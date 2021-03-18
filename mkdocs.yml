@@ -21,7 +21,7 @@ theme:
         - navigation.tracking
         - navigation.instant
     favicon: nodejs.svg
-    logo: nodejs.svg
+    logo: nodejs-white.svg
 
 extra:
     social:
