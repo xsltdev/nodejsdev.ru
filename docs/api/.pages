@@ -9,10 +9,10 @@ nav:
     - cli.md
     - console.md
     - crypto.md
-    #- debugger.md
-    #- dns.md
-    #- errors.md
-    #- events.md
+    - debugger.md
+    - dns.md
+    - errors.md
+    - events.md
     #- fs.md
     #- globals.md
     #- http.md

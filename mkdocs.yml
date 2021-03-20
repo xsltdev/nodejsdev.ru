@@ -53,12 +53,13 @@ markdown_extensions:
           emoji_generator: !!python/name:materialx.emoji.to_svg
     - pymdownx.tabbed
     - pymdownx.superfences
+    - pymdownx.keys
 
 plugins:
     - search:
-        lang:
-          - ru
-          - en
+          lang:
+              - ru
+              - en
     - awesome-pages
     - section-index
 
