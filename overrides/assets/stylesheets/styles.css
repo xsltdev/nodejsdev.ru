@@ -65,6 +65,10 @@ h2 {
 	border-bottom: 3px solid #f6f6f6;
 }
 
+h3 {
+	border-bottom: 1px solid #f6f6f6;
+}
+
 /*
 	Lists
 */
@@ -81,6 +85,10 @@ h2 {
 */
 .md-typeset pre {
 	margin: 0;
+}
+
+.md-typeset code {
+	word-break: initial;
 }
 
 /*

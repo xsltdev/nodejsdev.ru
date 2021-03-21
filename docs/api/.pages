@@ -13,7 +13,7 @@ nav:
     - dns.md
     - errors.md
     - events.md
-    #- fs.md
+    - fs.md
     #- globals.md
     #- http.md
     #- https.md
