@@ -14,7 +14,7 @@ nav:
     - errors.md
     - events.md
     - fs.md
-    #- globals.md
+    - globals.md
     #- http.md
     #- https.md
     #- net.md
