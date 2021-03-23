@@ -15,7 +15,7 @@ nav:
     - events.md
     - fs.md
     - globals.md
-    #- http.md
+    - http.md
     #- https.md
     #- net.md
     #- os.md
