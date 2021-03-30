@@ -16,7 +16,7 @@ nav:
     - fs.md
     - globals.md
     - http.md
-    #- https.md
+    - https.md
     #- net.md
     #- os.md
     #- path.md
