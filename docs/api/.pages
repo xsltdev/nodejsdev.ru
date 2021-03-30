@@ -19,9 +19,9 @@ nav:
     - https.md
     - net.md
     - os.md
-    #- path.md
+    - path.md
     #- process.md
-    #- querystring.md
+    - querystring.md
     #- readline.md
     #- repl.md
     #- stream.md
