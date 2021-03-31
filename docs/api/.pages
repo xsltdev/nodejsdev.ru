@@ -20,7 +20,7 @@ nav:
     - net.md
     - os.md
     - path.md
-    #- process.md
+    - process.md
     - querystring.md
     #- readline.md
     #- repl.md
