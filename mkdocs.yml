@@ -31,6 +31,9 @@ extra:
         - icon: fontawesome/brands/angular
           link: 'https://angdev.ru/'
           name: Angular docs
+        - icon: fontawesome/brands/react
+          link: 'https://reactdev.ru/'
+          name: React docs
         - icon: fontawesome/brands/node-js
           link: 'https://nodejsdev.ru/'
           name: Node.js docs
