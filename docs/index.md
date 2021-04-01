@@ -1,5 +1,5 @@
 ---
-title: Справочник
+title: Главная
 description: Node.js - это программная платформа, которая транслирует JavaScript в машинный код, исполняемый на стороне сервера
 hide:
   - toc
@@ -34,9 +34,9 @@ hide:
 
 ---
 
-!!!note ""
+!!!abstract "Справочники"
 
-	[XSLT](https://xsltdev.ru) &nbsp;&nbsp;&nbsp;
+    [XSLT](https://xsltdev.ru) &nbsp;&nbsp;&nbsp;
     [![Angular](angular.svg){: style="height:16px;width:16px;vertical-align:middle;"} Angular](https://angdev.ru/) &nbsp;&nbsp;&nbsp;
     [![React](react.svg){: style="height:16px;width:16px;vertical-align:middle;"} React](https://reactdev.ru/) &nbsp;&nbsp;&nbsp;
     [![Node.js](nodejs.svg){: style="height:16px;width:16px;vertical-align:middle;"} Node.js](https://nodejsdev.ru/)
