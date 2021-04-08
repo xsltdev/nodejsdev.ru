@@ -1264,13 +1264,13 @@ crypto.setEngine(engine[, flags])
 ### Опции OpenSSL
 
 `SSL_OP_ALL`
-: Применяет множественные методы обхода багов в OpenSSL. См. [openssl.org](https://www.openssl.org/docs/manmaster/ssl/SSL_CTX_set_options.html)
+: Применяет множественные методы обхода багов в OpenSSL. См. [openssl.org](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_options.html)
 
 `SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION`
-: Позволяет наследование небезопасного повторного переподключения между OpenSSL и неизвестными клиентами или серверами. См. [openssl.org](https://www.openssl.org/docs/manmaster/ssl/SSL_CTX_set_options.html)
+: Позволяет наследование небезопасного повторного переподключения между OpenSSL и неизвестными клиентами или серверами. См. [openssl.org](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_options.html)
 
 `SSL_OP_CIPHER_SERVER_PREFERENCE`
-: Изпользует предпочтения сервера вместо клиента при выборе шифратора. См. [openssl.org](https://www.openssl.org/docs/manmaster/ssl/SSL_CTX_set_options.html)
+: Изпользует предпочтения сервера вместо клиента при выборе шифратора. См. [openssl.org](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_options.html)
 
 `SSL_OP_CISCO_ANYCONNECT`
 : Дает OpenSSL инструкцию на использование "отсталой" версии Cisco DTLS_BAD_VER

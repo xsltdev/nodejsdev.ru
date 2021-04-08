@@ -18,7 +18,7 @@
 
 Возможно, вам знаком криптографический протокол Secure Socket Layer (SSL). [SSL является предшественником TLS](<https://msdn.microsoft.com/en-us/library/windows/desktop/aa380515(v=vs.85).aspx>). Другими словами, если раньше вы пользовались SSL, пора переходить к TLS. В целом, для работы с TLS мы рекомендуем использовать сервер Nginx. Подробные инструкции по настройке TLS на Nginx (и на других серверах) можно найти в разделе [Рекомендуемые конфигурации серверов (Mozilla Wiki)](https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_Server_Configurations).
 
-Кроме того, удобным инструментом для получения бесплатного сертификата TLS является [Let's Encrypt](https://letsencrypt.org/about/) - бесплатная, автоматическая и открытая сертификатная компания (CA), предоставленная корпорацией [Internet Security Research Group (ISRG)](https://letsencrypt.org/isrg/).
+Кроме того, удобным инструментом для получения бесплатного сертификата TLS является [Let's Encrypt](https://letsencrypt.org/about/) - бесплатная, автоматическая и открытая сертификатная компания (CA), предоставленная корпорацией [Internet Security Research Group (ISRG)](https://www.abetterinternet.org/).
 
 ## Использование Helmet
 
@@ -45,8 +45,8 @@ $ npm install --save helmet
 Затем используйте его в своем коде:
 
 ```js
-var helmet = require('helmet')
-app.use(helmet())
+var helmet = require('helmet');
+app.use(helmet());
 ```
 
 ### Как минимум, отключите заголовок X-Powered-By
@@ -56,7 +56,7 @@ app.use(helmet())
 Поэтому рекомендуется отключить данный заголовок с помощью метода `app.disable()`.
 
 ```js
-app.disable('x-powered-by')
+app.disable('x-powered-by');
 ```
 
 Если вы используете `helmet.js`, это будет сделано автоматически.
@@ -81,14 +81,14 @@ app.disable('x-powered-by')
 Для того чтобы избежать такой проблемы, используйте обобщенные имена cookie; например, при использовании промежуточного обработчика [express-session](https://www.npmjs.com/package/express-session):
 
 ```js
-var session = require('express-session')
-app.set('trust proxy', 1) // trust first proxy
+var session = require('express-session');
+app.set('trust proxy', 1); // trust first proxy
 app.use(
   session({
     secret: 's3Cur3',
     name: 'sessionId',
   })
-)
+);
 ```
 
 ### Настройка опций защиты cookie
@@ -104,11 +104,11 @@ app.use(
 Ниже приведен пример с использованием промежуточного обработчика [cookie-session](https://www.npmjs.com/package/cookie-session):
 
 ```js
-var session = require('cookie-session')
-var express = require('express')
-var app = express()
+var session = require('cookie-session');
+var express = require('express');
+var app = express();
 
-var expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+var expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 app.use(
   session({
     name: 'session',
@@ -121,7 +121,7 @@ app.use(
       expires: expiryDate,
     },
   })
-)
+);
 ```
 
 ## Обеспечение защиты зависимостей
@@ -160,7 +160,7 @@ $ requiresafe check
 
 Ниже приводится несколько дополнительных рекомендаций, взятых из исчерпывающего [Контрольного списка требований к защите Node.js](https://blog.risingstack.com/node-js-security-checklist/). В этой публикации можно найти дополнительную информацию по всем приведенным ниже рекомендациям:
 
-- Введите ограничение скорости передачи данных во избежание атак методом грубого подбора сочетаний символов для идентификации. Для реализации стратегии ограничения скорости передачи данных можно воспользоваться [Шлюзом API StrongLoop](https://strongloop.com/node-js/api-gateway/). В качестве альтернативы, можно использовать промежуточный обработчик, например, [express-limiter](https://www.npmjs.com/package/express-limiter), но для этого придется внести некоторые изменения в код.
+- Введите ограничение скорости передачи данных во избежание атак методом грубого подбора сочетаний символов для идентификации. Для реализации стратегии ограничения скорости передачи данных можно воспользоваться [Шлюзом API StrongLoop](https://strongloop.com/projects/#mg). В качестве альтернативы, можно использовать промежуточный обработчик, например, [express-limiter](https://www.npmjs.com/package/express-limiter), но для этого придется внести некоторые изменения в код.
 - Используйте промежуточный обработчик [csurf](https://www.npmjs.com/package/csurf) для защиты от подделки межсайтовых запросов (CSRF).
 - Всегда применяйте фильтрацию и очистку пользовательского ввода в целях защиты от атак межсайтового скриптинга (XSS) и ввода ложных команд.
 - Обеспечьте защиту от атак внедрения SQL-кода с помощью параметризованных запросов или подготовленных операторов.
