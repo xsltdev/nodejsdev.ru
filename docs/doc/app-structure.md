@@ -13,14 +13,13 @@ _app.js_
 ```js
 const express = require('express'),
   app = express(),
-  bodyParser = require('body-parser'),
   routes = require('./routes/index')
 
 const host = '127.0.0.1'
 const port = 7000
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use('/api', routes)
 
