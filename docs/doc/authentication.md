@@ -33,7 +33,6 @@ _app.js_
 ```js
 const express = require('express'),
   app = express(),
-  bodyParser = require('body-parser'),
   session = require('express-session'),
   passport = require('passport'),
   localStrategy = require('passport-local').Strategy,
@@ -52,8 +51,8 @@ function checkAuth() {
 passport.serializeUser((user, done) => done(null, user))
 passport.deserializeUser((user, done) => done(null, user))
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(session({ secret: 'you secret key' }))
 app.use(flash())
 app.use(passport.initialize())
@@ -197,7 +196,6 @@ _app.js_
 ```js
 const express = require('express'),
   app = express(),
-  bodyParser = require('body-parser'),
   session = require('express-session'),
   passport = require('passport'),
   GoogleStrategy = require('passport-google-oauth')
@@ -217,8 +215,8 @@ function checkAuth() {
   })
 }
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(session({ secret: 'you secret key' }))
 app.use(flash())
 app.use(passport.initialize())
