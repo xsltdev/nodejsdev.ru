@@ -71,7 +71,6 @@ _app.js_
 ```js
 const express = require('express'),
   app = express(),
-  bodyParser = require('body-parser'),
   crypto = require('crypto'),
   users = require('./users')
 
@@ -80,7 +79,7 @@ const port = 7000
 
 const tokenKey = '1a2b-3c4d-5e6f-7g8h'
 
-app.use(bodyParser.json())
+app.use(express.json())
 app.use((req, res, next) => {
   if (req.headers.authorization) {
     let tokenParts = req.headers.authorization
@@ -154,7 +153,6 @@ _app.js_
 ```js
 const express = require('express'),
   app = express(),
-  bodyParser = require('body-parser'),
   jwt = require('jsonwebtoken'),
   users = require('./users')
 
@@ -163,7 +161,7 @@ const port = 7000
 
 const tokenKey = '1a2b-3c4d-5e6f-7g8h'
 
-app.use(bodyParser.json())
+app.use(express.json())
 app.use((req, res, next) => {
   if (req.headers.authorization) {
     jwt.verify(
