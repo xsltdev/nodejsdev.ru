@@ -23,14 +23,13 @@ process.env.NODE_ENV = 'development'
 
 const express = require('express'),
   app = express(),
-  fs = require('fs'),
-  bodyParser = require('body-parser')
+  fs = require('fs')
 
 const host = '127.0.0.1'
 const port = 7000
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 let file = 'data.json'
 
