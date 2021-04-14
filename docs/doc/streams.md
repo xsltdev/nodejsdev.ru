@@ -151,7 +151,7 @@ writableStream.on('error', (err) => console.log(err))
 const fs = require('fs')
 
 let readStream = fs.createReadStream('./files/from.txt')
-let writeStream = fs.createReadStream('./files/to.txt')
+let writeStream = fs.createWriteStream('./files/to.txt')
 
 readStream.pipe(writeStream)
 ```
