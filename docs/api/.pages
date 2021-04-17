@@ -22,6 +22,6 @@ nav:
     - path.md
     - process.md
     - querystring.md
-    #- readline.md
-    #- repl.md
-    #- stream.md
+    - readline.md
+    - repl.md
+    - stream.md

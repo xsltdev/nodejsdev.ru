@@ -2,7 +2,6 @@
 	"name": "nodejsdev.ru",
 	"version": "1.0.0",
 	"description": "Site with web documentations",
-	"dependencies": {},
 	"devDependencies": {
 		"@prettier/plugin-xml": "^0.12.0",
 		"prettier": "^2.1.2"
