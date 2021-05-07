@@ -1,11 +1,11 @@
-# Path
+# Использование модуля path
 
 Модуль Node.js **Path** является встроенным и предоставляет набор функций для работы с путями в файловой системе.
 
 Подключение модуля.
 
 ```js
-const path = require('path')
+const path = require('path');
 ```
 
 Наиболее часто используемые методы Node.js Path:
@@ -13,39 +13,39 @@ const path = require('path')
 `basename()` - возвращает конечную часть пути, первым параметром принимает путь, вторым необязательным аргументом - расширение файла, которое нужно убрать из возвращаемого результата;
 
 ```js
-path.basename('/srv/app/app.js') //app.js
-path.basename('/srv/app/app.js', '.js') //app
+path.basename('/srv/app/app.js'); //app.js
+path.basename('/srv/app/app.js', '.js'); //app
 ```
 
 `dirname()` - возвращает директорию переданного пути;
 
 ```js
-path.dirname('/srv/app/app.js') // \srv\app
+path.dirname('/srv/app/app.js'); // \srv\app
 ```
 
 `extname()` - возвращает расширение файла переданного пути;
 
 ```js
-path.extname('/srv/app/app.js') //.js
+path.extname('/srv/app/app.js'); //.js
 ```
 
 `isAbsolute()` - булевое значение, `true`, если переданный путь является абсолютным;
 
 ```js
-path.isAbsolute('/srv/app/app.js') //true
-path.isAbsolute('srv/app/app.js') //false
+path.isAbsolute('/srv/app/app.js'); //true
+path.isAbsolute('srv/app/app.js'); //false
 ```
 
 `join()` - принимает неограниченное количество составных частей пути, включая возвраты в родительские директории, и возвращает полученный в результате путь;
 
 ```js
-path.join('/srv/app', '../config/..', 'app/app.js') // \srv\app\app.js
+path.join('/srv/app', '../config/..', 'app/app.js'); // \srv\app\app.js
 ```
 
 `normalize()` - приводит к корректному и оптимальному виду переданный путь;
 
 ```js
-path.normalize('/srv//app///app.js') // \srv\app\app.js
+path.normalize('/srv//app///app.js'); // \srv\app\app.js
 ```
 
 `parse()` - разбирает переданный путь на элементы и возвращает объект со следующими свойствами:
@@ -59,11 +59,14 @@ path.normalize('/srv//app///app.js') // \srv\app\app.js
 `relative()` - принимает два пути и возвращает относительный путь от первого ко второму;
 
 ```js
-path.relative('/srv/app/app.js', '/srv/config/default.conf') // ..\..\config\default.conf
+path.relative(
+  '/srv/app/app.js',
+  '/srv/config/default.conf'
+); // ..\..\config\default.conf
 ```
 
 `resolve()` - принимает составные части пути и возвращает абсолютный путь полученного в результате обработки переданных сегментов пути.
 
 ```js
-path.resolve('/srv/app', 'app.js') // D:\srv\app\app.js
+path.resolve('/srv/app', 'app.js'); // D:\srv\app\app.js
 ```

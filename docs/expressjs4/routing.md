@@ -1,4 +1,4 @@
-# Маршрутизация
+# Маршрутизация ExpressJS
 
 _Маршрутизация_ определяет, как приложение отвечает на клиентский запрос к конкретному адресу (URI).
 Вводную информацию о маршрутизации можно найти в разделе [Основы маршрутизации](basic-routing.md).
@@ -6,13 +6,13 @@ _Маршрутизация_ определяет, как приложение �
 Приведенный ниже код служит примером одного из самых простых маршрутов.
 
 ```js
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
-  res.send('hello world')
-})
+  res.send('hello world');
+});
 ```
 
 ## Методы Route
@@ -24,13 +24,13 @@ app.get('/', function (req, res) {
 ```js
 // GET method route
 app.get('/', function (req, res) {
-  res.send('GET request to the homepage')
-})
+  res.send('GET request to the homepage');
+});
 
 // POST method route
 app.post('/', function (req, res) {
-  res.send('POST request to the homepage')
-})
+  res.send('POST request to the homepage');
+});
 ```
 
 Express поддерживает перечисленные далее методы маршрутизации, соответствующие методам HTTP: `get`, `post`, `put`, `head`, `delete`, `options`, `trace`, `copy`, `lock`, `mkcol`, `move`, `purge`, `propfind`, `proppatch`, `unlock`, `report`, `mkactivity`, `checkout`, `merge`, `m-search`, `notify`, `subscribe`, `unsubscribe`, `patch`, `search` и `connect`.
@@ -43,9 +43,9 @@ Express поддерживает перечисленные далее мето�
 
 ```js
 app.all('/secret', function (req, res, next) {
-  console.log('Accessing the secret section ...')
-  next() // pass control to the next handler
-})
+  console.log('Accessing the secret section ...');
+  next(); // pass control to the next handler
+});
 ```
 
 ## Пути маршрутов
@@ -62,24 +62,24 @@ app.all('/secret', function (req, res, next) {
 
 ```js
 app.get('/', function (req, res) {
-  res.send('root')
-})
+  res.send('root');
+});
 ```
 
 Данный путь маршрута сопоставляет запросы с `/about`.
 
 ```js
 app.get('/about', function (req, res) {
-  res.send('about')
-})
+  res.send('about');
+});
 ```
 
 Данный путь маршрута сопоставляет запросы с `/random.text`.
 
 ```js
 app.get('/random.text', function (req, res) {
-  res.send('random.text')
-})
+  res.send('random.text');
+});
 ```
 
 Ниже приводятся примеры путей маршрутов на основе шаблонов строк.
@@ -88,32 +88,32 @@ app.get('/random.text', function (req, res) {
 
 ```js
 app.get('/ab?cd', function (req, res) {
-  res.send('ab?cd')
-})
+  res.send('ab?cd');
+});
 ```
 
 Этот путь маршрута сопоставляет `abcd`, `abbcd`, `abbbcd` и т. д.
 
 ```js
 app.get('/ab+cd', function (req, res) {
-  res.send('ab+cd')
-})
+  res.send('ab+cd');
+});
 ```
 
 Этот путь маршрута сопоставляет `abcd`, `abxcd`, `abRABDOMcd`, `ab123cd` и т. д.
 
 ```js
 app.get('/ab*cd', function (req, res) {
-  res.send('ab*cd')
-})
+  res.send('ab*cd');
+});
 ```
 
 Данный путь маршрута сопоставляет `/abe` и `/abcde`.
 
 ```js
 app.get('/ab(cd)?e', function (req, res) {
-  res.send('ab(cd)?e')
-})
+  res.send('ab(cd)?e');
+});
 ```
 
 Символы `?`, `+`, `*` и `()` представляют собой подмножества соответствующих им регулярных выражений. Дефис (`-`) и точка (`.`) интерпретируются буквально в путях на основе строк.
@@ -124,16 +124,16 @@ app.get('/ab(cd)?e', function (req, res) {
 
 ```js
 app.get(/a/, function (req, res) {
-  res.send('/a/')
-})
+  res.send('/a/');
+});
 ```
 
 Данный маршрут сопоставляет `butterfly` и `dragonfly`, но не `butterflyman`, `dragonfly man` и т. д.
 
 ```js
 app.get(/.*fly$/, function (req, res) {
-  res.send('/.*fly$/')
-})
+  res.send('/.*fly$/');
+});
 ```
 
 ## Обработчики маршрутов
@@ -146,8 +146,8 @@ app.get(/.*fly$/, function (req, res) {
 
 ```js
 app.get('/example/a', function (req, res) {
-  res.send('Hello from A!')
-})
+  res.send('Hello from A!');
+});
 ```
 
 Один маршрут может обрабатываться несколькими функциями обратного вызова (обязательно укажите объект `next`). Например:
@@ -158,47 +158,47 @@ app.get(
   function (req, res, next) {
     console.log(
       'the response will be sent by the next function ...'
-    )
-    next()
+    );
+    next();
   },
   function (req, res) {
-    res.send('Hello from B!')
+    res.send('Hello from B!');
   }
-)
+);
 ```
 
 Массив функций обратного вызова может обрабатывать один маршрут. Например:
 
 ```js
 var cb0 = function (req, res, next) {
-  console.log('CB0')
-  next()
-}
+  console.log('CB0');
+  next();
+};
 
 var cb1 = function (req, res, next) {
-  console.log('CB1')
-  next()
-}
+  console.log('CB1');
+  next();
+};
 
 var cb2 = function (req, res) {
-  res.send('Hello from C!')
-}
+  res.send('Hello from C!');
+};
 
-app.get('/example/c', [cb0, cb1, cb2])
+app.get('/example/c', [cb0, cb1, cb2]);
 ```
 
 Маршрут может обрабатываться сочетанием независимых функций и массивов функций. Например:
 
 ```js
 var cb0 = function (req, res, next) {
-  console.log('CB0')
-  next()
-}
+  console.log('CB0');
+  next();
+};
 
 var cb1 = function (req, res, next) {
-  console.log('CB1')
-  next()
-}
+  console.log('CB1');
+  next();
+};
 
 app.get(
   '/example/d',
@@ -206,13 +206,13 @@ app.get(
   function (req, res, next) {
     console.log(
       'the response will be sent by the next function ...'
-    )
-    next()
+    );
+    next();
   },
   function (req, res) {
-    res.send('Hello from D!')
+    res.send('Hello from D!');
   }
-)
+);
 ```
 
 ## Методы ответа
@@ -242,14 +242,14 @@ app.get(
 app
   .route('/book')
   .get(function (req, res) {
-    res.send('Get a random book')
+    res.send('Get a random book');
   })
   .post(function (req, res) {
-    res.send('Add a book')
+    res.send('Add a book');
   })
   .put(function (req, res) {
-    res.send('Update the book')
-  })
+    res.send('Update the book');
+  });
 ```
 
 ## express.Router
@@ -261,32 +261,32 @@ app
 Создайте файл маршрутизатора с именем `birds.js` в каталоге приложения со следующим содержанием:
 
 ```js
-var express = require('express')
-var router = express.Router()
+var express = require('express');
+var router = express.Router();
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now())
-  next()
-})
+  console.log('Time: ', Date.now());
+  next();
+});
 // define the home page route
 router.get('/', function (req, res) {
-  res.send('Birds home page')
-})
+  res.send('Birds home page');
+});
 // define the about route
 router.get('/about', function (req, res) {
-  res.send('About birds')
-})
+  res.send('About birds');
+});
 
-module.exports = router
+module.exports = router;
 ```
 
 Потом загрузите модуль маршрутизации в приложение:
 
 ```js
-var birds = require('./birds')
+var birds = require('./birds');
 
-app.use('/birds', birds)
+app.use('/birds', birds);
 ```
 
 Данное приложение теперь сможет обрабатывать запросы, адресованные ресурсам `/birds` и

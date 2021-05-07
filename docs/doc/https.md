@@ -2,7 +2,7 @@
 description: Протокол передачи данных HTTPS это тот же протокол HTTP с поддержкой шифрования, которое обеспечивают протоколы криптографии SSL и TSL.
 ---
 
-# HTTPS
+# Использование HTTPS
 
 **Протокол передачи данных HTTPS** &mdash; это тот же протокол HTTP с поддержкой шифрования, которое обеспечивают протоколы криптографии SSL и TSL. Обычно HTTPS используется там, где необходима безопасная передача личных данных, и занимает 443 порт (обычный HTTP использует 80 порт).
 
@@ -13,13 +13,13 @@ description: Протокол передачи данных HTTPS это тот 
 _app.js_
 
 ```js
-const express = require('express')
-const app = express()
-const https = require('https')
-const fs = require('fs')
+const express = require('express');
+const app = express();
+const https = require('https');
+const fs = require('fs');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 https
   .createServer(
@@ -30,8 +30,8 @@ https
     app
   )
   .listen(port, host, function () {
-    console.log(`Server listens https://${host}:${port}`)
-  })
+    console.log(`Server listens https://${host}:${port}`);
+  });
 ```
 
 Обратите внимание, что сертификат и закрытый ключ задается с помощью свойств `key` (закрытый ключ) и `cert` (сертификат) объекта, передаваемого методу `createServer()` первым аргументом.

@@ -1,4 +1,4 @@
-# Маршрутизация
+# Маршрутизация фреймворка
 
 При обработке запросов фреймворк Express опирается на систему маршрутизации. В приложении определяются маршруты, а также обработчики этих маршрутов. Если запрос соответствует определенному маршруту, то вызывается для обработки запроса соответствующий обработчик.
 
@@ -13,24 +13,24 @@
 В качестве первого параметра эти функции могут принимать шаблон адреса, запрос по которому будет обрабатываться. Второй параметр функций представляет функцию, которая будет обрабатывать запрос по совпавшему с шаблоном адресу. Например:
 
 ```js
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
 // обработка запроса по адресу /about
 app.get('/about', function (request, response) {
-  response.send('<h1>О сайте</h1>')
-})
+  response.send('<h1>О сайте</h1>');
+});
 
 // обработка запроса по адресу /contact
 app.use('/contact', function (request, response) {
-  response.send('<h1>Контакты</h1>')
-})
+  response.send('<h1>Контакты</h1>');
+});
 
 // обработка запроса к корню веб-сайта
 app.get('/', function (request, response) {
-  response.send('<h1>Главная страница</h1>')
-})
-app.listen(3000)
+  response.send('<h1>Главная страница</h1>');
+});
+app.listen(3000);
 ```
 
 Когда приходит запрос Express сопоставляет запрошенный адрес с каждым из маршрутов. Затем выбирается первый совпавший маршрут. При совпадении маршрута вызывается его функция обработчика.
@@ -45,8 +45,8 @@ app.listen(3000)
 
 ```js
 app.get('/bo?k', function (request, response) {
-  response.send(request.url)
-})
+  response.send(request.url);
+});
 ```
 
 Такой маршрут будет соответствовать строке запроса `/bk` или `/bok`.
@@ -55,8 +55,8 @@ app.get('/bo?k', function (request, response) {
 
 ```js
 app.get('/bo+k', function (request, response) {
-  response.send(request.url)
-})
+  response.send(request.url);
+});
 ```
 
 Такой маршрут будет соответствовать запросам `/bok`, `/book`, `/boook` и так далее.
@@ -65,8 +65,8 @@ app.get('/bo+k', function (request, response) {
 
 ```js
 app.get('/bo*k', function (request, response) {
-  response.send(request.url)
-})
+  response.send(request.url);
+});
 ```
 
 Такой маршрут будет соответствовать запросам `/bork`, `/bonk`, `/bor.dak`, `/bor/ok` и так далее.
@@ -75,8 +75,8 @@ app.get('/bo*k', function (request, response) {
 
 ```js
 app.get('/book(.html)?', function (request, response) {
-  response.send(request.url)
-})
+  response.send(request.url);
+});
 ```
 
 Выражение `(.html)?` указывает, что подстрока `.html` может встречаться или отсутствовать в строке запроса. И такой маршрут будет соответствовать запросам `/book` и `/book.html`.
@@ -85,6 +85,6 @@ app.get('/book(.html)?', function (request, response) {
 
 ```js
 app.get(/.*(\.)html$/, function (request, response) {
-  response.send(request.url)
-})
+  response.send(request.url);
+});
 ```

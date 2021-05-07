@@ -1,15 +1,15 @@
-# Stream
+# Потоки
 
 **Stream** представляет поток данных. Потоки бывают различных типов, среди которых можно выделить [потоки для чтения](https://nodejs.org/api/stream.html#stream_readable_streams) и [потоки для записи](https://nodejs.org/api/stream.html#stream_writable_streams).
 
 При создании сервера в первой главе мы уже сталкивались с потоками:
 
 ```js
-const http = require('http')
+const http = require('http');
 
 http
   .createServer(function (request, response) {})
-  .listen(3000)
+  .listen(3000);
 ```
 
 Параметры `request` и `response`, которые передаются в функцию и с помощью которых мы можем получать данные о запросе и управлять ответом, как раз представляют собой потоки: `request` - поток для чтения, а `response` - поток для записи.
@@ -17,20 +17,20 @@ http
 Используя потоки чтения и записи, мы можем считывать и записывать информацию в файл. Например:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-let writeableStream = fs.createWriteStream('hello.txt')
-writeableStream.write('Привет мир!')
-writeableStream.write('Продолжение записи \n')
-writeableStream.end('Завершение записи')
+let writeableStream = fs.createWriteStream('hello.txt');
+writeableStream.write('Привет мир!');
+writeableStream.write('Продолжение записи \n');
+writeableStream.end('Завершение записи');
 let readableStream = fs.createReadStream(
   'hello.txt',
   'utf8'
-)
+);
 
 readableStream.on('data', function (chunk) {
-  console.log(chunk)
-})
+  console.log(chunk);
+});
 ```
 
 Для создания потока для записи применяется метод `fs.createWriteStream()`, в который передается название файла. Если вдруг в папке нет такого файла, то он создается.
@@ -45,8 +45,8 @@ readableStream.on('data', function (chunk) {
 
 ```js
 readableStream.on('data', function (chunk) {
-  console.log(chunk)
-})
+  console.log(chunk);
+});
 ```
 
 Запустим файл на выполнение:

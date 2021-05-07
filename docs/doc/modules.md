@@ -1,4 +1,4 @@
-# Модули
+# Стандартные и собственные модули
 
 Node.js приложение имеет модульную архитектуру построения, причем каждый файл JavaScript рассматривается как отдельный модуль, который может зависеть от других модулей.
 
@@ -23,29 +23,31 @@ npm install express --save
 _app.js_
 
 ```js
-const myModule = require('./my-module')
+const myModule = require('./my-module');
 
-myModule.incrementCounter()
-myModule.incrementCounter(3)
+myModule.incrementCounter();
+myModule.incrementCounter(3);
 
-myModule.displayCounter()
+myModule.displayCounter();
 
-myModule.decrementCounter()
+myModule.decrementCounter();
 
-myModule.displayCounter()
+myModule.displayCounter();
 ```
 
 _my-module.js_
 
 ```js
-let counter = 0
+let counter = 0;
 
 exports.displayCounter = () =>
-  console.log(`Count value: ${counter}`)
+  console.log(`Count value: ${counter}`);
 
-exports.incrementCounter = (value = 1) => (counter += value)
+exports.incrementCounter = (value = 1) =>
+  (counter += value);
 
-exports.decrementCounter = (value = 1) => (counter -= value)
+exports.decrementCounter = (value = 1) =>
+  (counter -= value);
 ```
 
 ## require()
@@ -53,7 +55,7 @@ exports.decrementCounter = (value = 1) => (counter -= value)
 Для подключения модулей используется функция `require()`. Если подключается npm модуль, то функции необходимо передать только его название, независимо от того, на каком уровне иерархии проекта он запрашивается.
 
 ```js
-const express = require('express')
+const express = require('express');
 ```
 
 !!! note ""
@@ -63,7 +65,7 @@ const express = require('express')
 Подключение собственных модулей также осуществляется с использованием `require()`, только вместо имени модуля ей передается путь к файлу, относительно места, из которого он запрашивается.
 
 ```js
-const myModule = require('./my-module')
+const myModule = require('./my-module');
 ```
 
 Все пути файлов собственных модулей начинаются с `./`, что означает текущая директория.
