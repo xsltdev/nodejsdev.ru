@@ -2,14 +2,14 @@
 
 Буфер представляет собой некоторую область памяти, которая используется для временного хранения потоков данных операций ввода/вывода, в частности это касается файловой системы и работы с сетью.
 
-В Node.js работа с буфером осуществляется с использованием глобального класса `Buffer`, который позволяет обрабатывать потоков бинарных данных. Поскольку класс глобальный, он может быть использован в любом месте приложения без импорта самого модуля.
+В Node.js работа с буфером осуществляется с использованием глобального класса [`Buffer`](../api/buffer.md), который позволяет обрабатывать потоков бинарных данных. Поскольку класс глобальный, он может быть использован в любом месте приложения без импорта самого модуля.
 
 ## Создание
 
 Для создания пустого буфера размером в 10 байт используйте метод `Buffer.alloc()`.
 
 ```js
-Buffer.alloc(10) //<Buffer 00 00 00 00 00 00 00 00 00 00>
+Buffer.alloc(10); //<Buffer 00 00 00 00 00 00 00 00 00 00>
 ```
 
 !!! note ""
@@ -19,15 +19,15 @@ Buffer.alloc(10) //<Buffer 00 00 00 00 00 00 00 00 00 00>
 Размер буфера хранится в свойстве `length`.
 
 ```js
-let buffer = Buffer.alloc(3)
-buffer.length //3
+let buffer = Buffer.alloc(3);
+buffer.length; //3
 ```
 
 Чтобы заполнить создаваемый буфера значением по умолчанию, просто передайте это значение `Buffer.alloc()` вторым параметром
 
 ```js
-Buffer.alloc(10, 'A') //<Buffer 41 41 41 41 41 41 41 41 41 41>
-Buffer.alloc(10, 'ABC') //<Buffer 41 42 43 41 42 43 41 42 43 41>
+Buffer.alloc(10, 'A'); //<Buffer 41 41 41 41 41 41 41 41 41 41>
+Buffer.alloc(10, 'ABC'); //<Buffer 41 42 43 41 42 43 41 42 43 41>
 ```
 
 !!! note ""
@@ -37,13 +37,13 @@ Buffer.alloc(10, 'ABC') //<Buffer 41 42 43 41 42 43 41 42 43 41>
 Для создания буфера сразу нужного размера в Node.js имеется метод `Buffer.from()`, который принимает строку и создает под нее буфер.
 
 ```js
-Buffer.from('ABCDE') //<Buffer 41 42 43 44 45>
+Buffer.from('ABCDE'); //<Buffer 41 42 43 44 45>
 ```
 
 Вторым необязательным параметром методу `Buffer.from()` можно передать кодировку.
 
 ```js
-Buffer.from('ABCDE', 'base64') //<Buffer 00 10 83>
+Buffer.from('ABCDE', 'base64'); //<Buffer 00 10 83>
 ```
 
 ## Запись
@@ -59,24 +59,24 @@ Buffer.from('ABCDE', 'base64') //<Buffer 00 10 83>
 
 ```js
 //Запись в пустой буфер
-let buffer1 = Buffer.alloc(3) //<Buffer 00 00 00>
-buffer1.write('ABC') //<Buffer 41 42 43>
+let buffer1 = Buffer.alloc(3); //<Buffer 00 00 00>
+buffer1.write('ABC'); //<Buffer 41 42 43>
 
 //Перезапись заполненного буфера
-let buffer2 = Buffer.from('ABC') //<Buffer 41 42 43>
-buffer2.write('XYZ') //<Buffer 58 59 5a>
+let buffer2 = Buffer.from('ABC'); //<Buffer 41 42 43>
+buffer2.write('XYZ'); //<Buffer 58 59 5a>
 ```
 
 Пример записи в буфер с дополнительными параметрами.
 
 ```js
-let buffer = Buffer.alloc(3)
+let buffer = Buffer.alloc(3);
 
 //сдвиг позиции
-buffer.write('A', 1) //<Buffer 00 41 00>
+buffer.write('A', 1); //<Buffer 00 41 00>
 
 //ограничение записи переданной строки
-buffer.write('ABC', 0, 2) //<Buffer 41 42 00>
+buffer.write('ABC', 0, 2); //<Buffer 41 42 00>
 ```
 
 !!! note ""
@@ -84,8 +84,8 @@ buffer.write('ABC', 0, 2) //<Buffer 41 42 00>
     Метод `[Buffer instance].write()` возвращает длину записанной в буфер строки.
 
 ```js
-let buffer = Buffer.alloc(5)
-console.log(buffer.write('ABC')) //3
+let buffer = Buffer.alloc(5);
+console.log(buffer.write('ABC')); //3
 ```
 
 ## Чтение
@@ -97,9 +97,9 @@ console.log(buffer.write('ABC')) //3
 - позицию, на которой закончить чтение.
 
 ```js
-let buffer = Buffer.from('ABC')
-buffer.toString() //ABC
-buffer.toString('utf8', 1, 1) //B
+let buffer = Buffer.from('ABC');
+buffer.toString(); //ABC
+buffer.toString('utf8', 1, 1); //B
 ```
 
 ## Преобразование в JSON
@@ -107,8 +107,8 @@ buffer.toString('utf8', 1, 1) //B
 Объект Node.js класса `Buffer` может быть преобразован в формат JSON с помощью метода `[Buffer instance].toJSON()`.
 
 ```js
-let buffer = Buffer.from('ABC')
-buffer.toJSON().data //[65, 66, 67]
+let buffer = Buffer.from('ABC');
+buffer.toJSON().data; //[65, 66, 67]
 ```
 
 ## Buffer API
@@ -118,27 +118,27 @@ buffer.toJSON().data //[65, 66, 67]
 `Buffer.isEncoding()` - принимает кодировку и возвращает `true`, если ее испольщование допустимо при работе с буфером;
 
 ```js
-Buffer.isEncoding('ascii') //true
+Buffer.isEncoding('ascii'); //true
 ```
 
 `Buffer.isBuffer()` - принимает данные и возвращает `true`, если они являются экземпляром класса `Buffer`;
 
 ```js
-Buffer.isBuffer('ascii') //false
+Buffer.isBuffer('ascii'); //false
 ```
 
 `Buffer.byteLength()` - возвращает длину переданной строки в байтах (это не то же самое, что количество символов в строке), вторым необязательным параметром можно передать кодировку;
 
 ```js
-Buffer.byteLength('ascii') // 5
-Buffer.byteLength('ascii', 'base64') //
+Buffer.byteLength('ascii'); // 5
+Buffer.byteLength('ascii', 'base64'); //
 ```
 
 `Buffer.concat()` - принимает массив объектов класса `Buffer` и объединяет их в один, вторым необязательным параметром можно передать длину итогового буфера.
 
 ```js
-let buffer1 = Buffer.from('ABC')
-let buffer2 = Buffer.from('CDE')
-Buffer.conact([buffer1, buffer2], 5) //
-Buffer.conact([buffer1, buffer2], 7) //
+let buffer1 = Buffer.from('ABC');
+let buffer2 = Buffer.from('CDE');
+Buffer.conact([buffer1, buffer2], 5); //
+Buffer.conact([buffer1, buffer2], 7); //
 ```

@@ -1,4 +1,4 @@
-# Console
+# Модуль console
 
 !!!success "Стабильность: 2"
 

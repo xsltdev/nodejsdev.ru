@@ -1,4 +1,4 @@
-# Query String
+# Модуль querystring
 
 !!!success "Стабильность: 2 – Стабильно"
 

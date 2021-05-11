@@ -2,7 +2,7 @@
 
 Для работы с файлами в Node.js используется встроенный модуль `fs`, который выполняет все синхронные и асинхронные операции ввода/вывода применительно к файлам. Чтение и запись файла могут осуществляться одним из двумя способов:
 
-- с использованием `Buffer`;
+- с использованием [`Buffer`](../api/buffer.md);
 - через создание соответствующего потока.
 
 ## Чтение файлов и директорий
@@ -15,10 +15,10 @@
 
 ```js
 fs.readFile('files/data.txt', 'utf8', (err, data) => {
-  if (err) throw err
+  if (err) throw err;
 
-  console.log(data)
-})
+  console.log(data);
+});
 ```
 
 Callback-функции передается два аргумента: ошибка и полученные данные в строковом формате. Если операция прошла успешна, то в качестве ошибки передается `null`.
@@ -30,8 +30,8 @@ Callback-функции передается два аргумента: ошиб
 Поскольку метод выполняется асинхронно, то не происходит блокировки главного процесса Node.js. Но в некоторых случаях может понадобиться синхронное чтение файла, для этого есть метод `readFileSync()`, но при этом выполнение главного процесса будет заблокировано до тех пор, пока полностью не будет загружено содержимое файла.
 
 ```js
-const content = fs.readFileSync('files/data.txt', 'utf8')
-console.log(content)
+const content = fs.readFileSync('files/data.txt', 'utf8');
+console.log(content);
 ```
 
 Node.js `readFileSync()` возвращает результат чтения файла и принимает два параметра:
@@ -43,10 +43,10 @@ Node.js `readFileSync()` возвращает результат чтения ф
 
 ```js
 try {
-  const content = fs.readFileSync('files/data.txt', 'utf8')
-  console.log(content)
+  const content = fs.readFileSync('files/data.txt', 'utf8');
+  console.log(content);
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -65,9 +65,12 @@ try {
   - `autoClose` - если `true`, то при событиях `error` и `finish` поток закроется автоматически (по умолчанию `true`).
 
 ```js
-const stream = fs.createReadStream('files/data.txt', 'utf8')
-stream.on('data', (data) => console.log(data))
-stream.on('error', (err) => console.log(`Err: ${err}`))
+const stream = fs.createReadStream(
+  'files/data.txt',
+  'utf8'
+);
+stream.on('data', (data) => console.log(data));
+stream.on('error', (err) => console.log(`Err: ${err}`));
 ```
 
 !!! note ""
@@ -90,10 +93,10 @@ Node.js `readdir()` работает асинхронно и принимает 
 
 ```js
 fs.readdir('files', 'utf8', (err, files) => {
-  if (err) throw err
+  if (err) throw err;
 
-  console.log(files)
-})
+  console.log(files);
+});
 ```
 
 Node.js `readdirSync()` работает синхронно, возвращает массив найденных файлов и принимает два параметра:
@@ -103,10 +106,10 @@ Node.js `readdirSync()` работает синхронно, возвращае�
 
 ```js
 try {
-  const files = fs.readdirSync('files', 'utf8')
-  console.log(files)
+  const files = fs.readdirSync('files', 'utf8');
+  console.log(files);
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -127,11 +130,11 @@ fs.writeFile(
   'File Content',
   'utf8',
   (err) => {
-    if (err) throw err
+    if (err) throw err;
 
-    console.log('Done')
+    console.log('Done');
   }
-)
+);
 ```
 
 !!! note ""
@@ -142,10 +145,14 @@ fs.writeFile(
 
 ```js
 try {
-  fs.writeFileSync('files/data.txt', 'File Content', 'utf8')
-  console.log('Done')
+  fs.writeFileSync(
+    'files/data.txt',
+    'File Content',
+    'utf8'
+  );
+  console.log('Done');
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -161,11 +168,11 @@ fs.appendFile(
   '\nFile Content 2',
   'utf8',
   (err) => {
-    if (err) throw err
+    if (err) throw err;
 
-    console.log('Done')
+    console.log('Done');
   }
-)
+);
 ```
 
 Для записи файла через потока ввода имеется метод `fs.createWriteStream()`, который возвращает поток ввода и принимает два параметра:
@@ -180,14 +187,14 @@ fs.appendFile(
 const stream = fs.createWriteStream(
   'files/data.txt',
   'utf8'
-)
+);
 
-stream.on('error', (err) => console.log(`Err: ${err}`))
-stream.on('finish', () => console.log('Done'))
+stream.on('error', (err) => console.log(`Err: ${err}`));
+stream.on('finish', () => console.log('Done'));
 
-stream.write('First line\n')
-stream.write('Second line\n')
-stream.end()
+stream.write('First line\n');
+stream.write('Second line\n');
+stream.end();
 ```
 
 Чтобы создать директорию, используйте методы `mkdir()` и `mkdirSync()`.
@@ -204,20 +211,20 @@ Node.js `mkdir()` работает асинхронно и принимает в
 
 ```js
 fs.mkdir('files/dir/subdir', { recursive: true }, (err) => {
-  if (err) throw err
+  if (err) throw err;
 
-  console.log('Created')
-})
+  console.log('Created');
+});
 ```
 
 Node.js `mkdirSync()` создает директорию синхронно и возвращает `undefined`. Обработка ошибок осуществляется через `try{...}catch(){...}`. Метод `mkdirSync()` принимает те же параметры, что и `mkdir()`, за исключением callback-функции.
 
 ```js
 try {
-  fs.mkdirSync('files/dir/subdir', { recursive: true })
-  console.log('Done')
+  fs.mkdirSync('files/dir/subdir', { recursive: true });
+  console.log('Done');
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -229,20 +236,20 @@ try {
 
 ```js
 fs.unlink('files/data.txt', (err) => {
-  if (err) throw err
+  if (err) throw err;
 
-  console.log('Deleted')
-})
+  console.log('Deleted');
+});
 ```
 
 Для синхронного удаления файла используйте `unlinkSync()`, которому единственным аргументом передается имя файла.
 
 ```js
 try {
-  fs.unlinkSync('files/data.txt')
-  console.log('Deleted')
+  fs.unlinkSync('files/data.txt');
+  console.log('Deleted');
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -252,20 +259,20 @@ try {
 
 ```js
 fs.rmdir('files/dir', (err) => {
-  if (err) throw err
+  if (err) throw err;
 
-  console.log('Deleted')
-})
+  console.log('Deleted');
+});
 ```
 
 Пример `rmdirSync()`.
 
 ```js
 try {
-  fs.rmdirSync('files/dir')
-  console.log('Deleted')
+  fs.rmdirSync('files/dir');
+  console.log('Deleted');
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 
@@ -275,10 +282,10 @@ try {
 
 ```js
 try {
-  const exists = fs.existsSync('files')
-  console.log('Exists: ', exists)
+  const exists = fs.existsSync('files');
+  console.log('Exists: ', exists);
 } catch (e) {
-  console.log(e)
+  console.log(e);
 }
 ```
 

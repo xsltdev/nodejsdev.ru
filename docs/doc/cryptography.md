@@ -1,28 +1,28 @@
 # Криптография
 
-Выполнение функций криптографии в Node.js обеспечивает встроенный в платформу модуль `crypto`, который поддерживает алгоритмы для шифрования и расшифровки данных, генерацию сертификатов, хэш-функции и т. д.
+Выполнение функций криптографии в Node.js обеспечивает встроенный в платформу модуль [`crypto`](../api/crypto.md), который поддерживает алгоритмы для шифрования и расшифровки данных, генерацию сертификатов, хэш-функции и т. д.
 
 Модуль `crypto` входит не во все сборки Node.js, поэтому его использование в приложении, запускаемом на разных сервера, может быть не всегда возможным. Чтобы проверить доступность модуля, добавьте следующий код.
 
 ```js
-let crypto
+let crypto;
 
 try {
-  crypto = require('crypto')
+  crypto = require('crypto');
 } catch (err) {
-  console.log('Crypto module is unavailable')
+  console.log('Crypto module is unavailable');
 }
 ```
 
 Для получения списка поддерживаемых в Node.js алгоритмов шифрования, выполните у экземпляра модуля `crypto` функцию `getCiphers()`.
 
 ```js
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-console.log(crypto.getCiphers())
+console.log(crypto.getCiphers());
 ```
 
-В рамках данной статьи рассмотрены шифрование и расшифровка данных. Для ознакомления с остальным функционалом модуля `crypto` обратитесь к [официальной документации](https://nodejs.org/api/crypto.html).
+В рамках данной статьи рассмотрены шифрование и расшифровка данных.
 
 Шифрование данных по заданному алгоритму осуществляется в три этапа:
 
@@ -49,17 +49,17 @@ console.log(crypto.getCiphers())
 _cipher.js_
 
 ```js
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-const iv = crypto.randomBytes(16) //генерация вектора инициализации
-const key = crypto.scryptSync('secret', 'salt', 32) //генерация ключа
+const iv = crypto.randomBytes(16); //генерация вектора инициализации
+const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 const encyptedData = crypto
   .createCipheriv('aes-256-cbc', key, iv)
   .update('Any data', 'utf8', 'hex')
-  .final('hex')
+  .final('hex');
 
-console.log(encryptedData)
+console.log(encryptedData);
 ```
 
 !!! note ""
@@ -71,17 +71,17 @@ console.log(encryptedData)
 _decipher.js_
 
 ```js
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-const iv = crypto.randomBytes(16) //генерация вектора инициализации
-const key = crypto.scryptSync('secret', 'salt', 32) //генерация ключа
+const iv = crypto.randomBytes(16); //генерация вектора инициализации
+const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 const decyptedData = crypto
   .createDecipheriv('aes-256-cbc', key, iv)
   .update(encryptedData, 'hex', 'utf8')
-  .final('utf8')
+  .final('utf8');
 
-console.log(decryptedData) //Any data
+console.log(decryptedData); //Any data
 ```
 
 Процесс шифрования представляет собой поток. Поэтому пример выше может быть переписан следующим образом.
@@ -89,38 +89,41 @@ console.log(decryptedData) //Any data
 _crypto-stream.js_
 
 ```js
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-const iv = crypto.randomBytes(16) //генерация вектора инициализации
-const key = crypto.scryptSync('secret', 'salt', 32) //генерация ключа
+const iv = crypto.randomBytes(16); //генерация вектора инициализации
+const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 let cipherStream = crypto.createCipheriv(
   'aes-256-cbc',
   key,
   iv
-)
+);
 
-let encryptedData = ''
+let encryptedData = '';
 
 cipherStream.on(
   'data',
   (data) => (encryptedData += data.toString('hex'))
-)
+);
 
-cipherStream.write('Any data')
-cipherStream.end()
+cipherStream.write('Any data');
+cipherStream.end();
 
 let decipherStream = crypto.createDecipheriv(
   'aes-256-cbc',
   key,
   iv
-)
+);
 
-let decryptedData = ''
+let decryptedData = '';
 
-decipherStream.on('data', (data) => (decryptedData += data))
-decipherStream.on('end', () => console.log(decryptedData)) //'Any data'
+decipherStream.on(
+  'data',
+  (data) => (decryptedData += data)
+);
+decipherStream.on('end', () => console.log(decryptedData)); //'Any data'
 
-cipherStream.write(encryptedData, 'hex')
-cipherStream.end()
+cipherStream.write(encryptedData, 'hex');
+cipherStream.end();
 ```

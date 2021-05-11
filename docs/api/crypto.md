@@ -1,4 +1,4 @@
-# Crypto
+# Модуль crypto
 
 !!!success "Стабильность: 2"
 

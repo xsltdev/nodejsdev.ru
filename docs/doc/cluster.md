@@ -16,43 +16,43 @@ _app.js_
 const express = require('express'),
   app = express(),
   os = require('os'),
-  cluster = require('cluster')
+  cluster = require('cluster');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 app.use((req, res, next) => {
   if (cluster.isWorker)
     console.log(
       `Worker ${cluster.worker.id} handle request`
-    )
+    );
 
-  next()
-})
+  next();
+});
 
-app.get('/', (req, res) => res.send('Cluster mode.'))
+app.get('/', (req, res) => res.send('Cluster mode.'));
 
 if (cluster.isMaster) {
-  let cpus = os.cpus().length
+  let cpus = os.cpus().length;
 
-  for (let i = 0; i < cpus; i++) cluster.fork()
+  for (let i = 0; i < cpus; i++) cluster.fork();
 
   cluster.on('exit', (worker, code) => {
     console.log(
       `Worker ${worker.id} finished. Exit code: ${code}`
-    )
+    );
 
     app.listen(port, host, () =>
       console.log(`Worker ${cluster.worker.id} launched`)
-    )
-  })
+    );
+  });
 } else
   app.listen(port, host, () =>
     console.log(`Worker ${cluster.worker.id} launched`)
-  )
+  );
 ```
 
-Для кластеризации используется встроенный в Node.js модуль `cluster`. При запуске сервера проверяется, является ли текущий процесс основным. Если да, то на основании данных о процессоре, полученных с помощью модуля `os`, запускаются дополнительные экземпляры, которые при запуске попадают в ветку `else`.
+Для кластеризации используется встроенный в Node.js модуль [`cluster`](../api/cluster.md). При запуске сервера проверяется, является ли текущий процесс основным. Если да, то на основании данных о процессоре, полученных с помощью модуля `os`, запускаются дополнительные экземпляры, которые при запуске попадают в ветку `else`.
 
 !!! node ""
 
@@ -73,12 +73,12 @@ Worker 4 launched
 cluster.on('exit', (worker, code) => {
   console.log(
     `Worker ${worker.id} finished. Exit code: ${code}`
-  )
+  );
 
   app.listen(port, host, () =>
     console.log(`Worker ${cluster.worker.id} launched`)
-  )
-})
+  );
+});
 ```
 
 Чтобы удостовериться в том, что запросы обрабатываются одним из экземпляров кластера, используется функция промежуточной обработки.
@@ -88,10 +88,10 @@ app.use((req, res, next) => {
   if (cluster.isWorker)
     console.log(
       `Worker ${cluster.worker.id} handle request`
-    )
+    );
 
-  next()
-})
+  next();
+});
 ```
 
 При выполнении GET-запроса по адресу `http://127.0.0.1:7000` в консоли вы должны увидеть следующее.
@@ -123,8 +123,8 @@ cluster.on('fork', worker => {...});
 
 ```js
 cluster.on('listening', (worker, addr) => {
-  console.log(`Host: ${addr.address}, Port: ${addr.port}`)
-})
+  console.log(`Host: ${addr.address}, Port: ${addr.port}`);
+});
 ```
 
 `online` - возникает после того, как новый экземпляр посылает основному процессу сообщение в том, что он появился в кластере;
@@ -159,8 +159,8 @@ cluster.on('exit', (worker, code, signal) => {...});
 
 ```js
 if (cluster.isMaster) {
-  let worker = cluster.fork()
-  worker.send({ message: 'Data' })
+  let worker = cluster.fork();
+  worker.send({ message: 'Data' });
 }
 ```
 

@@ -2,7 +2,7 @@
 
 В Node.js дочерние процессы создаются для выполнения ресурсоемких операций, которые во время выполнения блокируют цикл событий основного процесса. Создаваемые дочерние процессы полностью независимы от родительского процесса и имеют свои собственные экземпляры V8 и выделенные мощности процессора и объем памяти.
 
-Для создания дочернего процесса в Node.js используется встроенный модуль `child_process` и его методы `spawn()` и `fork()`, каждый из которых возвращает экземпляр класса `ChildProcess`.
+Для создания дочернего процесса в Node.js используется встроенный модуль [`child_process`](../api/child_process.md) и его методы `spawn()` и `fork()`, каждый из которых возвращает экземпляр класса `ChildProcess`.
 
 ## child_process.spawn()
 
@@ -11,24 +11,24 @@
 _app.js_
 
 ```js
-const child_process = require('child_process')
+const child_process = require('child_process');
 
 //Переход в директорию /srv/app
-const cd = child_process.spawn('cd'['/srv/app'])
+const cd = child_process.spawn('cd'['/srv/app']);
 
 cd.on('error', (error) =>
   console.log('Cannot change dir: \n', error)
-)
+);
 
 //Получение списка файлов и директорий для Linux
-const ls = child_process.spawn('ls')
+const ls = child_process.spawn('ls');
 
 ls.stdout.on('data', (data) =>
   console.log('Files list: \n', data)
-)
+);
 ls.stderr.on('error', (error) =>
   console.log('Error: \n', error)
-)
+);
 ```
 
 !!! note ""
@@ -42,23 +42,23 @@ ls.stderr.on('error', (error) =>
 _app.js_
 
 ```js
-const child_process = require('child_process')
+const child_process = require('child_process');
 
-const child_3 = child_process.fork('child.js', [3])
-const child_9 = child_process.fork('child.js', [9])
+const child_3 = child_process.fork('child.js', [3]);
+const child_9 = child_process.fork('child.js', [9]);
 
 child_3.on('close', (code) =>
   console.log(`Child process 3 exited. Code: ${code}`)
-)
+);
 child_9.on('close', (code) =>
   console.log(`Child process 9 exited. Code: ${code}`)
-)
+);
 ```
 
 _child.js_
 
 ```js
-console.log(`Child process ${process.argv[2]} is running`)
+console.log(`Child process ${process.argv[2]} is running`);
 ```
 
 Для запуска примера выполните команду.
@@ -81,31 +81,31 @@ Child process 9 exited. Code: 0
 _app.js_
 
 ```js
-const child_process = require('child_process')
+const child_process = require('child_process');
 
-const child = child_process.fork('child.js')
+const child = child_process.fork('child.js');
 
-child.send('Ping child')
+child.send('Ping child');
 
 child.on('message', (code) =>
   console.log(`Message to parent: ${code}`)
-)
+);
 
 child.on('close', (code) =>
   console.log(`Child process exited. Code: ${code}`)
-)
+);
 ```
 
 _child.js_
 
 ```js
-console.log(`Child process is running`)
+console.log(`Child process is running`);
 
 process.on('message', (message) =>
   console.log('Message to child: ', message)
-)
+);
 
-process.send('Ping parent')
+process.send('Ping parent');
 ```
 
 Результат должен быть таким.
@@ -121,14 +121,14 @@ Message to parent: Ping parent
 Внесем изменения в предыдущий пример в файл `child.js`.
 
 ```js
-console.log(`Child process is running`)
+console.log(`Child process is running`);
 
 process.on('message', (message) =>
   console.log('Message to child: ', message)
-)
+);
 
-process.send('Ping parent')
-process.exit()
+process.send('Ping parent');
+process.exit();
 ```
 
 Теперь в консоли должна быть выведена дополнительная строка.

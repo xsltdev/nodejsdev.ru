@@ -1,4 +1,4 @@
-# Events
+# События
 
 !!!success "Стабильность: 2 – Стабильно"
 
@@ -54,7 +54,7 @@ myEmitter.on('event', (a, b) => {
 myEmitter.emit('event', 'a', 'b');
 ```
 
-## Асинхронный против Синхронный
+## Асинхронный против синхронный
 
 `EventListener` вызывает всех слушателей синхронно в том порядке, в котором они были зарегистрированы. Это важно для обеспечения надлежащей последовательности событий и во избежание состояния гонки или логических ошибок. При необходимости, функции слушателя могут переключиться на асинхронный режим работы с использованием методов `setImmediate()` или `process.nextTick()`:
 
@@ -134,9 +134,7 @@ myEmitter.emit('error', new Error('whoops!'));
 // Prints: whoops! there was an error
 ```
 
-## Класс EventEmitter (Генератор событий)
-
-Лобавлен в: v0.1.26
+## Класс EventEmitter
 
 Класс `EventEmitter` определяется и показывается модулем `events`:
 
@@ -240,7 +238,7 @@ emitter.addListener(eventName, listener)
 
 Дополнительные названия `emitter.on(eventName, listener)`.
 
-## emitter.emit(eventName[, arg1][, arg2][, ...])
+## emitter.emit()
 
 ```
 emitter.emit(eventName[, arg1][, arg2][, ...])

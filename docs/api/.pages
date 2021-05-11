@@ -1,20 +1,20 @@
 title: API
 nav:
     - index.md
+    - addons.md
+    - cli.md
+    - globals.md
+    - events.md
+    - errors.md
+    - debugger.md
     - assert.md
     - buffer.md
-    - addons.md
     - child_process.md
     - cluster.md
-    - cli.md
     - console.md
     - crypto.md
-    - debugger.md
     - dns.md
-    - errors.md
-    - events.md
     - fs.md
-    - globals.md
     - http.md
     - https.md
     - net.md

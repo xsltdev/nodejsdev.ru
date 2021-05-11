@@ -1,4 +1,4 @@
-# Child Processes
+# Модуль child_process
 
 !!!success "Стабильность: 2"
 

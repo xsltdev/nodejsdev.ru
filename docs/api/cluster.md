@@ -1,4 +1,4 @@
-# Cluster
+# Модуль cluster
 
 !!!success "Стабильность: 2"
 
