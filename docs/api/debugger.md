@@ -1,27 +1,38 @@
 # Debugger
 
-!!!success "Стабильность: 2 – Стабильно"
+<!--introduced_in=v0.9.12-->
 
-Node.js включает в себя полную внепроцессную утилиту по отладке, доступ к которой осуществляется через простой протокол на основе TCP и встроенный клиент. Для использования нужно запустить Node.js с аргументом `debug`, где нужно указать путь к скрипту дебага; запрос будет выводиться с отображением успешного запуска отладчика.
+> Стабильность: 2 - стабильная
 
+<!-- type=misc -->
+
+Node.js включает утилиту отладки командной строки. Чтобы использовать его, запустите Node.js с `inspect` аргумент, за которым следует путь к сценарию для отладки.
+
+```console
+$ node inspect myscript.js
+< Debugger listening on ws://127.0.0.1:9229/621111f9-ffcb-4e82-b718-48a145fa5db8
+< For help, see: https://nodejs.org/en/docs/inspector
+<
+< Debugger attached.
+<
+ ok
+Break on start in myscript.js:2
+  1 // myscript.js
+> 2 global.x = 5;
+  3 setTimeout(() => {
+  4   debugger;
+debug>
 ```
-$ node debug myscript.js
-> debugger listening on port 5858
-connecting... ok
-break in /home/indutny/Code/git/indutny/myscript.js:1
-  1 x = 5;
-  2 setTimeout(() => {
-  3   debugger;
-debug<
-```
 
-Клиент отладчика в Node.js не является полным отладчиком, но ему подвластны некоторые простые действия.
+Клиент отладчика Node.js не является полнофункциональным отладчиком, но возможны простые действия и проверка.
 
-Вставка выражения `debugger;` в код источника или скрипт позволяет вотметить контрольную точку в этой самой позиции в коде:
+Вставка заявления `debugger;` в исходный код скрипта включит точку останова в этой позиции в коде:
+
+<!-- eslint-disable no-debugger -->
 
 ```js
 // myscript.js
-x = 5;
+global.x = 5;
 setTimeout(() => {
   debugger;
   console.log('world');
@@ -29,139 +40,185 @@ setTimeout(() => {
 console.log('hello');
 ```
 
-После того, как запущен отладчик, контрольная точка будет находиться в строке 4:
+После запуска отладчика точка останова появится в строке 3:
 
-```
-$ node debug myscript.js
-> debugger listening on port 5858
-connecting... ok
-break in /home/indutny/Code/git/indutny/myscript.js:1
-  1 x = 5;
-  2 setTimeout(() =< {
-  3   debugger;
-debug< cont
-> hello
-break in /home/indutny/Code/git/indutny/myscript.js:3
-  1 x = 5;
-  2 setTimeout(() =< {
-  3   debugger;
-  4   console.log('world');
-  5 }, 1000);
-debug< next
-break in /home/indutny/Code/git/indutny/myscript.js:4
-  2 setTimeout(() =< {
-  3   debugger;
-  4   console.log('world');
-  5 }, 1000);
-  6 console.log('hello');
+```console
+$ node inspect myscript.js
+< Debugger listening on ws://127.0.0.1:9229/621111f9-ffcb-4e82-b718-48a145fa5db8
+< For help, see: https://nodejs.org/en/docs/inspector
+<
+< Debugger attached.
+<
+ ok
+Break on start in myscript.js:2
+  1 // myscript.js
+> 2 global.x = 5;
+  3 setTimeout(() => {
+  4   debugger;
+debug> cont
+< hello
+<
+break in myscript.js:4
+  2 global.x = 5;
+  3 setTimeout(() => {
+> 4   debugger;
+  5   console.log('world');
+  6 }, 1000);
+debug> next
+break in myscript.js:5
+  3 setTimeout(() => {
+  4   debugger;
+> 5   console.log('world');
+  6 }, 1000);
+  7 console.log('hello');
 debug> repl
-Press Ctrl + C to leave debug repl
-< x
+Press Ctrl+C to leave debug repl
+> x
 5
-< 2+2
+> 2 + 2
 4
-debug< next
-> world
-break in /home/indutny/Code/git/indutny/myscript.js:5
-  3   debugger;
-  4   console.log('world');
-  5 }, 1000);
-  6 console.log('hello');
-  7
-debug< quit
+debug> next
+< world
+<
+break in myscript.js:6
+  4   debugger;
+  5   console.log('world');
+> 6 }, 1000);
+  7 console.log('hello');
+  8
+debug> .exit
+$
 ```
 
-Команда `repl` позволяет удаленно оценивать код. Команда `next` перемещает на следующую строку. Для того, чтобы увидеть остальные доступные команды, наберите `help`.
+В `repl` Команда позволяет удаленно оценивать код. В `next` команда переходит к следующей строке. Тип `help` чтобы узнать, какие другие команды доступны.
 
-Нажатие ++enter++ без введения команды повторит предыдущую команду.
+Нажатие `enter` без ввода команды будет повторять предыдущую команду отладчика.
 
-## Отслеживание (Watchers)
+## Наблюдатели
 
-Возможно отслеживать выражения и значения переменных во время отладки. В каждой контрольной точке каждое выражение из списка отслеживания будет оценено в текущем контексте и отображено непосредственно перед листингом исходного кода в контрольной точке.
+Во время отладки можно наблюдать за значениями выражений и переменных. В каждой точке останова каждое выражение из списка наблюдателей будет оцениваться в текущем контексте и отображаться непосредственно перед листингом исходного кода точки останова.
 
-Для начала отслеживания выражения, наберите `watch('my_expression')`. Команда `watchers` покажет активные отслеживания. Для удаления отслеживания, наберите `unwatch('my_expression')`.
+Чтобы начать просмотр выражения, введите `watch('my_expression')`. Команда `watchers` напечатает активных наблюдателей. Чтобы удалить наблюдателя, введите `unwatch('my_expression')`.
 
-## Справочник команд
+## Справочник по командам
 
-### Шаги
+### Шагая
 
-- `cont`, `c` – Продолжать выполнение
-- `next`, `n` – следующий шаг
-- `step`, `s` – войти
-- `out`, `o` – выйти
-- `pause` – приостановить запускаемый код (как кнопка "pause" в инструментах разработчика)
+- `cont`, `c`: Продолжить выполнение
+- `next`, `n`: Шаг следующий
+- `step`, `s`: Шаг в
+- `out`, `o`: Выйти
+- `pause`: Приостановить выполнение кода (например, кнопка паузы в Инструментах разработчика)
 
 ### Контрольные точки
 
-- `setBreakpoint()`, `sb()` – установка контрольной точки в текущей строке
-- `setBreakpoint(line)`, `sb(line)` – установка контрольной точки в заданной строке
-- `setBreakpoint('fn()')`, `sb(...)` – установка контрольной точки в первое выражение в теле функции
-- `setBreakpoint('script.js', 1)`, `sb(...)` – установка контрольной точки в первую строку `script.js`
-- `clearBreakpoint('script.js', 1)`, `cb(...)` – удалить контрольную точку из `script.js` из первой строки
+- `setBreakpoint()`, `sb()`: Установить точку останова на текущей строке
+- `setBreakpoint(line)`, `sb(line)`: Установить точку останова на определенной строке
+- `setBreakpoint('fn()')`, `sb(...)`: Установить точку останова на первом операторе в теле функции
+- `setBreakpoint('script.js', 1)`, `sb(...)`: Установить точку останова на первой строке `script.js`
+- `setBreakpoint('script.js', 1, 'num < 4')`, `sb(...)`: Установить условную точку останова на первой строке `script.js` это ломается только когда `num < 4` оценивает `true`
+- `clearBreakpoint('script.js', 1)`, `cb(...)`: Очистить точку останова в `script.js` в строке 1
 
-Также возможно установить контрольную точку в файл (модуль), который еще не загружен:
+Также можно установить точку останова в еще не загруженном файле (модуле):
 
-```
-$ ./node debug test/fixtures/break-in-module/main.js
-> debugger listening on port 5858
-connecting to port 5858... ok
-break in test/fixtures/break-in-module/main.js:1
-  1 var mod = require('./mod.js');
+```console
+$ node inspect main.js
+< Debugger listening on ws://127.0.0.1:9229/48a5b28a-550c-471b-b5e1-d13dd7165df9
+< For help, see: https://nodejs.org/en/docs/inspector
+<
+< Debugger attached.
+<
+ ok
+Break on start in main.js:1
+> 1 const mod = require('./mod.js');
   2 mod.hello();
   3 mod.hello();
-debug< setBreakpoint('mod.js', 23)
+debug> setBreakpoint('mod.js', 22)
 Warning: script 'mod.js' was not loaded yet.
-  1 var mod = require('./mod.js');
-  2 mod.hello();
-  3 mod.hello();
-debug< c
-break in test/fixtures/break-in-module/mod.js:23
+debug> c
+break in mod.js:22
+ 20 // USE OR OTHER DEALINGS IN THE SOFTWARE.
  21
- 22 exports.hello = () =< {
+>22 exports.hello = function() {
  23   return 'hello from module';
  24 };
- 25
-debug<
+debug>
+```
+
+Также можно установить условную точку останова, которая прерывается только тогда, когда данное выражение оценивается как `true`:
+
+```console
+$ node inspect main.js
+< Debugger listening on ws://127.0.0.1:9229/ce24daa8-3816-44d4-b8ab-8273c8a66d35
+< For help, see: https://nodejs.org/en/docs/inspector
+< Debugger attached.
+Break on start in main.js:7
+  5 }
+  6
+> 7 addOne(10);
+  8 addOne(-1);
+  9
+debug> setBreakpoint('main.js', 4, 'num < 0')
+  1 'use strict';
+  2
+  3 function addOne(num) {
+> 4   return num + 1;
+  5 }
+  6
+  7 addOne(10);
+  8 addOne(-1);
+  9
+debug> cont
+break in main.js:4
+  2
+  3 function addOne(num) {
+> 4   return num + 1;
+  5 }
+  6
+debug> exec('num')
+-1
+debug>
 ```
 
 ### Информация
 
-- `backtrace`, `bt` – выводит на экран трассировку текущего фрейма выполнения
-- `list(5)` – список скриптов исходного кода в контексте пяти строк (пять строк до и пять после)
-- `watch(expr)` – добавить выражение в список отслеживания
-- `unwatch(expr)` – удалить выражение из списка отслеживания
-- `watchers` – список всех отслеживаний и их значений (автоматически собирается в каждой контрольной точке)
-- `repl` – открывает repl в отладчике в контекте скрипта отладчика
-- `exec expr` – выполняет выражение в контесте скрипта отладчика
+- `backtrace`, `bt`: Распечатать обратную трассировку текущего кадра выполнения
+- `list(5)`: Список исходных кодов скриптов с 5-строчным контекстом (5 строк до и после)
+- `watch(expr)`: Добавить выражение в список наблюдения
+- `unwatch(expr)`: Удалить выражение из списка наблюдения
+- `watchers`: Список всех наблюдателей и их значений (автоматически перечисляются для каждой точки останова)
+- `repl`: Открыть ответ отладчика для оценки в контексте отладочного скрипта
+- `exec expr`: Выполнить выражение в контексте сценария отладки
 
-### Контроль выполнения
+### Контроль исполнения
 
-- `run` – запускает скрипт (автоматически запускается после старта отладчика)
-- `restart` – перезапускает скрипт
-- `kill` – завершает скрипт
+- `run`: Запустить скрипт (автоматически запускается при запуске отладчика)
+- `restart`: Перезапустить скрипт
+- `kill`: Убить скрипт
 
-### Разное
+### Различный
 
-- `scripts` – список всех загруженных скриптов
-- `version` – отображает версию V8
+- `scripts`: Список всех загруженных скриптов
+- `version`: Показать версию V8
 
-## Продвинутое использование
+## Расширенное использование
 
-Альтернативный способ включения отладчика - запустить Node.js с флагом командной строки `--debug` или посредством отправки сигнала `SIGUSR1` существующему процессу Node.js.
+### Интеграция инспектора V8 для Node.js
 
-После того, как процесс был установлен в режим отладки этим способом, его можно проинспектировать, используя отладчик Node.js: либо подсоединяясь к `pid` запущенного процесса, либо через ссылку URI на отладчик:
+Интеграция V8 Inspector позволяет подключать Chrome DevTools к экземплярам Node.js для отладки и профилирования. Он использует [Протокол Chrome DevTools](https://chromedevtools.github.io/devtools-protocol/).
 
-- `node debug -p` – соединяет с процессом через `pid`
-- `node debug` – соединяет с процессом через URI (типа localhost:5858)
+Инспектор V8 можно включить, передав `--inspect` флаг при запуске приложения Node.js. Также можно указать настраиваемый порт с этим флагом, например `--inspect=9222` будет принимать подключения DevTools через порт 9222.
 
-## Интеграция V8 Inspector в Node.js
+Чтобы разбить первую строку кода приложения, передайте `--inspect-brk` флаг вместо `--inspect`.
 
-!!!note "Примечание"
+```console
+$ node --inspect index.js
+Debugger listening on ws://127.0.0.1:9229/dc9010dd-f8b8-4ac5-a510-c1a114ec7d29
+For help, see: https://nodejs.org/en/docs/inspector
+```
 
-    Эта фича является экспериментальной
+(В приведенном выше примере UUID dc9010dd-f8b8-4ac5-a510-c1a114ec7d29 в конце URL-адреса создается «на лету», он меняется в разных сеансах отладки.)
 
-Интеграция V8 Inspector позволяет добавить Chrome DevTools в экземпляры Node.js для отладки и профайлинга.
+Если браузер Chrome старше 66.0.3345.0, используйте `inspector.html` вместо того `js_app.html` в указанном выше URL.
 
-V8 Inspector можно включить посредством передачи флага `--inspect` при запуске приложения Node.js. Также возможно создать кастомный порт с таким флагом, например: `--inspect=9222` позволит соединения DevTools на порте `9222`.
-
-Для завершения на первой строке кода приложения, добавьте флаг `--debug-brk` дополнительно к `--inspect`.
+Chrome DevTools не поддерживает отладку [рабочие потоки](worker_threads.md) пока что. [ndb](https://github.com/GoogleChromeLabs/ndb/) можно использовать для их отладки.

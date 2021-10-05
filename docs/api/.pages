@@ -16,7 +16,10 @@ nav:
     - dns.md
     - fs.md
     - http.md
+    - http2.md
     - https.md
+    - modules.md
+    - n-api.md
     - net.md
     - os.md
     - path.md
@@ -25,3 +28,4 @@ nav:
     - readline.md
     - repl.md
     - stream.md
+    - util.md

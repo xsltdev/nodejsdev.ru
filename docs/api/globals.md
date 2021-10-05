@@ -1,126 +1,450 @@
 # Глобальные объекты
 
-Эти объекты доступны во всех модулях. Некоторые из этих объектов на самом деле не находятся в глобальном масштабе, а находятся в рамках модуля – об этом будет сказано в примечании.
+<!--introduced_in=v0.10.0-->
 
-Объекты, перечисленные здесь являются характерными для Node.js. Есть целый ряд встроенных объектов, которые являются частью языка JavaScript, которые также доступны глобально.
+<!-- type=misc -->
 
-## Класс Buffer
+Эти объекты доступны во всех модулях. Следующие переменные могут показаться глобальными, но это не так. Они существуют только в составе модулей, см. [документация по модульной системе](modules.md):
 
-`<Функция>`
+- [`__dirname`](modules.md#__dirname)
+- [`__filename`](modules.md#__filename)
+- [`exports`](modules.md#exports)
+- [`module`](modules.md#module)
+- [`require()`](modules.md#requireid)
 
-Используется для обработки двоичных данных. Смотрите раздел [buffer](buffer.md).
+Перечисленные здесь объекты относятся к Node.js. Есть [встроенные объекты](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) которые являются частью самого языка JavaScript и также доступны во всем мире.
 
-## \_\_dirname
+## Класс: `AbortController`
 
-`<Строка>`
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+changes:
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/35949
+    description: No longer experimental.
+-->
 
-Имя каталога, в котором в данный момент находится выполняющийся скрипт.
+<!-- type=global -->
 
-Пример: запущенный `node example.js` от `/Users/mjr`
-
-```js
-console.log(__dirname);
-// /Users/mjr
-```
-
-`__dirname` на самом деле не глобален, а скорее локален по отношению к каждому модулю.
-
-Например, с учетом двух модулей: `а` и `Ь`, где `Ь` является зависимым по отношению к `а` и существует структура каталогов:
-
-- `/Users/mjr/app/a.js`
-- `/Users/mjr/app/node_modules/b/b.js`
-
-Ссылки на `__dirname` в пределах `b.js` будут возвращать `/Users/mjr/app/node_modules/b` в то время как ссылки на `__dirname` в переделах `a.js` будут возвращать `/Users/mjr/app`.
-
-## \_\_filename
-
-`<Строка>`
-
-Имя файла выполняемого кода. Это разрешенный полный путь для этого файла кода. Для основной программы не обязательно использовать то же самое имя файла в командной строке. Значение внутри модуля и есть путь к этому файлу модуля.
-
-Пример: запущенный `node example.js` от `/Users/mjr`
+Служебный класс, используемый для сигнализации отмены в выбранных `Promise`на основе API. API основан на веб-API [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 
 ```js
-console.log(__filename);
-// /Users/mjr/example.js
+const ac = new AbortController();
+
+ac.signal.addEventListener(
+  'abort',
+  () => console.log('Aborted!'),
+  { once: true }
+);
+
+ac.abort();
+
+console.log(ac.signal.aborted); // Prints True
 ```
 
-`__filename` на самом деле не глобален, а скорее локален по отношению к каждому модулю.
+### `abortController.abort()`
 
-## clearImmediate(immediateObject)
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-`clearImmediate` описан в разделе `timers`.
+Запускает сигнал прерывания, вызывая `abortController.signal` испустить `'abort'` событие.
 
-## clearInterval(intervalObject)
+### `abortController.signal`
 
-`clearInterval` описан в разделе `timers`.
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-## clearTimeout(timeoutObject)
+- Тип: {AbortSignal}
 
-`clearTimeout` описан в разделе `timers`.
+### Класс: `AbortSignal`
 
-## console
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-`<Объект>`
+- Расширяется: {EventTarget}
 
-Используется чтобы отображать информацию в `stdout` и `stderr`. Смотрите раздел [console](console.md).
+В `AbortSignal` используется для уведомления наблюдателей, когда `abortController.abort()` вызывается метод.
 
-## exports
+#### Статический метод: `AbortSignal.abort()`
 
-Ссылка на `module.exports`, которая короче чем тип (тип название, присвоенное множеству элементов, обладающих некоторой совокупностью общих свойств. В программировании - определение области допустимых значений, которые может принимать переменная (объект), и множества операций, которые могут выполняться над переменной данного типа (объектом)типа.)
+<!-- YAML
+added:
+  - v15.12.0
+  - v14.17.0
+-->
 
-Смотрите module system documentation для получения деталей о том, когда использовать `exports`, а когда `module.exports`.
+- Возвращает: {AbortSignal}
 
-`exports` на самом деле не глобален, а скорее локален по отношению к каждому модулю.
+Возвращает новый, уже прерванный `AbortSignal`.
 
-Читайте module system documentation для получения дополнительной информации.
+#### Событие: `'abort'`
 
-## global
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-`<Объект>` Глобальный объект пространства имен.
+В `'abort'` событие генерируется, когда `abortController.abort()` вызывается метод. Обратный вызов вызывается с одним аргументом объекта с одним `type` свойство установлено на `'abort'`:
 
-В браузерах, область верхнего уровня является глобальной областью.
+```js
+const ac = new AbortController();
 
-Это означает, что в браузерах, если вы находитесь в глобальной области, то `var something` будет определять глобальную переменную.
+// Use either the onabort property...
+ac.signal.onabort = () => console.log('aborted!');
 
-В Node.js это происходит по-другому. Область верхнего уровня не глобальна; `var something` внутри модуля Node.js будет локальным для этого модуля.
+// Or the EventTarget API...
+ac.signal.addEventListener(
+  'abort',
+  (event) => {
+    console.log(event.type); // Prints 'abort'
+  },
+  { once: true }
+);
 
-## module
+ac.abort();
+```
 
-`<Объект>`
+В `AbortController` с которой `AbortSignal` связан, будет запускать только `'abort'` событие один раз. Мы рекомендуем, чтобы код проверял, что `abortSignal.aborted` атрибут `false` перед добавлением `'abort'` слушатель событий.
 
-Ссылка на текущий модуль. В частности `module.exports` используется для определения того, что экспортирует модуль и делает это доступным с помощью `require().module` на самом деле не глобален, а скорее локален по отношению к каждому модулю. Смотрите module system documentation для получения большей информации.
+Любые прослушиватели событий, прикрепленные к `AbortSignal` следует использовать `{ once: true }` вариант (или, если используется `EventEmitter` API для присоединения слушателя, используйте `once()` метод), чтобы гарантировать, что прослушиватель событий будет удален, как только `'abort'` событие обработано. Несоблюдение этого правила может привести к утечке памяти.
 
-## process
+#### `abortSignal.aborted`
 
-`<Объект>`
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-Объект процесса. Смотрите раздел [process](process.md).
+- Тип: {логическое} Истина после `AbortController` был прерван.
 
-## require()
+#### `abortSignal.onabort`
 
-`<Функция>`
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.17.0
+-->
 
-Требует модулей. Смортите раздел Modules. `require` на самом деле не глобален, а скорее локален по отношению к каждому модулю.
+- Тип: {Функция}
 
-### require.cache
+Необязательная функция обратного вызова, которая может быть установлена кодом пользователя, чтобы получать уведомление, когда `abortController.abort()` функция была вызвана.
 
-`<Объект>`
+## Класс: `Buffer`
 
-Модули кэшируются в этом объекте, когда они необходимы. При удалении ключа из этого объекта, следующий `require` будет требовать перезагрузки модуля. Обратите внимание, что это не относится к native addons, для которых перезагрузка будет приводить к ошибке.
+<!-- YAML
+added: v0.1.103
+-->
 
-### require.resolve()
+<!-- type=global -->
 
-Используйте внутренний алгоритм `require()` для поиска местоположения модуля, но вместо загрузки модуля, просто верните разрешенное имя файла.
+- {Функция}
 
-## setImmediate(callback[, ...args])
+Используется для обработки двоичных данных. Увидеть [буферная секция](buffer.md).
 
-`setImmediate` описан в разделе `timers`.
+## `__dirname`
 
-## setInterval(callback, delay[, arg][, ...])
+Эта переменная может показаться глобальной, но это не так. Видеть [`__dirname`](modules.md#__dirname).
 
-`setInterval` описан в разделе `timers`.
+## `__filename`
 
-## setTimeout(callback, delay[, arg][, ...])
+Эта переменная может показаться глобальной, но это не так. Видеть [`__filename`](modules.md#__filename).
 
-`setTimeout` описан в разделе `timers`.
+## `atob(data)`
+
+<!-- YAML
+added: v16.0.0
+-->
+
+> Стабильность: 3 - Наследие. Использовать `Buffer.from(data, 'base64')` вместо.
+
+Глобальный псевдоним для [`buffer.atob()`](buffer.md#bufferatobdata).
+
+## `btoa(data)`
+
+<!-- YAML
+added: v16.0.0
+-->
+
+> Стабильность: 3 - Наследие. Использовать `buf.toString('base64')` вместо.
+
+Глобальный псевдоним для [`buffer.btoa()`](buffer.md#bufferbtoadata).
+
+## `clearImmediate(immediateObject)`
+
+<!-- YAML
+added: v0.9.1
+-->
+
+<!--type=global-->
+
+[`clearImmediate`](timers.md#clearimmediateimmediate) описывается в [таймеры](timers.md) раздел.
+
+## `clearInterval(intervalObject)`
+
+<!-- YAML
+added: v0.0.1
+-->
+
+<!--type=global-->
+
+[`clearInterval`](timers.md#clearintervaltimeout) описывается в [таймеры](timers.md) раздел.
+
+## `clearTimeout(timeoutObject)`
+
+<!-- YAML
+added: v0.0.1
+-->
+
+<!--type=global-->
+
+[`clearTimeout`](timers.md#cleartimeouttimeout) описывается в [таймеры](timers.md) раздел.
+
+## `console`
+
+<!-- YAML
+added: v0.1.100
+-->
+
+<!-- type=global -->
+
+- {Объект}
+
+Используется для печати в stdout и stderr. Увидеть [`console`](console.md) раздел.
+
+## `Event`
+
+<!-- YAML
+added: v15.0.0
+changes:
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/35949
+    description: No longer experimental.
+-->
+
+<!-- type=global -->
+
+Совместимая с браузером реализация `Event` класс. Видеть [`EventTarget` а также `Event` API](events.md#eventtarget-and-event-api) Больше подробностей.
+
+## `EventTarget`
+
+<!-- YAML
+added: v15.0.0
+changes:
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/35949
+    description: No longer experimental.
+-->
+
+<!-- type=global -->
+
+Совместимая с браузером реализация `EventTarget` класс. Видеть [`EventTarget` а также `Event` API](events.md#eventtarget-and-event-api) Больше подробностей.
+
+## `exports`
+
+Эта переменная может показаться глобальной, но это не так. Видеть [`exports`](modules.md#exports).
+
+## `global`
+
+<!-- YAML
+added: v0.1.27
+-->
+
+<!-- type=global -->
+
+- {Object} Объект глобального пространства имен.
+
+В браузерах область верхнего уровня - это глобальная область. Это означает, что в браузере `var something` определит новую глобальную переменную. В Node.js все по-другому. Область верхнего уровня не является глобальной областью; `var something` внутри модуля Node.js будет локальным для этого модуля.
+
+## `MessageChannel`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+В `MessageChannel` класс. Видеть [`MessageChannel`](worker_threads.md#class-messagechannel) Больше подробностей.
+
+## `MessageEvent`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+В `MessageEvent` класс. Видеть [`MessageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/MessageEvent) Больше подробностей.
+
+## `MessagePort`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+В `MessagePort` класс. Видеть [`MessagePort`](worker_threads.md#class-messageport) Больше подробностей.
+
+## `module`
+
+Эта переменная может показаться глобальной, но это не так. Видеть [`module`](modules.md#module).
+
+## `performance`
+
+В [`perf_hooks.performance`](perf_hooks.md#perf_hooksperformance) объект.
+
+## `process`
+
+<!-- YAML
+added: v0.1.7
+-->
+
+<!-- type=global -->
+
+- {Объект}
+
+Объект процесса. Увидеть [`process` объект](process.md#process) раздел.
+
+## `queueMicrotask(callback)`
+
+<!-- YAML
+added: v11.0.0
+-->
+
+<!-- type=global -->
+
+- `callback` {Функция} Функция для постановки в очередь.
+
+В `queueMicrotask()` метод ставит в очередь микрозадачу для вызова `callback`. Если `callback` выдает исключение, [`process` объект](process.md#process) `'uncaughtException'` событие будет выпущено.
+
+Очередью микрозадач управляет V8, и ее можно использовать аналогично [`process.nextTick()`](process.md#processnexttickcallback-args) очередь, которой управляет Node.js. В `process.nextTick()` очередь всегда обрабатывается перед очередью микрозадач на каждом этапе цикла обработки событий Node.js.
+
+```js
+// Here, `queueMicrotask()` is used to ensure the 'load' event is always
+// emitted asynchronously, and therefore consistently. Using
+// `process.nextTick()` here would result in the 'load' event always emitting
+// before any other promise jobs.
+
+DataHandler.prototype.load = async function load(key) {
+  const hit = this._cache.get(key);
+  if (hit !== undefined) {
+    queueMicrotask(() => {
+      this.emit('load', hit);
+    });
+    return;
+  }
+
+  const data = await fetchData(key);
+  this._cache.set(key, data);
+  this.emit('load', data);
+};
+```
+
+## `require()`
+
+Эта переменная может показаться глобальной, но это не так. Видеть [`require()`](modules.md#requireid).
+
+## `setImmediate(callback[, ...args])`
+
+<!-- YAML
+added: v0.9.1
+-->
+
+<!-- type=global -->
+
+[`setImmediate`](timers.md#setimmediatecallback-args) описывается в [таймеры](timers.md) раздел.
+
+## `setInterval(callback, delay[, ...args])`
+
+<!-- YAML
+added: v0.0.1
+-->
+
+<!-- type=global -->
+
+[`setInterval`](timers.md#setintervalcallback-delay-args) описывается в [таймеры](timers.md) раздел.
+
+## `setTimeout(callback, delay[, ...args])`
+
+<!-- YAML
+added: v0.0.1
+-->
+
+<!-- type=global -->
+
+[`setTimeout`](timers.md#settimeoutcallback-delay-args) описывается в [таймеры](timers.md) раздел.
+
+## `DOMException`
+
+<!-- YAML
+added: REPLACEME
+-->
+
+<!-- type=global -->
+
+WHATWG `DOMException` класс. Видеть [`DOMException`](https://developer.mozilla.org/en-US/docs/Web/API/DOMException) Больше подробностей.
+
+## `TextDecoder`
+
+<!-- YAML
+added: v11.0.0
+-->
+
+<!-- type=global -->
+
+WHATWG `TextDecoder` класс. Увидеть [`TextDecoder`](util.md#class-utiltextdecoder) раздел.
+
+## `TextEncoder`
+
+<!-- YAML
+added: v11.0.0
+-->
+
+<!-- type=global -->
+
+WHATWG `TextEncoder` класс. Увидеть [`TextEncoder`](util.md#class-utiltextencoder) раздел.
+
+## `URL`
+
+<!-- YAML
+added: v10.0.0
+-->
+
+<!-- type=global -->
+
+WHATWG `URL` класс. Увидеть [`URL`](url.md#class-url) раздел.
+
+## `URLSearchParams`
+
+<!-- YAML
+added: v10.0.0
+-->
+
+<!-- type=global -->
+
+WHATWG `URLSearchParams` класс. Увидеть [`URLSearchParams`](url.md#class-urlsearchparams) раздел.
+
+## `WebAssembly`
+
+<!-- YAML
+added: v8.0.0
+-->
+
+<!-- type=global -->
+
+- {Объект}
+
+Объект, который действует как пространство имен для всех W3C [WebAssembly](https://webassembly.org) связанные функции. Увидеть [Сеть разработчиков Mozilla](https://developer.mozilla.org/en-US/docs/WebAssembly) для использования и совместимости.
