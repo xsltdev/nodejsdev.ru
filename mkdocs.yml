@@ -73,7 +73,7 @@ plugins:
               - ru
               - en
     - awesome-pages
-    - section-index
+    # - section-index
 
 extra_css:
     - '/assets/stylesheets/styles.css'
