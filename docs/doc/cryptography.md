@@ -124,6 +124,6 @@ decipherStream.on(
 );
 decipherStream.on('end', () => console.log(decryptedData)); //'Any data'
 
-cipherStream.write(encryptedData, 'hex');
-cipherStream.end();
+decipherStream.write(encryptedData, 'hex');
+decipherStream.end();
 ```
