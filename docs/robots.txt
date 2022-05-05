@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Clean-param: query
 
 Host: https://nodejsdev.ru/
 Sitemap: https://nodejsdev.ru/sitemap.xml
