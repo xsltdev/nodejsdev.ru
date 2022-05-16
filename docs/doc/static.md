@@ -44,7 +44,7 @@ http://127.0.0.1/photos/admin.png
 http://127.0.0.1/styles/app.css
 ```
 
-Чтобы в ответ были возвращены запрашиваемые файлы `admin.png` и `app.css`, они должны находиться по пути `/assets/images/admin.png` и `/assets/styles/app.css` соответственно.
+Чтобы в ответ были возвращены запрашиваемые файлы `admin.png` и `app.css`, они должны находиться по пути `/assets/img/admin.png` и `/assets/css/app.css` соответственно.
 
 Пример Node.js сервера с использованием Express `static()` для отдачи статических файлов.
 
