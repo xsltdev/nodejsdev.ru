@@ -8,6 +8,8 @@ hide:
 
 # ![Node.js](./nodejs.svg){: style="height:32px;width:32px;vertical-align:middle;"} Справочник Node.js
 
+[Группа в Telegram  :fontawesome-solid-paper-plane:](https://t.me/nodejsdev_ru){ .md-button }
+
 [Документация по Node.js](doc/index.md)
 : **Node.js** - это программная платформа, которая транслирует JavaScript в машинный код, исполняемый на стороне сервера. Таким образом, JavaScript можно использовать для создания серверной части.
 
