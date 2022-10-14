@@ -37,28 +37,11 @@ theme:
     logo: nodejs-white.svg
 
 extra:
+    generator: false
     social:
-        - icon: fontawesome/brands/html5
-          link: 'https://hcdev.ru/'
-          name: HTML and CSS docs
-        - icon: fontawesome/brands/js
-          link: 'https://scriptdev.ru/'
-          name: Javascript
-        - icon: fontawesome/brands/angular
-          link: 'https://angdev.ru/'
-          name: Angular docs
-        - icon: fontawesome/brands/react
-          link: 'https://reactdev.ru/'
-          name: React docs
-        - icon: fontawesome/brands/node-js
-          link: 'https://nodejsdev.ru/'
-          name: Node.js docs
-        - icon: fontawesome/brands/python
-          link: 'https://py3dev.ru/'
-          name: Python 3 docs
-        - icon: fontawesome/solid/code
-          link: 'https://xsltdev.ru/'
-          name: XSLT docs
+        - icon: fontawesome/brands/telegram
+          link: https://t.me/nodejsdev_ru
+          name: Группа в Telegram
 
 #google_analytics:
 #    - UA-34215161-1
