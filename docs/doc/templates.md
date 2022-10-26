@@ -38,7 +38,7 @@ const port = 7000
 
 app.engine(
   'handlebars',
-  handlebars({ defaultLayout: 'main' })
+  handlebars.engine({ defaultLayout: 'main' })
 )
 app.set('views', './views')
 app.set('view engine', 'handlebars')
@@ -195,7 +195,7 @@ _home.handlebars_
 ```js
 app.engine(
   'handlebars',
-  handlebars({
+  handlebars.engine({
     defaultLayout: 'main',
     helpers: {
       getTitle: () => 'Greetings form Handlebars',
