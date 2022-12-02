@@ -13,7 +13,6 @@ theme:
     # name: null
     # custom_dir: 'theme/material'
     palette:
-    palette:
         - media: "(prefers-color-scheme: light)"
           scheme: default
           primary: green
@@ -70,6 +69,7 @@ plugins:
               - en
     - awesome-pages
     # - section-index
+    - social
 
 extra_css:
     - '/assets/stylesheets/styles.css'
