@@ -8,6 +8,8 @@ hide:
 
 # ![Node.js](./nodejs.svg){: style="height:32px;width:32px;vertical-align:middle;"} Справочник Node.js
 
+[Карта обучения технологии Node.js<br /><small>Современный курс</small>](https://devmaps.ru/nodejs-2020){ .md-button .md-button--primary }
+
 [Документация по Node.js](doc/index.md)
 : **Node.js** - это программная платформа, которая транслирует JavaScript в машинный код, исполняемый на стороне сервера. Таким образом, JavaScript можно использовать для создания серверной части.
 
