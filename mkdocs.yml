@@ -2,7 +2,7 @@ site_name: Node.js
 site_url: https://nodejsdev.ru/
 site_description: Справочник web-разработчика с примерами кода - Node.js
 site_author: nodejsdev.ru
-copyright: (C) 2021, Справочник web-разработчика Node.js с примерами кода
+copyright: (C) 2021-2023, Справочник web-разработчика Node.js с примерами кода
 
 repo_name: 'Справочник на Github'
 repo_url: 'https://github.com/xsltdev/nodejsdev.ru'
