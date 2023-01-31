@@ -13,20 +13,20 @@ theme:
     # name: null
     # custom_dir: 'theme/material'
     palette:
-        - media: "(prefers-color-scheme: light)"
+        - media: '(prefers-color-scheme: light)'
           scheme: default
           primary: green
           accent: green
           toggle:
-            icon: material/toggle-switch-off-outline
-            name: Тёмная тема
-        - media: "(prefers-color-scheme: dark)"
+              icon: material/toggle-switch-off-outline
+              name: Тёмная тема
+        - media: '(prefers-color-scheme: dark)'
           scheme: slate
           primary: green
           accent: green
           toggle:
-            icon: material/toggle-switch
-            name: Светлая тема
+              icon: material/toggle-switch
+              name: Светлая тема
     language: ru
     features:
         - navigation.tabs
@@ -72,4 +72,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css'
+    - '/assets/stylesheets/styles.css?2'

@@ -1,4 +1,6 @@
 {
-    "svn.ignoreMissingSvnWarning": true,
-    "editor.formatOnSave": true
+	"svn.ignoreMissingSvnWarning": true,
+	"editor.formatOnSave": true,
+	"editor.tabCompletion": "on",
+	"diffEditor.codeLens": true
 }
