@@ -1,3 +1,7 @@
+---
+description: В child_process Модуль предоставляет возможность создавать подпроцессы аналогично, но не идентично popen
+---
+
 # Модуль child_process
 
 <!--introduced_in=v0.10.0-->
