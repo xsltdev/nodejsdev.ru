@@ -1,8 +1,8 @@
 site_name: Node.js
 site_url: https://nodejsdev.ru/
-site_description: Справочник web-разработчика с примерами кода - Node.js
+site_description: Справочник Node.js с примерами кода
 site_author: nodejsdev.ru
-copyright: (C) 2021-2023, Справочник web-разработчика Node.js с примерами кода
+copyright: (C) 2021-2023, Справочник Node.js с примерами кода
 
 repo_name: 'Справочник на Github'
 repo_url: 'https://github.com/xsltdev/nodejsdev.ru'
@@ -31,8 +31,8 @@ theme:
     features:
         - navigation.tabs
         - navigation.tracking
-        - navigation.instant
         - navigation.top
+        - navigation.indexes
         - content.action.edit
     favicon: nodejs.svg
     logo: nodejs-white.svg
@@ -78,9 +78,10 @@ markdown_extensions:
     - pymdownx.emoji:
           emoji_index: !!python/name:materialx.emoji.twemoji
           emoji_generator: !!python/name:materialx.emoji.to_svg
-    - pymdownx.tabbed
+    - pymdownx.tabbed:
+          alternate_style: true
     - pymdownx.superfences
-    - pymdownx.keys
+    - pymdownx.snippets
 
 plugins:
     - search:
@@ -88,8 +89,7 @@ plugins:
               - ru
               - en
     - awesome-pages
-    # - section-index
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css?3'
+    - '/assets/stylesheets/styles.css?4'
