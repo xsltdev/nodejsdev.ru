@@ -14,7 +14,7 @@ nav:
     - console.md
     - crypto.md
     - dns.md
-    - fs.md
+    - fs
     - http.md
     - http2.md
     - https.md
