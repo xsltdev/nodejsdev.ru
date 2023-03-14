@@ -1,6 +1,6 @@
 # access
 
-## Промис
+## Promise
 
 ```js
 fsPromises.access(path[, mode])
@@ -17,9 +17,9 @@ fsPromises.access(path[, mode])
 
 **Возвращает:**
 
--   `<Promise>` - Выполняется с `undefined` в случае успеха.
+-   `<Promise>` &mdash; Выполняется с `undefined` в случае успеха.
 
-## Колбек
+## Callback
 
 ```js
 fs.access(path[, mode], callback)
@@ -29,9 +29,9 @@ fs.access(path[, mode], callback)
 
     | Version  | Changes                                                                                                                                                                                                              |
     | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | v18.0.0  | Passing an invalid callback to the callback argument now throws ERR_INVALID_ARG_TYPE instead of ERR_INVALID_CALLBACK.                                                                                                |
+    | v18.0.0  | Passing an invalid callback to the callback argument now throws `ERR_INVALID_ARG_TYPE` instead of `ERR_INVALID_CALLBACK`.                                                                                                |
     | v7.6.0   | The path parameter can be a WHATWG URL object using file: protocol.                                                                                                                                                  |
-    | v6.3.0   | The constants like fs.R_OK, etc which were present directly on fs were moved into fs.constants as a soft deprecation. Thus for Node.js < v6.3.0 use fs to access those constants, or do something like (fs.constants |  | fs).R_OK to work with all versions. |
+    | v6.3.0   | The constants like `fs.R_OK`, etc which were present directly on fs were moved into fs.constants as a soft deprecation. Thus for Node.js < v6.3.0 use fs to access those constants, or do something like `(fs.constants || fs).R_OK` to work with all versions. |
     | v0.11.15 | Added in: v0.11.15                                                                                                                                                                                                   |
 
 **Параметры:**
@@ -190,7 +190,7 @@ open('myfile', 'r', (err, fd) => {
 
 В Windows политики управления доступом (ACL) к каталогу могут ограничивать доступ к файлу или каталогу. Однако функция `fs.access()` не проверяет ACL и поэтому может сообщить, что путь доступен, даже если ACL запрещает пользователю чтение или запись в него.
 
-## Синхронно
+## Sync
 
 ```js
 fs.accessSync(path[, mode])

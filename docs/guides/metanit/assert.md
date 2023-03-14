@@ -4,13 +4,13 @@
 
 ```js
 if (result !== expectedResult) {
-  throw new Error(
-    `Expected ${expectedResult}, but got ${result}`
-  );
+    throw new Error(
+        `Expected ${expectedResult}, but got ${result}`
+    );
 }
 ```
 
-Подобное сравнение является довольно тривиальным и фактически используется во многих тестах с небольшими изменениями. И специально чтобы упростить верификацию результатов в тестах для Node.js был создан специальный модуль - [`assert`](../api/assert.md). Кроме того, есть различные библиотеки, которые еще называют `Assertions` и которые служат той же цели: `should.js`, `expect.js` и т. д. Но в данном случае мы рассмотрим работу с модулем `assert`.
+Подобное сравнение является довольно тривиальным и фактически используется во многих тестах с небольшими изменениями. И специально чтобы упростить верификацию результатов в тестах для Node.js был создан специальный модуль - `assert`. Кроме того, есть различные библиотеки, которые еще называют `Assertions` и которые служат той же цели: `should.js`, `expect.js` и т. д. Но в данном случае мы рассмотрим работу с модулем `assert`.
 
 ## equal
 
@@ -18,7 +18,7 @@ if (result !== expectedResult) {
 
 ```js
 module.exports.multiply = function (x, y) {
-  return x * y;
+    return x * y;
 };
 ```
 
@@ -29,9 +29,9 @@ var assert = require('assert');
 var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expected = 15;
-  var result = operations.multiply(3, 5);
-  assert.equal(result, expected);
+    var expected = 15;
+    var result = operations.multiply(3, 5);
+    assert.equal(result, expected);
 });
 ```
 
@@ -45,8 +45,8 @@ it('should multiply two numbers', function () {
 
 ```js
 it('should multiply two numbers', function () {
-  var expected = 15;
-  var result = operations.multiply(3, 5);
-  assert.notEqual(result, expected);
+    var expected = 15;
+    var result = operations.multiply(3, 5);
+    assert.notEqual(result, expected);
 });
 ```

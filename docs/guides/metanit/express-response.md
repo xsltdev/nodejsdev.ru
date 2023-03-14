@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 
 app.use(function (request, response) {
-  response.send('<h2>Hello</h2>');
+    response.send('<h2>Hello</h2>');
 });
 
 app.listen(3000);
@@ -31,7 +31,7 @@ response.send(['Tom', 'Bob', 'Sam']);
 response.send(Buffer.from('Hello Express'));
 ```
 
-Объект [`Buffer`](../api/buffer.md) формально представляет некоторые бинарные данные. Так, в случае выше при выполнении кода по умолчанию браузер загрузит файл, в котором будет строка `Hello Express`.
+Объект `Buffer` формально представляет некоторые бинарные данные. Так, в случае выше при выполнении кода по умолчанию браузер загрузит файл, в котором будет строка `Hello Express`.
 
 ## sendFile
 
@@ -42,7 +42,7 @@ const express = require('express');
 const app = express();
 
 app.use(function (request, response) {
-  response.send(`<!DOCTYPE html>
+    response.send(`<!DOCTYPE html>
   <html>
   <head>
       <title>Главная</title>
@@ -67,15 +67,15 @@ app.listen(3000);
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Главная</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>Главная страница</h1>
-    <h3>Привет, Express</h3>
-  </body>
-  <html></html>
+    <head>
+        <title>Главная</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Главная страница</h1>
+        <h3>Привет, Express</h3>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -86,7 +86,7 @@ const express = require('express');
 const app = express();
 
 app.use(function (request, response) {
-  response.sendFile(__dirname + '/index.html');
+    response.sendFile(__dirname + '/index.html');
 });
 
 app.listen(3000);
@@ -105,7 +105,7 @@ const express = require('express');
 const app = express();
 
 app.use('/home/foo/bar', function (request, response) {
-  response.sendStatus(404);
+    response.sendStatus(404);
 });
 
 app.listen(3000);
@@ -120,7 +120,7 @@ const express = require('express');
 const app = express();
 
 app.use('/home/foo/bar', function (request, response) {
-  response.status(404).send(`Ресурс не найден`);
+    response.status(404).send(`Ресурс не найден`);
 });
 
 app.listen(3000);

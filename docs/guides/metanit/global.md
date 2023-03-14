@@ -10,10 +10,10 @@ let currentDate = new Date();
 global.date = currentDate;
 
 module.exports.getMessage = function () {
-  let hour = currentDate.getHours();
-  if (hour > 16) return 'Добрый вечер, ' + global.name;
-  else if (hour > 10) return 'Добрый день, ' + name;
-  else return 'Доброе утро, ' + name;
+    let hour = currentDate.getHours();
+    if (hour > 16) return 'Добрый вечер, ' + global.name;
+    else if (hour > 10) return 'Добрый день, ' + name;
+    else return 'Доброе утро, ' + name;
 };
 ```
 
@@ -32,7 +32,7 @@ global.console.log(date);
 console.log(greeting.getMessage());
 ```
 
-Здесь устанавливаем глобальную переменную `name`, которую мы получаем в модуле `greeting.js`. И также выводим на консоль глобальную переменную `date`. Причем все глобальные функции и объекты, например, [`console`](../api/console.md), также доступны внутри `global`, поэтому мы можем написать и `global.console.log()`, и просто `console.log()`.
+Здесь устанавливаем глобальную переменную `name`, которую мы получаем в модуле `greeting.js`. И также выводим на консоль глобальную переменную `date`. Причем все глобальные функции и объекты, например, `console`, также доступны внутри `global`, поэтому мы можем написать и `global.console.log()`, и просто `console.log()`.
 
 Запустим файл `app.js`:
 

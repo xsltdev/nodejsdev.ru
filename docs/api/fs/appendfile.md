@@ -1,6 +1,6 @@
 # appendFile
 
-## Промис
+## Promise
 
 ```js
 fsPromises.appendFile(path, data[, options])
@@ -21,7 +21,7 @@ fsPromises.appendFile(path, data[, options])
 
 **Возвращает:**
 
--   `<Promise>` - Выполняется с `undefined` в случае успеха.
+-   `<Promise>` &mdash; Выполняется с `undefined` в случае успеха.
 
 Асинхронно добавляет данные в файл, создавая файл, если он еще не существует. `data` может быть строкой или `<Buffer>`.
 
@@ -31,7 +31,7 @@ fsPromises.appendFile(path, data[, options])
 
 `path` может быть указан как `<FileHandle>`, который был открыт для добавления (используя [`fsPromises.open()`](open.md)).
 
-## Колбек
+## Callback
 
 ```js
 fs.appendFile(path, data[, options], callback)
@@ -41,8 +41,8 @@ fs.appendFile(path, data[, options], callback)
 
     | Version | Changes                                                                                                               |
     | ------- | --------------------------------------------------------------------------------------------------------------------- |
-    | v18.0.0 | Passing an invalid callback to the callback argument now throws ERR_INVALID_ARG_TYPE instead of ERR_INVALID_CALLBACK. |
-    | v10.0.0 | The callback parameter is no longer optional. Not passing it will throw a TypeError at runtime.                       |
+    | v18.0.0 | Passing an invalid callback to the callback argument now throws `ERR_INVALID_ARG_TYPE` instead of `ERR_INVALID_CALLBACK`. |
+    | v10.0.0 | The callback parameter is no longer optional. Not passing it will throw a `TypeError` at runtime.                       |
     | v7.0.0  | The callback parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.         |
     | v7.0.0  | The passed options object will never be modified.                                                                     |
     | v5.0.0  | The file parameter can be a file descriptor now.                                                                      |
@@ -113,7 +113,7 @@ open('message.txt', 'a', (err, fd) => {
 });
 ```
 
-## Синхронно
+## Sync
 
 ```js
 fs.appendFileSync(path, data[, options])
@@ -188,7 +188,7 @@ try {
 
     | Version            | Changes                                                               |
     | ------------------ | --------------------------------------------------------------------- |
-    | v15.14.0, v14.18.0 | The data argument supports AsyncIterable, Iterable, and Stream.       |
+    | v15.14.0, v14.18.0 | The data argument supports `AsyncIterable`, `Iterable`, and `Stream`.       |
     | v14.0.0            | The data parameter won't coerce unsupported input to strings anymore. |
     | v10.0.0            | Added in: v10.0.0                                                     |
 
@@ -200,7 +200,7 @@ try {
 
 **Возвращает:**
 
--   `<Promise>` : Выполняется с `undefined` в случае успеха.
+-   `<Promise>` &mdash; Выполняется с `undefined` в случае успеха.
 
 Псевдоним [`filehandle.writeFile()`](writefile.md).
 

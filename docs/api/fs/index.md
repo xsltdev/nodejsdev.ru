@@ -46,7 +46,7 @@
 -   [`appendFile`](appendfile.md) &mdash; добавляет данные в файл;
 -   [`chmod`](chmod.md) &mdash; изменяет права доступа к файлу;
 -   [`chown`](chown.md) &mdash; изменяет владельца файла;
--   [`close`](close.md) &mdash;
+-   [`close`](close.md) &mdash; закрывает дескриптор файла;
 -   [`copyFile`](copyfile.md) &mdash; копирует файл;
 -   [`cp`](cp.md) &mdash; копирует всю структуру каталогов, включая подкаталоги и файлы;
 -   [`createReadStream`](createreadstream.md) &mdash;
