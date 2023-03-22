@@ -28,4 +28,8 @@ nav:
     - readline.md
     - repl.md
     - stream.md
+    - tty.md
+    - url.md
     - util.md
+    - v8.md
+    - worker_threads.md

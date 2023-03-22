@@ -1,4 +1,4 @@
-# Util
+# Модуль util
 
 <!--introduced_in=v0.10.0-->
 
