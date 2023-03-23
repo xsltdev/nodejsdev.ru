@@ -8,6 +8,8 @@ nav:
     - errors.md
     - debugger.md
     - assert.md
+    - async_context.md
+    - async_hooks.md
     - buffer.md
     - child_process.md
     - cluster.md
@@ -18,18 +20,23 @@ nav:
     - http.md
     - http2.md
     - https.md
+    - intl.md
     - modules.md
+    - esm.md
     - n-api.md
     - net.md
     - os.md
     - path.md
+    - perf_hooks.md
     - process.md
     - querystring.md
     - readline.md
     - repl.md
     - stream.md
+    - tracing.md
     - tty.md
     - url.md
     - util.md
     - v8.md
+    - vm.md
     - worker_threads.md
