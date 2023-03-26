@@ -15,7 +15,9 @@ nav:
     - cluster.md
     - console.md
     - crypto.md
+    - diagnostics_channel.md
     - dns.md
+    - domain.md
     - fs.md
     - http.md
     - http2.md
@@ -23,6 +25,8 @@ nav:
     - intl.md
     - modules.md
     - esm.md
+    - module.md
+    - packages.md
     - n-api.md
     - net.md
     - os.md
@@ -32,11 +36,16 @@ nav:
     - querystring.md
     - readline.md
     - repl.md
+    - report.md
     - stream.md
+    - timers.md
+    - tls.md
     - tracing.md
     - tty.md
+    - dgram.md
     - url.md
     - util.md
     - v8.md
     - vm.md
     - worker_threads.md
+    - zlib.md
