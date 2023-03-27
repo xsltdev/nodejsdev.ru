@@ -1,8 +1,16 @@
+---
+description: Модуль tls предоставляет реализацию протоколов Transport Layer Security (TLS) и Secure Socket Layer (SSL), построенных на базе OpenSSL
+---
+
 # TLS (SSL)
 
-> Стабильность: 2 - Стабильный
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/tls.html)
 
-Модуль `node:tls` предоставляет реализацию протоколов Transport Layer Security (TLS) и Secure Socket Layer (SSL), построенных на базе OpenSSL. Доступ к модулю можно получить, используя:
+!!!success "Стабильность: 2 – Стабильная"
+
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+
+Модуль **`node:tls`** предоставляет реализацию протоколов Transport Layer Security (TLS) и Secure Socket Layer (SSL), построенных на базе OpenSSL. Доступ к модулю можно получить, используя:
 
 ```js
 const tls = require('node:tls');

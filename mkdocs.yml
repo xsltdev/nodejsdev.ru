@@ -34,6 +34,7 @@ theme:
         - navigation.top
         - navigation.indexes
         - content.action.edit
+        - content.tabs.link
     favicon: nodejs.svg
     logo: nodejs-white.svg
 
@@ -92,4 +93,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css?4'
+    - '/assets/stylesheets/styles.css?6'

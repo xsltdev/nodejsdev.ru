@@ -1,4 +1,10 @@
-# Модуль module
+---
+description: Предоставляет общие полезные методы при взаимодействии с экземплярами Module, переменной module, часто встречающейся в модулях CommonJS
+---
+
+# API node:module
+
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/module.html)
 
 ## Объект `Модуль`
 

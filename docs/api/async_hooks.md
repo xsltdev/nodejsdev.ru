@@ -1,6 +1,14 @@
+---
+description: Модуль async_hooks предоставляет API для отслеживания асинхронных ресурсов
+---
+
 # Модуль async_hooks
 
-> Стабильность: 1 - Экспериментальный. Пожалуйста, мигрируйте от этого API, если можете. Мы не рекомендуем использовать API [`createHook`](#async_hookscreatehookcallbacks), [`AsyncHook`](#class-asynchook) и [`executionAsyncResource`](#async_hooksexecutionasyncresource), так как они имеют проблемы с удобством использования, риски для безопасности и влияют на производительность. Для случаев использования отслеживания асинхронного контекста лучше использовать стабильный API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Если у вас есть сценарий использования `createHook`, `AsyncHook` или `executionAsyncResource`, выходящий за рамки потребностей отслеживания контекста, решаемых [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) или диагностических данных, предоставляемых в настоящее время [Diagnostics Channel](diagnostics_channel.md), пожалуйста, откройте проблему по адресу <https://github.com/nodejs/node/issues>, описав ваш сценарий использования, чтобы мы могли создать API, более ориентированный на конкретные цели.
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/async_hooks.html)
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Пожалуйста, мигрируйте от этого API, если можете. Мы не рекомендуем использовать API [`createHook`](#async_hookscreatehookcallbacks), [`AsyncHook`](#class-asynchook) и [`executionAsyncResource`](#async_hooksexecutionasyncresource), так как они имеют проблемы с удобством использования, риски для безопасности и влияют на производительность. Для случаев использования отслеживания асинхронного контекста лучше использовать стабильный API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Если у вас есть сценарий использования `createHook`, `AsyncHook` или `executionAsyncResource`, выходящий за рамки потребностей отслеживания контекста, решаемых [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) или диагностических данных, предоставляемых в настоящее время [Diagnostics Channel](diagnostics_channel.md), пожалуйста, откройте проблему по адресу <https://github.com/nodejs/node/issues>, описав ваш сценарий использования, чтобы мы могли создать API, более ориентированный на конкретные цели.
 
 Мы настоятельно не рекомендуем использовать API `async_hooks`. Другие API, которые могут покрыть большинство случаев использования, включают:
 
@@ -677,7 +685,7 @@ const server = net
 
 - Возвращает: Карта типов провайдеров с соответствующим числовым идентификатором. Эта карта содержит все типы событий, которые могут быть испущены событием `async_hooks.init()`.
 
-Эта функция подавляет устаревшее использование `process.binding('async_wrap').Providers`. См: [DEP0111](deprecations.md#dep0111-processbinding)
+Эта функция подавляет устаревшее использование `process.binding('async_wrap').Providers`.
 
 ## Отслеживание выполнения обещания
 

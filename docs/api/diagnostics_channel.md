@@ -1,18 +1,26 @@
-# Модуль diagnostics_channel
+# Канал диагностики: diagnostics_channel
 
-> Стабильность: 2 - Стабильный
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/diagnostics_channel.html)
 
-Модуль `node:diagnostics_channel` предоставляет API для создания именованных каналов для передачи произвольных данных сообщений в целях диагностики.
+!!!success "Стабильность: 2 – Стабильная"
+
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+
+Модуль **`node:diagnostics_channel`** предоставляет API для создания именованных каналов для передачи произвольных данных сообщений в целях диагностики.
 
 Доступ к нему можно получить с помощью:
 
-```mjs
-import diagnostics_channel from 'node:diagnostics_channel';
-```
+=== "MJS"
 
-```cjs
-const diagnostics_channel = require('node:diagnostics_channel');
-```
+    ```js
+    import diagnostics_channel from 'node:diagnostics_channel';
+    ```
+
+=== "CJS"
+
+    ```js
+    const diagnostics_channel = require('node:diagnostics_channel');
+    ```
 
 Предполагается, что автор модуля, желающий сообщать диагностические сообщения, создаст один или много каналов верхнего уровня, через которые будут передаваться сообщения. Каналы также могут быть получены во время выполнения, но это не рекомендуется из-за дополнительных накладных расходов. Для удобства каналы могут быть экспортированы, но пока известно их имя, они могут быть получены где угодно.
 
@@ -24,55 +32,59 @@ const diagnostics_channel = require('node:diagnostics_channel');
 
 Ниже приведен простой обзор публичного API.
 
-```mjs
-import diagnostics_channel from 'node:diagnostics_channel';
+=== "MJS"
 
-// Получение многократно используемого объекта канала
-const channel = diagnostics_channel.channel('my-channel');
+    ```js
+    import diagnostics_channel from 'node:diagnostics_channel';
 
-function onMessage(message, name) {
-  // Полученные данные
-}
+    // Получение многократно используемого объекта канала
+    const channel = diagnostics_channel.channel('my-channel');
 
-// Подписаться на канал
-diagnostics_channel.subscribe('my-channel', onMessage);
+    function onMessage(message, name) {
+    	// Полученные данные
+    }
 
-// Проверяем, есть ли у канала активный подписчик
-if (channel.hasSubscribers) {
-  // Публикуем данные в канале
-  channel.publish({
-    some: 'data',
-  });
-}
+    // Подписаться на канал
+    diagnostics_channel.subscribe('my-channel', onMessage);
 
-// Отписаться от канала
-diagnostics_channel.unsubscribe('my-channel', onMessage);
-```
+    // Проверяем, есть ли у канала активный подписчик
+    if (channel.hasSubscribers) {
+    	// Публикуем данные в канале
+    	channel.publish({
+    		some: 'data',
+    	});
+    }
 
-```cjs
-const diagnostics_channel = require('node:diagnostics_channel');
+    // Отписаться от канала
+    diagnostics_channel.unsubscribe('my-channel', onMessage);
+    ```
 
-// Получение многократно используемого объекта канала
-const channel = diagnostics_channel.channel('my-channel');
+=== "CJS"
 
-function onMessage(message, name) {
-  // Полученные данные
-}
+    ```js
+    const diagnostics_channel = require('node:diagnostics_channel');
 
-// Подписаться на канал
-diagnostics_channel.subscribe('my-channel', onMessage);
+    // Получение многократно используемого объекта канала
+    const channel = diagnostics_channel.channel('my-channel');
 
-// Проверяем, есть ли у канала активный подписчик
-if (channel.hasSubscribers) {
-  // Публикуем данные в канале
-  channel.publish({
-    some: 'data',
-  });
-}
+    function onMessage(message, name) {
+    	// Полученные данные
+    }
 
-// Отписаться от канала
-diagnostics_channel.unsubscribe('my-channel', onMessage);
-```
+    // Подписаться на канал
+    diagnostics_channel.subscribe('my-channel', onMessage);
+
+    // Проверяем, есть ли у канала активный подписчик
+    if (channel.hasSubscribers) {
+    	// Публикуем данные в канале
+    	channel.publish({
+    		some: 'data',
+    	});
+    }
+
+    // Отписаться от канала
+    diagnostics_channel.unsubscribe('my-channel', onMessage);
+    ```
 
 #### `diagnostics_channel.hasSubscribers(name)`
 
@@ -83,21 +95,25 @@ diagnostics_channel.unsubscribe('my-channel', onMessage);
 
 Этот API необязателен, но полезен при попытке публикации сообщений из очень чувствительного к производительности кода.
 
-```mjs
-import diagnostics_channel from 'node:diagnostics_channel';
+=== "MJS"
 
-if (diagnostics_channel.hasSubscribers('my-channel')) {
-  // Есть подписчики, подготовить и опубликовать сообщение
-}
-```
+    ```js
+    import diagnostics_channel from 'node:diagnostics_channel';
 
-```cjs
-const diagnostics_channel = require('node:diagnostics_channel');
+    if (diagnostics_channel.hasSubscribers('my-channel')) {
+    	// Есть подписчики, подготовить и опубликовать сообщение
+    }
+    ```
 
-if (diagnostics_channel.hasSubscribers('my-channel')) {
-  // Есть подписчики, подготовить и опубликовать сообщение
-}
-```
+=== "CJS"
+
+    ```js
+    const diagnostics_channel = require('node:diagnostics_channel');
+
+    if (diagnostics_channel.hasSubscribers('my-channel')) {
+    	// Есть подписчики, подготовить и опубликовать сообщение
+    }
+    ```
 
 #### `diagnostics_channel.channel(name)`
 
