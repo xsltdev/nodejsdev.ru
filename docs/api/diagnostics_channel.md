@@ -1,4 +1,4 @@
-# Канал диагностики: diagnostics_channel
+# Канал диагностики
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/diagnostics_channel.html)
 

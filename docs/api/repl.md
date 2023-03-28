@@ -1,4 +1,4 @@
-# Модуль repl
+# REPL
 
 <!--introduced_in=v0.10.0-->
 

@@ -2,7 +2,7 @@
 description: Пакет - это дерево папок, описываемое файлом package.json
 ---
 
-# Модули: Пакеты
+# Пакеты
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/packages.html)
 

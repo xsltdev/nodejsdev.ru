@@ -2,7 +2,7 @@
 description: API WASI предоставляет реализацию спецификации WebAssembly System Interface
 ---
 
-# WebAssembly System Interface (WASI)
+# WASI
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/wasi.html)
 

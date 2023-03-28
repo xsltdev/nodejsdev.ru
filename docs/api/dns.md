@@ -2,7 +2,7 @@
 description: В dns модуль включает разрешение имен
 ---
 
-# Модуль dns
+# DNS
 
 <!--introduced_in=v0.10.0-->
 

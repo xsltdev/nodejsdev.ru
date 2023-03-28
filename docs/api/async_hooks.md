@@ -2,7 +2,7 @@
 description: Модуль async_hooks предоставляет API для отслеживания асинхронных ресурсов
 ---
 
-# Модуль async_hooks
+# Асинхронные хуки
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/async_hooks.html)
 

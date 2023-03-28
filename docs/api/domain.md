@@ -2,7 +2,7 @@
 description: Домены предоставляют возможность обрабатывать несколько различных операций ввода-вывода как единую группу
 ---
 
-# Домен: domain
+# Домен
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/domain.html)
 

@@ -2,7 +2,7 @@
 description: Модули ECMAScript - это официальный стандартный формат для упаковки кода JavaScript для повторного использования
 ---
 
-# Модули ECMAScript
+# ECMAScript модули
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/esm.html)
 

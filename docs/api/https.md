@@ -1,4 +1,4 @@
-# Модуль https
+# HTTPS
 
 <!--introduced_in=v0.10.0-->
 

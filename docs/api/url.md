@@ -12,13 +12,17 @@ description: Модуль url предоставляет утилиты для �
 
 Модуль **`node:url`** предоставляет утилиты для разрешения и разбора URL. Доступ к нему можно получить, используя:
 
-```mjs
-import url from 'node:url';
-```
+=== "MJS"
 
-```cjs
-const url = require('node:url');
-```
+    ```js
+    import url from 'node:url';
+    ```
+
+=== "CJS"
+
+    ```js
+    const url = require('node:url');
+    ```
 
 ## Строки URL и объекты URL
 
@@ -61,19 +65,23 @@ const myURL = new URL(
 
 Разбор строки URL с помощью унаследованного API:
 
-```mjs
-import url from 'node:url';
-const myURL = url.parse(
-  'https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash'
-);
-```
+=== "MJS"
 
-```cjs
-const url = require('node:url');
-const myURL = url.parse(
-  'https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash'
-);
-```
+    ```js
+    import url from 'node:url';
+    const myURL = url.parse(
+    	'https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash'
+    );
+    ```
+
+=== "CJS"
+
+    ```js
+    const url = require('node:url');
+    const myURL = url.parse(
+    	'https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash'
+    );
+    ```
 
 ### Конструирование URL из составных частей и получение сконструированной строки
 
@@ -123,14 +131,18 @@ const myURL = new URL('/foo', 'https://example.org/');
 
 Конструктор URL доступен как свойство глобального объекта. Он также может быть импортирован из встроенного модуля url:
 
-```mjs
-import { URL } from 'node:url';
-console.log(URL === globalThis.URL); // Выводит "true".
-```
+=== "MJS"
 
-```cjs
-console.log(URL === require('node:url').URL); // Выводит 'true'.
-```
+    ```js
+    import { URL } from 'node:url';
+    console.log(URL === globalThis.URL); // Выводит "true".
+    ```
+
+=== "CJS"
+
+    ```js
+    console.log(URL === require('node:url').URL); // Выводит 'true'.
+    ```
 
 Ошибка `TypeError` будет выброшена, если `input` или `base` не являются корректными URL. Обратите внимание, что будет предпринята попытка преобразовать заданные значения в строки. Например:
 

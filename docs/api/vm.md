@@ -2,7 +2,7 @@
 description: Модуль vm позволяет компилировать и выполнять код в контексте виртуальной машины V8
 ---
 
-# Модуль vm
+# VM
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/vm.html)
 

@@ -1,4 +1,4 @@
-# Модуль http2
+# HTTP/2
 
 <!-- YAML
 added: v8.4.0

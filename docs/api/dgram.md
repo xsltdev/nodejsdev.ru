@@ -2,7 +2,7 @@
 description: Модуль node:dgram предоставляет реализацию сокетов дейтаграмм UDP
 ---
 
-# Сокеты UDP/датаграмм: dgram
+# Сокеты UDP/датаграмм
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/dgram.html)
 
