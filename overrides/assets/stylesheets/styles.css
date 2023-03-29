@@ -80,13 +80,6 @@ h3 {
 	font-size: 94%;
 }
 
-/*
-	Links with CODE
-*/
-.md-typeset pre {
-	margin: 0;
-}
-
 .md-typeset code {
 	word-break: initial;
 }
