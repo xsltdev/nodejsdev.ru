@@ -22,6 +22,7 @@ hide:
 
     Гайды по Node.js от различных авторов:
 
+	- [Руководство новичка](guides/freecodecamp.md) 
     - [Гайд от webdraftt](guides/webdraftt/index.md)
     - [Гайд от metanit](guides/metanit/index.md)
 
