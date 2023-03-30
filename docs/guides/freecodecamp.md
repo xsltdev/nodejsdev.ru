@@ -1815,29 +1815,29 @@ const _ = require('lodash')
 
     1.3.1
 
-### Install an older version of an npm package
+### Установка старой версии пакета npm
 
-Installing an older version of an npm package might be useful to solve a compatibility problem.
+Установка старой версии пакета npm может быть полезна для решения проблемы совместимости.
 
-You can install an old version of an npm package using the `@` syntax:
+Вы можете установить старую версию пакета npm, используя синтаксис `@`:
 
     npm install <package>@<version>
 
-Example:
+Пример:
 
     npm install cowsay
 
-installs version 1.3.1 (at the time of writing).
+устанавливает версию 1.3.1 (на момент написания статьи).
 
-Install version 1.2.0 with:
+Установите версию 1.2.0 с помощью:
 
     npm install cowsay@1.2.0
 
-The same can be done with global packages:
+То же самое можно сделать и с глобальными пакетами:
 
     npm install -g webpack@4.16.4
 
-You might also be interested in listing all the previous version of a package. You can do it with `npm view <package> ve`rsions:
+Вас также может заинтересовать список всех предыдущих версий пакета. Вы можете сделать это с помощью `npm view <package> versions`:
 
     ❯ npm view cowsay versions
 
@@ -1860,15 +1860,15 @@ You might also be interested in listing all the previous version of a package. Y
       '1.3.0',
       '1.3.1' ]
 
-### Update all the Node dependencies to their latest version
+### Обновление всех зависимостей Node до последней версии
 
-When you install a package using `npm install <packagena`me\>, the latest available version of the package is downloaded and put i`n the node_m`odules folder, and a corresponding entry is added t`o the packag`e.jso`n and package-loc`k.json files that are present in your current folder.
+Когда вы устанавливаете пакет с помощью `npm install <packagename\>`, последняя доступная версия пакета загружается и помещается в папку node_modules, и соответствующая запись добавляется в файлы package.json и package-lock.json, которые присутствуют в вашей текущей папке.
 
-npm calculates the dependencies and installs the latest available version of those as well.
+npm вычисляет зависимости и устанавливает последние доступные версии этих зависимостей.
 
-Let's say you install [`cowsay`](https://www.npmjs.com/package/cowsay){rel="noopener"}, a cool command line tool that lets you make a cow say **things**.
+Допустим, вы устанавливаете [`cowsay`](https://www.npmjs.com/package/cowsay){rel="noopener"}, классный инструмент командной строки, позволяющий заставить корову говорить **вещи**.
 
-When you `npm install cowsay`, this entry is added to the `package.json` file:
+Когда вы `npm install cowsay`, эта запись будет добавлена в файл `package.json`:
 
 ```language-json
 {
@@ -1878,7 +1878,7 @@ When you `npm install cowsay`, this entry is added to the `package.json` file:
 }
 ```
 
-and this is an extract of `package-lock.json`, where I removed the nested dependencies for clarity:
+а это выдержка из `package-lock.json`, где я удалил вложенные зависимости для ясности:
 
 ```language-json
 {
@@ -1900,15 +1900,15 @@ and this is an extract of `package-lock.json`, where I removed the nested depend
 }
 ```
 
-Now those 2 files tell us that we installed version `1.3.1` of cowsay, and our rule for updates is `^1.3.1`, which for the npm versioning rules (explained later on) means that npm can update to patch and minor releases: `0.13.1`, `0.14.0` and so on.
+Теперь эти 2 файла говорят нам, что мы установили версию `1.3.1` cowsay, а наше правило для обновлений - `^1.3.1`, что для правил версионности npm (объяснение позже) означает, что npm может обновляться до патчей и минорных релизов: `0.13.1`, `0.14.0` и так далее.
 
-If there is a new minor or patch release and we type `npm update`, the installed version is updated, and the `package-lock.json` file diligently filled with the new version.
+Если появляется новый минорный или патч релиз и мы набираем `npm update`, установленная версия обновляется, а файл `package-lock.json` старательно заполняется новой версией.
 
-`package.json` remains unchanged.
+`package.json` остается неизменным.
 
-To discover new releases of the packages, you run `npm outdated`.
+Чтобы узнать о новых выпусках пакетов, вы выполняете команду `npm outdated`.
 
-Here's the list of a few outdated packages in one repository I didn't update for quite a while:
+Вот список нескольких устаревших пакетов в одном репозитории, который я не обновлял довольно долгое время:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -1917,51 +1917,51 @@ class="kg-image" loading="lazy" width="800" height="530"
 alt="dQXY78UwUHW2iHblpRRLd8YdM4Zvdyf-3ctc" />
 </figure>
 
-Some of those updates are major releases. Running `npm update` won't update the version of those. Major releases are never updated in this way because they (by definition) introduce breaking changes, and `npm` want to save you trouble.
+Некоторые из этих обновлений являются основными релизами. Запуск `npm update` не обновит их версию. Основные релизы никогда не обновляются таким образом, потому что они (по определению) вносят разрушающие изменения, а `npm` хочет избавить вас от проблем.
 
-To update to a new major version all the packages, install the `npm-check-updates` package globally:
+Чтобы обновить до новой мажорной версии все пакеты, установите пакет `npm-check-updates` глобально:
 
     npm install -g npm-check-updates
 
-then run it:
+затем запустите его:
 
     ncu -u
 
-This will upgrade all the version hints in the `package.json` file, to `dependencies` and `devDependencies`, so npm can install the new major version.
+Это обновит все подсказки о версии в файле `package.json`, в `dependencies` и `devDependencies`, чтобы npm мог установить новую основную версию.
 
-You are now ready to run the update:
+Теперь вы готовы к запуску обновления:
 
     npm update
 
-If you just downloaded the project without the `node_modules` dependencies and you want to install the shiny new versions first, just run
+Если вы только что загрузили проект без зависимостей `node_modules` и хотите сначала установить новые блестящие версии, просто выполните команду
 
     npm install
 
-### Semantic Versioning using npm
+### Семантическое версионирование с помощью npm
 
-Semantic Versioning is a convention used to provide a meaning to versions.
+Semantic Versioning - это соглашение, используемое для придания смысла версиям.
 
-If there's one great thing in Node.js packages, is that all agreed on using Semantic Versioning for their version numbering.
+Если и есть что-то хорошее в пакетах Node.js, так это то, что все согласились использовать Semantic Versioning для нумерации версий.
 
-The Semantic Versioning concept is simple: all versions have 3 digits: `x.y.z`.
+Концепция Semantic Versioning проста: все версии состоят из 3 цифр: `x.y.z`.
 
-- the first digit is the major version
-- the second digit is the minor version
-- the third digit is the patch version
+- первая цифра - основная версия
+- вторая цифра - минорная версия
+- третья цифра - версия патча.
 
-When you make a new release, you don't just up a number as you please, but you have rules:
+Когда вы выпускаете новый релиз, вы не просто увеличиваете номер по своему усмотрению, но у вас есть правила:
 
-- you up the major version when you make incompatible API changes
-- you up the minor version when you add functionality in a backward-compatible manner
-- you up the patch version when you make backward-compatible bug fixes
+- вы повышаете основную версию, когда вносите несовместимые изменения в API
+- вы повышаете минорную версию, когда добавляете функциональность, совместимую с предыдущей версией
+- вы повышаете версию патча, когда исправляете ошибки, совместимые с обратным развитием.
 
-The convention is adopted all across programming languages, and it is very important that every `npm` package adheres to it, because the whole system depends on that.
+Эта конвенция принята во всех языках программирования, и очень важно, чтобы каждый пакет `npm` придерживался ее, потому что от этого зависит вся система.
 
-Why is that so important?
+Почему это так важно?
 
-Because `npm` set some rules we can use in the [`package.json` file](https://flaviocopes.com/package-json/) to choose which versions it can update our packages to, when we run `npm update`.
+Потому что `npm` установил некоторые правила, которые мы можем использовать в [`package.json` файле](https://flaviocopes.com/package-json/) для выбора версий, до которых он может обновить наши пакеты, когда мы запускаем `npm update`.
 
-The rules use those symbols:
+Правила используют эти символы:
 
 - `^`
 - `~`
@@ -1973,79 +1973,79 @@ The rules use those symbols:
 - `-`
 - `||`
 
-Let's see those rules in detail:
+Давайте рассмотрим эти правила подробнее:
 
-- `^`: if you write `^0.13.0` when running `npm update` it can update to patch and minor releases: `0.13.1`, `0.14.0` and so on.
-- `~`: if you write `~0.13.0`, when running `npm update` it can update to patch releases: `0.13.1` is ok, but `0.14.0` is not.
-- `<`: you accept any version higher than the one you specify
-- `>=`: you accept any version equal to or higher than the one you specify
-- `<=`: you accept any version equal or lower to the one you specify
-- `<`: you accept any version lower to the one you specify
-- `=`: you accept that exact version
-- `-`: you accept a range of versions. Example: `2.1.0 - 2.6.2`
-- `||`: you combine sets. Example: `< 2.1 || > 2.6`
+- `^`: если вы пишете `^0.13.0`, при запуске `npm update` он может обновиться до патча и минорных релизов: `0.13.1`, `0.14.0` и так далее.
+- `~`: если вы напишете `~0.13.0`, при запуске `npm update` он может обновляться до патчей: `0.13.1` - нормально, а `0.14.0` - нет.
+- `<`: вы принимаете любую версию выше той, которую вы указали.
+- `>=`: вы принимаете любую версию, равную или более высокую, чем та, которую вы указали
+- `<=`: вы принимаете любую версию, равную или меньшую указанной вами
+- `<`: вы принимаете любую версию ниже указанной вами
+- `=`: вы принимаете именно эту версию
+- `-`: вы принимаете диапазон версий. Пример: `2.1.0 - 2.6.2`.
+- `||`: вы объединяете наборы. Пример: `< 2.1 || > 2.6`.
 
-You can combine some of those notations, for example use `1.0.0 || >=1.1.0 <1.2.0` to either use 1.0.0 or one release from 1.1.0 up, but lower than 1.2.0.
+Вы можете комбинировать некоторые из этих обозначений, например, использовать `1.0.0 || >=1.1.0 <1.2.0`, чтобы использовать либо 1.0.0, либо один релиз, начиная с 1.1.0, но ниже 1.2.0.
 
-There are other rules, too:
+Существуют и другие правила:
 
-- no symbol: you accept only that specific version you specify (`1.2.1`)
-- `latest`: you want to use the latest version available
+- `нет символа`: вы принимаете только ту конкретную версию, которую вы указали (`1.2.1`)
+- `latest`: вы хотите использовать последнюю доступную версию.
 
-### Uninstalling npm packages locally or globally
+### Удаление пакетов npm локально или глобально
 
-To uninstall a package you have previously installed **locally** (using `npm install <package-na`me\> i`n the node_m`odules folder), run:
+Чтобы удалить пакет, который вы ранее установили **локально** (используя `npm install <package-na`me\> в папке node_m`odules), выполните:
 
     npm uninstall <package-name>
 
-from the project root folder (the folder that contains the node_modules folder).
+из корневой папки проекта (папки, содержащей папку node_modules).
 
-This operation will also remove the reference in the [`package.json`](https://flaviocopes.com/package-json/){rel="noopener"} [file](https://flaviocopes.com/package-json/){rel="noopener"}.
+Эта операция также удалит ссылку в [`package.json`](https://flaviocopes.com/package-json/){rel="noopener"} [file](https://flaviocopes.com/package-json/){rel="noopener"}.
 
-If the package was a development dependency, listed in the devDependencies of the `package.json` file, you must use the `-D` / `--save-dev` flag to remove it from the file:
+Если пакет был зависимостью разработки, перечисленной в devDependencies файла `package.json`, вы должны использовать флаг `-D` / `--save-dev`, чтобы удалить его из файла:
 
     npm uninstall -D <package-name>
 
-If the package is installed **globally**, you need to add the `-g` / `--global` flag:
+Если пакет установлен **глобально**, необходимо добавить флаг `-g` / `--global`:
 
     npm uninstall -g <package-name>
 
-Example:
+Пример:
 
     npm uninstall -g webpack
 
-and you can run this command from anywhere you want on your system because the folder where you currently are does not matter.
+и вы можете запустить эту команду из любого места вашей системы, потому что папка, в которой вы сейчас находитесь, не имеет значения.
 
-### npm global or local packages
+### npm глобальные или локальные пакеты
 
-When is a package best installed globally? And why?
+Когда пакет лучше всего устанавливать глобально? И почему?
 
-The main difference between local and global packages is this:
+Основное различие между локальными и глобальными пакетами заключается в следующем:
 
-- **local packages** are installed in the directory where you run `npm install <package-name>`, and they are put in the `node_modules` folder under this directory
-- **global packages** are all put in a single place in your system (exactly where depends on your setup), regardless of where you run `npm install -g <package-name>`
+- **локальные пакеты** устанавливаются в директорию, где вы запустили `npm install <имя пакета>, и помещаются в папку `node_modules` в этой директории.
+- **глобальные пакеты** устанавливаются в одно место в вашей системе (где именно - зависит от вашей установки), независимо от того, где вы запустили `npm install -g <package-name>`.
 
-In your code, they are both required in the same way:
+В вашем коде они оба требуются одинаково:
 
 ```language-js
 require('package-name')
 ```
 
-So when should you install in one way or another?
+Когда же следует устанавливать тем или иным способом?
 
-In general, all packages should be installed **locally**.
+В целом, все пакеты следует устанавливать **локально**.
 
-This makes sure you can have dozens of applications in your computer, all running a different version of each package if needed.
+Это гарантирует, что вы можете иметь десятки приложений на своем компьютере, и все они будут работать с разными версиями каждого пакета, если это необходимо.
 
-Updating a global package would make all your projects use the new release, and as you can imagine this might cause nightmares in terms of maintenance, as some packages might break compatibility with further dependencies, and so on.
+Обновление глобального пакета заставит все ваши проекты использовать новый релиз, и, как вы можете себе представить, это может привести к кошмарам в плане обслуживания, поскольку некоторые пакеты могут нарушить совместимость с другими зависимостями и так далее.
 
-All projects have their own local version of a package, even if this might appear like a waste of resources, it's minimal compared to the possible negative consequences.
+Все проекты имеют собственную локальную версию пакета, даже если это может показаться пустой тратой ресурсов, она минимальна по сравнению с возможными негативными последствиями.
 
-A package should be installed **globally** when it provides an executable command that you run from the shell (CLI), and it's reused across projects.
+Пакет должен быть установлен **глобально**, если он предоставляет исполняемую команду, которую вы запускаете из оболочки (CLI), и она используется повторно в разных проектах.
 
-You can also install executable commands locally and run them using [npx](https://flaviocopes.com/npx/){rel="noopener"}, but some packages are just better installed globally.
+Вы также можете установить исполняемые команды локально и запускать их с помощью [npx](https://flaviocopes.com/npx/){rel="noopener"}, но некоторые пакеты лучше устанавливать глобально.
 
-Great examples of popular global packages which you might know are:
+Отличными примерами популярных глобальных пакетов, которые вы можете знать, являются:
 
 - `npm`
 - `create-react-app`
@@ -2057,58 +2057,58 @@ Great examples of popular global packages which you might know are:
 - `forever`
 - `nodemon`
 
-You probably have some packages installed globally already on your system. You can see them by running:
+Вероятно, в вашей системе уже установлены некоторые глобальные пакеты. Вы можете увидеть их, выполнив команду:
 
     npm list -g --depth 0
 
-on your command line.
+в командной строке.
 
-### npm dependencies and devDependencies
+### npm dependencies и devDependencies
 
-When is a package a dependency, and when is it a development dependency?
+Когда пакет является зависимостью, а когда - зависимостью разработки?
 
-When you install an npm package using `npm install <package-name>`, you are installing it **as a dependency**.
+Когда вы устанавливаете пакет npm с помощью `npm install <имя пакета>`, вы устанавливаете его **как зависимость**.
 
-The package is automatically listed in the package.json file, under the `dependencies` list (as of npm 5: before you had to manually specify `--save`).
+Пакет автоматически перечисляется в файле package.json в списке `dependencies` (начиная с npm 5: до этого вам нужно было вручную указывать `--save`).
 
-When you add the `-D` flag, or `--save-dev`, you are installing it as a development dependency, which adds it to the `devDependencies` list.
+Когда вы добавляете флаг `-D`, или `--save-dev`, вы устанавливаете пакет как зависимость разработки, что добавляет его в список `devDependencies`.
 
-**Development dependencies** are intended as development-only packages, that are unneeded in production. For example testing packages, webpack or Babel.
+**Зависимости разработки** - это пакеты, предназначенные только для разработки, которые не нужны в производстве. Например, пакеты для тестирования, webpack или Babel.
 
-When you go **in production**, if you type `npm install` and the folder contains a `package.json` file, they are installed, as npm assumes this is a development deploy.
+Когда вы переходите **в продакшн**, если вы набираете `npm install` и папка содержит файл `package.json`, они будут установлены, так как npm предполагает, что это развертывание разработки.
 
-You need to set the `--production` flag (`npm install --production`) to avoid installing those development dependencies.
+Вам нужно установить флаг `--production` (`npm install --production`), чтобы избежать установки этих зависимостей разработки.
 
-### The npx Node Package Runner
+### npx Node Package Runner
 
-`npx` is a very cool way to run the Node.js codes, and provides many useful features.
+`npx` - это очень крутой способ запуска кода Node.js, предоставляющий множество полезных функций.
 
-In this section, I want to introduce a very powerful command that's been available in **npm** starting version 5.2, released in July 2017: **npx**.
+В этом разделе я хочу представить очень мощную команду, которая доступна в **npm** начиная с версии 5.2, выпущенной в июле 2017 года: **npx**.
 
-If you don't want to install npm, you can install npx as a [standalone package](https://www.npmjs.com/package/npx){rel="noopener"}.
+Если вы не хотите устанавливать npm, вы можете установить npx как [standalone package](https://www.npmjs.com/package/npx){rel="noopener"}.
 
-`npx` lets you run code built with Node.js and published through the npm registry.
+`npx` позволяет запускать код, созданный с помощью Node.js и опубликованный через реестр npm.
 
-#### Easily run local commands
+#### Легкий запуск локальных команд
 
-Node.js developers used to publish most of the executable commands as global packages, in order for them to be in the path and executable immediately.
+Раньше разработчики Node.js публиковали большинство исполняемых команд в виде глобальных пакетов, чтобы они были в пути и исполнялись немедленно.
 
-This was a pain because you could not really install different versions of the same command.
+Это было неудобно, потому что вы не могли установить разные версии одной и той же команды.
 
-Running `npx commandname` automatically finds the correct reference of the command inside the `node_modules` folder of a project, without needing to know the exact path, and without requiring the package to be installed globally and in the user's path.
+Выполнение команды `npx commandname` автоматически находит нужную ссылку команды в папке `node_modules` проекта, без необходимости знать точный путь, и без необходимости устанавливать пакет глобально и в пути пользователя.
 
-#### Installation-less command execution
+#### Выполнение команд без установки
 
-There is another great feature of `npm`, which is allowing to run commands without first installing them.
+Есть еще одна замечательная особенность `npm` - это возможность запускать команды без предварительной установки.
 
-This is pretty useful, mostly because:
+Это довольно полезно, в основном потому, что:
 
-1.  you don't need to install anything
-2.  you can run different versions of the same command, using the syntax `@version`
+1. вам не нужно ничего устанавливать
+2. вы можете запускать разные версии одной и той же команды, используя синтаксис `@version`.
 
-A typical demonstration of using `npx` is through the `cowsay` command. `cowsay` will print a cow saying what you wrote in the command. For example:
+Типичной демонстрацией использования `npx` является команда `cowsay`. Команда `cowsay` выведет корову, говорящую то, что вы написали в команде. Например:
 
-`cowsay "Hello"` will print
+`cowsay "Hello"` напечатает
 
      _______
     < Hello >
@@ -2119,75 +2119,75 @@ A typical demonstration of using `npx` is through the `cowsay` command. `cowsay`
                     ||----w |
                     ||     ||
 
-Now, this if you have the `cowsay` command globally installed from npm previously, otherwise you'll get an error when you try to run the command.
+Это возможно, если команда `cowsay` была установлена глобально из npm ранее, в противном случае вы получите ошибку при попытке запустить команду.
 
-`npx` allows you to run that npm command without having it installed locally:
+`npx` позволяет вам запустить эту команду npm без ее локальной установки:
 
     npx cowsay "Hello"
 
-Now, this is a funny useless command. Other scenarios include:
+Это забавная бесполезная команда. Другие сценарии включают:
 
-- running the `vue` CLI tool to create new applications and run them: `npx vue create my-vue-app`
-- creating a new React app using `create-react-app`: `npx create-react-app my-react-app`
+- использование инструмента `vue` CLI для создания новых приложений и их запуска: `npx vue create my-vue-app`.
+- создание нового приложения React с помощью `create-react-app`: `npx create-react-app my-react-app`.
 
-and many more.
+и многое другое.
 
-Once downloaded, the downloaded code will be wiped.
+После загрузки загруженный код будет стерт.
 
-#### Run some code using a different Node.js version {#run-some-code-using-a-different-node-js-version}
+#### Запустите некоторый код, используя другую версию Node.js {#run-some-code-using-a-different-node-js-version}.
 
-Use the `@` to specify the version, and combine that with the `node` npm package:
+Используйте `@`, чтобы указать версию, и объедините ее с пакетом `node` npm:
 
     npx node@6 -v #v6.14.3
     npx node@8 -v #v8.11.3
 
-This helps to avoid tools like `nvm` or the other Node version management tools.
+Это помогает избежать таких инструментов, как `nvm` или других инструментов управления версиями Node.
 
-#### Run arbitrary code snippets directly from a URL
+#### Запуск произвольных фрагментов кода непосредственно из URL.
 
-`npx` does not limit you to the packages published on the npm registry.
+`npx` не ограничивает вас пакетами, опубликованными в реестре npm.
 
-You can run code that sits in a [GitHub](https://flaviocopes.com/github/){rel="noopener"} gist, for example:
+Вы можете запускать код, который находится, например, в гисте [GitHub](https://flaviocopes.com/github/){rel="noopener"}:
 
     npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
-Of course, you need to be careful when running code that you do not control, as with great power comes great responsibility.
+Конечно, нужно быть осторожным при выполнении кода, который вы не контролируете, поскольку с большой властью приходит большая ответственность.
 
-### The Event Loop
+### Цикл событий
 
-The Event Loop is one of the most important aspects to understand about JavaScript. This section explains the inner details of how JavaScript works with a single thread, and how it handles asynchronous functions.
+Цикл событий - один из самых важных аспектов JavaScript. Этот раздел объясняет внутренние детали того, как JavaScript работает с одним потоком, и как он обрабатывает асинхронные функции.
 
-I've programmed for years with JavaScript, yet I've never **fully** understood how things work under the hoods. It's completely fine to not know this concept in detail. But as usual, it's helpful to know how it works, and also you might just be a little curious at this point.
+Я много лет программировал на JavaScript, но никогда **полностью** не понимал, как все работает под капотом. Совершенно нормально не знать эту концепцию в деталях. Но, как обычно, полезно знать, как это работает, а также вы можете быть просто немного любопытным в этот момент.
 
-Your JavaScript code runs single threaded. There is just one thing happening at a time.
+Ваш код JavaScript работает в однопоточном режиме. Одновременно выполняется только одно действие.
 
-This is a limitation that's actually very helpful, as it simplifies a lot of how you program without worrying about concurrency issues.
+Это ограничение на самом деле очень полезно, так как оно упрощает многие способы программирования, не беспокоясь о проблемах параллелизма.
 
-You just need to pay attention to how you write your code and avoid anything that could block the thread, like synchronous network calls or infinite [loops](https://flaviocopes.com/javascript-loops/){rel="noopener"}.
+Вам просто нужно обратить внимание на то, как вы пишете свой код, и избегать всего, что может заблокировать поток, например, синхронных сетевых вызовов или бесконечных [циклов](https://flaviocopes.com/javascript-loops/){rel="noopener"}.
 
-Generally, in most browsers there is an event loop for every browser tab, to make every process isolated and avoid a web page with infinite loops or heavy processing to block your entire browser.
+Как правило, в большинстве браузеров для каждой вкладки браузера существует цикл событий, чтобы сделать каждый процесс изолированным и избежать появления веб-страницы с бесконечными циклами или тяжелой обработкой, блокирующей весь браузер.
 
-The environment manages multiple concurrent event loops, to handle API calls for example. [Web Workers](https://flaviocopes.com/web-workers/){rel="noopener"} run in their own event loop as well.
+Среда управляет несколькими параллельными циклами событий для обработки вызовов API, например. [Web Workers](https://flaviocopes.com/web-workers/){rel="noopener"} также работают в своем собственном цикле событий.
 
-You mainly need to be concerned that **your code** will run on a single event loop, and write code with this thing in mind to avoid blocking it.
+Вам в основном нужно быть озабоченным тем, что **ваш код** будет работать в одном цикле событий, и писать код с учетом этого, чтобы избежать его блокировки.
 
-#### Blocking the event loop
+#### Блокирование цикла событий
 
-Any JavaScript code that takes too long to return back control to the event loop will block the execution of any JavaScript code in the page --- even block the UI thread --- and the user cannot click around, scroll the page, and so on.
+Любой код JavaScript, который слишком долго возвращает управление циклу событий, блокирует выполнение любого кода JavaScript на странице --- даже блокирует поток пользовательского интерфейса --- и пользователь не может щелкать мышью, прокручивать страницу и так далее.
 
-Almost all the I/O primitives in JavaScript are non-blocking. Network requests, Node.js file system operations, and so on. Being blocking is the exception, and this is why JavaScript is based so much on callbacks, and more recently on promises and async/await.
+Почти все примитивы ввода-вывода в JavaScript являются неблокирующими. Сетевые запросы, операции с файловой системой Node.js и так далее. Блокировка является исключением, и именно поэтому JavaScript так сильно основан на обратных вызовах, а в последнее время на обещаниях и async/await.
 
-#### The call stack
+#### Стек вызовов
 
-The call stack is a LIFO queue (Last In, First Out).
+Стек вызовов представляет собой очередь LIFO (Last In, First Out).
 
-The event loop continuously checks the **call stack** to see if there's any function that needs to run.
+Цикл событий постоянно проверяет стек **вызовов** на предмет наличия функции, которая должна быть запущена.
 
-While doing so, it adds any function call it finds to the call stack and executes each one in order.
+При этом он добавляет все найденные вызовы функций в стек вызовов и выполняет каждый из них по порядку.
 
-You know the error stack trace you might be familiar with, in the debugger or in the browser console?
+Вам знакома трассировка стека ошибок в отладчике или в консоли браузера?
 
-The browser looks up the function names in the call stack to inform you which function originates the current call:
+Браузер просматривает имена функций в стеке вызовов, чтобы сообщить вам, какая функция является источником текущего вызова:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2196,9 +2196,9 @@ class="kg-image" loading="lazy" width="592" height="615"
 alt="SFxrWa7lVtAfUsjnjoMqgCGdG4bK0jDvi-11" />
 </figure>
 
-#### A simple event loop explanation
+#### Простое объяснение цикла событий
 
-Let's pick an example:
+Давайте выберем пример:
 
 ```language-js
 const bar = () => console.log('bar')
@@ -2214,17 +2214,17 @@ const foo = () => {
 foo()
 ```
 
-This code prints:
+Этот код печатает:
 
     foo
     bar
     baz
 
-as expected.
+как и ожидалось.
 
-When this code runs, first `foo()` is called. Inside `foo()` we first call `bar()`, then we call `baz()`.
+Когда этот код выполняется, сначала вызывается `foo()`. Внутри `foo()` мы сначала вызываем `bar()`, затем `baz()`.
 
-At this point the call stack looks like this:
+В этот момент стек вызовов выглядит следующим образом:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2233,7 +2233,7 @@ class="kg-image" loading="lazy" width="800" height="835"
 alt="bFPM-QZwRcB6APbq6sSJpyQMZHWRACvJzAly" />
 </figure>
 
-The event loop on every iteration looks if there's something in the call stack, and executes it:
+Цикл событий на каждой итерации смотрит, есть ли что-то в стеке вызовов, и выполняет это:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2242,17 +2242,17 @@ class="kg-image" loading="lazy" width="466" height="769"
 alt="T3jPPIkLHGvy0QXBrUz8cb3VM0bVVez-joQ4" />
 </figure>
 
-until the call stack is empty.
+пока стек вызовов не опустеет.
 
-#### Queuing function execution
+#### Очередь выполнения функций
 
-The above example looks normal, there's nothing special about it: JavaScript finds things to execute, runs them in order.
+Приведенный выше пример выглядит нормально, в нем нет ничего особенного: JavaScript находит функции для выполнения и выполняет их по порядку.
 
-Let's see how to defer a function until the stack is clear.
+Давайте посмотрим, как отложить выполнение функции до тех пор, пока стек вызовов не станет пустым.
 
-The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it once every other function in the code has executed.
+Смысл использования `setTimeout(() => {}), 0)` заключается в том, чтобы вызвать функцию, но выполнить ее после того, как все остальные функции в коде будут выполнены.
 
-Take this example:
+Возьмем такой пример:
 
 ```language-js
 const bar = () => console.log('bar')
@@ -2268,15 +2268,15 @@ const foo = () => {
 foo()
 ```
 
-This code prints, maybe surprisingly:
+Этот код печатает, что, возможно, удивительно:
 
     foo
     baz
     bar
 
-When this code runs, first `foo()` is called. Inside `foo()` we first call `setTimeout`, passing `bar` as an argument, and we instruct it to run immediately as fast as it can, passing `0` as the timer. Then we call `baz()`.
+Когда этот код выполняется, сначала вызывается `foo()`. Внутри `foo()` мы сначала вызываем `setTimeout`, передавая `bar` в качестве аргумента, и инструктируем его выполнить немедленно так быстро, как он может, передавая `0` в качестве таймера. Затем мы вызываем `baz()`.
 
-At this point the call stack looks like this:
+В этот момент стек вызовов выглядит следующим образом:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2285,7 +2285,7 @@ class="kg-image" loading="lazy" width="800" height="762"
 alt="iUnlUVBLW8ozpE2ewbJswyp9tOP5OzPUXn0-" />
 </figure>
 
-Here is the execution order for all the functions in our program:
+Вот порядок выполнения всех функций в нашей программе:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2294,27 +2294,27 @@ class="kg-image" loading="lazy" width="466" height="769"
 alt="MsT6C2UAZJaEEm6SmU266PO-V4b-DY0wlMqb" />
 </figure>
 
-Why is this happening?
+Почему это происходит?
 
-#### The Message Queue
+#### Очередь сообщений
 
-When `setTimeout()` is called, the Browser or Node.js starts the timer. Once the timer expires, in this case immediately as we put `0` as the timeout, the callback function is put in the **Message Queue**.
+Когда вызывается `setTimeout()`, браузер или Node.js запускает таймер. Как только таймер истечет, в данном случае немедленно, поскольку в качестве таймаута мы указали `0`, функция обратного вызова будет помещена в **очередь сообщений**.
 
-The Message Queue is also where user-initiated events like click and keyboard events or fetch responses are queued before your code has the opportunity to react to them. Or also DOM events like `onLoad`.
+Очередь сообщений - это место, где инициированные пользователем события, такие как щелчки мышью или клавиатурой, или ответы на выборку ставятся в очередь, прежде чем ваш код получит возможность отреагировать на них. А также события DOM, такие как `onLoad`.
 
-The loop gives priority to the call stack. It first processes everything it finds in the call stack, and once there's nothing in there, it goes to pick up things in the message queue.
+В цикле приоритет отдается стеку вызовов. Сначала он обрабатывает все, что находит в стеке вызовов, а когда там ничего нет, переходит к обработке событий в очереди сообщений.
 
-We don't have to wait for functions like `setTimeout`, fetch or other things to do their own work, because they are provided by the browser, and they live on their own threads. For example, if you set the `setTimeout` timeout to 2 seconds, you don't have to wait 2 seconds - the wait happens elsewhere.
+Нам не нужно ждать, пока такие функции, как `setTimeout`, fetch или другие, выполнят свою работу, потому что они предоставляются браузером и живут в своих собственных потоках. Например, если вы установите таймаут `setTimeout` на 2 секунды, вам не придется ждать 2 секунды - ожидание происходит в другом месте.
 
-#### ES6 Job Queue
+#### ES6 Очередь заданий
 
-ECMAScript 2015 introduced the concept of the Job Queue, which is used by Promises (also introduced in ES6/ES2015). It's a way to execute the result of an async function as soon as possible, rather than being put at the end of the call stack.
+В ECMAScript 2015 появилась концепция очереди заданий, которая используется Promises (также представленными в ES6/ES2015). Это способ выполнить результат асинхронной функции как можно быстрее, а не помещать его в конец стека вызовов.
 
-Promises that resolve before the current function ends will be executed right after the current function.
+Обещания, которые разрешаются до завершения текущей функции, будут выполнены сразу после текущей функции.
 
-I find nice the analogy of a rollercoaster ride at an amusement park: the message queue puts you back in queue with after all the other people in the queue, while the job queue is the fastpass ticket that lets you take another ride right after you finished the previous one.
+Мне кажется удачной аналогия с американскими горками в парке развлечений: очередь сообщений возвращает вас в очередь после всех остальных людей в очереди, в то время как очередь заданий - это билет fastpass, который позволяет вам прокатиться на другом аттракционе сразу после того, как вы закончили предыдущий.
 
-Example:
+Пример:
 
 ```language-js
 const bar = () => console.log('bar')
@@ -2333,22 +2333,22 @@ const foo = () => {
 foo()
 ```
 
-This prints:
+Это печатает:
 
     foo
     baz
     should be right after foo, before bar
     bar
 
-That's a big difference between Promises (and `async/await`, which is built on promises) and plain old asynchronous functions through `setTimeout()` or other platform APIs.
+Это большая разница между Promises (и `async/await`, который построен на promises) и обычными асинхронными функциями через `setTimeout()` или другие API платформы.
 
-### Understanding process.nextTick() {#understanding-process-nexttick-}
+### Понимание process.nextTick() {#understanding-process-nexttick-}
 
-As you try to understand the Node.js event loop, one important part of it is `process.nextTick()`. It interacts with the event loop in a special way.
+По мере того как вы пытаетесь понять цикл событий Node.js, одной из важных его частей является `process.nextTick()`. Она взаимодействует с циклом событий особым образом.
 
-Every time the event loop takes a full trip, we call it a tick.
+Каждый раз, когда цикл событий совершает полный цикл, мы называем это тиком.
 
-When we pass a function to `process.nextTick()`, we instruct the engine to invoke this function at the end of the current operation, before the next event loop tick starts:
+Когда мы передаем функцию в `process.nextTick()`, мы инструктируем движок вызывать эту функцию в конце текущей операции, перед началом следующего тика цикла событий:
 
 ```language-js
 process.nextTick(() => {
@@ -2356,19 +2356,19 @@ process.nextTick(() => {
 })
 ```
 
-The event loop is busy processing the current function code.
+Цикл событий занят обработкой кода текущей функции.
 
-When this operation ends, the JavaScript engine runs all the functions passed to `nextTick` calls during that operation.
+Когда эта операция заканчивается, движок JavaScript запускает все функции, переданные в вызовы `nextTick` во время этой операции.
 
-It's the way we can tell the JavaScript engine to process a function asynchronously (after the current function), but as soon as possible, not queue it.
+Так мы можем сказать движку JavaScript обрабатывать функцию асинхронно (после текущей функции), но как можно быстрее, а не ставить ее в очередь.
 
-Calling `setTimeout(() => {}, 0)` will execute the function in the next tick, much later than when using `nextTick()`.
+Вызов `setTimeout(() => {}, 0)` выполнит функцию в следующем тике, гораздо позже, чем при использовании `nextTick()`.
 
-Use `nextTick()` when you want to make sure that in the next event loop iteration that code is already executed.
+Используйте `nextTick()`, когда хотите быть уверены, что на следующей итерации цикла событий код уже будет выполнен.
 
-### Understanding setImmediate() {#understanding-setimmediate-}
+### Понимание setImmediate() {#understanding-setimmediate-}
 
-When you want to execute some piece of code asynchronously, but as soon as possible, one option is to use the `setImmediate()` function provided by Node.js:
+Когда вы хотите выполнить некоторый фрагмент кода асинхронно, но как можно скорее, один из вариантов - использовать функцию `setImmediate()`, предоставляемую Node.js:
 
 ```language-js
 setImmediate(() => {
@@ -2376,23 +2376,23 @@ setImmediate(() => {
 })
 ```
 
-Any function passed as the `setImmediate()` argument is a callback that's executed in the next iteration of the event loop.
+Любая функция, переданная в качестве аргумента `setImmediate()`, является обратным вызовом, который выполняется в следующей итерации цикла событий.
 
-How is `setImmediate()` different from `setTimeout(() => {}, 0)` (passing a 0ms timeout), and from `process.nextTick()`?
+Чем `setImmediate()` отличается от `setTimeout(() => {}, 0)` (передача таймаута 0 мс) и от `process.nextTick()`?
 
-A function passed to `process.nextTick()` is going to be executed on the current iteration of the event loop, after the current operation ends. This means it will always execute before `setTimeout()` and `setImmediate()`.
+Функция, переданная в `process.nextTick()`, будет выполнена на текущей итерации цикла событий, после завершения текущей операции. Это означает, что она всегда будет выполняться перед `setTimeout()` и `setImmediate()`.
 
-A `setTimeout()` callback with a 0ms delay is very similar to `setImmediate()`. The execution order will depend on various factors, but they will be both run in the next iteration of the event loop.
+Обратный вызов `setTimeout()` с задержкой в 0 мс очень похож на `setImmediate()`. Порядок выполнения будет зависеть от различных факторов, но оба они будут выполняться в следующей итерации цикла событий.
 
-### Timers
+### Таймеры
 
-When writing JavaScript code, you might want to delay the execution of a function. Learn how to use `setTimeout()`and `setInterval()` to schedule functions in the future.
+При написании кода JavaScript может возникнуть необходимость отложить выполнение функции. Узнайте, как использовать `setTimeout()` и `setInterval()` для планирования функций на будущее.
 
 #### `setTimeout()` {#settimeout-}
 
-When writing JavaScript code, you might want to delay the execution of a function. This is the job of `setTimeout`.
+При написании кода JavaScript может возникнуть необходимость отложить выполнение функции. Этой задачей занимается `setTimeout`.
 
-You can specify a callback function to execute later, and a value expressing how much later you want it to run, in milliseconds:
+Вы можете указать функцию обратного вызова, которая будет выполнена позже, и значение, выражающее, через какое время она должна быть запущена, в миллисекундах:
 
 ```language-js
 setTimeout(() => {
@@ -2404,7 +2404,7 @@ setTimeout(() => {
 }, 50)
 ```
 
-This syntax defines a new function. You can call whatever other function you want in there, or you can pass an existing function name, and a set of parameters:
+Этот синтаксис определяет новую функцию. Вы можете вызвать в ней любую другую функцию, которую хотите, или передать имя существующей функции и набор параметров:
 
 ```language-js
 const myFunction = (firstParam, secondParam) => {
@@ -2415,7 +2415,7 @@ const myFunction = (firstParam, secondParam) => {
 setTimeout(myFunction, 2000, firstParam, secondParam)
 ```
 
-`setTimeout()` returns the timer id. This is generally not used, but you can store this id, and clear it if you want to delete this scheduled function execution:
+`setTimeout()` возвращает идентификатор таймера. Обычно он не используется, но вы можете хранить этот идентификатор и очищать его, если хотите удалить выполнение этой запланированной функции:
 
 ```language-js
 const id = setTimeout(() => {
@@ -2426,9 +2426,9 @@ const id = setTimeout(() => {
 clearTimeout(id)
 ```
 
-#### Zero delay
+#### Нулевая задержка
 
-If you specify the timeout delay to `0`, the callback function will be executed as soon as possible, but after the current function execution:
+Если вы зададите задержку тайм-аута равной `0`, функция обратного вызова будет выполнена как можно быстрее, но после выполнения текущей функции:
 
 ```language-js
 setTimeout(() => {
@@ -2438,15 +2438,15 @@ setTimeout(() => {
 console.log(' before ')
 ```
 
-will print `before after`.
+будет выводить `до после`.
 
-This is especially useful to avoid blocking the CPU on intensive tasks and let other functions be executed while performing a heavy calculation, by queuing functions in the scheduler.
+Это особенно полезно для того, чтобы избежать блокировки процессора при выполнении интенсивных задач и позволить другим функциям выполняться во время выполнения тяжелых вычислений, ставя функции в очередь в планировщике.
 
-Some browsers (IE and Edge) implement a `setImmediate()` method that does this same exact functionality, but it's not standard and [unavailable on other browsers](https://caniuse.com/#feat=setimmediate){rel="noopener"}. But it's a standard function in Node.js.
+Некоторые браузеры (IE и Edge) реализуют метод `setImmediate()`, который делает такую же точно функциональность, но он не является стандартным и [недоступен в других браузерах](https://caniuse.com/#feat=setimmediate){rel="noopener"}. Но это стандартная функция в Node.js.
 
 #### `setInterval()` {#setinterval-}
 
-`setInterval()` is a function similar to `setTimeout()` with a difference. Instead of running the callback function once, it will run it forever, at the specific time interval you specify (in milliseconds):
+`setInterval()` - это функция, похожая на `setTimeout()` с некоторым отличием. Вместо того чтобы запускать функцию обратного вызова один раз, она будет запускать ее вечно, через определенный интервал времени, который вы укажете (в миллисекундах):
 
 ```language-js
 setInterval(() => {
@@ -2454,7 +2454,7 @@ setInterval(() => {
 }, 2000)
 ```
 
-The function above runs every 2 seconds unless you tell it to stop, using `clearInterval`, passing it the interval id that `setInterval` returned:
+Приведенная выше функция выполняется каждые 2 секунды, пока вы не прикажете ей остановиться, используя `clearInterval`, передавая ей идентификатор интервала, который вернула `setInterval`:
 
 ```language-js
 const id = setInterval(() => {
@@ -2464,7 +2464,7 @@ const id = setInterval(() => {
 clearInterval(id)
 ```
 
-It's common to call `clearInterval` inside the `setInterval` callback function, to let it auto-determine if it should run again or stop. For example this code runs something unless `App.somethingIWait` has the value `arrived`:
+Обычно принято вызывать `clearInterval` внутри функции обратного вызова `setInterval`, чтобы позволить ей автоматически определять, следует ли ей запуститься снова или остановиться. Например, этот код запускает что-то, если `App.somethingIWait` имеет значение `arrived`:
 
 ```language-js
 const interval = setInterval(() => {
@@ -2476,11 +2476,11 @@ const interval = setInterval(() => {
 }, 100)
 ```
 
-#### Recursive setTimeout
+#### Рекурсивный setTimeout
 
-`setInterval` starts a function every `n` milliseconds, without any consideration about when a function finished its execution.
+`setInterval` запускает функцию каждые `n` миллисекунд, без какого-либо учета того, когда функция закончила свое выполнение.
 
-If a function takes always the same amount of time, it's all fine:
+Если функция выполняется всегда одинаковое количество времени, то все в порядке:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2489,7 +2489,7 @@ class="kg-image" loading="lazy" width="800" height="116"
 alt="eyf875I-cxYqAgNDSeh7CeLg4RXdJIgJphEw" />
 </figure>
 
-Maybe the function takes different execution times, depending on network conditions for example:
+Возможно, функция занимает разное время выполнения, например, в зависимости от условий сети:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2498,7 +2498,7 @@ class="kg-image" loading="lazy" width="800" height="114"
 alt="ge2DPdTuZwHnJIyUH9VSLok1J5WHPOlc1DML" />
 </figure>
 
-And maybe one long execution overlaps the next one:
+И, возможно, одна долгая казнь накладывается на следующую:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2507,7 +2507,7 @@ class="kg-image" loading="lazy" width="800" height="113"
 alt="I9kJc6l-BIT850OGlNDJre80RcsLp7N4amvy" />
 </figure>
 
-To avoid this, you can schedule a recursive setTimeout to be called when the callback function finishes:
+Чтобы избежать этого, вы можете запланировать рекурсивный setTimeout, который будет вызван по завершении функции обратного вызова:
 
 ```language-js
 const myFunction = () => {
@@ -2520,7 +2520,7 @@ setTimeout(
 }, 1000)
 ```
 
-to achieve this scenario:
+для реализации этого сценария:
 
 <figure class="kg-card kg-image-card">
 <img
@@ -2529,35 +2529,35 @@ class="kg-image" loading="lazy" width="800" height="114"
 alt="B2kod2dFuR5U1uwaaW9SGiC1zX5gIUEaiJ8A" />
 </figure>
 
-`setTimeout` and `setInterval` are also available in Node.js, through the [Timers module](https://nodejs.org/api/timers.html){rel="noopener"}.
+`setTimeout` и `setInterval` также доступны в Node.js, через модуль [Timers](https://nodejs.org/api/timers.html){rel="noopener"}.
 
-Node.js also provides `setImmediate()`, which is equivalent to using `setTimeout(() => {}, 0)`, mostly used to work with the Node.js Event Loop.
+Node.js также предоставляет `setImmediate()`, что эквивалентно использованию `setTimeout(() => {}, 0)`, в основном используется для работы с циклом событий Node.js.
 
-### Asynchronous Programming and Callbacks
+### Асинхронное программирование и обратные вызовы
 
-JavaScript is synchronous by default, and is single threaded. This means that code cannot create new threads and run in parallel.
+JavaScript по умолчанию является синхронным и однопоточным. Это означает, что код не может создавать новые потоки и работать параллельно.
 
-#### Asynchronicity in Programming Languages
+#### Асинхронность в языках программирования
 
-Computers are asynchronous by design.
+Компьютеры асинхронны по своей конструкции.
 
-Asynchronous means that things can happen independently of the main program flow.
+Асинхронность означает, что события могут происходить независимо от основного потока программы.
 
-In the current consumer computers, every program runs for a specific time slot, and then it stops its execution to let another program continue its execution. This thing runs in a cycle so fast that's impossible to notice, and we think our computers run many programs simultaneously, but this is an illusion (except on multiprocessor machines).
+В современных потребительских компьютерах каждая программа выполняется в течение определенного промежутка времени, а затем останавливает свое выполнение, чтобы дать возможность другой программе продолжить выполнение. Это происходит настолько быстро, что невозможно заметить, и мы думаем, что наши компьютеры выполняют много программ одновременно, но это иллюзия (за исключением многопроцессорных машин).
 
-Programs internally use **interrupts**, a signal that's emitted to the processor to gain the attention of the system.
+Программы внутри используют **прерывания**, сигнал, который подается процессору, чтобы привлечь внимание системы.
 
-I won't go into the internals of this, but just keep in mind that it's normal for programs to be asynchronous, and halt their execution until they need attention, and the computer can execute other things in the meantime. When a program is waiting for a response from the network, it cannot halt the processor until the request finishes.
+Я не буду вдаваться в подробности, но просто имейте в виду, что для программ нормально быть асинхронными и останавливать свое выполнение, пока им не понадобится внимание, а компьютер тем временем может выполнять другие действия. Когда программа ожидает ответа от сети, она не может остановить процессор, пока запрос не завершится.
 
-Normally, programming languages are synchronous, and some provide a way to manage asynchronicity, in the language or through libraries. C, Java, C#, PHP, Go, Ruby, Swift, Python, they are all synchronous by default. Some of them handle asynchronicity by using threads, spawning a new process.
+Как правило, языки программирования являются синхронными, а некоторые предоставляют возможность управлять асинхронностью, в самом языке или с помощью библиотек. C, Java, C#, PHP, Go, Ruby, Swift, Python - все они по умолчанию синхронны. Некоторые из них управляют асинхронностью с помощью потоков, порождая новый процесс.
 
 #### JavaScript
 
-JavaScript is **synchronous** by default and is single threaded. This means that code cannot create new threads and run in parallel.
+JavaScript является **синхронным** по умолчанию и однопоточным. Это означает, что код не может создавать новые потоки и выполняться параллельно.
 
-Lines of code are executed in series, one after another.
+Строки кода выполняются последовательно, одна за другой.
 
-For example:
+Например:
 
 ```language-js
 const a = 1
@@ -2567,17 +2567,17 @@ console.log(c)
 doSomething()
 ```
 
-But JavaScript was born inside the browser. Its main job, in the beginning, was to respond to user actions like `onClick`, `onMouseOver`, `onChange`, `onSubmit` and so on. How could it do this with a synchronous programming model?
+Но JavaScript родился внутри браузера. Вначале его основной задачей было реагировать на действия пользователя, такие как `onClick`, `onMouseOver`, `onChange`, `onSubmit` и так далее. Как он мог это делать при синхронной модели программирования?
 
-The answer was in its environment. The **browser** provides a way to do it by providing a set of APIs that can handle this kind of functionality.
+Ответ кроется в его окружении. Браузер\*\* предоставляет способ сделать это, предоставляя набор API, которые могут обрабатывать такого рода функциональность.
 
-More recently, Node.js introduced a non-blocking I/O environment to extend this concept to file access, network calls and so on.
+Совсем недавно Node.js представил неблокирующую среду ввода-вывода, чтобы распространить эту концепцию на доступ к файлам, сетевые вызовы и так далее.
 
-#### Callbacks
+#### Обратные вызовы
 
-You can't know when a user is going to click a button, so what you do is **define an event handler for the click event**.
+Вы не можете знать, когда пользователь собирается нажать на кнопку, поэтому вы делаете следующее: **определяете обработчик события для события click**.
 
-This event handler accepts a function, which will be called when the event is triggered:
+Этот обработчик события принимает функцию, которая будет вызываться при срабатывании события:
 
 ```language-js
 document.getElementById('button').addEventListener('click', () => {
@@ -2585,11 +2585,11 @@ document.getElementById('button').addEventListener('click', () => {
 })
 ```
 
-This is the so-called **callback**.
+Это так называемый **обратный вызов**.
 
-A callback is a simple function that's passed as a value to another function, and will only be executed when the event happens. We can do this because JavaScript has first-class functions, which can be assigned to variables and passed around to other functions (called **higher-order functions**)
+Обратный вызов - это простая функция, которая передается в качестве значения другой функции и будет выполнена только тогда, когда произойдет событие. Мы можем сделать это, потому что JavaScript имеет функции первого класса, которые можно присваивать переменным и передавать другим функциям (называемым **функциями высшего порядка**).
 
-It's common to wrap all your client code in a `load` event listener on the `window` object, which runs the callback function only when the page is ready:
+Обычно весь клиентский код оборачивается в слушатель события `load` на объекте `window`, который запускает функцию обратного вызова только тогда, когда страница готова:
 
 ```language-js
 window.addEventListener('load', () => {
@@ -2598,9 +2598,9 @@ window.addEventListener('load', () => {
 })
 ```
 
-Callbacks are used everywhere, not just in DOM events.
+Обратные вызовы используются повсеместно, а не только в событиях DOM.
 
-One common example is by using timers:
+Одним из распространенных примеров является использование таймеров:
 
 ```language-js
 setTimeout(() => {
@@ -2608,7 +2608,7 @@ setTimeout(() => {
 }, 2000)
 ```
 
-[XHR requests](https://en.wikipedia.org/wiki/XMLHttpRequest){rel="noopener"} also accept a callback, in this example by assigning a function to a property that will be called when a particular event occurs (in this case, the state of the request changes):
+[XHR-запросы](https://en.wikipedia.org/wiki/XMLHttpRequest){rel="noopener"} также принимают обратный вызов, в данном примере назначая свойству функцию, которая будет вызываться при наступлении определенного события (в данном случае изменения состояния запроса):
 
 ```language-js
 const xhr = new XMLHttpRequest()
@@ -2622,11 +2622,11 @@ xhr.open('GET', 'https://yoursite.com')
 xhr.send()
 ```
 
-#### Handling errors in callbacks
+#### Обработка ошибок в обратных вызовах
 
-How do you handle errors with callbacks? One very common strategy is to use what Node.js adopted: the first parameter in any callback function is the error object --- error-first callbacks.
+Как обрабатывать ошибки в обратных вызовах? Одной из очень распространенных стратегий является использование того, что принято в Node.js: первым параметром любой функции обратного вызова является объект ошибки --- обратные вызовы с ошибками.
 
-If there is no error, the object is `null`. If there is an error, it contains some description of the error and other information.
+Если ошибки нет, объект является `null`. Если ошибка есть, он содержит некоторое описание ошибки и другую информацию.
 
 ```language-js
 fs.readFile('/file.json', (err, data) => {
@@ -2641,11 +2641,11 @@ fs.readFile('/file.json', (err, data) => {
 })
 ```
 
-#### The problem with callbacks
+#### Проблема с обратными вызовами
 
-Callbacks are great for simple cases!
+Обратные вызовы отлично подходят для простых случаев!
 
-However, every callback adds a level of nesting. When you have lots of callbacks, the code starts to be complicated very quickly:
+Однако каждый обратный вызов добавляет уровень вложенности. Когда у вас много обратных вызовов, код начинает быстро усложняться:
 
 ```language-js
 window.addEventListener('load', () => {
@@ -2659,48 +2659,48 @@ window.addEventListener('load', () => {
 })
 ```
 
-This is just a simple 4-levels code, but I've seen much more levels of nesting and it's not fun.
+Это всего лишь простой 4-уровневый код, но я видел гораздо больше уровней вложенности, и это не весело.
 
-How do we solve this?
+Как нам решить эту проблему?
 
-#### Alternatives to callbacks
+#### Альтернативы обратным вызовам
 
-Starting with ES6, JavaScript introduced several features that help us with asynchronous code that do not involve using callbacks:
+Начиная с ES6, JavaScript представил несколько возможностей, которые помогают нам работать с асинхронным кодом, не используя обратные вызовы:
 
-- Promises (ES6)
+- Обещания (ES6)
 - Async/Await (ES8)
 
-### Promises
+### Обещания
 
-Promises are one way to deal with asynchronous code in JavaScript, without writing too many callbacks in your code.
+Обещания - это один из способов работы с асинхронным кодом в JavaScript без написания большого количества обратных вызовов в коде.
 
-#### Introduction to promises
+#### Введение в обещания
 
-A promise is commonly defined as **a proxy for a value that will eventually become available**.
+Обещание обычно определяется как **прокси для значения, которое со временем станет доступным**.
 
-Although being around for years, they have been standardized and introduced in ES2015, and now they have been superseded in ES2017 by async functions.
+Хотя обещания существуют уже много лет, они были стандартизированы и введены в ES2015, а в ES2017 их вытеснили асинхронные функции.
 
-**Async functions** use the promises API as their building block, so understanding them is fundamental even if in newer code you'll likely use async functions instead of promises.
+Функции **Async** используют API promises в качестве своего строительного блока, поэтому их понимание является фундаментальным, даже если в более новом коде вы, скорее всего, будете использовать функции async вместо promises.
 
-#### How promises work, in brief
+#### Как работают обещания, вкратце
 
-Once a promise has been called, it will start in **pending state**. This means that the caller function continues the execution, while it waits for the promise to do its own processing, and give the caller function some feedback.
+Как только обещание было вызвано, оно начинает выполняться в **состоянии ожидания**. Это означает, что вызывающая функция продолжает выполнение, ожидая, пока обещание выполнит свою собственную обработку и даст вызывающей функции обратную связь.
 
-At this point, the caller function waits for it to either return the promise in a **resolved state**, or in a **rejected state**, but as you know JavaScript is asynchronous --- so the function continues its execution while the promise does it work.
+В этот момент вызывающая функция ожидает, что обещание вернется либо в **решенном состоянии**, либо в **отклоненном состоянии**, но, как вы знаете, JavaScript асинхронен - поэтому функция продолжает выполнение, пока обещание делает свою работу.
 
-#### Which JS API use promises?
+#### Какие JS API используют обещания?
 
-In addition to your own code and libraries code, promises are used by standard modern Web APIs such as:
+Помимо вашего собственного кода и кода библиотек, обещания используются стандартными современными Web API, такими как:
 
-- **_the Battery API_**
-- the [Fetch API](https://flaviocopes.com/fetch-api/){rel="noopener"}
-- [Service Workers](https://flaviocopes.com/service-workers/){rel="noopener"}
+- **_t the Battery API_**
+- [Fetch API](https://flaviocopes.com/fetch-api/){rel="noopener"}
+- [Service Workers](https://flaviocopes.com/service-workers/){rel="noopener"}.
 
-It's unlikely that in modern JavaScript you'll find yourself **not** using promises, so let's start diving right into them.
+Маловероятно, что в современном JavaScript вы найдете себя **не** использующим обещания, поэтому давайте начнем погружаться в них.
 
-#### Creating a promise
+#### Создание обещания
 
-The Promise API exposes a Promise constructor, which you initialize using `new Promise()`:
+Promise API предоставляет конструктор Promise, который вы инициализируете с помощью `new Promise()`:
 
 ```language-js
 let done = true
@@ -2716,15 +2716,15 @@ const isItDoneYet = new Promise((resolve, reject) => {
 })
 ```
 
-As you can see the promise checks the `done` global constant, and if that's true, we return a resolved promise, otherwise a rejected promise.
+Как вы видите, обещание проверяет глобальную константу `done`, и если она верна, мы возвращаем разрешенное обещание, в противном случае - отклоненное обещание.
 
-Using `resolve` and `reject` we can communicate back a value, in the above case we just return a string, but it could be an object as well.
+Используя `resolve` и `reject`, мы можем передать обратно значение, в приведенном выше случае мы просто возвращаем строку, но это может быть и объект.
 
-#### Consuming a promise
+#### Потребление обещания
 
-In the last section, we introduced how a promise is created.
+В предыдущем разделе мы представили, как создается обещание.
 
-Now let's see how the promise can be **consumed** or used:
+Теперь давайте посмотрим, как обещание может быть **получено** или использовано:
 
 ```language-js
 const isItDoneYet = new Promise()
@@ -2741,17 +2741,17 @@ const checkIfItsDone = () => {
 }
 ```
 
-Running `checkIfItsDone()` will execute the `isItDoneYet()` promise and will wait for it to resolve, using the `then` callback, and if there is an error, it will handle it in the `catch` callback.
+Выполнение `checkIfItsDone()` выполнит обещание `isItDoneYet()` и будет ждать его разрешения, используя обратный вызов `then`, а если возникнет ошибка, то она будет обработана в обратном вызове `catch`.
 
-#### Chaining promises
+#### Цепочка обещаний
 
-A promise can be returned to another promise, creating a chain of promises.
+Обещание может быть возвращено в другое обещание, создавая цепочку обещаний.
 
-A great example of chaining promises is given by the [Fetch API](https://flaviocopes.com/fetch-api){rel="noopener"}, a layer on top of the `XMLHttpRequest` API, which we can use to get a resource and queue a chain of promises to execute when the resource is fetched.
+Отличным примером цепочки обещаний является [Fetch API](https://flaviocopes.com/fetch-api){rel="noopener"}, слой поверх API `XMLHttpRequest`, который мы можем использовать для получения ресурса и составления очереди цепочки обещаний для выполнения при получении ресурса.
 
-The Fetch API is a promise-based mechanism, and calling `fetch()` is equivalent to defining our own promise using `new Promise()`.
+Fetch API - это механизм, основанный на обещаниях, и вызов `fetch()` эквивалентен определению нашего собственного обещания с помощью `new Promise()`.
 
-#### Example of chaining promises
+#### Пример цепочки обещаний
 
 ```language-js
 const status = (response) => {
@@ -2774,22 +2774,22 @@ fetch('/todos.json')
   })
 ```
 
-In this example, we call `fetch()` to get a list of TODO items from the `todos.json` file found in the domain root, and we create a chain of promises.
+В этом примере мы вызываем `fetch()` для получения списка элементов TODO из файла `todos.json`, находящегося в корне домена, и создаем цепочку обещаний.
 
-Running `fetch()` returns a [response](https://fetch.spec.whatwg.org/#concept-response){rel="noopener"}, which has many properties, and within those we reference:
+Выполнение `fetch()` возвращает [response](https://fetch.spec.whatwg.org/#concept-response){rel="noopener"}, который имеет множество свойств, и в них мы ссылаемся на:
 
-- `status`, a numeric value representing the HTTP status code
-- `statusText`, a status message, which is `OK` if the request succeeded
+- `status`, числовое значение, представляющее код статуса HTTP
+- `statusText`, сообщение о статусе, которое равно `OK`, если запрос прошел успешно.
 
-`response` also has a `json()` method, which returns a promise that will resolve with the content of the body processed and transformed into JSON.
+`response` также имеет метод `json()`, который возвращает обещание, которое будет разрешено с содержимым тела, обработанным и преобразованным в JSON.
 
-So given those premises, this is what happens: the first promise in the chain is a function that we defined, called `status()`, that checks the response status and if it's not a success response (between 200 and 299), it rejects the promise.
+Итак, учитывая эти предпосылки, вот что происходит: первое обещание в цепочке - это определенная нами функция `status()`, которая проверяет статус ответа и, если это не успешный ответ (между 200 и 299), она отклоняет обещание.
 
-This operation will cause the promise chain to skip all the chained promises listed and will skip directly to the `catch()` statement at the bottom, logging the `Request failed` text along with the error message.
+Эта операция приведет к тому, что цепочка обещаний пропустит все перечисленные обещания и перейдет непосредственно к оператору `catch()` внизу, записывая в журнал текст `Request failed` вместе с сообщением об ошибке.
 
-If that succeeds instead, it calls the `json()` function we defined. Since the previous promise, when successful, returned the `response` object, we get it as an input to the second promise.
+В случае успеха вместо этого вызывается определенная нами функция `json()`. Поскольку предыдущее обещание в случае успеха возвращало объект `response`, мы получаем его в качестве входных данных для второго обещания.
 
-In this case, we return the data JSON processed, so the third promise receives the JSON directly:
+В данном случае мы возвращаем обработанные данные JSON, поэтому третье обещание получает JSON напрямую:
 
 ```language-js
 .then((data) => {
@@ -2797,13 +2797,13 @@ In this case, we return the data JSON processed, so the third promise receives t
 })
 ```
 
-and we simply log it to the console.
+и мы просто выводим его в консоль.
 
-#### Handling errors
+#### Обработка ошибок
 
-In the example, in the previous section, we had a `catch` that was appended to the chain of promises.
+В примере, приведенном в предыдущем разделе, у нас был `catch`, который добавлялся к цепочке обещаний.
 
-When anything in the chain of promises fails and raises an error or rejects the promise, the control goes to the nearest `catch()` statement down the chain.
+Когда что-то в цепочке обещаний не срабатывает и вызывает ошибку или отклоняет обещание, управление переходит к ближайшему по цепочке оператору `catch()`.
 
 ```language-js
 new Promise((resolve, reject) => {
@@ -2821,9 +2821,9 @@ new Promise((resolve, reject) => {
 })
 ```
 
-#### Cascading errors
+#### Каскадирование ошибок
 
-If inside the `catch()` you raise an error, you can append a second `catch()` to handle it, and so on.
+Если внутри `catch()` возникает ошибка, вы можете добавить второй `catch()` для ее обработки, и так далее.
 
 ```language-js
 new Promise((resolve, reject) => {
@@ -2837,13 +2837,13 @@ new Promise((resolve, reject) => {
   })
 ```
 
-### Orchestrating promises
+### Оркестрирование обещаний
 
 #### `Promise.all()` {#promise-all-}
 
-If you need to synchronize different promises, `Promise.all()` helps you define a list of promises, and execute something when they are all resolved.
+Если вам нужно синхронизировать различные обещания, `Promise.all()` поможет вам определить список обещаний и выполнить что-то, когда все они будут разрешены.
 
-Example:
+Пример:
 
 ```language-js
 const f1 = fetch('/something.json')
@@ -2858,7 +2858,7 @@ Promise.all([f1, f2])
   })
 ```
 
-The [ES2015 destructuring assignment](https://flaviocopes.com/ecmascript/#destructuring-assignments){rel="noopener"} syntax allows you to also do:
+Синтаксис [ES2015 destructuring assignment](https://flaviocopes.com/ecmascript/#destructuring-assignments){rel="noopener"} позволяет также делать:
 
 ```language-js
 Promise.all([f1, f2]).then(([res1, res2]) => {
@@ -2866,13 +2866,13 @@ Promise.all([f1, f2]).then(([res1, res2]) => {
 })
 ```
 
-You are not limited to using `fetch` of course, **any promise is good to go**.
+Конечно, вы не ограничены использованием `fetch`, **любое обещание подходит**.
 
 #### `Promise.race()` {#promise-race-}
 
-`Promise.race()` runs when the first of the promises you pass to it resolves, and it runs the attached callback just once, with the result of the first promise resolved.
+`Promise.race()` запускается, когда разрешается первое из переданных вам обещаний, и выполняет присоединенный обратный вызов только один раз, с результатом первого разрешенного обещания.
 
-Example:
+Пример:
 
 ```language-js
 const promiseOne = new Promise((resolve, reject) => {
@@ -2888,33 +2888,33 @@ Promise.race([promiseOne, promiseTwo]).then((result) => {
 })
 ```
 
-#### Common error, Uncaught TypeError: undefined is not a promise
+#### Общая ошибка, Uncaught TypeError: undefined is not a promise
 
-If you get the `Uncaught TypeError: undefined is not a promise` error in the console, make sure you use `new Promise()` instead of just `Promise()`.
+Если вы получаете в консоли ошибку `Uncaught TypeError: undefined is not a promise`, убедитесь, что вы используете `new Promise()`, а не просто `Promise()`.
 
-### Async and Await
+### Асинхронность и ожидание
 
-Discover the modern approach to asynchronous functions in JavaScript.
+Откройте для себя современный подход к асинхронным функциям в JavaScript.
 
-JavaScript evolved in a very short time from callbacks to promises (ES2015), and since ES2017 asynchronous JavaScript is even simpler with the async/await syntax.
+JavaScript за очень короткое время эволюционировал от обратных вызовов к обещаниям (ES2015), а с ES2017 асинхронный JavaScript стал еще проще благодаря синтаксису async/await.
 
-Async functions are a combination of promises and generators, and basically, they are a higher level abstraction over promises. Let me repeat: `async/await` is built on promises.
+Асинхронные функции - это комбинация обещаний и генераторов, и, по сути, они являются абстракцией более высокого уровня над обещаниями. Позвольте мне повторить: `async/await` построены на обещаниях.
 
-#### Why were async/await introduced? {#why-were-async-await-introduced}
+#### Почему были введены async/await? {#why-were-async-await-introduced}
 
-They reduce the boilerplate around promises, and the "don't break the chain" limitation of chaining promises.
+Они уменьшают кодовую таблицу вокруг обещаний и ограничение "не разрывать цепочку" при построении цепочек обещаний.
 
-When Promises were introduced in ES2015, they were meant to solve a problem with asynchronous code, and they did, but over the 2 years that separated ES2015 and ES2017, it was clear that promises could not be the final solution.
+Когда обещания были введены в ES2015, они должны были решить проблему с асинхронным кодом, и они ее решили, но за 2 года, которые разделяли ES2015 и ES2017, стало ясно, что обещания не могут быть окончательным решением.
 
-Promises were introduced to solve the famous callback hell problem, but they introduced complexity on their own, and syntax complexity.
+Обещания были введены для решения знаменитой проблемы "ада обратных вызовов", но они сами по себе привносили сложность, причем синтаксическую сложность.
 
-They were good primitives around which a better syntax could be exposed to the developers, so when the time was right we got **async functions**.
+Они были хорошими примитивами, вокруг которых можно было бы предложить разработчикам лучший синтаксис, поэтому, когда пришло время, мы получили **async-функции**.
 
-They make the code look like it's synchronous, but it's asynchronous and non-blocking behind the scenes.
+Благодаря им код выглядит как синхронный, но за кулисами он асинхронный и неблокирующий.
 
-#### How it works
+#### Как это работает
 
-An `async` function returns a promise, like in this example:
+Функция `async` возвращает обещание, как в этом примере:
 
 ```language-js
 const doSomethingAsync = () => {
@@ -2924,9 +2924,9 @@ const doSomethingAsync = () => {
 }
 ```
 
-When you want to call this function you prepend `await`, and the calling code will stop **until the promise is resolved or rejected**. One caveat: the client function must be defined as `async`.
+Когда вы хотите вызвать эту функцию, вы добавляете `await`, и вызывающий код будет остановлен **пока обещание не будет разрешено или отклонено**. Одна оговорка: клиентская функция должна быть определена как `async`.
 
-Here's an example:
+Вот пример:
 
 ```language-js
 const doSomething = async () => {
@@ -2934,9 +2934,9 @@ const doSomething = async () => {
 }
 ```
 
-#### A quick example
+#### Быстрый пример
 
-This is a simple example of `async/await` used to run a function asynchronously:
+Это простой пример использования `async/await` для асинхронного запуска функции:
 
 ```language-js
 const doSomethingAsync = () => {
@@ -2954,19 +2954,19 @@ doSomething()
 console.log('After')
 ```
 
-The above code will print the following to the browser console:
+Приведенный выше код выведет в консоль браузера следующее:
 
     Before
     After
     I did something // after 3s
 
-#### Promise all the things
+#### Обещайте все вещи
 
-Prepending the `async` keyword to any function means that the function will return a promise.
+Добавление ключевого слова `async` к любой функции означает, что функция будет возвращать обещание.
 
-Even if it's not doing so explicitly, it will internally make it return a promise.
+Даже если она не делает этого явно, внутренне это заставит ее вернуть обещание.
 
-This is why this code is valid:
+Вот почему этот код действителен:
 
     const aFunction = async () => {
       return 'test'
@@ -2974,7 +2974,7 @@ This is why this code is valid:
 
     aFunction().then(alert) // This will alert 'test'
 
-and it's the same as:
+и это то же самое, что:
 
 ```language-js
 const aFunction = async () => {
@@ -2984,27 +2984,27 @@ const aFunction = async () => {
 aFunction().then(alert) // This will alert 'test'
 ```
 
-#### The code is much simpler to read
+#### Код гораздо проще читать.
 
-As you can see in the example above, our code looks very simple. Compare it to code using plain promises, with chaining and callback functions.
+Как видно из примера выше, наш код выглядит очень просто. Сравните его с кодом, использующим обычные обещания, с цепочками и функциями обратного вызова.
 
-And this is a very simple example, the major benefits will arise when the code is much more complex.
+И это очень простой пример, основные преимущества появятся, когда код будет намного сложнее.
 
-For example, here's how you would get a JSON resource and parse it, using promises:
+Например, вот как можно получить ресурс JSON и разобрать его, используя обещания:
 
-```language-js
+```js
 const getFirstUserData = () => {
   return fetch('/users.json') // get users list
     .then((response) => response.json()) // parse JSON
     .then((users) => users[0]) // pick first user
     .then((user) => fetch(`/users/${user.name}`)) // get user data
-    .then((userResponse) => userResponse.json()) // parse JSON
-}
+    .then((userResponse) => userResponse.json()); // parse JSON
+};
 
-getFirstUserData()
+getFirstUserData();
 ```
 
-And here is the same functionality provided using `await/async`:
+А вот та же функциональность, предоставляемая с помощью `await/async`:
 
 ```language-js
 const getFirstUserData = async () => {
@@ -3019,9 +3019,9 @@ const getFirstUserData = async () => {
 getFirstUserData()
 ```
 
-#### Multiple async functions in series
+#### Несколько последовательных асинхронных функций
 
-`async` functions can be chained very easily, and the syntax is much more readable than with plain promises:
+Функции `async` можно очень легко объединять в цепочки, а синтаксис гораздо более читабелен, чем у простых обещаний:
 
 ```language-js
 const promiseToDoSomething = () => {
@@ -3045,39 +3045,39 @@ watchOverSomeoneWatchingSomeoneDoingSomething().then(res => {
 })
 ```
 
-Will print:
+Будет печататься:
 
     I did something and I watched and I watched as well
 
-#### Easier debugging
+#### Более простая отладка
 
-Debugging promises is hard because the debugger will not step over asynchronous code.
+Отлаживать обещания сложно, потому что отладчик не будет переступать через асинхронный код.
 
-`async/await` makes this very easy because to the compiler it's just like synchronous code.
+`async/await` делает это очень легко, потому что для компилятора это просто как синхронный код.
 
-### The Node.js Event Emitter {#the-node-js-event-emitter}
+### Эмиттер событий Node.js {#the-node-js-event-emitter}
 
-You can work with custom events in Node.js.
+В Node.js можно работать с пользовательскими событиями.
 
-If you worked with JavaScript in the browser, you know how much of the interaction of the user is handled through events: mouse clicks, keyboard button presses, reacting to mouse movements, and so on.
+Если вы работали с JavaScript в браузере, вы знаете, что большая часть взаимодействия с пользователем обрабатывается через события: щелчки мыши, нажатия кнопок клавиатуры, реакция на движение мыши и так далее.
 
-On the back-end side, Node.js offers us the option to build a similar system using the `events` [module](https://nodejs.org/api/events.html){rel="noopener"}.
+С обратной стороны Node.js предлагает нам возможность построить подобную систему, используя `events` [модуль](https://nodejs.org/api/events.html){rel="noopener"}.
 
-This module, in particular, offers the `EventEmitter` class, which we'll use to handle our events.
+Этот модуль, в частности, предлагает класс `EventEmitter`, который мы будем использовать для обработки наших событий.
 
-You initialize that using:
+Вы инициализируете его, используя:
 
 ```language-js
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 ```
 
-This object exposes, among many others, the `on` and `emit` methods.
+Этот объект раскрывает, среди многих других, методы `on` и `emit`.
 
-- `emit` is used to trigger an event
-- `on` is used to add a callback function that's going to be executed when the event is triggered
+- `emit` используется для запуска события
+- `on` используется для добавления функции обратного вызова, которая будет выполняться при срабатывании события.
 
-For example, let's create a `start` event, and as a matter of providing a sample, we react to that by just logging to the console:
+Например, давайте создадим событие `start`, и в качестве примера мы отреагируем на него, просто выведя журнал в консоль:
 
 ```language-js
 eventEmitter.on('start', () => {
@@ -3085,19 +3085,19 @@ eventEmitter.on('start', () => {
 })
 ```
 
-When we run:
+Когда мы запустим:
 
 ```language-js
 eventEmitter.emit('start')
 ```
 
-The event handler function is triggered, and we get the console log.
+Функция обработчика события срабатывает, и мы получаем консольный журнал.
 
-**Note:** `addListener()` is an alias for `on()` , in case you see that used.
+**Примечание:** `addListener()` - это псевдоним для `on()`, если вы видите, что он используется.
 
-#### Passing arguments to the event
+#### Передача аргументов событию
 
-You can pass arguments to the event handler by passing them as additional arguments to `emit()`:
+Вы можете передать аргументы обработчику события, передав их в качестве дополнительных аргументов в `emit()`:
 
 ```language-js
 eventEmitter.on('start', (number) => {
@@ -3107,7 +3107,7 @@ eventEmitter.on('start', (number) => {
 eventEmitter.emit('start', 23)
 ```
 
-Multiple arguments:
+Несколько аргументов:
 
 ```language-js
 eventEmitter.on('start', (start, end) => {
@@ -3117,151 +3117,151 @@ eventEmitter.on('start', (start, end) => {
 eventEmitter.emit('start', 1, 100)
 ```
 
-The EventEmitter object also exposes several other methods to interact with events, like:
+Объект EventEmitter также предоставляет несколько других методов для взаимодействия с событиями, например:
 
-- `once()`: add a one-time listener
-- `removeListener()` / `off()`: remove an event listener from an event
-- `removeAllListeners()`: remove all listeners for an event
+- `once()`: добавление одноразового слушателя события
+- `removeListener()` / `off()`: удалить слушателя из события
+- `removeAllListeners()`: удаление всех слушателей для события
 
-### How HTTP requests work
+### Как работают HTTP-запросы
 
-What happens when you type an URL in the browser, from start to finish?
+Что происходит, когда вы набираете URL в браузере, от начала и до конца?
 
-This section describes how browsers perform page requests using the HTTP/1.1 protocol.
+В этом разделе описывается, как браузеры выполняют запросы страниц по протоколу HTTP/1.1.
 
-If you ever did an interview, you might have been asked: "What happens when you type something into the Google search box and press enter?".
+Если вы когда-нибудь проходили собеседование, вас могли спросить: "Что происходит, когда вы набираете что-то в поисковой строке Google и нажимаете клавишу Enter?".
 
-It's one of the most popular questions you get asked. People just want to see if you can explain some rather basic concepts and if you have any clue how the internet actually works.
+Это один из самых популярных вопросов, которые вам задают. Люди просто хотят узнать, можете ли вы объяснить некоторые базовые понятия и имеете ли вы хоть какое-то представление о том, как на самом деле работает интернет.
 
-In this section, I'll analyze what happens when you type an URL in the address bar of your browser and press enter.
+В этом разделе я проанализирую, что происходит, когда вы вводите URL-адрес в адресную строку браузера и нажимаете клавишу Enter.
 
-It's a very interesting topic to dissect in this handbook, as it touches many technologies I can dive into in separate articles.
+Это очень интересная тема для рассмотрения в данном руководстве, поскольку она затрагивает множество технологий, в которые я могу погрузиться в отдельных статьях.
 
-This is tech that is very rarely changed, and powers one the most complex and wide ecosystems ever built by humans.
+Это технологии, которые очень редко меняются, и они обеспечивают работу одной из самых сложных и широких экосистем, когда-либо созданных человеком.
 
-### The HTTP protocol
+### Протокол HTTP
 
-I analyze URL requests only.
+Я анализирую только URL-запросы.
 
-Modern browsers have the capability of knowing if the thing you wrote in the address bar is an actual URL or a search term, and they will use the default search engine if it's not a valid URL.
+Современные браузеры имеют возможность определить, является ли то, что вы написали в адресной строке, реальным URL или поисковым запросом, и они будут использовать поисковую систему по умолчанию, если это не действительный URL.
 
-I assume you type an actual URL.
+Я предполагаю, что вы вводите фактический URL.
 
-When you enter the URL and press enter, the browser first builds the full URL.
+Когда вы вводите URL и нажимаете enter, браузер сначала строит полный URL.
 
-If you just entered a domain, like `flaviocopes.com`, the browser by default will prepend `HTTP://` to it, defaulting to the HTTP protocol.
+Если вы просто ввели домен, например `flaviocopes.com`, браузер по умолчанию добавит к нему `HTTP://`, по умолчанию используя протокол HTTP.
 
-#### Things relate to macOS / Linux
+#### Вещи относятся к macOS / Linux.
 
-Just FYI. Windows might do some things slightly differently.
+К вашему сведению. Windows может делать некоторые вещи немного по-другому.
 
-#### DNS Lookup phase
+#### Фаза поиска DNS
 
-The browser starts the DNS lookup to get the server IP address.
+Браузер начинает DNS-поиск, чтобы получить IP-адрес сервера.
 
-The domain name is a handy shortcut for us humans, but the internet is organized in such a way that computers can look up the exact location of a server through its IP address, which is a set of numbers like `222.324.3.1` (IPv4).
+Доменное имя - это удобное сокращение для нас, людей, но интернет устроен таким образом, что компьютеры могут узнать точное местоположение сервера по его IP-адресу, который представляет собой набор цифр типа `222.324.3.1` (IPv4).
 
-First, it checks the DNS local cache, to see if the domain has already been resolved recently.
+Сначала проверяется локальный кэш DNS, чтобы узнать, не был ли домен недавно разрешен.
 
-**_Chrome has a handy DNS cache visualizer you can see at this URL: chrome://net-internals/#dns (copy and paste it in the Chrome browser address bar)_**
+**_Chrome имеет удобный визуализатор кэша DNS, который можно посмотреть по этому URL: chrome://net-internals/#dns (скопируйте и вставьте его в адресную строку браузера Chrome)_**.
 
-If nothing is found there, the browser uses the DNS resolver, using the `gethostbyname` POSIX system call to retrieve the host information.
+Если там ничего не найдено, браузер использует DNS-резольвер, используя системный вызов POSIX `gethostbyname` для получения информации о хосте.
 
 #### gethostbyname
 
-`gethostbyname` first looks in the local hosts file, which on macOS or Linux is located in `/etc/hosts`, to see if the system provides the information locally.
+`gethostbyname` сначала ищет информацию в локальном файле hosts, который в macOS или Linux находится в `/etc/hosts`, чтобы проверить, предоставляет ли система информацию локально.
 
-If this does not give any information about the domain, the system makes a request to the DNS server.
+Если это не дает никакой информации о домене, система делает запрос на DNS-сервер.
 
-The address of the DNS server is stored in the system preferences.
+Адрес DNS-сервера хранится в настройках системы.
 
-Those are 2 popular DNS servers:
+Вот 2 популярных DNS-сервера:
 
-- `8.8.8.8`: the Google public DNS server
-- `1.1.1.1`: the CloudFlare DNS server
+- `8.8.8.8`: публичный DNS-сервер Google
+- `1.1.1.1.1`: DNS-сервер CloudFlare.
 
-Most people use the DNS server provided by their internet provider.
+Большинство людей используют DNS-сервер, предоставляемый их интернет-провайдером.
 
-The browser performs the DNS request using the UDP protocol.
+Браузер выполняет DNS-запрос, используя протокол UDP.
 
-TCP and UDP are two of the foundational protocols of computer networking. They sit at the same conceptual level, but TCP is connection-oriented, while UDP is a connectionless protocol, more lightweight, used to send messages with little overhead.
+TCP и UDP - два основополагающих протокола компьютерных сетей. Они находятся на одном концептуальном уровне, но TCP ориентирован на соединение, а UDP - это протокол без соединения, более легкий, используемый для передачи сообщений с небольшими накладными расходами.
 
-How the UDP request is performed is not in the scope of this handbook.
+То, как выполняется запрос UDP, не входит в задачи данного руководства.
 
-The DNS server might have the domain IP in the cache. It not, it will ask the **root DNS server**. That's a system (composed of 13 actual servers, distributed across the planet) that drives the entire internet.
+DNS-сервер может иметь IP-адрес домена в кэше. Если нет, он обратится к **корневому DNS-серверу**. Это система (состоящая из 13 реальных серверов, распределенных по всей планете), которая управляет всем интернетом.
 
-The DNS server does **not** know the address of each and every domain name on the planet.
+DNS-сервер **не** знает адреса всех и каждого доменного имени на планете.
 
-What it knows is where the **top-level DNS resolvers** are.
+Он знает, где находятся **верхнеуровневые DNS-резолверы**.
 
-A top-level domain is the domain extension: `.com`, `.it`, `.pizza` and so on.
+Домен верхнего уровня - это расширение домена: `.com`, `.it`, `.pizza` и так далее.
 
-Once the root DNS server receives the request, it forwards the request to that top-level domain (TLD) DNS server.
+Как только корневой DNS-сервер получает запрос, он перенаправляет его на DNS-сервер домена верхнего уровня (TLD).
 
-Say you are looking for `flaviocopes.com`. The root domain DNS server returns the IP of the .com TLD server.
+Допустим, вы ищете `flaviocopes.com`. DNS-сервер корневого домена возвращает IP-адрес сервера TLD .com.
 
-Now our DNS resolver will cache the IP of that TLD server, so it does not have to ask the root DNS server again for it.
+Теперь наш DNS-резольвер будет кэшировать IP-адрес этого сервера TLD, поэтому ему не придется снова запрашивать его у корневого DNS-сервера.
 
-The TLD DNS server will have the IP addresses of the authoritative Name Servers for the domain we are looking for.
+DNS-сервер ДВУ будет иметь IP-адреса авторитетных серверов имен для домена, который мы ищем.
 
-How? When you buy a domain, the domain registrar sends the appropriate TDL the name servers. When you update the name servers (for example, when you change the hosting provider), this information will be automatically updated by your domain registrar.
+Каким образом? Когда вы покупаете домен, регистратор домена отправляет соответствующий TDL серверам имен. Когда вы обновляете серверы имен (например, при смене хостинг-провайдера), эта информация автоматически обновляется регистратором домена.
 
-Those are the DNS servers of the hosting provider. They are usually more than 1, to serve as backup.
+Это DNS-серверы хостинг-провайдера. Их обычно больше одного, чтобы служить в качестве резервных.
 
-For example:
+Например:
 
 - `ns1.dreamhost.com`
 - `ns2.dreamhost.com`
 - `ns3.dreamhost.com`
 
-The DNS resolver starts with the first, and tries to ask the IP of the domain (with the subdomain, too) you are looking for.
+DNS-резольвер начинает с первого и пытается узнать IP-адрес домена (с поддоменом тоже), который вы ищете.
 
-That is the ultimate source of truth for the IP address.
+Это окончательный источник истины для IP-адреса.
 
-Now that we have the IP address, we can go on in our journey.
+Теперь, когда у нас есть IP-адрес, мы можем продолжить наше путешествие.
 
 #### TCP request handshaking
 
-With the server IP address available, now the browser can initiate a TCP connection to that.
+Имея IP-адрес сервера, браузер может инициировать TCP-соединение с ним.
 
-A TCP connection requires a bit of handshaking before it can be fully initialized and you can start sending data.
+TCP-соединение требует некоторого квитирования, прежде чем оно будет полностью инициализировано и вы сможете начать отправку данных.
 
-Once the connection is established, we can send the request
+Как только соединение установлено, мы можем отправить запрос
 
-#### Sending the request
+#### Отправка запроса
 
-The request is a plain text document structured in a precise way determined by the communication protocol.
+Запрос представляет собой обычный текстовый документ, структурированный определенным образом, определяемым протоколом связи.
 
-It's composed of 3 parts:
+Он состоит из 3 частей:
 
-- the request line
-- the request header
-- the request body
+- строка запроса
+- заголовок запроса
+- тело запроса
 
-#### The request line
+#### Строка запроса
 
-The request line sets, on a single line:
+Строка запроса содержит, в одной строке:
 
-- the HTTP method
-- the resource location
-- the protocol version
+- метод HTTP
+- местоположение ресурса
+- версия протокола
 
-Example:
+Пример:
 
     GET / HTTP/1.1
 
-#### The request header
+#### Заголовок запроса
 
-The request header is a set of `field: value` pairs that set certain values.
+Заголовок запроса представляет собой набор пар `поле: значение`, которые задают определенные значения.
 
-There are 2 mandatory fields, one of which is `Host`, and the other is `Connection`, while all the other fields are optional:
+Есть 2 обязательных поля, одно из которых `Host`, а другое `Connection`, в то время как все остальные поля являются необязательными:
 
     Host: flaviocopes.com
     Connection: close
 
-`Host` indicates the domain name which we want to target, while `Connection` is always set to `close` unless the connection must be kept open.
+`Host` указывает доменное имя, на которое мы хотим нацелиться, а `Connection` всегда устанавливается на `close`, если только соединение не должно оставаться открытым.
 
-Some of the most used header fields are:
+Некоторые из наиболее используемых полей заголовка следующие:
 
 - `Origin`
 - `Accept`
@@ -3270,25 +3270,25 @@ Some of the most used header fields are:
 - `Cache-Control`
 - `Dnt`
 
-but many more exist.
+но существует и множество других.
 
-The header part is terminated by a blank line.
+Заголовочная часть завершается пустой строкой.
 
-#### The request body
+#### Тело запроса
 
-The request body is optional, not used in GET requests but very much used in POST requests and sometimes in other verbs too, and it can contain data in JSON format.
+Тело запроса необязательно, оно не используется в GET-запросах, но очень часто используется в POST-запросах и иногда в других глаголах, и может содержать данные в формате JSON.
 
-Since we're now analyzing a GET request, the body is blank and we'll not look more into it.
+Поскольку мы сейчас анализируем GET-запрос, тело запроса пустое, и мы не будем рассматривать его подробнее.
 
-#### The response
+#### Ответ
 
-Once the request is sent, the server processes it and sends back a response.
+После отправки запроса сервер обрабатывает его и отправляет ответ.
 
-The response starts with the status code and the status message. If the request is successful and returns a 200, it will start with:
+Ответ начинается с кода статуса и сообщения о статусе. Если запрос успешен и возвращает значение 200, то ответ начинается с:
 
     200 OK
 
-The request might return a different status code and message, like one of these:
+Запрос может вернуть другой код состояния и сообщение, например, одно из следующих:
 
     404 Not Found
     403 Forbidden
@@ -3297,23 +3297,23 @@ The request might return a different status code and message, like one of these:
     304 Not Modified
     401 Unauthorized
 
-The response then contains a list of HTTP headers and the response body (which, since we're making the request in the browser, is going to be HTML).
+Ответ содержит список HTTP-заголовков и тело ответа (которое, поскольку мы делаем запрос в браузере, будет HTML).
 
-#### Parse the HTML
+#### Разбор HTML
 
-The browser now has received the HTML and starts to parse it, and will repeat the exact same process we did not for all the resources required by the page:
+Теперь браузер, получив HTML, начинает его разбирать и повторяет тот же самый процесс, который мы не делали для всех ресурсов, необходимых странице:
 
-- CSS files
-- images
-- the favicon
-- JavaScript files
+- CSS-файлы
+- изображения
+- фавикон
+- JavaScript-файлы
 - ...
 
-How browsers render the page then is out of the scope, but it's important to understand that the process I described is not just for the HTML pages, but for any item that's served over HTTP.
+То, как браузеры отображают страницу, выходит за рамки темы, но важно понимать, что процесс, который я описал, относится не только к HTML-страницам, но и к любому элементу, который обслуживается по HTTP.
 
 ### Build an HTTP Server with Node.js {#build-an-http-server-with-node-js}
 
-Here is the HTTP web server we used as the Node.js Hello World application in the introduction:
+Вот веб-сервер HTTP, который мы использовали в качестве приложения Node.js Hello World во введении:
 
 ```language-js
 const http = require('http')
@@ -3332,45 +3332,45 @@ server.listen(port, hostname, () => {
 })
 ```
 
-Let's analyze it briefly. We include the `http` [module](https://nodejs.org/api/http.html){rel="noopener"}.
+Давайте кратко проанализируем его. Мы включаем `http` [модуль](https://nodejs.org/api/http.html){rel="noopener"}.
 
-We use the module to create an HTTP server.
+Мы используем модуль для создания HTTP-сервера.
 
-The server is set to listen on the specified port, `3000`. When the server is ready, the `listen`callback function is called.
+Сервер настроен на прослушивание указанного порта, `3000`. Когда сервер готов, вызывается функция обратного вызова `listen`.
 
-The callback function we pass is the one that's going to be executed upon every request that comes in. Whenever a new request is received, the `request` [event](https://nodejs.org/api/http.html#http_event_request){rel="noopener"} is called, providing two objects: a request (an [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage){rel="noopener"}object) and a response (an [`http.ServerResponse`](https://nodejs.org/api/http.html#http_class_http_serverresponse){rel="noopener"}object).
+Функция обратного вызова, которую мы передаем, будет выполняться при каждом поступающем запросе. При получении нового запроса вызывается функция `request` [event](https://nodejs.org/api/http.html#http_event_request){rel="noopener"}, которая предоставляет два объекта: запрос (объект [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage){rel="noopener"}) и ответ (объект [`http.ServerResponse`](https://nodejs.org/api/http.html#http_class_http_serverresponse){rel="noopener"}).
 
-`request` provides the request details. Through it, we access the request headers and request data.
+`request` предоставляет детали запроса. Через него мы получаем доступ к заголовкам запроса и данным запроса.
 
-`response` is used to populate the data we're going to return to the client.
+`response` используется для заполнения данных, которые мы собираемся вернуть клиенту.
 
-In this case with:
+В данном случае с:
 
 ```language-js
 res.statusCode = 200
 ```
 
-We set the `statusCode` property to `200`, to indicate a successful response.
+Мы устанавливаем свойство `statusCode` в `200`, чтобы указать на успешный ответ.
 
-We also set the `Content-Type` header:
+Мы также устанавливаем заголовок `Content-Type`:
 
 ```language-js
 res.setHeader('Content-Type', 'text/plain')
 ```
 
-and we end close the response, adding the content as an argument to `end()`:
+и мы завершаем закрытие ответа, добавляя содержимое в качестве аргумента к `end()`:
 
 ```language-js
 res.end('Hello World\n')
 ```
 
-### Making HTTP requests with Node.js {#making-http-requests-with-node-js}
+### Выполнение HTTP-запросов с помощью Node.js {#making-http-requests-with-node-js}
 
-How to perform HTTP requests with Node.js using GET, POST, PUT and DELETE.
+Как выполнять HTTP-запросы с помощью Node.js, используя GET, POST, PUT и DELETE.
 
-I use the term HTTP, but HTTPS is what should be used everywhere, therefore these examples use HTTPS instead of HTTP.
+Я использую термин HTTP, но HTTPS - это то, что должно использоваться везде, поэтому в этих примерах используется HTTPS вместо HTTP.
 
-#### Perform a GET Request
+#### Выполнение запроса GET
 
 ```language-js
 const https = require('https')
@@ -3395,7 +3395,7 @@ req.on('error', (error) => {
 req.end()
 ```
 
-#### Perform a POST Request
+#### Выполнить POST-запрос
 
 ```language-js
 const https = require('https')
@@ -3430,47 +3430,47 @@ req.write(data)
 req.end()
 ```
 
-#### PUT and DELETE
+#### PUT и DELETE
 
-PUT and DELETE requests use the same POST request format, and just change the `options.method` value.
+Запросы PUT и DELETE используют тот же формат запроса POST и просто изменяют значение `options.method`.
 
-### HTTP requests in Node.js using Axios {#http-requests-in-node-js-using-axios}
+### HTTP-запросы в Node.js с использованием Axios {#http-requests-in-node-js-using-axios}
 
-Axios is a very popular JavaScript library you can use to perform HTTP requests, that works in both Browser and Node.js platforms.
+Axios - это очень популярная библиотека JavaScript, которую можно использовать для выполнения HTTP-запросов, работающая как в браузере, так и на платформе Node.js.
 
-It supports all modern browsers, including support for IE8 and higher.
+Она поддерживает все современные браузеры, включая поддержку IE8 и выше.
 
-It is promise-based, and this lets us write async/await code to perform [XHR](https://flaviocopes.com/xhr/){rel="noopener"} requests very easily.
+Она основана на обещаниях, и это позволяет нам писать асинхронный/ожидающий код для выполнения [XHR](https://flaviocopes.com/xhr/){rel="noopener"} запросов очень легко.
 
-Using Axios has quite a few advantages over the native Fetch API:
+Использование Axios имеет довольно много преимуществ перед родным Fetch API:
 
-- supports older browsers (Fetch needs a polyfill)
-- has a way to abort a request
-- has a way to set a response timeout
-- has built-in CSRF protection
-- supports upload progress
-- performs automatic JSON data transformation
-- works in Node.js
+- поддерживает старые браузеры (Fetch нуждается в полифилле)
+- есть возможность прервать запрос
+- есть возможность установить таймаут ответа
+- встроенная защита от CSRF
+- поддерживает прогресс загрузки
+- выполняет автоматическое преобразование данных JSON
+- работает в Node.js
 
-#### Installation
+#### Установка
 
-Axios can be installed using npm:
+Axios можно установить с помощью npm:
 
     npm install axios
 
-or yarn:
+или yarn:
 
     yarn add axios
 
-or simply include it in your page using unpkg.com:
+или просто включите его в свою страницу с помощью unpkg.com:
 
 ```language-js
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 ```
 
-#### The Axios API
+#### API Axios
 
-You can start an HTTP request from the `axios` object:
+Вы можете начать HTTP-запрос с объекта `axios`:
 
 ```language-js
 axios({
@@ -3482,29 +3482,29 @@ axios({
 })
 ```
 
-but for convenience, you will generally use:
+но для удобства вы обычно используете:
 
 - `axios.get()`
 - `axios.post()`
 
-(like in jQuery you would use `$.get()` and `$.post()` instead of `$.ajax()`)
+(как в jQuery вы бы использовали `$.get()` и `$.post()` вместо `$.ajax()`).
 
-Axios offers methods for all the HTTP verbs, which are less popular but still used:
+Axios предлагает методы для всех глаголов HTTP, которые менее популярны, но все еще используются:
 
 - `axios.delete()`
 - `axios.put()`
 - `axios.patch()`
 - `axios.options()`
 
-and a method to get the HTTP headers of a request, discarding the body:
+и метод для получения HTTP-заголовков запроса, отбрасывая тело:
 
 - `axios.head()`
 
-#### GET requests
+#### GET-запросы
 
-One convenient way to use Axios is to use the modern (ES2017) `async/await` syntax.
+Одним из удобных способов использования Axios является использование современного (ES2017) синтаксиса `async/await`.
 
-This Node.js example queries the [Dog API](https://dog.ceo/){rel="noopener"} to retrieve a list of all the dog breeds, using `axios.get()`, and it counts them:
+Этот пример Node.js запрашивает [Dog API](https://dog.ceo/){rel="noopener"} для получения списка всех пород собак, используя `axios.get()`, и подсчитывает их:
 
 ```language-js
 const axios = require('axios')
@@ -3527,7 +3527,7 @@ const countBreeds = async () => {
 countBreeds()
 ```
 
-If you don't want to use `async/await` you can use the [Promises](https://flaviocopes.com/javascript-promises/){rel="noopener"} syntax:
+Если вы не хотите использовать `async/await`, вы можете использовать синтаксис [Promises](https://flaviocopes.com/javascript-promises/){rel="noopener"}:
 
 ```language-js
 const axios = require('axios')
@@ -3557,17 +3557,17 @@ const countBreeds = async () => {
 countBreeds()
 ```
 
-#### Add parameters to GET requests
+#### Добавление параметров в GET-запросы
 
-A GET response can contain parameters in the URL, like this: [`https://site.com/?foo=bar`](https://site.com/?foo=bar.){rel="noopener"}
+GET-ответ может содержать параметры в URL, например, так: [`https://site.com/?foo=bar`](https://site.com/?foo=bar.){rel="noopener"}.
 
-With Axios you can perform this by simply using that URL:
+С помощью Axios вы можете сделать это, просто используя этот URL:
 
 ```language-js
 axios.get('https://site.com/?foo=bar')
 ```
 
-or you can use a `params` property in the options:
+или вы можете использовать свойство `params` в опциях:
 
 ```language-js
 axios.get('https://site.com/', {
@@ -3577,13 +3577,13 @@ axios.get('https://site.com/', {
 })
 ```
 
-#### POST Requests
+#### POST-запросы
 
-Performing a POST request is just like doing a GET request, but instead of `axios.get`, you use `axios.post`:
+Выполнение POST-запроса аналогично GET-запросу, но вместо `axios.get` вы используете `axios.post`:
 
     axios.post('https://site.com/')
 
-An object containing the POST parameters is the second argument:
+Объект, содержащий параметры POST, является вторым аргументом:
 
 ```language-js
 axios.post('https://site.com/', {
@@ -3591,54 +3591,54 @@ axios.post('https://site.com/', {
 })
 ```
 
-### Using WebSockets in Node.js {#using-websockets-in-node-js}
+### Использование WebSockets в Node.js {#using-websockets-in-node-js}
 
-WebSockets are an alternative to HTTP communication in Web Applications.
+WebSockets - это альтернатива HTTP-коммуникации в веб-приложениях.
 
-They offer a long lived, bidirectional communication channel between client and server.
+Они предлагают долговечный двунаправленный канал связи между клиентом и сервером.
 
-Once established, the channel is kept open, offering a very fast connection with low latency and overhead.
+После установления канал остается открытым, обеспечивая очень быстрое соединение с низкой задержкой и накладными расходами.
 
-### Browser support for WebSockets
+### Поддержка WebSockets браузерами
 
-WebSockets are supported by all modern browsers.
+WebSockets поддерживаются всеми современными браузерами.
 
-### How WebSockets differ from HTTP
+### Чем WebSockets отличаются от HTTP
 
-HTTP is a very different protocol, and has a different way of communicating.
+HTTP - это совсем другой протокол, и у него другой способ общения.
 
-HTTP is a request/response protocol: the server returns some data when the client requests it.
+HTTP - это протокол запроса/ответа: сервер возвращает некоторые данные, когда клиент их запрашивает.
 
-With WebSockets:
+С помощью WebSockets:
 
-- the **server can send a message to the client** without the client explicitly requesting something
-- the client and the server can **talk to each other simultaneously**
-- very little data overhead needs to be exchanged to send messages. This means a **low latency communication**.
+- **сервер может отправить сообщение клиенту** без явного запроса со стороны клиента
+- клиент и сервер могут **разговаривать друг с другом одновременно**
+- для отправки сообщений требуется обмен очень небольшим количеством данных. Это означает **низкую задержку связи**.
 
-WebSockets are great for real-time and long-lived communications.
+WebSockets отлично подходит для обмена данными в реальном времени и на длительный срок.
 
-HTTP is great for occasional data exchange and interactions initiated by the client.
+HTTP отлично подходит для периодического обмена данными и взаимодействия, инициируемого клиентом.
 
-HTTP is much simpler to implement, while WebSockets require a bit more overhead.
+HTTP намного проще в реализации, в то время как WebSockets требует немного больше накладных расходов.
 
-### Secured WebSockets
+### Безопасные WebSockets
 
-Always use the secure, encrypted protocol for WebSockets, `wss://`.
+Всегда используйте безопасный, зашифрованный протокол для WebSockets, `wss://`.
 
-`ws://` refers to the unsafe WebSockets version (the `http://` of WebSockets), and should be avoided for obvious reasons.
+Протокол `ws://` относится к небезопасной версии WebSockets (`http://` WebSockets), и его следует избегать по очевидным причинам.
 
-### Create a new WebSockets connection
+### Создайте новое соединение WebSockets
 
 ```language-js
 const url = 'wss://myserver.com/something'
 const connection = new WebSocket(url)
 ```
 
-`connection` is a [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket){rel="noopener"} object.
+`connection` - это объект [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket){rel="noopener"}.
 
-When the connection is successfully established, the `open`event is fired.
+Когда соединение успешно установлено, происходит событие `open`.
 
-Listen for it by assigning a callback function to the `onopen`property of the `connection` object:
+Прослушайте его, назначив функцию обратного вызова свойству `onopen` объекта `connection`:
 
 ```language-js
 connection.onopen = () => {
@@ -3646,7 +3646,7 @@ connection.onopen = () => {
 }
 ```
 
-If there's any error, the `onerror` function callback is fired:
+При возникновении ошибки происходит обратный вызов функции `onerror`:
 
 ```language-js
 connection.onerror = error => {
@@ -3654,11 +3654,11 @@ connection.onerror = error => {
 }
 ```
 
-### Sending data to the server using WebSockets
+### Отправка данных на сервер с помощью WebSockets
 
-Once the connection is open, you can send data to the server.
+Как только соединение открыто, вы можете отправлять данные на сервер.
 
-You can do so conveniently inside the `onopen` callback function:
+Это удобно делать внутри функции обратного вызова `onopen`:
 
 ```language-js
 connection.onopen = () => {
@@ -3666,9 +3666,9 @@ connection.onopen = () => {
 }
 ```
 
-### Receiving data from the server using WebSockets
+### Получение данных с сервера с помощью WebSockets
 
-Listen with a callback function on `onmessage`, which is called when the `message` event is received:
+Слушайте с функцией обратного вызова `onmessage`, которая вызывается при получении события `message`:
 
 ```language-js
 connection.onmessage = e => {
@@ -3676,18 +3676,18 @@ connection.onmessage = e => {
 }
 ```
 
-### Implement a WebSockets server in Node.js {#implement-a-websockets-server-in-node-js}
+### Реализация сервера WebSockets в Node.js {#implement-a-websockets-server-in-node-js}
 
-[ws](https://github.com/websockets/ws){rel="noopener"} is a popular WebSockets library for Node.js.
+[ws](https://github.com/websockets/ws){rel="noopener"} - это популярная библиотека WebSockets для Node.js.
 
-We'll use it to build a WebSockets server. It can also be used to implement a client, and use WebSockets to communicate between two backend services.
+Мы будем использовать ее для создания сервера WebSockets. Она также может быть использована для реализации клиента и использования WebSockets для связи между двумя внутренними сервисами.
 
-Easily install it using:
+Легко установить ее с помощью:
 
     yarn init
     yarn add ws
 
-The code you need to write is very little:
+Код, который вам нужно написать, очень мал:
 
 ```language-js
 const WebSocket = require('ws')
@@ -3702,19 +3702,19 @@ wss.on('connection', (ws) => {
 })
 ```
 
-This code creates a new server on port 8080 (the default port for WebSockets), and adds a callback function when a connection is established, sending `ho!` to the client, and logging the messages it receives.
+Этот код создает новый сервер на порту 8080 (порт по умолчанию для WebSockets) и добавляет функцию обратного вызова при установлении соединения, отправляя `ho!` клиенту и регистрируя полученные сообщения.
 
-### See a live example on Glitch
+### Посмотрите живой пример на Glitch
 
-[Here](https://glitch.com/edit/#!/flavio-websockets-server-example){rel="noopener"} is a live example of a WebSockets server.
+[Здесь](https://glitch.com/edit/#!/flavio-websockets-server-example){rel="noopener"} - живой пример сервера WebSockets.
 
-[Here](https://glitch.com/edit/#!/flavio-websockets-client-example){rel="noopener"} is a WebSockets client that interacts with the server.
+[Здесь](https://glitch.com/edit/#!/flavio-websockets-client-example){rel="noopener"} - это клиент WebSockets, который взаимодействует с сервером.
 
-### Working with file descriptors in Node.js {#working-with-file-descriptors-in-node-js}
+### Работа с дескрипторами файлов в Node.js {#working-with-file-descriptors-in-node-js}
 
-Before you're able to interact with a file that sits in your file system, you must get a file descriptor.
+Прежде чем вы сможете взаимодействовать с файлом, который находится в вашей файловой системе, вы должны получить файловый дескриптор.
 
-A file descriptor is what's returned by opening the file using the `open()` method offered by the `fs` module:
+Дескриптор файла - это то, что возвращается при открытии файла с помощью метода `open()`, предлагаемого модулем `fs`:
 
 ```language-js
 const fs = require('fs')
@@ -3724,18 +3724,18 @@ fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
 })
 ```
 
-Notice the `r` we used as the second parameter to the `fs.open()` call.
+Обратите внимание на `r`, который мы использовали в качестве второго параметра для вызова `fs.open()`.
 
-That flag means we open the file for reading.
+Этот флаг означает, что мы открываем файл для чтения.
 
-Other flags you'll commonly use are
+Другие флаги, которые вы обычно используете, следующие
 
-- `r+` open the file for reading and writing
-- `w+` open the file for reading and writing, positioning the stream at the beginning of the file. The file is created if not existing
-- `a` open the file for writing, positioning the stream at the end of the file. The file is created if not existing
-- `a+` open the file for reading and writing, positioning the stream at the end of the file. The file is created if not existing
+- `r+` открыть файл для чтения и записи
+- `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
+- `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
+- `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
 
-You can also open the file by using the `fs.openSync` method, which instead of providing the file descriptor object in a callback, it returns it:
+Вы также можете открыть файл с помощью метода `fs.openSync`, который вместо того, чтобы предоставить объект дескриптора файла в обратном вызове, возвращает его:
 
 ```language-js
 const fs = require('fs')
@@ -3747,15 +3747,15 @@ try {
 }
 ```
 
-Once you get the file descriptor, in whatever way you choose, you can perform all the operations that require it, like calling `fs.open()` and many other operations that interact with the file system.
+Получив дескриптор файла любым выбранным вами способом, вы можете выполнять все операции, требующие его, например, вызывать `fs.open()` и многие другие операции, взаимодействующие с файловой системой.
 
 ### Node.js file stats {#node-js-file-stats}
 
-Every file comes with a set of details that we can inspect using Node.js.
+Каждый файл поставляется с набором деталей, которые мы можем проверить с помощью Node.js.
 
-In particular, using the `stat()` method provided by the `fs` module.
+В частности, используя метод `stat()`, предоставляемый модулем `fs`.
 
-You call it passing a file path, and once Node.js gets the file details it will call the callback function you pass with 2 parameters: an error message, and the file stats:
+Вы вызываете его, передавая путь к файлу, и как только Node.js получит данные о файле, он вызовет переданную вами функцию обратного вызова с двумя параметрами: сообщением об ошибке и статистикой файла:
 
 ```language-js
 const fs = require('fs')
@@ -3768,7 +3768,7 @@ fs.stat('/Users/flavio/test.txt', (err, stats) => {
 })
 ```
 
-Node.js provides also a sync method, which blocks the thread until the file stats are ready:
+Node.js также предоставляет метод sync, который блокирует поток до тех пор, пока статистика файлов не будет готова:
 
 ```language-js
 const fs = require('fs')
@@ -3779,15 +3779,15 @@ try {
 }
 ```
 
-The file information is included in the stats variable. What kind of information can we extract using the stats?
+Информация о файле включена в переменную stats. Какую информацию мы можем извлечь с помощью stats?
 
-A lot, including:
+Много, включая:
 
-- if the file is a directory or a file, using `stats.isFile()` and `stats.isDirectory()`
-- if the file is a symbolic link using `stats.isSymbolicLink()`
-- the file size in bytes using `stats.size`.
+- является ли файл каталогом или файлом, используя `stats.isFile()` и `stats.isDirectory()`
+- является ли файл символической ссылкой, используя `stats.isSymbolicLink()`
+- размер файла в байтах с помощью `stats.size`.
 
-There are other advanced methods, but the bulk of what you'll use in your day-to-day programming is this:
+Существуют и другие продвинутые методы, но основная часть того, что вы будете использовать в повседневном программировании, заключается в следующем:
 
 ```language-js
 const fs = require('fs')
@@ -3804,37 +3804,37 @@ fs.stat('/Users/flavio/test.txt', (err, stats) => {
 })
 ```
 
-### Node.js File Paths {#node-js-file-paths}
+### Node.js Пути к файлам {#node-js-file-paths}
 
-Every file in the system has a path.
+Каждый файл в системе имеет путь.
 
-On Linux and macOS, a path might look like:
+В Linux и macOS путь может выглядеть следующим образом:
 
-`/users/flavio/file.txt`
+`/users/flavio/file.txt`.
 
-While Windows computers are different, and have a structure such as:
+В то время как компьютеры под управлением Windows отличаются, и имеют такую структуру, как:
 
-`C:\users\flavio\file.txt`
+`C:\users\flavio\file.txt`.
 
-You need to pay attention when using paths in your applications, as this difference must be taken into account.
+Вы должны быть внимательны при использовании путей в ваших приложениях, так как эта разница должна быть учтена.
 
-You include this module in your files using:
+Вы включаете этот модуль в свои файлы, используя:
 
 ```language-js
 const path = require('path')
 ```
 
-and you can start using its methods.
+и вы сможете начать использовать его методы.
 
-#### Getting information out of a path
+#### Получение информации из пути
 
-Given a path, you can extract information out of it using those methods:
+Получив путь, вы можете извлечь из него информацию, используя эти методы:
 
-- `dirname`: get the parent folder of a file
-- `basename`: get the filename part
-- `extname`: get the file extension
+- `dirname`: получить родительскую папку файла
+- `basename`: получить часть имени файла
+- `extname`: получить расширение файла
 
-Example:
+Пример:
 
 ```language-js
 const notes = '/users/flavio/notes.txt'
@@ -3844,50 +3844,50 @@ path.basename(notes) // notes.txt
 path.extname(notes) // .txt
 ```
 
-You can get the file name without the extension by specifying a second argument to `basename`:
+Вы можете получить имя файла без расширения, указав второй аргумент `basename`:
 
 ```language-js
 path.basename(notes, path.extname(notes)) // notes
 ```
 
-#### Working with paths
+#### Работа с путями
 
-You can join two or more parts of a path by using `path.join()`:
+Вы можете объединить две или более частей пути с помощью функции `path.join()`:
 
 ```language-js
 const name = 'flavio'
 path.join('/', 'users', name, 'notes.txt') // '/users/flavio/notes.txt'
 ```
 
-You can get the absolute path calculation of a relative path using `path.resolve()`:
+Вы можете получить расчет абсолютного пути относительного пути с помощью `path.resolve()`:
 
 ```language-js
 path.resolve('flavio.txt') // '/Users/flavio/flavio.txt' if run from my home folder
 ```
 
-In this case Node.js will simply append `/flavio.txt` to the current working directory. If you specify a second parameter folder, `resolve` will use the first as a base for the second:
+В этом случае Node.js просто добавит `/flavio.txt` в текущий рабочий каталог. Если вы укажете вторую папку с параметрами, `resolve` будет использовать первую в качестве основы для второй:
 
 ```language-js
 path.resolve('tmp', 'flavio.txt') // '/Users/flavio/tmp/flavio.txt' if run from my home folder
 ```
 
-If the first parameter starts with a slash, that means it's an absolute path:
+Если первый параметр начинается со слэша, это означает, что это абсолютный путь:
 
 ```language-js
 path.resolve('/etc', 'flavio.txt') // '/etc/flavio.txt'
 ```
 
-`path.normalize()` is another useful function, that will try and calculate the actual path, when it contains relative specifiers like `.` or `..`, or double slashes:
+`path.normalize()` - еще одна полезная функция, которая попытается вычислить фактический путь, если он содержит относительные спецификаторы типа `.` или `..`, или двойные косые черты:
 
 ```language-js
 path.normalize('/users/flavio/..//test.txt') //  /users/test.txt
 ```
 
-But `resolve` and `normalize` will **not** check if the path exists. They just calculate a path based on the information they got.
+Но `resolve` и `normalize` **не** проверяют, существует ли путь. Они просто вычисляют путь на основе полученной информации.
 
-### Reading files with Node.js {#reading-files-with-node-js}
+### Чтение файлов с помощью Node.js {#reading-files-with-node-js}
 
-The simplest way to read a file in Node.js is to use the `fs.readFile()` method, passing it the file path and a callback function that will be called with the file data (and the error):
+Самый простой способ прочитать файл в Node.js - это использовать метод `fs.readFile()`, передав ему путь к файлу и функцию обратного вызова, которая будет вызвана с данными файла (и ошибкой):
 
 ```language-js
 const fs = require('fs')
@@ -3901,7 +3901,7 @@ fs.readFile('/Users/flavio/test.txt', (err, data) => {
 })
 ```
 
-Alternatively, you can use the synchronous version `fs.readFileSync()`:
+В качестве альтернативы можно использовать синхронную версию `fs.readFileSync()`:
 
 ```language-js
 const fs = require('fs')
@@ -3914,19 +3914,19 @@ try {
 }
 ```
 
-The default encoding is `utf8`, but you can specify a custom encoding using a a second parameter.
+По умолчанию используется кодировка `utf8`, но вы можете указать собственную кодировку с помощью второго параметра.
 
-Both `fs.readFile()` and `fs.readFileSync()` read the full content of the file in memory before returning the data.
+И `fs.readFile()`, и `fs.readFileSync()` считывают полное содержимое файла в память перед возвратом данных.
 
-This means that big files are going to have a major impact on your memory consumption and speed of execution of the program.
+Это означает, что большие файлы будут сильно влиять на потребление памяти и скорость выполнения программы.
 
-In this case, a better option is to read the file content using streams.
+В этом случае лучшим вариантом будет чтение содержимого файла с помощью потоков.
 
-### Writing files with Node.js {#writing-files-with-node-js}
+### Запись файлов с помощью Node.js {#writing-files-with-node-js}
 
-The easiest way to write to files in Node.js is to use the `fs.writeFile()` API.
+Самый простой способ записи в файлы в Node.js - использовать API `fs.writeFile()`.
 
-Example:
+Пример:
 
 ```language-js
 const fs = require('fs')
@@ -3942,7 +3942,7 @@ fs.writeFile('/Users/flavio/test.txt', content, (err) => {
 })
 ```
 
-Alternatively, you can use the synchronous version `fs.writeFileSync()`:
+В качестве альтернативы можно использовать синхронную версию `fs.writeFileSync()`:
 
 ```language-js
 const fs = require('fs')
@@ -3957,26 +3957,26 @@ try {
 }
 ```
 
-By default, this API will **replace the contents of the file** if it does already exist.
+По умолчанию этот API **заменяет содержимое файла**, если он уже существует.
 
-You can modify the default by specifying a flag:
+Вы можете изменить значение по умолчанию, указав флаг:
 
 ```language-js
 fs.writeFile('/Users/flavio/test.txt', content, { flag: 'a+' }, (err) => {})
 ```
 
-The flags you'll likely use are:
+Флаги, которые вы, скорее всего, будете использовать, следующие:
 
-- `r+` open the file for reading and writing
-- `w+` open the file for reading and writing, positioning the stream at the beginning of the file. The file is created if not existing
-- `a` open the file for writing, positioning the stream at the end of the file. The file is created if not existing
-- `a+` open the file for reading and writing, positioning the stream at the end of the file. The file is created if not existing
+- `r+` открыть файл для чтения и записи
+- `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
+- `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
+- `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
 
-You can find more about [flags](https://nodejs.org/api/fs.html#fs_file_system_flags){rel="noopener"}.
+Вы можете узнать больше о [flags](https://nodejs.org/api/fs.html#fs_file_system_flags){rel="noopener"}.
 
-#### Append to a file
+#### Добавить в файл
 
-A handy method to append content to the end of a file is `fs.appendFile()` (and its `fs.appendFileSync()` counterpart):
+Удобным методом добавления содержимого в конец файла является `fs.appendFile()` (и его аналог `fs.appendFileSync()`):
 
 ```language-js
 const content = 'Some content!'
@@ -3990,23 +3990,23 @@ fs.appendFile('file.log', content, (err) => {
 })
 ```
 
-#### Using streams
+#### Использование потоков
 
-All those methods write the full content to the file before returning the control back to your program (in the async version, this means executing the callback)
+Все эти методы записывают полное содержимое в файл перед тем, как вернуть управление обратно вашей программе (в асинхронной версии это означает выполнение обратного вызова).
 
-In this case, a better option is to write the file content using streams.
+В этом случае лучшим вариантом будет запись содержимого файла с помощью потоков.
 
-### Working with folders in Node.js {#working-with-folders-in-node-js}
+### Работа с папками в Node.js {#working-with-folders-in-node-js}
 
-The Node.js `fs` core module provides many handy methods you can use to work with folders.
+Основной модуль Node.js `fs` предоставляет множество удобных методов, которые вы можете использовать для работы с папками.
 
-#### Check if a folder exists
+#### Проверка существования папки
 
-Use `fs.access()` to check if the folder exists and Node.js can access it with its permissions.
+Используйте `fs.access()`, чтобы проверить, существует ли папка, и может ли Node.js получить к ней доступ со своими разрешениями.
 
-#### Create a new folder
+#### Создание новой папки
 
-Use `fs.mkdir()` or `fs.mkdirSync()` to create a new folder:
+Используйте `fs.mkdir()` или `fs.mkdirSync()` для создания новой папки:
 
 ```language-js
 const fs = require('fs')
@@ -4022,11 +4022,11 @@ try {
 }
 ```
 
-#### Read the content of a directory
+#### Чтение содержимого каталога
 
-Use `fs.readdir()` or `fs.readdirSync` to read the contents of a directory.
+Используйте `fs.readdir()` или `fs.readdirSync` для чтения содержимого каталога.
 
-This piece of code reads the content of a folder, both files and subfolders, and returns their relative path:
+Эта часть кода читает содержимое папки, как файлы, так и вложенные папки, и возвращает их относительный путь:
 
 ```language-js
 const fs = require('fs')
@@ -4037,7 +4037,7 @@ const folderPath = '/Users/flavio'
 fs.readdirSync(folderPath)
 ```
 
-You can get the full path:
+Вы можете получить полный путь:
 
 ```language-js
 fs.readdirSync(folderPath).map(fileName => {
@@ -4045,7 +4045,7 @@ fs.readdirSync(folderPath).map(fileName => {
 }
 ```
 
-You can also filter the results to only return the files, and exclude the folders:
+Можно также отфильтровать результаты, чтобы вернуть только файлы и исключить папки:
 
 ```language-js
 const isFile = fileName => {
@@ -4057,11 +4057,11 @@ fs.readdirSync(folderPath).map(fileName => {
 }).filter(isFile)
 ```
 
-#### Rename a folder
+#### Переименование папки
 
-Use `fs.rename()` or `fs.renameSync()` to rename folder.
+Используйте `fs.rename()` или `fs.renameSync()` для переименования папки.
 
-The first parameter is the current path, the second the new path:
+Первый параметр - текущий путь, второй - новый путь:
 
 ```language-js
 const fs = require('fs')
@@ -4075,7 +4075,7 @@ fs.rename('/Users/flavio', '/Users/roger', err => {
 })
 ```
 
-`fs.renameSync()` is the synchronous version:
+`fs.renameSync()` - это синхронная версия:
 
 ```language-js
 const fs = require('fs')
@@ -4087,21 +4087,21 @@ try {
 }
 ```
 
-#### Remove a folder
+#### Удаление папки
 
-Use `fs.rmdir()` or `fs.rmdirSync()` to remove a folder.
+Используйте `fs.rmdir()` или `fs.rmdirSync()` для удаления папки.
 
-Removing a folder that has content can be more complicated than you need.
+Удаление папки с содержимым может быть сложнее, чем вам нужно.
 
-In this case I recommend installing the `fs-extra` module, which is very popular and well maintained, and it's a drop-in replacement of the `fs` module, providing more features on top of it.
+В этом случае я рекомендую установить модуль `fs-extra`, который очень популярен и хорошо поддерживается, и является заменой модуля `fs`, предоставляя больше возможностей поверх него.
 
-In this case the `remove()` method is what you want.
+В этом случае метод `remove()` - это то, что вам нужно.
 
-Install it using:
+Установите его с помощью:
 
 `npm install fs-extra`
 
-and use it like this:
+и используйте его следующим образом:
 
 ```language-js
 const fs = require('fs-extra')
@@ -4113,7 +4113,7 @@ fs.remove(folder, err => {
 })
 ```
 
-It can also be used with promises:
+Его также можно использовать с обещаниями:
 
 ```language-js
 fs.remove(folder).then(() => {
@@ -4123,7 +4123,7 @@ fs.remove(folder).then(() => {
 })
 ```
 
-or with `async/await`:
+или с `async/await`:
 
 ```language-js
 async function removeFolder(folder) {
@@ -4139,59 +4139,59 @@ const folder = '/Users/flavio'
 removeFolder(folder)
 ```
 
-### The Node.js fs module {#the-node-js-fs-module}
+### Модуль Node.js fs {#the-node-js-fs-module}
 
-The `fs` module provides a lot of very useful functionality to access and interact with the file system.
+Модуль `fs` предоставляет множество очень полезных функций для доступа и взаимодействия с файловой системой.
 
-There is no need to install it. Being part of the Node.js core, it can be used by simply requiring it:
+Нет необходимости устанавливать его. Будучи частью ядра Node.js, он может быть использован простым запросом:
 
 ```language-js
 const fs = require('fs')
 ```
 
-Once you do so, you have access to all its methods, which include:
+Как только вы это сделаете, вы получите доступ ко всем его методам, которые включают:
 
-- `fs.access()`: check if the file exists and Node can access it with its permissions
-- `fs.appendFile()`: append data to a file. If the file does not exist, it's created
-- `fs.chmod()`: change the permissions of a file specified by the filename passed. Related: `fs.lchmod()`, `fs.fchmod()`
-- `fs.chown()`: change the owner and group of a file specified by the filename passed. Related: `fs.fchown()`, `fs.lchown()`
-- `fs.close()`: close a file descriptor
-- `fs.copyFile()`: copies a file
-- `fs.createReadStream()`: create a readable file stream
-- `fs.createWriteStream()`: create a writable file stream
-- `fs.link()`: create a new hard link to a file
-- `fs.mkdir()`: create a new folder
-- `fs.mkdtemp()`: create a temporary directory
-- `fs.open()`: set the file mode
-- `fs.readdir()`: read the contents of a directory
-- `fs.readFile()`: read the content of a file. Related: `fs.read()`
-- `fs.readlink()`: read the value of a symbolic link
-- `fs.realpath()`: resolve relative file path pointers (`.`, `..`) to the full path
-- `fs.rename()`: rename a file or folder
-- `fs.rmdir()`: remove a folder
-- `fs.stat()`: returns the status of the file identified by the filename passed. Related: `fs.fstat()`, `fs.lstat()`
-- `fs.symlink()`: create a new symbolic link to a file
-- `fs.truncate()`: truncate to the specified length the file identified by the filename passed. Related: `fs.ftruncate()`
-- `fs.unlink()`: remove a file or a symbolic link
-- `fs.unwatchFile()`: stop watching for changes on a file
-- `fs.utimes()`: change the timestamp of the file identified by the filename passed. Related: `fs.futimes()`
-- `fs.watchFile()`: start watching for changes on a file. Related: `fs.watch()`
-- `fs.writeFile()`: write data to a file. Related: `fs.write()`
+- `fs.access()`: проверить, существует ли файл и может ли Node получить к нему доступ с его разрешениями
+- `fs.appendFile()`: добавление данных в файл. Если файл не существует, он создается
+- `fs.chmod()`: изменить разрешения файла, указанного переданным именем. Сопутствующие: `fs.lchmod()`, `fs.fchmod()`.
+- `fs.chown()`: изменение владельца и группы файла, указанного переданным именем. Связанные: `fs.fchown()`, `fs.lchown()`.
+- `fs.close()`: закрыть дескриптор файла
+- `fs.copyFile()`: копирование файла
+- `fs.createReadStream()`: создание потока файлов для чтения
+- `fs.createWriteStream()`: создание потока файлов на запись
+- `fs.link()`: создание новой жесткой ссылки на файл
+- `fs.mkdir()`: создание новой папки
+- `fs.mkdtemp()`: создание временного каталога
+- `fs.open()`: установить режим работы с файлом
+- `fs.readdir()`: чтение содержимого каталога
+- `fs.readFile()`: чтение содержимого файла. Связанные: `fs.read()`
+- `fs.readlink()`: чтение значения символической ссылки
+- `fs.realpath()`: преобразование относительных указателей пути к файлу (`.`, `..`) в полный путь
+- `fs.rename()`: переименовать файл или папку
+- `fs.rmdir()`: удалить папку
+- `fs.stat()`: возвращает статус файла, идентифицированного переданным именем. Связанные: `fs.fstat()`, `fs.lstat()`.
+- `fs.symlink()`: создание новой символической ссылки на файл
+- `fs.truncate()`: усечь до заданной длины файл, идентифицированный переданным именем. Связанные: `fs.ftruncate()`.
+- `fs.unlink()`: удаление файла или символической ссылки
+- `fs.unwatchFile()`: прекратить наблюдение за изменениями в файле
+- `fs.utimes()`: изменение временной метки файла, идентифицированного переданным именем. Связанные: `fs.futimes()`.
+- `fs.watchFile()`: начать наблюдение за изменениями в файле. Связанные: `fs.watch()`.
+- `fs.writeFile()`: запись данных в файл. Связанные: `fs.write()`.
 
-One peculiar thing about the `fs` module is that all the methods are asynchronous by default, but they can also work synchronously by appending `Sync`.
+Одна особенность модуля `fs` заключается в том, что все методы по умолчанию асинхронны, но они могут работать и синхронно, добавляя `Sync`.
 
-For example:
+Например:
 
 - `fs.rename()`
 - `fs.renameSync()`
 - `fs.write()`
 - `fs.writeSync()`
 
-This makes a huge difference in your application flow.
+Это вносит огромную разницу в поток вашего приложения.
 
-**Note:** Node 10 includes [experimental support](https://nodejs.org/api/fs.html#fs_fs_promises_api){rel="noopener"} for a promise based API.
+**Примечание:** Node 10 включает [экспериментальную поддержку](https://nodejs.org/api/fs.html#fs_fs_promises_api){rel="noopener"} для API на основе обещаний.
 
-For example let's examine the `fs.rename()` method. The asynchronous API is used with a callback:
+Для примера рассмотрим метод `fs.rename()`. Асинхронный API используется с обратным вызовом:
 
 ```language-js
 const fs = require('fs')
@@ -4204,7 +4204,7 @@ fs.rename('before.json', 'after.json', (err) => {
 })
 ```
 
-A synchronous API can be used like this, with a `try/catch` block to handle errors:
+Синхронный API можно использовать подобным образом, с блоком `try/catch` для обработки ошибок:
 
 ```language-js
 const fs = require('fs')
@@ -4217,25 +4217,25 @@ try {
 }
 ```
 
-The key difference here is that the execution of your script will block in the second example, until the file operation succeeded.
+Ключевое различие здесь в том, что во втором примере выполнение вашего скрипта будет блокироваться до тех пор, пока операция с файлом не завершится успешно.
 
-### The Node.js path module {#the-node-js-path-module}
+### Модуль пути Node.js {#the-node-js-path-module}
 
-The `path` module provides a lot of very useful functionality to access and interact with the file system.
+Модуль `path` предоставляет множество очень полезных функций для доступа и взаимодействия с файловой системой.
 
-There is no need to install it. Being part of the Node.js core, it can be used by simply requiring it:
+Нет необходимости устанавливать его. Будучи частью ядра Node.js, он может быть использован простым запросом:
 
 ```language-js
 const path = require('path')
 ```
 
-This module provides `path.sep` which provides the path segment separator (`\` on Windows, and `/` on Linux / macOS), and `path.delimiter` which provides the path delimiter (`;` on Windows, and `:` on Linux / macOS).
+Этот модуль предоставляет `path.sep`, который предоставляет разделитель сегментов пути (`\` в Windows, и `/` в Linux / macOS), и `path.delimiter`, который предоставляет разделитель путей (`;` в Windows, и `:` в Linux / macOS).
 
-These are the `path` methods.
+Это методы `path`.
 
 #### `path.basename()` {#path-basename-}
 
-Return the last portion of a path. A second parameter can filter out the file extension:
+Возвращает последнюю часть пути. Второй параметр может отфильтровать расширение файла:
 
 ```language-js
 require('path').basename('/test/something') // something
@@ -4245,7 +4245,7 @@ require('path').basename('/test/something.txt', '.txt') // something
 
 #### `path.dirname()` {#path-dirname-}
 
-Return the directory part of a path:
+Возвращает часть пути, относящуюся к каталогу:
 
 ```language-js
 require('path').dirname('/test/something') // /test
@@ -4254,7 +4254,7 @@ require('path').dirname('/test/something/file.txt') // /test/something
 
 #### `path.extname()` {#path-extname-}
 
-Return the extension part of a path:
+Возвращает расширенную часть пути:
 
 ```language-js
 require('path').dirname('/test/something') // ''
@@ -4263,7 +4263,7 @@ require('path').dirname('/test/something/file.txt') // '.txt'
 
 #### `path.isAbsolute()` {#path-isabsolute-}
 
-Returns true if it's an absolute path:
+Возвращает true, если это абсолютный путь:
 
 ```language-js
 require('path').isAbsolute('/test/something') // true
@@ -4272,7 +4272,7 @@ require('path').isAbsolute('./test/something') // false
 
 #### `path.join()` {#path-join-}
 
-Joins two or more parts of a path:
+Объединяет две или более частей пути:
 
 ```language-js
 const name = 'flavio'
@@ -4281,7 +4281,7 @@ require('path').join('/', 'users', name, 'notes.txt') // '/users/flavio/notes.tx
 
 #### `path.normalize()` {#path-normalize-}
 
-Tries to calculate the actual path when it contains relative specifiers like `.` or `..`, or double slashes:
+Пытается вычислить фактический путь, если он содержит относительные спецификаторы, такие как `.` или `..`, или двойные косые черты:
 
 ```language-js
 require('path').normalize('/users/flavio/..//test.txt') // /users/test.txt
@@ -4289,21 +4289,21 @@ require('path').normalize('/users/flavio/..//test.txt') // /users/test.txt
 
 #### `path.parse()` {#path-parse-}
 
-Parses a path to an object with the segments that compose it:
+Разбирает путь к объекту с сегментами, которые его составляют:
 
-- `root`: the root
-- `dir`: the folder path starting from the root
-- `base`: the file name + extension
-- `name`: the file name
-- `ext`: the file extension
+- `root`: корень
+- `dir`: путь к папке, начиная с корня
+- `base`: имя файла + расширение
+- `name`: имя файла
+- `ext`: расширение файла
 
-Example:
+Пример:
 
 ```language-js
 require('path').parse('/users/test.txt')
 ```
 
-results in:
+результаты:
 
 ```language-js
 {
@@ -4317,9 +4317,9 @@ results in:
 
 #### `path.relative()` {#path-relative-}
 
-Accepts 2 paths as arguments. Returns the the relative path from the first path to the second, based on the current working directory.
+Принимает 2 пути в качестве аргументов. Возвращает относительный путь от первого пути ко второму, основанный на текущем рабочем каталоге.
 
-Example:
+Пример:
 
 ```language-js
 require('path').relative('/Users/flavio', '/Users/flavio/test.txt') // 'test.txt'
@@ -4328,45 +4328,45 @@ require('path').relative('/Users/flavio', '/Users/flavio/something/test.txt') //
 
 #### `path.resolve()` {#path-resolve-}
 
-You can get the absolute path calculation of a relative path using `path.resolve()`:
+Вы можете получить расчет абсолютного пути относительного пути с помощью `path.resolve()`:
 
 ```language-js
 path.resolve('flavio.txt') // '/Users/flavio/flavio.txt' if run from my home folder
 ```
 
-By specifying a second parameter, `resolve` will use the first as a base for the second:
+Указав второй параметр, `resolve` будет использовать первый в качестве основы для второго:
 
 ```language-js
 path.resolve('tmp', 'flavio.txt') // '/Users/flavio/tmp/flavio.txt' if run from my home folder
 ```
 
-If the first parameter starts with a slash, that means it's an absolute path:
+Если первый параметр начинается со слэша, это означает, что это абсолютный путь:
 
 ```language-js
 path.resolve('/etc', 'flavio.txt') // '/etc/flavio.txt'
 ```
 
-### The Node.js os module {#the-node-js-os-module}
+### Модуль Node.js os {#the-node-js-os-module}
 
-This module provides many functions that you can use to retrieve information from the underlying **operating system** and the computer the program runs on, and interact with it.
+Этот модуль предоставляет множество функций, которые вы можете использовать для получения информации от базовой **операционной системы** и компьютера, на котором работает программа, и взаимодействия с ней.
 
 ```language-js
 const os = require('os')
 ```
 
-There are a few useful properties that tell us some key things related to handling files:
+Есть несколько полезных свойств, которые сообщают нам некоторые ключевые вещи, связанные с работой с файлами:
 
-`os.EOL` gives the line delimiter sequence. It\'s `\n` on Linux and macOS, and `\r\n` on Windows.
+`os.EOL` указывает последовательность разделителей строк. Это\n`в Linux и macOS, и`\r\n` в Windows.
 
-When I say Linux and macOS I mean POSIX platforms. For simplicity I exclude other less popular operating systems Node can run on.
+Когда я говорю Linux и macOS, я имею в виду POSIX платформы. Для простоты я исключаю другие менее популярные операционные системы, на которых может работать Node.
 
-`os.constants.signals` tells us all the constants related to handling process signals, like SIGHUP, SIGKILL and so on.
+`os.constants.signals` сообщает нам все константы, связанные с обработкой сигналов процесса, таких как SIGHUP, SIGKILL и так далее.
 
-`os.constants.errno` sets the constants for error reporting, like EADDRINUSE, EOVERFLOW and more.
+`os.constants.errno` устанавливает константы для сообщений об ошибках, таких как EADDRINUSE, EOVERFLOW и так далее.
 
-You can read them all [here](https://nodejs.org/api/os.html#os_signal_constants){rel="noopener"}.
+Вы можете прочитать их все [здесь](https://nodejs.org/api/os.html#os_signal_constants){rel="noopener"}.
 
-Let's now see the main methods that `os` provides:
+Давайте теперь посмотрим на основные методы, которые предоставляет `os`:
 
 - `os.arch()`
 - `os.cpus()`
@@ -4386,13 +4386,13 @@ Let's now see the main methods that `os` provides:
 
 #### `os.arch()` {#os-arch-}
 
-Return the string that identifies the underlying architecture, like `arm`, `x64`, `arm64`.
+Возвращает строку, идентифицирующую базовую архитектуру, например `arm`, `x64`, `arm64`.
 
 #### `os.cpus()` {#os-cpus-}
 
-Return information on the CPUs available on your system.
+Возвращает информацию о процессорах, доступных в вашей системе.
 
-Example:
+Пример:
 
 ```language-js
 [
@@ -4423,17 +4423,17 @@ Example:
 
 #### `os.endianness()` {#os-endianness-}
 
-Return `BE` or `LE` depending if Node.js was compiled with [Big Endian or Little Endian](https://en.wikipedia.org/wiki/Endianness){rel="noopener"}.
+Возвращает `BE` или `LE` в зависимости от того, был ли Node.js скомпилирован с [Big Endian или Little Endian](https://en.wikipedia.org/wiki/Endianness){rel="noopener"}.
 
 #### `os.freemem()` {#os-freemem-}
 
-Return the number of bytes that represent the free memory in the system.
+Возвращает количество байтов, представляющих свободную память в системе.
 
 #### `os.homedir()` {#os-homedir-}
 
-Return the path to the home directory of the current user.
+Возвращает путь к домашнему каталогу текущего пользователя.
 
-Example:
+Пример:
 
 ```language-js
 '/Users/flavio'
@@ -4441,15 +4441,15 @@ Example:
 
 #### `os.hostname()` {#os-hostname-}
 
-Return the hostname.
+Возвращает имя хоста.
 
 #### `os.loadavg()` {#os-loadavg-}
 
-Return the calculation made by the operating system on the load average.
+Возвращает расчет, произведенный операционной системой по среднему значению нагрузки.
 
-It only returns a meaningful value on Linux and macOS.
+Возвращает значимое значение только в Linux и macOS.
 
-Example:
+Пример:
 
 ```language-js
 [ 3.68798828125, 4.00244140625, 11.1181640625 ]
@@ -4457,9 +4457,9 @@ Example:
 
 #### `os.networkInterfaces()` {#os-networkinterfaces-}
 
-Returns the details of the network interfaces available on your system.
+Возвращает сведения о сетевых интерфейсах, доступных в вашей системе.
 
-Example:
+Пример:
 
 ```language-js
 {
@@ -4520,7 +4520,7 @@ Example:
 
 #### `os.platform()` {#os-platform-}
 
-Return the platform that Node.js was compiled for:
+Возвращает платформу, для которой был скомпилирован Node.js:
 
 - `darwin`
 - `freebsd`
@@ -4531,45 +4531,45 @@ Return the platform that Node.js was compiled for:
 
 #### `os.release()` {#os-release-}
 
-Returns a string that identifies the operating system release number.
+Возвращает строку, определяющую номер выпуска операционной системы.
 
 #### `os.tmpdir()` {#os-tmpdir-}
 
-Returns the path to the assigned temp folder.
+Возвращает путь к назначенной временной папке.
 
 #### `os.totalmem()` {#os-totalmem-}
 
-Returns the number of bytes that represent the total memory available in the system.
+Возвращает количество байтов, представляющих общую память, доступную в системе.
 
 #### `os.type()` {#os-type-}
 
-Identifies the operating system:
+Идентифицирует операционную систему:
 
 - `Linux`
-- `Darwin` on macOS
-- `Windows_NT` on Windows
+- `Darwin` на macOS
+- `Windows_NT` на Windows
 
 #### `os.uptime()` {#os-uptime-}
 
-Returns the number of seconds the computer has been running since it was last rebooted.
+Возвращает количество секунд, прошедших с момента последней перезагрузки компьютера.
 
-### The Node.js events module {#the-node-js-events-module}
+### Модуль событий Node.js {#the-node-js-events-module}
 
-The `events` module provides us the `EventEmitter` class, which is key to working with events in Node.js.
+Модуль `events` предоставляет нам класс `EventEmitter`, который является ключевым для работы с событиями в Node.js.
 
-I published a full [article](https://flaviocopes.com/node-event-emitter/){rel="noopener"} on that, so here I will just describe the API without further examples on how to use it.
+Я опубликовал полную [статью](https://flaviocopes.com/node-event-emitter/){rel="noopener"} об этом, поэтому здесь я просто опишу API без дополнительных примеров его использования.
 
 ```language-js
 const EventEmitter = require('events')
 const door = new EventEmitter()
 ```
 
-The event listener eats its own dog food and uses these events:
+Слушатель событий ест свой собственный собачий корм и использует эти события:
 
-- `newListener` when a listener is added
-- `removeListener` when a listener is removed
+- `newListener`, когда добавляется слушатель
+- `removeListener`, когда слушатель удаляется.
 
-Here's a detailed description of the most useful methods:
+Вот подробное описание наиболее полезных методов:
 
 - `emitter.addListener()`
 - `emitter.emit()`
@@ -4588,15 +4588,15 @@ Here's a detailed description of the most useful methods:
 
 #### `emitter.addListener()` {#emitter-addlistener-}
 
-Alias for `emitter.on()`.
+Псевдоним для `emitter.on()`.
 
 #### `emitter.emit()` {#emitter-emit-}
 
-Emits an event. It synchronously calls every event listener in the order they were registered.
+Вызывает событие. Оно синхронно вызывает каждый слушатель события в том порядке, в котором они были зарегистрированы.
 
 #### `emitter.eventNames()` {#emitter-eventnames-}
 
-Return an array of strings that represent the events registered on the current EventListener:
+Возвращает массив строк, которые представляют события, зарегистрированные на текущем EventListener:
 
 ```language-js
 door.eventNames()
@@ -4604,7 +4604,7 @@ door.eventNames()
 
 #### `emitter.getMaxListeners()` {#emitter-getmaxlisteners-}
 
-Get the maximum amount of listeners one can add to an EventListener object, which defaults to 10 but can be increased or lowered by using `setMaxListeners()`:
+Получение максимального количества слушателей, которое можно добавить к объекту EventListener. По умолчанию это значение равно 10, но может быть увеличено или уменьшено с помощью `setMaxListeners()`:
 
 ```language-js
 door.getMaxListeners()
@@ -4612,7 +4612,7 @@ door.getMaxListeners()
 
 #### `emitter.listenerCount()` {#emitter-listenercount-}
 
-Get the count of listeners of the event passed as parameter:
+Получить количество слушателей события, переданного в качестве параметра:
 
 ```language-js
 door.listenerCount('open')
@@ -4620,7 +4620,7 @@ door.listenerCount('open')
 
 #### `emitter.listeners()` {#emitter-listeners-}
 
-Gets an array of listeners of the event passed as parameter:
+Получает массив слушателей события, переданного в качестве параметра:
 
 ```language-js
 door.listeners('open')
@@ -4628,13 +4628,13 @@ door.listeners('open')
 
 #### `emitter.off()` {#emitter-off-}
 
-Alias for `emitter.removeListener()` added in Node 10.
+Псевдоним для `emitter.removeListener()`, добавленный в Node 10.
 
 #### `emitter.on()` {#emitter-on-}
 
-Adds a callback function that's called when an event is emitted.
+Добавляет функцию обратного вызова, которая вызывается, когда испускается событие.
 
-Usage:
+Использование:
 
 ```language-js
 door.on('open', () => {
@@ -4644,7 +4644,7 @@ door.on('open', () => {
 
 #### `emitter.once()` {#emitter-once-}
 
-Adds a callback function that's called when an event is emitted for the first time after registering this. This callback is only going to be called once, never again.
+Добавляет функцию обратного вызова, которая вызывается, когда событие испускается в первый раз после регистрации этой функции. Этот обратный вызов будет вызван только один раз, больше никогда.
 
 ```language-js
 const EventEmitter = require('events')
@@ -4657,15 +4657,15 @@ ee.once('my-event', () => {
 
 #### `emitter.prependListener()` {#emitter-prependlistener-}
 
-When you add a listener using `on` or `addListener`, it\'s added last in the queue of listeners, and called last. Using `prependListener` it\'s added, and called, before other listeners.
+Когда вы добавляете слушателя с помощью `on` или `addListener`, он добавляется последним в очередь слушателей и вызывается последним. При использовании `prependListener` он добавляется и вызывается раньше других слушателей.
 
 #### `emitter.prependOnceListener()` {#emitter-prependoncelistener-}
 
-When you add a listener using `once`, it\'s added last in the queue of listeners, and called last. Using `prependOnceListener` it\'s added, and called, before other listeners.
+Когда вы добавляете слушателя с помощью `once`, он добавляется последним в очереди слушателей и вызывается последним. При использовании `prependOnceListener` он добавляется и вызывается раньше других слушателей.
 
 #### `emitter.removeAllListeners()` {#emitter-removealllisteners-}
 
-Removes all listeners of an event emitter object listening to a specific event:
+Удаляет всех слушателей объекта-эмиттера события, слушающих определенное событие:
 
 ```language-js
 door.removeAllListeners('open')
@@ -4673,7 +4673,7 @@ door.removeAllListeners('open')
 
 #### `emitter.removeListener()` {#emitter-removelistener-}
 
-Remove a specific listener. You can do this by saving the callback function to a variable, when added, so you can reference it later:
+Удалить определенный слушатель. Это можно сделать, сохранив функцию обратного вызова в переменной при добавлении, чтобы можно было ссылаться на нее позже:
 
 ```language-js
 const doSomething = () => {}
@@ -4683,7 +4683,7 @@ door.removeListener('open', doSomething)
 
 #### `emitter.setMaxListeners()` {#emitter-setmaxlisteners-}
 
-Sets the maximum amount of listeners one can add to an EventListener object, which defaults to 10 but can be increased or lowered:
+Устанавливает максимальное количество слушателей, которое можно добавить к объекту EventListener. По умолчанию это значение равно 10, но может быть увеличено или уменьшено:
 
 ```language-js
 door.setMaxListeners(50)
@@ -4691,21 +4691,21 @@ door.setMaxListeners(50)
 
 ### The Node.js http module {#the-node-js-http-module}
 
-The `http` module of Node.js provides useful functions and classes to build an HTTP server. It is a key module to Node.js networking.
+Модуль `http` в Node.js предоставляет полезные функции и классы для построения HTTP-сервера. Это ключевой модуль для сетевой работы Node.js.
 
-It can be included using:
+Его можно включить, используя:
 
 ```language-js
 const http = require('http')
 ```
 
-The module provides some properties and methods, and some classes.
+Модуль предоставляет некоторые свойства и методы, а также некоторые классы.
 
 #### Properties
 
 #### `http.METHODS` {#http-methods}
 
-This property lists all the HTTP methods supported:
+В этом свойстве перечислены все поддерживаемые методы HTTP:
 
     > require('http').METHODS
 
@@ -4747,7 +4747,7 @@ This property lists all the HTTP methods supported:
 
 #### `http.STATUS_CODES` {#http-status_codes}
 
-This property lists all the HTTP status codes and their description:
+В этом свойстве перечислены все коды состояния HTTP и их описание:
 
 ```language-js
 > require('http').STATUS_CODES
@@ -4820,19 +4820,19 @@ This property lists all the HTTP status codes and their description:
 
 #### `http.globalAgent` {#http-globalagent}
 
-Points to the global instance of the Agent object, which is an instance of the `http.Agent`class.
+Указывает на глобальный экземпляр объекта Agent, который является экземпляром класса `http.Agent`.
 
-It's used to manage connections persistence and reuse for HTTP clients, and it's a key component of Node.js HTTP networking.
+Он используется для управления сохранением и повторным использованием соединений для HTTP-клиентов и является ключевым компонентом HTTP-сети Node.js.
 
-More in the `http.Agent` class description later on.
+Подробнее об описании класса `http.Agent` позже.
 
-#### Methods
+#### Методы
 
 #### `http.createServer()` {#http-createserver-}
 
-Return a new instance of the `http.Server` class.
+Возвращает новый экземпляр класса `http.Server`.
 
-Usage:
+Использование:
 
     const server = http.createServer((req, res) => {
       // handle every single request with this callback
@@ -4840,15 +4840,15 @@ Usage:
 
 #### `http.request()` {#http-request-}
 
-Makes an HTTP request to a server, creating an instance of the `http.ClientRequest` class.
+Выполняет HTTP-запрос к серверу, создавая экземпляр класса `http.ClientRequest`.
 
 #### `http.get()` {#http-get-}
 
-Similar to `http.request()`, but automatically sets the HTTP method to GET, and calls `req.end()` automatically.
+Аналогичен `http.request()`, но автоматически устанавливает метод HTTP на GET и автоматически вызывает `req.end()`.
 
-#### Classes
+#### Классы
 
-The HTTP module provides 5 classes:
+Модуль HTTP предоставляет 5 классов:
 
 - `http.Agent`
 - `http.ClientRequest`
@@ -4858,37 +4858,37 @@ The HTTP module provides 5 classes:
 
 #### `http.Agent` {#http-agent}
 
-Node creates a global instance of the `http.Agent` class to manage connections persistence and reuse for HTTP clients, a key component of Node HTTP networking.
+Node создает глобальный экземпляр класса `http.Agent` для управления сохранением и повторным использованием соединений для HTTP-клиентов, ключевого компонента HTTP-сети Node.
 
-This object makes sure that every request made to a server is queued and a single socket is reused.
+Этот объект следит за тем, чтобы каждый запрос к серверу ставился в очередь, а один сокет использовался повторно.
 
-It also maintains a pool of sockets. This is key for performance reasons.
+Он также поддерживает пул сокетов. Это важно для повышения производительности.
 
 #### `http.ClientRequest` {#http-clientrequest}
 
-An `http.ClientRequest` object is created when `http.request()` or `http.get()` is called.
+Объект `http.ClientRequest` создается при вызове `http.request()` или `http.get()`.
 
-When a response is received, the `response` event is called with the response, with an `http.IncomingMessage` instance as argument.
+Когда ответ получен, вызывается событие `response` с ответом, с экземпляром `http.IncomingMessage` в качестве аргумента.
 
-The returned data of a response can be read in 2 ways:
+Возвращенные данные ответа могут быть прочитаны двумя способами:
 
-- you can call the `response.read()` method
-- in the `response` event handler you can setup an event listener for the `data` event, so you can listen for the data streamed into.
+- вы можете вызвать метод `response.read()`.
+- в обработчике события `response` вы можете установить слушателя события `data`, чтобы вы могли прослушивать данные, передаваемые в поток.
 
 #### `http.Server` {#http-server}
 
-This class is commonly instantiated and returned when creating a new server using `http.createServer()`.
+Этот класс обычно инстанцируется и возвращается при создании нового сервера с помощью `http.createServer()`.
 
-Once you have a server object, you have access to its methods:
+Как только у вас есть объект сервера, вы получаете доступ к его методам:
 
-- `close()` stops the server from accepting new connections
-- `listen()` starts the HTTP server and listens for connections
+- `close()` останавливает сервер от приема новых соединений
+- `listen()` запускает HTTP-сервер и прослушивает соединения
 
 #### `http.ServerResponse` {#http-serverresponse}
 
-Created by an `http.Server` and passed as the second parameter to the `request` event it fires.
+Создается `http.Server` и передается в качестве второго параметра в событие `request`, которое он запускает.
 
-Commonly known and used in code as `res`:
+Обычно известен и используется в коде как `res`:
 
 ```language-js
 const server = http.createServer((req, res) => {
@@ -4896,23 +4896,23 @@ const server = http.createServer((req, res) => {
 })
 ```
 
-The method you'll always call in the handler is `end()`, which closes the response, the message is complete and the server can send it to the client. It must be called on each response.
+Метод, который вы всегда будете вызывать в обработчике, это `end()`, который закрывает ответ, сообщение завершено, и сервер может отправить его клиенту. Он должен вызываться при каждом ответе.
 
-These methods are used to interact with HTTP headers:
+Эти методы используются для взаимодействия с HTTP-заголовками:
 
-- `getHeaderNames()` get the list of the names of the HTTP headers already set
-- `getHeaders()` get a copy of the HTTP headers already set
-- `setHeader('headername', value)` sets an HTTP header value
-- `getHeader('headername')` gets an HTTP header already set
-- `removeHeader('headername')` removes an HTTP header already set
-- `hasHeader('headername')` return true if the response has that header set
-- `headersSent()` return true if the headers have already been sent to the client
+- `getHeaderNames()` получить список имен уже установленных HTTP-заголовков
+- `getHeaders()` получить копию уже установленных HTTP-заголовков
+- `setHeader('headername', value)` устанавливает значение HTTP-заголовка
+- `getHeader('headername')` получает уже установленный HTTP-заголовок
+- `removeHeader('headername')` удаляет уже установленный HTTP-заголовок
+- `hasHeader('headername')` возвращает true, если в ответе установлен этот заголовок
+- `headersSent()` возвращает true, если заголовки уже были отправлены клиенту.
 
-After processing the headers you can send them to the client by calling `response.writeHead()`, which accepts the statusCode as the first parameter, the optional status message, and the headers object.
+После обработки заголовков вы можете отправить их клиенту, вызвав функцию `response.writeHead()`, которая принимает в качестве первого параметра statusCode, необязательное сообщение о статусе и объект заголовков.
 
-To send data to the client in the response body, you use `write()`. It will send buffered data to the HTTP response stream.
+Чтобы отправить данные клиенту в теле ответа, вы используете `write()`. Она отправит буферизованные данные в поток HTTP-ответа.
 
-If the headers were not sent yet using `response.writeHead()`, it will send the headers first, with the status code and message that's set in the request, which you can edit by setting the `statusCode` and `statusMessage` properties values:
+Если заголовки еще не были отправлены с помощью `response.writeHead()`, то сначала будут отправлены заголовки с кодом статуса и сообщением, заданными в запросе, которые вы можете изменить, установив значения свойств `statusCode` и `statusMessage`:
 
 ```language-js
 response.statusCode = 500
@@ -4921,48 +4921,48 @@ response.statusMessage = 'Internal Server Error'
 
 #### `http.IncomingMessage` {#http-incomingmessage}
 
-An `http.IncomingMessage` object is created by:
+Объект `http.IncomingMessage` создается:
 
-- `http.Server` when listening to the `request` event
-- `http.ClientRequest` when listening to the `response` event
+- `http.Server` при прослушивании события `запрос`
+- `http.ClientRequest` при прослушивании события `response`.
 
-It can be used to access the response:
+Он может быть использован для доступа к ответу:
 
-- status using its `statusCode` and `statusMessage` methods
-- headers using its `headers` method or `rawHeaders`
-- HTTP method using its `method` method
-- HTTP version using the `httpVersion` method
-- URL using the `url` method
-- underlying socket using the `socket` method
+- статус с помощью методов `statusCode` и `statusMessage`
+- заголовки с помощью метода `headers` или `rawHeaders`
+- метод HTTP с помощью метода `method`
+- версия HTTP с помощью метода `httpVersion`.
+- URL с помощью метода `url`
+- базовый сокет с помощью метода `сокет`.
 
-The data is accessed using streams, since `http.IncomingMessage` implements the Readable Stream interface.
+Доступ к данным осуществляется с помощью потоков, поскольку `http.IncomingMessage` реализует интерфейс Readable Stream.
 
-### Node.js Streams {#node-js-streams}
+### Node.js Потоки {#node-js-streams}
 
-Streams are one of the fundamental concepts that power Node.js applications.
+Потоки - это одна из фундаментальных концепций, на которых основаны приложения Node.js.
 
-They are a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient way.
+Они представляют собой способ эффективной обработки чтения/записи файлов, сетевых коммуникаций или любого вида сквозного обмена информацией.
 
-Streams are not a concept unique to Node.js. They were introduced in the Unix operating system decades ago, and programs can interact with each other passing streams through the pipe operator (`|`).
+Потоки не являются концепцией, уникальной для Node.js. Они появились в операционной системе Unix несколько десятилетий назад, и программы могут взаимодействовать друг с другом, передавая потоки через оператор pipe (`|`).
 
-For example, in the traditional way, when you tell the program to read a file, the file is read into memory, from start to finish, and then you process it.
+Например, традиционным способом, когда вы говорите программе прочитать файл, файл считывается в память от начала до конца, а затем вы его обрабатываете.
 
-Using streams you read it piece by piece, processing its content without keeping it all in memory.
+Используя потоки, вы читаете файл по частям, обрабатывая его содержимое, не сохраняя все в памяти.
 
-The Node.js `stream` [module](https://nodejs.org/api/stream.html){rel="noopener"} provides the foundation upon which all streaming APIs are build.
+Node.js `stream` [модуль](https://nodejs.org/api/stream.html){rel="noopener"} обеспечивает основу, на которой строятся все потоковые API.
 
-#### Why streams?
+#### Почему именно потоки?
 
-Streams basically provide two major advantages using other data handling methods:
+Потоки в основном обеспечивают два основных преимущества перед другими методами обработки данных:
 
-- **Memory efficiency**: you don't need to load large amounts of data in memory before you are able to process it
-- **Time efficiency**: it takes way less time to start processing data as soon as you have it, rather than waiting till the whole data payload is available to start
+- **Эффективность памяти**: вам не нужно загружать большие объемы данных в память, прежде чем вы сможете их обработать
+- **Эффективность по времени**: требуется гораздо меньше времени, чтобы начать обработку данных сразу после их получения, а не ждать, пока весь объем данных будет доступен для начала работы.
 
-#### An example of a stream
+#### Пример потока
 
-A typical example is the one of reading files from a disk.
+Типичным примером является чтение файлов с диска.
 
-Using the Node.js `fs` module you can read a file, and serve it over HTTP when a new connection is established to your `http` server:
+Используя модуль Node.js `fs`, вы можете прочитать файл и передать его по HTTP при установлении нового соединения с вашим `http` сервером:
 
 ```language-js
 const http = require('http')
@@ -4977,11 +4977,11 @@ const server = http.createServer(function (req, res) {
 server.listen(3000)
 ```
 
-`readFile()` reads the full contents of the file, and invokes the callback function when it's done.
+`readFile()` считывает полное содержимое файла и вызывает функцию обратного вызова по завершении.
 
-`res.end(data)` in the callback will return the file contents to the HTTP client.
+`res.end(data)` в обратном вызове вернет содержимое файла HTTP-клиенту.
 
-If the file is big, the operation will take quite a bit of time. Here is the same thing written using streams:
+Если файл большой, операция займет довольно много времени. Вот то же самое, написанное с использованием потоков:
 
 ```language-js
 const http = require('http')
@@ -4995,82 +4995,82 @@ const server = http.createServer((req, res) => {
 server.listen(3000)
 ```
 
-Instead of waiting until the file is fully read, we start streaming it to the HTTP client as soon as we have a chunk of data ready to be sent.
+Вместо того чтобы ждать, пока файл будет полностью прочитан, мы начинаем передавать его HTTP-клиенту, как только у нас появляется фрагмент данных, готовый к отправке.
 
 #### pipe() {#pipe-}
 
-The above example uses the line `stream.pipe(res)`: the `pipe()` method is called on the file stream.
+В приведенном выше примере используется строка `stream.pipe(res)`: метод `pipe()` вызывается на файловом потоке.
 
-What does this code do? It takes the source, and pipes it into a destination.
+Что делает этот код? Он берет источник и передает его в место назначения.
 
-You call it on the source stream, so in this case, the file stream is piped to the HTTP response.
+Вы вызываете его на исходном потоке, поэтому в данном случае файловый поток передается в HTTP-ответ.
 
-The return value of the `pipe()` method is the destination stream, which is a very convenient thing that lets us chain multiple `pipe()` calls, like this:
+Возвращаемым значением метода `pipe()` является поток назначения, что очень удобно и позволяет нам соединять несколько вызовов `pipe()` в цепочку, например, так:
 
 ```language-js
 src.pipe(dest1).pipe(dest2)
 ```
 
-This construct is the same as doing:
+Эта конструкция - то же самое, что и "делать":
 
 ```language-js
 src.pipe(dest1)
 dest1.pipe(dest2)
 ```
 
-#### Streams-powered Node.js APIs {#streams-powered-node-js-apis}
+#### API Node.js с поддержкой потоков {#streams-powered-node-js-apis}
 
-Due to their advantages, many Node.js core modules provide native stream handling capabilities, most notably:
+Благодаря своим преимуществам, многие модули ядра Node.js предоставляют встроенные возможности работы с потоками, в частности:
 
-- `process.stdin` returns a stream connected to stdin
-- `process.stdout` returns a stream connected to stdout
-- `process.stderr` returns a stream connected to stderr
-- `fs.createReadStream()` creates a readable stream to a file
-- `fs.createWriteStream()` creates a writable stream to a file
-- `net.connect()` initiates a stream-based connection
-- `http.request()` returns an instance of the http.ClientRequest class, which is a writable stream
-- `zlib.createGzip()` compress data using gzip (a compression algorithm) into a stream
-- `zlib.createGunzip()` decompress a gzip stream.
-- `zlib.createDeflate()` compress data using deflate (a compression algorithm) into a stream
-- `zlib.createInflate()` decompress a deflate stream
+- `process.stdin` возвращает поток, подключенный к stdin
+- `process.stdout` возвращает поток, подключенный к stdout
+- `process.stderr` возвращает поток, подключенный к stderr
+- `fs.createReadStream()` создает поток для чтения файла
+- `fs.createWriteStream()` создает поток записи в файл
+- `net.connect()` инициирует соединение на основе потока
+- `http.request()` возвращает экземпляр класса http.ClientRequest, который является записываемым потоком
+- `zlib.createGzip()` сжимает данные с помощью gzip (алгоритм сжатия) в поток
+- `zlib.createGunzip()` распаковывает поток gzip.
+- `zlib.createDeflate()` сжимает данные с помощью deflate (алгоритм сжатия) в поток
+- `zlib.createInflate()` распаковывает поток deflate.
 
-#### Different types of streams
+#### Различные типы потоков
 
-There are four classes of streams:
+Существует четыре класса потоков:
 
-- `Readable`: a stream you can pipe from, but not pipe into (you can receive data, but not send data to it). When you push data into a readable stream, it is buffered, until a consumer starts to read the data.
-- `Writable`: a stream you can pipe into, but not pipe from (you can send data, but not receive from it)
-- `Duplex`: a stream you can both pipe into and pipe from, basically a combination of a Readable and Writable stream
-- `Transform`: a Transform stream is similar to a Duplex, but the output is a transform of its input
+- `Readable`: поток, из которого можно передавать данные, но нельзя передавать в него (вы можете получать данные, но не отправлять их в него). Когда вы передаете данные в читаемый поток, они буферизируются, пока потребитель не начнет читать данные.
+- `Записываемый`: поток, в который можно передавать данные, но не передавать из него (можно отправлять данные, но не получать из него).
+- `Duplex`: поток, в который можно передавать и из которого можно передавать данные, по сути, это комбинация потоков Readable и Writable.
+- `Transform`: поток Transform похож на Duplex, но выход является преобразованием его входа.
 
-#### How to create a readable stream
+#### Как создать читаемый поток
 
-We get the `Readable` stream from the `stream` module, and we initialize it:
+Мы получаем поток `Readable` из модуля `stream` и инициализируем его:
 
 ```language-js
 const Stream = require('stream')
 const readableStream = new Stream.Readable()
 ```
 
-Now that the stream is initialized, we can send data to it:
+Теперь, когда поток инициализирован, мы можем отправлять в него данные:
 
 ```language-js
 readableStream.push('hi!')
 readableStream.push('ho!')
 ```
 
-#### How to create a writable stream
+#### Как создать записываемый поток
 
-To create a writable stream we extend the base `Writable` object, and we implement its `_write()` method.
+Для создания записываемого потока мы расширяем базовый объект `Writable` и реализуем его метод `_write()`.
 
-First create a stream object:
+Сначала создадим объект stream:
 
 ```language-js
 const Stream = require('stream')
 const writableStream = new Stream.Writable()
 ```
 
-then implement `_write`:
+тогда реализуйте `_write`:
 
 ```language-js
 writableStream._write = (chunk, encoding, next) => {
@@ -5079,15 +5079,15 @@ writableStream._write = (chunk, encoding, next) => {
 }
 ```
 
-You can now pipe a readable stream in:
+Теперь вы можете передавать читаемый поток:
 
 ```language-js
 process.stdin.pipe(writableStream)
 ```
 
-#### How to get data from a readable stream
+#### Как получить данные из читаемого потока
 
-How do we read data from a readable stream? Using a writable stream:
+Как читать данные из читаемого потока? Используя записываемый поток:
 
 ```language-js
 const Stream = require('stream')
@@ -5106,7 +5106,7 @@ readableStream.push('hi!')
 readableStream.push('ho!')
 ```
 
-You can also consume a readable stream directly, using the `readable` event:
+Вы также можете потреблять читаемый поток напрямую, используя событие `readable`:
 
 ```language-js
 readableStream.on('readable', () => {
@@ -5114,17 +5114,17 @@ readableStream.on('readable', () => {
 })
 ```
 
-#### How to send data to a writable stream
+#### Как отправить данные в поток с возможностью записи.
 
-Using the stream `write()` method:
+Используя метод потока `write()`:
 
 ```language-js
 writableStream.write('hey!\n')
 ```
 
-#### Signaling a writable stream that you ended writing
+#### Сигнализация записываемого потока о том, что вы закончили запись.
 
-Use the `end()` method:
+Используйте метод `end()`:
 
 ```language-js
 const Stream = require('stream')
@@ -5145,29 +5145,29 @@ readableStream.push('ho!')
 writableStream.end()
 ```
 
-### The basics of working with MySQL and Node.js {#the-basics-of-working-with-mysql-and-node-js}
+### Основы работы с MySQL и Node.js {#the-basics-of-working-with-mysql-and-node-js}
 
-MySQL is one of the most popular relational databases in the world.
+MySQL - одна из самых популярных реляционных баз данных в мире.
 
-The Node.js ecosystem has several different packages that allow you to interface with MySQL, store data, retrieve data, and so on.
+В экосистеме Node.js есть несколько различных пакетов, которые позволяют взаимодействовать с MySQL, хранить данные, получать данные и так далее.
 
-We'll use [`mysqljs/mysql`](https://github.com/mysqljs/mysql){rel="noopener"}, a package that has over 12,000 GitHub stars and has been around for years.
+Мы будем использовать [`mysqljs/mysql`](https://github.com/mysqljs/mysql){rel="noopener"}, пакет, который имеет более 12 000 звезд на GitHub и существует уже много лет.
 
-#### Installing the Node.js MySql package {#installing-the-node-js-mysql-package}
+#### Установка пакета Node.js MySql {#installing-the-node-js-mysql-package}.
 
-You install it using:
+Вы устанавливаете его с помощью:
 
     npm install mysql
 
-#### Initializing the connection to the database
+#### Инициализация подключения к базе данных
 
-You first include the package:
+Сначала вы включаете пакет:
 
 ```language-js
 const mysql = require('mysql')
 ```
 
-and you create a connection:
+и вы создаете связь:
 
 ```language-js
 const options = {
@@ -5179,7 +5179,7 @@ const options = {
 const connection = mysql.createConnection(options)
 ```
 
-You initiate a new connection by calling:
+Вы инициируете новое соединение, позвонив по телефону:
 
 ```language-js
 connection.connect(err => {
@@ -5190,9 +5190,9 @@ connection.connect(err => {
 })
 ```
 
-#### The connection options
+#### Параметры подключения
 
-In the above example, the `options` object contained 3 options:
+В приведенном выше примере объект `options` содержал 3 опции:
 
 ```language-js
 const options = {
@@ -5202,18 +5202,18 @@ const options = {
 }
 ```
 
-There are many more you can use, including:
+Вы можете использовать множество других параметров, включая:
 
-- `host`, the database hostname, defaults to `localhost`
-- `port`, the MySQL server port number, defaults to 3306
-- `socketPath`, used to specify a unix socket instead of host and port
-- `debug`, by default disabled, can be used for debugging
-- `trace`, by default enabled, prints stack traces when errors occur
-- `ssl`, used to setup an SSL connection to the server (out of the scope of this tutorial)
+- `host`, имя хоста базы данных, по умолчанию `localhost`.
+- `port`, номер порта сервера MySQL, по умолчанию 3306
+- `socketPath`, используется для указания сокета unix вместо хоста и порта
+- `debug`, по умолчанию отключен, может быть использован для отладки
+- `trace`, по умолчанию включено, печатает трассировку стека при возникновении ошибок
+- `ssl`, используется для установки SSL-соединения с сервером (выходит за рамки данного руководства).
 
-#### Perform a SELECT query
+#### Выполнение запроса SELECT
 
-Now you are ready to perform an SQL query on the database. The query once executed will invoke a callback function which contains an eventual error, the results and the fields:
+Теперь вы готовы выполнить SQL-запрос к базе данных. После выполнения запроса будет вызвана функция обратного вызова, которая содержит возможную ошибку, результаты и поля:
 
 ```language-js
 connection.query('SELECT * FROM todos', (error, todos, fields) => {
@@ -5225,7 +5225,7 @@ connection.query('SELECT * FROM todos', (error, todos, fields) => {
 })
 ```
 
-You can pass in values which will be automatically escaped:
+Вы можете передавать значения, которые будут автоматически экранированы:
 
 ```language-js
 const id = 223
@@ -5238,7 +5238,7 @@ connection.query('SELECT * FROM todos WHERE id = ?', [id], (error, todos, fields
 })
 ```
 
-To pass multiple values, just put more elements in the array you pass as the second parameter:
+Чтобы передать несколько значений, просто поместите больше элементов в массив, который вы передаете в качестве второго параметра:
 
 ```language-js
 const id = 223
@@ -5252,9 +5252,9 @@ connection.query('SELECT * FROM todos WHERE id = ? AND author = ?', [id, author]
 })
 ```
 
-#### Perform an INSERT query
+#### Выполните запрос INSERT.
 
-You can pass an object:
+Вы можете передать объект:
 
 ```language-js
 const todo = {
@@ -5270,7 +5270,7 @@ connection.query('INSERT INTO todos SET ?', todo, (error, results, fields) => {
 })
 ```
 
-If the table has a primary key with `auto_increment`, the value of that will be returned in the `results.insertId`value:
+Если таблица имеет первичный ключ с `auto_increment`, его значение будет возвращено в значении `results.insertId`:
 
 ```language-js
 const todo = {
@@ -5289,42 +5289,42 @@ connection.query('INSERT INTO todos SET ?', todo, (error, results, fields) => {
 )
 ```
 
-#### Close the connection
+#### Закрыть соединение
 
-When you need to terminate the connection to the database you can call the `end()` method:
+Когда вам нужно прервать соединение с базой данных, вы можете вызвать метод `end()`:
 
 ```language-js
 connection.end()
 ```
 
-This makes sure any pending query gets sent, and the connection is gracefully terminated.
+Это гарантирует, что любой ожидающий запрос будет отправлен, и соединение будет изящно завершено.
 
-### The difference between development and production
+### Разница между разработкой и производством
 
-You can have different configurations for production and development environments.
+Вы можете иметь различные конфигурации для производственной среды и среды разработки.
 
-Node.js assumes it's always running in a development environment. You can signal Node.js that you are running in production by setting the `NODE_ENV=production` environment variable.
+Node.js предполагает, что он всегда работает в среде разработки. Вы можете сообщить Node.js, что вы работаете в production, установив переменную окружения `NODE_ENV=production`.
 
-This is usually done by executing the command:
+Обычно это делается путем выполнения команды:
 
     export NODE_ENV=production
 
-in the shell, but it's better to put it in your shell configuration file (like `.bash_profile` with the Bash shell) because otherwise the setting does not persist in case of a system restart.
+в оболочке, но лучше поместить ее в файл конфигурации оболочки (например, `.bash_profile` в оболочке Bash), поскольку в противном случае настройка не сохранится в случае перезагрузки системы.
 
-You can also apply the environment variable by prepending it to your application initialization command:
+Вы также можете применить переменную окружения, добавив ее в команду инициализации приложения:
 
     NODE_ENV=production node app.js
 
-This environment variable is a convention that is widely used in external libraries as well.
+Эта переменная окружения является соглашением, которое широко используется и во внешних библиотеках.
 
-Setting the environment to `production` generally ensures that:
+Установка окружения в `production` обычно гарантирует, что:
 
-- logging is kept to a minimum, essential level
-- more caching levels take place to optimize performance
+- протоколирование сведено к минимально необходимому уровню
+- больше уровней кэширования для оптимизации производительности.
 
-For example [Pug](https://pugjs.org/api/express.html){rel="noopener"}, the templating library used by Express, compiles in debug mode if `NODE_ENV` is not set to `production`. Express views are compiled in every request in development mode, while in production they are cached. There are many more examples.
+Например, [Pug](https://pugjs.org/api/express.html){rel="noopener"}, библиотека шаблонов, используемая Express, компилируется в режиме отладки, если `NODE_ENV` не установлен в `production`. Представления Express компилируются в каждом запросе в режиме разработки, в то время как в режиме производства они кэшируются. Существует множество других примеров.
 
-Express provides configuration hooks specific to the environment, which are automatically called based on the `NODE_ENV` variable value:
+Express предоставляет конфигурационные хуки, специфичные для среды, которые автоматически вызываются на основе значения переменной `NODE_ENV`:
 
 ```language-js
 app.configure('development', () => {
@@ -5340,7 +5340,7 @@ app.configure('production', 'staging', () => {
 })
 ```
 
-For example you can use this to set different error handlers for different modes:
+Например, вы можете использовать это для установки различных обработчиков ошибок для разных режимов:
 
 ```language-js
 app.configure('development', () => {
@@ -5352,6 +5352,6 @@ app.configure('production', () => {
 })
 ```
 
-### Closing words
+### Заключительные слова
 
-I hope this introduction to Node.js will help you get started using it, or help you grasp some of its concepts. And hopefully now you'll know enough to start building some great things!
+Я надеюсь, что это введение в Node.js поможет вам начать его использовать или понять некоторые его концепции. Надеюсь, теперь вы знаете достаточно, чтобы начать создавать замечательные вещи!
