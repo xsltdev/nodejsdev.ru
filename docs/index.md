@@ -22,8 +22,8 @@ hide:
 
     Гайды по Node.js от различных авторов:
 
-    - [Гайд от webdraftt](webdraftt/index.md)
-    - [Гайд от metanit](metanit/index.md)
+    - [Гайд от webdraftt](guides/webdraftt/index.md)
+    - [Гайд от metanit](guides/metanit/index.md)
 
 !!! success "Документация Express.js"
 
