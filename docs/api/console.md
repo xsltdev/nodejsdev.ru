@@ -1,48 +1,48 @@
 ---
-description: В console модуль предоставляет простую консоль отладки, аналогичную механизму консоли JavaScript, предоставляемому веб-браузерами
+description: Модуль console предоставляет простую отладочную консоль, которая похожа на механизм консоли JavaScript, предоставляемый веб-браузерами
 ---
 
 # Консоль
 
-<!--introduced_in=v0.10.13-->
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/console.html)
 
-> Стабильность: 2 - стабильная
+!!!success "Стабильность: 2 – Стабильная"
 
-<!-- source_link=lib/console.js -->
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-В `console` Модуль предоставляет простую консоль отладки, аналогичную механизму консоли JavaScript, предоставляемому веб-браузерами.
+Модуль `node:console` предоставляет простую отладочную консоль, которая похожа на механизм консоли JavaScript, предоставляемый веб-браузерами.
 
-Модуль экспортирует два конкретных компонента:
+Модуль экспортирует два специфических компонента:
 
-- А `Console` класс с такими методами, как `console.log()`, `console.error()` а также `console.warn()` который можно использовать для записи в любой поток Node.js.
-- Глобальный `console` экземпляр настроен для записи в [`process.stdout`](process.md#processstdout) а также [`process.stderr`](process.md#processstderr). Глобальный `console` можно использовать без звонка `require('console')`.
+- Класс `Console` с методами `console.log()`, `console.error()` и `console.warn()`, которые могут быть использованы для записи в любой поток Node.js.
+- Глобальный экземпляр `console` настроен на запись в [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr). Глобальная `console` может использоваться без вызова `require('node:console')`.
 
-**_Предупреждение_**: Методы глобального объекта консоли не являются ни постоянно синхронными, как API-интерфейсы браузера, на которые они похожи, ни они не являются последовательно асинхронными, как все другие потоки Node.js. Увидеть [примечание по вводу / выводу процесса](process.md#a-note-on-process-io) для дополнительной информации.
+**_Предупреждение_**: Методы объекта глобальной консоли не являются ни последовательно синхронными, как API браузера, на которые они похожи, ни последовательно асинхронными, как все остальные потоки Node.js. Дополнительную информацию смотрите в [заметке о процессах ввода-вывода](process.md#a-note-on-process-io).
 
-Пример использования глобального `console`:
+Пример с использованием глобальной `console`:
 
 ```js
 console.log('hello world');
-// Prints: hello world, to stdout
+// Печатает: hello world, в stdout
 console.log('hello %s', 'world');
-// Prints: hello world, to stdout
-console.error(new Error('Whoops, something bad happened'));
-// Prints error message and stack trace to stderr:
-//   Error: Whoops, something bad happened
-//     at [eval]:5:15
-//     at Script.runInThisContext (node:vm:132:18)
-//     at Object.runInThisContext (node:vm:309:38)
-//     at node:internal/process/execution:77:19
-//     at [eval]-wrapper:6:22
-//     at evalScript (node:internal/process/execution:76:60)
-//     at node:internal/main/eval_string:23:3
+// Выводит: hello world, на stdout
+console.error(new Error('Упс, случилось что-то плохое'));
+// Выводит сообщение об ошибке и трассировку стека в stderr:
+// Ошибка: Whoops, something bad happened
+// at [eval]:5:15
+// at Script.runInThisContext (node:vm:132:18)
+// at Object.runInThisContext (node:vm:309:38)
+// at node:internal/process/execution:77:19
+// at [eval]-wrapper:6:22
+// at evalScript (node:internal/process/execution:76:60)
+// at node:internal/main/eval_string:23:3
 
 const name = 'Will Robinson';
-console.warn(`Danger ${name}! Danger!`);
-// Prints: Danger Will Robinson! Danger!, to stderr
+console.warn(`Опасность ${имя}! Опасность!`);
+// Выводит: Danger Will Robinson! Danger!, to stderr
 ```
 
-Пример использования `Console` класс:
+Пример с использованием класса `Console`:
 
 ```js
 const out = getStreamSomehow();
@@ -50,89 +50,64 @@ const err = getStreamSomehow();
 const myConsole = new console.Console(out, err);
 
 myConsole.log('hello world');
-// Prints: hello world, to out
+// Печатает: hello world, в out
 myConsole.log('hello %s', 'world');
-// Prints: hello world, to out
-myConsole.error(
-  new Error('Whoops, something bad happened')
-);
-// Prints: [Error: Whoops, something bad happened], to err
+// Печатает: hello world, to out
+myConsole.error(new Error('Упс, случилось что-то плохое'));
+// Печатает: [Error: Whoops, something bad happened], to err
 
-const name = 'Will Robinson';
+const name = 'Уилл Робинсон';
 myConsole.warn(`Danger ${name}! Danger!`);
-// Prints: Danger Will Robinson! Danger!, to err
+// Prints: Danger Will Robinson! Опасность!, to err
 ```
+
+<!-- 0000.part.md -->
 
 ## Класс: `Console`
 
-<!-- YAML
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/9744
-    description: Errors that occur while writing to the underlying streams
-                 will now be ignored by default.
--->
-
-<!--type=class-->
-
-В `Console` class может использоваться для создания простого регистратора с настраиваемыми выходными потоками, и к нему можно получить доступ, используя либо `require('console').Console` или `console.Console` (или их деструктурированные аналоги):
+Класс `Console` может быть использован для создания простого регистратора с настраиваемыми потоками вывода, доступ к которому можно получить с помощью `require('node:console').Console` или `console.Console` (или их деструктурированных аналогов):
 
 ```js
-const { Console } = require('console');
+const { Console } = require('node:console');
 ```
 
 ```js
 const { Console } = console;
 ```
 
+<!-- 0001.part.md -->
+
 ### `new Console(stdout[, stderr][, ignoreErrors])`
+
+<!-- 0002.part.md -->
 
 ### `new Console(options)`
 
-<!-- YAML
-changes:
-  - version:
-     - v14.2.0
-     - v12.17.0
-    pr-url: https://github.com/nodejs/node/pull/32964
-    description: The `groupIndentation` option was introduced.
-  - version: v11.7.0
-    pr-url: https://github.com/nodejs/node/pull/24978
-    description: The `inspectOptions` option is introduced.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19372
-    description: The `Console` constructor now supports an `options` argument,
-                 and the `colorMode` option was introduced.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/9744
-    description: The `ignoreErrors` option was introduced.
--->
-
-- `options` {Объект}
+- `options` {Object}
   - `stdout` {stream.Writable}
   - `stderr` {stream.Writable}
-  - `ignoreErrors` {boolean} Игнорировать ошибки при записи в базовые потоки. **Дефолт:** `true`.
-  - `colorMode` {boolean | string} Установить поддержку цвета для этого `Console` пример. Установка на `true` позволяет раскрашивать при просмотре значений. Установка на `false` отключает окраску при проверке значений. Установка на `'auto'` делает поддержку цвета зависимой от значения `isTTY` свойство и значение, возвращаемое `getColorDepth()` в соответствующем потоке. Этот вариант нельзя использовать, если `inspectOptions.colors` также установлен. **Дефолт:** `'auto'`.
-  - `inspectOptions` {Object} Определяет параметры, которые передаются в [`util.inspect()`](util.md#utilinspectobject-options).
-  - `groupIndentation` {number} Установить отступ группы. **Дефолт:** `2`.
+  - `ignoreErrors` {boolean} Игнорировать ошибки при записи в базовые потоки. **По умолчанию:** `true`.
+  - `colorMode` {boolean|string} Устанавливает поддержку цвета для данного экземпляра `консоли`. Установка значения `true` включает раскраску при просмотре значений. Установка в `false` отключает раскраску при просмотре значений. Установка в `'auto'` делает поддержку цвета зависимой от значения свойства `isTTY` и значения, возвращаемого функцией `getColorDepth()` для соответствующего потока. Эта опция не может быть использована, если `inspectOptions.colors` также установлен. **По умолчанию:** `авто`.
+  - `inspectOptions` {Object} Определяет опции, которые передаются в [`util.inspect()`](util.md#utilinspectobject-options).
+  - `groupIndentation` {number} Установка отступа группы. **По умолчанию:** `2`.
 
-Создает новый `Console` с одним или двумя экземплярами потока с возможностью записи. `stdout` - это поток с возможностью записи для вывода журнала или информации. `stderr` используется для вывода предупреждений или ошибок. Если `stderr` не предусмотрено, `stdout` используется для `stderr`.
+Создает новую `Console` с одним или двумя экземплярами записываемого потока. `stdout` - записываемый поток для вывода журнала или информации. `stderr` используется для вывода предупреждений или ошибок. Если `stderr` не указан, `stdout` используется для `stderr`.
 
 ```js
 const output = fs.createWriteStream('./stdout.log');
 const errorOutput = fs.createWriteStream('./stderr.log');
-// Custom simple logger
+// Пользовательский простой регистратор
 const logger = new Console({
   stdout: output,
   stderr: errorOutput,
 });
-// use it like console
+// используем его как консоль
 const count = 5;
 logger.log('count: %d', count);
-// In stdout.log: count 5
+// В stdout.log: count 5
 ```
 
-Глобальный `console` это особенный `Console` чей вывод отправляется [`process.stdout`](process.md#processstdout) а также [`process.stderr`](process.md#processstderr). Это эквивалентно вызову:
+Глобальная `console` является специальной `Console`, вывод которой отправляется на [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr). Это эквивалентно вызову:
 
 ```js
 new Console({
@@ -141,55 +116,42 @@ new Console({
 });
 ```
 
+<!-- 0003.part.md -->
+
 ### `console.assert(value[, ...message])`
 
-<!-- YAML
-added: v0.1.101
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/17706
-    description: The implementation is now spec compliant and does not throw
-                 anymore.
--->
+- `value` {любой} Значение, проверяемое на истинность.
+- `...message` {любой} Все аргументы, кроме `value`, используются в качестве сообщения об ошибке.
 
-- `value` {any} Значение, проверенное на достоверность.
-- `...message` {any} Все аргументы кроме `value` используются как сообщение об ошибке.
+`console.assert()` пишет сообщение, если `value` является [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) или опущено. Она только пишет сообщение и никак иначе не влияет на выполнение. Вывод всегда начинается со слов `"Assertion failed"`. Если указано, то `сообщение` форматируется с помощью [`util.format()`](util.md#utilformatformat-args).
 
-`console.assert()` пишет сообщение, если `value` является [ложь](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) или опущено. Он только пишет сообщение и никаким другим образом не влияет на выполнение. Вывод всегда начинается с `"Assertion failed"`. Если предусмотрено, `message` форматируется с использованием [`util.format()`](util.md#utilformatformat-args).
-
-Если `value` является [правдивый](https://developer.mozilla.org/en-US/docs/Glossary/Truthy), Ничего не произошло.
+Если `value` является [truey](https://developer.mozilla.org/en-US/docs/Glossary/Truthy), то ничего не происходит.
 
 ```js
-console.assert(true, 'does nothing');
+console.assert(true, 'ничего не делает');
 
 console.assert(false, 'Whoops %s work', "didn't");
-// Assertion failed: Whoops didn't work
+// Assertion failed: Whoops не сработал
 
 console.assert();
 // Assertion failed
 ```
 
+<!-- 0004.part.md -->
+
 ### `console.clear()`
 
-<!-- YAML
-added: v8.3.0
--->
+Если `stdout` является TTY, вызов `console.clear()` попытается очистить TTY. Когда `stdout` не является TTY, этот метод ничего не делает.
 
-Когда `stdout` является телетайпом, звонит `console.clear()` попытается очистить TTY. Когда `stdout` не является телетайпом, этот метод ничего не делает.
+Конкретная операция `console.clear()` может отличаться в разных операционных системах и типах терминалов. В большинстве операционных систем Linux метод `console.clear()` работает аналогично команде оболочки `clear`. В Windows `console.clear()` очистит только вывод в текущем окне просмотра терминала для бинарного файла Node.js.
 
-Конкретная работа `console.clear()` может различаться в зависимости от операционной системы и типа терминала. Для большинства операционных систем Linux `console.clear()` действует аналогично `clear` команда оболочки. В Windows `console.clear()` очистит только вывод в текущем окне просмотра терминала для двоичного файла Node.js.
+<!-- 0005.part.md -->
 
 ### `console.count([label])`
 
-<!-- YAML
-added: v8.3.0
--->
+- `label` {string} Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
 
-- `label` {строка} Отображаемая метка счетчика. **Дефолт:** `'default'`.
-
-Поддерживает внутренний счетчик, специфичный для `label` и выводит на `stdout` количество раз `console.count()` был вызван с данным `label`.
-
-<!-- eslint-skip -->
+Ведет внутренний счетчик, специфичный для `label`, и выводит в `stdout` количество раз, когда `console.count()` был вызван с заданной `label`.
 
 ```js
 > console.count()
@@ -213,17 +175,13 @@ undefined
 >
 ```
 
+<!-- 0006.part.md -->
+
 ### `console.countReset([label])`
 
-<!-- YAML
-added: v8.3.0
--->
+- `label` {string} Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
 
-- `label` {строка} Отображаемая метка счетчика. **Дефолт:** `'default'`.
-
-Сбрасывает внутренний счетчик, относящийся к `label`.
-
-<!-- eslint-skip -->
+Сбрасывает внутренний счетчик, специфичный для `label`.
 
 ```js
 > console.count('abc');
@@ -237,143 +195,115 @@ undefined
 >
 ```
 
+<!-- 0007.part.md -->
+
 ### `console.debug(data[, ...args])`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v8.10.0
-    pr-url: https://github.com/nodejs/node/pull/17033
-    description: "`console.debug` is now an alias for `console.log`."
--->
-
-- `data` {любой}
+- `данные` {любые}
 - `...args` {любой}
 
-В `console.debug()` функция - это псевдоним для [`console.log()`](#consolelogdata-args).
+Функция `console.debug()` является псевдонимом для [`console.log()`](#consolelogdata-args).
+
+<!-- 0008.part.md -->
 
 ### `console.dir(obj[, options])`
 
-<!-- YAML
-added: v0.1.101
--->
-
 - `obj` {любой}
-- `options` {Объект}
-  - `showHidden` {boolean} Если `true` тогда также будут показаны неперечислимые свойства объекта и свойства символа. **Дефолт:** `false`.
-  - `depth` {number} говорит [`util.inspect()`](util.md#utilinspectobject-options) сколько раз повторять при форматировании объекта. Это полезно для осмотра больших сложных объектов. Чтобы сделать его рекурсивным бесконечно, передайте `null`. **Дефолт:** `2`.
-  - `colors` {boolean} Если `true`, то вывод будет оформлен с использованием цветовых кодов ANSI. Цвета настраиваются; видеть [настройка `util.inspect()` цвета](util.md#customizing-utilinspect-colors). **Дефолт:** `false`.
+- `options` {Object}
+  - `showHidden` {boolean} Если `true`, то будут показаны также неперечислимые и символьные свойства объекта. **По умолчанию:** `false`.
+  - `depth` {number} Указывает [`util.inspect()`](util.md#utilinspectobject-options), сколько раз пересматривать объект при форматировании. Это полезно при проверке больших сложных объектов. Чтобы заставить его выполнять возврат бесконечно, передайте `null`. **По умолчанию:** `2`.
+  - `colors` {boolean} Если `true`, то вывод будет оформлен с использованием цветовых кодов ANSI. Цвета настраиваются; смотрите [настройка цветов `util.inspect()`](util.md#customizing-utilinspect-colors). **По умолчанию:** `false`.
 
-Использует [`util.inspect()`](util.md#utilinspectobject-options) на `obj` и выводит полученную строку в `stdout`. Эта функция обходит любые пользовательские `inspect()` функция, определенная на `obj`.
+Использует [`util.inspect()`](util.md#utilinspectobject-options) для `obj` и печатает полученную строку в `stdout`. Эта функция обходит любую пользовательскую функцию `inspect()`, определенную для `obj`.
+
+<!-- 0009.part.md -->
 
 ### `console.dirxml(...data)`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v9.3.0
-    pr-url: https://github.com/nodejs/node/pull/17152
-    description: "`console.dirxml` now calls `console.log` for its arguments."
--->
-
 - `...data` {любой}
 
-Этот метод вызывает `console.log()` передавая ему полученные аргументы. Этот метод не производит никакого форматирования XML.
+Этот метод вызывает `console.log()`, передавая ему полученные аргументы. Этот метод не производит никакого форматирования XML.
+
+<!-- 0010.part.md -->
 
 ### `console.error([data][, ...args])`
 
-<!-- YAML
-added: v0.1.100
--->
-
-- `data` {любой}
+- `данные` {любые}
 - `...args` {любой}
 
-Печать на `stderr` с новой строкой. Можно передать несколько аргументов, первый из которых используется в качестве основного сообщения, а все дополнительные - в качестве значений подстановки, как в printf (3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
+Печатает в `stderr` с новой строкой. Можно передать несколько аргументов, при этом первый используется как основное сообщение, а все дополнительные - как подстановочные значения, аналогично printf(3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
 
 ```js
 const code = 5;
 console.error('error #%d', code);
-// Prints: error #5, to stderr
+// Выводит ошибку #5 в stderr
 console.error('error', code);
-// Prints: error 5, to stderr
+// Выводит: ошибка 5, на stderr
 ```
 
-Если элементы форматирования (например, `%d`) не найдены в первой строке, то [`util.inspect()`](util.md#utilinspectobject-options) вызывается для каждого аргумента, и результирующие строковые значения объединяются. Видеть [`util.format()`](util.md#utilformatformat-args) для дополнительной информации.
+Если элементы форматирования (например, `%d`) не найдены в первой строке, тогда [`util.inspect()`](util.md#utilinspectobject-options) вызывается на каждом аргументе и результирующие строковые значения конкатенируются. Дополнительную информацию смотрите в [`util.format()`](util.md#utilformatformat-args).
+
+<!-- 0011.part.md -->
 
 ### `console.group([...label])`
 
-<!-- YAML
-added: v8.5.0
--->
-
 - `...label` {любой}
 
-Увеличивает отступ последующих строк пробелами для `groupIndentation` длина.
+Увеличивает отступ последующих строк на пробелы для длины `groupIndentation`.
 
-Если один или несколько `label`предусмотрены, они печатаются первыми без дополнительного отступа.
+Если указана одна или более `ярлыков`, то они печатаются первыми без дополнительного отступа.
+
+<!-- 0012.part.md -->
 
 ### `console.groupCollapsed()`
 
-<!-- YAML
-  added: v8.5.0
--->
-
 Псевдоним для [`console.group()`](#consolegrouplabel).
+
+<!-- 0013.part.md -->
 
 ### `console.groupEnd()`
 
-<!-- YAML
-added: v8.5.0
--->
+Уменьшает отступ последующих строк на пробелы для длины `groupIndentation`.
 
-Уменьшает отступ последующих строк пробелами для `groupIndentation` длина.
+<!-- 0014.part.md -->
 
-### `console.info([data][, ...args])`
+### `console.info([data][, ...args])`.
 
-<!-- YAML
-added: v0.1.100
--->
-
-- `data` {любой}
+- `данные` {любые}
 - `...args` {любой}
 
-В `console.info()` функция - это псевдоним для [`console.log()`](#consolelogdata-args).
+Функция `console.info()` является псевдонимом для [`console.log()`](#consolelogdata-args).
+
+<!-- 0015.part.md -->
 
 ### `console.log([data][, ...args])`
 
-<!-- YAML
-added: v0.1.100
--->
-
-- `data` {любой}
+- `данные` {любые}
 - `...args` {любой}
 
-Печать на `stdout` с новой строкой. Можно передать несколько аргументов, первый из которых используется в качестве основного сообщения, а все дополнительные - в качестве значений подстановки, как в printf (3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
+Печатает в `stdout` с новой строкой. Можно передавать несколько аргументов, при этом первый используется как основное сообщение, а все дополнительные - как подстановочные значения, аналогично printf(3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
 
 ```js
 const count = 5;
 console.log('count: %d', count);
-// Prints: count: 5, to stdout
+// Выводит: count: 5, в stdout
 console.log('count:', count);
-// Prints: count: 5, to stdout
+// Выводит: count: 5, в stdout
 ```
 
-Видеть [`util.format()`](util.md#utilformatformat-args) для дополнительной информации.
+Дополнительную информацию смотрите в [`util.format()`](util.md#utilformatformat-args).
+
+<!-- 0016.part.md -->
 
 ### `console.table(tabularData[, properties])`
 
-<!-- YAML
-added: v10.0.0
--->
+- `табличные данные` {любой}
+- `свойства` {строка} Альтернативные свойства для построения таблицы.
 
-- `tabularData` {любой}
-- `properties` {string \[]} Альтернативные свойства для построения таблицы.
-
-Попробуйте построить таблицу со столбцами свойств `tabularData` (или используйте `properties`) и ряды `tabularData` и зарегистрируйте это. Возвращается к простой регистрации аргумента, если он не может быть проанализирован как табличный.
+Попробуйте построить таблицу со столбцами свойств `tabularData` (или используйте `properties`) и строками `tabularData` и запишите ее в журнал. Вернитесь к простому протоколированию аргумента, если он не может быть разобран как табличный.
 
 ```js
-// These can't be parsed as tabular data
+// Они не могут быть разобраны как табличные данные
 console.table(Symbol());
 // Symbol()
 
@@ -385,10 +315,10 @@ console.table([
   { a: 'Z', b: 2 },
 ]);
 // ┌─────────┬─────┬─────┐
-// │ (index) │  a  │  b  │
+// │ (индекс) │ a │ b │ │
 // ├─────────┼─────┼─────┤
-// │    0    │  1  │ 'Y' │
-// │    1    │ 'Z' │  2  │
+// │ 0 │ 1 │ 'Y' │
+// │ 1 │ 'Z' │ 2 │
 // └─────────┴─────┴─────┘
 
 console.table(
@@ -399,145 +329,125 @@ console.table(
   ['a']
 );
 // ┌─────────┬─────┐
-// │ (index) │  a  │
+// │ (индекс) │ a │
 // ├─────────┼─────┤
-// │    0    │  1  │
-// │    1    │ 'Z' │
+// │ 0 │ 1 │
+// │ 1 │ 'Z' │
 // └─────────┴─────┘
 ```
 
+<!-- 0017.part.md -->
+
 ### `console.time([label])`
 
-<!-- YAML
-added: v0.1.104
--->
+- `label` {string} **По умолчанию:** 'default'.
 
-- `label` {нить} **Дефолт:** `'default'`
+Запускает таймер, который может быть использован для вычисления продолжительности операции. Таймеры идентифицируются уникальной `label`. Используйте эту же `метку` при вызове [`console.timeEnd()`](#consoletimeendlabel) для остановки таймера и вывода прошедшего времени в соответствующих единицах времени в `stdout`. Например, если прошедшее время составляет 3869 мс, `console.timeEnd()` выводит "3.869s".
 
-Запускает таймер, который можно использовать для вычисления продолжительности операции. Таймеры идентифицируются уникальным `label`. Используйте то же самое `label` при звонке [`console.timeEnd()`](#consoletimeendlabel) для остановки таймера и вывода прошедшего времени в подходящих единицах времени для `stdout`. Например, если прошедшее время составляет 3869 мс, `console.timeEnd()` отображает «3.869 с».
+<!-- 0018.part.md -->
 
 ### `console.timeEnd([label])`
 
-<!-- YAML
-added: v0.1.104
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29251
-    description: The elapsed time is displayed with a suitable time unit.
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5901
-    description: This method no longer supports multiple calls that don’t map
-                 to individual `console.time()` calls; see below for details.
--->
+- `label` {string} **По умолчанию:** `'default'`.
 
-- `label` {нить} **Дефолт:** `'default'`
-
-Останавливает таймер, который ранее был запущен вызовом [`console.time()`](#consoletimelabel) и распечатывает результат в `stdout`:
+Останавливает таймер, который был ранее запущен вызовом [`console.time()`](#consoletimelabel) и печатает результат в `stdout`:
 
 ```js
-console.time('100-elements');
-for (let i = 0; i < 100; i++) {}
-console.timeEnd('100-elements');
-// prints 100-elements: 225.438ms
+console.time('bunch-of-stuff');
+// Делаем кучу всего.
+console.timeEnd('bunch-of-stuff');
+// Печатает: bunch-of-stuff: 225.438ms
 ```
+
+<!-- 0019.part.md -->
 
 ### `console.timeLog([label][, ...data])`
 
-<!-- YAML
-added: v10.7.0
--->
-
-- `label` {нить} **Дефолт:** `'default'`
+- `label` {string} **По умолчанию:** `'default'\*.
 - `...data` {любой}
 
-Для таймера, который ранее запускался вызовом [`console.time()`](#consoletimelabel), печатает прошедшее время и другие `data` аргументы `stdout`:
+Для таймера, который был ранее запущен вызовом [`console.time()`](#consoletimelabel), печатает истекшее время и другие `данные` аргументов в `stdout`:
 
 ```js
 console.time('process');
-const value = expensiveProcess1(); // Returns 42
+const value = expensiveProcess1(); // Возвращает 42
 console.timeLog('process', value);
-// Prints "process: 365.227ms 42".
+// Выводит "процесс: 365.227ms 42".
 doExpensiveProcess2(value);
 console.timeEnd('process');
 ```
 
+<!-- 0020.part.md -->
+
 ### `console.trace([message][, ...args])`
 
-<!-- YAML
-added: v0.1.104
--->
-
-- `message` {любой}
+- `сообщение` {любое}
 - `...args` {любой}
 
-Печать на `stderr` Струна `'Trace: '`, за которым следует [`util.format()`](util.md#utilformatformat-args) форматированное сообщение и трассировка стека до текущей позиции в коде.
+Печатает в `stderr` строку ` 'Trace:'``, затем [ `util.format()`](util.md#utilformatformat-args) отформатированное сообщение и трассировку стека до текущей позиции в коде.
 
 ```js
 console.trace('Show me');
-// Prints: (stack trace will vary based on where trace is called)
-//  Trace: Show me
-//    at repl:2:9
-//    at REPLServer.defaultEval (repl.js:248:27)
-//    at bound (domain.js:287:14)
-//    at REPLServer.runBound [as eval] (domain.js:300:12)
-//    at REPLServer.<anonymous> (repl.js:412:12)
-//    at emitOne (events.js:82:20)
-//    at REPLServer.emit (events.js:169:7)
-//    at REPLServer.Interface._onLine (readline.js:210:10)
-//    at REPLServer.Interface._line (readline.js:549:8)
-//    at REPLServer.Interface._ttyWrite (readline.js:826:14)
+// Печать: (трассировка стека будет меняться в зависимости от места вызова трассировки)
+// Трассировка: Show me
+// at repl:2:9
+// at REPLServer.defaultEval (repl.js:248:27)
+// at bound (domain.js:287:14)
+// at REPLServer.runBound [as eval] (domain.js:300:12)
+// at REPLServer.<anonymous> (repl.js:412:12)
+// at emitOne (events.js:82:20)
+// at REPLServer.emit (events.js:169:7)
+// at REPLServer.Interface._onLine (readline.js:210:10)
+// at REPLServer.Interface._line (readline.js:549:8)
+// at REPLServer.Interface._ttyWrite (readline.js:826:14)
 ```
+
+<!-- 0021.part.md -->
 
 ### `console.warn([data][, ...args])`
 
-<!-- YAML
-added: v0.1.100
--->
-
-- `data` {любой}
+- `данные` {любые}
 - `...args` {любой}
 
-В `console.warn()` функция - это псевдоним для [`console.error()`](#consoleerrordata-args).
+Функция `console.warn()` является псевдонимом для [`console.error()`](#consoleerrordata-args).
 
-## Только методы инспектора
+<!-- 0022.part.md -->
 
-Следующие методы предоставляются движком V8 в общем API, но ничего не отображают, если только они не используются вместе с [инспектор](debugger.md) (`--inspect` флаг).
+## Методы только для инспектора
+
+Следующие методы открываются движком V8 в общем API, но ничего не отображают, если не используются вместе с [inspector](debugger.md) (флаг `--inspect`).
+
+<!-- 0023.part.md -->
 
 ### `console.profile([label])`
 
-<!-- YAML
-added: v8.0.0
--->
+- `label` {string}
 
-- `label` {нить}
-
-Этот метод ничего не отображает, если он не используется в инспекторе. В `console.profile()` запускает профиль процессора JavaScript с необязательной меткой до тех пор, пока [`console.profileEnd()`](#consoleprofileendlabel) называется. Затем профиль добавляется в **Профиль** панель инспектора.
+Этот метод ничего не отображает, если не используется в инспекторе. Метод `console.profile()` запускает профиль процессора JavaScript с необязательной меткой до вызова [`console.profileEnd()`](#consoleprofileendlabel). Затем профиль добавляется на панель **Profile** инспектора.
 
 ```js
 console.profile('MyLabel');
-// Some code
+// Некоторый код
 console.profileEnd('MyLabel');
-// Adds the profile 'MyLabel' to the Profiles panel of the inspector.
+// Добавляет профиль 'MyLabel' на панель Profiles инспектора.
 ```
+
+<!-- 0024.part.md -->
 
 ### `console.profileEnd([label])`
 
-<!-- YAML
-added: v8.0.0
--->
+- `label` {string}
 
-- `label` {нить}
+Этот метод ничего не отображает, если не используется в инспекторе. Останавливает текущий сеанс профилирования процессора JavaScript, если он был запущен, и печатает отчет на панели **Profiles** инспектора. Пример см. в [`console.profile()`](#consoleprofilelabel).
 
-Этот метод ничего не отображает, если он не используется в инспекторе. Останавливает текущий сеанс профилирования ЦП JavaScript, если он был запущен, и печатает отчет в **Профили** панель инспектора. Видеть [`console.profile()`](#consoleprofilelabel) для примера.
+Если этот метод вызывается без метки, то останавливается последний запущенный профиль.
 
-Если этот метод вызывается без метки, последний запущенный профиль останавливается.
+<!-- 0025.part.md -->
 
 ### `console.timeStamp([label])`
 
-<!-- YAML
-added: v8.0.0
--->
+- `label` {string}
 
-- `label` {нить}
+Этот метод ничего не отображает, если не используется в инспекторе. Метод `console.timeStamp()` добавляет событие с меткой `'label'` на панель **Timeline** инспектора.
 
-Этот метод ничего не отображает, если он не используется в инспекторе. В `console.timeStamp()` метод добавляет событие с меткой `'label'` к **Лента новостей** панель инспектора.
+<!-- 0026.part.md -->
