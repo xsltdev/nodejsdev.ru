@@ -1,60 +1,71 @@
 # HTTPS
 
-<!--introduced_in=v0.10.0-->
+[:octicons-tag-24: v18.x.x](https://nodejs.org/dist/latest-v18.x/docs/api/https.html)
 
-> Стабильность: 2 - стабильная
+!!!success "Стабильность: 2 – Стабильная"
 
-<!-- source_link=lib/https.js -->
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-HTTPS - это протокол HTTP через TLS / SSL. В Node.js это реализовано как отдельный модуль.
+**HTTPS** - это протокол HTTP через TLS/SSL. В Node.js он реализован в виде отдельного модуля.
+
+<!-- 0000.part.md -->
+
+## Определение отсутствия поддержки криптографии
+
+Возможно, что Node.js собран без поддержки модуля `node:crypto`. В таких случаях попытка `импорта` из `https` или вызов `require('node:https')` приведет к ошибке.
+
+При использовании CommonJS возникшую ошибку можно перехватить с помощью `try/catch`:
+
+```cjs
+let https;
+try {
+  https = require('node:https');
+} catch (err) {
+  console.error('Поддержка https отключена!');
+}
+```
+
+При использовании лексического ключевого слова ESM `import` ошибка может быть поймана только в том случае, если обработчик `process.on('uncaughtException')` зарегистрирован _до_ любой попытки загрузить модуль (например, с помощью модуля предварительной загрузки).
+
+При использовании ESM, если есть вероятность, что код может быть запущен на сборке Node.js, в которой не включена поддержка криптографии, используйте функцию [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) вместо лексического ключевого слова `import`:
+
+```mjs
+let https;
+try {
+  https = await import('node:https');
+} catch (err) {
+  console.error('Поддержка https отключена!');
+}
+```
+
+<!-- 0001.part.md -->
 
 ## Класс: `https.Agent`
 
-<!-- YAML
-added: v0.4.5
-changes:
-  - version: v5.3.0
-    pr-url: https://github.com/nodejs/node/pull/4252
-    description: support `0` `maxCachedSessions` to disable TLS session caching.
-  - version: v2.5.0
-    pr-url: https://github.com/nodejs/node/pull/2228
-    description: parameter `maxCachedSessions` added to `options` for TLS
-                 sessions reuse.
--->
+Объект [`Agent`](#class-httpsagent) для HTTPS, аналогичный [`http.Agent`](http.md#class-httpagent). Дополнительную информацию смотрите в [`https.request()`](#httpsrequestoptions-callback).
 
-An [`Agent`](#class-httpsagent) объект для HTTPS, аналогичный [`http.Agent`](http.md#class-httpagent). Видеть [`https.request()`](#httpsrequestoptions-callback) для дополнительной информации.
+<!-- 0002.part.md -->
 
 ### `new Agent([options])`
 
-<!-- YAML
-changes:
-  - version: v12.5.0
-    pr-url: https://github.com/nodejs/node/pull/28209
-    description: do not automatically set servername if the target host was
-                 specified using an IP address.
--->
+- `options` {Object} Набор конфигурируемых опций для установки на агента. Может иметь те же поля, что и для [`http.Agent(options)`](http.md#new-agentoptions), и
 
-- `options` {Object} Набор настраиваемых параметров для настройки агента. Могут иметь те же поля, что и для [`http.Agent(options)`](http.md#new-agentoptions), а также
+  - `maxCachedSessions` {number} максимальное количество TLS кэшированных сессий. Используйте `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
 
-  - `maxCachedSessions` {number} максимальное количество сеансов кэширования TLS. Использовать `0` чтобы отключить кеширование сеанса TLS. **Дефолт:** `100`.
-  - `servername` {строка} значение [Расширение индикации имени сервера](https://en.wikipedia.org/wiki/Server_Name_Indication) для отправки на сервер. Использовать пустую строку `''` чтобы отключить отправку расширения. **Дефолт:** имя хоста целевого сервера, если целевой сервер не указан с использованием IP-адреса, и в этом случае значение по умолчанию `''` (без расширения).
+  - `servername` {string} значение расширения [Server Name Indication extension](https://en.wikipedia.org/wiki/Server_Name_Indication) для отправки на сервер. Используйте пустую строку `''`, чтобы отключить отправку расширения. **По умолчанию:** имя хоста целевого сервера, если только целевой сервер не указан с помощью IP-адреса, в этом случае по умолчанию используется `''` (без расширения).
 
-    Видеть [`Session Resumption`](tls.md#session-resumption) для получения информации о повторном использовании сеанса TLS.
+    Информацию о повторном использовании сеанса TLS см. в [`Session Resumption`](tls.md#session-resumption).
 
-#### Событие: `'keylog'`
+<!-- 0003.part.md -->
 
-<!-- YAML
-added:
- - v13.2.0
- - v12.16.0
--->
+#### Событие: `keylog`
 
-- `line` {Buffer} Строка текста ASCII в NSS `SSLKEYLOGFILE` формат.
-- `tlsSocket` {tls.TLSSocket} `tls.TLSSocket` экземпляр, на котором он был сгенерирован.
+- `line` {Буфер} Строка текста ASCII, в формате NSS `SSLKEYLOGFILE`.
+- `tlsSocket` {tls.TLSSocket} Экземпляр `tls.TLSSocket`, на котором оно было сгенерировано.
 
-В `keylog` Событие генерируется, когда ключевой материал генерируется или принимается соединением, управляемым этим агентом (обычно до завершения рукопожатия, но не обязательно). Этот ключевой материал можно сохранить для отладки, поскольку он позволяет расшифровывать захваченный трафик TLS. Он может генерироваться несколько раз для каждого сокета.
+Событие `keylog` испускается, когда ключевой материал генерируется или принимается соединением, управляемым этим агентом (обычно до завершения рукопожатия, но не обязательно). Этот ключевой материал может быть сохранен для отладки, поскольку он позволяет расшифровать захваченный трафик TLS. Он может выдаваться несколько раз для каждого сокета.
 
-Типичным вариантом использования является добавление полученных строк в общий текстовый файл, который позже используется программным обеспечением (например, Wireshark) для расшифровки трафика:
+Типичный случай использования - добавление полученных строк в общий текстовый файл, который впоследствии используется программами (например, Wireshark) для расшифровки трафика:
 
 ```js
 // ...
@@ -65,107 +76,105 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 });
 ```
 
+<!-- 0004.part.md -->
+
 ## Класс: `https.Server`
 
-<!-- YAML
-added: v0.3.4
--->
+- Расширяет: {tls.Server}
 
-- Расширяется: {tls.Server}
+Дополнительную информацию смотрите в [`http.Server`](http.md#class-httpserver).
 
-Видеть [`http.Server`](http.md#class-httpserver) для дополнительной информации.
+<!-- 0005.part.md -->
 
 ### `server.close([callback])`
 
-<!-- YAML
-added: v0.1.90
--->
-
 - `callback` {Функция}
 - Возвращает: {https.Server}
 
-Видеть [`server.close()`](http.md#serverclosecallback) из модуля HTTP для получения подробной информации.
+См. [`server.close()`](http.md#serverclosecallback) в модуле `node:http`.
+
+<!-- 0006.part.md -->
+
+### `server.closeAllConnections()`
+
+Смотрите [`server.closeAllConnections()`](http.md#servercloseallconnections) в модуле `node:http`.
+
+<!-- 0007.part.md -->
+
+### `server.closeIdleConnections()`
+
+Смотрите [`server.closeIdleConnections()`](http.md#servercloseidleconnections) в модуле `node:http`.
+
+<!-- 0008.part.md -->
 
 ### `server.headersTimeout`
 
-<!-- YAML
-added: v11.3.0
--->
+- {число} **По умолчанию:** `60000`.
 
-- {количество} **Дефолт:** `60000`
+Смотрите [`server.headersTimeout`](http.md#serverheaderstimeout) в модуле `node:http`.
 
-Видеть [`http.Server#headersTimeout`](http.md#serverheaderstimeout).
+<!-- 0009.part.md -->
 
 ### `server.listen()`
 
-Запускает HTTPS-сервер, ожидающий зашифрованных соединений. Этот метод идентичен [`server.listen()`](net.md#serverlisten) из [`net.Server`](net.md#class-netserver).
+Запускает HTTPS-сервер, прослушивающий зашифрованные соединения. Этот метод идентичен [`server.listen()`](net.md#serverlisten) из [`net.Server`](net.md#class-netserver).
+
+<!-- 0010.part.md -->
 
 ### `server.maxHeadersCount`
 
-- {количество} **Дефолт:** `2000`
+- {число} **По умолчанию:** `2000`.
 
-Видеть [`http.Server#maxHeadersCount`](http.md#servermaxheaderscount).
+Смотрите [`server.maxHeadersCount`](http.md#servermaxheaderscount) в модуле `node:http`.
+
+<!-- 0011.part.md -->
 
 ### `server.requestTimeout`
 
-<!-- YAML
-added: v14.11.0
--->
+- {число} **По умолчанию:** `300000`.
 
-- {количество} **Дефолт:** `0`
+Смотрите [`server.requestTimeout`](http.md#serverrequesttimeout) в модуле `node:http`.
 
-Видеть [`http.Server#requestTimeout`](http.md#serverrequesttimeout).
+<!-- 0012.part.md -->
 
 ### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v0.11.2
--->
-
-- `msecs` {количество} **Дефолт:** `120000` (2 минуты)
-- `callback` {Функция}
+- `msecs` {число} **По умолчанию:** `120000` (2 минуты)
+- `callback` {функция}
 - Возвращает: {https.Server}
 
-Видеть [`http.Server#setTimeout()`](http.md#serversettimeoutmsecs-callback).
+См. [`server.setTimeout()`](http.md#serversettimeoutmsecs-callback) в модуле `node:http`.
+
+<!-- 0013.part.md -->
 
 ### `server.timeout`
 
-<!-- YAML
-added: v0.11.2
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+- {число} **По умолчанию:** 0 (без таймаута).
 
-- {количество} **Дефолт:** 0 (без тайм-аута)
+Смотрите [`server.timeout`](http.md#servertimeout) в модуле `node:http`.
 
-Видеть [`http.Server#timeout`](http.md#servertimeout).
+<!-- 0014.part.md -->
 
 ### `server.keepAliveTimeout`
 
-<!-- YAML
-added: v8.0.0
--->
+- {число} **По умолчанию:** `5000` (5 секунд)
 
-- {количество} **Дефолт:** `5000` (5 секунд)
+Смотрите [`server.keepAliveTimeout`](http.md#serverkeepalivetimeout) в модуле `node:http`.
 
-Видеть [`http.Server#keepAliveTimeout`](http.md#serverkeepalivetimeout).
+<!-- 0015.part.md -->
 
 ## `https.createServer([options][, requestListener])`
 
-<!-- YAML
-added: v0.3.4
--->
-
-- `options` {Object} принимает `options` из [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener), [`tls.createSecureContext()`](tls.md#tlscreatesecurecontextoptions) а также [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
-- `requestListener` {Function} Слушатель, который будет добавлен к `'request'` событие.
+- `options` {Object} Принимает `опции` из [`tls.createServer()`](tls.md#tlsscreateserveroptions-secureconnectionlistener), [`tls.createSecureContext()`](tls.md#tlsscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
+- `requestListener` {Функция} Слушатель, который будет добавлен к событию `'request'`.
 - Возвращает: {https.Server}
+
+<!-- конец списка -->
 
 ```js
 // curl -k https://localhost:8000/
-const https = require('https');
-const fs = require('fs');
+const https = require('node:https');
+const fs = require('node:fs');
 
 const options = {
   key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
@@ -185,48 +194,40 @@ https
 Или
 
 ```js
-const https = require('https');
-const fs = require('fs');
+const https = require('node:https');
+const fs = require('node:fs');
+
 
 const options = {
   pfx: fs.readFileSync('test/fixtures/test_cert.pfx'),
-  passphrase: 'sample',
+  парольная фраза: 'sample',
 };
 
-https
-  .createServer(options, (req, res) => {
-    res.writeHead(200);
-    res.end('hello world\n');
-  })
-  .listen(8000);
+
+https.createServer(options, (req, res) => {
+  res.writeHead(200);
+  res.end('hello world\n');
+}).listen(8000);
 ```
+
+<!-- 0016.part.md -->
 
 ## `https.get(options[, callback])`
 
+<!-- 0017.part.md -->
+
 ## `https.get(url[, options][, callback])`
 
-<!-- YAML
-added: v0.3.6
-changes:
-  - version: v10.9.0
-    pr-url: https://github.com/nodejs/node/pull/21616
-    description: The `url` parameter can now be passed along with a separate
-                 `options` object.
-  - version: v7.5.0
-    pr-url: https://github.com/nodejs/node/pull/10638
-    description: The `options` parameter can be a WHATWG `URL` object.
--->
-
 - `url` {строка | URL}
-- `options` {Объект | строка | URL} Принимает то же самое `options` в качестве [`https.request()`](#httpsrequestoptions-callback), с `method` всегда установлен на `GET`.
+- `options` {Object | string | URL} Принимает те же `опции`, что и [`https.request()`](#httpsrequestoptions-callback), с `методом`, всегда установленным на `GET`.
 - `callback` {Функция}
 
-Нравиться [`http.get()`](http.md#httpgetoptions-callback) но для HTTPS.
+Подобно [`http.get()`](http.md#httpgetoptions-callback), но для HTTPS.
 
-`options` может быть объектом, строкой или [`URL`](url.md#the-whatwg-url-api) объект. Если `options` является строкой, она автоматически анализируется с помощью [`new URL()`](url.md#new-urlinput-base). Если это [`URL`](url.md#the-whatwg-url-api) объект, он будет автоматически преобразован в обычный `options` объект.
+`options` может быть объектом, строкой или объектом [`URL`](url.md#the-whatwg-url-api). Если `options` является строкой, она автоматически разбирается с помощью [`new URL()`](url.md#new-urlinput-base). Если это объект [`URL`](url.md#the-whatwg-url-api), он будет автоматически преобразован в обычный объект `options`.
 
 ```js
-const https = require('https');
+const https = require('node:https');
 
 https
   .get('https://encrypted.google.com/', (res) => {
@@ -242,62 +243,36 @@ https
   });
 ```
 
+<!-- 0018.part.md -->
+
 ## `https.globalAgent`
 
-<!-- YAML
-added: v0.5.9
--->
+Глобальный экземпляр [`https.Agent`](#class-httpsagent) для всех запросов HTTPS клиентов.
 
-Глобальный экземпляр [`https.Agent`](#class-httpsagent) для всех клиентских запросов HTTPS.
+<!-- 0019.part.md -->
 
 ## `https.request(options[, callback])`
 
-## `https.request(url[, options][, callback])`
-
-<!-- YAML
-added: v0.3.6
-changes:
-  - version:
-      - v16.7.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/39310
-    description: When using a `URL` object parsed username
-                 and password will now be properly URI decoded.
-  - version:
-      - v14.1.0
-      - v13.14.0
-    pr-url: https://github.com/nodejs/node/pull/32786
-    description: The `highWaterMark` option is accepted now.
-  - version: v10.9.0
-    pr-url: https://github.com/nodejs/node/pull/21616
-    description: The `url` parameter can now be passed along with a separate
-                 `options` object.
-  - version: v9.3.0
-    pr-url: https://github.com/nodejs/node/pull/14903
-    description: The `options` parameter can now include `clientCertEngine`.
-  - version: v7.5.0
-    pr-url: https://github.com/nodejs/node/pull/10638
-    description: The `options` parameter can be a WHATWG `URL` object.
--->
+<!-- 0020.part.md -->
 
 - `url` {строка | URL}
-- `options` {Объект | строка | URL} Принимает все `options` из [`http.request()`](http.md#httprequestoptions-callback), с некоторыми отличиями в значениях по умолчанию:
-  - `protocol` **Дефолт:** `'https:'`
-  - `port` **Дефолт:** `443`
-  - `agent` **Дефолт:** `https.globalAgent`
+- `options` {Object | string | URL} Принимает все `опции` из [`http.request()`](http.md#httprequestoptions-callback), с некоторыми различиями в значениях по умолчанию:
+  - `protocol` **Default:** `'https:'`.
+  - `port` **По умолчанию:** `443`
+  - `agent` **По умолчанию:** `https.globalAgent`
 - `callback` {Функция}
 - Возвращает: {http.ClientRequest}
 
-Отправляет запрос на защищенный веб-сервер.
+Делает запрос на защищенный веб-сервер.
 
-Следующие дополнительные `options` из [`tls.connect()`](tls.md#tlsconnectoptions-callback) также принимаются: `ca`, `cert`, `ciphers`, `clientCertEngine`, `crl`, `dhparam`, `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`, `secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`, `highWaterMark`.
+Также принимаются следующие дополнительные `опции` из [`tls.connect()`](tls.md#tlsconnectoptions-callback): `ca`, `cert`, `ciphers`, `clientCertEngine`, `crl`, `dhparam`, `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`, `ecureOptions`, `ecureProtocol`, `servername`, `essionIdContext`, `highWaterMark`.
 
-`options` может быть объектом, строкой или [`URL`](url.md#the-whatwg-url-api) объект. Если `options` является строкой, она автоматически анализируется с помощью [`new URL()`](url.md#new-urlinput-base). Если это [`URL`](url.md#the-whatwg-url-api) объект, он будет автоматически преобразован в обычный `options` объект.
+`options` может быть объектом, строкой или объектом [`URL`](url.md#the-whatwg-url-api). Если `options` - строка, она автоматически разбирается с помощью [`new URL()`](url.md#new-urlinput-base). Если это объект [`URL`](url.md#the-whatwg-url-api), то он будет автоматически преобразован в обычный объект `options`.
 
-`https.request()` возвращает экземпляр [`http.ClientRequest`](http.md#class-httpclientrequest) класс. В `ClientRequest` instance - это поток с возможностью записи. Если нужно загрузить файл с помощью POST-запроса, напишите в `ClientRequest` объект.
+`https.request()` возвращает экземпляр класса [`http.ClientRequest`](http.md#class-httpclientrequest). Экземпляр `ClientRequest` представляет собой поток, доступный для записи. Если нужно загрузить файл с помощью POST-запроса, то пишите в объект `ClientRequest`.
 
 ```js
-const https = require('https');
+const https = require('node:https');
 
 const options = {
   hostname: 'encrypted.google.com',
@@ -341,7 +316,7 @@ const req = https.request(options, (res) => {
 });
 ```
 
-В качестве альтернативы можно отказаться от пула подключений, не используя [`Agent`](#class-httpsagent).
+В качестве альтернативы откажитесь от пула соединений, не используя [`Agent`] (#class-httpsagent).
 
 ```js
 const options = {
@@ -361,7 +336,7 @@ const req = https.request(options, (res) => {
 });
 ```
 
-Пример использования [`URL`](url.md#the-whatwg-url-api) в качестве `options`:
+Пример с использованием [`URL`](url.md#the-whatwg-url-api) в качестве `options`:
 
 ```js
 const options = new URL('https://abc:xyz@example.com');
@@ -371,12 +346,12 @@ const req = https.request(options, (res) => {
 });
 ```
 
-Пример закрепления на отпечатке сертификата или открытом ключе (аналогично `pin-sha256`):
+Пример привязки к отпечатку пальца сертификата или открытому ключу (аналогично `pin-sha256`):
 
 ```js
-const tls = require('tls');
-const https = require('https');
-const crypto = require('crypto');
+const tls = require('node:tls');
+const https = require('node:https');
+const crypto = require('node:crypto');
 
 function sha256(s) {
   return crypto
@@ -396,7 +371,7 @@ const options = {
       return err;
     }
 
-    // Pin the public key, similar to HPKP pin-sha25 pinning
+    // Pin the public key, similar to HPKP pin-sha256 pinning
     const pubkey256 =
       'pL1+qb9HTMRZJmuC/bB/ZI9d302BYrrqiVuRyW+DGrU=';
     if (sha256(cert.pubkey) !== pubkey256) {
@@ -461,7 +436,7 @@ req.on('error', (e) => {
 req.end();
 ```
 
-Например, выходы:
+Выходные данные, например:
 
 ```text
 Subject Common Name: github.com
@@ -477,3 +452,5 @@ All OK. Server matched our pinned cert or public key
 statusCode: 200
 headers: max-age=0; pin-sha256="WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18="; pin-sha256="RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn/yOhI/y+ho="; pin-sha256="k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws="; pin-sha256="K87oWBWM9UZfyddvDfoxL+8lpNyoUB2ptGtn0fv6G2Q="; pin-sha256="IQBnNBEiFuhj+8x6X8XLgh01V9Ic5/V3IRQLNFFc7v4="; pin-sha256="iie1VXtL7HzAMF+/PVPR9xzT80kQxdZeJ+zduCB3uj0="; pin-sha256="LvRiGEjRqfzurezaWuj8Wie2gyHMrW5Q06LspMnox7A="; includeSubDomains
 ```
+
+<!-- 0021.part.md -->
