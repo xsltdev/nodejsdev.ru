@@ -1,47 +1,68 @@
+---
+description: Модуль http2 предоставляет реализацию протокола HTTP 2
+---
+
 # HTTP/2
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.3.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/36070
-    description: It is possible to abort a request with an AbortSignal.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34664
-    description: Requests with the `host` header (with or without
-                 `:authority`) can now be sent/received.
-  - version: v10.10.0
-    pr-url: https://github.com/nodejs/node/pull/22466
-    description: HTTP/2 is now Stable. Previously, it had been Experimental.
--->
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/http2.html)
 
-<!--introduced_in=v8.4.0-->
+!!!success "Стабильность: 2 – Стабильная"
 
-> Стабильность: 2 - стабильная
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-<!-- source_link=lib/http2.js -->
-
-В `http2` модуль обеспечивает реализацию [HTTP / 2](https://tools.ietf.org/html/rfc7540) протокол. Доступ к нему можно получить, используя:
+Модуль `node:http2` предоставляет реализацию протокола [HTTP/2](https://tools.ietf.org/html/rfc7540). Доступ к нему можно получить, используя:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 ```
+
+<!-- 0000.part.md -->
+
+## Определение отсутствия поддержки криптографии
+
+Возможно, что Node.js будет собран без поддержки модуля `node:crypto`. В таких случаях попытка `import` из `node:http2` или вызов `require('node:http2')` приведет к ошибке.
+
+При использовании CommonJS возникшую ошибку можно перехватить с помощью `try/catch`:
+
+```cjs
+let http2;
+try {
+  http2 = require('node:http2');
+} catch (err) {
+  console.error('Поддержка http2 отключена!');
+}
+```
+
+При использовании лексического ключевого слова ESM `import` ошибка может быть поймана только в том случае, если обработчик `process.on('uncaughtException')` зарегистрирован _до_ любой попытки загрузить модуль (например, с помощью модуля предварительной загрузки).
+
+При использовании ESM, если есть вероятность, что код может быть запущен на сборке Node.js, в которой не включена поддержка криптографии, используйте функцию [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) вместо лексического ключевого слова `import`:
+
+```mjs
+let http2;
+try {
+  http2 = await import('node:http2');
+} catch (err) {
+  console.error('Поддержка http2 отключена!');
+}
+```
+
+<!-- 0001.part.md -->
 
 ## Core API
 
-Core API предоставляет интерфейс низкого уровня, специально разработанный для поддержки функций протокола HTTP / 2. Это конкретно _нет_ разработан для совместимости с существующими [HTTP / 1](http.md) модуль API. Однако [Совместимость API](#compatibility-api) является.
+Core API предоставляет низкоуровневый интерфейс, разработанный специально для поддержки функций протокола HTTP/2. Он специально _не_ предназначен для совместимости с существующим API модуля [HTTP/1](http.md). Однако, [Compatibility API](#compatibility-api) является таковым.
 
-В `http2` Core API гораздо более симметричен между клиентом и сервером, чем `http` API. Например, большинство мероприятий, таких как `'error'`, `'connect'` а также `'stream'`, может генерироваться либо кодом на стороне клиента, либо кодом на стороне сервера.
+API ядра `http2` гораздо более симметричен между клиентом и сервером, чем API `http`. Например, большинство событий, таких как `'error'`, `'connect'` и `'stream'`, могут быть вызваны как клиентским, так и серверным кодом.
+
+<!-- 0002.part.md -->
 
 ### Пример на стороне сервера
 
-Ниже показан простой сервер HTTP / 2, использующий Core API. Поскольку нет известных браузеров, поддерживающих [незашифрованный HTTP / 2](https://http2.github.io/faq/#does-http2-require-encryption), использование [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler) необходим при общении с клиентами браузера.
+Ниже показан простой HTTP/2 сервер, использующий Core API. Поскольку не известно ни одного браузера, поддерживающего [незашифрованный HTTP/2](https://http2.github.io/faq/#does-http2-require-encryption), при взаимодействии с клиентами браузера необходимо использовать [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler).
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require('node:http2');
+const fs = require('node:fs');
 
 const server = http2.createSecureServer({
   key: fs.readFileSync('localhost-privkey.pem'),
@@ -50,10 +71,10 @@ const server = http2.createSecureServer({
 server.on('error', (err) => console.error(err));
 
 server.on('stream', (stream, headers) => {
-  // stream is a Duplex
+  // stream - это дуплекс
   stream.respond({
     'content-type': 'text/html; charset=utf-8',
-    ':status': 200,
+    status: 200,
   });
   stream.end('<h1>Hello World</h1>');
 });
@@ -61,20 +82,22 @@ server.on('stream', (stream, headers) => {
 server.listen(8443);
 ```
 
-Чтобы сгенерировать сертификат и ключ для этого примера, запустите:
+Чтобы сгенерировать сертификат и ключ для этого примера, выполните:
 
 ```bash
 openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' \
   -keyout localhost-privkey.pem -out localhost-cert.pem
 ```
 
+<!-- 0003.part.md -->
+
 ### Пример на стороне клиента
 
-Ниже показан клиент HTTP / 2:
+Ниже показан клиент HTTP/2:
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require('node:http2');
+const fs = require('node:fs');
 const client = http2.connect('https://localhost:8443', {
   ca: fs.readFileSync('localhost-cert.pem'),
 });
@@ -100,148 +123,130 @@ req.on('end', () => {
 req.end();
 ```
 
+<!-- 0004.part.md -->
+
 ### Класс: `Http2Session`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {EventEmitter}
 
-- Расширяется: {EventEmitter}
+Экземпляры класса `http2.Http2Session` представляют активный сеанс связи между HTTP/2 клиентом и сервером. Экземпляры этого класса _не_ предназначены для создания непосредственно пользовательским кодом.
 
-Экземпляры `http2.Http2Session` class представляют активный сеанс связи между клиентом HTTP / 2 и сервером. Экземпляры этого класса _нет_ предназначен для создания непосредственно пользовательским кодом.
+Каждый экземпляр `Http2Session` будет проявлять несколько иное поведение в зависимости от того, работает ли он как сервер или как клиент. Свойство `http2session.type` может быть использовано для определения режима, в котором работает `Http2Session`. На стороне сервера пользовательский код редко должен иметь возможность работать с объектом `Http2Session` напрямую, большинство действий обычно выполняется через взаимодействие с объектами `Http2Server` или `Http2Stream`.
 
-Каждый `Http2Session` Экземпляр будет демонстрировать немного другое поведение в зависимости от того, работает он как сервер или как клиент. В `http2session.type` свойство может использоваться для определения режима, в котором `Http2Session` работает. На стороне сервера пользовательский код редко должен иметь возможность работать с `Http2Session` объект напрямую, при этом большинство действий обычно выполняется через взаимодействие с `Http2Server` или `Http2Stream` объекты.
+Пользовательский код не будет создавать экземпляры `Http2Session` напрямую. Экземпляры `Http2Session` на стороне сервера создаются экземпляром `Http2Server` при получении нового HTTP/2 соединения. Экземпляры `Http2Session` на стороне клиента создаются с помощью метода `http2.connect()`.
 
-Код пользователя не создаст `Http2Session` экземпляры напрямую. На стороне сервера `Http2Session` экземпляры создаются `Http2Server` экземпляр, когда получено новое соединение HTTP / 2. Сторона клиента `Http2Session` экземпляры создаются с использованием `http2.connect()` метод.
+<!-- 0005.part.md -->
 
-#### `Http2Session` и розетки
+#### `Http2Session` и сокеты
 
-Каждый `Http2Session` экземпляр связан ровно с одним [`net.Socket`](net.md#class-netsocket) или [`tls.TLSSocket`](tls.md#class-tlstlssocket) когда он будет создан. Когда либо `Socket` или `Http2Session` уничтожены, оба будут уничтожены.
+Каждый экземпляр `Http2Session` при создании ассоциируется ровно с одним [`net.Socket`](net.md#class-netsocket) или [`tls.TLSSocket`](tls.md#class-tlstlssocket). При уничтожении `Socket` или `Http2Session` будут уничтожены оба.
 
-Из-за особых требований к сериализации и обработке, налагаемых протоколом HTTP / 2, пользовательскому коду не рекомендуется читать данные из или записывать данные в `Socket` экземпляр привязан к `Http2Session`. Это может перевести сеанс HTTP / 2 в неопределенное состояние, в результате чего сеанс и сокет станут непригодными для использования.
+Из-за специфических требований к сериализации и обработке, налагаемых протоколом HTTP/2, пользовательскому коду не рекомендуется читать данные из или записывать данные в экземпляр `Socket`, связанный с `Http2Session`. Это может перевести сессию HTTP/2 в неопределенное состояние, в результате чего сессия и сокет станут непригодными для использования.
 
-Когда `Socket` был привязан к `Http2Session`, пользовательский код должен полагаться исключительно на API `Http2Session`.
+После того, как `Socket` был привязан к `Http2Session`, пользовательский код должен полагаться исключительно на API `Http2Session`.
+
+<!-- 0006.part.md -->
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'close'` происходит после уничтожения `Http2Session`. Его слушатель не ожидает никаких аргументов.
 
-В `'close'` событие генерируется после того, как `Http2Session` был разрушен. Его слушатель не ожидает никаких аргументов.
+<!-- 0007.part.md -->
 
 #### Событие: `'connect'`
-
-<!-- YAML
-added: v8.4.0
--->
 
 - `session` {Http2Session}
 - `socket` {net.Socket}
 
-В `'connect'` событие генерируется после того, как `Http2Session` был успешно подключен к удаленному узлу, и связь может начаться.
+Событие `'connect'` происходит, когда `Http2Session` успешно соединяется с удаленным аналогом и может начать взаимодействие.
 
-Код пользователя обычно не отслеживает это событие напрямую.
+Пользовательский код, как правило, не прослушивает это событие напрямую.
 
-#### Событие: `'error'`
+<!-- 0008.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `error`
 
 - `error` {Ошибка}
 
-В `'error'` событие генерируется, когда возникает ошибка во время обработки `Http2Session`.
+Событие `'error'` генерируется, когда происходит ошибка во время обработки `Http2Session`.
 
-#### Событие: `'frameError'`
+<!-- 0009.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `FrameError`
 
 - `type` {integer} Тип кадра.
 - `code` {integer} Код ошибки.
-- `id` {integer} Идентификатор потока (или `0` если кадр не связан с потоком).
+- `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
 
-В `'frameError'` Событие генерируется, когда возникает ошибка при попытке отправить кадр в сеансе. Если кадр, который не удалось отправить, связан с определенным `Http2Stream`, попытка испустить `'frameError'` событие на `Http2Stream` сделан.
+Событие `'frameError'` генерируется, когда возникает ошибка при попытке отправить кадр в сессии. Если кадр, который не удалось отправить, связан с определенным `Http2Stream`, делается попытка выдать событие `'frameError'` на `Http2Stream`.
 
-Если `'frameError'` событие связано с потоком, поток будет закрыт и уничтожен сразу после `'frameError'` событие. Если событие не связано с потоком, `Http2Session` будет отключен сразу после `'frameError'` событие.
+Если событие `'frameError'` связано с потоком, поток будет закрыт и уничтожен сразу после события `'frameError'`. Если событие не связано с потоком, то `Http2Session` будет закрыт сразу после события `'frameError'`.
 
-#### Событие: `'goaway'`
+<!-- 0010.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `goaway`
 
-- `errorCode` {number} Код ошибки HTTP / 2, указанный в `GOAWAY` Рамка.
-- `lastStreamID` {number} ID последнего потока, успешно обработанного удаленным узлом (или `0` если не указан ID).
-- `opaqueData` {Buffer} Если в `GOAWAY` кадр, а `Buffer` будет передан экземпляр, содержащий эти данные.
+- `errorCode` {number} Код ошибки HTTP/2, указанный во фрейме `GOAWAY`.
+- `lastStreamID` {number} ID последнего потока, который удаленный пир успешно обработал (или `0`, если ID не указан).
+- `opaqueData` {Buffer} Если в кадр `GOAWAY` были включены дополнительные непрозрачные данные, будет передан экземпляр `Buffer`, содержащий эти данные.
 
-В `'goaway'` событие генерируется, когда `GOAWAY` кадр получен.
+Событие `goaway` испускается при получении кадра `GOAWAY`.
 
-В `Http2Session` экземпляр будет автоматически выключен, когда `'goaway'` событие испускается.
+Экземпляр `Http2Session` будет автоматически закрыт при получении события `'goaway'`.
+
+<!-- 0011.part.md -->
 
 #### Событие: `'localSettings'`
 
-<!-- YAML
-added: v8.4.0
--->
+- `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
 
-- `settings` {HTTP / 2 Settings Object} Копия `SETTINGS` кадр получен.
+Событие `'localSettings'` испускается, когда получено подтверждение кадра `SETTINGS`.
 
-В `'localSettings'` событие испускается, когда подтверждение `SETTINGS` кадр получен.
-
-Когда используешь `http2session.settings()` для отправки новых настроек измененные настройки не вступят в силу до тех пор, пока `'localSettings'` событие испускается.
+При использовании `http2session.settings()` для отправки новых настроек, измененные настройки не вступают в силу до тех пор, пока не будет вызвано событие `'localSettings'`.
 
 ```js
 session.settings({ enablePush: false });
 
 session.on('localSettings', (settings) => {
-  /* Use the new settings */
+  /* Использовать новые настройки */
 });
 ```
 
-#### Событие: `'ping'`
+<!-- 0012.part.md -->
 
-<!-- YAML
-added: v10.12.0
--->
+#### Событие: `ping`.
 
-- `payload` {Buffer} `PING` 8-байтовая полезная нагрузка кадра
+- `payload` {Буфер} 8-байтовая полезная нагрузка кадра `PING`.
 
-В `'ping'` событие генерируется всякий раз, когда `PING` фрейм получен от подключенного однорангового узла.
+Событие `'ping'` генерируется всякий раз, когда от подключенного аналога получен кадр `PING`.
+
+<!-- 0013.part.md -->
 
 #### Событие: `'remoteSettings'`
 
-<!-- YAML
-added: v8.4.0
--->
+- `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
 
-- `settings` {HTTP / 2 Settings Object} Копия `SETTINGS` кадр получен.
-
-В `'remoteSettings'` событие испускается, когда новый `SETTINGS` фрейм получен от подключенного однорангового узла.
+Событие `'remoteSettings'` испускается, когда новый фрейм `SETTINGS` получен от подключенного аналога.
 
 ```js
 session.on('remoteSettings', (settings) => {
-  /* Use the new settings */
+  /* Использовать новые настройки */
 });
 ```
 
-#### Событие: `'stream'`
+<!-- 0014.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `stream`
 
 - `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP / 2 Headers Object} Объект, описывающий заголовки.
-- `flags` {number} Связанные числовые флаги
-- `rawHeaders` {Array} Массив, содержащий необработанные имена заголовков, за которыми следуют их соответствующие значения.
+- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+- `flags` {number} Соответствующие числовые флаги
+- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
-В `'stream'` событие испускается, когда новый `Http2Stream` создано.
+Событие `'stream'` испускается, когда создается новый `Http2Stream`.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 session.on('stream', (stream, headers, flags) => {
   const method = headers[':method'];
   const path = headers[':path'];
@@ -250,17 +255,17 @@ session.on('stream', (stream, headers, flags) => {
     ':status': 200,
     'content-type': 'text/plain; charset=utf-8',
   });
-  stream.write('hello ');
+  stream.write('hello');
   stream.end('world');
 });
 ```
 
-На стороне сервера пользовательский код обычно не будет прослушивать это событие напрямую, а вместо этого будет регистрировать обработчик для `'stream'` событие, созданное `net.Server` или `tls.Server` экземпляры, возвращенные `http2.createServer()` а также `http2.createSecureServer()`соответственно, как в примере ниже:
+На стороне сервера пользовательский код обычно не будет слушать это событие напрямую, а вместо этого зарегистрирует обработчик для события `'stream'`, испускаемого экземплярами `net.Server` или `tls.Server`, возвращаемыми `http2.createServer()` и `http2.createSecureServer()` соответственно, как показано в примере ниже:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
-// Create an unencrypted HTTP/2 server
+// Создаем незашифрованный HTTP/2 сервер
 const server = http2.createServer();
 
 server.on('stream', (stream, headers) => {
@@ -272,164 +277,138 @@ server.on('stream', (stream, headers) => {
   stream.end('<h1>Hello World</h1>');
 });
 
-server.listen(80);
+server.listen(8000);
 ```
 
-Несмотря на то, что потоки HTTP / 2 и сетевые сокеты не находятся в соответствии 1: 1, сетевая ошибка уничтожит каждый отдельный поток и должна обрабатываться на уровне потока, как показано выше.
+Несмотря на то, что потоки HTTP/2 и сетевые сокеты не находятся в соответствии 1:1, сетевая ошибка уничтожит каждый отдельный поток и должна быть обработана на уровне потока, как показано выше.
+
+<!-- 0015.part.md -->
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
-
-После `http2session.setTimeout()` используется для установки периода тайм-аута для этого `Http2Session`, то `'timeout'` событие генерируется, если на `Http2Session` после настроенного количества миллисекунд. Его слушатель не ожидает никаких аргументов.
+После использования метода `http2session.setTimeout()` для установки периода таймаута для данной `Http2Session`, событие `'timeout'` испускается, если нет активности в `Http2Session` после заданного количества миллисекунд. Его слушатель не ожидает никаких аргументов.
 
 ```js
 session.setTimeout(2000);
 session.on('timeout', () => {
-  /* .. */
+  /* ... */
 });
 ```
 
+<!-- 0016.part.md -->
+
 #### `http2session.alpnProtocol`
 
-<!-- YAML
-added: v9.4.0
--->
+- {string|undefined}
 
-- {строка | undefined}
+Значение будет `undefined`, если `Http2Session` еще не подключен к сокету, `h2c`, если `Http2Session` не подключен к `TLSSocket`, или вернет значение собственного свойства `alpnProtocol` подключенного `TLSSocket`.
 
-Стоимость будет `undefined` если `Http2Session` еще не подключен к розетке, `h2c` если `Http2Session` не связан с `TLSSocket`, или вернет значение подключенного `TLSSocket`собственный `alpnProtocol` имущество.
+<!-- 0017.part.md -->
 
 #### `http2session.close([callback])`
 
-<!-- YAML
-added: v9.4.0
--->
+- `callback` {функция}
 
-- `callback` {Функция}
+Благородно закрывает `Http2Session`, позволяя всем существующим потокам завершиться самостоятельно и предотвращая создание новых экземпляров `Http2Stream`. После закрытия `http2session.destroy()` _может_ быть вызвана, если нет открытых экземпляров `Http2Stream`.
 
-Изящно закрывает `Http2Session`, позволяя существующим потокам завершаться самостоятельно и предотвращая появление новых `Http2Stream` экземпляры из создаваемых. После закрытия `http2session.destroy()` _мог бы_ называться, если нет открытых `Http2Stream` экземпляры.
+Если указано, то функция `callback` регистрируется как обработчик события `'close'`.
 
-Если указано, `callback` функция зарегистрирована как обработчик для `'close'` событие.
+<!-- 0018.part.md -->
 
 #### `http2session.closed`
 
-<!-- YAML
-added: v9.4.0
--->
+- {boolean}
 
-- {логический}
+Будет `true`, если данный экземпляр `Http2Session` был закрыт, иначе `false`.
 
-Будет `true` если это `Http2Session` экземпляр был закрыт, иначе `false`.
+<!-- 0019.part.md -->
 
 #### `http2session.connecting`
 
-<!-- YAML
-added: v10.0.0
--->
+- {boolean}
 
-- {логический}
+Будет `true`, если данный экземпляр `Http2Session` все еще подключен, будет установлен в `false` перед выдачей события `connect` и/или вызовом обратного вызова `http2.connect`.
 
-Будет `true` если это `Http2Session` экземпляр все еще подключается, будет установлено значение `false` перед испусканием `connect` событие и / или вызов `http2.connect` Перезвоните.
+<!-- 0020.part.md -->
 
 #### `http2session.destroy([error][, code])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `error` {Error} Объект `Error`, если `Http2Session` уничтожается из-за ошибки.
+- `code` {number} Код ошибки HTTP/2 для отправки в финальном фрейме `GOAWAY`. Если не указано, и `error` не является неопределенным, по умолчанию `INTERNAL_ERROR`, в противном случае по умолчанию `NO_ERROR`.
 
-- `error` {Ошибка} `Error` возражать, если `Http2Session` уничтожается из-за ошибки.
-- `code` {number} Код ошибки HTTP / 2 для отправки в окончательном `GOAWAY` Рамка. Если не указано, и `error` не является неопределенным, по умолчанию `INTERNAL_ERROR`, в противном случае по умолчанию `NO_ERROR`.
+Немедленно завершает `Http2Session` и связанный с ним `net.Socket` или `tls.TLSSocket`.
 
-Немедленно прекращает `Http2Session` и связанные `net.Socket` или `tls.TLSSocket`.
+После уничтожения `Http2Session` выдает событие `'close'`. Если `error` не является неопределенным, то событие `'error'` будет выдано непосредственно перед событием `'close'`.
 
-После уничтожения `Http2Session` испустит `'close'` событие. Если `error` не является неопределенным, `'error'` событие будет сгенерировано непосредственно перед `'close'` событие.
+Если есть какие-либо оставшиеся открытые `Http2Streams`, связанные с `Http2Session`, они также будут уничтожены.
 
-Если есть еще открытые `Http2Streams` связанный с `Http2Session`, они также будут уничтожены.
+<!-- 0021.part.md -->
 
 #### `http2session.destroyed`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+Будет `true`, если этот экземпляр `Http2Session` был уничтожен и больше не должен использоваться, иначе `false`.
 
-Будет `true` если это `Http2Session` экземпляр был уничтожен и больше не может использоваться, иначе `false`.
+<!-- 0022.part.md -->
 
 #### `http2session.encrypted`
 
-<!-- YAML
-added: v9.4.0
--->
+- {boolean|undefined}
 
-- {логическое | неопределенное}
+Значение равно `undefined`, если сокет сессии `Http2Session` еще не подключен, `true`, если `Http2Session` подключен к `TLSSocket`, и `false`, если `Http2Session` подключен к любому другому типу сокета или потока.
 
-Ценность `undefined` если `Http2Session` сокет сеанса еще не подключен, `true` если `Http2Session` связан с `TLSSocket`, а также `false` если `Http2Session` подключен к любому другому сокету или потоку.
+<!-- 0023.part.md -->
 
-#### `http2session.goaway([code[, lastStreamID[, opaqueData]]])`
+#### `http2session.goaway([code[, lastStreamID[, opaqueData]]]])`
 
-<!-- YAML
-added: v9.4.0
--->
+- `code` {number} Код ошибки HTTP/2
+- `lastStreamID` {число} Числовой идентификатор последнего обработанного `Http2Stream`.
+- `opaqueData` {Buffer|TypedArray|DataView} Экземпляр `TypedArray` или `DataView`, содержащий дополнительные данные, которые должны быть переданы в кадре `GOAWAY`.
 
-- `code` {number} Код ошибки HTTP / 2
-- `lastStreamID` {number} Числовой идентификатор последнего обработанного `Http2Stream`
-- `opaqueData` {Buffer | TypedArray | DataView} A `TypedArray` или `DataView` экземпляр, содержащий дополнительные данные, которые должны быть перенесены в `GOAWAY` Рамка.
+Передает кадр `GOAWAY` подключенному аналогу _без_ закрытия `Http2Session`.
 
-Передает `GOAWAY` фрейм к подключенному узлу _без_ закрытие `Http2Session`.
+<!-- 0024.part.md -->
 
 #### `http2session.localSettings`
 
-<!-- YAML
-added: v8.4.0
--->
+- {HTTP/2 Settings Object}
 
-- {Объект настроек HTTP / 2}
+Объект без прототипа, описывающий текущие локальные настройки данной `Http2Session`. Локальные настройки являются локальными для _этого_ экземпляра `Http2Session`.
 
-Объект без прототипа, описывающий текущие локальные настройки этого `Http2Session`. Локальные настройки являются локальными для _это_ `Http2Session` пример.
+<!-- 0025.part.md -->
 
 #### `http2session.originSet`
 
-<!-- YAML
-added: v9.4.0
--->
+- {string\[\]|undefined}
 
-- {строка \[] | undefined}
+Если `Http2Session` подключен к `TLSSocket`, свойство `originSet` возвращает `массив` источников, для которых `Http2Session` может считаться авторитетным.
 
-Если `Http2Session` подключен к `TLSSocket`, то `originSet` собственность вернет `Array` происхождения, для которых `Http2Session` можно считать авторитетным.
+Свойство `originSet` доступно только при использовании безопасного TLS-соединения.
 
-В `originSet` свойство доступно только при использовании безопасного TLS-соединения.
+<!-- 0026.part.md -->
 
 #### `http2session.pendingSettingsAck`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+Указывает, ожидает ли `Http2Session` в настоящее время подтверждения отправленного кадра `SETTINGS`. Будет `true` после вызова метода `http2session.settings()`. Будет `false`, когда все отправленные фреймы `SETTINGS` будут подтверждены.
 
-Указывает, есть ли `Http2Session` в настоящее время ожидает подтверждения отправки `SETTINGS` Рамка. Будет `true` после вызова `http2session.settings()` метод. Будет `false` однажды все отправлено `SETTINGS` кадры были подтверждены.
+<!-- 0027.part.md -->
 
 #### `http2session.ping([payload, ]callback)`
 
-<!-- YAML
-added: v8.9.3
--->
+- `payload` {Buffer|TypedArray|DataView} Необязательная полезная нагрузка пинга.
+- `callback` {Function}
+- Возвращает: {boolean}
 
-- `payload` {Buffer | TypedArray | DataView} Необязательные полезные данные проверки связи.
-- `callback` {Функция}
-- Возвращает: {логическое}
+Отправляет фрейм `PING` подключенному HTTP/2 peer. Должна быть указана функция `callback`. Метод вернет `true`, если `PING` был отправлен, `false` в противном случае.
 
-Отправляет `PING` фрейм к подключенному узлу HTTP / 2. А `callback` функция должна быть предоставлена. Метод вернет `true` если `PING` было послано, `false` иначе.
+Максимальное количество незавершенных (непризнанных) пингов определяется параметром конфигурации `maxOutstandingPings`. По умолчанию максимальное значение равно 10.
 
-Максимальное количество незавершенных (неподтвержденных) эхо-запросов определяется `maxOutstandingPings` вариант конфигурации. Максимальное значение по умолчанию - 10.
+Если указано, то `payload` должен представлять собой `Buffer`, `TypedArray` или `DataView`, содержащий 8 байт данных, которые будут переданы вместе с `PING` и возвращены с подтверждением пинга.
 
-Если предусмотрено, `payload` должен быть `Buffer`, `TypedArray`, или `DataView` содержащий 8 байтов данных, которые будут переданы с `PING` и вернулся с подтверждением ping.
-
-Обратный вызов будет вызван с тремя аргументами: аргумент ошибки, который будет `null` если `PING` был успешно признан, `duration` аргумент, который сообщает количество миллисекунд, прошедших с момента отправки эхо-запроса и получения подтверждения, и `Buffer` содержащий 8-байтовый `PING` полезная нагрузка.
+Обратный вызов будет вызван с тремя аргументами: аргумент error, который будет `null`, если `PING` был успешно подтвержден, аргумент `duration`, который сообщает количество миллисекунд, прошедших с момента отправки пинга и получения подтверждения, и `Buffer`, содержащий 8-байтовый полезный груз `PING`.
 
 ```js
 session.ping(
@@ -437,207 +416,185 @@ session.ping(
   (err, duration, payload) => {
     if (!err) {
       console.log(
-        `Ping acknowledged in ${duration} milliseconds`
+        `Пинг подтвержден через ${длительность} миллисекунд`
       );
-      console.log(`With payload '${payload.toString()}'`);
+      console.log(
+        `С полезной нагрузкой '${payload.toString()}'`
+      );
     }
   }
 );
 ```
 
-Если `payload` аргумент не указан, полезной нагрузкой по умолчанию будет 64-битная временная метка (с прямым порядком байтов), обозначающая начало `PING` продолжительность.
+Если аргумент `payload` не указан, то по умолчанию в качестве полезной нагрузки будет использоваться 64-битная метка времени (little endian), отмечающая начало длительности `PING`.
+
+<!-- 0028.part.md -->
 
 #### `http2session.ref()`
 
-<!-- YAML
-added: v9.4.0
--->
+Вызывает [`ref()`](net.md#socketref) для данного экземпляра `Http2Session`, лежащего в основе [`net.Socket`](net.md#class-netsocket).
 
-Звонки [`ref()`](net.md#socketref) на этом `Http2Session` базовый экземпляр [`net.Socket`](net.md#class-netsocket).
+<!-- 0029.part.md -->
 
 #### `http2session.remoteSettings`
 
-<!-- YAML
-added: v8.4.0
--->
+- {HTTP/2 Settings Object}
 
-- {Объект настроек HTTP / 2}
+Объект без прототипа, описывающий текущие удаленные настройки этой `Http2Session`. Удаленные настройки устанавливаются _подключенным_ HTTP/2 peer.
 
-Объект без прототипа, описывающий текущие удаленные настройки этого `Http2Session`. Удаленные настройки устанавливаются _связаны_ HTTP / 2 одноранговый узел.
+<!-- 0030.part.md -->
 
 #### `http2session.setLocalWindowSize(windowSize)`
 
-<!-- YAML
-added:
-  - v15.3.0
-  - v14.18.0
--->
+- `windowSize` {число}
 
-- `windowSize` {количество}
-
-Устанавливает размер окна локальной конечной точки. В `windowSize` - это общий размер окна, который нужно установить, а не дельта.
+Устанавливает размер окна локальной конечной точки. Значение `windowSize` - это полный размер окна, который нужно установить, а не дельта.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 const server = http2.createServer();
 const expectedWindowSize = 2 ** 20;
 server.on('connect', (session) => {
-  // Set local window size to be 2 ** 20
+  // Устанавливаем размер локального окна равным 2 ** 20
   session.setLocalWindowSize(expectedWindowSize);
 });
 ```
 
+<!-- 0031.part.md -->
+
 #### `http2session.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `msecs` {число}
+- `callback` {функция}
 
-- `msecs` {количество}
-- `callback` {Функция}
+Используется для установки функции обратного вызова, которая вызывается, когда нет активности на `Http2Session` после `msecs` миллисекунд. Данный `callback` регистрируется как слушатель события `'timeout'`.
 
-Используется для установки функции обратного вызова, которая вызывается при отсутствии активности на `Http2Session` после `msecs` миллисекунды. Данный `callback` зарегистрирован как слушатель на `'timeout'` событие.
+<!-- 0032.part.md -->
 
 #### `http2session.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+- {net.Socket|tls.TLSSocket}
 
-- {net.Socket | tls.TLSSocket}
+Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но ограничивает доступные методы теми, которые безопасны для использования с HTTP/2.
 
-Возвращает `Proxy` объект, который действует как `net.Socket` (или `tls.TLSSocket`), но ограничивает доступные методы теми, которые безопасны для использования с HTTP / 2.
+Методы `destroy`, `emit`, `end`, `pause`, `read`, `resume` и `write` приведут к ошибке с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Смотрите [`Http2Session` и сокеты](#http2session-and-sockets) для получения дополнительной информации.
 
-`destroy`, `emit`, `end`, `pause`, `read`, `resume`, а также `write` выдаст ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Видеть [`Http2Session` и розетки](#http2session-and-sockets) для дополнительной информации.
+Метод `setTimeout` будет вызван на этой `Http2Session`.
 
-`setTimeout` метод будет вызываться на этом `Http2Session`.
+Все остальные взаимодействия будут направлены непосредственно на сокет.
 
-Все остальные взаимодействия будут направляться непосредственно в сокет.
+<!-- 0033.part.md -->
 
 #### `http2session.state`
 
-<!-- YAML
-added: v8.4.0
--->
-
 Предоставляет различную информацию о текущем состоянии `Http2Session`.
 
-- {Объект}
-  - `effectiveLocalWindowSize` {number} Текущий размер окна локального (принимаемого) управления потоком для `Http2Session`.
-  - `effectiveRecvDataLength` {number} Текущее количество байтов, полученных с момента последнего управления потоком. `WINDOW_UPDATE`.
-  - `nextStreamID` {number} Числовой идентификатор, который будет использоваться в следующий раз, когда новый `Http2Stream` создается этим `Http2Session`.
-  - `localWindowSize` {number} Количество байтов, которое удаленный узел может отправить, не получив `WINDOW_UPDATE`.
-  - `lastProcStreamID` {number} Числовой идентификатор `Http2Stream` для чего `HEADERS` или `DATA` кадр был получен совсем недавно.
-  - `remoteWindowSize` {number} Количество байтов, которое `Http2Session` может отправить, не получив `WINDOW_UPDATE`.
-  - `outboundQueueSize` {number} Количество кадров, находящихся на данный момент в исходящей очереди для этого `Http2Session`.
-  - `deflateDynamicTableSize` {number} Текущий размер в байтах таблицы состояний сжатия исходящего заголовка.
-  - `inflateDynamicTableSize` {number} Текущий размер в байтах таблицы состояний сжатия входящего заголовка.
+- {Object}
+  - `effectiveLocalWindowSize` {number} Текущий размер локального (принимающего) окна управления потоком для `Http2Session`.
+  - `effectiveRecvDataLength` {number} Текущее количество байт, которые были получены с момента последнего управления потоком `WINDOW_UPDATE`.
+  - `nextStreamID` {number} Числовой идентификатор, который будет использоваться в следующий раз, когда новый `Http2Stream` будет создан этой `Http2Session`.
+  - `localWindowSize` {number} Количество байт, которое удаленный пир может отправить без получения `WINDOW_UPDATE`.
+  - `lastProcStreamID` {number} Числовой идентификатор `Http2Stream`, для которого последним был получен фрейм `HEADERS` или `DATA`.
+  - `remoteWindowSize` {number} Количество байт, которое эта `Http2Session` может отправить без получения `WINDOW_UPDATE`.
+  - `outboundQueueSize` {number} Количество кадров, находящихся в очереди на отправку для этой `Http2Session`.
+  - `deflateDynamicTableSize` {number} Текущий размер в байтах таблицы состояния сжатия исходящих заголовков.
+  - `inflateDynamicTableSize` {число} Текущий размер в байтах таблицы состояния сжатия входящих заголовков.
 
-Объект, описывающий текущий статус этого `Http2Session`.
+Объект, описывающий текущее состояние данного `Http2Session`.
+
+<!-- 0034.part.md -->
 
 #### `http2session.settings([settings][, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `settings` {HTTP/2 объект настроек}
+- `callback` {Функция} Обратный вызов, который вызывается после подключения сессии или сразу же, если сессия уже подключена.
+  - `err` {Error|null}
+  - `settings` {HTTP/2 Settings Object} Обновленный объект `settings`.
+  - `duration` {integer}
 
-- `settings` {Объект настроек HTTP / 2}
-- `callback` {Функция} Обратный вызов, который вызывается после подключения сеанса или сразу же, если сеанс уже подключен.
-  - `err` {Ошибка | ноль}
-  - `settings` {Объект настроек HTTP / 2} Обновленный `settings` объект.
-  - `duration` {целое число}
+Обновляет текущие локальные настройки для данной `Http2Session` и отправляет новый фрейм `SETTINGS` подключенному HTTP/2 peer.
 
-Обновляет текущие локальные настройки для этого `Http2Session` и отправляет новый `SETTINGS` фрейм к подключенному узлу HTTP / 2.
+После вызова свойство `http2session.pendingSettingsAck` будет иметь значение `true`, пока сессия ожидает подтверждения новых настроек от удаленного пира.
 
-После вызова `http2session.pendingSettingsAck` собственность будет `true` пока сеанс ожидает, пока удаленный узел подтвердит новые настройки.
+Новые настройки вступят в силу только после получения подтверждения `SETTINGS` и возникновения события `'localSettings'`. Можно отправить несколько кадров `SETTINGS`, пока ожидается подтверждение.
 
-Новые настройки не вступят в силу до тех пор, пока `SETTINGS` подтверждение получено, и `'localSettings'` событие испускается. Можно отправить несколько `SETTINGS` кадры, пока подтверждение еще не получено.
+<!-- 0035.part.md -->
 
 #### `http2session.type`
 
-<!-- YAML
-added: v8.4.0
--->
+- {число}
 
-- {количество}
+Значение `http2session.type` будет равно `http2.constants.NGHTTP2_SESSION_SERVER`, если данный экземпляр `Http2Session` является сервером, и `http2.constants.NGHTTP2_SESSION_CLIENT`, если экземпляр является клиентом.
 
-В `http2session.type` будет равно `http2.constants.NGHTTP2_SESSION_SERVER` если это `Http2Session` instance - это сервер, а `http2.constants.NGHTTP2_SESSION_CLIENT` если экземпляр является клиентом.
+<!-- 0036.part.md -->
 
 #### `http2session.unref()`
 
-<!-- YAML
-added: v9.4.0
--->
+Вызывает [`unref()`](net.md#socketunref) для данного экземпляра `Http2Session`, лежащего в основе [`net.Socket`](net.md#class-netsocket).
 
-Звонки [`unref()`](net.md#socketunref) на этом `Http2Session` базовый экземпляр [`net.Socket`](net.md#class-netsocket).
+<!-- 0037.part.md -->
 
 ### Класс: `ServerHttp2Session`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {Http2Session}
 
-- Расширяется: {Http2Session}
+<!-- 0038.part.md -->
 
 #### `serverhttp2session.altsvc(alt, originOrStream)`
 
-<!-- YAML
-added: v9.4.0
--->
+- `alt` {string} Описание конфигурации альтернативной службы, как определено в [RFC 7838](https://tools.ietf.org/html/rfc7838).
+- `originOrStream` {number|string|URL|Object} Либо строка URL, указывающая происхождение (или `Object` со свойством `origin`), либо числовой идентификатор активного `Http2Stream`, заданный свойством `http2stream.id`.
 
-- `alt` {строка} Описание альтернативной конфигурации службы, как определено [RFC 7838](https://tools.ietf.org/html/rfc7838).
-- `originOrStream` {number | string | URL | Object} Либо строка URL, указывающая источник (или `Object` с `origin` свойство) или числовой идентификатор активного `Http2Stream` как дано `http2stream.id` имущество.
-
-Представляет `ALTSVC` кадр (как определено [RFC 7838](https://tools.ietf.org/html/rfc7838)) подключенному клиенту.
+Отправляет фрейм `ALTSVC` (как определено в [RFC 7838](https://tools.ietf.org/html/rfc7838)) подключенному клиенту.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 const server = http2.createServer();
 server.on('session', (session) => {
-  // Set altsvc for origin https://example.org:80
+  // Устанавливаем altsvc для origin https://example.org:80
   session.altsvc('h2=":8000"', 'https://example.org:80');
 });
 
 server.on('stream', (stream) => {
-  // Set altsvc for a specific stream
+  // Устанавливаем altsvc для определенного потока
   stream.session.altsvc('h2=":8000"', stream.id);
 });
 ```
 
-Отправка `ALTSVC` кадр с определенным идентификатором потока указывает, что альтернативная услуга связана с источником данного `Http2Stream`.
+Отправка фрейма `ALTSVC` с определенным идентификатором потока указывает на то, что альтернативный сервис связан с происхождением данного `Http2Stream`.
 
-В `alt` и исходная строка _должен_ содержат только байты ASCII и строго интерпретируются как последовательность байтов ASCII. Особая ценность `'clear'` может быть передан для очистки любой ранее установленной альтернативной службы для данного домена.
+Строки `alt` и origin _должны_ содержать только ASCII байты и строго интерпретируются как последовательность ASCII байтов. Специальное значение `'clear'` может быть передано для очистки любой ранее установленной альтернативной службы для данного домена.
 
-Когда строка передается для `originOrStream` аргумент, он будет проанализирован как URL-адрес, и источник будет получен. Например, происхождение URL-адреса HTTP `'https://example.org/foo/bar'` это строка ASCII `'https://example.org'`. Будет выдана ошибка, если либо данная строка не может быть проанализирована как URL-адрес, либо если действительное происхождение не может быть получено.
+Если в качестве аргумента `originOrStream` передана строка, она будет разобрана как URL и будет определено происхождение. Например, источником для HTTP URL `'https://example.org/foo/bar'` является ASCII строка `'https://example.org'`. Если заданная строка не может быть разобрана как URL или если не может быть выведено правильное происхождение, будет выдана ошибка.
 
-А `URL` объект или любой объект с `origin` свойство, может быть передано как `originOrStream`, в этом случае значение `origin` собственность будет использоваться. Ценность `origin` имущество _должен_ быть правильно сериализованным источником ASCII.
+Объект `URL` или любой объект со свойством `origin` может быть передан как `originOrStream`, в этом случае будет использовано значение свойства `origin`. Значение свойства `origin` _должно_ быть правильно сериализованным ASCII origin.
 
-#### Указание альтернативных услуг
+<!-- 0039.part.md -->
 
-Формат `alt` параметр строго определяется [RFC 7838](https://tools.ietf.org/html/rfc7838) в виде строки ASCII, содержащей разделенный запятыми список «альтернативных» протоколов, связанных с конкретным хостом и портом.
+#### Указание альтернативных служб
 
-Например, значение `'h2="example.org:81"'` указывает, что протокол HTTP / 2 доступен на хосте `'example.org'` на порт TCP / IP 81. Хост и порт _должен_ содержаться в цитате (`"`) символы.
+Формат параметра `alt` строго определен [RFC 7838](https://tools.ietf.org/html/rfc7838) как ASCII-строка, содержащая список "альтернативных" протоколов, связанных с определенным хостом и портом, через запятую.
 
-Могут быть указаны несколько альтернатив, например: `'h2="example.org:81", h2=":82"'`.
+Например, значение `'h2="example.org:81"'` указывает, что протокол HTTP/2 доступен на хосте `'example.org'` на порту TCP/IP 81. Хост и порт _должны_ содержаться в кавычках (```).
 
-Идентификатор протокола (`'h2'` в примерах) может быть любым допустимым [Идентификатор протокола ALPN](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids).
+Можно указать несколько альтернатив, например: `'h2="example.org:81", h2=":82"'`.
 
-Синтаксис этих значений не проверяется реализацией Node.js и передается, как указано пользователем или получено от однорангового узла.
+Идентификатор протокола (`'h2'` в примерах) может быть любым действительным [ALPN Protocol ID](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids).
+
+Синтаксис этих значений не проверяется реализацией Node.js и передается как предоставленный пользователем или полученный от аналога.
+
+<!-- 0040.part.md -->
 
 #### `serverhttp2session.origin(...origins)`
 
-<!-- YAML
-added: v10.12.0
--->
+- `origins` { string | URL | Object } Одна или несколько строк URL, переданных в качестве отдельных аргументов.
 
-- `origins` {строка | URL | Object} Одна или несколько строк URL, переданных как отдельные аргументы.
-
-Представляет `ORIGIN` кадр (как определено [RFC 8336](https://tools.ietf.org/html/rfc8336)) подключенному клиенту, чтобы объявить набор источников, для которых сервер может предоставлять достоверные ответы.
+Посылает фрейм `ORIGIN` (как определено в [RFC 8336](https://tools.ietf.org/html/rfc8336)) подключенному клиенту для рекламы набора источников, для которых сервер способен предоставлять авторитетные ответы.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const options = getSecureOptionsSomehow();
 const server = http2.createSecureServer(options);
 server.on('stream', (stream) => {
@@ -652,14 +609,14 @@ server.on('session', (session) => {
 });
 ```
 
-Когда строка передается как `origin`, он будет проанализирован как URL-адрес, и источник будет получен. Например, происхождение URL-адреса HTTP `'https://example.org/foo/bar'` это строка ASCII `'https://example.org'`. Будет выдана ошибка, если либо данная строка не может быть проанализирована как URL-адрес, либо если действительное происхождение не может быть получено.
+Когда в качестве `origin` передается строка, она будет разобрана как URL, и из нее будет выведено происхождение. Например, источником для HTTP URL `'https://example.org/foo/bar'` является ASCII строка `'https://example.org'`. Если заданная строка не может быть разобрана как URL или если не может быть выведено правильное происхождение, будет выдана ошибка.
 
-А `URL` объект или любой объект с `origin` собственность, может быть передана как `origin`, в этом случае значение `origin` собственность будет использоваться. Ценность `origin` имущество _должен_ быть правильно сериализованным источником ASCII.
+В качестве `оригинала` может быть передан объект `URL` или любой объект со свойством `origin`, в этом случае будет использовано значение свойства `origin`. Значение свойства `origin` _должно_ быть правильно сериализованным ASCII origin.
 
-В качестве альтернативы `origins` параметр может использоваться при создании нового сервера HTTP / 2 с помощью `http2.createSecureServer()` метод:
+В качестве альтернативы, опцию `origins` можно использовать при создании нового HTTP/2 сервера с помощью метода `http2.createSecureServer()`:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const options = getSecureOptionsSomehow();
 options.origins = [
   'https://example.com',
@@ -672,28 +629,24 @@ server.on('stream', (stream) => {
 });
 ```
 
+<!-- 0041.part.md -->
+
 ### Класс: `ClientHttp2Session`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {Http2Session}
 
-- Расширяется: {Http2Session}
+<!-- 0042.part.md -->
 
 #### Событие: `'altsvc'`
 
-<!-- YAML
-added: v9.4.0
--->
+- `alt` {строка}
+- `origin` {string}
+- `streamId` {число}
 
-- `alt` {нить}
-- `origin` {нить}
-- `streamId` {количество}
-
-В `'altsvc'` событие генерируется всякий раз, когда `ALTSVC` кадр получен клиентом. Событие испускается с `ALTSVC` значение, источник и идентификатор потока. Если нет `origin` предоставляется в `ALTSVC` Рамка, `origin` будет пустой строкой.
+Событие `'altsvc'` испускается всякий раз, когда клиент получает кадр `ALTSVC`. В событии указывается значение `ALTSVC`, происхождение и ID потока. Если в кадре `ALTSVC` не указан `origin`, то `origin` будет пустой строкой.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const client = http2.connect('https://example.org');
 
 client.on('altsvc', (alt, origin, streamId) => {
@@ -703,18 +656,16 @@ client.on('altsvc', (alt, origin, streamId) => {
 });
 ```
 
-#### Событие: `'origin'`
+<!-- 0043.part.md -->
 
-<!-- YAML
-added: v10.12.0
--->
+#### Событие: `origin`
 
-- `origins` {нить\[]}
+- `origins` {string\[\]}
 
-В `'origin'` событие генерируется всякий раз, когда `ORIGIN` кадр получен клиентом. Событие испускается с массивом `origin` струны. В `http2session.originSet` будет обновлено, чтобы включить полученные исходные данные.
+Событие `'origin'` генерируется каждый раз, когда клиент получает кадр `ORIGIN`. Событие испускается с массивом строк `origin`. Набор `http2session.originSet` будет обновлен, чтобы включить полученные оригиналы.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const client = http2.connect('https://example.org');
 
 client.on('origin', (origins) => {
@@ -723,33 +674,33 @@ client.on('origin', (origins) => {
 });
 ```
 
-В `'origin'` Событие генерируется только при использовании безопасного TLS-соединения.
+Событие `origin` испускается только при использовании безопасного TLS-соединения.
+
+<!-- 0044.part.md -->
 
 #### `clienthttp2session.request(headers[, options])`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `headers` {Объект заголовков HTTP / 2}
+- `headers` {HTTP/2 Headers Object}
 
 - `options` {Объект}
 
-  - `endStream` {логический} `true` если `Http2Stream` _записываемый_ сторона должна быть изначально закрыта, например, при отправке `GET` запрос, который не должен ожидать тела полезной нагрузки.
-  - `exclusive` {boolean} Когда `true` а также `parent` идентифицирует родительский поток, созданный поток становится единственной прямой зависимостью от родительского потока, а все другие существующие зависимые объекты становятся зависимыми от вновь созданного потока. **Дефолт:** `false`.
-  - `parent` {number} Задает числовой идентификатор потока, от которого зависит вновь созданный поток.
-  - `weight` {number} Определяет относительную зависимость потока по отношению к другим потокам с таким же `parent`. Значение - это число между `1` а также `256` (включительно).
-  - `waitForTrailers` {boolean} Когда `true`, то `Http2Stream` испустит `'wantTrailers'` событие после финала `DATA` кадр был отправлен.
-  - `signal` {AbortSignal} AbortSignal, который может использоваться для прерывания текущего запроса.
+  - `endStream` {boolean} `true` если сторона `Http2Stream` _записываемая_ должна быть закрыта изначально, например, при отправке `GET` запроса, который не должен ожидать тела полезной нагрузки.
+  - `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
+  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
+  - `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
+  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
+  - `signal` {AbortSignal} Сигнал прерывания, который может быть использован для прерывания текущего запроса.
 
 - Возвращает: {ClientHttp2Stream}
 
-Для клиента HTTP / 2 `Http2Session` только экземпляры, `http2session.request()` создает и возвращает `Http2Stream` экземпляр, который можно использовать для отправки запроса HTTP / 2 на подключенный сервер.
+Только для экземпляров HTTP/2 Client `Http2Session`, `http2session.request()` создает и возвращает экземпляр `Http2Stream`, который может быть использован для отправки HTTP/2 запроса на подключенный сервер.
 
-Этот метод доступен, только если `http2session.type` равно `http2.constants.NGHTTP2_SESSION_CLIENT`.
+Когда `ClientHttp2Session` создается впервые, сокет может быть еще не подключен. Если в это время вызывается `clienthttp2session.request()`, фактический запрос будет отложен до тех пор, пока сокет не будет готов к работе. Если `сессия` будет закрыта до выполнения фактического запроса, будет выброшена ошибка `ERR_HTTP2_GOAWAY_SESSION`.
+
+Этот метод доступен, только если `http2session.type` равен `http2.constants.NGHTTP2_SESSION_CLIENT`.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const clientSession = http2.connect(
   'https://localhost:1234'
 );
@@ -764,42 +715,40 @@ const req = clientSession.request({
 req.on('response', (headers) => {
   console.log(headers[HTTP2_HEADER_STATUS]);
   req.on('data', (chunk) => {
-    /* .. */
+    /* ... */
   });
   req.on('end', () => {
-    /* .. */
+    /* ... */
   });
 });
 ```
 
-Когда `options.waitForTrailers` опция установлена, `'wantTrailers'` Событие генерируется сразу после постановки в очередь последнего блока данных полезной нагрузки для отправки. В `http2stream.sendTrailers()` затем можно вызвать метод для отправки конечных заголовков партнеру.
+Когда опция `options.waitForTrailers` установлена, событие `'wantTrailers'` испускается сразу после постановки в очередь последнего куска данных полезной нагрузки для отправки. Метод `http2stream.sendTrailers()` может быть вызван для отправки заголовков в конце письма.
 
-Когда `options.waitForTrailers` установлен, `Http2Stream` не закроется автоматически, когда последний `DATA` кадр передается. Код пользователя должен вызывать либо `http2stream.sendTrailers()` или `http2stream.close()` закрыть `Http2Stream`.
+Когда параметр `options.waitForTrailers` установлен, `Http2Stream` не будет автоматически закрываться, когда будет передан последний кадр `DATA`. Пользовательский код должен вызвать либо `http2stream.sendTrailers()`, либо `http2stream.close()`, чтобы закрыть `Http2Stream`.
 
-Когда `options.signal` установлен с `AbortSignal` а потом `abort` на соответствующем `AbortController` вызывается, запрос выдаст `'error'` событие с `AbortError` ошибка.
+Если в `options.signal` установлен `AbortSignal`, а затем вызван `abort` на соответствующем `AbortController`, запрос выдаст событие `'error'` с ошибкой `AbortError`.
 
-В `:method` а также `:path` псевдозаголовки не указаны в `headers`, они соответственно по умолчанию:
+Псевдозаголовки `:method` и `:path` не указываются в `headers`, они соответственно имеют значение по умолчанию:
 
-- `:method` знак равно `'GET'`
-- `:path` знак равно `/`
+- `:method` = `'GET'`.
+- `:path` = `/`
+
+<!-- 0045.part.md -->
 
 ### Класс: `Http2Stream`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {stream.Duplex}
 
-- Расширяется: {stream.Duplex}
+Каждый экземпляр класса `Http2Stream` представляет двунаправленный поток HTTP/2-коммуникаций через экземпляр `Http2Session`. Любой отдельный `Http2Session` может иметь до 2<sup>31</sup>-1 экземпляров `Http2Stream` за время своего существования.
 
-Каждый экземпляр `Http2Stream` class представляет двунаправленный поток связи HTTP / 2 по `Http2Session` пример. Любой сингл `Http2Session` может быть до 2<sup>31 год</sup>-1 `Http2Stream` экземпляров за время его существования.
+Пользовательский код не будет создавать экземпляры `Http2Stream` напрямую. Скорее, они создаются, управляются и предоставляются пользовательскому коду через экземпляр `Http2Session`. На сервере экземпляры `Http2Stream` создаются либо в ответ на входящий HTTP-запрос (и передаются коду пользователя через событие `'stream'`), либо в ответ на вызов метода `http2stream.pushStream()`. На клиенте экземпляры `Http2Stream` создаются и возвращаются либо при вызове метода `http2session.request()`, либо в ответ на входящее событие `'push'`.
 
-Пользовательский код не будет построен `Http2Stream` экземпляры напрямую. Скорее, они создаются, управляются и предоставляются пользовательскому коду через `Http2Session` пример. На сервере `Http2Stream` экземпляры создаются либо в ответ на входящий HTTP-запрос (и передаются пользовательскому коду через `'stream'` событие), или в ответ на вызов `http2stream.pushStream()` метод. На клиенте `Http2Stream` экземпляры создаются и возвращаются, когда либо `http2session.request()` вызывается метод, или в ответ на входящий `'push'` событие.
+Класс `Http2Stream` является базой для классов [`ServerHttp2Stream`](#class-serverhttp2stream) и [`ClientHttp2Stream`](#class-clienthttp2stream), каждый из которых используется на стороне сервера или клиента соответственно.
 
-В `Http2Stream` класс является базой для [`ServerHttp2Stream`](#class-serverhttp2stream) а также [`ClientHttp2Stream`](#class-clienthttp2stream) классы, каждый из которых используется отдельно на стороне сервера или клиента соответственно.
+Все экземпляры `Http2Stream` являются потоками [`Duplex`](stream.md#class-streamduplex). Сторона `Writable` потока `Duplex` используется для отправки данных подключенному аналогу, а сторона `Readable` используется для получения данных, отправленных подключенным аналогом.
 
-Все `Http2Stream` экземпляры [`Duplex`](stream.md#class-streamduplex) потоки. В `Writable` сторона `Duplex` используется для отправки данных подключенному узлу, в то время как `Readable` Сторона используется для приема данных, отправленных подключенным одноранговым узлом.
-
-Кодировка текстовых символов по умолчанию для всех `Http2Stream`s - это UTF-8. Рекомендуется, чтобы при использовании `Http2Stream` чтобы отправить текст, `'content-type'` заголовок должен быть установлен и должен идентифицировать используемую кодировку символов.
+Кодировка текстовых символов по умолчанию для `Http2Stream` - UTF-8. При использовании `Http2Stream` для отправки текста, используйте заголовок `'content-type'` для установки кодировки.
 
 ```js
 stream.respond({
@@ -808,103 +757,95 @@ stream.respond({
 });
 ```
 
-#### `Http2Stream` Жизненный цикл
+<!-- 0046.part.md -->
 
-##### Творчество
+#### `Http2Stream` Lifecycle
+
+<!-- 0047.part.md -->
+
+##### Создание
 
 На стороне сервера экземпляры [`ServerHttp2Stream`](#class-serverhttp2stream) создаются либо когда:
 
-- Новый HTTP / 2 `HEADERS` получен кадр с ранее неиспользованным идентификатором потока;
-- В `http2stream.pushStream()` вызывается метод.
+- Получается новый кадр HTTP/2 `HEADERS` с ранее неиспользованным идентификатором потока;
+- Вызывается метод `http2stream.pushStream()`.
 
-На стороне клиента экземпляры [`ClientHttp2Stream`](#class-clienthttp2stream) создаются, когда `http2session.request()` вызывается метод.
+На стороне клиента экземпляры [`ClientHttp2Stream`](#class-clienthttp2stream) создаются при вызове метода `http2session.request()`.
 
-На клиенте `Http2Stream` экземпляр, возвращенный `http2session.request()` может быть не сразу готов к использованию, если родительский `Http2Session` еще полностью не установлено. В таких случаях операции вызывались `Http2Stream` будут буферизированы до тех пор, пока `'ready'` событие испускается. Код пользователя должен редко, если вообще когда-либо, обрабатывать `'ready'` событие напрямую. Готовый статус `Http2Stream` можно определить, проверив значение `http2stream.id`. Если значение равно `undefined`, поток еще не готов к использованию.
+На клиенте экземпляр `Http2Stream`, возвращаемый методом `http2session.request()`, может быть не сразу готов к использованию, если родительский `Http2Session` еще не полностью создан. В таких случаях операции, вызываемые на `Http2Stream`, будут буферизироваться до тех пор, пока не произойдет событие `'ready'`. Пользовательский код редко, если вообще когда-либо, должен обрабатывать событие `'ready'` непосредственно. Статус готовности `Http2Stream` можно определить, проверив значение `http2stream.id`. Если значение равно `undefined`, поток еще не готов к использованию.
 
-##### Разрушение
+<!-- 0048.part.md -->
 
-Все [`Http2Stream`](#class-http2stream) экземпляры уничтожаются либо когда:
+##### Уничтожение
 
-- An `RST_STREAM` кадр для потока получен подключенным одноранговым узлом, и (только для клиентских потоков) ожидающие данные были прочитаны.
-- В `http2stream.close()` вызывается метод, и (только для клиентских потоков) ожидающие данные были прочитаны.
-- В `http2stream.destroy()` или `http2session.destroy()` методы называются.
+Все экземпляры [`Http2Stream`](#class-http2stream) уничтожаются либо когда:
 
-Когда `Http2Stream` экземпляр уничтожен, будет предпринята попытка отправить `RST_STREAM` фрейм к подключенному узлу.
+- кадр `RST_STREAM` для потока получен подключенным пиром, и (только для клиентских потоков) ожидающие данные были прочитаны.
+- Вызывается метод `http2stream.close()`, и (только для клиентских потоков) ожидающие данные были прочитаны.
+- Вызываются методы `http2stream.destroy()` или `http2session.destroy()`.
 
-Когда `Http2Stream` экземпляр уничтожен, `'close'` событие будет выпущено. Потому что `Http2Stream` это пример `stream.Duplex`, то `'end'` событие также будет сгенерировано, если данные потока текут в данный момент. В `'error'` событие также может быть сгенерировано, если `http2stream.destroy()` был вызван с `Error` передается как первый аргумент.
+Когда экземпляр `Http2Stream` уничтожается, будет предпринята попытка отправить фрейм `RST_STREAM` подключенному пиру.
 
-После `Http2Stream` был уничтожен, `http2stream.destroyed` собственность будет `true` и `http2stream.rstCode` свойство будет указывать `RST_STREAM` код ошибки. В `Http2Stream` После уничтожения экземпляр больше не может использоваться.
+Когда экземпляр `Http2Stream` будет уничтожен, произойдет событие `'close'`. Поскольку `Http2Stream` является экземпляром `stream.Duplex`, событие `'end'` также будет выдано, если данные потока в настоящее время текут. Событие `'error'` также может быть вызвано, если `http2stream.destroy()` было вызвано с `Error`, переданным в качестве первого аргумента.
+
+После уничтожения `Http2Stream` свойство `http2stream.destroyed` будет равно `true`, а свойство `http2stream.rstCode` будет указывать код ошибки `RST_STREAM`. После уничтожения экземпляр `Http2Stream` больше не может использоваться.
+
+<!-- 0049.part.md -->
 
 #### Событие: `'aborted'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'aborted'` генерируется всякий раз, когда экземпляр `Http2Stream` аномально прерывается в середине коммуникации. Его слушатель не ожидает никаких аргументов.
 
-В `'aborted'` событие генерируется всякий раз, когда `Http2Stream` Экземпляр ненормально прерывается во время обмена данными. Его слушатель не ожидает никаких аргументов.
+Событие `'aborted'` будет испущено, только если записываемая сторона `Http2Stream` не была завершена.
 
-В `'aborted'` событие будет сгенерировано только в том случае, если `Http2Stream` записываемая сторона не закончена.
+<!-- 0050.part.md -->
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'close'` происходит, когда `Http2Stream` уничтожается. После того, как это событие произошло, экземпляр `Http2Stream` больше не может использоваться.
 
-В `'close'` событие генерируется, когда `Http2Stream` уничтожен. Как только это событие генерируется, `Http2Stream` экземпляр больше не используется.
+Код ошибки HTTP/2, используемый при закрытии потока, можно получить с помощью свойства `http2stream.rstCode`. Если код имеет любое значение, отличное от `NGHTTP2_NO_ERROR` (`0`), то также будет выдано событие `'error`.
 
-Код ошибки HTTP / 2, используемый при закрытии потока, можно получить с помощью `http2stream.rstCode` имущество. Если код имеет любое значение, кроме `NGHTTP2_NO_ERROR` (`0`), `'error'` событие также будет отправлено.
+<!-- 0051.part.md -->
 
-#### Событие: `'error'`
-
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `error`
 
 - `error` {Ошибка}
 
-В `'error'` событие генерируется, когда возникает ошибка во время обработки `Http2Stream`.
+Событие `'error'` генерируется, когда происходит ошибка во время обработки `Http2Stream`.
 
-#### Событие: `'frameError'`
+<!-- 0052.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `FrameError`
 
 - `type` {integer} Тип кадра.
 - `code` {integer} Код ошибки.
-- `id` {integer} Идентификатор потока (или `0` если кадр не связан с потоком).
+- `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
 
-В `'frameError'` Событие генерируется, когда возникает ошибка при попытке отправить фрейм. При вызове функция-обработчик получит целочисленный аргумент, определяющий тип кадра, и целочисленный аргумент, определяющий код ошибки. В `Http2Stream` экземпляр будет уничтожен сразу после `'frameError'` событие испускается.
+Событие `'frameError'` генерируется при возникновении ошибки при попытке отправить кадр. При вызове функция-обработчик получает целочисленный аргумент, идентифицирующий тип кадра, и целочисленный аргумент, идентифицирующий код ошибки. Экземпляр `Http2Stream` будет уничтожен сразу после возникновения события `'frameError'`.
+
+<!-- 0053.part.md -->
 
 #### Событие: `'ready'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'ready'` происходит, когда поток `Http2Stream` был открыт, ему был присвоен `id`, и его можно использовать. Слушатель не ожидает никаких аргументов.
 
-В `'ready'` событие генерируется, когда `Http2Stream` открыт, ему присвоен `id`, и может быть использован. Слушатель не ожидает никаких аргументов.
+<!-- 0054.part.md -->
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'timeout'` происходит после того, как для данного `Http2Stream` не было получено никакой активности в течение количества миллисекунд, установленного с помощью `http2stream.setTimeout()`. Его слушатель не ожидает никаких аргументов.
 
-В `'timeout'` событие генерируется после того, как для этого не было получено никаких действий `Http2Stream` в пределах количества миллисекунд, установленных с помощью `http2stream.setTimeout()`. Его слушатель не ожидает никаких аргументов.
+<!-- 0055.part.md -->
 
-#### Событие: `'trailers'`
+#### Событие: `trailers`
 
-<!-- YAML
-added: v8.4.0
--->
+- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+- `flags` {число} Ассоциированные числовые флаги
 
-- `headers` {HTTP / 2 Headers Object} Объект, описывающий заголовки.
-- `flags` {number} Связанные числовые флаги
+Событие `'trailers'` генерируется, когда получен блок заголовков, связанных с полями заголовков в конце. Обратному вызову слушателя передается [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
-В `'trailers'` Событие генерируется при получении блока заголовков, связанных с завершающими полями заголовка. Обратный вызов слушателя передается [Объект заголовков HTTP / 2](#headers-object) и флаги, связанные с заголовками.
-
-Это событие не может быть сгенерировано, если `http2stream.end()` вызывается до приема трейлеров, а входящие данные не читаются и не прослушиваются.
+Это событие может не произойти, если `http2stream.end()` вызывается до получения трейлеров и входящие данные не читаются и не прослушиваются.
 
 ```js
 stream.on('trailers', (headers, flags) => {
@@ -912,210 +853,174 @@ stream.on('trailers', (headers, flags) => {
 });
 ```
 
+<!-- 0056.part.md -->
+
 #### Событие: `'wantTrailers'`
 
-<!-- YAML
-added: v10.0.0
--->
+Событие `'wantTrailers'` происходит, когда `Http2Stream` поставил в очередь последний кадр `DATA` для отправки в кадре и `Http2Stream` готов к отправке заголовков. При инициировании запроса или ответа для этого события должна быть установлена опция `waitForTrailers`.
 
-В `'wantTrailers'` событие генерируется, когда `Http2Stream` стоит в очереди на финал `DATA` кадр для отправки на кадре и `Http2Stream` готов к отправке конечных заголовков. При инициировании запроса или ответа `waitForTrailers` параметр должен быть установлен, чтобы это событие было испущено.
+<!-- 0057.part.md -->
 
 #### `http2stream.aborted`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true`, если экземпляр `Http2Stream` был аномально прерван. Если установлено, то будет выдано событие `'aborted''.
 
-Установлен в `true` если `Http2Stream` Экземпляр был аварийно прерван. Когда установлено, `'aborted'` событие будет отправлено.
+<!-- 0058.part.md -->
 
 #### `http2stream.bufferSize`
 
-<!-- YAML
-added:
- - v11.2.0
- - v10.16.0
--->
+- {число}
 
-- {количество}
+Это свойство показывает количество символов, буферизованных для записи. Подробности смотрите в [`net.Socket.bufferSize`](net.md#socketbuffersize).
 
-Это свойство показывает количество символов, которые в настоящее время буферизированы для записи. Видеть [`net.Socket.bufferSize`](net.md#socketbuffersize) для подробностей.
+<!-- 0059.part.md -->
 
 #### `http2stream.close(code[, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `code` {number} Беззнаковое 32-битное целое число, идентифицирующее код ошибки. **По умолчанию:** `http2.constants.NGHTTP2_NO_ERROR` (`0x00`).
+- `callback` {Function} Необязательная функция, зарегистрированная для прослушивания события `'close'`.
 
-- `code` {number} 32-битное целое число без знака, идентифицирующее код ошибки. **Дефолт:** `http2.constants.NGHTTP2_NO_ERROR` (`0x00`).
-- `callback` {Function} Необязательная функция, зарегистрированная для прослушивания `'close'` событие.
+Закрывает экземпляр `Http2Stream`, отправляя кадр `RST_STREAM` подключенному HTTP/2 peer.
 
-Закрывает `Http2Stream` экземпляр, отправив `RST_STREAM` фрейм к подключенному узлу HTTP / 2.
+<!-- 0060.part.md -->
 
 #### `http2stream.closed`
 
-<!-- YAML
-added: v9.4.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true`, если экземпляр `Http2Stream` был закрыт.
 
-Установлен в `true` если `Http2Stream` экземпляр был закрыт.
+<!-- 0061.part.md -->
 
 #### `http2stream.destroyed`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true`, если экземпляр `Http2Stream` был уничтожен и больше не может использоваться.
 
-Установлен в `true` если `Http2Stream` Экземпляр был уничтожен и больше не может использоваться.
+<!-- 0062.part.md -->
 
 #### `http2stream.endAfterHeaders`
 
-<!-- YAML
-added: v10.11.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true`, если в полученном кадре HEADERS запроса или ответа был установлен флаг `END_STREAM`, указывающий на то, что дополнительные данные не должны быть получены и читаемая сторона `Http2Stream` будет закрыта.
 
-Установить `true` если `END_STREAM` в полученном кадре HEADERS запроса или ответа был установлен флаг, указывающий на то, что дополнительные данные не должны приниматься и читаемая сторона `Http2Stream` будет закрыто.
+<!-- 0063.part.md -->
 
 #### `http2stream.id`
 
-<!-- YAML
-added: v8.4.0
--->
+- {number|undefined}
 
-- {number | undefined}
+Числовой идентификатор потока данного экземпляра `Http2Stream`. Устанавливается в `undefined`, если идентификатор потока еще не был назначен.
 
-Числовой идентификатор потока этого `Http2Stream` пример. Установлен в `undefined` если идентификатор потока еще не назначен.
+<!-- 0064.part.md -->
 
 #### `http2stream.pending`
 
-<!-- YAML
-added: v9.4.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true`, если экземпляру `Http2Stream` еще не был присвоен числовой идентификатор потока.
 
-Установлен в `true` если `Http2Stream` экземпляру еще не присвоен числовой идентификатор потока.
+<!-- 0065.part.md -->
 
 #### `http2stream.priority(options)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `options` {Object}
+  - `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, этот поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимые потоки становятся зависимыми от этого потока. **По умолчанию:** `false`.
+  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит этот поток.
+  - `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
+  - `silent` {boolean} Если `true`, изменяет приоритет локально, не посылая кадр `PRIORITY` подключенному аналогу.
 
-- `options` {Объект}
-  - `exclusive` {boolean} Когда `true` а также `parent` идентифицирует родительский поток, этот поток становится единственной прямой зависимостью от родительского потока, а все другие существующие зависимые объекты становятся зависимыми от этого потока. **Дефолт:** `false`.
-  - `parent` {number} Задает числовой идентификатор потока, от которого зависит этот поток.
-  - `weight` {number} Определяет относительную зависимость потока по отношению к другим потокам с таким же `parent`. Значение - это число между `1` а также `256` (включительно).
-  - `silent` {boolean} Когда `true`, меняет приоритет локально, не отправляя `PRIORITY` фрейм к подключенному узлу.
+Обновляет приоритет для данного экземпляра `Http2Stream`.
 
-Обновляет приоритет для этого `Http2Stream` пример.
+<!-- 0066.part.md -->
 
 #### `http2stream.rstCode`
 
-<!-- YAML
-added: v8.4.0
--->
+- {число}
 
-- {количество}
+Устанавливается в `RST_STREAM` [код ошибки] (#error-codes-for-rst_stream-and-goaway), сообщаемый при уничтожении `Http2Stream` после получения кадра `RST_STREAM` от подключенного пира, вызова `http2stream.close()` или `http2stream.destroy()`. Будет `не определено`, если `Http2Stream` не был закрыт.
 
-Установите на `RST_STREAM` [код ошибки](#error-codes-for-rst_stream-and-goaway) сообщил, когда `Http2Stream` уничтожается после получения `RST_STREAM` кадр от подключенного однорангового узла, вызывающий `http2stream.close()`, или `http2stream.destroy()`. Будет `undefined` если `Http2Stream` не был закрыт.
+<!-- 0067.part.md -->
 
 #### `http2stream.sentHeaders`
 
-<!-- YAML
-added: v9.5.0
--->
+- {HTTP/2 Headers Object}
 
-- {Объект заголовков HTTP / 2}
+Объект, содержащий исходящие заголовки, отправленные для данного `Http2Stream`.
 
-Объект, содержащий исходящие заголовки, отправленные для этого `Http2Stream`.
+<!-- 0068.part.md -->
 
 #### `http2stream.sentInfoHeaders`
 
-<!-- YAML
-added: v9.5.0
--->
+- {HTTP/2 Headers Object\[\]}
 
-- {Объект заголовков HTTP / 2 \[]}
+Массив объектов, содержащих исходящие информационные (дополнительные) заголовки, отправленные для данного `Http2Stream`.
 
-Массив объектов, содержащих исходящие информационные (дополнительные) заголовки, отправленные для этого `Http2Stream`.
+<!-- 0069.part.md -->
 
 #### `http2stream.sentTrailers`
 
-<!-- YAML
-added: v9.5.0
--->
+- {HTTP/2 Headers Object}
 
-- {Объект заголовков HTTP / 2}
+Объект, содержащий исходящие трейлеры, отправленные для данного `HttpStream`.
 
-Объект, содержащий отправленные для этого исходящие трейлеры. `HttpStream`.
+<!-- 0070.part.md -->
 
 #### `http2stream.session`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - {Http2Session}
 
-Ссылка на `Http2Session` экземпляр, которому принадлежит это `Http2Stream`. Стоимость будет `undefined` после `Http2Stream` экземпляр уничтожен.
+Ссылка на экземпляр `Http2Session`, которому принадлежит данный `Http2Stream`. Значение будет `не определено` после уничтожения экземпляра `Http2Stream`.
+
+<!-- 0071.part.md -->
 
 #### `http2stream.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `msecs` {число}
+- `callback` {функция}
 
-- `msecs` {количество}
-- `callback` {Функция}
+<!-- конец списка -->
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const client = http2.connect('http://example.org:8000');
 const { NGHTTP2_CANCEL } = http2.constants;
 const req = client.request({ ':path': '/' });
 
-// Cancel the stream if there's no activity after 5 seconds
+// Отменяем поток, если нет активности через 5 секунд
 req.setTimeout(5000, () => req.close(NGHTTP2_CANCEL));
 ```
 
-#### `http2stream.state`
+<!-- 0072.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### `http2stream.state`
 
 Предоставляет различную информацию о текущем состоянии `Http2Stream`.
 
-- {Объект}
-  - `localWindowSize` {number} Количество байтов, которое подключенный одноранговый узел может отправить для этого `Http2Stream` не получив `WINDOW_UPDATE`.
-  - `state` {number} Флаг, указывающий на низкоуровневое текущее состояние `Http2Stream` как определено `nghttp2`.
-  - `localClose` {количество} `1` если это `Http2Stream` был закрыт на месте.
-  - `remoteClose` {количество} `1` если это `Http2Stream` был закрыт удаленно.
-  - `sumDependencyWeight` {number} Суммарный вес всех `Http2Stream` экземпляры, которые зависят от этого `Http2Stream` как указано с использованием `PRIORITY` кадры.
-  - `weight` {number} Приоритетный вес этого `Http2Stream`.
+- {Object}
+  - `localWindowSize` {число} Количество байт, которое подключенный пир может отправить для данного `Http2Stream` без получения `WINDOW_UPDATE`.
+  - `state` {число} Флаг, указывающий на низкоуровневое текущее состояние `Http2Stream`, определенное `nghttp2`.
+  - `localClose` {number} `1`, если этот `Http2Stream` был закрыт локально.
+  - `remoteClose` {number} `1`, если этот `Http2Stream` был закрыт удаленно.
+  - `sumDependencyWeight` {number} Суммарный вес всех экземпляров `Http2Stream`, которые зависят от этого `Http2Stream`, как указано с помощью фреймов `PRIORITY`.
+  - `weight` {число} Приоритетный вес этого `Http2Stream`.
 
 Текущее состояние этого `Http2Stream`.
 
+<!-- 0073.part.md -->
+
 #### `http2stream.sendTrailers(headers)`
 
-<!-- YAML
-added: v10.0.0
--->
+- `headers` {HTTP/2 Headers Object}
 
-- `headers` {Объект заголовков HTTP / 2}
-
-Отправляет завершающий `HEADERS` фрейм к подключенному узлу HTTP / 2. Этот метод вызовет `Http2Stream` должны быть немедленно закрыты и должны вызываться только после `'wantTrailers'` событие было отправлено. При отправке запроса или ответа `options.waitForTrailers` параметр должен быть установлен, чтобы сохранить `Http2Stream` откроется после финала `DATA` рама, чтобы можно было отправлять прицепы.
+Отправляет трейлинг фрейма `HEADERS` подключенному аналогу HTTP/2. Этот метод приводит к немедленному закрытию `Http2Stream` и может быть вызван только после возникновения события `'wantTrailers`. При отправке запроса или ответа, опция `options.waitForTrailers` должна быть установлена для того, чтобы держать `Http2Stream` открытым после последнего кадра `DATA`, чтобы можно было отправить трейлеры.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   stream.respond(undefined, { waitForTrailers: true });
@@ -1126,33 +1031,30 @@ server.on('stream', (stream) => {
 });
 ```
 
-Спецификация HTTP / 1 запрещает трейлерам содержать поля псевдозаголовка HTTP / 2 (например, `':method'`, `':path'`, так далее).
+Спецификация HTTP/1 запрещает трейлерам содержать поля псевдозаголовков HTTP/2 (например, `':method'`, `':path'` и т. д.).
+
+<!-- 0074.part.md -->
 
 ### Класс: `ClientHttp2Stream`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - Расширяет {Http2Stream}
 
-В `ClientHttp2Stream` класс является расширением `Http2Stream` который используется исключительно на клиентах HTTP / 2. `Http2Stream` экземпляры на клиенте предоставляют такие события, как `'response'` а также `'push'` которые актуальны только для клиента.
+Класс `ClientHttp2Stream` является расширением `Http2Stream`, который используется исключительно в HTTP/2 клиентах. Экземпляры `Http2Stream` на клиенте обеспечивают такие события, как `'response'` и `'push'`, которые актуальны только на клиенте.
 
-#### Событие: `'continue'`
+<!-- 0075.part.md -->
 
-<!-- YAML
-added: v8.5.0
--->
+#### Событие: `continue`
 
-Излучается, когда сервер отправляет `100 Continue` статус, обычно потому, что запрос содержал `Expect: 100-continue`. Это инструкция о том, что клиент должен отправить тело запроса.
+Выдается, когда сервер посылает статус `100 Continue`, обычно потому, что запрос содержит `Expect: 100-continue`. Это указание, что клиент должен отправить тело запроса.
 
-#### Событие: `'headers'`
+<!-- 0076.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `headers`
 
-В `'headers'` событие генерируется, когда для потока получен дополнительный блок заголовков, например, когда блок `1xx` получены информационные заголовки. Обратный вызов слушателя передается [Объект заголовков HTTP / 2](#headers-object) и флаги, связанные с заголовками.
+- `headers` {HTTP/2 Headers Object}
+- `флаги` {число}
+
+Событие `'headers'` возникает, когда для потока получен дополнительный блок заголовков, например, когда получен блок информационных заголовков `1xx`. Обратному вызову слушателя передается объект [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
 ```js
 stream.on('headers', (headers, flags) => {
@@ -1160,13 +1062,14 @@ stream.on('headers', (headers, flags) => {
 });
 ```
 
-#### Событие: `'push'`
+<!-- 0077.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `push`
 
-В `'push'` Событие генерируется при получении заголовков ответа для потока Server Push. Обратный вызов слушателя передается [Объект заголовков HTTP / 2](#headers-object) и флаги, связанные с заголовками.
+- `headers` {HTTP/2 Headers Object}
+- `флаги` {число}
+
+Событие `'push'` возникает при получении заголовков ответа для потока Server Push. Обратному вызову слушателя передается объект [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
 ```js
 stream.on('push', (headers, flags) => {
@@ -1174,16 +1077,17 @@ stream.on('push', (headers, flags) => {
 });
 ```
 
-#### Событие: `'response'`
+<!-- 0078.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `response`
 
-В `'response'` событие генерируется, когда ответ `HEADERS` был получен кадр для этого потока от подключенного сервера HTTP / 2. Слушатель вызывается с двумя аргументами: `Object` содержащий полученные [Объект заголовков HTTP / 2](#headers-object), и флаги, связанные с заголовками.
+- `headers` {HTTP/2 Headers Object}
+- `флаги` {число}
+
+Событие `'response'` испускается, когда для этого потока был получен кадр ответа `HEADERS` от подключенного HTTP/2 сервера. Слушатель вызывается с двумя аргументами: `Object`, содержащий полученный [HTTP/2 Headers Object](#headers-object), и флаги, связанные с заголовками.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const client = http2.connect('https://localhost');
 const req = client.request({ ':path': '/' });
 req.on('response', (headers, flags) => {
@@ -1191,65 +1095,55 @@ req.on('response', (headers, flags) => {
 });
 ```
 
+<!-- 0079.part.md -->
+
 ### Класс: `ServerHttp2Stream`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {Http2Stream}
 
-- Расширяется: {Http2Stream}
+Класс `ServerHttp2Stream` является расширением [`Http2Stream`](#class-http2stream), который используется исключительно на HTTP/2 серверах. Экземпляры `Http2Stream` на сервере предоставляют дополнительные методы, такие как `http2stream.pushStream()` и `http2stream.respond()`, которые актуальны только на сервере.
 
-В `ServerHttp2Stream` класс является расширением [`Http2Stream`](#class-http2stream) который используется исключительно на серверах HTTP / 2. `Http2Stream` экземпляры на сервере предоставляют дополнительные методы, такие как `http2stream.pushStream()` а также `http2stream.respond()` которые актуальны только на сервере.
+<!-- 0080.part.md -->
 
 #### `http2stream.additionalHeaders(headers)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `headers` {HTTP/2 Headers Object}
 
-- `headers` {Объект заголовков HTTP / 2}
+Отправляет дополнительный информационный фрейм `HEADERS` подключенному HTTP/2 peer.
 
-Отправляет дополнительную информационную `HEADERS` фрейм к подключенному узлу HTTP / 2.
+<!-- 0081.part.md -->
 
 #### `http2stream.headersSent`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+True, если заголовки были отправлены, false в противном случае (только для чтения).
 
-Истина, если заголовки были отправлены, в противном случае - ложь (только для чтения).
+<!-- 0082.part.md -->
 
 #### `http2stream.pushAllowed`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+Свойство только для чтения, отображаемое на флаг `SETTINGS_ENABLE_PUSH` последнего кадра `SETTINGS` удаленного клиента. Будет `true`, если удаленный пир принимает push-потоки, `false` в противном случае. Настройки одинаковы для каждого `Http2Stream` в одном и том же `Http2Session`.
 
-Свойство только для чтения, сопоставленное с `SETTINGS_ENABLE_PUSH` флаг самого последнего удаленного клиента `SETTINGS` Рамка. Будет `true` если удаленный узел принимает push-потоки, `false` иначе. Настройки одинаковы для всех `Http2Stream` В то же самое `Http2Session`.
+<!-- 0083.part.md -->
 
 #### `http2stream.pushStream(headers[, options], callback)`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `headers` {Объект заголовков HTTP / 2}
+- `headers` {HTTP/2 Headers Object}
 - `options` {Объект}
-  - `exclusive` {boolean} Когда `true` а также `parent` идентифицирует родительский поток, созданный поток становится единственной прямой зависимостью от родительского потока, а все другие существующие зависимые объекты становятся зависимыми от вновь созданного потока. **Дефолт:** `false`.
-  - `parent` {number} Задает числовой идентификатор потока, от которого зависит вновь созданный поток.
-- `callback` {Функция} Обратный вызов, который вызывается после инициирования потока push.
+  - `exclusive` {boolean} Если `true` и `parent` указывает родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
+  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
+- `callback` {функция} Обратный вызов, который будет вызван после того, как поток push будет инициирован.
   - `err` {Ошибка}
-  - `pushStream` {ServerHttp2Stream} Возвращенный `pushStream` объект.
-  - `headers` {HTTP / 2 Headers Object} Заголовки - объект `pushStream` был инициирован с.
+  - `pushStream` {ServerHttp2Stream} Возвращаемый объект `pushStream`.
+  - `headers` {HTTP/2 Headers Object} Объект заголовков, с которым был инициирован `pushStream`.
 
-Инициирует push-поток. Обратный вызов вызывается с новым `Http2Stream` экземпляр, созданный для потока push, переданного в качестве второго аргумента, или `Error` передается как первый аргумент.
+Инициирует поток push. Обратный вызов вызывается с новым экземпляром `Http2Stream`, созданным для потока push, переданным в качестве второго аргумента, или с `Error`, переданным в качестве первого аргумента.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   stream.respond({ ':status': 200 });
@@ -1261,33 +1155,27 @@ server.on('stream', (stream) => {
       pushStream.end('some pushed data');
     }
   );
-  stream.end('some data');
+  stream.end('некоторые данные');
 });
 ```
 
-Установка веса push-потока не допускается в `HEADERS` Рамка. Пройти `weight` ценность для `http2stream.priority` с `silent` опция установлена на `true` чтобы включить балансировку полосы пропускания на стороне сервера между параллельными потоками.
+Установка веса push-потока не разрешена во фрейме `HEADERS`. Передайте значение `weight` в `http2stream.priority` с опцией `silent`, установленной в `true`, чтобы включить балансировку полосы пропускания на стороне сервера между параллельными потоками.
 
-Вызов `http2stream.pushStream()` изнутри проталкиваемого потока не разрешено и вызовет ошибку.
+Вызов `http2stream.pushStream()` изнутри проталкиваемого потока запрещен и приведет к ошибке.
+
+<!-- 0084.part.md -->
 
 #### `http2stream.respond([headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
--->
-
-- `headers` {Объект заголовков HTTP / 2}
+- `headers` {HTTP/2 Headers Object}
 - `options` {Объект}
-  - `endStream` {boolean} Установить на `true` чтобы указать, что ответ не будет включать данные полезной нагрузки.
-  - `waitForTrailers` {boolean} Когда `true`, то `Http2Stream` испустит `'wantTrailers'` событие после финала `DATA` кадр был отправлен.
+  - `endStream` {boolean} Устанавливается в `true`, чтобы указать, что ответ не будет включать данные полезной нагрузки.
+  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
+
+<!-- конец списка -->
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   stream.respond({ ':status': 200 });
@@ -1295,12 +1183,12 @@ server.on('stream', (stream) => {
 });
 ```
 
-Когда `options.waitForTrailers` опция установлена, `'wantTrailers'` Событие будет сгенерировано сразу после постановки в очередь последнего блока данных полезной нагрузки для отправки. В `http2stream.sendTrailers()` затем можно использовать для отправки конечных полей заголовка партнеру.
+Инициирует ответ. Если установлена опция `options.waitForTrailers`, событие `'wantTrailers'` будет выдано сразу после постановки в очередь последнего куска данных полезной нагрузки для отправки. После этого метод `http2stream.sendTrailers()` может быть использован для отправки полей заголовков, идущих следом, пиру.
 
-Когда `options.waitForTrailers` установлен, `Http2Stream` не закроется автоматически, когда последний `DATA` кадр передается. Код пользователя должен вызывать либо `http2stream.sendTrailers()` или `http2stream.close()` закрыть `Http2Stream`.
+Когда параметр `options.waitForTrailers` установлен, `Http2Stream` не будет автоматически закрываться, когда будет передан последний кадр `DATA`. Пользовательский код должен вызвать либо `http2stream.sendTrailers()`, либо `http2stream.close()`, чтобы закрыть `Http2Stream`.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   stream.respond(
@@ -1308,46 +1196,33 @@ server.on('stream', (stream) => {
     { waitForTrailers: true }
   );
   stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
+    stream.sendTrailers({
+      ABC: 'некоторое значение для отправки',
+    });
   });
-  stream.end('some data');
+  stream.end('некоторые данные');
 });
 ```
 
+<!-- 0085.part.md -->
+
 #### `http2stream.respondWithFD(fd[, headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
-  - version: v12.12.0
-    pr-url: https://github.com/nodejs/node/pull/29876
-    description: The `fd` option may now be a `FileHandle`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18936
-    description: Any readable file descriptor, not necessarily for a
-                 regular file, is supported now.
--->
-
-- `fd` {number | FileHandle} Читаемый дескриптор файла.
-- `headers` {Объект заголовков HTTP / 2}
+- `fd` {number|FileHandle} Читаемый дескриптор файла.
+- `headers` {HTTP/2 Headers Object}
 - `options` {Объект}
   - `statCheck` {Функция}
-  - `waitForTrailers` {boolean} Когда `true`, то `Http2Stream` испустит `'wantTrailers'` событие после финала `DATA` кадр был отправлен.
-  - `offset` {number} Позиция смещения, с которой следует начать чтение.
-  - `length` {number} Объем данных из файлового дескриптора для отправки.
+  - `waitForTrailers` {boolean} Когда `true`, `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
+  - `offset` {число} Позиция смещения, с которой следует начать чтение.
+  - `length` {number} Количество данных из fd для отправки.
 
-Инициирует ответ, данные которого считываются из указанного файлового дескриптора. Для данного файлового дескриптора проверка не выполняется. Если при попытке чтения данных с помощью дескриптора файла возникает ошибка, `Http2Stream` будет закрыто с использованием `RST_STREAM` рама с использованием стандарта `INTERNAL_ERROR` код.
+Инициирует ответ, данные которого считываются из заданного дескриптора файла. Проверка заданного файлового дескриптора не производится. Если при попытке чтения данных с помощью дескриптора файла произойдет ошибка, `Http2Stream` будет закрыт с помощью кадра `RST_STREAM` со стандартным кодом `INTERNAL_ERROR`.
 
-При использовании `Http2Stream` объекты `Duplex` интерфейс будет закрыт автоматически.
+При использовании `Http2Stream` интерфейс `Duplex` объекта `Http2Stream` будет закрыт автоматически.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require('node:http2');
+const fs = require('node:fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
@@ -1364,19 +1239,19 @@ server.on('stream', (stream) => {
 });
 ```
 
-Необязательный `options.statCheck` функция может быть указана, чтобы дать пользовательскому коду возможность устанавливать дополнительные заголовки контента на основе `fs.Stat` детали данного фд. Если `statCheck` функция предусмотрена, `http2stream.respondWithFD()` метод выполнит `fs.fstat()` вызов для сбора сведений о предоставленном дескрипторе файла.
+Необязательная функция `options.statCheck` может быть указана, чтобы дать возможность пользовательскому коду установить дополнительные заголовки содержимого, основываясь на деталях `fs.Stat` данного fd. Если указана функция `statCheck`, метод `http2stream.respondWithFD()` выполнит вызов `fs.fstat()` для сбора информации о предоставленном дескрипторе файла.
 
-В `offset` а также `length` параметры могут использоваться, чтобы ограничить ответ конкретным подмножеством диапазона. Это можно использовать, например, для поддержки запросов диапазона HTTP.
+Опции `offset` и `length` могут быть использованы для ограничения ответа определенным подмножеством диапазона. Это может быть использовано, например, для поддержки запросов HTTP Range.
 
-Дескриптор файла или `FileHandle` не закрывается, когда поток закрыт, поэтому его нужно будет закрыть вручную, если он больше не нужен. Одновременное использование одного и того же файлового дескриптора для нескольких потоков не поддерживается и может привести к потере данных. Поддерживается повторное использование дескриптора файла после завершения потока.
+Дескриптор файла или `FileHandle` не закрывается при закрытии потока, поэтому его нужно будет закрыть вручную, когда он больше не нужен. Использование одного и того же файлового дескриптора одновременно для нескольких потоков не поддерживается и может привести к потере данных. Повторное использование дескриптора файла после завершения потока поддерживается.
 
-Когда `options.waitForTrailers` опция установлена, `'wantTrailers'` Событие будет сгенерировано сразу после постановки в очередь последнего блока данных полезной нагрузки для отправки. В `http2stream.sendTrailers()` затем можно использовать для отправки конечных полей заголовка партнеру.
+Когда установлена опция `options.waitForTrailers`, событие `'wantTrailers` будет выдаваться сразу после постановки в очередь последнего куска данных полезной нагрузки для отправки. После этого метод `http2stream.sendTrailers()` может быть использован для отправки полей заголовков, идущих следом, пиру.
 
-Когда `options.waitForTrailers` установлен, `Http2Stream` не закроется автоматически, когда последний `DATA` кадр передается. Код пользователя _должен_ позвони либо `http2stream.sendTrailers()` или `http2stream.close()` закрыть `Http2Stream`.
+Если параметр `options.waitForTrailers` установлен, `Http2Stream` не будет автоматически закрываться, когда будет передан последний кадр `DATA`. Пользовательский код _должен_ вызвать либо `http2stream.sendTrailers()`, либо `http2stream.close()` для закрытия `Http2Stream`.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require('node:http2');
+const fs = require('node:fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
@@ -1401,50 +1276,37 @@ server.on('stream', (stream) => {
 
 #### `http2stream.respondWithFile(path[, headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18936
-    description: Any readable file, not necessarily a
-                 regular file, is supported now.
--->
-
-- `path` {строка | Буфер | URL}
-- `headers` {Объект заголовков HTTP / 2}
+- `path` {string|Buffer|URL}
+- `headers` {HTTP/2 Headers Object}
 - `options` {Объект}
   - `statCheck` {Функция}
   - `onError` {Функция} Функция обратного вызова, вызываемая в случае ошибки перед отправкой.
-  - `waitForTrailers` {boolean} Когда `true`, то `Http2Stream` испустит `'wantTrailers'` событие после финала `DATA` кадр был отправлен.
-  - `offset` {number} Позиция смещения, с которой следует начать чтение.
-  - `length` {number} Объем данных из файлового дескриптора для отправки.
+  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
+  - `offset` {число} Позиция смещения, с которой следует начать чтение.
+  - `length` {number} Количество данных из fd для отправки.
 
-В качестве ответа отправляет обычный файл. В `path` необходимо указать обычный файл или `'error'` событие будет выпущено на `Http2Stream` объект.
+Отправляет обычный файл в качестве ответа. В `path` должен быть указан обычный файл, иначе на объект `Http2Stream` будет выдано событие `'error'`.
 
-При использовании `Http2Stream` объекты `Duplex` интерфейс будет закрыт автоматически.
+При использовании, интерфейс `Duplex` объекта `Http2Stream` будет автоматически закрыт.
 
-Необязательный `options.statCheck` функция может быть указана, чтобы дать пользовательскому коду возможность устанавливать дополнительные заголовки контента на основе `fs.Stat` детали данного файла:
+Необязательная функция `options.statCheck` может быть указана, чтобы дать возможность пользовательскому коду установить дополнительные заголовки содержимого на основе данных `fs.Stat` данного файла:
 
-Если при попытке чтения данных файла возникает ошибка, `Http2Stream` будет закрыто с использованием `RST_STREAM` рама с использованием стандарта `INTERNAL_ERROR` код. Если `onError` callback определен, затем он будет вызван. В противном случае поток будет уничтожен.
+Если при попытке чтения данных файла произойдет ошибка, `Http2Stream` будет закрыт с помощью фрейма `RST_STREAM` со стандартным кодом `INTERNAL_ERROR`. Если определен обратный вызов `onError`, то он будет вызван. В противном случае поток будет уничтожен.
 
-Пример использования пути к файлу:
+Пример с использованием пути к файлу:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   function statCheck(stat, headers) {
     headers['last-modified'] = stat.mtime.toUTCString();
   }
 
+
   function onError(err) {
-    // stream.respond() can throw if the stream has been destroyed by
-    // the other side.
+    // stream.respond() может бросить, если поток был уничтожен
+    // другой стороной.
     try {
       if (err.code === 'ENOENT') {
         stream.respond({ ':status': 404 });
@@ -1452,51 +1314,48 @@ server.on('stream', (stream) => {
         stream.respond({ ':status': 500 });
       }
     } catch (err) {
-      // Perform actual error handling.
-      console.log(err);
+      // Выполняем фактическую обработку ошибок.
+      console.error(err);
     }
     stream.end();
   }
 
-  stream.respondWithFile(
-    '/some/file',
-    { 'content-type': 'text/plain; charset=utf-8' },
-    { statCheck, onError }
-  );
+
+  stream.respondWithFile('/some/file',
+                         { 'content-type': 'text/plain; charset=utf-8' }
+                         { statCheck, onError });
 });
 ```
 
-В `options.statCheck` функция также может использоваться для отмены операции отправки путем возврата `false`. Например, условный запрос может проверять результаты статистики, чтобы определить, был ли файл изменен, чтобы вернуть соответствующий `304` отклик:
+Функция `options.statCheck` может также использоваться для отмены операции отправки, возвращая `false`. Например, условный запрос может проверить результаты stat, чтобы определить, был ли файл изменен, и вернуть соответствующий ответ `304`:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   function statCheck(stat, headers) {
-    // Check the stat here...
+    // Проверяем stat здесь...
     stream.respond({ ':status': 304 });
-    return false; // Cancel the send operation
+    return false; // Отмена операции отправки
   }
-  stream.respondWithFile(
-    '/some/file',
-    { 'content-type': 'text/plain; charset=utf-8' },
-    { statCheck }
-  );
+  stream.respondWithFile('/some/file',
+                         { 'content-type': 'text/plain; charset=utf-8' }
+                         { statCheck });
 });
 ```
 
-В `content-length` поле заголовка будет установлено автоматически.
+Поле заголовка `content-length` будет установлено автоматически.
 
-В `offset` а также `length` параметры могут использоваться, чтобы ограничить ответ конкретным подмножеством диапазона. Это можно использовать, например, для поддержки запросов диапазона HTTP.
+Опции `offset` и `length` могут быть использованы для ограничения ответа определенным подмножеством диапазонов. Это может быть использовано, например, для поддержки запросов HTTP Range.
 
-В `options.onError` Функция также может использоваться для обработки всех ошибок, которые могли произойти до начала доставки файла. По умолчанию поток уничтожается.
+Функция `options.onError` также может быть использована для обработки всех ошибок, которые могут произойти до начала доставки файла. Поведением по умолчанию является уничтожение потока.
 
-Когда `options.waitForTrailers` опция установлена, `'wantTrailers'` Событие будет сгенерировано сразу после постановки в очередь последнего блока данных полезной нагрузки для отправки. В `http2stream.sendTrailers()` затем можно использовать для отправки конечных полей заголовка партнеру.
+Если установлена опция `options.waitForTrailers`, событие `'wantTrailers` будет выдано сразу после постановки в очередь последнего куска данных полезной нагрузки для отправки. После этого метод `http2stream.sendTrailers()` может быть использован для отправки полей заголовков, идущих в хвосте, пиру.
 
-Когда `options.waitForTrailers` установлен, `Http2Stream` не закроется автоматически, когда последний `DATA` кадр передается. Код пользователя должен вызывать либо `http2stream.sendTrailers()` или `http2stream.close()` закрыть `Http2Stream`.
+Когда параметр `options.waitForTrailers` установлен, `Http2Stream` не будет автоматически закрываться, когда будет передан последний кадр `DATA`. Пользовательский код должен вызвать либо `http2stream.sendTrailers()`, либо `http2stream.close()`, чтобы закрыть `Http2Stream`.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
   stream.respondWithFile(
@@ -1510,87 +1369,78 @@ server.on('stream', (stream) => {
 });
 ```
 
+<!-- 0087.part.md -->
+
 ### Класс: `Http2Server`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {net.Server}
 
-- Расширяется: {net.Server}
+Экземпляры `Http2Server` создаются с помощью функции `http2.createServer()`. Класс `Http2Server` не экспортируется напрямую модулем `node:http2`.
 
-Экземпляры `Http2Server` создаются с использованием `http2.createServer()` функция. В `Http2Server` класс не экспортируется напрямую `http2` модуль.
+<!-- 0088.part.md -->
 
 #### Событие: `'checkContinue'`
 
-<!-- YAML
-added: v8.5.0
--->
+- `запрос` {http2.Http2ServerRequest}
+- `ответ` {http2.Http2ServerResponse}
 
-- `request` {http2.Http2ServerRequest}
-- `response` {http2.Http2ServerResponse}
+Если зарегистрирован слушатель [`'request'`](#event-request) или [`http2.createServer()`](#http2createserveroptions-onrequesthandler) снабжен функцией обратного вызова, событие `'checkContinue'` испускается каждый раз, когда получен запрос с HTTP `Expect: 100-continue`. Если это событие не прослушивается, сервер будет автоматически отвечать со статусом `100 Continue` в зависимости от ситуации.
 
-Если [`'request'`](#event-request) слушатель зарегистрирован или [`http2.createServer()`](#http2createserveroptions-onrequesthandler) предоставляется функция обратного вызова, `'checkContinue'` событие генерируется каждый раз, когда запрос с HTTP `Expect: 100-continue` получен. Если это событие не прослушивается, сервер автоматически ответит статусом `100 Continue` по мере необходимости.
+Обработка этого события включает вызов [`response.writeContinue()`](#responsewritecontinue), если клиент должен продолжить отправку тела запроса, или генерацию соответствующего HTTP ответа (например, 400 Bad Request), если клиент не должен продолжать отправку тела запроса.
 
-Обработка этого события включает вызов [`response.writeContinue()`](#responsewritecontinue) если клиент должен продолжать отправлять тело запроса, или генерировать соответствующий HTTP-ответ (например, 400 Bad Request), если клиент не должен продолжать отправлять тело запроса.
+Когда это событие испущено и обработано, событие [`'request'`](#event-request) не будет испущено.
 
-Когда это событие генерируется и обрабатывается, [`'request'`](#event-request) событие не будет отправлено.
+<!-- 0089.part.md -->
 
-#### Событие: `'connection'`
-
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `connection`
 
 - `socket` {stream.Duplex}
 
-Это событие генерируется, когда устанавливается новый поток TCP. `socket` обычно является объектом типа [`net.Socket`](net.md#class-netsocket). Обычно пользователи не хотят получать доступ к этому событию.
+Это событие возникает при установлении нового TCP-потока. `socket` обычно представляет собой объект типа [`net.Socket`] (net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
-Это событие также может быть явно отправлено пользователями для вставки соединений в HTTP-сервер. В этом случае любой [`Duplex`](stream.md#class-streamduplex) поток можно пропустить.
+Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#class-streamduplex).
 
-#### Событие: `'request'`
+<!-- 0090.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `request`
 
-- `request` {http2.Http2ServerRequest}
+- `запрос` {http2.Http2ServerRequest}
 - `response` {http2.Http2ServerResponse}
 
-Выдается каждый раз при запросе. За сеанс может быть несколько запросов. Увидеть [Совместимость API](#compatibility-api).
+Выдается при каждом запросе. В одной сессии может быть несколько запросов. См. [API совместимости] (#compatibility-api).
 
-#### Событие: `'session'`
+<!-- 0091.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `session`
 
-В `'session'` событие испускается, когда новый `Http2Session` создается `Http2Server`.
+- `session` {ServerHttp2Session}
 
-#### Событие: `'sessionError'`
+Событие `'session'` испускается, когда новый `Http2Session` создается Http2Server'ом.
 
-<!-- YAML
-added: v8.4.0
--->
+<!-- 0092.part.md -->
 
-В `'sessionError'` событие генерируется, когда `'error'` событие испускается `Http2Session` объект, связанный с `Http2Server`.
+#### Событие: `sessionError`
 
-#### Событие: `'stream'`
+- `error` {Ошибка}
+- `session` {ServerHttp2Session}
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'sessionError'` испускается, когда событие `'error'` испускается объектом `Http2Session`, связанным с `Http2Server`.
+
+<!-- 0093.part.md -->
+
+#### Событие: `stream`
 
 - `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP / 2 Headers Object} Объект, описывающий заголовки.
-- `flags` {number} Связанные числовые флаги
-- `rawHeaders` {Array} Массив, содержащий необработанные имена заголовков, за которыми следуют их соответствующие значения.
+- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+- `flags` {number} Соответствующие числовые флаги
+- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
-В `'stream'` событие генерируется, когда `'stream'` событие было отправлено `Http2Session` связанный с сервером.
+Событие `'stream'` испускается, когда событие `'stream'` было испущено `Http2Session`, связанным с сервером.
 
-Смотрите также [`Http2Session`с `'stream'` событие](#event-stream).
+См. также [событие `Http2Session` `'stream'`](#event-stream).
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const {
   HTTP2_HEADER_METHOD,
   HTTP2_HEADER_PATH,
@@ -1613,165 +1463,132 @@ server.on('stream', (stream, headers, flags) => {
 });
 ```
 
-#### Событие: `'timeout'`
+<!-- 0094.part.md -->
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+#### Событие: `timeout`
 
-В `'timeout'` событие генерируется, когда на сервере нет активности в течение заданного количества миллисекунд, установленных с помощью `http2server.setTimeout()`. **Дефолт:** 0 (без тайм-аута)
+Событие `'timeout'` происходит, когда на сервере нет активности в течение заданного количества миллисекунд, установленного с помощью `http2server.setTimeout()`. **По умолчанию:** 0 (таймаут отсутствует)
+
+<!-- 0095.part.md -->
 
 #### `server.close([callback])`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - `callback` {Функция}
 
-Запрещает серверу устанавливать новые сеансы. Это не препятствует созданию новых потоков запросов из-за постоянного характера сеансов HTTP / 2. Чтобы корректно выключить сервер, позвоните [`http2session.close()`](#http2sessionclosecallback) на всех активных сессиях.
+Прекращает создание сервером новых сессий. Это не препятствует созданию новых потоков запросов из-за постоянной природы сессий HTTP/2. Чтобы изящно завершить работу сервера, вызовите [`http2session.close()`](#http2sessionclosecallback) для всех активных сессий.
 
-Если `callback` предоставляется, он не вызывается до тех пор, пока все активные сеансы не будут закрыты, хотя сервер уже прекратил разрешать новые сеансы. Видеть [`net.Server.close()`](net.md#serverclosecallback) Больше подробностей.
+Если указан `callback`, он не будет вызван, пока все активные сессии не будут закрыты, хотя сервер уже перестал допускать новые сессии. Подробнее см. в [`net.Server.close()`](net.md#serverclosecallback).
+
+<!-- 0096.part.md -->
 
 #### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
-
-- `msecs` {количество} **Дефолт:** 0 (без тайм-аута)
-- `callback` {Функция}
+- `msecs` {число} **По умолчанию:** 0 (без таймаута)
+- `callback` {функция}
 - Возвращает: {Http2Server}
 
-Используется для установки значения тайм-аута для запросов сервера http2 и устанавливает функцию обратного вызова, которая вызывается, когда на сервере нет активности. `Http2Server` после `msecs` миллисекунды.
+Используется для установки значения тайм-аута для запросов http2-сервера и задает функцию обратного вызова, которая вызывается при отсутствии активности на `Http2Server` по истечении `msecs` миллисекунд.
 
-Данный обратный вызов зарегистрирован как слушатель на `'timeout'` событие.
+Данный обратный вызов регистрируется как слушатель события `'timeout'`.
 
-В случае если `callback` это не функция, а новый `ERR_INVALID_CALLBACK` будет выброшена ошибка.
+В случае, если `callback` не является функцией, будет выброшена новая ошибка `ERR_INVALID_ARG_TYPE`.
+
+<!-- 0097.part.md -->
 
 #### `server.timeout`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+- {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
-- {number} Тайм-аут в миллисекундах. **Дефолт:** 0 (без тайм-аута)
+Количество миллисекунд бездействия, после которого считается, что сокет завершил работу.
 
-Количество миллисекунд бездействия до истечения тайм-аута сокета.
+Значение `0` отключает таймаут для входящих соединений.
 
-Ценность `0` отключит поведение тайм-аута для входящих подключений.
+Логика таймаута сокета устанавливается при подключении, поэтому изменение этого значения влияет только на новые соединения с сервером, а не на существующие.
 
-Логика тайм-аута сокета настраивается при подключении, поэтому изменение этого значения влияет только на новые подключения к серверу, но не на существующие подключения.
+<!-- 0098.part.md -->
 
 #### `server.updateSettings([settings])`
 
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
--->
+- `settings` {HTTP/2 Settings Object}
 
-- `settings` {Объект настроек HTTP / 2}
+Используется для обновления сервера с заданными настройками.
 
-Используется для обновления сервера с предоставленными настройками.
+Выбрасывает `ERR_HTTP2_INVALID_SETTING_VALUE` для недопустимых значений `settings`.
 
-Броски `ERR_HTTP2_INVALID_SETTING_VALUE` для недействительных `settings` ценности.
+Выбрасывает `ERR_INVALID_ARG_TYPE` для недопустимого аргумента `settings`.
 
-Броски `ERR_INVALID_ARG_TYPE` для недействительных `settings` аргумент.
+<!-- 0099.part.md -->
 
 ### Класс: `Http2SecureServer`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {tls.Server}
 
-- Расширяется: {tls.Server}
+Экземпляры `Http2SecureServer` создаются с помощью функции `http2.createSecureServer()`. Класс `Http2SecureServer` не экспортируется напрямую модулем `node:http2`.
 
-Экземпляры `Http2SecureServer` создаются с использованием `http2.createSecureServer()` функция. В `Http2SecureServer` класс не экспортируется напрямую `http2` модуль.
+<!-- 0100.part.md -->
 
 #### Событие: `'checkContinue'`
 
-<!-- YAML
-added: v8.5.0
--->
+- `запрос` {http2.Http2ServerRequest}
+- `ответ` {http2.Http2ServerResponse}
 
-- `request` {http2.Http2ServerRequest}
-- `response` {http2.Http2ServerResponse}
+Если зарегистрирован слушатель [`'request'`](#event-request) или [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler) снабжен функцией обратного вызова, событие `'checkContinue'` испускается каждый раз, когда получен запрос с HTTP `Expect: 100-continue`. Если это событие не прослушивается, сервер будет автоматически отвечать со статусом `100 Continue` в зависимости от ситуации.
 
-Если [`'request'`](#event-request) слушатель зарегистрирован или [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler) предоставляется функция обратного вызова, `'checkContinue'` событие генерируется каждый раз, когда запрос с HTTP `Expect: 100-continue` получен. Если это событие не прослушивается, сервер автоматически ответит статусом `100 Continue` по мере необходимости.
+Обработка этого события включает вызов [`response.writeContinue()`](#responsewritecontinue), если клиент должен продолжить отправку тела запроса, или генерацию соответствующего HTTP ответа (например, 400 Bad Request), если клиент не должен продолжать отправку тела запроса.
 
-Обработка этого события включает вызов [`response.writeContinue()`](#responsewritecontinue) если клиент должен продолжать отправлять тело запроса, или генерировать соответствующий HTTP-ответ (например, 400 Bad Request), если клиент не должен продолжать отправлять тело запроса.
+Когда это событие испущено и обработано, событие [`'request'`](#event-request) не будет испущено.
 
-Когда это событие генерируется и обрабатывается, [`'request'`](#event-request) событие не будет отправлено.
+<!-- 0101.part.md -->
 
-#### Событие: `'connection'`
-
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `connection`
 
 - `socket` {stream.Duplex}
 
-Это событие генерируется, когда устанавливается новый поток TCP, до начала установления связи TLS. `socket` обычно является объектом типа [`net.Socket`](net.md#class-netsocket). Обычно пользователи не хотят получать доступ к этому событию.
+Это событие возникает при установлении нового TCP-потока, до начала квитирования TLS. `socket` обычно представляет собой объект типа [`net.Socket`] (net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
-Это событие также может быть явно отправлено пользователями для вставки соединений в HTTP-сервер. В этом случае любой [`Duplex`](stream.md#class-streamduplex) поток можно пропустить.
+Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#class-streamduplex).
 
-#### Событие: `'request'`
+<!-- 0102.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `request`
 
-- `request` {http2.Http2ServerRequest}
+- `запрос` {http2.Http2ServerRequest}
 - `response` {http2.Http2ServerResponse}
 
-Выдается каждый раз при запросе. За сеанс может быть несколько запросов. Увидеть [Совместимость API](#compatibility-api).
+Выдается при каждом запросе. В одной сессии может быть несколько запросов. См. [API совместимости] (#compatibility-api).
 
-#### Событие: `'session'`
+<!-- 0103.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### Событие: `session`
 
-В `'session'` событие испускается, когда новый `Http2Session` создается `Http2SecureServer`.
+- `session` {ServerHttp2Session}
 
-#### Событие: `'sessionError'`
+Событие `'session'` испускается, когда новый `Http2Session` создается сервером `Http2SecureServer`.
 
-<!-- YAML
-added: v8.4.0
--->
+<!-- 0104.part.md -->
 
-В `'sessionError'` событие генерируется, когда `'error'` событие испускается `Http2Session` объект, связанный с `Http2SecureServer`.
+#### Событие: `sessionError`
 
-#### Событие: `'stream'`
+- `error` {Ошибка}
+- `session` {ServerHttp2Session}
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'sessionError'` генерируется, когда объект `Http2Session`, связанный с `Http2SecureServer`, выдает событие `'error'`.
+
+<!-- 0105.part.md -->
+
+#### Событие: `stream`
 
 - `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP / 2 Headers Object} Объект, описывающий заголовки.
-- `flags` {number} Связанные числовые флаги
-- `rawHeaders` {Array} Массив, содержащий необработанные имена заголовков, за которыми следуют их соответствующие значения.
+- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+- `flags` {number} Соответствующие числовые флаги
+- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
-В `'stream'` событие генерируется, когда `'stream'` событие было отправлено `Http2Session` связанный с сервером.
+Событие `'stream'` испускается, когда событие `'stream'` было испущено `Http2Session`, связанным с сервером.
 
-Смотрите также [`Http2Session`с `'stream'` событие](#event-stream).
+См. также [событие `Http2Session` `'stream'`](#event-stream).
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const {
   HTTP2_HEADER_METHOD,
   HTTP2_HEADER_PATH,
@@ -1796,166 +1613,104 @@ server.on('stream', (stream, headers, flags) => {
 });
 ```
 
+<!-- 0106.part.md -->
+
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'timeout'` происходит, когда на сервере нет активности в течение заданного количества миллисекунд, установленного с помощью `http2secureServer.setTimeout()`. **По умолчанию:** 2 минуты.
 
-В `'timeout'` событие генерируется, когда на сервере нет активности в течение заданного количества миллисекунд, установленных с помощью `http2secureServer.setTimeout()`. **Дефолт:** 2 минуты.
+<!-- 0107.part.md -->
 
-#### Событие: `'unknownProtocol'`
+#### Событие: `unknownProtocol`
 
-<!-- YAML
-added: v8.4.0
--->
+- `socket` {stream.Duplex}
 
-В `'unknownProtocol'` Событие генерируется, когда подключающийся клиент не может согласовать разрешенный протокол (например, HTTP / 2 или HTTP / 1.1). Обработчик событий получает сокет для обработки. Если для этого события не зарегистрирован прослушиватель, соединение разрывается. Тайм-аут можно указать с помощью `'unknownProtocolTimeout'` опция передана [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler). Увидеть [Совместимость API](#compatibility-api).
+Событие `'unknownProtocol'` возникает, когда подключающийся клиент не может согласовать разрешенный протокол (т.е. HTTP/2 или HTTP/1.1). Обработчик события получает сокет для обработки. Если для этого события не зарегистрирован слушатель, соединение разрывается. Таймаут может быть указан с помощью опции `'unknownProtocolTimeout'`, передаваемой в [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler).
+
+В ранних версиях Node.js это событие возникало, если `allowHTTP1` было `false` и во время квитирования TLS клиент либо не отправлял расширение ALPN, либо отправлял расширение ALPN, не включающее HTTP/2 (`h2`). Более новые версии Node.js выдают это событие только в том случае, если `allowHTTP1` равно `false` и клиент не отправляет расширение ALPN. Если клиент отправляет расширение ALPN, которое не включает HTTP/2 (или HTTP/1.1, если `allowHTTP1` равно `true`), квитирование TLS завершится неудачей, и безопасное соединение не будет установлено.
+
+<!-- 0108.part.md -->
 
 #### `server.close([callback])`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - `callback` {Функция}
 
-Запрещает серверу устанавливать новые сеансы. Это не препятствует созданию новых потоков запросов из-за постоянного характера сеансов HTTP / 2. Чтобы корректно выключить сервер, позвоните [`http2session.close()`](#http2sessionclosecallback) на всех активных сессиях.
+Прекращает создание сервером новых сессий. Это не препятствует созданию новых потоков запросов из-за постоянной природы сессий HTTP/2. Чтобы изящно завершить работу сервера, вызовите [`http2session.close()`](#http2sessionclosecallback) для всех активных сессий.
 
-Если `callback` предоставляется, он не вызывается до тех пор, пока все активные сеансы не будут закрыты, хотя сервер уже прекратил разрешать новые сеансы. Видеть [`tls.Server.close()`](tls.md#serverclosecallback) Больше подробностей.
+Если указан `callback`, он не будет вызван, пока все активные сессии не будут закрыты, хотя сервер уже перестал допускать новые сессии. Более подробную информацию смотрите в [`tls.Server.close()`](tls.md#serverclosecallback).
+
+<!-- 0109.part.md -->
 
 #### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `msecs` {количество} **Дефолт:** `120000` (2 минуты)
-- `callback` {Функция}
+- `msecs` {число} **По умолчанию:** `120000` (2 минуты)
+- `callback` {функция}
 - Возвращает: {Http2SecureServer}
 
-Используется для установки значения тайм-аута для запросов к защищенному серверу http2 и устанавливает функцию обратного вызова, которая вызывается, когда на сервере нет активности. `Http2SecureServer` после `msecs` миллисекунды.
+Используется для установки значения тайм-аута для запросов http2 secure server, и устанавливает функцию обратного вызова, которая вызывается, когда нет активности на `Http2SecureServer` после `msecs` миллисекунд.
 
-Данный обратный вызов зарегистрирован как слушатель на `'timeout'` событие.
+Данный обратный вызов регистрируется как слушатель события `'timeout'`.
 
-В случае если `callback` это не функция, а новый `ERR_INVALID_CALLBACK` будет выброшена ошибка.
+В случае, если `callback` не является функцией, будет выброшена новая ошибка `ERR_INVALID_ARG_TYPE`.
+
+<!-- 0110.part.md -->
 
 #### `server.timeout`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+- {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
-- {number} Тайм-аут в миллисекундах. **Дефолт:** 0 (без тайм-аута)
+Количество миллисекунд бездействия, после которого считается, что сокет завершил работу.
 
-Количество миллисекунд бездействия до истечения тайм-аута сокета.
+Значение `0` отключает таймаут для входящих соединений.
 
-Ценность `0` отключит поведение тайм-аута для входящих подключений.
+Логика таймаута сокета устанавливается при подключении, поэтому изменение этого значения влияет только на новые соединения с сервером, а не на существующие.
 
-Логика тайм-аута сокета настраивается при подключении, поэтому изменение этого значения влияет только на новые подключения к серверу, но не на существующие подключения.
+<!-- 0111.part.md -->
 
 #### `server.updateSettings([settings])`
 
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
--->
+- `settings` {HTTP/2 Settings Object}
 
-- `settings` {Объект настроек HTTP / 2}
+Используется для обновления сервера с заданными настройками.
 
-Используется для обновления сервера с предоставленными настройками.
+Выбрасывает `ERR_HTTP2_INVALID_SETTING_VALUE` для недопустимых значений `settings`.
 
-Броски `ERR_HTTP2_INVALID_SETTING_VALUE` для недействительных `settings` ценности.
+Выбрасывает `ERR_INVALID_ARG_TYPE` для недопустимого аргумента `settings`.
 
-Броски `ERR_INVALID_ARG_TYPE` для недействительных `settings` аргумент.
+<!-- 0112.part.md -->
 
-### `http2.createServer(options[, onRequestHandler])`
+### `http2.createServer([options][, onRequestHandler])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionRejectedStreams` option with a default of 100.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionInvalidFrames` option with a default of 1000.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v12.4.0
-    pr-url: https://github.com/nodejs/node/pull/27782
-    description: The `options` parameter now supports `net.createServer()`
-                 options.
-  - version: v9.6.0
-    pr-url: https://github.com/nodejs/node/pull/15752
-    description: Added the `Http1IncomingMessage` and `Http1ServerResponse`
-                 option.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
-
-- `options` {Объект}
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлятирования полей заголовка. **Дефолт:** `4Kib`.
-  - `maxSettings` {number} Задает максимальное количество записей настроек на `SETTINGS` Рамка. Минимальное допустимое значение: `1`. **Дефолт:** `32`.
-  - `maxSessionMemory`{number} Устанавливает максимальный объем памяти, который `Http2Session` разрешено использовать. Значение выражается в количестве мегабайт, например `1` равняется 1 мегабайту. Минимальное допустимое значение: `1`. Это кредитный лимит, существующий `Http2Stream`s может привести к превышению этого лимита, но новые `Http2Stream` экземпляры будут отклонены, пока этот лимит превышен. Текущее количество `Http2Stream` сеансы, текущее использование памяти таблицами сжатия заголовков, текущие данные в очереди на отправку и неподтвержденные `PING` а также `SETTINGS` все кадры учитываются по текущему пределу. **Дефолт:** `10`.
-  - `maxHeaderListPairs` {число} Устанавливает максимальное количество записей заголовка. Это похоже на [`http.Server#maxHeadersCount`](http.md#servermaxheaderscount) или [`http.ClientRequest#maxHeadersCount`](http.md#requestmaxheaderscount). Минимальное значение `4`. **Дефолт:** `128`.
-  - `maxOutstandingPings` {number} Устанавливает максимальное количество незавершенных неподтвержденных запросов ping. **Дефолт:** `10`.
-  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер для сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к `'frameError'` генерируется событие, а поток закрывается и уничтожается.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества отступов, используемых для `HEADERS` а также `DATA` кадры. **Дефолт:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-    - `http2.constants.PADDING_STRATEGY_NONE`: Заполнение не применяется.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество отступов, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточно заполнения, чтобы гарантировать, что общая длина кадра, включая 9-байтовый заголовок, кратна 8. Для каждого кадра существует максимально допустимое количество байтов заполнения, которое определяется текущим состоянием управления потоком и настройками. . Если этот максимум меньше рассчитанного количества, необходимого для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается на уровне 8 байтов.
-  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного узла, как если бы `SETTINGS` кадр был получен. Будет отменено, если удаленный узел устанавливает собственное значение для `maxConcurrentStreams`. **Дефолт:** `100`.
-  - `maxSessionInvalidFrames` {integer} Устанавливает максимальное количество недопустимых кадров, которое будет допущено до закрытия сеанса. **Дефолт:** `1000`.
-  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество потоков, отклоненных при создании, которое будет допущено до закрытия сеанса. Каждый отказ связан с `NGHTTP2_ENHANCE_YOUR_CALM` ошибка, которая должна сказать партнеру, чтобы он больше не открывал потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения однорангового узла. **Дефолт:** `100`.
-  - `settings` {HTTP / 2 Settings Object} Начальные настройки для отправки удаленному узлу при подключении.
-  - `Http1IncomingMessage` {http.IncomingMessage} Определяет `IncomingMessage` класс, используемый для отката HTTP / 1. Полезно для расширения оригинала `http.IncomingMessage`. **Дефолт:** `http.IncomingMessage`.
-  - `Http1ServerResponse` {http.ServerResponse} Определяет `ServerResponse` класс, используемый для отката HTTP / 1. Полезно для расширения оригинала `http.ServerResponse`. **Дефолт:** `http.ServerResponse`.
-  - `Http2ServerRequest` {http2.Http2ServerRequest} Определяет `Http2ServerRequest` класс для использования. Полезно для расширения оригинала `Http2ServerRequest`. **Дефолт:** `Http2ServerRequest`.
-  - `Http2ServerResponse` {http2.Http2ServerResponse} Определяет `Http2ServerResponse` класс для использования. Полезно для расширения оригинала `Http2ServerResponse`. **Дефолт:** `Http2ServerResponse`.
-  - `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, в течение которого сервер должен ждать, когда [`'unknownProtocol'`](#event-unknownprotocol) испускается. Если к этому времени сокет не был уничтожен, сервер уничтожит его. **Дефолт:** `10000`.
-  - ...: Любой [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener) вариант может быть предоставлен.
-- `onRequestHandler` {Function} См. [Совместимость API](#compatibility-api)
+- `options` {Object}
+  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+  - `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
+  - `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
+  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен. Хотя этот параметр устанавливает максимально допустимый размер для всего блока заголовков, `nghttp2`(внутренняя библиотека http2) имеет ограничение`65536` для каждой распакованной пары ключ/значение.
+  - `paddingStrategy` {number} Стратегия, используемая для определения количества прокладок для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+    - `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
+    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
+  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
+  - `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
+  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
+  - `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
+  - `Http1IncomingMessage` {http.IncomingMessage} Определяет класс `IncomingMessage`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.IncomingMessage`. **По умолчанию:** `http.IncomingMessage`.
+  - `Http1ServerResponse` {http.ServerResponse} Определяет класс `ServerResponse`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.ServerResponse`. **По умолчанию:** `http.ServerResponse`.
+  - `Http2ServerRequest` {http2.Http2ServerRequest} Определяет класс `Http2ServerRequest` для использования. Полезен для расширения оригинального `Http2ServerRequest`. **По умолчанию:** `Http2ServerRequest`.
+  - `Http2ServerResponse` {http2.Http2ServerResponse} Определяет класс `Http2ServerResponse` для использования. Полезно для расширения оригинального `Http2ServerResponse`. **По умолчанию:** `Http2ServerResponse`.
+  - `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, который сервер должен ждать, когда выдается [`неизвестный протокол`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
+  - ...: Может быть предоставлена любая опция [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener).
+- `onRequestHandler` {Функция} См. [API совместимости](#compatibility-api).
 - Возвращает: {Http2Server}
 
-Возвращает `net.Server` экземпляр, который создает и управляет `Http2Session` экземпляры.
+Возвращает экземпляр `net.Server`, который создает и управляет экземплярами `Http2Session`.
 
-Поскольку нет известных браузеров, поддерживающих [незашифрованный HTTP / 2](https://http2.github.io/faq/#does-http2-require-encryption), использование [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler) необходим при общении с клиентами браузера.
+Поскольку не существует браузеров, поддерживающих [незашифрованный HTTP/2](https://http2.github.io/faq/#does-http2-require-encryption), при взаимодействии с клиентами браузеров необходимо использовать [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler).
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 // Create an unencrypted HTTP/2 server.
 // Since there are no browsers known that support
@@ -1971,84 +1726,40 @@ server.on('stream', (stream, headers) => {
   stream.end('<h1>Hello World</h1>');
 });
 
-server.listen(80);
+server.listen(8000);
 ```
+
+<!-- 0113.part.md -->
 
 ### `http2.createSecureServer(options[, onRequestHandler])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionRejectedStreams` option with a default of 100.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionInvalidFrames` option with a default of 1000.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v10.12.0
-    pr-url: https://github.com/nodejs/node/pull/22956
-    description: Added the `origins` option to automatically send an `ORIGIN`
-                 frame on `Http2Session` startup.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
-
-- `options` {Объект}
-  - `allowHTTP1` {boolean} Входящие клиентские подключения, не поддерживающие HTTP / 2, будут переведены на HTTP / 1.x, если для него установлено значение `true`. Увидеть [`'unknownProtocol'`](#event-unknownprotocol) событие. Видеть [Согласование ALPN](#alpn-negotiation). **Дефолт:** `false`.
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлятирования полей заголовка. **Дефолт:** `4Kib`.
-  - `maxSettings` {number} Задает максимальное количество записей настроек на `SETTINGS` Рамка. Минимальное допустимое значение: `1`. **Дефолт:** `32`.
-  - `maxSessionMemory`{number} Устанавливает максимальный объем памяти, который `Http2Session` разрешено использовать. Значение выражается в количестве мегабайт, например `1` равняется 1 мегабайту. Минимальное допустимое значение: `1`. Это кредитный лимит, существующий `Http2Stream`s может привести к превышению этого лимита, но новые `Http2Stream` экземпляры будут отклонены, пока этот лимит превышен. Текущее количество `Http2Stream` сеансы, текущее использование памяти таблицами сжатия заголовков, текущие данные в очереди на отправку и неподтвержденные `PING` а также `SETTINGS` все кадры учитываются по текущему пределу. **Дефолт:** `10`.
-  - `maxHeaderListPairs` {число} Устанавливает максимальное количество записей заголовка. Это похоже на [`http.Server#maxHeadersCount`](http.md#servermaxheaderscount) или [`http.ClientRequest#maxHeadersCount`](http.md#requestmaxheaderscount). Минимальное значение `4`. **Дефолт:** `128`.
-  - `maxOutstandingPings` {number} Устанавливает максимальное количество незавершенных неподтвержденных запросов ping. **Дефолт:** `10`.
-  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер для сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к `'frameError'` генерируется событие, а поток закрывается и уничтожается.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества отступов, используемых для `HEADERS` а также `DATA` кадры. **Дефолт:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-    - `http2.constants.PADDING_STRATEGY_NONE`: Заполнение не применяется.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество отступов, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточно заполнения, чтобы гарантировать, что общая длина кадра, включая 9-байтовый заголовок, кратна 8. Для каждого кадра существует максимально допустимое количество байтов заполнения, которое определяется текущим состоянием управления потоком и настройками. . Если этот максимум меньше рассчитанного количества, необходимого для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается на уровне 8 байтов.
-  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного узла, как если бы `SETTINGS` кадр был получен. Будет отменено, если удаленный узел устанавливает собственное значение для `maxConcurrentStreams`. **Дефолт:** `100`.
-  - `maxSessionInvalidFrames` {integer} Устанавливает максимальное количество недопустимых кадров, которое будет допущено до закрытия сеанса. **Дефолт:** `1000`.
-  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество потоков, отклоненных при создании, которое будет допущено до закрытия сеанса. Каждый отказ связан с `NGHTTP2_ENHANCE_YOUR_CALM` ошибка, которая должна сказать партнеру, чтобы он больше не открывал потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения однорангового узла. **Дефолт:** `100`.
-  - `settings` {HTTP / 2 Settings Object} Начальные настройки для отправки удаленному узлу при подключении.
-  - ...: Любой [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener) варианты могут быть предоставлены. Для серверов параметры идентификации (`pfx` или `key`/`cert`) обычно требуются.
-  - `origins` {string \[]} Массив исходных строк для отправки в `ORIGIN` кадр сразу после создания нового сервера `Http2Session`.
-  - `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, в течение которого сервер должен ждать, когда [`'unknownProtocol'`](#event-unknownprotocol) событие испускается. Если к этому времени сокет не был уничтожен, сервер уничтожит его. **Дефолт:** `10000`.
-- `onRequestHandler` {Function} См. [Совместимость API](#compatibility-api)
+- `options` {Object}
+  - `allowHTTP1` {boolean} Входящие клиентские соединения, не поддерживающие HTTP/2, будут понижены до HTTP/1.x, если установлено значение `true`. См. событие [`неизвестный протокол`](#event-unknownprotocol). См. [ALPN negotiation](#alpn-negotiation). **По умолчанию:** `false`.
+  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+  - `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
+  - `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
+  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен.
+  - `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+  - `http2.constants.PADDING_STRATEGY_NONE`: Никакие прокладки не применяются.
+    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
+  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
+  - `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
+  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
+  - `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
+  - ...: Можно предоставить любые опции [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener). Для серверов обычно требуются опции идентификации (`pfx` или `key`/`cert`).
+  - `origins` {string\[\]} Массив строк происхождения для отправки во фрейме `ORIGIN` сразу после создания новой серверной `Http2Session`.
+  - `unknownProtocolTimeout` {number} Определяет таймаут в миллисекундах, который сервер должен выждать, когда испускается событие [`'unknownProtocol'`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
+- `onRequestHandler` {Функция} См. [Compatibility API](#compatibility-api).
 - Возвращает: {Http2SecureServer}
 
-Возвращает `tls.Server` экземпляр, который создает и управляет `Http2Session` экземпляры.
+Возвращает экземпляр `tls.Server`, который создает и управляет экземплярами `Http2Session`.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require('node:http2');
+const fs = require('node:fs');
 
 const options = {
   key: fs.readFileSync('server-key.pem'),
@@ -2066,146 +1777,104 @@ server.on('stream', (stream, headers) => {
   stream.end('<h1>Hello World</h1>');
 });
 
-server.listen(80);
+server.listen(8443);
 ```
+
+<!-- 0114.part.md -->
 
 ### `http2.connect(authority[, options][, listener])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
+- `authority` {string|URL} Удаленный HTTP/2 сервер, к которому необходимо подключиться. Он должен быть в виде минимального корректного URL с префиксом `http://` или `https://`, имени хоста и IP-порта (если используется порт не по умолчанию). Информация о пользователе (идентификатор пользователя и пароль), путь, строка запроса и детали фрагмента в URL будут проигнорированы.
+- `options` {Object}
+  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непризнанные фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+  - `maxHeaderListPairs` {number} Sets the maximum number of header entries. This is similar to [`server.maxHeadersCount`](http.md#servermaxheaderscount) or [`request.maxHeadersCount`](http.md#requestmaxheaderscount) in the `node:http` module. The minimum value is `1`. **Default:** `128`.
+  - `maxOutstandingPings` {number} Sets the maximum number of outstanding, unacknowledged pings. **Default:** `10`.
+  - `maxReservedRemoteStreams` {number} Sets the maximum number of reserved push streams the client will accept at any given time. Once the current number of currently reserved push streams exceeds reaches this limit, new push streams sent by the server will be automatically rejected. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. A negative value sets this option to the maximum allowed value. **Default:** `200`.
+  - `maxSendHeaderBlockLength` {number} Sets the maximum allowed size for a serialized, compressed block of headers. Attempts to send headers that exceed this limit will result in a `'frameError'` event being emitted and the stream being closed and destroyed.
+  - `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+    - `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
+    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Попытка применить достаточное количество прокладок для того, чтобы общая длина кадра, включая
 
-- `authority` {string | URL} Удаленный сервер HTTP / 2 для подключения. Это должен быть минимальный действительный URL-адрес с `http://` или `https://` префикс, имя хоста и IP-порт (если используется порт, отличный от порта по умолчанию). Информация о пользователе (идентификатор пользователя и пароль), путь, строка запроса и сведения о фрагменте в URL-адресе будут проигнорированы.
-- `options` {Объект}
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлятирования полей заголовка. **Дефолт:** `4Kib`.
-  - `maxSettings` {number} Задает максимальное количество записей настроек на `SETTINGS` Рамка. Минимальное допустимое значение: `1`. **Дефолт:** `32`.
-  - `maxSessionMemory`{number} Устанавливает максимальный объем памяти, который `Http2Session` разрешено использовать. Значение выражается в количестве мегабайт, например `1` равняется 1 мегабайту. Минимальное допустимое значение: `1`. Это кредитный лимит, существующий `Http2Stream`s может привести к превышению этого лимита, но новые `Http2Stream` экземпляры будут отклонены, пока этот лимит превышен. Текущее количество `Http2Stream` сеансы, текущее использование памяти таблицами сжатия заголовков, текущие данные в очереди на отправку и неподтвержденные `PING` а также `SETTINGS` все кадры учитываются по текущему пределу. **Дефолт:** `10`.
-  - `maxHeaderListPairs` {число} Устанавливает максимальное количество записей заголовка. Это похоже на [`http.Server#maxHeadersCount`](http.md#servermaxheaderscount) или [`http.ClientRequest#maxHeadersCount`](http.md#requestmaxheaderscount). Минимальное значение `1`. **Дефолт:** `128`.
-  - `maxOutstandingPings` {number} Устанавливает максимальное количество незавершенных неподтвержденных запросов ping. **Дефолт:** `10`.
-  - `maxReservedRemoteStreams` {number} Устанавливает максимальное количество зарезервированных push-потоков, которые клиент будет принимать в любой момент времени. Как только текущее количество зарезервированных push-потоков превысит этот предел, новые push-потоки, отправленные сервером, будут автоматически отклонены. Минимальное допустимое значение - 0. Максимально допустимое значение - 2.<sup>32</sup>-1. Отрицательное значение устанавливает для этого параметра максимально допустимое значение. **Дефолт:** `200`.
-  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер для сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к `'frameError'` генерируется событие, а поток закрывается и уничтожается.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества отступов, используемых для `HEADERS` а также `DATA` кадры. **Дефолт:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-    - `http2.constants.PADDING_STRATEGY_NONE`: Заполнение не применяется.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество отступов, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточно заполнения, чтобы гарантировать, что общая длина кадра, включая 9-байтовый заголовок, кратна 8. Для каждого кадра существует максимально допустимое количество байтов заполнения, которое определяется текущим состоянием управления потоком и настройками. . Если этот максимум меньше рассчитанного количества, необходимого для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается на уровне 8 байтов.
-  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного узла, как если бы `SETTINGS` кадр был получен. Будет отменено, если удаленный узел устанавливает собственное значение для `maxConcurrentStreams`. **Дефолт:** `100`.
-  - `protocol` {строка} Протокол для подключения, если он не установлен в `authority`. Значение может быть либо `'http:'` или `'https:'`. **Дефолт:** `'https:'`
-  - `settings` {HTTP / 2 Settings Object} Начальные настройки для отправки удаленному узлу при подключении.
-  - `createConnection` {Function} Необязательный обратный вызов, который получает `URL` экземпляр передан `connect` и `options` объект и возвращает любой [`Duplex`](stream.md#class-streamduplex) поток, который будет использоваться в качестве соединения для этого сеанса.
-  - ...: Любой [`net.connect()`](net.md#netconnect) или [`tls.connect()`](tls.md#tlsconnectoptions-callback) варианты могут быть предоставлены.
-  - `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, в течение которого сервер должен ждать, когда [`'unknownProtocol'`](#event-unknownprotocol) событие испускается. Если к этому времени сокет не был уничтожен, сервер уничтожит его. **Дефолт:** `10000`.
-- `listener` {Function} Будет зарегистрирован как разовый слушатель [`'connect'`](#event-connect) событие.
-- Возвращает: {ClientHttp2Session}
-
-Возвращает `ClientHttp2Session` пример.
-
-```js
-const http2 = require('http2');
-const client = http2.connect('https://localhost:1234');
-
-/* Use the client */
-
-client.close();
-```
+<!-- 0115.part.md -->
 
 ### `http2.constants`
 
-<!-- YAML
-added: v8.4.0
--->
+<!-- 0116.part.md -->
 
-#### Коды ошибок для `RST_STREAM` а также `GOAWAY`
+#### Коды ошибок для `RST_STREAM` и `GOAWAY`
 
-| Значение | Имя | Постоянный | | -------- | --------------------- | ------------------ ----------------------------- | | `0x00` | Нет ошибок | `http2.constants.NGHTTP2_NO_ERROR` | | `0x01` | Ошибка протокола | `http2.constants.NGHTTP2_PROTOCOL_ERROR` | | `0x02` | Внутренняя ошибка | `http2.constants.NGHTTP2_INTERNAL_ERROR` | | `0x03` | Ошибка управления потоком | `http2.constants.NGHTTP2_FLOW_CONTROL_ERROR` | | `0x04` | Настройки Тайм-аут | `http2.constants.NGHTTP2_SETTINGS_TIMEOUT` | | `0x05` | Поток закрыт | `http2.constants.NGHTTP2_STREAM_CLOSED` | | `0x06` | Ошибка размера кадра | `http2.constants.NGHTTP2_FRAME_SIZE_ERROR` | | `0x07` | Отказ от потока | `http2.constants.NGHTTP2_REFUSED_STREAM` | | `0x08` | Отмена | `http2.constants.NGHTTP2_CANCEL` | | `0x09` | Ошибка сжатия | `http2.constants.NGHTTP2_COMPRESSION_ERROR` | | `0x0a` | Ошибка подключения | `http2.constants.NGHTTP2_CONNECT_ERROR` | | `0x0b` | Укрепите свое спокойствие | `http2.constants.NGHTTP2_ENHANCE_YOUR_CALM` | | `0x0c` | Неадекватная безопасность | `http2.constants.NGHTTP2_INADEQUATE_SECURITY` | | `0x0d` | HTTP / 1.1 Требуется | `http2.constants.NGHTTP2_HTTP_1_1_REQUIRED` |
+| Значение | Имя | Константа |
+| --- | --- | --- |
+| `0x00` | Ошибка отсутствует | `http2.constants.NGHTTP2_NO_ERROR` |
+| `0x01` | Ошибка протокола | `http2.constants.NGHTTP2_PROTOCOL_ERROR` |
+| `0x02` | Внутренняя ошибка | `http2.constants.NGHTTP2_INTERNAL_ERROR` |  |
+| `0x03` | Ошибка контроля потока | `http2.constants.NGHTTP2_FLOW_CONTROL_ERROR` |  |
+| `0x04` | Таймаут настроек | `http2.constants.NGHTTP2_SETTINGS_TIMEOUT` |  |
+| `0x05` | Поток закрыт | `http2.constants.NGHTTP2_STREAM_CLOSED` |  |
+| `0x06` | Ошибка размера кадра | `http2.constants.NGHTTP2_FRAME_SIZE_ERROR` |  |
+| `0x07` | Отказанный поток | `http2.constants.NGHTTP2_REFUSED_STREAM` |  |
+| `0x08` | Отмена | `http2.constants.NGHTTP2_CANCEL` |  |
+|  | `0x09` | Ошибка сжатия | `http2.constants.NGHTTP2_COMPRESSION_ERROR` |  |
+| `0x0a` | Ошибка соединения | `http2.constants.NGHTTP2_CONNECT_ERROR` |
+|  | `0x0b` | Повышение спокойствия | `http2.constants.NGHTTP2_ENHANCE_YOUR_CALM` |  |
+|  | `0x0c` | Недостаточная безопасность | `http2.constants.NGHTTP2_INADEQUATE_SECURITY` |  |
+|  | `0x0d` | HTTP/1.1 Required | `http2.constants.NGHTTP2_HTTP_1_1_REQUIRED` |  |
 
-В `'timeout'` событие генерируется, когда на сервере нет активности в течение заданного количества миллисекунд, установленных с помощью `http2server.setTimeout()`.
+Событие `'timeout'` происходит, когда на сервере нет активности в течение заданного количества миллисекунд, установленного с помощью `http2server.setTimeout()`.
+
+<!-- 0117.part.md -->
 
 ### `http2.getDefaultSettings()`
 
-<!-- YAML
-added: v8.4.0
--->
+- Возвращает: {HTTP/2 Settings Object}
 
-- Возвращает: {объект настроек HTTP / 2}.
+Возвращает объект, содержащий настройки по умолчанию для экземпляра `Http2Session`. Этот метод возвращает новый экземпляр объекта при каждом вызове, поэтому возвращаемые экземпляры могут быть безопасно изменены для использования.
 
-Возвращает объект, содержащий настройки по умолчанию для `Http2Session` пример. Этот метод возвращает новый экземпляр объекта каждый раз, когда он вызывается, поэтому возвращенные экземпляры могут быть безопасно изменены для использования.
+<!-- 0118.part.md -->
 
 ### `http2.getPackedSettings([settings])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `settings` {HTTP/2 Объект настроек}
+- Возвращает: {Буфер}
 
-- `settings` {Объект настроек HTTP / 2}
-- Возвращает: {Buffer}
-
-Возвращает `Buffer` экземпляр, содержащий сериализованное представление заданных параметров HTTP / 2, как указано в [HTTP / 2](https://tools.ietf.org/html/rfc7540) Технические характеристики. Это предназначено для использования с `HTTP2-Settings` поле заголовка.
+Возвращает экземпляр `Buffer`, содержащий сериализованное представление заданных настроек HTTP/2, как указано в спецификации [HTTP/2](https://tools.ietf.org/html/rfc7540). Предназначен для использования с полем заголовка `HTTP2-Settings`.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 const packed = http2.getPackedSettings({
   enablePush: false,
 });
 
 console.log(packed.toString('base64'));
-// Prints: AAIAAAAA
+// Печатает: AAIAAAAAAA
 ```
+
+<!-- 0119.part.md -->
 
 ### `http2.getUnpackedSettings(buf)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `buf` {Buffer|TypedArray} Упакованные настройки.
+- Возвращает: {HTTP/2 Settings Object}
 
-- `buf` {Buffer | TypedArray} Упакованные настройки.
-- Возвращает: {объект настроек HTTP / 2}.
+Возвращает [HTTP/2 Settings Object](#settings-object), содержащий десериализованные настройки из данного `Buffer`, сгенерированные `http2.getPackedSettings()`.
 
-Возвращает [Объект настроек HTTP / 2](#settings-object) содержащие десериализованные настройки из заданного `Buffer` как создано `http2.getPackedSettings()`.
+<!-- 0120.part.md -->
 
 ### `http2.sensitiveHeaders`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.18.0
--->
+- {символ}
 
-- {условное обозначение}
+Этот символ может быть установлен как свойство объекта HTTP/2 headers со значением массива, чтобы предоставить список заголовков, считающихся чувствительными. Более подробную информацию смотрите в [Sensitive headers](#sensitive-headers).
 
-Этот символ может быть установлен как свойство объекта заголовков HTTP / 2 со значением массива, чтобы предоставить список заголовков, считающихся конфиденциальными. Видеть [Конфиденциальные заголовки](#sensitive-headers) Больше подробностей.
+<!-- 0121.part.md -->
 
 ### Объект заголовков
 
-Заголовки представлены как собственные свойства в объектах JavaScript. Ключи свойств будут преобразованы в нижний регистр. Значения свойств должны быть строками (в противном случае они будут преобразованы в строки) или `Array` строк (для отправки более одного значения в поле заголовка).
+Заголовки представляются как собственные свойства объектов JavaScript. Ключи свойств будут сериализованы в нижний регистр. Значения свойств должны быть строками (если это не так, они будут принудительно преобразованы в строки) или `массивом` строк (чтобы отправить более одного значения для каждого поля заголовка).
 
 ```js
 const headers = {
@@ -2217,18 +1886,20 @@ const headers = {
 stream.respond(headers);
 ```
 
-Объекты заголовка, передаваемые функциям обратного вызова, будут иметь `null` прототип. Это означает, что обычные методы объекта JavaScript, такие как `Object.prototype.toString()` а также `Object.prototype.hasOwnProperty()` не будет работать.
+Объекты заголовков, передаваемые в функции обратного вызова, будут иметь прототип `null`. Это означает, что обычные объектные методы JavaScript, такие как `Object.prototype.toString()` и `Object.prototype.hasOwnProperty()` не будут работать.
 
 Для входящих заголовков:
 
-- В `:status` заголовок конвертируется в `number`.
-- Дубликаты `:status`, `:method`, `:authority`, `:scheme`, `:path`, `:protocol`, `age`, `authorization`, `access-control-allow-credentials`, `access-control-max-age`, `access-control-request-method`, `content-encoding`, `content-language`, `content-length`, `content-location`, `content-md5`, `content-range`, `content-type`, `date`, `dnt`, `etag`, `expires`, `from`, `host`, `if-match`, `if-modified-since`, `if-none-match`, `if-range`, `if-unmodified-since`, `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `range`, `referer`,`retry-after`, `tk`, `upgrade-insecure-requests`, `user-agent` или `x-content-type-options` отбрасываются.
-- `set-cookie` всегда массив. В массив добавляются дубликаты.
-- Для дубликата `cookie` заголовки, значения объединяются вместе с помощью '; '.
-- Для всех остальных заголовков значения объединяются вместе с помощью ','.
+- Заголовок `:status` преобразуется в `number`.
+- Дубликаты `:status`, `:method`, `:authority`, `:scheme`, `:path`, `: protocol`, `age`, `authorization`, `access-control-allow-credentials`, `access-control-max-age`, `access-control-request-method`, `content-encoding`, `content-language`, `content-length`, `content-location`, `content-md5`, `content-range`, `content-type`, `date`, `dnt`, `etag`, `expires`, `from`, `host`, `if-match`, `if-modified-since`, `if-none-match`, `if-range`, `if-unmodified-since`, `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `range`, `referer`, `retry-after`, `tk`, `upgrade-insecure-requests`, `user-agent` или `x-content-type-options` отбрасываются.
+- `set-cookie` всегда является массивом. Дубликаты добавляются в массив.
+- Для дублирующихся заголовков `cookie` значения объединяются с помощью ';'.
+- Для всех остальных заголовков значения объединяются с помощью ','.
+
+<!-- конец списка -->
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream, headers) => {
   console.log(headers[':path']);
@@ -2236,16 +1907,18 @@ server.on('stream', (stream, headers) => {
 });
 ```
 
-#### Конфиденциальные заголовки
+<!-- 0122.part.md -->
 
-Заголовки HTTP2 могут быть помечены как конфиденциальные, что означает, что алгоритм сжатия заголовков HTTP / 2 никогда не будет их индексировать. Это может иметь смысл для значений заголовков с низкой энтропией и может считаться ценным для злоумышленника, например `Cookie` или `Authorization`. Для этого добавьте название заголовка в `[http2.sensitiveHeaders]` свойство как массив:
+#### Чувствительные заголовки
+
+Заголовки HTTP2 могут быть помечены как чувствительные, что означает, что алгоритм сжатия заголовков HTTP/2 никогда не будет их индексировать. Это может иметь смысл для заголовков с низкой энтропией, которые могут быть ценными для злоумышленника, например, `Cookie` или `Authorization`. Чтобы добиться этого, добавьте имя заголовка в свойство `[http2.sensitiveHeaders]` в виде массива:
 
 ```js
 const headers = {
   ':status': '200',
   'content-type': 'text-plain',
   cookie: 'some-cookie',
-  'other-sensitive-header': 'very secret data',
+  'other-sensitive-header': 'очень секретные данные',
   [http2.sensitiveHeaders]: [
     'cookie',
     'other-sensitive-header',
@@ -2255,89 +1928,88 @@ const headers = {
 stream.respond(headers);
 ```
 
-Для некоторых заголовков, например `Authorization` и коротко `Cookie` заголовки этот флаг устанавливается автоматически.
+Для некоторых заголовков, таких как `Authorization` и короткие заголовки `Cookie`, этот флаг устанавливается автоматически.
 
-Это свойство также устанавливается для полученных заголовков. Он будет содержать имена всех заголовков, помеченных как конфиденциальные, в том числе помеченных таким образом автоматически.
+Это свойство также устанавливается для полученных заголовков. Оно будет содержать имена всех заголовков, помеченных как чувствительные, включая те, которые были помечены таким образом автоматически.
+
+<!-- 0123.part.md -->
 
 ### Объект настроек
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v12.12.0
-    pr-url: https://github.com/nodejs/node/pull/29833
-    description: The `maxConcurrentStreams` setting is stricter.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: The `maxHeaderListSize` setting is now strictly enforced.
--->
+API `http2.getDefaultSettings()`, `http2.getPackedSettings()`, `http2.createServer()`, `http2.createSecureServer()`, `http2session.settings()`, `http2session.localSettings` и `http2session.remoteSettings` либо возвращают, либо получают на вход объект, определяющий настройки конфигурации для объекта `Http2Session`. Эти объекты представляют собой обычные объекты JavaScript, содержащие следующие свойства.
 
-В `http2.getDefaultSettings()`, `http2.getPackedSettings()`, `http2.createServer()`, `http2.createSecureServer()`, `http2session.settings()`, `http2session.localSettings`, а также `http2session.remoteSettings` API либо возвращают, либо получают в качестве входных данных объект, который определяет параметры конфигурации для `Http2Session` объект. Эти объекты являются обычными объектами JavaScript, содержащими следующие свойства.
-
-- `headerTableSize` {число} Задает максимальное количество байтов, используемых для сжатия заголовка. Минимальное допустимое значение - 0. Максимально допустимое значение - 2.<sup>32</sup>-1. **Дефолт:** `4096`.
-- `enablePush` {boolean} Определяет `true` если потоки HTTP / 2 Push будут разрешены на `Http2Session` экземпляры. **Дефолт:** `true`.
-- `initialWindowSize` {number} Определяет _отправитель_ начальный размер окна в байтах для управления потоком на уровне потока. Минимальное допустимое значение - 0. Максимально допустимое значение - 2.<sup>32</sup>-1. **Дефолт:** `65535`.
-- `maxFrameSize` {число} Определяет размер в байтах полезной нагрузки самого большого кадра. Минимально допустимое значение - 16 384. Максимально допустимое значение - 2<sup>24</sup>-1. **Дефолт:** `16384`.
-- `maxConcurrentStreams` {number} Определяет максимальное количество одновременных потоков, разрешенных на `Http2Session`. Не существует значения по умолчанию, которое подразумевает, по крайней мере теоретически, 2<sup>32</sup>-1 поток может быть открыт одновременно в любой момент времени в `Http2Session`. Минимальное значение - 0. Максимально допустимое значение - 2.<sup>32</sup>-1. **Дефолт:** `4294967295`.
-- `maxHeaderListSize` {число} Задает максимальный размер (несжатые октеты) списка заголовков, который будет принят. Минимальное допустимое значение - 0. Максимально допустимое значение - 2.<sup>32</sup>-1. **Дефолт:** `65535`.
-- `maxHeaderSize` {number} Псевдоним для `maxHeaderListSize`.
-- `enableConnectProtocol`{boolean} Определяет `true` если «Протокол расширенного подключения», определенный [RFC 8441](https://tools.ietf.org/html/rfc8441) должен быть включен. Этот параметр имеет смысл только в том случае, если он отправлен сервером. Однажды `enableConnectProtocol` настройка была включена для данного `Http2Session`, его нельзя отключить. **Дефолт:** `false`.
+- `headerTableSize` {number} Specifies the maximum number of bytes used for header compression. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4096`.
+- `enablePush` {boolean} Указывает `true`, если HTTP/2 Push-потоки должны быть разрешены для экземпляров `Http2Session`. **По умолчанию:** `true`.
+- `initialWindowSize` {number} Specifies the _sender’s_ initial window size in bytes for stream-level flow control. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
+- `maxFrameSize` {number} Specifies the size in bytes of the largest frame payload. The minimum allowed value is 16,384. The maximum allowed value is 2<sup>24</sup>-1. **Default:** `16384`.
+- `maxConcurrentStreams` {number} Specifies the maximum number of concurrent streams permitted on an `Http2Session`. There is no default value which implies, at least theoretically, 2<sup>32</sup>-1 streams may be open concurrently at any given time in an `Http2Session`. The minimum value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4294967295`.
+- `maxHeaderListSize` {number} Specifies the maximum size (uncompressed octets) of header list that will be accepted. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
+- `maxHeaderSize` {число} Псевдоним для `maxHeaderListSize`.
+- `enableConnectProtocol`{boolean} Указывает `true`, если должен быть включен "Расширенный протокол соединения", определенный в [RFC 8441] (https://tools.ietf.org/html/rfc8441). Этот параметр имеет смысл только в том случае, если он отправлен сервером. После включения параметра `enableConnectProtocol` для данной `Http2Session`, он не может быть отключен. **По умолчанию:** `false`.
 
 Все дополнительные свойства объекта настроек игнорируются.
 
+<!-- 0124.part.md -->
+
 ### Обработка ошибок
 
-Есть несколько типов ошибок, которые могут возникнуть при использовании `http2` модуль:
+Существует несколько типов ошибок, которые могут возникнуть при использовании модуля `node:http2`:
 
-Ошибки проверки возникают, когда передается неверный аргумент, параметр или значение параметра. Об этом всегда будет сообщать синхронный `throw`.
+Ошибки валидации возникают, когда передан неверный аргумент, опция или значение настройки. О них всегда сообщает синхронный `throw`.
 
-Ошибки состояния возникают, когда действие предпринимается в неправильное время (например, при попытке отправить данные в потоке после его закрытия). Об этом будет сообщено с использованием синхронного `throw` или через `'error'` событие на `Http2Stream`, `Http2Session` или объекты HTTP / 2 Server, в зависимости от того, где и когда возникает ошибка.
+Ошибки состояния возникают, когда действие выполняется в неправильное время (например, попытка отправить данные в потоке после его закрытия). О них будет сообщено либо с помощью синхронного `throw`, либо через событие `'error'` на объектах `Http2Stream`, `Http2Session` или HTTP/2 Server, в зависимости от того, где и когда произошла ошибка.
 
-Внутренние ошибки возникают при неожиданном сбое сеанса HTTP / 2. Об этом будет сообщено через `'error'` событие на `Http2Session` или объекты HTTP / 2 Server.
+Внутренние ошибки возникают, когда сессия HTTP/2 неожиданно завершается неудачей. О них будет сообщено через событие `'error'` на объектах `Http2Session` или HTTP/2 Server.
 
-Ошибки протокола возникают при нарушении различных ограничений протокола HTTP / 2. Об этом будет сообщено с использованием синхронного `throw` или через `'error'` событие на `Http2Stream`, `Http2Session` или объекты HTTP / 2 Server, в зависимости от того, где и когда возникает ошибка.
+Ошибки протокола возникают при нарушении различных ограничений протокола HTTP/2. О них будет сообщено либо с помощью синхронного `throw`, либо через событие `'error'` на объектах `Http2Stream`, `Http2Session` или HTTP/2 Server, в зависимости от того, где и когда произошла ошибка.
 
-### Недопустимая обработка символов в именах и значениях заголовков
+<!-- 0125.part.md -->
 
-Реализация HTTP / 2 применяет более строгую обработку недопустимых символов в именах и значениях заголовков HTTP, чем реализация HTTP / 1.
+### Обработка недопустимых символов в именах и значениях заголовков
 
-Имена полей заголовка _без учета регистра_ и передаются по сети строго как строчные строки. API, предоставляемый Node.js, позволяет задавать имена заголовков как строки со смешанным регистром (например, `Content-Type`), но преобразует их в нижний регистр (например, `content-type`) при передаче.
+В реализации HTTP/2 применяется более строгая обработка недопустимых символов в именах и значениях заголовков HTTP, чем в реализации HTTP/1.
 
-Имена полей заголовка _должен только_ содержат один или несколько из следующих символов ASCII: `a`-`z`, `A`-`Z`, `0`-`9`, `!`, `#`, `$`, `%`, `&`, `'`, `*`, `+`, `-`, `.`, `^`, `_`, `` ` `` (обратная кавычка), `|`, а также `~`.
+Имена полей заголовков _нечувствительны к регистру_ и передаются по проводам строго в виде строк в нижнем регистре. API, предоставляемый Node.js, позволяет задавать имена заголовков в виде строк со смешанным регистром (например, `Content-Type`), но при передаче они будут преобразованы в строчные (например, `content-type`).
+
+Имена полей заголовка _должны содержать только_ один или несколько из следующих символов ASCII: `a`-`z`, `A`-`Z`, `0`-`9`, `!`, `#`, `$`, `%`, `&`, `'`, `*`, `+`, `-`, `.`, `^`, `_`, `````(обратный знак),`|`и`~`.
 
 Использование недопустимых символов в имени поля заголовка HTTP приведет к закрытию потока с сообщением об ошибке протокола.
 
-Значения поля заголовка обрабатываются более мягко, но _должен_ не содержать символов новой строки или возврата каретки и _должен_ ограничиваться символами US-ASCII в соответствии с требованиями спецификации HTTP.
+Значения полей заголовков обрабатываются более мягко, но _не должны_ содержать символов новой строки или возврата каретки и _должны_ быть ограничены символами US-ASCII, согласно требованиям спецификации HTTP.
 
-### Пуш-потоки на клиенте
+<!-- 0126.part.md -->
 
-Чтобы получать проталкиваемые потоки на клиенте, установите прослушиватель для `'stream'` событие на `ClientHttp2Session`:
+### Push streams на клиенте
+
+Чтобы получать потоки на клиенте, установите слушателя для события `'stream'` на `ClientHttp2Session`:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 const client = http2.connect('http://localhost');
 
 client.on('stream', (pushedStream, requestHeaders) => {
   pushedStream.on('push', (responseHeaders) => {
-    // Process response headers
+    // Обработка заголовков ответа
   });
   pushedStream.on('data', (chunk) => {
-    /* handle pushed data */
+    /* обрабатываем вталкиваемые данные */
   });
 });
 
 const req = client.request({ ':path': '/' });
 ```
 
-### Поддерживая `CONNECT` метод
+<!-- 0127.part.md -->
 
-В `CONNECT` используется, чтобы разрешить использование сервера HTTP / 2 в качестве прокси для соединений TCP / IP.
+### Поддержка метода `CONNECT`
+
+Метод `CONNECT` используется для того, чтобы позволить HTTP/2 серверу использоваться в качестве прокси для TCP/IP соединений.
 
 Простой TCP-сервер:
 
 ```js
-const net = require('net');
+const net = require('node:net');
 
 const server = net.createServer((socket) => {
   let name = '';
@@ -2349,23 +2021,23 @@ const server = net.createServer((socket) => {
 server.listen(8000);
 ```
 
-Прокси-сервер HTTP / 2 CONNECT:
+HTTP/2 CONNECT прокси:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const { NGHTTP2_REFUSED_STREAM } = http2.constants;
-const net = require('net');
+const net = require('node:net');
 
 const proxy = http2.createServer();
 proxy.on('stream', (stream, headers) => {
   if (headers[':method'] !== 'CONNECT') {
-    // Only accept CONNECT requests
+    // Принимать только запросы CONNECT
     stream.close(NGHTTP2_REFUSED_STREAM);
     return;
   }
   const auth = new URL(`tcp://${headers[':authority']}`);
-  // It's a very good idea to verify that hostname and port are
-  // things this proxy should be connecting to.
+  // Очень хорошая идея проверить, что имя хоста и порт являются.
+  // к которым должен подключаться этот прокси.
   const socket = net.connect(
     auth.port,
     auth.hostname,
@@ -2383,18 +2055,18 @@ proxy.on('stream', (stream, headers) => {
 proxy.listen(8001);
 ```
 
-Клиент HTTP / 2 CONNECT:
+Клиент HTTP/2 CONNECT:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 
 const client = http2.connect('http://localhost:8001');
 
-// Must not specify the ':path' and ':scheme' headers
-// for CONNECT requests or an error will be thrown.
+// Не следует указывать заголовки ':path' и ':scheme'
+// для запросов CONNECT, иначе будет выдана ошибка.
 const req = client.request({
   ':method': 'CONNECT',
-  ':authority': `localhost:${port}`,
+  ':authority': 'localhost:8000',
 });
 
 req.on('response', (headers) => {
@@ -2404,28 +2076,30 @@ let data = '';
 req.setEncoding('utf8');
 req.on('data', (chunk) => (data += chunk));
 req.on('end', () => {
-  console.log(`The server says: ${data}`);
+  console.log(`Сервер говорит: ${data}`);
   client.close();
 });
 req.end('Jane');
 ```
 
-### Расширенный `CONNECT` протокол
+<!-- 0128.part.md -->
 
-[RFC 8441](https://tools.ietf.org/html/rfc8441) определяет расширение «Extended CONNECT Protocol» для HTTP / 2, которое может использоваться для начальной загрузки использования `Http2Stream` с помощью `CONNECT` как туннель для других протоколов связи (например, WebSockets).
+### Расширенный протокол `CONNECT`
 
-Использование расширенного протокола CONNECT разрешено серверами HTTP / 2 с помощью `enableConnectProtocol` параметр:
+[RFC 8441](https://tools.ietf.org/html/rfc8441) определяет расширение "Extended CONNECT Protocol" для HTTP/2, которое может быть использовано для загрузки использования `Http2Stream` с помощью метода `CONNECT` в качестве туннеля для других коммуникационных протоколов (таких как WebSockets).
+
+Использование расширенного протокола CONNECT включается серверами HTTP/2 с помощью параметра `enableConnectProtocol`:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const settings = { enableConnectProtocol: true };
 const server = http2.createServer({ settings });
 ```
 
-Как только клиент получит `SETTINGS` кадр с сервера, указывающий, что можно использовать расширенное соединение CONNECT, он может отправить `CONNECT` запросы, использующие `':protocol'` Псевдо-заголовок HTTP / 2:
+Как только клиент получает от сервера фрейм `SETTINGS`, указывающий на возможность использования расширенного CONNECT, он может отправлять запросы `CONNECT`, использующие псевдозаголовок `':protocol'` HTTP/2:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const client = http2.connect('http://localhost:8080');
 client.on('remoteSettings', (settings) => {
   if (settings.enableConnectProtocol) {
@@ -2438,14 +2112,16 @@ client.on('remoteSettings', (settings) => {
 });
 ```
 
-## Совместимость API
+<!-- 0129.part.md -->
 
-API совместимости имеет целью предоставить разработчикам аналогичные возможности HTTP / 1 при использовании HTTP / 2, что позволяет разрабатывать приложения, поддерживающие оба [HTTP / 1](http.md) и HTTP / 2. Этот API нацелен только на **общедоступный API** принадлежащий [HTTP / 1](http.md). Однако многие модули используют внутренние методы или состояние, а те _не поддерживаются_ поскольку это совершенно другая реализация.
+## API совместимости
 
-В следующем примере создается сервер HTTP / 2 с использованием API совместимости:
+Целью Compatibility API является обеспечение схожего с HTTP/1 опыта разработчика при использовании HTTP/2, что делает возможным разработку приложений, поддерживающих как [HTTP/1](http.md), так и HTTP/2. Этот API нацелен только на **публичный API** из [HTTP/1](http.md). Однако многие модули используют внутренние методы или состояние, и они _не поддерживаются_, поскольку это совершенно другая реализация.
+
+Следующий пример создает HTTP/2 сервер, используя API совместимости:
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('X-Foo', 'bar');
@@ -2456,19 +2132,21 @@ const server = http2.createServer((req, res) => {
 });
 ```
 
-Чтобы создать смешанный [HTTPS](https.md) и сервер HTTP / 2 см. [Согласование ALPN](#alpn-negotiation) раздел. Обновление с серверов HTTP / 1, отличных от tls, не поддерживается.
+Чтобы создать смешанный [HTTPS](https.md) и HTTP/2 сервер, обратитесь к разделу [ALPN negotiation](#alpn-negotiation). Обновление с не-tls серверов HTTP/1 не поддерживается.
 
-API совместимости HTTP / 2 состоит из [`Http2ServerRequest`](#class-http2http2serverrequest) а также [`Http2ServerResponse`](#class-http2http2serverresponse). Они нацелены на совместимость API с HTTP / 1, но не скрывают различия между протоколами. Например, сообщение о состоянии для кодов HTTP игнорируется.
+API совместимости HTTP/2 состоит из [`Http2ServerRequest`](#class-http2http2serverrequest) и [`Http2ServerResponse`](#class-http2http2serverresponse). Они направлены на совместимость API с HTTP/1, но не скрывают различий между протоколами. Например, сообщение о статусе для HTTP-кодов игнорируется.
 
-### Согласование ALPN
+<!-- 0130.part.md -->
 
-Согласование ALPN позволяет поддерживать оба [HTTPS](https.md) и HTTP / 2 через тот же сокет. В `req` а также `res` объекты могут быть HTTP / 1 или HTTP / 2, а приложение **должен** ограничить себя общедоступным API [HTTP / 1](http.md)и определите, можно ли использовать более продвинутые функции HTTP / 2.
+### ALPN negotiation
+
+Переговоры ALPN позволяют поддерживать [HTTPS](https.md) и HTTP/2 через один и тот же сокет. Объекты `req` и `res` могут быть как HTTP/1, так и HTTP/2, и приложение **должно** ограничиться публичным API [HTTP/1](http.md) и определить, возможно ли использовать более продвинутые возможности HTTP/2.
 
 В следующем примере создается сервер, поддерживающий оба протокола:
 
 ```js
-const { createSecureServer } = require('http2');
-const { readFileSync } = require('fs');
+const { createSecureServer } = require('node:http2');
+const { readFileSync } = require('node:fs');
 
 const cert = readFileSync('./cert.pem');
 const key = readFileSync('./key.pem');
@@ -2479,7 +2157,7 @@ const server = createSecureServer(
 ).listen(4443);
 
 function onRequest(req, res) {
-  // Detects if it is a HTTPS request or HTTP/2
+  // Определяет, является ли это запрос HTTPS или HTTP/2
   const {
     socket: { alpnProtocol },
   } = req.httpVersion === '2.0' ? req.stream.session : req;
@@ -2495,270 +2173,233 @@ function onRequest(req, res) {
 }
 ```
 
-В `'request'` событие работает одинаково на обоих [HTTPS](https.md) и HTTP / 2.
+Событие `'request'` работает одинаково как на [HTTPS](https.md), так и на HTTP/2.
+
+<!-- 0131.part.md -->
 
 ### Класс: `http2.Http2ServerRequest`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {stream.Readable}
 
-- Расширяется: {stream.Readable}
+Объект `Http2ServerRequest` создается [`http2.Server`](#class-http2server) или [`http2.SecureServer`](#class-http2secureserver) и передается в качестве первого аргумента в событие [`'request'`](#event-request). Он может быть использован для доступа к статусу запроса, заголовкам и данным.
 
-А `Http2ServerRequest` объект создан [`http2.Server`](#class-http2server) или [`http2.SecureServer`](#class-http2secureserver) и передается в качестве первого аргумента в [`'request'`](#event-request) событие. Его можно использовать для доступа к статусу запроса, заголовкам и данным.
+<!-- 0132.part.md -->
 
 #### Событие: `'aborted'`
 
-<!-- YAML
-added: v8.4.0
--->
+Событие `'aborted'` генерируется всякий раз, когда экземпляр `Http2ServerRequest` аномально прерывается в середине коммуникации.
 
-В `'aborted'` событие генерируется всякий раз, когда `Http2ServerRequest` Экземпляр ненормально прерывается во время обмена данными.
+Событие `'aborted'` будет испущено только в том случае, если записываемая сторона `Http2ServerRequest` не была завершена.
 
-В `'aborted'` событие будет сгенерировано только в том случае, если `Http2ServerRequest` записываемая сторона не закончена.
+<!-- 0133.part.md -->
 
-#### Событие: `'close'`
+#### Событие: `close`
 
-<!-- YAML
-added: v8.4.0
--->
+Указывает, что базовый [`Http2Stream`](#class-http2stream) был закрыт. Как и `'end'`, это событие происходит только один раз для каждого ответа.
 
-Указывает, что основной [`Http2Stream`](#class-http2stream) был закрыт. Как `'end'`, это событие происходит только один раз за ответ.
+<!-- 0134.part.md -->
 
 #### `request.aborted`
 
-<!-- YAML
-added: v10.1.0
--->
+- {boolean}
 
-- {логический}
+Свойство `request.aborted` будет иметь значение `true`, если запрос был прерван.
 
-В `request.aborted` собственность будет `true` если запрос был прерван.
+<!-- 0135.part.md -->
 
 #### `request.authority`
 
-<!-- YAML
-added: v8.4.0
--->
+- {строка}
 
-- {нить}
+Поле псевдозаголовка полномочий запроса. Поскольку HTTP/2 позволяет запросам задавать либо `:authority`, либо `host`, это значение берется из `req.headers[':authority']`, если оно присутствует. В противном случае оно берется из `req.headers['host']`.
 
-Поле псевдозаголовка центра запроса. Поскольку HTTP / 2 позволяет запросам устанавливать либо `:authority` или `host`, это значение получено из `req.headers[':authority']` если представить. В противном случае он получается из `req.headers['host']`.
+<!-- 0136.part.md -->
 
 #### `request.complete`
 
-<!-- YAML
-added: v12.10.0
--->
+- {boolean}
 
-- {логический}
+Свойство `request.complete` будет равно `true`, если запрос был завершен, прерван или уничтожен.
 
-В `request.complete` собственность будет `true` если запрос был завершен, прерван или уничтожен.
+<!-- 0137.part.md -->
 
 #### `request.connection`
 
-<!-- YAML
-added: v8.4.0
-deprecated: v13.0.0
--->
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
-> Стабильность: 0 - Не рекомендуется. Использовать [`request.socket`](#requestsocket).
+    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
 
-- {net.Socket | tls.TLSSocket}
+    Используйте [`request.socket`](#requestsocket).
 
-Видеть [`request.socket`](#requestsocket).
+- {net.Socket|tls.TLSSocket}
+
+См. [`request.socket`](#requestsocket).
+
+<!-- 0138.part.md -->
 
 #### `request.destroy([error])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `error` {Error}
 
-- `error` {Ошибка}
+Вызывает `destroy()` на [`Http2Stream`](#class-http2stream), который получил [`Http2ServerRequest`](#class-http2http2serverrequest). Если указано `error`, то выдается событие `error` и `error` передается в качестве аргумента любым слушателям этого события.
 
-Звонки `destroy()` на [`Http2Stream`](#class-http2stream) который получил [`Http2ServerRequest`](#class-http2http2serverrequest). Если `error` предоставляется, `'error'` событие испускается и `error` передается в качестве аргумента всем слушателям события.
+Ничего не происходит, если поток уже был уничтожен.
 
-Он ничего не делает, если поток уже был уничтожен.
+<!-- 0139.part.md -->
 
 #### `request.headers`
 
-<!-- YAML
-added: v8.4.0
--->
+- {Object}
 
-- {Объект}
+Объект заголовков запроса/ответа.
 
-Объект заголовков запроса / ответа.
-
-Пары "ключ-значение", состоящие из имен и значений заголовков. Имена заголовков в нижнем регистре.
+Пары ключ-значение имен и значений заголовков. Имена заголовков записываются в нижнем регистре.
 
 ```js
-// Prints something like:
+// Выводит что-то вроде:
 //
-// { 'user-agent': 'curl/7.22.0',
-//   host: '127.0.0.1:8000',
-//   accept: '*/*' }
+// { { 'user-agent': 'curl/7.22.0',
+// host: '127.0.0.1:8000',
+// accept: '*/*' }
 console.log(request.headers);
 ```
 
-Видеть [Объект заголовков HTTP / 2](#headers-object).
+См. [HTTP/2 Headers Object](#headers-object).
 
-В HTTP / 2 путь запроса, имя хоста, протокол и метод представлены в виде специальных заголовков с префиксом `:` персонаж (например, `':path'`). Эти специальные заголовки будут включены в `request.headers` объект. Следует проявлять осторожность, чтобы случайно не изменить эти специальные заголовки, иначе могут возникнуть ошибки. Например, удаление всех заголовков из запроса приведет к возникновению ошибок:
+В HTTP/2 путь запроса, имя хоста, протокол и метод представлены в виде специальных заголовков с префиксом `:` (например, `':path'`). Эти специальные заголовки будут включены в объект `request.headers`. Необходимо следить за тем, чтобы случайно не изменить эти специальные заголовки, иначе могут возникнуть ошибки. Например, удаление всех заголовков из запроса приведет к возникновению ошибок:
 
 ```js
 removeAllHeaders(request.headers);
-assert(request.url); // Fails because the :path header has been removed
+assert(request.url); // Ошибка, потому что заголовок :path был удален
 ```
+
+<!-- 0140.part.md -->
 
 #### `request.httpVersion`
 
-<!-- YAML
-added: v8.4.0
--->
+- {string}
 
-- {нить}
+В случае запроса сервера, версия HTTP, отправленная клиентом. В случае ответа клиента - HTTP-версия подключившегося сервера. Возвращает `2.0`.
 
-В случае запроса сервера - версия HTTP, отправленная клиентом. В случае ответа клиента - версия HTTP подключенного сервера. Возврат `'2.0'`.
+Также `message.httpVersionMajor` является первым целым числом, а `message.httpVersionMinor` - вторым.
 
-Также `message.httpVersionMajor` - первое целое число и `message.httpVersionMinor` это второй.
+<!-- 0141.part.md -->
 
 #### `request.method`
 
-<!-- YAML
-added: v8.4.0
--->
+- {строка}
 
-- {нить}
+Метод запроса в виде строки. Только для чтения. Примеры: `GET`, `DELETE`.
 
-Метод запроса в виде строки. Только для чтения. Примеры: `'GET'`, `'DELETE'`.
+<!-- 0142.part.md -->
 
 #### `request.rawHeaders`
 
-<!-- YAML
-added: v8.4.0
--->
+- {string\[\]}
 
-- {нить\[]}
+Список необработанных заголовков запроса/ответа в том виде, в котором они были получены.
 
-Необработанные заголовки запроса / ответа перечислены в том виде, в котором они были получены.
+Ключи и значения находятся в одном списке. Это _не_ список кортежей. Таким образом, четные смещения - это значения ключей, а нечетные смещения - связанные с ними значения.
 
-Ключи и значения находятся в одном списке. это _нет_ список кортежей. Таким образом, смещения с четными номерами являются ключевыми значениями, а смещения с нечетными номерами - соответствующими значениями.
-
-Имена заголовков не в нижнем регистре, и дубликаты не объединяются.
+Имена заголовков не выделяются нижним регистром, а дубликаты не объединяются.
 
 ```js
-// Prints something like:
+// Выводит что-то вроде:
 //
 // [ 'user-agent',
-//   'this is invalid because there can be only one',
-//   'User-Agent',
-//   'curl/7.22.0',
-//   'Host',
-//   '127.0.0.1:8000',
-//   'ACCEPT',
-//   '*/*' ]
+// 'this is invalid because there can be only one',
+// 'User-Agent',
+// 'curl/7.22.0',
+// 'Host',
+// '127.0.0.1:8000',
+// 'ACCEPT',
+// '*/*' ]
 console.log(request.rawHeaders);
 ```
 
+<!-- 0143.part.md -->
+
 #### `request.rawTrailers`
 
-<!-- YAML
-added: v8.4.0
--->
+- {string\[\]}
 
-- {нить\[]}
+Необработанные ключи и значения трейлеров запроса/ответа в том виде, в котором они были получены. Заполняется только при событии `'end'`.
 
-Необработанные ключи и значения трейлера запроса / ответа в том виде, в котором они были получены. Заселены только в `'end'` событие.
+<!-- 0144.part.md -->
 
 #### `request.scheme`
 
-<!-- YAML
-added: v8.4.0
--->
+- {строка}
 
-- {нить}
+Поле псевдозаголовка схемы запроса, указывающее на часть схемы целевого URL.
 
-Поле псевдозаголовка схемы запроса, указывающее часть схемы целевого URL.
+<!-- 0145.part.md -->
 
 #### `request.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `msecs` {количество}
-- `callback` {Функция}
+- `msecs` {число}
+- `callback` {функция}
 - Возвращает: {http2.Http2ServerRequest}
 
-Устанавливает [`Http2Stream`](#class-http2stream)значение тайм-аута до `msecs`. Если предоставляется обратный вызов, он добавляется в качестве слушателя на `'timeout'` событие в объекте ответа.
+Устанавливает значение тайм-аута [`Http2Stream`](#class-http2stream) в `msecs`. Если указан обратный вызов, то он добавляется в качестве слушателя события `'timeout'` на объекте ответа.
 
-Если нет `'timeout'` слушатель добавляется к запросу, ответу или серверу, затем [`Http2Stream`](#class-http2stream)s уничтожаются по истечении времени ожидания. Если на запрос назначен обработчик, ответ или серверный `'timeout'` события, сокеты с истекшим временем ожидания должны обрабатываться явно.
+Если к запросу, ответу или серверу не добавлен слушатель `'timeout'`, то [`Http2Stream`](#class-http2stream)уничтожаются по истечении времени. Если для событий `'timeout'' запроса, ответа или сервера назначен обработчик, то таймаут сокетов должен обрабатываться явно.
+
+<!-- 0146.part.md -->
 
 #### `request.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+- {net.Socket|tls.TLSSocket}
 
-- {net.Socket | tls.TLSSocket}
+Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы, основанные на логике HTTP/2.
 
-Возвращает `Proxy` объект, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы на основе логики HTTP / 2.
+Свойства `destroyed`, `readable` и `writable` будут получены из `request.stream` и установлены в `request.stream`.
 
-`destroyed`, `readable`, а также `writable` свойства будут извлечены и установлены на `request.stream`.
+Методы `destroy`, `emit`, `end`, `on` и `once` будут вызываться на `request.stream`.
 
-`destroy`, `emit`, `end`, `on` а также `once` методы будут вызываться `request.stream`.
+Метод `setTimeout` будет вызван на `request.stream.session`.
 
-`setTimeout` метод будет вызван `request.stream.session`.
+`pause`, `read`, `resume` и `write` будут вызывать ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Смотрите [`Http2Session` и сокеты](#http2session-and-sockets) для получения дополнительной информации.
 
-`pause`, `read`, `resume`, а также `write` выдаст ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Видеть [`Http2Session` и розетки](#http2session-and-sockets) для дополнительной информации.
+Все остальные взаимодействия будут направлены непосредственно на сокет. При поддержке TLS используйте [`request.socket.getPeerCertificate()`](tls.md#tlssocketgetpeercertificatedetailed) для получения аутентификационных данных клиента.
 
-Все остальные взаимодействия будут направляться непосредственно в сокет. С поддержкой TLS используйте [`request.socket.getPeerCertificate()`](tls.md#tlssocketgetpeercertificatedetailed) чтобы получить данные аутентификации клиента.
+<!-- 0147.part.md -->
 
 #### `request.stream`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - {Http2Stream}
 
-В [`Http2Stream`](#class-http2stream) объект, поддерживающий запрос.
+Объект [`Http2Stream`](#class-http2stream), поддерживающий запрос.
+
+<!-- 0148.part.md -->
 
 #### `request.trailers`
 
-<!-- YAML
-added: v8.4.0
--->
+- {Object}
 
-- {Объект}
+Объект трейлеров запроса/ответа. Заполняется только при событии `end`.
 
-Объект трейлеров запроса / ответа. Заселены только в `'end'` событие.
+<!-- 0149.part.md -->
 
 #### `request.url`
 
-<!-- YAML
-added: v8.4.0
--->
+- {строка}
 
-- {нить}
-
-Строка URL-адреса запроса. Он содержит только URL-адрес, который присутствует в фактическом HTTP-запросе. Если запрос:
+Строка URL запроса. Содержит только тот URL, который присутствует в фактическом HTTP-запросе. Если запрос имеет вид:
 
 ```http
 GET /status?name=ryan HTTP/1.1
 Accept: text/plain
 ```
 
-потом `request.url` будет:
-
-<!-- eslint-disable semi -->
+Тогда `request.url` будет:
 
 ```js
 '/status?name=ryan';
 
 ```
 
-Чтобы разобрать URL-адрес на части, `new URL()` может быть использован:
+Чтобы разобрать url на части, можно использовать `new URL()`:
 
 ```console
 $ node
@@ -2779,116 +2420,98 @@ URL {
 }
 ```
 
+<!-- 0150.part.md -->
+
 ### Класс: `http2.Http2ServerResponse`
 
-<!-- YAML
-added: v8.4.0
--->
+- Расширяет: {Stream}
 
-- Расширяется: {Stream}
+Этот объект создается внутри HTTP-сервера, а не пользователем. Он передается в качестве второго параметра в событие [`'request'`](#event-request).
 
-Этот объект создается внутри HTTP-сервером, а не пользователем. Он передается вторым параметром в [`'request'`](#event-request) событие.
+<!-- 0151.part.md -->
 
-#### Событие: `'close'`
+#### Событие: `close`
 
-<!-- YAML
-added: v8.4.0
--->
+Указывает, что базовый [`Http2Stream`](#class-http2stream) был завершен до того, как [`response.end()`](#responseenddata-encoding-callback) был вызван или успел промыться.
 
-Указывает, что основной [`Http2Stream`](#class-http2stream) был прекращен до [`response.end()`](#responseenddata-encoding-callback) был вызван или смог промыть.
+<!-- 0152.part.md -->
 
-#### Событие: `'finish'`
+#### Событие: `finish`
 
-<!-- YAML
-added: v8.4.0
--->
+Вызывается, когда ответ был отправлен. Точнее, это событие возникает, когда последний сегмент заголовков и тела ответа был передан мультиплексированию HTTP/2 для передачи по сети. Это не означает, что клиент уже что-то получил.
 
-Выдается после отправки ответа. В частности, это событие генерируется, когда последний сегмент заголовков и тела ответа был передан мультиплексору HTTP / 2 для передачи по сети. Это не означает, что клиент еще что-то получил.
+После этого события для объекта ответа больше не будет испускаться никаких событий.
 
-После этого события в объекте ответа больше не будет событий.
+<!-- 0153.part.md -->
 
 #### `response.addTrailers(headers)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `headers` {Object}
 
-- `headers` {Объект}
+Этот метод добавляет в ответ трейлинг-заголовки HTTP (заголовок, но в конце сообщения).
 
-Этот метод добавляет к ответу завершающие заголовки HTTP (заголовок, но в конце сообщения).
+Попытка установить имя или значение поля заголовка, которое содержит недопустимые символы, приведет к возникновению [`TypeError`](errors.md#class-typeerror).
 
-Попытка установить имя поля заголовка или значение, содержащее недопустимые символы, приведет к [`TypeError`](errors.md#class-typeerror) быть брошенным.
+<!-- 0154.part.md -->
 
 #### `response.connection`
 
-<!-- YAML
-added: v8.4.0
-deprecated: v13.0.0
--->
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
-> Стабильность: 0 - Не рекомендуется. Использовать [`response.socket`](#responsesocket).
+    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
 
-- {net.Socket | tls.TLSSocket}
+    Используйте [`response.socket`](#responsesocket).
 
-Видеть [`response.socket`](#responsesocket).
+- {net.Socket|tls.TLSSocket}
+
+См. [`response.socket`](#responsesocket).
+
+<!-- 0155.part.md -->
 
 #### `response.createPushResponse(headers, callback)`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `headers` {HTTP / 2 Headers Object} Объект, описывающий заголовки.
-- `callback` {Function} Вызывается один раз `http2stream.pushStream()` завершено, либо когда попытка создать отправленный `Http2Stream` не удалось или был отклонен, или состояние `Http2ServerRequest` закрывается до вызова `http2stream.pushStream()` метод
+- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+- `callback` {Функция} Вызывается после завершения `http2stream.pushStream()`, либо когда попытка создать проталкиваемый `Http2Stream` не удалась или была отклонена, либо состояние `Http2ServerRequest` закрыто до вызова метода `http2stream.pushStream()`.
   - `err` {Ошибка}
-  - `res` {http2.Http2ServerResponse} Недавно созданный `Http2ServerResponse` объект
+  - `res` {http2.Http2ServerResponse} Только что созданный объект `Http2ServerResponse`.
 
-Вызов [`http2stream.pushStream()`](#http2streampushstreamheaders-options-callback) с заданными заголовками и оберните данный [`Http2Stream`](#class-http2stream) на вновь созданном `Http2ServerResponse` в качестве параметра обратного вызова в случае успеха. Когда `Http2ServerRequest` закрывается, обратный вызов вызывается с ошибкой `ERR_HTTP2_INVALID_STREAM`.
+Вызывает [`http2stream.pushStream()`](#http2streampushstreamheaders-options-callback) с заданными заголовками и в случае успеха оборачивает заданный [`Http2Stream`](#class-http2stream) на вновь созданный `Http2ServerResponse` в качестве параметра обратного вызова. Когда `Http2ServerRequest` закрывается, обратный вызов вызывается с ошибкой `ERR_HTTP2_INVALID_STREAM`.
+
+<!-- 0156.part.md -->
 
 #### `response.end([data[, encoding]][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18780
-    description: This method now returns a reference to `ServerResponse`.
--->
-
-- `data` {строка | Буфер | Uint8Array}
-- `encoding` {нить}
-- `callback` {Функция}
+- `данные` {string|Buffer|Uint8Array}
+- `encoding` {string}
+- `callback` {функция}
 - Возвращает: {this}
 
-Этот метод сигнализирует серверу, что все заголовки и тело ответа отправлены; этот сервер должен считать это сообщение завершенным. Метод, `response.end()`, ДОЛЖЕН вызываться при каждом ответе.
+Этот метод сигнализирует серверу, что все заголовки и тело ответа были отправлены; сервер должен считать это сообщение завершенным. Метод `response.end()` ДОЛЖЕН вызываться в каждом ответе.
 
-Если `data` указано, это эквивалентно вызову [`response.write(data, encoding)`](http.md#responsewritechunk-encoding-callback) с последующим `response.end(callback)`.
+Если указано `data`, это эквивалентно вызову [`response.write(data, encoding)`](http.md#responsewritechunk-encoding-callback), за которым следует `response.end(callback)`.
 
-Если `callback` указан, он будет вызываться по завершении потока ответа.
+Если указан `callback`, он будет вызван, когда поток ответа будет завершен.
+
+<!-- 0157.part.md -->
 
 #### `response.finished`
 
-<!-- YAML
-added: v8.4.0
-deprecated:
- - v13.4.0
- - v12.16.0
--->
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
-> Стабильность: 0 - Не рекомендуется. Использовать [`response.writableEnded`](#responsewritableended).
+    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
 
-- {логический}
+    Используйте [`response.writableEnded`](#responsewritableended).
 
-Логическое значение, указывающее, завершен ли ответ. Начинается как `false`. После [`response.end()`](#responseenddata-encoding-callback) выполняется, значение будет `true`.
+- {boolean}
+
+Булево значение, указывающее, завершен ли ответ. Начинается как `false`. После выполнения [`response.end()`](#responseenddata-encoding-callback) значение будет `true`.
+
+<!-- 0158.part.md -->
 
 #### `response.getHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `name` {нить}
-- Возвращает: {строка}
+- `name` {string}
+- Возвращает: {string}
 
 Считывает заголовок, который уже был поставлен в очередь, но не отправлен клиенту. Имя не чувствительно к регистру.
 
@@ -2896,15 +2519,13 @@ added: v8.4.0
 const contentType = response.getHeader('content-type');
 ```
 
+<!-- 0159.part.md -->
+
 #### `response.getHeaderNames()`
 
-<!-- YAML
-added: v8.4.0
--->
+- Возвращает: {string\[\]}
 
-- Возвращает: {строка \[]}
-
-Возвращает массив, содержащий уникальные имена текущих исходящих заголовков. Все имена заголовков в нижнем регистре.
+Возвращает массив, содержащий уникальные имена текущих исходящих заголовков. Все имена заголовков пишутся в нижнем регистре.
 
 ```js
 response.setHeader('Foo', 'bar');
@@ -2914,17 +2535,15 @@ const headerNames = response.getHeaderNames();
 // headerNames === ['foo', 'set-cookie']
 ```
 
-#### `response.getHeaders()`
+<!-- 0160.part.md -->
 
-<!-- YAML
-added: v8.4.0
--->
+#### `response.getHeaders()`
 
 - Возвращает: {Object}
 
-Возвращает частичную копию текущих исходящих заголовков. Поскольку используется неглубокая копия, значения массива можно изменять без дополнительных вызовов различных методов HTTP-модуля, связанных с заголовками. Ключи возвращаемого объекта - это имена заголовков, а значения - соответствующие значения заголовков. Все имена заголовков в нижнем регистре.
+Возвращает неглубокую копию текущих исходящих заголовков. Поскольку используется неглубокая копия, значения массива могут быть изменены без дополнительных вызовов различных методов модуля http, связанных с заголовками. Ключами возвращаемого объекта являются имена заголовков, а значениями - соответствующие значения заголовков. Все имена заголовков пишутся в нижнем регистре.
 
-Объект, возвращаемый `response.getHeaders()` метод _не_ прототипно унаследовать от JavaScript `Object`. Это означает, что типичный `Object` такие методы как `obj.toString()`, `obj.hasOwnProperty()`, а другие не определены и _не будет работать_.
+Объект, возвращаемый методом `response.getHeaders()`, _не_ прототипически наследует от JavaScript `Object`. Это означает, что типичные методы `Object`, такие как `obj.toString()`, `obj.hasOwnProperty()` и другие, не определены и _не будут работать_.
 
 ```js
 response.setHeader('Foo', 'bar');
@@ -2934,38 +2553,32 @@ const headers = response.getHeaders();
 // headers === { foo: 'bar', 'set-cookie': ['foo=bar', 'bar=baz'] }
 ```
 
+<!-- 0161.part.md -->
+
 #### `response.hasHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `name` {string}
+- Возвращает: {boolean}
 
-- `name` {нить}
-- Возвращает: {логическое}
-
-Возврат `true` если заголовок идентифицирован `name` в настоящее время устанавливается в исходящих заголовках. При сопоставлении имени заголовка регистр не учитывается.
+Возвращает `true`, если заголовок, обозначенный `name`, в настоящее время установлен в исходящих заголовках. Соответствие имени заголовка не чувствительно к регистру.
 
 ```js
 const hasContentType = response.hasHeader('content-type');
 ```
 
+<!-- 0162.part.md -->
+
 #### `response.headersSent`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+True, если заголовки были отправлены, false в противном случае (только для чтения).
 
-Истина, если заголовки были отправлены, в противном случае - ложь (только для чтения).
+<!-- 0163.part.md -->
 
 #### `response.removeHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
-
-- `name` {нить}
+- `name` {строка}
 
 Удаляет заголовок, который был поставлен в очередь для неявной отправки.
 
@@ -2973,38 +2586,32 @@ added: v8.4.0
 response.removeHeader('Content-Encoding');
 ```
 
-### `response.req`
+<!-- 0164.part.md -->
 
-<!-- YAML
-added: v15.7.0
--->
+#### `response.req`
 
 - {http2.Http2ServerRequest}
 
-Ссылка на оригинальный HTTP2 `request` объект.
+Ссылка на исходный объект HTTP2 `request`.
+
+<!-- 0165.part.md -->
 
 #### `response.sendDate`
 
-<!-- YAML
-added: v8.4.0
--->
+- {boolean}
 
-- {логический}
+При значении true заголовок Date будет автоматически сгенерирован и отправлен в ответ, если он еще не присутствует в заголовках. По умолчанию установлено значение true.
 
-Если установлено значение true, заголовок Date будет автоматически сгенерирован и отправлен в ответе, если он еще не присутствует в заголовках. По умолчанию true.
+Этот параметр следует отключать только для тестирования; HTTP требует наличия заголовка Date в ответах.
 
-Это следует отключать только для тестирования; HTTP требует заголовка Date в ответах.
+<!-- 0166.part.md -->
 
 #### `response.setHeader(name, value)`
 
-<!-- YAML
-added: v8.4.0
--->
+- `имя` {строка}
+- `value` {string|string\[\]}
 
-- `name` {нить}
-- `value` {строка | строка \[]}
-
-Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в заголовках для отправки, его значение будет заменено. Используйте здесь массив строк, чтобы отправить несколько заголовков с одним и тем же именем.
+Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Используйте массив строк для отправки нескольких заголовков с одинаковым именем.
 
 ```js
 response.setHeader(
@@ -3022,12 +2629,12 @@ response.setHeader('Set-Cookie', [
 ]);
 ```
 
-Попытка установить имя поля заголовка или значение, содержащее недопустимые символы, приведет к [`TypeError`](errors.md#class-typeerror) быть брошенным.
+Попытка установить имя или значение поля заголовка, содержащее недопустимые символы, приведет к возникновению [`TypeError`](errors.md#class-typeerror).
 
-Когда заголовки были установлены с [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), с заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) учитывая приоритет.
+Когда заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
 ```js
-// Returns content-type = text/plain
+// Возвращает content-type = text/plain
 const server = http2.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('X-Foo', 'bar');
@@ -3038,155 +2645,156 @@ const server = http2.createServer((req, res) => {
 });
 ```
 
+<!-- 0167.part.md -->
+
 #### `response.setTimeout(msecs[, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `msecs` {число}
+- `callback` {функция}
+- Возвращает: {http2.Http2ServerResponse}
 
-- `msecs` {количество}
-- `callback` {Функция}
-- Возвращает: {http2.Http2ServerResponse}.
+Устанавливает значение тайм-аута [`Http2Stream`](#class-http2stream) в `msecs`. Если указан обратный вызов, то он добавляется в качестве слушателя события `'timeout'` для объекта ответа.
 
-Устанавливает [`Http2Stream`](#class-http2stream)значение тайм-аута до `msecs`. Если предоставляется обратный вызов, он добавляется в качестве слушателя на `'timeout'` событие в объекте ответа.
+Если к запросу, ответу или серверу не добавлен слушатель `'timeout'`, то [`Http2Stream`](#class-http2stream)уничтожаются по истечении времени. Если для событий `'timeout'' запроса, ответа или сервера назначен обработчик, то таймаут сокетов должен обрабатываться явно.
 
-Если нет `'timeout'` слушатель добавляется к запросу, ответу или серверу, затем [`Http2Stream`](#class-http2stream)s уничтожаются по истечении времени ожидания. Если на запрос назначен обработчик, ответ или серверный `'timeout'` события, сокеты с истекшим временем ожидания должны обрабатываться явно.
+<!-- 0168.part.md -->
 
 #### `response.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+- {net.Socket|tls.TLSSocket}
 
-- {net.Socket | tls.TLSSocket}
+Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы, основанные на логике HTTP/2.
 
-Возвращает `Proxy` объект, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы на основе логики HTTP / 2.
+Свойства `destroyed`, `readable` и `writable` будут получены из `response.stream` и установлены в `response.stream`.
 
-`destroyed`, `readable`, а также `writable` свойства будут извлечены и установлены на `response.stream`.
+Методы `destroy`, `emit`, `end`, `on` и `once` будут вызываться на `response.stream`.
 
-`destroy`, `emit`, `end`, `on` а также `once` методы будут вызываться `response.stream`.
+Метод `setTimeout` будет вызван на `response.stream.session`.
 
-`setTimeout` метод будет вызван `response.stream.session`.
+`pause`, `read`, `resume` и `write` будут вызывать ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Смотрите [`Http2Session` и сокеты](#http2session-and-sockets) для получения дополнительной информации.
 
-`pause`, `read`, `resume`, а также `write` выдаст ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`. Видеть [`Http2Session` и розетки](#http2session-and-sockets) для дополнительной информации.
-
-Все остальные взаимодействия будут направляться непосредственно в сокет.
+Все остальные взаимодействия будут направлены непосредственно на сокет.
 
 ```js
-const http2 = require('http2');
+const http2 = require('node:http2');
 const server = http2
   .createServer((req, res) => {
     const ip = req.socket.remoteAddress;
     const port = req.socket.remotePort;
     res.end(
-      `Your IP address is ${ip} and your source port is ${port}.`
+      `Ваш IP адрес ${ip} и ваш порт источника ${port}.`
     );
   })
   .listen(3000);
 ```
 
+<!-- 0169.part.md -->
+
 #### `response.statusCode`
 
-<!-- YAML
-added: v8.4.0
--->
+- {число}
 
-- {количество}
-
-При использовании неявных заголовков (не вызывающих [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) явно), это свойство управляет кодом состояния, который будет отправлен клиенту при сбросе заголовков.
+При использовании неявных заголовков (без явного вызова [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers)) это свойство управляет кодом статуса, который будет отправлен клиенту, когда заголовки будут смыты.
 
 ```js
 response.statusCode = 404;
 ```
 
-После того, как заголовок ответа был отправлен клиенту, это свойство указывает код состояния, который был отправлен.
+После того, как заголовок ответа был отправлен клиенту, это свойство указывает на код статуса, который был отправлен.
+
+<!-- 0170.part.md -->
 
 #### `response.statusMessage`
 
-<!-- YAML
-added: v8.4.0
--->
+- {string}
 
-- {нить}
+Сообщение о статусе не поддерживается HTTP/2 (RFC 7540 8.1.2.4). Оно возвращает пустую строку.
 
-Сообщение о состоянии не поддерживается HTTP / 2 (RFC 7540 8.1.2.4). Возвращает пустую строку.
+<!-- 0171.part.md -->
 
 #### `response.stream`
 
-<!-- YAML
-added: v8.4.0
--->
-
 - {Http2Stream}
 
-В [`Http2Stream`](#class-http2stream) объект, подтверждающий ответ.
+Объект [`Http2Stream`](#class-http2stream), поддерживающий ответ.
+
+<!-- 0172.part.md -->
 
 #### `response.writableEnded`
 
-<!-- YAML
-added: v12.9.0
--->
+- {boolean}
 
-- {логический}
+Является `true` после вызова [`response.end()`](#responseenddata-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](stream.md#writablewritablefinished).
 
-Является `true` после [`response.end()`](#responseenddata-encoding-callback) был вызван. Это свойство не указывает, были ли данные сброшены, для этого использования. [`writable.writableFinished`](stream.md#writablewritablefinished) вместо.
+<!-- 0173.part.md -->
 
 #### `response.write(chunk[, encoding][, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+- `chunk` {string|Buffer|Uint8Array}
+- `encoding` {string}
+- `обратный вызов` {функция}
+- Возвращает: {boolean}
 
-- `chunk` {строка | Буфер | Uint8Array}
-- `encoding` {нить}
-- `callback` {Функция}
-- Возвращает: {логическое}
+Если этот метод вызван и [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) не был вызван, он переключится в режим неявных заголовков и промоет неявные заголовки.
 
-Если этот метод вызван и [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) не был вызван, он переключится в режим неявного заголовка и сбрасывает неявные заголовки.
+При этом отправляется фрагмент тела ответа. Этот метод может быть вызван несколько раз для предоставления последовательных частей тела.
 
-Это отправляет кусок тела ответа. Этот метод может вызываться несколько раз для получения последовательных частей тела.
+В модуле `node:http` тело ответа опускается, если запрос является запросом HEAD. Аналогично, ответы `204` и `304` _не должны_ включать тело сообщения.
 
-в `http` модуль, тело ответа опускается, если запрос является запросом HEAD. Аналогичным образом `204` а также `304` ответы _не должен_ включить тело сообщения.
+`chunk` может быть строкой или буфером. Если `chunk` является строкой, второй параметр указывает, как кодировать его в поток байтов. По умолчанию `кодировка` - `'utf8'`. Функция `callback` будет вызвана, когда этот кусок данных будет сброшен.
 
-`chunk` может быть строкой или буфером. Если `chunk` является строкой, второй параметр указывает, как ее кодировать в поток байтов. По умолчанию `encoding` является `'utf8'`. `callback` будет вызываться, когда этот фрагмент данных будет сброшен.
+Это необработанное тело HTTP и не имеет ничего общего с многокомпонентными кодировками тела более высокого уровня, которые могут быть использованы.
 
-Это необработанное тело HTTP и не имеет ничего общего с кодировками, состоящими из нескольких частей, которые могут быть использованы.
+При первом вызове [`response.write()`](#responsewritechunk-encoding-callback) клиенту будет отправлена буферизованная информация заголовка и первый фрагмент тела. При втором вызове [`response.write()`](#responsewritechunk-encoding-callback) Node.js предполагает, что данные будут передаваться потоком, и отправляет новые данные отдельно. То есть, ответ буферизируется до первого куска тела.
 
-Первый раз [`response.write()`](#responsewritechunk-encoding-callback) вызывается, он отправит клиенту буферизованную информацию заголовка и первый фрагмент тела. Второй раз [`response.write()`](#responsewritechunk-encoding-callback) вызывается, Node.js предполагает, что данные будут передаваться в потоковом режиме, и отправляет новые данные отдельно. То есть ответ буферизируется до первого фрагмента тела.
+Возвращает `true`, если все данные были успешно переданы в буфер ядра. Возвращает `false`, если все данные или их часть были помещены в пользовательскую память. Когда буфер снова освободится, будет выдано сообщение `drain`.
 
-Возврат `true` если все данные были успешно сброшены в буфер ядра. Возврат `false` если все или часть данных были помещены в очередь в пользовательской памяти. `'drain'` будет выдан, когда буфер снова освободится.
+<!-- 0174.part.md -->
 
 #### `response.writeContinue()`
 
-<!-- YAML
-added: v8.4.0
--->
+Отправляет клиенту статус `100 Continue`, указывающий на то, что тело запроса должно быть отправлено. См. событие [`'checkContinue'`](#event-checkcontinue) на `Http2Server` и `Http2SecureServer`.
 
-Отправляет статус `100 Continue` клиенту, указывая, что тело запроса должно быть отправлено. Увидеть [`'checkContinue'`](#event-checkcontinue) событие на `Http2Server` а также `Http2SecureServer`.
+<!-- 0175.part.md -->
+
+#### `response.writeEarlyHints(hints)`
+
+- `hints` {Object}
+
+Отправляет статус `103 Early Hints` клиенту с заголовком Link, указывая, что пользовательский агент может предварительно загрузить/отключить связанные ресурсы. Объект `hints` содержит значения заголовков, которые должны быть отправлены с сообщением ранних подсказок.
+
+**Пример**
+
+```js
+const earlyHintsLink =
+  '</styles.css>; rel=preload; as=style';
+response.writeEarlyHints({
+  link: earlyHintsLink,
+});
+
+const earlyHintsLinks = [
+  '</styles.css>; rel=preload; as=style',
+  '</scripts.js>; rel=preload; as=script',
+];
+response.writeEarlyHints({
+  link: earlyHintsLinks,
+});
+```
+
+<!-- 0176.part.md -->
 
 #### `response.writeHead(statusCode[, statusMessage][, headers])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-     - v11.10.0
-     - v10.17.0
-    pr-url: https://github.com/nodejs/node/pull/25974
-    description: Return `this` from `writeHead()` to allow chaining with
-                 `end()`.
--->
+- `statusCode` {число}
+- `statusMessage` {строка}
+- `headers` {Object|Array}
+- Возвращает: {http2.Http2ServerResponse}
 
-- `statusCode` {количество}
-- `statusMessage` {нить}
-- `headers` {Объект}
-- Возвращает: {http2.Http2ServerResponse}.
+Отправляет заголовок ответа на запрос. Код статуса - это трехзначный код статуса HTTP, например `404`. Последний аргумент, `headers`, - это заголовки ответа.
 
-Отправляет заголовок ответа на запрос. Код состояния представляет собой трехзначный код состояния HTTP, например `404`. Последний аргумент, `headers`, являются заголовками ответа.
+Возвращает ссылку на `Http2ServerResponse`, так что вызовы могут быть объединены в цепочку.
 
-Возвращает ссылку на `Http2ServerResponse`, так что вызовы можно связывать.
-
-Для совместимости с [HTTP / 1](http.md), удобочитаемый `statusMessage` может быть передан как второй аргумент. Однако, поскольку `statusMessage` не имеет значения в HTTP / 2, аргумент не будет иметь никакого эффекта, и будет выдано предупреждение процесса.
+Для совместимости с [HTTP/1](http.md), в качестве второго аргумента может быть передано человекочитаемое `statusMessage`. Однако, поскольку `statusMessage` не имеет никакого значения в HTTP/2, этот аргумент не будет иметь никакого эффекта и будет выдано предупреждение процесса.
 
 ```js
 const body = 'hello world';
@@ -3196,16 +2804,16 @@ response.writeHead(200, {
 });
 ```
 
-`Content-Length` дается в байтах, а не в символах. В `Buffer.byteLength()` API может использоваться для определения количества байтов в данной кодировке. В исходящих сообщениях Node.js не проверяет, равны ли Content-Length и длина передаваемого тела. Однако при получении сообщений Node.js автоматически отклоняет сообщения, когда `Content-Length` не соответствует фактическому размеру полезной нагрузки.
+Длина `Content-Length` указывается в байтах, а не в символах. API `Buffer.byteLength()` может быть использован для определения количества байт в данной кодировке. При передаче исходящих сообщений Node.js не проверяет, равны или нет Content-Length и длина передаваемого тела. Однако при получении сообщений Node.js будет автоматически отклонять сообщения, если `Content-Length` не соответствует фактическому размеру полезной нагрузки.
 
-Этот метод может быть вызван не более одного раза в сообщении перед [`response.end()`](#responseenddata-encoding-callback) называется.
+Этот метод может быть вызван не более одного раза в сообщении до вызова [`response.end()`](#responseenddata-encoding-callback).
 
-Если [`response.write()`](#responsewritechunk-encoding-callback) или [`response.end()`](#responseenddata-encoding-callback) вызываются перед вызовом этого, неявные / изменяемые заголовки будут вычислены и вызовут эту функцию.
+Если [`response.write()`](#responsewritechunk-encoding-callback) или [`response.end()`](#responseenddata-encoding-callback) будут вызваны до вызова этой функции, неявные/изменяемые заголовки будут вычислены и вызовут эту функцию.
 
-Когда заголовки были установлены с [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), с заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) учитывая приоритет.
+Если заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
 ```js
-// Returns content-type = text/plain
+// Возвращает content-type = text/plain
 const server = http2.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('X-Foo', 'bar');
@@ -3216,54 +2824,60 @@ const server = http2.createServer((req, res) => {
 });
 ```
 
-Попытка установить имя поля заголовка или значение, содержащее недопустимые символы, приведет к [`TypeError`](errors.md#class-typeerror) быть брошенным.
+Попытка установить имя или значение поля заголовка, содержащее недопустимые символы, приведет к возникновению [`TypeError`](errors.md#class-typeerror).
 
-## Сбор метрик производительности HTTP / 2
+<!-- 0177.part.md -->
 
-В [Наблюдатель за производительностью](perf_hooks.md) API можно использовать для сбора основных показателей производительности для каждого `Http2Session` а также `Http2Stream` пример.
+## Сбор метрик производительности HTTP/2
+
+API [Performance Observer](perf_hooks.md) можно использовать для сбора основных показателей производительности для каждого экземпляра `Http2Session` и `Http2Stream`.
 
 ```js
-const { PerformanceObserver } = require('perf_hooks');
+const { PerformanceObserver } = require('node:perf_hooks');
 
 const obs = new PerformanceObserver((items) => {
   const entry = items.getEntries()[0];
-  console.log(entry.entryType); // prints 'http2'
+  console.log(entry.entryType); // печатает 'http2'
   if (entry.name === 'Http2Session') {
-    // Entry contains statistics about the Http2Session
+    // запись содержит статистику о Http2Session
   } else if (entry.name === 'Http2Stream') {
-    // Entry contains statistics about the Http2Stream
+    // Ввод содержит статистику о Http2Stream
   }
 });
 obs.observe({ entryTypes: ['http2'] });
 ```
 
-В `entryType` собственность `PerformanceEntry` будет равно `'http2'`.
+Свойство `entryType` записи `PerformanceEntry` будет равно `'http2'`.
 
-В `name` собственность `PerformanceEntry` будет равно либо `'Http2Stream'` или `'Http2Session'`.
+Свойство `name` `PerformanceEntry` будет равно либо `'Http2Stream'`, либо `'Http2Session'`.
 
 Если `name` равно `Http2Stream`, то `PerformanceEntry` будет содержать следующие дополнительные свойства:
 
-- `bytesRead` {number} Количество `DATA` фрейм байтов, полученных для этого `Http2Stream`.
-- `bytesWritten` {number} Количество `DATA` байтов кадра, отправленных для этого `Http2Stream`.
-- `id` {number} идентификатор связанного `Http2Stream`
-- `timeToFirstByte` {number} количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и прием первого `DATA` Рамка.
-- `timeToFirstByteSent` {number} количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправка первого `DATA` Рамка.
-- `timeToFirstHeader` {number} количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и прием первого заголовка.
+- `bytesRead` {number} Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
+- `bytesWritten` {number} Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
+- `id` {number} Идентификатор связанного `Http2Stream`.
+- `timeToFirstByte` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
+- `timeToFirstByteSent` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
+- `timeToFirstHeader` {число} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
 
 Если `name` равно `Http2Session`, то `PerformanceEntry` будет содержать следующие дополнительные свойства:
 
-- `bytesRead` {number} Количество байтов, полученных для этого `Http2Session`.
-- `bytesWritten` {number} Количество байтов, отправленных для этого `Http2Session`.
-- `framesReceived` {number} Количество кадров HTTP / 2, полученных `Http2Session`.
-- `framesSent` {number} Количество кадров HTTP / 2, отправленных `Http2Session`.
-- `maxConcurrentStreams` {number} Максимальное количество потоков, одновременно открытых в течение времени существования `Http2Session`.
-- `pingRTT` {number} Количество миллисекунд, прошедших с момента передачи `PING` кадр и прием его подтверждения. Присутствует только в том случае, если `PING` кадр был отправлен на `Http2Session`.
-- `streamAverageDuration` {number} Средняя продолжительность (в миллисекундах) для всех `Http2Stream` экземпляры.
-- `streamCount` {number} Количество `Http2Stream` экземпляры, обработанные `Http2Session`.
-- `type` {строка} Либо `'server'` или `'client'` определить тип `Http2Session`.
+- `bytesRead` {number} Количество байт, полученных для данного `Http2Session`.
+- `bytesWritten` {number} Количество отправленных байт для этой `Http2Session`.
+- `framesReceived` {number} Количество кадров HTTP/2, полученных `Http2Session`.
+- `framesSent` {number} Количество кадров HTTP/2, отправленных `Http2Session`.
+- `maxConcurrentStreams` {number} Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
+- `pingRTT` {число} Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
+- `streamAverageDuration` {number} Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
+- `streamCount` {number} Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
+- `type` {string} Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
 
-## Обратите внимание на `:authority` а также `host`
+<!-- 0178.part.md -->
 
-HTTP / 2 требует, чтобы запросы имели либо `:authority` псевдо-заголовок или `host` заголовок. Предпочитать `:authority` при построении запроса HTTP / 2 напрямую, и `host` при конвертации из HTTP / 1 (например, в прокси).
+## Примечание по поводу `:authority` и `host`
 
-API совместимости возвращается к `host` если `:authority` нет. Видеть [`request.authority`](#requestauthority) для дополнительной информации. Однако, если вы не используете API совместимости (или используете `req.headers` напрямую), вам необходимо самостоятельно реализовать любое откатное поведение.
+HTTP/2 требует, чтобы запросы содержали либо псевдозаголовок `:authority`, либо заголовок `host`. Предпочтите `:authority` при создании HTTP/2 запроса напрямую, и `host` при конвертации из HTTP/1 (например, в прокси).
+
+API совместимости возвращается к `host`, если `:authority` отсутствует. Более подробную информацию смотрите в [`request.authority`](#requestauthority). Однако, если вы не используете API совместимости (или используете `req.headers` напрямую), вам необходимо реализовать любое поведение отката самостоятельно.
+
+<!-- 0179.part.md -->
