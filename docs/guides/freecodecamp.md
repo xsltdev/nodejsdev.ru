@@ -31,20 +31,22 @@ Node.js имеет уникальное преимущество, посколь
 Самый распространенный пример Hello World из Node.js - это веб-сервер:
 
 ```js
-const http = require('http')
+const http = require('http');
 
-const hostname = '127.0.0.1'
-const port = 3000
+const hostname = '127.0.0.1';
+const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200
-  res.setHeader('Content-Type', 'text/plain')
-  res.end('Hello World\n')
-})
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
+});
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`)
-})
+  console.log(
+    `Server running at http://${hostname}:${port}/`
+  );
+});
 ```
 
 Чтобы запустить этот фрагмент, сохраните его как файл `server.js` и запустите `node server.js` в терминале.
@@ -68,7 +70,7 @@ Node.js имеет удивительную [стандартную библио
 В данном случае с:
 
 ```js
-res.statusCode = 200
+res.statusCode = 200;
 ```
 
 Мы устанавливаем свойство `statusCode` в `200`, чтобы указать на успешный ответ.
@@ -76,13 +78,13 @@ res.statusCode = 200
 Мы устанавливаем заголовок `Content-Type`:
 
 ```js
-res.setHeader('Content-Type', 'text/plain')
+res.setHeader('Content-Type', 'text/plain');
 ```
 
 ...и мы завершаем закрытие ответа, добавляя содержимое в качестве аргумента к `end()`:
 
 ```js
-res.end('Hello World\n')
+res.end('Hello World\n');
 ```
 
 ### Node.js фреймворки и инструменты {#node-js-frameworks-and-tools}
@@ -253,17 +255,17 @@ JavScript компилируется внутри V8 с помощью комп�
 Если вас это устраивает, вы можете передать целое число, которое сообщит операционной системе код завершения:
 
 ```js
-process.exit(1)
+process.exit(1);
 ```
 
 По умолчанию код выхода равен `0`, что означает успех. Различные коды выхода имеют разное значение, которое вы можете использовать в своей системе, чтобы программа могла общаться с другими программами.
 
-Подробнее о кодах выхода вы можете прочитать [здесь](.../api/process.md#process_exit_codes).
+Подробнее о кодах выхода вы можете прочитать [здесь](../api/process.md#process_exit_codes).
 
 Вы также можете установить свойство `process.exitCode`:
 
 ```js
-process.exitCode = 1
+process.exitCode = 1;
 ```
 
 и когда программа впоследствии завершится, Node.js вернет этот код выхода.
@@ -273,14 +275,14 @@ process.exitCode = 1
 Много раз с помощью Node.js мы запускаем серверы, например, этот HTTP-сервер:
 
 ```js
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hi!')
-})
+  res.send('Hi!');
+});
 
-app.listen(3000, () => console.log('Server ready'))
+app.listen(3000, () => console.log('Server ready'));
 ```
 
 Эта программа никогда не завершится. Если вы вызовете `process.exit()`, любой ожидающий или выполняющийся запрос будет прерван. Это **нехорошо**.
@@ -290,21 +292,23 @@ app.listen(3000, () => console.log('Server ready'))
 **Примечание:** `process` не требует `require`, он автоматически доступен.
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hi!')
-})
+  res.send('Hi!');
+});
 
-const server = app.listen(3000, () => console.log('Server ready'))
+const server = app.listen(3000, () =>
+  console.log('Server ready')
+);
 
 process.on('SIGTERM', () => {
   server.close(() => {
-    console.log('Process terminated')
-  })
-})
+    console.log('Process terminated');
+  });
+});
 ```
 
 Что такое сигналы? Сигналы — это система обмена данными Portable Operating System Interface (POSIX): уведомление, посылаемое процессу, чтобы оповестить его о произошедшем событии.
@@ -316,7 +320,7 @@ process.on('SIGTERM', () => {
 Вы можете послать этот сигнал изнутри программы, в другой функции:
 
 ```js
-process.kill(process.pid, 'SIGTERM')
+process.kill(process.pid, 'SIGTERM');
 ```
 
 Или из другой программы, запущенной на Node.js, или из любого другого приложения, запущенного в вашей системе, которое знает PID процесса, который вы хотите завершить.
@@ -328,7 +332,7 @@ process.kill(process.pid, 'SIGTERM')
 Вот пример, который обращается к переменной окружения `NODE_ENV`, которая по умолчанию установлена в `development`.
 
 ```js
-process.env.NODE_ENV // "development"
+process.env.NODE_ENV; // "development"
 ```
 
 Установив ее в `production` перед запуском сценария, вы сообщите Node.js, что это производственная среда.
@@ -344,8 +348,8 @@ API_KEY=123123 API_SECRET=456456 node app.js
 Мы можем получить их в Node.js, выполнив команду
 
 ```js
-process.env.API_KEY // "123123"
-process.env.API_SECRET // "456456"
+process.env.API_KEY; // "123123"
+process.env.API_SECRET; // "456456"
 ```
 
 Вы можете записать переменные окружения в файл `.env` (который следует добавить в `.gitignore`, чтобы избежать публикации на GitHub), затем
@@ -357,7 +361,7 @@ npm install dotenv
 и в начале вашего основного файла Node добавьте
 
 ```js
-require('dotenv').config()
+require('dotenv').config();
 ```
 
 Таким образом, вы можете не указывать переменные окружения в командной строке перед командой `node`, и эти переменные будут подхвачены автоматически.
@@ -455,7 +459,7 @@ PAAS расшифровывается как Platform As A Service. Эти пл�
 
 Другим решением является получение [bare metal сервера](https://en.wikipedia.org/wiki/Bare-metal_server), установка дистрибутива Linux, подключение к интернету (или аренда сервера на месяц, как это можно сделать с помощью сервиса [Vultr Bare Metal](https://www.vultr.com/pricing/baremetal/)).
 
-----
+---
 
 ### Как использовать Node.js REPL {#how-to-use-the-node-js-repl}
 
@@ -588,14 +592,14 @@ REPL знает, когда вы набираете многострочный �
 
 ```js
 process.argv.forEach((val, index) => {
-  console.log(`${index}: ${val}`)
-})
+  console.log(`${index}: ${val}`);
+});
 ```
 
 Вы можете получить только дополнительные аргументы, создав новый массив, исключающий первые 2 параметра:
 
 ```js
-const args = process.argv.slice(2)
+const args = process.argv.slice(2);
 ```
 
 Если у вас есть один аргумент без имени индекса, например, так:
@@ -605,8 +609,8 @@ const args = process.argv.slice(2)
 вы можете получить к нему доступ, используя
 
 ```js
-const args = process.argv.slice(2)
-args[0]
+const args = process.argv.slice(2);
+args[0];
 ```
 
 В данном случае:
@@ -616,8 +620,8 @@ args[0]
 `args[0]` - это `name=flavio`, и вам нужно разобрать его. Лучший способ сделать это - использовать `minimist` [library](https://www.npmjs.com/package/minimist){rel="noopener"}, который помогает работать с аргументами:
 
 ```js
-const args = require('minimist')(process.argv.slice(2))
-args['name'] // flavio
+const args = require('minimist')(process.argv.slice(2));
+args['name']; // flavio
 ```
 
 ### Вывод в командную строку с помощью Node.js {#output-to-the-command-line-using-node-js}
@@ -637,9 +641,9 @@ Node.js предоставляет `console` [модуль](https://nodejs.org/a
 В `console.log` можно передать несколько переменных, например:
 
 ```js
-const x = 'x'
-const y = 'y'
-console.log(x, y)
+const x = 'x';
+const y = 'y';
+console.log(x, y);
 ```
 
 и Node.js выведет обе фразы.
@@ -649,7 +653,7 @@ console.log(x, y)
 Например:
 
 ```js
-console.log('My %s has %d years', 'cat', 2)
+console.log('My %s has %d years', 'cat', 2);
 ```
 
 - `%s` форматирует переменную как строку
@@ -660,7 +664,7 @@ console.log('My %s has %d years', 'cat', 2)
 Пример:
 
 ```js
-console.log('%O', Number)
+console.log('%O', Number);
 ```
 
 #### Очистить консоль
@@ -674,21 +678,27 @@ console.log('%O', Number)
 Возьмите этот код:
 
 ```js
-const x = 1
-const y = 2
-const z = 3
+const x = 1;
+const y = 2;
+const z = 3;
 
 console.count(
-  'The value of x is ' + x + ' and has been checked .. how many times?'
-)
+  'The value of x is ' +
+    x +
+    ' and has been checked .. how many times?'
+);
 
 console.count(
-  'The value of x is ' + x + ' and has been checked .. how many times?'
-)
+  'The value of x is ' +
+    x +
+    ' and has been checked .. how many times?'
+);
 
 console.count(
-  'The value of y is ' + y + ' and has been checked .. how many times?'
-)
+  'The value of y is ' +
+    y +
+    ' and has been checked .. how many times?'
+);
 ```
 
 Происходит это так: `count` будет считать, сколько раз печатается строка, и выводить рядом с ней счет.
@@ -696,16 +706,16 @@ console.count(
 Вы можете просто считать яблоки и апельсины:
 
 ```js
-const oranges = ['orange', 'orange']
-const apples = ['just one apple']
+const oranges = ['orange', 'orange'];
+const apples = ['just one apple'];
 
-oranges.forEach(fruit => {
-  console.count(fruit)
-})
+oranges.forEach((fruit) => {
+  console.count(fruit);
+});
 
-apples.forEach(fruit => {
-  console.count(fruit)
-})
+apples.forEach((fruit) => {
+  console.count(fruit);
+});
 ```
 
 #### Печать трассировки стека
@@ -715,9 +725,9 @@ apples.forEach(fruit => {
 Вы можете сделать это с помощью `console.trace()`:
 
 ```js
-const function2 = () => console.trace()
-const function1 = () => function2()
-function1()
+const function2 = () => console.trace();
+const function1 = () => function2();
+function1();
 ```
 
 Это выведет трассировку стека. Вот что будет выведено, если я попробую сделать это в Node REPL:
@@ -739,15 +749,15 @@ function1()
 Вы можете легко подсчитать, сколько времени занимает выполнение функции, используя `time()` и `timeEnd()`.
 
 ```js
-const doSomething = () => console.log('test')
+const doSomething = () => console.log('test');
 const measureDoingSomething = () => {
-  console.time('doSomething()')
+  console.time('doSomething()');
   // do something, and measure the time it takes
-  doSomething()
-  console.timeEnd('doSomething()')
-}
+  doSomething();
+  console.timeEnd('doSomething()');
+};
 
-measureDoingSomething()
+measureDoingSomething();
 ```
 
 #### stdout и stderr
@@ -765,7 +775,7 @@ measureDoingSomething()
 Пример:
 
 ```js
-console.log('\x1b[33m%s\x1b[0m', 'hi!')
+console.log('\x1b[33m%s\x1b[0m', 'hi!');
 ```
 
 Вы можете попробовать сделать это в Node REPL, и он выведет `hi!` желтым цветом.
@@ -775,8 +785,8 @@ console.log('\x1b[33m%s\x1b[0m', 'hi!')
 Вы устанавливаете ее с помощью `npm install chalk`, а затем можете использовать ее:
 
 ```js
-const chalk = require('chalk')
-console.log(chalk.yellow('hi!'))
+const chalk = require('chalk');
+console.log(chalk.yellow('hi!'));
 ```
 
 Использовать `chalk.yellow` гораздо удобнее, чем пытаться запомнить escape-коды, и код становится гораздо более читабельным.
@@ -790,15 +800,15 @@ console.log(chalk.yellow('hi!'))
 Этот фрагмент создает 10-шаговый прогресс-бар, и каждые 100 мс завершается один шаг. Когда полоса завершается, мы очищаем интервал:
 
 ```js
-const ProgressBar = require('progress')
+const ProgressBar = require('progress');
 
-const bar = new ProgressBar(':bar', { total: 10 })
+const bar = new ProgressBar(':bar', { total: 10 });
 const timer = setInterval(() => {
-  bar.tick()
+  bar.tick();
   if (bar.complete) {
-    clearInterval(timer)
+    clearInterval(timer);
   }
-}, 100)
+}, 100);
 ```
 
 ### Принять ввод из командной строки в Node.js {#accept-input-from-the-command-line-in-node-js}
@@ -810,13 +820,13 @@ Node, начиная с версии 7, предоставляет `readline` [�
 ```js
 const readline = require('readline').createInterface({
   input: process.stdin,
-  output: process.stdout
-})
+  output: process.stdout,
+});
 
 readline.question(`What's your name?`, (name) => {
-  console.log(`Hi ${name}!`)
-  readline.close()
-})
+  console.log(`Hi ${name}!`);
+  readline.close();
+});
 ```
 
 Этот фрагмент кода запрашивает имя пользователя, и как только текст будет введен и пользователь нажмет клавишу Enter, мы отправим приветствие.
@@ -836,17 +846,19 @@ readline.question(`What's your name?`, (name) => {
 Вы можете установить его с помощью `npm install inquirer`, а затем воспроизвести приведенный выше код следующим образом:
 
 ```js
-const inquirer = require('inquirer')
+const inquirer = require('inquirer');
 
-var questions = [{
-  type: 'input',
-  name: 'name',
-  message: "What's your name?",
-}]
+var questions = [
+  {
+    type: 'input',
+    name: 'name',
+    message: "What's your name?",
+  },
+];
 
-inquirer.prompt(questions).then(answers => {
-  console.log(`Hi ${answers['name']}!`)
-})
+inquirer.prompt(questions).then((answers) => {
+  console.log(`Hi ${answers['name']}!`);
+});
 ```
 
 Inquirer.js позволяет вам делать множество вещей, например, задавать несколько вариантов ответа, иметь радиокнопки, подтверждения и многое другое.
@@ -864,7 +876,7 @@ Node.js имеет встроенную систему модулей.
 Когда вы хотите импортировать что-то, вы используете:
 
 ```js
-const library = require('./library')
+const library = require('./library');
 ```
 
 для импорта функциональности, раскрытой в файле `library.js`, который находится в папке текущего файла.
@@ -884,14 +896,14 @@ const library = require('./library')
 ```js
 const car = {
   brand: 'Ford',
-  model: 'Fiesta'
-}
+  model: 'Fiesta',
+};
 
-module.exports = car
+module.exports = car;
 
 // ...in the other file
 
-const car = require('./car')
+const car = require('./car');
 ```
 
 Второй способ - добавить экспортируемый объект в качестве свойства `exports`. Этот способ позволяет экспортировать **множество** объектов, функций или данных:
@@ -899,10 +911,10 @@ const car = require('./car')
 ```js
 const car = {
   brand: 'Ford',
-  model: 'Fiesta'
-}
+  model: 'Fiesta',
+};
 
-exports.car = car
+exports.car = car;
 ```
 
 или непосредственно
@@ -910,21 +922,21 @@ exports.car = car
 ```js
 exports.car = {
   brand: 'Ford',
-  model: 'Fiesta'
-}
+  model: 'Fiesta',
+};
 ```
 
 А в другом файле вы будете использовать его, ссылаясь на свойство вашего импорта:
 
 ```js
-const items = require('./items')
-items.car
+const items = require('./items');
+items.car;
 ```
 
 или
 
 ```js
-const car = require('./items').car
+const car = require('./items').car;
 ```
 
 В чем разница между `module.exports` и `exports`?
@@ -1003,7 +1015,7 @@ const car = require('./items').car
   "scripts": {
     "start-dev": "node lib/server-development",
     "start": "node lib/server-production"
-  },
+  }
 }
 ```
 
@@ -1014,8 +1026,8 @@ const car = require('./items').car
   "scripts": {
     "watch": "webpack --watch --progress --colors --config webpack.conf.js",
     "dev": "webpack --progress --colors --config webpack.conf.js",
-    "prod": "NODE_ENV=production webpack -p --config webpack.conf.js",
-  },
+    "prod": "NODE_ENV=production webpack -p --config webpack.conf.js"
+  }
 }
 ```
 
@@ -1071,7 +1083,7 @@ const car = require('./items').car
 Чтобы использовать его в своем коде, вам просто нужно импортировать его в свою программу с помощью `require`:
 
 ```js
-const _ = require('lodash')
+const _ = require('lodash');
 ```
 
 Что если ваш пакет является исполняемым файлом?
@@ -1109,9 +1121,7 @@ const _ = require('lodash')
 Вот пример файла package.json:
 
 ```json
-{
-
-}
+{}
 ```
 
 Он пустой! Не существует фиксированных требований к тому, что должно быть в файле `package.json` для приложения. Единственное требование - это соблюдение формата JSON, иначе он не может быть прочитан программами, которые пытаются получить доступ к его свойствам программно.
@@ -1276,7 +1286,9 @@ const _ = require('lodash')
 
 ```json
 {
-  "contributors": ["Flavio Copes <your@email.com> (https://flaviocopes.com)"]
+  "contributors": [
+    "Flavio Copes <your@email.com> (https://flaviocopes.com)"
+  ]
 }
 ```
 
@@ -1947,7 +1959,7 @@ Semantic Versioning - это соглашение, используемое дл
 В вашем коде они оба требуются одинаково:
 
 ```js
-require('package-name')
+require('package-name');
 ```
 
 Когда же следует устанавливать тем или иным способом?
@@ -2120,17 +2132,17 @@ alt="SFxrWa7lVtAfUsjnjoMqgCGdG4bK0jDvi-11" />
 Давайте выберем пример:
 
 ```js
-const bar = () => console.log('bar')
+const bar = () => console.log('bar');
 
-const baz = () => console.log('baz')
+const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo')
-  bar()
-  baz()
-}
+  console.log('foo');
+  bar();
+  baz();
+};
 
-foo()
+foo();
 ```
 
 Этот код печатает:
@@ -2174,17 +2186,17 @@ alt="T3jPPIkLHGvy0QXBrUz8cb3VM0bVVez-joQ4" />
 Возьмем такой пример:
 
 ```js
-const bar = () => console.log('bar')
+const bar = () => console.log('bar');
 
-const baz = () => console.log('baz')
+const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo')
-  setTimeout(bar, 0)
-  baz()
-}
+  console.log('foo');
+  setTimeout(bar, 0);
+  baz();
+};
 
-foo()
+foo();
 ```
 
 Этот код печатает, что, возможно, удивительно:
@@ -2236,20 +2248,20 @@ alt="MsT6C2UAZJaEEm6SmU266PO-V4b-DY0wlMqb" />
 Пример:
 
 ```js
-const bar = () => console.log('bar')
+const bar = () => console.log('bar');
 
-const baz = () => console.log('baz')
+const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo')
-  setTimeout(bar, 0)
+  console.log('foo');
+  setTimeout(bar, 0);
   new Promise((resolve, reject) =>
     resolve('should be right after baz, before bar')
-  ).then((resolve) => console.log(resolve))
-  baz()
-}
+  ).then((resolve) => console.log(resolve));
+  baz();
+};
 
-foo()
+foo();
 ```
 
 Это печатает:
@@ -2272,7 +2284,7 @@ foo()
 ```js
 process.nextTick(() => {
   // do something
-})
+});
 ```
 
 Цикл событий занят обработкой кода текущей функции.
@@ -2292,7 +2304,7 @@ process.nextTick(() => {
 ```js
 setImmediate(() => {
   // run something
-})
+});
 ```
 
 Любая функция, переданная в качестве аргумента `setImmediate()`, является обратным вызовом, который выполняется в следующей итерации цикла событий.
@@ -2316,11 +2328,11 @@ setImmediate(() => {
 ```js
 setTimeout(() => {
   // runs after 2 seconds
-}, 2000)
+}, 2000);
 
 setTimeout(() => {
   // runs after 50 milliseconds
-}, 50)
+}, 50);
 ```
 
 Этот синтаксис определяет новую функцию. Вы можете вызвать в ней любую другую функцию, которую хотите, или передать имя существующей функции и набор параметров:
@@ -2328,10 +2340,10 @@ setTimeout(() => {
 ```js
 const myFunction = (firstParam, secondParam) => {
   // do something
-}
+};
 
 // runs after 2 seconds
-setTimeout(myFunction, 2000, firstParam, secondParam)
+setTimeout(myFunction, 2000, firstParam, secondParam);
 ```
 
 `setTimeout()` возвращает идентификатор таймера. Обычно он не используется, но вы можете хранить этот идентификатор и очищать его, если хотите удалить выполнение этой запланированной функции:
@@ -2339,10 +2351,10 @@ setTimeout(myFunction, 2000, firstParam, secondParam)
 ```js
 const id = setTimeout(() => {
   // should run after 2 seconds
-}, 2000)
+}, 2000);
 
 // I changed my mind
-clearTimeout(id)
+clearTimeout(id);
 ```
 
 #### Нулевая задержка
@@ -2351,10 +2363,10 @@ clearTimeout(id)
 
 ```js
 setTimeout(() => {
-  console.log('after ')
-}, 0)
+  console.log('after ');
+}, 0);
 
-console.log(' before ')
+console.log(' before ');
 ```
 
 будет выводить `до после`.
@@ -2370,7 +2382,7 @@ console.log(' before ')
 ```js
 setInterval(() => {
   // runs every 2 seconds
-}, 2000)
+}, 2000);
 ```
 
 Приведенная выше функция выполняется каждые 2 секунды, пока вы не прикажете ей остановиться, используя `clearInterval`, передавая ей идентификатор интервала, который вернула `setInterval`:
@@ -2378,9 +2390,9 @@ setInterval(() => {
 ```js
 const id = setInterval(() => {
   // runs every 2 seconds
-}, 2000)
+}, 2000);
 
-clearInterval(id)
+clearInterval(id);
 ```
 
 Обычно принято вызывать `clearInterval` внутри функции обратного вызова `setInterval`, чтобы позволить ей автоматически определять, следует ли ей запуститься снова или остановиться. Например, этот код запускает что-то, если `App.somethingIWait` имеет значение `arrived`:
@@ -2388,11 +2400,11 @@ clearInterval(id)
 ```js
 const interval = setInterval(() => {
   if (App.somethingIWait === 'arrived') {
-    clearInterval(interval)
-    return
+    clearInterval(interval);
+    return;
   }
   // otherwise do things
-}, 100)
+}, 100);
 ```
 
 #### Рекурсивный setTimeout
@@ -2479,11 +2491,11 @@ JavaScript является **синхронным** по умолчанию и 
 Например:
 
 ```js
-const a = 1
-const b = 2
-const c = a * b
-console.log(c)
-doSomething()
+const a = 1;
+const b = 2;
+const c = a * b;
+console.log(c);
+doSomething();
 ```
 
 Но JavaScript родился внутри браузера. Вначале его основной задачей было реагировать на действия пользователя, такие как `onClick`, `onMouseOver`, `onChange`, `onSubmit` и так далее. Как он мог это делать при синхронной модели программирования?
@@ -2499,9 +2511,11 @@ doSomething()
 Этот обработчик события принимает функцию, которая будет вызываться при срабатывании события:
 
 ```js
-document.getElementById('button').addEventListener('click', () => {
-  // item clicked
-})
+document
+  .getElementById('button')
+  .addEventListener('click', () => {
+    // item clicked
+  });
 ```
 
 Это так называемый **обратный вызов**.
@@ -2514,7 +2528,7 @@ document.getElementById('button').addEventListener('click', () => {
 window.addEventListener('load', () => {
   // window loaded
   //do what you want
-})
+});
 ```
 
 Обратные вызовы используются повсеместно, а не только в событиях DOM.
@@ -2524,21 +2538,23 @@ window.addEventListener('load', () => {
 ```js
 setTimeout(() => {
   // runs after 2 seconds
-}, 2000)
+}, 2000);
 ```
 
 [XHR-запросы](https://en.wikipedia.org/wiki/XMLHttpRequest){rel="noopener"} также принимают обратный вызов, в данном примере назначая свойству функцию, которая будет вызываться при наступлении определенного события (в данном случае изменения состояния запроса):
 
 ```js
-const xhr = new XMLHttpRequest()
+const xhr = new XMLHttpRequest();
 xhr.onreadystatechange = () => {
   if (xhr.readyState === 4) {
-  xhr.status === 200 ? console.log(xhr.responseText) : console.error('error')
+    xhr.status === 200
+      ? console.log(xhr.responseText)
+      : console.error('error');
   }
-}
+};
 
-xhr.open('GET', 'https://yoursite.com')
-xhr.send()
+xhr.open('GET', 'https://yoursite.com');
+xhr.send();
 ```
 
 #### Обработка ошибок в обратных вызовах
@@ -2551,13 +2567,13 @@ xhr.send()
 fs.readFile('/file.json', (err, data) => {
   if (err !== null) {
     //handle error
-    console.log(err)
-    return
+    console.log(err);
+    return;
   }
 
   // no errors, process data
-  console.log(data)
-})
+  console.log(data);
+});
 ```
 
 #### Проблема с обратными вызовами
@@ -2568,14 +2584,16 @@ fs.readFile('/file.json', (err, data) => {
 
 ```js
 window.addEventListener('load', () => {
-  document.getElementById('button').addEventListener('click', () => {
-    setTimeout(() => {
-      items.forEach(item => {
-        // your code here
-      })
-    }, 2000)
-  })
-})
+  document
+    .getElementById('button')
+    .addEventListener('click', () => {
+      setTimeout(() => {
+        items.forEach((item) => {
+          // your code here
+        });
+      }, 2000);
+    });
+});
 ```
 
 Это всего лишь простой 4-уровневый код, но я видел гораздо больше уровней вложенности, и это не весело.
@@ -2622,17 +2640,17 @@ window.addEventListener('load', () => {
 Promise API предоставляет конструктор Promise, который вы инициализируете с помощью `new Promise()`:
 
 ```js
-let done = true
+let done = true;
 
 const isItDoneYet = new Promise((resolve, reject) => {
   if (done) {
-    const workDone = 'Here is the thing I built'
-    resolve(workDone)
+    const workDone = 'Here is the thing I built';
+    resolve(workDone);
   } else {
-    const why = 'Still working on something else'
-    reject(why)
+    const why = 'Still working on something else';
+    reject(why);
   }
-})
+});
 ```
 
 Как вы видите, обещание проверяет глобальную константу `done`, и если она верна, мы возвращаем разрешенное обещание, в противном случае - отклоненное обещание.
@@ -2646,18 +2664,18 @@ const isItDoneYet = new Promise((resolve, reject) => {
 Теперь давайте посмотрим, как обещание может быть **получено** или использовано:
 
 ```js
-const isItDoneYet = new Promise()
+const isItDoneYet = new Promise();
 //...
 
 const checkIfItsDone = () => {
   isItDoneYet
     .then((ok) => {
-      console.log(ok)
+      console.log(ok);
     })
     .catch((err) => {
-      console.error(err)
-    })
-}
+      console.error(err);
+    });
+};
 ```
 
 Выполнение `checkIfItsDone()` выполнит обещание `isItDoneYet()` и будет ждать его разрешения, используя обратный вызов `then`, а если возникнет ошибка, то она будет обработана в обратном вызове `catch`.
@@ -2675,22 +2693,25 @@ Fetch API - это механизм, основанный на обещания�
 ```js
 const status = (response) => {
   if (response.status >= 200 && response.status < 300) {
-    return Promise.resolve(response)
+    return Promise.resolve(response);
   }
-  return Promise.reject(new Error(response.statusText))
-}
+  return Promise.reject(new Error(response.statusText));
+};
 
-const json = (response) => response.json()
+const json = (response) => response.json();
 
 fetch('/todos.json')
   .then(status)
   .then(json)
   .then((data) => {
-    console.log('Request succeeded with JSON response', data)
+    console.log(
+      'Request succeeded with JSON response',
+      data
+    );
   })
   .catch((error) => {
-    console.log('Request failed', error)
-  })
+    console.log('Request failed', error);
+  });
 ```
 
 В этом примере мы вызываем `fetch()` для получения списка элементов TODO из файла `todos.json`, находящегося в корне домена, и создаем цепочку обещаний.
@@ -2726,18 +2747,18 @@ fetch('/todos.json')
 
 ```js
 new Promise((resolve, reject) => {
-  throw new Error('Error')
+  throw new Error('Error');
 }).catch((err) => {
-  console.error(err)
-})
+  console.error(err);
+});
 
 // or
 
 new Promise((resolve, reject) => {
-  reject('Error')
+  reject('Error');
 }).catch((err) => {
-  console.error(err)
-})
+  console.error(err);
+});
 ```
 
 #### Каскадирование ошибок
@@ -2746,14 +2767,14 @@ new Promise((resolve, reject) => {
 
 ```js
 new Promise((resolve, reject) => {
-  throw new Error('Error')
+  throw new Error('Error');
 })
   .catch((err) => {
-    throw new Error('Error')
+    throw new Error('Error');
   })
   .catch((err) => {
-    console.error(err)
-  })
+    console.error(err);
+  });
 ```
 
 ### Оркестрирование обещаний
@@ -2765,24 +2786,24 @@ new Promise((resolve, reject) => {
 Пример:
 
 ```js
-const f1 = fetch('/something.json')
-const f2 = fetch('/something2.json')
+const f1 = fetch('/something.json');
+const f2 = fetch('/something2.json');
 
 Promise.all([f1, f2])
   .then((res) => {
-    console.log('Array of results', res)
+    console.log('Array of results', res);
   })
   .catch((err) => {
-    console.error(err)
-  })
+    console.error(err);
+  });
 ```
 
 Синтаксис [ES2015 destructuring assignment](https://flaviocopes.com/ecmascript/#destructuring-assignments){rel="noopener"} позволяет также делать:
 
 ```js
 Promise.all([f1, f2]).then(([res1, res2]) => {
-  console.log('Results', res1, res2)
-})
+  console.log('Results', res1, res2);
+});
 ```
 
 Конечно, вы не ограничены использованием `fetch`, **любое обещание подходит**.
@@ -2795,16 +2816,16 @@ Promise.all([f1, f2]).then(([res1, res2]) => {
 
 ```js
 const promiseOne = new Promise((resolve, reject) => {
-  setTimeout(resolve, 500, 'one')
-})
+  setTimeout(resolve, 500, 'one');
+});
 
 const promiseTwo = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100, 'two')
-})
+  setTimeout(resolve, 100, 'two');
+});
 
 Promise.race([promiseOne, promiseTwo]).then((result) => {
-  console.log(result) // 'two'
-})
+  console.log(result); // 'two'
+});
 ```
 
 #### Общая ошибка, Uncaught TypeError: undefined is not a promise
@@ -2838,9 +2859,9 @@ JavaScript за очень короткое время эволюциониро�
 ```js
 const doSomethingAsync = () => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve('I did something'), 3000)
-  })
-}
+    setTimeout(() => resolve('I did something'), 3000);
+  });
+};
 ```
 
 Когда вы хотите вызвать эту функцию, вы добавляете `await`, и вызывающий код будет остановлен **пока обещание не будет разрешено или отклонено**. Одна оговорка: клиентская функция должна быть определена как `async`.
@@ -2849,8 +2870,8 @@ const doSomethingAsync = () => {
 
 ```js
 const doSomething = async () => {
-  console.log(await doSomethingAsync())
-}
+  console.log(await doSomethingAsync());
+};
 ```
 
 #### Быстрый пример
@@ -2860,17 +2881,17 @@ const doSomething = async () => {
 ```js
 const doSomethingAsync = () => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve('I did something'), 3000)
-  })
-}
+    setTimeout(() => resolve('I did something'), 3000);
+  });
+};
 
 const doSomething = async () => {
-  console.log(await doSomethingAsync())
-}
+  console.log(await doSomethingAsync());
+};
 
-console.log('Before')
-doSomething()
-console.log('After')
+console.log('Before');
+doSomething();
+console.log('After');
 ```
 
 Приведенный выше код выведет в консоль браузера следующее:
@@ -2897,10 +2918,10 @@ console.log('After')
 
 ```js
 const aFunction = async () => {
-  return Promise.resolve('test')
-}
+  return Promise.resolve('test');
+};
 
-aFunction().then(alert) // This will alert 'test'
+aFunction().then(alert); // This will alert 'test'
 ```
 
 #### Код гораздо проще читать.
@@ -2927,15 +2948,15 @@ getFirstUserData();
 
 ```js
 const getFirstUserData = async () => {
-  const response = await fetch('/users.json') // get users list
-  const users = await response.json() // parse JSON
-  const user = users[0] // pick first user
-  const userResponse = await fetch(`/users/${user.name}`) // get user data
-  const userData = await userResponse.json() // parse JSON
-  return userData
-}
+  const response = await fetch('/users.json'); // get users list
+  const users = await response.json(); // parse JSON
+  const user = users[0]; // pick first user
+  const userResponse = await fetch(`/users/${user.name}`); // get user data
+  const userData = await userResponse.json(); // parse JSON
+  return userData;
+};
 
-getFirstUserData()
+getFirstUserData();
 ```
 
 #### Несколько последовательных асинхронных функций
@@ -2944,24 +2965,26 @@ getFirstUserData()
 
 ```js
 const promiseToDoSomething = () => {
-  return new Promise(resolve => {
-    setTimeout(() => resolve('I did something'), 10000)
-  })
-}
+  return new Promise((resolve) => {
+    setTimeout(() => resolve('I did something'), 10000);
+  });
+};
 
 const watchOverSomeoneDoingSomething = async () => {
-  const something = await promiseToDoSomething()
-  return something + ' and I watched'
-}
+  const something = await promiseToDoSomething();
+  return something + ' and I watched';
+};
 
 const watchOverSomeoneWatchingSomeoneDoingSomething = async () => {
-  const something = await watchOverSomeoneDoingSomething()
-  return something + ' and I watched as well'
-}
+  const something = await watchOverSomeoneDoingSomething();
+  return something + ' and I watched as well';
+};
 
-watchOverSomeoneWatchingSomeoneDoingSomething().then(res => {
-  console.log(res)
-})
+watchOverSomeoneWatchingSomeoneDoingSomething().then(
+  (res) => {
+    console.log(res);
+  }
+);
 ```
 
 Будет печататься:
@@ -2987,8 +3010,8 @@ watchOverSomeoneWatchingSomeoneDoingSomething().then(res => {
 Вы инициализируете его, используя:
 
 ```js
-const EventEmitter = require('events')
-const eventEmitter = new EventEmitter()
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
 ```
 
 Этот объект раскрывает, среди многих других, методы `on` и `emit`.
@@ -3000,14 +3023,14 @@ const eventEmitter = new EventEmitter()
 
 ```js
 eventEmitter.on('start', () => {
-  console.log('started')
-})
+  console.log('started');
+});
 ```
 
 Когда мы запустим:
 
 ```js
-eventEmitter.emit('start')
+eventEmitter.emit('start');
 ```
 
 Функция обработчика события срабатывает, и мы получаем консольный журнал.
@@ -3020,20 +3043,20 @@ eventEmitter.emit('start')
 
 ```js
 eventEmitter.on('start', (number) => {
-  console.log(`started ${number}`)
-})
+  console.log(`started ${number}`);
+});
 
-eventEmitter.emit('start', 23)
+eventEmitter.emit('start', 23);
 ```
 
 Несколько аргументов:
 
 ```js
 eventEmitter.on('start', (start, end) => {
-  console.log(`started from ${start} to ${end}`)
-})
+  console.log(`started from ${start} to ${end}`);
+});
 
-eventEmitter.emit('start', 1, 100)
+eventEmitter.emit('start', 1, 100);
 ```
 
 Объект EventEmitter также предоставляет несколько других методов для взаимодействия с событиями, например:
@@ -3235,20 +3258,22 @@ TCP-соединение требует некоторого квитирова�
 Вот веб-сервер HTTP, который мы использовали в качестве приложения Node.js Hello World во введении:
 
 ```js
-const http = require('http')
+const http = require('http');
 
-const hostname = 'localhost'
-const port = 3000
+const hostname = 'localhost';
+const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200
-  res.setHeader('Content-Type', 'text/plain')
-  res.end('Hello World\n')
-})
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
+});
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`)
-})
+  console.log(
+    `Server running at http://${hostname}:${port}/`
+  );
+});
 ```
 
 Давайте кратко проанализируем его. Мы включаем `http` [модуль](https://nodejs.org/api/http.html){rel="noopener"}.
@@ -3266,7 +3291,7 @@ server.listen(port, hostname, () => {
 В данном случае с:
 
 ```js
-res.statusCode = 200
+res.statusCode = 200;
 ```
 
 Мы устанавливаем свойство `statusCode` в `200`, чтобы указать на успешный ответ.
@@ -3274,13 +3299,13 @@ res.statusCode = 200
 Мы также устанавливаем заголовок `Content-Type`:
 
 ```js
-res.setHeader('Content-Type', 'text/plain')
+res.setHeader('Content-Type', 'text/plain');
 ```
 
 и мы завершаем закрытие ответа, добавляя содержимое в качестве аргумента к `end()`:
 
 ```js
-res.end('Hello World\n')
+res.end('Hello World\n');
 ```
 
 ### Выполнение HTTP-запросов с помощью Node.js {#making-http-requests-with-node-js}
@@ -3292,36 +3317,36 @@ res.end('Hello World\n')
 #### Выполнение запроса GET
 
 ```js
-const https = require('https')
+const https = require('https');
 const options = {
   hostname: 'flaviocopes.com',
   port: 443,
   path: '/todos',
-  method: 'GET'
-}
+  method: 'GET',
+};
 
 const req = https.request(options, (res) => {
-  console.log(`statusCode: ${res.statusCode}`)
+  console.log(`statusCode: ${res.statusCode}`);
   res.on('data', (d) => {
-    process.stdout.write(d)
-  })
-})
+    process.stdout.write(d);
+  });
+});
 
 req.on('error', (error) => {
-  console.error(error)
-})
+  console.error(error);
+});
 
-req.end()
+req.end();
 ```
 
 #### Выполнить POST-запрос
 
 ```js
-const https = require('https')
+const https = require('https');
 
 const data = JSON.stringify({
   todo: 'Buy the milk',
-})
+});
 
 const options = {
   hostname: 'flaviocopes.com',
@@ -3332,21 +3357,21 @@ const options = {
     'Content-Type': 'application/json',
     'Content-Length': data.length,
   },
-}
+};
 
 const req = https.request(options, (res) => {
-  console.log(`statusCode: ${res.statusCode}`)
+  console.log(`statusCode: ${res.statusCode}`);
   res.on('data', (d) => {
-    process.stdout.write(d)
-  })
-})
+    process.stdout.write(d);
+  });
+});
 
 req.on('error', (error) => {
-  console.error(error)
-})
+  console.error(error);
+});
 
-req.write(data)
-req.end()
+req.write(data);
+req.end();
 ```
 
 #### PUT и DELETE
@@ -3396,9 +3421,9 @@ axios({
   url: 'https://dog.ceo/api/breeds/list/all',
   method: 'get',
   data: {
-    foo: 'bar'
-  }
-})
+    foo: 'bar',
+  },
+});
 ```
 
 но для удобства вы обычно используете:
@@ -3426,54 +3451,62 @@ Axios предлагает методы для всех глаголов HTTP, �
 Этот пример Node.js запрашивает [Dog API](https://dog.ceo/){rel="noopener"} для получения списка всех пород собак, используя `axios.get()`, и подсчитывает их:
 
 ```js
-const axios = require('axios')
+const axios = require('axios');
 
 const getBreeds = async () => {
   try {
-    return await axios.get('https://dog.ceo/api/breeds/list/all')
+    return await axios.get(
+      'https://dog.ceo/api/breeds/list/all'
+    );
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 const countBreeds = async () => {
-  const breeds = await getBreeds()
+  const breeds = await getBreeds();
   if (breeds.data.message) {
-    console.log(`Got ${Object.entries(breeds.data.message).length} breeds`)
+    console.log(
+      `Got ${
+        Object.entries(breeds.data.message).length
+      } breeds`
+    );
   }
-}
+};
 
-countBreeds()
+countBreeds();
 ```
 
 Если вы не хотите использовать `async/await`, вы можете использовать синтаксис [Promises](https://flaviocopes.com/javascript-promises/){rel="noopener"}:
 
 ```js
-const axios = require('axios')
+const axios = require('axios');
 
 const getBreeds = () => {
   try {
-    return axios.get('https://dog.ceo/api/breeds/list/all')
+    return axios.get('https://dog.ceo/api/breeds/list/all');
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 const countBreeds = async () => {
   const breeds = getBreeds()
     .then((response) => {
       if (response.data.message) {
         console.log(
-          `Got ${Object.entries(response.data.message).length} breeds`
-        )
+          `Got ${
+            Object.entries(response.data.message).length
+          } breeds`
+        );
       }
     })
     .catch((error) => {
-      console.log(error)
-    })
-}
+      console.log(error);
+    });
+};
 
-countBreeds()
+countBreeds();
 ```
 
 #### Добавление параметров в GET-запросы
@@ -3483,7 +3516,7 @@ GET-ответ может содержать параметры в URL, напр
 С помощью Axios вы можете сделать это, просто используя этот URL:
 
 ```js
-axios.get('https://site.com/?foo=bar')
+axios.get('https://site.com/?foo=bar');
 ```
 
 или вы можете использовать свойство `params` в опциях:
@@ -3491,9 +3524,9 @@ axios.get('https://site.com/?foo=bar')
 ```js
 axios.get('https://site.com/', {
   params: {
-    foo: 'bar'
-  }
-})
+    foo: 'bar',
+  },
+});
 ```
 
 #### POST-запросы
@@ -3506,8 +3539,8 @@ axios.get('https://site.com/', {
 
 ```js
 axios.post('https://site.com/', {
-  foo: 'bar'
-})
+  foo: 'bar',
+});
 ```
 
 ### Использование WebSockets в Node.js {#using-websockets-in-node-js}
@@ -3549,8 +3582,8 @@ HTTP намного проще в реализации, в то время ка�
 ### Создайте новое соединение WebSockets
 
 ```js
-const url = 'wss://myserver.com/something'
-const connection = new WebSocket(url)
+const url = 'wss://myserver.com/something';
+const connection = new WebSocket(url);
 ```
 
 `connection` - это объект [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket){rel="noopener"}.
@@ -3562,15 +3595,15 @@ const connection = new WebSocket(url)
 ```js
 connection.onopen = () => {
   // ...
-}
+};
 ```
 
 При возникновении ошибки происходит обратный вызов функции `onerror`:
 
 ```js
-connection.onerror = error => {
-  console.log(`WebSocket error: ${error}`)
-}
+connection.onerror = (error) => {
+  console.log(`WebSocket error: ${error}`);
+};
 ```
 
 ### Отправка данных на сервер с помощью WebSockets
@@ -3581,8 +3614,8 @@ connection.onerror = error => {
 
 ```js
 connection.onopen = () => {
-  connection.send('hey')
-}
+  connection.send('hey');
+};
 ```
 
 ### Получение данных с сервера с помощью WebSockets
@@ -3590,9 +3623,9 @@ connection.onopen = () => {
 Слушайте с функцией обратного вызова `onmessage`, которая вызывается при получении события `message`:
 
 ```js
-connection.onmessage = e => {
-  console.log(e.data)
-}
+connection.onmessage = (e) => {
+  console.log(e.data);
+};
 ```
 
 ### Реализация сервера WebSockets в Node.js {#implement-a-websockets-server-in-node-js}
@@ -3609,16 +3642,16 @@ connection.onmessage = e => {
 Код, который вам нужно написать, очень мал:
 
 ```js
-const WebSocket = require('ws')
+const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new WebSocket.Server({ port: 8080 });
 
 wss.on('connection', (ws) => {
   ws.on('message', (message) => {
-    console.log(`Received message => ${message}`)
-  })
-  ws.send('ho!')
-})
+    console.log(`Received message => ${message}`);
+  });
+  ws.send('ho!');
+});
 ```
 
 Этот код создает новый сервер на порту 8080 (порт по умолчанию для WebSockets) и добавляет функцию обратного вызова при установлении соединения, отправляя `ho!` клиенту и регистрируя полученные сообщения.
@@ -3636,11 +3669,11 @@ wss.on('connection', (ws) => {
 Дескриптор файла - это то, что возвращается при открытии файла с помощью метода `open()`, предлагаемого модулем `fs`:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
   //fd is our file descriptor
-})
+});
 ```
 
 Обратите внимание на `r`, который мы использовали в качестве второго параметра для вызова `fs.open()`.
@@ -3657,12 +3690,12 @@ fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
 Вы также можете открыть файл с помощью метода `fs.openSync`, который вместо того, чтобы предоставить объект дескриптора файла в обратном вызове, возвращает его:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 try {
-  const fd = fs.openSync('/Users/flavio/test.txt', 'r')
+  const fd = fs.openSync('/Users/flavio/test.txt', 'r');
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -3677,24 +3710,24 @@ try {
 Вы вызываете его, передавая путь к файлу, и как только Node.js получит данные о файле, он вызовет переданную вами функцию обратного вызова с двумя параметрами: сообщением об ошибке и статистикой файла:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 fs.stat('/Users/flavio/test.txt', (err, stats) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
   // we have access to the file stats in `stats`
-})
+});
 ```
 
 Node.js также предоставляет метод sync, который блокирует поток до тех пор, пока статистика файлов не будет готова:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 try {
-  const stats = fs.stat('/Users/flavio/test.txt')
+  const stats = fs.stat('/Users/flavio/test.txt');
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -3709,18 +3742,18 @@ try {
 Существуют и другие продвинутые методы, но основная часть того, что вы будете использовать в повседневном программировании, заключается в следующем:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 fs.stat('/Users/flavio/test.txt', (err, stats) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
 
-  stats.isFile() // true
-  stats.isDirectory() // false
-  stats.isSymbolicLink() // false
-  stats.size // 1024000 //= 1MB
-})
+  stats.isFile(); // true
+  stats.isDirectory(); // false
+  stats.isSymbolicLink(); // false
+  stats.size; // 1024000 //= 1MB
+});
 ```
 
 ### Node.js Пути к файлам {#node-js-file-paths}
@@ -3740,7 +3773,7 @@ fs.stat('/Users/flavio/test.txt', (err, stats) => {
 Вы включаете этот модуль в свои файлы, используя:
 
 ```js
-const path = require('path')
+const path = require('path');
 ```
 
 и вы сможете начать использовать его методы.
@@ -3756,17 +3789,17 @@ const path = require('path')
 Пример:
 
 ```js
-const notes = '/users/flavio/notes.txt'
+const notes = '/users/flavio/notes.txt';
 
-path.dirname(notes) // /users/flavio
-path.basename(notes) // notes.txt
-path.extname(notes) // .txt
+path.dirname(notes); // /users/flavio
+path.basename(notes); // notes.txt
+path.extname(notes); // .txt
 ```
 
 Вы можете получить имя файла без расширения, указав второй аргумент `basename`:
 
 ```js
-path.basename(notes, path.extname(notes)) // notes
+path.basename(notes, path.extname(notes)); // notes
 ```
 
 #### Работа с путями
@@ -3774,32 +3807,32 @@ path.basename(notes, path.extname(notes)) // notes
 Вы можете объединить две или более частей пути с помощью функции `path.join()`:
 
 ```js
-const name = 'flavio'
-path.join('/', 'users', name, 'notes.txt') // '/users/flavio/notes.txt'
+const name = 'flavio';
+path.join('/', 'users', name, 'notes.txt'); // '/users/flavio/notes.txt'
 ```
 
 Вы можете получить расчет абсолютного пути относительного пути с помощью `path.resolve()`:
 
 ```js
-path.resolve('flavio.txt') // '/Users/flavio/flavio.txt' if run from my home folder
+path.resolve('flavio.txt'); // '/Users/flavio/flavio.txt' if run from my home folder
 ```
 
 В этом случае Node.js просто добавит `/flavio.txt` в текущий рабочий каталог. Если вы укажете вторую папку с параметрами, `resolve` будет использовать первую в качестве основы для второй:
 
 ```js
-path.resolve('tmp', 'flavio.txt') // '/Users/flavio/tmp/flavio.txt' if run from my home folder
+path.resolve('tmp', 'flavio.txt'); // '/Users/flavio/tmp/flavio.txt' if run from my home folder
 ```
 
 Если первый параметр начинается со слэша, это означает, что это абсолютный путь:
 
 ```js
-path.resolve('/etc', 'flavio.txt') // '/etc/flavio.txt'
+path.resolve('/etc', 'flavio.txt'); // '/etc/flavio.txt'
 ```
 
 `path.normalize()` - еще одна полезная функция, которая попытается вычислить фактический путь, если он содержит относительные спецификаторы типа `.` или `..`, или двойные косые черты:
 
 ```js
-path.normalize('/users/flavio/..//test.txt') //  /users/test.txt
+path.normalize('/users/flavio/..//test.txt'); //  /users/test.txt
 ```
 
 Но `resolve` и `normalize` **не** проверяют, существует ли путь. Они просто вычисляют путь на основе полученной информации.
@@ -3809,27 +3842,30 @@ path.normalize('/users/flavio/..//test.txt') //  /users/test.txt
 Самый простой способ прочитать файл в Node.js - это использовать метод `fs.readFile()`, передав ему путь к файлу и функцию обратного вызова, которая будет вызвана с данными файла (и ошибкой):
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 fs.readFile('/Users/flavio/test.txt', (err, data) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
-  console.log(data)
-})
+  console.log(data);
+});
 ```
 
 В качестве альтернативы можно использовать синхронную версию `fs.readFileSync()`:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 try {
-  const data = fs.readFileSync('/Users/flavio/test.txt', 'utf8')
-  console.log(data)
+  const data = fs.readFileSync(
+    '/Users/flavio/test.txt',
+    'utf8'
+  );
+  console.log(data);
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -3848,31 +3884,34 @@ try {
 Пример:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-const content = 'Some content!'
+const content = 'Some content!';
 
 fs.writeFile('/Users/flavio/test.txt', content, (err) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
   // file written successfully
-})
+});
 ```
 
 В качестве альтернативы можно использовать синхронную версию `fs.writeFileSync()`:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-const content = 'Some content!'
+const content = 'Some content!';
 
 try {
-  const data = fs.writeFileSync('/Users/flavio/test.txt', content)
+  const data = fs.writeFileSync(
+    '/Users/flavio/test.txt',
+    content
+  );
   // file written successfully
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -3881,7 +3920,12 @@ try {
 Вы можете изменить значение по умолчанию, указав флаг:
 
 ```js
-fs.writeFile('/Users/flavio/test.txt', content, { flag: 'a+' }, (err) => {})
+fs.writeFile(
+  '/Users/flavio/test.txt',
+  content,
+  { flag: 'a+' },
+  (err) => {}
+);
 ```
 
 Флаги, которые вы, скорее всего, будете использовать, следующие:
@@ -3898,15 +3942,15 @@ fs.writeFile('/Users/flavio/test.txt', content, { flag: 'a+' }, (err) => {})
 Удобным методом добавления содержимого в конец файла является `fs.appendFile()` (и его аналог `fs.appendFileSync()`):
 
 ```js
-const content = 'Some content!'
+const content = 'Some content!';
 
 fs.appendFile('file.log', content, (err) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
   // done!
-})
+});
 ```
 
 #### Использование потоков
@@ -3928,16 +3972,16 @@ fs.appendFile('file.log', content, (err) => {
 Используйте `fs.mkdir()` или `fs.mkdirSync()` для создания новой папки:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-const folderName = '/Users/flavio/test'
+const folderName = '/Users/flavio/test';
 
 try {
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir)
+    fs.mkdirSync(dir);
   }
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -3948,12 +3992,12 @@ try {
 Эта часть кода читает содержимое папки, как файлы, так и вложенные папки, и возвращает их относительный путь:
 
 ```js
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
-const folderPath = '/Users/flavio'
+const folderPath = '/Users/flavio';
 
-fs.readdirSync(folderPath)
+fs.readdirSync(folderPath);
 ```
 
 Вы можете получить полный путь:
@@ -3967,13 +4011,15 @@ fs.readdirSync(folderPath).map(fileName => {
 Можно также отфильтровать результаты, чтобы вернуть только файлы и исключить папки:
 
 ```js
-const isFile = fileName => {
-  return fs.lstatSync(fileName).isFile()
-}
+const isFile = (fileName) => {
+  return fs.lstatSync(fileName).isFile();
+};
 
-fs.readdirSync(folderPath).map(fileName => {
-  return path.join(folderPath, fileName)
-}).filter(isFile)
+fs.readdirSync(folderPath)
+  .map((fileName) => {
+    return path.join(folderPath, fileName);
+  })
+  .filter(isFile);
 ```
 
 #### Переименование папки
@@ -3983,26 +4029,26 @@ fs.readdirSync(folderPath).map(fileName => {
 Первый параметр - текущий путь, второй - новый путь:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-fs.rename('/Users/flavio', '/Users/roger', err => {
+fs.rename('/Users/flavio', '/Users/roger', (err) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
   // done
-})
+});
 ```
 
 `fs.renameSync()` - это синхронная версия:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 try {
-  fs.renameSync('/Users/flavio', '/Users/roger')
+  fs.renameSync('/Users/flavio', '/Users/roger');
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -4023,23 +4069,25 @@ try {
 и используйте его следующим образом:
 
 ```js
-const fs = require('fs-extra')
+const fs = require('fs-extra');
 
-const folder = '/Users/flavio'
+const folder = '/Users/flavio';
 
-fs.remove(folder, err => {
-  console.error(err)
-})
+fs.remove(folder, (err) => {
+  console.error(err);
+});
 ```
 
 Его также можно использовать с обещаниями:
 
 ```js
-fs.remove(folder).then(() => {
-  // done
-}).catch(err => {
-  console.error(err)
-})
+fs.remove(folder)
+  .then(() => {
+    // done
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 ```
 
 или с `async/await`:
@@ -4047,15 +4095,15 @@ fs.remove(folder).then(() => {
 ```js
 async function removeFolder(folder) {
   try {
-    await fs.remove(folder)
+    await fs.remove(folder);
     // done
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 }
 
-const folder = '/Users/flavio'
-removeFolder(folder)
+const folder = '/Users/flavio';
+removeFolder(folder);
 ```
 
 ### Модуль Node.js fs {#the-node-js-fs-module}
@@ -4065,7 +4113,7 @@ removeFolder(folder)
 Нет необходимости устанавливать его. Будучи частью ядра Node.js, он может быть использован простым запросом:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 ```
 
 Как только вы это сделаете, вы получите доступ ко всем его методам, которые включают:
@@ -4113,26 +4161,26 @@ const fs = require('fs')
 Для примера рассмотрим метод `fs.rename()`. Асинхронный API используется с обратным вызовом:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 fs.rename('before.json', 'after.json', (err) => {
   if (err) {
-    return console.error(err)
+    return console.error(err);
   }
   // done
-})
+});
 ```
 
 Синхронный API можно использовать подобным образом, с блоком `try/catch` для обработки ошибок:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 try {
-  fs.renameSync('before.json', 'after.json')
+  fs.renameSync('before.json', 'after.json');
   // done
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
 ```
 
@@ -4145,7 +4193,7 @@ try {
 Нет необходимости устанавливать его. Будучи частью ядра Node.js, он может быть использован простым запросом:
 
 ```js
-const path = require('path')
+const path = require('path');
 ```
 
 Этот модуль предоставляет `path.sep`, который предоставляет разделитель сегментов пути (`\` в Windows, и `/` в Linux / macOS), и `path.delimiter`, который предоставляет разделитель путей (`;` в Windows, и `:` в Linux / macOS).
@@ -4157,9 +4205,9 @@ const path = require('path')
 Возвращает последнюю часть пути. Второй параметр может отфильтровать расширение файла:
 
 ```js
-require('path').basename('/test/something') // something
-require('path').basename('/test/something.txt') // something.txt
-require('path').basename('/test/something.txt', '.txt') // something
+require('path').basename('/test/something'); // something
+require('path').basename('/test/something.txt'); // something.txt
+require('path').basename('/test/something.txt', '.txt'); // something
 ```
 
 #### `path.dirname()` {#path-dirname-}
@@ -4167,8 +4215,8 @@ require('path').basename('/test/something.txt', '.txt') // something
 Возвращает часть пути, относящуюся к каталогу:
 
 ```js
-require('path').dirname('/test/something') // /test
-require('path').dirname('/test/something/file.txt') // /test/something
+require('path').dirname('/test/something'); // /test
+require('path').dirname('/test/something/file.txt'); // /test/something
 ```
 
 #### `path.extname()` {#path-extname-}
@@ -4176,8 +4224,8 @@ require('path').dirname('/test/something/file.txt') // /test/something
 Возвращает расширенную часть пути:
 
 ```js
-require('path').dirname('/test/something') // ''
-require('path').dirname('/test/something/file.txt') // '.txt'
+require('path').dirname('/test/something'); // ''
+require('path').dirname('/test/something/file.txt'); // '.txt'
 ```
 
 #### `path.isAbsolute()` {#path-isabsolute-}
@@ -4185,8 +4233,8 @@ require('path').dirname('/test/something/file.txt') // '.txt'
 Возвращает true, если это абсолютный путь:
 
 ```js
-require('path').isAbsolute('/test/something') // true
-require('path').isAbsolute('./test/something') // false
+require('path').isAbsolute('/test/something'); // true
+require('path').isAbsolute('./test/something'); // false
 ```
 
 #### `path.join()` {#path-join-}
@@ -4194,8 +4242,8 @@ require('path').isAbsolute('./test/something') // false
 Объединяет две или более частей пути:
 
 ```js
-const name = 'flavio'
-require('path').join('/', 'users', name, 'notes.txt') // '/users/flavio/notes.txt'
+const name = 'flavio';
+require('path').join('/', 'users', name, 'notes.txt'); // '/users/flavio/notes.txt'
 ```
 
 #### `path.normalize()` {#path-normalize-}
@@ -4203,7 +4251,7 @@ require('path').join('/', 'users', name, 'notes.txt') // '/users/flavio/notes.tx
 Пытается вычислить фактический путь, если он содержит относительные спецификаторы, такие как `.` или `..`, или двойные косые черты:
 
 ```js
-require('path').normalize('/users/flavio/..//test.txt') // /users/test.txt
+require('path').normalize('/users/flavio/..//test.txt'); // /users/test.txt
 ```
 
 #### `path.parse()` {#path-parse-}
@@ -4219,7 +4267,7 @@ require('path').normalize('/users/flavio/..//test.txt') // /users/test.txt
 Пример:
 
 ```js
-require('path').parse('/users/test.txt')
+require('path').parse('/users/test.txt');
 ```
 
 результаты:
@@ -4241,8 +4289,14 @@ require('path').parse('/users/test.txt')
 Пример:
 
 ```js
-require('path').relative('/Users/flavio', '/Users/flavio/test.txt') // 'test.txt'
-require('path').relative('/Users/flavio', '/Users/flavio/something/test.txt') // 'something/test.txt'
+require('path').relative(
+  '/Users/flavio',
+  '/Users/flavio/test.txt'
+); // 'test.txt'
+require('path').relative(
+  '/Users/flavio',
+  '/Users/flavio/something/test.txt'
+); // 'something/test.txt'
 ```
 
 #### `path.resolve()` {#path-resolve-}
@@ -4250,19 +4304,19 @@ require('path').relative('/Users/flavio', '/Users/flavio/something/test.txt') //
 Вы можете получить расчет абсолютного пути относительного пути с помощью `path.resolve()`:
 
 ```js
-path.resolve('flavio.txt') // '/Users/flavio/flavio.txt' if run from my home folder
+path.resolve('flavio.txt'); // '/Users/flavio/flavio.txt' if run from my home folder
 ```
 
 Указав второй параметр, `resolve` будет использовать первый в качестве основы для второго:
 
 ```js
-path.resolve('tmp', 'flavio.txt') // '/Users/flavio/tmp/flavio.txt' if run from my home folder
+path.resolve('tmp', 'flavio.txt'); // '/Users/flavio/tmp/flavio.txt' if run from my home folder
 ```
 
 Если первый параметр начинается со слэша, это означает, что это абсолютный путь:
 
 ```js
-path.resolve('/etc', 'flavio.txt') // '/etc/flavio.txt'
+path.resolve('/etc', 'flavio.txt'); // '/etc/flavio.txt'
 ```
 
 ### Модуль Node.js os {#the-node-js-os-module}
@@ -4270,7 +4324,7 @@ path.resolve('/etc', 'flavio.txt') // '/etc/flavio.txt'
 Этот модуль предоставляет множество функций, которые вы можете использовать для получения информации от базовой **операционной системы** и компьютера, на котором работает программа, и взаимодействия с ней.
 
 ```js
-const os = require('os')
+const os = require('os');
 ```
 
 Есть несколько полезных свойств, которые сообщают нам некоторые ключевые вещи, связанные с работой с файлами:
@@ -4337,7 +4391,7 @@ const os = require('os')
       irq: 0,
     },
   },
-]
+];
 ```
 
 #### `os.endianness()` {#os-endianness-}
@@ -4355,7 +4409,8 @@ const os = require('os')
 Пример:
 
 ```js
-'/Users/flavio'
+'/Users/flavio';
+
 ```
 
 #### `os.hostname()` {#os-hostname-}
@@ -4371,7 +4426,7 @@ const os = require('os')
 Пример:
 
 ```js
-[ 3.68798828125, 4.00244140625, 11.1181640625 ]
+[3.68798828125, 4.00244140625, 11.1181640625];
 ```
 
 #### `os.networkInterfaces()` {#os-networkinterfaces-}
@@ -4479,8 +4534,8 @@ const os = require('os')
 Я опубликовал полную [статью](https://flaviocopes.com/node-event-emitter/){rel="noopener"} об этом, поэтому здесь я просто опишу API без дополнительных примеров его использования.
 
 ```js
-const EventEmitter = require('events')
-const door = new EventEmitter()
+const EventEmitter = require('events');
+const door = new EventEmitter();
 ```
 
 Слушатель событий ест свой собственный собачий корм и использует эти события:
@@ -4518,7 +4573,7 @@ const door = new EventEmitter()
 Возвращает массив строк, которые представляют события, зарегистрированные на текущем EventListener:
 
 ```js
-door.eventNames()
+door.eventNames();
 ```
 
 #### `emitter.getMaxListeners()` {#emitter-getmaxlisteners-}
@@ -4526,7 +4581,7 @@ door.eventNames()
 Получение максимального количества слушателей, которое можно добавить к объекту EventListener. По умолчанию это значение равно 10, но может быть увеличено или уменьшено с помощью `setMaxListeners()`:
 
 ```js
-door.getMaxListeners()
+door.getMaxListeners();
 ```
 
 #### `emitter.listenerCount()` {#emitter-listenercount-}
@@ -4534,7 +4589,7 @@ door.getMaxListeners()
 Получить количество слушателей события, переданного в качестве параметра:
 
 ```js
-door.listenerCount('open')
+door.listenerCount('open');
 ```
 
 #### `emitter.listeners()` {#emitter-listeners-}
@@ -4542,7 +4597,7 @@ door.listenerCount('open')
 Получает массив слушателей события, переданного в качестве параметра:
 
 ```js
-door.listeners('open')
+door.listeners('open');
 ```
 
 #### `emitter.off()` {#emitter-off-}
@@ -4557,8 +4612,8 @@ door.listeners('open')
 
 ```js
 door.on('open', () => {
-  console.log('Door was opened')
-})
+  console.log('Door was opened');
+});
 ```
 
 #### `emitter.once()` {#emitter-once-}
@@ -4566,12 +4621,12 @@ door.on('open', () => {
 Добавляет функцию обратного вызова, которая вызывается, когда событие испускается в первый раз после регистрации этой функции. Этот обратный вызов будет вызван только один раз, больше никогда.
 
 ```js
-const EventEmitter = require('events')
-const ee = new EventEmitter()
+const EventEmitter = require('events');
+const ee = new EventEmitter();
 
 ee.once('my-event', () => {
   // call callback function once
-})
+});
 ```
 
 #### `emitter.prependListener()` {#emitter-prependlistener-}
@@ -4587,7 +4642,7 @@ ee.once('my-event', () => {
 Удаляет всех слушателей объекта-эмиттера события, слушающих определенное событие:
 
 ```js
-door.removeAllListeners('open')
+door.removeAllListeners('open');
 ```
 
 #### `emitter.removeListener()` {#emitter-removelistener-}
@@ -4595,9 +4650,9 @@ door.removeAllListeners('open')
 Удалить определенный слушатель. Это можно сделать, сохранив функцию обратного вызова в переменной при добавлении, чтобы можно было ссылаться на нее позже:
 
 ```js
-const doSomething = () => {}
-door.on('open', doSomething)
-door.removeListener('open', doSomething)
+const doSomething = () => {};
+door.on('open', doSomething);
+door.removeListener('open', doSomething);
 ```
 
 #### `emitter.setMaxListeners()` {#emitter-setmaxlisteners-}
@@ -4605,7 +4660,7 @@ door.removeListener('open', doSomething)
 Устанавливает максимальное количество слушателей, которое можно добавить к объекту EventListener. По умолчанию это значение равно 10, но может быть увеличено или уменьшено:
 
 ```js
-door.setMaxListeners(50)
+door.setMaxListeners(50);
 ```
 
 ### The Node.js http module {#the-node-js-http-module}
@@ -4615,7 +4670,7 @@ door.setMaxListeners(50)
 Его можно включить, используя:
 
 ```js
-const http = require('http')
+const http = require('http');
 ```
 
 Модуль предоставляет некоторые свойства и методы, а также некоторые классы.
@@ -4812,7 +4867,7 @@ Node создает глобальный экземпляр класса `http.A
 ```js
 const server = http.createServer((req, res) => {
   // res is an http.ServerResponse object
-})
+});
 ```
 
 Метод, который вы всегда будете вызывать в обработчике, это `end()`, который закрывает ответ, сообщение завершено, и сервер может отправить его клиенту. Он должен вызываться при каждом ответе.
@@ -4834,8 +4889,8 @@ const server = http.createServer((req, res) => {
 Если заголовки еще не были отправлены с помощью `response.writeHead()`, то сначала будут отправлены заголовки с кодом статуса и сообщением, заданными в запросе, которые вы можете изменить, установив значения свойств `statusCode` и `statusMessage`:
 
 ```js
-response.statusCode = 500
-response.statusMessage = 'Internal Server Error'
+response.statusCode = 500;
+response.statusMessage = 'Internal Server Error';
 ```
 
 #### `http.IncomingMessage` {#http-incomingmessage}
@@ -4884,16 +4939,16 @@ Node.js `stream` [модуль](https://nodejs.org/api/stream.html){rel="noopene
 Используя модуль Node.js `fs`, вы можете прочитать файл и передать его по HTTP при установлении нового соединения с вашим `http` сервером:
 
 ```js
-const http = require('http')
-const fs = require('fs')
+const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer(function (req, res) {
   fs.readFile(__dirname + '/data.txt', (err, data) => {
-    res.end(data)
-  })
-})
+    res.end(data);
+  });
+});
 
-server.listen(3000)
+server.listen(3000);
 ```
 
 `readFile()` считывает полное содержимое файла и вызывает функцию обратного вызова по завершении.
@@ -4903,15 +4958,17 @@ server.listen(3000)
 Если файл большой, операция займет довольно много времени. Вот то же самое, написанное с использованием потоков:
 
 ```js
-const http = require('http')
-const fs = require('fs')
+const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((req, res) => {
-  const stream = fs.createReadStream(__dirname + '/data.txt')
-  stream.pipe(res)
-})
+  const stream = fs.createReadStream(
+    __dirname + '/data.txt'
+  );
+  stream.pipe(res);
+});
 
-server.listen(3000)
+server.listen(3000);
 ```
 
 Вместо того чтобы ждать, пока файл будет полностью прочитан, мы начинаем передавать его HTTP-клиенту, как только у нас появляется фрагмент данных, готовый к отправке.
@@ -4927,14 +4984,14 @@ server.listen(3000)
 Возвращаемым значением метода `pipe()` является поток назначения, что очень удобно и позволяет нам соединять несколько вызовов `pipe()` в цепочку, например, так:
 
 ```js
-src.pipe(dest1).pipe(dest2)
+src.pipe(dest1).pipe(dest2);
 ```
 
 Эта конструкция - то же самое, что и "делать":
 
 ```js
-src.pipe(dest1)
-dest1.pipe(dest2)
+src.pipe(dest1);
+dest1.pipe(dest2);
 ```
 
 #### API Node.js с поддержкой потоков {#streams-powered-node-js-apis}
@@ -4967,15 +5024,15 @@ dest1.pipe(dest2)
 Мы получаем поток `Readable` из модуля `stream` и инициализируем его:
 
 ```js
-const Stream = require('stream')
-const readableStream = new Stream.Readable()
+const Stream = require('stream');
+const readableStream = new Stream.Readable();
 ```
 
 Теперь, когда поток инициализирован, мы можем отправлять в него данные:
 
 ```js
-readableStream.push('hi!')
-readableStream.push('ho!')
+readableStream.push('hi!');
+readableStream.push('ho!');
 ```
 
 #### Как создать записываемый поток
@@ -4985,23 +5042,23 @@ readableStream.push('ho!')
 Сначала создадим объект stream:
 
 ```js
-const Stream = require('stream')
-const writableStream = new Stream.Writable()
+const Stream = require('stream');
+const writableStream = new Stream.Writable();
 ```
 
 тогда реализуйте `_write`:
 
 ```js
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString())
-  next()
-}
+  console.log(chunk.toString());
+  next();
+};
 ```
 
 Теперь вы можете передавать читаемый поток:
 
 ```js
-process.stdin.pipe(writableStream)
+process.stdin.pipe(writableStream);
 ```
 
 #### Как получить данные из читаемого потока
@@ -5009,28 +5066,28 @@ process.stdin.pipe(writableStream)
 Как читать данные из читаемого потока? Используя записываемый поток:
 
 ```js
-const Stream = require('stream')
+const Stream = require('stream');
 
-const readableStream = new Stream.Readable()
-const writableStream = new Stream.Writable()
+const readableStream = new Stream.Readable();
+const writableStream = new Stream.Writable();
 
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString())
-  next()
-}
+  console.log(chunk.toString());
+  next();
+};
 
-readableStream.pipe(writableStream)
+readableStream.pipe(writableStream);
 
-readableStream.push('hi!')
-readableStream.push('ho!')
+readableStream.push('hi!');
+readableStream.push('ho!');
 ```
 
 Вы также можете потреблять читаемый поток напрямую, используя событие `readable`:
 
 ```js
 readableStream.on('readable', () => {
-  console.log(readableStream.read())
-})
+  console.log(readableStream.read());
+});
 ```
 
 #### Как отправить данные в поток с возможностью записи.
@@ -5038,7 +5095,7 @@ readableStream.on('readable', () => {
 Используя метод потока `write()`:
 
 ```js
-writableStream.write('hey!\n')
+writableStream.write('hey!\n');
 ```
 
 #### Сигнализация записываемого потока о том, что вы закончили запись.
@@ -5046,22 +5103,22 @@ writableStream.write('hey!\n')
 Используйте метод `end()`:
 
 ```js
-const Stream = require('stream')
+const Stream = require('stream');
 
-const readableStream = new Stream.Readable()
-const writableStream = new Stream.Writable()
+const readableStream = new Stream.Readable();
+const writableStream = new Stream.Writable();
 
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString())
-  next()
-}
+  console.log(chunk.toString());
+  next();
+};
 
-readableStream.pipe(writableStream)
+readableStream.pipe(writableStream);
 
-readableStream.push('hi!')
-readableStream.push('ho!')
+readableStream.push('hi!');
+readableStream.push('ho!');
 
-writableStream.end()
+writableStream.end();
 ```
 
 ### Основы работы с MySQL и Node.js {#the-basics-of-working-with-mysql-and-node-js}
@@ -5083,7 +5140,7 @@ MySQL - одна из самых популярных реляционных б�
 Сначала вы включаете пакет:
 
 ```js
-const mysql = require('mysql')
+const mysql = require('mysql');
 ```
 
 и вы создаете связь:
@@ -5092,21 +5149,23 @@ const mysql = require('mysql')
 const options = {
   user: 'the_mysql_user_name',
   password: 'the_mysql_user_password',
-  database: 'the_mysql_database_name'
-}
+  database: 'the_mysql_database_name',
+};
 
-const connection = mysql.createConnection(options)
+const connection = mysql.createConnection(options);
 ```
 
 Вы инициируете новое соединение, позвонив по телефону:
 
 ```js
-connection.connect(err => {
+connection.connect((err) => {
   if (err) {
-    console.error('An error occurred while connecting to the DB')
-    throw err
+    console.error(
+      'An error occurred while connecting to the DB'
+    );
+    throw err;
   }
-})
+});
 ```
 
 #### Параметры подключения
@@ -5117,8 +5176,8 @@ connection.connect(err => {
 const options = {
   user: 'the_mysql_user_name',
   password: 'the_mysql_user_password',
-  database: 'the_mysql_database_name'
-}
+  database: 'the_mysql_database_name',
+};
 ```
 
 Вы можете использовать множество других параметров, включая:
@@ -5135,26 +5194,37 @@ const options = {
 Теперь вы готовы выполнить SQL-запрос к базе данных. После выполнения запроса будет вызвана функция обратного вызова, которая содержит возможную ошибку, результаты и поля:
 
 ```js
-connection.query('SELECT * FROM todos', (error, todos, fields) => {
-  if (error) {
-    console.error('An error occurred while executing the query')
-    throw error
+connection.query(
+  'SELECT * FROM todos',
+  (error, todos, fields) => {
+    if (error) {
+      console.error(
+        'An error occurred while executing the query'
+      );
+      throw error;
+    }
+    console.log(todos);
   }
-  console.log(todos)
-})
+);
 ```
 
 Вы можете передавать значения, которые будут автоматически экранированы:
 
 ```js
-const id = 223
-connection.query('SELECT * FROM todos WHERE id = ?', [id], (error, todos, fields) => {
-  if (error) {
-    console.error('An error occurred while executing the query')
-    throw error
+const id = 223;
+connection.query(
+  'SELECT * FROM todos WHERE id = ?',
+  [id],
+  (error, todos, fields) => {
+    if (error) {
+      console.error(
+        'An error occurred while executing the query'
+      );
+      throw error;
+    }
+    console.log(todos);
   }
-  console.log(todos)
-})
+);
 ```
 
 Чтобы передать несколько значений, просто поместите больше элементов в массив, который вы передаете в качестве второго параметра:
@@ -5213,7 +5283,7 @@ connection.query('INSERT INTO todos SET ?', todo, (error, results, fields) => {
 Когда вам нужно прервать соединение с базой данных, вы можете вызвать метод `end()`:
 
 ```js
-connection.end()
+connection.end();
 ```
 
 Это гарантирует, что любой ожидающий запрос будет отправлен, и соединение будет изящно завершено.
@@ -5248,27 +5318,32 @@ Express предоставляет конфигурационные хуки, с
 ```js
 app.configure('development', () => {
   // ...
-})
+});
 
 app.configure('production', () => {
   // ...
-})
+});
 
 app.configure('production', 'staging', () => {
   // ...
-})
+});
 ```
 
 Например, вы можете использовать это для установки различных обработчиков ошибок для разных режимов:
 
 ```js
 app.configure('development', () => {
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-})
+  app.use(
+    express.errorHandler({
+      dumpExceptions: true,
+      showStack: true,
+    })
+  );
+});
 
 app.configure('production', () => {
-  app.use(express.errorHandler())
-})
+  app.use(express.errorHandler());
+});
 ```
 
 ### Заключительные слова
