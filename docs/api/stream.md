@@ -1,108 +1,296 @@
-# Потоки
+# Поток
 
-<!--introduced_in=v0.10.0-->
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/stream.html)
 
-> Стабильность: 2 - стабильная
+!!!success "Стабильность: 2 – Стабильная"
 
-<!-- source_link=lib/stream.js -->
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Поток - это абстрактный интерфейс для работы с потоковыми данными в Node.js. В `stream` модуль предоставляет API для реализации потокового интерфейса.
+**Поток** - это абстрактный интерфейс для работы с потоковыми данными в Node.js. Модуль **`node:stream`** предоставляет API для реализации интерфейса потока.
 
-Node.js. предоставляет множество потоковых объектов. Например, [запрос к HTTP серверу](http.md#class-httpincomingmessage) а также [`process.stdout`](process.md#processstdout) оба экземпляра потока.
+В Node.js существует множество объектов потока. Например, [запрос к HTTP-серверу](http.md#class-httpincomingmessage) и [`process.stdout`](process.md#processstdout) являются экземплярами потока.
 
-Потоки могут быть доступны для чтения, записи или и того, и другого. Все потоки являются экземплярами [`EventEmitter`](events.md#class-eventemitter).
+Потоки могут быть доступны для чтения, записи или и для того, и для другого. Все потоки являются экземплярами [`EventEmitter`](events.md#class-eventemitter).
 
-Чтобы получить доступ к `stream` модуль:
+Чтобы получить доступ к модулю `node:stream`:
 
 ```js
-const stream = require('stream');
+const stream = require('node:stream');
 ```
 
-В `stream` модуль полезен для создания новых типов экземпляров потока. Обычно нет необходимости использовать `stream` модуль для потребления потоков.
+Модуль `node:stream` полезен для создания новых типов экземпляров потоков. Обычно нет необходимости использовать модуль `node:stream` для потребления потоков.
 
-## Организация этого документа
+<!-- 0000.part.md -->
+
+## Организация данного документа
 
 Этот документ содержит два основных раздела и третий раздел для примечаний. В первом разделе объясняется, как использовать существующие потоки в приложении. Во втором разделе объясняется, как создавать новые типы потоков.
 
+<!-- 0001.part.md -->
+
 ## Типы потоков
 
-В Node.js есть четыре основных типа потоков:
+В Node.js существует четыре основных типа потоков:
 
 - [`Writable`](#class-streamwritable): потоки, в которые можно записывать данные (например, [`fs.createWriteStream()`](fs.md#fscreatewritestreampath-options)).
 - [`Readable`](#class-streamreadable): потоки, из которых можно читать данные (например, [`fs.createReadStream()`](fs.md#fscreatereadstreampath-options)).
-- [`Duplex`](#class-streamduplex): потоки, которые являются `Readable` а также `Writable` (Например, [`net.Socket`](net.md#class-netsocket)).
-- [`Transform`](#class-streamtransform): `Duplex` потоки, которые могут изменять или преобразовывать данные по мере их записи и чтения (например, [`zlib.createDeflate()`](zlib.md#zlibcreatedeflateoptions)).
+- [`Duplex`](#class-streamduplex): потоки, которые являются одновременно `Readable` и `Writable` (например, [`net.Socket`](net.md#class-netsocket)).
+- [`Transform`](#class-streamtransform): `дуплексные` потоки, которые могут изменять или преобразовывать данные по мере их записи и чтения (например, [`zlib.createDeflate()`](zlib.md#zlibcreatedeflateoptions)).
 
-Дополнительно этот модуль включает служебные функции [`stream.pipeline()`](#streampipelinesource-transforms-destination-callback), [`stream.finished()`](#streamfinishedstream-options-callback), [`stream.Readable.from()`](#streamreadablefromiterable-options) а также [`stream.addAbortSignal()`](#streamaddabortsignalsignal-stream).
+Кроме того, в этот модуль входят служебные функции [`stream.pipeline()`](#streampipelinesource-transforms-destination-callback), [`stream.finished()`](#streamfinishedstream-options-callback), [`stream.Readable.from()`](#streamreadablefromiterable-options) и [`stream.addAbortSignal()`](#streamaddabortsignalsignal-stream).
 
-### Streams Promises API
+<!-- 0002.part.md -->
 
-<!-- YAML
-added: v15.0.0
--->
+### Promise API потоков
 
-В `stream/promises` API предоставляет альтернативный набор асинхронных служебных функций для потоков, возвращающих `Promise` объекты вместо использования обратных вызовов. API доступен через `require('stream/promises')` или `require('stream').promises`.
+API `stream/promises` предоставляет альтернативный набор асинхронных служебных функций для потоков, которые возвращают объекты `Promise`, а не используют обратные вызовы. API доступен через `require('node:stream/promises')` или `require('node:stream').promises`.
+
+<!-- 0003.part.md -->
+
+### `stream.pipeline(source[, ...transforms], destination[, options])`
+
+<!-- 0004.part.md -->
+
+### `stream.pipeline(streams[, options])`
+
+- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]}
+- `source` {Stream|Iterable|AsyncIterable|Function}
+  - Возвращает: {Promise|AsyncIterable}
+- `...transforms` {Stream|Function}
+  - `source` {AsyncIterable}
+  - Возвращает: {Promise|AsyncIterable}
+- `destination` {Stream|Function}
+  - `source` {AsyncIterable}
+  - Возвращает: {Promise|AsyncIterable}
+- `options` {Object}
+  - `сигнал` {AbortSignal}
+  - `end` {boolean}
+- Возвращает: {Promise} Выполняется, когда конвейер завершен.
+
+<!-- конец списка -->
+
+```cjs
+const { pipeline } = require('node:stream/promises');
+const fs = require('node:fs');
+const zlib = require('node:zlib');
+
+async function run() {
+  await pipeline(
+    fs.createReadStream('archive.tar'),
+    zlib.createGzip(),
+    fs.createWriteStream('archive.tar.gz')
+  );
+  console.log('Pipeline succeeded.');
+}
+
+run().catch(console.error);
+```
+
+```mjs
+import { pipeline } from 'node:stream/promises';
+import {
+  createReadStream,
+  createWriteStream,
+} from 'node:fs';
+import { createGzip } from 'node:zlib';
+
+await pipeline(
+  createReadStream('archive.tar'),
+  createGzip(),
+  createWriteStream('archive.tar.gz')
+);
+console.log('Pipeline succeeded.');
+```
+
+Чтобы использовать `AbortSignal`, передайте его внутри объекта options в качестве последнего аргумента. Когда сигнал будет прерван, на базовом конвейере будет вызвана команда `destroy` с сообщением `AbortError`.
+
+```cjs
+const { pipeline } = require('node:stream/promises');
+const fs = require('node:fs');
+const zlib = require('node:zlib');
+
+async function run() {
+  const ac = new AbortController();
+  const signal = ac.signal;
+
+  setImmediate(() => ac.abort());
+  await pipeline(
+    fs.createReadStream('archive.tar'),
+    zlib.createGzip(),
+    fs.createWriteStream('archive.tar.gz'),
+    { signal }
+  );
+}
+
+run().catch(console.error); // AbortError
+```
+
+```mjs
+import { pipeline } from 'node:stream/promises';
+import {
+  createReadStream,
+  createWriteStream,
+} from 'node:fs';
+import { createGzip } from 'node:zlib';
+
+const ac = new AbortController();
+const { signal } = ac;
+setImmediate(() => ac.abort());
+try {
+  await pipeline(
+    createReadStream('archive.tar'),
+    createGzip(),
+    createWriteStream('archive.tar.gz'),
+    { signal }
+  );
+} catch (err) {
+  console.error(err); // AbortError
+}
+```
+
+API `pipeline` также поддерживает асинхронные генераторы:
+
+```cjs
+const { pipeline } = require('node:stream/promises');
+const fs = require('node:fs');
+
+async function run() {
+  await pipeline(
+    fs.createReadStream('lowercase.txt'),
+    async function* (source, { signal }) {
+      source.setEncoding('utf8'); // Работаем со строками, а не с `буфером`.
+      for await (const chunk of source) {
+        yield await processChunk(chunk, { signal });
+      }
+    },
+    fs.createWriteStream('uppercase.txt')
+  );
+  console.log('Pipeline succeeded.');
+}
+
+run().catch(console.error);
+```
+
+```mjs
+import { pipeline } from 'node:stream/promises';
+import fs from 'node:fs';
+await pipeline(async function* ({ signal }) {
+  await someLongRunningfn({ signal });
+  yield 'asd';
+}, fs.createWriteStream('uppercase.txt'));
+console.log('Pipeline succeeded.');
+```
+
+API `pipeline` предоставляет [версию обратного вызова](#streampipelinesource-transforms-destination-callback):
+
+<!-- 0005.part.md -->
+
+### `stream.finished(stream[, options])`
+
+- `stream` {Stream}
+- `options` {Object}
+  - `error` {boolean|undefined}
+  - `readable` {boolean|undefined}
+  - `writable` {boolean|undefined}
+  - `сигнал`: {AbortSignal|undefined}
+- Возвращает: {Promise} Выполняется, когда поток больше не доступен для чтения или записи.
+
+<!-- конец списка -->
+
+```cjs
+const { finished } = require('node:stream/promises');
+const fs = require('node:fs');
+
+const rs = fs.createReadStream('archive.tar');
+
+async function run() {
+  await finished(rs);
+  console.log('Поток закончил чтение.');
+}
+
+run().catch(console.error);
+rs.resume(); // Слить поток.
+```
+
+```mjs
+import { finished } from 'node:stream/promises';
+import { createReadStream } from 'node:fs';
+
+const rs = createReadStream('archive.tar');
+
+async function run() {
+  await finished(rs);
+  console.log('Поток закончил чтение.');
+}
+
+run().catch(console.error);
+rs.resume(); // Слить поток.
+```
+
+API `finished` предоставляет [версию обратного вызова](#streamfinishedstream-options-callback):
+
+<!-- 0006.part.md -->
 
 ### Объектный режим
 
-Все потоки, созданные API-интерфейсами Node.js, работают исключительно со строками и `Buffer` (или `Uint8Array`) объекты. Однако реализации потоков могут работать с другими типами значений JavaScript (за исключением `null`, который служит специальной цели в потоках). Считается, что такие потоки работают в «объектном режиме».
+Все потоки, создаваемые API Node.js, работают исключительно со строками и объектами `Buffer` (или `Uint8Array`). Однако, возможно, что реализация потоков может работать с другими типами значений JavaScript (за исключением `null`, который служит специальной цели в потоках). Такие потоки считаются работающими в "объектном режиме".
 
-Экземпляры потока переводятся в объектный режим с помощью `objectMode` вариант при создании потока. Попытка переключить существующий поток в объектный режим небезопасна.
+Экземпляры потоков переводятся в объектный режим с помощью опции `objectMode` при создании потока. Попытка переключить существующий поток в объектный режим небезопасна.
+
+<!-- 0007.part.md -->
 
 ### Буферизация
 
-<!--type=misc-->
+Потоки [`Writable`](#class-streamwritable) и [`Readable`](#class-streamreadable) будут хранить данные во внутреннем буфере.
 
-Оба [`Writable`](#class-streamwritable) а также [`Readable`](#class-streamreadable) потоки будут хранить данные во внутреннем буфере.
+Объем потенциально буферизуемых данных зависит от параметра `highWaterMark`, передаваемого в конструктор потока. Для обычных потоков опция `highWaterMark` определяет [общее количество байт](#highwatermark-discrepancy-after-calling-readablesetencoding). Для потоков, работающих в объектном режиме, параметр `highWaterMark` указывает общее количество объектов.
 
-Объем потенциально буферизованных данных зависит от `highWaterMark` опция передана в конструктор потока. Для обычных потоков `highWaterMark` опция указывает [общее количество байтов](#highwatermark-discrepancy-after-calling-readablesetencoding). Для потоков, работающих в объектном режиме, `highWaterMark` указывает общее количество объектов.
+Данные буферизуются в потоках `Readable`, когда реализация вызывает [`stream.push(chunk)`](#readablepushchunk-encoding). Если потребитель потока не вызывает [`stream.read()`](#readablereadsize), данные будут находиться во внутренней очереди, пока не будут потреблены.
 
-Данные буферизируются в `Readable` потоки, когда реализация вызывает [`stream.push(chunk)`](#readablepushchunk-encoding). Если потребитель Stream не вызывает [`stream.read()`](#readablereadsize), данные будут находиться во внутренней очереди до тех пор, пока не будут использованы.
+Когда общий размер внутреннего буфера чтения достигнет порога, заданного параметром `highWaterMark`, поток временно прекратит чтение данных из базового ресурса, пока данные, находящиеся в буфере, не будут потреблены (то есть поток перестанет вызывать внутренний метод [`readable._read()`](#readable_readsize), который используется для заполнения буфера чтения).
 
-Как только общий размер внутреннего буфера чтения достигнет порога, указанного `highWaterMark`, поток временно прекратит чтение данных из базового ресурса до тех пор, пока буферизованные в данный момент данные не будут использованы (то есть поток перестанет вызывать внутренний [`readable._read()`](#readable_readsize) метод, который используется для заполнения буфера чтения).
+Буферизация данных в потоках `Writable` происходит при многократном вызове метода [`writable.write(chunk)`](#writablewritechunk-encoding-callback). Пока общий размер внутреннего буфера записи ниже порога, установленного `highWaterMark`, вызовы `writable.write()` будут возвращать `true`. Как только размер внутреннего буфера достигнет или превысит `highWaterMark`, будет возвращена `false`.
 
-Данные буферизируются в `Writable` потоки, когда [`writable.write(chunk)`](#writablewritechunk-encoding-callback) метод вызывается повторно. Хотя общий размер внутреннего буфера записи ниже порога, установленного `highWaterMark`, звонки `writable.write()` вернусь `true`. Как только размер внутреннего буфера достигает или превышает `highWaterMark`, `false` будет возвращен.
+Ключевой целью API `stream`, в частности метода [`stream.pipe()`](#readablepipedestination-options), является ограничение буферизации данных до приемлемого уровня, чтобы источники и пункты назначения с разной скоростью не перегружали доступную память.
 
-Ключевая цель `stream` API, особенно [`stream.pipe()`](#readablepipedestination-options) Метод заключается в том, чтобы ограничить буферизацию данных до приемлемых уровней, чтобы источники и места назначения с разными скоростями не перегружали доступную память.
+Опция `highWaterMark` - это порог, а не предел: она определяет количество данных, которое поток буферизирует, прежде чем перестанет запрашивать больше данных. Она не обеспечивает жесткого ограничения памяти в целом. Конкретные реализации потоков могут выбрать более строгие ограничения, но это необязательно.
 
-В `highWaterMark` Параметр является порогом, а не пределом: он определяет объем данных, которые поток буферизует, прежде чем он перестанет запрашивать дополнительные данные. В целом это не налагает строгих ограничений на память. Конкретные реализации потока могут установить более строгие ограничения, но это необязательно.
+Поскольку потоки [`Duplex`](#class-streamduplex) и [`Transform`](#class-streamtransform) являются одновременно `Readable` и `Writable`, каждый из них поддерживает _два_ отдельных внутренних буфера, используемых для чтения и записи, что позволяет каждой стороне работать независимо от другой, поддерживая при этом соответствующий и эффективный поток данных. Например, экземпляры [`net.Socket`](net.md#class-netsocket) представляют собой [`Duplex`](#class-streamduplex) потоки, чья `Readable` сторона позволяет потреблять данные, полученные _из_ сокета, и чья `Writable` сторона позволяет записывать данные _в_ сокет. Поскольку данные могут записываться в сокет быстрее или медленнее, чем приниматься, каждая сторона должна работать (и буферизироваться) независимо от другой.
 
-Потому что [`Duplex`](#class-streamduplex) а также [`Transform`](#class-streamtransform) потоки оба `Readable` а также `Writable`, каждый поддерживает _два_ отдельные внутренние буферы, используемые для чтения и записи, что позволяет каждой стороне работать независимо от другой, поддерживая соответствующий и эффективный поток данных. Например, [`net.Socket`](net.md#class-netsocket) экземпляры [`Duplex`](#class-streamduplex) потоки, чьи `Readable` сторона позволяет потреблять полученные данные _из_ розетка и чья `Writable` сторона позволяет записывать данные _к_ розетка. Поскольку данные могут записываться в сокет с большей или меньшей скоростью, чем их получают, каждая сторона должна работать (и буферизовать) независимо от другой.
+Механика внутренней буферизации является внутренней деталью реализации и может быть изменена в любое время. Однако для некоторых продвинутых реализаций внутренние буферы могут быть r
 
-Механизм внутренней буферизации является деталью внутренней реализации и может быть изменен в любое время. Однако для некоторых расширенных реализаций внутренние буферы можно получить с помощью `writable.writableBuffer` или `readable.readableBuffer`. Использование этих недокументированных свойств не рекомендуется.
+<!-- 0008.part.md -->
 
 ## API для потребителей потоков
 
-<!--type=misc-->
-
-Почти все приложения Node.js, какими бы простыми они ни были, так или иначе используют потоки. Ниже приведен пример использования потоков в приложении Node.js, реализующем HTTP-сервер:
+Почти все приложения Node.js, независимо от того, насколько они просты, в той или иной мере используют потоки. Ниже приведен пример использования потоков в приложении Node.js, реализующем HTTP-сервер:
 
 ```js
-const http = require('http');
+const http = require('node:http');
 
 const server = http.createServer((req, res) => {
-  // `req` is an http.IncomingMessage, which is a readable stream.
-  // `res` is an http.ServerResponse, which is a writable stream.
+  // `req` - это http.IncomingMessage, который является читаемым потоком.
+  // `res` - это http.ServerResponse, который является записываемым потоком.
 
   let body = '';
-  // Get the data as utf8 strings.
-  // If an encoding is not set, Buffer objects will be received.
+  // Получаем данные в виде строк utf8.
+  // Если кодировка не задана, будут получены объекты Buffer.
   req.setEncoding('utf8');
 
-  // Readable streams emit 'data' events once a listener is added.
+  // Читаемые потоки испускают события 'data' после добавления слушателя.
   req.on('data', (chunk) => {
     body += chunk;
   });
 
-  // The 'end' event indicates that the entire body has been received.
+  // Событие 'end' означает, что все тело было получено.
   req.on('end', () => {
     try {
       const data = JSON.parse(body);
-      // Write back something interesting to the user:
+      // Записываем обратно что-нибудь интересное для пользователя:
       res.write(typeof data);
       res.end();
     } catch (er) {
-      // uh oh! bad json!
+      // ой! плохой json!
       res.statusCode = 400;
       return res.end(`error: ${er.message}`);
     }
@@ -112,87 +300,76 @@ const server = http.createServer((req, res) => {
 server.listen(1337);
 
 // $ curl localhost:1337 -d "{}"
-// object
+// объект
 // $ curl localhost:1337 -d "\"foo\""
-// string
+// строка
 // $ curl localhost:1337 -d "not json"
-// error: Unexpected token o in JSON at position 1
+// ошибка: Unexpected token 'o', "not json" is not valid JSON
 ```
 
-[`Writable`](#class-streamwritable) потоки (например, `res` в примере) предоставляют такие методы, как `write()` а также `end()` которые используются для записи данных в поток.
+[`Writable`](#class-streamwritable) потоки (такие как `res` в примере) раскрывают такие методы как `write()` и `end()`, которые используются для записи данных в поток.
 
-[`Readable`](#class-streamreadable) потоки используют [`EventEmitter`](events.md#class-eventemitter) API для уведомления кода приложения, когда данные доступны для чтения из потока. Эти доступные данные можно прочитать из потока несколькими способами.
+Потоки [`Readable`](#class-streamreadable) используют API [`EventEmitter`](events.md#class-eventemitter) для уведомления кода приложения, когда данные доступны для чтения из потока. Эти доступные данные могут быть считаны из потока несколькими способами.
 
-Оба [`Writable`](#class-streamwritable) а также [`Readable`](#class-streamreadable) потоки используют [`EventEmitter`](events.md#class-eventemitter) API различными способами для передачи текущего состояния потока.
+Потоки [`Writable`](#class-streamwritable) и [`Readable`](#class-streamreadable) используют API [`EventEmitter`](events.md#class-eventemitter) различными способами для передачи текущего состояния потока.
 
-[`Duplex`](#class-streamduplex) а также [`Transform`](#class-streamtransform) потоки оба [`Writable`](#class-streamwritable) а также [`Readable`](#class-streamreadable).
+Потоки [`Duplex`](#class-streamduplex) и [`Transform`](#class-streamtransform) являются одновременно [`Writable`](#class-streamwritable) и [`Readable`](#class-streamreadable).
 
-Приложения, которые либо записывают данные, либо потребляют данные из потока, не обязаны напрямую реализовывать потоковые интерфейсы и, как правило, не имеют причин для вызова `require('stream')`.
+Приложениям, которые записывают данные в поток или потребляют данные из потока, не требуется реализовывать интерфейсы потоков напрямую, и у них, как правило, нет причин вызывать `require('node:stream')`.
 
-Разработчикам, желающим реализовать новые типы потоков, следует обратиться к разделу [API для исполнителей потоковой передачи](#api-for-stream-implementers).
+Разработчики, желающие реализовать новые типы потоков, должны обратиться к разделу [API для реализаторов потоков] (#api-for-stream-implementers).
+
+<!-- 0009.part.md -->
 
 ### Записываемые потоки
 
-Записываемые потоки - это абстракция для _место назначения_ в который записываются данные.
+Записываемые потоки - это абстракция для _назначения_, в которое записываются данные.
 
-Примеры [`Writable`](#class-streamwritable) потоки включают:
+Примеры [`Writable`](#class-streamwritable) потоков включают:
 
-- [HTTP-запросы на клиенте](http.md#class-httpclientrequest)
-- [HTTP-ответы на сервере](http.md#class-httpserverresponse)
+- [HTTP-запросы, на клиенте](http.md#class-httpclientrequest)
+- [HTTP ответы, на сервере](http.md#class-httpserverresponse)
 - [потоки записи fs](fs.md#class-fswritestream)
 - [потоки zlib](zlib.md)
-- [криптопотоки](crypto.md)
-- [Сокеты TCP](net.md#class-netsocket)
-- [дочерний процесс stdin](child_process.md#subprocessstdin)
+- [crypto streams](crypto.md)
+- [TCP сокеты](net.md#class-netsocket)
+- [stdin дочернего процесса](child_process.md#subprocessstdin)
 - [`process.stdout`](process.md#processstdout), [`process.stderr`](process.md#processstderr)
 
-Некоторые из этих примеров на самом деле [`Duplex`](#class-streamduplex) потоки, реализующие [`Writable`](#class-streamwritable) интерфейс.
+Некоторые из этих примеров на самом деле являются потоками [`Duplex`](#class-streamduplex), которые реализуют интерфейс [`Writable`](#class-streamwritable).
 
-Все [`Writable`](#class-streamwritable) потоки реализуют интерфейс, определенный `stream.Writable` класс.
+Все потоки [`Writable`](#class-streamwritable) реализуют интерфейс, определенный классом `stream.Writable`.
 
-Хотя конкретные экземпляры [`Writable`](#class-streamwritable) потоки могут отличаться по-разному, все `Writable` потоки следуют тому же основному шаблону использования, как показано в примере ниже:
+Хотя конкретные экземпляры потоков [`Writable`](#class-streamwritable) могут различаться различными способами, все потоки `Writable` следуют одной и той же основной схеме использования, как показано в примере ниже:
 
 ```js
 const myStream = getWritableStreamSomehow();
-myStream.write('some data');
-myStream.write('some more data');
-myStream.end('done writing data');
+myStream.write('некоторые данные');
+myStream.write('еще немного данных');
+myStream.end('закончил запись данных');
 ```
+
+<!-- 0010.part.md -->
 
 #### Класс: `stream.Writable`
 
-<!-- YAML
-added: v0.9.4
--->
+<!-- 0011.part.md -->
 
-<!--type=class-->
+##### Событие: `close`
 
-##### Событие: `'close'`
+Событие `'close'` генерируется, когда поток и любой из его базовых ресурсов (например, дескриптор файла) закрыты. Это событие указывает на то, что больше не будет испускаться никаких событий, и никаких дальнейших вычислений не будет.
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18438
-    description: Add `emitClose` option to specify if `'close'` is emitted on
-                 destroy.
--->
+Поток [`Writable`](#class-streamwritable) всегда будет испускать событие `'close`, если он создан с опцией `emitClose`.
 
-В `'close'` Событие генерируется, когда поток и любые его базовые ресурсы (например, файловый дескриптор) закрыты. Событие указывает, что больше никаких событий не будет, и никаких дальнейших вычислений не будет.
+<!-- 0012.part.md -->
 
-А [`Writable`](#class-streamwritable) поток всегда будет излучать `'close'` событие, если оно создано с `emitClose` вариант.
+##### Событие: `drain`
 
-##### Событие: `'drain'`
-
-<!-- YAML
-added: v0.9.4
--->
-
-Если звонок на [`stream.write(chunk)`](#writablewritechunk-encoding-callback) возвращается `false`, то `'drain'` Событие будет сгенерировано, когда будет необходимо возобновить запись данных в поток.
+Если вызов [`stream.write(chunk)`](#writablewritechunk-encoding-callback) возвращает `false`, событие `'drain'` будет выдано, когда будет уместно возобновить запись данных в поток.
 
 ```js
-// Write the data to the supplied writable stream one million times.
-// Be attentive to back-pressure.
+// Записываем данные в предоставленный поток с возможностью записи миллион раз.
+// Будьте внимательны к обратному давлению.
 function writeOneMillionTimes(
   writer,
   data,
@@ -206,44 +383,40 @@ function writeOneMillionTimes(
     do {
       i--;
       if (i === 0) {
-        // Last time!
+        // Последний раз!
         writer.write(data, encoding, callback);
       } else {
-        // See if we should continue, or wait.
-        // Don't pass the callback, because we're not done yet.
+        // Узнайте, должны ли мы продолжить или подождать.
+        // Не передавайте обратный вызов, потому что мы еще не закончили.
         ok = writer.write(data, encoding);
       }
     } while (i > 0 && ok);
     if (i > 0) {
-      // Had to stop early!
-      // Write some more once it drains.
+      // Пришлось остановиться раньше времени!
+      // Напишем еще немного, когда все стечет.
       writer.once('drain', write);
     }
   }
 }
 ```
 
-##### Событие: `'error'`
+<!-- 0013.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `error`
 
-- {Ошибка}
+- {Error}
 
-В `'error'` Событие генерируется, если произошла ошибка при записи или передаче данных. Обратному вызову слушателя передается один `Error` аргумент при вызове.
+Событие `'error'` генерируется, если во время записи или передачи данных произошла ошибка. При вызове обратного вызова слушателя ему передается единственный аргумент `Error`.
 
-Поток закрывается, когда `'error'` событие генерируется, если только [`autoDestroy`](#new-streamwritableoptions) опция была установлена на `false` при создании потока.
+Поток закрывается при возникновении события `'error'`, если только опция [`autoDestroy`](#new-streamwritableoptions) не была установлена в `false` при создании потока.
 
-После `'error'`, никаких других событий кроме `'close'` _должен_ быть выпущенным (в том числе `'error'` События).
+После `error` больше не должно происходить никаких событий, кроме `close` (включая события `error`).
+
+<!-- 0014.part.md -->
 
 ##### Событие: `'finish'`
 
-<!-- YAML
-added: v0.9.4
--->
-
-В `'finish'` событие испускается после [`stream.end()`](#writableendchunk-encoding-callback) был вызван, и все данные были сброшены в базовую систему.
+Событие `finish` возникает после вызова метода [`stream.end()`](#writableendchunk-encoding-callback), и все данные были переданы в базовую систему.
 
 ```js
 const writer = getWritableStreamSomehow();
@@ -251,97 +424,83 @@ for (let i = 0; i < 100; i++) {
   writer.write(`hello, #${i}!\n`);
 }
 writer.on('finish', () => {
-  console.log('All writes are now complete.');
+  console.log('Все записи завершены');
 });
-writer.end('This is the end\n');
+writer.end('Это конец\n');
 ```
 
-##### Событие: `'pipe'`
+<!-- 0015.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `pipe`
 
-- `src` {stream.Readable} исходный поток, который пересылается в этот доступный для записи
+- `src` {stream.Readable} исходный поток, который передается по трубопроводу в этот объект записи
 
-В `'pipe'` событие генерируется, когда [`stream.pipe()`](#readablepipedestination-options) вызывается в доступном для чтения потоке, добавляя этот доступный для записи набору адресатов.
+Событие `pipe` возникает, когда метод [`stream.pipe()`](#readablepipedestination-options) вызывается на потоке readable, добавляя этот writable к его набору пунктов назначения.
 
 ```js
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('pipe', (src) => {
-  console.log('Something is piping into the writer.');
+  console.log('Что-то передается в писатель');
   assert.equal(src, reader);
 });
 reader.pipe(writer);
 ```
 
-##### Событие: `'unpipe'`
+<!-- 0016.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `unpipe`
 
-- `src` {stream.Readable} Исходный поток, который [без трубопровода](#readableunpipedestination) это записываемое
+- `src` {stream.Readable} Исходный поток, который [unpipeed](#readableunpipedestination) этот writable
 
-В `'unpipe'` событие генерируется, когда [`stream.unpipe()`](#readableunpipedestination) метод вызывается на [`Readable`](#class-streamreadable) поток, удалив это [`Writable`](#class-streamwritable) из своего набора направлений.
+Событие `unpipe` испускается, когда метод [`stream.unpipe()`](#readableunpipedestination) вызывается на потоке [`Readable`](#class-streamreadable), удаляя этот [`Writable`](#class-streamwritable) из его набора пунктов назначения.
 
-Это также излучается в случае, если это [`Writable`](#class-streamwritable) поток выдает ошибку, когда [`Readable`](#class-streamreadable) струйные трубы в него.
+Это также происходит в случае, если этот поток [`Writable`](#class-streamwritable) выдает ошибку при передаче в него потока [`Readable`](#class-streamreadable).
 
 ```js
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('unpipe', (src) => {
-  console.log(
-    'Something has stopped piping into the writer.'
-  );
+  console.log('Что-то перестало поступать в писатель');
   assert.equal(src, reader);
 });
 reader.pipe(writer);
 reader.unpipe(writer);
 ```
 
+<!-- 0017.part.md -->
+
 ##### `writable.cork()`
 
-<!-- YAML
-added: v0.11.2
--->
+Метод `writable.cork()` заставляет все записанные данные буферизироваться в памяти. Буферизованные данные будут удалены при вызове методов [`stream.uncork()`](#writableuncork) или [`stream.end()`](#writableendchunk-encoding-callback).
 
-В `writable.cork()` метод заставляет все записанные данные буферизироваться в памяти. Буферизованные данные будут сброшены, когда либо [`stream.uncork()`](#writableuncork) или [`stream.end()`](#writableendchunk-encoding-callback) методы называются.
+Основная цель метода `writable.cork()` - приспособиться к ситуации, когда в поток записывается несколько небольших фрагментов в быстрой последовательности. Вместо того, чтобы немедленно пересылать их по назначению, `writable.cork()` буферизирует все куски до вызова `writable.uncork()`, который передаст их все в `writable._writev()`, если таковой имеется. Это предотвращает ситуацию блокировки в голове строки, когда данные буферизируются в ожидании обработки первого небольшого фрагмента. Однако использование `writable.cork()` без реализации `writable._writev()` может негативно сказаться на пропускной способности.
 
-Основная цель `writable.cork()` предназначен для учета ситуации, в которой несколько небольших фрагментов записываются в поток в быстрой последовательности. Вместо того, чтобы сразу пересылать их в основной пункт назначения, `writable.cork()` буферизует все куски до тех пор, пока `writable.uncork()` вызывается, который передаст их всех `writable._writev()`, если представить. Это предотвращает ситуацию блокировки заголовка строки, когда данные буферизируются в ожидании обработки первого небольшого фрагмента. Однако использование `writable.cork()` без реализации `writable._writev()` может отрицательно сказаться на пропускной способности.
+См. также: [`writable.uncork()`](#writableuncork), [`writable._writev()`](#writable_writevchunks-callback).
 
-Смотрите также: [`writable.uncork()`](#writableuncork), [`writable._writev()`](#writable_writevchunks-callback).
+<!-- 0018.part.md -->
 
 ##### `writable.destroy([error])`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/29197
-    description: Work as a no-op on a stream that has already been destroyed.
--->
-
-- `error` {Error} Необязательно, сообщение об ошибке `'error'` событие.
+- `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `'error'`.
 - Возвращает: {this}
 
-Уничтожьте поток. При желании испустить `'error'` событие и испустить `'close'` событие (если `emitClose` установлен на `false`). После этого вызова доступный для записи поток закончился, и последующие вызовы `write()` или `end()` приведет к `ERR_STREAM_DESTROYED` ошибка. Это разрушительный и немедленный способ уничтожить ручей. Предыдущие звонки на `write()` может не стекать и может вызвать `ERR_STREAM_DESTROYED` ошибка. Использовать `end()` вместо уничтожения, если данные должны быть сброшены перед закрытием, или дождаться `'drain'` событие перед уничтожением потока.
+Уничтожить поток. Опционально выдает событие `'error'` и выдает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова поток, доступный для записи, завершен, и последующие вызовы `write()` или `end()` приведут к ошибке `ERR_STREAM_DESTROYED`. Это деструктивный и немедленный способ уничтожения потока. Предыдущие вызовы `write()` могут не уничтожить поток и вызвать ошибку `ERR_STREAM_DESTROYED`. Используйте `end()` вместо destroy, если данные должны быть удалены до закрытия, или дождитесь события `'drain'` перед уничтожением потока.
 
 ```cjs
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myStream = new Writable();
 
-const fooErr = new Error('foo error');
+const fooErr = new Error('ошибка foo');
 myStream.destroy(fooErr);
 myStream.on('error', (fooErr) =>
   console.error(fooErr.message)
-); // foo error
+); // ошибка foo
 ```
 
 ```cjs
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myStream = new Writable();
 
@@ -350,7 +509,7 @@ myStream.on('error', function wontHappen() {});
 ```
 
 ```cjs
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myStream = new Writable();
 myStream.destroy();
@@ -359,22 +518,28 @@ myStream.write('foo', (error) => console.error(error.code));
 // ERR_STREAM_DESTROYED
 ```
 
-Один раз `destroy()` был вызван, любые дальнейшие вызовы не будут выполняться, и никаких других ошибок, кроме `_destroy()` может быть выпущен как `'error'`.
+После вызова `destroy()` любые дальнейшие вызовы будут бесполезны, и никакие другие ошибки, кроме `_destroy()`, не могут быть выданы как `'error'`.
 
-Разработчикам не следует переопределять этот метод, а вместо этого реализовывать [`writable._destroy()`](#writable_destroyerr-callback).
+Реализаторы не должны переопределять этот метод, а вместо этого реализовать [`writable._destroy()`](#writable_destroyerr-callback).
+
+<!-- 0019.part.md -->
+
+##### `writable.closed`
+
+- {булево}
+
+Является `true` после испускания `close`.
+
+<!-- 0020.part.md -->
 
 ##### `writable.destroyed`
 
-<!-- YAML
-added: v8.0.0
--->
+- {boolean}
 
-- {логический}
-
-Является `true` после [`writable.destroy()`](#writabledestroyerror) был вызван.
+Является `true` после вызова [`writable.destroy()`](#writabledestroyerror).
 
 ```cjs
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myStream = new Writable();
 
@@ -383,67 +548,44 @@ myStream.destroy();
 console.log(myStream.destroyed); // true
 ```
 
+<!-- 0021.part.md -->
+
 ##### `writable.end([chunk[, encoding]][, callback])`
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34101
-    description: The `callback` is invoked before 'finish' or on error.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/29747
-    description: The `callback` is invoked if 'finish' or 'error' is emitted.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18780
-    description: This method now returns a reference to `writable`.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/11608
-    description: The `chunk` argument can now be a `Uint8Array` instance.
--->
-
-- `chunk` {string | Buffer | Uint8Array | any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должно быть строкой, `Buffer` или `Uint8Array`. Для потоков в объектном режиме `chunk` может быть любое значение JavaScript, кроме `null`.
-- `encoding` {строка} Кодировка, если `chunk` это строка
-- `callback` {Функция} Обратный вызов, когда поток завершен.
+- `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+- `encoding` {string} Кодировка, если `chunk` является строкой.
+- `callback` {функция} Обратный вызов для завершения потока.
 - Возвращает: {this}
 
-Вызов `writable.end()` метод сигнализирует о том, что данные больше не будут записываться в [`Writable`](#class-streamwritable). Необязательный `chunk` а также `encoding` Аргументы позволяют записать последний дополнительный фрагмент данных непосредственно перед закрытием потока.
+Вызов метода `writable.end()` сигнализирует о том, что данные больше не будут записываться в [`Writable`](#class-streamwritable). Необязательные аргументы `chunk` и `encoding` позволяют записать последний дополнительный фрагмент данных непосредственно перед закрытием потока.
 
-Вызов [`stream.write()`](#writablewritechunk-encoding-callback) метод после вызова [`stream.end()`](#writableendchunk-encoding-callback) вызовет ошибку.
+Вызов метода [`stream.write()`](#writablewritechunk-encoding-callback) после вызова [`stream.end()`](#writableendchunk-encoding-callback) приведет к ошибке.
 
 ```js
-// Write 'hello, ' and then end with 'world!'.
-const fs = require('fs');
+// Напишите 'hello, ', а затем закончите 'world!'.
+const fs = require('node:fs');
 const file = fs.createWriteStream('example.txt');
 file.write('hello, ');
 file.end('world!');
-// Writing more now is not allowed!
+// Писать больше сейчас запрещено!
 ```
+
+<!-- 0022.part.md -->
 
 ##### `writable.setDefaultEncoding(encoding)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v6.1.0
-    pr-url: https://github.com/nodejs/node/pull/5040
-    description: This method now returns a reference to `writable`.
--->
-
-- `encoding` {строка} Новая кодировка по умолчанию
+- `encoding` {string} Новая кодировка по умолчанию
 - Возвращает: {this}
 
-В `writable.setDefaultEncoding()` метод устанавливает значение по умолчанию `encoding` для [`Writable`](#class-streamwritable) транслировать.
+Метод `writable.setDefaultEncoding()` устанавливает `кодировку по умолчанию` для потока [`Writable`](#class-streamwritable).
+
+<!-- 0023.part.md -->
 
 ##### `writable.uncork()`
 
-<!-- YAML
-added: v0.11.2
--->
+Метод `writable.uncork()` очищает все данные, буферизованные с момента вызова [`stream.cork()`](#writablecork).
 
-В `writable.uncork()` метод очищает все данные, буферизованные, так как [`stream.cork()`](#writablecork) назывался.
-
-Когда используешь [`writable.cork()`](#writablecork) а также `writable.uncork()` для управления буферизацией записи в поток рекомендуется, чтобы вызовы `writable.uncork()` быть отложенным с использованием `process.nextTick()`. Это позволяет группировать все `writable.write()` вызовы, которые происходят в рамках данной фазы цикла событий Node.js.
+При использовании [`writable.cork()`](#writablecork) и `writable.uncork()` для управления буферизацией записей в поток, отложите вызов `writable.uncork()` с помощью `process.nextTick()`. Это позволяет выполнять пакетную обработку всех вызовов `writable.write()`, которые происходят в данной фазе цикла событий Node.js.
 
 ```js
 stream.cork();
@@ -452,7 +594,7 @@ stream.write('data ');
 process.nextTick(() => stream.uncork());
 ```
 
-Если [`writable.cork()`](#writablecork) метод вызывается несколько раз в потоке, такое же количество вызовов `writable.uncork()` должен быть вызван для очистки буферизованных данных.
+Если метод [`writable.cork()`](#writablecork) вызывается несколько раз на потоке, то такое же количество вызовов `writable.uncork()` должно быть вызвано для промывки буферизованных данных.
 
 ```js
 stream.cork();
@@ -461,125 +603,115 @@ stream.cork();
 stream.write('data ');
 process.nextTick(() => {
   stream.uncork();
-  // The data will not be flushed until uncork() is called a second time.
+  // Данные не будут удалены до тех пор, пока функция uncork() не будет вызвана во второй раз.
   stream.uncork();
 });
 ```
 
-Смотрите также: [`writable.cork()`](#writablecork).
+См. также: [`writable.cork()`](#writablecork).
+
+<!-- 0024.part.md -->
 
 ##### `writable.writable`
 
-<!-- YAML
-added: v11.4.0
--->
+- {boolean}
 
-- {логический}
+Является `true`, если безопасно вызывать [`writable.write()`](#writablewritechunk-encoding-callback), что означает, что поток не был уничтожен, ошибочен или завершен.
 
-Является `true` если можно позвонить [`writable.write()`](#writablewritechunk-encoding-callback), что означает, что поток не был уничтожен, не содержит ошибок и не завершен.
+<!-- 0025.part.md -->
+
+##### `writable.writableAborted`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- {boolean}
+
+Возвращает, был ли поток уничтожен или ошибочен перед выдачей `'finish'`.
+
+<!-- 0026.part.md -->
 
 ##### `writable.writableEnded`
 
-<!-- YAML
-added: v12.9.0
--->
+- {булево}
 
-- {логический}
+Является `true` после вызова [`writable.end()`](#writableendchunk-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](#writablewritablefinished).
 
-Является `true` после [`writable.end()`](#writableendchunk-encoding-callback) был вызван. Это свойство не указывает, были ли данные сброшены, для этого использования. [`writable.writableFinished`](#writablewritablefinished) вместо.
+<!-- 0027.part.md -->
 
 ##### `writable.writableCorked`
 
-<!-- YAML
-added:
- - v13.2.0
- - v12.16.0
--->
-
 - {целое число}
 
-Количество раз [`writable.uncork()`](#writableuncork) необходимо вызвать, чтобы полностью откупорить поток.
+Количество раз, которое необходимо вызвать [`writable.uncork()`](#writableuncork), чтобы полностью откупорить поток.
+
+<!-- 0028.part.md -->
+
+##### `writable.errored`
+
+- {Error}
+
+Возвращает ошибку, если поток был уничтожен с ошибкой.
+
+<!-- 0029.part.md -->
 
 ##### `writable.writableFinished`
 
-<!-- YAML
-added: v12.6.0
--->
+- {boolean}
 
-- {логический}
+Устанавливается в `true` непосредственно перед испусканием события [`'finish'`](#event-finish).
 
-Установлен на `true` непосредственно перед [`'finish'`](#event-finish) событие испускается.
+<!-- 0030.part.md -->
 
 ##### `writable.writableHighWaterMark`
 
-<!-- YAML
-added: v9.3.0
--->
+- {число}
 
-- {количество}
+Возвращает значение `highWaterMark`, переданное при создании этой `записываемой`.
 
-Вернуть значение `highWaterMark` прошло при создании этого `Writable`.
+<!-- 0031.part.md -->
 
 ##### `writable.writableLength`
 
-<!-- YAML
-added: v9.4.0
--->
+- {число}
 
-- {количество}
+Это свойство содержит количество байтов (или объектов) в очереди, готовых к записи. Значение предоставляет данные интроспекции относительно состояния `highWaterMark`.
 
-Это свойство содержит количество байтов (или объектов) в очереди, готовых к записи. Значение предоставляет данные самоанализа относительно статуса `highWaterMark`.
+<!-- 0032.part.md -->
 
 ##### `writable.writableNeedDrain`
 
-<!-- YAML
-added:
-  - v15.2.0
-  - v14.17.0
--->
+- {boolean}
 
-- {логический}
+Является `true`, если буфер потока был заполнен и поток будет издавать сигнал `'drain'`.
 
-Является `true` если буфер потока был заполнен и поток выдаст `'drain'`.
+<!-- 0033.part.md -->
 
 ##### `writable.writableObjectMode`
 
-<!-- YAML
-added: v12.3.0
--->
+- {boolean}
 
-- {логический}
+Получатель для свойства `objectMode` данного потока `Writable`.
 
-Получатель недвижимости `objectMode` данного `Writable` транслировать.
+<!-- 0034.part.md -->
 
 ##### `writable.write(chunk[, encoding][, callback])`
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/11608
-    description: The `chunk` argument can now be a `Uint8Array` instance.
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/6170
-    description: Passing `null` as the `chunk` parameter will always be
-                 considered invalid now, even in object mode.
--->
+- `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+- `encoding` {string|null} Кодировка, если `chunk` является строкой. **По умолчанию:** `'utf8'`.
+- `callback` {Function} Обратный вызов, когда этот фрагмент данных будет удален.
+- Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
-- `chunk` {string | Buffer | Uint8Array | any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должно быть строкой, `Buffer` или `Uint8Array`. Для потоков в объектном режиме `chunk` может быть любое значение JavaScript, кроме `null`.
-- `encoding` {string | null} Кодировка, если `chunk` это строка. **Дефолт:** `'utf8'`
-- `callback` {Функция} Обратный вызов, когда этот фрагмент данных сбрасывается.
-- Возвращает: {логическое} `false` если поток хочет, чтобы вызывающий код дождался `'drain'` событие, которое должно быть сгенерировано перед продолжением записи дополнительных данных; иначе `true`.
+Метод `writable.write()` записывает некоторые данные в поток и вызывает предоставленный `callback`, когда данные будут полностью обработаны. Если произошла ошибка, будет вызван `callback` с ошибкой в качестве первого аргумента. Вызов `callback` происходит асинхронно и до того, как будет выдана `'error'`.
 
-В `writable.write()` метод записывает некоторые данные в поток и вызывает предоставленный `callback` как только данные будут полностью обработаны. В случае ошибки `callback` будет вызываться с ошибкой в качестве первого аргумента. В `callback` вызывается асинхронно и до `'error'` испускается.
+Возвращаемое значение равно `true`, если внутренний буфер меньше, чем `highWaterMark`, настроенный при создании потока после приема `chunk`. Если возвращается `false`, дальнейшие попытки записи данных в поток должны быть прекращены до тех пор, пока не произойдет событие [`'drain'`](#event-drain).
 
-Возвращаемое значение - `true` если внутренний буфер меньше `highWaterMark` настроен, когда поток был создан после допуска `chunk`. Если `false` возвращается, дальнейшие попытки записи данных в поток должны прекратиться до тех пор, пока [`'drain'`](#event-drain) событие испускается.
+Пока поток не осушен, вызовы `write()` будут буферизировать `chunk` и возвращать `false`. Когда все текущие буферизованные фрагменты будут осушены (приняты операционной системой для доставки), произойдет событие `'drain'`. Если `write()` возвращает `false`, не записывайте больше чанков, пока не произойдет событие `'drain'`. Хотя вызов `write()` на потоке, который не осушается, разрешен, Node.js будет буферизировать все записанные фрагменты до тех пор, пока не произойдет максимальное использование памяти, после чего произойдет безусловное прерывание. Даже до прерывания, высокое использование памяти приведет к плохой работе сборщика мусора и высокой RSS (которая обычно не возвращается в систему, даже после того, как память больше не требуется). Поскольку TCP-сокеты могут никогда не разряжаться, если удаленный пир не читает данные, запись в сокет, который не разряжается, может привести к уязвимости, которую можно использовать удаленно.
 
-Пока поток не сливается, звонки на `write()` буферизирует `chunk`, и верните false. После того, как все буферизованные в данный момент фрагменты опустошены (приняты для доставки операционной системой), `'drain'` событие будет выпущено. Рекомендуется один раз `write()` возвращает false, блоки больше не будут записаны до тех пор, пока `'drain'` событие испускается. Во время звонка `write()` в потоке, который не истощается, разрешено, Node.js будет буферизовать все записанные фрагменты до тех пор, пока не будет достигнуто максимальное использование памяти, после чего он будет безоговорочно прерван. Даже до того, как он прервется, большое использование памяти приведет к низкой производительности сборщика мусора и высокому RSS (который обычно не возвращается в систему, даже после того, как память больше не требуется). Поскольку сокеты TCP могут никогда не истощаться, если удаленный узел не читает данные, запись в сокет, который не истощает, может привести к уязвимости, которую можно использовать удаленно.
+Запись данных, пока поток не иссякает, особенно проблематична для [`Transform`](#class-streamtransform), поскольку потоки `Transform` по умолчанию приостанавливаются до тех пор, пока они не будут переданы по трубопроводу или не будет добавлен обработчик событий `data` или `readable`.
 
-Запись данных, когда поток не истощается, особенно проблематичен для [`Transform`](#class-streamtransform), поскольку `Transform` потоки по умолчанию приостанавливаются до тех пор, пока они не будут переданы по конвейеру или `'data'` или `'readable'` добавлен обработчик событий.
-
-Если данные для записи могут быть сгенерированы или получены по запросу, рекомендуется инкапсулировать логику в [`Readable`](#class-streamreadable) и использовать [`stream.pipe()`](#readablepipedestination-options). Однако если позвонить `write()` является предпочтительным, можно учитывать противодавление и избегать проблем с памятью, используя [`'drain'`](#event-drain) событие:
+Если данные для записи могут быть сгенерированы или получены по требованию, рекомендуется инкапсулировать логику в [`Readable`](#class-streamreadable) и использовать [`stream.pipe()`](#readablepipedestination-options). Однако, если вызов `write()` предпочтительнее, можно соблюсти обратное давление и избежать проблем с памятью, используя событие [`'drain'`](#event-drain):
 
 ```js
 function write(data, cb) {
@@ -596,206 +728,185 @@ write('hello', () => {
 });
 ```
 
-А `Writable` поток в объектном режиме всегда будет игнорировать `encoding` аргумент.
+Поток `Writable` в объектном режиме всегда будет игнорировать аргумент `encoding`.
+
+<!-- 0035.part.md -->
 
 ### Читаемые потоки
 
-Читаемые потоки - это абстракция для _источник_ откуда потребляются данные.
+Читаемые потоки - это абстракция для _источника_, из которого потребляются данные.
 
-Примеры `Readable` потоки включают:
+Примеры `Readable` потоков включают:
 
-- [HTTP-ответы на клиенте](http.md#class-httpincomingmessage)
-- [HTTP-запросы на сервере](http.md#class-httpincomingmessage)
+- [HTTP ответы, на клиенте](http.md#class-httpincomingmessage)
+- [HTTP-запросы, на сервере](http.md#class-httpincomingmessage)
 - [потоки чтения fs](fs.md#class-fsreadstream)
 - [потоки zlib](zlib.md)
-- [криптопотоки](crypto.md)
-- [Сокеты TCP](net.md#class-netsocket)
-- [дочерний процесс stdout и stderr](child_process.md#subprocessstdout)
+- [crypto streams](crypto.md)
+- [TCP сокеты](net.md#class-netsocket)
+- [stdout и stderr дочернего процесса](child_process.md#subprocessstdout)
 - [`process.stdin`](process.md#processstdin)
 
-Все [`Readable`](#class-streamreadable) потоки реализуют интерфейс, определенный `stream.Readable` класс.
+Все потоки [`Readable`](#class-streamreadable) реализуют интерфейс, определенный классом `stream.Readable`.
+
+<!-- 0036.part.md -->
 
 #### Два режима чтения
 
-`Readable` потоки эффективно работают в одном из двух режимов: текущем и приостановленном. Эти режимы отделены от [объектный режим](#object-mode). А [`Readable`](#class-streamreadable) stream может быть в объектном режиме или нет, независимо от того, находится ли он в потоковом режиме или в режиме паузы.
+Потоки `Readable` эффективно работают в одном из двух режимов: текущем и приостановленном. Эти режимы отличаются от [объектного режима](#object-mode). Поток [`Readable`](#class-streamreadable) может быть в объектном режиме или нет, независимо от того, находится ли он в потоковом режиме или в режиме паузы.
 
-- В потоковом режиме данные автоматически считываются из базовой системы и предоставляются приложению как можно быстрее с использованием событий через [`EventEmitter`](events.md#class-eventemitter) интерфейс.
+- В режиме потока данные считываются из базовой системы автоматически и предоставляются приложению как можно быстрее с помощью событий через интерфейс [`EventEmitter`](events.md#class-eventemitter).
 
-- В приостановленном режиме [`stream.read()`](#readablereadsize) Метод должен вызываться явно для чтения фрагментов данных из потока.
+- В режиме паузы для чтения фрагментов данных из потока необходимо явно вызывать метод [`stream.read()`](#readablereadsize).
 
-Все [`Readable`](#class-streamreadable) потоки начинаются в приостановленном режиме, но могут быть переключены в текущий режим одним из следующих способов:
+Все потоки [`Readable`](#class-streamreadable) начинаются в режиме паузы, но могут быть переключены в режим потока одним из следующих способов:
 
-- Добавление [`'data'`](#event-data) обработчик события.
-- Вызов [`stream.resume()`](#readableresume) метод.
-- Вызов [`stream.pipe()`](#readablepipedestination-options) метод отправки данных в [`Writable`](#class-streamwritable).
+- Добавление обработчика события [`'data'`](#event-data).
+- Вызов метода [`stream.resume()`](#readableresume).
+- Вызов метода [`stream.pipe()`](#readablepipedestination-options) для отправки данных на [`Writable`](#class-streamwritable).
 
-В `Readable` можно вернуться в режим паузы, используя одно из следующих действий:
+`Readable` может переключиться обратно в режим паузы, используя одно из следующих действий:
 
-- Если адресатов каналов нет, позвонив в [`stream.pause()`](#readablepause) метод.
-- Если есть пункты назначения каналов, удалив все пункты назначения каналов. Несколько пунктов назначения каналов можно удалить, вызвав [`stream.unpipe()`](#readableunpipedestination) метод.
+- Если нет мест назначения, вызвав метод [`stream.pause()`](#readablepause).
+- Если есть места назначения труб, то путем удаления всех мест назначения труб. Несколько мест назначения труб можно удалить, вызвав метод [`stream.unpipe()`](#readableunpipedestination).
 
-Важно помнить, что `Readable` не будет генерировать данные, пока не будет предоставлен механизм для использования или игнорирования этих данных. Если потребляющий механизм отключен или убран, `Readable` буду _пытаться_ чтобы прекратить генерировать данные.
+Важно помнить, что `Readable` не будет генерировать данные, пока не будет предоставлен механизм для потребления или игнорирования этих данных. Если механизм потребления отключен или убран, `Readable` будет _пытаться_ прекратить генерировать данные.
 
-По причинам обратной совместимости удаление [`'data'`](#event-data) обработчики событий будут **нет** автоматически приостанавливает трансляцию. Кроме того, если есть направления по трубопроводу, то вызов [`stream.pause()`](#readablepause) не гарантирует, что поток будет _оставаться_ приостанавливается, когда эти пункты назначения истощаются, и запрашивают дополнительные данные.
+По причинам обратной совместимости, удаление обработчиков событий [`данные`](#event-data) **не** будет автоматически приостанавливать поток. Кроме того, если есть конечные пункты назначения, то вызов [`stream.pause()`](#readablepause) не гарантирует, что поток _останется_ приостановленным, когда эти пункты назначения иссякнут и запросят больше данных.
 
-Если [`Readable`](#class-streamreadable) переключен в поточный режим, и нет доступных потребителей для обработки данных, эти данные будут потеряны. Это может произойти, например, когда `readable.resume()` метод вызывается без слушателя, прикрепленного к `'data'` событие, или когда `'data'` обработчик событий удаляется из потока.
+Если [`Readable`](#class-streamreadable) переключается в режим потока и нет потребителей, доступных для обработки данных, эти данные будут потеряны. Это может произойти, например, когда метод `readable.resume()` вызывается без слушателя, присоединенного к событию `'data'`, или когда обработчик события `'data'` удаляется из потока.
 
-Добавление [`'readable'`](#event-readable) обработчик событий автоматически останавливает поток, и данные должны потребляться через [`readable.read()`](#readablereadsize). Если [`'readable'`](#event-readable) обработчик событий удаляется, тогда поток снова начнет течь, если есть [`'data'`](#event-data) обработчик события.
+Добавление обработчика события [`'readable'`](#event-readable) автоматически прекращает поток, и данные должны быть потреблены через [`readable.read()`](#readablereadsize). Если обработчик события [`'readable'`](#event-readable) удален, то поток снова начнет течь, если есть обработчик события [`'data'`](#event-data).
+
+<!-- 0037.part.md -->
 
 #### Три состояния
 
-«Два режима» работы для `Readable` stream - это упрощенная абстракция для более сложного управления внутренним состоянием, которое происходит внутри `Readable` реализация потока.
+Два режима работы потока `Readable` - это упрощенная абстракция для более сложного внутреннего управления состояниями, которое происходит в реализации потока `Readable`.
 
 В частности, в любой момент времени каждый `Readable` находится в одном из трех возможных состояний:
 
 - `readable.readableFlowing === null`
 - `readable.readableFlowing === false`
-- `readable.readableFlowing === true`
+- `readable.readableFlowing === true`.
 
-Когда `readable.readableFlowing` является `null`, механизма для использования данных потока не предусмотрено. Следовательно, поток не будет генерировать данные. В этом состоянии прикрепление слушателя для `'data'` событие, вызывая `readable.pipe()` метод или вызов `readable.resume()` метод переключится `readable.readableFlowing` к `true`, вызывая `Readable` чтобы начать активно излучать события по мере создания данных.
+Когда `readable.readableFlowing` имеет значение `null`, механизм потребления данных потока не предусмотрен. Поэтому поток не будет генерировать данные. В этом состоянии прикрепление слушателя для события `'data'`, вызов метода `readable.pipe()` или вызов метода `readable.resume()` переключит `readable.readableFlowing` в `true`, заставляя `Readable` начать активно генерировать события по мере генерации данных.
 
-Вызов `readable.pause()`, `readable.unpipe()`, или получение противодавления вызовет `readable.readableFlowing` быть установленным как `false`, временно останавливая поток событий, но _нет_ остановка генерации данных. В этом состоянии прикрепление слушателя для `'data'` событие не переключится `readable.readableFlowing` к `true`.
+Вызов `readable.pause()`, `readable.unpipe()` или получение обратного давления приведет к тому, что `readable.readableFlowing` будет установлен как `false`, временно останавливая поток событий, но _не_ останавливая генерацию данных. Находясь в этом состоянии, прикрепление слушателя для события `'data'` не переключит `readable.readableFlowing` в `true`.
 
 ```js
-const { PassThrough, Writable } = require('stream');
+const { PassThrough, Writable } = require('node:stream');
 const pass = new PassThrough();
 const writable = new Writable();
 
 pass.pipe(writable);
 pass.unpipe(writable);
-// readableFlowing is now false.
+// readableFlowing теперь false.
 
 pass.on('data', (chunk) => {
   console.log(chunk.toString());
 });
-pass.write('ok'); // Will not emit 'data'.
-pass.resume(); // Must be called to make stream emit 'data'.
+// readableFlowing все еще ложно.
+pass.write('ok'); // Не будет выдавать 'data'.
+pass.resume(); // Должен быть вызван, чтобы поток выдал 'данные'.
+// readableFlowing теперь истина.
 ```
 
-В то время как `readable.readableFlowing` является `false`данные могут накапливаться во внутреннем буфере потока.
+Пока `readable.readableFlowing` имеет значение `false`, данные могут накапливаться во внутреннем буфере потока.
+
+<!-- 0038.part.md -->
 
 #### Выберите один стиль API
 
-В `Readable` Stream API развивался в нескольких версиях Node.js и предоставляет несколько методов использования потоковых данных. В общем, разработчикам следует выбирать _один_ методов потребления данных и _Никогда не следует_ использовать несколько методов для получения данных из одного потока. В частности, используя комбинацию `on('data')`, `on('readable')`, `pipe()`, или асинхронные итераторы могут привести к неинтуитивному поведению.
+API потока `Readable` развивался на протяжении нескольких версий Node.js и предоставляет несколько методов потребления данных потока. В целом, разработчики должны выбрать _один_ из методов потребления данных и _никогда_ не должны использовать несколько методов для потребления данных из одного потока. В частности, использование комбинации `on('data')`, `on('readable')`, `pipe()` или асинхронных итераторов может привести к неинтуитивному поведению.
 
-Использование `readable.pipe()` Метод рекомендуется для большинства пользователей, так как он был реализован, чтобы обеспечить самый простой способ использования потоковых данных. Разработчики, которым требуется более детальный контроль над передачей и генерацией данных, могут использовать [`EventEmitter`](events.md#class-eventemitter) а также `readable.on('readable')`/`readable.read()` или `readable.pause()`/`readable.resume()` API.
+<!-- 0039.part.md -->
 
 #### Класс: `stream.Readable`
 
-<!-- YAML
-added: v0.9.4
--->
+<!-- 0040.part.md -->
 
-<!--type=class-->
+##### Событие: `close`
 
-##### Событие: `'close'`
+Событие `'close'` генерируется, когда поток и любой из его базовых ресурсов (например, дескриптор файла) закрыты. Это событие указывает на то, что больше не будет испускаться никаких событий, и никаких дальнейших вычислений не будет.
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18438
-    description: Add `emitClose` option to specify if `'close'` is emitted on
-                 destroy.
--->
+Поток [`Readable`](#class-streamreadable) всегда будет испускать событие `close`, если он создан с опцией `emitClose`.
 
-В `'close'` Событие генерируется, когда поток и любые его базовые ресурсы (например, файловый дескриптор) закрыты. Событие указывает, что больше никаких событий не будет, и никаких дальнейших вычислений не будет.
+<!-- 0041.part.md -->
 
-А [`Readable`](#class-streamreadable) поток всегда будет излучать `'close'` событие, если оно создано с `emitClose` вариант.
+##### Событие: `data`
 
-##### Событие: `'data'`
+- `chunk` {Buffer|string|any} Кусок данных. Для потоков, не работающих в объектном режиме, чанк будет либо строкой, либо `буфером`. Для потоков, работающих в объектном режиме, чанк может быть любым значением JavaScript, кроме `null`.
 
-<!-- YAML
-added: v0.9.4
--->
+Событие `'data'` генерируется всякий раз, когда поток передает право собственности на кусок данных потребителю. Это может происходить всякий раз, когда поток переключается в режим потока, вызывая `readable.pipe()`, `readable.resume()` или присоединяя обратный вызов слушателя к событию `'data'`. Событие `'data'` также будет возникать всякий раз, когда вызывается метод `readable.read()` и фрагмент данных доступен для возврата.
 
-- `chunk` {Buffer | string | any} Фрагмент данных. Для потоков, которые не работают в объектном режиме, фрагмент будет либо строкой, либо `Buffer`. Для потоков, находящихся в объектном режиме, фрагмент может быть любым значением JavaScript, кроме `null`.
+Прикрепление слушателя события `'data'` к потоку, который не был явно приостановлен, переключит поток в режим потока. Данные будут передаваться, как только они станут доступны.
 
-В `'data'` Событие генерируется всякий раз, когда поток передает право собственности на блок данных потребителю. Это может происходить всякий раз, когда поток переключается в текущий режим путем вызова `readable.pipe()`, `readable.resume()`, или прикрепив обратный вызов слушателя к `'data'` событие. В `'data'` событие также будет сгенерировано всякий раз, когда `readable.read()` вызывается метод, и доступен для возврата фрагмент данных.
-
-Прикрепление `'data'` прослушиватель событий для потока, который не был явно приостановлен, переключит поток в текущий режим. Затем данные будут переданы, как только они станут доступны.
-
-Обратному вызову слушателя будет передан фрагмент данных в виде строки, если для потока была указана кодировка по умолчанию с использованием `readable.setEncoding()` метод; в противном случае данные будут переданы как `Buffer`.
+В обратный вызов слушателя будет передан фрагмент данных в виде строки, если для потока была задана кодировка по умолчанию с помощью метода `readable.setEncoding()`; в противном случае данные будут переданы в виде `Buffer`.
 
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Received ${chunk.length} bytes of data.`);
+  console.log(`Принято ${chunk.length} байт данных.`);
 });
 ```
 
-##### Событие: `'end'`
+<!-- 0042.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `end`
 
-В `'end'` Событие генерируется, когда из потока больше нет данных для потребления.
+Событие `'end'` происходит, когда больше нет данных для потребления из потока.
 
-В `'end'` событие **не будет испускаться** если данные не будут полностью израсходованы. Это можно сделать, переключив поток в текущий режим или вызвав [`stream.read()`](#readablereadsize) несколько раз, пока все данные не будут использованы.
+Событие `'end'` **не будет вызвано**, пока данные не будут полностью израсходованы. Этого можно добиться, переключив поток в режим потока, или вызывая [`stream.read()`](#readablereadsize) несколько раз, пока все данные не будут потреблены.
 
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Received ${chunk.length} bytes of data.`);
+  console.log(`Получено ${chunk.length} байт данных.`);
 });
 readable.on('end', () => {
-  console.log('There will be no more data.');
+  console.log('Больше данных не будет.');
 });
 ```
 
-##### Событие: `'error'`
+<!-- 0043.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `error`
 
-- {Ошибка}
+- {Error}
 
-В `'error'` событие может быть отправлено `Readable` реализация в любое время. Как правило, это может произойти, если базовый поток не может генерировать данные из-за основного внутреннего сбоя или когда реализация потока пытается протолкнуть недопустимый фрагмент данных.
+Событие `'error'` может быть вызвано реализацией `Readable` в любое время. Как правило, это может произойти, если базовый поток не может генерировать данные из-за внутреннего сбоя или когда реализация потока пытается передать недопустимый фрагмент данных.
 
-Обратный вызов слушателя будет передан одним `Error` объект.
+Обратному вызову слушателя будет передан единственный объект `Error`.
 
-##### Событие: `'pause'`
+<!-- 0044.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### Событие: `pause`
 
-В `'pause'` событие генерируется, когда [`stream.pause()`](#readablepause) называется и `readableFlowing` не является `false`.
+Событие `pause` происходит, когда вызывается [`stream.pause()`](#readablepause) и `readableFlowing` не равно `false`.
+
+<!-- 0045.part.md -->
 
 ##### Событие: `'readable'`
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/17979
-    description: The `'readable'` is always emitted in the next tick after
-                 `.push()` is called.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18994
-    description: Using `'readable'` requires calling `.read()`.
--->
-
-В `'readable'` Событие генерируется, когда есть данные, доступные для чтения из потока, или когда достигнут конец потока. Фактически, `'readable'` событие указывает, что в потоке есть новая информация. Если данные доступны, [`stream.read()`](#readablereadsize) вернет эти данные.
+Событие `'readable'` генерируется, когда из потока доступны данные для чтения или когда достигнут конец потока. По сути, событие `'readable'` указывает на то, что в потоке есть новая информация. Если данные доступны, [`stream.read()`](#readablereadsize) вернет эти данные.
 
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('readable', function () {
-  // There is some data to read now.
+  // Теперь есть некоторые данные для чтения.
   let data;
 
-  while ((data = this.read())) {
+  while ((data = this.read()) !== null) {
     console.log(data);
   }
 });
 ```
 
-Если достигнут конец потока, вызывается [`stream.read()`](#readablereadsize) вернусь `null` и вызвать `'end'` событие. Это также верно, если никогда не было никаких данных для чтения. Например, в следующем примере `foo.txt` это пустой файл:
+Если достигнут конец потока, вызов [`stream.read()`](#readablereadsize) вернет `null` и вызовет событие `'end'`. Это также верно, если никогда не было данных для чтения. Например, в следующем примере `foo.txt` является пустым файлом:
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
 const rr = fs.createReadStream('foo.txt');
 rr.on('readable', () => {
   console.log(`readable: ${rr.read()}`);
@@ -805,7 +916,7 @@ rr.on('end', () => {
 });
 ```
 
-Результат выполнения этого сценария:
+Результатом выполнения этого скрипта будет:
 
 ```console
 $ node test.js
@@ -813,58 +924,54 @@ readable: null
 end
 ```
 
-В некоторых случаях добавление слушателя для `'readable'` событие вызовет чтение некоторого количества данных во внутренний буфер.
+В некоторых случаях прикрепление слушателя для события `'readable'` приведет к считыванию некоторого количества данных во внутренний буфер.
 
-В целом `readable.pipe()` а также `'data'` механизмы событий легче понять, чем `'readable'` событие. Однако обработка `'readable'` может привести к увеличению пропускной способности.
+В целом, механизмы событий `readable.pipe()` и `'data'` проще для понимания, чем событие `'readable'`. Однако обработка `'readable'` может привести к увеличению пропускной способности.
 
-Если оба `'readable'` а также [`'data'`](#event-data) используются одновременно, `'readable'` имеет приоритет при управлении потоком, т. е. `'data'` будет выпущен только тогда, когда [`stream.read()`](#readablereadsize) называется. В `readableFlowing` собственность станет `false`. Если есть `'data'` слушатели, когда `'readable'` удаляется, поток начнет течь, т.е. `'data'`события будут отправляться без вызова `.resume()`.
+Если одновременно используются `readable` и [`'data'`](#event-data), `'readable'` имеет приоритет в управлении потоком, т. е. `'data'` будет выдаваться только при вызове [`stream.read()`](#readablereadsize). Свойство `readableFlowing` станет `false`. Если есть слушатели `'data'`, когда `'readable'` будет удалено, поток начнет течь, т. е. события `'data'` будут испускаться без вызова `.resume()`.
+
+<!-- 0046.part.md -->
 
 ##### Событие: `'resume'`
 
-<!-- YAML
-added: v0.9.4
--->
+Событие `'resume'` происходит, когда вызывается [`stream.resume()`](#readableresume) и `readableFlowing` не является `true`.
 
-В `'resume'` событие генерируется, когда [`stream.resume()`](#readableresume) называется и `readableFlowing` не является `true`.
+<!-- 0047.part.md -->
 
 ##### `readable.destroy([error])`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/29197
-    description: Work as a no-op on a stream that has already been destroyed.
--->
-
-- `error` {Error} Ошибка, которая будет передана как полезная нагрузка в `'error'` событие
+- `error` {Error} Ошибка, которая будет передана в качестве полезной нагрузки в событии `'error'`.
 - Возвращает: {this}
 
-Уничтожьте поток. При желании испустить `'error'` событие и испустить `'close'` событие (если `emitClose` установлен на `false`). После этого вызова читаемый поток освободит все внутренние ресурсы и последующие вызовы `push()` будут проигнорированы.
+Уничтожить поток. Опционально испускает событие `'error'` и испускает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова читаемый поток освободит все внутренние ресурсы, и последующие вызовы `push()` будут игнорироваться.
 
-Один раз `destroy()` был вызван, любые дальнейшие вызовы не будут выполняться, и никаких других ошибок, кроме `_destroy()` может быть выпущен как `'error'`.
+После вызова `destroy()` все последующие вызовы будут бесполезны, и никакие другие ошибки, кроме `_destroy()`, не могут быть выданы как `'error'`.
 
-Разработчикам не следует переопределять этот метод, а вместо этого реализовывать [`readable._destroy()`](#readable_destroyerr-callback).
+Реализаторы не должны переопределять этот метод, а вместо этого реализовать [`readable._destroy()`](#readable_destroyerr-callback).
+
+<!-- 0048.part.md -->
+
+##### `readable.closed`
+
+- {boolean}
+
+Является `true` после испускания `close`.
+
+<!-- 0049.part.md -->
 
 ##### `readable.destroyed`
 
-<!-- YAML
-added: v8.0.0
--->
+- {boolean}
 
-- {логический}
+Является `true` после вызова [`readable.destroy()`](#readabledestroyerror).
 
-Является `true` после [`readable.destroy()`](#readabledestroyerror) был вызван.
+<!-- 0050.part.md -->
 
 ##### `readable.isPaused()`
 
-<!-- YAML
-added: v0.11.14
--->
+- Возвращает: {булево}
 
-- Возвращает: {логическое}
-
-В `readable.isPaused()` метод возвращает текущее рабочее состояние `Readable`. Это используется главным образом механизмом, лежащим в основе `readable.pipe()` метод. В большинстве типичных случаев нет причин использовать этот метод напрямую.
+Метод `readable.isPaused()` возвращает текущее рабочее состояние `Readable`. Он используется в основном механизмом, который лежит в основе метода `readable.pipe()`. В большинстве типичных случаев нет причин использовать этот метод напрямую.
 
 ```js
 const readable = new stream.Readable();
@@ -876,69 +983,66 @@ readable.resume();
 readable.isPaused(); // === false
 ```
 
-##### `readable.pause()`
+<!-- 0051.part.md -->
 
-<!-- YAML
-added: v0.9.4
--->
+##### `readable.pause()`
 
 - Возвращает: {this}
 
-В `readable.pause()` метод приведет к тому, что поток в текущем режиме перестанет излучать [`'data'`](#event-data) события, выход из проточного режима. Любые данные, которые становятся доступными, останутся во внутреннем буфере.
+Метод `readable.pause()` заставит поток в режиме потока прекратить испускать события [`'data'`](#event-data), переходя из режима потока. Любые данные, которые становятся доступными, остаются во внутреннем буфере.
 
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Received ${chunk.length} bytes of data.`);
+  console.log(`Получено ${chunk.length} байт данных.`);
   readable.pause();
   console.log(
-    'There will be no additional data for 1 second.'
+    'Дополнительных данных не будет в течение 1 секунды.'
   );
   setTimeout(() => {
-    console.log('Now data will start flowing again.');
+    console.log('Теперь данные начнут поступать снова.');
     readable.resume();
   }, 1000);
 });
 ```
 
-В `readable.pause()` метод не действует, если есть `'readable'` слушатель событий.
+Метод `readable.pause()` не имеет эффекта, если существует слушатель событий `'readable'`.
+
+<!-- 0052.part.md -->
 
 ##### `readable.pipe(destination[, options])`
 
-<!-- YAML
-added: v0.9.4
--->
-
 - `destination` {stream.Writable} Место назначения для записи данных
-- `options` {Object} Параметры трубы
-  - `end` {boolean} Завершить писателя, когда закончится читатель. **Дефолт:** `true`.
-- Возвращает: {stream.Writable} _место назначения_, учитывая цепочку труб, если это [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform) транслировать
+- `options` {Object} Опции трубы
+  - `end` {boolean} Завершить запись при завершении чтения. **По умолчанию:** `true`.
+- Возвращает: {stream.Writable} конечный пункт, позволяющий создавать цепочку труб, если это поток [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform).
 
-В `readable.pipe()` метод прикрепляет [`Writable`](#class-streamwritable) поток к `readable`, заставляя его автоматически переключаться в режим потока и передавать все свои данные в подключенный [`Writable`](#class-streamwritable). Поток данных будет управляться автоматически, так что пункт назначения `Writable` поток не перегружен более быстрым `Readable` транслировать.
+Метод `readable.pipe()` присоединяет поток [`Writable`](#class-streamwritable) к `readable`, заставляя его автоматически переключаться в режим потока и передавать все свои данные в присоединенный [`Writable`](#class-streamwritable). Поток данных будет автоматически управляться таким образом, чтобы конечный поток `Writable` не был перегружен более быстрым потоком `Readable`.
 
-В следующем примере передаются все данные из `readable` в файл с именем `file.txt`:
+В следующем примере все данные из `readable` передаются в файл с именем `file.txt`:
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
 const readable = getReadableStreamSomehow();
 const writable = fs.createWriteStream('file.txt');
-// All the data from readable goes into 'file.txt'.
+// Все данные из readable попадают в 'file.txt'.
 readable.pipe(writable);
 ```
 
-Можно прикрепить несколько `Writable` потоки к синглу `Readable` транслировать.
+Можно присоединить несколько потоков `Writable` к одному потоку `Readable`.
 
-В `readable.pipe()` метод возвращает ссылку на _место назначения_ stream, позволяющий создавать цепочки конвейерных потоков:
+Метод `readable.pipe()` возвращает ссылку на поток _назначения_, что позволяет создавать цепочки потоков, передаваемых по трубопроводу:
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
+const zlib = require('node:zlib');
 const r = fs.createReadStream('file.txt');
 const z = zlib.createGzip();
 const w = fs.createWriteStream('file.txt.gz');
 r.pipe(z).pipe(w);
 ```
 
-По умолчанию, [`stream.end()`](#writableendchunk-encoding-callback) вызывается по месту назначения `Writable` поток, когда источник `Readable` поток излучает [`'end'`](#event-end), так что адрес назначения больше не доступен для записи. Чтобы отключить это поведение по умолчанию, `end` вариант можно передать как `false`, в результате чего целевой поток остается открытым:
+По умолчанию, [`stream.end()`](#writableendchunk-encoding-callback) вызывается на конечном `Writable` потоке, когда исходный `Readable` поток испускает [`'end'`](#event-end), так что конечный поток больше не доступен для записи. Чтобы отключить это поведение по умолчанию, опцию `end` можно передать как `false`, в результате чего поток назначения останется открытым:
 
 ```js
 reader.pipe(writer, { end: false });
@@ -947,53 +1051,51 @@ reader.on('end', () => {
 });
 ```
 
-Одно важное предостережение: если `Readable` поток выдает ошибку во время обработки, `Writable` место назначения _не закрыто_ автоматически. В случае возникновения ошибки необходимо будет _вручную_ закройте каждый поток, чтобы предотвратить утечку памяти.
+Важной оговоркой является то, что если поток `Readable` выдает ошибку во время обработки, направление `Writable` _не закрывается_ автоматически. Если произойдет ошибка, необходимо будет _ручно_ закрыть каждый поток, чтобы предотвратить утечку памяти.
 
-В [`process.stderr`](process.md#processstderr) а также [`process.stdout`](process.md#processstdout) `Writable` потоки никогда не закрываются, пока процесс Node.js не завершится, независимо от указанных параметров.
+Потоки [`process.stderr`](process.md#processstderr) и [`process.stdout`](process.md#processstdout) `Writable` никогда не закрываются до выхода процесса Node.js, независимо от указанных опций.
+
+<!-- 0053.part.md -->
 
 ##### `readable.read([size])`
 
-<!-- YAML
-added: v0.9.4
--->
+- `size` {число} Необязательный аргумент, указывающий, сколько данных нужно прочитать.
+- Возвращает: {string|Buffer|null|any}
 
-- `size` {number} Необязательный аргумент для указания количества данных для чтения.
-- Возвращает: {string | Buffer | null | any}.
+Метод `readable.read()` считывает данные из внутреннего буфера и возвращает их. Если данные не доступны для чтения, возвращается `null`. По умолчанию данные возвращаются в виде объекта `Buffer`, если только кодировка не была указана с помощью метода `readable.setEncoding()` или поток работает в объектном режиме.
 
-В `readable.read()` метод извлекает некоторые данные из внутреннего буфера и возвращает их. Если нет данных для чтения, `null` возвращается. По умолчанию данные будут возвращены в виде `Buffer` объект, если кодировка не была указана с помощью `readable.setEncoding()` или поток работает в объектном режиме.
+Необязательный аргумент `size` задает определенное количество байт для чтения. Если `size` байт недоступен для чтения, будет возвращен `null`, _если только_ поток не завершился, в этом случае будут возвращены все данные, оставшиеся во внутреннем буфере.
 
-Необязательный `size` Аргумент указывает определенное количество байтов для чтения. Если `size` байты недоступны для чтения, `null` будет возвращен _пока не_ поток закончился, и в этом случае будут возвращены все данные, оставшиеся во внутреннем буфере.
+Если аргумент `size` не указан, будут возвращены все данные, содержащиеся во внутреннем буфере.
 
-Если `size` аргумент не указан, будут возвращены все данные, содержащиеся во внутреннем буфере.
+Аргумент `size` должен быть меньше или равен 1 GiB.
 
-В `size` аргумент должен быть меньше или равен 1 ГиБ.
-
-В `readable.read()` метод должен вызываться только на `Readable` потоки, работающие в приостановленном режиме. В проточном режиме, `readable.read()` вызывается автоматически до тех пор, пока внутренний буфер не будет полностью опустошен.
+Метод `readable.read()` следует вызывать только на потоках `Readable`, работающих в приостановленном режиме. В потоковом режиме `readable.read()` вызывается автоматически, пока внутренний буфер не будет полностью опустошен.
 
 ```js
 const readable = getReadableStreamSomehow();
 
-// 'readable' may be triggered multiple times as data is buffered in
+// 'readable' может быть вызван несколько раз по мере буферизации данных
 readable.on('readable', () => {
   let chunk;
   console.log(
-    'Stream is readable (new data received in buffer)'
+    'Stream is readable (новые данные получены в буфер)'
   );
-  // Use a loop to make sure we read all currently available data
+  // Используйте цикл, чтобы убедиться, что мы прочитали все доступные в данный момент данные
   while (null !== (chunk = readable.read())) {
-    console.log(`Read ${chunk.length} bytes of data...`);
+    console.log(`Прочитано ${chunk.length} байт данных...`);
   }
 });
 
-// 'end' will be triggered once when there is no more data available
+// 'end' будет срабатывать один раз, когда больше не будет данных
 readable.on('end', () => {
-  console.log('Reached end of stream.');
+  console.log('Достигнут конец потока.');
 });
 ```
 
-Каждый звонок `readable.read()` возвращает фрагмент данных или `null`. Фрагменты не объединяются. А `while` цикл необходим для использования всех данных, находящихся в данный момент в буфере. При чтении большого файла `.read()` может вернуться `null`, до сих пор израсходовав весь буферизованный контент, но есть еще данные, которые еще не буферизованы. В этом случае новый `'readable'` Событие будет сгенерировано, когда в буфере будет больше данных. Наконец `'end'` событие будет сгенерировано, когда больше не будет данных.
+Каждый вызов `readable.read()` возвращает фрагмент данных или `null`. Куски не конкатенируются. Цикл `while` необходим для потребления всех данных, находящихся в буфере. При чтении большого файла `.read()` может вернуть `null`, израсходовав все буферизованное содержимое, но есть еще больше данных, которые еще не буферизованы. В этом случае новое событие `'readable'` будет выдано, когда в буфере будет больше данных. Наконец, событие `'end'` будет вызвано, когда больше не будет данных.
 
-Следовательно, чтобы прочитать все содержимое файла из `readable`необходимо собирать куски по нескольким `'readable'` События:
+Поэтому, чтобы прочитать все содержимое файла из `readable`, необходимо собирать фрагменты в несколько событий `'readable'`:
 
 ```js
 const chunks = [];
@@ -1010,151 +1112,132 @@ readable.on('end', () => {
 });
 ```
 
-А `Readable` поток в объектном режиме всегда будет возвращать один элемент из вызова [`readable.read(size)`](#readablereadsize), независимо от стоимости `size` аргумент.
+Поток `Readable` в объектном режиме всегда будет возвращать один элемент из вызова [`readable.read(size)`](#readableereadsize), независимо от значения аргумента `size`.
 
-Если `readable.read()` метод возвращает фрагмент данных, `'data'` событие также будет выпущено.
+Если метод `readable.read()` возвращает фрагмент данных, также будет выдано событие `'data'`.
 
-Вызов [`stream.read([size])`](#readablereadsize) после [`'end'`](#event-end) событие было отправлено, вернется `null`. Ошибка выполнения не возникнет.
+Вызов [`stream.read([size])`](#readablereadsize) после того, как было выдано событие [`'end'`](#event-end), вернет `null`. Никакой ошибки во время выполнения не возникнет.
+
+<!-- 0054.part.md -->
 
 ##### `readable.readable`
 
-<!-- YAML
-added: v11.4.0
--->
+- {boolean}
 
-- {логический}
+Является `true`, если безопасно вызывать [`readable.read()`](#readablereadsize), что означает, что поток не был уничтожен или выдал `'error'` или `'end'`.
 
-Является `true` если можно позвонить [`readable.read()`](#readablereadsize), что означает, что поток не был уничтожен или испущен `'error'` или `'end'`.
+<!-- 0055.part.md -->
 
 ##### `readable.readableAborted`
 
-<!-- YAML
-added: v16.8.0
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- {логический}
+- {boolean}
 
-Возвращает, был ли поток уничтожен или ошибался перед отправкой. `'end'`.
+Возвращает, был ли поток уничтожен или ошибочен перед выдачей `'end'`.
+
+<!-- 0056.part.md -->
 
 ##### `readable.readableDidRead`
 
-<!-- YAML
-added:
-  - v16.7.0
-  - v14.18.0
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- {логический}
+- {boolean}
 
-Возвращает ли `'data'` был выпущен.
+Возвращает, были ли испущены `данные`.
+
+<!-- 0057.part.md -->
 
 ##### `readable.readableEncoding`
 
-<!-- YAML
-added: v12.7.0
--->
+- {null|string}
 
-- {null | строка}
+Получатель свойства `encoding` для данного потока `Readable`. Свойство `encoding` может быть установлено с помощью метода [`readable.setEncoding()`](#readablesetencodingencoding).
 
-Получатель недвижимости `encoding` данного `Readable` транслировать. В `encoding` свойство можно установить с помощью [`readable.setEncoding()`](#readablesetencodingencoding) метод.
+<!-- 0058.part.md -->
 
 ##### `readable.readableEnded`
 
-<!-- YAML
-added: v12.9.0
--->
+- {boolean}
 
-- {логический}
+Становится `true`, когда испускается событие [`'end'`](#event-end).
 
-Становится `true` когда [`'end'`](#event-end) событие испускается.
+<!-- 0059.part.md -->
+
+##### `readable.errored`
+
+- {Error}
+
+Возвращает ошибку, если поток был уничтожен с ошибкой.
+
+<!-- 0060.part.md -->
 
 ##### `readable.readableFlowing`
 
-<!-- YAML
-added: v9.4.0
--->
+- {boolean}
 
-- {логический}
+Это свойство отражает текущее состояние потока `Readable`, как описано в разделе [Три состояния](#three-states).
 
-Это свойство отражает текущее состояние `Readable` поток, как описано в [Три состояния](#three-states) раздел.
+<!-- 0061.part.md -->
 
 ##### `readable.readableHighWaterMark`
 
-<!-- YAML
-added: v9.3.0
--->
+- {число}
 
-- {количество}
+Возвращает значение `highWaterMark`, переданное при создании этого `Readable`.
 
-Возвращает значение `highWaterMark` прошло при создании этого `Readable`.
+<!-- 0062.part.md -->
 
 ##### `readable.readableLength`
 
-<!-- YAML
-added: v9.4.0
--->
+- {число}
 
-- {количество}
+Это свойство содержит количество байтов (или объектов) в очереди, готовых к чтению. Значение предоставляет данные интроспекции относительно состояния `highWaterMark`.
 
-Это свойство содержит количество байтов (или объектов) в очереди, готовых к чтению. Значение предоставляет данные самоанализа относительно статуса `highWaterMark`.
+<!-- 0063.part.md -->
 
 ##### `readable.readableObjectMode`
 
-<!-- YAML
-added: v12.3.0
--->
+- {boolean}
 
-- {логический}
+Получатель для свойства `objectMode` данного потока `Readable`.
 
-Получатель недвижимости `objectMode` данного `Readable` транслировать.
+<!-- 0064.part.md -->
 
 ##### `readable.resume()`
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18994
-    description: The `resume()` has no effect if there is a `'readable'` event
-                 listening.
--->
-
 - Возвращает: {this}
 
-В `readable.resume()` метод вызывает явно приостановленную `Readable` поток, чтобы возобновить передачу [`'data'`](#event-data) события, переводящие поток в текущий режим.
+Метод `readable.resume()` заставляет явно приостановленный поток `Readable` возобновить испускание событий [`'data'`](#event-data), переводя поток в режим потока.
 
-В `readable.resume()` может использоваться для полного использования данных из потока без фактической обработки каких-либо из этих данных:
+Метод `readable.resume()` можно использовать для полного потребления данных из потока без фактической обработки этих данных:
 
 ```js
 getReadableStreamSomehow()
   .resume()
   .on('end', () => {
-    console.log(
-      'Reached the end, but did not read anything.'
-    );
+    console.log('Достиг конца, но ничего не прочитал.');
   });
 ```
 
-В `readable.resume()` метод не действует, если есть `'readable'` слушатель событий.
+Метод `readable.resume()` не имеет эффекта, если существует слушатель события `'readable'`.
+
+<!-- 0065.part.md -->
 
 ##### `readable.setEncoding(encoding)`
 
-<!-- YAML
-added: v0.9.4
--->
-
-- `encoding` {строка} Используемая кодировка.
+- `encoding` {string} Кодировка, которую следует использовать.
 - Возвращает: {this}
 
-В `readable.setEncoding()` устанавливает кодировку символов для данных, считываемых из `Readable` транслировать.
+Метод `readable.setEncoding()` устанавливает кодировку символов для данных, считываемых из потока `Readable`.
 
-По умолчанию кодировка не назначается, и данные потока будут возвращены как `Buffer` объекты. Установка кодировки приводит к тому, что данные потока возвращаются как строки указанной кодировки, а не как `Buffer` объекты. Например, позвонив `readable.setEncoding('utf8')` приведет к тому, что выходные данные будут интерпретироваться как данные UTF-8 и передаваться как строки. Вызов `readable.setEncoding('hex')` приведет к кодированию данных в шестнадцатеричном строковом формате.
+По умолчанию кодировка не задается, и данные потока будут возвращаться в виде объектов `Buffer`. Установка кодировки приводит к тому, что данные потока будут возвращаться в виде строк указанной кодировки, а не в виде объектов `Buffer`. Например, вызов `readable.setEncoding('utf8')` приведет к тому, что выходные данные будут интерпретированы как данные UTF-8 и переданы как строки. Вызов `readable.setEncoding('hex')` приведет к тому, что данные будут закодированы в шестнадцатеричном формате строк.
 
-В `Readable` stream будет правильно обрабатывать многобайтовые символы, доставленные через поток, которые в противном случае были бы неправильно декодированы, если бы их просто вытащили из потока как `Buffer` объекты.
+Поток `Readable` будет правильно обрабатывать многобайтовые символы, передаваемые через поток, которые в противном случае были бы неправильно декодированы, если бы просто извлекались из потока как объекты `Buffer`.
 
 ```js
 const readable = getReadableStreamSomehow();
@@ -1162,68 +1245,60 @@ readable.setEncoding('utf8');
 readable.on('data', (chunk) => {
   assert.equal(typeof chunk, 'string');
   console.log(
-    'Got %d characters of string data:',
+    'Получено %d символов строковых данных:',
     chunk.length
   );
 });
 ```
 
+<!-- 0066.part.md -->
+
 ##### `readable.unpipe([destination])`
 
-<!-- YAML
-added: v0.9.4
--->
-
-- `destination` {stream.Writable} Необязательный конкретный поток для отключения
+- `destination` {stream.Writable} Необязательный конкретный поток для распайки
 - Возвращает: {this}
 
-В `readable.unpipe()` метод отсоединяет `Writable` поток, ранее прикрепленный с помощью [`stream.pipe()`](#readablepipedestination-options) метод.
+Метод `readable.unpipe()` отсоединяет поток `Writable`, ранее присоединенный с помощью метода [`stream.pipe()`](#readablepipedestination-options).
 
-Если `destination` не указано, то _все_ трубы отсоединены.
+Если `destination` не указан, то отсоединяются _все_ трубы.
 
-Если `destination` указан, но для него не настроен канал, тогда метод ничего не делает.
+Если `назначение` указано, но для него не установлена труба, то метод ничего не делает.
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
 const readable = getReadableStreamSomehow();
 const writable = fs.createWriteStream('file.txt');
-// All the data from readable goes into 'file.txt',
-// but only for the first second.
+// Все данные из readable попадают в 'file.txt',
+// но только в течение первой секунды.
 readable.pipe(writable);
 setTimeout(() => {
-  console.log('Stop writing to file.txt.');
+  console.log('Остановить запись в файл.txt.');
   readable.unpipe(writable);
-  console.log('Manually close the file stream.');
+  console.log('Вручную закрыть поток файлов.');
   writable.end();
 }, 1000);
 ```
 
+<!-- 0067.part.md -->
+
 ##### `readable.unshift(chunk[, encoding])`
 
-<!-- YAML
-added: v0.9.11
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/11608
-    description: The `chunk` argument can now be a `Uint8Array` instance.
--->
+- `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для выгрузки в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+- `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
 
-- `chunk` {Buffer | Uint8Array | string | null | any} Фрагмент данных, который нужно перенести в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должно быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков в объектном режиме `chunk` может быть любым значением JavaScript.
-- `encoding` {строка} Кодировка фрагментов строки. Должен быть действительным `Buffer` кодирование, например `'utf8'` или `'ascii'`.
+Передача `chunk` как `null` сигнализирует о конце потока (EOF) и ведет себя так же, как `readable.push(null)`, после чего данные больше не могут быть записаны. Сигнал EOF ставится в конце буфера, и все буферизованные данные все равно будут смыты.
 
-Проходящий `chunk` в качестве `null` сигнализирует об окончании потока (EOF) и ведет себя так же, как `readable.push(null)`, после чего запись данных невозможна. Сигнал EOF помещается в конец буфера, и все буферизованные данные все равно будут сброшены.
+Метод `readable.unshift()` выталкивает фрагмент данных обратно во внутренний буфер. Это полезно в некоторых ситуациях, когда поток потребляется кодом, которому нужно "отменить потребление" некоторого количества данных, которые он оптимистично извлек из источника, чтобы эти данные могли быть переданы другой стороне.
 
-В `readable.unshift()` возвращает часть данных во внутренний буфер. Это полезно в определенных ситуациях, когда поток потребляется кодом, которому необходимо «не потреблять» некоторый объем данных, оптимистично извлеченных из источника, чтобы данные можно было передать какой-либо другой стороне.
+Метод `stream.unshift(chunk)` не может быть вызван после того, как произошло событие [`'end'`](#event-end), иначе будет выдана ошибка времени выполнения.
 
-В `stream.unshift(chunk)` метод не может быть вызван после [`'end'`](#event-end) было создано событие, или будет выдана ошибка времени выполнения.
-
-Разработчики, использующие `stream.unshift()` часто следует подумать о переходе на использование [`Transform`](#class-streamtransform) поток вместо этого. Увидеть [API для исполнителей потоковой передачи](#api-for-stream-implementers) раздел для получения дополнительной информации.
+Разработчикам, часто использующим `stream.unshift()`, следует рассмотреть возможность перехода на использование потока [`Transform`](#class-streamtransform) вместо этого. Дополнительную информацию смотрите в разделе [API для реализаторов потоков](#api-for-stream-implementers).
 
 ```js
-// Pull off a header delimited by \n\n.
-// Use unshift() if we get too much.
-// Call the callback with (error, header, stream).
-const { StringDecoder } = require('string_decoder');
+// Вытаскиваем заголовок, разделенный \n\n.
+// Используем unshift(), если получаем слишком много.
+// Вызываем обратный вызов с (error, header, stream).
+const { StringDecoder } = require('node:string_decoder');
 function parseHeader(stream, callback) {
   stream.on('error', callback);
   stream.on('readable', onReadable);
@@ -1233,69 +1308,63 @@ function parseHeader(stream, callback) {
     let chunk;
     while (null !== (chunk = stream.read())) {
       const str = decoder.write(chunk);
-      if (str.match(/\n\n/)) {
-        // Found the header boundary.
+      if (str.includes('\n\n')) {
+        // Найдена граница заголовка.
         const split = str.split(/\n\n/);
         header += split.shift();
         const remaining = split.join('\n\n');
         const buf = Buffer.from(remaining, 'utf8');
         stream.removeListener('error', callback);
-        // Remove the 'readable' listener before unshifting.
+        // Удалите слушателя 'readable' перед разгруппировкой.
         stream.removeListener('readable', onReadable);
         if (buf.length) stream.unshift(buf);
-        // Now the body of the message can be read from the stream.
+        // Теперь тело сообщения может быть прочитано из потока.
         callback(null, header, stream);
-      } else {
-        // Still reading the header.
-        header += str;
+        return;
       }
+      // Продолжаем читать заголовок.
+      header += str;
     }
   }
 }
 ```
 
-В отличие от [`stream.push(chunk)`](#readablepushchunk-encoding), `stream.unshift(chunk)` не завершит процесс чтения, сбросив внутреннее состояние чтения потока. Это может привести к неожиданным результатам, если `readable.unshift()` вызывается во время чтения (т.е. изнутри [`stream._read()`](#readable_readsize) реализация в настраиваемом потоке). После звонка `readable.unshift()` с немедленным [`stream.push('')`](#readablepushchunk-encoding) сбросит состояние чтения соответствующим образом, однако лучше просто избегать вызова `readable.unshift()` в процессе чтения.
+В отличие от [`stream.push(chunk)`](#readablepushchunk-encoding), `stream.unshift(chunk)` не завершает процесс чтения, сбрасывая внутреннее состояние потока. Это может привести к неожиданным результатам, если `readable.unshift()` вызывается во время чтения (например, из реализации [`stream._read()`](#readable_readsize) на пользовательском потоке). После вызова `readable.unshift()` с немедленным [`stream.push('')`](#readablepushchunk-encoding) будет сброшен параметр
+
+<!-- 0068.part.md -->
 
 ##### `readable.wrap(stream)`
 
-<!-- YAML
-added: v0.9.4
--->
-
-- `stream` {Stream} Читаемый поток в "старом стиле"
+- `stream` {Stream} Читаемый поток "старого стиля"
 - Возвращает: {this}
 
-До Node.js 0.10 потоки не реализовывали полностью `stream` модуль API в том виде, в каком он определен в настоящее время. (Видеть [Совместимость](#compatibility-with-older-nodejs-versions) для дополнительной информации.)
+До версии Node.js 0.10 потоки не реализовывали весь API модуля `node:stream`, как он определен в настоящее время. (Более подробную информацию смотрите в [Совместимость](#compatibility-with-older-nodejs-versions)).
 
-При использовании более старой библиотеки Node.js, которая выдает [`'data'`](#event-data) события и имеет [`stream.pause()`](#readablepause) метод, который носит рекомендательный характер, `readable.wrap()` может использоваться для создания [`Readable`](#class-streamreadable) поток, который использует старый поток в качестве источника данных.
+При использовании старой библиотеки Node.js, которая испускает события [`'data'`](#event-data) и имеет метод [`stream.pause()`](#readablepause), который является только рекомендательным, метод `readable.wrap()` можно использовать для создания потока [`Readable`](#class-streamreadable), который использует старый поток в качестве источника данных.
 
-Редко будет необходимо использовать `readable.wrap()` но этот метод был предоставлен для удобства взаимодействия со старыми приложениями и библиотеками Node.js.
+Использование `readable.wrap()` потребуется редко, но метод был предоставлен в качестве удобства для взаимодействия со старыми приложениями и библиотеками Node.js.
 
 ```js
 const { OldReader } = require('./old-api-module.js');
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 const oreader = new OldReader();
 const myReader = new Readable().wrap(oreader);
 
 myReader.on('readable', () => {
-  myReader.read(); // etc.
+  myReader.read(); // и т.д.
 });
 ```
 
+<!-- 0069.part.md -->
+
 ##### `readable[Symbol.asyncIterator]()`
 
-<!-- YAML
-added: v10.0.0
-changes:
-  - version: v11.14.0
-    pr-url: https://github.com/nodejs/node/pull/26989
-    description: Symbol.asyncIterator support is no longer experimental.
--->
+- Возвращает: {AsyncIterator} для полного потребления потока.
 
-- Возвращает: {AsyncIterator} для полного использования потока.
+<!-- конец списка -->
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
 
 async function print(readable) {
   readable.setEncoding('utf8');
@@ -1309,24 +1378,63 @@ async function print(readable) {
 print(fs.createReadStream('file')).catch(console.error);
 ```
 
-Если цикл завершается `break`, `return`, или `throw`, поток будет уничтожен. Другими словами, итерация по потоку полностью потребляет поток. Поток будет прочитан кусками размером, равным `highWaterMark` вариант. В приведенном выше примере кода данные будут в одном фрагменте, если файл содержит менее 64 КБ данных, потому что нет `highWaterMark` опция предоставляется [`fs.createReadStream()`](fs.md#fscreatereadstreampath-options).
+Если цикл завершится с `break`, `return` или `throw`, поток будет уничтожен. Другими словами, итерация над потоком будет полностью его потреблять. Поток будет считываться кусками размером, равным параметру `highWaterMark`. В приведенном выше примере данные будут в одном куске, если файл имеет размер менее 64 KiB, потому что опция `highWaterMark` не предоставляется в [`fs.createReadStream()`](fs.md#fscreatereadstreampath-options).
+
+<!-- 0070.part.md -->
+
+##### `readable.compose(stream[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `stream` {Stream|Iterable|AsyncIterable|Function}
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Duplex} поток, составленный с потоком `stream`.
+
+<!-- конец списка -->
+
+```mjs
+import { Readable } from 'node:stream';
+
+async function* splitToWords(source) {
+  for await (const chunk of source) {
+    const words = String(chunk).split(' ');
+
+    for (const word of words) {
+      yield word;
+    }
+  }
+}
+
+const wordsStream = Readable.from([
+  'this is',
+  'compose as operator',
+]).compose(splitToWords);
+const words = await wordsStream.toArray();
+
+console.log(words); // печатает ['this', 'is', 'compose', 'as', 'operator']
+```
+
+Дополнительную информацию смотрите в [`stream.compose`](#streamcomposestreams).
+
+<!-- 0071.part.md -->
 
 ##### `readable.iterator([options])`
 
-<!-- YAML
-added: v16.3.0
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `options` {Объект}
-  - `destroyOnReturn` {boolean} Если задано значение `false`, звоню `return` на асинхронном итераторе или при выходе из `for await...of` итерация с использованием `break`, `return`, или `throw` не разрушит поток. **Дефолт:** `true`.
-- Возвращает: {AsyncIterator} для использования потока.
+- `options` {Object}
+  - `destroyOnReturn` {boolean} Если установлено значение `false`, вызов `return` на асинхронном итераторе или завершение итерации `for await...of` с помощью `break`, `return` или `throw` не будет уничтожать поток. **По умолчанию:** `true`.
+- Возвращает: {AsyncIterator} для потребления потока.
 
-Итератор, созданный этим методом, дает пользователям возможность отменить уничтожение потока, если `for await...of` цикл выходит из `return`, `break`, или `throw`, или если итератор должен уничтожить поток, если поток выдал ошибку во время итерации.
+Итератор, созданный этим методом, дает пользователям возможность отменить уничтожение потока, если цикл `for await...of` будет завершен `return`, `break` или `throw`, или если итератор должен уничтожить поток, если поток выдал ошибку во время итерации.
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 async function printIterator(readable) {
   for await (const chunk of readable.iterator({
@@ -1341,10 +1449,10 @@ async function printIterator(readable) {
   for await (const chunk of readable.iterator({
     destroyOnReturn: false,
   })) {
-    console.log(chunk); // Will print 2 and then 3
+    console.log(chunk); // Будет выведено 2, а затем 3
   }
 
-  console.log(readable.destroyed); // True, stream was totally consumed
+  console.log(readable.destroyed); // True, поток был полностью уничтожен
 }
 
 async function printSymbolAsyncIterator(readable) {
@@ -1364,110 +1472,552 @@ async function showBoth() {
 showBoth();
 ```
 
-### Дуплексные и трансформируемые потоки
+<!-- 0072.part.md -->
+
+##### `readable.map(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для отображения каждого куска данных в потоке.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
+
+Этот метод позволяет выполнять отображение над потоком. Функция `fn` будет вызываться для каждого чанка в потоке. Если функция `fn` возвращает обещание - это обещание будет `ожидаться` перед передачей в поток результатов.
+
+```mjs
+import { Readable } from 'node:stream';
+import { Resolver } from 'node:dns/promises';
+
+// С синхронным маппером.
+for await (const chunk of Readable.from([1, 2, 3, 4]).map(
+  (x) => x * 2
+)) {
+  console.log(chunk); // 2, 4, 6, 8
+}
+// С асинхронным маппером, делая не более 2 запросов за раз.
+const resolver = new Resolver();
+const dnsResults = Readable.from([
+  'nodejs.org',
+  'openjsf.org',
+  'www.linuxfoundation.org',
+]).map((domain) => resolver.resolve4(domain), {
+  concurrency: 2,
+});
+for await (const result of dnsResults) {
+  console.log(result); // Выводит в журнал DNS-результат resolver.resolve4.
+}
+```
+
+<!-- 0073.part.md -->
+
+##### `readable.filter(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для фильтрации фрагментов из потока.
+  - `data` {any} кусок данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток, отфильтрованный с помощью предиката `fn`.
+
+Этот метод позволяет фильтровать поток. Для каждого куска в потоке будет вызвана функция `fn`, и если она вернет истинное значение, то кусок будет передан в поток результатов. Если функция `fn` возвращает обещание - это обещание будет `ожидаться`.
+
+```mjs
+import { Readable } from 'node:stream';
+import { Resolver } from 'node:dns/promises';
+
+// С синхронным предикатом.
+for await (const chunk of Readable.from([
+  1,
+  2,
+  3,
+  4,
+]).filter((x) => x > 2)) {
+  console.log(chunk); // 3, 4
+}
+// С асинхронным предикатом, делая не более 2 запросов за раз.
+const resolver = new Resolver();
+const dnsResults = Readable.from([
+  'nodejs.org',
+  'openjsf.org',
+  'www.linuxfoundation.org',
+]).filter(
+  async (domain) => {
+    const { address } = await resolver.resolve4(domain, {
+      ttl: true,
+    });
+    return address.ttl > 60;
+  },
+  { concurrency: 2 }
+);
+for await (const result of dnsResults) {
+  // Заносит в журнал домены с разрешенной dns-записью более 60 секунд.
+  console.log(result);
+}
+```
+
+<!-- 0074.part.md -->
+
+##### `readable.forEach(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Promise} обещание о завершении потока.
+
+Этот метод позволяет итерировать поток. Для каждого куска в потоке будет вызвана функция `fn`. Если функция `fn` возвращает обещание - это обещание будет `await`.
+
+Этот метод отличается от циклов `for await...of` тем, что он может обрабатывать фрагменты одновременно. Кроме того, итерацию `forEach` можно остановить только передав опцию `signal и прервав соответствующий `AbortController`, в то время как `for await...of`можно остановить с помощью`break`или`return`. В любом случае поток будет уничтожен.
+
+Этот метод отличается от прослушивания события [`'data'`](#event-data) тем, что он использует событие [`readable`](#class-streamreadable) в базовой машине и может ограничить количество одновременных вызовов `fn`.
+
+```mjs
+import { Readable } from 'node:stream';
+import { Resolver } from 'node:dns/promises';
+
+// С синхронным предикатом.
+for await (const chunk of Readable.from([
+  1,
+  2,
+  3,
+  4,
+]).filter((x) => x > 2)) {
+  console.log(chunk); // 3, 4
+}
+// С асинхронным предикатом, делая не более 2 запросов за раз.
+const resolver = new Resolver();
+const dnsResults = Readable.from([
+  'nodejs.org',
+  'openjsf.org',
+  'www.linuxfoundation.org',
+]).map(
+  async (domain) => {
+    const { address } = await resolver.resolve4(domain, {
+      ttl: true,
+    });
+    return address;
+  },
+  { concurrency: 2 }
+);
+await dnsResults.forEach((result) => {
+  // Выводит результат в журнал, аналогично `for await (const result of dnsResults)`.
+  console.log(result);
+});
+console.log('done'); // Поток завершен
+```
+
+<!-- 0075.part.md -->
+
+##### `readable.toArray([options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет отменить операцию toArray, если сигнал прерван.
+- Возвращает: {Promise} обещание, содержащее массив с содержимым потока.
+
+Этот метод позволяет легко получить содержимое потока.
+
+Поскольку этот метод считывает весь поток в память, он сводит на нет преимущества потоков. Он предназначен для совместимости и удобства, а не как основной способ потребления потоков.
+
+```mjs
+import { Readable } from 'node:stream';
+import { Resolver } from 'node:dns/promises';
+
+await Readable.from([1, 2, 3, 4]).toArray(); // [1, 2, 3, 4]
+
+// Выполняем параллельные dns-запросы с помощью .map и собираем
+// результаты в массив с помощью toArray
+const dnsResults = await Readable.from([
+  'nodejs.org',
+  'openjsf.org',
+  'www.linuxfoundation.org',
+])
+  .map(
+    async (domain) => {
+      const { address } = await resolver.resolve4(domain, {
+        ttl: true,
+      });
+      return address;
+    },
+    { concurrency: 2 }
+  )
+  .toArray();
+```
+
+<!-- 0076.part.md -->
+
+##### `readable.some(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение хотя бы для одного из чанков.
+
+Этот метод похож на `Array.prototype.some` и вызывает `fn` на каждом куске в потоке, пока ожидаемое возвращаемое значение не станет `true` (или любым истинным значением). Как только вызов `fn` на куске, ожидающем возврата значения, становится истинным, поток уничтожается и обещание выполняется с `true`. Если ни один из вызовов `fn` на чанках не возвращает истинное значение, обещание выполняется с `false`.
+
+```mjs
+import { Readable } from 'node:stream';
+import { stat } from 'node:fs/promises';
+
+// С синхронным предикатом.
+await Readable.from([1, 2, 3, 4]).some((x) => x > 2); // true
+await Readable.from([1, 2, 3, 4]).some((x) => x < 0); // false
+
+// С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
+const anyBigFile = await Readable.from([
+  'file1',
+  'file2',
+  'file3',
+]).some(
+  async (fileName) => {
+    const stats = await stat(fileName);
+    return stats.size > 1024 * 1024;
+  },
+  { concurrency: 2 }
+);
+console.log(anyBigFile); // `true`, если любой файл в списке больше 1MB
+console.log('done'); // Поток завершен
+```
+
+<!-- 0077.part.md -->
+
+##### `readable.find(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Promise} обещание, оценивающее первый чанк, для которого `fn` имеет истинностное значение, или `undefined`, если элемент не был найден.
+
+Этот метод похож на `Array.prototype.find` и вызывает `fn` на каждом куске в потоке, чтобы найти кусок с истинностным значением для `fn`. Как только ожидаемое возвращаемое значение вызова `fn` становится истинным, поток уничтожается, а обещание выполняется значением, для которого `fn` вернул истинное значение. Если все вызовы `fn` в чанках возвращают ложное значение, обещание выполняется с `undefined`.
+
+```mjs
+import { Readable } from 'node:stream';
+import { stat } from 'node:fs/promises';
+
+// С синхронным предикатом.
+await Readable.from([1, 2, 3, 4]).find((x) => x > 2); // 3
+await Readable.from([1, 2, 3, 4]).find((x) => x > 0); // 1
+await Readable.from([1, 2, 3, 4]).find((x) => x > 10); // неопределено
+
+// С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
+const foundBigFile = await Readable.from([
+  'file1',
+  'file2',
+  'file3',
+]).find(
+  async (fileName) => {
+    const stats = await stat(fileName);
+    return stats.size > 1024 * 1024;
+  },
+  { concurrency: 2 }
+);
+console.log(foundBigFile); // Имя файла большого файла, если какой-либо файл в списке больше 1MB
+console.log('done'); // Поток завершен
+```
+
+<!-- 0078.part.md -->
+
+##### `readable.every(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция для вызова на каждом куске потока.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение для всех чанков.
+
+Этот метод похож на `Array.prototype.every` и вызывает `fn` на каждом куске в потоке, чтобы проверить, являются ли все ожидаемые возвращаемые значения истинным значением для `fn`. Как только вызов `fn` на чанке, ожидающем возврата значения, оказывается ложным, поток уничтожается, а обещание выполняется с `false`. Если все вызовы `fn` на чанках возвращают истинное значение, обещание выполняется с `true`.
+
+```mjs
+import { Readable } from 'node:stream';
+import { stat } from 'node:fs/promises';
+
+// С синхронным предикатом.
+await Readable.from([1, 2, 3, 4]).every((x) => x > 2); // false
+await Readable.from([1, 2, 3, 4]).every((x) => x > 0); // true
+
+// С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
+const allBigFiles = await Readable.from([
+  'file1',
+  'file2',
+  'file3',
+]).every(
+  async (fileName) => {
+    const stats = await stat(fileName);
+    return stats.size > 1024 * 1024;
+  },
+  { concurrency: 2 }
+);
+// `true`, если все файлы в списке больше 1MiB
+console.log(allBigFiles);
+console.log('done'); // Поток завершен
+```
+
+<!-- 0079.part.md -->
+
+##### `readable.flatMap(fn[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncGeneratorFunction|AsyncFunction} функция для отображения каждого куска в потоке.
+  - `data` {any} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `options` {Object}
+  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
+
+Этот метод возвращает новый поток, применяя заданный обратный вызов к каждому фрагменту потока и затем сглаживая результат.
+
+Можно вернуть поток или другую итерабельную или асинхронную итерабельную функцию из `fn`, и потоки результатов будут объединены (сплющены) в возвращаемый поток.
+
+```mjs
+import { Readable } from 'node:stream';
+import { createReadStream } from 'node:fs';
+
+// С синхронным маппером.
+for await (const chunk of Readable.from([
+  1,
+  2,
+  3,
+  4,
+]).flatMap((x) => [x, x])) {
+  console.log(chunk); // 1, 1, 2, 2, 2, 3, 3, 4, 4
+}
+// С помощью асинхронного маппера объедините содержимое 4 файлов
+const concatResult = Readable.from([
+  './1.mjs',
+  './2.mjs',
+  './3.mjs',
+  './4.mjs',
+]).flatMap((fileName) => createReadStream(fileName));
+for await (const result of concatResult) {
+  // Это будет содержать содержимое (все чанки) всех 4 файлов
+  console.log(result);
+}
+```
+
+<!-- 0080.part.md -->
+
+##### `readable.drop(limit[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `limit` {number} количество кусков, которые нужно отбросить из читаемого файла.
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток с `лимитом` отброшенных чанков.
+
+Этот метод возвращает новый поток с первым `лимитом` отброшенных кусков.
+
+```mjs
+import { Readable } from 'node:stream';
+
+await Readable.from([1, 2, 3, 4]).drop(2).toArray(); // [3, 4]
+```
+
+<!-- 0081.part.md -->
+
+##### `readable.take(limit[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `limit` {number} количество кусков, которые нужно взять из читаемого файла.
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток с `лимитом` занятых фрагментов.
+
+Этот метод возвращает новый поток с первыми `лимитными` чанками.
+
+```mjs
+import { Readable } from 'node:stream';
+
+await Readable.from([1, 2, 3, 4]).take(2).toArray(); // [1, 2]
+```
+
+<!-- 0082.part.md -->
+
+##### `readable.asIndexedPairs([options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Readable} поток индексированных пар.
+
+Этот метод возвращает новый поток с фрагментами базового потока в паре со счетчиком в виде `[index, chunk]`. Первое значение индекса равно 0, и оно увеличивается на 1 для каждого полученного куска.
+
+```mjs
+import { Readable } from 'node:stream';
+
+const pairs = await Readable.from(['a', 'b', 'c'])
+  .asIndexedPairs()
+  .toArray();
+console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
+```
+
+<!-- 0083.part.md -->
+
+##### `readable.reduce(fn[, initial[, options]])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `fn` {Function|AsyncFunction} функция редуктора для вызова над каждым куском в потоке.
+  - `previous` {любое} значение, полученное от последнего вызова `fn` или `initial`, если указано, или первый чанк потока в противном случае.
+  - `data` {любой} фрагмент данных из потока.
+  - `options` {Object}
+    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+- `initial` {любой} начальное значение для использования в сокращении.
+- `options` {Object}
+  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+- Возвращает: {Promise} обещание конечного значения редукции.
+
+Этот метод вызывает `fn` на каждом куске потока по порядку, передавая ему результат вычисления на предыдущем элементе. Он возвращает обещание конечного значения редукции.
+
+Функция reducer итерирует поток элемент за элементом, что означает отсутствие параметра `concurrency` или параллелизма. Чтобы выполнить `reduce` параллельно, его можно подключить к методу [`readable.map`](#readablemapfn-options).
+
+Если значение `initial` не указано, то в качестве начального значения используется первый кусок потока. Если поток пуст, обещание отклоняется с `TypeError` со свойством кода `ERR_INVALID_ARGS`.
+
+```mjs
+import { Readable } from 'node:stream';
+
+const ten = await Readable.from([1, 2, 3, 4]).reduce(
+  (previous, data) => {
+    return previous + data;
+  }
+);
+console.log(ten); // 10
+```
+
+<!-- 0084.part.md -->
+
+### Дуплекс и преобразование потоков
+
+<!-- 0085.part.md -->
 
 #### Класс: `stream.Duplex`
 
-<!-- YAML
-added: v0.9.4
-changes:
-  - version: v6.8.0
-    pr-url: https://github.com/nodejs/node/pull/8834
-    description: Instances of `Duplex` now return `true` when
-                 checking `instanceof stream.Writable`.
--->
+Двусторонние потоки - это потоки, которые реализуют оба интерфейса [`Readable`](#class-streamreadable) и [`Writable`](#class-streamwritable).
 
-<!--type=class-->
+Примерами `дуплексных` потоков являются:
 
-Дуплексные потоки - это потоки, которые реализуют как [`Readable`](#class-streamreadable) а также [`Writable`](#class-streamwritable) интерфейсы.
+- [TCP сокеты](net.md#class-netsocket)
+- [zlib streams](zlib.md)
+- [crypto streams](crypto.md)
 
-Примеры `Duplex` потоки включают:
-
-- [Сокеты TCP](net.md#class-netsocket)
-- [потоки zlib](zlib.md)
-- [криптопотоки](crypto.md)
+<!-- 0086.part.md -->
 
 ##### `duplex.allowHalfOpen`
 
-<!-- YAML
-added: v0.9.4
--->
+- {boolean}
 
-- {логический}
+Если `false`, то поток будет автоматически завершать записываемую сторону, когда заканчивается читаемая сторона. Изначально устанавливается опцией конструктора `allowHalfOpen`, которая по умолчанию имеет значение `true`.
 
-Если `false` тогда поток автоматически завершит доступную для записи сторону, когда закончится доступная для чтения сторона. Первоначально устанавливается `allowHalfOpen` параметр конструктора, по умолчанию `false`.
+Этот параметр можно изменить вручную, чтобы изменить поведение полуоткрытия существующего экземпляра потока `Duplex`, но он должен быть изменен до того, как будет вызвано событие `'end'`.
 
-Это можно изменить вручную, чтобы изменить полуоткрытое поведение существующего `Duplex` экземпляр потока, но его необходимо изменить перед `'end'` событие испускается.
+<!-- 0087.part.md -->
 
 #### Класс: `stream.Transform`
 
-<!-- YAML
-added: v0.9.4
--->
+Потоки Transform - это потоки [`Duplex`](#class-streamduplex), в которых выход каким-то образом связан с входом. Как и все потоки [`Duplex`](#class-streamduplex), потоки `Transform` реализуют интерфейсы [`Readable`](#class-streamreadable) и [`Writable`](#class-streamwritable).
 
-<!--type=class-->
+Примеры потоков `Transform` включают:
 
-Потоки преобразования [`Duplex`](#class-streamduplex) потоки, где вывод каким-то образом связан с вводом. Как все [`Duplex`](#class-streamduplex) ручьи `Transform` потоки реализуют как [`Readable`](#class-streamreadable) а также [`Writable`](#class-streamwritable) интерфейсы.
+- [zlib streams](zlib.md)
+- [crypto streams](crypto.md)
 
-Примеры `Transform` потоки включают:
-
-- [потоки zlib](zlib.md)
-- [криптопотоки](crypto.md)
+<!-- 0088.part.md -->
 
 ##### `transform.destroy([error])`
-
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/29197
-    description: Work as a no-op on a stream that has already been destroyed.
--->
 
 - `error` {Ошибка}
 - Возвращает: {this}
 
-Уничтожить поток и, при желании, испустить `'error'` событие. После этого вызова поток преобразования освободит все внутренние ресурсы. Разработчикам не следует переопределять этот метод, а вместо этого реализовывать [`readable._destroy()`](#readable_destroyerr-callback). Реализация по умолчанию `_destroy()` для `Transform` также испускать `'close'` пока не `emitClose` установлен в false.
+Уничтожить поток и, по желанию, выдать событие `'error'`. После этого вызова поток преобразования освободит все внутренние ресурсы. Реализаторы не должны переопределять этот метод, а вместо этого реализовать [`readable._destroy()`](#readable_destroyerr-callback). Реализация по умолчанию `_destroy()` для `Transform` также испускает `'close'`, если `emitClose` не установлен в false.
 
-Один раз `destroy()` был вызван, любые дальнейшие вызовы не будут выполняться и никаких ошибок, кроме `_destroy()` может быть выпущен как `'error'`.
+После вызова `destroy()` любые дальнейшие вызовы будут бесполезны, и никакие другие ошибки, кроме `_destroy()`, не могут быть выданы как `'error'`.
+
+<!-- 0089.part.md -->
 
 ### `stream.finished(stream[, options], callback)`
 
-<!-- YAML
-added: v10.0.0
-changes:
-  - version: v15.11.0
-    pr-url: https://github.com/nodejs/node/pull/37354
-    description: The `signal` option was added.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/32158
-    description: The `finished(stream, cb)` will wait for the `'close'` event
-                 before invoking the callback. The implementation tries to
-                 detect legacy streams and only apply this behavior to streams
-                 which are expected to emit `'close'`.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/31545
-    description: Emitting `'close'` before `'end'` on a `Readable` stream
-                 will cause an `ERR_STREAM_PREMATURE_CLOSE` error.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/31509
-    description: Callback will be invoked on streams which have already
-                 finished before the call to `finished(stream, cb)`.
--->
+- `stream` {Stream|ReadableStream|WritableStream}
 
-- `stream` {Stream} Доступный для чтения и / или записи поток.
-- `options` {Объект}
-  - `error` {boolean} Если установлено значение `false`, затем звонок `emit('error', err)` не считается законченным. **Дефолт:** `true`.
-  - `readable` {boolean} Если задано значение `false`, обратный вызов будет вызван, когда поток закончится, даже если поток все еще доступен для чтения. **Дефолт:** `true`.
-  - `writable` {boolean} Если задано значение `false`, обратный вызов будет вызван, когда поток закончится, даже если поток все еще доступен для записи. **Дефолт:** `true`.
-  - `signal` {AbortSignal} позволяет прервать ожидание окончания потока. Базовый поток будет _нет_ быть прерванным, если сигнал прерван. Обратный вызов будет вызван с `AbortError`. Все зарегистрированные слушатели, добавленные этой функцией, также будут удалены.
-- `callback` {Функция} Функция обратного вызова, которая принимает необязательный аргумент ошибки.
-- Возвращает: {Функция} Функция очистки, которая удаляет всех зарегистрированных слушателей.
+Читаемый и/или записываемый поток/вебстрим.
 
-Функция для получения уведомлений, когда поток больше не доступен для чтения, записи или произошла ошибка или событие преждевременного закрытия.
+- `options` {Object}
+
+  - `error` {boolean} Если установлено значение `false`, то вызов `emit('error', err)` не рассматривается как завершенный. **По умолчанию:** `true`.
+  - `readable` {boolean} Если установлено значение `false`, обратный вызов будет вызван, когда поток завершится, даже если поток все еще может быть доступен для чтения. **По умолчанию:** `true`.
+  - `writable` {boolean} Если установлено значение `false`, обратный вызов будет вызван при завершении потока, даже если поток может быть доступен для записи. **По умолчанию:** `true`.
+  - `signal` {AbortSignal} позволяет прервать ожидание завершения потока. Основной поток не будет прерван, если сигнал прерван. Обратный вызов будет вызван с сообщением `AbortError`. Все зарегистрированные слушатели, добавленные этой функцией, также будут удалены.
+  - `cleanup` {boolean} удалить все зарегистрированные слушатели потока. **По умолчанию:** `false`.
+
+- `callback` {функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
+
+- Возвращает: {Function} Функция очистки, которая удаляет всех зарегистрированных слушателей.
+
+Функция для получения уведомления, когда поток больше не доступен для чтения, записи или произошла ошибка или событие преждевременного закрытия.
 
 ```js
-const { finished } = require('stream');
+const { finished } = require('node:stream');
+const fs = require('node:fs');
 
 const rs = fs.createReadStream('archive.tar');
 
@@ -1475,32 +2025,18 @@ finished(rs, (err) => {
   if (err) {
     console.error('Stream failed.', err);
   } else {
-    console.log('Stream is done reading.');
+    console.log('Поток закончил чтение.');
   }
 });
 
-rs.resume(); // Drain the stream.
+rs.resume(); // Слить поток.
 ```
 
-Особенно полезно в сценариях обработки ошибок, когда поток преждевременно уничтожается (например, прерванный HTTP-запрос) и не генерирует `'end'` или `'finish'`.
+Особенно полезен в сценариях обработки ошибок, когда поток уничтожается преждевременно (например, прерванный HTTP-запрос), и не выдает `'end'` или `'finish'`.
 
-В `finished` API предоставляет версию обещания:
+API `finished` предоставляет [promise version](#streamfinishedstream-options).
 
-```js
-const { finished } = require('stream/promises');
-
-const rs = fs.createReadStream('archive.tar');
-
-async function run() {
-  await finished(rs);
-  console.log('Stream is done reading.');
-}
-
-run().catch(console.error);
-rs.resume(); // Drain the stream.
-```
-
-`stream.finished()` оставляет висящие слушатели событий (в частности, `'error'`, `'end'`, `'finish'` а также `'close'`) после `callback` был вызван. Причина этого в том, что неожиданный `'error'` события (из-за неправильной реализации потока) не вызывают неожиданных сбоев. Если это нежелательное поведение, то возвращенная функция очистки должна быть вызвана в обратном вызове:
+Функция `stream.finished()` оставляет висящие слушатели событий (в частности, `'error'`, `'end'`, `'finish'` и `'close'`) после вызова `callback`. Это делается для того, чтобы неожиданные события `ошибки` (из-за неправильной реализации потока) не приводили к неожиданным сбоям. Если это нежелательное поведение, то возвращаемая функция очистки должна быть вызвана в обратном вызове:
 
 ```js
 const cleanup = finished(rs, (err) => {
@@ -1509,49 +2045,39 @@ const cleanup = finished(rs, (err) => {
 });
 ```
 
+<!-- 0090.part.md -->
+
 ### `stream.pipeline(source[, ...transforms], destination, callback)`
+
+<!-- 0091.part.md -->
 
 ### `stream.pipeline(streams, callback)`
 
-<!-- YAML
-added: v10.0.0
-changes:
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/32158
-    description: The `pipeline(..., cb)` will wait for the `'close'` event
-                 before invoking the callback. The implementation tries to
-                 detect legacy streams and only apply this behavior to streams
-                 which are expected to emit `'close'`.
-  - version: v13.10.0
-    pr-url: https://github.com/nodejs/node/pull/31223
-    description: Add support for async generators.
--->
-
-- `streams` {Stream \[] | Iterable \[] | AsyncIterable \[] | Функция \[]}
-- `source` {Stream | Iterable | AsyncIterable | Функция}
-  - Возвращает: {Iterable | AsyncIterable}.
-- `...transforms` {Stream | Функция}
+- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
+- `source` {Stream|Iterable|AsyncIterable|Function|ReadableStream}
+  - Возвращает: {Iterable|AsyncIterable}
+- `...transforms` {Stream|Function|TransformStream}
   - `source` {AsyncIterable}
   - Возвращает: {AsyncIterable}
-- `destination` {Stream | Функция}
+- `destination` {Stream|Function|WritableStream}
   - `source` {AsyncIterable}
-  - Возвращает: {AsyncIterable | Promise}.
-- `callback` {Функция} Вызывается, когда конвейер полностью готов.
+  - Возвращает: {AsyncIterable|Promise}
+- `callback` {Function} Вызывается, когда конвейер полностью завершен.
   - `err` {Ошибка}
-  - `val` Разрешенное значение `Promise` вернулся `destination`.
+  - `val` Разрешенное значение `Promise`, возвращенное `destination`.
 - Возвращает: {Stream}
 
-Метод модуля для передачи между потоками и генераторами ошибок, правильной очистки и обеспечения обратного вызова после завершения конвейера.
+Метод модуля для передачи данных между потоками и генераторами, пересылающими ошибки и должным образом очищающими их, а также предоставляющими обратный вызов, когда конвейер завершен.
 
 ```js
-const { pipeline } = require('stream');
-const fs = require('fs');
-const zlib = require('zlib');
+const { pipeline } = require('node:stream');
+const fs = require('node:fs');
+const zlib = require('node:zlib');
 
-// Use the pipeline API to easily pipe a series of streams
-// together and get notified when the pipeline is fully done.
+// Используйте API трубопровода для простой передачи серии потоков
+// вместе и получить уведомление, когда конвейер будет полностью завершен.
 
-// A pipeline to gzip a potentially huge tar file efficiently:
+// Конвейер для эффективного gzip потенциально огромного tar-файла:
 
 pipeline(
   fs.createReadStream('archive.tar'),
@@ -1567,110 +2093,57 @@ pipeline(
 );
 ```
 
-В `pipeline` API предоставляет версию обещания, которая также может получать аргумент опций в качестве последнего параметра с `signal` Свойство {AbortSignal}. Когда сигнал прерывается, `destroy` будет вызываться в нижележащем конвейере с `AbortError`.
+API `pipeline` предоставляет [promise version](#streampipelinesource-transforms-destination-options).
+
+`stream.pipeline()` будет вызывать `stream.destroy(err)` для всех потоков, кроме:
+
+- `Readable` потоков, которые выдали команду `'end'` или `'close'`.
+- `Writable` потоков, которые выдали `'finish'` или `'close'`.
+
+`stream.pipeline()` оставляет висящие слушатели событий на потоках после вызова `callback`. В случае повторного использования потоков после сбоя это может привести к утечке слушателей событий и проглоченным ошибкам. Если последний поток доступен для чтения, висячие слушатели событий будут удалены, чтобы последний поток мог быть использован позже.
+
+`stream.pipeline()` закрывает все потоки при возникновении ошибки. Использование `IncomingRequest` с `pipeline` может привести к неожиданному поведению, когда сокет будет уничтожен без отправки ожидаемого ответа. Смотрите пример ниже:
 
 ```js
-const { pipeline } = require('stream/promises');
+const fs = require('node:fs');
+const http = require('node:http');
+const { pipeline } = require('node:stream');
 
-async function run() {
-  await pipeline(
-    fs.createReadStream('archive.tar'),
-    zlib.createGzip(),
-    fs.createWriteStream('archive.tar.gz')
+const server = http.createServer((req, res) => {
+  const fileStream = fs.createReadStream(
+    './fileNotExist.txt'
   );
-  console.log('Pipeline succeeded.');
-}
-
-run().catch(console.error);
+  pipeline(fileStream, res, (err) => {
+    if (err) {
+      console.log(err); // Нет такого файла
+      // Это сообщение не может быть отправлено после того, как `pipeline` уже уничтожил сокет
+      return res.end('error!!!');
+    }
+  });
+});
 ```
 
-Чтобы использовать `AbortSignal`, передайте его внутри объекта параметров в качестве последнего аргумента:
-
-```js
-const { pipeline } = require('stream/promises');
-
-async function run() {
-  const ac = new AbortController();
-  const signal = ac.signal;
-
-  setTimeout(() => ac.abort(), 1);
-  await pipeline(
-    fs.createReadStream('archive.tar'),
-    zlib.createGzip(),
-    fs.createWriteStream('archive.tar.gz'),
-    { signal }
-  );
-}
-
-run().catch(console.error); // AbortError
-```
-
-В `pipeline` API также поддерживает асинхронные генераторы:
-
-```js
-const { pipeline } = require('stream/promises');
-const fs = require('fs');
-
-async function run() {
-  await pipeline(
-    fs.createReadStream('lowercase.txt'),
-    async function* (source, signal) {
-      source.setEncoding('utf8'); // Work with strings rather than `Buffer`s.
-      for await (const chunk of source) {
-        yield await processChunk(chunk, { signal });
-      }
-    },
-    fs.createWriteStream('uppercase.txt')
-  );
-  console.log('Pipeline succeeded.');
-}
-
-run().catch(console.error);
-```
-
-Не забывайте обращаться с `signal` аргумент передан в асинхронный генератор. Особенно в случае, когда асинхронный генератор является источником конвейера (т.е. первым аргументом) или конвейер никогда не будет завершен.
-
-```js
-const { pipeline } = require('stream/promises');
-const fs = require('fs');
-
-async function run() {
-  await pipeline(async function* (signal) {
-    await someLongRunningfn({ signal });
-    yield 'asd';
-  }, fs.createWriteStream('uppercase.txt'));
-  console.log('Pipeline succeeded.');
-}
-
-run().catch(console.error);
-```
-
-`stream.pipeline()` позвоню `stream.destroy(err)` на всех потоках, кроме:
-
-- `Readable` потоки, которые испустили `'end'` или `'close'`.
-- `Writable` потоки, которые испустили `'finish'` или `'close'`.
-
-`stream.pipeline()` оставляет висящие прослушиватели событий в потоках после `callback` был вызван. В случае повторного использования потоков после сбоя это может привести к утечкам прослушивателя событий и ошибкам проглатывания.
+<!-- 0092.part.md -->
 
 ### `stream.compose(...streams)`
 
-<!-- YAML
-added: v16.9.0
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - `stream.compose` экспериментальный.
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `streams` {Stream \[] | Iterable \[] | AsyncIterable \[] | Функция \[]}
+    `stream.compose` является экспериментальным.
+
+- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
 - Возвращает: {stream.Duplex}
 
-Объединяет два или более потока в один `Duplex` поток, который записывает в первый поток и читает из последнего. Каждый предоставленный поток передается по конвейеру в следующий, используя `stream.pipeline`. Если какой-либо из потоков ошибается, то все уничтожаются, включая внешний `Duplex` транслировать.
+Объединяет два или более потоков в поток `Duplex`, который пишет в первый поток и читает из последнего. Каждый предоставленный поток передается в следующий, используя `stream.pipeline`. Если какой-либо из потоков ошибается, то все они уничтожаются, включая внешний поток `Duplex`.
 
-Потому что `stream.compose` возвращает новый поток, который, в свою очередь, может (и должен) быть передан по конвейеру в другие потоки, он включает композицию. Напротив, при передаче потоков в `stream.pipeline`, как правило, первый поток является читаемым потоком, а последний - записываемым потоком, образуя замкнутую схему.
+Поскольку `stream.compose` возвращает новый поток, который, в свою очередь, может (и должен) передаваться в другие потоки, он обеспечивает композицию. Напротив, при передаче потоков в `stream.pipeline`, обычно первый поток является потоком для чтения, а последний - потоком для записи, образуя замкнутую цепь.
 
-Если прошел `Function` это должен быть заводской метод, `source` `Iterable`.
+Если передается `Function`, то это должен быть фабричный метод, принимающий `Iterable` источника.
 
 ```mjs
-import { compose, Transform } from 'stream';
+import { compose, Transform } from 'node:stream';
 
 const removeSpaces = new Transform({
   transform(chunk, encoding, callback) {
@@ -1694,17 +2167,19 @@ for await (const buf of compose(removeSpaces, toUpper).end(
 console.log(res); // prints 'HELLOWORLD'
 ```
 
-`stream.compose` может использоваться для преобразования асинхронных итераций, генераторов и функций в потоки.
+`stream.compose` можно использовать для преобразования асинхронных итерабельных, генераторов и функций в потоки.
 
-- `AsyncIterable` превращается в читаемый `Duplex`. Не может уступить `null`.
-- `AsyncGeneratorFunction` преобразуется в читаемое / записываемое преобразование `Duplex`. Должен взять источник `AsyncIterable` как первый параметр. Не может уступить `null`.
-- `AsyncFunction` превращается в записываемый `Duplex`. Должен вернуться либо `null` или `undefined`.
+- `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
+- `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
+- `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
+
+<!-- конец списка -->
 
 ```mjs
-import { compose } from 'stream';
-import { finished } from 'stream/promises';
+import { compose } from 'node:stream';
+import { finished } from 'node:stream/promises';
 
-// Convert AsyncIterable into readable Duplex.
+// Преобразуем AsyncIterable в читаемый Duplex.
 const s1 = compose(
   (async function* () {
     yield 'Hello';
@@ -1712,7 +2187,7 @@ const s1 = compose(
   })()
 );
 
-// Convert AsyncGenerator into transform Duplex.
+// Преобразуем AsyncGenerator в преобразуемый Duplex.
 const s2 = compose(async function* (source) {
   for await (const chunk of source) {
     yield String(chunk).toUpperCase();
@@ -1721,7 +2196,7 @@ const s2 = compose(async function* (source) {
 
 let res = '';
 
-// Convert AsyncFunction into writable Duplex.
+// Преобразуем AsyncFunction в записываемый Duplex.
 const s3 = compose(async function (source) {
   for await (const chunk of source) {
     res += chunk;
@@ -1730,25 +2205,23 @@ const s3 = compose(async function (source) {
 
 await finished(compose(s1, s2, s3));
 
-console.log(res); // prints 'HELLOWORLD'
+console.log(res); // печатает 'HELLOWORLD'
 ```
+
+См. [`readable.compose(stream)`](#readablecomposestream-options) для `stream.compose` как оператора.
+
+<!-- 0093.part.md -->
 
 ### `stream.Readable.from(iterable[, options])`
 
-<!-- YAML
-added:
-  - v12.3.0
-  - v10.17.0
--->
-
-- `iterable` {Iterable} Объект, реализующий `Symbol.asyncIterator` или `Symbol.iterator` итеративный протокол. Выдает событие «ошибка», если передано нулевое значение.
-- `options` {Object} Параметры, предоставленные `new stream.Readable([options])`. По умолчанию, `Readable.from()` установит `options.objectMode` к `true`, если это явно не отключено, установив `options.objectMode` к `false`.
+- `iterable` {Iterable} Объект, реализующий протокол итератора `Symbol.asyncIterator` или `Symbol.iterator`. Выдает событие 'error', если передано нулевое значение.
+- `options` {Object} Параметры, предоставляемые `new stream.Readable([options])`. По умолчанию, `Readable.from()` будет устанавливать `options.objectMode` в `true`, если это не будет явно отклонено установкой `options.objectMode` в `false`.
 - Возвращает: {stream.Readable}
 
-Утилита для создания читаемых потоков из итераторов.
+Метод утилиты для создания читаемых потоков из итераторов.
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 async function* generate() {
   yield 'hello';
@@ -1762,144 +2235,323 @@ readable.on('data', (chunk) => {
 });
 ```
 
-Вызов `Readable.from(string)` или `Readable.from(buffer)` не будет повторять строки или буферы для соответствия семантике других потоков по соображениям производительности.
+При вызове `Readable.from(string)` или `Readable.from(buffer)` строки или буферы не будут итерироваться в соответствии с семантикой других потоков по причинам производительности.
+
+Если в качестве аргумента передается объект `Iterable`, содержащий обещания, это может привести к необработанному отказу.
+
+```js
+const { Readable } = require('node:stream');
+
+Readable.from([
+  new Promise((resolve) => setTimeout(resolve('1'), 1500)),
+  new Promise((_, reject) =>
+    setTimeout(reject(new Error('2')), 1000)
+  ), // Не обработанный отказ
+]);
+```
+
+<!-- 0094.part.md -->
 
 ### `stream.Readable.fromWeb(readableStream[, options])`
 
-<!-- YAML
-added: REPLACEME
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 - `readableStream` {ReadableStream}
-- `options` {Объект}
-  - `encoding` {нить}
-  - `highWaterMark` {количество}
-  - `objectModel` {логический}
-  - `signal` {AbortSignal}
+- `options` {Object}
+  - `encoding` {string}
+  - `highWaterMark` {number}
+  - `objectMode` {boolean}
+  - `сигнал` {AbortSignal}
 - Возвращает: {stream.Readable}
+
+<!-- 0095.part.md -->
 
 ### `stream.Readable.isDisturbed(stream)`
 
-<!-- YAML
-added: v16.8.0
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `stream` {stream.Readable | ReadableStream}
-- Возврат: `boolean`
+- `stream` {stream.Readable|ReadableStream}
+- Возвращает: `boolean`.
 
-Возвращает информацию о том, был ли поток прочитан или отменен.
+Возвращает, был ли поток прочитан или отменен.
 
-### `stream.Readable.toWeb(streamReadable)`
+<!-- 0096.part.md -->
 
-<!-- YAML
-added: REPLACEME
--->
+### `stream.isErrored(stream)`
 
-> Стабильность: 1 - экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `stream` {Readable|Writable|Duplex|WritableStream|ReadableStream}
+- Возвращает: {boolean}
+
+Возвращает, столкнулся ли поток с ошибкой.
+
+<!-- 0097.part.md -->
+
+### `stream.isReadable(stream)`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+
+- `stream` {Readable|Duplex|ReadableStream}
+- Возвращает: {boolean}
+
+Возвращает, является ли поток читаемым.
+
+<!-- 0098.part.md -->
+
+### `stream.Readable.toWeb(streamReadable[, options])`
+
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 - `streamReadable` {stream.Readable}
+- `options` {Object}
+  - `стратегия` {Объект}
+    - `highWaterMark` {number} Максимальный размер внутренней очереди (созданного `ReadableStream`) перед применением обратного давления при чтении из данного `stream.Readable`. Если значение не указано, оно будет взято из данного `stream.Readable`.
+    - `size` {Функция} Функция, определяющая размер заданного куска данных. Если значение не указано, размер будет равен `1` для всех чанков.
+      - `chunk` {любой}
+      - Возвращает: {число}
 - Возвращает: {ReadableStream}
+
+<!-- 0099.part.md -->
 
 ### `stream.Writable.fromWeb(writableStream[, options])`
 
-<!-- YAML
-added: REPLACEME
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 - `writableStream` {WritableStream}
-- `options` {Объект}
-  - `decodeStrings` {логический}
-  - `highWaterMark` {количество}
-  - `objectMode` {логический}
+- `options` {Object}
+  - `decodeStrings` {boolean}
+  - `highWaterMark` {число}
+  - `objectMode` {boolean}
   - `signal` {AbortSignal}
 - Возвращает: {stream.Writable}
 
+<!-- 0100.part.md -->
+
 ### `stream.Writable.toWeb(streamWritable)`
 
-<!-- YAML
-added: REPLACEME
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 - `streamWritable` {stream.Writable}
 - Возвращает: {WritableStream}
 
+<!-- 0101.part.md -->
+
 ### `stream.Duplex.from(src)`
 
-<!-- YAML
-added: v16.8.0
--->
-
-- `src` {Stream | Blob | ArrayBuffer | string | Iterable | AsyncIterable | AsyncGeneratorFunction | AsyncFunction | Promise | Object}
+- `src` {Stream|Blob|ArrayBuffer|string|Iterable|AsyncIterable| AsyncGeneratorFunction|AsyncFunction|Promise|Object| ReadableStream|WritableStream}
 
 Утилита для создания дуплексных потоков.
 
 - `Stream` преобразует записываемый поток в записываемый `Duplex` и читаемый поток в `Duplex`.
-- `Blob` превращается в читаемый `Duplex`.
-- `string` превращается в читаемый `Duplex`.
-- `ArrayBuffer` превращается в читаемый `Duplex`.
-- `AsyncIterable` превращается в читаемый `Duplex`. Не может уступить `null`.
-- `AsyncGeneratorFunction` преобразуется в читаемое / записываемое преобразование `Duplex`. Должен взять источник `AsyncIterable` как первый параметр. Не может уступить `null`.
-- `AsyncFunction` превращается в записываемый `Duplex`. Должен вернуться либо `null` или `undefined`
-- `Object ({ writable, readable })` обращает `readable` а также `writable` в `Stream` а затем объединяет их в `Duplex` где `Duplex` напишу в `writable` и читайте из `readable`.
-- `Promise` превращается в читаемый `Duplex`. Ценить `null` игнорируется.
+- `Blob` преобразует читаемый поток в читаемый `Duplex`.
+- `string` преобразует в читаемый `Duplex`.
+- `ArrayBuffer` преобразуется в читаемый `Duplex`.
+- `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
+- `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
+- `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
+- `Object ({ writable, readable })` преобразует `readable` и `writable` в `Stream` и затем объединяет их в `Duplex`, где `Duplex` будет писать в `writable` и читать из `readable`.
+- `Promise` преобразуется в читаемый `Duplex`. Значение `null` игнорируется.
+- `ReadableStream` преобразуется в читаемый `Duplex`.
+- `WritableStream` преобразуется в записываемый `Duplex`.
 - Возвращает: {stream.Duplex}
+
+Если в качестве аргумента передан объект `Iterable`, содержащий обещания, это может привести к необработанному отказу.
+
+```js
+const { Duplex } = require('node:stream');
+
+Duplex.from([
+  new Promise((resolve) => setTimeout(resolve('1'), 1500)),
+  new Promise((_, reject) =>
+    setTimeout(reject(new Error('2')), 1000)
+  ), // Не обработанный отказ
+]);
+```
+
+<!-- 0102.part.md -->
 
 ### `stream.Duplex.fromWeb(pair[, options])`
 
-<!-- YAML
-added: REPLACEME
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `pair` {Объект}
+- `pair` {Object}
   - `readable` {ReadableStream}
   - `writable` {WritableStream}
-- `options` {Объект}
-  - `allowHalfOpen` {логический}
-  - `decodeStrings` {логический}
-  - `encoding` {нить}
-  - `highWaterMark` {количество}
-  - `objectMode` {логический}
-  - `signal` {AbortSignal}
+- `options` {Object}
+  - `allowHalfOpen` {boolean}
+  - `decodeStrings` {boolean}
+  - `encoding` {string}
+  - `highWaterMark` {number}
+  - `objectMode` {boolean}
+  - `сигнал` {AbortSignal}
 - Возвращает: {stream.Duplex}
+
+<!-- конец списка -->
+
+```mjs
+import { Duplex } from 'node:stream';
+import {
+  ReadableStream,
+  WritableStream,
+} from 'node:stream/web';
+
+const readable = new ReadableStream({
+  start(controller) {
+    controller.enqueue('world');
+  },
+});
+
+const writable = new WritableStream({
+  write(chunk) {
+    console.log('writable', chunk);
+  },
+});
+
+const pair = {
+  readable,
+  writable,
+};
+const duplex = Duplex.fromWeb(pair, {
+  encoding: 'utf8',
+  objectMode: true,
+});
+
+duplex.write('hello');
+
+for await (const chunk of duplex) {
+  console.log('readable', chunk);
+}
+```
+
+```cjs
+const { Duplex } = require('node:stream');
+const {
+  ReadableStream,
+  WritableStream,
+} = require('node:stream/web');
+
+const readable = new ReadableStream({
+  start(controller) {
+    controller.enqueue('world');
+  },
+});
+
+const writable = new WritableStream({
+  write(chunk) {
+    console.log('writable', chunk);
+  },
+});
+
+const pair = {
+  readable,
+  writable,
+};
+const duplex = Duplex.fromWeb(pair, {
+  encoding: 'utf8',
+  objectMode: true,
+});
+
+duplex.write('hello');
+duplex.once('readable', () =>
+  console.log('readable', duplex.read())
+);
+```
+
+<!-- 0103.part.md -->
 
 ### `stream.Duplex.toWeb(streamDuplex)`
 
-<!-- YAML
-added: REPLACEME
--->
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - экспериментальная
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 - `streamDuplex` {stream.Duplex}
 - Возвращает: {Object}
-  - `readable` {ReadableStream}
-  - `writable` {WritableStream}
+  - `читаемый` {ReadableStream}
+  - `записываемый` {WritableStream}
+
+<!-- конец списка -->
+
+```mjs
+import { Duplex } from 'node:stream';
+
+const duplex = Duplex({
+  objectMode: true,
+  read() {
+    this.push('world');
+    this.push(null);
+  },
+  write(chunk, encoding, callback) {
+    console.log('writable', chunk);
+    callback();
+  },
+});
+
+const { readable, writable } = Duplex.toWeb(duplex);
+writable.getWriter().write('hello');
+
+const { value } = await readable.getReader().read();
+console.log('readable', value);
+```
+
+```cjs
+const { Duplex } = require('node:stream');
+
+const duplex = Duplex({
+  objectMode: true,
+  read() {
+    this.push('world');
+    this.push(null);
+  },
+  write(chunk, encoding, callback) {
+    console.log('writable', chunk);
+    callback();
+  },
+});
+
+const { readable, writable } = Duplex.toWeb(duplex);
+writable.getWriter().write('hello');
+
+readable
+  .getReader()
+  .read()
+  .then((result) => {
+    console.log('readable', result.value);
+  });
+```
+
+<!-- 0104.part.md -->
 
 ### `stream.addAbortSignal(signal, stream)`
 
-<!-- YAML
-added: v15.4.0
--->
+- `signal` {AbortSignal} Сигнал, представляющий возможную отмену
+- `stream` {Stream|ReadableStream|WritableStream}
 
-- `signal` {AbortSignal} Сигнал, указывающий на возможную отмену.
-- `stream` {Stream} поток для присоединения сигнала к
+Поток, к которому нужно прикрепить сигнал.
 
-Присоединяет AbortSignal к читаемому или записываемому потоку. Это позволяет коду управлять уничтожением потока с помощью `AbortController`.
+Прикрепляет сигнал AbortSignal к читаемому или записываемому потоку. Это позволяет коду управлять уничтожением потока с помощью `AbortController`.
 
-Вызов `abort` на `AbortController` соответствующий пройденному `AbortSignal` будет вести себя так же, как вызов `.destroy(new AbortError())` на ручье.
+Вызов `abort` на `AbortController`, соответствующем переданному `AbortSignal`, будет вести себя так же, как вызов `.destroy(new AbortError())` для потока, и `controller.error(new AbortError())` для веб-потоков.
 
 ```js
-const fs = require('fs');
+const fs = require('node:fs');
 
 const controller = new AbortController();
 const read = addAbortSignal(
@@ -1910,7 +2562,7 @@ const read = addAbortSignal(
 controller.abort();
 ```
 
-Или используя `AbortSignal` с читаемым потоком как асинхронным итерабельным:
+Или используя `AbortSignal` с читаемым потоком в качестве асинхронного итерабельного:
 
 ```js
 const controller = new AbortController();
@@ -1934,18 +2586,47 @@ const stream = addAbortSignal(
 })();
 ```
 
-## API для исполнителей потоковой передачи
-
-<!--type=misc-->
-
-В `stream` API модуля был разработан, чтобы упростить реализацию потоков с использованием прототипной модели наследования JavaScript.
-
-Сначала разработчик потока объявит новый класс JavaScript, который расширяет один из четырех основных классов потока (`stream.Writable`, `stream.Readable`, `stream.Duplex`, или `stream.Transform`), убедившись, что они вызывают соответствующий конструктор родительского класса:
-
-<!-- eslint-disable no-useless-constructor -->
+Или используя `AbortSignal` с ReadableStream:
 
 ```js
-const { Writable } = require('stream');
+const controller = new AbortController();
+const rs = new ReadableStream({
+  start(controller) {
+    controller.enqueue('hello');
+    controller.enqueue('world');
+    controller.close();
+  },
+});
+
+addAbortSignal(controller.signal, rs);
+
+finished(rs, (err) => {
+  if (err) {
+    if (err.name === 'AbortError') {
+      // The operation was cancelled
+    }
+  }
+});
+
+const reader = rs.getReader();
+
+reader.read().then(({ value, done }) => {
+  console.log(value); // hello
+  console.log(done); // false
+  controller.abort();
+});
+```
+
+<!-- 0105.part.md -->
+
+## API для реализаторов потоков
+
+API модуля `node:stream` был разработан для того, чтобы сделать возможной простую реализацию потоков с использованием прототипной модели наследования JavaScript.
+
+Сначала разработчик потоков объявляет новый класс JavaScript, который расширяет один из четырех базовых классов потоков (`stream.Writable`, `stream.Readable`, `stream.Duplex` или `stream.Transform`), убеждаясь, что он вызывает соответствующий конструктор родительского класса:
+
+```js
+const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
   constructor({ highWaterMark, ...options }) {
@@ -1955,101 +2636,86 @@ class MyWritable extends Writable {
 }
 ```
 
-При расширении потоков помните, какие параметры пользователь может и должен предоставить, прежде чем пересылать их в базовый конструктор. Например, если реализация делает предположения относительно `autoDestroy` а также `emitClose` параметры, не позволяйте пользователю переопределять их. Четко указывайте, какие параметры пересылаются, вместо неявной пересылки всех параметров.
+При расширении потоков следует помнить о том, какие опции может и должен предоставлять пользователь, прежде чем передавать их базовому конструктору. Например, если реализация делает предположения относительно опций `autoDestroy` и `emitClose`, не позволяйте пользователю переопределять их. Явно указывайте, какие опции передаются, вместо того, чтобы неявно передавать все опции.
 
-Затем новый класс потока должен реализовать один или несколько конкретных методов, в зависимости от типа создаваемого потока, как подробно описано в таблице ниже:
+Затем новый класс потока должен реализовать один или несколько специфических методов, в зависимости от типа создаваемого потока, как показано на следующей схеме:
 
-| Пример использования | Класс | Метод (ы) для реализации | | -------- | ----- | ---------------------- | | Только чтение | [`Readable`](#class-streamreadable) | [`_read()`](#readable_readsize) | | Только написание | [`Writable`](#class-streamwritable) | [`_write()`](#writable_writechunk-encoding-callback), [`_writev()`](#writable_writevchunks-callback), [`_final()`](#writable_finalcallback) | | Чтение и письмо | [`Duplex`](#class-streamduplex) | [`_read()`](#readable_readsize), [`_write()`](#writable_writechunk-encoding-callback), [`_writev()`](#writable_writevchunks-callback), [`_final()`](#writable_finalcallback) | | Оперируйте записанными данными, затем прочтите результат | [`Transform`](#class-streamtransform) | [`_transform()`](#transform_transformchunk-encoding-callback), [`_flush()`](#transform_flushcallback), [`_final()`](#writable_finalcallback) |
+| Use-case | Class | Method(s) to implement |
+| --- | --- | --- |
+| Только чтение | [`Readable`](#class-streamreadable) | [`_read()`](#readable_readsize) |
+| Только запись | [`Writable`](#class-streamwritable) | [`_write()`](#writable_writechunk-encoding-callback), [`_writev()`](#writable_writevchunks-callback), [`_final()`](#writable_finalcallback) |  |
+| Чтение и запись | [`Duplex`](#class-streamduplex) | [`_read()`](#readable_readsize), [`_write()`](#writable_writechunk-encoding-callback), [`_writev()`](#writable_writevchunks-callback), [`_final()`](#writable_finalcallback) |
+| Оперировать с записанными данными, затем читать результат | [`Трансформация`](#class-streamtransform) | [`_transform()`](#transform_transformchunk-encoding-callback), [`_flush()`](#transform_flushcallback), [`_final()`](#writable_finalcallback) |
 
-Код реализации для потока должен _никогда_ вызывать "общедоступные" методы потока, которые предназначены для использования потребителями (как описано в [API для потребителей потоков](#api-for-stream-consumers) раздел). Это может привести к нежелательным побочным эффектам в коде приложения, потребляющем поток.
+Код реализации потока _никогда_ не должен вызывать "публичные" методы потока, предназначенные для использования потребителями (как описано в разделе [API для потребителей потоков](#api-for-stream-consumers)). Это может привести к неблагоприятным побочным эффектам в приложении
 
-Избегайте переопределения общедоступных методов, таких как `write()`, `end()`, `cork()`, `uncork()`, `read()` а также `destroy()`, или генерируя внутренние события, такие как `'error'`, `'data'`, `'end'`, `'finish'` а также `'close'` через `.emit()`. Это может нарушить текущие и будущие инварианты потоков, что приведет к проблемам с поведением и / или совместимостью с другими потоками, потоковыми утилитами и ожиданиями пользователей.
+<!-- 0106.part.md -->
 
-### Упрощенная конструкция
+### Упрощенное построение
 
-<!-- YAML
-added: v1.2.0
--->
-
-Во многих простых случаях можно создать поток, не полагаясь на наследование. Это может быть выполнено путем непосредственного создания экземпляров `stream.Writable`, `stream.Readable`, `stream.Duplex` или `stream.Transform` объекты и передача соответствующих методов в качестве параметров конструктора.
+Для многих простых случаев можно создать поток, не полагаясь на наследование. Это можно сделать, непосредственно создавая экземпляры объектов `stream.Writable`, `stream.Readable`, `stream.Duplex` или `stream.Transform` и передавая соответствующие методы в качестве опций конструктора.
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myWritable = new Writable({
   construct(callback) {
-    // Initialize state and load resources...
+    // Инициализация состояния и загрузка ресурсов...
   },
   write(chunk, encoding, callback) {
     // ...
   },
   destroy() {
-    // Free resources...
+    // Освободить ресурсы...
   },
 });
 ```
 
-### Реализация записываемого потока
+<!-- 0107.part.md -->
 
-В `stream.Writable` класс расширен для реализации [`Writable`](#class-streamwritable) транслировать.
+### Реализация потока с возможностью записи
 
-Обычай `Writable` потоки _должен_ позвонить в `new stream.Writable([options])` конструктор и реализовать `writable._write()` и / или `writable._writev()` метод.
+Класс `stream.Writable` расширен для реализации потока [`Writable`](#class-streamwritable).
+
+Пользовательские потоки `Writable` _должны_ вызывать конструктор `new stream.Writable([options])` и реализовывать метод `writable._write()` и/или `writable._writev()`.
+
+<!-- 0108.part.md -->
 
 #### `new stream.Writable([options])`
 
-<!-- YAML
-changes:
-  - version: v15.5.0
-    pr-url: https://github.com/nodejs/node/pull/36431
-    description: support passing in an AbortSignal.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/30623
-    description: Change `autoDestroy` option default to `true`.
-  - version:
-     - v11.2.0
-     - v10.16.0
-    pr-url: https://github.com/nodejs/node/pull/22795
-    description: Add `autoDestroy` option to automatically `destroy()` the
-                 stream when it emits `'finish'` or errors.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18438
-    description: Add `emitClose` option to specify if `'close'` is emitted on
-                 destroy.
--->
-
-- `options` {Объект}
-  - `highWaterMark` {number} Уровень буфера, когда [`stream.write()`](#writablewritechunk-encoding-callback) начинает возвращаться `false`. **Дефолт:** `16384` (16 КБ) или `16` для `objectMode` потоки.
-  - `decodeStrings` {boolean} Кодировать ли `string`s передано [`stream.write()`](#writablewritechunk-encoding-callback) к `Buffer`s (с кодировкой, указанной в [`stream.write()`](#writablewritechunk-encoding-callback) call) перед тем, как передать их [`stream._write()`](#writable_writechunk-encoding-callback). Другие типы данных не преобразуются (т. Е. `Buffer`s не декодируются в `string`с). Установка значения false предотвратит `string`s от преобразования. **Дефолт:** `true`.
-  - `defaultEncoding` {строка} Кодировка по умолчанию, которая используется, когда кодировка не указана в качестве аргумента для [`stream.write()`](#writablewritechunk-encoding-callback). **Дефолт:** `'utf8'`.
-  - `objectMode` {boolean} Независимо от того, [`stream.write(anyObj)`](#writablewritechunk-encoding-callback) это допустимая операция. Когда установлено, становится возможным записывать значения JavaScript, отличные от строки, `Buffer` или `Uint8Array` если поддерживается реализацией потока. **Дефолт:** `false`.
-  - `emitClose` {boolean} Должен ли поток выдавать `'close'` после того, как он был разрушен. **Дефолт:** `true`.
-  - `write` {Function} Реализация для [`stream._write()`](#writable_writechunk-encoding-callback) метод.
-  - `writev` {Function} Реализация для [`stream._writev()`](#writable_writevchunks-callback) метод.
-  - `destroy` {Function} Реализация для [`stream._destroy()`](#writable_destroyerr-callback) метод.
-  - `final` {Function} Реализация для [`stream._final()`](#writable_finalcallback) метод.
-  - `construct` {Function} Реализация для [`stream._construct()`](#writable_constructcallback) метод.
-  - `autoDestroy` {boolean} Должен ли этот поток вызывать автоматически `.destroy()` на себя после окончания. **Дефолт:** `true`.
+- `options` {Object}
+  - `highWaterMark` {number} Уровень буфера, когда [`stream.write()`](#writablewritechunk-encoding-callback) начинает возвращать `false`. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
+  - `decodeStrings` {boolean} Кодировать ли `строки`, переданные в [`stream.write()`](#writablewritechunk-encoding-callback) в `буфер` (с кодировкой, указанной в вызове [`stream.write()`](#writablewritechunk-encoding-callback)) перед передачей их в [`stream._write()`](#writable_writechunk-encoding-callback). Другие типы данных не преобразуются (т.е. `буфер` не декодируется в `строку`). Установка значения false предотвращает преобразование `строк`. **По умолчанию:** `true`.
+  - `defaultEncoding` {string} Кодировка по умолчанию, которая используется, если в качестве аргумента [`stream.write()`](#writablewritechunk-encoding-callback) не указана кодировка. **По умолчанию:** `'utf8'`.
+  - `objectMode` {boolean} Является ли [`stream.write(anyObj)`](#writablewritechunk-encoding-callback) допустимой операцией. Если установлено, становится возможной запись JavaScript-значений, отличных от string, `Buffer` или `Uint8Array`, если это поддерживается реализацией потока. **По умолчанию:** `false`.
+  - `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
+  - `write` {Функция} Реализация метода [`stream._write()`](#writable_writechunk-encoding-callback).
+  - `writev` {Функция} Реализация для метода [`stream._writev()`](#writable_writevchunks-callback).
+  - `destroy` {Функция} Реализация для метода [`stream._destroy()`](#writable_destroyerr-callback).
+  - `final` {Функция} Реализация метода [`stream._final()`](#writable_finalcallback).
+  - `construct` {Функция} Реализация для метода [`stream._construct()`](#writable_constructcallback).
+  - `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
   - `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
 
-<!-- eslint-disable no-useless-constructor -->
+<!-- конец списка -->
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
   constructor(options) {
-    // Calls the stream.Writable() constructor.
+    // Вызывает конструктор stream.Writable().
     super(options);
     // ...
   }
 }
 ```
 
-Или при использовании конструкторов в стиле до ES6:
+Или, при использовании конструкторов в стиле доES6:
 
 ```js
-const { Writable } = require('stream');
-const util = require('util');
+const { Writable } = require('node:stream');
+const util = require('node:util');
 
 function MyWritable(options) {
   if (!(this instanceof MyWritable))
@@ -2059,25 +2725,26 @@ function MyWritable(options) {
 util.inherits(MyWritable, Writable);
 ```
 
-Или, используя упрощенный конструкторский подход:
+Или, используя упрощенный подход с конструктором:
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
+
 
 const myWritable = new Writable({
   write(chunk, encoding, callback) {
     // ...
   },
-  writev(chunks, callback) {
+  writev(chunks, callback) { ...
     // ...
   },
 });
 ```
 
-Вызов `abort` на `AbortController` соответствующий пройденному `AbortSignal` будет вести себя так же, как вызов `.destroy(new AbortError())` в записываемом потоке.
+Вызов `abort` на `AbortController`, соответствующем переданному `AbortSignal`, будет вести себя так же, как вызов `.destroy(new AbortError())` на записываемом потоке.
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const controller = new AbortController();
 const myWritable = new Writable({
@@ -2093,26 +2760,25 @@ const myWritable = new Writable({
 controller.abort();
 ```
 
+<!-- 0109.part.md -->
+
 #### `writable._construct(callback)`
 
-<!-- YAML
-added: v15.0.0
--->
+- `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
 
-- `callback` {Функция} Вызовите эту функцию (необязательно с аргументом ошибки), когда поток завершит инициализацию.
+Метод `_construct()` НЕ ДОЛЖЕН вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Writable`.
 
-В `_construct()` метод НЕ ДОЛЖЕН быть вызван напрямую. Он может быть реализован дочерними классами, и если да, то будет вызываться внутренним `Writable` только методы класса.
-
-Эта необязательная функция будет вызываться через тик после возврата конструктора потока, задерживая любые `_write()`, `_final()` а также `_destroy()` звонит, пока `callback` называется. Это полезно для инициализации состояния или асинхронной инициализации ресурсов перед использованием потока.
+Эта необязательная функция будет вызвана в тике после возврата конструктора потока, откладывая любые вызовы `_write()`, `_final()` и `_destroy()` до вызова `callback`. Это полезно для инициализации состояния или асинхронной инициализации ресурсов до того, как поток может быть использован.
 
 ```js
-const { Writable } = require('stream');
-const fs = require('fs');
+const { Writable } = require('node:stream');
+const fs = require('node:fs');
 
 class WriteStream extends Writable {
   constructor(filename) {
     super();
     this.filename = filename;
+    this.fd = null;
   }
   _construct(callback) {
     fs.open(this.filename, (err, fd) => {
@@ -2137,77 +2803,72 @@ class WriteStream extends Writable {
 }
 ```
 
+<!-- 0110.part.md -->
+
 #### `writable._write(chunk, encoding, callback)`
 
-<!-- YAML
-changes:
-  - version: v12.11.0
-    pr-url: https://github.com/nodejs/node/pull/29639
-    description: _write() is optional when providing _writev().
--->
+- `chunk` {Buffer|string|any} Записываемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+- `encoding` {string} Если чанк является строкой, то `encoding` - это кодировка символов этой строки. Если чанк является `буфером`, или если поток работает в объектном режиме, `encoding` может быть проигнорирован.
+- `callback` {Функция} Вызвать эту функцию (опционально с аргументом об ошибке), когда обработка будет завершена для предоставленного чанка.
 
-- `chunk` {Buffer | string | any} `Buffer` быть записанным, преобразованным из `string` перешел к [`stream.write()`](#writablewritechunk-encoding-callback). Если поток `decodeStrings` вариант `false` или поток работает в объектном режиме, фрагмент не будет преобразован и будет соответствовать тому, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
-- `encoding` {строка} Если фрагмент является строкой, тогда `encoding` кодировка символов этой строки. Если чанк `Buffer`, или если поток работает в объектном режиме, `encoding` можно игнорировать.
-- `callback` {Функция} Вызовите эту функцию (необязательно с аргументом ошибки) после завершения обработки предоставленного фрагмента.
+Все реализации потока `Writable` должны предоставлять метод [`writable._write()`](#writable_writechunk-encoding-callback) и/или [`writable._writev()`](#writable_writevchunks-callback) для отправки данных на базовый ресурс.
 
-Все `Writable` реализации потока должны предоставлять [`writable._write()`](#writable_writechunk-encoding-callback) и / или [`writable._writev()`](#writable_writevchunks-callback) для отправки данных в базовый ресурс.
+Потоки [`Transform`](#class-streamtransform) предоставляют собственную реализацию метода [`writable._write()`](#writable_writechunk-encoding-callback).
 
-[`Transform`](#class-streamtransform) потоки обеспечивают собственную реализацию [`writable._write()`](#writable_writechunk-encoding-callback).
+Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Writable`.
 
-Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Он должен быть реализован дочерними классами и вызываться внутренним `Writable` только методы класса.
+Функция `callback` должна вызываться синхронно внутри `writable._write()` или асинхронно (т.е. разными тиками), чтобы сигнализировать либо об успешном завершении записи, либо об ошибке. Первым аргументом, передаваемым в `callback`, должен быть объект `Error`, если вызов не удался, или `null`, если запись прошла успешно.
 
-В `callback` функция должна вызываться синхронно внутри `writable._write()` или асинхронно (т. е. другой тик), чтобы сигнализировать, что запись завершилась успешно или завершилась ошибкой. Первый аргумент, переданный в `callback` должен быть `Error` объект, если вызов не удался или `null` если запись прошла успешно.
+Все вызовы `writable.write()`, которые происходят между вызовом `writable._write()` и вызовом `callback`, приводят к буферизации записанных данных. Когда вызывается `callback`, поток может выдать событие [`'drain'`](#event-drain). Если реализация потока способна обрабатывать несколько порций данных одновременно, следует реализовать метод `writable._writev()`.
 
-Все звонки на `writable.write()` что происходит между временем `writable._write()` называется и `callback` вызывает буферизацию записанных данных. Когда `callback` вызывается, поток может испустить [`'drain'`](#event-drain) событие. Если реализация потока способна обрабатывать несколько блоков данных одновременно, `writable._writev()` метод должен быть реализован.
+Если свойство `decodeStrings` явно установлено в `false` в опциях конструктора, то `chunk` останется тем же объектом, который передается в `.write()`, и может быть строкой, а не `Buffer`. Это сделано для поддержки реализаций, оптимизированных для работы с определенными кодировками строковых данных. В этом случае аргумент `encoding` будет указывать на кодировку символов строки. В противном случае аргумент `encoding` можно смело игнорировать.
 
-Если `decodeStrings` свойство явно установлено на `false` в параметрах конструктора, затем `chunk` останется тем же объектом, который был передан в `.write()`, и может быть строкой, а не `Buffer`. Это сделано для поддержки реализаций, которые имеют оптимизированную обработку для определенных кодировок строковых данных. В этом случае `encoding` Аргумент будет указывать кодировку символов строки. В противном случае `encoding` аргумент можно проигнорировать.
+Метод `writable._write()` помечен знаком подчеркивания, поскольку он является внутренним для класса, который его определяет, и никогда не должен вызываться напрямую пользовательскими программами.
 
-В `writable._write()` Метод имеет префикс подчеркивания, потому что он является внутренним по отношению к классу, который его определяет, и никогда не должен вызываться непосредственно пользовательскими программами.
+<!-- 0111.part.md -->
 
 #### `writable._writev(chunks, callback)`
 
-- `chunks` {Object \[]} Данные для записи. Значение представляет собой массив {Object}, каждый из которых представляет отдельный фрагмент данных для записи. Свойства этих объектов:
-  - `chunk` {Buffer | string} Экземпляр или строка буфера, содержащая данные для записи. В `chunk` будет строкой, если `Writable` был создан с `decodeStrings` опция установлена на `false` и строка была передана в `write()`.
-  - `encoding` {строка} Кодировка символов `chunk`. Если `chunk` это `Buffer`, то `encoding` будет `'buffer'`.
-- `callback` {Функция} Функция обратного вызова (необязательно с аргументом ошибки), которая будет вызываться после завершения обработки предоставленных фрагментов.
+- `куски` {Объект\[\]} Данные, которые должны быть записаны. Значение представляет собой массив {Object}, каждый из которых представляет собой отдельный фрагмент данных для записи. Свойствами этих объектов являются:
+  - `chunk` {Buffer|string} Экземпляр буфера или строка, содержащая данные для записи. Объект `chunk` будет строкой, если `Writable` был создан с опцией `decodeStrings`, установленной в `false`, и строка была передана в `write()`.
+  - `encoding` {string} Кодировка символов для `chunk`. Если `chunk` является `буфером`, то `encoding` будет `'buffer'`.
+- `callback` {Function} Функция обратного вызова (опционально с аргументом ошибки), которая будет вызвана, когда обработка будет завершена для предоставленных чанков.
 
-Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Он должен быть реализован дочерними классами и вызываться внутренним `Writable` только методы класса.
+Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Writable`.
 
-В `writable._writev()` метод может быть реализован в дополнение или как альтернатива `writable._write()` в потоковых реализациях, которые способны обрабатывать сразу несколько блоков данных. Если реализовано и есть буферизованные данные из предыдущих записей, `_writev()` будет называться вместо `_write()`.
+Метод `writable._writev()` может быть реализован в дополнение или альтернативно к `writable._write()` в реализациях потоков, способных обрабатывать несколько кусков данных одновременно. В случае реализации и при наличии буферизованных данных от предыдущих записей, `_writev()` будет вызван вместо `_write()`.
 
-В `writable._writev()` Метод имеет префикс подчеркивания, потому что он является внутренним по отношению к классу, который его определяет, и никогда не должен вызываться непосредственно пользовательскими программами.
+Метод `writable._writev()` снабжен символом подчеркивания, поскольку он является внутренним для класса, который его определяет, и никогда не должен вызываться напрямую пользовательскими программами.
+
+<!-- 0112.part.md -->
 
 #### `writable._destroy(err, callback)`
 
-<!-- YAML
-added: v8.0.0
--->
+- `err` {Ошибка} Возможная ошибка.
+- `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
 
-- `err` {Error} Возможная ошибка.
-- `callback` {Функция} Функция обратного вызова, которая принимает необязательный аргумент ошибки.
+Метод `_destroy()` вызывается [`writable.destroy()`](#writabledestroyerror). Он может быть переопределен дочерними классами, но **не должен** вызываться напрямую. Кроме того, `callback` не следует смешивать с async/await, поскольку он выполняется при разрешении обещания.
 
-В `_destroy()` метод вызывается [`writable.destroy()`](#writabledestroyerror). Его можно переопределить дочерними классами, но он **не должен** звонить напрямую.
+<!-- 0113.part.md -->
 
 #### `writable._final(callback)`
 
-<!-- YAML
-added: v8.0.0
--->
+- `callback` {Функция} Вызов этой функции (опционально с аргументом об ошибке) при завершении записи оставшихся данных.
 
-- `callback` {Функция} Вызовите эту функцию (необязательно с аргументом ошибки), когда закончите запись любых оставшихся данных.
+Метод `_final()` **не должен** вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Writable`.
 
-В `_final()` метод **не должен** звонить напрямую. Он может быть реализован дочерними классами, и если да, то будет вызываться внутренним `Writable` только методы класса.
+Эта необязательная функция будет вызвана до закрытия потока, откладывая событие `'finish'` до вызова `callback`. Это полезно для закрытия ресурсов или записи буферизованных данных перед завершением потока.
 
-Эта дополнительная функция будет вызываться перед закрытием потока, задерживая `'finish'` событие до `callback` называется. Это полезно для закрытия ресурсов или записи буферизованных данных до завершения потока.
+<!-- 0114.part.md -->
 
 #### Ошибки при записи
 
-Ошибки, возникающие при обработке [`writable._write()`](#writable_writechunk-encoding-callback), [`writable._writev()`](#writable_writevchunks-callback) а также [`writable._final()`](#writable_finalcallback) методы должны распространяться путем вызова обратного вызова и передачи ошибки в качестве первого аргумента. Бросив `Error` из этих методов или вручную `'error'` событие приводит к неопределенному поведению.
+Ошибки, возникающие во время обработки методов [`writable._write()`](#writable_writechunk-encoding-callback), [`writable._writev()`](#writable_writevchunks-callback) и [`writable._final()`](#writable_finalcallback), должны распространяться путем вызова обратного вызова и передачи ошибки в качестве первого аргумента. Выброс `Error` из этих методов или ручное создание события `'error'` приводит к неопределенному поведению.
 
-Если `Readable` поток трубы в `Writable` поток, когда `Writable` выдает ошибку, `Readable` поток будет отключен.
+Если поток `Readable` передается в поток `Writable`, когда `Writable` выдает ошибку, поток `Readable` будет распакован.
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 const myWritable = new Writable({
   write(chunk, encoding, callback) {
@@ -2220,12 +2881,14 @@ const myWritable = new Writable({
 });
 ```
 
-#### Пример записываемого потока
+<!-- 0115.part.md -->
 
-Следующее иллюстрирует довольно упрощенный (и несколько бессмысленный) обычай. `Writable` реализация потока. Хотя этот конкретный `Writable` экземпляр потока не представляет особой полезности, пример иллюстрирует каждый из требуемых элементов настраиваемого [`Writable`](#class-streamwritable) экземпляр потока:
+#### Пример потока с возможностью записи
+
+Ниже показана довольно упрощенная (и в некоторой степени бессмысленная) реализация пользовательского потока `Writable`. Хотя этот конкретный экземпляр потока `Writable` не представляет особой пользы, пример иллюстрирует каждый из необходимых элементов пользовательского [`Writable`](#class-streamwritable) экземпляра потока:
 
 ```js
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
   _write(chunk, encoding, callback) {
@@ -2238,13 +2901,15 @@ class MyWritable extends Writable {
 }
 ```
 
-#### Буферы декодирования в доступном для записи потоке
+<!-- 0116.part.md -->
 
-Буферы декодирования - обычная задача, например, при использовании преобразователей, вход которых является строкой. Это нетривиальный процесс при использовании кодировки многобайтовых символов, такой как UTF-8. В следующем примере показано, как декодировать многобайтовые строки с помощью `StringDecoder` а также [`Writable`](#class-streamwritable).
+#### Декодирование буферов в потоке с возможностью записи
+
+Декодирование буферов является распространенной задачей, например, при использовании трансформаторов, входными данными которых является строка. Это нетривиальный процесс при использовании многобайтовой кодировки символов, такой как UTF-8. Следующий пример показывает, как декодировать многобайтовые строки с помощью `StringDecoder` и [`Writable`](#class-streamwritable).
 
 ```js
-const { Writable } = require('stream');
-const { StringDecoder } = require('string_decoder');
+const { Writable } = require('node:stream');
+const { StringDecoder } = require('node:string_decoder');
 
 class StringWritable extends Writable {
   constructor(options) {
@@ -2274,63 +2939,51 @@ w.write('currency: ');
 w.write(euro[0]);
 w.end(euro[1]);
 
-console.log(w.data); // currency: €
+console.log(w.data); // валюта: €
 ```
+
+<!-- 0117.part.md -->
 
 ### Реализация читаемого потока
 
-В `stream.Readable` класс расширен для реализации [`Readable`](#class-streamreadable) транслировать.
+Класс `stream.Readable` расширен для реализации потока [`Readable`](#class-streamreadable).
 
-Обычай `Readable` потоки _должен_ позвонить в `new stream.Readable([options])` конструктор и реализовать [`readable._read()`](#readable_readsize) метод.
+Пользовательские потоки `Readable` _должны_ вызывать конструктор `new stream.Readable([options])` и реализовывать метод [`readable._read()`](#readable_readsize).
+
+<!-- 0118.part.md -->
 
 #### `new stream.Readable([options])`
 
-<!-- YAML
-changes:
-  - version: v15.5.0
-    pr-url: https://github.com/nodejs/node/pull/36431
-    description: support passing in an AbortSignal.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/30623
-    description: Change `autoDestroy` option default to `true`.
-  - version:
-     - v11.2.0
-     - v10.16.0
-    pr-url: https://github.com/nodejs/node/pull/22795
-    description: Add `autoDestroy` option to automatically `destroy()` the
-                 stream when it emits `'end'` or errors.
--->
-
-- `options` {Объект}
-  - `highWaterMark` {number} Максимальный [количество байтов](#highwatermark-discrepancy-after-calling-readablesetencoding) для сохранения во внутреннем буфере перед прекращением чтения из базового ресурса. **Дефолт:** `16384` (16 КБ) или `16` для `objectMode` потоки.
-  - `encoding` {строка} Если указано, то буферы будут декодированы в строки с использованием указанной кодировки. **Дефолт:** `null`.
-  - `objectMode` {boolean} Должен ли этот поток вести себя как поток объектов. Означающий, что [`stream.read(n)`](#readablereadsize) возвращает одно значение вместо `Buffer` размера `n`. **Дефолт:** `false`.
-  - `emitClose` {boolean} Должен ли поток выдавать `'close'` после того, как он был разрушен. **Дефолт:** `true`.
-  - `read` {Function} Реализация для [`stream._read()`](#readable_readsize) метод.
-  - `destroy` {Function} Реализация для [`stream._destroy()`](#readable_destroyerr-callback) метод.
-  - `construct` {Function} Реализация для [`stream._construct()`](#readable_constructcallback) метод.
-  - `autoDestroy` {boolean} Должен ли этот поток вызывать автоматически `.destroy()` на себя после окончания. **Дефолт:** `true`.
+- `options` {Object}
+  - `highWaterMark` {number} Максимальное [количество байт](#highwatermark-discrepancy-after-calling-readablesetencoding) для хранения во внутреннем буфере перед прекращением чтения из базового ресурса. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
+  - `encoding` {string} Если указано, то буферы будут декодированы в строки с использованием указанной кодировки. **По умолчанию:** `null`.
+  - `objectMode` {boolean} Должен ли этот поток вести себя как поток объектов. Это означает, что [`stream.read(n)`](#readablereadsize) возвращает одно значение вместо `Buffer` размером `n`. **По умолчанию:** `false`.
+  - `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
+  - `read` {Функция} Реализация метода [`stream._read()`](#readable_readsize).
+  - `destroy` {Функция} Реализация для метода [`stream._destroy()`](#readable_destroyerr-callback).
+  - `construct` {Функция} Реализация метода [`stream._construct()`](#readable_constructcallback).
+  - `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
   - `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
 
-<!-- eslint-disable no-useless-constructor -->
+<!-- конец списка -->
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 class MyReadable extends Readable {
   constructor(options) {
-    // Calls the stream.Readable(options) constructor.
+    // Вызывает конструктор stream.Readable(options).
     super(options);
     // ...
   }
 }
 ```
 
-Или при использовании конструкторов в стиле до ES6:
+Или, при использовании конструкторов в стиле до ES6:
 
 ```js
-const { Readable } = require('stream');
-const util = require('util');
+const { Readable } = require('node:stream');
+const util = require('node:util');
 
 function MyReadable(options) {
   if (!(this instanceof MyReadable))
@@ -2340,10 +2993,10 @@ function MyReadable(options) {
 util.inherits(MyReadable, Readable);
 ```
 
-Или, используя упрощенный конструкторский подход:
+Или, используя упрощенный подход с конструктором:
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 const myReadable = new Readable({
   read(size) {
@@ -2352,10 +3005,10 @@ const myReadable = new Readable({
 });
 ```
 
-Вызов `abort` на `AbortController` соответствующий пройденному `AbortSignal` будет вести себя так же, как вызов `.destroy(new AbortError())` на читаемом создал.
+Вызов `abort` на `AbortController`, соответствующем переданному `AbortSignal`, будет вести себя так же, как вызов `.destroy(new AbortError())` на созданном readable.
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 const controller = new AbortController();
 const read = new Readable({
   read(size) {
@@ -2363,25 +3016,23 @@ const read = new Readable({
   },
   signal: controller.signal,
 });
-// Later, abort the operation closing the stream
+// Позже прервите операцию, закрыв поток
 controller.abort();
 ```
 
+<!-- 0119.part.md -->
+
 #### `readable._construct(callback)`
 
-<!-- YAML
-added: v15.0.0
--->
+- `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
 
-- `callback` {Функция} Вызовите эту функцию (необязательно с аргументом ошибки), когда поток завершит инициализацию.
+Метод `_construct()` НЕ ДОЛЖЕН вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Readable`.
 
-В `_construct()` метод НЕ ДОЛЖЕН быть вызван напрямую. Он может быть реализован дочерними классами, и если да, то будет вызываться внутренним `Readable` только методы класса.
-
-Эта необязательная функция будет запланирована в следующем тике конструктором потока, задерживая любые `_read()` а также `_destroy()` звонит, пока `callback` называется. Это полезно для инициализации состояния или асинхронной инициализации ресурсов перед использованием потока.
+Эта необязательная функция будет запланирована на следующий такт конструктором потока, откладывая любые вызовы `_read()` и `_destroy()` до вызова `callback`. Это полезно для инициализации состояния или асинхронной инициализации ресурсов перед использованием потока.
 
 ```js
-const { Readable } = require('stream');
-const fs = require('fs');
+const { Readable } = require('node:stream');
+const fs = require('node:fs');
 
 class ReadStream extends Readable {
   constructor(filename) {
@@ -2421,62 +3072,53 @@ class ReadStream extends Readable {
 }
 ```
 
+<!-- 0120.part.md -->
+
 #### `readable._read(size)`
 
-<!-- YAML
-added: v0.9.4
--->
+- `size` {number} Количество байт для асинхронного чтения
 
-- `size` {number} Количество байтов для асинхронного чтения
+Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
-Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Он должен быть реализован дочерними классами и вызываться внутренним `Readable` только методы класса.
+Все реализации потока `Readable` должны предоставлять реализацию метода [`readable._read()`](#readable_readsize) для получения данных из базового ресурса.
 
-Все `Readable` реализации потока должны обеспечивать реализацию [`readable._read()`](#readable_readsize) для извлечения данных из базового ресурса.
+Когда вызывается [`readable._read()`](#readable_readsize), если данные доступны из ресурса, реализация должна начать проталкивать эти данные в очередь чтения, используя метод [`this.push(dataChunk)`](#readablepushchunk-encoding). `_read()` будет вызываться снова после каждого вызова [`this.push(dataChunk)`](#readablepushchunk-encoding), когда поток будет готов принять больше данных. `_read()` может продолжать читать из ресурса и проталкивать данные, пока `readable.push()` не вернет `false`. Только когда `_read()` снова вызывается после остановки, он должен возобновить проталкивание дополнительных данных в очередь.
 
-Когда [`readable._read()`](#readable_readsize) вызывается, если данные доступны из ресурса, реализация должна начать помещать эти данные в очередь чтения с помощью [`this.push(dataChunk)`](#readablepushchunk-encoding) метод. `_read()` будет вызываться снова после каждого вызова [`this.push(dataChunk)`](#readablepushchunk-encoding) как только поток будет готов принять больше данных. `_read()` может продолжить чтение из ресурса и отправку данных до тех пор, пока `readable.push()` возвращается `false`. Только когда `_read()` вызывается снова после остановки, если он возобновляет отправку дополнительных данных в очередь.
+После вызова метода [`readable._read()`](#readable_readsize), он не будет вызван снова, пока больше данных не будет протолкнуто через метод [`readable.push()`](#readablepushchunk-encoding). Пустые данные, такие как пустые буферы и строки, не вызовут метод [`readable._read()`](#readable_readsize).
 
-Однажды [`readable._read()`](#readable_readsize) был вызван, он не будет вызываться снова, пока через [`readable.push()`](#readablepushchunk-encoding) метод. Пустые данные, такие как пустые буферы и строки, не вызовут [`readable._read()`](#readable_readsize) быть позванным.
+Аргумент `size` является рекомендательным. В тех реализациях, где "чтение" - это одна операция, возвращающая данные, аргумент `size` может использоваться для определения того, сколько данных нужно получить. Другие реализации могут игнорировать этот аргумент и просто предоставлять данные всякий раз, когда они становятся доступными. Нет необходимости "ждать", пока `size` байт станет доступен перед вызовом [`stream.push(chunk)`](#readablepushchunk-encoding).
 
-В `size` аргумент носит рекомендательный характер. Для реализаций, где «чтение» - это отдельная операция, которая возвращает данные, можно использовать `size` аргумент, чтобы определить, сколько данных нужно получить. Другие реализации могут игнорировать этот аргумент и просто предоставлять данные, когда они становятся доступными. Нет необходимости «ждать», пока `size` байты доступны перед вызовом [`stream.push(chunk)`](#readablepushchunk-encoding).
+Метод [`readable._read()`](#readable_readsize) помечен знаком подчеркивания, потому что он является внутренним для класса, который его определяет, и никогда не должен вызываться напрямую пользовательскими программами.
 
-В [`readable._read()`](#readable_readsize) Метод имеет префикс подчеркивания, потому что он является внутренним по отношению к классу, который его определяет, и никогда не должен вызываться непосредственно пользовательскими программами.
+<!-- 0121.part.md -->
 
 #### `readable._destroy(err, callback)`
 
-<!-- YAML
-added: v8.0.0
--->
+- `err` {Ошибка} Возможная ошибка.
+- `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
 
-- `err` {Error} Возможная ошибка.
-- `callback` {Функция} Функция обратного вызова, которая принимает необязательный аргумент ошибки.
+Метод `_destroy()` вызывается [`readable.destroy()`](#readabledestroyerror). Он может быть переопределен дочерними классами, но **не должен** вызываться напрямую.
 
-В `_destroy()` метод вызывается [`readable.destroy()`](#readabledestroyerror). Его можно переопределить дочерними классами, но он **не должен** звонить напрямую.
+<!-- 0122.part.md -->
 
 #### `readable.push(chunk[, encoding])`
 
-<!-- YAML
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/11608
-    description: The `chunk` argument can now be a `Uint8Array` instance.
--->
+- `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для передачи в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+- `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
+- Возвращает: {boolean} `true`, если можно продолжать проталкивать дополнительные куски данных; `false` в противном случае.
 
-- `chunk` {Buffer | Uint8Array | string | null | any} Фрагмент данных, помещаемых в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должно быть строкой, `Buffer` или `Uint8Array`. Для потоков в объектном режиме `chunk` может быть любым значением JavaScript.
-- `encoding` {строка} Кодировка фрагментов строки. Должен быть действительным `Buffer` кодирование, например `'utf8'` или `'ascii'`.
-- Возвращает: {логическое} `true` если можно продолжить отправку дополнительных фрагментов данных; `false` иначе.
+Если `chunk` является `буфером`, `Uint8Array` или `строкой`, то `кусок` данных будет добавлен во внутреннюю очередь для потребления пользователями потока. Передача `chunk` как `null` сигнализирует о конце потока (EOF), после чего данные больше не могут быть записаны.
 
-Когда `chunk` это `Buffer`, `Uint8Array` или `string`, то `chunk` данных будет добавлено во внутреннюю очередь для использования пользователями потока. Проходящий `chunk` в качестве `null` сигнализирует об окончании потока (EOF), после которого больше нельзя записывать данные.
+Когда `Readable` работает в режиме паузы, данные, добавленные с помощью `readable.push()`, могут быть считаны путем вызова метода [`readable.read()`](#readablereadsize) при появлении события [`'readable'`](#event-readable).
 
-Когда `Readable` работает в режиме паузы, данные добавлены `readable.push()` можно прочитать, позвонив в [`readable.read()`](#readablereadsize) метод, когда [`'readable'`](#event-readable) событие испускается.
+Когда `Readable` работает в потоковом режиме, данные, добавленные с помощью `readable.push()`, будут доставлены путем испускания события `'data'`.
 
-Когда `Readable` работает в проточном режиме, данные добавлены `readable.push()` будет доставлен путем испускания `'data'` событие.
-
-В `readable.push()` Метод разработан, чтобы быть максимально гибким. Например, при упаковке источника нижнего уровня, который предоставляет некоторую форму механизма паузы / возобновления и обратного вызова данных, источник низкого уровня может быть заключен в оболочку с помощью настраиваемого `Readable` пример:
+Метод `readable.push()` разработан так, чтобы быть как можно более гибким. Например, при обертывании низкоуровневого источника, который обеспечивает некоторую форму механизма паузы/возобновления и обратного вызова данных, низкоуровневый источник может быть обернут пользовательским экземпляром `Readable`:
 
 ```js
-// `_source` is an object with readStop() and readStart() methods,
-// and an `ondata` member that gets called when it has data, and
-// an `onend` member that gets called when the data is over.
+// `_source` - это объект с методами readStop() и readStart(),
+// и членом `ondata`, который вызывается, когда у него есть данные, и
+// член `onend`, который вызывается, когда данные заканчиваются.
 
 class SourceWrapper extends Readable {
   constructor(options) {
@@ -2484,35 +3126,37 @@ class SourceWrapper extends Readable {
 
     this._source = getLowLevelSourceObject();
 
-    // Every time there's data, push it into the internal buffer.
+    // Каждый раз, когда есть данные, заталкиваем их во внутренний буфер.
     this._source.ondata = (chunk) => {
-      // If push() returns false, then stop reading from source.
+      // Если push() возвращает false, то прекратите чтение из источника.
       if (!this.push(chunk)) this._source.readStop();
     };
 
-    // When the source ends, push the EOF-signaling `null` chunk.
+    // Когда источник закончится, вытолкните чанк `null` с сигналом EOF.
     this._source.onend = () => {
       this.push(null);
     };
   }
-  // _read() will be called when the stream wants to pull more data in.
-  // The advisory size argument is ignored in this case.
+  // _read() будет вызвана, когда поток захочет получить больше данных.
+  // Совещательный аргумент size в этом случае игнорируется.
   _read(size) {
     this._source.readStart();
   }
 }
 ```
 
-В `readable.push()` используется для проталкивания содержимого во внутренний буфер. Это может быть вызвано [`readable._read()`](#readable_readsize) метод.
+Метод `readable.push()` используется для проталкивания содержимого во внутренний буфер. Он может быть вызван методом [`readable._read()`](#readable_readsize).
 
-Для потоков, не работающих в объектном режиме, если `chunk` параметр `readable.push()` является `undefined`, он будет рассматриваться как пустая строка или буфер. Видеть [`readable.push('')`](#readablepush) для дополнительной информации.
+Для потоков, не работающих в объектном режиме, если параметр `chunk` метода `readable.push()` имеет значение `undefined`, он будет рассматриваться как пустая строка или буфер. Дополнительную информацию смотрите в [`readable.push('')`](#readablepush).
+
+<!-- 0123.part.md -->
 
 #### Ошибки при чтении
 
-Ошибки, возникающие при обработке [`readable._read()`](#readable_readsize) должны распространяться через [`readable.destroy(err)`](#readable_destroyerr-callback) метод. Бросив `Error` изнутри [`readable._read()`](#readable_readsize) или вручную испустить `'error'` событие приводит к неопределенному поведению.
+Ошибки, возникающие при обработке [`readable._read()`](#readable_readsize), должны передаваться через метод [`readable.destroy(err)`](#readable_destroyerr-callback). Бросок `Error` изнутри [`readable._read()`](#readable_readsize) или ручное создание события `'error'` приводит к неопределенному поведению.
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 const myReadable = new Readable({
   read(size) {
@@ -2520,20 +3164,20 @@ const myReadable = new Readable({
     if (err) {
       this.destroy(err);
     } else {
-      // Do some work.
+      // Выполните какую-нибудь работу.
     }
   },
 });
 ```
 
+<!-- 0124.part.md -->
+
 #### Пример счетного потока
 
-<!--type=example-->
-
-Ниже приведен базовый пример `Readable` поток, который выводит цифры от 1 до 1 000 000 в порядке возрастания, а затем завершается.
+Ниже приведен базовый пример потока `Readable`, который выдает цифры от 1 до 1 000 000 в порядке возрастания, а затем завершается.
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 class Counter extends Readable {
   constructor(opt) {
@@ -2554,39 +3198,35 @@ class Counter extends Readable {
 }
 ```
 
+<!-- 0125.part.md -->
+
 ### Реализация дуплексного потока
 
-А [`Duplex`](#class-streamduplex) поток - это тот, который реализует оба [`Readable`](#class-streamreadable) а также [`Writable`](#class-streamwritable), например, соединение через сокет TCP.
+Поток [`Duplex`](#class-streamduplex) - это поток, который реализует как [`Readable`](#class-streamreadable), так и [`Writable`](#class-streamwritable), например, соединение TCP сокета.
 
-Поскольку JavaScript не поддерживает множественное наследование, `stream.Duplex` класс расширен для реализации [`Duplex`](#class-streamduplex) поток (в отличие от расширения `stream.Readable` _а также_ `stream.Writable` классы).
+Поскольку JavaScript не поддерживает множественное наследование, класс `stream.Duplex` расширяется для реализации потока [`Duplex`](#class-streamduplex) (в отличие от расширения классов `stream.Readable` _и_ `stream.Writable`).
 
-В `stream.Duplex` класс прототипически наследуется от `stream.Readable` и паразитически из `stream.Writable`, но `instanceof` будет работать правильно для обоих базовых классов из-за переопределения [`Symbol.hasInstance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance) на `stream.Writable`.
+Класс `stream.Duplex` прототипически наследуется от `stream.Readable` и паразитно от `stream.Writable`, но `instanceof` будет работать правильно для обоих базовых классов благодаря переопределению [`Symbol.hasInstance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance) для `stream.Writable`.
 
-Обычай `Duplex` потоки _должен_ позвонить в `new stream.Duplex([options])` конструктор и реализация _оба_ в [`readable._read()`](#readable_readsize) а также `writable._write()` методы.
+Пользовательские потоки `Duplex` _должны_ вызывать конструктор `new stream.Duplex([options])` и реализовывать _обои_ методы [`readable._read()`](#readable_readsize) и `writable._write()`.
+
+<!-- 0126.part.md -->
 
 #### `new stream.Duplex(options)`
 
-<!-- YAML
-changes:
-  - version: v8.4.0
-    pr-url: https://github.com/nodejs/node/pull/14636
-    description: The `readableHighWaterMark` and `writableHighWaterMark` options
-                 are supported now.
--->
+- `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
+  - `allowHalfOpen` {boolean} Если установлено значение `false`, то поток будет автоматически завершать записываемую сторону, когда завершается читаемая сторона. **По умолчанию:** `true`.
+  - `readable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для чтения. **По умолчанию:** `true`.
+  - `writable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для записи. **По умолчанию:** `true`.
+  - `readableObjectMode` {boolean} Устанавливает `objectMode` для читаемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
+  - `writableObjectMode` {boolean} Устанавливает `objectMode` для записываемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
+  - `readableHighWaterMark` {number} Устанавливает `highWaterMark` для читаемой стороны потока. Не имеет эффекта, если `highWaterMark` предоставлен.
+  - `writableHighWaterMark` {number} Устанавливает `highWaterMark` для записываемой стороны потока. Не имеет эффекта, если задана `highWaterMark`.
 
-- `options` {Object} Передано обоим `Writable` а также `Readable` конструкторы. Также есть следующие поля:
-  - `allowHalfOpen` {boolean} Если установлено значение `false`, то поток автоматически закроет доступную для записи сторону, когда закончится доступная для чтения сторона. **Дефолт:** `true`.
-  - `readable` {boolean} Устанавливает, будет ли `Duplex` должен быть читабельным. **Дефолт:** `true`.
-  - `writable` {boolean} Устанавливает, будет ли `Duplex` должен быть доступен для записи. **Дефолт:** `true`.
-  - `readableObjectMode` {boolean} Наборы `objectMode` для читаемой стороны потока. Не действует, если `objectMode` является `true`. **Дефолт:** `false`.
-  - `writableObjectMode` {boolean} Наборы `objectMode` для записываемой стороны потока. Не действует, если `objectMode` является `true`. **Дефолт:** `false`.
-  - `readableHighWaterMark` {number} наборы `highWaterMark` для читаемой стороны потока. Не действует, если `highWaterMark` предоставлен.
-  - `writableHighWaterMark` {number} наборы `highWaterMark` для записываемой стороны потока. Не действует, если `highWaterMark` предоставлен.
-
-<!-- eslint-disable no-useless-constructor -->
+<!-- конец списка -->
 
 ```js
-const { Duplex } = require('stream');
+const { Duplex } = require('node:stream');
 
 class MyDuplex extends Duplex {
   constructor(options) {
@@ -2596,11 +3236,11 @@ class MyDuplex extends Duplex {
 }
 ```
 
-Или при использовании конструкторов в стиле до ES6:
+Или, при использовании конструкторов в стиле до ES6:
 
 ```js
-const { Duplex } = require('stream');
-const util = require('util');
+const { Duplex } = require('node:stream');
+const util = require('node:util');
 
 function MyDuplex(options) {
   if (!(this instanceof MyDuplex))
@@ -2610,10 +3250,10 @@ function MyDuplex(options) {
 util.inherits(MyDuplex, Duplex);
 ```
 
-Или, используя упрощенный конструкторский подход:
+Или, используя упрощенный подход с конструктором:
 
 ```js
-const { Duplex } = require('stream');
+const { Duplex } = require('node:stream');
 
 const myDuplex = new Duplex({
   read(size) {
@@ -2625,16 +3265,16 @@ const myDuplex = new Duplex({
 });
 ```
 
-При использовании трубопровода:
+При использовании конвейера:
 
 ```js
-const { Transform, pipeline } = require('stream');
-const fs = require('fs');
+const { Transform, pipeline } = require('node:stream');
+const fs = require('node:fs');
 
 pipeline(
   fs.createReadStream('object.json').setEncoding('utf8'),
   new Transform({
-    decodeStrings: false, // Accept string input rather than Buffers
+    decodeStrings: false, // Принимать строковый ввод, а не буферы
     construct(callback) {
       this.data = '';
       callback();
@@ -2645,9 +3285,10 @@ pipeline(
     },
     flush(callback) {
       try {
-        // Make sure is valid json.
+        // Убедитесь, что это корректный json.
         JSON.parse(this.data);
         this.push(this.data);
+        callback();
       } catch (err) {
         callback(err);
       }
@@ -2664,12 +3305,14 @@ pipeline(
 );
 ```
 
+<!-- 0127.part.md -->
+
 #### Пример дуплексного потока
 
-Ниже показан простой пример `Duplex` stream, который обертывает гипотетический исходный объект нижнего уровня, в который могут быть записаны данные и из которого данные могут быть прочитаны, хотя и с использованием API, несовместимого с потоками Node.js. Ниже показан простой пример `Duplex` поток, который буферизует входящие записанные данные через [`Writable`](#class-streamwritable) интерфейс, который считывается обратно через [`Readable`](#class-streamreadable) интерфейс.
+Ниже показан простой пример потока `Duplex`, который оборачивает гипотетический объект-источник нижнего уровня, в который могут быть записаны данные и из которого могут быть прочитаны данные, хотя и с использованием API, не совместимого с потоками Node.js. Ниже показан простой пример потока `Duplex`, который буферизирует входящие записанные данные через интерфейс [`Writable`](#class-streamwritable), которые считываются обратно через интерфейс [`Readable`](#class-streamreadable).
 
 ```js
-const { Duplex } = require('stream');
+const { Duplex } = require('node:stream');
 const kSource = Symbol('source');
 
 class MyDuplex extends Duplex {
@@ -2679,7 +3322,7 @@ class MyDuplex extends Duplex {
   }
 
   _write(chunk, encoding, callback) {
-    // The underlying source only deals with strings.
+    // Базовый источник работает только со строками.
     if (Buffer.isBuffer(chunk)) chunk = chunk.toString();
     this[kSource].writeSomeData(chunk);
     callback();
@@ -2693,29 +3336,31 @@ class MyDuplex extends Duplex {
 }
 ```
 
-Самый важный аспект `Duplex` поток в том, что `Readable` а также `Writable` стороны работают независимо друг от друга, несмотря на сосуществование в пределах одного экземпляра объекта.
+Наиболее важным аспектом дуплексного потока является то, что стороны `Readable` и `Writable` работают независимо друг от друга, несмотря на сосуществование в одном экземпляре объекта.
 
-#### Дуплексные потоки в объектном режиме
+<!-- 0128.part.md -->
 
-Для `Duplex` ручьи `objectMode` может быть установлен исключительно для `Readable` или `Writable` сторона, использующая `readableObjectMode` а также `writableObjectMode` варианты соответственно.
+#### Дуплексные потоки с объектным режимом
 
-В следующем примере, например, новый `Transform` поток (который является типом [`Duplex`](#class-streamduplex) поток) создается с объектным режимом `Writable` сторона, которая принимает числа JavaScript, которые преобразуются в шестнадцатеричные строки на `Readable` боковая сторона.
+Для потоков `Duplex` режим `objectMode` может быть установлен исключительно для стороны `Readable` или `Writable` с помощью опций `readableObjectMode` и `writableObjectMode` соответственно.
+
+Например, в следующем примере создается новый поток `Transform` (который является типом потока [`Duplex`](#class-streamduplex)) с объектным режимом `Writable` на стороне, принимающей числа JavaScript, которые преобразуются в шестнадцатеричные строки на стороне `Readable`.
 
 ```js
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 
-// All Transform streams are also Duplex Streams.
+// Все потоки Transform также являются дуплексными потоками.
 const myTransform = new Transform({
   writableObjectMode: true,
 
   transform(chunk, encoding, callback) {
-    // Coerce the chunk to a number if necessary.
+    // При необходимости преобразуем чанк в число.
     chunk |= 0;
 
-    // Transform the chunk into something else.
+    // Преобразуем чанк во что-то другое.
     const data = chunk.toString(16);
 
-    // Push the data onto the readable queue.
+    // Передаем данные в очередь на чтение.
     callback(null, '0'.repeat(data.length % 2) + data);
   },
 });
@@ -2724,35 +3369,39 @@ myTransform.setEncoding('ascii');
 myTransform.on('data', (chunk) => console.log(chunk));
 
 myTransform.write(1);
-// Prints: 01
+// Печатает: 01
 myTransform.write(10);
-// Prints: 0a
+// Печатает: 0a
 myTransform.write(100);
-// Prints: 64
+// Печатает: 64
 ```
+
+<!-- 0129.part.md -->
 
 ### Реализация потока преобразования
 
-А [`Transform`](#class-streamtransform) поток - это [`Duplex`](#class-streamduplex) поток, в котором вывод каким-то образом вычисляется на основе ввода. Примеры включают [zlib](zlib.md) потоки или [крипто](crypto.md) потоки, которые сжимают, шифруют или дешифруют данные.
+Поток [`Transform`](#class-streamtransform) - это поток [`Duplex`](#class-streamduplex), в котором выходной поток каким-то образом вычисляется из входного. Примерами могут служить потоки [zlib](zlib.md) или [crypto](crypto.md), которые сжимают, шифруют или расшифровывают данные.
 
-Не требуется, чтобы выходные данные были того же размера, что и входные, или чтобы они приходили в одно и то же время. Например, `Hash` stream всегда будет иметь только один фрагмент вывода, который предоставляется по окончании ввода. А `zlib` stream произведет вывод, который либо намного меньше, либо намного больше, чем его ввод.
+Нет требования, чтобы выходные данные были того же размера, что и входные, имели то же количество фрагментов или приходили в то же время. Например, поток `Hash` будет иметь только один выходной фрагмент, который будет предоставлен после завершения ввода. Поток `zlib` будет производить вывод, который либо намного меньше, либо намного больше, чем его вход.
 
-В `stream.Transform` класс расширен для реализации [`Transform`](#class-streamtransform) транслировать.
+Класс `stream.Transform` расширен для реализации потока [`Transform`](#class-streamtransform).
 
-В `stream.Transform` класс прототипически наследуется от `stream.Duplex` и реализует собственные версии `writable._write()` а также [`readable._read()`](#readable_readsize) методы. Обычай `Transform` реализации _должен_ реализовать [`transform._transform()`](#transform_transformchunk-encoding-callback) метод и _мая_ также реализовать [`transform._flush()`](#transform_flushcallback) метод.
+Класс `stream.Transform` прототипически наследуется от `stream.Duplex` и реализует свои собственные версии методов `writable._write()` и [`readable._read()`](#readable_readsize). Пользовательские реализации `Transform` _должны_ реализовывать метод [`transform._transform()`](#transform_transformchunk-encoding-callback) и _могут_ также реализовывать метод [`transform._flush()`](#transform_flushcallback).
 
-Следует соблюдать осторожность при использовании `Transform` потоки в этих данных, записанных в поток, могут вызвать `Writable` сторону потока, чтобы сделать паузу, если вывод на `Readable` сторона не расходуется.
+При использовании потоков `Transform` следует соблюдать осторожность, так как данные, записанные в поток, могут вызвать приостановку потока со стороны `Writable`, если вывод на стороне `Readable` не будет использован.
+
+<!-- 0130.part.md -->
 
 #### `new stream.Transform([options])`
 
-- `options` {Object} Передано обоим `Writable` а также `Readable` конструкторы. Также есть следующие поля:
-  - `transform` {Function} Реализация для [`stream._transform()`](#transform_transformchunk-encoding-callback) метод.
-  - `flush` {Function} Реализация для [`stream._flush()`](#transform_flushcallback) метод.
+- `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
+  - `transform` {Функция} Реализация метода [`stream._transform()`](#transform_transformchunk-encoding-callback).
+  - `flush` {Функция} Реализация для метода [`stream._flush()`](#transform_flushcallback).
 
-<!-- eslint-disable no-useless-constructor -->
+<!-- конец списка -->
 
 ```js
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 
 class MyTransform extends Transform {
   constructor(options) {
@@ -2762,11 +3411,11 @@ class MyTransform extends Transform {
 }
 ```
 
-Или при использовании конструкторов в стиле до ES6:
+Или, при использовании конструкторов в стиле до ES6:
 
 ```js
-const { Transform } = require('stream');
-const util = require('util');
+const { Transform } = require('node:stream');
+const util = require('node:util');
 
 function MyTransform(options) {
   if (!(this instanceof MyTransform))
@@ -2776,10 +3425,10 @@ function MyTransform(options) {
 util.inherits(MyTransform, Transform);
 ```
 
-Или, используя упрощенный конструкторский подход:
+Или, используя упрощенный подход конструктора:
 
 ```js
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 
 const myTransform = new Transform({
   transform(chunk, encoding, callback) {
@@ -2788,43 +3437,51 @@ const myTransform = new Transform({
 });
 ```
 
-#### Событие: `'end'`
+<!-- 0131.part.md -->
 
-В [`'end'`](#event-end) событие из `stream.Readable` класс. В `'end'` событие генерируется после вывода всех данных, что происходит после обратного вызова в [`transform._flush()`](#transform_flushcallback) был вызван. В случае ошибки `'end'` не должны испускаться.
+#### Событие: `end`
 
-#### Событие: `'finish'`
+Событие [`'end'`](#event-end) относится к классу `stream.Readable`. Событие `'end'` испускается после вывода всех данных, что происходит после вызова обратного вызова в [`transform._flush()`](#transform_flushcallback). В случае ошибки событие `'end'` не должно выдаваться.
 
-В [`'finish'`](#event-finish) событие из `stream.Writable` класс. В `'finish'` событие испускается после [`stream.end()`](#writableendchunk-encoding-callback) вызывается, и все фрагменты были обработаны [`stream._transform()`](#transform_transformchunk-encoding-callback). В случае ошибки `'finish'` не должны испускаться.
+<!-- 0132.part.md -->
+
+#### Событие: `finish`
+
+Событие [`'finish'`](#event-finish) относится к классу `stream.Writable`. Событие `'finish'` происходит после вызова [`stream.end()`](#writableendchunk-encoding-callback) и обработки всех кусков [`stream._transform()`](#transform_transformchunk-encoding-callback). В случае ошибки, `'finish'` не должен выдаваться.
+
+<!-- 0133.part.md -->
 
 #### `transform._flush(callback)`
 
-- `callback` {Функция} Функция обратного вызова (необязательно с аргументом ошибки и данными), которая будет вызываться, когда оставшиеся данные будут сброшены.
+- `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана, когда оставшиеся данные будут удалены.
 
-Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Он должен быть реализован дочерними классами и вызываться внутренним `Readable` только методы класса.
+Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
-В некоторых случаях операция преобразования может потребовать выдачи дополнительного бита данных в конце потока. Например, `zlib` В потоке сжатия будет храниться внутреннее состояние, используемое для оптимального сжатия вывода. Однако, когда поток заканчивается, эти дополнительные данные необходимо очистить, чтобы сжатые данные были полными.
+В некоторых случаях операция преобразования может потребовать выдать дополнительный бит данных в конце потока. Например, поток сжатия `zlib` будет хранить некоторое количество внутреннего состояния, используемого для оптимального сжатия выходных данных. Однако, когда поток заканчивается, эти дополнительные данные должны быть удалены, чтобы сжатые данные были полными.
 
-Обычай [`Transform`](#class-streamtransform) реализации _мая_ реализовать `transform._flush()` метод. Это будет вызываться, когда больше нет записанных данных для использования, но до [`'end'`](#event-end) генерируется событие, сигнализирующее об окончании [`Readable`](#class-streamreadable) транслировать.
+Пользовательские реализации [`Transform`](#class-streamtransform) _могут_ реализовать метод `transform._flush()`. Он будет вызван, когда больше нет записанных данных для потребления, но до того, как произойдет событие [`'end'`](#event-end), сигнализирующее о завершении потока [`Readable`](#class-streamreadable).
 
-В рамках `transform._flush()` реализация, `transform.push()` в зависимости от обстоятельств метод может вызываться ноль или более раз. В `callback` функция должна быть вызвана после завершения операции промывки.
+В рамках реализации `transform._flush()` метод `transform.push()` может быть вызван ноль или более раз, в зависимости от ситуации. Функция `callback` должна быть вызвана после завершения операции flush.
 
-В `transform._flush()` Метод имеет префикс подчеркивания, потому что он является внутренним по отношению к классу, который его определяет, и никогда не должен вызываться непосредственно пользовательскими программами.
+Метод `transform._flush()` снабжен символом подчеркивания, поскольку он является внутренним для класса, который его определяет, и никогда не должен вызываться напрямую пользовательскими программами.
+
+<!-- 0134.part.md -->
 
 #### `transform._transform(chunk, encoding, callback)`
 
-- `chunk` {Buffer | string | any} `Buffer` быть преобразованным, преобразованным из `string` перешел к [`stream.write()`](#writablewritechunk-encoding-callback). Если поток `decodeStrings` вариант `false` или поток работает в объектном режиме, фрагмент не будет преобразован и будет соответствовать тому, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
-- `encoding` {строка} Если фрагмент является строкой, то это тип кодировки. Если чанк является буфером, тогда это специальное значение `'buffer'`. В таком случае не обращайте на это внимания.
-- `callback` {Функция} Функция обратного вызова (необязательно с аргументом ошибки и данными), вызываемая после предоставленного `chunk` обработан.
+- `chunk` {Buffer|string|any} Преобразуемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+- `encoding` {string} Если чанк является строкой, то это тип кодировки. Если чанк является буфером, то это специальное значение `'buffer''. В этом случае игнорируйте его.
+- `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана после обработки предоставленного `чанка`.
 
-Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Он должен быть реализован дочерними классами и вызываться внутренним `Readable` только методы класса.
+Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
-Все `Transform` реализации потока должны предоставлять `_transform()` метод приема ввода и вывода вывода. В `transform._transform()` реализация обрабатывает записываемые байты, вычисляет вывод, затем передает этот вывод в читаемую часть, используя `transform.push()` метод.
+Все реализации потока `Transform` должны предоставлять метод `_transform()` для приема входных данных и получения выходных. Реализация `transform._transform()` обрабатывает записываемые байты, вычисляет выход, затем передает этот выход в читаемую часть с помощью метода `transform.push()`.
 
-В `transform.push()` Метод может вызываться ноль или более раз для генерации вывода из одного входного фрагмента, в зависимости от того, сколько должно быть выведено в результате этого фрагмента.
+Метод `transform.push()` может быть вызван ноль или более раз для генерации вывода из одного входного чанка, в зависимости от того, какой объем должен быть выведен в результате работы чанка.
 
-Возможно, что ни один из заданных фрагментов входных данных не генерирует никаких выходных данных.
+Возможно, что из любого заданного куска входных данных не будет сгенерирован выход.
 
-В `callback` Функция должна вызываться только тогда, когда текущий кусок полностью израсходован. Первый аргумент, переданный в `callback` должен быть `Error` объект, если при обработке ввода произошла ошибка или `null` иначе. Если второй аргумент передается в `callback`, он будет отправлен на `transform.push()` метод. Другими словами, следующие эквиваленты:
+Функция `callback` должна быть вызвана только тогда, когда текущий чанк полностью потреблен. Первым аргументом, передаваемым в `callback`, должен быть объект `Error`, если при обработке входных данных произошла ошибка, или `null` в противном случае. Если в `callback` передан второй аргумент, он будет передан методу `transform.push()`. Другими словами, следующие команды эквивалентны:
 
 ```js
 transform.prototype._transform = function (
@@ -2845,25 +3502,31 @@ transform.prototype._transform = function (
 };
 ```
 
-В `transform._transform()` Метод имеет префикс подчеркивания, потому что он является внутренним по отношению к классу, который его определяет, и никогда не должен вызываться непосредственно пользовательскими программами.
+Метод `transform._transform()` снабжен символом подчеркивания, поскольку он является внутренним для класса, который его определяет, и никогда не должен вызываться напрямую пользовательскими программами.
 
-`transform._transform()` никогда не вызывается параллельно; потоки реализуют механизм очереди, и для получения следующего фрагмента `callback` должен вызываться синхронно или асинхронно.
+Метод `transform._transform()` никогда не вызывается параллельно; потоки реализуют механизм очереди, и для получения следующего куска необходимо вызвать `callback`, либо синхронно, либо асинхронно.
+
+<!-- 0135.part.md -->
 
 #### Класс: `stream.PassThrough`
 
-В `stream.PassThrough` class - это тривиальная реализация [`Transform`](#class-streamtransform) поток, который просто передает входные байты на выход. Его цель - в первую очередь для примеров и тестирования, но есть некоторые варианты использования, когда `stream.PassThrough` полезен как строительный блок для новых видов потоков.
+Класс `stream.PassThrough` - это тривиальная реализация потока [`Transform`](#class-streamtransform), который просто передает входные байты на выход. Он предназначен в основном для примеров и тестирования, но есть некоторые случаи использования, когда `stream.PassThrough` полезен как строительный блок для новых видов потоков.
 
-## Дополнительные замечания
+<!-- 0136.part.md -->
 
-<!--type=misc-->
+## Дополнительные примечания
+
+<!-- 0137.part.md -->
 
 ### Совместимость потоков с асинхронными генераторами и асинхронными итераторами
 
-Благодаря поддержке асинхронных генераторов и итераторов в JavaScript, асинхронные генераторы фактически представляют собой первоклассную конструкцию потока на уровне языка.
+С поддержкой асинхронных генераторов и итераторов в JavaScript, асинхронные генераторы фактически являются первоклассной конструкцией потока на уровне языка на данный момент.
 
-Ниже приведены некоторые распространенные случаи взаимодействия потоков Node.js с асинхронными генераторами и асинхронными итераторами.
+Ниже приведены некоторые распространенные случаи взаимодействия потоков Node.js с генераторами async и итераторами async.
 
-#### Использование читаемых потоков с помощью асинхронных итераторов
+<!-- 0138.part.md -->
+
+#### Потребление читаемых потоков с помощью асинхронных итераторов
 
 ```js
 (async function () {
@@ -2873,14 +3536,16 @@ transform.prototype._transform = function (
 })();
 ```
 
-Асинхронные итераторы регистрируют постоянный обработчик ошибок в потоке, чтобы предотвратить любые необработанные ошибки после уничтожения.
+Асинхронные итераторы регистрируют постоянный обработчик ошибок на потоке, чтобы предотвратить любые необработанные ошибки после уничтожения.
+
+<!-- 0139.part.md -->
 
 #### Создание читаемых потоков с помощью асинхронных генераторов
 
-Читаемый поток Node.js может быть создан из асинхронного генератора с помощью `Readable.from()` служебный метод:
+Читаемый поток Node.js может быть создан из асинхронного генератора с помощью метода `Readable.from()`:
 
 ```js
-const { Readable } = require('stream');
+const { Readable } = require('node:stream');
 
 const ac = new AbortController();
 const signal = ac.signal;
@@ -2902,16 +3567,18 @@ readable.on('data', (chunk) => {
 });
 ```
 
-#### Переход к доступным для записи потокам от асинхронных итераторов
+<!-- 0140.part.md -->
 
-При записи в доступный для записи поток из асинхронного итератора убедитесь, что корректная обработка обратного давления и ошибок. [`stream.pipeline()`](#streampipelinesource-transforms-destination-callback) абстрагируется от обработки ошибок, связанных с противодавлением и противодавлением:
+#### Передача данных в записываемые потоки из асинхронных итераторов
+
+При записи в записываемый поток из асинхронного итератора необходимо обеспечить правильную обработку обратного давления и ошибок. [`stream.pipeline()`](#streampipelinesource-transforms-destination-callback) абстрагирует обработку обратного давления и ошибок, связанных с обратным давлением:
 
 ```js
-const fs = require('fs');
-const { pipeline } = require('stream');
+const fs = require('node:fs');
+const { pipeline } = require('node:stream');
 const {
   pipeline: pipelinePromise,
-} = require('stream/promises');
+} = require('node:stream/promises');
 
 const writable = fs.createWriteStream('./file');
 
@@ -2920,21 +3587,21 @@ const signal = ac.signal;
 
 const iterator = createIterator({ signal });
 
-// Callback Pattern
+// Шаблон обратного вызова
 pipeline(iterator, writable, (err, value) => {
   if (err) {
     console.error(err);
   } else {
-    console.log(value, 'value returned');
+    console.log(value, 'возвращаемое значение');
   }
 }).on('close', () => {
   ac.abort();
 });
 
-// Promise Pattern
+// Шаблон обещания
 pipelinePromise(iterator, writable)
   .then((value) => {
-    console.log(value, 'value returned');
+    console.log(value, 'значение возвращено');
   })
   .catch((err) => {
     console.error(err);
@@ -2942,82 +3609,88 @@ pipelinePromise(iterator, writable)
   });
 ```
 
-<!--type=misc-->
+<!-- 0141.part.md -->
 
 ### Совместимость со старыми версиями Node.js
 
-<!--type=misc-->
+До версии Node.js 0.10 интерфейс потока `Readable` был более простым, но также менее мощным и менее полезным.
 
-До версии Node.js 0.10 `Readable` потоковый интерфейс был проще, но также менее мощным и менее полезным.
+- Вместо того чтобы ждать вызова метода [`stream.read()`](#readablereadsize), события [`'data'`](#event-data) начинали испускаться немедленно. Приложения, которые должны были выполнить определенный объем работы, чтобы решить, как обрабатывать данные, должны были хранить прочитанные данные в буферах, чтобы данные не были потеряны.
+- Метод [`stream.pause()`](#readablepause) был рекомендательным, а не гарантированным. Это означало, что необходимо быть готовым к получению событий [`данные`](#event-data) _даже когда поток находится в состоянии паузы_.
 
-- Вместо того, чтобы ждать звонков в [`stream.read()`](#readablereadsize) метод [`'data'`](#event-data) события начнут излучаться немедленно. Приложениям, которым необходимо было бы выполнить некоторый объем работы, чтобы решить, как обрабатывать данные, требовалось хранить считанные данные в буферах, чтобы данные не были потеряны.
-- В [`stream.pause()`](#readablepause) метод был рекомендательным, а не гарантированным. Это означало, что по-прежнему необходимо было быть готовым к получению [`'data'`](#event-data) События _даже когда поток был в приостановленном состоянии_.
+В Node.js 0.10 был добавлен класс [`Readable`](#class-streamreadable). Для обратной совместимости со старыми программами Node.js, потоки `Readable` переходят в "текущий режим" при добавлении обработчика события [`'data'`](#event-data) или при вызове метода [`stream.resume()`](#readableresume). В результате, даже если не использовать новый метод [`stream.read()`](#readablereadsize) и событие [`'readable'`](#event-readable), больше не нужно беспокоиться о потере кусков [`'data'`](#event-data).
 
-В Node.js 0.10 [`Readable`](#class-streamreadable) класс был добавлен. Для обратной совместимости со старыми программами Node.js `Readable` потоки переходят в «текущий режим», когда [`'data'`](#event-data) обработчик событий добавлен, или когда [`stream.resume()`](#readableresume) вызывается метод. Эффект таков, что даже если вы не используете новый [`stream.read()`](#readablereadsize) метод и [`'readable'`](#event-readable) событие, больше не нужно беспокоиться о потере [`'data'`](#event-data) куски.
+Хотя большинство приложений будут продолжать нормально функционировать, это вводит крайний случай в следующих условиях:
 
-Хотя большинство приложений продолжат нормально функционировать, это приводит к возникновению пограничного случая в следующих случаях:
-
-- Нет [`'data'`](#event-data) добавлен слушатель событий.
-- В [`stream.resume()`](#readableresume) метод никогда не вызывается.
-- Поток не передается ни в какое место назначения с возможностью записи.
+- Не добавлен слушатель событий [`'data'`](#event-data).
+- Метод [`stream.resume()`](#readableresume) никогда не вызывается.
+- Поток не передается ни в одно записываемое место назначения.
 
 Например, рассмотрим следующий код:
 
 ```js
-// WARNING!  BROKEN!
+// ВНИМАНИЕ!  СЛОМАНО!
 net
   .createServer((socket) => {
-    // We add an 'end' listener, but never consume the data.
+    // Мы добавляем слушателя 'end', но никогда не потребляем данные.
     socket.on('end', () => {
-      // It will never get here.
+      // Оно никогда не дойдет до нас.
       socket.end(
-        'The message was received but was not processed.\n'
+        'Сообщение было получено, но не было обработано.\n'
       );
     });
   })
   .listen(1337);
 ```
 
-До версии Node.js 0.10 данные входящего сообщения просто отбрасывались. Однако в Node.js 0.10 и более поздних версиях сокет остается приостановленным навсегда.
+До Node.js 0.10 данные входящего сообщения просто отбрасывались. Однако в Node.js 0.10 и последующих версиях сокет остается приостановленным навсегда.
 
-Обходной путь в этой ситуации - вызвать [`stream.resume()`](#readableresume) метод для начала потока данных:
+Обходным решением в этой ситуации является вызов метода [`stream.resume()`](#readableresume), чтобы начать поток данных:
 
 ```js
-// Workaround.
+// Обходной путь.
 net
   .createServer((socket) => {
     socket.on('end', () => {
       socket.end(
-        'The message was received but was not processed.\n'
+        'Сообщение было получено, но не было обработано.\n'
       );
     });
 
-    // Start the flow of data, discarding it.
+    // Начните поток данных, отбрасывая их.
     socket.resume();
   })
   .listen(1337);
 ```
 
-Помимо новых `Readable` потоки переключаются в текущий режим, потоки в стиле до 0.10 могут быть обернуты в `Readable` класс с использованием [`readable.wrap()`](#readablewrapstream) метод.
+В дополнение к новым потокам `Readable`, переходящим в режим потока, потоки в стиле pre-0.10 могут быть обернуты в класс `Readable` с помощью метода [`readable.wrap()`](#readablewrapstream).
+
+<!-- 0142.part.md -->
 
 ### `readable.read(0)`
 
-В некоторых случаях необходимо запустить обновление базовых механизмов читаемых потоков без фактического потребления каких-либо данных. В таких случаях можно позвонить `readable.read(0)`, который всегда будет возвращаться `null`.
+Бывают случаи, когда необходимо вызвать обновление базовых механизмов потока readable, не потребляя при этом никаких данных. В таких случаях можно вызвать `readable.read(0)`, который всегда будет возвращать `null`.
 
-Если внутренний буфер чтения ниже `highWaterMark`, и поток в настоящее время не читает, затем вызывает `stream.read(0)` вызовет низкий уровень [`stream._read()`](#readable_readsize) вызов.
+Если внутренний буфер чтения находится ниже `highWaterMark`, а поток в данный момент не читает, то вызов `stream.read(0)` вызовет низкоуровневый вызов [`stream._read()`](#readable_readsize).
 
-Хотя большинству приложений это почти никогда не понадобится, в Node.js бывают ситуации, когда это делается, особенно в `Readable` внутренности потокового класса.
+Хотя большинству приложений это почти никогда не понадобится, в Node.js есть ситуации, когда это делается, особенно во внутреннем интерфейсе класса потока `Readable`.
+
+<!-- 0143.part.md -->
 
 ### `readable.push('')`
 
 Использование `readable.push('')` не рекомендуется.
 
-Нажимая строку с нулевым байтом, `Buffer` или `Uint8Array` к потоку, который не находится в объектном режиме, имеет интересный побочный эффект. Потому что _является_ звонок в [`readable.push()`](#readablepushchunk-encoding), вызов завершит процесс чтения. Однако, поскольку аргумент является пустой строкой, данные в читаемый буфер не добавляются, поэтому пользователю нечего использовать.
+Передача строки с нулевым байтом, `Buffer` или `Uint8Array` в поток, который не находится в объектном режиме, имеет интересный побочный эффект. Поскольку это _является_ вызовом [`readable.push()`](#readablepushchunk-encoding), вызов завершает процесс чтения. Однако, поскольку аргументом является пустая строка, никакие данные не добавляются в буфер readable, поэтому пользователю нечего потреблять.
 
-### `highWaterMark` расхождение после звонка `readable.setEncoding()`
+<!-- 0144.part.md -->
 
-Использование `readable.setEncoding()` изменит поведение того, как `highWaterMark` работает в необъектном режиме.
+### `highWaterMark` несоответствие после вызова `readable.setEncoding()`
 
-Обычно размер текущего буфера измеряется относительно `highWaterMark` в _байты_. Однако после `setEncoding()` вызывается, функция сравнения начнет измерять размер буфера в _символы_.
+Использование `readable.setEncoding()` изменит поведение того, как `highWaterMark` работает в безобъектном режиме.
 
-Это не проблема в обычных случаях с `latin1` или `ascii`. Но рекомендуется помнить об этом поведении при работе со строками, которые могут содержать многобайтовые символы.
+Обычно размер текущего буфера измеряется относительно `highWaterMark` в _байтах_. Однако после вызова `setEncoding()` функция сравнения начнет измерять размер буфера в _символах_.
+
+Это не является проблемой в обычных случаях с `latin1` или `ascii`. Но рекомендуется помнить о таком поведении при работе со строками, которые могут содержать многобайтовые символы.
+
+<!-- 0145.part.md -->

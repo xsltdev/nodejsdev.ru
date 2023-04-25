@@ -6,11 +6,11 @@ hide:
   - navigation
 ---
 
-# Справочник Node.js
-
-**Node.js®** — это кроссплатформенная среда выполнения JavaScript с открытым исходным кодом.
+# ![Node.js](nodejs.svg){: style="height:64px;width:64px;vertical-align:middle;"} Справочник Node.js
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-column-gap: 30px; place-items: stretch;" markdown>
+
+[![Node.js](nodejs.svg){: style="height:20px;width:20px;vertical-align:middle;"} **Node.js®**](https://nodejs.org/ru) — это кроссплатформенная среда выполнения JavaScript с открытым исходным кодом.
 
 !!! success "Справочник API v18.x.x :octicons-tag-24:"
 
@@ -22,11 +22,11 @@ hide:
 
     Гайды по Node.js от различных авторов:
 
-	- [Руководство новичка](guides/freecodecamp.md) 
+    - [Руководство новичка](guides/freecodecamp.md)
     - [Гайд от webdraftt](guides/webdraftt/index.md)
     - [Гайд от metanit](guides/metanit/index.md)
 
-!!! success "Документация Express.js"
+!!! info "Документация Express.js"
 
     **Express** &mdash; это минималистичный и гибкий веб-фреймворк для приложений Node.js, предоставляющий обширный набор функций для мобильных и веб-приложений.
 
@@ -39,8 +39,6 @@ hide:
     [Карта обучения :fontawesome-solid-diagram-project:](https://devmaps.ru/nodejs-2020){ .md-button }
 
 </div>
-
-<!-- https://habr.com/ru/company/ruvds/blog/422893/ -->
 
 ---
 

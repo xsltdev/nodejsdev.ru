@@ -35,6 +35,7 @@ theme:
         - navigation.indexes
         - content.action.edit
         - content.tabs.link
+        - content.code.copy
     favicon: nodejs.svg
     logo: nodejs-white.svg
 
