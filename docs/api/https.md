@@ -1,3 +1,7 @@
+---
+description: HTTPS - это протокол HTTP через TLS/SSL
+---
+
 # HTTPS
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/dist/latest-v18.x/docs/api/https.html)

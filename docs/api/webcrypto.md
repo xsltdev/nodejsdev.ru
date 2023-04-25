@@ -2,7 +2,7 @@
 description: Node.js предоставляет реализацию стандартного Web Crypto API
 ---
 
-# Web Crypto
+# Web Crypto API
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/webcrypto.html)
 

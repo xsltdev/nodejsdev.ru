@@ -1,4 +1,5 @@
 ---
+title: ECMAScript modules
 description: Модули ECMAScript - это официальный стандартный формат для упаковки кода JavaScript для повторного использования
 ---
 

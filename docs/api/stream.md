@@ -1,3 +1,8 @@
+---
+title: Stream
+description: Поток - это абстрактный интерфейс для работы с потоковыми данными в Node.js
+---
+
 # Поток
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/stream.html)

@@ -1,4 +1,5 @@
 ---
+title: Packages
 description: Пакет - это дерево папок, описываемое файлом package.json
 ---
 

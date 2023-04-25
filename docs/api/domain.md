@@ -1,4 +1,5 @@
 ---
+title: Domain
 description: Домены предоставляют возможность обрабатывать несколько различных операций ввода-вывода как единую группу
 ---
 
@@ -362,20 +363,11 @@ d.run(() => {
 
 Начиная с Node.js 8.0.0, обработчики обещаний запускаются внутри домена, в котором был сделан вызов `.then()` или `.catch()`:
 
-``js
-const d1 = domain.create();
-const d2 = domain.create();
+``js const d1 = domain.create(); const d2 = domain.create();
 
-let p;
-d1.run(() => {
-p = Promise.resolve(42);
-});
+let p; d1.run(() => { p = Promise.resolve(42); });
 
-d2.run(() => {
-p.then((v) => {
-// выполняется в d2
-});
-});
+d2.run(() => { p.then((v) => { // выполняется в d2 }); });
 
 ````
 

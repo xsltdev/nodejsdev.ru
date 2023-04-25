@@ -1,4 +1,5 @@
 ---
+title: Test runner
 description: Модуль test облегчает создание тестов JavaScript
 ---
 

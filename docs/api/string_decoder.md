@@ -1,4 +1,5 @@
 ---
+title: String decoder
 description: Модуль string_decoder предоставляет API для декодирования объектов Buffer в строки с сохранением закодированных многобайтовых символов UTF-8 и UTF-16
 ---
 

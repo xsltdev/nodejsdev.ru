@@ -1,4 +1,5 @@
 ---
+title: UDP/datagram sockets
 description: Модуль node:dgram предоставляет реализацию сокетов дейтаграмм UDP
 ---
 

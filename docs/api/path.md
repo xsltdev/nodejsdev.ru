@@ -1,266 +1,256 @@
+---
+description: Модуль path предоставляет утилиты для работы с путями к файлам и каталогам
+---
+
 # Path
 
-<!--introduced_in=v0.10.0-->
+[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/path.html)
 
-> Стабильность: 2 - стабильная
+!!!success "Стабильность: 2 – Стабильная"
 
-<!-- source_link=lib/path.js -->
+    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-В `path` Модуль предоставляет утилиты для работы с путями к файлам и каталогам. Доступ к нему можно получить, используя:
+Модуль **`node:path`** предоставляет утилиты для работы с путями к файлам и каталогам. Доступ к нему можно получить с помощью:
 
 ```js
-const path = require('path');
+const path = require('node:path');
 ```
+
+<!-- 0000.part.md -->
 
 ## Windows против POSIX
 
-Работа по умолчанию `path` Модуль зависит от операционной системы, в которой запущено приложение Node.js. В частности, при работе в операционной системе Windows `path` модуль будет предполагать, что используются пути в стиле Windows.
+Работа модуля `node:path` по умолчанию зависит от операционной системы, на которой запущено приложение Node.js. В частности, при работе в операционной системе Windows модуль `node:path` будет считать, что используются пути в стиле Windows.
 
-Итак, используя `path.basename()` может дать разные результаты в POSIX и Windows:
+Поэтому использование `path.basename()` может дать разные результаты на POSIX и Windows:
 
-В POSIX:
+На POSIX:
 
 ```js
 path.basename('C:\\temp\\myfile.html');
-// Returns: 'C:\\temp\\myfile.html'
+// Возвращает: 'C:\temp\myfile.html'
 ```
 
 В Windows:
 
 ```js
 path.basename('C:\\temp\\myfile.html');
-// Returns: 'myfile.html'
+// Возвращает: 'myfile.html'
 ```
 
-Чтобы добиться согласованных результатов при работе с путями к файлам Windows в любой операционной системе, используйте [`path.win32`](#pathwin32):
+Для достижения последовательных результатов при работе с путями к файлам Windows в любой операционной системе используйте [`path.win32`](#pathwin32):
 
 В POSIX и Windows:
 
 ```js
 path.win32.basename('C:\\temp\\myfile.html');
-// Returns: 'myfile.html'
+// Возвращает: 'myfile.html'
 ```
 
-Чтобы добиться согласованных результатов при работе с путями к файлам POSIX в любой операционной системе, используйте [`path.posix`](#pathposix):
+Для достижения согласованных результатов при работе с путями к файлам POSIX в любой операционной системе используйте [`path.posix`](#pathposix):
 
 В POSIX и Windows:
 
 ```js
 path.posix.basename('/tmp/myfile.html');
-// Returns: 'myfile.html'
+// Возвращает: 'myfile.html'
 ```
 
-В Windows Node.js следует концепции рабочего каталога для каждого диска. Такое поведение наблюдается при использовании пути к диску без обратной косой черты. Например, `path.resolve('C:\\')` потенциально может вернуть другой результат, чем `path.resolve('C:')`. Для получения дополнительной информации см. [эта страница MSDN](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#fully-qualified-vs-relative-paths).
+В Windows Node.js следует концепции рабочего каталога на каждом диске. Такое поведение можно наблюдать при использовании пути к диску без обратной косой черты. Например, `path.resolve('C:\')` потенциально может вернуть другой результат, чем `path.resolve('C:')`. Для получения дополнительной информации смотрите [эту страницу MSDN](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#fully-qualified-vs-relative-paths).
 
-## `path.basename(path[, ext])`
+<!-- 0001.part.md -->
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
+## `path.basename(path[, suffix])`
 
-- `path` {нить}
-- `ext` {строка} Необязательное расширение файла
+- `путь` {строка}
+- `suffix` {строка} Необязательный суффикс для удаления
 - Возвращает: {строка}
 
-В `path.basename()` метод возвращает последнюю часть `path`, аналогично Unix `basename` команда. Конечные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
+Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Заглавные [разделители каталогов](#pathsep) игнорируются.
 
 ```js
 path.basename('/foo/bar/baz/asdf/quux.html');
-// Returns: 'quux.html'
+// Возвращает: 'quux.html'
 
 path.basename('/foo/bar/baz/asdf/quux.html', '.html');
-// Returns: 'quux'
+// Возвращает: 'quux'
 ```
 
-Хотя Windows обычно обрабатывает имена файлов, включая расширения файлов, без учета регистра, эта функция этого не делает. Например, `C:\\foo.html` а также `C:\\foo.HTML` относятся к тому же файлу, но `basename` обрабатывает расширение как строку с учетом регистра:
+Хотя Windows обычно обрабатывает имена файлов, включая расширения файлов, без учета регистра, эта функция этого не делает. Например, `C:\foo.html` и `C:\foo.HTML` ссылаются на один и тот же файл, но `basename` рассматривает расширение как строку, чувствительную к регистру:
 
 ```js
-path.win32.basename('C:\\foo.html', '.html');
-// Returns: 'foo'
+path.win32.basename('C:\foo.html', '.html');
+// Возвращает: 'foo'
 
-path.win32.basename('C:\\foo.HTML', '.html');
-// Returns: 'foo.HTML'
+path.win32.basename('C:\foo.HTML', '.html');
+// Возвращает: 'foo.HTML'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не является строкой или если `ext` дается и не является строкой.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой или если указан `suffix, который не является строкой.
+
+<!-- 0002.part.md -->
 
 ## `path.delimiter`
 
-<!-- YAML
-added: v0.9.3
--->
+- {строка}
 
-- {нить}
-
-Предоставляет разделитель пути для конкретной платформы:
+Предоставляет специфический для платформы разделитель путей:
 
 - `;` для Windows
 - `:` для POSIX
 
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
 console.log(process.env.PATH);
-// Prints: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+// Печатает: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
 
 process.env.PATH.split(path.delimiter);
-// Returns: ['/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin']
+// Возвращает: ['/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin']
 ```
 
 В Windows:
 
 ```js
 console.log(process.env.PATH);
-// Prints: 'C:\Windows\system32;C:\Windows;C:\Program Files\node\'
+// Печатает: 'C:\Windows\system32;C:\Windows;C:\Program Files\node\'
 
 process.env.PATH.split(path.delimiter);
-// Returns ['C:\\Windows\\system32', 'C:\\Windows', 'C:\\Program Files\\node\\']
+// Возвращает ['C:\Windows\system32', 'C:\Windows', 'C:\Program Files\node\']
 ```
+
+<!-- 0003.part.md -->
 
 ## `path.dirname(path)`
 
-<!-- YAML
-added: v0.1.16
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
-
-- `path` {нить}
+- `path` {строка}
 - Возвращает: {строка}
 
-В `path.dirname()` метод возвращает имя каталога `path`, аналогично Unix `dirname` команда. Конечные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
+Метод `path.dirname()` возвращает имя каталога `пути`, аналогично команде Unix `dirname`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
 ```js
 path.dirname('/foo/bar/baz/asdf/quux');
-// Returns: '/foo/bar/baz/asdf'
+// Возвращает: '/foo/bar/baz/asdf'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой.
+
+<!-- 0004.part.md -->
 
 ## `path.extname(path)`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
-
-- `path` {нить}
+- `path` {строка}
 - Возвращает: {строка}
 
-В `path.extname()` метод возвращает расширение `path`, от последнего появления `.` (точка) до конца строки в последней части `path`. Если нет `.` в последней части `path`, или если нет `.` символы кроме первого символа базового имени `path` (видеть `path.basename()`) возвращается пустая строка.
+Метод `path.extname()` возвращает расширение `пути`, начиная с последнего появления символа `.` (точка) до конца строки в последней части `пути`. Если в последней части `path` нет символа `.`, или если нет символов `.`, кроме первого символа основного имени `path` (см. `path.basename()`), возвращается пустая строка.
 
 ```js
 path.extname('index.html');
-// Returns: '.html'
+// Возвращает: '.html'
 
 path.extname('index.coffee.md');
-// Returns: '.md'
+// Возвращает: '.md'
 
 path.extname('index.');
-// Returns: '.'
+// Возвращает: '.'
 
 path.extname('index');
-// Returns: ''
+// Возвращает: ''
 
 path.extname('.index');
-// Returns: ''
+// Возвращает: ''
 
 path.extname('.index.md');
-// Returns: '.md'
+// Возвращает: '.md'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой.
+
+<!-- 0005.part.md -->
 
 ## `path.format(pathObject)`
 
-<!-- YAML
-added: v0.11.15
--->
-
 - `pathObject` {Object} Любой объект JavaScript, имеющий следующие свойства:
-  - `dir` {нить}
-  - `root` {нить}
-  - `base` {нить}
-  - `name` {нить}
-  - `ext` {нить}
+  - `dir` {string}
+  - `root` {string}
+  - `base` {string}
+  - `name` {string}
+  - `ext` {string}
 - Возвращает: {строка}
 
-В `path.format()` Метод возвращает строку пути от объекта. Это противоположность [`path.parse()`](#pathparsepath).
+Метод `path.format()` возвращает строку пути из объекта. Это противоположность [`path.parse()`](#pathparsepath).
 
-При предоставлении свойств `pathObject` помните, что есть комбинации, в которых одно свойство имеет приоритет над другим:
+При задании свойств для `pathObject` помните, что существуют комбинации, в которых одно свойство имеет приоритет над другим:
 
-- `pathObject.root` игнорируется, если `pathObject.dir` предоставлен
-- `pathObject.ext` а также `pathObject.name` игнорируются, если `pathObject.base` существуют
+- `pathObject.root` игнорируется, если указано `pathObject.dir`.
+- `pathObject.ext` и `pathObject.name` игнорируются, если существует `pathObject.base`.
 
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
-// If `dir`, `root` and `base` are provided,
+// Если указаны `dir`, `root` и `base`,
 // `${dir}${path.sep}${base}`
-// will be returned. `root` is ignored.
+// будет возвращен. `root` игнорируется.
 path.format({
   root: '/ignored',
   dir: '/home/user/dir',
   base: 'file.txt',
 });
-// Returns: '/home/user/dir/file.txt'
+// Возвращает: '/home/user/dir/file.txt'
 
-// `root` will be used if `dir` is not specified.
-// If only `root` is provided or `dir` is equal to `root` then the
-// platform separator will not be included. `ext` will be ignored.
+// `root` будет использоваться, если `dir` не указан.
+// Если указан только `root` или `dir` равен `root`, то разделитель платформы не будет включен.
+// платформенный разделитель не будет включен. `ext` будет проигнорирован.
 path.format({
   root: '/',
   base: 'file.txt',
   ext: 'ignored',
 });
-// Returns: '/file.txt'
+// Возвращает: '/file.txt'
 
-// `name` + `ext` will be used if `base` is not specified.
+// `name` + `ext` будут использованы, если `base` не указан.
 path.format({
   root: '/',
   name: 'file',
   ext: '.txt',
 });
-// Returns: '/file.txt'
+// Возвращает: '/file.txt'
+
+// Точка будет добавлена, если она не указана в `ext`.
+path.format({
+  root: '/',
+  name: 'file',
+  ext: 'txt',
+});
+// Возвращает: '/file.txt'
 ```
 
 В Windows:
 
 ```js
 path.format({
-  dir: 'C:\\path\\dir',
+  dir: 'C:pathdir',
   base: 'file.txt',
 });
-// Returns: 'C:\\path\\dir\\file.txt'
+// Возвращает: 'C:\path\dir\file.txt'
 ```
+
+<!-- 0006.part.md -->
 
 ## `path.isAbsolute(path)`
 
-<!-- YAML
-added: v0.11.2
--->
+- `путь` {строка}
+- Возвращает: {boolean}
 
-- `path` {нить}
-- Возвращает: {логическое}
+Метод `path.isAbsolute()` определяет, является ли `path` абсолютным путем.
 
-В `path.isAbsolute()` метод определяет, если `path` это абсолютный путь.
+Если заданный `path` является строкой нулевой длины, будет возвращена `false`.
 
-Если данный `path` строка нулевой длины, `false` будет возвращен.
-
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
 path.isAbsolute('/foo/bar'); // true
-path.isAbsolute('/baz/..'); // true
+path.isAbsolute('/baz/...'); // true
 path.isAbsolute('qux/'); // false
 path.isAbsolute('.'); // false
 ```
@@ -269,292 +259,260 @@ path.isAbsolute('.'); // false
 
 ```js
 path.isAbsolute('//server'); // true
-path.isAbsolute('\\\\server'); // true
-path.isAbsolute('C:/foo/..'); // true
-path.isAbsolute('C:\\foo\\..'); // true
-path.isAbsolute('bar\\baz'); // false
+path.isAbsolute('\\server'); // true
+path.isAbsolute('C:/foo/...'); // true
+path.isAbsolute('C:\foo...'); // true
+path.isAbsolute('bar\baz'); // false
 path.isAbsolute('bar/baz'); // false
 path.isAbsolute('.'); // false
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой.
+
+<!-- 0007.part.md -->
 
 ## `path.join([...paths])`
 
-<!-- YAML
-added: v0.1.16
--->
-
-- `...paths` {string} Последовательность сегментов пути
+- `...paths` {строка} Последовательность сегментов пути
 - Возвращает: {строка}
 
-В `path.join()` метод объединяет все данные `path` сегменты вместе с использованием разделителя для конкретной платформы в качестве разделителя, а затем нормализует полученный путь.
+Метод `path.join()` объединяет все заданные сегменты `пути` вместе, используя в качестве разделителя специфический для платформы разделитель, а затем нормализует полученный путь.
 
-Нулевой длины `path` сегменты игнорируются. Если объединенная строка пути является строкой нулевой длины, тогда `'.'` будет возвращен, представляя текущий рабочий каталог.
+Сегменты `пути` нулевой длины игнорируются. Если объединенная строка пути является строкой нулевой длины, то будет возвращена `.'`, представляющая текущий рабочий каталог.
 
 ```js
-path.join('/foo', 'bar', 'baz/asdf', 'quux', '..');
-// Returns: '/foo/bar/baz/asdf'
+path.join('/foo', 'bar', 'baz/asdf', 'quux', '.');
+// Возвращает: '/foo/bar/baz/asdf'
 
 path.join('foo', {}, 'bar');
-// Throws 'TypeError: Path must be a string. Received {}'
+// Выбрасывает 'TypeError: Path must be a string. Received {}'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) выбрасывается, если какой-либо из сегментов пути не является строкой.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если любой из сегментов пути не является строкой.
+
+<!-- 0008.part.md -->
 
 ## `path.normalize(path)`
 
-<!-- YAML
-added: v0.1.23
--->
-
-- `path` {нить}
+- `путь` {строка}
 - Возвращает: {строка}
 
-В `path.normalize()` метод нормализует данный `path`, разрешение `'..'` а также `'.'` сегменты.
+Метод `path.normalize()` нормализует заданный `путь`, разрешая сегменты `...` и `...`.
 
-При обнаружении нескольких последовательных символов разделения сегментов пути (например, `/` на POSIX и либо `\` или `/` в Windows) они заменяются одним экземпляром разделителя сегментов пути, зависящего от платформы (`/` на POSIX и `\` в Windows). Конечные разделители сохранены.
+Если найдено несколько последовательных символов разделения сегментов пути (например, `/` на POSIX и `\` или `/` на Windows), они заменяются одним экземпляром специфического для платформы разделителя сегментов пути (`/` на POSIX и `\` на Windows). Последующие разделители сохраняются.
 
-Если `path` строка нулевой длины, `'.'` возвращается, представляя текущий рабочий каталог.
+Если `path` является строкой нулевой длины, возвращается `'.'`, представляющий текущий рабочий каталог.
 
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
-path.normalize('/foo/bar//baz/asdf/quux/..');
-// Returns: '/foo/bar/baz/asdf'
+path.normalize('/foo/bar//baz/asdf/quux/...');
+// Возвращает: '/foo/bar/baz/asdf'
 ```
 
 В Windows:
 
 ```js
-path.normalize('C:\\temp\\\\foo\\bar\\..\\');
-// Returns: 'C:\\temp\\foo\\'
+path.normalize('C:\temp\\foo\bar\..\');
+// Возвращает: 'C:\temp\foo\'
 ```
 
-Поскольку Windows распознает несколько разделителей путей, оба разделителя будут заменены экземплярами предпочтительного разделителя Windows (`\`):
+Поскольку Windows распознает несколько разделителей путей, оба разделителя будут заменены экземплярами предпочитаемого Windows разделителя (`\`):
 
 ```js
-path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
-// Returns: 'C:\\temp\\foo\\bar'
+path.win32.normalize('C:////temp\\////foo/bar');
+// Возвращает: 'C:\temp\foo\bar'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой.
+
+<!-- 0009.part.md -->
 
 ## `path.parse(path)`
 
-<!-- YAML
-added: v0.11.15
--->
+- `путь` {строка}
+- Возвращает: {Объект}
 
-- `path` {нить}
-- Возвращает: {Object}
+Метод `path.parse()` возвращает объект, свойства которого представляют значимые элементы `пути`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
-В `path.parse()` метод возвращает объект, свойства которого представляют собой важные элементы `path`. Конечные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
+Возвращаемый объект будет иметь следующие свойства:
 
-Возвращенный объект будет иметь следующие свойства:
+- `dir` {строка}
+- `root` {строка}
+- `база` {строка}
+- `name` {string}
+- `ext` {string}
 
-- `dir` {нить}
-- `root` {нить}
-- `base` {нить}
-- `name` {нить}
-- `ext` {нить}
-
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
 path.parse('/home/user/dir/file.txt');
-// Returns:
+// Возвращает:
 // { root: '/',
-//   dir: '/home/user/dir',
-//   base: 'file.txt',
-//   ext: '.txt',
-//   name: 'file' }
+// dir: '/home/user/dir',
+// base: 'file.txt',
+// ext: '.txt',
+// name: 'file' }
 ```
 
-```text
+```текст
 ┌─────────────────────┬────────────┐
-│          dir        │    base    │
-├──────┬              ├──────┬─────┤
-│ root │              │ name │ ext │
-"  /    home/user/dir / file  .txt "
+│ dir │ base │
+├──────┬ ├──────┬─────┤
+│ root │ │ name │ ext │
+"  / home/user/dir / file .txt "
 └──────┴──────────────┴──────┴─────┘
-(All spaces in the "" line should be ignored. They are purely for formatting.)
+(Все пробелы в строке "" следует игнорировать. Они предназначены исключительно для форматирования).
 ```
 
 В Windows:
 
 ```js
 path.parse('C:\\path\\dir\\file.txt');
-// Returns:
-// { root: 'C:\\',
-//   dir: 'C:\\path\\dir',
-//   base: 'file.txt',
-//   ext: '.txt',
-//   name: 'file' }
+// Возвращает:
+// { root: 'C:\',
+// dir: 'C:\path\dir',
+// base: 'file.txt',
+// ext: '.txt',
+// name: 'file' }
 ```
 
-```text
+```
 ┌─────────────────────┬────────────┐
-│          dir        │    base    │
-├──────┬              ├──────┬─────┤
-│ root │              │ name │ ext │
-" C:\      path\dir   \ file  .txt "
+│ dir │ base │
+├──────┬ ├──────┬─────┤
+│ root │ │ name │ ext │
+" C:\ путь\dir \ файл .txt "
 └──────┴──────────────┴──────┴─────┘
-(All spaces in the "" line should be ignored. They are purely for formatting.)
+(Все пробелы в строке "" следует игнорировать. Они предназначены исключительно для форматирования).
 ```
 
-А [`TypeError`](errors.md#class-typeerror) бросается, если `path` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `path` не является строкой.
+
+<!-- 0010.part.md -->
 
 ## `path.posix`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v15.3.0
-    pr-url: https://github.com/nodejs/node/pull/34962
-    description: Exposed as `require('path/posix')`.
--->
+- {Object}
 
-- {Объект}
+Свойство `path.posix` предоставляет доступ к POSIX-специфическим реализациям методов `path`.
 
-В `path.posix` свойство обеспечивает доступ к специфическим реализациям POSIX `path` методы.
+API доступен через `require('node:path').posix` или `require('node:path/posix')`.
 
-API доступен через `require('path').posix` или `require('path/posix')`.
+<!-- 0011.part.md -->
 
 ## `path.relative(from, to)`
 
-<!-- YAML
-added: v0.5.0
-changes:
-  - version: v6.8.0
-    pr-url: https://github.com/nodejs/node/pull/8523
-    description: On Windows, the leading slashes for UNC paths are now included
-                 in the return value.
--->
+- `from` {string}
+- `to` {string}
+- Возвращает: {string}
 
-- `from` {нить}
-- `to` {нить}
-- Возвращает: {строка}
+Метод `path.relative()` возвращает относительный путь от `from` к `to` на основе текущего рабочего каталога. Если `from` и `to` разрешаются в один и тот же путь (после вызова `path.resolve()` для каждого), возвращается строка нулевой длины.
 
-В `path.relative()` метод возвращает относительный путь от `from` к `to` на основе текущего рабочего каталога. Если `from` а также `to` каждый разрешает один и тот же путь (после вызова `path.resolve()` на каждом) возвращается строка нулевой длины.
+Если в качестве `from` или `to` передана строка нулевой длины, то вместо строк нулевой длины будет использоваться текущий рабочий каталог.
 
-Если строка нулевой длины передается как `from` или `to`, текущий рабочий каталог будет использоваться вместо строк нулевой длины.
-
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
 path.relative(
   '/data/orandea/test/aaa',
   '/data/orandea/impl/bbb'
 );
-// Returns: '../../impl/bbb'
+// Возвращает: '../../impl/bbb'
 ```
 
 В Windows:
 
 ```js
-path.relative(
-  'C:\\orandea\\test\\aaa',
-  'C:\\orandea\\impl\\bbb'
-);
-// Returns: '..\\..\\impl\\bbb'
+path.relative('C:orandea\testaaa', 'C:orandeaimpl\bb');
+// Возвращает: '..\.\.\impl\bbb'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) выбрасывается, если `from` или `to` не строка.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если `from` или `to` не является строкой.
+
+<!-- 0012.part.md -->
 
 ## `path.resolve([...paths])`
 
-<!-- YAML
-added: v0.3.4
--->
-
-- `...paths` {string} Последовательность путей или сегментов пути
+- `...paths` {строка} Последовательность путей или сегментов путей
 - Возвращает: {строка}
 
-В `path.resolve()` преобразует последовательность путей или сегментов пути в абсолютный путь.
+Метод `path.resolve()` преобразует последовательность путей или сегментов путей в абсолютный путь.
 
-Заданная последовательность путей обрабатывается справа налево, с каждым последующим `path` добавляется до тех пор, пока не будет построен абсолютный путь. Например, учитывая последовательность сегментов пути: `/foo`, `/bar`, `baz`, звоню `path.resolve('/foo', '/bar', 'baz')` вернется `/bar/baz` потому что `'baz'` это не абсолютный путь, но `'/bar' + '/' + 'baz'` является.
+Заданная последовательность путей обрабатывается справа налево, с добавлением каждого последующего `path`, пока не будет построен абсолютный путь. Например, если задана последовательность сегментов пути: `/foo`, `/bar`, `baz`, вызов `path.resolve('/foo', '/bar', 'baz')` вернет `/bar/baz`, потому что `'baz'` не является абсолютным путем, а `'/bar' + '/' + 'baz'` является.
 
-Если после обработки все дано `path` сегменты, абсолютный путь еще не сформирован, используется текущий рабочий каталог.
+Если после обработки всех заданных сегментов `path` абсолютный путь еще не сгенерирован, то используется текущий рабочий каталог.
 
-Результирующий путь нормализуется, а завершающие косые черты удаляются, если путь не разрешен до корневого каталога.
+Результирующий путь нормализуется и удаляются косые черты, если только путь не разрешается в корневой каталог.
 
-Нулевой длины `path` сегменты игнорируются.
+Сегменты `пути` нулевой длины игнорируются.
 
-Если нет `path` сегменты пройдены, `path.resolve()` вернет абсолютный путь к текущему рабочему каталогу.
+Если сегменты `path` не переданы, `path.resolve()` вернет абсолютный путь к текущему рабочему каталогу.
 
 ```js
 path.resolve('/foo/bar', './baz');
-// Returns: '/foo/bar/baz'
+// Возвращает: '/foo/bar/baz'
 
 path.resolve('/foo/bar', '/tmp/file/');
-// Returns: '/tmp/file'
+// Возвращает: '/tmp/file'
 
 path.resolve(
   'wwwroot',
   'static_files/png/',
   '../gif/image.gif'
 );
-// If the current working directory is /home/myself/node,
-// this returns '/home/myself/node/wwwroot/static_files/gif/image.gif'
+// Если текущий рабочий каталог - /home/myself/node,
+// это возвращает '/home/myself/node/wwwroot/static_files/gif/image.gif'
 ```
 
-А [`TypeError`](errors.md#class-typeerror) выбрасывается, если какой-либо из аргументов не является строкой.
+Ошибка [`TypeError`](errors.md#class-typeerror) возникает, если любой из аргументов не является строкой.
+
+<!-- 0013.part.md -->
 
 ## `path.sep`
 
-<!-- YAML
-added: v0.7.9
--->
+- {string}
 
-- {нить}
-
-Предоставляет разделитель сегментов пути, зависящий от платформы:
+Предоставляет специфический для платформы разделитель сегментов пути:
 
 - `\` в Windows
-- `/` в POSIX
+- `/` на POSIX
 
-Например, в POSIX:
+Например, на POSIX:
 
 ```js
 'foo/bar/baz'.split(path.sep);
-// Returns: ['foo', 'bar', 'baz']
+// Возвращает: ['foo', 'bar', 'baz'].
 ```
 
 В Windows:
 
 ```js
-'foo\\bar\\baz'.split(path.sep);
-// Returns: ['foo', 'bar', 'baz']
+'foo\bar\baz'.split(path.sep);
+// Возвращает: ['foo', 'bar', 'baz'].
 ```
 
-В Windows обе косые черты (`/`) и обратная косая черта (`\`) принимаются как разделители отрезков пути; Однако `path` методы только добавляют обратную косую черту (`\`).
+В Windows в качестве разделителя сегментов пути принимается как прямая косая черта (`/`), так и обратная косая черта (`\`); однако методы `path` добавляют только обратную косую черту (`\`).
+
+<!-- 0014.part.md -->
 
 ## `path.toNamespacedPath(path)`
 
-<!-- YAML
-added: v9.0.0
--->
+- `путь` {строка}
+- Возвращает: {string}
 
-- `path` {нить}
-- Возвращает: {строка}
+Только в системах Windows, возвращает эквивалентный [namespace-prefixed path](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#namespaces) для заданного `path`. Если `path` не является строкой, `path` будет возвращен без изменений.
 
-Только в системах Windows возвращает эквивалент [путь с префиксом пространства имен](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#namespaces) для данного `path`. Если `path` не строка, `path` будет возвращен без изменений.
+Этот метод имеет смысл только в системах Windows. В POSIX-системах метод не работает и всегда возвращает `path` без изменений.
 
-Этот метод имеет смысл только в системах Windows. В системах POSIX метод не работает и всегда возвращает `path` без доработок.
+<!-- 0015.part.md -->
 
 ## `path.win32`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v15.3.0
-    pr-url: https://github.com/nodejs/node/pull/34962
-    description: Exposed as `require('path/win32')`.
--->
+- {Object}
 
-- {Объект}
+Свойство `path.win32` предоставляет доступ к Windows-специфическим реализациям методов `path`.
 
-В `path.win32` свойство обеспечивает доступ к специфичным для Windows реализациям `path` методы.
+API доступен через `require('node:path').win32` или `require('node:path/win32')`.
 
-API доступен через `require('path').win32` или `require('path/win32')`.
+<!-- 0016.part.md -->

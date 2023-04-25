@@ -1,4 +1,5 @@
 ---
+title: C++ embedder API
 description: Node.js предоставляет ряд C++ API, которые можно использовать для выполнения JavaScript в среде Node.js из других C++ программ
 ---
 

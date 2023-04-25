@@ -1,4 +1,5 @@
 ---
+title: Process
 description: Объект process предоставляет информацию о текущем процессе Node.js и контроль над ним
 ---
 

@@ -1,4 +1,5 @@
 ---
+title: Web Streams API
 description: Реализация WHATWG Streams Standard
 ---
 

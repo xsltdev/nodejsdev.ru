@@ -1,4 +1,5 @@
 ---
+title: Async hooks
 description: Модуль async_hooks предоставляет API для отслеживания асинхронных ресурсов
 ---
 

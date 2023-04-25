@@ -1,4 +1,5 @@
 ---
+title: Worker threads
 description: Модуль worker_threads позволяет использовать потоки, параллельно выполняющие JavaScript
 ---
 

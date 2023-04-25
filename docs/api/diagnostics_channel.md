@@ -1,3 +1,8 @@
+---
+title: Diagnostics Channel
+description: Модуль diagnostics_channel предоставляет API для создания именованных каналов для передачи произвольных данных сообщений в целях диагностики
+---
+
 # Канал диагностики
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/diagnostics_channel.html)

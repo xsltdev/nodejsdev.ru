@@ -1,4 +1,5 @@
 ---
+title: Performance hooks
 description: API для измерения производительности
 ---
 

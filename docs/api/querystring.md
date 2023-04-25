@@ -1,4 +1,5 @@
 ---
+title: Query strings
 description: Модуль querystring предоставляет утилиты для разбора и форматирования строк запросов URL
 ---
 
