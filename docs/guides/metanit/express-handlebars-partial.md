@@ -10,7 +10,8 @@
 
 ```html
 <nav>
-  <a href="/">Главная</a> | <a href="/contact">Контакты</a>
+    <a href="/">Главная</a> |
+    <a href="/contact">Контакты</a>
 </nav>
 ```
 
@@ -66,44 +67,44 @@
 
 В итоге весь проект будет выглядеть следующим образом:
 
-- app.js
-- node_modules
-- views
-  - contact.hbs
-  - home.hbs
-  - partials
-    - footer.hbs
-    - menu.hbs
+-   app.js
+-   node_modules
+-   views
+    -   contact.hbs
+    -   home.hbs
+    -   partials
+        -   footer.hbs
+        -   menu.hbs
 
 В конце изменим файл `app.js`:
 
 ```js
-const express = require('express')
-const hbs = require('hbs')
-const app = express()
+const express = require('express');
+const hbs = require('hbs');
+const app = express();
 
-app.set('view engine', 'hbs')
-hbs.registerPartials(__dirname + '/views/partials')
+app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + '/views/partials');
 
 app.use('/contact', function (request, response) {
-  response.render('contact', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 
 app.use('/', function (request, response) {
-  response.render('home.hbs')
-})
-app.listen(3000)
+    response.render('home.hbs');
+});
+app.listen(3000);
 ```
 
 Для настройки функционала частичных представлений в коде используется вызов:
 
 ```js
-hbs.registerPartials(__dirname + '/views/partials')
+hbs.registerPartials(__dirname + '/views/partials');
 ```
 
 который устанавливает каталог, где располагаются частичные представления.

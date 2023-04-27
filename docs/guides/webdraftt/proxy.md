@@ -9,9 +9,9 @@ npm install express-http-proxy --save
 В самом простом использовании модуля `express-http-proxy` прокси выглядит следующим образом.
 
 ```js
-let proxy = require('express-http-proxy')
+let proxy = require('express-http-proxy');
 
-app.use('/api', proxy('http://example.com'))
+app.use('/api', proxy('http://example.com'));
 ```
 
 Здесь все запросы к маршрутам, начинающимся с `/api` будут перенаправлены на `http://example.com`.
@@ -22,96 +22,96 @@ app.use('/api', proxy('http://example.com'))
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    filter: (req, res) =>
-      req.headers.hasOwnProperty('Authorization'),
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        filter: (req, res) =>
+            req.headers.hasOwnProperty('Authorization'),
+    })
+);
 ```
 
 `userResDecorator` - используется для модификации объекта ответа перед его отдачей клиенту;
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    userResDecorator: (proxyRes, proxyResData) => {
-      let _data = JSON.parse(proxyResData)
-      _data.proxy = true
-      return JSON.stringify(_data)
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        userResDecorator: (proxyRes, proxyResData) => {
+            let _data = JSON.parse(proxyResData);
+            _data.proxy = true;
+            return JSON.stringify(_data);
+        },
+    })
+);
 ```
 
 `userResHeaderDecorator` - используется для модификации заголовков ответа;
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    userResHeaderDecorator: (hdrs) => {
-      hdrs.Proxy = true
-      return hdrs
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        userResHeaderDecorator: (hdrs) => {
+            hdrs.Proxy = true;
+            return hdrs;
+        },
+    })
+);
 ```
 
 `proxyReqPathResolver` - используется для модификации пути запроса (путем считается все, что следует после хоста);
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    proxyReqPathResolver: (req) => {
-      console.log(req.url)
-      return req.url
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        proxyReqPathResolver: (req) => {
+            console.log(req.url);
+            return req.url;
+        },
+    })
+);
 ```
 
 `proxyReqOptDecorator` - предназначен для модификации параметров объекта запроса (заголовков, HTTP метода, параметров адресной строки и т. д.);
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    proxyReqOptDecorator: (reqOpts) => {
-      reqOpts.method = 'POST'
-      return reqOpts
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        proxyReqOptDecorator: (reqOpts) => {
+            reqOpts.method = 'POST';
+            return reqOpts;
+        },
+    })
+);
 ```
 
 `proxyReqBodyDecorator` - используется для модификации тела запроса;
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    proxyReqBodyDecorator: (body) => {
-      console.log(body)
-      return body
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        proxyReqBodyDecorator: (body) => {
+            console.log(body);
+            return body;
+        },
+    })
+);
 ```
 
 `proxyErrorHandler` - предназначен для задания пользовательского поведения при возникновении ошибки (по умолчанию транслирует ошибку клиенту);
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    proxyErrorHandler: (err, res, next) => {
-      next(err)
-    },
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        proxyErrorHandler: (err, res, next) => {
+            next(err);
+        },
+    })
+);
 ```
 
 `parseReqBody` - булевое значение, если `true` - парсит тело запроса, если `false` - у объекта запроса не будет свойства `body`, рекомендуется отключать из соображений эффективности при передаче бинарных данных (по умолчанию `true`);
@@ -120,11 +120,11 @@ app.use(
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    limit: '10mb',
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        limit: '10mb',
+    })
+);
 ```
 
 `memozieHost` - булевое значение, если `true` - то первый параметр (адрес, куда проксируются запросы), будет разбираться при каждом запросе, если `false` - то только при первом и полученное значение будет использоваться в дальнейшем для всех поступающих запросов (по умолчанию `true`);
@@ -137,9 +137,9 @@ app.use(
 
 ```js
 app.use(
-  '/api',
-  proxy('http://example.com', {
-    timeout: 2000,
-  })
-)
+    '/api',
+    proxy('http://example.com', {
+        timeout: 2000,
+    })
+);
 ```

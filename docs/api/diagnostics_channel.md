@@ -93,8 +93,8 @@ description: Модуль diagnostics_channel предоставляет API д�
 
 #### `diagnostics_channel.hasSubscribers(name)`
 
-- `name` {string|symbol} Имя канала
-- Возвращает: {boolean} Если есть активные подписчики
+-   `name` {string|symbol} Имя канала
+-   Возвращает: {boolean} Если есть активные подписчики
 
 Проверьте, есть ли активные подписчики на названный канал. Это полезно, если сообщение, которое вы хотите отправить, может быть дорого подготовлено.
 
@@ -122,8 +122,8 @@ description: Модуль diagnostics_channel предоставляет API д�
 
 #### `diagnostics_channel.channel(name)`
 
-- `name` {string|symbol} Имя канала
-- Возвращает: {Channel} Объект именованного канала
+-   `name` {string|symbol} Имя канала
+-   Возвращает: {Channel} Объект именованного канала
 
 Это основная точка входа для тех, кто хочет опубликоваться в именованном канале. Он создает объект канала, который оптимизирован для максимального снижения накладных расходов во время публикации.
 
@@ -141,10 +141,10 @@ const channel = diagnostics_channel.channel('my-channel');
 
 #### `diagnostics_channel.subscribe(name, onMessage)`
 
-- `name` {string|symbol} Имя канала
-- `onMessage` {функция} Обработчик для получения сообщений канала
-  - `message` {любой} Данные сообщения
-  - `name` {string|symbol} Имя канала
+-   `name` {string|symbol} Имя канала
+-   `onMessage` {функция} Обработчик для получения сообщений канала
+    -   `message` {любой} Данные сообщения
+    -   `name` {string|symbol} Имя канала
 
 Зарегистрируйте обработчик сообщений для подписки на этот канал. Этот обработчик сообщений будет выполняться синхронно каждый раз, когда сообщение будет опубликовано на канале. Любые ошибки, возникающие в обработчике сообщений, будут вызывать [`'uncaughtException'`](process.md#event-uncaughtexception).
 
@@ -152,10 +152,10 @@ const channel = diagnostics_channel.channel('my-channel');
 import diagnostics_channel from 'node:diagnostics_channel';
 
 diagnostics_channel.subscribe(
-  'my-channel',
-  (message, name) => {
-    // Полученные данные
-  }
+    'my-channel',
+    (message, name) => {
+        // Полученные данные
+    }
 );
 ```
 
@@ -163,18 +163,18 @@ diagnostics_channel.subscribe(
 const diagnostics_channel = require('node:diagnostics_channel');
 
 diagnostics_channel.subscribe(
-  'my-channel',
-  (message, name) => {
-    // Полученные данные
-  }
+    'my-channel',
+    (message, name) => {
+        // Полученные данные
+    }
 );
 ```
 
 #### `diagnostics_channel.unsubscribe(name, onMessage)`
 
-- `name` {string|symbol} Имя канала
-- `onMessage` {функция} Предыдущий обработчик подписки для удаления
-- Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
+-   `name` {string|symbol} Имя канала
+-   `onMessage` {функция} Предыдущий обработчик подписки для удаления
+-   Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
 
 Удаляет обработчик сообщений, ранее зарегистрированный на этот канал с помощью [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage).
 
@@ -182,7 +182,7 @@ diagnostics_channel.subscribe(
 import diagnostics_channel from 'node:diagnostics_channel';
 
 function onMessage(message, name) {
-  // Полученные данные
+    // Полученные данные
 }
 
 diagnostics_channel.subscribe('my-channel', onMessage);
@@ -194,7 +194,7 @@ diagnostics_channel.unsubscribe('my-channel', onMessage);
 const diagnostics_channel = require('node:diagnostics_channel');
 
 function onMessage(message, name) {
-  // Полученные данные
+    // Полученные данные
 }
 
 diagnostics_channel.subscribe('my-channel', onMessage);
@@ -208,7 +208,7 @@ diagnostics_channel.unsubscribe('my-channel', onMessage);
 
 #### `channel.hasSubscribers`
 
-- Возвращает: {boolean} Если есть активные подписчики
+-   Возвращает: {boolean} Если есть активные подписчики
 
 Проверяет, есть ли активные подписчики у этого канала. Это полезно, если сообщение, которое вы хотите отправить, может быть дорогостоящим в подготовке.
 
@@ -220,7 +220,7 @@ import diagnostics_channel from 'node:diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
-  // Подписчики есть, подготавливаем и публикуем сообщение
+    // Подписчики есть, подготавливаем и публикуем сообщение
 }
 ```
 
@@ -230,13 +230,13 @@ const diagnostics_channel = require('node:diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
-  // Подписчики есть, подготавливаем и публикуем сообщение
+    // Подписчики есть, подготавливаем и публикуем сообщение
 }
 ```
 
 #### `channel.publish(message)`
 
-- `message` {any} Сообщение для отправки подписчикам канала
+-   `message` {any} Сообщение для отправки подписчикам канала
 
 Публикует сообщение всем подписчикам канала. При этом обработчики сообщений будут запускаться синхронно, поэтому они будут выполняться в одном и том же контексте.
 
@@ -246,7 +246,7 @@ import diagnostics_channel from 'node:diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
-  some: 'message',
+    some: 'message',
 });
 ```
 
@@ -256,7 +256,7 @@ const diagnostics_channel = require('node:diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
-  some: 'message',
+    some: 'message',
 });
 ```
 
@@ -264,9 +264,9 @@ channel.publish({
 
 > Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage)
 
-- `onMessage` {Функция} Обработчик для получения сообщений канала
-  - `message` {любой} Данные сообщения
-  - `name` {string|symbol} Имя канала
+-   `onMessage` {Функция} Обработчик для получения сообщений канала
+    -   `message` {любой} Данные сообщения
+    -   `name` {string|symbol} Имя канала
 
 Зарегистрируйте обработчик сообщений для подписки на этот канал. Этот обработчик сообщений будет выполняться синхронно каждый раз, когда сообщение будет опубликовано на канале. Любые ошибки, возникающие в обработчике сообщений, будут вызывать [`'uncaughtException'`](process.md#event-uncaughtexception).
 
@@ -276,7 +276,7 @@ import diagnostics_channel from 'node:diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
-  // Полученные данные
+    // Полученные данные
 });
 ```
 
@@ -286,7 +286,7 @@ const diagnostics_channel = require('node:diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
-  // Полученные данные
+    // Полученные данные
 });
 ```
 
@@ -294,8 +294,8 @@ channel.subscribe((message, name) => {
 
 > Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.unsubscribe(name, onMessage)`](#diagnostics_channelunsubscribename-onmessage)
 
-- `onMessage` {Function} Предыдущий обработчик подписки для удаления
-- Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
+-   `onMessage` {Function} Предыдущий обработчик подписки для удаления
+-   Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
 
 Удаление обработчика сообщений, ранее зарегистрированного на этот канал с помощью [`channel.subscribe(onMessage)`](#channelsubscribeonmessage).
 
@@ -305,7 +305,7 @@ import diagnostics_channel from 'node:diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
-  // Полученные данные
+    // Полученные данные
 }
 
 channel.subscribe(onMessage);
@@ -319,7 +319,7 @@ const diagnostics_channel = require('node:diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
-  // Полученные данные
+    // Полученные данные
 }
 
 channel.subscribe(onMessage);
@@ -337,32 +337,32 @@ channel.unsubscribe(onMessage);
 
 `http.client.request.start`
 
-- `запрос` {http.ClientRequest}
+-   `запрос` {http.ClientRequest}
 
 Выдается, когда клиент начинает запрос.
 
 `http.client.response.finish`
 
-- `запрос` {http.ClientRequest}
-- `response` {http.IncomingMessage}
+-   `запрос` {http.ClientRequest}
+-   `response` {http.IncomingMessage}
 
 Выдается, когда клиент получает ответ.
 
 `http.server.request.start`
 
-- `запрос` {http.IncomingMessage}
-- `response` {http.ServerResponse}
-- `сокет` {net.Socket}
-- `server` {http.Server}
+-   `запрос` {http.IncomingMessage}
+-   `response` {http.ServerResponse}
+-   `сокет` {net.Socket}
+-   `server` {http.Server}
 
 Выдается, когда сервер получает запрос.
 
 `http.server.response.finish`
 
-- `запрос` {http.IncomingMessage}
-- `ответ` {http.ServerResponse}
-- `socket` {net.Socket}
-- `server` {http.Server}
+-   `запрос` {http.IncomingMessage}
+-   `ответ` {http.ServerResponse}
+-   `socket` {net.Socket}
+-   `server` {http.Server}
 
 Выдается, когда сервер посылает ответ.
 
@@ -370,13 +370,13 @@ channel.unsubscribe(onMessage);
 
 `net.client.socket`
 
-- `socket` {net.Socket}
+-   `socket` {net.Socket}
 
 Выдается при создании нового клиентского сокета TCP или pipe.
 
 `net.server.socket`
 
-- `socket` {net.Socket}
+-   `socket` {net.Socket}
 
 Выдается при получении нового TCP- или pipe-соединения.
 
@@ -384,7 +384,7 @@ channel.unsubscribe(onMessage);
 
 `udp.socket`
 
-- `socket` {dgram.Socket}
+-   `socket` {dgram.Socket}
 
 Выдается при создании нового UDP сокета.
 
@@ -392,7 +392,7 @@ channel.unsubscribe(onMessage);
 
 `детский_процесс`
 
-- `process` {ChildProcess}
+-   `process` {ChildProcess}
 
 Выдается при создании нового процесса.
 
@@ -400,6 +400,6 @@ channel.unsubscribe(onMessage);
 
 `worker_threads`
 
-- `worker` [`Worker`](worker_threads.md#class-worker)
+-   `worker` [`Worker`](worker_threads.md#class-worker)
 
 Выдается при создании нового потока.

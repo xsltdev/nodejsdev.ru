@@ -8,11 +8,11 @@
 
 ```json
 {
-  "name": "expressapp",
-  "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.16.4"
-  }
+    "name": "expressapp",
+    "version": "1.0.0",
+    "dependencies": {
+        "express": "^4.16.4"
+    }
 }
 ```
 
@@ -28,31 +28,31 @@ npm install
 
 ```js
 // подключение express
-const express = require('express')
+const express = require('express');
 // создаем объект приложения
-const app = express()
+const app = express();
 // определяем обработчик для маршрута "/"
 app.get('/', function (request, response) {
-  // отправляем ответ
-  response.send('<h2>Привет Express!</h2>')
-})
+    // отправляем ответ
+    response.send('<h2>Привет Express!</h2>');
+});
 // начинаем прослушивать подключения на 3000 порту
-app.listen(3000)
+app.listen(3000);
 ```
 
 Для использования Express в начале надо создать объект, который будет представлять приложение:
 
 ```js
-const app = express()
+const app = express();
 ```
 
 Для обработки запросов в Express определено ряд встроенных функций, и одной из таких является функция `app.get()`. Она обрабатывает GET-запросы протокола HTTP и позволяет связать маршруты с определенными обработчиками. Для этого первым параметром передается маршрут, а вторым - обработчик, который будет вызываться, если запрос к серверу соответствует данному маршруту:
 
 ```js
 app.get('/', function (request, response) {
-  // отправляем ответ
-  response.send('<h2>Привет Express!</h2>')
-})
+    // отправляем ответ
+    response.send('<h2>Привет Express!</h2>');
+});
 ```
 
 Маршрут `/` представляет корневой маршрут.
@@ -70,19 +70,19 @@ app.get('/', function (request, response) {
 Теперь изменим файл `app.js`:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 app.get('/', function (request, response) {
-  response.send('<h1>Главная страница</h1>')
-})
+    response.send('<h1>Главная страница</h1>');
+});
 app.get('/about', function (request, response) {
-  response.send('<h1>О сайте</h1>')
-})
+    response.send('<h1>О сайте</h1>');
+});
 app.get('/contact', function (request, response) {
-  response.send('<h1>Контакты</h1>')
-})
-app.listen(3000)
+    response.send('<h1>Контакты</h1>');
+});
+app.listen(3000);
 ```
 
 Теперь в приложении определено три маршрута, которые будут обрабатываться сервером:

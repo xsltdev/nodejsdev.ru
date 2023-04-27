@@ -1,7 +1,6 @@
 # Маршрутизация ExpressJS
 
-_Маршрутизация_ определяет, как приложение отвечает на клиентский запрос к конкретному адресу (URI).
-Вводную информацию о маршрутизации можно найти в разделе [Основы маршрутизации](basic-routing.md).
+_Маршрутизация_ определяет, как приложение отвечает на клиентский запрос к конкретному адресу (URI). Вводную информацию о маршрутизации можно найти в разделе [Основы маршрутизации](basic-routing.md).
 
 Приведенный ниже код служит примером одного из самых простых маршрутов.
 
@@ -11,7 +10,7 @@ var app = express();
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
-  res.send('hello world');
+    res.send('hello world');
 });
 ```
 
@@ -24,12 +23,12 @@ app.get('/', function (req, res) {
 ```js
 // GET method route
 app.get('/', function (req, res) {
-  res.send('GET request to the homepage');
+    res.send('GET request to the homepage');
 });
 
 // POST method route
 app.post('/', function (req, res) {
-  res.send('POST request to the homepage');
+    res.send('POST request to the homepage');
 });
 ```
 
@@ -43,8 +42,8 @@ Express поддерживает перечисленные далее мето�
 
 ```js
 app.all('/secret', function (req, res, next) {
-  console.log('Accessing the secret section ...');
-  next(); // pass control to the next handler
+    console.log('Accessing the secret section ...');
+    next(); // pass control to the next handler
 });
 ```
 
@@ -62,7 +61,7 @@ app.all('/secret', function (req, res, next) {
 
 ```js
 app.get('/', function (req, res) {
-  res.send('root');
+    res.send('root');
 });
 ```
 
@@ -70,7 +69,7 @@ app.get('/', function (req, res) {
 
 ```js
 app.get('/about', function (req, res) {
-  res.send('about');
+    res.send('about');
 });
 ```
 
@@ -78,7 +77,7 @@ app.get('/about', function (req, res) {
 
 ```js
 app.get('/random.text', function (req, res) {
-  res.send('random.text');
+    res.send('random.text');
 });
 ```
 
@@ -88,7 +87,7 @@ app.get('/random.text', function (req, res) {
 
 ```js
 app.get('/ab?cd', function (req, res) {
-  res.send('ab?cd');
+    res.send('ab?cd');
 });
 ```
 
@@ -96,7 +95,7 @@ app.get('/ab?cd', function (req, res) {
 
 ```js
 app.get('/ab+cd', function (req, res) {
-  res.send('ab+cd');
+    res.send('ab+cd');
 });
 ```
 
@@ -104,7 +103,7 @@ app.get('/ab+cd', function (req, res) {
 
 ```js
 app.get('/ab*cd', function (req, res) {
-  res.send('ab*cd');
+    res.send('ab*cd');
 });
 ```
 
@@ -112,7 +111,7 @@ app.get('/ab*cd', function (req, res) {
 
 ```js
 app.get('/ab(cd)?e', function (req, res) {
-  res.send('ab(cd)?e');
+    res.send('ab(cd)?e');
 });
 ```
 
@@ -124,7 +123,7 @@ app.get('/ab(cd)?e', function (req, res) {
 
 ```js
 app.get(/a/, function (req, res) {
-  res.send('/a/');
+    res.send('/a/');
 });
 ```
 
@@ -132,7 +131,7 @@ app.get(/a/, function (req, res) {
 
 ```js
 app.get(/.*fly$/, function (req, res) {
-  res.send('/.*fly$/');
+    res.send('/.*fly$/');
 });
 ```
 
@@ -146,7 +145,7 @@ app.get(/.*fly$/, function (req, res) {
 
 ```js
 app.get('/example/a', function (req, res) {
-  res.send('Hello from A!');
+    res.send('Hello from A!');
 });
 ```
 
@@ -154,16 +153,16 @@ app.get('/example/a', function (req, res) {
 
 ```js
 app.get(
-  '/example/b',
-  function (req, res, next) {
-    console.log(
-      'the response will be sent by the next function ...'
-    );
-    next();
-  },
-  function (req, res) {
-    res.send('Hello from B!');
-  }
+    '/example/b',
+    function (req, res, next) {
+        console.log(
+            'the response will be sent by the next function ...'
+        );
+        next();
+    },
+    function (req, res) {
+        res.send('Hello from B!');
+    }
 );
 ```
 
@@ -171,17 +170,17 @@ app.get(
 
 ```js
 var cb0 = function (req, res, next) {
-  console.log('CB0');
-  next();
+    console.log('CB0');
+    next();
 };
 
 var cb1 = function (req, res, next) {
-  console.log('CB1');
-  next();
+    console.log('CB1');
+    next();
 };
 
 var cb2 = function (req, res) {
-  res.send('Hello from C!');
+    res.send('Hello from C!');
 };
 
 app.get('/example/c', [cb0, cb1, cb2]);
@@ -191,27 +190,27 @@ app.get('/example/c', [cb0, cb1, cb2]);
 
 ```js
 var cb0 = function (req, res, next) {
-  console.log('CB0');
-  next();
+    console.log('CB0');
+    next();
 };
 
 var cb1 = function (req, res, next) {
-  console.log('CB1');
-  next();
+    console.log('CB1');
+    next();
 };
 
 app.get(
-  '/example/d',
-  [cb0, cb1],
-  function (req, res, next) {
-    console.log(
-      'the response will be sent by the next function ...'
-    );
-    next();
-  },
-  function (req, res) {
-    res.send('Hello from D!');
-  }
+    '/example/d',
+    [cb0, cb1],
+    function (req, res, next) {
+        console.log(
+            'the response will be sent by the next function ...'
+        );
+        next();
+    },
+    function (req, res) {
+        res.send('Hello from D!');
+    }
 );
 ```
 
@@ -219,37 +218,35 @@ app.get(
 
 Методы в объекте ответа (`res`), перечисленные в таблице ниже, могут передавать ответ клиенту и завершать цикл "запрос-ответ". Если ни один из этих методов не будет вызван из обработчика маршрута, клиентский запрос зависнет.
 
-| Метод            | Описание                                                                                       |
-| ---------------- | ---------------------------------------------------------------------------------------------- |
-| res.download()   | Приглашение загрузки файла.                                                                    |
-| res.end()        | Завершение процесса ответа.                                                                    |
-| res.json()       | Отправка ответа JSON.                                                                          |
-| res.jsonp()      | Отправка ответа JSON с поддержкой JSONP.                                                       |
-| res.redirect()   | Перенаправление ответа.                                                                        |
-| res.render()     | Вывод шаблона представления.                                                                   |
-| res.send()       | Отправка ответа различных типов.                                                               |
-| res.sendFile()   | Отправка файла в виде потока октетов.                                                          |
+| Метод | Описание |
+| --- | --- |
+| res.download() | Приглашение загрузки файла. |
+| res.end() | Завершение процесса ответа. |
+| res.json() | Отправка ответа JSON. |
+| res.jsonp() | Отправка ответа JSON с поддержкой JSONP. |
+| res.redirect() | Перенаправление ответа. |
+| res.render() | Вывод шаблона представления. |
+| res.send() | Отправка ответа различных типов. |
+| res.sendFile() | Отправка файла в виде потока октетов. |
 | res.sendStatus() | Установка кода состояния ответа и отправка представления в виде строки в качестве тела ответа. |
 
 ## app.route()
 
-Метод `app.route()` позволяет создавать обработчики маршрутов, образующие цепочки, для пути маршрута.
-Поскольку путь указан в одном расположении, удобно создавать модульные маршруты, чтобы минимизировать избыточность и количество опечаток. Дополнительная информация о маршрутах приводится в документации `Router()`.
+Метод `app.route()` позволяет создавать обработчики маршрутов, образующие цепочки, для пути маршрута. Поскольку путь указан в одном расположении, удобно создавать модульные маршруты, чтобы минимизировать избыточность и количество опечаток. Дополнительная информация о маршрутах приводится в документации `Router()`.
 
 Ниже приведен пример объединенных в цепочку обработчиков маршрутов, определенных с помощью функции `app.route()`.
 
 ```js
-app
-  .route('/book')
-  .get(function (req, res) {
-    res.send('Get a random book');
-  })
-  .post(function (req, res) {
-    res.send('Add a book');
-  })
-  .put(function (req, res) {
-    res.send('Update the book');
-  });
+app.route('/book')
+    .get(function (req, res) {
+        res.send('Get a random book');
+    })
+    .post(function (req, res) {
+        res.send('Add a book');
+    })
+    .put(function (req, res) {
+        res.send('Update the book');
+    });
 ```
 
 ## express.Router
@@ -266,16 +263,16 @@ var router = express.Router();
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
-  next();
+    console.log('Time: ', Date.now());
+    next();
 });
 // define the home page route
 router.get('/', function (req, res) {
-  res.send('Birds home page');
+    res.send('Birds home page');
 });
 // define the about route
 router.get('/about', function (req, res) {
-  res.send('About birds');
+    res.send('About birds');
 });
 
 module.exports = router;
@@ -289,5 +286,4 @@ var birds = require('./birds');
 app.use('/birds', birds);
 ```
 
-Данное приложение теперь сможет обрабатывать запросы, адресованные ресурсам `/birds` и
-`/birds/about`, а также вызывать специальную функцию промежуточной обработки `timeLog` данного маршрута.
+Данное приложение теперь сможет обрабатывать запросы, адресованные ресурсам `/birds` и `/birds/about`, а также вызывать специальную функцию промежуточной обработки `timeLog` данного маршрута.

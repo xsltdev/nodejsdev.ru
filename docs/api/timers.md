@@ -23,13 +23,13 @@ description: Модуль timer предоставляет глобальный 
 
 ### `immediate.hasRef()`
 
-- Возвращает: {boolean}.
+-   Возвращает: {boolean}.
 
 Если true, то объект `Immediate` будет поддерживать цикл событий Node.js активным.
 
 ### `immediate.ref()`
 
-- Возвращает: {Immediate} ссылку на `immediate`.
+-   Возвращает: {Immediate} ссылку на `immediate`.
 
 При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока активен `Immediate`. Вызов `immediate.ref()` несколько раз не будет иметь никакого эффекта.
 
@@ -37,7 +37,7 @@ description: Модуль timer предоставляет глобальный 
 
 ### `immediate.unref()`
 
-- Возвращает: {Immediate} ссылку на `immediate`.
+-   Возвращает: {Immediate} ссылку на `immediate`.
 
 При вызове активный объект `Immediate` не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта `Immediate`. Вызов `immediate.unref()` несколько раз не будет иметь никакого эффекта.
 
@@ -51,19 +51,19 @@ description: Модуль timer предоставляет глобальный 
 
 > Стабильность: 3 - Наследие: Используйте [`clearTimeout()`](#cleartimeouttimeout) вместо этого.
 
-- Возвращает: {Timeout} ссылку на `timeout`.
+-   Возвращает: {Timeout} ссылку на `timeout`.
 
 Отменяет таймаут.
 
 ### `timeout.hasRef()`
 
-- Возвращает: {boolean}.
+-   Возвращает: {boolean}.
 
 Если true, то объект `Timeout` будет поддерживать цикл событий Node.js активным.
 
 ### `timeout.ref()`
 
-- Возвращает: {Timeout} ссылку на `timeout`.
+-   Возвращает: {Timeout} ссылку на `timeout`.
 
 При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался до тех пор, пока активен `timeout`. Вызов `timeout.ref()` несколько раз не будет иметь никакого эффекта.
 
@@ -71,7 +71,7 @@ description: Модуль timer предоставляет глобальный 
 
 ### `timeout.refresh()`
 
-- Возвращает: {Timeout} ссылку на `timeout`.
+-   Возвращает: {Timeout} ссылку на `timeout`.
 
 Устанавливает время запуска таймера на текущее время и перепланирует таймер для вызова его обратного вызова в ранее указанную продолжительность с поправкой на текущее время. Это полезно для обновления таймера без выделения нового объекта JavaScript.
 
@@ -79,13 +79,13 @@ description: Модуль timer предоставляет глобальный 
 
 ### `timeout.unref()`
 
-- Возвращает: {Timeout} ссылку на `timeout`.
+-   Возвращает: {Timeout} ссылку на `timeout`.
 
 При вызове активный объект `Timeout` не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет других действий, поддерживающих цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта `Timeout`. Многократный вызов `timeout.unref()` не будет иметь никакого эффекта.
 
 ### `timeout[Symbol.toPrimitive]()`
 
-- Возвращает: {целое} число, которое может быть использовано для ссылки на этот `тайм-аут`.
+-   Возвращает: {целое} число, которое может быть использовано для ссылки на этот `тайм-аут`.
 
 Соединяет `тайм-аут` с примитивом. Примитив может быть использован для очистки `тайм-аута`. Примитив можно использовать только в том же потоке, в котором был создан таймаут. Поэтому, чтобы использовать его в [`worker_threads`](worker_threads.md), он должен быть сначала передан в нужный поток. Это позволяет улучшить совместимость с браузерными реализациями `setTimeout()` и `setInterval()`.
 
@@ -95,9 +95,9 @@ description: Модуль timer предоставляет глобальный 
 
 ### `setImmediate(callback[, ...args])`
 
-- `callback` {Function} Функция, которую нужно вызвать в конце этого витка Node.js [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#setimmediate-vs-settimeout)
-- `...args` {any} Необязательные аргументы для передачи при вызове `callback`.
-- Возвращает: {Immediate} для использования с [`clearImmediate()`](#clearimmediateimmediate)
+-   `callback` {Function} Функция, которую нужно вызвать в конце этого витка Node.js [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#setimmediate-vs-settimeout)
+-   `...args` {any} Необязательные аргументы для передачи при вызове `callback`.
+-   Возвращает: {Immediate} для использования с [`clearImmediate()`](#clearimmediateimmediate)
 
 Планирует "немедленное" выполнение `callback` после обратных вызовов событий ввода/вывода.
 
@@ -109,10 +109,10 @@ description: Модуль timer предоставляет глобальный 
 
 ### `setInterval(callback[, delay[, ...args]])`
 
-- `callback` {Function} Функция для вызова по истечении таймера.
-- `delay` {число} Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
-- `...args` {любой} Необязательные аргументы, которые нужно передать при вызове `обратного действия`.
-- Возвращает: {Timeout} для использования с [`clearInterval()`](#clearintervaltimeout).
+-   `callback` {Function} Функция для вызова по истечении таймера.
+-   `delay` {число} Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
+-   `...args` {любой} Необязательные аргументы, которые нужно передать при вызове `обратного действия`.
+-   Возвращает: {Timeout} для использования с [`clearInterval()`](#clearintervaltimeout).
 
 Планирует повторное выполнение `callback` каждые `delay` миллисекунд.
 
@@ -124,10 +124,10 @@ description: Модуль timer предоставляет глобальный 
 
 ### `setTimeout(callback[, delay[, ...args]])`
 
-- `callback` {Function} Функция для вызова по истечении таймера.
-- `delay` {число} Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
-- `...args` {любой} Необязательные аргументы, которые нужно передать при вызове `обратного действия`.
-- Возвращает: {Timeout} для использования с [`clearTimeout()`](#cleartimeouttimeout)
+-   `callback` {Function} Функция для вызова по истечении таймера.
+-   `delay` {число} Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
+-   `...args` {любой} Необязательные аргументы, которые нужно передать при вызове `обратного действия`.
+-   Возвращает: {Timeout} для использования с [`clearTimeout()`](#cleartimeouttimeout)
 
 Планирует выполнение однократного `обратного вызова` через `задержку` миллисекунд.
 
@@ -149,18 +149,20 @@ description: Модуль timer предоставляет глобальный 
 
 ```js
 const {
-  setImmediate: setImmediatePromise,
+    setImmediate: setImmediatePromise,
 } = require('node:timers/promises');
 
 const ac = new AbortController();
 const signal = ac.signal;
 
 setImmediatePromise('foobar', { signal })
-  .then(console.log)
-  .catch((err) => {
-    if (err.name === 'AbortError')
-      console.error('Немедленное выполнение было прервано');
-  });
+    .then(console.log)
+    .catch((err) => {
+        if (err.name === 'AbortError')
+            console.error(
+                'Немедленное выполнение было прервано'
+            );
+    });
 
 ac.abort();
 ```
@@ -169,37 +171,37 @@ ac.abort();
 
 ```js
 const {
-  setTimeout: setTimeoutPromise,
+    setTimeout: setTimeoutPromise,
 } = require('node:timers/promises');
 
 const ac = new AbortController();
 const signal = ac.signal;
 
 setTimeoutPromise(1000, 'foobar', { signal })
-  .then(console.log)
-  .catch((err) => {
-    if (err.name === 'AbortError')
-      console.error('Таймаут был прерван');
-  });
+    .then(console.log)
+    .catch((err) => {
+        if (err.name === 'AbortError')
+            console.error('Таймаут был прерван');
+    });
 
 ac.abort();
 ```
 
 ### `clearImmediate(immediate)`
 
-- `immediate` {Immediate} Объект `Immediate`, возвращенный командой [`setImmediate()`](#setimmediatecallback-args).
+-   `immediate` {Immediate} Объект `Immediate`, возвращенный командой [`setImmediate()`](#setimmediatecallback-args).
 
 Отменяет объект `Immediate`, созданный [`setImmediate()`](#setimmediatecallback-args).
 
 ### `clearInterval(timeout)`
 
-- `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setInterval()`](#setintervalcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
+-   `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setInterval()`](#setintervalcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
 
 Отменяет объект `Timeout`, созданный [`setInterval()`](#setintervalcallback-delay-args).
 
 ### `clearTimeout(timeout)`
 
-- `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setTimeout()`](#settimeoutcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
+-   `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setTimeout()`](#settimeoutcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
 
 Отменяет объект `Timeout`, созданный [`setTimeout()`](#settimeoutcallback-delay-args).
 
@@ -209,27 +211,27 @@ API `timers/promises` предоставляет альтернативный н
 
 ```mjs
 import {
-  setTimeout,
-  setImmediate,
-  setInterval,
+    setTimeout,
+    setImmediate,
+    setInterval,
 } from 'timers/promises';
 ```
 
 ```cjs
 const {
-  setTimeout,
-  setImmediate,
-  setInterval,
+    setTimeout,
+    setImmediate,
+    setInterval,
 } = require('node:timers/promises');
 ```
 
 ### `timersPromises.setTimeout([delay[, value[, options]]])`
 
-- `delay` {number} Количество миллисекунд ожидания перед выполнением обещания. **По умолчанию:** `1`.
-- `value` {любое} Значение, с которым будет выполнено обещание.
-- `options` {Object}
-  - `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированный `Timeout` не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout`.
+-   `delay` {number} Количество миллисекунд ожидания перед выполнением обещания. **По умолчанию:** `1`.
+-   `value` {любое} Значение, с которым будет выполнено обещание.
+-   `options` {Object}
+    -   `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированный `Timeout` не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout`.
 
 ```mjs
 import { setTimeout } from 'timers/promises';
@@ -243,16 +245,16 @@ console.log(res); // Печатает 'result'
 const { setTimeout } = require('node:timers/promises');
 
 setTimeout(100, 'result').then((res) => {
-  console.log(res); // Печатает 'result'
+    console.log(res); // Печатает 'result'
 });
 ```
 
 ### `timersPromises.setImmediate([value[, options]])`.
 
-- `value` {любой} Значение, с которым обещание будет выполнено.
-- `options` {Object}
-  - `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированное `Immediate` не должно требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Immediate`.
+-   `value` {любой} Значение, с которым обещание будет выполнено.
+-   `options` {Object}
+    -   `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированное `Immediate` не должно требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Immediate`.
 
 ```mjs
 import { setImmediate } from 'timers/promises';
@@ -266,7 +268,7 @@ console.log(res); // Печатает 'result'
 const { setImmediate } = require('node:timers/promises');
 
 setImmediate('result').then((res) => {
-  console.log(res); // Печатает 'result'
+    console.log(res); // Печатает 'result'
 });
 ```
 
@@ -274,23 +276,23 @@ setImmediate('result').then((res) => {
 
 Возвращает асинхронный итератор, который генерирует значения в интервале `delay` мс. Если `ref` равно `true`, необходимо явно или неявно вызвать `next()` асинхронного итератора, чтобы сохранить цикл событий.
 
-- `delay` {number} Число миллисекунд для ожидания между итерациями. **По умолчанию:** `1`.
-- `value` {любое} Значение, с которым возвращается итератор.
-- `options` {Object}
-  - `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированный `Timeout` между итерациями не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout` между операциями.
+-   `delay` {number} Число миллисекунд для ожидания между итерациями. **По умолчанию:** `1`.
+-   `value` {любое} Значение, с которым возвращается итератор.
+-   `options` {Object}
+    -   `ref` {boolean} Устанавливается в `false`, чтобы указать, что запланированный `Timeout` между итерациями не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout` между операциями.
 
 ```mjs
 import { setInterval } from 'timers/promises';
 
 const interval = 100;
 for await (const startTime of setInterval(
-  interval,
-  Date.now()
+    interval,
+    Date.now()
 )) {
-  const now = Date.now();
-  console.log(now);
-  if (now - startTime > 1000) break;
+    const now = Date.now();
+    console.log(now);
+    if (now - startTime > 1000) break;
 }
 console.log(Date.now());
 ```
@@ -300,15 +302,15 @@ const { setInterval } = require('node:timers/promises');
 const interval = 100;
 
 (async function () {
-  for await (const startTime of setInterval(
-    interval,
-    Date.now()
-  )) {
-    const now = Date.now();
-    console.log(now);
-    if (now - startTime > 1000) break;
-  }
-  console.log(Date.now());
+    for await (const startTime of setInterval(
+        interval,
+        Date.now()
+    )) {
+        const now = Date.now();
+        console.log(now);
+        if (now - startTime > 1000) break;
+    }
+    console.log(Date.now());
 })();
 ```
 
@@ -316,10 +318,10 @@ const interval = 100;
 
 > Стабильность: 1 - Экспериментально
 
-- `delay` {number} Количество миллисекунд, которое нужно подождать перед разрешением обещания.
-- `options` {Object}
-  - `signal` {AbortSignal} Необязательный сигнал `AbortSignal`, который может быть использован для отмены ожидания.
-- Возвращает: {Promise}
+-   `delay` {number} Количество миллисекунд, которое нужно подождать перед разрешением обещания.
+-   `options` {Object}
+    -   `signal` {AbortSignal} Необязательный сигнал `AbortSignal`, который может быть использован для отмены ожидания.
+-   Возвращает: {Promise}
 
 Экспериментальный API, определенный проектом спецификации [Scheduling APIs](https://github.com/WICG/scheduling-apis), разрабатываемый как стандартный API для веб-платформы.
 
@@ -335,7 +337,7 @@ await scheduler.wait(1000); // Подождите одну секунду пер
 
 > Стабильность: 1 - Экспериментальная
 
-- Возвращает: {Promise}
+-   Возвращает: {Promise}
 
 Экспериментальный API, определенный в проекте спецификации [Scheduling APIs](https://github.com/WICG/scheduling-apis), разрабатываемой как стандартный API для веб-платформы.
 

@@ -23,8 +23,8 @@ const util = require('node:util');
 
 ## `util.callbackify(original)`
 
-- `original` {Function} Функция `async`.
-- Возвращает: {Function} функцию в стиле обратного вызова
+-   `original` {Function} Функция `async`.
+-   Возвращает: {Function} функцию в стиле обратного вызова
 
 Принимает функцию `async` (или функцию, возвращающую `Promise`) и возвращает функцию в стиле обратного вызова по ошибке, т.е. принимая в качестве последнего аргумента обратный вызов `(err, value) => ...`. В обратном вызове первым аргументом будет причина отказа (или `null`, если `Promise` разрешилась), а вторым аргументом будет разрешенное значение.
 
@@ -34,13 +34,13 @@ const util = require('node:util');
 const util = require('node:util');
 
 async function fn() {
-  return 'hello world';
+    return 'hello world';
 }
 const callbackFunction = util.callbackify(fn);
 
 callbackFunction((err, ret) => {
-  if (err) throw err;
-  console.log(ret);
+    if (err) throw err;
+    console.log(ret);
 });
 ```
 
@@ -64,16 +64,16 @@ hello world
 
 ```js
 function fn() {
-  return Promise.reject(null);
+    return Promise.reject(null);
 }
 const callbackFunction = util.callbackify(fn);
 
 callbackFunction((err, ret) => {
-  // When the Promise was rejected with `null` it is wrapped with an Error and
-  // the original value is stored in `reason`.
-  err &&
-    Object.hasOwn(err, 'reason') &&
-    err.reason === null; // true
+    // When the Promise was rejected with `null` it is wrapped with an Error and
+    // the original value is stored in `reason`.
+    err &&
+        Object.hasOwn(err, 'reason') &&
+        err.reason === null; // true
 });
 ```
 
@@ -81,9 +81,9 @@ callbackFunction((err, ret) => {
 
 ## `util.debuglog(section[, callback])`.
 
-- `section` {string} Строка, идентифицирующая часть приложения, для которой создается функция `debuglog`.
-- `callback` {функция} Обратный вызов, вызываемый при первом вызове функции логирования с аргументом функции, который является более оптимизированной функцией логирования.
-- Возвращает: {Function} Функция протоколирования.
+-   `section` {string} Строка, идентифицирующая часть приложения, для которой создается функция `debuglog`.
+-   `callback` {функция} Обратный вызов, вызываемый при первом вызове функции логирования с аргументом функции, который является более оптимизированной функцией логирования.
+-   Возвращает: {Function} Функция протоколирования.
 
 Метод `util.debuglog()` используется для создания функции, которая условно записывает отладочные сообщения в `stderr` на основе существования переменной окружения `NODE_DEBUG`. Если имя `section` встречается в значении этой переменной окружения, то возвращаемая функция работает аналогично [`console.error()`](console.md#consoleerrordata-args). Если нет, то возвращаемая функция не работает.
 
@@ -142,9 +142,9 @@ FOO-BAR 3257: hi there, it's foo-bar [2333]
 ```js
 const util = require('node:util');
 let debuglog = util.debuglog('internals', (debug) => {
-  // Replace with a logging function that optimizes out
-  // testing if the section is enabled
-  debuglog = debug;
+    // Replace with a logging function that optimizes out
+    // testing if the section is enabled
+    debuglog = debug;
 });
 ```
 
@@ -152,7 +152,7 @@ let debuglog = util.debuglog('internals', (debug) => {
 
 ### `debuglog().enabled`
 
-- {boolean}
+-   {boolean}
 
 Геттер `util.debuglog().enabled` используется для создания теста, который может быть использован в условиях, основанных на существовании переменной окружения `NODE_DEBUG`. Если имя `section` встречается в значении этой переменной окружения, то возвращаемое значение будет `true`. Если нет, то возвращаемое значение будет `false`.
 
@@ -162,7 +162,7 @@ let debuglog = util.debuglog('internals', (debug) => {
 const util = require('node:util');
 const enabled = util.debuglog('foo').enabled;
 if (enabled) {
-  console.log('hello from foo [%d]', 123);
+    console.log('hello from foo [%d]', 123);
 }
 ```
 
@@ -184,10 +184,10 @@ hello from foo [123]
 
 ## `util.deprecate(fn, msg[, code])`.
 
-- `fn` {Функция} Функция, которая устаревает.
-- `msg` {string} Предупреждающее сообщение, которое будет отображаться при вызове устаревшей функции.
-- `code` {string} Код устаревания. Список кодов см. в [list of deprecated APIs](deprecations.md#list-of-deprecated-apis).
-- Возвращает: {Функция} Устаревшая функция, обернутая для выдачи предупреждения.
+-   `fn` {Функция} Функция, которая устаревает.
+-   `msg` {string} Предупреждающее сообщение, которое будет отображаться при вызове устаревшей функции.
+-   `code` {string} Код устаревания. Список кодов см. в [list of deprecated APIs](deprecations.md#list-of-deprecated-apis).
+-   Возвращает: {Функция} Устаревшая функция, обернутая для выдачи предупреждения.
 
 Метод `util.deprecate()` оборачивает `fn` (которая может быть функцией или классом) таким образом, что она помечается как устаревшая.
 
@@ -197,7 +197,7 @@ hello from foo [123]
 const util = require('node:util');
 
 exports.obsoleteFunction = util.deprecate(() => {
-  // Do something here.
+    // Do something here.
 }, 'obsoleteFunction() is deprecated. Use newShinyFunction() instead.');
 ```
 
@@ -213,14 +213,14 @@ exports.obsoleteFunction = util.deprecate(() => {
 const util = require('node:util');
 
 const fn1 = util.deprecate(
-  someFunction,
-  someMessage,
-  'DEP0001'
+    someFunction,
+    someMessage,
+    'DEP0001'
 );
 const fn2 = util.deprecate(
-  someOtherFunction,
-  someOtherMessage,
-  'DEP0001'
+    someOtherFunction,
+    someOtherMessage,
+    'DEP0001'
 );
 fn1(); // Emits a deprecation warning with code DEP0001
 fn2(); // Does not emit a deprecation warning because it has the same code
@@ -238,20 +238,20 @@ fn2(); // Does not emit a deprecation warning because it has the same code
 
 ## `util.format(format[, ...args])`
 
-- `format` {string} Строка формата, подобная `printf`.
+-   `format` {string} Строка формата, подобная `printf`.
 
 Метод `util.format()` возвращает отформатированную строку, используя первый аргумент как `printf`-подобную строку формата, которая может содержать ноль или более спецификаторов формата. Каждый спецификатор заменяется преобразованным значением соответствующего аргумента. Поддерживаются следующие спецификаторы:
 
-- `%s`: `String` будет использоваться для преобразования всех значений, кроме `BigInt`, `Object` и `-0`. Значения `BigInt` будут представлены символом `n`, а Объекты, не имеющие определенной пользователем функции `toString`, проверяются с помощью `util.inspect()` с опциями `{ depth: 0, colors: false, compact: 3 }`.
-- `%d`: `Number` будет использоваться для преобразования всех значений, кроме `BigInt` и `Symbol`.
-- `%i`: `parseInt(value, 10)` используется для всех значений, кроме `BigInt` и `Symbol`.
-- `%f`: `parseFloat(value)` используется для всех значений, кроме `Symbol`.
-- `%j`: JSON. Заменяется строкой `'[Circular]'`, если аргумент содержит круговые ссылки.
-- `%o`: `Object`. Строковое представление объекта с общим форматированием объектов JavaScript. Аналогично `util.inspect()` с опциями `{ showHidden: true, showProxy: true }`. Это покажет полный объект, включая неперечисляемые свойства и прокси.
-- `%O`: `Object`. Строковое представление объекта с общим форматированием объекта JavaScript. Аналогично `util.inspect()` без опций. Будет показан полный объект, не включая неперечисляемые свойства и прокси.
-- `%c`: `CSS`. Этот спецификатор игнорируется и пропускает все переданные CSS.
-- `%%`: одиночный знак процента (`'%'`). Аргумент не используется.
-- Возвращает: {строка} форматированная строка.
+-   `%s`: `String` будет использоваться для преобразования всех значений, кроме `BigInt`, `Object` и `-0`. Значения `BigInt` будут представлены символом `n`, а Объекты, не имеющие определенной пользователем функции `toString`, проверяются с помощью `util.inspect()` с опциями `{ depth: 0, colors: false, compact: 3 }`.
+-   `%d`: `Number` будет использоваться для преобразования всех значений, кроме `BigInt` и `Symbol`.
+-   `%i`: `parseInt(value, 10)` используется для всех значений, кроме `BigInt` и `Symbol`.
+-   `%f`: `parseFloat(value)` используется для всех значений, кроме `Symbol`.
+-   `%j`: JSON. Заменяется строкой `'[Circular]'`, если аргумент содержит круговые ссылки.
+-   `%o`: `Object`. Строковое представление объекта с общим форматированием объектов JavaScript. Аналогично `util.inspect()` с опциями `{ showHidden: true, showProxy: true }`. Это покажет полный объект, включая неперечисляемые свойства и прокси.
+-   `%O`: `Object`. Строковое представление объекта с общим форматированием объекта JavaScript. Аналогично `util.inspect()` без опций. Будет показан полный объект, не включая неперечисляемые свойства и прокси.
+-   `%c`: `CSS`. Этот спецификатор игнорируется и пропускает все переданные CSS.
+-   `%%`: одиночный знак процента (`'%'`). Аргумент не используется.
+-   Возвращает: {строка} форматированная строка.
 
 Если спецификатор не имеет соответствующего аргумента, он не заменяется:
 
@@ -303,8 +303,8 @@ util.format('%% %s');
 
 ## `util.formatWithOptions(inspectOptions, format[, ...args])`.
 
-- `inspectOptions` {Object}
-- `format` {string}
+-   `inspectOptions` {Object}
+-   `format` {string}
 
 Эта функция идентична [`util.format()`](#utilformatformat-args), за исключением того, что она принимает аргумент `inspectOptions`, который определяет опции, передаваемые [`util.inspect()`](#utilinspectobject-options).
 
@@ -312,7 +312,7 @@ util.format('%% %s');
 
 ```js
 util.formatWithOptions({ colors: true }, 'See object %O', {
-  foo: 42,
+    foo: 42,
 });
 // Returns 'See object { foo: 42 }', where `42` is colored as a number
 // when printed to a terminal.
@@ -322,8 +322,8 @@ util.formatWithOptions({ colors: true }, 'See object %O', {
 
 ## `util.getSystemErrorName(err)`
 
-- `err` {число}
-- Возвращает: {строка}
+-   `err` {число}
+-   Возвращает: {строка}
 
 Возвращает строковое имя для числового кода ошибки, который поступает из API Node.js. Сопоставление между кодами ошибок и именами ошибок зависит от платформы. Имена распространенных ошибок см. в [Common System Errors](errors.md#common-system-errors).
 
@@ -331,8 +331,8 @@ util.formatWithOptions({ colors: true }, 'See object %O', {
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
-  const name = util.getSystemErrorName(err.errno);
-  console.error(name); // ENOENT
+    const name = util.getSystemErrorName(err.errno);
+    console.error(name); // ENOENT
 });
 ```
 
@@ -340,7 +340,7 @@ fs.access('file/that/does/not/exist', (err) => {
 
 ## `util.getSystemErrorMap()`.
 
-- Возвращает: {Map}
+-   Возвращает: {Map}
 
 Возвращает карту всех кодов системных ошибок, доступных из API Node.js. Сопоставление между кодами ошибок и именами ошибок зависит от платформы. Имена распространенных ошибок см. в [Common System Errors](errors.md#common-system-errors).
 
@@ -348,9 +348,9 @@ fs.access('file/that/does/not/exist', (err) => {
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
-  const errorMap = util.getSystemErrorMap();
-  const name = errorMap.get(err.errno);
-  console.error(name); // ENOENT
+    const errorMap = util.getSystemErrorMap();
+    const name = errorMap.get(err.errno);
+    console.error(name); // ENOENT
 });
 ```
 
@@ -360,8 +360,8 @@ fs.access('file/that/does/not/exist', (err) => {
 
 > Стабильность: 3 - Наследие: Используйте синтаксис классов ES2015 и ключевое слово `extends` вместо этого.
 
-- `constructor` {Function}
-- `superConstructor` {Функция}
+-   `constructor` {Function}
+-   `superConstructor` {Функция}
 
 Использование `util.inherits()` не рекомендуется. Пожалуйста, используйте ключевые слова ES6 `class` и `extends`, чтобы получить поддержку наследования на уровне языка. Также обратите внимание, что эти два стиля [семантически несовместимы] (https://github.com/nodejs/node/issues/4179).
 
@@ -376,13 +376,13 @@ const util = require('node:util');
 const EventEmitter = require('node:events');
 
 function MyStream() {
-  EventEmitter.call(this);
+    EventEmitter.call(this);
 }
 
 util.inherits(MyStream, EventEmitter);
 
 MyStream.prototype.write = function (data) {
-  this.emit('data', data);
+    this.emit('data', data);
 };
 
 const stream = new MyStream();
@@ -391,7 +391,7 @@ console.log(stream instanceof EventEmitter); // true
 console.log(MyStream.super_ === EventEmitter); // true
 
 stream.on('data', (data) => {
-  console.log(`Received data: "${data}"`);
+    console.log(`Received data: "${data}"`);
 });
 stream.write('It works!'); // Received data: "It works!"
 ```
@@ -406,15 +406,15 @@ stream.write('It works!'); // Received data: "It works!"
 const EventEmitter = require('node:events');
 
 class MyStream extends EventEmitter {
-  write(data) {
-    this.emit('data', data);
-  }
+    write(data) {
+        this.emit('data', data);
+    }
 }
 
 const stream = new MyStream();
 
 stream.on('data', (data) => {
-  console.log(`Received data: "${data}"`);
+    console.log(`Received data: "${data}"`);
 });
 stream.write('With ES6');
 ```
@@ -425,17 +425,17 @@ stream.write('With ES6');
 
 ## `util.inspect(object[, showHidden[, depth[, colors]]])`.
 
-- `object` {any} Любой примитив JavaScript или `Object`.
-- `options` {Object}
-  - `showHidden` {boolean} Если `true`, то неперечисляемые символы и свойства `объекта` будут включены в отформатированный результат. Также включаются записи [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), а также определяемые пользователем свойства прототипа (за исключением свойств метода). **По умолчанию:** `false`.
-  - `depth` {number} Определяет количество раз для перебора при форматировании `объекта`. Это полезно для проверки больших объектов. Для вызова до максимального размера стека вызовов передайте `Infinity` или `null`. **По умолчанию:** `2`.
-  - `colors` {boolean} Если `true`, вывод будет оформлен с использованием цветовых кодов ANSI. Цвета можно настраивать. Смотрите [Настройка цветов `util.inspect`](#customizing-utilinspect-colors). **По умолчанию:** `false`.
-  - `customInspect` {boolean}. Если `false`, то функции `[util.inspect.custom](depth, opts, inspect)` не вызываются. **По умолчанию:** `true`.
-  - `showProxy` {boolean} Если `true`, то проверка `Proxy` включает объекты [`target` и `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology). **По умолчанию:** `false`.
-  - `maxArrayLength` {целое число} Определяет максимальное количество элементов `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), которые следует включать при форматировании. Установите значение `null` или `Infinity`, чтобы показать все элементы. Установите значение `0` или отрицательное, чтобы не показывать никаких элементов. **По умолчанию:** `100`.
-  - `maxStringLength` {целое число} Определяет максимальное количество символов для включения при форматировании. Установите значение `null` или `бесконечность`, чтобы показать все элементы. Установите `0` или отрицательное значение, чтобы не показывать никаких символов. **По умолчанию:** `10000`.
-  - `breakLength` {целое число} Длина, при которой вводимые значения разбиваются на несколько строк. Установите значение `Infinity` для форматирования ввода в виде одной строки (в сочетании с `compact`, установленным в `true` или любым числом \>= `1`). **По умолчанию:** `80`.
-  - `compact` {boolean|integer} Установка этого параметра в `false` приводит к тому, что каждый ключ объекта будет отображаться на новой строке. Текст, длина которого превышает `breakLength`, будет обрываться на новых строках. Если задано число, то наиболее `n` внутренних элементов объединяются на одной строке, пока все свойства помещаются в `breakLength`. Короткие элементы массива также группируются вместе. F
+-   `object` {any} Любой примитив JavaScript или `Object`.
+-   `options` {Object}
+    -   `showHidden` {boolean} Если `true`, то неперечисляемые символы и свойства `объекта` будут включены в отформатированный результат. Также включаются записи [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), а также определяемые пользователем свойства прототипа (за исключением свойств метода). **По умолчанию:** `false`.
+    -   `depth` {number} Определяет количество раз для перебора при форматировании `объекта`. Это полезно для проверки больших объектов. Для вызова до максимального размера стека вызовов передайте `Infinity` или `null`. **По умолчанию:** `2`.
+    -   `colors` {boolean} Если `true`, вывод будет оформлен с использованием цветовых кодов ANSI. Цвета можно настраивать. Смотрите [Настройка цветов `util.inspect`](#customizing-utilinspect-colors). **По умолчанию:** `false`.
+    -   `customInspect` {boolean}. Если `false`, то функции `[util.inspect.custom](depth, opts, inspect)` не вызываются. **По умолчанию:** `true`.
+    -   `showProxy` {boolean} Если `true`, то проверка `Proxy` включает объекты [`target` и `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology). **По умолчанию:** `false`.
+    -   `maxArrayLength` {целое число} Определяет максимальное количество элементов `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), которые следует включать при форматировании. Установите значение `null` или `Infinity`, чтобы показать все элементы. Установите значение `0` или отрицательное, чтобы не показывать никаких элементов. **По умолчанию:** `100`.
+    -   `maxStringLength` {целое число} Определяет максимальное количество символов для включения при форматировании. Установите значение `null` или `бесконечность`, чтобы показать все элементы. Установите `0` или отрицательное значение, чтобы не показывать никаких символов. **По умолчанию:** `10000`.
+    -   `breakLength` {целое число} Длина, при которой вводимые значения разбиваются на несколько строк. Установите значение `Infinity` для форматирования ввода в виде одной строки (в сочетании с `compact`, установленным в `true` или любым числом \>= `1`). **По умолчанию:** `80`.
+    -   `compact` {boolean|integer} Установка этого параметра в `false` приводит к тому, что каждый ключ объекта будет отображаться на новой строке. Текст, длина которого превышает `breakLength`, будет обрываться на новых строках. Если задано число, то наиболее `n` внутренних элементов объединяются на одной строке, пока все свойства помещаются в `breakLength`. Короткие элементы массива также группируются вместе. F
 
 <!-- 0045.part.md -->
 
@@ -443,7 +443,7 @@ stream.write('With ES6');
       - `getters` {boolean|string} Если установлено значение `true`, проверяются геттеры. Если установлено значение `'get'`, проверяются только геттеры без соответствующего сеттера. Если установлено значение `'set'`, проверяются только геттеры с соответствующим сеттером. Это может вызвать побочные эффекты в зависимости от функции getter. **По умолчанию:** `false`.
       - `numericSeparator` {boolean} Если установлено значение `true`, то подчеркивание используется для разделения каждых трех цифр во всех bigint и числах. **По умолчанию:** `false`.
 
-- Возвращает: {строка} Представление `объекта`.
+-   Возвращает: {строка} Представление `объекта`.
 
 Метод `util.inspect()` возвращает строковое представление `объекта`, предназначенное для отладки. Вывод `util.inspect` может измениться в любой момент и не должен зависеть от него программно. Могут быть переданы дополнительные `опции`, которые изменяют результат. `util.inspect()` будет использовать имя конструктора и/или `@@toStringTag` для создания идентифицируемой метки для проверяемого значения.
 
@@ -451,15 +451,15 @@ stream.write('With ES6');
 
 ```js
 class Foo {
-  get [Symbol.toStringTag]() {
-    return 'bar';
-  }
+    get [Symbol.toStringTag]() {
+        return 'bar';
+    }
 }
 
 class Bar {}
 
 const baz = Object.create(null, {
-  [Symbol.toStringTag]: { value: 'foo' },
+    [Symbol.toStringTag]: { value: 'foo' },
 });
 
 util.inspect(new Foo()); // 'Foo [bar] {}'
@@ -499,7 +499,7 @@ console.log(inspect(obj));
 const util = require('node:util');
 
 console.log(
-  util.inspect(util, { showHidden: true, depth: null })
+    util.inspect(util, { showHidden: true, depth: null })
 );
 ```
 
@@ -513,30 +513,30 @@ console.log(
 const util = require('node:util');
 
 const o = {
-  a: [
-    1,
-    2,
-    [
-      [
-        'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do ' +
-          'eiusmod \ntempor incididunt ut labore et dolore magna aliqua.',
-        'test',
-        'foo',
-      ],
+    a: [
+        1,
+        2,
+        [
+            [
+                'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do ' +
+                    'eiusmod \ntempor incididunt ut labore et dolore magna aliqua.',
+                'test',
+                'foo',
+            ],
+        ],
+        4,
     ],
-    4,
-  ],
-  b: new Map([
-    ['za', 1],
-    ['zb', 'test'],
-  ]),
+    b: new Map([
+        ['za', 1],
+        ['zb', 'test'],
+    ]),
 };
 console.log(
-  util.inspect(o, {
-    compact: true,
-    depth: 5,
-    breakLength: 80,
-  })
+    util.inspect(o, {
+        compact: true,
+        depth: 5,
+        breakLength: 80,
+    })
 );
 
 // { a:
@@ -550,11 +550,11 @@ console.log(
 
 // Setting `compact` to false or an integer creates more reader friendly output.
 console.log(
-  util.inspect(o, {
-    compact: false,
-    depth: 5,
-    breakLength: 80,
-  })
+    util.inspect(o, {
+        compact: false,
+        depth: 5,
+        breakLength: 80,
+    })
 );
 
 // {
@@ -610,25 +610,25 @@ const { inspect } = require('node:util');
 const assert = require('node:assert');
 
 const o1 = {
-  b: [2, 3, 1],
-  a: '`a` comes before `b`',
-  c: new Set([2, 3, 1]),
+    b: [2, 3, 1],
+    a: '`a` comes before `b`',
+    c: new Set([2, 3, 1]),
 };
 console.log(inspect(o1, { sorted: true }));
 // { a: '`a` comes before `b`', b: [ 2, 3, 1 ], c: Set(3) { 1, 2, 3 } }
 console.log(
-  inspect(o1, { sorted: (a, b) => b.localeCompare(a) })
+    inspect(o1, { sorted: (a, b) => b.localeCompare(a) })
 );
 // { c: Set(3) { 3, 2, 1 }, b: [ 2, 3, 1 ], a: '`a` comes before `b`' }
 
 const o2 = {
-  c: new Set([2, 1, 3]),
-  a: '`a` comes before `b`',
-  b: [2, 3, 1],
+    c: new Set([2, 1, 3]),
+    a: '`a` comes before `b`',
+    b: [2, 3, 1],
 };
 assert.strict.equal(
-  inspect(o1, { sorted: true }),
-  inspect(o2, { sorted: true })
+    inspect(o1, { sorted: true }),
+    inspect(o2, { sorted: true })
 );
 ```
 
@@ -662,18 +662,18 @@ console.log(thousand, million, bigNumber, bigDecimal);
 
 По умолчанию используются следующие стили и связанные с ними цвета:
 
-- `bigint`: `yellow`.
-- `булево`: `желтый`
-- `дата`: `маджента`.
-- `модуль`: `андерлайн`
-- `имя`: (без стилизации)
-- `null`: `жирный`
-- `число`: `желтый`
-- `regexp`: `red`
-- `специальный`: `синий` (например, `Proxies`)
-- `строка`: `зеленый`
-- `символ`: `зеленый`
-- `неопределенный`: `серый`
+-   `bigint`: `yellow`.
+-   `булево`: `желтый`
+-   `дата`: `маджента`.
+-   `модуль`: `андерлайн`
+-   `имя`: (без стилизации)
+-   `null`: `жирный`
+-   `число`: `желтый`
+-   `regexp`: `red`
+-   `специальный`: `синий` (например, `Proxies`)
+-   `строка`: `зеленый`
+-   `символ`: `зеленый`
+-   `неопределенный`: `серый`
 
 Цветовая стилизация использует управляющие коды ANSI, которые могут поддерживаться не на всех терминалах. Для проверки поддержки цветов используйте [`tty.hasColors()`](tty.md#writestreamhascolorscount-env).
 
@@ -683,56 +683,56 @@ console.log(thousand, million, bigNumber, bigDecimal);
 
 Modifier support varies throughout different terminals. They will mostly be ignored, if not supported.
 
-- `reset` - Resets all (color) modifiers to their defaults
-- **bold** - Make text bold
-- _italic_ - Make text italic
-- <span style="border-bottom: 1px;">underline</span> - Make text underlined
-- ~~strikethrough~~ - Puts a horizontal line through the center of the text (Alias: `strikeThrough`, `crossedout`, `crossedOut`)
-- `hidden` - Prints the text, but makes it invisible (Alias: conceal)
-- <span style="opacity: 0.5;">dim</span> - Decreased color intensity (Alias: `faint`)
-- <span style="border-top: 1px">overlined</span> - Make text overlined
-- blink - Hides and shows the text in an interval
-- <span style="filter: invert(100%)">inverse</span> - Swap foreground and background colors (Alias: `swapcolors`, `swapColors`)
-- <span style="border-bottom: 1px double;">doubleunderline</span> - Make text double underlined (Alias: `doubleUnderline`)
-- <span style="border: 1px">framed</span> - Draw a frame around the text
+-   `reset` - Resets all (color) modifiers to their defaults
+-   **bold** - Make text bold
+-   _italic_ - Make text italic
+-   <span style="border-bottom: 1px;">underline</span> - Make text underlined
+-   ~~strikethrough~~ - Puts a horizontal line through the center of the text (Alias: `strikeThrough`, `crossedout`, `crossedOut`)
+-   `hidden` - Prints the text, but makes it invisible (Alias: conceal)
+-   <span style="opacity: 0.5;">dim</span> - Decreased color intensity (Alias: `faint`)
+-   <span style="border-top: 1px">overlined</span> - Make text overlined
+-   blink - Hides and shows the text in an interval
+-   <span style="filter: invert(100%)">inverse</span> - Swap foreground and background colors (Alias: `swapcolors`, `swapColors`)
+-   <span style="border-bottom: 1px double;">doubleunderline</span> - Make text double underlined (Alias: `doubleUnderline`)
+-   <span style="border: 1px">framed</span> - Draw a frame around the text
 
 #### Цвета переднего плана
 
-- `черный`
-- `красный`
-- зелёный
-- `жёлтый`
-- `синий`
-- маджента
-- циан
-- `белый`
-- `серый` (псевдонимы: `grey`, `blackBright`)
-- `redBright`
-- `зеленый`
-- `желто-светлый`
-- `blueBright`
-- `magentaBright`
-- `cyanBright`
-- `белый`
+-   `черный`
+-   `красный`
+-   зелёный
+-   `жёлтый`
+-   `синий`
+-   маджента
+-   циан
+-   `белый`
+-   `серый` (псевдонимы: `grey`, `blackBright`)
+-   `redBright`
+-   `зеленый`
+-   `желто-светлый`
+-   `blueBright`
+-   `magentaBright`
+-   `cyanBright`
+-   `белый`
 
 #### Фоновые цвета
 
-- `bgBlack`
-- `bgRed`
-- `bgGreen`
-- `bgYellow`
-- `bgBlue`
-- `bgMagenta`
-- `bgCyan`
-- `bgWhite`
-- `bgGray` (псевдонимы: `bgGrey`, `bgBlackBright`)
-- `bgRedBright`
-- `bgGreenBright`
-- `bgYellowBright`
-- `bgBlueBright`
-- `bgMagentaBright`
-- `bgCyanBright`
-- `bgWhiteBright`
+-   `bgBlack`
+-   `bgRed`
+-   `bgGreen`
+-   `bgYellow`
+-   `bgBlue`
+-   `bgMagenta`
+-   `bgCyan`
+-   `bgWhite`
+-   `bgGray` (псевдонимы: `bgGrey`, `bgBlackBright`)
+-   `bgRedBright`
+-   `bgGreenBright`
+-   `bgYellowBright`
+-   `bgBlueBright`
+-   `bgMagentaBright`
+-   `bgCyanBright`
+-   `bgWhiteBright`
 
 ### Пользовательские функции проверки объектов
 
@@ -744,31 +744,33 @@ Modifier support varies throughout different terminals. They will mostly be igno
 const util = require('node:util');
 
 class Box {
-  constructor(value) {
-    this.value = value;
-  }
-
-  [util.inspect.custom](depth, options, inspect) {
-    if (depth < 0) {
-      return options.stylize('[Box]', 'special');
+    constructor(value) {
+        this.value = value;
     }
 
-    const newOptions = Object.assign({}, options, {
-      depth:
-        options.depth === null ? null : options.depth - 1,
-    });
+    [util.inspect.custom](depth, options, inspect) {
+        if (depth < 0) {
+            return options.stylize('[Box]', 'special');
+        }
 
-    // Five space padding because that's the size of "Box< ".
-    const padding = ' '.repeat(5);
-    const inner = inspect(this.value, newOptions).replace(
-      /\n/g,
-      `\n${padding}`
-    );
-    return `${options.stylize(
-      'Box',
-      'special'
-    )}< ${inner} >`;
-  }
+        const newOptions = Object.assign({}, options, {
+            depth:
+                options.depth === null
+                    ? null
+                    : options.depth - 1,
+        });
+
+        // Five space padding because that's the size of "Box< ".
+        const padding = ' '.repeat(5);
+        const inner = inspect(
+            this.value,
+            newOptions
+        ).replace(/\n/g, `\n${padding}`);
+        return `${options.stylize(
+            'Box',
+            'special'
+        )}< ${inner} >`;
+    }
 }
 
 const box = new Box(true);
@@ -787,10 +789,10 @@ util.inspect(box);
 const util = require('node:util');
 
 const obj = {
-  foo: 'this will not show up in the inspect() output',
+    foo: 'this will not show up in the inspect() output',
 };
 obj[util.inspect.custom] = (depth) => {
-  return { bar: 'baz' };
+    return { bar: 'baz' };
 };
 
 util.inspect(obj);
@@ -801,7 +803,7 @@ util.inspect(obj);
 
 ### `util.inspect.custom`
 
-- {символ}, который можно использовать для объявления пользовательских функций inspect.
+-   {символ}, который можно использовать для объявления пользовательских функций inspect.
 
 Помимо того, что этот символ доступен через `util.inspect.custom`, он [зарегистрирован глобально](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for) и может быть доступен в любой среде как `Symbol.for('nodejs.util.inspect.custom')`.
 
@@ -811,21 +813,21 @@ util.inspect(obj);
 
 ```js
 const customInspectSymbol = Symbol.for(
-  'nodejs.util.inspect.custom'
+    'nodejs.util.inspect.custom'
 );
 
 class Password {
-  constructor(value) {
-    this.value = value;
-  }
+    constructor(value) {
+        this.value = value;
+    }
 
-  toString() {
-    return 'xxxxxxxx';
-  }
+    toString() {
+        return 'xxxxxxxx';
+    }
 
-  [customInspectSymbol](depth, inspectOptions, inspect) {
-    return `Password <${this.toString()}>`;
-  }
+    [customInspectSymbol](depth, inspectOptions, inspect) {
+        return `Password <${this.toString()}>`;
+    }
 }
 
 const password = new Password('r0sebud');
@@ -856,9 +858,9 @@ console.log(arr); // logs the full array
 
 ## `util.isDeepStrictEqual(val1, val2)`
 
-- `val1` {любой}
-- `val2` {любой}
-- Возвращает: {boolean}
+-   `val1` {любой}
+-   `val2` {любой}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если существует глубокое строгое равенство между `val1` и `val2`. В противном случае возвращается `false`.
 
@@ -876,7 +878,7 @@ MIME-строка - это структурированная строка, со
 
 ### Конструктор: `new MIMEType(input)`.
 
-- `input` {string} Входной MIME для разбора
+-   `input` {string} Входной MIME для разбора
 
 Создает новый объект `MIMEType` путем разбора `input`.
 
@@ -907,7 +909,7 @@ const myMIME = new MIMEType('text/plain');
 ```mjs
 import { MIMEType } from 'node:util';
 const myMIME = new MIMEType({
-  toString: () => 'text/plain',
+    toString: () => 'text/plain',
 });
 console.log(String(myMIME));
 // Prints: text/plain
@@ -920,7 +922,7 @@ console.log(String(myMIME));
 ```cjs
 const { MIMEType } = require('node:util');
 const myMIME = new MIMEType({
-  toString: () => 'text/plain',
+    toString: () => 'text/plain',
 });
 console.log(String(myMIME));
 // Prints: text/plain
@@ -930,7 +932,7 @@ console.log(String(myMIME));
 
 #### `mime.type`
 
-- {строка}
+-   {строка}
 
 Получает и устанавливает часть типа MIME.
 
@@ -970,7 +972,7 @@ console.log(String(myMIME));
 
 #### `mime.subtype`
 
-- {строка}
+-   {строка}
 
 Получает и устанавливает часть подтипа MIME.
 
@@ -1010,7 +1012,7 @@ console.log(String(myMIME));
 
 #### `mime.essence`
 
-- {строка}
+-   {строка}
 
 Получает сущность MIME. Это свойство доступно только для чтения. Используйте `mime.type` или `mime.subtype` для изменения MIME.
 
@@ -1050,13 +1052,13 @@ console.log(String(myMIME));
 
 #### `mime.params`
 
-- {MIMEParams}
+-   {MIMEParams}
 
 Получает объект [`MIMEParams`](#class-utilmimeparams), представляющий параметры MIME. Это свойство доступно только для чтения. Подробности см. в документации [`MIMEParams`](#class-utilmimeparams).
 
 #### `mime.toString()`.
 
-- Возвращает: {string}
+-   Возвращает: {string}
 
 Метод `toString()` объекта `MIMEType` возвращает сериализованный MIME.
 
@@ -1064,7 +1066,7 @@ console.log(String(myMIME));
 
 #### `mime.toJSON()`.
 
-- Возвращает: {строка}.
+-   Возвращает: {строка}.
 
 Псевдоним для [`mime.toString()`](#mimetostring).
 
@@ -1076,8 +1078,8 @@ console.log(String(myMIME));
 import { MIMEType } from 'node:util';
 
 const myMIMES = [
-  new MIMEType('image/png'),
-  new MIMEType('image/gif'),
+    new MIMEType('image/png'),
+    new MIMEType('image/gif'),
 ];
 console.log(JSON.stringify(myMIMES));
 // Prints: ["image/png", "image/gif"]
@@ -1091,8 +1093,8 @@ console.log(JSON.stringify(myMIMES));
 const { MIMEType } = require('node:util');
 
 const myMIMES = [
-  new MIMEType('image/png'),
-  new MIMEType('image/gif'),
+    new MIMEType('image/png'),
+    new MIMEType('image/gif'),
 ];
 console.log(JSON.stringify(myMIMES));
 // Prints: ["image/png", "image/gif"]
@@ -1130,33 +1132,33 @@ const myParams = new MIMEParams();
 
 #### `mimeParams.delete(name)`.
 
-- `name` {string}
+-   `name` {string}
 
 Удаляет все пары имя-значение, имя которых равно `name`.
 
 #### `mimeParams.entries()`.
 
-- Возвращает: {Iterator}
+-   Возвращает: {Iterator}
 
 Возвращает итератор по каждой из пар "имя-значение" в параметрах. Каждый элемент итератора представляет собой JavaScript `массив`. Первый элемент массива - это `имя`, второй элемент массива - `значение`.
 
 #### `mimeParams.get(name)`.
 
-- `name` {string}
-- Возвращает: {string} или `null`, если не существует пары имя-значение с заданным `name`.
+-   `name` {string}
+-   Возвращает: {string} или `null`, если не существует пары имя-значение с заданным `name`.
 
 Возвращает значение первой пары имя-значение, имя которой равно `name`. Если таких пар нет, возвращается `null`.
 
 #### `mimeParams.has(name)`.
 
-- `name` {string}
-- Возвращает: {boolean}
+-   `name` {string}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если существует хотя бы одна пара имя-значение, имя которой равно `name`.
 
 #### `mimeParams.keys()`.
 
-- Возвращает: {Итератор}
+-   Возвращает: {Итератор}
 
 Возвращает итератор по именам каждой пары имя-значение.
 
@@ -1167,7 +1169,7 @@ import { MIMEType } from 'node:util';
 
 const { params } = new MIMEType('text/plain;foo=0;bar=1');
 for (const name of params.keys()) {
-  console.log(name);
+    console.log(name);
 }
 // Prints:
 //   foo
@@ -1183,7 +1185,7 @@ const { MIMEType } = require('node:util');
 
 const { params } = new MIMEType('text/plain;foo=0;bar=1');
 for (const name of params.keys()) {
-  console.log(name);
+    console.log(name);
 }
 // Prints:
 //   foo
@@ -1194,8 +1196,8 @@ for (const name of params.keys()) {
 
 #### `mimeParams.set(name, value)`.
 
-- `name` {string}
-- `value` {строка}
+-   `name` {string}
+-   `value` {строка}
 
 Устанавливает значение в объекте `MIMEParams`, связанном с `name`, в `value`. Если существуют уже существующие пары имя-значение, имена которых равны `name`, установите значение первой такой пары в `value`.
 
@@ -1229,13 +1231,13 @@ console.log(params.toString());
 
 #### `mimeParams.values()`.
 
-- Возвращает: {Итератор}
+-   Возвращает: {Итератор}
 
 Возвращает итератор по значениям каждой пары имя-значение.
 
 #### `mimeParams[@@iterator]()`.
 
-- Возвращает: {Итератор}
+-   Возвращает: {Итератор}
 
 Псевдоним для [`mimeParams.entries()`](#mimeparamsentries).
 
@@ -1245,10 +1247,10 @@ console.log(params.toString());
 import { MIMEType } from 'node:util';
 
 const { params } = new MIMEType(
-  'text/plain;foo=bar;xyz=baz'
+    'text/plain;foo=bar;xyz=baz'
 );
 for (const [name, value] of params) {
-  console.log(name, value);
+    console.log(name, value);
 }
 // Prints:
 //   foo bar
@@ -1263,10 +1265,10 @@ for (const [name, value] of params) {
 const { MIMEType } = require('node:util');
 
 const { params } = new MIMEType(
-  'text/plain;foo=bar;xyz=baz'
+    'text/plain;foo=bar;xyz=baz'
 );
 for (const [name, value] of params) {
-  console.log(name, value);
+    console.log(name, value);
 }
 // Prints:
 //   foo bar
@@ -1277,20 +1279,20 @@ for (const [name, value] of params) {
 
 ## `util.parseArgs([config])`
 
-- `config` {Объект} Используется для предоставления аргументов для разбора и для настройки парсера. `config` поддерживает следующие свойства:
-  - `args` {string\[\]} массив строк аргументов. **По умолчанию:** `process.argv` с удаленными `execPath` и `filename`.
-  - `options` {Object} Используется для описания аргументов, известных синтаксическому анализатору. Ключами `options` являются длинные имена опций, а значениями - {Object}, принимающие следующие свойства:
-    - `type` {string} Тип аргумента, который должен быть либо `boolean`, либо `string`.
-    - `multiple` {boolean} Может ли этот параметр быть указан несколько раз. Если `true`, все значения будут собраны в массив. Если `false`, то значения для опции будут последними. **По умолчанию:** `false`.
-    - `short` {string} Односимвольный псевдоним для опции.
-    - `default` {string | boolean | string\[\] | boolean\[\]} Значение опции по умолчанию, если оно не задано args. Оно должно быть того же типа, что и свойство `type`. Если `multiple` имеет значение `true`, это должен быть массив.
-  - `strict` {boolean} Должна ли возникать ошибка при встрече неизвестных аргументов или при передаче аргументов, не соответствующих `типу`, заданному в `options`. **По умолчанию:** `true`.
-  - `allowPositionals` {boolean} Принимает ли эта команда позиционные аргументы. **По умолчанию:** `false`, если `strict` равно `true`, иначе `true`.
-  - `tokens` {boolean} Возвращает разобранные лексемы. Это полезно для расширения встроенного поведения, от добавления дополнительных проверок до переработки токенов различными способами. **По умолчанию:** `false`.
-- Возвращает: {Object} Разобранные аргументы командной строки:
-  - `values` {Object} Отображение разобранных имен опций с их значениями {string} или {boolean}.
-  - `positionals` {string\[\]} Позиционные аргументы.
-  - `токены` {Object\[\] | undefined} См. раздел [parseArgs tokens](#parseargs-tokens). Возвращается только если `config` включает `tokens: true`.
+-   `config` {Объект} Используется для предоставления аргументов для разбора и для настройки парсера. `config` поддерживает следующие свойства:
+    -   `args` {string\[\]} массив строк аргументов. **По умолчанию:** `process.argv` с удаленными `execPath` и `filename`.
+    -   `options` {Object} Используется для описания аргументов, известных синтаксическому анализатору. Ключами `options` являются длинные имена опций, а значениями - {Object}, принимающие следующие свойства:
+        -   `type` {string} Тип аргумента, который должен быть либо `boolean`, либо `string`.
+        -   `multiple` {boolean} Может ли этот параметр быть указан несколько раз. Если `true`, все значения будут собраны в массив. Если `false`, то значения для опции будут последними. **По умолчанию:** `false`.
+        -   `short` {string} Односимвольный псевдоним для опции.
+        -   `default` {string | boolean | string\[\] | boolean\[\]} Значение опции по умолчанию, если оно не задано args. Оно должно быть того же типа, что и свойство `type`. Если `multiple` имеет значение `true`, это должен быть массив.
+    -   `strict` {boolean} Должна ли возникать ошибка при встрече неизвестных аргументов или при передаче аргументов, не соответствующих `типу`, заданному в `options`. **По умолчанию:** `true`.
+    -   `allowPositionals` {boolean} Принимает ли эта команда позиционные аргументы. **По умолчанию:** `false`, если `strict` равно `true`, иначе `true`.
+    -   `tokens` {boolean} Возвращает разобранные лексемы. Это полезно для расширения встроенного поведения, от добавления дополнительных проверок до переработки токенов различными способами. **По умолчанию:** `false`.
+-   Возвращает: {Object} Разобранные аргументы командной строки:
+    -   `values` {Object} Отображение разобранных имен опций с их значениями {string} или {boolean}.
+    -   `positionals` {string\[\]} Позиционные аргументы.
+    -   `токены` {Object\[\] | undefined} См. раздел [parseArgs tokens](#parseargs-tokens). Возвращается только если `config` включает `tokens: true`.
 
 Предоставляет API более высокого уровня для разбора аргументов командной строки, чем непосредственное взаимодействие с `process.argv`. Принимает спецификацию ожидаемых аргументов и возвращает структурированный объект с разобранными опциями и позициями.
 
@@ -1300,17 +1302,17 @@ for (const [name, value] of params) {
 import { parseArgs } from 'node:util';
 const args = ['-f', '--bar', 'b'];
 const options = {
-  foo: {
-    type: 'boolean',
-    short: 'f',
-  },
-  bar: {
-    type: 'string',
-  },
+    foo: {
+        type: 'boolean',
+        short: 'f',
+    },
+    bar: {
+        type: 'string',
+    },
 };
 const { values, positionals } = parseArgs({
-  args,
-  options,
+    args,
+    options,
 });
 console.log(values, positionals);
 // Prints: [Object: null prototype] { foo: true, bar: 'b' } []
@@ -1324,17 +1326,17 @@ console.log(values, positionals);
 const { parseArgs } = require('node:util');
 const args = ['-f', '--bar', 'b'];
 const options = {
-  foo: {
-    type: 'boolean',
-    short: 'f',
-  },
-  bar: {
-    type: 'string',
-  },
+    foo: {
+        type: 'boolean',
+        short: 'f',
+    },
+    bar: {
+        type: 'string',
+    },
 };
 const { values, positionals } = parseArgs({
-  args,
-  options,
+    args,
+    options,
 });
 console.log(values, positionals);
 // Prints: [Object: null prototype] { foo: true, bar: 'b' } []
@@ -1346,17 +1348,17 @@ console.log(values, positionals);
 
 Детальная информация о разборе доступна для добавления пользовательского поведения, если указать `tokens: true` в конфигурации. Возвращаемые токены имеют свойства, описывающие:
 
-- все токены
-  - `kind` {string} Одно из 'option', 'positional' или 'option-terminator'.
-  - `index` {число} Индекс элемента в `args`, содержащего токен. Таким образом, исходным аргументом для токена является `args[token.index]`.
-- токены опций
-  - `name` {строка} Длинное имя опции.
-  - `rawName` {строка} Как опция используется в args, например, `-f` из `--foo`.
-  - `value` {string | undefined} Значение опции, указанное в args. Неопределено для булевых опций.
-  - `inlineValue` {boolean | undefined} Указывается ли значение опции в строке, как `--foo=bar`.
-- позиционные маркеры
-  - `value` {string} Значение позиционного аргумента в args (т.е. `args[index]`).
-- опция-терминатор токена
+-   все токены
+    -   `kind` {string} Одно из 'option', 'positional' или 'option-terminator'.
+    -   `index` {число} Индекс элемента в `args`, содержащего токен. Таким образом, исходным аргументом для токена является `args[token.index]`.
+-   токены опций
+    -   `name` {строка} Длинное имя опции.
+    -   `rawName` {строка} Как опция используется в args, например, `-f` из `--foo`.
+    -   `value` {string | undefined} Значение опции, указанное в args. Неопределено для булевых опций.
+    -   `inlineValue` {boolean | undefined} Указывается ли значение опции в строке, как `--foo=bar`.
+-   позиционные маркеры
+    -   `value` {string} Значение позиционного аргумента в args (т.е. `args[index]`).
+-   опция-терминатор токена
 
 Возвращаемые лексемы располагаются в том порядке, в котором они встречаются во входных args. Опции, которые встречаются в args более одного раза, выдают маркер для каждого использования. Короткие группы опций, такие как `-xy`, расширяются до маркера для каждой опции. Таким образом, `-xxx` дает три токена.
 
@@ -1368,30 +1370,30 @@ console.log(values, positionals);
 import { parseArgs } from 'node:util';
 
 const options = {
-  color: { type: 'boolean' },
-  'no-color': { type: 'boolean' },
-  logfile: { type: 'string' },
-  'no-logfile': { type: 'boolean' },
+    color: { type: 'boolean' },
+    'no-color': { type: 'boolean' },
+    logfile: { type: 'string' },
+    'no-logfile': { type: 'boolean' },
 };
 const { values, tokens } = parseArgs({
-  options,
-  tokens: true,
+    options,
+    tokens: true,
 });
 
 // Reprocess the option tokens and overwrite the returned values.
 tokens
-  .filter((token) => token.kind === 'option')
-  .forEach((token) => {
-    if (token.name.startsWith('no-')) {
-      // Store foo:false for --no-foo
-      const positiveName = token.name.slice(3);
-      values[positiveName] = false;
-      delete values[token.name];
-    } else {
-      // Resave value so last one wins if both --foo and --no-foo.
-      values[token.name] = token.value ?? true;
-    }
-  });
+    .filter((token) => token.kind === 'option')
+    .forEach((token) => {
+        if (token.name.startsWith('no-')) {
+            // Store foo:false for --no-foo
+            const positiveName = token.name.slice(3);
+            values[positiveName] = false;
+            delete values[token.name];
+        } else {
+            // Resave value so last one wins if both --foo and --no-foo.
+            values[token.name] = token.value ?? true;
+        }
+    });
 
 const color = values.color;
 const logfile = values.logfile ?? 'default.log';
@@ -1407,30 +1409,30 @@ console.log({ logfile, color });
 const { parseArgs } = require('node:util');
 
 const options = {
-  color: { type: 'boolean' },
-  'no-color': { type: 'boolean' },
-  logfile: { type: 'string' },
-  'no-logfile': { type: 'boolean' },
+    color: { type: 'boolean' },
+    'no-color': { type: 'boolean' },
+    logfile: { type: 'string' },
+    'no-logfile': { type: 'boolean' },
 };
 const { values, tokens } = parseArgs({
-  options,
-  tokens: true,
+    options,
+    tokens: true,
 });
 
 // Reprocess the option tokens and overwrite the returned values.
 tokens
-  .filter((token) => token.kind === 'option')
-  .forEach((token) => {
-    if (token.name.startsWith('no-')) {
-      // Store foo:false for --no-foo
-      const positiveName = token.name.slice(3);
-      values[positiveName] = false;
-      delete values[token.name];
-    } else {
-      // Resave value so last one wins if both --foo and --no-foo.
-      values[token.name] = token.value ?? true;
-    }
-  });
+    .filter((token) => token.kind === 'option')
+    .forEach((token) => {
+        if (token.name.startsWith('no-')) {
+            // Store foo:false for --no-foo
+            const positiveName = token.name.slice(3);
+            values[positiveName] = false;
+            delete values[token.name];
+        } else {
+            // Resave value so last one wins if both --foo and --no-foo.
+            values[token.name] = token.value ?? true;
+        }
+    });
 
 const color = values.color;
 const logfile = values.logfile ?? 'default.log';
@@ -1459,8 +1461,8 @@ $ node negate.js --no-logfile --logfile=test.log --color --no-color
 
 ## `util.promisify(original)`
 
-- `original` {Функция}
-- Возвращает: {Function}
+-   `original` {Функция}
+-   Возвращает: {Function}
 
 Принимает функцию, следуя общему стилю обратного вызова по ошибке, т.е. принимая `(err, value) => ...` обратный вызов в качестве последнего аргумента, и возвращает версию, которая возвращает обещания.
 
@@ -1472,12 +1474,12 @@ const fs = require('node:fs');
 
 const stat = util.promisify(fs.stat);
 stat('.')
-  .then((stats) => {
-    // Do something with `stats`
-  })
-  .catch((error) => {
-    // Handle the error.
-  });
+    .then((stats) => {
+        // Do something with `stats`
+    })
+    .catch((error) => {
+        // Handle the error.
+    });
 ```
 
 <!-- 0119.part.md -->
@@ -1493,8 +1495,8 @@ const fs = require('node:fs');
 const stat = util.promisify(fs.stat);
 
 async function callStat() {
-  const stats = await stat('.');
-  console.log(`This directory is owned by ${stats.uid}`);
+    const stats = await stat('.');
+    console.log(`This directory is owned by ${stats.uid}`);
 }
 ```
 
@@ -1512,13 +1514,13 @@ async function callStat() {
 const util = require('node:util');
 
 class Foo {
-  constructor() {
-    this.a = 42;
-  }
+    constructor() {
+        this.a = 42;
+    }
 
-  bar(callback) {
-    callback(null, this.a);
-  }
+    bar(callback) {
+        callback(null, this.a);
+    }
 }
 
 const foo = new Foo();
@@ -1545,16 +1547,16 @@ bindBar().then((a) => console.log(a)); // '42'
 const util = require('node:util');
 
 function doSomething(foo, callback) {
-  // ...
+    // ...
 }
 
 doSomething[util.promisify.custom] = (foo) => {
-  return getPromiseSomehow();
+    return getPromiseSomehow();
 };
 
 const promisified = util.promisify(doSomething);
 console.log(
-  promisified === doSomething[util.promisify.custom]
+    promisified === doSomething[util.promisify.custom]
 );
 // prints 'true'
 ```
@@ -1569,9 +1571,9 @@ console.log(
 
 ```js
 doSomething[util.promisify.custom] = (foo) => {
-  return new Promise((resolve, reject) => {
-    doSomething(foo, resolve, reject);
-  });
+    return new Promise((resolve, reject) => {
+        doSomething(foo, resolve, reject);
+    });
 };
 ```
 
@@ -1581,7 +1583,7 @@ doSomething[util.promisify.custom] = (foo) => {
 
 ### `util.promisify.custom`
 
-- {символ}, который можно использовать для объявления пользовательских промисифицированных вариантов функций, см. [Пользовательские промисифицированные функции](#custom-promisified-functions).
+-   {символ}, который можно использовать для объявления пользовательских промисифицированных вариантов функций, см. [Пользовательские промисифицированные функции](#custom-promisified-functions).
 
 Помимо того, что этот символ доступен через `util.promisify.custom`, он [зарегистрирован глобально](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for) и может быть доступен в любом окружении как `Symbol.for('nodejs.util.promisify.custom')`.
 
@@ -1591,13 +1593,13 @@ doSomething[util.promisify.custom] = (foo) => {
 
 ```js
 const kCustomPromisifiedSymbol = Symbol.for(
-  'nodejs.util.promisify.custom'
+    'nodejs.util.promisify.custom'
 );
 
 doSomething[kCustomPromisifiedSymbol] = (foo) => {
-  return new Promise((resolve, reject) => {
-    doSomething(foo, resolve, reject);
-  });
+    return new Promise((resolve, reject) => {
+        doSomething(foo, resolve, reject);
+    });
 };
 ```
 
@@ -1605,8 +1607,8 @@ doSomething[kCustomPromisifiedSymbol] = (foo) => {
 
 ## `util.stripVTControlCharacters(str)`
 
-- `str` {строка}
-- Возвращает: {string}
+-   `str` {строка}
+-   Возвращает: {string}
 
 Возвращает `str` с удаленными кодами ANSI.
 
@@ -1614,7 +1616,7 @@ doSomething[kCustomPromisifiedSymbol] = (foo) => {
 
 ```js
 console.log(
-  util.stripVTControlCharacters('\u001B[4mvalue\u001B[0m')
+    util.stripVTControlCharacters('\u001B[4mvalue\u001B[0m')
 );
 // Prints "value"
 ```
@@ -1686,10 +1688,10 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### `new TextDecoder([encoding[, options]])`.
 
-- `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `ТекстДекодера`. **По умолчанию:** `'utf-8'`.
-- `options` {Object}
-  - `fatal` {boolean} `true`, если сбои декодирования являются фатальными. Эта опция не поддерживается, если ICU отключен (см. [Интернационализация](intl.md)). **По умолчанию:** `false`.
-  - `ignoreBOM` {boolean} Когда `true`, `TextDecoder` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
+-   `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `ТекстДекодера`. **По умолчанию:** `'utf-8'`.
+-   `options` {Object}
+    -   `fatal` {boolean} `true`, если сбои декодирования являются фатальными. Эта опция не поддерживается, если ICU отключен (см. [Интернационализация](intl.md)). **По умолчанию:** `false`.
+    -   `ignoreBOM` {boolean} Когда `true`, `TextDecoder` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
 
 Создает новый экземпляр `TextDecoder`. В `encoding` может быть указана одна из поддерживаемых кодировок или псевдоним.
 
@@ -1697,10 +1699,10 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### `textDecoder.decode([input[, options]])`.
 
-- `вход` {ArrayBuffer|DataView|TypedArray} Экземпляр `ArrayBuffer`, `DataView` или `TypedArray`, содержащий закодированные данные.
-- `options` {Object}
-  - `stream` {boolean} `true`, если ожидаются дополнительные порции данных. **По умолчанию:** `false`.
-- Возвращает: {строка}
+-   `вход` {ArrayBuffer|DataView|TypedArray} Экземпляр `ArrayBuffer`, `DataView` или `TypedArray`, содержащий закодированные данные.
+-   `options` {Object}
+    -   `stream` {boolean} `true`, если ожидаются дополнительные порции данных. **По умолчанию:** `false`.
+-   Возвращает: {строка}
 
 Декодирует `input` и возвращает строку. Если `options.stream` имеет значение `true`, все неполные последовательности байтов, встречающиеся в конце `ввода`, буферизируются внутри и выдаются после следующего вызова `textDecoder.decode()`.
 
@@ -1708,19 +1710,19 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### `textDecoder.encoding`
 
-- {строка}
+-   {строка}
 
 Кодировка, поддерживаемая экземпляром `TextDecoder`.
 
 ### `textDecoder.fatal`
 
-- {boolean}
+-   {boolean}
 
 Значение будет `true`, если в результате ошибок декодирования будет выброшена `TypeError`.
 
 ### `textDecoder.ignoreBOM`
 
-- {boolean}
+-   {boolean}
 
 Значение будет `true`, если результат декодирования будет включать метку порядка байтов.
 
@@ -1741,18 +1743,18 @@ const uint8array = encoder.encode('this is some data');
 
 ### `textEncoder.encode([input])`
 
-- `ввод` {строка} Текст для кодирования. **По умолчанию:** пустая строка.
-- Возвращает: {Uint8Array}
+-   `ввод` {строка} Текст для кодирования. **По умолчанию:** пустая строка.
+-   Возвращает: {Uint8Array}
 
 UTF-8 кодирует строку `input` и возвращает `Uint8Array`, содержащий закодированные байты.
 
 ### `textEncoder.encodeInto(src, dest)`.
 
-- src` {строка} Текст для кодирования.
-- `dest` {Uint8Array} Массив для хранения результата кодирования.
-- Возвращает: {Object}
-  - `read` {number} Прочитанные единицы кода Unicode src.
-  - `written` {number} Записанные байты в формате UTF-8 из dest.
+-   src` {строка} Текст для кодирования.
+-   `dest` {Uint8Array} Массив для хранения результата кодирования.
+-   Возвращает: {Object}
+    -   `read` {number} Прочитанные единицы кода Unicode src.
+    -   `written` {number} Записанные байты в формате UTF-8 из dest.
 
 UTF-8 кодирует строку `rc` в Uint8Array `dest` и возвращает объект, содержащий считанные единицы кода Unicode и записанные байты UTF-8.
 
@@ -1769,13 +1771,13 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 ### `textEncoder.encoding`
 
-- {строка}
+-   {строка}
 
 Кодировка, поддерживаемая экземпляром `TextEncoder`. Всегда устанавливается на `'utf-8'`.
 
 ## `util.toUSVString(string)`.
 
-- `string` {string}
+-   `string` {string}
 
 Возвращает `строку` после замены любых суррогатных кодовых точек (или, эквивалентно, любых непарных суррогатных кодовых единиц) на "символ замены" Юникода U+FFFD.
 
@@ -1789,8 +1791,8 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 > Стабильность: 1 - Экспериментальная
 
-- `signal` {AbortSignal}
-- Возвращает: {AbortSignal}
+-   `signal` {AbortSignal}
+-   Возвращает: {AbortSignal}
 
 Маркирует данный {AbortSignal} как передаваемый, чтобы его можно было использовать с `structuredClone()` и `postMessage()`.
 
@@ -1798,7 +1800,7 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 ```js
 const signal = transferableAbortSignal(
-  AbortSignal.timeout(100)
+    AbortSignal.timeout(100)
 );
 const channel = new MessageChannel();
 channel.port2.postMessage(signal, [signal]);
@@ -1810,9 +1812,9 @@ channel.port2.postMessage(signal, [signal]);
 
 > Стабильность: 1 - Экспериментальная
 
-- `signal` {AbortSignal}
-- `ресурс` {Объект} Любая ненулевая сущность, ссылка на которую удерживается слабо.
-- Возвращает: {Promise}
+-   `signal` {AbortSignal}
+-   `ресурс` {Объект} Любая ненулевая сущность, ссылка на которую удерживается слабо.
+-   Возвращает: {Promise}
 
 Слушает событие прерывания на предоставленном `signal` и возвращает обещание, которое будет выполнено, когда `signal` будет прерван. Если переданный `ресурс` будет собран до прерывания `signal`, возвращаемое обещание будет оставаться невыполненным неопределенное время.
 
@@ -1824,11 +1826,11 @@ const { aborted } = require('node:util');
 const dependent = obtainSomethingAbortable();
 
 aborted(dependent.signal, dependent).then(() => {
-  // Do something when dependent is aborted.
+    // Do something when dependent is aborted.
 });
 
 dependent.on('event', () => {
-  dependent.abort();
+    dependent.abort();
 });
 ```
 
@@ -1842,11 +1844,11 @@ import { aborted } from 'node:util';
 const dependent = obtainSomethingAbortable();
 
 aborted(dependent.signal, dependent).then(() => {
-  // Do something when dependent is aborted.
+    // Do something when dependent is aborted.
 });
 
 dependent.on('event', () => {
-  dependent.abort();
+    dependent.abort();
 });
 ```
 
@@ -1862,8 +1864,8 @@ API доступен через `require('node:util').types` или `require('no
 
 ### `util.types.isAnyArrayBuffer(value)`
 
-- `value` {any}
-- Возвращает: {boolean}
+-   `value` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) или [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
 
@@ -1880,8 +1882,8 @@ util.types.isAnyArrayBuffer(new SharedArrayBuffer()); // Returns true
 
 ### `util.types.isArrayBufferView(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром одного из представлений [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), таких как типизированные объекты массивов или [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView). Эквивалентно [`ArrayBuffer.isView()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView).
 
@@ -1891,7 +1893,7 @@ util.types.isAnyArrayBuffer(new SharedArrayBuffer()); // Returns true
 util.types.isArrayBufferView(new Int8Array()); // true
 util.types.isArrayBufferView(Buffer.from('hello world')); // true
 util.types.isArrayBufferView(
-  new DataView(new ArrayBuffer(16))
+    new DataView(new ArrayBuffer(16))
 ); // true
 util.types.isArrayBufferView(new ArrayBuffer()); // false
 ```
@@ -1900,8 +1902,8 @@ util.types.isArrayBufferView(new ArrayBuffer()); // false
 
 ### `util.types.isArgumentsObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является объектом `arguments`.
 
@@ -1909,7 +1911,7 @@ util.types.isArrayBufferView(new ArrayBuffer()); // false
 
 ```js
 function foo() {
-  util.types.isArgumentsObject(arguments); // Returns true
+    util.types.isArgumentsObject(arguments); // Returns true
 }
 ```
 
@@ -1917,8 +1919,8 @@ function foo() {
 
 ### `util.types.isArrayBuffer(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Это _не_ включает экземпляры [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer). Обычно желательно проверять оба варианта; см. об этом в [`util.types.isAnyArrayBuffer()`](#utiltypesisanyarraybuffervalue).
 
@@ -1933,8 +1935,8 @@ util.types.isArrayBuffer(new SharedArrayBuffer()); // Returns false
 
 ### `util.types.isAsyncFunction(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является [асинхронной функцией](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -1949,8 +1951,8 @@ util.types.isAsyncFunction(async function foo() {}); // Returns true
 
 ### `util.types.isBigInt64Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром `BigInt64Array`.
 
@@ -1965,8 +1967,8 @@ util.types.isBigInt64Array(new BigUint64Array()); // Returns false
 
 ### `util.types.isBigUint64Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром `BigUint64Array`.
 
@@ -1981,8 +1983,8 @@ util.types.isBigUint64Array(new BigUint64Array()); // Returns true
 
 ### `util.types.isBooleanObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является булевым объектом, например, созданным с помощью `new Boolean()`.
 
@@ -2001,8 +2003,8 @@ util.types.isBooleanObject(Boolean(true)); // Returns false
 
 ### `util.types.isBoxedPrimitive(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является любым объектом boxed primitive, например, созданным с помощью `new Boolean()`, `new String()` или `Object(Symbol())`.
 
@@ -2022,15 +2024,15 @@ util.types.isBoxedPrimitive(Object(BigInt(5))); // Returns true
 
 ### `util.types.isCryptoKey(value)`
 
-- `значение` {Объект}
-- Возвращает: {boolean}
+-   `значение` {Объект}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если `значение` является {CryptoKey}, `false` в противном случае.
 
 ### `util.types.isDataView(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView).
 
@@ -2048,8 +2050,8 @@ util.types.isDataView(new Float64Array()); // Returns false
 
 ### `util.types.isDate(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date).
 
@@ -2063,8 +2065,8 @@ util.types.isDate(new Date()); // Returns true
 
 ### `util.types.isExternal(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является родным `External` значением.
 
@@ -2108,8 +2110,8 @@ util.types.isExternal(new String('foo')); // returns false
 
 ### `util.types.isFloat32Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`Float32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array).
 
@@ -2125,8 +2127,8 @@ util.types.isFloat32Array(new Float64Array()); // Returns false
 
 ### `util.types.isFloat64Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`Float64Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array).
 
@@ -2142,8 +2144,8 @@ util.types.isFloat64Array(new Float64Array()); // Returns true
 
 ### `util.types.isGeneratorFunction(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является генераторной функцией. Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -2158,8 +2160,8 @@ util.types.isGeneratorFunction(function* foo() {}); // Returns true
 
 ### `util.types.isGeneratorObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является объектом генератора, возвращенным встроенной функцией генератора. Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -2175,8 +2177,8 @@ util.types.isGeneratorObject(generator); // Returns true
 
 ### `util.types.isInt8Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array).
 
@@ -2192,8 +2194,8 @@ util.types.isInt8Array(new Float64Array()); // Returns false
 
 ### `util.types.isInt16Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array).
 
@@ -2209,8 +2211,8 @@ util.types.isInt16Array(new Float64Array()); // Returns false
 
 ### `util.types.isInt32Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array).
 
@@ -2226,15 +2228,15 @@ util.types.isInt32Array(new Float64Array()); // Returns false
 
 ### `util.types.isKeyObject(value)`
 
-- `значение` {Объект}
-- Возвращает: {boolean}
+-   `значение` {Объект}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если `value` является {KeyObject}, `false` в противном случае.
 
 ### `util.types.isMap(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенной [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
@@ -2248,8 +2250,8 @@ util.types.isMap(new Map()); // Returns true
 
 ### `util.types.isMapIterator(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является итератором, возвращаемым для встроенного экземпляра [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
@@ -2267,8 +2269,8 @@ util.types.isMapIterator(map[Symbol.iterator]()); // Returns true
 
 ### `util.types.isModuleNamespaceObject(value)`
 
-- `значение` {любой}
-- Возвращает: {boolean}
+-   `значение` {любой}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром [Module Namespace Object](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects).
 
@@ -2284,8 +2286,8 @@ util.types.isModuleNamespaceObject(ns); // Returns true
 
 ### `util.types.isNativeError(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение было возвращено конструктором [встроенного типа `Error`](https://tc39.es/ecma262/#sec-error-objects).
 
@@ -2338,8 +2340,8 @@ console.log(myError instanceof Error); // true
 
 ### `util.types.isNumberObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является числовым объектом, например, созданным с помощью `new Number()`.
 
@@ -2354,8 +2356,8 @@ util.types.isNumberObject(new Number(0)); // Returns true
 
 ### `util.types.isPromise(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
@@ -2369,8 +2371,8 @@ util.types.isPromise(Promise.resolve(42)); // Returns true
 
 ### `util.types.isProxy(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy).
 
@@ -2387,8 +2389,8 @@ util.types.isProxy(proxy); // Returns true
 
 ### `util.types.isRegExp(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является объектом регулярного выражения.
 
@@ -2403,8 +2405,8 @@ util.types.isRegExp(new RegExp('abc')); // Returns true
 
 ### `util.types.isSet(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
 
@@ -2418,8 +2420,8 @@ util.types.isSet(new Set()); // Returns true
 
 ### `util.types.isSetIterator(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является итератором, возвращаемым для встроенного экземпляра [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
 
@@ -2437,8 +2439,8 @@ util.types.isSetIterator(set[Symbol.iterator]()); // Returns true
 
 ### `util.types.isSharedArrayBuffer(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer). Это _не_ включает экземпляры [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Обычно желательно проверять оба варианта; см. об этом в [`util.types.isAnyArrayBuffer()`](#utiltypesisanyarraybuffervalue).
 
@@ -2453,8 +2455,8 @@ util.types.isSharedArrayBuffer(new SharedArrayBuffer()); // Returns true
 
 ### `util.types.isStringObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является строковым объектом, например, созданным с помощью `new String()`.
 
@@ -2469,8 +2471,8 @@ util.types.isStringObject(new String('foo')); // Returns true
 
 ### `util.types.isSymbolObject(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является объектом символа, созданным вызовом `Object()` на примитиве `Symbol`.
 
@@ -2486,8 +2488,8 @@ util.types.isSymbolObject(Object(symbol)); // Returns true
 
 ### `util.types.isTypedArray(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 
@@ -2505,8 +2507,8 @@ util.types.isTypedArray(new Float64Array()); // Returns true
 
 ### `util.types.isUint8Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
@@ -2522,8 +2524,8 @@ util.types.isUint8Array(new Float64Array()); // Returns false
 
 ### `util.types.isUint8ClampedArray(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является встроенным экземпляром [`Uint8ClampedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray).
 
@@ -2539,8 +2541,8 @@ util.types.isUint8ClampedArray(new Float64Array()); // Returns false
 
 ### `util.types.isUint16Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array).
 
@@ -2556,8 +2558,8 @@ util.types.isUint16Array(new Float64Array()); // Returns false
 
 ### `util.types.isUint32Array(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array).
 
@@ -2573,8 +2575,8 @@ util.types.isUint32Array(new Float64Array()); // Returns false
 
 ### `util.types.isWeakMap(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенной [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap).
 
@@ -2588,8 +2590,8 @@ util.types.isWeakMap(new WeakMap()); // Returns true
 
 ### `util.types.isWeakSet(value)`
 
-- `значение` {любое}
-- Возвращает: {boolean}
+-   `значение` {любое}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet).
 
@@ -2605,8 +2607,8 @@ util.types.isWeakSet(new WeakSet()); // Returns true
 
 > Стабильность: 0 - Утратил актуальность: Используйте `value instanceof WebAssembly.Module` вместо этого.
 
-- `value` {any}
-- Возвращает: {boolean}
+-   `value` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если значение является экземпляром встроенного [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
 
@@ -2627,8 +2629,8 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 > Стабильность: 0 - Устаревший: Вместо этого используйте [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign).
 
-- `target` {Object}
-- `источник` {Объект}
+-   `target` {Object}
+-   `источник` {Объект}
 
 Метод `util._extend()` никогда не предназначался для использования вне внутренних модулей Node.js. Однако сообщество все равно нашло и использовало его.
 
@@ -2638,8 +2640,8 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 > Стабильность: 0 - Утратил актуальность: Вместо этого используйте [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Псевдоним для [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
@@ -2664,8 +2666,8 @@ util.isArray({});
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'boolean'`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `булевым`. В противном случае возвращается `false`.
 
@@ -2688,8 +2690,8 @@ util.isBoolean(false);
 
 > Стабильность: 0 - Исправлено: Используйте [`Buffer.isBuffer()`](buffer.md#static-method-bufferisbufferobj) вместо этого.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `буфером`. В противном случае возвращается `false`.
 
@@ -2712,8 +2714,8 @@ util.isBuffer(Buffer.from('hello world'));
 
 > Стабильность: 0 - Исправлено: Используйте [`util.types.isDate()`](#utiltypesisdatevalue) вместо этого.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `датой`. В противном случае возвращает `false`.
 
@@ -2736,8 +2738,8 @@ util.isDate({});
 
 > Стабильность: 0 - Исправлено: Используйте [`util.types.isNativeError()`](#utiltypesisnativeerrorvalue) вместо этого.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является [`ошибкой`](errors.md#class-error). В противном случае возвращается `false`.
 
@@ -2751,8 +2753,8 @@ util.isError(new Error());
 util.isError(new TypeError());
 // Returns: true
 util.isError({
-  name: 'Error',
-  message: 'an error occurred',
+    name: 'Error',
+    message: 'an error occurred',
 });
 // Returns: false
 ```
@@ -2780,8 +2782,8 @@ util.isError(obj);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'function'`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `функцией`. В противном случае возвращает `false`.
 
@@ -2807,8 +2809,8 @@ util.isFunction(Bar);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === null`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` строго `null`. В противном случае возвращается `false`.
 
@@ -2831,8 +2833,8 @@ util.isNull(null);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined || value === null`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `null` или `undefined`. В противном случае возвращается `false`.
 
@@ -2855,8 +2857,8 @@ util.isNullOrUndefined(null);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'number'`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `число`. В противном случае возвращает `false`.
 
@@ -2881,8 +2883,8 @@ util.isNumber(NaN);
 
 > Стабильность: 0 - Исправлено: Используйте `value !== null && typeof value === 'object'` вместо этого.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `object` является строго `Object` **и** не `Function` (даже если функции являются объектами в JavaScript). В противном случае возвращается `false`.
 
@@ -2907,8 +2909,8 @@ util.isObject(() => {});
 
 > Стабильность: 0 - Исправлено: Используйте `(typeof value !== 'object' && typeof value !== 'function') || value === null` вместо этого.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `object` является примитивным типом. В противном случае возвращает `false`.
 
@@ -2943,8 +2945,8 @@ util.isPrimitive(new Date());
 
 > Стабильность: 0 - Утратил актуальность
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `RegExp`. В противном случае возвращается `false`.
 
@@ -2967,8 +2969,8 @@ util.isRegExp({});
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'string'`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `строкой`. В противном случае возвращает `false`.
 
@@ -2993,8 +2995,8 @@ util.isString(5);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'symbol'`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `символом`. В противном случае возвращается `false`.
 
@@ -3017,8 +3019,8 @@ util.isSymbol(Symbol('foo'));
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined`.
 
-- `object` {any}
-- Возвращает: {boolean}
+-   `object` {any}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный `объект` является `неопределенным`. В противном случае возвращает `false`.
 
@@ -3042,7 +3044,7 @@ util.isUndefined(null);
 
 > Стабильность: 0 - Утратил актуальность: Вместо этого используйте сторонний модуль.
 
-- `string` {string}
+-   `string` {string}
 
 Метод `util.log()` печатает заданную `строку` в `stdout` с включенной меткой времени.
 

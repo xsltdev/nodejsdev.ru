@@ -27,9 +27,9 @@ const http2 = require('node:http2');
 ```cjs
 let http2;
 try {
-  http2 = require('node:http2');
+    http2 = require('node:http2');
 } catch (err) {
-  console.error('Поддержка http2 отключена!');
+    console.error('Поддержка http2 отключена!');
 }
 ```
 
@@ -40,9 +40,9 @@ try {
 ```mjs
 let http2;
 try {
-  http2 = await import('node:http2');
+    http2 = await import('node:http2');
 } catch (err) {
-  console.error('Поддержка http2 отключена!');
+    console.error('Поддержка http2 отключена!');
 }
 ```
 
@@ -65,18 +65,18 @@ const http2 = require('node:http2');
 const fs = require('node:fs');
 
 const server = http2.createSecureServer({
-  key: fs.readFileSync('localhost-privkey.pem'),
-  cert: fs.readFileSync('localhost-cert.pem'),
+    key: fs.readFileSync('localhost-privkey.pem'),
+    cert: fs.readFileSync('localhost-cert.pem'),
 });
 server.on('error', (err) => console.error(err));
 
 server.on('stream', (stream, headers) => {
-  // stream - это дуплекс
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    status: 200,
-  });
-  stream.end('<h1>Hello World</h1>');
+    // stream - это дуплекс
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        status: 200,
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(8443);
@@ -99,26 +99,26 @@ openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' \
 const http2 = require('node:http2');
 const fs = require('node:fs');
 const client = http2.connect('https://localhost:8443', {
-  ca: fs.readFileSync('localhost-cert.pem'),
+    ca: fs.readFileSync('localhost-cert.pem'),
 });
 client.on('error', (err) => console.error(err));
 
 const req = client.request({ ':path': '/' });
 
 req.on('response', (headers, flags) => {
-  for (const name in headers) {
-    console.log(`${name}: ${headers[name]}`);
-  }
+    for (const name in headers) {
+        console.log(`${name}: ${headers[name]}`);
+    }
 });
 
 req.setEncoding('utf8');
 let data = '';
 req.on('data', (chunk) => {
-  data += chunk;
+    data += chunk;
 });
 req.on('end', () => {
-  console.log(`\n${data}`);
-  client.close();
+    console.log(`\n${data}`);
+    client.close();
 });
 req.end();
 ```
@@ -127,7 +127,7 @@ req.end();
 
 ### Класс: `Http2Session`
 
-- Расширяет: {EventEmitter}
+-   Расширяет: {EventEmitter}
 
 Экземпляры класса `http2.Http2Session` представляют активный сеанс связи между HTTP/2 клиентом и сервером. Экземпляры этого класса _не_ предназначены для создания непосредственно пользовательским кодом.
 
@@ -155,8 +155,8 @@ req.end();
 
 #### Событие: `'connect'`
 
-- `session` {Http2Session}
-- `socket` {net.Socket}
+-   `session` {Http2Session}
+-   `socket` {net.Socket}
 
 Событие `'connect'` происходит, когда `Http2Session` успешно соединяется с удаленным аналогом и может начать взаимодействие.
 
@@ -166,7 +166,7 @@ req.end();
 
 #### Событие: `error`
 
-- `error` {Ошибка}
+-   `error` {Ошибка}
 
 Событие `'error'` генерируется, когда происходит ошибка во время обработки `Http2Session`.
 
@@ -174,9 +174,9 @@ req.end();
 
 #### Событие: `FrameError`
 
-- `type` {integer} Тип кадра.
-- `code` {integer} Код ошибки.
-- `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
+-   `type` {integer} Тип кадра.
+-   `code` {integer} Код ошибки.
+-   `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
 
 Событие `'frameError'` генерируется, когда возникает ошибка при попытке отправить кадр в сессии. Если кадр, который не удалось отправить, связан с определенным `Http2Stream`, делается попытка выдать событие `'frameError'` на `Http2Stream`.
 
@@ -186,9 +186,9 @@ req.end();
 
 #### Событие: `goaway`
 
-- `errorCode` {number} Код ошибки HTTP/2, указанный во фрейме `GOAWAY`.
-- `lastStreamID` {number} ID последнего потока, который удаленный пир успешно обработал (или `0`, если ID не указан).
-- `opaqueData` {Buffer} Если в кадр `GOAWAY` были включены дополнительные непрозрачные данные, будет передан экземпляр `Buffer`, содержащий эти данные.
+-   `errorCode` {number} Код ошибки HTTP/2, указанный во фрейме `GOAWAY`.
+-   `lastStreamID` {number} ID последнего потока, который удаленный пир успешно обработал (или `0`, если ID не указан).
+-   `opaqueData` {Buffer} Если в кадр `GOAWAY` были включены дополнительные непрозрачные данные, будет передан экземпляр `Buffer`, содержащий эти данные.
 
 Событие `goaway` испускается при получении кадра `GOAWAY`.
 
@@ -198,7 +198,7 @@ req.end();
 
 #### Событие: `'localSettings'`
 
-- `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
+-   `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
 
 Событие `'localSettings'` испускается, когда получено подтверждение кадра `SETTINGS`.
 
@@ -208,7 +208,7 @@ req.end();
 session.settings({ enablePush: false });
 
 session.on('localSettings', (settings) => {
-  /* Использовать новые настройки */
+    /* Использовать новые настройки */
 });
 ```
 
@@ -216,7 +216,7 @@ session.on('localSettings', (settings) => {
 
 #### Событие: `ping`.
 
-- `payload` {Буфер} 8-байтовая полезная нагрузка кадра `PING`.
+-   `payload` {Буфер} 8-байтовая полезная нагрузка кадра `PING`.
 
 Событие `'ping'` генерируется всякий раз, когда от подключенного аналога получен кадр `PING`.
 
@@ -224,13 +224,13 @@ session.on('localSettings', (settings) => {
 
 #### Событие: `'remoteSettings'`
 
-- `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
+-   `settings` {HTTP/2 Объект настроек} Копия полученного кадра `SETTINGS`.
 
 Событие `'remoteSettings'` испускается, когда новый фрейм `SETTINGS` получен от подключенного аналога.
 
 ```js
 session.on('remoteSettings', (settings) => {
-  /* Использовать новые настройки */
+    /* Использовать новые настройки */
 });
 ```
 
@@ -238,25 +238,25 @@ session.on('remoteSettings', (settings) => {
 
 #### Событие: `stream`
 
-- `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
-- `flags` {number} Соответствующие числовые флаги
-- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
+-   `stream` {Http2Stream} Ссылка на поток
+-   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+-   `flags` {number} Соответствующие числовые флаги
+-   `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
 Событие `'stream'` испускается, когда создается новый `Http2Stream`.
 
 ```js
 const http2 = require('node:http2');
 session.on('stream', (stream, headers, flags) => {
-  const method = headers[':method'];
-  const path = headers[':path'];
-  // ...
-  stream.respond({
-    ':status': 200,
-    'content-type': 'text/plain; charset=utf-8',
-  });
-  stream.write('hello');
-  stream.end('world');
+    const method = headers[':method'];
+    const path = headers[':path'];
+    // ...
+    stream.respond({
+        ':status': 200,
+        'content-type': 'text/plain; charset=utf-8',
+    });
+    stream.write('hello');
+    stream.end('world');
 });
 ```
 
@@ -269,12 +269,12 @@ const http2 = require('node:http2');
 const server = http2.createServer();
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200,
-  });
-  stream.on('error', (error) => console.error(error));
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200,
+    });
+    stream.on('error', (error) => console.error(error));
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(8000);
@@ -291,7 +291,7 @@ server.listen(8000);
 ```js
 session.setTimeout(2000);
 session.on('timeout', () => {
-  /* ... */
+    /* ... */
 });
 ```
 
@@ -299,7 +299,7 @@ session.on('timeout', () => {
 
 #### `http2session.alpnProtocol`
 
-- {string|undefined}
+-   {string|undefined}
 
 Значение будет `undefined`, если `Http2Session` еще не подключен к сокету, `h2c`, если `Http2Session` не подключен к `TLSSocket`, или вернет значение собственного свойства `alpnProtocol` подключенного `TLSSocket`.
 
@@ -307,7 +307,7 @@ session.on('timeout', () => {
 
 #### `http2session.close([callback])`
 
-- `callback` {функция}
+-   `callback` {функция}
 
 Благородно закрывает `Http2Session`, позволяя всем существующим потокам завершиться самостоятельно и предотвращая создание новых экземпляров `Http2Stream`. После закрытия `http2session.destroy()` _может_ быть вызвана, если нет открытых экземпляров `Http2Stream`.
 
@@ -317,7 +317,7 @@ session.on('timeout', () => {
 
 #### `http2session.closed`
 
-- {boolean}
+-   {boolean}
 
 Будет `true`, если данный экземпляр `Http2Session` был закрыт, иначе `false`.
 
@@ -325,7 +325,7 @@ session.on('timeout', () => {
 
 #### `http2session.connecting`
 
-- {boolean}
+-   {boolean}
 
 Будет `true`, если данный экземпляр `Http2Session` все еще подключен, будет установлен в `false` перед выдачей события `connect` и/или вызовом обратного вызова `http2.connect`.
 
@@ -333,8 +333,8 @@ session.on('timeout', () => {
 
 #### `http2session.destroy([error][, code])`
 
-- `error` {Error} Объект `Error`, если `Http2Session` уничтожается из-за ошибки.
-- `code` {number} Код ошибки HTTP/2 для отправки в финальном фрейме `GOAWAY`. Если не указано, и `error` не является неопределенным, по умолчанию `INTERNAL_ERROR`, в противном случае по умолчанию `NO_ERROR`.
+-   `error` {Error} Объект `Error`, если `Http2Session` уничтожается из-за ошибки.
+-   `code` {number} Код ошибки HTTP/2 для отправки в финальном фрейме `GOAWAY`. Если не указано, и `error` не является неопределенным, по умолчанию `INTERNAL_ERROR`, в противном случае по умолчанию `NO_ERROR`.
 
 Немедленно завершает `Http2Session` и связанный с ним `net.Socket` или `tls.TLSSocket`.
 
@@ -346,7 +346,7 @@ session.on('timeout', () => {
 
 #### `http2session.destroyed`
 
-- {boolean}
+-   {boolean}
 
 Будет `true`, если этот экземпляр `Http2Session` был уничтожен и больше не должен использоваться, иначе `false`.
 
@@ -354,7 +354,7 @@ session.on('timeout', () => {
 
 #### `http2session.encrypted`
 
-- {boolean|undefined}
+-   {boolean|undefined}
 
 Значение равно `undefined`, если сокет сессии `Http2Session` еще не подключен, `true`, если `Http2Session` подключен к `TLSSocket`, и `false`, если `Http2Session` подключен к любому другому типу сокета или потока.
 
@@ -362,9 +362,9 @@ session.on('timeout', () => {
 
 #### `http2session.goaway([code[, lastStreamID[, opaqueData]]]])`
 
-- `code` {number} Код ошибки HTTP/2
-- `lastStreamID` {число} Числовой идентификатор последнего обработанного `Http2Stream`.
-- `opaqueData` {Buffer|TypedArray|DataView} Экземпляр `TypedArray` или `DataView`, содержащий дополнительные данные, которые должны быть переданы в кадре `GOAWAY`.
+-   `code` {number} Код ошибки HTTP/2
+-   `lastStreamID` {число} Числовой идентификатор последнего обработанного `Http2Stream`.
+-   `opaqueData` {Buffer|TypedArray|DataView} Экземпляр `TypedArray` или `DataView`, содержащий дополнительные данные, которые должны быть переданы в кадре `GOAWAY`.
 
 Передает кадр `GOAWAY` подключенному аналогу _без_ закрытия `Http2Session`.
 
@@ -372,7 +372,7 @@ session.on('timeout', () => {
 
 #### `http2session.localSettings`
 
-- {HTTP/2 Settings Object}
+-   {HTTP/2 Settings Object}
 
 Объект без прототипа, описывающий текущие локальные настройки данной `Http2Session`. Локальные настройки являются локальными для _этого_ экземпляра `Http2Session`.
 
@@ -380,7 +380,7 @@ session.on('timeout', () => {
 
 #### `http2session.originSet`
 
-- {string\[\]|undefined}
+-   {string\[\]|undefined}
 
 Если `Http2Session` подключен к `TLSSocket`, свойство `originSet` возвращает `массив` источников, для которых `Http2Session` может считаться авторитетным.
 
@@ -390,7 +390,7 @@ session.on('timeout', () => {
 
 #### `http2session.pendingSettingsAck`
 
-- {boolean}
+-   {boolean}
 
 Указывает, ожидает ли `Http2Session` в настоящее время подтверждения отправленного кадра `SETTINGS`. Будет `true` после вызова метода `http2session.settings()`. Будет `false`, когда все отправленные фреймы `SETTINGS` будут подтверждены.
 
@@ -398,9 +398,9 @@ session.on('timeout', () => {
 
 #### `http2session.ping([payload, ]callback)`
 
-- `payload` {Buffer|TypedArray|DataView} Необязательная полезная нагрузка пинга.
-- `callback` {Function}
-- Возвращает: {boolean}
+-   `payload` {Buffer|TypedArray|DataView} Необязательная полезная нагрузка пинга.
+-   `callback` {Function}
+-   Возвращает: {boolean}
 
 Отправляет фрейм `PING` подключенному HTTP/2 peer. Должна быть указана функция `callback`. Метод вернет `true`, если `PING` был отправлен, `false` в противном случае.
 
@@ -412,17 +412,17 @@ session.on('timeout', () => {
 
 ```js
 session.ping(
-  Buffer.from('abcdefgh'),
-  (err, duration, payload) => {
-    if (!err) {
-      console.log(
-        `Пинг подтвержден через ${длительность} миллисекунд`
-      );
-      console.log(
-        `С полезной нагрузкой '${payload.toString()}'`
-      );
+    Buffer.from('abcdefgh'),
+    (err, duration, payload) => {
+        if (!err) {
+            console.log(
+                `Пинг подтвержден через ${длительность} миллисекунд`
+            );
+            console.log(
+                `С полезной нагрузкой '${payload.toString()}'`
+            );
+        }
     }
-  }
 );
 ```
 
@@ -438,7 +438,7 @@ session.ping(
 
 #### `http2session.remoteSettings`
 
-- {HTTP/2 Settings Object}
+-   {HTTP/2 Settings Object}
 
 Объект без прототипа, описывающий текущие удаленные настройки этой `Http2Session`. Удаленные настройки устанавливаются _подключенным_ HTTP/2 peer.
 
@@ -446,7 +446,7 @@ session.ping(
 
 #### `http2session.setLocalWindowSize(windowSize)`
 
-- `windowSize` {число}
+-   `windowSize` {число}
 
 Устанавливает размер окна локальной конечной точки. Значение `windowSize` - это полный размер окна, который нужно установить, а не дельта.
 
@@ -456,8 +456,8 @@ const http2 = require('node:http2');
 const server = http2.createServer();
 const expectedWindowSize = 2 ** 20;
 server.on('connect', (session) => {
-  // Устанавливаем размер локального окна равным 2 ** 20
-  session.setLocalWindowSize(expectedWindowSize);
+    // Устанавливаем размер локального окна равным 2 ** 20
+    session.setLocalWindowSize(expectedWindowSize);
 });
 ```
 
@@ -465,8 +465,8 @@ server.on('connect', (session) => {
 
 #### `http2session.setTimeout(msecs, callback)`
 
-- `msecs` {число}
-- `callback` {функция}
+-   `msecs` {число}
+-   `callback` {функция}
 
 Используется для установки функции обратного вызова, которая вызывается, когда нет активности на `Http2Session` после `msecs` миллисекунд. Данный `callback` регистрируется как слушатель события `'timeout'`.
 
@@ -474,7 +474,7 @@ server.on('connect', (session) => {
 
 #### `http2session.socket`
 
-- {net.Socket|tls.TLSSocket}
+-   {net.Socket|tls.TLSSocket}
 
 Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но ограничивает доступные методы теми, которые безопасны для использования с HTTP/2.
 
@@ -490,16 +490,16 @@ server.on('connect', (session) => {
 
 Предоставляет различную информацию о текущем состоянии `Http2Session`.
 
-- {Object}
-  - `effectiveLocalWindowSize` {number} Текущий размер локального (принимающего) окна управления потоком для `Http2Session`.
-  - `effectiveRecvDataLength` {number} Текущее количество байт, которые были получены с момента последнего управления потоком `WINDOW_UPDATE`.
-  - `nextStreamID` {number} Числовой идентификатор, который будет использоваться в следующий раз, когда новый `Http2Stream` будет создан этой `Http2Session`.
-  - `localWindowSize` {number} Количество байт, которое удаленный пир может отправить без получения `WINDOW_UPDATE`.
-  - `lastProcStreamID` {number} Числовой идентификатор `Http2Stream`, для которого последним был получен фрейм `HEADERS` или `DATA`.
-  - `remoteWindowSize` {number} Количество байт, которое эта `Http2Session` может отправить без получения `WINDOW_UPDATE`.
-  - `outboundQueueSize` {number} Количество кадров, находящихся в очереди на отправку для этой `Http2Session`.
-  - `deflateDynamicTableSize` {number} Текущий размер в байтах таблицы состояния сжатия исходящих заголовков.
-  - `inflateDynamicTableSize` {число} Текущий размер в байтах таблицы состояния сжатия входящих заголовков.
+-   {Object}
+    -   `effectiveLocalWindowSize` {number} Текущий размер локального (принимающего) окна управления потоком для `Http2Session`.
+    -   `effectiveRecvDataLength` {number} Текущее количество байт, которые были получены с момента последнего управления потоком `WINDOW_UPDATE`.
+    -   `nextStreamID` {number} Числовой идентификатор, который будет использоваться в следующий раз, когда новый `Http2Stream` будет создан этой `Http2Session`.
+    -   `localWindowSize` {number} Количество байт, которое удаленный пир может отправить без получения `WINDOW_UPDATE`.
+    -   `lastProcStreamID` {number} Числовой идентификатор `Http2Stream`, для которого последним был получен фрейм `HEADERS` или `DATA`.
+    -   `remoteWindowSize` {number} Количество байт, которое эта `Http2Session` может отправить без получения `WINDOW_UPDATE`.
+    -   `outboundQueueSize` {number} Количество кадров, находящихся в очереди на отправку для этой `Http2Session`.
+    -   `deflateDynamicTableSize` {number} Текущий размер в байтах таблицы состояния сжатия исходящих заголовков.
+    -   `inflateDynamicTableSize` {число} Текущий размер в байтах таблицы состояния сжатия входящих заголовков.
 
 Объект, описывающий текущее состояние данного `Http2Session`.
 
@@ -507,11 +507,11 @@ server.on('connect', (session) => {
 
 #### `http2session.settings([settings][, callback])`
 
-- `settings` {HTTP/2 объект настроек}
-- `callback` {Функция} Обратный вызов, который вызывается после подключения сессии или сразу же, если сессия уже подключена.
-  - `err` {Error|null}
-  - `settings` {HTTP/2 Settings Object} Обновленный объект `settings`.
-  - `duration` {integer}
+-   `settings` {HTTP/2 объект настроек}
+-   `callback` {Функция} Обратный вызов, который вызывается после подключения сессии или сразу же, если сессия уже подключена.
+    -   `err` {Error|null}
+    -   `settings` {HTTP/2 Settings Object} Обновленный объект `settings`.
+    -   `duration` {integer}
 
 Обновляет текущие локальные настройки для данной `Http2Session` и отправляет новый фрейм `SETTINGS` подключенному HTTP/2 peer.
 
@@ -523,7 +523,7 @@ server.on('connect', (session) => {
 
 #### `http2session.type`
 
-- {число}
+-   {число}
 
 Значение `http2session.type` будет равно `http2.constants.NGHTTP2_SESSION_SERVER`, если данный экземпляр `Http2Session` является сервером, и `http2.constants.NGHTTP2_SESSION_CLIENT`, если экземпляр является клиентом.
 
@@ -537,14 +537,14 @@ server.on('connect', (session) => {
 
 ### Класс: `ServerHttp2Session`
 
-- Расширяет: {Http2Session}
+-   Расширяет: {Http2Session}
 
 <!-- 0038.part.md -->
 
 #### `serverhttp2session.altsvc(alt, originOrStream)`
 
-- `alt` {string} Описание конфигурации альтернативной службы, как определено в [RFC 7838](https://tools.ietf.org/html/rfc7838).
-- `originOrStream` {number|string|URL|Object} Либо строка URL, указывающая происхождение (или `Object` со свойством `origin`), либо числовой идентификатор активного `Http2Stream`, заданный свойством `http2stream.id`.
+-   `alt` {string} Описание конфигурации альтернативной службы, как определено в [RFC 7838](https://tools.ietf.org/html/rfc7838).
+-   `originOrStream` {number|string|URL|Object} Либо строка URL, указывающая происхождение (или `Object` со свойством `origin`), либо числовой идентификатор активного `Http2Stream`, заданный свойством `http2stream.id`.
 
 Отправляет фрейм `ALTSVC` (как определено в [RFC 7838](https://tools.ietf.org/html/rfc7838)) подключенному клиенту.
 
@@ -553,13 +553,13 @@ const http2 = require('node:http2');
 
 const server = http2.createServer();
 server.on('session', (session) => {
-  // Устанавливаем altsvc для origin https://example.org:80
-  session.altsvc('h2=":8000"', 'https://example.org:80');
+    // Устанавливаем altsvc для origin https://example.org:80
+    session.altsvc('h2=":8000"', 'https://example.org:80');
 });
 
 server.on('stream', (stream) => {
-  // Устанавливаем altsvc для определенного потока
-  stream.session.altsvc('h2=":8000"', stream.id);
+    // Устанавливаем altsvc для определенного потока
+    stream.session.altsvc('h2=":8000"', stream.id);
 });
 ```
 
@@ -589,7 +589,7 @@ server.on('stream', (stream) => {
 
 #### `serverhttp2session.origin(...origins)`
 
-- `origins` { string | URL | Object } Одна или несколько строк URL, переданных в качестве отдельных аргументов.
+-   `origins` { string | URL | Object } Одна или несколько строк URL, переданных в качестве отдельных аргументов.
 
 Посылает фрейм `ORIGIN` (как определено в [RFC 8336](https://tools.ietf.org/html/rfc8336)) подключенному клиенту для рекламы набора источников, для которых сервер способен предоставлять авторитетные ответы.
 
@@ -598,14 +598,14 @@ const http2 = require('node:http2');
 const options = getSecureOptionsSomehow();
 const server = http2.createSecureServer(options);
 server.on('stream', (stream) => {
-  stream.respond();
-  stream.end('ok');
+    stream.respond();
+    stream.end('ok');
 });
 server.on('session', (session) => {
-  session.origin(
-    'https://example.com',
-    'https://example.org'
-  );
+    session.origin(
+        'https://example.com',
+        'https://example.org'
+    );
 });
 ```
 
@@ -619,13 +619,13 @@ server.on('session', (session) => {
 const http2 = require('node:http2');
 const options = getSecureOptionsSomehow();
 options.origins = [
-  'https://example.com',
-  'https://example.org',
+    'https://example.com',
+    'https://example.org',
 ];
 const server = http2.createSecureServer(options);
 server.on('stream', (stream) => {
-  stream.respond();
-  stream.end('ok');
+    stream.respond();
+    stream.end('ok');
 });
 ```
 
@@ -633,15 +633,15 @@ server.on('stream', (stream) => {
 
 ### Класс: `ClientHttp2Session`
 
-- Расширяет: {Http2Session}
+-   Расширяет: {Http2Session}
 
 <!-- 0042.part.md -->
 
 #### Событие: `'altsvc'`
 
-- `alt` {строка}
-- `origin` {string}
-- `streamId` {число}
+-   `alt` {строка}
+-   `origin` {string}
+-   `streamId` {число}
 
 Событие `'altsvc'` испускается всякий раз, когда клиент получает кадр `ALTSVC`. В событии указывается значение `ALTSVC`, происхождение и ID потока. Если в кадре `ALTSVC` не указан `origin`, то `origin` будет пустой строкой.
 
@@ -650,9 +650,9 @@ const http2 = require('node:http2');
 const client = http2.connect('https://example.org');
 
 client.on('altsvc', (alt, origin, streamId) => {
-  console.log(alt);
-  console.log(origin);
-  console.log(streamId);
+    console.log(alt);
+    console.log(origin);
+    console.log(streamId);
 });
 ```
 
@@ -660,7 +660,7 @@ client.on('altsvc', (alt, origin, streamId) => {
 
 #### Событие: `origin`
 
-- `origins` {string\[\]}
+-   `origins` {string\[\]}
 
 Событие `'origin'` генерируется каждый раз, когда клиент получает кадр `ORIGIN`. Событие испускается с массивом строк `origin`. Набор `http2session.originSet` будет обновлен, чтобы включить полученные оригиналы.
 
@@ -669,8 +669,8 @@ const http2 = require('node:http2');
 const client = http2.connect('https://example.org');
 
 client.on('origin', (origins) => {
-  for (let n = 0; n < origins.length; n++)
-    console.log(origins[n]);
+    for (let n = 0; n < origins.length; n++)
+        console.log(origins[n]);
 });
 ```
 
@@ -680,18 +680,18 @@ client.on('origin', (origins) => {
 
 #### `clienthttp2session.request(headers[, options])`
 
-- `headers` {HTTP/2 Headers Object}
+-   `headers` {HTTP/2 Headers Object}
 
-- `options` {Объект}
+-   `options` {Объект}
 
-  - `endStream` {boolean} `true` если сторона `Http2Stream` _записываемая_ должна быть закрыта изначально, например, при отправке `GET` запроса, который не должен ожидать тела полезной нагрузки.
-  - `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
-  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
-  - `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
-  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
-  - `signal` {AbortSignal} Сигнал прерывания, который может быть использован для прерывания текущего запроса.
+    -   `endStream` {boolean} `true` если сторона `Http2Stream` _записываемая_ должна быть закрыта изначально, например, при отправке `GET` запроса, который не должен ожидать тела полезной нагрузки.
+    -   `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
+    -   `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
+    -   `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
+    -   `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
+    -   `signal` {AbortSignal} Сигнал прерывания, который может быть использован для прерывания текущего запроса.
 
-- Возвращает: {ClientHttp2Stream}
+-   Возвращает: {ClientHttp2Stream}
 
 Только для экземпляров HTTP/2 Client `Http2Session`, `http2session.request()` создает и возвращает экземпляр `Http2Stream`, который может быть использован для отправки HTTP/2 запроса на подключенный сервер.
 
@@ -702,24 +702,24 @@ client.on('origin', (origins) => {
 ```js
 const http2 = require('node:http2');
 const clientSession = http2.connect(
-  'https://localhost:1234'
+    'https://localhost:1234'
 );
 const {
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS,
 } = http2.constants;
 
 const req = clientSession.request({
-  [HTTP2_HEADER_PATH]: '/',
+    [HTTP2_HEADER_PATH]: '/',
 });
 req.on('response', (headers) => {
-  console.log(headers[HTTP2_HEADER_STATUS]);
-  req.on('data', (chunk) => {
-    /* ... */
-  });
-  req.on('end', () => {
-    /* ... */
-  });
+    console.log(headers[HTTP2_HEADER_STATUS]);
+    req.on('data', (chunk) => {
+        /* ... */
+    });
+    req.on('end', () => {
+        /* ... */
+    });
 });
 ```
 
@@ -731,14 +731,14 @@ req.on('response', (headers) => {
 
 Псевдозаголовки `:method` и `:path` не указываются в `headers`, они соответственно имеют значение по умолчанию:
 
-- `:method` = `'GET'`.
-- `:path` = `/`
+-   `:method` = `'GET'`.
+-   `:path` = `/`
 
 <!-- 0045.part.md -->
 
 ### Класс: `Http2Stream`
 
-- Расширяет: {stream.Duplex}
+-   Расширяет: {stream.Duplex}
 
 Каждый экземпляр класса `Http2Stream` представляет двунаправленный поток HTTP/2-коммуникаций через экземпляр `Http2Session`. Любой отдельный `Http2Session` может иметь до 2<sup>31</sup>-1 экземпляров `Http2Stream` за время своего существования.
 
@@ -752,8 +752,8 @@ req.on('response', (headers) => {
 
 ```js
 stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200,
+    'content-type': 'text/html; charset=utf-8',
+    ':status': 200,
 });
 ```
 
@@ -767,8 +767,8 @@ stream.respond({
 
 На стороне сервера экземпляры [`ServerHttp2Stream`](#class-serverhttp2stream) создаются либо когда:
 
-- Получается новый кадр HTTP/2 `HEADERS` с ранее неиспользованным идентификатором потока;
-- Вызывается метод `http2stream.pushStream()`.
+-   Получается новый кадр HTTP/2 `HEADERS` с ранее неиспользованным идентификатором потока;
+-   Вызывается метод `http2stream.pushStream()`.
 
 На стороне клиента экземпляры [`ClientHttp2Stream`](#class-clienthttp2stream) создаются при вызове метода `http2session.request()`.
 
@@ -780,9 +780,9 @@ stream.respond({
 
 Все экземпляры [`Http2Stream`](#class-http2stream) уничтожаются либо когда:
 
-- кадр `RST_STREAM` для потока получен подключенным пиром, и (только для клиентских потоков) ожидающие данные были прочитаны.
-- Вызывается метод `http2stream.close()`, и (только для клиентских потоков) ожидающие данные были прочитаны.
-- Вызываются методы `http2stream.destroy()` или `http2session.destroy()`.
+-   кадр `RST_STREAM` для потока получен подключенным пиром, и (только для клиентских потоков) ожидающие данные были прочитаны.
+-   Вызывается метод `http2stream.close()`, и (только для клиентских потоков) ожидающие данные были прочитаны.
+-   Вызываются методы `http2stream.destroy()` или `http2session.destroy()`.
 
 Когда экземпляр `Http2Stream` уничтожается, будет предпринята попытка отправить фрейм `RST_STREAM` подключенному пиру.
 
@@ -810,7 +810,7 @@ stream.respond({
 
 #### Событие: `error`
 
-- `error` {Ошибка}
+-   `error` {Ошибка}
 
 Событие `'error'` генерируется, когда происходит ошибка во время обработки `Http2Stream`.
 
@@ -818,9 +818,9 @@ stream.respond({
 
 #### Событие: `FrameError`
 
-- `type` {integer} Тип кадра.
-- `code` {integer} Код ошибки.
-- `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
+-   `type` {integer} Тип кадра.
+-   `code` {integer} Код ошибки.
+-   `id` {integer} Идентификатор потока (или `0`, если кадр не связан с потоком).
 
 Событие `'frameError'` генерируется при возникновении ошибки при попытке отправить кадр. При вызове функция-обработчик получает целочисленный аргумент, идентифицирующий тип кадра, и целочисленный аргумент, идентифицирующий код ошибки. Экземпляр `Http2Stream` будет уничтожен сразу после возникновения события `'frameError'`.
 
@@ -840,8 +840,8 @@ stream.respond({
 
 #### Событие: `trailers`
 
-- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
-- `flags` {число} Ассоциированные числовые флаги
+-   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+-   `flags` {число} Ассоциированные числовые флаги
 
 Событие `'trailers'` генерируется, когда получен блок заголовков, связанных с полями заголовков в конце. Обратному вызову слушателя передается [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
@@ -849,7 +849,7 @@ stream.respond({
 
 ```js
 stream.on('trailers', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -863,7 +863,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.aborted`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true`, если экземпляр `Http2Stream` был аномально прерван. Если установлено, то будет выдано событие `'aborted''.
 
@@ -871,7 +871,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.bufferSize`
 
-- {число}
+-   {число}
 
 Это свойство показывает количество символов, буферизованных для записи. Подробности смотрите в [`net.Socket.bufferSize`](net.md#socketbuffersize).
 
@@ -879,8 +879,8 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.close(code[, callback])`
 
-- `code` {number} Беззнаковое 32-битное целое число, идентифицирующее код ошибки. **По умолчанию:** `http2.constants.NGHTTP2_NO_ERROR` (`0x00`).
-- `callback` {Function} Необязательная функция, зарегистрированная для прослушивания события `'close'`.
+-   `code` {number} Беззнаковое 32-битное целое число, идентифицирующее код ошибки. **По умолчанию:** `http2.constants.NGHTTP2_NO_ERROR` (`0x00`).
+-   `callback` {Function} Необязательная функция, зарегистрированная для прослушивания события `'close'`.
 
 Закрывает экземпляр `Http2Stream`, отправляя кадр `RST_STREAM` подключенному HTTP/2 peer.
 
@@ -888,7 +888,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.closed`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true`, если экземпляр `Http2Stream` был закрыт.
 
@@ -896,7 +896,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.destroyed`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true`, если экземпляр `Http2Stream` был уничтожен и больше не может использоваться.
 
@@ -904,7 +904,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.endAfterHeaders`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true`, если в полученном кадре HEADERS запроса или ответа был установлен флаг `END_STREAM`, указывающий на то, что дополнительные данные не должны быть получены и читаемая сторона `Http2Stream` будет закрыта.
 
@@ -912,7 +912,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.id`
 
-- {number|undefined}
+-   {number|undefined}
 
 Числовой идентификатор потока данного экземпляра `Http2Stream`. Устанавливается в `undefined`, если идентификатор потока еще не был назначен.
 
@@ -920,7 +920,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.pending`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true`, если экземпляру `Http2Stream` еще не был присвоен числовой идентификатор потока.
 
@@ -928,11 +928,11 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.priority(options)`
 
-- `options` {Object}
-  - `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, этот поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимые потоки становятся зависимыми от этого потока. **По умолчанию:** `false`.
-  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит этот поток.
-  - `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
-  - `silent` {boolean} Если `true`, изменяет приоритет локально, не посылая кадр `PRIORITY` подключенному аналогу.
+-   `options` {Object}
+    -   `exclusive` {boolean} Когда `true` и `parent` идентифицирует родительский поток, этот поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимые потоки становятся зависимыми от этого потока. **По умолчанию:** `false`.
+    -   `parent` {number} Указывает числовой идентификатор потока, от которого зависит этот поток.
+    -   `weight` {число} Определяет относительную зависимость потока по отношению к другим потокам с тем же `родителями`. Значение - число от `1` до `256` (включительно).
+    -   `silent` {boolean} Если `true`, изменяет приоритет локально, не посылая кадр `PRIORITY` подключенному аналогу.
 
 Обновляет приоритет для данного экземпляра `Http2Stream`.
 
@@ -940,7 +940,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.rstCode`
 
-- {число}
+-   {число}
 
 Устанавливается в `RST_STREAM` [код ошибки] (#error-codes-for-rst_stream-and-goaway), сообщаемый при уничтожении `Http2Stream` после получения кадра `RST_STREAM` от подключенного пира, вызова `http2stream.close()` или `http2stream.destroy()`. Будет `не определено`, если `Http2Stream` не был закрыт.
 
@@ -948,7 +948,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.sentHeaders`
 
-- {HTTP/2 Headers Object}
+-   {HTTP/2 Headers Object}
 
 Объект, содержащий исходящие заголовки, отправленные для данного `Http2Stream`.
 
@@ -956,7 +956,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.sentInfoHeaders`
 
-- {HTTP/2 Headers Object\[\]}
+-   {HTTP/2 Headers Object\[\]}
 
 Массив объектов, содержащих исходящие информационные (дополнительные) заголовки, отправленные для данного `Http2Stream`.
 
@@ -964,7 +964,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.sentTrailers`
 
-- {HTTP/2 Headers Object}
+-   {HTTP/2 Headers Object}
 
 Объект, содержащий исходящие трейлеры, отправленные для данного `HttpStream`.
 
@@ -972,7 +972,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.session`
 
-- {Http2Session}
+-   {Http2Session}
 
 Ссылка на экземпляр `Http2Session`, которому принадлежит данный `Http2Stream`. Значение будет `не определено` после уничтожения экземпляра `Http2Stream`.
 
@@ -980,8 +980,8 @@ stream.on('trailers', (headers, flags) => {
 
 #### `http2stream.setTimeout(msecs, callback)`
 
-- `msecs` {число}
-- `callback` {функция}
+-   `msecs` {число}
+-   `callback` {функция}
 
 <!-- конец списка -->
 
@@ -1001,13 +1001,13 @@ req.setTimeout(5000, () => req.close(NGHTTP2_CANCEL));
 
 Предоставляет различную информацию о текущем состоянии `Http2Stream`.
 
-- {Object}
-  - `localWindowSize` {число} Количество байт, которое подключенный пир может отправить для данного `Http2Stream` без получения `WINDOW_UPDATE`.
-  - `state` {число} Флаг, указывающий на низкоуровневое текущее состояние `Http2Stream`, определенное `nghttp2`.
-  - `localClose` {number} `1`, если этот `Http2Stream` был закрыт локально.
-  - `remoteClose` {number} `1`, если этот `Http2Stream` был закрыт удаленно.
-  - `sumDependencyWeight` {number} Суммарный вес всех экземпляров `Http2Stream`, которые зависят от этого `Http2Stream`, как указано с помощью фреймов `PRIORITY`.
-  - `weight` {число} Приоритетный вес этого `Http2Stream`.
+-   {Object}
+    -   `localWindowSize` {число} Количество байт, которое подключенный пир может отправить для данного `Http2Stream` без получения `WINDOW_UPDATE`.
+    -   `state` {число} Флаг, указывающий на низкоуровневое текущее состояние `Http2Stream`, определенное `nghttp2`.
+    -   `localClose` {number} `1`, если этот `Http2Stream` был закрыт локально.
+    -   `remoteClose` {number} `1`, если этот `Http2Stream` был закрыт удаленно.
+    -   `sumDependencyWeight` {number} Суммарный вес всех экземпляров `Http2Stream`, которые зависят от этого `Http2Stream`, как указано с помощью фреймов `PRIORITY`.
+    -   `weight` {число} Приоритетный вес этого `Http2Stream`.
 
 Текущее состояние этого `Http2Stream`.
 
@@ -1015,7 +1015,7 @@ req.setTimeout(5000, () => req.close(NGHTTP2_CANCEL));
 
 #### `http2stream.sendTrailers(headers)`
 
-- `headers` {HTTP/2 Headers Object}
+-   `headers` {HTTP/2 Headers Object}
 
 Отправляет трейлинг фрейма `HEADERS` подключенному аналогу HTTP/2. Этот метод приводит к немедленному закрытию `Http2Stream` и может быть вызван только после возникновения события `'wantTrailers`. При отправке запроса или ответа, опция `options.waitForTrailers` должна быть установлена для того, чтобы держать `Http2Stream` открытым после последнего кадра `DATA`, чтобы можно было отправить трейлеры.
 
@@ -1023,11 +1023,11 @@ req.setTimeout(5000, () => req.close(NGHTTP2_CANCEL));
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond(undefined, { waitForTrailers: true });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ xyz: 'abc' });
-  });
-  stream.end('Hello World');
+    stream.respond(undefined, { waitForTrailers: true });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ xyz: 'abc' });
+    });
+    stream.end('Hello World');
 });
 ```
 
@@ -1037,7 +1037,7 @@ server.on('stream', (stream) => {
 
 ### Класс: `ClientHttp2Stream`
 
-- Расширяет {Http2Stream}
+-   Расширяет {Http2Stream}
 
 Класс `ClientHttp2Stream` является расширением `Http2Stream`, который используется исключительно в HTTP/2 клиентах. Экземпляры `Http2Stream` на клиенте обеспечивают такие события, как `'response'` и `'push'`, которые актуальны только на клиенте.
 
@@ -1051,14 +1051,14 @@ server.on('stream', (stream) => {
 
 #### Событие: `headers`
 
-- `headers` {HTTP/2 Headers Object}
-- `флаги` {число}
+-   `headers` {HTTP/2 Headers Object}
+-   `флаги` {число}
 
 Событие `'headers'` возникает, когда для потока получен дополнительный блок заголовков, например, когда получен блок информационных заголовков `1xx`. Обратному вызову слушателя передается объект [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
 ```js
 stream.on('headers', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -1066,14 +1066,14 @@ stream.on('headers', (headers, flags) => {
 
 #### Событие: `push`
 
-- `headers` {HTTP/2 Headers Object}
-- `флаги` {число}
+-   `headers` {HTTP/2 Headers Object}
+-   `флаги` {число}
 
 Событие `'push'` возникает при получении заголовков ответа для потока Server Push. Обратному вызову слушателя передается объект [HTTP/2 Headers Object](#headers-object) и флаги, связанные с заголовками.
 
 ```js
 stream.on('push', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -1081,8 +1081,8 @@ stream.on('push', (headers, flags) => {
 
 #### Событие: `response`
 
-- `headers` {HTTP/2 Headers Object}
-- `флаги` {число}
+-   `headers` {HTTP/2 Headers Object}
+-   `флаги` {число}
 
 Событие `'response'` испускается, когда для этого потока был получен кадр ответа `HEADERS` от подключенного HTTP/2 сервера. Слушатель вызывается с двумя аргументами: `Object`, содержащий полученный [HTTP/2 Headers Object](#headers-object), и флаги, связанные с заголовками.
 
@@ -1091,7 +1091,7 @@ const http2 = require('node:http2');
 const client = http2.connect('https://localhost');
 const req = client.request({ ':path': '/' });
 req.on('response', (headers, flags) => {
-  console.log(headers[':status']);
+    console.log(headers[':status']);
 });
 ```
 
@@ -1099,7 +1099,7 @@ req.on('response', (headers, flags) => {
 
 ### Класс: `ServerHttp2Stream`
 
-- Расширяет: {Http2Stream}
+-   Расширяет: {Http2Stream}
 
 Класс `ServerHttp2Stream` является расширением [`Http2Stream`](#class-http2stream), который используется исключительно на HTTP/2 серверах. Экземпляры `Http2Stream` на сервере предоставляют дополнительные методы, такие как `http2stream.pushStream()` и `http2stream.respond()`, которые актуальны только на сервере.
 
@@ -1107,7 +1107,7 @@ req.on('response', (headers, flags) => {
 
 #### `http2stream.additionalHeaders(headers)`
 
-- `headers` {HTTP/2 Headers Object}
+-   `headers` {HTTP/2 Headers Object}
 
 Отправляет дополнительный информационный фрейм `HEADERS` подключенному HTTP/2 peer.
 
@@ -1115,7 +1115,7 @@ req.on('response', (headers, flags) => {
 
 #### `http2stream.headersSent`
 
-- {boolean}
+-   {boolean}
 
 True, если заголовки были отправлены, false в противном случае (только для чтения).
 
@@ -1123,7 +1123,7 @@ True, если заголовки были отправлены, false в про
 
 #### `http2stream.pushAllowed`
 
-- {boolean}
+-   {boolean}
 
 Свойство только для чтения, отображаемое на флаг `SETTINGS_ENABLE_PUSH` последнего кадра `SETTINGS` удаленного клиента. Будет `true`, если удаленный пир принимает push-потоки, `false` в противном случае. Настройки одинаковы для каждого `Http2Stream` в одном и том же `Http2Session`.
 
@@ -1131,14 +1131,14 @@ True, если заголовки были отправлены, false в про
 
 #### `http2stream.pushStream(headers[, options], callback)`
 
-- `headers` {HTTP/2 Headers Object}
-- `options` {Объект}
-  - `exclusive` {boolean} Если `true` и `parent` указывает родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
-  - `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
-- `callback` {функция} Обратный вызов, который будет вызван после того, как поток push будет инициирован.
-  - `err` {Ошибка}
-  - `pushStream` {ServerHttp2Stream} Возвращаемый объект `pushStream`.
-  - `headers` {HTTP/2 Headers Object} Объект заголовков, с которым был инициирован `pushStream`.
+-   `headers` {HTTP/2 Headers Object}
+-   `options` {Объект}
+    -   `exclusive` {boolean} Если `true` и `parent` указывает родительский поток, создаваемый поток становится единственной прямой зависимостью родительского потока, а все остальные существующие зависимости становятся зависимыми от вновь созданного потока. **По умолчанию:** `false`.
+    -   `parent` {number} Указывает числовой идентификатор потока, от которого зависит создаваемый поток.
+-   `callback` {функция} Обратный вызов, который будет вызван после того, как поток push будет инициирован.
+    -   `err` {Ошибка}
+    -   `pushStream` {ServerHttp2Stream} Возвращаемый объект `pushStream`.
+    -   `headers` {HTTP/2 Headers Object} Объект заголовков, с которым был инициирован `pushStream`.
 
 Инициирует поток push. Обратный вызов вызывается с новым экземпляром `Http2Stream`, созданным для потока push, переданным в качестве второго аргумента, или с `Error`, переданным в качестве первого аргумента.
 
@@ -1146,16 +1146,16 @@ True, если заголовки были отправлены, false в про
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond({ ':status': 200 });
-  stream.pushStream(
-    { ':path': '/' },
-    (err, pushStream, headers) => {
-      if (err) throw err;
-      pushStream.respond({ ':status': 200 });
-      pushStream.end('some pushed data');
-    }
-  );
-  stream.end('некоторые данные');
+    stream.respond({ ':status': 200 });
+    stream.pushStream(
+        { ':path': '/' },
+        (err, pushStream, headers) => {
+            if (err) throw err;
+            pushStream.respond({ ':status': 200 });
+            pushStream.end('some pushed data');
+        }
+    );
+    stream.end('некоторые данные');
 });
 ```
 
@@ -1167,10 +1167,10 @@ server.on('stream', (stream) => {
 
 #### `http2stream.respond([headers[, options]])`
 
-- `headers` {HTTP/2 Headers Object}
-- `options` {Объект}
-  - `endStream` {boolean} Устанавливается в `true`, чтобы указать, что ответ не будет включать данные полезной нагрузки.
-  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
+-   `headers` {HTTP/2 Headers Object}
+-   `options` {Объект}
+    -   `endStream` {boolean} Устанавливается в `true`, чтобы указать, что ответ не будет включать данные полезной нагрузки.
+    -   `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
 
 <!-- конец списка -->
 
@@ -1178,8 +1178,8 @@ server.on('stream', (stream) => {
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond({ ':status': 200 });
-  stream.end('some data');
+    stream.respond({ ':status': 200 });
+    stream.end('some data');
 });
 ```
 
@@ -1191,16 +1191,16 @@ server.on('stream', (stream) => {
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond(
-    { ':status': 200 },
-    { waitForTrailers: true }
-  );
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({
-      ABC: 'некоторое значение для отправки',
+    stream.respond(
+        { ':status': 200 },
+        { waitForTrailers: true }
+    );
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({
+            ABC: 'некоторое значение для отправки',
+        });
     });
-  });
-  stream.end('некоторые данные');
+    stream.end('некоторые данные');
 });
 ```
 
@@ -1208,13 +1208,13 @@ server.on('stream', (stream) => {
 
 #### `http2stream.respondWithFD(fd[, headers[, options]])`
 
-- `fd` {number|FileHandle} Читаемый дескриптор файла.
-- `headers` {HTTP/2 Headers Object}
-- `options` {Объект}
-  - `statCheck` {Функция}
-  - `waitForTrailers` {boolean} Когда `true`, `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
-  - `offset` {число} Позиция смещения, с которой следует начать чтение.
-  - `length` {number} Количество данных из fd для отправки.
+-   `fd` {number|FileHandle} Читаемый дескриптор файла.
+-   `headers` {HTTP/2 Headers Object}
+-   `options` {Объект}
+    -   `statCheck` {Функция}
+    -   `waitForTrailers` {boolean} Когда `true`, `Http2Stream` будет выдавать событие `'wantTrailers'` после того, как будет отправлен последний кадр `DATA`.
+    -   `offset` {число} Позиция смещения, с которой следует начать чтение.
+    -   `length` {number} Количество данных из fd для отправки.
 
 Инициирует ответ, данные которого считываются из заданного дескриптора файла. Проверка заданного файлового дескриптора не производится. Если при попытке чтения данных с помощью дескриптора файла произойдет ошибка, `Http2Stream` будет закрыт с помощью кадра `RST_STREAM` со стандартным кодом `INTERNAL_ERROR`.
 
@@ -1226,16 +1226,16 @@ const fs = require('node:fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  const fd = fs.openSync('/some/file', 'r');
+    const fd = fs.openSync('/some/file', 'r');
 
-  const stat = fs.fstatSync(fd);
-  const headers = {
-    'content-length': stat.size,
-    'last-modified': stat.mtime.toUTCString(),
-    'content-type': 'text/plain; charset=utf-8',
-  };
-  stream.respondWithFD(fd, headers);
-  stream.on('close', () => fs.closeSync(fd));
+    const stat = fs.fstatSync(fd);
+    const headers = {
+        'content-length': stat.size,
+        'last-modified': stat.mtime.toUTCString(),
+        'content-type': 'text/plain; charset=utf-8',
+    };
+    stream.respondWithFD(fd, headers);
+    stream.on('close', () => fs.closeSync(fd));
 });
 ```
 
@@ -1255,35 +1255,35 @@ const fs = require('node:fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  const fd = fs.openSync('/some/file', 'r');
+    const fd = fs.openSync('/some/file', 'r');
 
-  const stat = fs.fstatSync(fd);
-  const headers = {
-    'content-length': stat.size,
-    'last-modified': stat.mtime.toUTCString(),
-    'content-type': 'text/plain; charset=utf-8',
-  };
-  stream.respondWithFD(fd, headers, {
-    waitForTrailers: true,
-  });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
-  });
+    const stat = fs.fstatSync(fd);
+    const headers = {
+        'content-length': stat.size,
+        'last-modified': stat.mtime.toUTCString(),
+        'content-type': 'text/plain; charset=utf-8',
+    };
+    stream.respondWithFD(fd, headers, {
+        waitForTrailers: true,
+    });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ ABC: 'some value to send' });
+    });
 
-  stream.on('close', () => fs.closeSync(fd));
+    stream.on('close', () => fs.closeSync(fd));
 });
 ```
 
 #### `http2stream.respondWithFile(path[, headers[, options]])`
 
-- `path` {string|Buffer|URL}
-- `headers` {HTTP/2 Headers Object}
-- `options` {Объект}
-  - `statCheck` {Функция}
-  - `onError` {Функция} Функция обратного вызова, вызываемая в случае ошибки перед отправкой.
-  - `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
-  - `offset` {число} Позиция смещения, с которой следует начать чтение.
-  - `length` {number} Количество данных из fd для отправки.
+-   `path` {string|Buffer|URL}
+-   `headers` {HTTP/2 Headers Object}
+-   `options` {Объект}
+    -   `statCheck` {Функция}
+    -   `onError` {Функция} Функция обратного вызова, вызываемая в случае ошибки перед отправкой.
+    -   `waitForTrailers` {boolean} Если `true`, то `Http2Stream` будет выдавать событие `'wantTrailers'` после отправки последнего кадра `DATA`.
+    -   `offset` {число} Позиция смещения, с которой следует начать чтение.
+    -   `length` {number} Количество данных из fd для отправки.
 
 Отправляет обычный файл в качестве ответа. В `path` должен быть указан обычный файл, иначе на объект `Http2Stream` будет выдано событие `'error'`.
 
@@ -1358,14 +1358,14 @@ server.on('stream', (stream) => {
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respondWithFile(
-    '/some/file',
-    { 'content-type': 'text/plain; charset=utf-8' },
-    { waitForTrailers: true }
-  );
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
-  });
+    stream.respondWithFile(
+        '/some/file',
+        { 'content-type': 'text/plain; charset=utf-8' },
+        { waitForTrailers: true }
+    );
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ ABC: 'some value to send' });
+    });
 });
 ```
 
@@ -1373,7 +1373,7 @@ server.on('stream', (stream) => {
 
 ### Класс: `Http2Server`
 
-- Расширяет: {net.Server}
+-   Расширяет: {net.Server}
 
 Экземпляры `Http2Server` создаются с помощью функции `http2.createServer()`. Класс `Http2Server` не экспортируется напрямую модулем `node:http2`.
 
@@ -1381,8 +1381,8 @@ server.on('stream', (stream) => {
 
 #### Событие: `'checkContinue'`
 
-- `запрос` {http2.Http2ServerRequest}
-- `ответ` {http2.Http2ServerResponse}
+-   `запрос` {http2.Http2ServerRequest}
+-   `ответ` {http2.Http2ServerResponse}
 
 Если зарегистрирован слушатель [`'request'`](#event-request) или [`http2.createServer()`](#http2createserveroptions-onrequesthandler) снабжен функцией обратного вызова, событие `'checkContinue'` испускается каждый раз, когда получен запрос с HTTP `Expect: 100-continue`. Если это событие не прослушивается, сервер будет автоматически отвечать со статусом `100 Continue` в зависимости от ситуации.
 
@@ -1394,7 +1394,7 @@ server.on('stream', (stream) => {
 
 #### Событие: `connection`
 
-- `socket` {stream.Duplex}
+-   `socket` {stream.Duplex}
 
 Это событие возникает при установлении нового TCP-потока. `socket` обычно представляет собой объект типа [`net.Socket`] (net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
@@ -1404,8 +1404,8 @@ server.on('stream', (stream) => {
 
 #### Событие: `request`
 
-- `запрос` {http2.Http2ServerRequest}
-- `response` {http2.Http2ServerResponse}
+-   `запрос` {http2.Http2ServerRequest}
+-   `response` {http2.Http2ServerResponse}
 
 Выдается при каждом запросе. В одной сессии может быть несколько запросов. См. [API совместимости] (#compatibility-api).
 
@@ -1413,7 +1413,7 @@ server.on('stream', (stream) => {
 
 #### Событие: `session`
 
-- `session` {ServerHttp2Session}
+-   `session` {ServerHttp2Session}
 
 Событие `'session'` испускается, когда новый `Http2Session` создается Http2Server'ом.
 
@@ -1421,8 +1421,8 @@ server.on('stream', (stream) => {
 
 #### Событие: `sessionError`
 
-- `error` {Ошибка}
-- `session` {ServerHttp2Session}
+-   `error` {Ошибка}
+-   `session` {ServerHttp2Session}
 
 Событие `'sessionError'` испускается, когда событие `'error'` испускается объектом `Http2Session`, связанным с `Http2Server`.
 
@@ -1430,10 +1430,10 @@ server.on('stream', (stream) => {
 
 #### Событие: `stream`
 
-- `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
-- `flags` {number} Соответствующие числовые флаги
-- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
+-   `stream` {Http2Stream} Ссылка на поток
+-   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+-   `flags` {number} Соответствующие числовые флаги
+-   `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
 Событие `'stream'` испускается, когда событие `'stream'` было испущено `Http2Session`, связанным с сервером.
 
@@ -1442,24 +1442,24 @@ server.on('stream', (stream) => {
 ```js
 const http2 = require('node:http2');
 const {
-  HTTP2_HEADER_METHOD,
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS,
-  HTTP2_HEADER_CONTENT_TYPE,
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS,
+    HTTP2_HEADER_CONTENT_TYPE,
 } = http2.constants;
 
 const server = http2.createServer();
 server.on('stream', (stream, headers, flags) => {
-  const method = headers[HTTP2_HEADER_METHOD];
-  const path = headers[HTTP2_HEADER_PATH];
-  // ...
-  stream.respond({
-    [HTTP2_HEADER_STATUS]: 200,
-    [HTTP2_HEADER_CONTENT_TYPE]:
-      'text/plain; charset=utf-8',
-  });
-  stream.write('hello ');
-  stream.end('world');
+    const method = headers[HTTP2_HEADER_METHOD];
+    const path = headers[HTTP2_HEADER_PATH];
+    // ...
+    stream.respond({
+        [HTTP2_HEADER_STATUS]: 200,
+        [HTTP2_HEADER_CONTENT_TYPE]:
+            'text/plain; charset=utf-8',
+    });
+    stream.write('hello ');
+    stream.end('world');
 });
 ```
 
@@ -1473,7 +1473,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.close([callback])`
 
-- `callback` {Функция}
+-   `callback` {Функция}
 
 Прекращает создание сервером новых сессий. Это не препятствует созданию новых потоков запросов из-за постоянной природы сессий HTTP/2. Чтобы изящно завершить работу сервера, вызовите [`http2session.close()`](#http2sessionclosecallback) для всех активных сессий.
 
@@ -1483,9 +1483,9 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.setTimeout([msecs][, callback])`
 
-- `msecs` {число} **По умолчанию:** 0 (без таймаута)
-- `callback` {функция}
-- Возвращает: {Http2Server}
+-   `msecs` {число} **По умолчанию:** 0 (без таймаута)
+-   `callback` {функция}
+-   Возвращает: {Http2Server}
 
 Используется для установки значения тайм-аута для запросов http2-сервера и задает функцию обратного вызова, которая вызывается при отсутствии активности на `Http2Server` по истечении `msecs` миллисекунд.
 
@@ -1497,7 +1497,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.timeout`
 
-- {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
+-   {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
 Количество миллисекунд бездействия, после которого считается, что сокет завершил работу.
 
@@ -1509,7 +1509,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.updateSettings([settings])`
 
-- `settings` {HTTP/2 Settings Object}
+-   `settings` {HTTP/2 Settings Object}
 
 Используется для обновления сервера с заданными настройками.
 
@@ -1521,7 +1521,7 @@ server.on('stream', (stream, headers, flags) => {
 
 ### Класс: `Http2SecureServer`
 
-- Расширяет: {tls.Server}
+-   Расширяет: {tls.Server}
 
 Экземпляры `Http2SecureServer` создаются с помощью функции `http2.createSecureServer()`. Класс `Http2SecureServer` не экспортируется напрямую модулем `node:http2`.
 
@@ -1529,8 +1529,8 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `'checkContinue'`
 
-- `запрос` {http2.Http2ServerRequest}
-- `ответ` {http2.Http2ServerResponse}
+-   `запрос` {http2.Http2ServerRequest}
+-   `ответ` {http2.Http2ServerResponse}
 
 Если зарегистрирован слушатель [`'request'`](#event-request) или [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler) снабжен функцией обратного вызова, событие `'checkContinue'` испускается каждый раз, когда получен запрос с HTTP `Expect: 100-continue`. Если это событие не прослушивается, сервер будет автоматически отвечать со статусом `100 Continue` в зависимости от ситуации.
 
@@ -1542,7 +1542,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `connection`
 
-- `socket` {stream.Duplex}
+-   `socket` {stream.Duplex}
 
 Это событие возникает при установлении нового TCP-потока, до начала квитирования TLS. `socket` обычно представляет собой объект типа [`net.Socket`] (net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
@@ -1552,8 +1552,8 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `request`
 
-- `запрос` {http2.Http2ServerRequest}
-- `response` {http2.Http2ServerResponse}
+-   `запрос` {http2.Http2ServerRequest}
+-   `response` {http2.Http2ServerResponse}
 
 Выдается при каждом запросе. В одной сессии может быть несколько запросов. См. [API совместимости] (#compatibility-api).
 
@@ -1561,7 +1561,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `session`
 
-- `session` {ServerHttp2Session}
+-   `session` {ServerHttp2Session}
 
 Событие `'session'` испускается, когда новый `Http2Session` создается сервером `Http2SecureServer`.
 
@@ -1569,8 +1569,8 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `sessionError`
 
-- `error` {Ошибка}
-- `session` {ServerHttp2Session}
+-   `error` {Ошибка}
+-   `session` {ServerHttp2Session}
 
 Событие `'sessionError'` генерируется, когда объект `Http2Session`, связанный с `Http2SecureServer`, выдает событие `'error'`.
 
@@ -1578,10 +1578,10 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `stream`
 
-- `stream` {Http2Stream} Ссылка на поток
-- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
-- `flags` {number} Соответствующие числовые флаги
-- `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
+-   `stream` {Http2Stream} Ссылка на поток
+-   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+-   `flags` {number} Соответствующие числовые флаги
+-   `rawHeaders` {Array} Массив, содержащий имена необработанных заголовков, за которыми следуют их соответствующие значения.
 
 Событие `'stream'` испускается, когда событие `'stream'` было испущено `Http2Session`, связанным с сервером.
 
@@ -1590,26 +1590,26 @@ server.on('stream', (stream, headers, flags) => {
 ```js
 const http2 = require('node:http2');
 const {
-  HTTP2_HEADER_METHOD,
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS,
-  HTTP2_HEADER_CONTENT_TYPE,
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS,
+    HTTP2_HEADER_CONTENT_TYPE,
 } = http2.constants;
 
 const options = getOptionsSomehow();
 
 const server = http2.createSecureServer(options);
 server.on('stream', (stream, headers, flags) => {
-  const method = headers[HTTP2_HEADER_METHOD];
-  const path = headers[HTTP2_HEADER_PATH];
-  // ...
-  stream.respond({
-    [HTTP2_HEADER_STATUS]: 200,
-    [HTTP2_HEADER_CONTENT_TYPE]:
-      'text/plain; charset=utf-8',
-  });
-  stream.write('hello ');
-  stream.end('world');
+    const method = headers[HTTP2_HEADER_METHOD];
+    const path = headers[HTTP2_HEADER_PATH];
+    // ...
+    stream.respond({
+        [HTTP2_HEADER_STATUS]: 200,
+        [HTTP2_HEADER_CONTENT_TYPE]:
+            'text/plain; charset=utf-8',
+    });
+    stream.write('hello ');
+    stream.end('world');
 });
 ```
 
@@ -1623,7 +1623,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### Событие: `unknownProtocol`
 
-- `socket` {stream.Duplex}
+-   `socket` {stream.Duplex}
 
 Событие `'unknownProtocol'` возникает, когда подключающийся клиент не может согласовать разрешенный протокол (т.е. HTTP/2 или HTTP/1.1). Обработчик события получает сокет для обработки. Если для этого события не зарегистрирован слушатель, соединение разрывается. Таймаут может быть указан с помощью опции `'unknownProtocolTimeout'`, передаваемой в [`http2.createSecureServer()`](#http2createsecureserveroptions-onrequesthandler).
 
@@ -1633,7 +1633,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.close([callback])`
 
-- `callback` {Функция}
+-   `callback` {Функция}
 
 Прекращает создание сервером новых сессий. Это не препятствует созданию новых потоков запросов из-за постоянной природы сессий HTTP/2. Чтобы изящно завершить работу сервера, вызовите [`http2session.close()`](#http2sessionclosecallback) для всех активных сессий.
 
@@ -1643,9 +1643,9 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.setTimeout([msecs][, callback])`
 
-- `msecs` {число} **По умолчанию:** `120000` (2 минуты)
-- `callback` {функция}
-- Возвращает: {Http2SecureServer}
+-   `msecs` {число} **По умолчанию:** `120000` (2 минуты)
+-   `callback` {функция}
+-   Возвращает: {Http2SecureServer}
 
 Используется для установки значения тайм-аута для запросов http2 secure server, и устанавливает функцию обратного вызова, которая вызывается, когда нет активности на `Http2SecureServer` после `msecs` миллисекунд.
 
@@ -1657,7 +1657,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.timeout`
 
-- {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
+-   {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
 Количество миллисекунд бездействия, после которого считается, что сокет завершил работу.
 
@@ -1669,7 +1669,7 @@ server.on('stream', (stream, headers, flags) => {
 
 #### `server.updateSettings([settings])`
 
-- `settings` {HTTP/2 Settings Object}
+-   `settings` {HTTP/2 Settings Object}
 
 Используется для обновления сервера с заданными настройками.
 
@@ -1681,29 +1681,29 @@ server.on('stream', (stream, headers, flags) => {
 
 ### `http2.createServer([options][, onRequestHandler])`
 
-- `options` {Object}
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
-  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
-  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
-  - `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
-  - `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
-  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен. Хотя этот параметр устанавливает максимально допустимый размер для всего блока заголовков, `nghttp2`(внутренняя библиотека http2) имеет ограничение`65536` для каждой распакованной пары ключ/значение.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества прокладок для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-    - `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
-  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
-  - `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
-  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
-  - `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
-  - `Http1IncomingMessage` {http.IncomingMessage} Определяет класс `IncomingMessage`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.IncomingMessage`. **По умолчанию:** `http.IncomingMessage`.
-  - `Http1ServerResponse` {http.ServerResponse} Определяет класс `ServerResponse`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.ServerResponse`. **По умолчанию:** `http.ServerResponse`.
-  - `Http2ServerRequest` {http2.Http2ServerRequest} Определяет класс `Http2ServerRequest` для использования. Полезен для расширения оригинального `Http2ServerRequest`. **По умолчанию:** `Http2ServerRequest`.
-  - `Http2ServerResponse` {http2.Http2ServerResponse} Определяет класс `Http2ServerResponse` для использования. Полезно для расширения оригинального `Http2ServerResponse`. **По умолчанию:** `Http2ServerResponse`.
-  - `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, который сервер должен ждать, когда выдается [`неизвестный протокол`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
-  - ...: Может быть предоставлена любая опция [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener).
-- `onRequestHandler` {Функция} См. [API совместимости](#compatibility-api).
-- Возвращает: {Http2Server}
+-   `options` {Object}
+    -   `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+    -   `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+    -   `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+    -   `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
+    -   `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
+    -   `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен. Хотя этот параметр устанавливает максимально допустимый размер для всего блока заголовков, `nghttp2`(внутренняя библиотека http2) имеет ограничение`65536` для каждой распакованной пары ключ/значение.
+    -   `paddingStrategy` {number} Стратегия, используемая для определения количества прокладок для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+        -   `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
+        -   `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+        -   `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
+    -   `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
+    -   `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
+    -   `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
+    -   `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
+    -   `Http1IncomingMessage` {http.IncomingMessage} Определяет класс `IncomingMessage`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.IncomingMessage`. **По умолчанию:** `http.IncomingMessage`.
+    -   `Http1ServerResponse` {http.ServerResponse} Определяет класс `ServerResponse`, который будет использоваться для HTTP/1 fallback. Полезно для расширения оригинального `http.ServerResponse`. **По умолчанию:** `http.ServerResponse`.
+    -   `Http2ServerRequest` {http2.Http2ServerRequest} Определяет класс `Http2ServerRequest` для использования. Полезен для расширения оригинального `Http2ServerRequest`. **По умолчанию:** `Http2ServerRequest`.
+    -   `Http2ServerResponse` {http2.Http2ServerResponse} Определяет класс `Http2ServerResponse` для использования. Полезно для расширения оригинального `Http2ServerResponse`. **По умолчанию:** `Http2ServerResponse`.
+    -   `unknownProtocolTimeout` {number} Определяет тайм-аут в миллисекундах, который сервер должен ждать, когда выдается [`неизвестный протокол`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
+    -   ...: Может быть предоставлена любая опция [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener).
+-   `onRequestHandler` {Функция} См. [API совместимости](#compatibility-api).
+-   Возвращает: {Http2Server}
 
 Возвращает экземпляр `net.Server`, который создает и управляет экземплярами `Http2Session`.
 
@@ -1719,11 +1719,11 @@ const http2 = require('node:http2');
 const server = http2.createServer();
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200,
-  });
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200,
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(8000);
@@ -1733,27 +1733,27 @@ server.listen(8000);
 
 ### `http2.createSecureServer(options[, onRequestHandler])`
 
-- `options` {Object}
-  - `allowHTTP1` {boolean} Входящие клиентские соединения, не поддерживающие HTTP/2, будут понижены до HTTP/1.x, если установлено значение `true`. См. событие [`неизвестный протокол`](#event-unknownprotocol). См. [ALPN negotiation](#alpn-negotiation). **По умолчанию:** `false`.
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
-  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
-  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
-  - `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
-  - `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
-  - `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-  - `http2.constants.PADDING_STRATEGY_NONE`: Никакие прокладки не применяются.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
-  - `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
-  - `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
-  - `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
-  - `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
-  - ...: Можно предоставить любые опции [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener). Для серверов обычно требуются опции идентификации (`pfx` или `key`/`cert`).
-  - `origins` {string\[\]} Массив строк происхождения для отправки во фрейме `ORIGIN` сразу после создания новой серверной `Http2Session`.
-  - `unknownProtocolTimeout` {number} Определяет таймаут в миллисекундах, который сервер должен выждать, когда испускается событие [`'unknownProtocol'`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
-- `onRequestHandler` {Функция} См. [Compatibility API](#compatibility-api).
-- Возвращает: {Http2SecureServer}
+-   `options` {Object}
+    -   `allowHTTP1` {boolean} Входящие клиентские соединения, не поддерживающие HTTP/2, будут понижены до HTTP/1.x, если установлено значение `true`. См. событие [`неизвестный протокол`](#event-unknownprotocol). См. [ALPN negotiation](#alpn-negotiation). **По умолчанию:** `false`.
+    -   `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+    -   `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+    -   `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непринятые фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+    -   `maxHeaderListPairs` {number} Устанавливает максимальное количество записей заголовков. Это аналогично [`server.maxHeadersCount`](http.md#servermaxheaderscount) или [`request.maxHeadersCount`](http.md#requestmaxheaderscount) в модуле `node:http`. Минимальное значение - `4`. **По умолчанию:** `128`.
+    -   `maxOutstandingPings` {number} Задает максимальное количество оставшихся непринятых пингов. **По умолчанию:** `10`.
+    -   `maxSendHeaderBlockLength` {number} Устанавливает максимально допустимый размер сериализованного сжатого блока заголовков. Попытки отправить заголовки, превышающие этот предел, приведут к возникновению события `'frameError'', а поток будет закрыт и уничтожен.
+    -   `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+    -   `http2.constants.PADDING_STRATEGY_NONE`: Никакие прокладки не применяются.
+        -   `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+        -   `http2.constants.PADDING_STRATEGY_ALIGNED`: Пытается применить достаточное количество прокладок, чтобы общая длина кадра, включая 9-байтовый заголовок, была кратна 8. Для каждого кадра существует максимально допустимое количество байт прокладок, которое определяется текущим состоянием и настройками управления потоком. Если этот максимум меньше, чем рассчитанное количество, необходимое для обеспечения выравнивания, используется максимум, и общая длина кадра не обязательно выравнивается по 8 байтам.
+    -   `peerMaxConcurrentStreams` {number} Устанавливает максимальное количество одновременных потоков для удаленного пира, как если бы был получен кадр `SETTINGS`. Будет переопределено, если удаленный пир установит собственное значение для `maxConcurrentStreams`. **По умолчанию:** `100`.
+    -   `maxSessionInvalidFrames` {целое число} Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
+    -   `maxSessionRejectedStreams` {integer} Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
+    -   `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
+    -   ...: Можно предоставить любые опции [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener). Для серверов обычно требуются опции идентификации (`pfx` или `key`/`cert`).
+    -   `origins` {string\[\]} Массив строк происхождения для отправки во фрейме `ORIGIN` сразу после создания новой серверной `Http2Session`.
+    -   `unknownProtocolTimeout` {number} Определяет таймаут в миллисекундах, который сервер должен выждать, когда испускается событие [`'unknownProtocol'`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
+-   `onRequestHandler` {Функция} См. [Compatibility API](#compatibility-api).
+-   Возвращает: {Http2SecureServer}
 
 Возвращает экземпляр `tls.Server`, который создает и управляет экземплярами `Http2Session`.
 
@@ -1762,19 +1762,19 @@ const http2 = require('node:http2');
 const fs = require('node:fs');
 
 const options = {
-  key: fs.readFileSync('server-key.pem'),
-  cert: fs.readFileSync('server-cert.pem'),
+    key: fs.readFileSync('server-key.pem'),
+    cert: fs.readFileSync('server-cert.pem'),
 };
 
 // Create a secure HTTP/2 server
 const server = http2.createSecureServer(options);
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200,
-  });
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200,
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(8443);
@@ -1784,19 +1784,19 @@ server.listen(8443);
 
 ### `http2.connect(authority[, options][, listener])`
 
-- `authority` {string|URL} Удаленный HTTP/2 сервер, к которому необходимо подключиться. Он должен быть в виде минимального корректного URL с префиксом `http://` или `https://`, имени хоста и IP-порта (если используется порт не по умолчанию). Информация о пользователе (идентификатор пользователя и пароль), путь, строка запроса и детали фрагмента в URL будут проигнорированы.
-- `options` {Object}
-  - `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
-  - `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
-  - `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непризнанные фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
-  - `maxHeaderListPairs` {number} Sets the maximum number of header entries. This is similar to [`server.maxHeadersCount`](http.md#servermaxheaderscount) or [`request.maxHeadersCount`](http.md#requestmaxheaderscount) in the `node:http` module. The minimum value is `1`. **Default:** `128`.
-  - `maxOutstandingPings` {number} Sets the maximum number of outstanding, unacknowledged pings. **Default:** `10`.
-  - `maxReservedRemoteStreams` {number} Sets the maximum number of reserved push streams the client will accept at any given time. Once the current number of currently reserved push streams exceeds reaches this limit, new push streams sent by the server will be automatically rejected. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. A negative value sets this option to the maximum allowed value. **Default:** `200`.
-  - `maxSendHeaderBlockLength` {number} Sets the maximum allowed size for a serialized, compressed block of headers. Attempts to send headers that exceed this limit will result in a `'frameError'` event being emitted and the stream being closed and destroyed.
-  - `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
-    - `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
-    - `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
-    - `http2.constants.PADDING_STRATEGY_ALIGNED`: Попытка применить достаточное количество прокладок для того, чтобы общая длина кадра, включая
+-   `authority` {string|URL} Удаленный HTTP/2 сервер, к которому необходимо подключиться. Он должен быть в виде минимального корректного URL с префиксом `http://` или `https://`, имени хоста и IP-порта (если используется порт не по умолчанию). Информация о пользователе (идентификатор пользователя и пароль), путь, строка запроса и детали фрагмента в URL будут проигнорированы.
+-   `options` {Object}
+    -   `maxDeflateDynamicTableSize` {number} Устанавливает максимальный размер динамической таблицы для дефлирования полей заголовка. **По умолчанию:** `4Kib`.
+    -   `maxSettings` {number} Устанавливает максимальное количество записей настроек в рамке `SETTINGS`. Минимальное допустимое значение - `1`. **По умолчанию:** `32`.
+    -   `maxSessionMemory`{число} Задает максимальное количество памяти, которое разрешено использовать `Http2Session`. Значение выражается в количестве мегабайт, например, `1` равно 1 мегабайту. Минимально допустимое значение - `1`. Это ограничение, основанное на кредите, существующие `Http2Stream` могут привести к превышению этого ограничения, но новые экземпляры `Http2Stream` будут отклонены при превышении этого ограничения. Текущее количество сессий `Http2Stream`, текущее использование памяти таблиц сжатия заголовков, текущие данные в очереди на отправку, а также непризнанные фреймы `PING` и `SETTINGS` учитываются в текущем лимите. **По умолчанию:** `10`.
+    -   `maxHeaderListPairs` {number} Sets the maximum number of header entries. This is similar to [`server.maxHeadersCount`](http.md#servermaxheaderscount) or [`request.maxHeadersCount`](http.md#requestmaxheaderscount) in the `node:http` module. The minimum value is `1`. **Default:** `128`.
+    -   `maxOutstandingPings` {number} Sets the maximum number of outstanding, unacknowledged pings. **Default:** `10`.
+    -   `maxReservedRemoteStreams` {number} Sets the maximum number of reserved push streams the client will accept at any given time. Once the current number of currently reserved push streams exceeds reaches this limit, new push streams sent by the server will be automatically rejected. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. A negative value sets this option to the maximum allowed value. **Default:** `200`.
+    -   `maxSendHeaderBlockLength` {number} Sets the maximum allowed size for a serialized, compressed block of headers. Attempts to send headers that exceed this limit will result in a `'frameError'` event being emitted and the stream being closed and destroyed.
+    -   `paddingStrategy` {number} Стратегия, используемая для определения количества вставки для фреймов `HEADERS` и `DATA`. **По умолчанию:** `http2.constants.PADDING_STRATEGY_NONE`. Значение может быть одним из:
+        -   `http2.constants.PADDING_STRATEGY_NONE`: Никакая прокладка не применяется.
+        -   `http2.constants.PADDING_STRATEGY_MAX`: Применяется максимальное количество прокладок, определяемое внутренней реализацией.
+        -   `http2.constants.PADDING_STRATEGY_ALIGNED`: Попытка применить достаточное количество прокладок для того, чтобы общая длина кадра, включая
 
 <!-- 0115.part.md -->
 
@@ -1829,7 +1829,7 @@ server.listen(8443);
 
 ### `http2.getDefaultSettings()`
 
-- Возвращает: {HTTP/2 Settings Object}
+-   Возвращает: {HTTP/2 Settings Object}
 
 Возвращает объект, содержащий настройки по умолчанию для экземпляра `Http2Session`. Этот метод возвращает новый экземпляр объекта при каждом вызове, поэтому возвращаемые экземпляры могут быть безопасно изменены для использования.
 
@@ -1837,8 +1837,8 @@ server.listen(8443);
 
 ### `http2.getPackedSettings([settings])`
 
-- `settings` {HTTP/2 Объект настроек}
-- Возвращает: {Буфер}
+-   `settings` {HTTP/2 Объект настроек}
+-   Возвращает: {Буфер}
 
 Возвращает экземпляр `Buffer`, содержащий сериализованное представление заданных настроек HTTP/2, как указано в спецификации [HTTP/2](https://tools.ietf.org/html/rfc7540). Предназначен для использования с полем заголовка `HTTP2-Settings`.
 
@@ -1846,7 +1846,7 @@ server.listen(8443);
 const http2 = require('node:http2');
 
 const packed = http2.getPackedSettings({
-  enablePush: false,
+    enablePush: false,
 });
 
 console.log(packed.toString('base64'));
@@ -1857,8 +1857,8 @@ console.log(packed.toString('base64'));
 
 ### `http2.getUnpackedSettings(buf)`
 
-- `buf` {Buffer|TypedArray} Упакованные настройки.
-- Возвращает: {HTTP/2 Settings Object}
+-   `buf` {Buffer|TypedArray} Упакованные настройки.
+-   Возвращает: {HTTP/2 Settings Object}
 
 Возвращает [HTTP/2 Settings Object](#settings-object), содержащий десериализованные настройки из данного `Buffer`, сгенерированные `http2.getPackedSettings()`.
 
@@ -1866,7 +1866,7 @@ console.log(packed.toString('base64'));
 
 ### `http2.sensitiveHeaders`
 
-- {символ}
+-   {символ}
 
 Этот символ может быть установлен как свойство объекта HTTP/2 headers со значением массива, чтобы предоставить список заголовков, считающихся чувствительными. Более подробную информацию смотрите в [Sensitive headers](#sensitive-headers).
 
@@ -1878,9 +1878,9 @@ console.log(packed.toString('base64'));
 
 ```js
 const headers = {
-  ':status': '200',
-  'content-type': 'text-plain',
-  ABC: ['has', 'more', 'than', 'one', 'value'],
+    ':status': '200',
+    'content-type': 'text-plain',
+    ABC: ['has', 'more', 'than', 'one', 'value'],
 };
 
 stream.respond(headers);
@@ -1890,11 +1890,11 @@ stream.respond(headers);
 
 Для входящих заголовков:
 
-- Заголовок `:status` преобразуется в `number`.
-- Дубликаты `:status`, `:method`, `:authority`, `:scheme`, `:path`, `: protocol`, `age`, `authorization`, `access-control-allow-credentials`, `access-control-max-age`, `access-control-request-method`, `content-encoding`, `content-language`, `content-length`, `content-location`, `content-md5`, `content-range`, `content-type`, `date`, `dnt`, `etag`, `expires`, `from`, `host`, `if-match`, `if-modified-since`, `if-none-match`, `if-range`, `if-unmodified-since`, `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `range`, `referer`, `retry-after`, `tk`, `upgrade-insecure-requests`, `user-agent` или `x-content-type-options` отбрасываются.
-- `set-cookie` всегда является массивом. Дубликаты добавляются в массив.
-- Для дублирующихся заголовков `cookie` значения объединяются с помощью ';'.
-- Для всех остальных заголовков значения объединяются с помощью ','.
+-   Заголовок `:status` преобразуется в `number`.
+-   Дубликаты `:status`, `:method`, `:authority`, `:scheme`, `:path`, `: protocol`, `age`, `authorization`, `access-control-allow-credentials`, `access-control-max-age`, `access-control-request-method`, `content-encoding`, `content-language`, `content-length`, `content-location`, `content-md5`, `content-range`, `content-type`, `date`, `dnt`, `etag`, `expires`, `from`, `host`, `if-match`, `if-modified-since`, `if-none-match`, `if-range`, `if-unmodified-since`, `last-modified`, `location`, `max-forwards`, `proxy-authorization`, `range`, `referer`, `retry-after`, `tk`, `upgrade-insecure-requests`, `user-agent` или `x-content-type-options` отбрасываются.
+-   `set-cookie` всегда является массивом. Дубликаты добавляются в массив.
+-   Для дублирующихся заголовков `cookie` значения объединяются с помощью ';'.
+-   Для всех остальных заголовков значения объединяются с помощью ','.
 
 <!-- конец списка -->
 
@@ -1902,8 +1902,8 @@ stream.respond(headers);
 const http2 = require('node:http2');
 const server = http2.createServer();
 server.on('stream', (stream, headers) => {
-  console.log(headers[':path']);
-  console.log(headers.ABC);
+    console.log(headers[':path']);
+    console.log(headers.ABC);
 });
 ```
 
@@ -1915,14 +1915,14 @@ server.on('stream', (stream, headers) => {
 
 ```js
 const headers = {
-  ':status': '200',
-  'content-type': 'text-plain',
-  cookie: 'some-cookie',
-  'other-sensitive-header': 'очень секретные данные',
-  [http2.sensitiveHeaders]: [
-    'cookie',
-    'other-sensitive-header',
-  ],
+    ':status': '200',
+    'content-type': 'text-plain',
+    cookie: 'some-cookie',
+    'other-sensitive-header': 'очень секретные данные',
+    [http2.sensitiveHeaders]: [
+        'cookie',
+        'other-sensitive-header',
+    ],
 };
 
 stream.respond(headers);
@@ -1938,14 +1938,14 @@ stream.respond(headers);
 
 API `http2.getDefaultSettings()`, `http2.getPackedSettings()`, `http2.createServer()`, `http2.createSecureServer()`, `http2session.settings()`, `http2session.localSettings` и `http2session.remoteSettings` либо возвращают, либо получают на вход объект, определяющий настройки конфигурации для объекта `Http2Session`. Эти объекты представляют собой обычные объекты JavaScript, содержащие следующие свойства.
 
-- `headerTableSize` {number} Specifies the maximum number of bytes used for header compression. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4096`.
-- `enablePush` {boolean} Указывает `true`, если HTTP/2 Push-потоки должны быть разрешены для экземпляров `Http2Session`. **По умолчанию:** `true`.
-- `initialWindowSize` {number} Specifies the _sender’s_ initial window size in bytes for stream-level flow control. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
-- `maxFrameSize` {number} Specifies the size in bytes of the largest frame payload. The minimum allowed value is 16,384. The maximum allowed value is 2<sup>24</sup>-1. **Default:** `16384`.
-- `maxConcurrentStreams` {number} Specifies the maximum number of concurrent streams permitted on an `Http2Session`. There is no default value which implies, at least theoretically, 2<sup>32</sup>-1 streams may be open concurrently at any given time in an `Http2Session`. The minimum value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4294967295`.
-- `maxHeaderListSize` {number} Specifies the maximum size (uncompressed octets) of header list that will be accepted. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
-- `maxHeaderSize` {число} Псевдоним для `maxHeaderListSize`.
-- `enableConnectProtocol`{boolean} Указывает `true`, если должен быть включен "Расширенный протокол соединения", определенный в [RFC 8441] (https://tools.ietf.org/html/rfc8441). Этот параметр имеет смысл только в том случае, если он отправлен сервером. После включения параметра `enableConnectProtocol` для данной `Http2Session`, он не может быть отключен. **По умолчанию:** `false`.
+-   `headerTableSize` {number} Specifies the maximum number of bytes used for header compression. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4096`.
+-   `enablePush` {boolean} Указывает `true`, если HTTP/2 Push-потоки должны быть разрешены для экземпляров `Http2Session`. **По умолчанию:** `true`.
+-   `initialWindowSize` {number} Specifies the _sender’s_ initial window size in bytes for stream-level flow control. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
+-   `maxFrameSize` {number} Specifies the size in bytes of the largest frame payload. The minimum allowed value is 16,384. The maximum allowed value is 2<sup>24</sup>-1. **Default:** `16384`.
+-   `maxConcurrentStreams` {number} Specifies the maximum number of concurrent streams permitted on an `Http2Session`. There is no default value which implies, at least theoretically, 2<sup>32</sup>-1 streams may be open concurrently at any given time in an `Http2Session`. The minimum value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `4294967295`.
+-   `maxHeaderListSize` {number} Specifies the maximum size (uncompressed octets) of header list that will be accepted. The minimum allowed value is 0. The maximum allowed value is 2<sup>32</sup>-1. **Default:** `65535`.
+-   `maxHeaderSize` {число} Псевдоним для `maxHeaderListSize`.
+-   `enableConnectProtocol`{boolean} Указывает `true`, если должен быть включен "Расширенный протокол соединения", определенный в [RFC 8441] (https://tools.ietf.org/html/rfc8441). Этот параметр имеет смысл только в том случае, если он отправлен сервером. После включения параметра `enableConnectProtocol` для данной `Http2Session`, он не может быть отключен. **По умолчанию:** `false`.
 
 Все дополнительные свойства объекта настроек игнорируются.
 
@@ -1989,12 +1989,12 @@ const http2 = require('node:http2');
 const client = http2.connect('http://localhost');
 
 client.on('stream', (pushedStream, requestHeaders) => {
-  pushedStream.on('push', (responseHeaders) => {
-    // Обработка заголовков ответа
-  });
-  pushedStream.on('data', (chunk) => {
-    /* обрабатываем вталкиваемые данные */
-  });
+    pushedStream.on('push', (responseHeaders) => {
+        // Обработка заголовков ответа
+    });
+    pushedStream.on('data', (chunk) => {
+        /* обрабатываем вталкиваемые данные */
+    });
 });
 
 const req = client.request({ ':path': '/' });
@@ -2012,10 +2012,10 @@ const req = client.request({ ':path': '/' });
 const net = require('node:net');
 
 const server = net.createServer((socket) => {
-  let name = '';
-  socket.setEncoding('utf8');
-  socket.on('data', (chunk) => (name += chunk));
-  socket.on('end', () => socket.end(`hello ${name}`));
+    let name = '';
+    socket.setEncoding('utf8');
+    socket.on('data', (chunk) => (name += chunk));
+    socket.on('end', () => socket.end(`hello ${name}`));
 });
 
 server.listen(8000);
@@ -2030,26 +2030,26 @@ const net = require('node:net');
 
 const proxy = http2.createServer();
 proxy.on('stream', (stream, headers) => {
-  if (headers[':method'] !== 'CONNECT') {
-    // Принимать только запросы CONNECT
-    stream.close(NGHTTP2_REFUSED_STREAM);
-    return;
-  }
-  const auth = new URL(`tcp://${headers[':authority']}`);
-  // Очень хорошая идея проверить, что имя хоста и порт являются.
-  // к которым должен подключаться этот прокси.
-  const socket = net.connect(
-    auth.port,
-    auth.hostname,
-    () => {
-      stream.respond();
-      socket.pipe(stream);
-      stream.pipe(socket);
+    if (headers[':method'] !== 'CONNECT') {
+        // Принимать только запросы CONNECT
+        stream.close(NGHTTP2_REFUSED_STREAM);
+        return;
     }
-  );
-  socket.on('error', (error) => {
-    stream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
-  });
+    const auth = new URL(`tcp://${headers[':authority']}`);
+    // Очень хорошая идея проверить, что имя хоста и порт являются.
+    // к которым должен подключаться этот прокси.
+    const socket = net.connect(
+        auth.port,
+        auth.hostname,
+        () => {
+            stream.respond();
+            socket.pipe(stream);
+            stream.pipe(socket);
+        }
+    );
+    socket.on('error', (error) => {
+        stream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
+    });
 });
 
 proxy.listen(8001);
@@ -2065,19 +2065,21 @@ const client = http2.connect('http://localhost:8001');
 // Не следует указывать заголовки ':path' и ':scheme'
 // для запросов CONNECT, иначе будет выдана ошибка.
 const req = client.request({
-  ':method': 'CONNECT',
-  ':authority': 'localhost:8000',
+    ':method': 'CONNECT',
+    ':authority': 'localhost:8000',
 });
 
 req.on('response', (headers) => {
-  console.log(headers[http2.constants.HTTP2_HEADER_STATUS]);
+    console.log(
+        headers[http2.constants.HTTP2_HEADER_STATUS]
+    );
 });
 let data = '';
 req.setEncoding('utf8');
 req.on('data', (chunk) => (data += chunk));
 req.on('end', () => {
-  console.log(`Сервер говорит: ${data}`);
-  client.close();
+    console.log(`Сервер говорит: ${data}`);
+    client.close();
 });
 req.end('Jane');
 ```
@@ -2102,13 +2104,13 @@ const server = http2.createServer({ settings });
 const http2 = require('node:http2');
 const client = http2.connect('http://localhost:8080');
 client.on('remoteSettings', (settings) => {
-  if (settings.enableConnectProtocol) {
-    const req = client.request({
-      ':method': 'CONNECT',
-      ':protocol': 'foo',
-    });
-    // ...
-  }
+    if (settings.enableConnectProtocol) {
+        const req = client.request({
+            ':method': 'CONNECT',
+            ':protocol': 'foo',
+        });
+        // ...
+    }
 });
 ```
 
@@ -2123,12 +2125,12 @@ client.on('remoteSettings', (settings) => {
 ```js
 const http2 = require('node:http2');
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, {
-    'Content-Type': 'text/plain; charset=utf-8',
-  });
-  res.end('ok');
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, {
+        'Content-Type': 'text/plain; charset=utf-8',
+    });
+    res.end('ok');
 });
 ```
 
@@ -2152,24 +2154,27 @@ const cert = readFileSync('./cert.pem');
 const key = readFileSync('./key.pem');
 
 const server = createSecureServer(
-  { cert, key, allowHTTP1: true },
-  onRequest
+    { cert, key, allowHTTP1: true },
+    onRequest
 ).listen(4443);
 
 function onRequest(req, res) {
-  // Определяет, является ли это запрос HTTPS или HTTP/2
-  const {
-    socket: { alpnProtocol },
-  } = req.httpVersion === '2.0' ? req.stream.session : req;
-  res.writeHead(200, {
-    'content-type': 'application/json',
-  });
-  res.end(
-    JSON.stringify({
-      alpnProtocol,
-      httpVersion: req.httpVersion,
-    })
-  );
+    // Определяет, является ли это запрос HTTPS или HTTP/2
+    const {
+        socket: { alpnProtocol },
+    } =
+        req.httpVersion === '2.0'
+            ? req.stream.session
+            : req;
+    res.writeHead(200, {
+        'content-type': 'application/json',
+    });
+    res.end(
+        JSON.stringify({
+            alpnProtocol,
+            httpVersion: req.httpVersion,
+        })
+    );
 }
 ```
 
@@ -2179,7 +2184,7 @@ function onRequest(req, res) {
 
 ### Класс: `http2.Http2ServerRequest`
 
-- Расширяет: {stream.Readable}
+-   Расширяет: {stream.Readable}
 
 Объект `Http2ServerRequest` создается [`http2.Server`](#class-http2server) или [`http2.SecureServer`](#class-http2secureserver) и передается в качестве первого аргумента в событие [`'request'`](#event-request). Он может быть использован для доступа к статусу запроса, заголовкам и данным.
 
@@ -2201,7 +2206,7 @@ function onRequest(req, res) {
 
 #### `request.aborted`
 
-- {boolean}
+-   {boolean}
 
 Свойство `request.aborted` будет иметь значение `true`, если запрос был прерван.
 
@@ -2209,7 +2214,7 @@ function onRequest(req, res) {
 
 #### `request.authority`
 
-- {строка}
+-   {строка}
 
 Поле псевдозаголовка полномочий запроса. Поскольку HTTP/2 позволяет запросам задавать либо `:authority`, либо `host`, это значение берется из `req.headers[':authority']`, если оно присутствует. В противном случае оно берется из `req.headers['host']`.
 
@@ -2217,7 +2222,7 @@ function onRequest(req, res) {
 
 #### `request.complete`
 
-- {boolean}
+-   {boolean}
 
 Свойство `request.complete` будет равно `true`, если запрос был завершен, прерван или уничтожен.
 
@@ -2231,7 +2236,7 @@ function onRequest(req, res) {
 
     Используйте [`request.socket`](#requestsocket).
 
-- {net.Socket|tls.TLSSocket}
+-   {net.Socket|tls.TLSSocket}
 
 См. [`request.socket`](#requestsocket).
 
@@ -2239,7 +2244,7 @@ function onRequest(req, res) {
 
 #### `request.destroy([error])`
 
-- `error` {Error}
+-   `error` {Error}
 
 Вызывает `destroy()` на [`Http2Stream`](#class-http2stream), который получил [`Http2ServerRequest`](#class-http2http2serverrequest). Если указано `error`, то выдается событие `error` и `error` передается в качестве аргумента любым слушателям этого события.
 
@@ -2249,7 +2254,7 @@ function onRequest(req, res) {
 
 #### `request.headers`
 
-- {Object}
+-   {Object}
 
 Объект заголовков запроса/ответа.
 
@@ -2277,7 +2282,7 @@ assert(request.url); // Ошибка, потому что заголовок :pa
 
 #### `request.httpVersion`
 
-- {string}
+-   {string}
 
 В случае запроса сервера, версия HTTP, отправленная клиентом. В случае ответа клиента - HTTP-версия подключившегося сервера. Возвращает `2.0`.
 
@@ -2287,7 +2292,7 @@ assert(request.url); // Ошибка, потому что заголовок :pa
 
 #### `request.method`
 
-- {строка}
+-   {строка}
 
 Метод запроса в виде строки. Только для чтения. Примеры: `GET`, `DELETE`.
 
@@ -2295,7 +2300,7 @@ assert(request.url); // Ошибка, потому что заголовок :pa
 
 #### `request.rawHeaders`
 
-- {string\[\]}
+-   {string\[\]}
 
 Список необработанных заголовков запроса/ответа в том виде, в котором они были получены.
 
@@ -2321,7 +2326,7 @@ console.log(request.rawHeaders);
 
 #### `request.rawTrailers`
 
-- {string\[\]}
+-   {string\[\]}
 
 Необработанные ключи и значения трейлеров запроса/ответа в том виде, в котором они были получены. Заполняется только при событии `'end'`.
 
@@ -2329,7 +2334,7 @@ console.log(request.rawHeaders);
 
 #### `request.scheme`
 
-- {строка}
+-   {строка}
 
 Поле псевдозаголовка схемы запроса, указывающее на часть схемы целевого URL.
 
@@ -2337,9 +2342,9 @@ console.log(request.rawHeaders);
 
 #### `request.setTimeout(msecs, callback)`
 
-- `msecs` {число}
-- `callback` {функция}
-- Возвращает: {http2.Http2ServerRequest}
+-   `msecs` {число}
+-   `callback` {функция}
+-   Возвращает: {http2.Http2ServerRequest}
 
 Устанавливает значение тайм-аута [`Http2Stream`](#class-http2stream) в `msecs`. Если указан обратный вызов, то он добавляется в качестве слушателя события `'timeout'` на объекте ответа.
 
@@ -2349,7 +2354,7 @@ console.log(request.rawHeaders);
 
 #### `request.socket`
 
-- {net.Socket|tls.TLSSocket}
+-   {net.Socket|tls.TLSSocket}
 
 Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы, основанные на логике HTTP/2.
 
@@ -2367,7 +2372,7 @@ console.log(request.rawHeaders);
 
 #### `request.stream`
 
-- {Http2Stream}
+-   {Http2Stream}
 
 Объект [`Http2Stream`](#class-http2stream), поддерживающий запрос.
 
@@ -2375,7 +2380,7 @@ console.log(request.rawHeaders);
 
 #### `request.trailers`
 
-- {Object}
+-   {Object}
 
 Объект трейлеров запроса/ответа. Заполняется только при событии `end`.
 
@@ -2383,7 +2388,7 @@ console.log(request.rawHeaders);
 
 #### `request.url`
 
-- {строка}
+-   {строка}
 
 Строка URL запроса. Содержит только тот URL, который присутствует в фактическом HTTP-запросе. Если запрос имеет вид:
 
@@ -2424,7 +2429,7 @@ URL {
 
 ### Класс: `http2.Http2ServerResponse`
 
-- Расширяет: {Stream}
+-   Расширяет: {Stream}
 
 Этот объект создается внутри HTTP-сервера, а не пользователем. Он передается в качестве второго параметра в событие [`'request'`](#event-request).
 
@@ -2446,7 +2451,7 @@ URL {
 
 #### `response.addTrailers(headers)`
 
-- `headers` {Object}
+-   `headers` {Object}
 
 Этот метод добавляет в ответ трейлинг-заголовки HTTP (заголовок, но в конце сообщения).
 
@@ -2462,7 +2467,7 @@ URL {
 
     Используйте [`response.socket`](#responsesocket).
 
-- {net.Socket|tls.TLSSocket}
+-   {net.Socket|tls.TLSSocket}
 
 См. [`response.socket`](#responsesocket).
 
@@ -2470,10 +2475,10 @@ URL {
 
 #### `response.createPushResponse(headers, callback)`
 
-- `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
-- `callback` {Функция} Вызывается после завершения `http2stream.pushStream()`, либо когда попытка создать проталкиваемый `Http2Stream` не удалась или была отклонена, либо состояние `Http2ServerRequest` закрыто до вызова метода `http2stream.pushStream()`.
-  - `err` {Ошибка}
-  - `res` {http2.Http2ServerResponse} Только что созданный объект `Http2ServerResponse`.
+-   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
+-   `callback` {Функция} Вызывается после завершения `http2stream.pushStream()`, либо когда попытка создать проталкиваемый `Http2Stream` не удалась или была отклонена, либо состояние `Http2ServerRequest` закрыто до вызова метода `http2stream.pushStream()`.
+    -   `err` {Ошибка}
+    -   `res` {http2.Http2ServerResponse} Только что созданный объект `Http2ServerResponse`.
 
 Вызывает [`http2stream.pushStream()`](#http2streampushstreamheaders-options-callback) с заданными заголовками и в случае успеха оборачивает заданный [`Http2Stream`](#class-http2stream) на вновь созданный `Http2ServerResponse` в качестве параметра обратного вызова. Когда `Http2ServerRequest` закрывается, обратный вызов вызывается с ошибкой `ERR_HTTP2_INVALID_STREAM`.
 
@@ -2481,10 +2486,10 @@ URL {
 
 #### `response.end([data[, encoding]][, callback])`
 
-- `данные` {string|Buffer|Uint8Array}
-- `encoding` {string}
-- `callback` {функция}
-- Возвращает: {this}
+-   `данные` {string|Buffer|Uint8Array}
+-   `encoding` {string}
+-   `callback` {функция}
+-   Возвращает: {this}
 
 Этот метод сигнализирует серверу, что все заголовки и тело ответа были отправлены; сервер должен считать это сообщение завершенным. Метод `response.end()` ДОЛЖЕН вызываться в каждом ответе.
 
@@ -2502,7 +2507,7 @@ URL {
 
     Используйте [`response.writableEnded`](#responsewritableended).
 
-- {boolean}
+-   {boolean}
 
 Булево значение, указывающее, завершен ли ответ. Начинается как `false`. После выполнения [`response.end()`](#responseenddata-encoding-callback) значение будет `true`.
 
@@ -2510,8 +2515,8 @@ URL {
 
 #### `response.getHeader(name)`
 
-- `name` {string}
-- Возвращает: {string}
+-   `name` {string}
+-   Возвращает: {string}
 
 Считывает заголовок, который уже был поставлен в очередь, но не отправлен клиенту. Имя не чувствительно к регистру.
 
@@ -2523,7 +2528,7 @@ const contentType = response.getHeader('content-type');
 
 #### `response.getHeaderNames()`
 
-- Возвращает: {string\[\]}
+-   Возвращает: {string\[\]}
 
 Возвращает массив, содержащий уникальные имена текущих исходящих заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -2539,7 +2544,7 @@ const headerNames = response.getHeaderNames();
 
 #### `response.getHeaders()`
 
-- Возвращает: {Object}
+-   Возвращает: {Object}
 
 Возвращает неглубокую копию текущих исходящих заголовков. Поскольку используется неглубокая копия, значения массива могут быть изменены без дополнительных вызовов различных методов модуля http, связанных с заголовками. Ключами возвращаемого объекта являются имена заголовков, а значениями - соответствующие значения заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -2557,8 +2562,8 @@ const headers = response.getHeaders();
 
 #### `response.hasHeader(name)`
 
-- `name` {string}
-- Возвращает: {boolean}
+-   `name` {string}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если заголовок, обозначенный `name`, в настоящее время установлен в исходящих заголовках. Соответствие имени заголовка не чувствительно к регистру.
 
@@ -2570,7 +2575,7 @@ const hasContentType = response.hasHeader('content-type');
 
 #### `response.headersSent`
 
-- {boolean}
+-   {boolean}
 
 True, если заголовки были отправлены, false в противном случае (только для чтения).
 
@@ -2578,7 +2583,7 @@ True, если заголовки были отправлены, false в про
 
 #### `response.removeHeader(name)`
 
-- `name` {строка}
+-   `name` {строка}
 
 Удаляет заголовок, который был поставлен в очередь для неявной отправки.
 
@@ -2590,7 +2595,7 @@ response.removeHeader('Content-Encoding');
 
 #### `response.req`
 
-- {http2.Http2ServerRequest}
+-   {http2.Http2ServerRequest}
 
 Ссылка на исходный объект HTTP2 `request`.
 
@@ -2598,7 +2603,7 @@ response.removeHeader('Content-Encoding');
 
 #### `response.sendDate`
 
-- {boolean}
+-   {boolean}
 
 При значении true заголовок Date будет автоматически сгенерирован и отправлен в ответ, если он еще не присутствует в заголовках. По умолчанию установлено значение true.
 
@@ -2608,15 +2613,15 @@ response.removeHeader('Content-Encoding');
 
 #### `response.setHeader(name, value)`
 
-- `имя` {строка}
-- `value` {string|string\[\]}
+-   `имя` {строка}
+-   `value` {string|string\[\]}
 
 Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Используйте массив строк для отправки нескольких заголовков с одинаковым именем.
 
 ```js
 response.setHeader(
-  'Content-Type',
-  'text/html; charset=utf-8'
+    'Content-Type',
+    'text/html; charset=utf-8'
 );
 ```
 
@@ -2624,8 +2629,8 @@ response.setHeader(
 
 ```js
 response.setHeader('Set-Cookie', [
-  'type=ninja',
-  'language=javascript',
+    'type=ninja',
+    'language=javascript',
 ]);
 ```
 
@@ -2636,12 +2641,15 @@ response.setHeader('Set-Cookie', [
 ```js
 // Возвращает content-type = text/plain
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, {
-    'Content-Type': 'text/plain; charset=utf-8',
-  });
-  res.end('ok');
+    res.setHeader(
+        'Content-Type',
+        'text/html; charset=utf-8'
+    );
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, {
+        'Content-Type': 'text/plain; charset=utf-8',
+    });
+    res.end('ok');
 });
 ```
 
@@ -2649,9 +2657,9 @@ const server = http2.createServer((req, res) => {
 
 #### `response.setTimeout(msecs[, callback])`
 
-- `msecs` {число}
-- `callback` {функция}
-- Возвращает: {http2.Http2ServerResponse}
+-   `msecs` {число}
+-   `callback` {функция}
+-   Возвращает: {http2.Http2ServerResponse}
 
 Устанавливает значение тайм-аута [`Http2Stream`](#class-http2stream) в `msecs`. Если указан обратный вызов, то он добавляется в качестве слушателя события `'timeout'` для объекта ответа.
 
@@ -2661,7 +2669,7 @@ const server = http2.createServer((req, res) => {
 
 #### `response.socket`
 
-- {net.Socket|tls.TLSSocket}
+-   {net.Socket|tls.TLSSocket}
 
 Возвращает объект `Proxy`, который действует как `net.Socket` (или `tls.TLSSocket`), но применяет геттеры, сеттеры и методы, основанные на логике HTTP/2.
 
@@ -2678,21 +2686,21 @@ const server = http2.createServer((req, res) => {
 ```js
 const http2 = require('node:http2');
 const server = http2
-  .createServer((req, res) => {
-    const ip = req.socket.remoteAddress;
-    const port = req.socket.remotePort;
-    res.end(
-      `Ваш IP адрес ${ip} и ваш порт источника ${port}.`
-    );
-  })
-  .listen(3000);
+    .createServer((req, res) => {
+        const ip = req.socket.remoteAddress;
+        const port = req.socket.remotePort;
+        res.end(
+            `Ваш IP адрес ${ip} и ваш порт источника ${port}.`
+        );
+    })
+    .listen(3000);
 ```
 
 <!-- 0169.part.md -->
 
 #### `response.statusCode`
 
-- {число}
+-   {число}
 
 При использовании неявных заголовков (без явного вызова [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers)) это свойство управляет кодом статуса, который будет отправлен клиенту, когда заголовки будут смыты.
 
@@ -2706,7 +2714,7 @@ response.statusCode = 404;
 
 #### `response.statusMessage`
 
-- {string}
+-   {string}
 
 Сообщение о статусе не поддерживается HTTP/2 (RFC 7540 8.1.2.4). Оно возвращает пустую строку.
 
@@ -2714,7 +2722,7 @@ response.statusCode = 404;
 
 #### `response.stream`
 
-- {Http2Stream}
+-   {Http2Stream}
 
 Объект [`Http2Stream`](#class-http2stream), поддерживающий ответ.
 
@@ -2722,7 +2730,7 @@ response.statusCode = 404;
 
 #### `response.writableEnded`
 
-- {boolean}
+-   {boolean}
 
 Является `true` после вызова [`response.end()`](#responseenddata-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](stream.md#writablewritablefinished).
 
@@ -2730,10 +2738,10 @@ response.statusCode = 404;
 
 #### `response.write(chunk[, encoding][, callback])`
 
-- `chunk` {string|Buffer|Uint8Array}
-- `encoding` {string}
-- `обратный вызов` {функция}
-- Возвращает: {boolean}
+-   `chunk` {string|Buffer|Uint8Array}
+-   `encoding` {string}
+-   `обратный вызов` {функция}
+-   Возвращает: {boolean}
 
 Если этот метод вызван и [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) не был вызван, он переключится в режим неявных заголовков и промоет неявные заголовки.
 
@@ -2759,7 +2767,7 @@ response.statusCode = 404;
 
 #### `response.writeEarlyHints(hints)`
 
-- `hints` {Object}
+-   `hints` {Object}
 
 Отправляет статус `103 Early Hints` клиенту с заголовком Link, указывая, что пользовательский агент может предварительно загрузить/отключить связанные ресурсы. Объект `hints` содержит значения заголовков, которые должны быть отправлены с сообщением ранних подсказок.
 
@@ -2767,17 +2775,17 @@ response.statusCode = 404;
 
 ```js
 const earlyHintsLink =
-  '</styles.css>; rel=preload; as=style';
+    '</styles.css>; rel=preload; as=style';
 response.writeEarlyHints({
-  link: earlyHintsLink,
+    link: earlyHintsLink,
 });
 
 const earlyHintsLinks = [
-  '</styles.css>; rel=preload; as=style',
-  '</scripts.js>; rel=preload; as=script',
+    '</styles.css>; rel=preload; as=style',
+    '</scripts.js>; rel=preload; as=script',
 ];
 response.writeEarlyHints({
-  link: earlyHintsLinks,
+    link: earlyHintsLinks,
 });
 ```
 
@@ -2785,10 +2793,10 @@ response.writeEarlyHints({
 
 #### `response.writeHead(statusCode[, statusMessage][, headers])`
 
-- `statusCode` {число}
-- `statusMessage` {строка}
-- `headers` {Object|Array}
-- Возвращает: {http2.Http2ServerResponse}
+-   `statusCode` {число}
+-   `statusMessage` {строка}
+-   `headers` {Object|Array}
+-   Возвращает: {http2.Http2ServerResponse}
 
 Отправляет заголовок ответа на запрос. Код статуса - это трехзначный код статуса HTTP, например `404`. Последний аргумент, `headers`, - это заголовки ответа.
 
@@ -2799,8 +2807,8 @@ response.writeEarlyHints({
 ```js
 const body = 'hello world';
 response.writeHead(200, {
-  'Content-Length': Buffer.byteLength(body),
-  'Content-Type': 'text/plain; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+    'Content-Type': 'text/plain; charset=utf-8',
 });
 ```
 
@@ -2815,12 +2823,15 @@ response.writeHead(200, {
 ```js
 // Возвращает content-type = text/plain
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, {
-    'Content-Type': 'text/plain; charset=utf-8',
-  });
-  res.end('ok');
+    res.setHeader(
+        'Content-Type',
+        'text/html; charset=utf-8'
+    );
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, {
+        'Content-Type': 'text/plain; charset=utf-8',
+    });
+    res.end('ok');
 });
 ```
 
@@ -2836,13 +2847,13 @@ API [Performance Observer](perf_hooks.md) можно использовать д
 const { PerformanceObserver } = require('node:perf_hooks');
 
 const obs = new PerformanceObserver((items) => {
-  const entry = items.getEntries()[0];
-  console.log(entry.entryType); // печатает 'http2'
-  if (entry.name === 'Http2Session') {
-    // запись содержит статистику о Http2Session
-  } else if (entry.name === 'Http2Stream') {
-    // Ввод содержит статистику о Http2Stream
-  }
+    const entry = items.getEntries()[0];
+    console.log(entry.entryType); // печатает 'http2'
+    if (entry.name === 'Http2Session') {
+        // запись содержит статистику о Http2Session
+    } else if (entry.name === 'Http2Stream') {
+        // Ввод содержит статистику о Http2Stream
+    }
 });
 obs.observe({ entryTypes: ['http2'] });
 ```
@@ -2853,24 +2864,24 @@ obs.observe({ entryTypes: ['http2'] });
 
 Если `name` равно `Http2Stream`, то `PerformanceEntry` будет содержать следующие дополнительные свойства:
 
-- `bytesRead` {number} Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
-- `bytesWritten` {number} Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
-- `id` {number} Идентификатор связанного `Http2Stream`.
-- `timeToFirstByte` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
-- `timeToFirstByteSent` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
-- `timeToFirstHeader` {число} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
+-   `bytesRead` {number} Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
+-   `bytesWritten` {number} Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
+-   `id` {number} Идентификатор связанного `Http2Stream`.
+-   `timeToFirstByte` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
+-   `timeToFirstByteSent` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
+-   `timeToFirstHeader` {число} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
 
 Если `name` равно `Http2Session`, то `PerformanceEntry` будет содержать следующие дополнительные свойства:
 
-- `bytesRead` {number} Количество байт, полученных для данного `Http2Session`.
-- `bytesWritten` {number} Количество отправленных байт для этой `Http2Session`.
-- `framesReceived` {number} Количество кадров HTTP/2, полученных `Http2Session`.
-- `framesSent` {number} Количество кадров HTTP/2, отправленных `Http2Session`.
-- `maxConcurrentStreams` {number} Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
-- `pingRTT` {число} Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
-- `streamAverageDuration` {number} Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
-- `streamCount` {number} Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
-- `type` {string} Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
+-   `bytesRead` {number} Количество байт, полученных для данного `Http2Session`.
+-   `bytesWritten` {number} Количество отправленных байт для этой `Http2Session`.
+-   `framesReceived` {number} Количество кадров HTTP/2, полученных `Http2Session`.
+-   `framesSent` {number} Количество кадров HTTP/2, отправленных `Http2Session`.
+-   `maxConcurrentStreams` {number} Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
+-   `pingRTT` {число} Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
+-   `streamAverageDuration` {number} Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
+-   `streamCount` {number} Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
+-   `type` {string} Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
 
 <!-- 0178.part.md -->
 

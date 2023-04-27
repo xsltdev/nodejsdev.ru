@@ -20,7 +20,7 @@ description: Модули ECMAScript - это официальный станд�
 ```js
 // addTwo.mjs
 function addTwo(num) {
-  return num + 2;
+    return num + 2;
 }
 
 export { addTwo };
@@ -56,11 +56,11 @@ Node.js имеет две системы модулей: [CommonJS](modules.md) 
 
 Существует три типа спецификаторов:
 
-- _Относительные спецификаторы_, такие как `'./startup.js'` или `'../config.mjs'`. Они указывают путь относительно местоположения импортируемого файла. Для них всегда необходимо расширение файла.
+-   _Относительные спецификаторы_, такие как `'./startup.js'` или `'../config.mjs'`. Они указывают путь относительно местоположения импортируемого файла. Для них всегда необходимо расширение файла.
 
-- _Голые спецификаторы_, такие как `некоторый пакет` или `некоторый пакет/shuffle`. Они могут ссылаться на основную точку входа пакета по имени пакета или на конкретный функциональный модуль внутри пакета с префиксом имени пакета, как показано в примерах соответственно. Указание расширения файла необходимо только для пакетов без поля [` exports`](packages.md#exports).
+-   _Голые спецификаторы_, такие как `некоторый пакет` или `некоторый пакет/shuffle`. Они могут ссылаться на основную точку входа пакета по имени пакета или на конкретный функциональный модуль внутри пакета с префиксом имени пакета, как показано в примерах соответственно. Указание расширения файла необходимо только для пакетов без поля [` exports`](packages.md#exports).
 
-- _Абсолютные спецификаторы_, такие как `'file:///opt/nodejs/config.js'`. Они прямо и однозначно ссылаются на полный путь.
+-   _Абсолютные спецификаторы_, такие как `'file:///opt/nodejs/config.js'`. Они прямо и однозначно ссылаются на полный путь.
 
 Разрешение голых спецификаторов обрабатывается [алгоритмом разрешения модулей Node.js](#resolver-algorithm-specification). Все остальные разрешения спецификаторов всегда разрешаются только с помощью стандартной семантики разрешения относительных [URL](https://url.spec.whatwg.org/).
 
@@ -95,9 +95,9 @@ import './foo.mjs?query=2'; // загружает ./foo.mjs с запросом 
 
 [`data:` URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) поддерживаются для импорта со следующими MIME-типами:
 
-- `text/javascript` для модулей ES
-- `application/json` для JSON
-- `application/wasm` для Wasm
+-   `text/javascript` для модулей ES
+-   `application/json` для JSON
+-   `application/wasm` для Wasm
 
 <!-- конец списка -->
 
@@ -158,11 +158,11 @@ const e = new EventEmitter();
 ```js
 import { readFile } from 'node:fs';
 readFile('./foo.txt', (err, source) => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(source);
-  }
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(source);
+    }
 });
 ```
 
@@ -185,13 +185,13 @@ fs.readFileSync === readFileSync;
 
 ## `import.meta`
 
-- {Object}
+-   {Object}
 
 Мета-свойство `import.meta` представляет собой `объект`, содержащий следующие свойства.
 
 ### `import.meta.url`
 
-- {string} Абсолютный `файл:` URL модуля.
+-   {string} Абсолютный `файл:` URL модуля.
 
 Определяется точно так же, как и в браузерах, предоставляя URL текущего файла модуля.
 
@@ -200,7 +200,7 @@ fs.readFileSync === readFileSync;
 ```js
 import { readFileSync } from 'node:fs';
 const buffer = readFileSync(
-  new URL('./data.proto', import.meta.url)
+    new URL('./data.proto', import.meta.url)
 );
 ```
 
@@ -210,15 +210,15 @@ const buffer = readFileSync(
 
 Эта функция доступна только при включенном флаге команды `--experimental-import-meta-resolve`.
 
-- `specifier` {string} Спецификатор модуля для разрешения относительно `parent`.
-- `parent` {string|URL} Абсолютный URL родительского модуля для преобразования. Если не указан, то по умолчанию используется значение `import.meta.url`.
-- Возвращает: {Promise}
+-   `specifier` {string} Спецификатор модуля для разрешения относительно `parent`.
+-   `parent` {string|URL} Абсолютный URL родительского модуля для преобразования. Если не указан, то по умолчанию используется значение `import.meta.url`.
+-   Возвращает: {Promise}
 
 Предоставляет функцию разрешения относительно модуля, относящуюся к каждому модулю и возвращающую строку URL.
 
 ```js
 const dependencyAsset = await import.meta.resolve(
-  'component-lib/asset.css'
+    'component-lib/asset.css'
 );
 ```
 
@@ -416,12 +416,12 @@ import { spawn } from 'node:child_process';
 import { execPath } from 'node:process';
 
 spawn(execPath, [
-  '--input-type=module',
-  '--eval',
-  // Never-resolving Promise:
-  'await new Promise(() => {})',
+    '--input-type=module',
+    '--eval',
+    // Never-resolving Promise:
+    'await new Promise(() => {})',
 ]).once('exit', (code) => {
-  console.log(code); // Запись в журнал `13`
+    console.log(code); // Запись в журнал `13`
 });
 ```
 
@@ -455,8 +455,8 @@ CORS разработан для того, чтобы позволить сер�
 // file.mjs
 import worker_threads from 'node:worker_threads';
 import {
-  configure,
-  resize,
+    configure,
+    resize,
 } from 'https://example.com/imagelib.mjs';
 configure({ worker_threads });
 ```
@@ -465,10 +465,10 @@ configure({ worker_threads });
 // https://example.com/imagelib.mjs
 let worker_threads;
 export function configure(opts) {
-  worker_threads = opts.worker_threads;
+    worker_threads = opts.worker_threads;
 }
 export function resize(img, size) {
-  // Выполняем изменение размера в потоке worker_thread, чтобы избежать блокировки основного потока
+    // Выполняем изменение размера в потоке worker_thread, чтобы избежать блокировки основного потока
 }
 ```
 
@@ -507,19 +507,19 @@ export function resize(img, size) {
 
 > В настоящее время API загрузчиков перерабатывается. Этот хук может исчезнуть или его сигнатура может измениться. Не полагайтесь на API, описанный ниже.
 
-- `specifier` {string}
-- `контекст` {Объект}
-  - `условия` {string\[\]} Условия экспорта соответствующего `package.json`.
-  - `importAssertions` {Object} Объект, пары ключ-значение которого представляют утверждения для импортируемого модуля
-  - `parentURL` {string|undefined} Модуль, импортирующий данный модуль, или undefined, если это точка входа Node.js
-- `nextResolve` {функция} Следующий хук `resolve` в цепочке, или хук `resolve` по умолчанию Node.js после последнего пользовательского хука `resolve`.
-  - `спецификатор` {строка}
-  - `context` {Object}
-- Возвращает: {Object}
-  - `формат` {string|null|undefined} Подсказка для крючка загрузки (может быть проигнорирована) `'builtin' | 'commonjs' | 'json' | 'module' | 'wasm'`.
-  - `importAssertions` {Object|undefined} Утверждения импорта для использования при кэшировании модуля (необязательно; если исключить, то будут использоваться входные данные)
-  - `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
-  - `url` {string} Абсолютный URL, к которому разрешается данный вход.
+-   `specifier` {string}
+-   `контекст` {Объект}
+    -   `условия` {string\[\]} Условия экспорта соответствующего `package.json`.
+    -   `importAssertions` {Object} Объект, пары ключ-значение которого представляют утверждения для импортируемого модуля
+    -   `parentURL` {string|undefined} Модуль, импортирующий данный модуль, или undefined, если это точка входа Node.js
+-   `nextResolve` {функция} Следующий хук `resolve` в цепочке, или хук `resolve` по умолчанию Node.js после последнего пользовательского хука `resolve`.
+    -   `спецификатор` {строка}
+    -   `context` {Object}
+-   Возвращает: {Object}
+    -   `формат` {string|null|undefined} Подсказка для крючка загрузки (может быть проигнорирована) `'builtin' | 'commonjs' | 'json' | 'module' | 'wasm'`.
+    -   `importAssertions` {Object|undefined} Утверждения импорта для использования при кэшировании модуля (необязательно; если исключить, то будут использоваться входные данные)
+    -   `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
+    -   `url` {string} Абсолютный URL, к которому разрешается данный вход.
 
 Цепочка хуков `resolve` отвечает за указание Node.js, где найти и как кэшировать заданный оператор `import` или выражение. По желанию она может возвращать его формат (например, `'module'`) в качестве подсказки для хука `load`. Если формат не указан, крючок `load` в конечном итоге отвечает за предоставление окончательного значения `формата` (и он может игнорировать подсказку, предоставленную `resolve`); если `resolve` предоставляет `формат`, требуется пользовательский крючок `load`, даже если только для передачи значения крючку Node.js по умолчанию `load`.
 
@@ -531,37 +531,40 @@ export function resize(img, size) {
 
 ```js
 export async function resolve(
-  specifier,
-  context,
-  nextResolve
+    specifier,
+    context,
+    nextResolve
 ) {
-  const { parentURL = null } = context;
+    const { parentURL = null } = context;
 
-  if (Math.random() > 0.5) {
-    // Некоторое условие.
-    // Для некоторых или всех спецификаторов сделайте некоторую пользовательскую логику для разрешения.
-    // Всегда возвращайте объект вида {url: <строка>}.
-    return {
-      shortCircuit: true,
-      url: parentURL
-        ? new URL(specifier, parentURL).href
-        : new URL(specifier).href,
-    };
-  }
+    if (Math.random() > 0.5) {
+        // Некоторое условие.
+        // Для некоторых или всех спецификаторов сделайте некоторую пользовательскую логику для разрешения.
+        // Всегда возвращайте объект вида {url: <строка>}.
+        return {
+            shortCircuit: true,
+            url: parentURL
+                ? new URL(specifier, parentURL).href
+                : new URL(specifier).href,
+        };
+    }
 
-  if (Math.random() < 0.5) {
-    // Еще одно условие.
-    // При вызове `defaultResolve` аргументы могут быть изменены. В данном
-    // случае это добавление еще одного значения для соответствия условному экспорту.
-    return nextResolve(specifier, {
-      контекст,
-      условия: [...context.conditions, 'another-condition'],
-    });
-  }
+    if (Math.random() < 0.5) {
+        // Еще одно условие.
+        // При вызове `defaultResolve` аргументы могут быть изменены. В данном
+        // случае это добавление еще одного значения для соответствия условному экспорту.
+        return nextResolve(specifier, {
+            контекст,
+            условия: [
+                ...context.conditions,
+                'another-condition',
+            ],
+        });
+    }
 
-  // Откладываем до следующего хука в цепочке, которым будет resolve по умолчанию в Node.
-  // Node.js resolve по умолчанию, если это последний указанный пользователем загрузчик.
-  return nextResolve(specifier);
+    // Откладываем до следующего хука в цепочке, которым будет resolve по умолчанию в Node.
+    // Node.js resolve по умолчанию, если это последний указанный пользователем загрузчик.
+    return nextResolve(specifier);
 }
 ```
 
@@ -571,18 +574,18 @@ export async function resolve(
 
 > В предыдущей версии этого API эта функция была разделена на 3 отдельных, ныне устаревших хука (`getFormat`, `getSource` и `transformSource`).
 
-- `url` {строка} URL, возвращаемый цепочкой `resolve`.
-- `context` {Object}
-  - `conditions` {string\[\]} Условия экспорта соответствующего `package.json`.
-  - `формат` {string|null|undefined} Формат, опционально предоставляемый цепочкой хуков `resolve`.
-  - `importAssertions` {Object}
-- `nextLoad` {Function} Следующий `load` хук в цепочке, или `load` хук по умолчанию Node.js после последнего пользовательского `load` хука.
-  - `спецификатор` {строка}
-  - `context` {Object}
-- Возвращает: {Object}
-  - `формат` {string}
-  - `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
-  - `source` {string|ArrayBuffer|TypedArray} Источник для оценки Node.js
+-   `url` {строка} URL, возвращаемый цепочкой `resolve`.
+-   `context` {Object}
+    -   `conditions` {string\[\]} Условия экспорта соответствующего `package.json`.
+    -   `формат` {string|null|undefined} Формат, опционально предоставляемый цепочкой хуков `resolve`.
+    -   `importAssertions` {Object}
+-   `nextLoad` {Function} Следующий `load` хук в цепочке, или `load` хук по умолчанию Node.js после последнего пользовательского `load` хука.
+    -   `спецификатор` {строка}
+    -   `context` {Object}
+-   Возвращает: {Object}
+    -   `формат` {string}
+    -   `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
+    -   `source` {string|ArrayBuffer|TypedArray} Источник для оценки Node.js
 
 Хук `load` предоставляет возможность определить пользовательский метод определения того, как URL должен быть интерпретирован, получен и разобран. Он также отвечает за проверку утверждения об импорте.
 
@@ -631,8 +634,8 @@ export async function resolve(
 
 > Все эти типы соответствуют классам, определенным в ECMAScript.
 
-- Конкретный объект [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) является объектом [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
-- Конкретным объектом [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) является [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
+-   Конкретный объект [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) является объектом [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
+-   Конкретным объектом [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) является [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
 Если исходное значение текстового формата (например, `'json'`, `'module'`) не является строкой, оно преобразуется в строку с помощью [`util.TextDecoder`](util.md#class-utiltextdecoder).
 
@@ -640,26 +643,26 @@ export async function resolve(
 
 ```js
 export async function load(url, context, nextLoad) {
-  const { format } = context;
+    const { format } = context;
 
-  if (Math.random() > 0.5) {
-    // Some condition
-    /*
+    if (Math.random() > 0.5) {
+        // Some condition
+        /*
       For some or all URLs, do some custom logic for retrieving the source.
       Always return an object of the form {
         format: <string>,
         source: <string|buffer>,
       }.
     */
-    return {
-      format,
-      shortCircuit: true,
-      source: '...',
-    };
-  }
+        return {
+            format,
+            shortCircuit: true,
+            source: '...',
+        };
+    }
 
-  // Defer to the next hook in the chain.
-  return nextLoad(url);
+    // Defer to the next hook in the chain.
+    return nextLoad(url);
 }
 ```
 
@@ -671,9 +674,9 @@ export async function load(url, context, nextLoad) {
 
 > В предыдущей версии этого API этот хук назывался `getGlobalPreloadCode`.
 
-- `context` {Object} Информация для помощи коду предварительной загрузки
-  - `port` {MessagePort}
-- Возвращает: {строка} Код для запуска перед стартом приложения
+-   `context` {Object} Информация для помощи коду предварительной загрузки
+    -   `port` {MessagePort}
+-   Возвращает: {строка} Код для запуска перед стартом приложения
 
 Иногда может потребоваться запустить некоторый код внутри той же глобальной области видимости, в которой запускается приложение. Этот хук позволяет вернуть строку, которая будет запущена как скрипт в небрежном режиме при запуске приложения.
 
@@ -683,7 +686,7 @@ export async function load(url, context, nextLoad) {
 
 ```js
 export function globalPreload(context) {
-  return `\
+    return `\
 globalThis.someInjectedProperty = 42;
 console.log('Я только что установил некоторые глобальные свойства!');
 
@@ -706,10 +709,10 @@ const require = createRequire(cwd() + '/<preload>');
  * и отправляет сообщение обратно в контекст приложения.
  */
 export function globalPreload({ port }) {
-  port.onmessage = (evt) => {
-    port.postMessage(evt.data);
-  };
-  return `\
+    port.onmessage = (evt) => {
+        port.postMessage(evt.data);
+    };
+    return `\
     port.postMessage('console.log("Я сходил в Loader и обратно");');
     port.onmessage = (evt) => {
       eval(evt.data);
@@ -733,53 +736,53 @@ export function globalPreload({ port }) {
 import { get } from 'node:https';
 
 export function resolve(specifier, context, nextResolve) {
-  const { parentURL = null } = context;
+    const { parentURL = null } = context;
 
-  // Обычно Node.js ошибается на спецификаторах, начинающихся с 'https://', поэтому
-  // этот хук перехватывает их и преобразует в абсолютные URL-адреса, которые будут
-  // передаются последующим хукам ниже.
-  if (specifier.startsWith('https://')) {
-    return {
-      shortCircuit: true,
-      url: specifier,
-    };
-  } else if (
-    parentURL &&
-    parentURL.startsWith('https://')
-  ) {
-    return {
-      shortCircuit: true,
-      url: new URL(specifier, parentURL).href,
-    };
-  }
+    // Обычно Node.js ошибается на спецификаторах, начинающихся с 'https://', поэтому
+    // этот хук перехватывает их и преобразует в абсолютные URL-адреса, которые будут
+    // передаются последующим хукам ниже.
+    if (specifier.startsWith('https://')) {
+        return {
+            shortCircuit: true,
+            url: specifier,
+        };
+    } else if (
+        parentURL &&
+        parentURL.startsWith('https://')
+    ) {
+        return {
+            shortCircuit: true,
+            url: new URL(specifier, parentURL).href,
+        };
+    }
 
-  // Пусть Node.js обрабатывает все остальные спецификаторы.
-  return nextResolve(specifier);
+    // Пусть Node.js обрабатывает все остальные спецификаторы.
+    return nextResolve(specifier);
 }
 
 export function load(url, context, nextLoad) {
-  // Чтобы JavaScript загружался по сети, нам нужно получить и
-  // вернуть его.
-  if (url.startsWith('https://')) {
-    return new Promise((resolve, reject) => {
-      get(url, (res) => {
-        let data = '';
-        res.on('data', (chunk) => (data += chunk));
-        res.on('end', () =>
-          resolve({
-            // В этом примере предполагается, что весь JavaScript, предоставляемый сетью, является модулем ES.
-            // код.
-            format: 'module',
-            shortCircuit: true,
-            source: data,
-          })
-        );
-      }).on('error', (err) => reject(err));
-    });
-  }
+    // Чтобы JavaScript загружался по сети, нам нужно получить и
+    // вернуть его.
+    if (url.startsWith('https://')) {
+        return new Promise((resolve, reject) => {
+            get(url, (res) => {
+                let data = '';
+                res.on('data', (chunk) => (data += chunk));
+                res.on('end', () =>
+                    resolve({
+                        // В этом примере предполагается, что весь JavaScript, предоставляемый сетью, является модулем ES.
+                        // код.
+                        format: 'module',
+                        shortCircuit: true,
+                        source: data,
+                    })
+                );
+            }).on('error', (err) => reject(err));
+        });
+    }
 
-  // Пусть Node.js обрабатывает все остальные URL.
-  return nextLoad(url);
+    // Пусть Node.js обрабатывает все остальные URL.
+    return nextLoad(url);
 }
 ```
 
@@ -802,9 +805,9 @@ console.log(VERSION);
 // coffeescript-loader.mjs
 import { readFile } from 'node:fs/promises';
 import {
-  dirname,
-  extname,
-  resolve as resolvePath,
+    dirname,
+    extname,
+    resolve as resolvePath,
 } from 'node:path';
 import { cwd } from 'node:process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -816,103 +819,104 @@ const baseURL = pathToFileURL(`${cwd()}/`).href;
 const extensionsRegex = /\.coffee$|\.litcoffee$|\.coffee\.md$/;
 
 export async function resolve(
-  specifier,
-  context,
-  nextResolve
+    specifier,
+    context,
+    nextResolve
 ) {
-  if (extensionsRegex.test(specifier)) {
-    const { parentURL = baseURL } = context;
+    if (extensionsRegex.test(specifier)) {
+        const { parentURL = baseURL } = context;
 
-    // Node.js normally errors on unknown file extensions, so return a URL for
-    // specifiers ending in the CoffeeScript file extensions.
-    return {
-      shortCircuit: true,
-      url: new URL(specifier, parentURL).href,
-    };
-  }
+        // Node.js normally errors on unknown file extensions, so return a URL for
+        // specifiers ending in the CoffeeScript file extensions.
+        return {
+            shortCircuit: true,
+            url: new URL(specifier, parentURL).href,
+        };
+    }
 
-  // Let Node.js handle all other specifiers.
-  return nextResolve(specifier);
+    // Let Node.js handle all other specifiers.
+    return nextResolve(specifier);
 }
 
 export async function load(url, context, nextLoad) {
-  if (extensionsRegex.test(url)) {
-    // Now that we patched resolve to let CoffeeScript URLs through, we need to
-    // tell Node.js what format such URLs should be interpreted as. Because
-    // CoffeeScript transpiles into JavaScript, it should be one of the two
-    // JavaScript formats: 'commonjs' or 'module'.
+    if (extensionsRegex.test(url)) {
+        // Now that we patched resolve to let CoffeeScript URLs through, we need to
+        // tell Node.js what format such URLs should be interpreted as. Because
+        // CoffeeScript transpiles into JavaScript, it should be one of the two
+        // JavaScript formats: 'commonjs' or 'module'.
 
-    // CoffeeScript files can be either CommonJS or ES modules, so we want any
-    // CoffeeScript file to be treated by Node.js the same as a .js file at the
-    // same location. To determine how Node.js would interpret an arbitrary .js
-    // file, search up the file system for the nearest parent package.json file
-    // and read its "type" field.
-    const format = await getPackageType(url);
-    // When a hook returns a format of 'commonjs', `source` is ignored.
-    // To handle CommonJS files, a handler needs to be registered with
-    // `require.extensions` in order to process the files with the CommonJS
-    // loader. Avoiding the need for a separate CommonJS handler is a future
-    // enhancement planned for ES module loaders.
-    if (format === 'commonjs') {
-      return {
-        format,
-        shortCircuit: true,
-      };
+        // CoffeeScript files can be either CommonJS or ES modules, so we want any
+        // CoffeeScript file to be treated by Node.js the same as a .js file at the
+        // same location. To determine how Node.js would interpret an arbitrary .js
+        // file, search up the file system for the nearest parent package.json file
+        // and read its "type" field.
+        const format = await getPackageType(url);
+        // When a hook returns a format of 'commonjs', `source` is ignored.
+        // To handle CommonJS files, a handler needs to be registered with
+        // `require.extensions` in order to process the files with the CommonJS
+        // loader. Avoiding the need for a separate CommonJS handler is a future
+        // enhancement planned for ES module loaders.
+        if (format === 'commonjs') {
+            return {
+                format,
+                shortCircuit: true,
+            };
+        }
+
+        const { source: rawSource } = await nextLoad(url, {
+            ...context,
+            format,
+        });
+        // This hook converts CoffeeScript source code into JavaScript source code
+        // for all imported CoffeeScript files.
+        const transformedSource = coffeeCompile(
+            rawSource.toString(),
+            url
+        );
+
+        return {
+            format,
+            shortCircuit: true,
+            source: transformedSource,
+        };
     }
 
-    const { source: rawSource } = await nextLoad(url, {
-      ...context,
-      format,
-    });
-    // This hook converts CoffeeScript source code into JavaScript source code
-    // for all imported CoffeeScript files.
-    const transformedSource = coffeeCompile(
-      rawSource.toString(),
-      url
-    );
-
-    return {
-      format,
-      shortCircuit: true,
-      source: transformedSource,
-    };
-  }
-
-  // Let Node.js handle all other URLs.
-  return nextLoad(url);
+    // Let Node.js handle all other URLs.
+    return nextLoad(url);
 }
 
 async function getPackageType(url) {
-  // `url` is only a file path during the first iteration when passed the
-  // resolved url from the load() hook
-  // an actual file path from load() will contain a file extension as it's
-  // required by the spec
-  // this simple truthy check for whether `url` contains a file extension will
-  // work for most projects but does not cover some edge-cases (such as
-  // extensionless files or a url ending in a trailing space)
-  const isFilePath = !!extname(url);
-  // If it is a file path, get the directory it's in
-  const dir = isFilePath
-    ? dirname(fileURLToPath(url))
-    : url;
-  // Compose a file path to a package.json in the same directory,
-  // which may or may not exist
-  const packagePath = resolvePath(dir, 'package.json');
-  // Try to read the possibly nonexistent package.json
-  const type = await readFile(packagePath, {
-    encoding: 'utf8',
-  })
-    .then((filestring) => JSON.parse(filestring).type)
-    .catch((err) => {
-      if (err?.code !== 'ENOENT') console.error(err);
-    });
-  // Ff package.json existed and contained a `type` field with a value, voila
-  if (type) return type;
-  // Otherwise, (if not at the root) continue checking the next directory up
-  // If at the root, stop and return false
-  return (
-    dir.length > 1 && getPackageType(resolvePath(dir, '..'))
-  );
+    // `url` is only a file path during the first iteration when passed the
+    // resolved url from the load() hook
+    // an actual file path from load() will contain a file extension as it's
+    // required by the spec
+    // this simple truthy check for whether `url` contains a file extension will
+    // work for most projects but does not cover some edge-cases (such as
+    // extensionless files or a url ending in a trailing space)
+    const isFilePath = !!extname(url);
+    // If it is a file path, get the directory it's in
+    const dir = isFilePath
+        ? dirname(fileURLToPath(url))
+        : url;
+    // Compose a file path to a package.json in the same directory,
+    // which may or may not exist
+    const packagePath = resolvePath(dir, 'package.json');
+    // Try to read the possibly nonexistent package.json
+    const type = await readFile(packagePath, {
+        encoding: 'utf8',
+    })
+        .then((filestring) => JSON.parse(filestring).type)
+        .catch((err) => {
+            if (err?.code !== 'ENOENT') console.error(err);
+        });
+    // Ff package.json existed and contained a `type` field with a value, voila
+    if (type) return type;
+    // Otherwise, (if not at the root) continue checking the next directory up
+    // If at the root, stop and return false
+    return (
+        dir.length > 1 &&
+        getPackageType(resolvePath(dir, '..'))
+    );
 }
 ```
 
@@ -939,12 +943,12 @@ export scream = (str) -> str.toUpperCase()
 
 Резольвер обладает следующими свойствами:
 
-- Разрешение на основе FileURL, как это используется в модулях ES
-- Поддержка загрузки встроенных модулей
-- Относительное и абсолютное разрешение URL
-- Отсутствие расширений по умолчанию
-- Отсутствие папки mains
-- Поиск разрешения пакетов с голыми спецификаторами через node_modules
+-   Разрешение на основе FileURL, как это используется в модулях ES
+-   Поддержка загрузки встроенных модулей
+-   Относительное и абсолютное разрешение URL
+-   Отсутствие расширений по умолчанию
+-   Отсутствие папки mains
+-   Поиск разрешения пакетов с голыми спецификаторами через node_modules
 
 ### Алгоритм разрешителя
 
@@ -958,13 +962,13 @@ _defaultConditions_ - это массив имен условного окруж
 
 Резольвер может выдать следующие ошибки:
 
-- _Invalid Module Specifier_: Спецификатор модуля является недопустимым URL, именем пакета или спецификатором подпути пакета.
-- _Invalid Package Configuration_: конфигурация package.json недопустима или содержит недопустимую конфигурацию.
-- _Неверная цель пакета_: Экспорт или импорт пакета определяет целевой модуль для пакета, который является недопустимым типом или строковым целевым модулем.
-- _Путь пакета не экспортирован_: Экспорт пакетов не определяет или не разрешает целевой подпуть в пакете для данного модуля.
-- _Импорт пакета не определен_: Импорт пакета не определяет спецификатор.
-- _Module Not Found_: Запрашиваемый пакет или модуль не существует.
-- _Unsupported Directory Import_: Разрешенный путь соответствует каталогу, который не является поддерживаемой целью для импорта модулей.
+-   _Invalid Module Specifier_: Спецификатор модуля является недопустимым URL, именем пакета или спецификатором подпути пакета.
+-   _Invalid Package Configuration_: конфигурация package.json недопустима или содержит недопустимую конфигурацию.
+-   _Неверная цель пакета_: Экспорт или импорт пакета определяет целевой модуль для пакета, который является недопустимым типом или строковым целевым модулем.
+-   _Путь пакета не экспортирован_: Экспорт пакетов не определяет или не разрешает целевой подпуть в пакете для данного модуля.
+-   _Импорт пакета не определен_: Импорт пакета не определяет спецификатор.
+-   _Module Not Found_: Запрашиваемый пакет или модуль не существует.
+-   _Unsupported Directory Import_: Разрешенный путь соответствует каталогу, который не является поддерживаемой целью для импорта модулей.
 
 ### Спецификация алгоритма резольвера
 

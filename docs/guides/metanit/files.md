@@ -29,19 +29,19 @@ fs.readFile("hello.txt", "utf8", function(error,data){ });
 Для чтения файла определим в файле `app.js` следующий код:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 // асинхронное чтение
 fs.readFile('hello.txt', 'utf8', function (error, data) {
-  console.log('Асинхронное чтение файла')
-  if (error) throw error // если возникла ошибка
-  console.log(data) // выводим считанные данные
-})
+    console.log('Асинхронное чтение файла');
+    if (error) throw error; // если возникла ошибка
+    console.log(data); // выводим считанные данные
+});
 
 // синхронное чтение
-console.log('Синхронное чтение файла')
-let fileContent = fs.readFileSync('hello.txt', 'utf8')
-console.log(fileContent)
+console.log('Синхронное чтение файла');
+let fileContent = fs.readFileSync('hello.txt', 'utf8');
+console.log(fileContent);
 ```
 
 ![2.17.png](2.17.png)
@@ -53,28 +53,28 @@ console.log(fileContent)
 Для записи файла в синхронном варианте используется функция `fs.writeFileSync()`, которая в качестве параметра принимает путь к файлу и записываемые данные:
 
 ```js
-fs.writeFileSync('hello.txt', 'Привет ми ми ми!')
+fs.writeFileSync('hello.txt', 'Привет ми ми ми!');
 ```
 
 Также для записи файла можно использовать асинхронную функцию `fs.writeFile()`, которая принимает те же параметры:
 
 ```js
-fs.writeFile('hello.txt', 'Привет МИГ-29!')
+fs.writeFile('hello.txt', 'Привет МИГ-29!');
 ```
 
 В качестве вспомогательного параметра в функцию может передаваться функция обратного вызова, которая выполняется после завершения записи:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 fs.writeFile('hello.txt', 'Hello мир!', function (error) {
-  if (error) throw error // если возникла ошибка
-  console.log(
-    'Асинхронная запись файла завершена. Содержимое файла:'
-  )
-  let data = fs.readFileSync('hello.txt', 'utf8')
-  console.log(data) // выводим считанные данные
-})
+    if (error) throw error; // если возникла ошибка
+    console.log(
+        'Асинхронная запись файла завершена. Содержимое файла:'
+    );
+    let data = fs.readFileSync('hello.txt', 'utf8');
+    console.log(data); // выводим считанные данные
+});
 ```
 
 ![2.18.png](2.18.png)
@@ -82,17 +82,19 @@ fs.writeFile('hello.txt', 'Hello мир!', function (error) {
 Следует отметить, что эти методы полностью перезаписывают файл. Если надо дозаписать файл, то применяются методы `fs.appendFile()`/`fs.appendFileSync()`:
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-fs.appendFileSync('hello.txt', 'Привет ми ми ми!')
+fs.appendFileSync('hello.txt', 'Привет ми ми ми!');
 
 fs.appendFile('hello.txt', 'Привет МИД!', function (error) {
-  if (error) throw error // если возникла ошибка
+    if (error) throw error; // если возникла ошибка
 
-  console.log('Запись файла завершена. Содержимое файла:')
-  let data = fs.readFileSync('hello.txt', 'utf8')
-  console.log(data) // выводим считанные данные
-})
+    console.log(
+        'Запись файла завершена. Содержимое файла:'
+    );
+    let data = fs.readFileSync('hello.txt', 'utf8');
+    console.log(data); // выводим считанные данные
+});
 ```
 
 ![2.19.png](2.19.png)
@@ -102,15 +104,15 @@ fs.appendFile('hello.txt', 'Привет МИД!', function (error) {
 Для удаления файла в синхронном варианте используется функция `fs.unlinkSync()`, которая в качестве параметра принимает путь к удаляемому файлу:
 
 ```js
-fs.unlinkSync('hello.txt')
+fs.unlinkSync('hello.txt');
 ```
 
 Также для удаления файла можно использовать асинхронную функцию `fs.unlink()`, которая принимает путь к файлу и функцию, вызываемую при завершении удаления:
 
 ```js
 fs.unlink('hello.txt', (err) => {
-  if (err) console.log(err)
-  // если возникла ошибка
-  else console.log('hello.txt was deleted')
-})
+    if (err) console.log(err);
+    // если возникла ошибка
+    else console.log('hello.txt was deleted');
+});
 ```

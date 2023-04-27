@@ -12,7 +12,8 @@ npm install express-handlebars
 
 ```html
 <nav>
-  <a href="/">Главная</a> | <a href="/contact">Контакты</a>
+    <a href="/">Главная</a> |
+    <a href="/contact">Контакты</a>
 </nav>
 ```
 
@@ -62,49 +63,49 @@ npm install express-handlebars
 Далее опредлим следующий файл `app.js`:
 
 ```js
-const express = require('express')
-const expressHbs = require('express-handlebars')
-const hbs = require('hbs')
-const app = express()
+const express = require('express');
+const expressHbs = require('express-handlebars');
+const hbs = require('hbs');
+const app = express();
 
 // устанавливаем настройки для файлов layout
 app.engine(
-  'hbs',
-  expressHbs({
-    layoutsDir: 'views/layouts',
-    defaultLayout: 'layout',
-    extname: 'hbs',
-  })
-)
-app.set('view engine', 'hbs')
-hbs.registerPartials(__dirname + '/views/partials')
+    'hbs',
+    expressHbs({
+        layoutsDir: 'views/layouts',
+        defaultLayout: 'layout',
+        extname: 'hbs',
+    })
+);
+app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + '/views/partials');
 
 app.use('/contact', function (request, response) {
-  response.render('contact', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 
 app.use('/', function (request, response) {
-  response.render('home.hbs')
-})
-app.listen(3000)
+    response.render('home.hbs');
+});
+app.listen(3000);
 ```
 
 Для использования файлов `layout` необходимо настроить движок hbs:
 
 ```js
 app.engine(
-  'hbs',
-  expressHbs({
-    layoutsDir: 'views/layouts',
-    defaultLayout: 'layout',
-    extname: 'hbs',
-  })
-)
+    'hbs',
+    expressHbs({
+        layoutsDir: 'views/layouts',
+        defaultLayout: 'layout',
+        extname: 'hbs',
+    })
+);
 ```
 
 Функция `expressHbs` осуществляет конфигурацию движка. В частности, свойство `layoutsDir` задает путь к папке с файлами `layout` относительно корня каталога проекта. Свойство `defaultLayout` указывает на название файла, который будет использоваться в качестве мастер-страницы. В нашем случае это файл `layout.hbs`, поэтому указываем название этого файла без расширения. И третье свойство - `extname` задает расширение файлов.

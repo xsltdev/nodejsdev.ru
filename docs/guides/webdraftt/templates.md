@@ -4,14 +4,14 @@
 
 Настройка Node.js шаблонизатора осуществляется заданием двух параметров:
 
-- `views` - путь к директории, в которой находятся шаблоны;
-- `view engine` - указание самого шаблонизатора.
+-   `views` - путь к директории, в которой находятся шаблоны;
+-   `view engine` - указание самого шаблонизатора.
 
 Для задания этих параметров используется метод Express `set()`.
 
 ```js
-app.set('views', './views')
-app.set('view engine', 'handlebars')
+app.set('views', './views');
+app.set('view engine', 'handlebars');
 ```
 
 Шаблонизаторов очень много, но наибольшее распространение получили Handlebars и Pug.
@@ -29,27 +29,29 @@ npm install --save express-handlebars
 _app.js_
 
 ```js
-const express = require('express')
-const app = express()
-const handlebars = require('express-handlebars')
+const express = require('express');
+const app = express();
+const handlebars = require('express-handlebars');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 app.engine(
-  'handlebars',
-  handlebars.engine({ defaultLayout: 'main' })
-)
-app.set('views', './views')
-app.set('view engine', 'handlebars')
+    'handlebars',
+    handlebars.engine({ defaultLayout: 'main' })
+);
+app.set('views', './views');
+app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Greetings form Handlebars' })
-})
+    res.render('home', {
+        title: 'Greetings form Handlebars',
+    });
+});
 
 app.listen(port, host, function () {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 _views/home.handlebars_
@@ -63,18 +65,18 @@ _views/layouts/main.handlebars_
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        />
 
-    <title>Node js Handlebars</title>
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+        <title>Node js Handlebars</title>
+    </head>
+    <body>
+        {{{body}}}
+    </body>
 </html>
 ```
 
@@ -82,8 +84,8 @@ _views/layouts/main.handlebars_
 
 Генерация и отдача представления осуществляется с помощью метода `render()`, который принимает два параметра:
 
-- шаблон;
-- данные для шаблона в виде объекта (если необходимо).
+-   шаблон;
+-   данные для шаблона в виде объекта (если необходимо).
 
 !!! note ""
 
@@ -99,11 +101,11 @@ _views/layouts/main.handlebars_
 
 ```js
 app.get('/', (req, res) => {
-  res.render('home', {
-    title: 'Greetings form Handlebars',
-    layout: false,
-  })
-})
+    res.render('home', {
+        title: 'Greetings form Handlebars',
+        layout: false,
+    });
+});
 ```
 
 Node.js handlebars гибкий шаблонизатор с обширным функционалом.
@@ -113,7 +115,7 @@ Node.js handlebars гибкий шаблонизатор с обширным ф�
 В handlebars предусмотрен механизм кэширования представлений в режиме `production`. Шаблонизатор самостоятельно следит за режимом запуска приложения и управляет кэшированием. Но для этого сперва необходимо активировать кэширование с помощью Express.
 
 ```js
-app.enable('view cache')
+app.enable('view cache');
 ```
 
 ### Условия
@@ -122,11 +124,11 @@ app.enable('view cache')
 
 ```js
 app.get('/', (req, res) => {
-  res.render('home', {
-    title: 'Greetings form Handlebars',
-    content: 'Description how to use it handlebars',
-  })
-})
+    res.render('home', {
+        title: 'Greetings form Handlebars',
+        content: 'Description how to use it handlebars',
+    });
+});
 ```
 
 ```html
@@ -143,11 +145,11 @@ app.get('/', (req, res) => {
 
 ```js
 app.get('/', (req, res) => {
-  res.render('home', {
-    title: 'Greetings form Handlebars',
-    advantages: ['simple', 'flexible', 'powerful'],
-  })
-})
+    res.render('home', {
+        title: 'Greetings form Handlebars',
+        advantages: ['simple', 'flexible', 'powerful'],
+    });
+});
 ```
 
 ```html
@@ -157,9 +159,9 @@ app.get('/', (req, res) => {
 <p>Advantages</p>
 
 <ul>
-  {{#each advantages}}
-  <li>{{this}}</li>
-  {{/each}}
+    {{#each advantages}}
+    <li>{{this}}</li>
+    {{/each}}
 </ul>
 {{/if}}
 ```
@@ -172,9 +174,9 @@ _partials/advantages.handlebars_
 
 ```html
 <ul>
-  {{#each advantages}}
-  <li>{{this}}</li>
-  {{/each}}
+    {{#each advantages}}
+    <li>{{this}}</li>
+    {{/each}}
 </ul>
 ```
 
@@ -194,28 +196,28 @@ _home.handlebars_
 
 ```js
 app.engine(
-  'handlebars',
-  handlebars.engine({
-    defaultLayout: 'main',
-    helpers: {
-      getTitle: () => 'Greetings form Handlebars',
-    },
-  })
-)
-app.set('views', './views')
-app.set('view engine', 'handlebars')
+    'handlebars',
+    handlebars.engine({
+        defaultLayout: 'main',
+        helpers: {
+            getTitle: () => 'Greetings form Handlebars',
+        },
+    })
+);
+app.set('views', './views');
+app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
-  res.render('home', {
-    helpers: {
-      getAdvantages: () => [
-        'simple',
-        'flexible',
-        'powerful',
-      ],
-    },
-  })
-})
+    res.render('home', {
+        helpers: {
+            getAdvantages: () => [
+                'simple',
+                'flexible',
+                'powerful',
+            ],
+        },
+    });
+});
 ```
 
 ```html
@@ -245,22 +247,22 @@ npm install pug --save
 _app.js_
 
 ```js
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
-app.set('views', './views')
-app.set('view engine', 'pug')
+app.set('views', './views');
+app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
-  res.render('main', { title: 'Greetings from Pug' })
-})
+    res.render('main', { title: 'Greetings from Pug' });
+});
 
 app.listen(port, host, function () {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 _views/main.pug_
@@ -325,11 +327,11 @@ Node.js шаблонизатор Pug для реализации условий 
 
 ```js
 app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Greetings from Pug',
-    content: 'Node js Pug description',
-  })
-})
+    res.render('index', {
+        title: 'Greetings from Pug',
+        content: 'Node js Pug description',
+    });
+});
 ```
 
 ```pug
@@ -350,11 +352,11 @@ html(lang="en")
 
 ```js
 app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Greetings from Pug',
-    type: 'h3',
-  })
-})
+    res.render('index', {
+        title: 'Greetings from Pug',
+        type: 'h3',
+    });
+});
 ```
 
 ```pug
@@ -422,8 +424,8 @@ _app.js_
 
 ```js
 app.get('/', (req, res) => {
-  res.render('home')
-})
+    res.render('home');
+});
 ```
 
 _views/index.pug_

@@ -5,73 +5,85 @@
 _app.js_
 
 ```js
-const http = require('http')
+const http = require('http');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 function notFound(res) {
-  res.statusCode = 404
-  res.setHeader('Content-Type', 'text/plain')
-  res.end('Not found\n')
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Not found\n');
 }
 
 const server = http.createServer((req, res) => {
-  switch (req.method) {
-    case 'GET': {
-      switch (req.url) {
-        case '/home': {
-          res.statusCode = 200
-          res.setHeader('Content-Type', 'text/plain')
-          res.end('Home page\n')
-          break
+    switch (req.method) {
+        case 'GET': {
+            switch (req.url) {
+                case '/home': {
+                    res.statusCode = 200;
+                    res.setHeader(
+                        'Content-Type',
+                        'text/plain'
+                    );
+                    res.end('Home page\n');
+                    break;
+                }
+                case '/about': {
+                    res.statusCode = 200;
+                    res.setHeader(
+                        'Content-Type',
+                        'text/plain'
+                    );
+                    res.end('About page\n');
+                    break;
+                }
+                default: {
+                    notFound(res);
+                    break;
+                }
+            }
+
+            break;
         }
-        case '/about': {
-          res.statusCode = 200
-          res.setHeader('Content-Type', 'text/plain')
-          res.end('About page\n')
-          break
+        case 'POST': {
+            switch (req.url) {
+                case '/api/admin': {
+                    res.statusCode = 200;
+                    res.setHeader(
+                        'Content-Type',
+                        'text/plain'
+                    );
+                    res.end('Create admin request\n');
+                    break;
+                }
+                case '/api/user': {
+                    res.statusCode = 200;
+                    res.setHeader(
+                        'Content-Type',
+                        'text/plain'
+                    );
+                    res.end('Create user request\n');
+                    break;
+                }
+                default: {
+                    notFound(res);
+                    break;
+                }
+            }
+
+            break;
         }
         default: {
-          notFound(res)
-          break
+            notFound(res);
+            break;
         }
-      }
-
-      break
     }
-    case 'POST': {
-      switch (req.url) {
-        case '/api/admin': {
-          res.statusCode = 200
-          res.setHeader('Content-Type', 'text/plain')
-          res.end('Create admin request\n')
-          break
-        }
-        case '/api/user': {
-          res.statusCode = 200
-          res.setHeader('Content-Type', 'text/plain')
-          res.end('Create user request\n')
-          break
-        }
-        default: {
-          notFound(res)
-          break
-        }
-      }
-
-      break
-    }
-    default: {
-      notFound(res)
-      break
-    }
-  }
-})
+});
 
 server.listen(port, host, () => {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 Чтобы запустить написанный Node.js сервер выполните команду.
@@ -90,8 +102,8 @@ node app.js
 
 Далее с использованием метода `createServer()` модуля `http` создается Node.js сервер. Метод `createServer()` принимает два аргумента:
 
-- объект запроса (ссылка) - содержит данные запроса;
-- объект ответа (ссылка) - нужен для управления ответом на запрос.
+-   объект запроса (ссылка) - содержит данные запроса;
+-   объект ответа (ссылка) - нужен для управления ответом на запрос.
 
 С помощью условного оператор `switch` организуется структура сервера и описываются ответы на указанные запросы. Если запрашиваемый URL не существует - возвращается `404` код ответа и текст `Not found`.
 
@@ -103,8 +115,8 @@ node app.js
 
 Далее метод `listen()` запускает Node.js сервер. Передаваемые методу параметры:
 
-- хост;
-- порт;
-- callback-функция, которая будет вызвана сразу после запуска сервера.
+-   хост;
+-   порт;
+-   callback-функция, которая будет вызвана сразу после запуска сервера.
 
 Созданный в примере сервер трудно масштабируется и содержит много кода, к тому же весь процесс приходится контролировать самостоятельно. На практике разработка Node.js приложений ведется с использованием фреймворков, самый популярный из которых - [Express](http://expressjs.com/).

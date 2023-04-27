@@ -14,42 +14,44 @@ _app.js_
 
 ```js
 const express = require('express'),
-  app = express(),
-  os = require('os'),
-  cluster = require('cluster');
+    app = express(),
+    os = require('os'),
+    cluster = require('cluster');
 
 const host = '127.0.0.1';
 const port = 7000;
 
 app.use((req, res, next) => {
-  if (cluster.isWorker)
-    console.log(
-      `Worker ${cluster.worker.id} handle request`
-    );
+    if (cluster.isWorker)
+        console.log(
+            `Worker ${cluster.worker.id} handle request`
+        );
 
-  next();
+    next();
 });
 
 app.get('/', (req, res) => res.send('Cluster mode.'));
 
 if (cluster.isMaster) {
-  let cpus = os.cpus().length;
+    let cpus = os.cpus().length;
 
-  for (let i = 0; i < cpus; i++) cluster.fork();
+    for (let i = 0; i < cpus; i++) cluster.fork();
 
-  cluster.on('exit', (worker, code) => {
-    console.log(
-      `Worker ${worker.id} finished. Exit code: ${code}`
-    );
+    cluster.on('exit', (worker, code) => {
+        console.log(
+            `Worker ${worker.id} finished. Exit code: ${code}`
+        );
 
-    app.listen(port, host, () =>
-      console.log(`Worker ${cluster.worker.id} launched`)
-    );
-  });
+        app.listen(port, host, () =>
+            console.log(
+                `Worker ${cluster.worker.id} launched`
+            )
+        );
+    });
 } else
-  app.listen(port, host, () =>
-    console.log(`Worker ${cluster.worker.id} launched`)
-  );
+    app.listen(port, host, () =>
+        console.log(`Worker ${cluster.worker.id} launched`)
+    );
 ```
 
 Для кластеризации используется встроенный в Node.js модуль [`cluster`](../../api/cluster.md). При запуске сервера проверяется, является ли текущий процесс основным. Если да, то на основании данных о процессоре, полученных с помощью модуля `os`, запускаются дополнительные экземпляры, которые при запуске попадают в ветку `else`.
@@ -71,13 +73,13 @@ Worker 4 launched
 
 ```js
 cluster.on('exit', (worker, code) => {
-  console.log(
-    `Worker ${worker.id} finished. Exit code: ${code}`
-  );
+    console.log(
+        `Worker ${worker.id} finished. Exit code: ${code}`
+    );
 
-  app.listen(port, host, () =>
-    console.log(`Worker ${cluster.worker.id} launched`)
-  );
+    app.listen(port, host, () =>
+        console.log(`Worker ${cluster.worker.id} launched`)
+    );
 });
 ```
 
@@ -85,12 +87,12 @@ cluster.on('exit', (worker, code) => {
 
 ```js
 app.use((req, res, next) => {
-  if (cluster.isWorker)
-    console.log(
-      `Worker ${cluster.worker.id} handle request`
-    );
+    if (cluster.isWorker)
+        console.log(
+            `Worker ${cluster.worker.id} handle request`
+        );
 
-  next();
+    next();
 });
 ```
 
@@ -106,10 +108,10 @@ Worker 4 handle request
 
 Методы и свойства модуля `cluster`:
 
-- `fork()` - создает новый экземпляр приложения;
-- `disconnect()` - отключает от кластера все созданные дополнительно экземпляры, параметром принимает callback-функцию, которая будет вызвана, когда все экземпляры будут отключены;
-- `isMaster` - булевое значение, если `true` - значит текущий процесс является основным;
-- `isWorker` - булевое значение, если `true` - значит текущий процесс является дочерним.
+-   `fork()` - создает новый экземпляр приложения;
+-   `disconnect()` - отключает от кластера все созданные дополнительно экземпляры, параметром принимает callback-функцию, которая будет вызвана, когда все экземпляры будут отключены;
+-   `isMaster` - булевое значение, если `true` - значит текущий процесс является основным;
+-   `isWorker` - булевое значение, если `true` - значит текущий процесс является дочерним.
 
 События модуля `cluster`:
 
@@ -123,7 +125,9 @@ cluster.on('fork', worker => {...});
 
 ```js
 cluster.on('listening', (worker, addr) => {
-  console.log(`Host: ${addr.address}, Port: ${addr.port}`);
+    console.log(
+        `Host: ${addr.address}, Port: ${addr.port}`
+    );
 });
 ```
 
@@ -153,22 +157,22 @@ cluster.on('exit', (worker, code, signal) => {...});
 
 Перечисленные выше методы, свойства и события относятся ко всему кластеру. Теперь рассмотрим методы и свойства дочернего экземпляра:
 
-- `disconnect()` - разрывает IPC канал между основным и текущим дочерним процессами, но сам дочерний процесс не завершается, пока у него будут активные подключения, новых подключений он уже не принимает;
-- `kill()` - завершает дочерний экземпляр, начиная с разрыва канала IPC и заканчивая присвоением статуса завершения процесса, который передается методу `kill()` аргументом (по умолчанию `0`);
-- `send()` - посылает экземпляру данные и инициирует у него событие `message`;
+-   `disconnect()` - разрывает IPC канал между основным и текущим дочерним процессами, но сам дочерний процесс не завершается, пока у него будут активные подключения, новых подключений он уже не принимает;
+-   `kill()` - завершает дочерний экземпляр, начиная с разрыва канала IPC и заканчивая присвоением статуса завершения процесса, который передается методу `kill()` аргументом (по умолчанию `0`);
+-   `send()` - посылает экземпляру данные и инициирует у него событие `message`;
 
 ```js
 if (cluster.isMaster) {
-  let worker = cluster.fork();
-  worker.send({ message: 'Data' });
+    let worker = cluster.fork();
+    worker.send({ message: 'Data' });
 }
 ```
 
-- `isConnected()` - возвращает `true`, если дочерний процесс связан с главным процессом IPC каналом;
-- `isDead()` - возвращает `true`, если экземпляр уже завершен
-- `id` - уникальный идентификатор процесса;
-- `process` - экземпляр созданного дочернего процесса;
-- `exitedAfterDisconnect` - булевое значение, если `true`, то экземпляр был завершен вызовом `kill()` или `disconnect()`.
+-   `isConnected()` - возвращает `true`, если дочерний процесс связан с главным процессом IPC каналом;
+-   `isDead()` - возвращает `true`, если экземпляр уже завершен
+-   `id` - уникальный идентификатор процесса;
+-   `process` - экземпляр созданного дочернего процесса;
+-   `exitedAfterDisconnect` - булевое значение, если `true`, то экземпляр был завершен вызовом `kill()` или `disconnect()`.
 
 !!! note ""
 

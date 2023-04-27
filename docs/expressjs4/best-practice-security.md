@@ -26,15 +26,15 @@
 
 Helmet, по сути, представляет собой набор из девяти более мелких функций промежуточной обработки, обеспечивающих настройку заголовков HTTP, связанную с защитой:
 
-- [csp](https://github.com/helmetjs/csp) задает заголовок `Content-Security-Policy` для предотвращения атак межсайтового скриптинга и прочих межсайтовых вмешательств.
-- [hidePoweredBy](https://github.com/helmetjs/hide-powered-by) удаляет заголовок `X-Powered-By`.
-- [hpkp](https://github.com/helmetjs/hpkp) добавляет заголовки [Public Key Pinning](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning) для предотвращения атак посредника (атак "человек посередине") с поддельными сертификатами.
-- [hsts](https://github.com/helmetjs/hsts) задает заголовок `Strict-Transport-Security`, принудительно активирующий защиту соединений с сервером (по протоколу HTTP с использованием SSL/TLS).
-- [ieNoOpen](https://github.com/helmetjs/ienoopen) задает заголовок `X-Download-Options` для IE8+.
-- [noCache](https://github.com/helmetjs/nocache) задает заголовок `Cache-Control` и заголовки Pragma для отключения кеширования на стороне клиента.
-- [noSniff](https://github.com/helmetjs/dont-sniff-mimetype) задает заголовок `X-Content-Type-Options` для защиты браузеров от прослушивания (сниффинга) MIME ответов с отличным от объявленного типом содержимого (content-type).
-- [frameguard](https://github.com/helmetjs/frameguard) задает заголовок `X-Frame-Options` для защиты от [кликджекинга](https://www.owasp.org/index.php/Clickjacking).
-- [xssFilter](https://github.com/helmetjs/x-xss-protection) задает заголовок `X-XSS-Protection` для активации фильтра XSS (фильтра межсайтового скриптинга) в большинстве современных веб-браузеров.
+-   [csp](https://github.com/helmetjs/csp) задает заголовок `Content-Security-Policy` для предотвращения атак межсайтового скриптинга и прочих межсайтовых вмешательств.
+-   [hidePoweredBy](https://github.com/helmetjs/hide-powered-by) удаляет заголовок `X-Powered-By`.
+-   [hpkp](https://github.com/helmetjs/hpkp) добавляет заголовки [Public Key Pinning](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning) для предотвращения атак посредника (атак "человек посередине") с поддельными сертификатами.
+-   [hsts](https://github.com/helmetjs/hsts) задает заголовок `Strict-Transport-Security`, принудительно активирующий защиту соединений с сервером (по протоколу HTTP с использованием SSL/TLS).
+-   [ieNoOpen](https://github.com/helmetjs/ienoopen) задает заголовок `X-Download-Options` для IE8+.
+-   [noCache](https://github.com/helmetjs/nocache) задает заголовок `Cache-Control` и заголовки Pragma для отключения кеширования на стороне клиента.
+-   [noSniff](https://github.com/helmetjs/dont-sniff-mimetype) задает заголовок `X-Content-Type-Options` для защиты браузеров от прослушивания (сниффинга) MIME ответов с отличным от объявленного типом содержимого (content-type).
+-   [frameguard](https://github.com/helmetjs/frameguard) задает заголовок `X-Frame-Options` для защиты от [кликджекинга](https://www.owasp.org/index.php/Clickjacking).
+-   [xssFilter](https://github.com/helmetjs/x-xss-protection) задает заголовок `X-XSS-Protection` для активации фильтра XSS (фильтра межсайтового скриптинга) в большинстве современных веб-браузеров.
 
 Установите Helmet, как обычный модуль:
 
@@ -67,8 +67,8 @@ app.disable('x-powered-by');
 
 Существует два основных сеансовых модуля cookie для промежуточной обработки:
 
-- Модуль [express-session](https://www.npmjs.com/package/express-session), заменяющий собой промежуточный обработчик `express.session`, встроенный в Express 3.x.
-- Модуль [cookie-session](https://www.npmjs.com/package/cookie-session), заменяющий собой промежуточный обработчик `express.cookieSession`, встроенный в Express 3.x.
+-   Модуль [express-session](https://www.npmjs.com/package/express-session), заменяющий собой промежуточный обработчик `express.session`, встроенный в Express 3.x.
+-   Модуль [cookie-session](https://www.npmjs.com/package/cookie-session), заменяющий собой промежуточный обработчик `express.cookieSession`, встроенный в Express 3.x.
 
 Основное различие между этими двумя модулями состоит в способе сохранения сеансовых данных cookie. Промежуточный обработчик [express-session](https://www.npmjs.com/package/express-session) сохраняет данные о сеансе на сервере; в самом файле cookie сохраняется только ИД сеанса, но не данные сеанса. По умолчанию, используется хранилище в оперативной памяти, но данный способ не предназначен для рабочей среды. В рабочей среде необходимо настроить масштабируемое хранилище сеансов; см. список [совместимых хранилищ сеансов](https://github.com/expressjs/session#compatible-session-stores).
 
@@ -84,10 +84,10 @@ app.disable('x-powered-by');
 var session = require('express-session');
 app.set('trust proxy', 1); // trust first proxy
 app.use(
-  session({
-    secret: 's3Cur3',
-    name: 'sessionId',
-  })
+    session({
+        secret: 's3Cur3',
+        name: 'sessionId',
+    })
 );
 ```
 
@@ -95,11 +95,11 @@ app.use(
 
 Для обеспечения защиты необходимо настроить следующие опции защиты файлов cookie:
 
-- `secure` - обеспечивает отправку файлов cookie браузером только с использованием протокола HTTPS.
-- `httpOnly` - обеспечивает отправку cookie только с использованием протокола HTTP(S), а не клиентского JavaScript, что способствует защите от атак межсайтового скриптинга.
-- `domain` - указывает домен cookie; используется для сравнения с доменом сервера, на котором запрашивается данный URL. В случае совпадения выполняется проверка следующего атрибута - пути.
-- `path` - указывает путь cookie; используется для сравнения с путем запроса. Если путь и домен совпадают, выполняется отправка cookie в запросе.
-- `expires` - используется для настройки даты окончания срока хранения для постоянных cookie.
+-   `secure` - обеспечивает отправку файлов cookie браузером только с использованием протокола HTTPS.
+-   `httpOnly` - обеспечивает отправку cookie только с использованием протокола HTTP(S), а не клиентского JavaScript, что способствует защите от атак межсайтового скриптинга.
+-   `domain` - указывает домен cookie; используется для сравнения с доменом сервера, на котором запрашивается данный URL. В случае совпадения выполняется проверка следующего атрибута - пути.
+-   `path` - указывает путь cookie; используется для сравнения с путем запроса. Если путь и домен совпадают, выполняется отправка cookie в запросе.
+-   `expires` - используется для настройки даты окончания срока хранения для постоянных cookie.
 
 Ниже приведен пример с использованием промежуточного обработчика [cookie-session](https://www.npmjs.com/package/cookie-session):
 
@@ -110,17 +110,17 @@ var app = express();
 
 var expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 app.use(
-  session({
-    name: 'session',
-    keys: ['key1', 'key2'],
-    cookie: {
-      secure: true,
-      httpOnly: true,
-      domain: 'example.com',
-      path: 'foo/bar',
-      expires: expiryDate,
-    },
-  })
+    session({
+        name: 'session',
+        keys: ['key1', 'key2'],
+        cookie: {
+            secure: true,
+            httpOnly: true,
+            domain: 'example.com',
+            path: 'foo/bar',
+            expires: expiryDate,
+        },
+    })
 );
 ```
 
@@ -160,13 +160,13 @@ $ requiresafe check
 
 Ниже приводится несколько дополнительных рекомендаций, взятых из исчерпывающего [Контрольного списка требований к защите Node.js](https://blog.risingstack.com/node-js-security-checklist/). В этой публикации можно найти дополнительную информацию по всем приведенным ниже рекомендациям:
 
-- Введите ограничение скорости передачи данных во избежание атак методом грубого подбора сочетаний символов для идентификации. Для реализации стратегии ограничения скорости передачи данных можно воспользоваться [Шлюзом API StrongLoop](https://strongloop.com/projects/#mg). В качестве альтернативы, можно использовать промежуточный обработчик, например, [express-limiter](https://www.npmjs.com/package/express-limiter), но для этого придется внести некоторые изменения в код.
-- Используйте промежуточный обработчик [csurf](https://www.npmjs.com/package/csurf) для защиты от подделки межсайтовых запросов (CSRF).
-- Всегда применяйте фильтрацию и очистку пользовательского ввода в целях защиты от атак межсайтового скриптинга (XSS) и ввода ложных команд.
-- Обеспечьте защиту от атак внедрения SQL-кода с помощью параметризованных запросов или подготовленных операторов.
-- Используйте инструмент [sqlmap](http://sqlmap.org/) с открытым исходным кодом для выявления уязвимостей к внедрению SQL-кода в приложение.
-- Используйте инструменты [nmap](https://nmap.org/) и [sslyze](https://github.com/nabla-c0d3/sslyze) для проверки конфигурации шифров, ключей и повторных согласований SSL, а также действительности сертификата.
-- Используйте [safe-regex](https://www.npmjs.com/package/safe-regex), чтобы убедиться в невосприимчивости регулярных выражений к атакам [отказа в обслуживании регулярных выражений](https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS).
+-   Введите ограничение скорости передачи данных во избежание атак методом грубого подбора сочетаний символов для идентификации. Для реализации стратегии ограничения скорости передачи данных можно воспользоваться [Шлюзом API StrongLoop](https://strongloop.com/projects/#mg). В качестве альтернативы, можно использовать промежуточный обработчик, например, [express-limiter](https://www.npmjs.com/package/express-limiter), но для этого придется внести некоторые изменения в код.
+-   Используйте промежуточный обработчик [csurf](https://www.npmjs.com/package/csurf) для защиты от подделки межсайтовых запросов (CSRF).
+-   Всегда применяйте фильтрацию и очистку пользовательского ввода в целях защиты от атак межсайтового скриптинга (XSS) и ввода ложных команд.
+-   Обеспечьте защиту от атак внедрения SQL-кода с помощью параметризованных запросов или подготовленных операторов.
+-   Используйте инструмент [sqlmap](http://sqlmap.org/) с открытым исходным кодом для выявления уязвимостей к внедрению SQL-кода в приложение.
+-   Используйте инструменты [nmap](https://nmap.org/) и [sslyze](https://github.com/nabla-c0d3/sslyze) для проверки конфигурации шифров, ключей и повторных согласований SSL, а также действительности сертификата.
+-   Используйте [safe-regex](https://www.npmjs.com/package/safe-regex), чтобы убедиться в невосприимчивости регулярных выражений к атакам [отказа в обслуживании регулярных выражений](https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS).
 
 ## Избегайте прочих известных уязвимостей
 

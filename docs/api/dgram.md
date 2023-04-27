@@ -19,21 +19,21 @@ import dgram from 'node:dgram';
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-  console.error(`server error:\n${err.stack}`);
-  server.close();
+    console.error(`server error:\n${err.stack}`);
+    server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-  console.log(
-    `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
-  );
+    console.log(
+        `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
+    );
 });
 
 server.on('listening', () => {
-  const address = server.address();
-  console.log(
-    `server listening ${address.address}:${address.port}`
-  );
+    const address = server.address();
+    console.log(
+        `server listening ${address.address}:${address.port}`
+    );
 });
 
 server.bind(41234);
@@ -45,21 +45,21 @@ const dgram = require('node:dgram');
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-  console.error(`server error:\n${err.stack}`);
-  server.close();
+    console.error(`server error:\n${err.stack}`);
+    server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-  console.log(
-    `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
-  );
+    console.log(
+        `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
+    );
 });
 
 server.on('listening', () => {
-  const address = server.address();
-  console.log(
-    `server listening ${address.address}:${address.port}`
-  );
+    const address = server.address();
+    console.log(
+        `server listening ${address.address}:${address.port}`
+    );
 });
 
 server.bind(41234);
@@ -68,7 +68,7 @@ server.bind(41234);
 
 ## Класс: `dgram.Socket`
 
-- Расширяет: {EventEmitter}
+-   Расширяет: {EventEmitter}
 
 Инкапсулирует функциональность дейтаграммы.
 
@@ -84,7 +84,7 @@ server.bind(41234);
 
 ### Событие: `ошибка`
 
-- `exception` {Ошибка}
+-   `exception` {Ошибка}
 
 Событие `'error'` генерируется всякий раз, когда возникает какая-либо ошибка. Функции-обработчику события передается единственный объект `Error`.
 
@@ -96,19 +96,19 @@ server.bind(41234);
 
 Событие `'message'` происходит, когда на сокете появляется новая датаграмма. Функции-обработчику события передаются два аргумента: `msg` и `rinfo`.
 
-- `msg` {Буфер} Сообщение.
-- `rinfo` {Объект} Информация об удаленном адресе.
-  - `address` {string} Адрес отправителя.
-  - `family` {string} Семейство адресов (`IPv4` или `IPv6`).
-  - `port` {number} Порт отправителя.
-  - `Size` {число} Размер сообщения.
+-   `msg` {Буфер} Сообщение.
+-   `rinfo` {Объект} Информация об удаленном адресе.
+    -   `address` {string} Адрес отправителя.
+    -   `family` {string} Семейство адресов (`IPv4` или `IPv6`).
+    -   `port` {number} Порт отправителя.
+    -   `Size` {число} Размер сообщения.
 
 Если адрес источника входящего пакета является адресом IPv6 link-local, к `address` добавляется имя интерфейса. Например, пакет, полученный на интерфейсе `en0`, может иметь поле адреса, установленное в `'fe80::2618:1234:ab11:3b9c%en0'`, где `'%en0'` - имя интерфейса в виде суффикса идентификатора зоны.
 
 ### `socket.addMembership(multicastAddress[, multicastInterface])`
 
-- `multicastAddress` {string}
-- `multicastInterface` {строка}
+-   `multicastAddress` {string}
+-   `multicastInterface` {строка}
 
 Указывает ядру присоединиться к многоадресной группе по заданным `multicastAddress` и `multicastInterface`, используя опцию сокета `IP_ADD_MEMBERSHIP`. Если аргумент `multicastInterface` не указан, операционная система выберет один интерфейс и добавит к нему членство. Чтобы добавить членство ко всем доступным интерфейсам, вызовите `addMembership` несколько раз, по одному разу для каждого интерфейса.
 
@@ -121,13 +121,13 @@ import cluster from 'node:cluster';
 import dgram from 'node:dgram';
 
 if (cluster.isPrimary) {
-  cluster.fork(); // Работает нормально.
-  cluster.fork(); // Не работает с EADDRINUSE.
+    cluster.fork(); // Работает нормально.
+    cluster.fork(); // Не работает с EADDRINUSE.
 } else {
-  const s = dgram.createSocket('udp4');
-  s.bind(1234, () => {
-    s.addMembership('224.0.0.114');
-  });
+    const s = dgram.createSocket('udp4');
+    s.bind(1234, () => {
+        s.addMembership('224.0.0.114');
+    });
 }
 ```
 
@@ -136,21 +136,21 @@ const cluster = require('node:cluster');
 const dgram = require('node:dgram');
 
 if (cluster.isPrimary) {
-  cluster.fork(); // Работает нормально.
-  cluster.fork(); // Не работает с EADDRINUSE.
+    cluster.fork(); // Работает нормально.
+    cluster.fork(); // Не работает с EADDRINUSE.
 } else {
-  const s = dgram.createSocket('udp4');
-  s.bind(1234, () => {
-    s.addMembership('224.0.0.114');
-  });
+    const s = dgram.createSocket('udp4');
+    s.bind(1234, () => {
+        s.addMembership('224.0.0.114');
+    });
 }
 ```
 
 ### `socket.addSourceSpecificMembership(sourceAddress, groupAddress[, multicastInterface])`
 
-- `sourceAddress` {string}
-- `groupAddress` {string}
-- `multicastInterface` {строка}
+-   `sourceAddress` {string}
+-   `groupAddress` {string}
+-   `multicastInterface` {строка}
 
 Указывает ядру присоединиться к специфическому для источника многоадресному каналу по заданным `sourceAddress` и `groupAddress`, используя `multicastInterface` с опцией сокета `IP_ADD_SOURCE_MEMBERSHIP`. Если аргумент `multicastInterface` не указан, операционная система выберет один интерфейс и добавит членство в нем. Чтобы добавить членство в каждый доступный интерфейс, вызовите `socket.addSourceSpecificMembership()` несколько раз, по одному разу для каждого интерфейса.
 
@@ -158,7 +158,7 @@ if (cluster.isPrimary) {
 
 ### `socket.address()`
 
-- Возвращает: {Object}
+-   Возвращает: {Object}
 
 Возвращает объект, содержащий адресную информацию для сокета. Для UDP сокетов этот объект будет содержать свойства `address`, `family` и `port`.
 
@@ -166,9 +166,9 @@ if (cluster.isPrimary) {
 
 ### `socket.bind([port][, address][, callback])`
 
-- `порт` {целое число}
-- `адрес` {строка}
-- `callback` {Функция} без параметров. Вызывается, когда привязка завершена.
+-   `порт` {целое число}
+-   `адрес` {строка}
+-   `callback` {Функция} без параметров. Вызывается, когда привязка завершена.
 
 Для UDP сокетов заставляет `dgram.Socket` прослушивать сообщения дейтаграмм на указанном `порте` и необязательном `адресе`. Если `port` не указан или равен `0`, операционная система попытается привязаться к произвольному порту. Если `адрес` не указан, операционная система будет пытаться прослушивать все адреса. Когда привязка завершена, выдается событие `'listening'` и вызывается необязательная функция `callback`.
 
@@ -186,21 +186,21 @@ import dgram from 'node:dgram';
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-  console.error(`server error:\n${err.stack}`);
-  server.close();
+    console.error(`server error:\n${err.stack}`);
+    server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-  console.log(
-    `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
-  );
+    console.log(
+        `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
+    );
 });
 
 server.on('listening', () => {
-  const address = server.address();
-  console.log(
-    `server listening ${address.address}:${address.port}`
-  );
+    const address = server.address();
+    console.log(
+        `server listening ${address.address}:${address.port}`
+    );
 });
 
 server.bind(41234);
@@ -212,21 +212,21 @@ const dgram = require('node:dgram');
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-  console.error(`server error:\n${err.stack}`);
-  server.close();
+    console.error(`server error:\n${err.stack}`);
+    server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-  console.log(
-    `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
-  );
+    console.log(
+        `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
+    );
 });
 
 server.on('listening', () => {
-  const address = server.address();
-  console.log(
-    `server listening ${address.address}:${address.port}`
-  );
+    const address = server.address();
+    console.log(
+        `server listening ${address.address}:${address.port}`
+    );
 });
 
 server.bind(41234);
@@ -235,12 +235,12 @@ server.bind(41234);
 
 ### `socket.bind(options[, callback])`
 
-- `options` {Object} Требуется. Поддерживает следующие свойства:
-  - `port` {integer}
-  - `адрес` {строка}
-  - `exclusive` {boolean}
-  - `fd` {integer}
-- `callback` {функция}
+-   `options` {Object} Требуется. Поддерживает следующие свойства:
+    -   `port` {integer}
+    -   `адрес` {строка}
+    -   `exclusive` {boolean}
+    -   `fd` {integer}
+-   `callback` {функция}
 
 Для UDP сокетов заставляет `dgram.Socket` прослушивать сообщения дейтаграмм на названном `порте` и необязательном `адресе`, которые передаются как свойства объекта `options`, переданного в качестве первого аргумента. Если `port` не указан или равен `0`, операционная система попытается привязаться к случайному порту. Если `address` не указан, операционная система будет пытаться прослушивать все адреса. Когда привязка завершена, выдается событие `прослушивание` и вызывается необязательная функция `обратный вызов`.
 
@@ -258,23 +258,23 @@ server.bind(41234);
 
 ```js
 socket.bind({
-  адрес: 'localhost',
-  порт: 8000,
-  эксклюзивный: true,
+    адрес: 'localhost',
+    порт: 8000,
+    эксклюзивный: true,
 });
 ```
 
 ### `socket.close([callback])`
 
-- `callback` {Функция} Вызывается, когда сокет был закрыт.
+-   `callback` {Функция} Вызывается, когда сокет был закрыт.
 
 Закрывает базовый сокет и прекращает прослушивание данных на нем. Если указан обратный вызов, он добавляется в качестве слушателя для события [`'close'`](#event-close).
 
 ### `socket.connect(port[, address][, callback])`
 
-- `порт` {целое число}
-- `адрес` {строка}
-- `callback` {функция} Вызывается при завершении соединения или при ошибке.
+-   `порт` {целое число}
+-   `адрес` {строка}
+-   `callback` {функция} Вызывается при завершении соединения или при ошибке.
 
 Связывает `dgram.Socket` с удаленным адресом и портом. Каждое сообщение, отправленное этим хэндлом, автоматически отправляется по этому адресу. Кроме того, сокет будет получать сообщения только от этого удаленного пира. Попытка вызвать `connect()` на уже подключенном сокете приведет к исключению [`ERR_SOCKET_DGRAM_IS_CONNECTED`](errors.md#err_socket_dgram_is_connected). Если `address` не указан, по умолчанию будет использоваться `'127.0.0.1'` (для `udp4` сокетов) или `'::1'` (для `udp6` сокетов). Как только соединение будет завершено, произойдет событие `'connect'` и будет вызвана необязательная функция `callback`. В случае неудачи вызывается `callback` или, в противном случае, выдается событие `'error'`.
 
@@ -284,8 +284,8 @@ socket.bind({
 
 ### `socket.dropMembership(multicastAddress[, multicastInterface])`
 
-- `multicastAddress` {string}
-- `multicastInterface` {строка}
+-   `multicastAddress` {string}
+-   `multicastInterface` {строка}
 
 Инструктирует ядро покинуть многоадресную группу по адресу `multicastAddress`, используя опцию сокета `IP_DROP_MEMBERSHIP`. Этот метод автоматически вызывается ядром при закрытии сокета или завершении процесса, поэтому большинство приложений никогда не будут иметь причин для его вызова.
 
@@ -293,9 +293,9 @@ socket.bind({
 
 ### `socket.dropSourceSpecificMembership(sourceAddress, groupAddress[, multicastInterface])`
 
-- `sourceAddress` {string}
-- `groupAddress` {string}
-- `multicastInterface` {string}
+-   `sourceAddress` {string}
+-   `groupAddress` {string}
+-   `multicastInterface` {string}
 
 Инструктирует ядро покинуть многоадресный канал, специфичный для источника, по заданным `sourceAddress` и `groupAddress`, используя опцию сокета `IP_DROP_SOURCE_MEMBERSHIP`. Этот метод автоматически вызывается ядром при закрытии сокета или завершении процесса, поэтому большинство приложений никогда не будут иметь причин для его вызова.
 
@@ -303,27 +303,27 @@ socket.bind({
 
 ### `socket.getRecvBufferSize()`
 
-- Возвращает: {число} размер буфера приема сокета `SO_RCVBUF` в байтах.
+-   Возвращает: {число} размер буфера приема сокета `SO_RCVBUF` в байтах.
 
 Этот метод бросает [`ERR_SOCKET_BUFFER_SIZE`](errors.md#err_socket_buffer_size), если вызывается на несвязанном сокете.
 
 ### `socket.getSendBufferSize()`
 
-- Возвращает: {число} размер буфера отправки сокета `SO_SNDBUF` в байтах.
+-   Возвращает: {число} размер буфера отправки сокета `SO_SNDBUF` в байтах.
 
 Этот метод бросает [`ERR_SOCKET_BUFFER_SIZE`](errors.md#err_socket_buffer_size), если вызывается на несвязанном сокете.
 
 ### `socket.getSendQueueSize()`
 
-- Возвращает: {number} Количество байт в очереди на отправку.
+-   Возвращает: {number} Количество байт в очереди на отправку.
 
 ### `socket.getSendQueueCount()`
 
-- Возвращает: {number} Количество запросов на отправку, находящихся в очереди и ожидающих обработки.
+-   Возвращает: {number} Количество запросов на отправку, находящихся в очереди и ожидающих обработки.
 
 ### `socket.ref()`
 
-- Возвращает: {dgram.Socket}
+-   Возвращает: {dgram.Socket}
 
 По умолчанию связывание сокета приводит к блокированию выхода процесса Node.js до тех пор, пока сокет открыт. Метод `socket.unref()` можно использовать для исключения сокета из подсчета ссылок, который поддерживает процесс Node.js активным. Метод `socket.ref()` добавляет сокет обратно в подсчет ссылок и восстанавливает поведение по умолчанию.
 
@@ -333,18 +333,18 @@ socket.bind({
 
 ### `socket.remoteAddress()`
 
-- Возвращает: {Object}
+-   Возвращает: {Object}
 
 Возвращает объект, содержащий `адрес`, `семейство` и `порт` удаленной конечной точки. Этот метод выбрасывает исключение [`ERR_SOCKET_DGRAM_NOT_CONNECTED`](errors.md#err_socket_dgram_not_connected), если сокет не подключен.
 
 ### `socket.send(msg[, offset, length][, port][, address][, callback])`
 
-- `msg` {Buffer|TypedArray|DataView|string|Array} Сообщение, которое будет отправлено.
-- `offset` {integer} Смещение в буфере, с которого начинается сообщение.
-- `length` {integer} Количество байт в сообщении.
-- `port` {integer} Порт назначения.
-- `address` {string} Имя хоста назначения или IP-адрес.
-- `callback` {функция} Вызывается, когда сообщение было отправлено.
+-   `msg` {Buffer|TypedArray|DataView|string|Array} Сообщение, которое будет отправлено.
+-   `offset` {integer} Смещение в буфере, с которого начинается сообщение.
+-   `length` {integer} Количество байт в сообщении.
+-   `port` {integer} Порт назначения.
+-   `address` {string} Имя хоста назначения или IP-адрес.
+-   `callback` {функция} Вызывается, когда сообщение было отправлено.
 
 Передает дейтаграмму на сокет. Для сокетов без соединения необходимо указать `порт` и `адрес` назначения. Подключенные сокеты, с другой стороны, будут использовать связанную с ними удаленную конечную точку, поэтому аргументы `порт` и `адрес` не должны быть заданы.
 
@@ -371,7 +371,7 @@ import { Buffer } from 'node:buffer';
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.send(message, 41234, 'localhost', (err) => {
-  client.close();
+    client.close();
 });
 ```
 
@@ -382,7 +382,7 @@ const { Buffer } = require('node:buffer');
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.send(message, 41234, 'localhost', (err) => {
-  client.close();
+    client.close();
 });
 ```
 
@@ -396,7 +396,7 @@ const buf1 = Buffer.from('Some ');
 const buf2 = Buffer.from('bytes');
 const client = dgram.createSocket('udp4');
 client.send([buf1, buf2], 41234, (err) => {
-  client.close();
+    client.close();
 });
 ```
 
@@ -408,7 +408,7 @@ const buf1 = Buffer.from('Some ');
 const buf2 = Buffer.from('bytes');
 const client = dgram.createSocket('udp4');
 client.send([buf1, buf2], 41234, (err) => {
-  client.close();
+    client.close();
 });
 ```
 
@@ -423,9 +423,9 @@ import { Buffer } from 'node:buffer';
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.connect(41234, 'localhost', (err) => {
-  client.send(message, (err) => {
-    client.close();
-  });
+    client.send(message, (err) => {
+        client.close();
+    });
 });
 ```
 
@@ -436,9 +436,9 @@ const { Buffer } = require('node:buffer');
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.connect(41234, 'localhost', (err) => {
-  client.send(message, (err) => {
-    client.close();
-  });
+    client.send(message, (err) => {
+        client.close();
+    });
 });
 ```
 
@@ -446,17 +446,17 @@ client.connect(41234, 'localhost', (err) => {
 
 Максимальный размер дейтаграммы IPv4/v6 зависит от `MTU` (Maximum Transmission Unit) и размера поля `Payload Length`.
 
-- Поле `Payload Length` имеет ширину 16 бит, что означает, что обычная полезная нагрузка не может превышать 64K октетов, включая интернет-заголовок и данные (65,507 байт = 65,535 - 8 байт UDP-заголовок - 20 байт IP-заголовок); это обычно справедливо для loopback-интерфейсов, но такие длинные дейтаграммы непрактичны для большинства узлов и сетей.
+-   Поле `Payload Length` имеет ширину 16 бит, что означает, что обычная полезная нагрузка не может превышать 64K октетов, включая интернет-заголовок и данные (65,507 байт = 65,535 - 8 байт UDP-заголовок - 20 байт IP-заголовок); это обычно справедливо для loopback-интерфейсов, но такие длинные дейтаграммы непрактичны для большинства узлов и сетей.
 
-- MTU" - это наибольший размер, который может поддерживать данная технология канального уровня для дейтаграммных сообщений. Для любого канала IPv4 требует минимальный `MTU` в 68 октетов, а рекомендуемый `MTU` для IPv4 составляет 576 (обычно рекомендуемый `MTU` для приложений типа dial-up), независимо от того, приходят ли они целиком или фрагментами.
+-   MTU" - это наибольший размер, который может поддерживать данная технология канального уровня для дейтаграммных сообщений. Для любого канала IPv4 требует минимальный `MTU` в 68 октетов, а рекомендуемый `MTU` для IPv4 составляет 576 (обычно рекомендуемый `MTU` для приложений типа dial-up), независимо от того, приходят ли они целиком или фрагментами.
 
-  Для IPv6 минимальный `MTU` составляет 1280 октетов. Однако обязательный минимальный размер буфера для сборки фрагментов составляет 1500 октетов. Значение 68 октетов очень мало, поскольку большинство современных технологий канального уровня, например Ethernet, имеют минимальный `MTU` равный 1500.
+    Для IPv6 минимальный `MTU` составляет 1280 октетов. Однако обязательный минимальный размер буфера для сборки фрагментов составляет 1500 октетов. Значение 68 октетов очень мало, поскольку большинство современных технологий канального уровня, например Ethernet, имеют минимальный `MTU` равный 1500.
 
 Невозможно заранее узнать MTU каждого канала, через который может проходить пакет. Отправка дейтаграммы, превышающей `MTU` приемника, не сработает, поскольку пакет будет молча отброшен без уведомления источника о том, что данные не достигли адресата.
 
 ### `socket.setBroadcast(flag)`
 
-- `flag` {boolean}
+-   `flag` {boolean}
 
 Устанавливает или снимает опцию сокета `SO_BROADCAST`. Если флаг установлен в `true`, UDP-пакеты могут быть отправлены на широковещательный адрес локального интерфейса.
 
@@ -464,7 +464,7 @@ client.connect(41234, 'localhost', (err) => {
 
 ### `socket.setMulticastInterface(multicastInterface)`
 
-- `multicastInterface` {string}
+-   `multicastInterface` {string}
 
 _Все ссылки на scope в этом разделе относятся к [индексам зон IPv6](https://en.wikipedia.org/wiki/IPv6_address#Scoped_literal_IPv6_addresses), которые определены в [RFC 4007](https://tools.ietf.org/html/rfc4007). В строковой форме IP с индексом зоны записывается как `'IP%scope'`, где scope - это имя интерфейса или номер интерфейса._
 
@@ -484,7 +484,7 @@ _Все ссылки на scope в этом разделе относятся к
 const socket = dgram.createSocket('udp6');
 
 socket.bind(1234, () => {
-  socket.setMulticastInterface('::%eth1');
+    socket.setMulticastInterface('::%eth1');
 });
 ```
 
@@ -494,7 +494,7 @@ socket.bind(1234, () => {
 const socket = dgram.createSocket('udp6');
 
 socket.bind(1234, () => {
-  socket.setMulticastInterface('::%2');
+    socket.setMulticastInterface('::%2');
 });
 ```
 
@@ -506,7 +506,7 @@ socket.bind(1234, () => {
 const socket = dgram.createSocket('udp4');
 
 socket.bind(1234, () => {
-  socket.setMulticastInterface('10.0.0.2');
+    socket.setMulticastInterface('10.0.0.2');
 });
 ```
 
@@ -524,7 +524,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.setMulticastLoopback(flag)`
 
-- `flag` {boolean}
+-   `flag` {boolean}
 
 Устанавливает или снимает опцию сокета `IP_MULTICAST_LOOP`. Если установлено значение `true`, многоадресные пакеты будут приниматься и на локальном интерфейсе.
 
@@ -532,7 +532,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.setMulticastTTL(ttl)`
 
-- `ttl` {целое число}
+-   `ttl` {целое число}
 
 Устанавливает опцию сокета `IP_MULTICAST_TTL`. Хотя TTL обычно означает "Time to Live", в данном контексте он определяет количество IP-переходов, через которые должен пройти пакет, особенно для многоадресного трафика. Каждый маршрутизатор или шлюз, пересылающий пакет, уменьшает TTL. Если TTL уменьшается маршрутизатором до 0, пакет не будет пересылаться.
 
@@ -542,7 +542,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.setRecvBufferSize(size)`
 
-- `size` {целое число}
+-   `size` {целое число}
 
 Устанавливает опцию сокета `SO_RCVBUF`. Устанавливает максимальный буфер приема сокета в байтах.
 
@@ -550,7 +550,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.setSendBufferSize(size)`
 
-- `size` {целое число}
+-   `size` {целое число}
 
 Устанавливает опцию сокета `SO_SNDBUF`. Устанавливает максимальный размер буфера отправки сокета в байтах.
 
@@ -558,7 +558,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.setTTL(ttl)`
 
-- `ttl` {целое число}
+-   `ttl` {целое число}
 
 Устанавливает параметр сокета `IP_TTL`. Хотя TTL обычно означает "Time to Live", в данном контексте он определяет количество IP-переходов, через которые должен пройти пакет. Каждый маршрутизатор или шлюз, пересылающий пакет, уменьшает TTL. Если TTL уменьшается маршрутизатором до 0, пакет не будет пересылаться. Изменение значения TTL обычно выполняется для сетевых зондов или при многоадресной рассылке.
 
@@ -568,7 +568,7 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `socket.unref()`
 
-- Возвращает: {dgram.Socket}
+-   Возвращает: {dgram.Socket}
 
 По умолчанию связывание сокета приводит к блокированию выхода процесса Node.js до тех пор, пока сокет открыт. Метод `socket.unref()` может быть использован для исключения сокета из подсчета ссылок, который поддерживает процесс Node.js активным, позволяя процессу выйти, даже если сокет все еще прослушивается.
 
@@ -580,16 +580,16 @@ ANY-адрес семейства адресов сокета (IPv4 `'0.0.0.0'` 
 
 ### `dgram.createSocket(options[, callback])`.
 
-- `options` {Object} Доступные опции:
-  - `type` {string} Семейство сокетов. Должно быть либо `'udp4'`, либо `'udp6'`. Требуется.
-  - `reuseAddr` {boolean} Когда `true` [`socket.bind()`](#socketbindport-address-callback) будет повторно использовать адрес, даже если другой процесс уже связал с ним сокет. **По умолчанию:** `false`.
-  - `ipv6Only` {boolean} Установка `ipv6Only` в `true` отключает поддержку двойного стека, т.е. привязка к адресу `::` не заставит привязать `0.0.0.0`. **По умолчанию:** `false`.
-  - `recvBufferSize` {number} Устанавливает значение `SO_RCVBUF` сокета.
-  - `sendBufferSize` {number} Устанавливает значение сокета `SO_SNDBUF`.
-  - `lookup` {Функция} Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`](dns.md#dnslookuphostname-options-callback).
-  - `signal` {AbortSignal} Сигнал прерывания, который может быть использован для закрытия сокета.
-- `callback` {Function} Прикрепляется в качестве слушателя для событий `'message'`. Необязательно.
-- Возвращает: {dgram.Socket}
+-   `options` {Object} Доступные опции:
+    -   `type` {string} Семейство сокетов. Должно быть либо `'udp4'`, либо `'udp6'`. Требуется.
+    -   `reuseAddr` {boolean} Когда `true` [`socket.bind()`](#socketbindport-address-callback) будет повторно использовать адрес, даже если другой процесс уже связал с ним сокет. **По умолчанию:** `false`.
+    -   `ipv6Only` {boolean} Установка `ipv6Only` в `true` отключает поддержку двойного стека, т.е. привязка к адресу `::` не заставит привязать `0.0.0.0`. **По умолчанию:** `false`.
+    -   `recvBufferSize` {number} Устанавливает значение `SO_RCVBUF` сокета.
+    -   `sendBufferSize` {number} Устанавливает значение сокета `SO_SNDBUF`.
+    -   `lookup` {Функция} Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`](dns.md#dnslookuphostname-options-callback).
+    -   `signal` {AbortSignal} Сигнал прерывания, который может быть использован для закрытия сокета.
+-   `callback` {Function} Прикрепляется в качестве слушателя для событий `'message'`. Необязательно.
+-   Возвращает: {dgram.Socket}
 
 Создает объект `dgram.Socket`. После создания сокета вызов [`socket.bind()`](#socketbindport-address-callback) даст указание сокету начать прослушивание дейтаграммных сообщений. Если `address` и `port` не переданы в [`socket.bind()`](#socketbindport-address-callback), метод привяжет сокет к адресу "все интерфейсы" на случайном порту (это правильно для сокетов `udp4` и `udp6`). Привязанные адрес и порт можно получить с помощью [`socket.address().address`](#socketaddress) и [`socket.address().port`](#socketaddress).
 
@@ -600,9 +600,9 @@ const controller = new AbortController();
 const { signal } = controller;
 const server = dgram.createSocket({ type: 'udp4', signal });
 server.on('message', (msg, rinfo) => {
-  console.log(
-    `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
-  );
+    console.log(
+        `server got: ${msg} from ${rinfo.address}:${rinfo.port}`
+    );
 });
 // Позже, когда вы захотите закрыть сервер.
 controller.abort();
@@ -610,9 +610,9 @@ controller.abort();
 
 ### `dgram.createSocket(type[, callback])`
 
-- `type` {string} Либо `'udp4'`, либо `'udp6'`.
-- `callback` {функция} Прикрепляется в качестве слушателя событий `'message'`.
-- Возвращает: {dgram.Socket}
+-   `type` {string} Либо `'udp4'`, либо `'udp6'`.
+-   `callback` {функция} Прикрепляется в качестве слушателя событий `'message'`.
+-   Возвращает: {dgram.Socket}
 
 Создает объект `dgram.Socket` указанного `типа`.
 

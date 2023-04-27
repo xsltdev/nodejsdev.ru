@@ -48,14 +48,14 @@ console.log(decoder.end(Buffer.from([0xAC]))));
 
 ### `new StringDecoder([encoding])`
 
-- `encoding` {string} Символьная [кодировка] (buffer.md#buffers-and-character-encodings), которую будет использовать `StringDecoder`. **По умолчанию:** `'utf8'`.
+-   `encoding` {string} Символьная [кодировка] (buffer.md#buffers-and-character-encodings), которую будет использовать `StringDecoder`. **По умолчанию:** `'utf8'`.
 
 Создает новый экземпляр `StringDecoder`.
 
 ### `stringDecoder.end([buffer])`
 
-- `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
-- Возвращает: {строка}
+-   `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
+-   Возвращает: {строка}
 
 Возвращает все оставшиеся входные данные, хранящиеся во внутреннем буфере, в виде строки. Байты, представляющие неполные символы UTF-8 и UTF-16, будут заменены символами-заместителями, соответствующими кодировке.
 
@@ -63,7 +63,7 @@ console.log(decoder.end(Buffer.from([0xAC]))));
 
 ### `stringDecoder.write(buffer)`
 
-- `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
-- Возвращает: {строка}
+-   `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
+-   Возвращает: {строка}
 
 Возвращает декодированную строку, гарантируя, что любые неполные многобайтовые символы в конце `Buffer`, или `TypedArray`, или `DataView` будут исключены из возвращаемой строки и сохранены во внутреннем буфере для следующего вызова `stringDecoder.write()` или `stringDecoder.end()`.

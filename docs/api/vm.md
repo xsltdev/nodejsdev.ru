@@ -45,18 +45,18 @@ console.log(x); // 1; y не определено.
 
 ### `новый vm.Script(code[, options])`
 
-- `code` {строка} JavaScript-код для компиляции.
-- `options` {Object|string}
-  - `filename` {string} Определяет имя файла, используемое в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  - `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. При предоставлении значение `cachedDataRejected` будет установлено в `true` или `false` в зависимости от принятия данных V8.
-  - `produceCachedData` {boolean} Если `true` и нет `cachedData`, V8 попытается создать данные кэша кода для `code`. В случае успеха будет создан `буфер` с данными кэша кода V8 и сохранен в свойстве `cachedData` возвращаемого экземпляра `vm.Script`. Значение `cachedDataProduced` будет установлено в `true` или `false` в зависимости от того, успешно ли были созданы данные кэша кода. Эта опция **устарела** в пользу `script.createCachedData()`. **По умолчанию:** `false`.
-  - `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-    - `specifier` {строка} спецификатор, передаваемый в `import()`.
-    - `script` {vm.Script}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+-   `code` {строка} JavaScript-код для компиляции.
+-   `options` {Object|string}
+    -   `filename` {string} Определяет имя файла, используемое в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
+    -   `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. При предоставлении значение `cachedDataRejected` будет установлено в `true` или `false` в зависимости от принятия данных V8.
+    -   `produceCachedData` {boolean} Если `true` и нет `cachedData`, V8 попытается создать данные кэша кода для `code`. В случае успеха будет создан `буфер` с данными кэша кода V8 и сохранен в свойстве `cachedData` возвращаемого экземпляра `vm.Script`. Значение `cachedDataProduced` будет установлено в `true` или `false` в зависимости от того, успешно ли были созданы данные кэша кода. Эта опция **устарела** в пользу `script.createCachedData()`. **По умолчанию:** `false`.
+    -   `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
+        -   `specifier` {строка} спецификатор, передаваемый в `import()`.
+        -   `script` {vm.Script}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
 
 Если `options` - строка, то она указывает имя файла.
 
@@ -64,13 +64,13 @@ console.log(x); // 1; y не определено.
 
 ### `script.cachedDataRejected`
 
-- {boolean|undefined}
+-   {boolean|undefined}
 
 Когда `cachedData` предоставляется для создания `vm.Script`, это значение будет установлено в `true` или `false` в зависимости от принятия данных V8. В противном случае значение будет `undefined`.
 
 ### `script.createCachedData()`
 
-- Возвращает: {Буфер}
+-   Возвращает: {Буфер}
 
 Создает кэш кода, который можно использовать с опцией `cachedData` конструктора `Script`. Возвращает `буфер`. Этот метод может быть вызван в любое время и любое количество раз.
 
@@ -100,12 +100,12 @@ const cacheWithAdd = script.createCachedData();
 
 ### `script.runInContext(contextifiedObject[, options])`
 
-- `contextifiedObject` {Object} A [contextified](#what-does-it-mean-to-contextify-an-object) объект, возвращаемый методом `vm.createContext()`..
-- `options` {Object}
-  - `displayErrors` {boolean} При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-  - `timeout` {integer} Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
-  - `breakOnSigint` {boolean} Если `true`, получает `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прервет выполнение и выбросит [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
-- Возвращает: {any} результат самого последнего оператора, выполненного в сценарии.
+-   `contextifiedObject` {Object} A [contextified](#what-does-it-mean-to-contextify-an-object) объект, возвращаемый методом `vm.createContext()`..
+-   `options` {Object}
+    -   `displayErrors` {boolean} При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
+    -   `timeout` {integer} Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
+    -   `breakOnSigint` {boolean} Если `true`, получает `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прервет выполнение и выбросит [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
+-   Возвращает: {any} результат самого последнего оператора, выполненного в сценарии.
 
 Выполняет скомпилированный код, содержащийся в объекте `vm.Script`, в пределах заданного `contextifiedObject` и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
 
@@ -115,15 +115,15 @@ const cacheWithAdd = script.createCachedData();
 const vm = require('node:vm');
 
 const context = {
-  animal: 'cat',
-  count: 2,
+    animal: 'cat',
+    count: 2,
 };
 
 const script = new vm.Script('count += 1; name = "kitty";');
 
 vm.createContext(context);
 for (let i = 0; i < 10; ++i) {
-  script.runInContext(context);
+    script.runInContext(context);
 }
 
 console.log(context);
@@ -134,18 +134,18 @@ console.log(context);
 
 ### `script.runInNewContext([contextObject[, options]])`
 
-- `contextObject` {Object} Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
-- `options` {Object}
-  - `displayErrors` {boolean} При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-  - `timeout` {integer} Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-  - `contextName` {string} Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
-  - `contextOrigin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующий вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
-  - `contextCodeGeneration` {Object}
-    - `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-    - `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  - `microtaskMode` {string} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
-- Возвращает: {любой} результат самого последнего оператора, выполненного в скрипте.
+-   `contextObject` {Object} Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
+-   `options` {Object}
+    -   `displayErrors` {boolean} При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
+    -   `timeout` {integer} Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
+    -   `contextName` {string} Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
+    -   `contextOrigin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующий вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
+    -   `contextCodeGeneration` {Object}
+        -   `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
+        -   `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
+    -   `microtaskMode` {string} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
+-   Возвращает: {любой} результат самого последнего оператора, выполненного в скрипте.
 
 Сначала контекстирует заданный `contextObject`, запускает скомпилированный код, содержащийся в объекте `vm.Script` в созданном контексте, и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
 
@@ -158,7 +158,7 @@ const script = new vm.Script('globalVar = "set"');
 
 const contexts = [{}, {}, {}];
 contexts.forEach((context) => {
-  script.runInNewContext(context);
+    script.runInNewContext(context);
 });
 
 console.log(contexts);
@@ -167,11 +167,11 @@ console.log(contexts);
 
 ### `script.runInThisContext([options])`
 
-- `options` {Object}
-  - `displayErrors` {boolean} When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
-  - `timeout` {integer} Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-- Returns: {any} the result of the very last statement executed in the script.
+-   `options` {Object}
+    -   `displayErrors` {boolean} When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
+    -   `timeout` {integer} Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
+-   Returns: {any} the result of the very last statement executed in the script.
 
 Запускает скомпилированный код, содержащийся в `vm.Script`, в контексте текущего объекта `global`. Выполняемый код не имеет доступа к локальной области видимости, но _имеет_ доступ к текущему объекту `global`.
 
@@ -183,11 +183,11 @@ const vm = require('node:vm');
 global.globalVar = 0;
 
 const script = new vm.Script('globalVar += 1', {
-  filename: 'myfile.vm',
+    filename: 'myfile.vm',
 });
 
 for (let i = 0; i < 1000; ++i) {
-  script.runInThisContext();
+    script.runInThisContext();
 }
 
 console.log(globalVar);
@@ -197,7 +197,7 @@ console.log(globalVar);
 
 ### `script.sourceMapURL`
 
-- {string|undefined}
+-   {string|undefined}
 
 Когда скрипт компилируется из источника, содержащего магический комментарий карты источника, это свойство будет установлено в URL карты источника.
 
@@ -243,8 +243,8 @@ console.log(script.sourceMapURL);
 import vm from 'node:vm';
 
 const contextifiedObject = vm.createContext({
-  secret: 42,
-  print: console.log,
+    secret: 42,
+    print: console.log,
 });
 
 // Шаг 1
@@ -258,12 +258,12 @@ const contextifiedObject = vm.createContext({
 // поместить его в локальное связывание "secret".
 
 const bar = new vm.SourceTextModule(
-  `
+    `
   import s from 'foo';
   s;
   print(s);
 `,
-  { context: contextifiedObject }
+    { context: contextifiedObject }
 );
 
 // Шаг 2
@@ -290,22 +290,22 @@ const bar = new vm.SourceTextModule(
 // кэш, вероятно, будет использоваться, чтобы избежать дублирования модулей.
 
 async function linker(specifier, referencingModule) {
-  if (specifier === 'foo') {
-    return new vm.SourceTextModule(
-      `
+    if (specifier === 'foo') {
+        return new vm.SourceTextModule(
+            `
       // The "secret" variable refers to the global variable we added to
       // "contextifiedObject" when creating the context.
       export default secret;
     `,
-      { context: referencingModule.context }
-    );
+            { context: referencingModule.context }
+        );
 
-    // Using `contextifiedObject` instead of `referencingModule.context`
-    // here would work as well.
-  }
-  throw new Error(
-    `Unable to resolve dependency: ${specifier}`
-  );
+        // Using `contextifiedObject` instead of `referencingModule.context`
+        // here would work as well.
+    }
+    throw new Error(
+        `Unable to resolve dependency: ${specifier}`
+    );
 }
 await bar.link(linker);
 
@@ -322,86 +322,86 @@ await bar.evaluate();
 const vm = require('node:vm');
 
 const contextifiedObject = vm.createContext({
-  secret: 42,
-  print: console.log,
+    secret: 42,
+    print: console.log,
 });
 
 (async () => {
-  // Step 1
-  //
-  // Create a Module by constructing a new `vm.SourceTextModule` object. This
-  // parses the provided source text, throwing a `SyntaxError` if anything goes
-  // wrong. By default, a Module is created in the top context. But here, we
-  // specify `contextifiedObject` as the context this Module belongs to.
-  //
-  // Here, we attempt to obtain the default export from the module "foo", and
-  // put it into local binding "secret".
+    // Step 1
+    //
+    // Create a Module by constructing a new `vm.SourceTextModule` object. This
+    // parses the provided source text, throwing a `SyntaxError` if anything goes
+    // wrong. By default, a Module is created in the top context. But here, we
+    // specify `contextifiedObject` as the context this Module belongs to.
+    //
+    // Here, we attempt to obtain the default export from the module "foo", and
+    // put it into local binding "secret".
 
-  const bar = new vm.SourceTextModule(
-    `
+    const bar = new vm.SourceTextModule(
+        `
     import s from 'foo';
     s;
     print(s);
   `,
-    { context: contextifiedObject }
-  );
+        { context: contextifiedObject }
+    );
 
-  // Step 2
-  //
-  // "Link" the imported dependencies of this Module to it.
-  //
-  // The provided linking callback (the "linker") accepts two arguments: the
-  // parent module (`bar` in this case) and the string that is the specifier of
-  // the imported module. The callback is expected to return a Module that
-  // corresponds to the provided specifier, with certain requirements documented
-  // in `module.link()`.
-  //
-  // If linking has not started for the returned Module, the same linker
-  // callback will be called on the returned Module.
-  //
-  // Even top-level Modules without dependencies must be explicitly linked. The
-  // callback provided would never be called, however.
-  //
-  // The link() method returns a Promise that will be resolved when all the
-  // Promises returned by the linker resolve.
-  //
-  // Note: This is a contrived example in that the linker function creates a new
-  // "foo" module every time it is called. In a full-fledged module system, a
-  // cache would probably be used to avoid duplicated modules.
+    // Step 2
+    //
+    // "Link" the imported dependencies of this Module to it.
+    //
+    // The provided linking callback (the "linker") accepts two arguments: the
+    // parent module (`bar` in this case) and the string that is the specifier of
+    // the imported module. The callback is expected to return a Module that
+    // corresponds to the provided specifier, with certain requirements documented
+    // in `module.link()`.
+    //
+    // If linking has not started for the returned Module, the same linker
+    // callback will be called on the returned Module.
+    //
+    // Even top-level Modules without dependencies must be explicitly linked. The
+    // callback provided would never be called, however.
+    //
+    // The link() method returns a Promise that will be resolved when all the
+    // Promises returned by the linker resolve.
+    //
+    // Note: This is a contrived example in that the linker function creates a new
+    // "foo" module every time it is called. In a full-fledged module system, a
+    // cache would probably be used to avoid duplicated modules.
 
-  async function linker(specifier, referencingModule) {
-    if (specifier === 'foo') {
-      return new vm.SourceTextModule(
-        `
+    async function linker(specifier, referencingModule) {
+        if (specifier === 'foo') {
+            return new vm.SourceTextModule(
+                `
         // The "secret" variable refers to the global variable we added to
         // "contextifiedObject" when creating the context.
         export default secret;
       `,
-        { context: referencingModule.context }
-      );
+                { context: referencingModule.context }
+            );
 
-      // Using `contextifiedObject` instead of `referencingModule.context`
-      // here would work as well.
+            // Using `contextifiedObject` instead of `referencingModule.context`
+            // here would work as well.
+        }
+        throw new Error(
+            `Unable to resolve dependency: ${specifier}`
+        );
     }
-    throw new Error(
-      `Unable to resolve dependency: ${specifier}`
-    );
-  }
-  await bar.link(linker);
+    await bar.link(linker);
 
-  // Step 3
-  //
-  // Evaluate the Module. The evaluate() method returns a promise which will
-  // resolve after the module has finished evaluating.
+    // Step 3
+    //
+    // Evaluate the Module. The evaluate() method returns a promise which will
+    // resolve after the module has finished evaluating.
 
-  // Prints 42.
-  await bar.evaluate();
+    // Prints 42.
+    await bar.evaluate();
 })();
 ```
 
 ### `module.dependencySpecifiers`
 
-- {string\[\]}
+-   {string\[\]}
 
 Спецификаторы всех зависимостей этого модуля. Возвращаемый массив замораживается, чтобы запретить любые изменения в нем.
 
@@ -409,7 +409,7 @@ const contextifiedObject = vm.createContext({
 
 ### `module.error`
 
-- {любая}
+-   {любая}
 
 Если `module.status` имеет значение `'errored'`, то это свойство содержит исключение, выброшенное модулем во время оценки. Если статус имеет любое другое значение, обращение к этому свойству приведет к выброшенному исключению.
 
@@ -419,10 +419,10 @@ const contextifiedObject = vm.createContext({
 
 ### `module.evaluate([options])`
 
-- `options` {Object}
-  - `timeout` {integer} Specifies the number of milliseconds to evaluate before terminating execution. If execution is interrupted, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-- Возвращается: {Promise} Выполняется с `undefined` в случае успеха.
+-   `options` {Object}
+    -   `timeout` {integer} Specifies the number of milliseconds to evaluate before terminating execution. If execution is interrupted, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
+-   Возвращается: {Promise} Выполняется с `undefined` в случае успеха.
 
 Оценить модуль.
 
@@ -434,44 +434,44 @@ const contextifiedObject = vm.createContext({
 
 ### `module.identifier`
 
-- {строка}
+-   {строка}
 
 Идентификатор текущего модуля, установленный в конструкторе.
 
 ### `module.link(linker)`
 
-- `linker` {Function}
+-   `linker` {Function}
 
-  - `specifier` {string} Спецификатор запрашиваемого модуля:
+    -   `specifier` {string} Спецификатор запрашиваемого модуля:
 
-    ```mjs
-    import foo from 'foo';
-    // ^^^^^ спецификатор модуля
-    ```
+        ```mjs
+        import foo from 'foo';
+        // ^^^^^ спецификатор модуля
+        ```
 
-  - `referencingModule` {vm.Module} Объект `модуля` `link()` вызывается на.
+    -   `referencingModule` {vm.Module} Объект `модуля` `link()` вызывается на.
 
-  - `extra` {Object}
+    -   `extra` {Object}
 
-    - `assert` {Object} Данные из утверждения:
+        -   `assert` {Object} Данные из утверждения:
 
-      ```js
-      import foo from "foo" assert { name: "value" };
-      // ^^^^^^^^^^^^^^^^^ утверждение
-      ```
+            ```js
+            import foo from "foo" assert { name: "value" };
+            // ^^^^^^^^^^^^^^^^^ утверждение
+            ```
 
-      Согласно ECMA-262, ожидается, что хосты будут игнорировать утверждения, которые они не поддерживают, в отличие, например, от выдачи ошибки при наличии неподдерживаемого утверждения.
+            Согласно ECMA-262, ожидается, что хосты будут игнорировать утверждения, которые они не поддерживают, в отличие, например, от выдачи ошибки при наличии неподдерживаемого утверждения.
 
-  - Возвращает: {vm.Module|Promise}
+    -   Возвращает: {vm.Module|Promise}
 
-- Возвращает: {Promise}
+-   Возвращает: {Promise}
 
 Связать зависимости модуля. Этот метод должен быть вызван до оценки и может быть вызван только один раз для каждого модуля.
 
 Ожидается, что функция вернет объект `Module` или `Promise`, который в конечном итоге разрешится в объект `Module`. Возвращаемый `модуль` должен удовлетворять следующим двум инвариантам:
 
-- Он должен принадлежать к тому же контексту, что и родительский `модуль`.
-- Его `статус` не должен быть `"errored"`.
+-   Он должен принадлежать к тому же контексту, что и родительский `модуль`.
+-   Его `статус` не должен быть `"errored"`.
 
 Если `статус` возвращаемого `модуля будет `'unlinked'`, этот метод будет рекурсивно вызван на возвращаемом `модуле`с той же самой предоставленной функцией`linker`.
 
@@ -479,7 +479,7 @@ const contextifiedObject = vm.createContext({
 
 Функция компоновщика примерно соответствует определяемой реализацией абстрактной операции [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) в спецификации ECMAScript, с несколькими ключевыми отличиями:
 
-- Функция компоновщика может быть асинхронной, а [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) - синхронной.
+-   Функция компоновщика может быть асинхронной, а [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) - синхронной.
 
 Фактическая реализация [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule), используемая во время компоновки модулей, возвращает модули, связанные во время компоновки. Поскольку в этот момент все модули уже были бы полностью связаны, реализация [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) является полностью синхронной согласно спецификации.
 
@@ -487,7 +487,7 @@ const contextifiedObject = vm.createContext({
 
 ### `module.namespace`
 
-- {Object}
+-   {Object}
 
 Объект пространства имен модуля. Он доступен только после завершения связывания (`module.link()`).
 
@@ -495,21 +495,21 @@ const contextifiedObject = vm.createContext({
 
 ### `module.status`
 
-- {string}
+-   {string}
 
 Текущий статус модуля. Будет одним из:
 
-- `'unlinked'`: `module.link()` еще не был вызван.
+-   `'unlinked'`: `module.link()` еще не был вызван.
 
-- `'linking'`: `module.link()` был вызван, но еще не все Promises, возвращенные функцией linker, были разрешены.
+-   `'linking'`: `module.link()` был вызван, но еще не все Promises, возвращенные функцией linker, были разрешены.
 
-- `'linked'`: Модуль был успешно связан, и все его зависимости связаны, но `module.evaluate()` еще не был вызван.
+-   `'linked'`: Модуль был успешно связан, и все его зависимости связаны, но `module.evaluate()` еще не был вызван.
 
-- ` 'evaluating``: Модуль оценивается через  `module.evaluate()` для себя или родительского модуля.
+-   ` 'evaluating``: Модуль оценивается через  `module.evaluate()` для себя или родительского модуля.
 
-- `'evaluated'`: Модуль был успешно оценен.
+-   `'evaluated'`: Модуль был успешно оценен.
 
-- `'errored'`: Модуль был оценен, но возникло исключение.
+-   `'errored'`: Модуль был оценен, но возникло исключение.
 
 Кроме `'errored'`, эта строка состояния соответствует полю `[[Status]]` спецификации [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records). `'errored'` соответствует `'evaluated'` в спецификации, но с `[[EvaluationError]]`, установленным на значение, которое не является `undefined`.
 
@@ -519,27 +519,27 @@ const contextifiedObject = vm.createContext({
 
 Эта возможность доступна только при включенном флаге команды `--experimental-vm-modules`.
 
-- Расширяет: {vm.Module}
+-   Расширяет: {vm.Module}
 
 Класс `vm.SourceTextModule` предоставляет [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records), как определено в спецификации ECMAScript.
 
 ### `новый vm.SourceTextModule(code[, options])`
 
-- `code` {string} Код JavaScript-модуля для разбора
-- `options`
-  - `идентификатор` {строка} Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - контекстно-зависимый возрастающий индекс.
-  - `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. Код `code` должен быть таким же, как и модуль, из которого были созданы эти `cachedData`.
-  - `context` {Object} [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
-  - `lineOffset` {целое число} Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
-  - `columnOffset` {integer} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
-  - `initializeImportMeta` {Функция} Вызывается во время оценки этого `модуля` для инициализации `import.meta`.
-    - `meta` {import.meta}
-    - `модуль` {vm.SourceTextModule}
-  - `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing).
-    - `specifier` {строка} спецификатор, переданный в `import()`.
-    - `модуль` {vm.Module}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+-   `code` {string} Код JavaScript-модуля для разбора
+-   `options`
+    -   `идентификатор` {строка} Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - контекстно-зависимый возрастающий индекс.
+    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. Код `code` должен быть таким же, как и модуль, из которого были созданы эти `cachedData`.
+    -   `context` {Object} [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
+    -   `lineOffset` {целое число} Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
+    -   `columnOffset` {integer} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
+    -   `initializeImportMeta` {Функция} Вызывается во время оценки этого `модуля` для инициализации `import.meta`.
+        -   `meta` {import.meta}
+        -   `модуль` {vm.SourceTextModule}
+    -   `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing).
+        -   `specifier` {строка} спецификатор, переданный в `import()`.
+        -   `модуль` {vm.Module}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
 
 Создает новый экземпляр `SourceTextModule`.
 
@@ -551,16 +551,16 @@ import vm from 'node:vm';
 const contextifiedObject = vm.createContext({ secret: 42 });
 
 const module = new vm.SourceTextModule(
-  'Object.getPrototypeOf(import.meta.prop).secret = secret;',
-  {
-    initializeImportMeta(meta) {
-      // Примечание: этот объект создается в верхнем контексте. Как таковой,
-      // Object.getPrototypeOf(import.meta.prop) указывает на
-      // Object.prototype в верхнем контексте, а не на прототип в
-      // контекстифицированном объекте.
-      meta.prop = {};
-    },
-  }
+    'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+    {
+        initializeImportMeta(meta) {
+            // Примечание: этот объект создается в верхнем контексте. Как таковой,
+            // Object.getPrototypeOf(import.meta.prop) указывает на
+            // Object.prototype в верхнем контексте, а не на прототип в
+            // контекстифицированном объекте.
+            meta.prop = {};
+        },
+    }
 );
 // Поскольку модуль не имеет зависимостей, функция linker никогда не будет вызвана.
 await module.link(() => {});
@@ -578,33 +578,33 @@ await module.evaluate();
 const vm = require('node:vm');
 const contextifiedObject = vm.createContext({ secret: 42 });
 (async () => {
-  const module = new vm.SourceTextModule(
-    'Object.getPrototypeOf(import.meta.prop).secret = secret;',
-    {
-      initializeImportMeta(meta) {
-        // Note: this object is created in the top context. As such,
-        // Object.getPrototypeOf(import.meta.prop) points to the
-        // Object.prototype in the top context rather than that in
-        // the contextified object.
-        meta.prop = {};
-      },
-    }
-  );
-  // Since module has no dependencies, the linker function will never be called.
-  await module.link(() => {});
-  await module.evaluate();
-  // Now, Object.prototype.secret will be equal to 42.
-  //
-  // To fix this problem, replace
-  //     meta.prop = {};
-  // above with
-  //     meta.prop = vm.runInContext('{}', contextifiedObject);
+    const module = new vm.SourceTextModule(
+        'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+        {
+            initializeImportMeta(meta) {
+                // Note: this object is created in the top context. As such,
+                // Object.getPrototypeOf(import.meta.prop) points to the
+                // Object.prototype in the top context rather than that in
+                // the contextified object.
+                meta.prop = {};
+            },
+        }
+    );
+    // Since module has no dependencies, the linker function will never be called.
+    await module.link(() => {});
+    await module.evaluate();
+    // Now, Object.prototype.secret will be equal to 42.
+    //
+    // To fix this problem, replace
+    //     meta.prop = {};
+    // above with
+    //     meta.prop = vm.runInContext('{}', contextifiedObject);
 })();
 ```
 
 ### `sourceTextModule.createCachedData()`
 
-- Возвращает: {Буфер}
+-   Возвращает: {Буфер}
 
 Создает кэш кода, который может быть использован с опцией `cachedData` конструктора `SourceTextModule`. Возвращает `Буфер`. Этот метод может быть вызван любое количество раз до того, как модуль будет оценен.
 
@@ -621,7 +621,7 @@ const cachedData = module.createCachedData();
 
 // Создайте новый модуль, используя кэшированные данные. Код должен быть одинаковым.
 const module2 = new vm.SourceTextModule('const a = 1;', {
-  cachedData,
+    cachedData,
 });
 ```
 
@@ -631,7 +631,7 @@ const module2 = new vm.SourceTextModule('const a = 1;', {
 
 Эта возможность доступна только при включенном флаге команды `--experimental-vm-modules`.
 
-- Расширяет: {vm.Module}
+-   Расширяет: {vm.Module}
 
 Класс `vm.SyntheticModule` предоставляет [Synthetic Module Record](https://heycam.github.io/webidl/#synthetic-module-records), как определено в спецификации WebIDL. Целью синтетических модулей является предоставление общего интерфейса для раскрытия источников не-JavaScript в графы модулей ECMAScript.
 
@@ -640,11 +640,11 @@ const vm = require('node:vm');
 
 const source = '{ "a": 1 }';
 const module = new vm.SyntheticModule(
-  ['default'],
-  function () {
-    const obj = JSON.parse(source);
-    this.setExport('default', obj);
-  }
+    ['default'],
+    function () {
+        const obj = JSON.parse(source);
+        this.setExport('default', obj);
+    }
 );
 
 // Использование `module` в связывании...
@@ -652,11 +652,11 @@ const module = new vm.SyntheticModule(
 
 ### `новый vm.SyntheticModule(exportNames, evaluateCallback[, options])`
 
-- `exportNames` {string\[\]} Массив имен, которые будут экспортированы из модуля.
-- `evaluateCallback` {Function} Вызывается при оценке модуля.
-- `options`
-  - `identifier` {string} Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - специфический для контекста возрастающий индекс.
-  - `context` {Object} [контекстифицированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
+-   `exportNames` {string\[\]} Массив имен, которые будут экспортированы из модуля.
+-   `evaluateCallback` {Function} Вызывается при оценке модуля.
+-   `options`
+    -   `identifier` {string} Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - специфический для контекста возрастающий индекс.
+    -   `context` {Object} [контекстифицированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
 
 Создает новый экземпляр `SyntheticModule`.
 
@@ -664,8 +664,8 @@ const module = new vm.SyntheticModule(
 
 ### `syntheticModule.setExport(name, value)`
 
-- `name` {string} Имя экспорта, который нужно установить.
-- `value` {любое} Значение, на которое нужно установить экспорт.
+-   `name` {string} Имя экспорта, который нужно установить.
+-   `value` {любое} Значение, на которое нужно установить экспорт.
 
 Этот метод используется после соединения модуля для установки значений экспортов. Если он будет вызван до того, как модуль будет связан, то будет выдана ошибка [`ERR_VM_MODULE_STATUS`](errors.md#err_vm_module_status).
 
@@ -673,7 +673,7 @@ const module = new vm.SyntheticModule(
 import vm from 'node:vm';
 
 const m = new vm.SyntheticModule(['x'], () => {
-  m.setExport('x', 1);
+    m.setExport('x', 1);
 });
 
 await m.link(() => {});
@@ -685,47 +685,47 @@ assert.strictEqual(m.namespace.x, 1);
 ```cjs
 const vm = require('node:vm');
 (async () => {
-  const m = new vm.SyntheticModule(['x'], () => {
-    m.setExport('x', 1);
-  });
-  await m.link(() => {});
-  await m.evaluate();
-  assert.strictEqual(m.namespace.x, 1);
+    const m = new vm.SyntheticModule(['x'], () => {
+        m.setExport('x', 1);
+    });
+    await m.link(() => {});
+    await m.evaluate();
+    assert.strictEqual(m.namespace.x, 1);
 })();
 ```
 
 ## `vm.compileFunction(code[, params[, options]])`
 
-- `code` {строка} Тело функции для компиляции.
-- `params` {string\[\]} Массив строк, содержащий все параметры для функции.
-- `options` {Object}
-  - `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `''`''.
-  - `lineOffset` {number} Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-  - `produceCachedData` {boolean} Указывает, нужно ли создавать новые данные кэша. **По умолчанию:** `false`.
-  - `parsingContext` {Object} [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, в котором должна быть скомпилирована указанная функция.
-  - `contextExtensions` {Object\[\]} Массив, содержащий коллекцию расширений контекста (объектов, оборачивающих текущую область видимости), которые будут применены при компиляции. **По умолчанию:** `[]`.
-  - `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей и не должна считаться стабильной.
-    - `specifier` {строка} спецификатор, передаваемый в `import()`.
-    - `function` {функция}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
-- Возвращает: {Функция}
+-   `code` {строка} Тело функции для компиляции.
+-   `params` {string\[\]} Массив строк, содержащий все параметры для функции.
+-   `options` {Object}
+    -   `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `''`''.
+    -   `lineOffset` {number} Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
+    -   `produceCachedData` {boolean} Указывает, нужно ли создавать новые данные кэша. **По умолчанию:** `false`.
+    -   `parsingContext` {Object} [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, в котором должна быть скомпилирована указанная функция.
+    -   `contextExtensions` {Object\[\]} Массив, содержащий коллекцию расширений контекста (объектов, оборачивающих текущую область видимости), которые будут применены при компиляции. **По умолчанию:** `[]`.
+    -   `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей и не должна считаться стабильной.
+        -   `specifier` {строка} спецификатор, передаваемый в `import()`.
+        -   `function` {функция}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+-   Возвращает: {Функция}
 
 Компилирует заданный код в предоставленный контекст (если контекст не предоставлен, используется текущий контекст) и возвращает его завернутым в функцию с заданными `параметрами`.
 
 ## `vm.createContext([contextObject[, options]])`
 
-- `contextObject` {Object}
-- `options` {Object}
-  - `name` {string} Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
-  - `origin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующее вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
-  - `codeGeneration` {Object}
-    - `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-    - `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  - `microtaskMode` {string} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут выполняться сразу после запуска скрипта через [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
-- Возвращает: {Object} контекстифицированный объект.
+-   `contextObject` {Object}
+-   `options` {Object}
+    -   `name` {string} Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
+    -   `origin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующее вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
+    -   `codeGeneration` {Object}
+        -   `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
+        -   `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
+    -   `microtaskMode` {string} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут выполняться сразу после запуска скрипта через [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
+-   Возвращает: {Object} контекстифицированный объект.
 
 Если дан `contextObject`, метод `vm.createContext()` [подготовит этот объект](#what-does-it-mean-to-contextify-an-object), чтобы его можно было использовать в вызовах [`vm.runInContext()`](#vmrunincontextcode-contextifiedobject-options) или [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). Внутри таких скриптов `contextObject` будет глобальным объектом, сохраняя все свои существующие свойства, но также имея встроенные объекты и функции, которые есть у любого стандартного [глобального объекта](https://es5.github.io/#x15.1). Вне скриптов, выполняемых модулем vm, глобальные переменные останутся неизменными.
 
@@ -754,8 +754,8 @@ console.log(global.globalVar);
 
 ## `vm.isContext(object)`
 
-- `object` {Object}
-- Возвращает: {boolean}
+-   `object` {Object}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если данный объект `object` был [контекстирован] (#what-does-it-mean-to-contextify-an-object) с помощью [`vm.createContext()`] (#vmcreatecontextcontextobject-options).
 
@@ -765,10 +765,10 @@ console.log(global.globalVar);
 
 Измеряет память, известную V8 и используемую всеми контекстами, известными текущему изоляту V8 или основному контексту.
 
-- `options` {Object} Необязательно.
-  - `mode` {string} Либо `сводный`, либо `детальный`. В кратком режиме будет возвращена только память, измеренная для основного контекста. В подробном режиме будет возвращена память, измеренная для всех контекстов, известных текущему изоляту V8. **По умолчанию:** `'summary'`.
-  - `execution` {строка} Либо `'default'`, либо `'eager'`. При выполнении по умолчанию обещание не будет разрешено до следующего запланированного запуска сборки мусора, что может занять некоторое время (или никогда, если программа завершится до следующего GC). При нетерпеливом выполнении GC будет запущен сразу же, чтобы измерить память. **По умолчанию:** `'default'\*.
-- Возвращает: {Promise} Если память успешно измерена, обещание разрешится с объектом, содержащим информацию об использовании памяти.
+-   `options` {Object} Необязательно.
+    -   `mode` {string} Либо `сводный`, либо `детальный`. В кратком режиме будет возвращена только память, измеренная для основного контекста. В подробном режиме будет возвращена память, измеренная для всех контекстов, известных текущему изоляту V8. **По умолчанию:** `'summary'`.
+    -   `execution` {строка} Либо `'default'`, либо `'eager'`. При выполнении по умолчанию обещание не будет разрешено до следующего запланированного запуска сборки мусора, что может занять некоторое время (или никогда, если программа завершится до следующего GC). При нетерпеливом выполнении GC будет запущен сразу же, чтобы измерить память. **По умолчанию:** `'default'\*.
+-   Возвращает: {Promise} Если память успешно измерена, обещание разрешится с объектом, содержащим информацию об использовании памяти.
 
 Формат объекта, с которым может разрешиться возвращаемое обещание, специфичен для движка V8 и может меняться от версии V8 к версии.
 
@@ -778,63 +778,63 @@ console.log(global.globalVar);
 const vm = require('node:vm');
 // Измерьте память, используемую основным контекстом.
 vm.measureMemory({ mode: 'summary' })
-  // Это то же самое, что и vm.measureMemory()
-  .then((result) => {
-    // Текущий формат:
-    // {
-    // итого: {
-    // jsMemoryEstimate: 2418479, jsMemoryRange: [ 2418479, 2745799 ]
-    // }
-    // }
-    console.log(result);
-  });
+    // Это то же самое, что и vm.measureMemory()
+    .then((result) => {
+        // Текущий формат:
+        // {
+        // итого: {
+        // jsMemoryEstimate: 2418479, jsMemoryRange: [ 2418479, 2745799 ]
+        // }
+        // }
+        console.log(result);
+    });
 
 const context = vm.createContext({ a: 1 });
 vm.measureMemory({
-  mode: 'detailed',
-  execution: 'eager',
+    mode: 'detailed',
+    execution: 'eager',
 }).then((result) => {
-  // Ссылаемся на контекст здесь, чтобы он не был GC'ed
-  // пока измерение не будет завершено.
-  console.log(context.a);
-  // {
-  // итого: {
-  // jsMemoryEstimate: 2574732,
-  // jsMemoryRange: [ 2574732, 2904372 ]
-  // },
-  // текущий: {
-  // jsMemoryEstimate: 2438996,
-  // jsMemoryRange: [ 2438996, 2768636 ]
-  // },
-  // other: [
-  // {
-  // jsMemoryEstimate: 135736,
-  // jsMemoryRange: [ 135736, 465376 ]
-  // }
-  // ]
-  // }
-  console.log(result);
+    // Ссылаемся на контекст здесь, чтобы он не был GC'ed
+    // пока измерение не будет завершено.
+    console.log(context.a);
+    // {
+    // итого: {
+    // jsMemoryEstimate: 2574732,
+    // jsMemoryRange: [ 2574732, 2904372 ]
+    // },
+    // текущий: {
+    // jsMemoryEstimate: 2438996,
+    // jsMemoryRange: [ 2438996, 2768636 ]
+    // },
+    // other: [
+    // {
+    // jsMemoryEstimate: 135736,
+    // jsMemoryRange: [ 135736, 465376 ]
+    // }
+    // ]
+    // }
+    console.log(result);
 });
 ```
 
 ## `vm.runInContext(code, contextifiedObject[, options])`
 
-- `code` {string} JavaScript-код для компиляции и запуска.
-- `contextifiedObject` {Object} контекстифицированный объект, который будет использоваться в качестве `глобального` при компиляции и выполнении `кода`.
-- `options` {Object|string}
-  - `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  - `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `displayErrors` {boolean} Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-  - `timeout` {integer} Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-  - `cachedData` {Buffer|TypedArray|DataView} Provides an optional `Buffer` or `TypedArray`, or `DataView` with V8’s code cache data for the supplied source.
-  - `importModuleDynamically` {Function} Called during evaluation of this module when `import()` is called. If this option is not specified, calls to `import()` will reject with [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). This option is part of the experimental modules API. We do not recommend using it in a production environment.
-    - `specifier` {string} specifier passed to `import()`
-    - `script` {vm.Script}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
-- Возвращает: {любой} результат самого последнего оператора, выполненного в сценарии.
+-   `code` {string} JavaScript-код для компиляции и запуска.
+-   `contextifiedObject` {Object} контекстифицированный объект, который будет использоваться в качестве `глобального` при компиляции и выполнении `кода`.
+-   `options` {Object|string}
+    -   `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
+    -   `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `displayErrors` {boolean} Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
+    -   `timeout` {integer} Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
+    -   `cachedData` {Buffer|TypedArray|DataView} Provides an optional `Buffer` or `TypedArray`, or `DataView` with V8’s code cache data for the supplied source.
+    -   `importModuleDynamically` {Function} Called during evaluation of this module when `import()` is called. If this option is not specified, calls to `import()` will reject with [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). This option is part of the experimental modules API. We do not recommend using it in a production environment.
+        -   `specifier` {string} specifier passed to `import()`
+        -   `script` {vm.Script}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+-   Возвращает: {любой} результат самого последнего оператора, выполненного в сценарии.
 
 Метод `vm.runInContext()` компилирует `код`, выполняет его в контексте `contextifiedObject`, а затем возвращает результат. Выполняемый код не имеет доступа к локальной области видимости. Объект `contextifiedObject` _должен_ быть предварительно [контекстирован](#what-does-it-mean-to-contextify-an-object) с помощью метода [`vm.createContext()`](#vmcreatecontextcontextobject-options).
 
@@ -849,7 +849,7 @@ const contextObject = { globalVar: 1 };
 vm.createContext(contextObject);
 
 for (let i = 0; i < 10; ++i) {
-  vm.runInContext('globalVar *= 2;', contextObject);
+    vm.runInContext('globalVar *= 2;', contextObject);
 }
 console.log(contextObject);
 // Prints: { globalVar: 1024 }
@@ -857,28 +857,28 @@ console.log(contextObject);
 
 ## `vm.runInNewContext(code[, contextObject[, options]])`
 
-- `code` {string} JavaScript-код для компиляции и запуска.
-- `contextObject` {Object} Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
-- `options` {Object|string}
-  - `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  - `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-  - `displayErrors` {boolean} Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-  - `timeout` {integer} Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-  - `contextName` {string} Human-readable name of the newly created context. **Default:** `'VM Context i'`, where `i` is an ascending numerical index of the created context.
-  - `contextOrigin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) corresponding to the newly created context for display purposes. The origin should be formatted like a URL, but with only the scheme, host, and port (if necessary), like the value of the [`url.origin`](url.md#urlorigin) property of a [`URL`](url.md#class-url) object. Most notably, this string should omit the trailing slash, as that denotes a path. **Default:** `''`.
-  - `contextCodeGeneration` {Object}
-    - `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-    - `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  - `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-  - `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-    - `specifier` {строка} спецификатор, передаваемый в `import()`.
-    - `script` {vm.Script}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
-  - `microtaskMode` {строка} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
-- Возвращает: {любой} результат самого последнего оператора, выполненного в скрипте.
+-   `code` {string} JavaScript-код для компиляции и запуска.
+-   `contextObject` {Object} Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
+-   `options` {Object|string}
+    -   `filename` {string} Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
+    -   `lineOffset` {number} Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `columnOffset` {number} Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
+    -   `displayErrors` {boolean} Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
+    -   `timeout` {integer} Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
+    -   `contextName` {string} Human-readable name of the newly created context. **Default:** `'VM Context i'`, where `i` is an ascending numerical index of the created context.
+    -   `contextOrigin` {string} [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) corresponding to the newly created context for display purposes. The origin should be formatted like a URL, but with only the scheme, host, and port (if necessary), like the value of the [`url.origin`](url.md#urlorigin) property of a [`URL`](url.md#class-url) object. Most notably, this string should omit the trailing slash, as that denotes a path. **Default:** `''`.
+    -   `contextCodeGeneration` {Object}
+        -   `strings` {boolean} Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
+        -   `wasm` {boolean} Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
+    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
+    -   `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
+        -   `specifier` {строка} спецификатор, передаваемый в `import()`.
+        -   `script` {vm.Script}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+    -   `microtaskMode` {строка} Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
+-   Возвращает: {любой} результат самого последнего оператора, выполненного в скрипте.
 
 Команда `vm.runInNewContext()` сначала контекстирует заданный `contextObject` (или создает новый `contextObject`, если передан как `undefined`), компилирует `код`, запускает его в созданном контексте, а затем возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
 
@@ -890,13 +890,13 @@ console.log(contextObject);
 const vm = require('node:vm');
 
 const contextObject = {
-  animal: 'cat',
-  count: 2,
+    animal: 'cat',
+    count: 2,
 };
 
 vm.runInNewContext(
-  'count += 1; name = "kitty"',
-  contextObject
+    'count += 1; name = "kitty"',
+    contextObject
 );
 console.log(contextObject);
 // Prints: { animal: 'cat', count: 3, name: 'kitty' }
@@ -904,21 +904,21 @@ console.log(contextObject);
 
 ## `vm.runInThisContext(code[, options])`
 
-- `code` {string} The JavaScript code to compile and run.
-- `options` {Object|string}
-  - `filename` {string} Specifies the filename used in stack traces produced by this script. **Default:** `'evalmachine.<anonymous>'`.
-  - `lineOffset` {number} Specifies the line number offset that is displayed in stack traces produced by this script. **Default:** `0`.
-  - `columnOffset` {number} Specifies the first-line column number offset that is displayed in stack traces produced by this script. **Default:** `0`.
-  - `displayErrors` {boolean} When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
-  - `timeout` {integer} Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-  - `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
-  - `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-  - `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-    - `specifier` {строка} спецификатор, передаваемый в `import()`.
-    - `script` {vm.Script}
-    - `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-    - Возвращает: {Объект пространства имен модуля|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
-- Возвращает: {любой} результат самого последнего оператора, выполненного в сценарии.
+-   `code` {string} The JavaScript code to compile and run.
+-   `options` {Object|string}
+    -   `filename` {string} Specifies the filename used in stack traces produced by this script. **Default:** `'evalmachine.<anonymous>'`.
+    -   `lineOffset` {number} Specifies the line number offset that is displayed in stack traces produced by this script. **Default:** `0`.
+    -   `columnOffset` {number} Specifies the first-line column number offset that is displayed in stack traces produced by this script. **Default:** `0`.
+    -   `displayErrors` {boolean} When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
+    -   `timeout` {integer} Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
+    -   `breakOnSigint` {boolean} If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
+    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
+    -   `importModuleDynamically` {Функция} Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
+        -   `specifier` {строка} спецификатор, передаваемый в `import()`.
+        -   `script` {vm.Script}
+        -   `importAssertions` {Object} Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
+        -   Возвращает: {Объект пространства имен модуля|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+-   Возвращает: {любой} результат самого последнего оператора, выполненного в сценарии.
 
 `vm.runInThisContext()` компилирует `код`, выполняет его в контексте текущего `global` и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости, но имеет доступ к текущему объекту `global`.
 
@@ -932,13 +932,13 @@ let localVar = 'начальное значение';
 
 const vmResult = vm.runInThisContext('localVar = "vm";');
 console.log(
-  `vmResult: '${vmResult}', localVar: '${localVar}'`
+    `vmResult: '${vmResult}', localVar: '${localVar}'`
 );
 // Печатает: vmResult: 'vm', localVar: 'начальное значение'
 
 const evalResult = eval('localVar = "eval";');
 console.log(
-  `evalResult: '${evalResult}', localVar: '${localVar}'`
+    `evalResult: '${evalResult}', localVar: '${localVar}'`
 );
 // Печатает: evalResult: 'eval', localVar: 'eval'
 ```
@@ -992,14 +992,14 @@ vm.runInThisContext(code)(require);
 const vm = require('node:vm');
 
 function loop() {
-  console.log('входим в цикл');
-  while (1) console.log(Date.now());
+    console.log('входим в цикл');
+    while (1) console.log(Date.now());
 }
 
 vm.runInNewContext(
-  'Promise.resolve().then(() => loop());',
-  { loop, console },
-  { timeout: 5 }
+    'Promise.resolve().then(() => loop());',
+    { loop, console },
+    { timeout: 5 }
 );
 // Это выводится *до* "входа в цикл" (!)
 console.log('done executing');
@@ -1011,13 +1011,13 @@ console.log('done executing');
 const vm = require('node:vm');
 
 function loop() {
-  while (1) console.log(Date.now());
+    while (1) console.log(Date.now());
 }
 
 vm.runInNewContext(
-  'Promise.resolve().then(() => loop());',
-  { loop, console },
-  { timeout: 5, microtaskMode: 'afterEvaluate' }
+    'Promise.resolve().then(() => loop());',
+    { loop, console },
+    { timeout: 5, microtaskMode: 'afterEvaluate' }
 );
 ```
 

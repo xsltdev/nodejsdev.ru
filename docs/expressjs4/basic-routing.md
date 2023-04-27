@@ -12,10 +12,10 @@ app.METHOD(PATH, HANDLER)
 
 Где:
 
-- `app` - это экземпляр `express`.
-- `METHOD` - [метод запроса HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol).
-- `PATH` - путь на сервере.
-- `HANDLER` - функция, выполняемая при сопоставлении маршрута.
+-   `app` - это экземпляр `express`.
+-   `METHOD` - [метод запроса HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol).
+-   `PATH` - путь на сервере.
+-   `HANDLER` - функция, выполняемая при сопоставлении маршрута.
 
 В этом учебнике мы исходим из предположения о том, что экземпляр `express` с именем `app` уже создан, и сервер работает. Если вы не знакомы со способами создания и запуска приложения, обратитесь к разделу [Пример "Hello world"](hello-world.md).
 
@@ -25,32 +25,32 @@ app.METHOD(PATH, HANDLER)
 
 ```js
 app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+    res.send('Hello World!');
+});
 ```
 
 Ответ на запрос POST в корневом маршруте (`/`), на домашней странице приложения:
 
 ```js
 app.post('/', function (req, res) {
-  res.send('Got a POST request')
-})
+    res.send('Got a POST request');
+});
 ```
 
 Ответ на запрос PUT, адресованный маршруту `/user`:
 
 ```js
 app.put('/user', function (req, res) {
-  res.send('Got a PUT request at /user')
-})
+    res.send('Got a PUT request at /user');
+});
 ```
 
 Ответ на запрос DELETE, адресованный маршруту `/user`:
 
 ```js
 app.delete('/user', function (req, res) {
-  res.send('Got a DELETE request at /user')
-})
+    res.send('Got a DELETE request at /user');
+});
 ```
 
 Дополнительная информация о маршрутизации приведена в [руководстве по маршрутизации](routing.md).

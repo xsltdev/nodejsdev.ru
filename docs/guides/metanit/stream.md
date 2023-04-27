@@ -7,9 +7,9 @@
 ```js
 const http = require('http');
 
-http
-  .createServer(function (request, response) {})
-  .listen(3000);
+http.createServer(function (request, response) {}).listen(
+    3000
+);
 ```
 
 Параметры `request` и `response`, которые передаются в функцию и с помощью которых мы можем получать данные о запросе и управлять ответом, как раз представляют собой потоки: `request` - поток для чтения, а `response` - поток для записи.
@@ -24,12 +24,12 @@ writeableStream.write('Привет мир!');
 writeableStream.write('Продолжение записи \n');
 writeableStream.end('Завершение записи');
 let readableStream = fs.createReadStream(
-  'hello.txt',
-  'utf8'
+    'hello.txt',
+    'utf8'
 );
 
 readableStream.on('data', function (chunk) {
-  console.log(chunk);
+    console.log(chunk);
 });
 ```
 
@@ -45,7 +45,7 @@ readableStream.on('data', function (chunk) {
 
 ```js
 readableStream.on('data', function (chunk) {
-  console.log(chunk);
+    console.log(chunk);
 });
 ```
 

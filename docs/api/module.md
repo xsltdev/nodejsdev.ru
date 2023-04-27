@@ -8,13 +8,13 @@ description: Предоставляет общие полезные методы
 
 ## Объект `Модуль`
 
-- {Object}
+-   {Object}
 
 Предоставляет общие полезные методы при взаимодействии с экземплярами `Module`, переменной [`module`](modules.md#the-module-object), часто встречающейся в модулях [CommonJS](modules.md). Доступ к ней осуществляется через `import 'node:module'` или `require('node:module')`.
 
 ### `module.builtinModules`
 
-- {string\[\]}
+-   {string\[\]}
 
 Список имен всех модулей, предоставляемых Node.js. Может использоваться для проверки того, поддерживается ли модуль третьей стороной или нет.
 
@@ -34,8 +34,8 @@ const builtin = require('node:module').builtinModules;
 
 ### `module.createRequire(filename)`
 
-- `filename` {string|URL} Имя файла, которое будет использоваться для создания функции require. Должно быть объектом URL файла, строкой URL файла или строкой абсолютного пути.
-- Возвращает: {require} Функция require
+-   `filename` {string|URL} Имя файла, которое будет использоваться для создания функции require. Должно быть объектом URL файла, строкой URL файла или строкой абсолютного пути.
+-   Возвращает: {require} Функция require
 
 <!-- конец списка -->
 
@@ -49,8 +49,8 @@ const siblingModule = require('./sibling-module');
 
 ### `module.isBuiltin(moduleName)`
 
-- `moduleName` {строка} имя модуля
-- Возвращает: {boolean} возвращает true, если модуль является встроенным, иначе возвращает false
+-   `moduleName` {строка} имя модуля
+-   Возвращает: {boolean} возвращает true, если модуль является встроенным, иначе возвращает false
 
 <!-- конец списка -->
 
@@ -122,8 +122,8 @@ const { findSourceMap, SourceMap } = require('node:module');
 
 ### `module.findSourceMap(path)`
 
-- `path` {строка}
-- Возвращает: {module.SourceMap|undefined} Возвращает `module.SourceMap`, если карта источника найдена, `undefined` в противном случае.
+-   `path` {строка}
+-   Возвращает: {module.SourceMap|undefined} Возвращает `module.SourceMap`, если карта источника найдена, `undefined` в противном случае.
 
 `path` - это разрешенный путь к файлу, для которого должна быть найдена соответствующая карта источников.
 
@@ -131,37 +131,37 @@ const { findSourceMap, SourceMap } = require('node:module');
 
 #### `новый SourceMap(payload)`
 
-- `payload` {Объект}
+-   `payload` {Объект}
 
 Создает новый экземпляр `sourceMap.
 
 `payload` - это объект с ключами, соответствующими [Source map v3 format](https://sourcemaps.info/spec.html#h.mofvlxcwqzej):
 
-- `file`: {строка}
-- `version`: {число}
-- `источники`: {string\[\]}
-- `sourcesContent`: {string\[\]}
-- `имена`: {string\[\]}
-- `mappings`: {строка}
-- `sourceRoot`: {string}
+-   `file`: {строка}
+-   `version`: {число}
+-   `источники`: {string\[\]}
+-   `sourcesContent`: {string\[\]}
+-   `имена`: {string\[\]}
+-   `mappings`: {строка}
+-   `sourceRoot`: {string}
 
 #### `sourceMap.payload`.
 
-- Возвращает: {Object}
+-   Возвращает: {Object}
 
 Получатель полезной нагрузки, используемой для построения экземпляра [`SourceMap`](#class-modulesourcemap).
 
 #### `sourceMap.findEntry(lineNumber, columnNumber)`.
 
-- `lineNumber` {number}
-- `columnNumber` {number}
-- Возвращает: {Object}
+-   `lineNumber` {number}
+-   `columnNumber` {number}
+-   Возвращает: {Object}
 
 Учитывая номер строки и номер столбца в сгенерированном исходном файле, возвращает объект, представляющий позицию в исходном файле. Возвращаемый объект состоит из следующих ключей:
 
-- generatedLine: {number}
-- generatedColumn: {число}
-- originalSource: {строка}
-- originalLine: {number}
-- originalColumn: {число}
-- имя: {строка}
+-   generatedLine: {number}
+-   generatedColumn: {число}
+-   originalSource: {строка}
+-   originalLine: {number}
+-   originalColumn: {число}
+-   имя: {строка}

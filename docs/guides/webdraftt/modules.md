@@ -41,13 +41,13 @@ _my-module.js_
 let counter = 0;
 
 exports.displayCounter = () =>
-  console.log(`Count value: ${counter}`);
+    console.log(`Count value: ${counter}`);
 
 exports.incrementCounter = (value = 1) =>
-  (counter += value);
+    (counter += value);
 
 exports.decrementCounter = (value = 1) =>
-  (counter -= value);
+    (counter -= value);
 ```
 
 ## require()

@@ -37,15 +37,15 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Hello World\n');
 });
 
 server.listen(port, hostname, () => {
-  console.log(
-    `Server running at http://${hostname}:${port}/`
-  );
+    console.log(
+        `Server running at http://${hostname}:${port}/`
+    );
 });
 ```
 
@@ -93,12 +93,12 @@ Node.js - это низкоуровневая платформа. Чтобы с�
 
 Многие из них со временем стали популярными. Вот неполный список тех, которые я считаю очень важными и достойными изучения:
 
-- [**Express**](../expressjs4/index.md) — Один из самых простых и в то же время мощных способов создания веб-сервера. Его минималистский подход и беспристрастное внимание к основным функциям сервера является ключом к его успеху.
-- [**Meteor**](https://www.meteor.com/) — Невероятно мощный фреймворк полного стека, позволяющий использовать изоморфный подход к созданию приложений на JavaScript и разделять код на клиенте и сервере. Когда-то он был готовым инструментом, который предоставлял все, но теперь он интегрируется с такими библиотеками front-end, как [React](https://reactdev.ru/), [Vue](https://vuejs.org/) и [Angular](https://angdev.ru/). Meteor можно использовать и для создания мобильных приложений.
-- [**Koa**](http://koajs.com/) — Созданный той же командой, что и Express, Koa стремится быть еще проще и меньше, опираясь на многолетние знания. Новый проект родился из необходимости создавать несовместимые изменения, не нарушая существующего сообщества.
-- [**Next.js**](https://reactdev.ru/nextjs/) — Это фреймворк для рендеринга приложений на стороне сервера [React](https://reactdev.ru/).
-- [**Micro**](https://github.com/zeit/micro) — Это очень легкий сервер для создания асинхронных HTTP микросервисов.
-- [**Socket.io**](https://socket.io/) — Это механизм коммуникации в реальном времени для создания сетевых приложений.
+-   [**Express**](../expressjs4/index.md) — Один из самых простых и в то же время мощных способов создания веб-сервера. Его минималистский подход и беспристрастное внимание к основным функциям сервера является ключом к его успеху.
+-   [**Meteor**](https://www.meteor.com/) — Невероятно мощный фреймворк полного стека, позволяющий использовать изоморфный подход к созданию приложений на JavaScript и разделять код на клиенте и сервере. Когда-то он был готовым инструментом, который предоставлял все, но теперь он интегрируется с такими библиотеками front-end, как [React](https://reactdev.ru/), [Vue](https://vuejs.org/) и [Angular](https://angdev.ru/). Meteor можно использовать и для создания мобильных приложений.
+-   [**Koa**](http://koajs.com/) — Созданный той же командой, что и Express, Koa стремится быть еще проще и меньше, опираясь на многолетние знания. Новый проект родился из необходимости создавать несовместимые изменения, не нарушая существующего сообщества.
+-   [**Next.js**](https://reactdev.ru/nextjs/) — Это фреймворк для рендеринга приложений на стороне сервера [React](https://reactdev.ru/).
+-   [**Micro**](https://github.com/zeit/micro) — Это очень легкий сервер для создания асинхронных HTTP микросервисов.
+-   [**Socket.io**](https://socket.io/) — Это механизм коммуникации в реальном времени для создания сетевых приложений.
 
 ### Как установить Node.js {#how-to-install-node-js}
 
@@ -134,31 +134,31 @@ brew install node
 
 Я бы рекомендовал вам хорошо усвоить основные концепции JavaScript, прежде чем погружаться в Node.js:
 
-- [Лексическая структура](https://learn.javascript.ru/structure)
-- Выражения
-- [Типы](https://learn.javascript.ru/types)
-- [Переменные](https://learn.javascript.ru/variables)
-- [Функции](https://learn.javascript.ru/function-basics)
-- [`this`](https://learn.javascript.ru/object-methods)
-- [Стрелочные функции](https://learn.javascript.ru/arrow-functions-basics)
-- [Циклы](https://learn.javascript.ru/while-for)
-- Циклы и область видимости
-- [Массивы](https://learn.javascript.ru/array)
-- Шаблонные литералы
-- Точки с запятой
-- [Строгий режим](https://learn.javascript.ru/strict-mode)
-- ECMAScript 6+
+-   [Лексическая структура](https://learn.javascript.ru/structure)
+-   Выражения
+-   [Типы](https://learn.javascript.ru/types)
+-   [Переменные](https://learn.javascript.ru/variables)
+-   [Функции](https://learn.javascript.ru/function-basics)
+-   [`this`](https://learn.javascript.ru/object-methods)
+-   [Стрелочные функции](https://learn.javascript.ru/arrow-functions-basics)
+-   [Циклы](https://learn.javascript.ru/while-for)
+-   Циклы и область видимости
+-   [Массивы](https://learn.javascript.ru/array)
+-   Шаблонные литералы
+-   Точки с запятой
+-   [Строгий режим](https://learn.javascript.ru/strict-mode)
+-   ECMAScript 6+
 
 Зная эти понятия, вы уже на пути к тому, чтобы стать опытным разработчиком JavaScript как в браузере, так и в Node.js.
 
 Следующие концепции также являются ключевыми для понимания асинхронного программирования, которое является одной из фундаментальных составляющих Node.js:
 
-- [Асинхронное программирование и колбеки](https://learn.javascript.ru/callbacks)
-- [Таймеры](https://learn.javascript.ru/settimeout-setinterval)
-- [Промисы](https://learn.javascript.ru/promise-basics)
-- [`async` и `await`](https://learn.javascript.ru/async-await)
-- [Замыкания](https://learn.javascript.ru/closure)
-- Цикл событий
+-   [Асинхронное программирование и колбеки](https://learn.javascript.ru/callbacks)
+-   [Таймеры](https://learn.javascript.ru/settimeout-setinterval)
+-   [Промисы](https://learn.javascript.ru/promise-basics)
+-   [`async` и `await`](https://learn.javascript.ru/async-await)
+-   [Замыкания](https://learn.javascript.ru/closure)
+-   Цикл событий
 
 ### Различия между Node.js и браузером {#differences-between-node-js-and-the-browser}
 
@@ -206,9 +206,9 @@ V8 обеспечивает среду выполнения, в которой �
 
 Другие браузеры имеют свой собственный движок JavaScript:
 
-- Firefox имеет [Spidermonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey).
-- Safari имеет [JavaScriptCore](https://developer.apple.com/documentation/javascriptcore) (также называется Nitro)
-- Edge имеет [Chakra](https://github.com/Microsoft/ChakraCore)
+-   Firefox имеет [Spidermonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey).
+-   Safari имеет [JavaScriptCore](https://developer.apple.com/documentation/javascriptcore) (также называется Nitro)
+-   Edge имеет [Chakra](https://github.com/Microsoft/ChakraCore)
 
 и многие другие.
 
@@ -279,7 +279,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hi!');
+    res.send('Hi!');
 });
 
 app.listen(3000, () => console.log('Server ready'));
@@ -297,17 +297,17 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hi!');
+    res.send('Hi!');
 });
 
 const server = app.listen(3000, () =>
-  console.log('Server ready')
+    console.log('Server ready')
 );
 
 process.on('SIGTERM', () => {
-  server.close(() => {
-    console.log('Process terminated');
-  });
+    server.close(() => {
+        console.log('Process terminated');
+    });
 });
 ```
 
@@ -408,8 +408,8 @@ require('dotenv').config();
 
 К очень популярным решениям относятся:
 
-- [Serverless Framework](https://serverless.com/framework/)
-- [Стандартная библиотека](https://stdlib.com/).
+-   [Serverless Framework](https://serverless.com/framework/)
+-   [Стандартная библиотека](https://stdlib.com/).
 
 Они оба предоставляют слой абстракции для публикации на AWS Lambda и других FAAS-решений на базе Azure или Google Cloud.
 
@@ -447,9 +447,9 @@ PAAS расшифровывается как Platform As A Service. Эти пл�
 
 В этом разделе вы найдете обычных подозреваемых, упорядоченных от более удобных для пользователя к менее удобным:
 
-- [Digital Ocean](https://www.digitalocean.com/)
-- [Linode](https://www.linode.com/)
-- [Amazon Web Services](https://aws.amazon.com/), в частности, я упоминаю Amazon Elastic Beanstalk, поскольку он немного абстрагирует сложность AWS.
+-   [Digital Ocean](https://www.digitalocean.com/)
+-   [Linode](https://www.linode.com/)
+-   [Amazon Web Services](https://aws.amazon.com/), в частности, я упоминаю Amazon Elastic Beanstalk, поскольку он немного абстрагирует сложность AWS.
 
 Поскольку они предоставляют пустую Linux-машину, на которой вы можете работать, специального руководства по ним нет.
 
@@ -533,13 +533,13 @@ alt="e2qWLuyjYC4DFZjEs2jYWK-NL9AXbpDiSdA7" />
 
 В REPL есть несколько специальных команд, все они начинаются с точки `.`. К ним относятся
 
-- `.help`: показывает справку по точечным командам.
-- `.editor`: включает режим редактора, позволяющий легко писать многострочный код JavaScript. Как только вы окажетесь в этом режиме, введите ctrl-D, чтобы запустить написанный вами код.
-- `.break`: при вводе многострочного выражения ввод команды .break прерывает дальнейший ввод. Аналогично нажатию клавиши ctrl-C.
-- `.clear`: сбрасывает контекст REPL на пустой объект и очищает любое многострочное выражение, вводимое в данный момент.
-- `.load`: загружает файл JavaScript, относительно текущего рабочего каталога.
-- `.save`: сохраняет все, что вы ввели в сеансе REPL, в файл (укажите имя файла).
-- `.exit`: завершает работу (то же самое, что два раза нажать ctrl-C).
+-   `.help`: показывает справку по точечным командам.
+-   `.editor`: включает режим редактора, позволяющий легко писать многострочный код JavaScript. Как только вы окажетесь в этом режиме, введите ctrl-D, чтобы запустить написанный вами код.
+-   `.break`: при вводе многострочного выражения ввод команды .break прерывает дальнейший ввод. Аналогично нажатию клавиши ctrl-C.
+-   `.clear`: сбрасывает контекст REPL на пустой объект и очищает любое многострочное выражение, вводимое в данный момент.
+-   `.load`: загружает файл JavaScript, относительно текущего рабочего каталога.
+-   `.save`: сохраняет все, что вы ввели в сеансе REPL, в файл (укажите имя файла).
+-   `.exit`: завершает работу (то же самое, что два раза нажать ctrl-C).
 
 REPL знает, когда вы набираете многострочный оператор, без необходимости вызывать `.editor`.
 
@@ -592,7 +592,7 @@ REPL знает, когда вы набираете многострочный �
 
 ```js
 process.argv.forEach((val, index) => {
-  console.log(`${index}: ${val}`);
+    console.log(`${index}: ${val}`);
 });
 ```
 
@@ -656,10 +656,10 @@ console.log(x, y);
 console.log('My %s has %d years', 'cat', 2);
 ```
 
-- `%s` форматирует переменную как строку
-- `%d` или `%i` форматируют переменную как целое число
-- `%f` форматирует переменную как число с плавающей точкой
-- `%O` используется для печати представления объекта
+-   `%s` форматирует переменную как строку
+-   `%d` или `%i` форматируют переменную как целое число
+-   `%f` форматирует переменную как число с плавающей точкой
+-   `%O` используется для печати представления объекта
 
 Пример:
 
@@ -683,21 +683,21 @@ const y = 2;
 const z = 3;
 
 console.count(
-  'The value of x is ' +
-    x +
-    ' and has been checked .. how many times?'
+    'The value of x is ' +
+        x +
+        ' and has been checked .. how many times?'
 );
 
 console.count(
-  'The value of x is ' +
-    x +
-    ' and has been checked .. how many times?'
+    'The value of x is ' +
+        x +
+        ' and has been checked .. how many times?'
 );
 
 console.count(
-  'The value of y is ' +
-    y +
-    ' and has been checked .. how many times?'
+    'The value of y is ' +
+        y +
+        ' and has been checked .. how many times?'
 );
 ```
 
@@ -710,11 +710,11 @@ const oranges = ['orange', 'orange'];
 const apples = ['just one apple'];
 
 oranges.forEach((fruit) => {
-  console.count(fruit);
+    console.count(fruit);
 });
 
 apples.forEach((fruit) => {
-  console.count(fruit);
+    console.count(fruit);
 });
 ```
 
@@ -751,10 +751,10 @@ function1();
 ```js
 const doSomething = () => console.log('test');
 const measureDoingSomething = () => {
-  console.time('doSomething()');
-  // do something, and measure the time it takes
-  doSomething();
-  console.timeEnd('doSomething()');
+    console.time('doSomething()');
+    // do something, and measure the time it takes
+    doSomething();
+    console.timeEnd('doSomething()');
 };
 
 measureDoingSomething();
@@ -804,10 +804,10 @@ const ProgressBar = require('progress');
 
 const bar = new ProgressBar(':bar', { total: 10 });
 const timer = setInterval(() => {
-  bar.tick();
-  if (bar.complete) {
-    clearInterval(timer);
-  }
+    bar.tick();
+    if (bar.complete) {
+        clearInterval(timer);
+    }
 }, 100);
 ```
 
@@ -819,13 +819,13 @@ Node, начиная с версии 7, предоставляет `readline` [�
 
 ```js
 const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
 
 readline.question(`What's your name?`, (name) => {
-  console.log(`Hi ${name}!`);
-  readline.close();
+    console.log(`Hi ${name}!`);
+    readline.close();
 });
 ```
 
@@ -849,15 +849,15 @@ readline.question(`What's your name?`, (name) => {
 const inquirer = require('inquirer');
 
 var questions = [
-  {
-    type: 'input',
-    name: 'name',
-    message: "What's your name?",
-  },
+    {
+        type: 'input',
+        name: 'name',
+        message: "What's your name?",
+    },
 ];
 
 inquirer.prompt(questions).then((answers) => {
-  console.log(`Hi ${answers['name']}!`);
+    console.log(`Hi ${answers['name']}!`);
 });
 ```
 
@@ -895,8 +895,8 @@ const library = require('./library');
 
 ```js
 const car = {
-  brand: 'Ford',
-  model: 'Fiesta',
+    brand: 'Ford',
+    model: 'Fiesta',
 };
 
 module.exports = car;
@@ -910,8 +910,8 @@ const car = require('./car');
 
 ```js
 const car = {
-  brand: 'Ford',
-  model: 'Fiesta',
+    brand: 'Ford',
+    model: 'Fiesta',
 };
 
 exports.car = car;
@@ -921,8 +921,8 @@ exports.car = car;
 
 ```js
 exports.car = {
-  brand: 'Ford',
-  model: 'Fiesta',
+    brand: 'Ford',
+    model: 'Fiesta',
 };
 ```
 
@@ -973,8 +973,8 @@ const car = require('./items').car;
 
 Часто можно увидеть дополнительные флаги, добавляемые к этой команде:
 
-- `--save` устанавливает и добавляет запись в файл `package.json` `dependencies`.
-- `--save-dev` устанавливает и добавляет запись в файл `package.json` `devDependencies`.
+-   `--save` устанавливает и добавляет запись в файл `package.json` `dependencies`.
+-   `--save-dev` устанавливает и добавляет запись в файл `package.json` `devDependencies`.
 
 Разница в основном заключается в том, что `devDependencies` обычно являются инструментами разработки, например, библиотекой для тестирования, в то время как `dependencies` поставляются с приложением в продакшене.
 
@@ -1012,10 +1012,10 @@ const car = require('./items').car;
 
 ```json
 {
-  "scripts": {
-    "start-dev": "node lib/server-development",
-    "start": "node lib/server-production"
-  }
+    "scripts": {
+        "start-dev": "node lib/server-development",
+        "start": "node lib/server-production"
+    }
 }
 ```
 
@@ -1023,11 +1023,11 @@ const car = require('./items').car;
 
 ```json
 {
-  "scripts": {
-    "watch": "webpack --watch --progress --colors --config webpack.conf.js",
-    "dev": "webpack --progress --colors --config webpack.conf.js",
-    "prod": "NODE_ENV=production webpack -p --config webpack.conf.js"
-  }
+    "scripts": {
+        "watch": "webpack --watch --progress --colors --config webpack.conf.js",
+        "dev": "webpack --progress --colors --config webpack.conf.js",
+        "prod": "NODE_ENV=production webpack -p --config webpack.conf.js"
+    }
 }
 ```
 
@@ -1041,8 +1041,8 @@ const car = require('./items').car;
 
 Когда вы устанавливаете пакет с помощью `npm` (или [yarn](https://flaviocopes.com/yarn/){rel="noopener"}), вы можете выполнить 2 типа установки:
 
-- локальная установка
-- глобальная установка
+-   локальная установка
+-   глобальная установка
 
 По умолчанию, когда вы вводите команду `npm install`, например:
 
@@ -1132,7 +1132,7 @@ const _ = require('lodash');
 
 ```json
 {
-  "name": "test-project"
+    "name": "test-project"
 }
 ```
 
@@ -1142,93 +1142,97 @@ const _ = require('lodash');
 
 ```json
 {
-  "name": "test-project",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
-  "main": "src/main.js",
-  "private": true,
-  "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
-    "unit": "jest --config test/unit/jest.conf.js --coverage",
-    "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
-  },
-  "dependencies": {
-    "vue": "^2.5.2"
-  },
-  "devDependencies": {
-    "autoprefixer": "^7.1.2",
-    "babel-core": "^6.22.1",
-    "babel-eslint": "^8.2.1",
-    "babel-helper-vue-jsx-merge-props": "^2.0.3",
-    "babel-jest": "^21.0.2",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-dynamic-import-node": "^1.2.0",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-plugin-transform-vue-jsx": "^3.5.0",
-    "babel-preset-env": "^1.3.2",
-    "babel-preset-stage-2": "^6.22.0",
-    "chalk": "^2.0.1",
-    "copy-webpack-plugin": "^4.0.1",
-    "css-loader": "^0.28.0",
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb-base": "^11.3.0",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-import-resolver-webpack": "^0.8.3",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-vue": "^4.0.0",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^1.1.4",
-    "friendly-errors-webpack-plugin": "^1.6.1",
-    "html-webpack-plugin": "^2.30.1",
-    "jest": "^22.0.4",
-    "jest-serializer-vue": "^0.3.0",
-    "node-notifier": "^5.1.2",
-    "optimize-css-assets-webpack-plugin": "^3.2.0",
-    "ora": "^1.2.0",
-    "portfinder": "^1.0.13",
-    "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.8",
-    "postcss-url": "^7.2.1",
-    "rimraf": "^2.6.0",
-    "semver": "^5.3.0",
-    "shelljs": "^0.7.6",
-    "uglifyjs-webpack-plugin": "^1.1.1",
-    "url-loader": "^0.5.8",
-    "vue-jest": "^1.0.2",
-    "vue-loader": "^13.3.0",
-    "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
-  },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"]
+    "name": "test-project",
+    "version": "1.0.0",
+    "description": "A Vue.js project",
+    "main": "src/main.js",
+    "private": true,
+    "scripts": {
+        "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+        "start": "npm run dev",
+        "unit": "jest --config test/unit/jest.conf.js --coverage",
+        "test": "npm run unit",
+        "lint": "eslint --ext .js,.vue src test/unit",
+        "build": "node build/build.js"
+    },
+    "dependencies": {
+        "vue": "^2.5.2"
+    },
+    "devDependencies": {
+        "autoprefixer": "^7.1.2",
+        "babel-core": "^6.22.1",
+        "babel-eslint": "^8.2.1",
+        "babel-helper-vue-jsx-merge-props": "^2.0.3",
+        "babel-jest": "^21.0.2",
+        "babel-loader": "^7.1.1",
+        "babel-plugin-dynamic-import-node": "^1.2.0",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+        "babel-plugin-transform-runtime": "^6.22.0",
+        "babel-plugin-transform-vue-jsx": "^3.5.0",
+        "babel-preset-env": "^1.3.2",
+        "babel-preset-stage-2": "^6.22.0",
+        "chalk": "^2.0.1",
+        "copy-webpack-plugin": "^4.0.1",
+        "css-loader": "^0.28.0",
+        "eslint": "^4.15.0",
+        "eslint-config-airbnb-base": "^11.3.0",
+        "eslint-friendly-formatter": "^3.0.0",
+        "eslint-import-resolver-webpack": "^0.8.3",
+        "eslint-loader": "^1.7.1",
+        "eslint-plugin-import": "^2.7.0",
+        "eslint-plugin-vue": "^4.0.0",
+        "extract-text-webpack-plugin": "^3.0.0",
+        "file-loader": "^1.1.4",
+        "friendly-errors-webpack-plugin": "^1.6.1",
+        "html-webpack-plugin": "^2.30.1",
+        "jest": "^22.0.4",
+        "jest-serializer-vue": "^0.3.0",
+        "node-notifier": "^5.1.2",
+        "optimize-css-assets-webpack-plugin": "^3.2.0",
+        "ora": "^1.2.0",
+        "portfinder": "^1.0.13",
+        "postcss-import": "^11.0.0",
+        "postcss-loader": "^2.0.8",
+        "postcss-url": "^7.2.1",
+        "rimraf": "^2.6.0",
+        "semver": "^5.3.0",
+        "shelljs": "^0.7.6",
+        "uglifyjs-webpack-plugin": "^1.1.1",
+        "url-loader": "^0.5.8",
+        "vue-jest": "^1.0.2",
+        "vue-loader": "^13.3.0",
+        "vue-style-loader": "^3.0.1",
+        "vue-template-compiler": "^2.5.2",
+        "webpack": "^3.6.0",
+        "webpack-bundle-analyzer": "^2.9.0",
+        "webpack-dev-server": "^2.9.1",
+        "webpack-merge": "^4.1.0"
+    },
+    "engines": {
+        "node": ">= 6.0.0",
+        "npm": ">= 3.0.0"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
 }
 ```
 
 здесь происходит **много** вещей:
 
-- `name` задает имя приложения/пакета
-- `version` указывает текущую версию
-- `description` - краткое описание приложения/пакета
-- `main` задает точку входа для приложения
-- `private`, если установлено значение `true`, предотвращает случайную публикацию приложения/пакета на `npm`.
-- `scripts` определяет набор скриптов для node, которые вы можете запускать
-- `dependencies` задает список пакетов `npm`, установленных в качестве зависимостей
-- `devDependencies` задает список пакетов `npm`, установленных в качестве зависимостей для разработки
-- `engines` устанавливает, на каких версиях Node работает этот пакет/приложение
-- `browserslist` используется для указания того, какие браузеры (и их версии) вы хотите поддерживать.
+-   `name` задает имя приложения/пакета
+-   `version` указывает текущую версию
+-   `description` - краткое описание приложения/пакета
+-   `main` задает точку входа для приложения
+-   `private`, если установлено значение `true`, предотвращает случайную публикацию приложения/пакета на `npm`.
+-   `scripts` определяет набор скриптов для node, которые вы можете запускать
+-   `dependencies` задает список пакетов `npm`, установленных в качестве зависимостей
+-   `devDependencies` задает список пакетов `npm`, установленных в качестве зависимостей для разработки
+-   `engines` устанавливает, на каких версиях Node работает этот пакет/приложение
+-   `browserslist` используется для указания того, какие браузеры (и их версии) вы хотите поддерживать.
 
 Все эти свойства используются либо `npm`, либо другими инструментами, которые мы можем использовать.
 
@@ -1262,7 +1266,7 @@ const _ = require('lodash');
 
 ```json
 {
-  "author": "Flavio Copes <flavio@flaviocopes.com> (https://flaviocopes.com)"
+    "author": "Flavio Copes <flavio@flaviocopes.com> (https://flaviocopes.com)"
 }
 ```
 
@@ -1270,11 +1274,11 @@ const _ = require('lodash');
 
 ```json
 {
-  "author": {
-    "name": "Flavio Copes",
-    "email": "your@email.com",
-    "url": "https://flaviocopes.com"
-  }
+    "author": {
+        "name": "Flavio Copes",
+        "email": "your@email.com",
+        "url": "https://flaviocopes.com"
+    }
 }
 ```
 
@@ -1286,9 +1290,9 @@ const _ = require('lodash');
 
 ```json
 {
-  "contributors": [
-    "Flavio Copes <your@email.com> (https://flaviocopes.com)"
-  ]
+    "contributors": [
+        "Flavio Copes <your@email.com> (https://flaviocopes.com)"
+    ]
 }
 ```
 
@@ -1296,13 +1300,13 @@ const _ = require('lodash');
 
 ```json
 {
-  "contributors": [
-    {
-      "name": "Flavio Copes",
-      "email": "your@email.com",
-      "url": "https://flaviocopes.com"
-    }
-  ]
+    "contributors": [
+        {
+            "name": "Flavio Copes",
+            "email": "your@email.com",
+            "url": "https://flaviocopes.com"
+        }
+    ]
 }
 ```
 
@@ -1314,7 +1318,7 @@ const _ = require('lodash');
 
 ```json
 {
-  "bugs": "https://github.com/flaviocopes/package/issues"
+    "bugs": "https://github.com/flaviocopes/package/issues"
 }
 ```
 
@@ -1326,7 +1330,7 @@ const _ = require('lodash');
 
 ```json
 {
-  "homepage": "https://flaviocopes.com/package"
+    "homepage": "https://flaviocopes.com/package"
 }
 ```
 
@@ -1551,18 +1555,18 @@ const _ = require('lodash');
 
 Учитывая, что при использовании semver (semantic versioning) все версии имеют 3 цифры, первая - основной выпуск, вторая - минорный выпуск и третья - выпуск патча, у вас есть следующие правила:
 
-- `~`: если вы пишете `~0.13.0`, вы хотите обновлять только выпуски патчей: `0.13.1` подходит, а `0.14.0` - нет.
-- `^`: если вы пишете `^0.13.0`, вы хотите обновлять патч и минорные релизы: `0.13.1`, `0.14.0` и так далее.
-- `*`: если вы пишете `*`, это означает, что вы принимаете все обновления, включая основные обновления версий.
-- `>`: вы принимаете любую версию выше той, которую вы указали.
-- `>=`: вы принимаете любую версию, равную или более высокую, чем та, которую вы указали
-- `<=`: вы принимаете любую версию, равную или ниже указанной вами
-- `<`: вы принимаете любую версию ниже указанной.
+-   `~`: если вы пишете `~0.13.0`, вы хотите обновлять только выпуски патчей: `0.13.1` подходит, а `0.14.0` - нет.
+-   `^`: если вы пишете `^0.13.0`, вы хотите обновлять патч и минорные релизы: `0.13.1`, `0.14.0` и так далее.
+-   `*`: если вы пишете `*`, это означает, что вы принимаете все обновления, включая основные обновления версий.
+-   `>`: вы принимаете любую версию выше той, которую вы указали.
+-   `>=`: вы принимаете любую версию, равную или более высокую, чем та, которую вы указали
+-   `<=`: вы принимаете любую версию, равную или ниже указанной вами
+-   `<`: вы принимаете любую версию ниже указанной.
 
 Существуют и другие правила:
 
-- без символа: вы принимаете только ту конкретную версию, которую вы указали
-- `latest`: вы хотите использовать последнюю доступную версию
+-   без символа: вы принимаете только ту конкретную версию, которую вы указали
+-   `latest`: вы хотите использовать последнюю доступную версию
 
 и вы можете объединить большинство из вышеперечисленных правил в диапазоны, например: `1.0.0 || >=1.1.0 <1.2.0`, чтобы использовать либо 1.0.0, либо один релиз, начиная с 1.1.0, но ниже 1.2.0.
 
@@ -1578,9 +1582,9 @@ const _ = require('lodash');
 
 Это решает очень специфическую проблему, которую `package.json` оставил нерешенной. В package.json вы можете указать, до каких версий вы хотите обновиться (patch или minor), используя нотацию **semver**, например:
 
-- если вы пишете `~0.13.0`, вы хотите обновлять только релизы патчей: `0.13.1` подойдет, а `0.14.0` - нет.
-- если вы пишете `^0.13.0`, вы хотите обновлять патч и минорные релизы: `0.13.1`, `0.14.0` и так далее.
-- если вы пишете `0.13.0`, это точная версия, которая будет использоваться всегда.
+-   если вы пишете `~0.13.0`, вы хотите обновлять только релизы патчей: `0.13.1` подойдет, а `0.14.0` - нет.
+-   если вы пишете `^0.13.0`, вы хотите обновлять патч и минорные релизы: `0.13.1`, `0.14.0` и так далее.
+-   если вы пишете `0.13.0`, это точная версия, которая будет использоваться всегда.
 
 Вы не фиксируете в Git свою папку node_modules, которая обычно огромна, и когда вы пытаетесь воспроизвести проект на другой машине с помощью команды `npm install`, если вы указали синтаксис `~` и был выпущен патч-релиз пакета, будет установлен именно он. То же самое для `^` и минорных релизов.
 
@@ -1604,94 +1608,94 @@ const _ = require('lodash');
 
 ```json
 {
-  "requires": true,
-  "lockfileVersion": 1,
-  "dependencies": {
-    "ansi-regex": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.0.tgz",
-      "integrity": "sha1-7QMXwyIGT3lGbAKWa922Bas32Zg="
-    },
-    "cowsay": {
-      "version": "1.3.1",
-      "resolved": "https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz",
-      "integrity": "sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkMAjufp+0F9eLjzRnOHzVAYeIYFF5po5NjRrgefnRMQ==",
-      "requires": {
-        "get-stdin": "^5.0.1",
-        "optimist": "~0.6.1",
-        "string-width": "~2.1.1",
-        "strip-eof": "^1.0.0"
-      }
-    },
-    "get-stdin": {
-      "version": "5.0.1",
-      "resolved": "https://registry.npmjs.org/get-stdin/-/get-stdin-5.0.1.tgz",
-      "integrity": "sha1-Ei4WFZHiH/TFJTAwVpPyDmOTo5g="
-    },
-    "is-fullwidth-code-point": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz",
-      "integrity": "sha1-o7MKXE8ZkYMWeqq5O+764937ZU8="
-    },
-    "minimist": {
-      "version": "0.0.10",
-      "resolved": "https://registry.npmjs.org/minimist/-/minimist-0.0.10.tgz",
-      "integrity": "sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8="
-    },
-    "optimist": {
-      "version": "0.6.1",
-      "resolved": "https://registry.npmjs.org/optimist/-/optimist-0.6.1.tgz",
-      "integrity": "sha1-2j6nRob6IaGaERwybpDrFaAZZoY=",
-      "requires": {
-        "minimist": "~0.0.1",
-        "wordwrap": "~0.0.2"
-      }
-    },
-    "string-width": {
-      "version": "2.1.1",
-      "resolved": "https://registry.npmjs.org/string-width/-/string-width-2.1.1.tgz",
-      "integrity": "sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVa",
-      "requires": {
-        "is-fullwidth-code-point": "^2.0.0",
-        "strip-ansi": "^4.0.0"
-      }
-    },
-    "strip-ansi": {
-      "version": "4.0.0",
-      "resolved": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-4.0.0.tgz",
-      "integrity": "sha1-qEeQIusaw2iocTibY1JixQXuNo8=",
-      "requires": {
-        "ansi-regex": "^3.0.0"
-      }
-    },
-    "strip-eof": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/strip-eof/-/strip-eof-1.0.0.tgz",
-      "integrity": "sha1-u0P/VZim6wXYm1n80SnJgzE2Br8="
-    },
-    "wordwrap": {
-      "version": "0.0.3",
-      "resolved": "https://registry.npmjs.org/wordwrap/-/wordwrap-0.0.3.tgz",
-      "integrity": "sha1-o9XabNXAvAAI03I0u68b7WMFkQc="
+    "requires": true,
+    "lockfileVersion": 1,
+    "dependencies": {
+        "ansi-regex": {
+            "version": "3.0.0",
+            "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.0.tgz",
+            "integrity": "sha1-7QMXwyIGT3lGbAKWa922Bas32Zg="
+        },
+        "cowsay": {
+            "version": "1.3.1",
+            "resolved": "https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz",
+            "integrity": "sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkMAjufp+0F9eLjzRnOHzVAYeIYFF5po5NjRrgefnRMQ==",
+            "requires": {
+                "get-stdin": "^5.0.1",
+                "optimist": "~0.6.1",
+                "string-width": "~2.1.1",
+                "strip-eof": "^1.0.0"
+            }
+        },
+        "get-stdin": {
+            "version": "5.0.1",
+            "resolved": "https://registry.npmjs.org/get-stdin/-/get-stdin-5.0.1.tgz",
+            "integrity": "sha1-Ei4WFZHiH/TFJTAwVpPyDmOTo5g="
+        },
+        "is-fullwidth-code-point": {
+            "version": "2.0.0",
+            "resolved": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz",
+            "integrity": "sha1-o7MKXE8ZkYMWeqq5O+764937ZU8="
+        },
+        "minimist": {
+            "version": "0.0.10",
+            "resolved": "https://registry.npmjs.org/minimist/-/minimist-0.0.10.tgz",
+            "integrity": "sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8="
+        },
+        "optimist": {
+            "version": "0.6.1",
+            "resolved": "https://registry.npmjs.org/optimist/-/optimist-0.6.1.tgz",
+            "integrity": "sha1-2j6nRob6IaGaERwybpDrFaAZZoY=",
+            "requires": {
+                "minimist": "~0.0.1",
+                "wordwrap": "~0.0.2"
+            }
+        },
+        "string-width": {
+            "version": "2.1.1",
+            "resolved": "https://registry.npmjs.org/string-width/-/string-width-2.1.1.tgz",
+            "integrity": "sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVa",
+            "requires": {
+                "is-fullwidth-code-point": "^2.0.0",
+                "strip-ansi": "^4.0.0"
+            }
+        },
+        "strip-ansi": {
+            "version": "4.0.0",
+            "resolved": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-4.0.0.tgz",
+            "integrity": "sha1-qEeQIusaw2iocTibY1JixQXuNo8=",
+            "requires": {
+                "ansi-regex": "^3.0.0"
+            }
+        },
+        "strip-eof": {
+            "version": "1.0.0",
+            "resolved": "https://registry.npmjs.org/strip-eof/-/strip-eof-1.0.0.tgz",
+            "integrity": "sha1-u0P/VZim6wXYm1n80SnJgzE2Br8="
+        },
+        "wordwrap": {
+            "version": "0.0.3",
+            "resolved": "https://registry.npmjs.org/wordwrap/-/wordwrap-0.0.3.tgz",
+            "integrity": "sha1-o9XabNXAvAAI03I0u68b7WMFkQc="
+        }
     }
-  }
 }
 ```
 
 Мы установили `cowsay`, который зависит от:
 
-- `get-stdin`
-- `optimist`
-- `string-width`
-- `strip-eof`
+-   `get-stdin`
+-   `optimist`
+-   `string-width`
+-   `strip-eof`
 
 В свою очередь, эти пакеты требуют других пакетов, что видно из свойства `requires`, которым обладают некоторые из них:
 
-- `ansi-regex`
-- `is-fullwidth-code-point`
-- `minimist`
-- `wordwrap`
-- `strip-eof`
+-   `ansi-regex`
+-   `is-fullwidth-code-point`
+-   `minimist`
+-   `wordwrap`
+-   `strip-eof`
 
 Они добавляются в файл в алфавитном порядке, и каждый из них имеет поле `version`, поле `resolved`, указывающее на местоположение пакета, и строку `integrity`, которую мы можем использовать для проверки пакета.
 
@@ -1803,9 +1807,9 @@ npm вычисляет зависимости и устанавливает по
 
 ```json
 {
-  "dependencies": {
-    "cowsay": "^1.3.1"
-  }
+    "dependencies": {
+        "cowsay": "^1.3.1"
+    }
 }
 ```
 
@@ -1813,21 +1817,21 @@ npm вычисляет зависимости и устанавливает по
 
 ```json
 {
-  "requires": true,
-  "lockfileVersion": 1,
-  "dependencies": {
-    "cowsay": {
-      "version": "1.3.1",
-      "resolved": "https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz",
-      "integrity": "sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkMAjufp+0F9eLjzRnOH",
-      "requires": {
-        "get-stdin": "^5.0.1",
-        "optimist": "~0.6.1",
-        "string-width": "~2.1.1",
-        "strip-eof": "^1.0.0"
-      }
+    "requires": true,
+    "lockfileVersion": 1,
+    "dependencies": {
+        "cowsay": {
+            "version": "1.3.1",
+            "resolved": "https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz",
+            "integrity": "sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkMAjufp+0F9eLjzRnOH",
+            "requires": {
+                "get-stdin": "^5.0.1",
+                "optimist": "~0.6.1",
+                "string-width": "~2.1.1",
+                "strip-eof": "^1.0.0"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -1876,15 +1880,15 @@ Semantic Versioning - это соглашение, используемое дл
 
 Концепция Semantic Versioning проста: все версии состоят из 3 цифр: `x.y.z`.
 
-- первая цифра - основная версия
-- вторая цифра - минорная версия
-- третья цифра - версия патча.
+-   первая цифра - основная версия
+-   вторая цифра - минорная версия
+-   третья цифра - версия патча.
 
 Когда вы выпускаете новый релиз, вы не просто увеличиваете номер по своему усмотрению, но у вас есть правила:
 
-- вы повышаете основную версию, когда вносите несовместимые изменения в API
-- вы повышаете минорную версию, когда добавляете функциональность, совместимую с предыдущей версией
-- вы повышаете версию патча, когда исправляете ошибки, совместимые с обратным развитием.
+-   вы повышаете основную версию, когда вносите несовместимые изменения в API
+-   вы повышаете минорную версию, когда добавляете функциональность, совместимую с предыдущей версией
+-   вы повышаете версию патча, когда исправляете ошибки, совместимые с обратным развитием.
 
 Эта конвенция принята во всех языках программирования, и очень важно, чтобы каждый пакет `npm` придерживался ее, потому что от этого зависит вся система.
 
@@ -1894,34 +1898,34 @@ Semantic Versioning - это соглашение, используемое дл
 
 Правила используют эти символы:
 
-- `^`
-- `~`
-- \`\>
-- `>=`
-- `<`
-- `<=`
-- `=`
-- `-`
-- `||`
+-   `^`
+-   `~`
+-   \`\>
+-   `>=`
+-   `<`
+-   `<=`
+-   `=`
+-   `-`
+-   `||`
 
 Давайте рассмотрим эти правила подробнее:
 
-- `^`: если вы пишете `^0.13.0`, при запуске `npm update` он может обновиться до патча и минорных релизов: `0.13.1`, `0.14.0` и так далее.
-- `~`: если вы напишете `~0.13.0`, при запуске `npm update` он может обновляться до патчей: `0.13.1` - нормально, а `0.14.0` - нет.
-- `<`: вы принимаете любую версию выше той, которую вы указали.
-- `>=`: вы принимаете любую версию, равную или более высокую, чем та, которую вы указали
-- `<=`: вы принимаете любую версию, равную или меньшую указанной вами
-- `<`: вы принимаете любую версию ниже указанной вами
-- `=`: вы принимаете именно эту версию
-- `-`: вы принимаете диапазон версий. Пример: `2.1.0 - 2.6.2`.
-- `||`: вы объединяете наборы. Пример: `< 2.1 || > 2.6`.
+-   `^`: если вы пишете `^0.13.0`, при запуске `npm update` он может обновиться до патча и минорных релизов: `0.13.1`, `0.14.0` и так далее.
+-   `~`: если вы напишете `~0.13.0`, при запуске `npm update` он может обновляться до патчей: `0.13.1` - нормально, а `0.14.0` - нет.
+-   `<`: вы принимаете любую версию выше той, которую вы указали.
+-   `>=`: вы принимаете любую версию, равную или более высокую, чем та, которую вы указали
+-   `<=`: вы принимаете любую версию, равную или меньшую указанной вами
+-   `<`: вы принимаете любую версию ниже указанной вами
+-   `=`: вы принимаете именно эту версию
+-   `-`: вы принимаете диапазон версий. Пример: `2.1.0 - 2.6.2`.
+-   `||`: вы объединяете наборы. Пример: `< 2.1 || > 2.6`.
 
 Вы можете комбинировать некоторые из этих обозначений, например, использовать `1.0.0 || >=1.1.0 <1.2.0`, чтобы использовать либо 1.0.0, либо один релиз, начиная с 1.1.0, но ниже 1.2.0.
 
 Существуют и другие правила:
 
-- `нет символа`: вы принимаете только ту конкретную версию, которую вы указали (`1.2.1`)
-- `latest`: вы хотите использовать последнюю доступную версию.
+-   `нет символа`: вы принимаете только ту конкретную версию, которую вы указали (`1.2.1`)
+-   `latest`: вы хотите использовать последнюю доступную версию.
 
 ### Удаление пакетов npm локально или глобально
 
@@ -1953,8 +1957,8 @@ Semantic Versioning - это соглашение, используемое дл
 
 Основное различие между локальными и глобальными пакетами заключается в следующем:
 
-- **локальные пакеты** устанавливаются в директорию, где вы запустили `npm install <имя пакета>, и помещаются в папку `node_modules` в этой директории.
-- **глобальные пакеты** устанавливаются в одно место в вашей системе (где именно - зависит от вашей установки), независимо от того, где вы запустили `npm install -g <package-name>`.
+-   **локальные пакеты** устанавливаются в директорию, где вы запустили `npm install <имя пакета>, и помещаются в папку `node_modules` в этой директории.
+-   **глобальные пакеты** устанавливаются в одно место в вашей системе (где именно - зависит от вашей установки), независимо от того, где вы запустили `npm install -g <package-name>`.
 
 В вашем коде они оба требуются одинаково:
 
@@ -1978,15 +1982,15 @@ require('package-name');
 
 Отличными примерами популярных глобальных пакетов, которые вы можете знать, являются:
 
-- `npm`
-- `create-react-app`
-- `vue-cli`
-- `grunt-cli`
-- `mocha`
-- `react-native-cli`
-- `gatsby-cli`
-- `forever`
-- `nodemon`
+-   `npm`
+-   `create-react-app`
+-   `vue-cli`
+-   `grunt-cli`
+-   `mocha`
+-   `react-native-cli`
+-   `gatsby-cli`
+-   `forever`
+-   `nodemon`
 
 Вероятно, в вашей системе уже установлены некоторые глобальные пакеты. Вы можете увидеть их, выполнив команду:
 
@@ -2058,8 +2062,8 @@ require('package-name');
 
 Это забавная бесполезная команда. Другие сценарии включают:
 
-- использование инструмента `vue` CLI для создания новых приложений и их запуска: `npx vue create my-vue-app`.
-- создание нового приложения React с помощью `create-react-app`: `npx create-react-app my-react-app`.
+-   использование инструмента `vue` CLI для создания новых приложений и их запуска: `npx vue create my-vue-app`.
+-   создание нового приложения React с помощью `create-react-app`: `npx create-react-app my-react-app`.
 
 и многое другое.
 
@@ -2137,9 +2141,9 @@ const bar = () => console.log('bar');
 const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo');
-  bar();
-  baz();
+    console.log('foo');
+    bar();
+    baz();
 };
 
 foo();
@@ -2191,9 +2195,9 @@ const bar = () => console.log('bar');
 const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo');
-  setTimeout(bar, 0);
-  baz();
+    console.log('foo');
+    setTimeout(bar, 0);
+    baz();
 };
 
 foo();
@@ -2253,12 +2257,12 @@ const bar = () => console.log('bar');
 const baz = () => console.log('baz');
 
 const foo = () => {
-  console.log('foo');
-  setTimeout(bar, 0);
-  new Promise((resolve, reject) =>
-    resolve('should be right after baz, before bar')
-  ).then((resolve) => console.log(resolve));
-  baz();
+    console.log('foo');
+    setTimeout(bar, 0);
+    new Promise((resolve, reject) =>
+        resolve('should be right after baz, before bar')
+    ).then((resolve) => console.log(resolve));
+    baz();
 };
 
 foo();
@@ -2283,7 +2287,7 @@ foo();
 
 ```js
 process.nextTick(() => {
-  // do something
+    // do something
 });
 ```
 
@@ -2303,7 +2307,7 @@ process.nextTick(() => {
 
 ```js
 setImmediate(() => {
-  // run something
+    // run something
 });
 ```
 
@@ -2327,11 +2331,11 @@ setImmediate(() => {
 
 ```js
 setTimeout(() => {
-  // runs after 2 seconds
+    // runs after 2 seconds
 }, 2000);
 
 setTimeout(() => {
-  // runs after 50 milliseconds
+    // runs after 50 milliseconds
 }, 50);
 ```
 
@@ -2339,7 +2343,7 @@ setTimeout(() => {
 
 ```js
 const myFunction = (firstParam, secondParam) => {
-  // do something
+    // do something
 };
 
 // runs after 2 seconds
@@ -2350,7 +2354,7 @@ setTimeout(myFunction, 2000, firstParam, secondParam);
 
 ```js
 const id = setTimeout(() => {
-  // should run after 2 seconds
+    // should run after 2 seconds
 }, 2000);
 
 // I changed my mind
@@ -2363,7 +2367,7 @@ clearTimeout(id);
 
 ```js
 setTimeout(() => {
-  console.log('after ');
+    console.log('after ');
 }, 0);
 
 console.log(' before ');
@@ -2381,7 +2385,7 @@ console.log(' before ');
 
 ```js
 setInterval(() => {
-  // runs every 2 seconds
+    // runs every 2 seconds
 }, 2000);
 ```
 
@@ -2389,7 +2393,7 @@ setInterval(() => {
 
 ```js
 const id = setInterval(() => {
-  // runs every 2 seconds
+    // runs every 2 seconds
 }, 2000);
 
 clearInterval(id);
@@ -2399,11 +2403,11 @@ clearInterval(id);
 
 ```js
 const interval = setInterval(() => {
-  if (App.somethingIWait === 'arrived') {
-    clearInterval(interval);
-    return;
-  }
-  // otherwise do things
+    if (App.somethingIWait === 'arrived') {
+        clearInterval(interval);
+        return;
+    }
+    // otherwise do things
 }, 100);
 ```
 
@@ -2512,10 +2516,10 @@ doSomething();
 
 ```js
 document
-  .getElementById('button')
-  .addEventListener('click', () => {
-    // item clicked
-  });
+    .getElementById('button')
+    .addEventListener('click', () => {
+        // item clicked
+    });
 ```
 
 Это так называемый **обратный вызов**.
@@ -2526,8 +2530,8 @@ document
 
 ```js
 window.addEventListener('load', () => {
-  // window loaded
-  //do what you want
+    // window loaded
+    //do what you want
 });
 ```
 
@@ -2537,7 +2541,7 @@ window.addEventListener('load', () => {
 
 ```js
 setTimeout(() => {
-  // runs after 2 seconds
+    // runs after 2 seconds
 }, 2000);
 ```
 
@@ -2546,11 +2550,11 @@ setTimeout(() => {
 ```js
 const xhr = new XMLHttpRequest();
 xhr.onreadystatechange = () => {
-  if (xhr.readyState === 4) {
-    xhr.status === 200
-      ? console.log(xhr.responseText)
-      : console.error('error');
-  }
+    if (xhr.readyState === 4) {
+        xhr.status === 200
+            ? console.log(xhr.responseText)
+            : console.error('error');
+    }
 };
 
 xhr.open('GET', 'https://yoursite.com');
@@ -2565,14 +2569,14 @@ xhr.send();
 
 ```js
 fs.readFile('/file.json', (err, data) => {
-  if (err !== null) {
-    //handle error
-    console.log(err);
-    return;
-  }
+    if (err !== null) {
+        //handle error
+        console.log(err);
+        return;
+    }
 
-  // no errors, process data
-  console.log(data);
+    // no errors, process data
+    console.log(data);
 });
 ```
 
@@ -2584,15 +2588,15 @@ fs.readFile('/file.json', (err, data) => {
 
 ```js
 window.addEventListener('load', () => {
-  document
-    .getElementById('button')
-    .addEventListener('click', () => {
-      setTimeout(() => {
-        items.forEach((item) => {
-          // your code here
+    document
+        .getElementById('button')
+        .addEventListener('click', () => {
+            setTimeout(() => {
+                items.forEach((item) => {
+                    // your code here
+                });
+            }, 2000);
         });
-      }, 2000);
-    });
 });
 ```
 
@@ -2604,8 +2608,8 @@ window.addEventListener('load', () => {
 
 Начиная с ES6, JavaScript представил несколько возможностей, которые помогают нам работать с асинхронным кодом, не используя обратные вызовы:
 
-- Обещания (ES6)
-- Async/Await (ES8)
+-   Обещания (ES6)
+-   Async/Await (ES8)
 
 ### Обещания
 
@@ -2629,9 +2633,9 @@ window.addEventListener('load', () => {
 
 Помимо вашего собственного кода и кода библиотек, обещания используются стандартными современными Web API, такими как:
 
-- **_t the Battery API_**
-- [Fetch API](https://flaviocopes.com/fetch-api/){rel="noopener"}
-- [Service Workers](https://flaviocopes.com/service-workers/){rel="noopener"}.
+-   **_t the Battery API_**
+-   [Fetch API](https://flaviocopes.com/fetch-api/){rel="noopener"}
+-   [Service Workers](https://flaviocopes.com/service-workers/){rel="noopener"}.
 
 Маловероятно, что в современном JavaScript вы найдете себя **не** использующим обещания, поэтому давайте начнем погружаться в них.
 
@@ -2643,13 +2647,13 @@ Promise API предоставляет конструктор Promise, кото�
 let done = true;
 
 const isItDoneYet = new Promise((resolve, reject) => {
-  if (done) {
-    const workDone = 'Here is the thing I built';
-    resolve(workDone);
-  } else {
-    const why = 'Still working on something else';
-    reject(why);
-  }
+    if (done) {
+        const workDone = 'Here is the thing I built';
+        resolve(workDone);
+    } else {
+        const why = 'Still working on something else';
+        reject(why);
+    }
 });
 ```
 
@@ -2668,13 +2672,13 @@ const isItDoneYet = new Promise();
 //...
 
 const checkIfItsDone = () => {
-  isItDoneYet
-    .then((ok) => {
-      console.log(ok);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    isItDoneYet
+        .then((ok) => {
+            console.log(ok);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 };
 ```
 
@@ -2692,34 +2696,34 @@ Fetch API - это механизм, основанный на обещания�
 
 ```js
 const status = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return Promise.resolve(response);
-  }
-  return Promise.reject(new Error(response.statusText));
+    if (response.status >= 200 && response.status < 300) {
+        return Promise.resolve(response);
+    }
+    return Promise.reject(new Error(response.statusText));
 };
 
 const json = (response) => response.json();
 
 fetch('/todos.json')
-  .then(status)
-  .then(json)
-  .then((data) => {
-    console.log(
-      'Request succeeded with JSON response',
-      data
-    );
-  })
-  .catch((error) => {
-    console.log('Request failed', error);
-  });
+    .then(status)
+    .then(json)
+    .then((data) => {
+        console.log(
+            'Request succeeded with JSON response',
+            data
+        );
+    })
+    .catch((error) => {
+        console.log('Request failed', error);
+    });
 ```
 
 В этом примере мы вызываем `fetch()` для получения списка элементов TODO из файла `todos.json`, находящегося в корне домена, и создаем цепочку обещаний.
 
 Выполнение `fetch()` возвращает [response](https://fetch.spec.whatwg.org/#concept-response){rel="noopener"}, который имеет множество свойств, и в них мы ссылаемся на:
 
-- `status`, числовое значение, представляющее код статуса HTTP
-- `statusText`, сообщение о статусе, которое равно `OK`, если запрос прошел успешно.
+-   `status`, числовое значение, представляющее код статуса HTTP
+-   `statusText`, сообщение о статусе, которое равно `OK`, если запрос прошел успешно.
 
 `response` также имеет метод `json()`, который возвращает обещание, которое будет разрешено с содержимым тела, обработанным и преобразованным в JSON.
 
@@ -2747,17 +2751,17 @@ fetch('/todos.json')
 
 ```js
 new Promise((resolve, reject) => {
-  throw new Error('Error');
+    throw new Error('Error');
 }).catch((err) => {
-  console.error(err);
+    console.error(err);
 });
 
 // or
 
 new Promise((resolve, reject) => {
-  reject('Error');
+    reject('Error');
 }).catch((err) => {
-  console.error(err);
+    console.error(err);
 });
 ```
 
@@ -2767,14 +2771,14 @@ new Promise((resolve, reject) => {
 
 ```js
 new Promise((resolve, reject) => {
-  throw new Error('Error');
-})
-  .catch((err) => {
     throw new Error('Error');
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+})
+    .catch((err) => {
+        throw new Error('Error');
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 ```
 
 ### Оркестрирование обещаний
@@ -2790,19 +2794,19 @@ const f1 = fetch('/something.json');
 const f2 = fetch('/something2.json');
 
 Promise.all([f1, f2])
-  .then((res) => {
-    console.log('Array of results', res);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+    .then((res) => {
+        console.log('Array of results', res);
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 ```
 
 Синтаксис [ES2015 destructuring assignment](https://flaviocopes.com/ecmascript/#destructuring-assignments){rel="noopener"} позволяет также делать:
 
 ```js
 Promise.all([f1, f2]).then(([res1, res2]) => {
-  console.log('Results', res1, res2);
+    console.log('Results', res1, res2);
 });
 ```
 
@@ -2816,15 +2820,15 @@ Promise.all([f1, f2]).then(([res1, res2]) => {
 
 ```js
 const promiseOne = new Promise((resolve, reject) => {
-  setTimeout(resolve, 500, 'one');
+    setTimeout(resolve, 500, 'one');
 });
 
 const promiseTwo = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100, 'two');
+    setTimeout(resolve, 100, 'two');
 });
 
 Promise.race([promiseOne, promiseTwo]).then((result) => {
-  console.log(result); // 'two'
+    console.log(result); // 'two'
 });
 ```
 
@@ -2858,9 +2862,9 @@ JavaScript за очень короткое время эволюциониро�
 
 ```js
 const doSomethingAsync = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve('I did something'), 3000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => resolve('I did something'), 3000);
+    });
 };
 ```
 
@@ -2870,7 +2874,7 @@ const doSomethingAsync = () => {
 
 ```js
 const doSomething = async () => {
-  console.log(await doSomethingAsync());
+    console.log(await doSomethingAsync());
 };
 ```
 
@@ -2880,13 +2884,13 @@ const doSomething = async () => {
 
 ```js
 const doSomethingAsync = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve('I did something'), 3000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => resolve('I did something'), 3000);
+    });
 };
 
 const doSomething = async () => {
-  console.log(await doSomethingAsync());
+    console.log(await doSomethingAsync());
 };
 
 console.log('Before');
@@ -2918,7 +2922,7 @@ console.log('After');
 
 ```js
 const aFunction = async () => {
-  return Promise.resolve('test');
+    return Promise.resolve('test');
 };
 
 aFunction().then(alert); // This will alert 'test'
@@ -2934,11 +2938,11 @@ aFunction().then(alert); // This will alert 'test'
 
 ```js
 const getFirstUserData = () => {
-  return fetch('/users.json') // get users list
-    .then((response) => response.json()) // parse JSON
-    .then((users) => users[0]) // pick first user
-    .then((user) => fetch(`/users/${user.name}`)) // get user data
-    .then((userResponse) => userResponse.json()); // parse JSON
+    return fetch('/users.json') // get users list
+        .then((response) => response.json()) // parse JSON
+        .then((users) => users[0]) // pick first user
+        .then((user) => fetch(`/users/${user.name}`)) // get user data
+        .then((userResponse) => userResponse.json()); // parse JSON
 };
 
 getFirstUserData();
@@ -2948,12 +2952,12 @@ getFirstUserData();
 
 ```js
 const getFirstUserData = async () => {
-  const response = await fetch('/users.json'); // get users list
-  const users = await response.json(); // parse JSON
-  const user = users[0]; // pick first user
-  const userResponse = await fetch(`/users/${user.name}`); // get user data
-  const userData = await userResponse.json(); // parse JSON
-  return userData;
+    const response = await fetch('/users.json'); // get users list
+    const users = await response.json(); // parse JSON
+    const user = users[0]; // pick first user
+    const userResponse = await fetch(`/users/${user.name}`); // get user data
+    const userData = await userResponse.json(); // parse JSON
+    return userData;
 };
 
 getFirstUserData();
@@ -2965,25 +2969,25 @@ getFirstUserData();
 
 ```js
 const promiseToDoSomething = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve('I did something'), 10000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => resolve('I did something'), 10000);
+    });
 };
 
 const watchOverSomeoneDoingSomething = async () => {
-  const something = await promiseToDoSomething();
-  return something + ' and I watched';
+    const something = await promiseToDoSomething();
+    return something + ' and I watched';
 };
 
 const watchOverSomeoneWatchingSomeoneDoingSomething = async () => {
-  const something = await watchOverSomeoneDoingSomething();
-  return something + ' and I watched as well';
+    const something = await watchOverSomeoneDoingSomething();
+    return something + ' and I watched as well';
 };
 
 watchOverSomeoneWatchingSomeoneDoingSomething().then(
-  (res) => {
-    console.log(res);
-  }
+    (res) => {
+        console.log(res);
+    }
 );
 ```
 
@@ -3016,14 +3020,14 @@ const eventEmitter = new EventEmitter();
 
 Этот объект раскрывает, среди многих других, методы `on` и `emit`.
 
-- `emit` используется для запуска события
-- `on` используется для добавления функции обратного вызова, которая будет выполняться при срабатывании события.
+-   `emit` используется для запуска события
+-   `on` используется для добавления функции обратного вызова, которая будет выполняться при срабатывании события.
 
 Например, давайте создадим событие `start`, и в качестве примера мы отреагируем на него, просто выведя журнал в консоль:
 
 ```js
 eventEmitter.on('start', () => {
-  console.log('started');
+    console.log('started');
 });
 ```
 
@@ -3043,7 +3047,7 @@ eventEmitter.emit('start');
 
 ```js
 eventEmitter.on('start', (number) => {
-  console.log(`started ${number}`);
+    console.log(`started ${number}`);
 });
 
 eventEmitter.emit('start', 23);
@@ -3053,7 +3057,7 @@ eventEmitter.emit('start', 23);
 
 ```js
 eventEmitter.on('start', (start, end) => {
-  console.log(`started from ${start} to ${end}`);
+    console.log(`started from ${start} to ${end}`);
 });
 
 eventEmitter.emit('start', 1, 100);
@@ -3061,9 +3065,9 @@ eventEmitter.emit('start', 1, 100);
 
 Объект EventEmitter также предоставляет несколько других методов для взаимодействия с событиями, например:
 
-- `once()`: добавление одноразового слушателя события
-- `removeListener()` / `off()`: удалить слушателя из события
-- `removeAllListeners()`: удаление всех слушателей для события
+-   `once()`: добавление одноразового слушателя события
+-   `removeListener()` / `off()`: удалить слушателя из события
+-   `removeAllListeners()`: удаление всех слушателей для события
 
 ### Как работают HTTP-запросы
 
@@ -3119,8 +3123,8 @@ eventEmitter.emit('start', 1, 100);
 
 Вот 2 популярных DNS-сервера:
 
-- `8.8.8.8`: публичный DNS-сервер Google
-- `1.1.1.1.1`: DNS-сервер CloudFlare.
+-   `8.8.8.8`: публичный DNS-сервер Google
+-   `1.1.1.1.1`: DNS-сервер CloudFlare.
 
 Большинство людей используют DNS-сервер, предоставляемый их интернет-провайдером.
 
@@ -3152,9 +3156,9 @@ DNS-сервер ДВУ будет иметь IP-адреса авторитет
 
 Например:
 
-- `ns1.dreamhost.com`
-- `ns2.dreamhost.com`
-- `ns3.dreamhost.com`
+-   `ns1.dreamhost.com`
+-   `ns2.dreamhost.com`
+-   `ns3.dreamhost.com`
 
 DNS-резольвер начинает с первого и пытается узнать IP-адрес домена (с поддоменом тоже), который вы ищете.
 
@@ -3176,17 +3180,17 @@ TCP-соединение требует некоторого квитирова�
 
 Он состоит из 3 частей:
 
-- строка запроса
-- заголовок запроса
-- тело запроса
+-   строка запроса
+-   заголовок запроса
+-   тело запроса
 
 #### Строка запроса
 
 Строка запроса содержит, в одной строке:
 
-- метод HTTP
-- местоположение ресурса
-- версия протокола
+-   метод HTTP
+-   местоположение ресурса
+-   версия протокола
 
 Пример:
 
@@ -3205,12 +3209,12 @@ TCP-соединение требует некоторого квитирова�
 
 Некоторые из наиболее используемых полей заголовка следующие:
 
-- `Origin`
-- `Accept`
-- `Accept-Encoding`
-- `Cookie`
-- `Cache-Control`
-- `Dnt`
+-   `Origin`
+-   `Accept`
+-   `Accept-Encoding`
+-   `Cookie`
+-   `Cache-Control`
+-   `Dnt`
 
 но существует и множество других.
 
@@ -3245,11 +3249,11 @@ TCP-соединение требует некоторого квитирова�
 
 Теперь браузер, получив HTML, начинает его разбирать и повторяет тот же самый процесс, который мы не делали для всех ресурсов, необходимых странице:
 
-- CSS-файлы
-- изображения
-- фавикон
-- JavaScript-файлы
-- ...
+-   CSS-файлы
+-   изображения
+-   фавикон
+-   JavaScript-файлы
+-   ...
 
 То, как браузеры отображают страницу, выходит за рамки темы, но важно понимать, что процесс, который я описал, относится не только к HTML-страницам, но и к любому элементу, который обслуживается по HTTP.
 
@@ -3264,15 +3268,15 @@ const hostname = 'localhost';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Hello World\n');
 });
 
 server.listen(port, hostname, () => {
-  console.log(
-    `Server running at http://${hostname}:${port}/`
-  );
+    console.log(
+        `Server running at http://${hostname}:${port}/`
+    );
 });
 ```
 
@@ -3319,21 +3323,21 @@ res.end('Hello World\n');
 ```js
 const https = require('https');
 const options = {
-  hostname: 'flaviocopes.com',
-  port: 443,
-  path: '/todos',
-  method: 'GET',
+    hostname: 'flaviocopes.com',
+    port: 443,
+    path: '/todos',
+    method: 'GET',
 };
 
 const req = https.request(options, (res) => {
-  console.log(`statusCode: ${res.statusCode}`);
-  res.on('data', (d) => {
-    process.stdout.write(d);
-  });
+    console.log(`statusCode: ${res.statusCode}`);
+    res.on('data', (d) => {
+        process.stdout.write(d);
+    });
 });
 
 req.on('error', (error) => {
-  console.error(error);
+    console.error(error);
 });
 
 req.end();
@@ -3345,29 +3349,29 @@ req.end();
 const https = require('https');
 
 const data = JSON.stringify({
-  todo: 'Buy the milk',
+    todo: 'Buy the milk',
 });
 
 const options = {
-  hostname: 'flaviocopes.com',
-  port: 443,
-  path: '/todos',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Content-Length': data.length,
-  },
+    hostname: 'flaviocopes.com',
+    port: 443,
+    path: '/todos',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': data.length,
+    },
 };
 
 const req = https.request(options, (res) => {
-  console.log(`statusCode: ${res.statusCode}`);
-  res.on('data', (d) => {
-    process.stdout.write(d);
-  });
+    console.log(`statusCode: ${res.statusCode}`);
+    res.on('data', (d) => {
+        process.stdout.write(d);
+    });
 });
 
 req.on('error', (error) => {
-  console.error(error);
+    console.error(error);
 });
 
 req.write(data);
@@ -3388,13 +3392,13 @@ Axios - это очень популярная библиотека JavaScript, 
 
 Использование Axios имеет довольно много преимуществ перед родным Fetch API:
 
-- поддерживает старые браузеры (Fetch нуждается в полифилле)
-- есть возможность прервать запрос
-- есть возможность установить таймаут ответа
-- встроенная защита от CSRF
-- поддерживает прогресс загрузки
-- выполняет автоматическое преобразование данных JSON
-- работает в Node.js
+-   поддерживает старые браузеры (Fetch нуждается в полифилле)
+-   есть возможность прервать запрос
+-   есть возможность установить таймаут ответа
+-   встроенная защита от CSRF
+-   поддерживает прогресс загрузки
+-   выполняет автоматическое преобразование данных JSON
+-   работает в Node.js
 
 #### Установка
 
@@ -3418,31 +3422,31 @@ Axios можно установить с помощью npm:
 
 ```js
 axios({
-  url: 'https://dog.ceo/api/breeds/list/all',
-  method: 'get',
-  data: {
-    foo: 'bar',
-  },
+    url: 'https://dog.ceo/api/breeds/list/all',
+    method: 'get',
+    data: {
+        foo: 'bar',
+    },
 });
 ```
 
 но для удобства вы обычно используете:
 
-- `axios.get()`
-- `axios.post()`
+-   `axios.get()`
+-   `axios.post()`
 
 (как в jQuery вы бы использовали `$.get()` и `$.post()` вместо `$.ajax()`).
 
 Axios предлагает методы для всех глаголов HTTP, которые менее популярны, но все еще используются:
 
-- `axios.delete()`
-- `axios.put()`
-- `axios.patch()`
-- `axios.options()`
+-   `axios.delete()`
+-   `axios.put()`
+-   `axios.patch()`
+-   `axios.options()`
 
 и метод для получения HTTP-заголовков запроса, отбрасывая тело:
 
-- `axios.head()`
+-   `axios.head()`
 
 #### GET-запросы
 
@@ -3454,24 +3458,24 @@ Axios предлагает методы для всех глаголов HTTP, �
 const axios = require('axios');
 
 const getBreeds = async () => {
-  try {
-    return await axios.get(
-      'https://dog.ceo/api/breeds/list/all'
-    );
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        return await axios.get(
+            'https://dog.ceo/api/breeds/list/all'
+        );
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 const countBreeds = async () => {
-  const breeds = await getBreeds();
-  if (breeds.data.message) {
-    console.log(
-      `Got ${
-        Object.entries(breeds.data.message).length
-      } breeds`
-    );
-  }
+    const breeds = await getBreeds();
+    if (breeds.data.message) {
+        console.log(
+            `Got ${
+                Object.entries(breeds.data.message).length
+            } breeds`
+        );
+    }
 };
 
 countBreeds();
@@ -3483,27 +3487,31 @@ countBreeds();
 const axios = require('axios');
 
 const getBreeds = () => {
-  try {
-    return axios.get('https://dog.ceo/api/breeds/list/all');
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        return axios.get(
+            'https://dog.ceo/api/breeds/list/all'
+        );
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 const countBreeds = async () => {
-  const breeds = getBreeds()
-    .then((response) => {
-      if (response.data.message) {
-        console.log(
-          `Got ${
-            Object.entries(response.data.message).length
-          } breeds`
-        );
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    const breeds = getBreeds()
+        .then((response) => {
+            if (response.data.message) {
+                console.log(
+                    `Got ${
+                        Object.entries(
+                            response.data.message
+                        ).length
+                    } breeds`
+                );
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 countBreeds();
@@ -3523,9 +3531,9 @@ axios.get('https://site.com/?foo=bar');
 
 ```js
 axios.get('https://site.com/', {
-  params: {
-    foo: 'bar',
-  },
+    params: {
+        foo: 'bar',
+    },
 });
 ```
 
@@ -3539,7 +3547,7 @@ axios.get('https://site.com/', {
 
 ```js
 axios.post('https://site.com/', {
-  foo: 'bar',
+    foo: 'bar',
 });
 ```
 
@@ -3563,9 +3571,9 @@ HTTP - это протокол запроса/ответа: сервер воз�
 
 С помощью WebSockets:
 
-- **сервер может отправить сообщение клиенту** без явного запроса со стороны клиента
-- клиент и сервер могут **разговаривать друг с другом одновременно**
-- для отправки сообщений требуется обмен очень небольшим количеством данных. Это означает **низкую задержку связи**.
+-   **сервер может отправить сообщение клиенту** без явного запроса со стороны клиента
+-   клиент и сервер могут **разговаривать друг с другом одновременно**
+-   для отправки сообщений требуется обмен очень небольшим количеством данных. Это означает **низкую задержку связи**.
 
 WebSockets отлично подходит для обмена данными в реальном времени и на длительный срок.
 
@@ -3594,7 +3602,7 @@ const connection = new WebSocket(url);
 
 ```js
 connection.onopen = () => {
-  // ...
+    // ...
 };
 ```
 
@@ -3602,7 +3610,7 @@ connection.onopen = () => {
 
 ```js
 connection.onerror = (error) => {
-  console.log(`WebSocket error: ${error}`);
+    console.log(`WebSocket error: ${error}`);
 };
 ```
 
@@ -3614,7 +3622,7 @@ connection.onerror = (error) => {
 
 ```js
 connection.onopen = () => {
-  connection.send('hey');
+    connection.send('hey');
 };
 ```
 
@@ -3624,7 +3632,7 @@ connection.onopen = () => {
 
 ```js
 connection.onmessage = (e) => {
-  console.log(e.data);
+    console.log(e.data);
 };
 ```
 
@@ -3647,10 +3655,10 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 
 wss.on('connection', (ws) => {
-  ws.on('message', (message) => {
-    console.log(`Received message => ${message}`);
-  });
-  ws.send('ho!');
+    ws.on('message', (message) => {
+        console.log(`Received message => ${message}`);
+    });
+    ws.send('ho!');
 });
 ```
 
@@ -3672,7 +3680,7 @@ wss.on('connection', (ws) => {
 const fs = require('fs');
 
 fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
-  //fd is our file descriptor
+    //fd is our file descriptor
 });
 ```
 
@@ -3682,10 +3690,10 @@ fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
 
 Другие флаги, которые вы обычно используете, следующие
 
-- `r+` открыть файл для чтения и записи
-- `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
-- `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
-- `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
+-   `r+` открыть файл для чтения и записи
+-   `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
+-   `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
+-   `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
 
 Вы также можете открыть файл с помощью метода `fs.openSync`, который вместо того, чтобы предоставить объект дескриптора файла в обратном вызове, возвращает его:
 
@@ -3693,9 +3701,9 @@ fs.open('/Users/flavio/test.txt', 'r', (err, fd) => {
 const fs = require('fs');
 
 try {
-  const fd = fs.openSync('/Users/flavio/test.txt', 'r');
+    const fd = fs.openSync('/Users/flavio/test.txt', 'r');
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -3712,11 +3720,11 @@ try {
 ```js
 const fs = require('fs');
 fs.stat('/Users/flavio/test.txt', (err, stats) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  // we have access to the file stats in `stats`
+    if (err) {
+        console.error(err);
+        return;
+    }
+    // we have access to the file stats in `stats`
 });
 ```
 
@@ -3725,9 +3733,9 @@ Node.js также предоставляет метод sync, который б
 ```js
 const fs = require('fs');
 try {
-  const stats = fs.stat('/Users/flavio/test.txt');
+    const stats = fs.stat('/Users/flavio/test.txt');
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -3735,24 +3743,24 @@ try {
 
 Много, включая:
 
-- является ли файл каталогом или файлом, используя `stats.isFile()` и `stats.isDirectory()`
-- является ли файл символической ссылкой, используя `stats.isSymbolicLink()`
-- размер файла в байтах с помощью `stats.size`.
+-   является ли файл каталогом или файлом, используя `stats.isFile()` и `stats.isDirectory()`
+-   является ли файл символической ссылкой, используя `stats.isSymbolicLink()`
+-   размер файла в байтах с помощью `stats.size`.
 
 Существуют и другие продвинутые методы, но основная часть того, что вы будете использовать в повседневном программировании, заключается в следующем:
 
 ```js
 const fs = require('fs');
 fs.stat('/Users/flavio/test.txt', (err, stats) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
+    if (err) {
+        console.error(err);
+        return;
+    }
 
-  stats.isFile(); // true
-  stats.isDirectory(); // false
-  stats.isSymbolicLink(); // false
-  stats.size; // 1024000 //= 1MB
+    stats.isFile(); // true
+    stats.isDirectory(); // false
+    stats.isSymbolicLink(); // false
+    stats.size; // 1024000 //= 1MB
 });
 ```
 
@@ -3782,9 +3790,9 @@ const path = require('path');
 
 Получив путь, вы можете извлечь из него информацию, используя эти методы:
 
-- `dirname`: получить родительскую папку файла
-- `basename`: получить часть имени файла
-- `extname`: получить расширение файла
+-   `dirname`: получить родительскую папку файла
+-   `basename`: получить часть имени файла
+-   `extname`: получить расширение файла
 
 Пример:
 
@@ -3845,11 +3853,11 @@ path.normalize('/users/flavio/..//test.txt'); //  /users/test.txt
 const fs = require('fs');
 
 fs.readFile('/Users/flavio/test.txt', (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(data);
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log(data);
 });
 ```
 
@@ -3859,13 +3867,13 @@ fs.readFile('/Users/flavio/test.txt', (err, data) => {
 const fs = require('fs');
 
 try {
-  const data = fs.readFileSync(
-    '/Users/flavio/test.txt',
-    'utf8'
-  );
-  console.log(data);
+    const data = fs.readFileSync(
+        '/Users/flavio/test.txt',
+        'utf8'
+    );
+    console.log(data);
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -3889,11 +3897,11 @@ const fs = require('fs');
 const content = 'Some content!';
 
 fs.writeFile('/Users/flavio/test.txt', content, (err) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  // file written successfully
+    if (err) {
+        console.error(err);
+        return;
+    }
+    // file written successfully
 });
 ```
 
@@ -3905,13 +3913,13 @@ const fs = require('fs');
 const content = 'Some content!';
 
 try {
-  const data = fs.writeFileSync(
-    '/Users/flavio/test.txt',
-    content
-  );
-  // file written successfully
+    const data = fs.writeFileSync(
+        '/Users/flavio/test.txt',
+        content
+    );
+    // file written successfully
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -3921,19 +3929,19 @@ try {
 
 ```js
 fs.writeFile(
-  '/Users/flavio/test.txt',
-  content,
-  { flag: 'a+' },
-  (err) => {}
+    '/Users/flavio/test.txt',
+    content,
+    { flag: 'a+' },
+    (err) => {}
 );
 ```
 
 Флаги, которые вы, скорее всего, будете использовать, следующие:
 
-- `r+` открыть файл для чтения и записи
-- `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
-- `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
-- `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
+-   `r+` открыть файл для чтения и записи
+-   `w+` открыть файл для чтения и записи, позиционируя поток в начало файла. Файл создается, если он не существует
+-   `a` открыть файл для записи, расположив поток в конце файла. Файл создается, если не существует
+-   `a+` открыть файл для чтения и записи, расположив поток в конце файла. Файл создается, если не существует
 
 Вы можете узнать больше о [flags](https://nodejs.org/api/fs.html#fs_file_system_flags){rel="noopener"}.
 
@@ -3945,11 +3953,11 @@ fs.writeFile(
 const content = 'Some content!';
 
 fs.appendFile('file.log', content, (err) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  // done!
+    if (err) {
+        console.error(err);
+        return;
+    }
+    // done!
 });
 ```
 
@@ -3977,11 +3985,11 @@ const fs = require('fs');
 const folderName = '/Users/flavio/test';
 
 try {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -4012,14 +4020,14 @@ fs.readdirSync(folderPath).map(fileName => {
 
 ```js
 const isFile = (fileName) => {
-  return fs.lstatSync(fileName).isFile();
+    return fs.lstatSync(fileName).isFile();
 };
 
 fs.readdirSync(folderPath)
-  .map((fileName) => {
-    return path.join(folderPath, fileName);
-  })
-  .filter(isFile);
+    .map((fileName) => {
+        return path.join(folderPath, fileName);
+    })
+    .filter(isFile);
 ```
 
 #### Переименование папки
@@ -4032,11 +4040,11 @@ fs.readdirSync(folderPath)
 const fs = require('fs');
 
 fs.rename('/Users/flavio', '/Users/roger', (err) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  // done
+    if (err) {
+        console.error(err);
+        return;
+    }
+    // done
 });
 ```
 
@@ -4046,9 +4054,9 @@ fs.rename('/Users/flavio', '/Users/roger', (err) => {
 const fs = require('fs');
 
 try {
-  fs.renameSync('/Users/flavio', '/Users/roger');
+    fs.renameSync('/Users/flavio', '/Users/roger');
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -4074,7 +4082,7 @@ const fs = require('fs-extra');
 const folder = '/Users/flavio';
 
 fs.remove(folder, (err) => {
-  console.error(err);
+    console.error(err);
 });
 ```
 
@@ -4082,24 +4090,24 @@ fs.remove(folder, (err) => {
 
 ```js
 fs.remove(folder)
-  .then(() => {
-    // done
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+    .then(() => {
+        // done
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 ```
 
 или с `async/await`:
 
 ```js
 async function removeFolder(folder) {
-  try {
-    await fs.remove(folder);
-    // done
-  } catch (err) {
-    console.error(err);
-  }
+    try {
+        await fs.remove(folder);
+        // done
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 const folder = '/Users/flavio';
@@ -4118,41 +4126,41 @@ const fs = require('fs');
 
 Как только вы это сделаете, вы получите доступ ко всем его методам, которые включают:
 
-- `fs.access()`: проверить, существует ли файл и может ли Node получить к нему доступ с его разрешениями
-- `fs.appendFile()`: добавление данных в файл. Если файл не существует, он создается
-- `fs.chmod()`: изменить разрешения файла, указанного переданным именем. Сопутствующие: `fs.lchmod()`, `fs.fchmod()`.
-- `fs.chown()`: изменение владельца и группы файла, указанного переданным именем. Связанные: `fs.fchown()`, `fs.lchown()`.
-- `fs.close()`: закрыть дескриптор файла
-- `fs.copyFile()`: копирование файла
-- `fs.createReadStream()`: создание потока файлов для чтения
-- `fs.createWriteStream()`: создание потока файлов на запись
-- `fs.link()`: создание новой жесткой ссылки на файл
-- `fs.mkdir()`: создание новой папки
-- `fs.mkdtemp()`: создание временного каталога
-- `fs.open()`: установить режим работы с файлом
-- `fs.readdir()`: чтение содержимого каталога
-- `fs.readFile()`: чтение содержимого файла. Связанные: `fs.read()`
-- `fs.readlink()`: чтение значения символической ссылки
-- `fs.realpath()`: преобразование относительных указателей пути к файлу (`.`, `..`) в полный путь
-- `fs.rename()`: переименовать файл или папку
-- `fs.rmdir()`: удалить папку
-- `fs.stat()`: возвращает статус файла, идентифицированного переданным именем. Связанные: `fs.fstat()`, `fs.lstat()`.
-- `fs.symlink()`: создание новой символической ссылки на файл
-- `fs.truncate()`: усечь до заданной длины файл, идентифицированный переданным именем. Связанные: `fs.ftruncate()`.
-- `fs.unlink()`: удаление файла или символической ссылки
-- `fs.unwatchFile()`: прекратить наблюдение за изменениями в файле
-- `fs.utimes()`: изменение временной метки файла, идентифицированного переданным именем. Связанные: `fs.futimes()`.
-- `fs.watchFile()`: начать наблюдение за изменениями в файле. Связанные: `fs.watch()`.
-- `fs.writeFile()`: запись данных в файл. Связанные: `fs.write()`.
+-   `fs.access()`: проверить, существует ли файл и может ли Node получить к нему доступ с его разрешениями
+-   `fs.appendFile()`: добавление данных в файл. Если файл не существует, он создается
+-   `fs.chmod()`: изменить разрешения файла, указанного переданным именем. Сопутствующие: `fs.lchmod()`, `fs.fchmod()`.
+-   `fs.chown()`: изменение владельца и группы файла, указанного переданным именем. Связанные: `fs.fchown()`, `fs.lchown()`.
+-   `fs.close()`: закрыть дескриптор файла
+-   `fs.copyFile()`: копирование файла
+-   `fs.createReadStream()`: создание потока файлов для чтения
+-   `fs.createWriteStream()`: создание потока файлов на запись
+-   `fs.link()`: создание новой жесткой ссылки на файл
+-   `fs.mkdir()`: создание новой папки
+-   `fs.mkdtemp()`: создание временного каталога
+-   `fs.open()`: установить режим работы с файлом
+-   `fs.readdir()`: чтение содержимого каталога
+-   `fs.readFile()`: чтение содержимого файла. Связанные: `fs.read()`
+-   `fs.readlink()`: чтение значения символической ссылки
+-   `fs.realpath()`: преобразование относительных указателей пути к файлу (`.`, `..`) в полный путь
+-   `fs.rename()`: переименовать файл или папку
+-   `fs.rmdir()`: удалить папку
+-   `fs.stat()`: возвращает статус файла, идентифицированного переданным именем. Связанные: `fs.fstat()`, `fs.lstat()`.
+-   `fs.symlink()`: создание новой символической ссылки на файл
+-   `fs.truncate()`: усечь до заданной длины файл, идентифицированный переданным именем. Связанные: `fs.ftruncate()`.
+-   `fs.unlink()`: удаление файла или символической ссылки
+-   `fs.unwatchFile()`: прекратить наблюдение за изменениями в файле
+-   `fs.utimes()`: изменение временной метки файла, идентифицированного переданным именем. Связанные: `fs.futimes()`.
+-   `fs.watchFile()`: начать наблюдение за изменениями в файле. Связанные: `fs.watch()`.
+-   `fs.writeFile()`: запись данных в файл. Связанные: `fs.write()`.
 
 Одна особенность модуля `fs` заключается в том, что все методы по умолчанию асинхронны, но они могут работать и синхронно, добавляя `Sync`.
 
 Например:
 
-- `fs.rename()`
-- `fs.renameSync()`
-- `fs.write()`
-- `fs.writeSync()`
+-   `fs.rename()`
+-   `fs.renameSync()`
+-   `fs.write()`
+-   `fs.writeSync()`
 
 Это вносит огромную разницу в поток вашего приложения.
 
@@ -4164,10 +4172,10 @@ const fs = require('fs');
 const fs = require('fs');
 
 fs.rename('before.json', 'after.json', (err) => {
-  if (err) {
-    return console.error(err);
-  }
-  // done
+    if (err) {
+        return console.error(err);
+    }
+    // done
 });
 ```
 
@@ -4177,10 +4185,10 @@ fs.rename('before.json', 'after.json', (err) => {
 const fs = require('fs');
 
 try {
-  fs.renameSync('before.json', 'after.json');
-  // done
+    fs.renameSync('before.json', 'after.json');
+    // done
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -4258,11 +4266,11 @@ require('path').normalize('/users/flavio/..//test.txt'); // /users/test.txt
 
 Разбирает путь к объекту с сегментами, которые его составляют:
 
-- `root`: корень
-- `dir`: путь к папке, начиная с корня
-- `base`: имя файла + расширение
-- `name`: имя файла
-- `ext`: расширение файла
+-   `root`: корень
+-   `dir`: путь к папке, начиная с корня
+-   `base`: имя файла + расширение
+-   `name`: имя файла
+-   `ext`: расширение файла
 
 Пример:
 
@@ -4290,12 +4298,12 @@ require('path').parse('/users/test.txt');
 
 ```js
 require('path').relative(
-  '/Users/flavio',
-  '/Users/flavio/test.txt'
+    '/Users/flavio',
+    '/Users/flavio/test.txt'
 ); // 'test.txt'
 require('path').relative(
-  '/Users/flavio',
-  '/Users/flavio/something/test.txt'
+    '/Users/flavio',
+    '/Users/flavio/something/test.txt'
 ); // 'something/test.txt'
 ```
 
@@ -4341,21 +4349,21 @@ const os = require('os');
 
 Давайте теперь посмотрим на основные методы, которые предоставляет `os`:
 
-- `os.arch()`
-- `os.cpus()`
-- `os.endianness()`
-- `os.freemem()`
-- `os.homedir()`
-- `os.hostname()`
-- `os.loadavg()`
-- `os.networkInterfaces()`
-- `os.platform()`
-- `os.release()`
-- `os.tmpdir()`
-- `os.totalmem()`
-- `os.type()`
-- `os.uptime()`
-- `os.userInfo()`
+-   `os.arch()`
+-   `os.cpus()`
+-   `os.endianness()`
+-   `os.freemem()`
+-   `os.homedir()`
+-   `os.hostname()`
+-   `os.loadavg()`
+-   `os.networkInterfaces()`
+-   `os.platform()`
+-   `os.release()`
+-   `os.tmpdir()`
+-   `os.totalmem()`
+-   `os.type()`
+-   `os.uptime()`
+-   `os.userInfo()`
 
 #### `os.arch()` {#os-arch-}
 
@@ -4369,28 +4377,28 @@ const os = require('os');
 
 ```js
 [
-  {
-    model: 'Intel(R) Core(TM)2 Duo CPU P8600 @ 2.40GHz',
-    speed: 2400,
-    times: {
-      user: 281685380,
-      nice: 0,
-      sys: 187986530,
-      idle: 685833750,
-      irq: 0,
+    {
+        model: 'Intel(R) Core(TM)2 Duo CPU P8600 @ 2.40GHz',
+        speed: 2400,
+        times: {
+            user: 281685380,
+            nice: 0,
+            sys: 187986530,
+            idle: 685833750,
+            irq: 0,
+        },
     },
-  },
-  {
-    model: 'Intel(R) Core(TM)2 Duo CPU P8600 @ 2.40GHz',
-    speed: 2400,
-    times: {
-      user: 282348700,
-      nice: 0,
-      sys: 161800480,
-      idle: 703509470,
-      irq: 0,
+    {
+        model: 'Intel(R) Core(TM)2 Duo CPU P8600 @ 2.40GHz',
+        speed: 2400,
+        times: {
+            user: 282348700,
+            nice: 0,
+            sys: 161800480,
+            idle: 703509470,
+            irq: 0,
+        },
     },
-  },
 ];
 ```
 
@@ -4496,12 +4504,12 @@ const os = require('os');
 
 Возвращает платформу, для которой был скомпилирован Node.js:
 
-- `darwin`
-- `freebsd`
-- `linux`
-- `openbsd`
-- `win32`
-- ...more
+-   `darwin`
+-   `freebsd`
+-   `linux`
+-   `openbsd`
+-   `win32`
+-   ...more
 
 #### `os.release()` {#os-release-}
 
@@ -4519,9 +4527,9 @@ const os = require('os');
 
 Идентифицирует операционную систему:
 
-- `Linux`
-- `Darwin` на macOS
-- `Windows_NT` на Windows
+-   `Linux`
+-   `Darwin` на macOS
+-   `Windows_NT` на Windows
 
 #### `os.uptime()` {#os-uptime-}
 
@@ -4540,25 +4548,25 @@ const door = new EventEmitter();
 
 Слушатель событий ест свой собственный собачий корм и использует эти события:
 
-- `newListener`, когда добавляется слушатель
-- `removeListener`, когда слушатель удаляется.
+-   `newListener`, когда добавляется слушатель
+-   `removeListener`, когда слушатель удаляется.
 
 Вот подробное описание наиболее полезных методов:
 
-- `emitter.addListener()`
-- `emitter.emit()`
-- `emitter.eventNames()`
-- `emitter.getMaxListeners()`
-- `emitter.listenerCount()`
-- `emitter.listeners()`
-- `emitter.off()`
-- `emitter.on()`
-- `emitter.once()`
-- `emitter.prependListener()`
-- `emitter.prependOnceListener()`
-- `emitter.removeAllListeners()`
-- `emitter.removeListener()`
-- `emitter.setMaxListeners()`
+-   `emitter.addListener()`
+-   `emitter.emit()`
+-   `emitter.eventNames()`
+-   `emitter.getMaxListeners()`
+-   `emitter.listenerCount()`
+-   `emitter.listeners()`
+-   `emitter.off()`
+-   `emitter.on()`
+-   `emitter.once()`
+-   `emitter.prependListener()`
+-   `emitter.prependOnceListener()`
+-   `emitter.removeAllListeners()`
+-   `emitter.removeListener()`
+-   `emitter.setMaxListeners()`
 
 #### `emitter.addListener()` {#emitter-addlistener-}
 
@@ -4612,7 +4620,7 @@ door.listeners('open');
 
 ```js
 door.on('open', () => {
-  console.log('Door was opened');
+    console.log('Door was opened');
 });
 ```
 
@@ -4625,7 +4633,7 @@ const EventEmitter = require('events');
 const ee = new EventEmitter();
 
 ee.once('my-event', () => {
-  // call callback function once
+    // call callback function once
 });
 ```
 
@@ -4824,11 +4832,11 @@ const http = require('http');
 
 Модуль HTTP предоставляет 5 классов:
 
-- `http.Agent`
-- `http.ClientRequest`
-- `http.Server`
-- `http.ServerResponse`
-- `http.IncomingMessage`
+-   `http.Agent`
+-   `http.ClientRequest`
+-   `http.Server`
+-   `http.ServerResponse`
+-   `http.IncomingMessage`
 
 #### `http.Agent` {#http-agent}
 
@@ -4846,8 +4854,8 @@ Node создает глобальный экземпляр класса `http.A
 
 Возвращенные данные ответа могут быть прочитаны двумя способами:
 
-- вы можете вызвать метод `response.read()`.
-- в обработчике события `response` вы можете установить слушателя события `data`, чтобы вы могли прослушивать данные, передаваемые в поток.
+-   вы можете вызвать метод `response.read()`.
+-   в обработчике события `response` вы можете установить слушателя события `data`, чтобы вы могли прослушивать данные, передаваемые в поток.
 
 #### `http.Server` {#http-server}
 
@@ -4855,8 +4863,8 @@ Node создает глобальный экземпляр класса `http.A
 
 Как только у вас есть объект сервера, вы получаете доступ к его методам:
 
-- `close()` останавливает сервер от приема новых соединений
-- `listen()` запускает HTTP-сервер и прослушивает соединения
+-   `close()` останавливает сервер от приема новых соединений
+-   `listen()` запускает HTTP-сервер и прослушивает соединения
 
 #### `http.ServerResponse` {#http-serverresponse}
 
@@ -4866,7 +4874,7 @@ Node создает глобальный экземпляр класса `http.A
 
 ```js
 const server = http.createServer((req, res) => {
-  // res is an http.ServerResponse object
+    // res is an http.ServerResponse object
 });
 ```
 
@@ -4874,13 +4882,13 @@ const server = http.createServer((req, res) => {
 
 Эти методы используются для взаимодействия с HTTP-заголовками:
 
-- `getHeaderNames()` получить список имен уже установленных HTTP-заголовков
-- `getHeaders()` получить копию уже установленных HTTP-заголовков
-- `setHeader('headername', value)` устанавливает значение HTTP-заголовка
-- `getHeader('headername')` получает уже установленный HTTP-заголовок
-- `removeHeader('headername')` удаляет уже установленный HTTP-заголовок
-- `hasHeader('headername')` возвращает true, если в ответе установлен этот заголовок
-- `headersSent()` возвращает true, если заголовки уже были отправлены клиенту.
+-   `getHeaderNames()` получить список имен уже установленных HTTP-заголовков
+-   `getHeaders()` получить копию уже установленных HTTP-заголовков
+-   `setHeader('headername', value)` устанавливает значение HTTP-заголовка
+-   `getHeader('headername')` получает уже установленный HTTP-заголовок
+-   `removeHeader('headername')` удаляет уже установленный HTTP-заголовок
+-   `hasHeader('headername')` возвращает true, если в ответе установлен этот заголовок
+-   `headersSent()` возвращает true, если заголовки уже были отправлены клиенту.
 
 После обработки заголовков вы можете отправить их клиенту, вызвав функцию `response.writeHead()`, которая принимает в качестве первого параметра statusCode, необязательное сообщение о статусе и объект заголовков.
 
@@ -4897,17 +4905,17 @@ response.statusMessage = 'Internal Server Error';
 
 Объект `http.IncomingMessage` создается:
 
-- `http.Server` при прослушивании события `запрос`
-- `http.ClientRequest` при прослушивании события `response`.
+-   `http.Server` при прослушивании события `запрос`
+-   `http.ClientRequest` при прослушивании события `response`.
 
 Он может быть использован для доступа к ответу:
 
-- статус с помощью методов `statusCode` и `statusMessage`
-- заголовки с помощью метода `headers` или `rawHeaders`
-- метод HTTP с помощью метода `method`
-- версия HTTP с помощью метода `httpVersion`.
-- URL с помощью метода `url`
-- базовый сокет с помощью метода `сокет`.
+-   статус с помощью методов `statusCode` и `statusMessage`
+-   заголовки с помощью метода `headers` или `rawHeaders`
+-   метод HTTP с помощью метода `method`
+-   версия HTTP с помощью метода `httpVersion`.
+-   URL с помощью метода `url`
+-   базовый сокет с помощью метода `сокет`.
 
 Доступ к данным осуществляется с помощью потоков, поскольку `http.IncomingMessage` реализует интерфейс Readable Stream.
 
@@ -4929,8 +4937,8 @@ Node.js `stream` [модуль](https://nodejs.org/api/stream.html){rel="noopene
 
 Потоки в основном обеспечивают два основных преимущества перед другими методами обработки данных:
 
-- **Эффективность памяти**: вам не нужно загружать большие объемы данных в память, прежде чем вы сможете их обработать
-- **Эффективность по времени**: требуется гораздо меньше времени, чтобы начать обработку данных сразу после их получения, а не ждать, пока весь объем данных будет доступен для начала работы.
+-   **Эффективность памяти**: вам не нужно загружать большие объемы данных в память, прежде чем вы сможете их обработать
+-   **Эффективность по времени**: требуется гораздо меньше времени, чтобы начать обработку данных сразу после их получения, а не ждать, пока весь объем данных будет доступен для начала работы.
 
 #### Пример потока
 
@@ -4943,9 +4951,9 @@ const http = require('http');
 const fs = require('fs');
 
 const server = http.createServer(function (req, res) {
-  fs.readFile(__dirname + '/data.txt', (err, data) => {
-    res.end(data);
-  });
+    fs.readFile(__dirname + '/data.txt', (err, data) => {
+        res.end(data);
+    });
 });
 
 server.listen(3000);
@@ -4962,10 +4970,10 @@ const http = require('http');
 const fs = require('fs');
 
 const server = http.createServer((req, res) => {
-  const stream = fs.createReadStream(
-    __dirname + '/data.txt'
-  );
-  stream.pipe(res);
+    const stream = fs.createReadStream(
+        __dirname + '/data.txt'
+    );
+    stream.pipe(res);
 });
 
 server.listen(3000);
@@ -4998,26 +5006,26 @@ dest1.pipe(dest2);
 
 Благодаря своим преимуществам, многие модули ядра Node.js предоставляют встроенные возможности работы с потоками, в частности:
 
-- `process.stdin` возвращает поток, подключенный к stdin
-- `process.stdout` возвращает поток, подключенный к stdout
-- `process.stderr` возвращает поток, подключенный к stderr
-- `fs.createReadStream()` создает поток для чтения файла
-- `fs.createWriteStream()` создает поток записи в файл
-- `net.connect()` инициирует соединение на основе потока
-- `http.request()` возвращает экземпляр класса http.ClientRequest, который является записываемым потоком
-- `zlib.createGzip()` сжимает данные с помощью gzip (алгоритм сжатия) в поток
-- `zlib.createGunzip()` распаковывает поток gzip.
-- `zlib.createDeflate()` сжимает данные с помощью deflate (алгоритм сжатия) в поток
-- `zlib.createInflate()` распаковывает поток deflate.
+-   `process.stdin` возвращает поток, подключенный к stdin
+-   `process.stdout` возвращает поток, подключенный к stdout
+-   `process.stderr` возвращает поток, подключенный к stderr
+-   `fs.createReadStream()` создает поток для чтения файла
+-   `fs.createWriteStream()` создает поток записи в файл
+-   `net.connect()` инициирует соединение на основе потока
+-   `http.request()` возвращает экземпляр класса http.ClientRequest, который является записываемым потоком
+-   `zlib.createGzip()` сжимает данные с помощью gzip (алгоритм сжатия) в поток
+-   `zlib.createGunzip()` распаковывает поток gzip.
+-   `zlib.createDeflate()` сжимает данные с помощью deflate (алгоритм сжатия) в поток
+-   `zlib.createInflate()` распаковывает поток deflate.
 
 #### Различные типы потоков
 
 Существует четыре класса потоков:
 
-- `Readable`: поток, из которого можно передавать данные, но нельзя передавать в него (вы можете получать данные, но не отправлять их в него). Когда вы передаете данные в читаемый поток, они буферизируются, пока потребитель не начнет читать данные.
-- `Записываемый`: поток, в который можно передавать данные, но не передавать из него (можно отправлять данные, но не получать из него).
-- `Duplex`: поток, в который можно передавать и из которого можно передавать данные, по сути, это комбинация потоков Readable и Writable.
-- `Transform`: поток Transform похож на Duplex, но выход является преобразованием его входа.
+-   `Readable`: поток, из которого можно передавать данные, но нельзя передавать в него (вы можете получать данные, но не отправлять их в него). Когда вы передаете данные в читаемый поток, они буферизируются, пока потребитель не начнет читать данные.
+-   `Записываемый`: поток, в который можно передавать данные, но не передавать из него (можно отправлять данные, но не получать из него).
+-   `Duplex`: поток, в который можно передавать и из которого можно передавать данные, по сути, это комбинация потоков Readable и Writable.
+-   `Transform`: поток Transform похож на Duplex, но выход является преобразованием его входа.
 
 #### Как создать читаемый поток
 
@@ -5050,8 +5058,8 @@ const writableStream = new Stream.Writable();
 
 ```js
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString());
-  next();
+    console.log(chunk.toString());
+    next();
 };
 ```
 
@@ -5072,8 +5080,8 @@ const readableStream = new Stream.Readable();
 const writableStream = new Stream.Writable();
 
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString());
-  next();
+    console.log(chunk.toString());
+    next();
 };
 
 readableStream.pipe(writableStream);
@@ -5086,7 +5094,7 @@ readableStream.push('ho!');
 
 ```js
 readableStream.on('readable', () => {
-  console.log(readableStream.read());
+    console.log(readableStream.read());
 });
 ```
 
@@ -5109,8 +5117,8 @@ const readableStream = new Stream.Readable();
 const writableStream = new Stream.Writable();
 
 writableStream._write = (chunk, encoding, next) => {
-  console.log(chunk.toString());
-  next();
+    console.log(chunk.toString());
+    next();
 };
 
 readableStream.pipe(writableStream);
@@ -5147,9 +5155,9 @@ const mysql = require('mysql');
 
 ```js
 const options = {
-  user: 'the_mysql_user_name',
-  password: 'the_mysql_user_password',
-  database: 'the_mysql_database_name',
+    user: 'the_mysql_user_name',
+    password: 'the_mysql_user_password',
+    database: 'the_mysql_database_name',
 };
 
 const connection = mysql.createConnection(options);
@@ -5159,12 +5167,12 @@ const connection = mysql.createConnection(options);
 
 ```js
 connection.connect((err) => {
-  if (err) {
-    console.error(
-      'An error occurred while connecting to the DB'
-    );
-    throw err;
-  }
+    if (err) {
+        console.error(
+            'An error occurred while connecting to the DB'
+        );
+        throw err;
+    }
 });
 ```
 
@@ -5174,20 +5182,20 @@ connection.connect((err) => {
 
 ```js
 const options = {
-  user: 'the_mysql_user_name',
-  password: 'the_mysql_user_password',
-  database: 'the_mysql_database_name',
+    user: 'the_mysql_user_name',
+    password: 'the_mysql_user_password',
+    database: 'the_mysql_database_name',
 };
 ```
 
 Вы можете использовать множество других параметров, включая:
 
-- `host`, имя хоста базы данных, по умолчанию `localhost`.
-- `port`, номер порта сервера MySQL, по умолчанию 3306
-- `socketPath`, используется для указания сокета unix вместо хоста и порта
-- `debug`, по умолчанию отключен, может быть использован для отладки
-- `trace`, по умолчанию включено, печатает трассировку стека при возникновении ошибок
-- `ssl`, используется для установки SSL-соединения с сервером (выходит за рамки данного руководства).
+-   `host`, имя хоста базы данных, по умолчанию `localhost`.
+-   `port`, номер порта сервера MySQL, по умолчанию 3306
+-   `socketPath`, используется для указания сокета unix вместо хоста и порта
+-   `debug`, по умолчанию отключен, может быть использован для отладки
+-   `trace`, по умолчанию включено, печатает трассировку стека при возникновении ошибок
+-   `ssl`, используется для установки SSL-соединения с сервером (выходит за рамки данного руководства).
 
 #### Выполнение запроса SELECT
 
@@ -5195,16 +5203,16 @@ const options = {
 
 ```js
 connection.query(
-  'SELECT * FROM todos',
-  (error, todos, fields) => {
-    if (error) {
-      console.error(
-        'An error occurred while executing the query'
-      );
-      throw error;
+    'SELECT * FROM todos',
+    (error, todos, fields) => {
+        if (error) {
+            console.error(
+                'An error occurred while executing the query'
+            );
+            throw error;
+        }
+        console.log(todos);
     }
-    console.log(todos);
-  }
 );
 ```
 
@@ -5213,17 +5221,17 @@ connection.query(
 ```js
 const id = 223;
 connection.query(
-  'SELECT * FROM todos WHERE id = ?',
-  [id],
-  (error, todos, fields) => {
-    if (error) {
-      console.error(
-        'An error occurred while executing the query'
-      );
-      throw error;
+    'SELECT * FROM todos WHERE id = ?',
+    [id],
+    (error, todos, fields) => {
+        if (error) {
+            console.error(
+                'An error occurred while executing the query'
+            );
+            throw error;
+        }
+        console.log(todos);
     }
-    console.log(todos);
-  }
 );
 ```
 
@@ -5308,8 +5316,8 @@ Node.js предполагает, что он всегда работает в �
 
 Установка окружения в `production` обычно гарантирует, что:
 
-- протоколирование сведено к минимально необходимому уровню
-- больше уровней кэширования для оптимизации производительности.
+-   протоколирование сведено к минимально необходимому уровню
+-   больше уровней кэширования для оптимизации производительности.
 
 Например, [Pug](https://pugjs.org/api/express.html){rel="noopener"}, библиотека шаблонов, используемая Express, компилируется в режиме отладки, если `NODE_ENV` не установлен в `production`. Представления Express компилируются в каждом запросе в режиме разработки, в то время как в режиме производства они кэшируются. Существует множество других примеров.
 
@@ -5317,15 +5325,15 @@ Express предоставляет конфигурационные хуки, с
 
 ```js
 app.configure('development', () => {
-  // ...
+    // ...
 });
 
 app.configure('production', () => {
-  // ...
+    // ...
 });
 
 app.configure('production', 'staging', () => {
-  // ...
+    // ...
 });
 ```
 
@@ -5333,16 +5341,16 @@ app.configure('production', 'staging', () => {
 
 ```js
 app.configure('development', () => {
-  app.use(
-    express.errorHandler({
-      dumpExceptions: true,
-      showStack: true,
-    })
-  );
+    app.use(
+        express.errorHandler({
+            dumpExceptions: true,
+            showStack: true,
+        })
+    );
 });
 
 app.configure('production', () => {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 });
 ```
 

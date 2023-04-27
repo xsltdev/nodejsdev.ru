@@ -4,11 +4,11 @@
 
 Для обработки данных по определенному маршруту можно использовать ряд функций, в частности:
 
-- `use`
-- `get`
-- `post`
-- `put`
-- `delete`
+-   `use`
+-   `get`
+-   `post`
+-   `put`
+-   `delete`
 
 В качестве первого параметра эти функции могут принимать шаблон адреса, запрос по которому будет обрабатываться. Второй параметр функций представляет функцию, которая будет обрабатывать запрос по совпавшему с шаблоном адресу. Например:
 
@@ -18,17 +18,17 @@ const app = express();
 
 // обработка запроса по адресу /about
 app.get('/about', function (request, response) {
-  response.send('<h1>О сайте</h1>');
+    response.send('<h1>О сайте</h1>');
 });
 
 // обработка запроса по адресу /contact
 app.use('/contact', function (request, response) {
-  response.send('<h1>Контакты</h1>');
+    response.send('<h1>Контакты</h1>');
 });
 
 // обработка запроса к корню веб-сайта
 app.get('/', function (request, response) {
-  response.send('<h1>Главная страница</h1>');
+    response.send('<h1>Главная страница</h1>');
 });
 app.listen(3000);
 ```
@@ -45,7 +45,7 @@ app.listen(3000);
 
 ```js
 app.get('/bo?k', function (request, response) {
-  response.send(request.url);
+    response.send(request.url);
 });
 ```
 
@@ -55,7 +55,7 @@ app.get('/bo?k', function (request, response) {
 
 ```js
 app.get('/bo+k', function (request, response) {
-  response.send(request.url);
+    response.send(request.url);
 });
 ```
 
@@ -65,7 +65,7 @@ app.get('/bo+k', function (request, response) {
 
 ```js
 app.get('/bo*k', function (request, response) {
-  response.send(request.url);
+    response.send(request.url);
 });
 ```
 
@@ -75,7 +75,7 @@ app.get('/bo*k', function (request, response) {
 
 ```js
 app.get('/book(.html)?', function (request, response) {
-  response.send(request.url);
+    response.send(request.url);
 });
 ```
 
@@ -85,6 +85,6 @@ app.get('/book(.html)?', function (request, response) {
 
 ```js
 app.get(/.*(\.)html$/, function (request, response) {
-  response.send(request.url);
+    response.send(request.url);
 });
 ```

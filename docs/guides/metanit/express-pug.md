@@ -11,31 +11,31 @@ npm install pug --save
 Определим в файле `app.js` следующий код:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
 app.use('/contact', function (request, response) {
-  response.render('contact', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 Факически здесь код идентичен тому, что использовался для ранее рассмотренных движков за тем исключением, что в качестве движка представления устанавливается Pug:
 
 ```js
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 ```
 
 Затем добавим в папку `views` в папке проекта новый файл `contact.pug`:

@@ -28,7 +28,7 @@ class MyEmitter extends EventEmitter {}
 
 const myEmitter = new MyEmitter();
 myEmitter.on('event', () => {
-  console.log('произошло событие!');
+    console.log('произошло событие!');
 });
 myEmitter.emit('event');
 ```
@@ -40,7 +40,7 @@ class MyEmitter extends EventEmitter {}
 
 const myEmitter = new MyEmitter();
 myEmitter.on('event', () => {
-  console.log('произошло событие!');
+    console.log('произошло событие!');
 });
 myEmitter.emit('event');
 ```
@@ -56,14 +56,14 @@ import { EventEmitter } from 'node:events';
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', function (a, b) {
-  console.log(a, b, this, this === myEmitter);
-  // Печатает:
-  // a b MyEmitter {
-  // _events: [Object: null prototype] { event: [Function (anonymous)] } }
-  // _eventsCount: 1,
-  // _maxListeners: undefined,
-  // [Symbol(kCapture)]: false
-  // } true
+    console.log(a, b, this, this === myEmitter);
+    // Печатает:
+    // a b MyEmitter {
+    // _events: [Object: null prototype] { event: [Function (anonymous)] } }
+    // _eventsCount: 1,
+    // _maxListeners: undefined,
+    // [Symbol(kCapture)]: false
+    // } true
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -73,14 +73,14 @@ const EventEmitter = require('node:events');
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', function (a, b) {
-  console.log(a, b, this, this === myEmitter);
-  // Печатает:
-  // a b MyEmitter {
-  // _events: [Object: null prototype] { event: [Function (anonymous)] } }
-  // _eventsCount: 1,
-  // _maxListeners: undefined,
-  // [Symbol(kCapture)]: false
-  // } true
+    console.log(a, b, this, this === myEmitter);
+    // Печатает:
+    // a b MyEmitter {
+    // _events: [Object: null prototype] { event: [Function (anonymous)] } }
+    // _eventsCount: 1,
+    // _maxListeners: undefined,
+    // [Symbol(kCapture)]: false
+    // } true
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -92,8 +92,8 @@ import { EventEmitter } from 'node:events';
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', (a, b) => {
-  console.log(a, b, this);
-  // Печатает: a b {}
+    console.log(a, b, this);
+    // Печатает: a b {}
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -103,8 +103,8 @@ const EventEmitter = require('node:events');
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', (a, b) => {
-  console.log(a, b, this);
-  // Печатает: a b {}
+    console.log(a, b, this);
+    // Печатает: a b {}
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -120,9 +120,9 @@ import { EventEmitter } from 'node:events';
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', (a, b) => {
-  setImmediate(() => {
-    console.log('это происходит асинхронно');
-  });
+    setImmediate(() => {
+        console.log('это происходит асинхронно');
+    });
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -132,9 +132,9 @@ const EventEmitter = require('node:events');
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('event', (a, b) => {
-  setImmediate(() => {
-    console.log('это происходит асинхронно');
-  });
+    setImmediate(() => {
+        console.log('это происходит асинхронно');
+    });
 });
 myEmitter.emit('event', 'a', 'b');
 ```
@@ -151,7 +151,7 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 let m = 0;
 myEmitter.on('event', () => {
-  console.log(++m);
+    console.log(++m);
 });
 myEmitter.emit('event');
 // Печатает: 1
@@ -165,7 +165,7 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 let m = 0;
 myEmitter.on('event', () => {
-  console.log(++m);
+    console.log(++m);
 });
 myEmitter.emit('event');
 // Печатает: 1
@@ -181,7 +181,7 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 let m = 0;
 myEmitter.once('event', () => {
-  console.log(++m);
+    console.log(++m);
 });
 myEmitter.emit('event');
 // Печатает: 1
@@ -195,7 +195,7 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 let m = 0;
 myEmitter.once('event', () => {
-  console.log(++m);
+    console.log(++m);
 });
 myEmitter.emit('event');
 // Печатает: 1
@@ -236,7 +236,7 @@ import { EventEmitter } from 'node:events';
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('error', (err) => {
-  console.error('упс! произошла ошибка');
+    console.error('упс! произошла ошибка');
 });
 myEmitter.emit('error', new Error('whoops!'));
 // Выводит: упс! произошла ошибка
@@ -247,7 +247,7 @@ const EventEmitter = require('node:events');
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 myEmitter.on('error', (err) => {
-  console.error('упс! произошла ошибка');
+    console.error('упс! произошла ошибка');
 });
 myEmitter.emit('error', new Error('whoops!'));
 // Выводит: упс! произошла ошибка
@@ -260,7 +260,7 @@ import { EventEmitter, errorMonitor } from 'node:events';
 
 const myEmitter = new EventEmitter();
 myEmitter.on(errorMonitor, (err) => {
-  MyMonitoringTool.log(err);
+    MyMonitoringTool.log(err);
 });
 myEmitter.emit('error', new Error('whoops!'));
 // Все еще бросает и рушит Node.js
@@ -268,13 +268,13 @@ myEmitter.emit('error', new Error('whoops!'));
 
 ```cjs
 const {
-  EventEmitter,
-  errorMonitor,
+    EventEmitter,
+    errorMonitor,
 } = require('node:events');
 
 const myEmitter = new EventEmitter();
 myEmitter.on(errorMonitor, (err) => {
-  MyMonitoringTool.log(err);
+    MyMonitoringTool.log(err);
 });
 myEmitter.emit('error', new Error('whoops!'));
 // Все еще бросает и рушит Node.js
@@ -290,7 +290,7 @@ myEmitter.emit('error', new Error('whoops!'));
 import { EventEmitter } from 'node:events';
 const ee = new EventEmitter();
 ee.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 ```
 
@@ -298,7 +298,7 @@ ee.on('something', async (value) => {
 const EventEmitter = require('node:events');
 const ee = new EventEmitter();
 ee.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 ```
 
@@ -308,14 +308,14 @@ ee.on('something', async (value) => {
 import { EventEmitter } from 'node:events';
 const ee1 = new EventEmitter({ captureRejections: true });
 ee1.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);
 
 const ee2 = new EventEmitter({ captureRejections: true });
 ee2.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee2[Symbol.for('nodejs.rejection')] = console.log;
@@ -325,14 +325,14 @@ ee2[Symbol.for('nodejs.rejection')] = console.log;
 const EventEmitter = require('node:events');
 const ee1 = new EventEmitter({ captureRejections: true });
 ee1.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);
 
 const ee2 = new EventEmitter({ captureRejections: true });
 ee2.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee2[Symbol.for('nodejs.rejection')] = console.log;
@@ -346,7 +346,7 @@ import { EventEmitter } from 'node:events';
 EventEmitter.captureRejections = true;
 const ee1 = new EventEmitter();
 ee1.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);
@@ -357,7 +357,7 @@ const events = require('node:events');
 events.captureRejections = true;
 const ee1 = new events.EventEmitter();
 ee1.on('something', async (value) => {
-  throw new Error('kaboom');
+    throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);
@@ -383,14 +383,14 @@ const EventEmitter = require('node:events');
 
 Он поддерживает следующую опцию:
 
-- `captureRejections` {boolean} Включает [автоматический перехват отказов обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+-   `captureRejections` {boolean} Включает [автоматический перехват отказов обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
 
 <!-- 0006.part.md -->
 
 ### Событие: `'newListener'`
 
-- `eventName` {string|symbol} Имя события, которое прослушивается
-- `listener` {функция} Функция обработчика события
+-   `eventName` {string|symbol} Имя события, которое прослушивается
+-   `listener` {функция} Функция обработчика события
 
 Экземпляр `EventEmitter` будет испускать свое собственное событие `'newListener'` _до_ того, как слушатель будет добавлен в его внутренний массив слушателей.
 
@@ -405,15 +405,15 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 // Делаем это только один раз, чтобы не циклиться вечно
 myEmitter.once('newListener', (event, listener) => {
-  if (event === 'event') {
-    // Вставляем новый слушатель
-    myEmitter.on('event', () => {
-      console.log('B');
-    });
-  }
+    if (event === 'event') {
+        // Вставляем новый слушатель
+        myEmitter.on('event', () => {
+            console.log('B');
+        });
+    }
 });
 myEmitter.on('event', () => {
-  console.log('A');
+    console.log('A');
 });
 myEmitter.emit('event');
 // Печатает:
@@ -428,15 +428,15 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 // Делаем это только один раз, чтобы не циклиться вечно
 myEmitter.once('newListener', (event, listener) => {
-  if (event === 'event') {
-    // Вставляем новый слушатель
-    myEmitter.on('event', () => {
-      console.log('B');
-    });
-  }
+    if (event === 'event') {
+        // Вставляем новый слушатель
+        myEmitter.on('event', () => {
+            console.log('B');
+        });
+    }
 });
 myEmitter.on('event', () => {
-  console.log('A');
+    console.log('A');
 });
 myEmitter.emit('event');
 // Печатает:
@@ -448,8 +448,8 @@ myEmitter.emit('event');
 
 ### Событие: `'removeListener'`
 
-- `eventName` {string|symbol} Имя события
-- `listener` {Function} Функция обработчика события
+-   `eventName` {string|symbol} Имя события
+-   `listener` {Function} Функция обработчика события
 
 Событие `'removeListener'` испускается _после_ удаления `listener'`.
 
@@ -457,8 +457,8 @@ myEmitter.emit('event');
 
 ### `emitter.addListener(eventName, listener)`
 
-- `eventName` {string|symbol}
-- `listener` {Function}
+-   `eventName` {string|symbol}
+-   `listener` {Function}
 
 Псевдоним для `emitter.on(eventName, listener)`.
 
@@ -466,9 +466,9 @@ myEmitter.emit('event');
 
 ### `emitter.emit(eventName[, ...args])`
 
-- `eventName` {string|symbol}
-- `...args` {любой}
-- Возвращает: {boolean}
+-   `eventName` {string|symbol}
+-   `...args` {любой}
+-   Возвращает: {boolean}
 
 Синхронно вызывает каждый из слушателей, зарегистрированных для события с именем `eventName`, в порядке их регистрации, передавая каждому из них указанные аргументы.
 
@@ -480,20 +480,20 @@ const myEmitter = new EventEmitter();
 
 // Первый слушатель
 myEmitter.on('event', function firstListener() {
-  console.log('Helloooooo! первый слушатель');
+    console.log('Helloooooo! первый слушатель');
 });
 // Второй слушатель
 myEmitter.on('event', function secondListener(arg1, arg2) {
-  console.log(
-    `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
-  );
+    console.log(
+        `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
+    );
 });
 // Третий слушатель
 myEmitter.on('event', function thirdListener(...args) {
-  const parameters = args.join(', ');
-  console.log(
-    `событие с параметрами ${параметры} в третьем слушателе`
-  );
+    const parameters = args.join(', ');
+    console.log(
+        `событие с параметрами ${параметры} в третьем слушателе`
+    );
 });
 
 console.log(myEmitter.listeners('event'));
@@ -517,20 +517,20 @@ const myEmitter = new EventEmitter();
 
 // Первый слушатель
 myEmitter.on('event', function firstListener() {
-  console.log('Helloooooo! первый слушатель');
+    console.log('Helloooooo! первый слушатель');
 });
 // Второй слушатель
 myEmitter.on('event', function secondListener(arg1, arg2) {
-  console.log(
-    `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
-  );
+    console.log(
+        `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
+    );
 });
 // Третий слушатель
 myEmitter.on('event', function thirdListener(...args) {
-  const parameters = args.join(', ');
-  console.log(
-    `событие с параметрами ${параметры} в третьем слушателе`
-  );
+    const parameters = args.join(', ');
+    console.log(
+        `событие с параметрами ${параметры} в третьем слушателе`
+    );
 });
 
 console.log(myEmitter.listeners('event'));
@@ -552,7 +552,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 
 ### `emitter.eventNames()`
 
-- Возвращает: {Array}
+-   Возвращает: {Array}
 
 Возвращает массив, содержащий список событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или `символы`.
 
@@ -588,7 +588,7 @@ console.log(myEE.eventNames());
 
 ### `emitter.getMaxListeners()`
 
-- Возвращает: {целое число}
+-   Возвращает: {целое число}
 
 Возвращает текущее максимальное значение слушателя для `EventEmitter`, которое либо установлено [`emitter.setMaxListeners(n)`](#emittersetmaxlistenersn), либо по умолчанию равно [`events.defaultMaxListeners`](#eventsdefaultmaxlisteners).
 
@@ -596,8 +596,8 @@ console.log(myEE.eventNames());
 
 ### `emitter.listenerCount(eventName)`
 
-- `eventName` {string|symbol} Имя события, которое прослушивается
-- Возвращает: {целое число}
+-   `eventName` {string|symbol} Имя события, которое прослушивается
+-   Возвращает: {целое число}
 
 Возвращает количество слушателей, прослушивающих событие с именем `eventName`.
 
@@ -605,14 +605,14 @@ console.log(myEE.eventNames());
 
 ### `emitter.listeners(eventName)`
 
-- `eventName` {string|symbol}
-- Возвращает: {функция\[\]}
+-   `eventName` {string|symbol}
+-   Возвращает: {функция\[\]}
 
 Возвращает копию массива слушателей для события с именем `eventName`.
 
 ```js
 server.on('connection', (stream) => {
-  console.log('кто-то подключился!');
+    console.log('кто-то подключился!');
 });
 console.log(util.inspect(server.listeners('connection')));
 // Выводит: [ [Функция]]
@@ -622,9 +622,9 @@ console.log(util.inspect(server.listeners('connection')));
 
 ### `emitter.off(eventName, listener)`
 
-- `eventName` {string|symbol}
-- `listener` {Function}
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol}
+-   `listener` {Function}
+-   Возвращает: {EventEmitter}
 
 Псевдоним для [`emitter.removeListener()`](#emitterremovelistenereventname-listener).
 
@@ -632,15 +632,15 @@ console.log(util.inspect(server.listeners('connection')));
 
 ### `emitter.on(eventName, listener)`
 
-- `eventName` {string|symbol} Имя события.
-- `listener` {функция} Функция обратного вызова.
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol} Имя события.
+-   `listener` {функция} Функция обратного вызова.
+-   Возвращает: {EventEmitter}
 
 Добавляет функцию `listener` в конец массива слушателей для события с именем `eventName`. Не проверяется, не был ли `listener` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
 ```js
 server.on('connection', (stream) => {
-  console.log('кто-то подключился!');
+    console.log('кто-то подключился!');
 });
 ```
 
@@ -674,15 +674,15 @@ myEE.emit('foo');
 
 ### `emitter.once(eventName, listener)`
 
-- `eventName` {string|symbol} Имя события.
-- `listener` {Function} Функция обратного вызова.
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol} Имя события.
+-   `listener` {Function} Функция обратного вызова.
+-   Возвращает: {EventEmitter}
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName`. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
 ```js
 server.once('connection', (stream) => {
-  console.log('Ах, у нас есть наш первый пользователь!');
+    console.log('Ах, у нас есть наш первый пользователь!');
 });
 ```
 
@@ -716,15 +716,15 @@ myEE.emit('foo');
 
 ### `emitter.prependListener(eventName, listener)`
 
-- `eventName` {string|symbol} Имя события.
-- `listener` {Function} Функция обратного вызова.
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol} Имя события.
+-   `listener` {Function} Функция обратного вызова.
+-   Возвращает: {EventEmitter}
 
 Добавляет функцию `listener` в _начало_ массива слушателей для события с именем `eventName`. Не проверяется, не был ли `слушатель` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
 ```js
 server.prependListener('connection', (stream) => {
-  console.log('кто-то подключился!');
+    console.log('кто-то подключился!');
 });
 ```
 
@@ -734,15 +734,15 @@ server.prependListener('connection', (stream) => {
 
 ### `emitter.prependOnceListener(eventName, listener)`
 
-- `eventName` {string|symbol} Имя события.
-- `listener` {функция} Функция обратного вызова.
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol} Имя события.
+-   `listener` {функция} Функция обратного вызова.
+-   Возвращает: {EventEmitter}
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName` в _начало_ массива слушателей. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
 ```js
 server.prependOnceListener('connection', (stream) => {
-  console.log('Ах, у нас есть наш первый пользователь!');
+    console.log('Ах, у нас есть наш первый пользователь!');
 });
 ```
 
@@ -752,8 +752,8 @@ server.prependOnceListener('connection', (stream) => {
 
 ### `emitter.removeAllListeners([eventName])`
 
-- `eventName` {string|symbol}
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol}
+-   Возвращает: {EventEmitter}
 
 Удаляет всех слушателей или слушателей указанного `eventName`.
 
@@ -765,15 +765,15 @@ server.prependOnceListener('connection', (stream) => {
 
 ### `emitter.removeListener(eventName, listener)`
 
-- `eventName` {string|symbol}
-- `listener` {Function}
-- Возвращает: {EventEmitter}
+-   `eventName` {string|symbol}
+-   `listener` {Function}
+-   Возвращает: {EventEmitter}
 
 Удаляет указанный `listener` из массива слушателей для события с именем `eventName`.
 
 ```js
 const callback = (stream) => {
-  console.log('кто-то подключился!');
+    console.log('кто-то подключился!');
 };
 server.on('connection', callback);
 // ...
@@ -790,12 +790,12 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 
 const callbackA = () => {
-  console.log('A');
-  myEmitter.removeListener('event', callbackB);
+    console.log('A');
+    myEmitter.removeListener('event', callbackB);
 };
 
 const callbackB = () => {
-  console.log('B');
+    console.log('B');
 };
 
 myEmitter.on('event', callbackA);
@@ -822,12 +822,12 @@ class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 
 const callbackA = () => {
-  console.log('A');
-  myEmitter.removeListener('event', callbackB);
+    console.log('A');
+    myEmitter.removeListener('event', callbackB);
 };
 
 const callbackB = () => {
-  console.log('B');
+    console.log('B');
 };
 
 myEmitter.on('event', callbackA);
@@ -857,7 +857,7 @@ import { EventEmitter } from 'node:events';
 const ee = new EventEmitter();
 
 function pong() {
-  console.log('pong');
+    console.log('pong');
 }
 
 ee.on('ping', pong);
@@ -873,7 +873,7 @@ const EventEmitter = require('node:events');
 const ee = new EventEmitter();
 
 function pong() {
-  console.log('pong');
+    console.log('pong');
 }
 
 ee.on('ping', pong);
@@ -888,8 +888,8 @@ ee.emit('ping');
 
 ### `emitter.setMaxListeners(n)`
 
-- `n` {целое число}
-- Возвращает: {EventEmitter}
+-   `n` {целое число}
+-   Возвращает: {EventEmitter}
 
 По умолчанию `EventEmitter` выводит предупреждение, если для определенного события добавлено более `10` слушателей. Это полезное значение по умолчанию, которое помогает найти утечки памяти. Метод `emitter.setMaxListeners()` позволяет изменить это ограничение для данного экземпляра `EventEmitter`. Значение может быть установлено в `бесконечность` (или `0`), чтобы указать неограниченное количество слушателей.
 
@@ -899,8 +899,8 @@ ee.emit('ping');
 
 ### `emitter.rawListeners(eventName)`
 
-- `eventName` {string|symbol}
-- Возвращает: {функция\[\]}
+-   `eventName` {string|symbol}
+-   Возвращает: {функция\[\]}
 
 Возвращает копию массива слушателей для события с именем `eventName`, включая любые обертки (например, созданные `.once()`).
 
@@ -958,65 +958,65 @@ emitter.emit('log');
 
 ### `emitter[Symbol.for('nodejs.rejection')](err, eventName[, ...args])`
 
-- `err` Ошибка
-- `eventName` {string|symbol}
-- `...args` {любой}
+-   `err` Ошибка
+-   `eventName` {string|symbol}
+-   `...args` {любой}
 
 Метод `Symbol.for('nodejs.rejection')` вызывается в том случае, если при эмиссии события происходит отказ от обещания и на эмиттере включена функция [`captureRejections`](#capture-rejections-of-promises). Можно использовать [`events.captureRejectionSymbol`](#eventscapturerejectionsymbol) вместо `Symbol.for('nodejs.rejection')`.
 
 ```mjs
 import {
-  EventEmitter,
-  captureRejectionSymbol,
+    EventEmitter,
+    captureRejectionSymbol,
 } from 'node:events';
 
 class MyClass extends EventEmitter {
-  constructor() {
-    super({ captureRejections: true });
-  }
+    constructor() {
+        super({ captureRejections: true });
+    }
 
-  [captureRejectionSymbol](err, event, ...args) {
-    console.log(
-      'отклонение произошло для',
-      event,
-      'с',
-      err,
-      ...args
-    );
-    this.destroy(err);
-  }
+    [captureRejectionSymbol](err, event, ...args) {
+        console.log(
+            'отклонение произошло для',
+            event,
+            'с',
+            err,
+            ...args
+        );
+        this.destroy(err);
+    }
 
-  destroy(err) {
-    // Уничтожаем ресурс здесь.
-  }
+    destroy(err) {
+        // Уничтожаем ресурс здесь.
+    }
 }
 ```
 
 ```cjs
 const {
-  EventEmitter,
-  captureRejectionSymbol,
+    EventEmitter,
+    captureRejectionSymbol,
 } = require('node:events');
 
 class MyClass extends EventEmitter {
-  constructor() {
-    super({ captureRejections: true });
-  }
+    constructor() {
+        super({ captureRejections: true });
+    }
 
-  [captureRejectionSymbol](err, event, ...args) {
-    console.log(
-      'отклонение произошло для',
-      event,
-      'с',
-      err,
-      ...args
-    );
-    this.destroy(err);
-  }
+    [captureRejectionSymbol](err, event, ...args) {
+        console.log(
+            'отклонение произошло для',
+            event,
+            'с',
+            err,
+            ...args
+        );
+        this.destroy(err);
+    }
 
-  destroy(err) {
-    // Уничтожаем ресурс здесь.
-  }
+    destroy(err) {
+        // Уничтожаем ресурс здесь.
+    }
 }
 ```
 
@@ -1035,10 +1035,10 @@ import { EventEmitter } from 'node:events';
 const emitter = new EventEmitter();
 emitter.setMaxListeners(emitter.getMaxListeners() + 1);
 emitter.once('event', () => {
-  // делать что-то
-  emitter.setMaxListeners(
-    Math.max(emitter.getMaxListeners() - 1, 0)
-  );
+    // делать что-то
+    emitter.setMaxListeners(
+        Math.max(emitter.getMaxListeners() - 1, 0)
+    );
 });
 ```
 
@@ -1047,10 +1047,10 @@ const EventEmitter = require('node:events');
 const emitter = new EventEmitter();
 emitter.setMaxListeners(emitter.getMaxListeners() + 1);
 emitter.once('event', () => {
-  // делать что-то
-  emitter.setMaxListeners(
-    Math.max(emitter.getMaxListeners() - 1, 0)
-  );
+    // делать что-то
+    emitter.setMaxListeners(
+        Math.max(emitter.getMaxListeners() - 1, 0)
+    );
 });
 ```
 
@@ -1070,9 +1070,9 @@ emitter.once('event', () => {
 
 ## `events.getEventListeners(emitterOrTarget, eventName)`
 
-- `emitterOrTarget` {EventEmitter|EventTarget}
-- `eventName` {string|symbol}
-- Возвращает: {функция\[\]}
+-   `emitterOrTarget` {EventEmitter|EventTarget}
+-   `eventName` {string|symbol}
+-   Возвращает: {функция\[\]}
 
 Возвращает копию массива слушателей для события с именем `eventName`.
 
@@ -1082,45 +1082,45 @@ emitter.once('event', () => {
 
 ```mjs
 import {
-  getEventListeners,
-  EventEmitter,
+    getEventListeners,
+    EventEmitter,
 } from 'node:events';
 
 {
-  const ee = new EventEmitter();
-  const listener = () =>
-    console.log('События - это весело');
-  ee.on('foo', listener);
-  console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
+    const ee = new EventEmitter();
+    const listener = () =>
+        console.log('События - это весело');
+    ee.on('foo', listener);
+    console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
 }
 {
-  const et = new EventTarget();
-  const listener = () =>
-    console.log('События - это весело');
-  et.addEventListener('foo', listener);
-  console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
+    const et = new EventTarget();
+    const listener = () =>
+        console.log('События - это весело');
+    et.addEventListener('foo', listener);
+    console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
 }
 ```
 
 ```cjs
 const {
-  getEventListeners,
-  EventEmitter,
+    getEventListeners,
+    EventEmitter,
 } = require('node:events');
 
 {
-  const ee = new EventEmitter();
-  const listener = () =>
-    console.log('События - это весело');
-  ee.on('foo', listener);
-  console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
+    const ee = new EventEmitter();
+    const listener = () =>
+        console.log('События - это весело');
+    ee.on('foo', listener);
+    console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
 }
 {
-  const et = new EventTarget();
-  const listener = () =>
-    console.log('События - это весело');
-  et.addEventListener('foo', listener);
-  console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
+    const et = new EventTarget();
+    const listener = () =>
+        console.log('События - это весело');
+    et.addEventListener('foo', listener);
+    console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
 }
 ```
 
@@ -1128,11 +1128,11 @@ const {
 
 ## `events.once(emitter, name[, options])`
 
-- `emitter` {EventEmitter}
-- `name` {string}
-- `options` {Object}
-  - `signal` {AbortSignal} Может использоваться для отмены ожидания события.
-- Возвращает: {Promise}
+-   `emitter` {EventEmitter}
+-   `name` {string}
+-   `options` {Object}
+    -   `signal` {AbortSignal} Может использоваться для отмены ожидания события.
+-   Возвращает: {Promise}
 
 Создает `Promise`, которое будет выполнено, когда `EventEmitter` испустит данное событие, или которое будет отклонено, если `EventEmitter` испустит `'error'` во время ожидания. Обещание `Promise` будет разрешено массивом всех аргументов, испущенных для данного события.
 
@@ -1145,7 +1145,7 @@ import process from 'node:process';
 const ee = new EventEmitter();
 
 process.nextTick(() => {
-  ee.emit('myevent', 42);
+    ee.emit('myevent', 42);
 });
 
 const [value] = await once(ee, 'myevent');
@@ -1153,13 +1153,13 @@ console.log(value);
 
 const err = new Error('kaboom');
 process.nextTick(() => {
-  ee.emit('error', err);
+    ee.emit('error', err);
 });
 
 try {
-  await once(ee, 'myevent');
+    await once(ee, 'myevent');
 } catch (err) {
-  console.error('произошла ошибка', err);
+    console.error('произошла ошибка', err);
 }
 ```
 
@@ -1167,25 +1167,25 @@ try {
 const { once, EventEmitter } = require('node:events');
 
 async function run() {
-  const ee = new EventEmitter();
+    const ee = new EventEmitter();
 
-  process.nextTick(() => {
-    ee.emit('myevent', 42);
-  });
+    process.nextTick(() => {
+        ee.emit('myevent', 42);
+    });
 
-  const [value] = await once(ee, 'myevent');
-  console.log(value);
+    const [value] = await once(ee, 'myevent');
+    console.log(value);
 
-  const err = new Error('kaboom');
-  process.nextTick(() => {
-    ee.emit('error', err);
-  });
+    const err = new Error('kaboom');
+    process.nextTick(() => {
+        ee.emit('error', err);
+    });
 
-  try {
-    await once(ee, 'myevent');
-  } catch (err) {
-    console.error('произошла ошибка', err);
-  }
+    try {
+        await once(ee, 'myevent');
+    } catch (err) {
+        console.error('произошла ошибка', err);
+    }
 }
 
 run();
@@ -1199,8 +1199,8 @@ import { EventEmitter, once } from 'node:events';
 const ee = new EventEmitter();
 
 once(ee, 'error')
-  .then(([err]) => console.log('ok', err.message))
-  .catch((err) => console.error('error', err.message));
+    .then(([err]) => console.log('ok', err.message))
+    .catch((err) => console.error('error', err.message));
 
 ee.emit('error', new Error('boom'));
 
@@ -1213,8 +1213,8 @@ const { EventEmitter, once } = require('node:events');
 const ee = new EventEmitter();
 
 once(ee, 'error')
-  .then(([err]) => console.log('ok', err.message))
-  .catch((err) => console.error('error', err.message));
+    .then(([err]) => console.log('ok', err.message))
+    .catch((err) => console.error('error', err.message));
 
 ee.emit('error', new Error('boom'));
 
@@ -1230,16 +1230,21 @@ const ee = new EventEmitter();
 const ac = new AbortController();
 
 async function foo(emitter, event, signal) {
-  try {
-    await once(emitter, event, { signal });
-    console.log('event emitted!');
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      console.error('Waiting for the event was canceled!');
-    } else {
-      console.error('There was an error', error.message);
+    try {
+        await once(emitter, event, { signal });
+        console.log('event emitted!');
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.error(
+                'Waiting for the event was canceled!'
+            );
+        } else {
+            console.error(
+                'There was an error',
+                error.message
+            );
+        }
     }
-  }
 }
 
 foo(ee, 'foo', ac.signal);
@@ -1254,16 +1259,21 @@ const ee = new EventEmitter();
 const ac = new AbortController();
 
 async function foo(emitter, event, signal) {
-  try {
-    await once(emitter, event, { signal });
-    console.log('event emitted!');
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      console.error('Waiting for the event was canceled!');
-    } else {
-      console.error('There was an error', error.message);
+    try {
+        await once(emitter, event, { signal });
+        console.log('event emitted!');
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.error(
+                'Waiting for the event was canceled!'
+            );
+        } else {
+            console.error(
+                'There was an error',
+                error.message
+            );
+        }
     }
-  }
 }
 
 foo(ee, 'foo', ac.signal);
@@ -1282,18 +1292,18 @@ import process from 'node:process';
 const myEE = new EventEmitter();
 
 async function foo() {
-  await once(myEE, 'bar');
-  console.log('bar');
+    await once(myEE, 'bar');
+    console.log('bar');
 
-  // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
-  // уже было вызвано до создания Promise.
-  await once(myEE, 'foo');
-  console.log('foo');
+    // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
+    // уже было вызвано до создания Promise.
+    await once(myEE, 'foo');
+    console.log('foo');
 }
 
 process.nextTick(() => {
-  myEE.emit('bar');
-  myEE.emit('foo');
+    myEE.emit('bar');
+    myEE.emit('foo');
 });
 
 foo().then(() => console.log('done'));
@@ -1305,18 +1315,18 @@ const { EventEmitter, once } = require('node:events');
 const myEE = new EventEmitter();
 
 async function foo() {
-  await once(myEE, 'bar');
-  console.log('bar');
+    await once(myEE, 'bar');
+    console.log('bar');
 
-  // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
-  // уже было вызвано до создания Promise.
-  await once(myEE, 'foo');
-  console.log('foo');
+    // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
+    // уже было вызвано до создания Promise.
+    await once(myEE, 'foo');
+    console.log('foo');
 }
 
 process.nextTick(() => {
-  myEE.emit('bar');
-  myEE.emit('foo');
+    myEE.emit('bar');
+    myEE.emit('foo');
 });
 
 foo().then(() => console.log('done'));
@@ -1331,13 +1341,16 @@ import process from 'node:process';
 const myEE = new EventEmitter();
 
 async function foo() {
-  await Promise.all([once(myEE, 'bar'), once(myEE, 'foo')]);
-  console.log('foo', 'bar');
+    await Promise.all([
+        once(myEE, 'bar'),
+        once(myEE, 'foo'),
+    ]);
+    console.log('foo', 'bar');
 }
 
 process.nextTick(() => {
-  myEE.emit('bar');
-  myEE.emit('foo');
+    myEE.emit('bar');
+    myEE.emit('foo');
 });
 
 foo().then(() => console.log('done'));
@@ -1349,13 +1362,16 @@ const { EventEmitter, once } = require('node:events');
 const myEE = new EventEmitter();
 
 async function foo() {
-  await Promise.all([once(myEE, 'bar'), once(myEE, 'foo')]);
-  console.log('foo', 'bar');
+    await Promise.all([
+        once(myEE, 'bar'),
+        once(myEE, 'foo'),
+    ]);
+    console.log('foo', 'bar');
 }
 
 process.nextTick(() => {
-  myEE.emit('bar');
-  myEE.emit('foo');
+    myEE.emit('bar');
+    myEE.emit('foo');
 });
 
 foo().then(() => console.log('done'));
@@ -1387,8 +1403,8 @@ foo().then(() => console.log('done'));
 
     Вместо этого используйте [`emitter.listenerCount()`](#emitterlistenercounteventname).
 
-- `emitter` {EventEmitter} Эмиттер для запроса
-- `eventName` {string|symbol} Имя события
+-   `emitter` {EventEmitter} Эмиттер для запроса
+-   `eventName` {string|symbol} Имя события
 
 Метод класса, который возвращает количество слушателей для данного `eventName`, зарегистрированных на данном `emitter`.
 
@@ -1404,8 +1420,8 @@ console.log(listenerCount(myEmitter, 'event'));
 
 ```cjs
 const {
-  EventEmitter,
-  listenerCount,
+    EventEmitter,
+    listenerCount,
 } = require('node:events');
 
 const myEmitter = new EventEmitter();
@@ -1419,11 +1435,11 @@ console.log(listenerCount(myEmitter, 'event'));
 
 ## `events.on(emitter, eventName[, options])`
 
-- `emitter` {EventEmitter}
-- `eventName` {string|symbol} Имя события, которое прослушивается
-- `options` {Object}
-  - `signal` {AbortSignal} Может использоваться для отмены ожидающих событий.
-- Возвращает: {AsyncIterator}, итератор событий `eventName`, испускаемых `emitter`.
+-   `emitter` {EventEmitter}
+-   `eventName` {string|symbol} Имя события, которое прослушивается
+-   `options` {Object}
+    -   `signal` {AbortSignal} Может использоваться для отмены ожидающих событий.
+-   Возвращает: {AsyncIterator}, итератор событий `eventName`, испускаемых `emitter`.
 
 <!-- конец списка -->
 
@@ -1435,15 +1451,15 @@ const ee = new EventEmitter();
 
 // Эмиттировать позже
 process.nextTick(() => {
-  ee.emit('foo', 'bar');
-  ee.emit('foo', 42);
+    ee.emit('foo', 'bar');
+    ee.emit('foo', 42);
 });
 
 for await (const event of on(ee, 'foo')) {
-  // Выполнение этого внутреннего блока синхронно, и он
-  // обрабатывает одно событие за раз (даже с await). Не используйте.
-  // если требуется одновременное выполнение.
-  console.log(event); // печатает ['bar'] [42]
+    // Выполнение этого внутреннего блока синхронно, и он
+    // обрабатывает одно событие за раз (даже с await). Не используйте.
+    // если требуется одновременное выполнение.
+    console.log(event); // печатает ['bar'] [42]
 }
 // Недоступно здесь
 ```
@@ -1452,21 +1468,21 @@ for await (const event of on(ee, 'foo')) {
 const { on, EventEmitter } = require('node:events');
 
 (async () => {
-  const ee = new EventEmitter();
+    const ee = new EventEmitter();
 
-  // Эмиттировать позже
-  process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-  });
+    // Эмиттировать позже
+    process.nextTick(() => {
+        ee.emit('foo', 'bar');
+        ee.emit('foo', 42);
+    });
 
-  for await (const event of on(ee, 'foo')) {
-    // Выполнение этого внутреннего блока синхронно, и он
-    // обрабатывает одно событие за раз (даже с await). Не используйте.
-    // если требуется одновременное выполнение.
-    console.log(event); // печатает ['bar'] [42]
-  }
-  // недоступно здесь
+    for await (const event of on(ee, 'foo')) {
+        // Выполнение этого внутреннего блока синхронно, и он
+        // обрабатывает одно событие за раз (даже с await). Не используйте.
+        // если требуется одновременное выполнение.
+        console.log(event); // печатает ['bar'] [42]
+    }
+    // недоступно здесь
 })();
 ```
 
@@ -1481,23 +1497,23 @@ import process from 'node:process';
 const ac = new AbortController();
 
 (async () => {
-  const ee = new EventEmitter();
+    const ee = new EventEmitter();
 
-  // Эмиттировать позже
-  process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-  });
+    // Эмиттировать позже
+    process.nextTick(() => {
+        ee.emit('foo', 'bar');
+        ee.emit('foo', 42);
+    });
 
-  for await (const event of on(ee, 'foo', {
-    signal: ac.signal,
-  })) {
-    // Выполнение этого внутреннего блока синхронно и он
-    // обрабатывает одно событие за раз (даже с await). Не используйте.
-    // если требуется одновременное выполнение.
-    console.log(event); // печатает ['bar'] [42]
-  }
-  // недоступно здесь
+    for await (const event of on(ee, 'foo', {
+        signal: ac.signal,
+    })) {
+        // Выполнение этого внутреннего блока синхронно и он
+        // обрабатывает одно событие за раз (даже с await). Не используйте.
+        // если требуется одновременное выполнение.
+        console.log(event); // печатает ['bar'] [42]
+    }
+    // недоступно здесь
 })();
 
 process.nextTick(() => ac.abort());
@@ -1509,23 +1525,23 @@ const { on, EventEmitter } = require('node:events');
 const ac = new AbortController();
 
 (async () => {
-  const ee = new EventEmitter();
+    const ee = new EventEmitter();
 
-  // Эмиттировать позже
-  process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-  });
+    // Эмиттировать позже
+    process.nextTick(() => {
+        ee.emit('foo', 'bar');
+        ee.emit('foo', 42);
+    });
 
-  for await (const event of on(ee, 'foo', {
-    signal: ac.signal,
-  })) {
-    // Выполнение этого внутреннего блока синхронно и он
-    // обрабатывает одно событие за раз (даже с await). Не используйте.
-    // если требуется одновременное выполнение.
-    console.log(event); // печатает ['bar'] [42]
-  }
-  // недоступно здесь
+    for await (const event of on(ee, 'foo', {
+        signal: ac.signal,
+    })) {
+        // Выполнение этого внутреннего блока синхронно и он
+        // обрабатывает одно событие за раз (даже с await). Не используйте.
+        // если требуется одновременное выполнение.
+        console.log(event); // печатает ['bar'] [42]
+    }
+    // недоступно здесь
 })();
 
 process.nextTick(() => ac.abort());
@@ -1535,8 +1551,8 @@ process.nextTick(() => ac.abort());
 
 ## `events.setMaxListeners(n[, ...eventTargets])`
 
-- `n` {number} Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
-- `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или {EventEmitter}. Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и {EventEmitter}.
+-   `n` {number} Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
+-   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или {EventEmitter}. Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и {EventEmitter}.
 
 <!-- конец списка -->
 
@@ -1551,8 +1567,8 @@ setMaxListeners(5, target, emitter);
 
 ```cjs
 const {
-  setMaxListeners,
-  EventEmitter,
+    setMaxListeners,
+    EventEmitter,
 } = require('node:events');
 
 const target = new EventTarget();
@@ -1569,13 +1585,13 @@ setMaxListeners(5, target, emitter);
 
 ```mjs
 import {
-  EventEmitterAsyncResource,
-  EventEmitter,
+    EventEmitterAsyncResource,
+    EventEmitter,
 } from 'node:events';
 import { notStrictEqual, strictEqual } from 'node:assert';
 import {
-  executionAsyncId,
-  triggerAsyncId,
+    executionAsyncId,
+    triggerAsyncId,
 } from 'node:async_hooks';
 
 // Инструментарий отслеживания асинхронных процессов определит это как 'Q'.
@@ -1583,8 +1599,8 @@ const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
 
 // Слушатели 'foo' будут запускаться в асинхронном контексте EventEmitters.
 ee1.on('foo', () => {
-  strictEqual(executionAsyncId(), ee1.asyncId);
-  strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
+    strictEqual(executionAsyncId(), ee1.asyncId);
+    strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
 });
 
 const ee2 = new EventEmitter();
@@ -1592,28 +1608,28 @@ const ee2 = new EventEmitter();
 // Слушатели 'foo' на обычных EventEmitters, которые не отслеживают async
 // контекст, однако, запускаются в том же async контексте, что и emit().
 ee2.on('foo', () => {
-  notStrictEqual(executionAsyncId(), ee2.asyncId);
-  notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
+    notStrictEqual(executionAsyncId(), ee2.asyncId);
+    notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
 });
 
 Promise.resolve().then(() => {
-  ee1.emit('foo');
-  ee2.emit('foo');
+    ee1.emit('foo');
+    ee2.emit('foo');
 });
 ```
 
 ```cjs
 const {
-  EventEmitterAsyncResource,
-  EventEmitter,
+    EventEmitterAsyncResource,
+    EventEmitter,
 } = require('node:events');
 const {
-  notStrictEqual,
-  strictEqual,
+    notStrictEqual,
+    strictEqual,
 } = require('node:assert');
 const {
-  executionAsyncId,
-  triggerAsyncId,
+    executionAsyncId,
+    triggerAsyncId,
 } = require('node:async_hooks');
 
 // Инструментарий отслеживания асинхронных событий идентифицирует это как 'Q'.
@@ -1621,8 +1637,8 @@ const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
 
 // Слушатели 'foo' будут запускаться в асинхронном контексте EventEmitters.
 ee1.on('foo', () => {
-  strictEqual(executionAsyncId(), ee1.asyncId);
-  strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
+    strictEqual(executionAsyncId(), ee1.asyncId);
+    strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
 });
 
 const ee2 = new EventEmitter();
@@ -1630,13 +1646,13 @@ const ee2 = new EventEmitter();
 // Слушатели 'foo' на обычных EventEmitters, которые не отслеживают async
 // контекст, однако, запускаются в том же async контексте, что и emit().
 ee2.on('foo', () => {
-  notStrictEqual(executionAsyncId(), ee2.asyncId);
-  notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
+    notStrictEqual(executionAsyncId(), ee2.asyncId);
+    notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
 });
 
 Promise.resolve().then(() => {
-  ee1.emit('foo');
-  ee2.emit('foo');
+    ee1.emit('foo');
+    ee2.emit('foo');
 });
 ```
 
@@ -1646,23 +1662,23 @@ Promise.resolve().then(() => {
 
 ### `new events.EventEmitterAsyncResource([options])`
 
-- `options` {Object}
-  - `captureRejections` {boolean} Включает [автоматическое фиксирование отказов от обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
-  - `name` {string} Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
-  - `triggerAsyncId` {number} ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
-  - `requireManualDestroy` {boolean} Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
+-   `options` {Object}
+    -   `captureRejections` {boolean} Включает [автоматическое фиксирование отказов от обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+    -   `name` {string} Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
+    -   `triggerAsyncId` {number} ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
+    -   `requireManualDestroy` {boolean} Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
 
 <!-- 0036.part.md -->
 
 ### `eventemitterasyncresource.asyncId`
 
-- Тип: {number} Уникальный `asyncId`, присвоенный ресурсу.
+-   Тип: {number} Уникальный `asyncId`, присвоенный ресурсу.
 
 <!-- 0037.part.md -->
 
 ### `eventemitterasyncresource.asyncResource`
 
-- Тип: Базовый {AsyncResource}.
+-   Тип: Базовый {AsyncResource}.
 
 Возвращаемый объект `AsyncResource` имеет дополнительное свойство `eventEmitter`, которое предоставляет ссылку на этот `EventEmitterAsyncResource`.
 
@@ -1676,7 +1692,7 @@ Promise.resolve().then(() => {
 
 ### `eventemitterasyncresource.triggerAsyncId`
 
-- Тип: {number} Тот же `triggerAsyncId`, который передается конструктору `AsyncResource`.
+-   Тип: {number} Тот же `triggerAsyncId`, который передается конструктору `AsyncResource`.
 
 <!-- 0040.part.md -->
 
@@ -1688,7 +1704,7 @@ Promise.resolve().then(() => {
 const target = new EventTarget();
 
 target.addEventListener('foo', (event) => {
-  console.log('событие foo произошло!');
+    console.log('событие foo произошло!');
 });
 ```
 
@@ -1732,25 +1748,25 @@ target.addEventListener('foo', (event) => {
 
 ```js
 function handler1(event) {
-  console.log(event.type); // Выводит 'foo'
-  event.a = 1;
+    console.log(event.type); // Выводит 'foo'
+    event.a = 1;
 }
 
 async function handler2(event) {
-  console.log(event.type); // Печатает 'foo'
-  console.log(event.a); // Печатает 1
+    console.log(event.type); // Печатает 'foo'
+    console.log(event.a); // Печатает 1
 }
 
 const handler3 = {
-  handleEvent(event) {
-    console.log(event.type); // Печатает 'foo'
-  },
+    handleEvent(event) {
+        console.log(event.type); // Печатает 'foo'
+    },
 };
 
 const handler4 = {
-  async handleEvent(event) {
-    console.log(event.type); // Печатает 'foo'
-  },
+    async handleEvent(event) {
+        console.log(event.type); // Печатает 'foo'
+    },
 };
 
 const target = new EventTarget();
@@ -1783,7 +1799,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.bubbles`
 
-- Тип: {boolean} Всегда возвращает `false`.
+-   Тип: {boolean} Всегда возвращает `false`.
 
 Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
 
@@ -1793,7 +1809,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 > Стабильность: 3 - Наследие: Вместо этого используйте [`event.stopPropagation()`](#eventstoppropagation).
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Псевдоним для `event.stopPropagation()`, если установлено значение `true`. Он не используется в Node.js и приведен исключительно для полноты.
 
@@ -1801,13 +1817,13 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.cancelable`
 
-- Тип: {boolean} Истина, если событие было создано с опцией `cancelable`.
+-   Тип: {boolean} Истина, если событие было создано с опцией `cancelable`.
 
 <!-- 0049.part.md -->
 
 #### `event.composed`
 
-- Тип: {boolean} Всегда возвращает `false`.
+-   Тип: {boolean} Всегда возвращает `false`.
 
 Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
 
@@ -1821,7 +1837,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.currentTarget`
 
-- Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+-   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
 
 Псевдоним для `event.target`.
 
@@ -1829,7 +1845,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.defaultPrevented`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Является `true`, если `cancelable` является `true` и `event.preventDefault()` был вызван.
 
@@ -1837,7 +1853,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.eventPhase`
 
-- Тип: {число} Возвращает `0`, если событие не отправляется, `2`, если отправляется.
+-   Тип: {число} Возвращает `0`, если событие не отправляется, `2`, если отправляется.
 
 Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
 
@@ -1845,7 +1861,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.isTrusted`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Событие {AbortSignal} `abort` испускается, если значение `isTrusted` установлено в `true`. Во всех остальных случаях значение `false`.
 
@@ -1865,7 +1881,7 @@ target.addEventListener('foo', handler4, { once: true });
 
     Вместо этого используйте [`event.defaultPrevented`](#eventdefaultprevented).
 
-- Тип: {boolean} Истинно, если событие не было отменено.
+-   Тип: {boolean} Истинно, если событие не было отменено.
 
 Значение `event.returnValue` всегда противоположно `event.defaultPrevented`. Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
 
@@ -1879,7 +1895,7 @@ target.addEventListener('foo', handler4, { once: true });
 
     Вместо этого используйте [`event.target`](#eventtarget).
 
-- Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+-   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
 
 Псевдоним для `event.target`.
 
@@ -1899,13 +1915,13 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.target`
 
-- Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+-   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
 
 <!-- 0061.part.md -->
 
 #### `event.timeStamp`
 
-- Тип: {число}
+-   Тип: {число}
 
 Миллисекундная метка времени, когда был создан объект `Event`.
 
@@ -1913,7 +1929,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.type`
 
-- Тип: {строка}
+-   Тип: {строка}
 
 Идентификатор типа события.
 
@@ -1925,13 +1941,13 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `eventTarget.addEventListener(type, listener[, options])`
 
-- `type` {string}
-- `listener` {Function|EventListener}
-- `options` {Object}
-  - `once` {boolean} Если `true`, слушатель автоматически удаляется при первом вызове. **По умолчанию:** `false`.
-  - `passive` {boolean} Когда `true`, служит подсказкой, что слушатель не будет вызывать метод `preventDefault()` объекта `Event`. **По умолчанию:** `false`.
-  - `capture` {boolean} Не используется непосредственно в Node.js. Добавлен для полноты API. **По умолчанию:** `false`.
-  - `signal` {AbortSignal} Слушатель будет удален при вызове метода `abort()` данного объекта AbortSignal.
+-   `type` {string}
+-   `listener` {Function|EventListener}
+-   `options` {Object}
+    -   `once` {boolean} Если `true`, слушатель автоматически удаляется при первом вызове. **По умолчанию:** `false`.
+    -   `passive` {boolean} Когда `true`, служит подсказкой, что слушатель не будет вызывать метод `preventDefault()` объекта `Event`. **По умолчанию:** `false`.
+    -   `capture` {boolean} Не используется непосредственно в Node.js. Добавлен для полноты API. **По умолчанию:** `false`.
+    -   `signal` {AbortSignal} Слушатель будет удален при вызове метода `abort()` данного объекта AbortSignal.
 
 Добавляет новый обработчик для события `type`. Любой заданный `listener` добавляется только один раз для каждого `type` и для каждого значения опции `capture`.
 
@@ -1951,7 +1967,7 @@ target.removeEventListener('foo', handler);
 
 // Удаляет первый экземпляр обработчика
 target.removeEventListener('foo', handler, {
-  capture: true,
+    capture: true,
 });
 ```
 
@@ -1959,8 +1975,8 @@ target.removeEventListener('foo', handler, {
 
 #### `eventTarget.dispatchEvent(event)`
 
-- `event` {Event}
-- Возвращает: {boolean} `true`, если либо значение атрибута `cancelable` события равно false, либо его метод `preventDefault()` не был вызван, иначе `false`.
+-   `event` {Event}
+-   Возвращает: {boolean} `true`, если либо значение атрибута `cancelable` события равно false, либо его метод `preventDefault()` не был вызван, иначе `false`.
 
 Отправляет `событие` в список обработчиков для `event.type`.
 
@@ -1970,10 +1986,10 @@ target.removeEventListener('foo', handler, {
 
 #### `eventTarget.removeEventListener(type, listener[, options])`
 
-- `тип` {строка}
-- `listener` {Function|EventListener}
-- `options` {Object}
-  - `capture` {boolean}
+-   `тип` {строка}
+-   `listener` {Function|EventListener}
+-   `options` {Object}
+    -   `capture` {boolean}
 
 Удаляет `listener` из списка обработчиков события `type`.
 
@@ -1985,7 +2001,7 @@ target.removeEventListener('foo', handler, {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- Расширяет: {Event}
+-   Расширяет: {Event}
 
 Объект `CustomEvent` является адаптацией [`CustomEvent` Web API](https://dom.spec.whatwg.org/#customevent). Экземпляры создаются внутри Node.js.
 
@@ -1997,7 +2013,7 @@ target.removeEventListener('foo', handler, {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- Тип: {любой} Возвращает пользовательские данные, переданные при инициализации.
+-   Тип: {любой} Возвращает пользовательские данные, переданные при инициализации.
 
 Только для чтения.
 
@@ -2005,7 +2021,7 @@ target.removeEventListener('foo', handler, {
 
 ### Класс: `NodeEventTarget`
 
-- Расширяет: {EventTarget}
+-   Расширяет: {EventTarget}
 
 `NodeEventTarget` - это специфическое для Node.js расширение `EventTarget`, которое эмулирует часть API `EventEmitter`.
 
@@ -2013,11 +2029,11 @@ target.removeEventListener('foo', handler, {
 
 #### `nodeEventTarget.addListener(type, listener)`
 
-- `type` {string}
+-   `type` {string}
 
-- `listener` {Function|EventListener}
+-   `listener` {Function|EventListener}
 
-- Возвращает: {EventTarget} this
+-   Возвращает: {EventTarget} this
 
 Node.js-специфическое расширение класса `EventTarget`, которое эмулирует эквивалентный API `EventEmitter`. Единственное различие между `addListener()` и `addEventListener()` заключается в том, что `addListener()` возвращает ссылку на `EventTarget`.
 
@@ -2025,7 +2041,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.eventNames()`
 
-- Возвращает: {string\[\]}
+-   Возвращает: {string\[\]}
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает массив имен событий `типа`, для которых зарегистрированы слушатели событий.
 
@@ -2033,9 +2049,9 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.listenerCount(type)`
 
-- `type` {string}
+-   `type` {string}
 
-- Возвращает: {число}
+-   Возвращает: {число}
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество слушателей событий, зарегистрированных для `type`.
 
@@ -2043,7 +2059,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.setMaxListeners(n)`
 
-- `n` {число}
+-   `n` {число}
 
 Node.js-специфическое расширение класса `EventTarget`, которое устанавливает число максимальных слушателей событий как `n`.
 
@@ -2051,7 +2067,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.getMaxListeners()`
 
-- Возвращает: {число}
+-   Возвращает: {число}
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество максимальных слушателей событий.
 
@@ -2059,11 +2075,11 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.off(type, listener[, options])`
 
-- `type` {string}
-- `listener` {Function|EventListener}
-- `options` {Object}
-  - `capture` {boolean}
-- Возвращает: {EventTarget} this
+-   `type` {string}
+-   `listener` {Function|EventListener}
+-   `options` {Object}
+    -   `capture` {boolean}
+-   Возвращает: {EventTarget} this
 
 Node.js-специфический псевдоним для `eventTarget.removeListener()`.
 
@@ -2071,11 +2087,11 @@ Node.js-специфический псевдоним для `eventTarget.remove
 
 #### `nodeEventTarget.on(type, listener)`
 
-- `type` {string}
+-   `type` {string}
 
-- `listener` {Function|EventListener}
+-   `listener` {Function|EventListener}
 
-- Возвращает: {EventTarget} this
+-   Возвращает: {EventTarget} this
 
 Node.js-специфический псевдоним для `eventTarget.addListener()`.
 
@@ -2083,11 +2099,11 @@ Node.js-специфический псевдоним для `eventTarget.addLis
 
 #### `nodeEventTarget.once(type, listener)`
 
-- `type` {string}
+-   `type` {string}
 
-- `listener` {Function|EventListener}
+-   `listener` {Function|EventListener}
 
-- Возвращает: {EventTarget} this
+-   Возвращает: {EventTarget} this
 
 Node.js-специфическое расширение класса `EventTarget`, которое добавляет `once` слушателя для заданного `type` события. Это эквивалентно вызову `on` с опцией `once`, установленной в `true`.
 
@@ -2095,9 +2111,9 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.removeAllListeners([type])`
 
-- `type` {string}
+-   `type` {string}
 
-- Возвращает: {EventTarget} this
+-   Возвращает: {EventTarget} this
 
 Специфическое для Node.js расширение класса `EventTarget`. Если указан `type`, удаляет всех зарегистрированных слушателей для `type`, в противном случае удаляет всех зарегистрированных слушателей.
 
@@ -2105,15 +2121,15 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.removeListener(type, listener[, options])`
 
-- `type` {string}
+-   `type` {string}
 
-- `listener` {Function|EventListener}
+-   `listener` {Function|EventListener}
 
-- `options` {Object}
+-   `options` {Object}
 
-  - `capture` {boolean}
+    -   `capture` {boolean}
 
-- Возвращает: {EventTarget} this
+-   Возвращает: {EventTarget} this
 
 Node.js-специфическое расширение класса `EventTarget`, которое удаляет `слушателя` для заданного `типа`. Единственная разница между `removeListener()` и `removeEventListener()` заключается в том, что `removeListener()` возвращает ссылку на `EventTarget`.
 

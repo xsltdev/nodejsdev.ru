@@ -9,11 +9,11 @@
 Функция `setTimeout()` выполняет переданную функцию после истечения заданного в миллисекундах интервала времени.
 
 ```js
-console.log('Console before timeout')
+console.log('Console before timeout');
 
-setTimeout(() => console.log('Delayed execution'), 3000)
+setTimeout(() => console.log('Delayed execution'), 3000);
 
-console.log('Console after timeout')
+console.log('Console after timeout');
 ```
 
 Результат работы кода.
@@ -31,11 +31,11 @@ Delayed execution //по истечении 3 секунд
 Функция-таймер выполняет переданную ей функцию в самом конце текущей итерации event loop. Это означает, что функция выполнится после всех событий ввода/вывода.
 
 ```js
-console.log('Console before immediate')
+console.log('Console before immediate');
 
-setImmediate(() => console.log('Immediate execution'))
+setImmediate(() => console.log('Immediate execution'));
 
-console.log('Console after immediate')
+console.log('Console after immediate');
 ```
 
 Результат работы кода.
@@ -50,11 +50,11 @@ Immediate execution //сразу после выполнения остальн�
 
 Функция `setInterval()` используется для выполнения определенного кода множество через заданный интервал времени и принимает два параметра
 
-- функция для выполнения;
-- интервал времени в миллисекундах, через который переданная первым аргументом функция, должна быть вызвана снова.
+-   функция для выполнения;
+-   интервал времени в миллисекундах, через который переданная первым аргументом функция, должна быть вызвана снова.
 
 ```js
-setInterval(() => console.log('Interval execution'), 1000)
+setInterval(() => console.log('Interval execution'), 1000);
 ```
 
 Результат работы кода.
@@ -74,25 +74,25 @@ Interval execution
 Каждая из Node.js функций-таймеров - `setTimeout()`, `setImmediate()` и `setInterval()` - при вызове возвращает объект `timer`, который можно использовать для завершения работы таймеров, передав его соответствующей очищающей функции.
 
 ```js
-console.log('Before')
+console.log('Before');
 
 let timeout = setTimeout(
-  () => console.log('Delayed execution'),
-  3000
-)
+    () => console.log('Delayed execution'),
+    3000
+);
 let immediate = setImmediate(() =>
-  console.log('Immediate execution')
-)
+    console.log('Immediate execution')
+);
 let interval = setInterval(
-  () => console.log('Interval execution'),
-  1000
-)
+    () => console.log('Interval execution'),
+    1000
+);
 
-clearTimeout(timeout)
-clearImmediate(immediate)
-clearInterval(interval)
+clearTimeout(timeout);
+clearImmediate(immediate);
+clearInterval(interval);
 
-console.log('After')
+console.log('After');
 ```
 
 Результат работы кода.

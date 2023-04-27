@@ -40,7 +40,7 @@ const inspector = require('node:inspector');
 
 ### Класс: `inspector.Session`
 
-- Расширяет: {EventEmitter}
+-   Расширяет: {EventEmitter}
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 
@@ -50,13 +50,13 @@ const inspector = require('node:inspector');
 
 #### Событие: `inspectorNotification`
 
-- {Объект} Объект сообщения уведомления
+-   {Объект} Объект сообщения уведомления
 
 Выдается при получении любого уведомления от инспектора V8.
 
 ```js
 session.on('inspectorNotification', (message) =>
-  console.log(message.method)
+    console.log(message.method)
 );
 // Debugger.paused
 // Debugger.resumed
@@ -66,7 +66,7 @@ session.on('inspectorNotification', (message) =>
 
 #### Событие: `<inspector-protocol-method>`
 
-- {Object} Объект сообщения уведомления
+-   {Object} Объект сообщения уведомления
 
 Выдается при получении уведомления инспектора, у которого поле method установлено в значение `<inspector-protocol-method>`.
 
@@ -74,7 +74,7 @@ session.on('inspectorNotification', (message) =>
 
 ```js
 session.on('Debugger.paused', ({ params }) => {
-  console.log(params.hitBreakpoints);
+    console.log(params.hitBreakpoints);
 });
 // [ [ '/the/file/that/has/the/breakpoint.js:11:0' ]
 ```
@@ -93,23 +93,23 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.post(method[, params])`
 
-- `method` {строка}
-- `params` {Object}
-- Возвращает: {Promise}
+-   `method` {строка}
+-   `params` {Object}
+-   Возвращает: {Promise}
 
 Отправляет сообщение на внутреннюю страницу инспектора.
 
 ```mjs
 import { Session } from 'node:inspector/promises';
 try {
-  const session = new Session();
-  session.connect();
-  const result = await session.post('Runtime.evaluate', {
-    expression: '2 + 2',
-  });
-  console.log(result);
+    const session = new Session();
+    session.connect();
+    const result = await session.post('Runtime.evaluate', {
+        expression: '2 + 2',
+    });
+    console.log(result);
 } catch (error) {
-  console.error(error);
+    console.error(error);
 }
 // Output: { result: { type: 'number', value: 4, description: '4' } }
 ```
@@ -141,8 +141,8 @@ const { profile } = await session.post('Profiler.stop');
 
 // Записываем профиль на диск, загружаем и т.д.
 fs.writeFileSync(
-  './profile.cpupuprofile',
-  JSON.stringify(profile)
+    './profile.cpupuprofile',
+    JSON.stringify(profile)
 );
 ```
 
@@ -160,12 +160,12 @@ const fd = fs.openSync('profile.heapsnapshot', 'w');
 session.connect();
 
 session.on('HeapProfiler.addHeapSnapshotChunk', (m) => {
-  fs.writeSync(fd, m.params.chunk);
+    fs.writeSync(fd, m.params.chunk);
 });
 
 const result = await session.post(
-  'HeapProfiler.takeHeapSnapshot',
-  null
+    'HeapProfiler.takeHeapSnapshot',
+    null
 );
 console.log('HeapProfiler.takeHeapSnapshot done:', result);
 session.disconnect();
@@ -176,7 +176,7 @@ fs.closeSync(fd);
 
 ### Класс: `inspector.Session`
 
-- Расширяет: {EventEmitter}
+-   Расширяет: {EventEmitter}
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 
@@ -186,13 +186,13 @@ fs.closeSync(fd);
 
 #### Событие: `inspectorNotification`
 
-- {Объект} Объект сообщения уведомления
+-   {Объект} Объект сообщения уведомления
 
 Выдается при получении любого уведомления от инспектора V8.
 
 ```js
 session.on('inspectorNotification', (message) =>
-  console.log(message.method)
+    console.log(message.method)
 );
 // Debugger.paused
 // Debugger.resumed
@@ -202,7 +202,7 @@ session.on('inspectorNotification', (message) =>
 
 #### Событие: `<inspector-protocol-method>`
 
-- {Object} Объект сообщения уведомления
+-   {Object} Объект сообщения уведомления
 
 Выдается при получении уведомления инспектора, у которого поле method установлено в значение `<inspector-protocol-method>`.
 
@@ -210,7 +210,7 @@ session.on('inspectorNotification', (message) =>
 
 ```js
 session.on('Debugger.paused', ({ params }) => {
-  console.log(params.hitBreakpoints);
+    console.log(params.hitBreakpoints);
 });
 // [ [ '/the/file/that/has/the/breakpoint.js:11:0' ]
 ```
@@ -229,17 +229,17 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.post(method[, params][, callback])`
 
-- `method` {строка}
-- `params` {Object}
-- `callback` {Function}
+-   `method` {строка}
+-   `params` {Object}
+-   `callback` {Function}
 
 Отправляет сообщение на внутреннюю страницу инспектора. Функция `callback` будет уведомлена, когда будет получен ответ. `callback` - это функция, принимающая два необязательных аргумента: ошибку и результат, специфичный для сообщения.
 
 ```js
 session.post(
-  'Runtime.evaluate',
-  { expression: '2 + 2' },
-  (error, { result }) => console.log(result)
+    'Runtime.evaluate',
+    { expression: '2 + 2' },
+    (error, { result }) => console.log(result)
 );
 // Output: { type: 'number', value: 4, description: '4' }
 ```
@@ -265,20 +265,23 @@ const session = new inspector.Session();
 session.connect();
 
 session.post('Profiler.enable', () => {
-  session.post('Profiler.start', () => {
-    // Вызовите бизнес-логику измерения здесь...
+    session.post('Profiler.start', () => {
+        // Вызовите бизнес-логику измерения здесь...
 
-    // некоторое время спустя...
-    session.post('Profiler.stop', (err, { profile }) => {
-      // Запись профиля на диск, выгрузка и т.д.
-      if (!err) {
-        fs.writeFileSync(
-          './profile.cpupuprofile',
-          JSON.stringify(profile)
+        // некоторое время спустя...
+        session.post(
+            'Profiler.stop',
+            (err, { profile }) => {
+                // Запись профиля на диск, выгрузка и т.д.
+                if (!err) {
+                    fs.writeFileSync(
+                        './profile.cpupuprofile',
+                        JSON.stringify(profile)
+                    );
+                }
+            }
         );
-      }
     });
-  });
 });
 ```
 
@@ -296,21 +299,21 @@ const fd = fs.openSync('profile.heapsnapshot', 'w');
 session.connect();
 
 session.on('HeapProfiler.addHeapSnapshotChunk', (m) => {
-  fs.writeSync(fd, m.params.chunk);
+    fs.writeSync(fd, m.params.chunk);
 });
 
 session.post(
-  'HeapProfiler.takeHeapSnapshot',
-  null,
-  (err, r) => {
-    console.log(
-      'HeapProfiler.takeHeapSnapshot done:',
-      err,
-      r
-    );
-    session.disconnect();
-    fs.closeSync(fd);
-  }
+    'HeapProfiler.takeHeapSnapshot',
+    null,
+    (err, r) => {
+        console.log(
+            'HeapProfiler.takeHeapSnapshot done:',
+            err,
+            r
+        );
+        session.disconnect();
+        fs.closeSync(fd);
+    }
 );
 ```
 
@@ -322,7 +325,7 @@ session.post(
 
 ### `inspector.console`
 
-- {Object} Объект для отправки сообщений на консоль удаленного инспектора.
+-   {Object} Объект для отправки сообщений на консоль удаленного инспектора.
 
 ```js
 require('node:inspector').console.log('сообщение');
@@ -332,9 +335,9 @@ require('node:inspector').console.log('сообщение');
 
 ### `inspector.open([port[, host[, wait]]])`
 
-- `port` {number} Порт для прослушивания соединений инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
-- `host` {string} Хост, на котором будут прослушиваться соединения инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
-- `wait` {boolean} Блокировать до тех пор, пока клиент не подключится. Необязательно. **По умолчанию:** `false`.
+-   `port` {number} Порт для прослушивания соединений инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
+-   `host` {string} Хост, на котором будут прослушиваться соединения инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
+-   `wait` {boolean} Блокировать до тех пор, пока клиент не подключится. Необязательно. **По умолчанию:** `false`.
 
 Активировать инспектора на хосте и порту. Эквивалентно `node --inspect=[[host:]port]`, но может быть выполнено программно после запуска узла.
 
@@ -344,7 +347,7 @@ require('node:inspector').console.log('сообщение');
 
 ### `inspector.url()`
 
-- Возвращает: {string|undefined}
+-   Возвращает: {string|undefined}
 
 Возвращает URL активного инспектора, или `undefined`, если его нет.
 

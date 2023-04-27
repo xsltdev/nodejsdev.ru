@@ -6,8 +6,8 @@
 
 ```json
 {
-  "name": "testapp",
-  "version": "1.0.0"
+    "name": "testapp",
+    "version": "1.0.0"
 }
 ```
 
@@ -23,8 +23,8 @@ npm install mocha --save-dev
 
 ```js
 module.exports.multiply = function (x, y) {
-  return x * y
-}
+    return x * y;
+};
 ```
 
 Здесь определена функция умножения двух чисел.
@@ -32,17 +32,17 @@ module.exports.multiply = function (x, y) {
 Для тестирования этого модуля добавим в проект новый файл `operations.test.js`:
 
 ```js
-var operations = require('./operations')
+var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expectedResult = 15
-  var result = operations.multiply(3, 5)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 15;
+    var result = operations.multiply(3, 5);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 ```
 
 Рассмотрим этот тест. Для тестирования результата применяется функция `it()`, которая предоставляется фреймворком Mocha.
@@ -55,14 +55,14 @@ it('should multiply two numbers', function () {
 
 ```json
 {
-  "name": "testapp",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "mocha *.test.js"
-  },
-  "devDependencies": {
-    "mocha": "^3.2.0"
-  }
+    "name": "testapp",
+    "version": "1.0.0",
+    "scripts": {
+        "test": "mocha *.test.js"
+    },
+    "devDependencies": {
+        "mocha": "^3.2.0"
+    }
 }
 ```
 
@@ -83,17 +83,17 @@ npm test
 Но, если мы изменим код теста:
 
 ```js
-var operations = require('./operations')
+var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expectedResult = 16
-  var result = operations.multiply(3, 5)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 16;
+    var result = operations.multiply(3, 5);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 ```
 
 То тест не будет проходить, так как результат - `15` не равен ожидаемому результату - числу `16`. И консоль уведомит об этом при повторном запуске теста:
@@ -104,36 +104,36 @@ it('should multiply two numbers', function () {
 
 ```js
 module.exports.multiply = function (x, y) {
-  return x * y
-}
+    return x * y;
+};
 module.exports.add = function (x, y) {
-  return x + y
-}
+    return x + y;
+};
 ```
 
 Теперь в файле была добавлена функция для сложения чисел. Протестируем ее в `operations.test.js`:
 
 ```js
-var operations = require('./operations')
+var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expectedResult = 15
-  var result = operations.multiply(3, 5)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 15;
+    var result = operations.multiply(3, 5);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 it('should add two numbers', function () {
-  var expectedResult = 16
-  var result = operations.add(9, 7)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 16;
+    var result = operations.add(9, 7);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 ```
 
 Запустим тест:
@@ -146,54 +146,54 @@ it('should add two numbers', function () {
 
 ```js
 module.exports.multiply = function (x, y) {
-  return x * y
-}
+    return x * y;
+};
 module.exports.add = function (x, y) {
-  return x + y
-}
+    return x + y;
+};
 
 module.exports.multiplyAsync = function (a, b, callback) {
-  setTimeout(function () {
-    callback(a * b)
-  }, 1000)
-}
+    setTimeout(function () {
+        callback(a * b);
+    }, 1000);
+};
 ```
 
 Протестируем эту функцию в `operations.test.js`:
 
 ```js
-var operations = require('./operations')
+var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expectedResult = 15
-  var result = operations.multiply(3, 5)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 15;
+    var result = operations.multiply(3, 5);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 it('should add two numbers', function () {
-  var expectedResult = 16
-  var result = operations.add(9, 7)
-  if (result !== expectedResult) {
-    throw new Error(
-      `Expected ${expectedResult}, but got ${result}`
-    )
-  }
-})
+    var expectedResult = 16;
+    var result = operations.add(9, 7);
+    if (result !== expectedResult) {
+        throw new Error(
+            `Expected ${expectedResult}, but got ${result}`
+        );
+    }
+});
 
 it('shoud async multiply two numbers', function (done) {
-  var expectedResult = 12
-  operations.multiplyAsync(4, 3, function (result) {
-    if (result !== expectedResult) {
-      throw new Error(
-        `Expected ${expectedResult}, but got ${result}`
-      )
-    }
-    done()
-  })
-})
+    var expectedResult = 12;
+    operations.multiplyAsync(4, 3, function (result) {
+        if (result !== expectedResult) {
+            throw new Error(
+                `Expected ${expectedResult}, but got ${result}`
+            );
+        }
+        done();
+    });
+});
 ```
 
 Особенностью тестирования асинхронных функций является то, что чтобы они завершились до завершения теста, в тестирующую функцию передается функция `done()`. Причем при окончании тестирования нам надо вызвать эту функцию. Тем самым через подобную функцию Mocha сможет контролировать выполнение теста.

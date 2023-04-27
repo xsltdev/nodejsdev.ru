@@ -2,22 +2,22 @@
 
 Для работы с файлами в Node.js используется встроенный модуль `fs`, который выполняет все синхронные и асинхронные операции ввода/вывода применительно к файлам. Чтение и запись файла могут осуществляться одним из двумя способов:
 
-- с использованием [`Buffer`](../../api/buffer.md);
-- через создание соответствующего потока.
+-   с использованием [`Buffer`](../../api/buffer.md);
+-   через создание соответствующего потока.
 
 ## Чтение файлов и директорий
 
 Для чтения файла в асинхронном режиме используется метод Node.js `readFile()`, который принимает три параметра:
 
-- путь к файлу;
-- кодировка;
-- callback-функция, вызываемая после получения содержимого файла.
+-   путь к файлу;
+-   кодировка;
+-   callback-функция, вызываемая после получения содержимого файла.
 
 ```js
 fs.readFile('files/data.txt', 'utf8', (err, data) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log(data);
+    console.log(data);
 });
 ```
 
@@ -36,17 +36,20 @@ console.log(content);
 
 Node.js `readFileSync()` возвращает результат чтения файла и принимает два параметра:
 
-- путь к файлу;
-- кодировку.
+-   путь к файлу;
+-   кодировку.
 
 Обработка и перехват ошибок при использовании `readFileSync()` осуществляется с помощью конструкции `try{...}catch(){...}`.
 
 ```js
 try {
-  const content = fs.readFileSync('files/data.txt', 'utf8');
-  console.log(content);
+    const content = fs.readFileSync(
+        'files/data.txt',
+        'utf8'
+    );
+    console.log(content);
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -58,16 +61,16 @@ try {
 
 Параметры, принимаемые `fs.createReadStream()`:
 
-- путь к файлу;
-- объект со следующими настройками:
-  - `encoding` - кодировка (по умолчанию `utf8`);
-  - `mode` - режим доступа (по умолчанию `0o666`);
-  - `autoClose` - если `true`, то при событиях `error` и `finish` поток закроется автоматически (по умолчанию `true`).
+-   путь к файлу;
+-   объект со следующими настройками:
+    -   `encoding` - кодировка (по умолчанию `utf8`);
+    -   `mode` - режим доступа (по умолчанию `0o666`);
+    -   `autoClose` - если `true`, то при событиях `error` и `finish` поток закроется автоматически (по умолчанию `true`).
 
 ```js
 const stream = fs.createReadStream(
-  'files/data.txt',
-  'utf8'
+    'files/data.txt',
+    'utf8'
 );
 stream.on('data', (data) => console.log(data));
 stream.on('error', (err) => console.log(`Err: ${err}`));
@@ -79,37 +82,37 @@ stream.on('error', (err) => console.log(`Err: ${err}`));
 
 Использование потока имеет ряд преимуществ перед `Buffer`:
 
-- Меньшее использование памяти за счет чтения содержимого по частям;
-- Для объемных файлов время между запросом и ответом существенно сокращается за счет того, что данные начинают поступать по частям, а не после полной загрузки;
-- Возможность перенаправить данные в другой поток с помощью метода `pipe()`.
+-   Меньшее использование памяти за счет чтения содержимого по частям;
+-   Для объемных файлов время между запросом и ответом существенно сокращается за счет того, что данные начинают поступать по частям, а не после полной загрузки;
+-   Возможность перенаправить данные в другой поток с помощью метода `pipe()`.
 
 Для чтения директорий используются методы `readdir()` и `readdirSync()`, для асинхронного и синхронного режимов соответственно.
 
 Node.js `readdir()` работает асинхронно и принимает три аргумента:
 
-- путь к директории;
-- кодировку;
-- callback-функцию, которая принимает аргументами ошибку и массив файлов директории (при успешном выполнении операции ошибка передается как `null`).
+-   путь к директории;
+-   кодировку;
+-   callback-функцию, которая принимает аргументами ошибку и массив файлов директории (при успешном выполнении операции ошибка передается как `null`).
 
 ```js
 fs.readdir('files', 'utf8', (err, files) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log(files);
+    console.log(files);
 });
 ```
 
 Node.js `readdirSync()` работает синхронно, возвращает массив найденных файлов и принимает два параметра:
 
-- путь к директории;
-- кодировку.
+-   путь к директории;
+-   кодировку.
 
 ```js
 try {
-  const files = fs.readdirSync('files', 'utf8');
-  console.log(files);
+    const files = fs.readdirSync('files', 'utf8');
+    console.log(files);
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -117,23 +120,23 @@ try {
 
 В Node.js файлы могут быть записаны также синхронно и асинхронно. Для асинхронной записи имеется метод `writeFile()`, принимающий следующие аргументы:
 
-- путь к файлу;
-- данные для записи;
-- параметры записи:
-  - кодировка (по умолчанию `utf8`);
-  - права доступа (по умолчанию `0o666`);
-- callback-функция, которая вызывается по завершению операции и единственным аргументом принимает ошибку (в случае успешной записи передается `null`).
+-   путь к файлу;
+-   данные для записи;
+-   параметры записи:
+    -   кодировка (по умолчанию `utf8`);
+    -   права доступа (по умолчанию `0o666`);
+-   callback-функция, которая вызывается по завершению операции и единственным аргументом принимает ошибку (в случае успешной записи передается `null`).
 
 ```js
 fs.writeFile(
-  'files/data.txt',
-  'File Content',
-  'utf8',
-  (err) => {
-    if (err) throw err;
+    'files/data.txt',
+    'File Content',
+    'utf8',
+    (err) => {
+        if (err) throw err;
 
-    console.log('Done');
-  }
+        console.log('Done');
+    }
 );
 ```
 
@@ -145,14 +148,14 @@ fs.writeFile(
 
 ```js
 try {
-  fs.writeFileSync(
-    'files/data.txt',
-    'File Content',
-    'utf8'
-  );
-  console.log('Done');
+    fs.writeFileSync(
+        'files/data.txt',
+        'File Content',
+        'utf8'
+    );
+    console.log('Done');
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -164,29 +167,29 @@ try {
 
 ```js
 fs.appendFile(
-  'files/data.txt',
-  '\nFile Content 2',
-  'utf8',
-  (err) => {
-    if (err) throw err;
+    'files/data.txt',
+    '\nFile Content 2',
+    'utf8',
+    (err) => {
+        if (err) throw err;
 
-    console.log('Done');
-  }
+        console.log('Done');
+    }
 );
 ```
 
 Для записи файла через потока ввода имеется метод `fs.createWriteStream()`, который возвращает поток ввода и принимает два параметра:
 
-- путь к файлу;
-- объект со следующими настройками:
-  - `encoding` - кодировка (по умолчанию `utf8`);
-  - `mode` - режим доступа (по умолчанию `0o666`);
-  - `autoClose` - если `true`, то при событиях `error` и `finish` поток закроется автоматически (по умолчанию `true`).
+-   путь к файлу;
+-   объект со следующими настройками:
+    -   `encoding` - кодировка (по умолчанию `utf8`);
+    -   `mode` - режим доступа (по умолчанию `0o666`);
+    -   `autoClose` - если `true`, то при событиях `error` и `finish` поток закроется автоматически (по умолчанию `true`).
 
 ```js
 const stream = fs.createWriteStream(
-  'files/data.txt',
-  'utf8'
+    'files/data.txt',
+    'utf8'
 );
 
 stream.on('error', (err) => console.log(`Err: ${err}`));
@@ -201,19 +204,19 @@ stream.end();
 
 Node.js `mkdir()` работает асинхронно и принимает в качестве параметров:
 
-- путь к директории;
-- объект со следующими настройками:
-  - `recursive` - если `true`, создает директорию и все ее родительские директории согласно указанному пути, если они еще не существуют (по умолчанию `false`, т. е. все родительские директории уже должны быть созданы, иначе будет сгенерирована ошибка);
-  - `mode` - режим доступа, параметр не поддерживается на ОС Windows (по умолчанию `0o777`);
-  - callback-функцию, которая единственным аргументом принимает ошибку, при успешном создании директории передается `null`.
+-   путь к директории;
+-   объект со следующими настройками:
+    -   `recursive` - если `true`, создает директорию и все ее родительские директории согласно указанному пути, если они еще не существуют (по умолчанию `false`, т. е. все родительские директории уже должны быть созданы, иначе будет сгенерирована ошибка);
+    -   `mode` - режим доступа, параметр не поддерживается на ОС Windows (по умолчанию `0o777`);
+    -   callback-функцию, которая единственным аргументом принимает ошибку, при успешном создании директории передается `null`.
 
 Вторым параметром можно сразу передать callback-функцию.
 
 ```js
 fs.mkdir('files/dir/subdir', { recursive: true }, (err) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log('Created');
+    console.log('Created');
 });
 ```
 
@@ -221,10 +224,10 @@ Node.js `mkdirSync()` создает директорию синхронно и 
 
 ```js
 try {
-  fs.mkdirSync('files/dir/subdir', { recursive: true });
-  console.log('Done');
+    fs.mkdirSync('files/dir/subdir', { recursive: true });
+    console.log('Done');
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -236,9 +239,9 @@ try {
 
 ```js
 fs.unlink('files/data.txt', (err) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log('Deleted');
+    console.log('Deleted');
 });
 ```
 
@@ -246,10 +249,10 @@ fs.unlink('files/data.txt', (err) => {
 
 ```js
 try {
-  fs.unlinkSync('files/data.txt');
-  console.log('Deleted');
+    fs.unlinkSync('files/data.txt');
+    console.log('Deleted');
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -259,9 +262,9 @@ try {
 
 ```js
 fs.rmdir('files/dir', (err) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log('Deleted');
+    console.log('Deleted');
 });
 ```
 
@@ -269,10 +272,10 @@ fs.rmdir('files/dir', (err) => {
 
 ```js
 try {
-  fs.rmdirSync('files/dir');
-  console.log('Deleted');
+    fs.rmdirSync('files/dir');
+    console.log('Deleted');
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 
@@ -282,10 +285,10 @@ try {
 
 ```js
 try {
-  const exists = fs.existsSync('files');
-  console.log('Exists: ', exists);
+    const exists = fs.existsSync('files');
+    console.log('Exists: ', exists);
 } catch (e) {
-  console.log(e);
+    console.log(e);
 }
 ```
 

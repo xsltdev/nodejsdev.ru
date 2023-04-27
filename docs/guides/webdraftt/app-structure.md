@@ -12,221 +12,232 @@ _app.js_
 
 ```js
 const express = require('express'),
-  app = express(),
-  routes = require('./routes/index')
+    app = express(),
+    routes = require('./routes/index');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', routes)
+app.use('/api', routes);
 
 app.listen(port, host, () =>
-  console.log(`Server listens http://${host}:${port}`)
-)
+    console.log(`Server listens http://${host}:${port}`)
+);
 ```
 
 _routes/index.js_
 
 ```js
 const express = require('express'),
-  router = express.Router(),
-  usersRoutes = require('./users.routes')
+    router = express.Router(),
+    usersRoutes = require('./users.routes');
 
-router.use('/users', usersRoutes)
+router.use('/users', usersRoutes);
 
-module.exports = router
+module.exports = router;
 ```
 
 _routes/users.routes.js_
 
 ```js
 const express = require('express'),
-  router = express.Router(),
-  UserController = require('../controllers/users.controller'),
-  UsersService = require('../services/users.service')
+    router = express.Router(),
+    UserController = require('../controllers/users.controller'),
+    UsersService = require('../services/users.service');
 
 router.use(async (req, res, next) => {
-  let data = await UsersService.getUsers()
+    let data = await UsersService.getUsers();
 
-  if (data) {
-    req.users = data
-    next()
-  } else
-    return res
-      .status(500)
-      .send({ message: 'Error while getting users' })
-})
+    if (data) {
+        req.users = data;
+        next();
+    } else
+        return res
+            .status(500)
+            .send({ message: 'Error while getting users' });
+});
 
 router
-  .route('/')
-  .get(UserController.getUsers)
-  .post(UserController.createUser)
-  .put(UserController.updateUser)
-  .delete(UserController.deleteUser)
+    .route('/')
+    .get(UserController.getUsers)
+    .post(UserController.createUser)
+    .put(UserController.updateUser)
+    .delete(UserController.deleteUser);
 
-module.exports = router
+module.exports = router;
 ```
 
 _controllers/users.controller.js_
 
 ```js
-const UsersService = require('../services/users.service')
+const UsersService = require('../services/users.service');
 
 class UsersController {
-  getUsers(req, res) {
-    if (req.query.id) {
-      if (req.users.hasOwnProperty(req.query.id))
-        return res
-          .status(200)
-          .send({ data: req.users[req.query.id] })
-      else
-        return res
-          .status(404)
-          .send({ message: 'User not found.' })
-    } else if (!req.users)
-      return res
-        .status(404)
-        .send({ message: 'Users not found.' })
+    getUsers(req, res) {
+        if (req.query.id) {
+            if (req.users.hasOwnProperty(req.query.id))
+                return res.status(200).send({
+                    data: req.users[req.query.id],
+                });
+            else
+                return res
+                    .status(404)
+                    .send({ message: 'User not found.' });
+        } else if (!req.users)
+            return res
+                .status(404)
+                .send({ message: 'Users not found.' });
 
-    return res.status(200).send({ data: req.users })
-  }
+        return res.status(200).send({ data: req.users });
+    }
 
-  async createUser(req, res) {
-    if (req.body.user && req.body.user.id) {
-      if (req.users.hasOwnProperty(req.body.user.id))
-        return res
-          .status(409)
-          .send({ message: 'User already exists.' })
+    async createUser(req, res) {
+        if (req.body.user && req.body.user.id) {
+            if (req.users.hasOwnProperty(req.body.user.id))
+                return res.status(409).send({
+                    message: 'User already exists.',
+                });
 
-      req.users[req.body.user.id] = req.body.user
+            req.users[req.body.user.id] = req.body.user;
 
-      let result = await UsersService.createUser(req.users)
+            let result = await UsersService.createUser(
+                req.users
+            );
 
-      if (result) return res.status(200).send(result)
-      else
-        return res
-          .status(500)
-          .send({ message: 'Unable create user.' })
-    } else
-      return res
-        .status(400)
-        .send({ message: 'Bad request.' })
-  }
+            if (result) return res.status(200).send(result);
+            else
+                return res.status(500).send({
+                    message: 'Unable create user.',
+                });
+        } else
+            return res
+                .status(400)
+                .send({ message: 'Bad request.' });
+    }
 
-  async updateUser(req, res) {
-    if (req.body.user && req.body.user.id) {
-      if (!req.users.hasOwnProperty(req.body.user.id))
-        return res
-          .status(404)
-          .send({ message: 'User not found.' })
+    async updateUser(req, res) {
+        if (req.body.user && req.body.user.id) {
+            if (!req.users.hasOwnProperty(req.body.user.id))
+                return res
+                    .status(404)
+                    .send({ message: 'User not found.' });
 
-      req.users[req.body.user.id] = req.body.user
+            req.users[req.body.user.id] = req.body.user;
 
-      let result = await UsersService.updateUser(req.users)
+            let result = await UsersService.updateUser(
+                req.users
+            );
 
-      if (result) return res.status(200).send(result)
-      else
-        return res
-          .status(500)
-          .send({ message: 'Unable update user.' })
-    } else
-      return res
-        .status(400)
-        .send({ message: 'Bad request.' })
-  }
+            if (result) return res.status(200).send(result);
+            else
+                return res.status(500).send({
+                    message: 'Unable update user.',
+                });
+        } else
+            return res
+                .status(400)
+                .send({ message: 'Bad request.' });
+    }
 
-  async deleteUser(req, res) {
-    if (req.query.id) {
-      if (req.users.hasOwnProperty(req.query.id)) {
-        delete req.users[req.query.id]
+    async deleteUser(req, res) {
+        if (req.query.id) {
+            if (req.users.hasOwnProperty(req.query.id)) {
+                delete req.users[req.query.id];
 
-        let result = await UsersService.deleteUser(
-          req.users
-        )
+                let result = await UsersService.deleteUser(
+                    req.users
+                );
 
-        if (result) return res.status(200).send(result)
-        else
-          return res
-            .status(500)
-            .send({ message: 'Unable delete user.' })
-      } else
-        return res
-          .status(404)
-          .send({ message: 'User not found.' })
-    } else
-      return res
-        .status(400)
-        .send({ message: 'Bad request.' })
-  }
+                if (result)
+                    return res.status(200).send(result);
+                else
+                    return res.status(500).send({
+                        message: 'Unable delete user.',
+                    });
+            } else
+                return res
+                    .status(404)
+                    .send({ message: 'User not found.' });
+        } else
+            return res
+                .status(400)
+                .send({ message: 'Bad request.' });
+    }
 }
 
-module.exports = new UsersController()
+module.exports = new UsersController();
 ```
 
 _services/users.service.js_
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 class UsersService {
-  getUsers() {
-    return new Promise((res, rej) => {
-      fs.readFile('data.json', (err, data) => {
-        if (err) {
-          return res(false)
-        }
-        return res(JSON.parse(data))
-      })
-    })
-  }
+    getUsers() {
+        return new Promise((res, rej) => {
+            fs.readFile('data.json', (err, data) => {
+                if (err) {
+                    return res(false);
+                }
+                return res(JSON.parse(data));
+            });
+        });
+    }
 
-  createUser(data) {
-    return new Promise((res, rej) => {
-      fs.writeFile(
-        'data.json',
-        JSON.stringify(data),
-        (err, response) => {
-          if (err) return res(false)
+    createUser(data) {
+        return new Promise((res, rej) => {
+            fs.writeFile(
+                'data.json',
+                JSON.stringify(data),
+                (err, response) => {
+                    if (err) return res(false);
 
-          return res({ message: 'User created.' })
-        }
-      )
-    })
-  }
+                    return res({
+                        message: 'User created.',
+                    });
+                }
+            );
+        });
+    }
 
-  updateUser(data) {
-    return new Promise((res, rej) => {
-      fs.writeFile(
-        'data.json',
-        JSON.stringify(data),
-        (err, response) => {
-          if (err) return res(false)
+    updateUser(data) {
+        return new Promise((res, rej) => {
+            fs.writeFile(
+                'data.json',
+                JSON.stringify(data),
+                (err, response) => {
+                    if (err) return res(false);
 
-          return res({ message: 'User updated.' })
-        }
-      )
-    })
-  }
+                    return res({
+                        message: 'User updated.',
+                    });
+                }
+            );
+        });
+    }
 
-  deleteUser(data) {
-    return new Promise((res, rej) => {
-      fs.writeFile(
-        'data.json',
-        JSON.stringify(data),
-        (err, response) => {
-          if (err) return res(false)
+    deleteUser(data) {
+        return new Promise((res, rej) => {
+            fs.writeFile(
+                'data.json',
+                JSON.stringify(data),
+                (err, response) => {
+                    if (err) return res(false);
 
-          return res({ message: 'User deleted.' })
-        }
-      )
-    })
-  }
+                    return res({
+                        message: 'User deleted.',
+                    });
+                }
+            );
+        });
+    }
 }
 
-module.exports = new UsersService()
+module.exports = new UsersService();
 ```
 
 В файле `app.js` содержатся только основные функции промежуточной обработки и функция запуска вашего Node.js приложения.

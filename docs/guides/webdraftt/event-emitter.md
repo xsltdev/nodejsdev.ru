@@ -12,10 +12,10 @@ const EventEmitter = require('events');
 const emitter = new EventEmitter();
 
 emitter.on('message', (message) =>
-  console.log('Message: ', message)
+    console.log('Message: ', message)
 );
 emitter.on('error', (error) =>
-  console.log('Error: ', error)
+    console.log('Error: ', error)
 );
 
 emitter.emit('message', 'Node js EventEmitter in action.');
@@ -25,8 +25,8 @@ emitter.emit('message', 'Node js EventEmitter in action.');
 
 Обработчик регистрируется с использованием метода `on()`, которому передается два параметра:
 
-- имя Node.js события;
-- callback-функция, принимающая в качестве параметров указанные в `emit()` данные.
+-   имя Node.js события;
+-   callback-функция, принимающая в качестве параметров указанные в `emit()` данные.
 
 !!! note ""
 
@@ -48,22 +48,22 @@ const emitterOneInstance = new EmitterOne();
 const emitterTwoInstance = new EmitterTwo();
 
 emitterOneInstance.on('message', (message) =>
-  console.log('Emitter one message: ', message)
+    console.log('Emitter one message: ', message)
 );
 emitterOneInstance.on('error', (error) =>
-  console.log('Emitter one error: ', error)
+    console.log('Emitter one error: ', error)
 );
 
 emitterTwoInstance.on('message', (message) =>
-  console.log('Emitter two message: ', message)
+    console.log('Emitter two message: ', message)
 );
 emitterTwoInstance.on('error', (error) =>
-  console.log('Emitter two error: ', error)
+    console.log('Emitter two error: ', error)
 );
 
 emitterOneInstance.emit(
-  'message',
-  'Node js EventEmitter in action.'
+    'message',
+    'Node js EventEmitter in action.'
 );
 ```
 
@@ -83,7 +83,7 @@ const EventEmitter = require('events');
 const emitter = new EventEmitter();
 
 emitter.once('message', (message) =>
-  console.log('Message: ', message)
+    console.log('Message: ', message)
 ); //выполнится один раз
 
 emitter.emit('message', 'First');
@@ -102,10 +102,10 @@ EventEmitter.defaultMaxListeners = 1;
 const emitter = new EventEmitter();
 
 emitter.on('message', (message) =>
-  console.log('Listener 1: ', message)
+    console.log('Listener 1: ', message)
 );
 emitter.on('message', (message) =>
-  console.log('Listener 2: ', message)
+    console.log('Listener 2: ', message)
 );
 
 emitter.emit('message', 'Message');
@@ -125,8 +125,8 @@ emitter.setMaxListeners(1);
 
 Чтобы узнать, сколько обрабатывающих функций уже зарегистрировано на конкретное событие, используйте метод `EventEmitter.listenerCount()`, которому передаются два параметра:
 
-- экземпляр `EventEmitter`, относительно которого было зарегистрировано событие;
-- имя события.
+-   экземпляр `EventEmitter`, относительно которого было зарегистрировано событие;
+-   имя события.
 
 _app.js_
 
@@ -136,10 +136,10 @@ const EventEmitter = require('events');
 const emitter = new EventEmitter();
 
 emitter.on('message', (message) =>
-  console.log('Listener 1: ', message)
+    console.log('Listener 1: ', message)
 );
 emitter.on('message', (message) =>
-  console.log('Listener 2: ', message)
+    console.log('Listener 2: ', message)
 );
 
 console.log(EventEmitter.listenerCount(emitter, 'message')); //2
@@ -149,10 +149,10 @@ console.log(EventEmitter.listenerCount(emitter, 'message')); //2
 
 ```js
 emitter.on('message', (message) =>
-  console.log('Message: ', message)
+    console.log('Message: ', message)
 );
 emitter.on('error', (error) =>
-  console.log('Error: ', error)
+    console.log('Error: ', error)
 );
 
 console.log(emitter.eventNames()); //['message', 'error']
@@ -162,7 +162,7 @@ console.log(emitter.eventNames()); //['message', 'error']
 
 ```js
 const messageListener = (message) =>
-  console.log('Message: ', message);
+    console.log('Message: ', message);
 
 emitter.on('message', messageListener);
 
@@ -177,11 +177,11 @@ emitter.emit('message', 'Second'); //на этом этапе обработич
 
 ```js
 const messageListener1 = (message) =>
-  console.log('Message listener 1: ', message);
+    console.log('Message listener 1: ', message);
 const messageListener2 = (message) =>
-  console.log('Message listener 2: ', message);
+    console.log('Message listener 2: ', message);
 const errorListener = (error) =>
-  console.log('Error: ', error);
+    console.log('Error: ', error);
 
 emitter.on('message', messageListener1);
 emitter.on('message', messageListener2);

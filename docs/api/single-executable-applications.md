@@ -59,13 +59,13 @@ $ cp $(command -v node) hello
 
 Удалите подпись двоичного файла:
 
-- На macOS:
+-   На macOS:
 
 ```console
 $ codesign --remove-signature hello
 ```
 
-- На Windows (опционально):
+-   На Windows (опционально):
 
 [signtool](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool) можно использовать из установленного [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/). Если этот шаг пропущен, игнорируйте все предупреждения postject, связанные с подписью.
 
@@ -77,22 +77,22 @@ $ signtool remove /s hello
 
 Внедрите блоб в скопированный двоичный файл, запустив `postject` со следующими опциями:
 
-- `hello` - Имя копии исполняемого файла `node`, созданного на шаге 2.
-- `NODE_SEA_BLOB` - Имя ресурса / заметки / секции в бинарном файле, где будет храниться содержимое блоба.
-- `sea-prep.blob` - Имя блоба, созданного на шаге 1.
-- `--sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2` - [fuse](https://www.electronjs.org/docs/latest/tutorial/fuses), используемый проектом Node.js для обнаружения инъекции файла.
-- `--macho-segment-name NODE_SEA` (нужен только на macOS) - Имя сегмента в бинарном файле, где будет храниться содержимое блоба.
+-   `hello` - Имя копии исполняемого файла `node`, созданного на шаге 2.
+-   `NODE_SEA_BLOB` - Имя ресурса / заметки / секции в бинарном файле, где будет храниться содержимое блоба.
+-   `sea-prep.blob` - Имя блоба, созданного на шаге 1.
+-   `--sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2` - [fuse](https://www.electronjs.org/docs/latest/tutorial/fuses), используемый проектом Node.js для обнаружения инъекции файла.
+-   `--macho-segment-name NODE_SEA` (нужен только на macOS) - Имя сегмента в бинарном файле, где будет храниться содержимое блоба.
 
 Подводя итог, вот необходимая команда для каждой платформы:
 
-- В системах, отличных от macOS:
+-   В системах, отличных от macOS:
 
 ```console
 $ npx postject hello NODE_SEA_BLOB sea-prep.blob \
 	--sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
 ```
 
-- На macOS:
+-   На macOS:
 
 ```console
 $ npx postject hello NODE_SEA_BLOB sea-prep.blob \
@@ -104,15 +104,15 @@ $ npx postject hello NODE_SEA_BLOB sea-prep.blob \
 
 Подпишите бинарный файл:
 
-- На macOS:
+-   На macOS:
 
 ```console
 $ codesign --sign - hello
 ```
 
-- На Windows (опционально):
+-   На Windows (опционально):
 
-  Для этого необходимо наличие сертификата. Однако неподписанный двоичный файл все равно можно будет запустить.
+    Для этого необходимо наличие сертификата. Однако неподписанный двоичный файл все равно можно будет запустить.
 
 ```console
 $ signtool sign /fd SHA256 hello
@@ -135,8 +135,8 @@ Hello, world!
 
 ```json
 {
-  "main": "/path/to/bundled/script.js",
-  "output": "/path/to/write/the/generated/blob.blob"
+    "main": "/path/to/bundled/script.js",
+    "output": "/path/to/write/the/generated/blob.blob"
 }
 ```
 
@@ -169,9 +169,9 @@ require = createRequire(__filename);
 
 Инструмент, нацеленный на создание одного исполняемого Node.js приложения, должен инжектировать содержимое блоба, подготовленного с помощью `--experimental-sea-config`:
 
-- ресурс с именем `NODE_SEA_BLOB`, если двоичный файл `node` является [PE](https://ru.wikipedia.org/wiki/portable_executable) файлом
-- секцию с именем `NODE_SEA_BLOB` в сегменте `NODE_SEA`, если двоичный файл `node` является файлом [Mach-O](https://ru.wikipedia.org/wiki/mach-o)
-- примечание с именем `NODE_SEA_BLOB`, если двоичный файл `node` является файлом [ELF](https://ru.wikipedia.org/wiki/executable_and_linkable_format).
+-   ресурс с именем `NODE_SEA_BLOB`, если двоичный файл `node` является [PE](https://ru.wikipedia.org/wiki/portable_executable) файлом
+-   секцию с именем `NODE_SEA_BLOB` в сегменте `NODE_SEA`, если двоичный файл `node` является файлом [Mach-O](https://ru.wikipedia.org/wiki/mach-o)
+-   примечание с именем `NODE_SEA_BLOB`, если двоичный файл `node` является файлом [ELF](https://ru.wikipedia.org/wiki/executable_and_linkable_format).
 
 Поиск в двоичном файле строки `NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2:0` [fuse](https://www.electronjs.org/docs/latest/tutorial/fuses) и переверните последний символ в `1`, чтобы указать, что ресурс был инжектирован.
 
@@ -179,9 +179,9 @@ require = createRequire(__filename);
 
 Поддержка одноисполняемых файлов регулярно тестируется на CI только на следующих платформах:
 
-- Windows
-- macOS
-- Linux (все дистрибутивы [поддерживаемые Node.js](https://github.com/nodejs/node/blob/main/building.md#platform-list), кроме Alpine, и все архитектуры [поддерживаемые Node.js](https://github.com/nodejs/node/blob/main/building.md#platform-list), кроме s390x и ppc64).
+-   Windows
+-   macOS
+-   Linux (все дистрибутивы [поддерживаемые Node.js](https://github.com/nodejs/node/blob/main/building.md#platform-list), кроме Alpine, и все архитектуры [поддерживаемые Node.js](https://github.com/nodejs/node/blob/main/building.md#platform-list), кроме s390x и ppc64).
 
 Это связано с отсутствием лучших инструментов для генерации одиночных исполняемых файлов, которые можно было бы использовать для тестирования этой функции на других платформах.
 

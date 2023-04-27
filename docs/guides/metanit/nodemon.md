@@ -3,17 +3,15 @@
 В процессе разработки может потребоваться необходимость внести изменения в уже запущенный проект. Допустим, у нас в файле `app.js` определен следующий код:
 
 ```js
-const http = require('http')
+const http = require('http');
 
-let message = 'Hello World!'
-http
-  .createServer(function (request, response) {
-    console.log(message)
-    response.end(message)
-  })
-  .listen(3000, '127.0.0.1', () => {
-    console.log('Сервер начал прослушивание запросов')
-  })
+let message = 'Hello World!';
+http.createServer(function (request, response) {
+    console.log(message);
+    response.end(message);
+}).listen(3000, '127.0.0.1', () => {
+    console.log('Сервер начал прослушивание запросов');
+});
 ```
 
 Запустим сервер с помощью команды `node app.js`, и при обращении пользователя по адресу `http://localhost:3000/` браузер пользователя отобразит строку `Hello World!`. Одновременно строка выводится на консоль.

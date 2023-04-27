@@ -11,30 +11,30 @@ npm install ejs --save
 Определим в файле `app.js` следующий код:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.use('/contact', function (request, response) {
-  response.render('contact', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 По факту здесь определен тот же код, что и в одной из предыдущих тем, только теперь устанавливается движок `ejs`:
 
 ```js
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 ```
 
 Далее добавим в папку `views` в папке проекта новый файл `contact.ejs` (представления в EJS по умолчанию имеют расширение `.ejs`):
@@ -83,7 +83,8 @@ EJS позволяет вставлять код одних представле
 
 ```html
 <nav>
-  <a href="/">Главная</a> | <a href="/contact">Контакты</a>
+    <a href="/">Главная</a> |
+    <a href="/contact">Контакты</a>
 </nav>
 ```
 

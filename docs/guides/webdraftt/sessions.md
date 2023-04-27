@@ -18,35 +18,35 @@ _app.js_
 
 ```js
 const express = require('express'),
-  app = express(),
-  session = require('express-session')
+    app = express(),
+    session = require('express-session');
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  session({
-    secret: 'you secret key',
-    saveUninitialized: true,
-  })
-)
+    session({
+        secret: 'you secret key',
+        saveUninitialized: true,
+    })
+);
 
 app.post('/ad', (req, res) => {
-  req.session.showAd = req.body.showAd
-  res.sendStatus(200)
-})
+    req.session.showAd = req.body.showAd;
+    res.sendStatus(200);
+});
 
 app.get('/', (req, res) => {
-  console.log(req.session.showAd)
-  res.sendStatus(200)
-})
+    console.log(req.session.showAd);
+    res.sendStatus(200);
+});
 
 app.listen(port, host, function () {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 !!! note ""
@@ -57,13 +57,13 @@ app.listen(port, host, function () {
 
 Во время инициализации Node.js сессии с помощью объекта можно задать следующие опции:
 
-- `cookie` - настройка cookie хранения идентификатора сессии, передается объект с опциями (подробно [здесь](cookie.md));
-- `genid` - функция, которая возвращает новый идентификатор сессии в виде строки (по умолчанию используется функция, генерирующая идентификаторы на основе библиотеки `uid-safe`);
-- `resave` - булевое значение, указывает, нужно ли пересохранять сессию в хранилище, если она не изменилась (по умолчанию `false`);
-- `rolling` - булевое значение, указывающее, нужно ли устанавливать идентификатор сессии cookie на каждый запрос (по умолчанию `false`);
-- `saveUninitialized` - булевое значение, если `true`, то в хранилище будут попадать пустые сессии;
-- `secret` - строка, которой подписывается сохраняемый в cookie идентификатор сессии;
-- `store` - экземпляр хранилища, которое будет использоваться для хранения сессии (рассмотрено ниже в этой статье).
+-   `cookie` - настройка cookie хранения идентификатора сессии, передается объект с опциями (подробно [здесь](cookie.md));
+-   `genid` - функция, которая возвращает новый идентификатор сессии в виде строки (по умолчанию используется функция, генерирующая идентификаторы на основе библиотеки `uid-safe`);
+-   `resave` - булевое значение, указывает, нужно ли пересохранять сессию в хранилище, если она не изменилась (по умолчанию `false`);
+-   `rolling` - булевое значение, указывающее, нужно ли устанавливать идентификатор сессии cookie на каждый запрос (по умолчанию `false`);
+-   `saveUninitialized` - булевое значение, если `true`, то в хранилище будут попадать пустые сессии;
+-   `secret` - строка, которой подписывается сохраняемый в cookie идентификатор сессии;
+-   `store` - экземпляр хранилища, которое будет использоваться для хранения сессии (рассмотрено ниже в этой статье).
 
 !!! note ""
 
@@ -83,46 +83,46 @@ _app.js_
 
 ```js
 const express = require('express'),
-  app = express(),
-  bodyParser = require('body-parser'),
-  session = require('express-session'),
-  redisStorage = require('connect-redis')(session),
-  redis = require('redis'),
-  client = redis.createClient()
+    app = express(),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    redisStorage = require('connect-redis')(session),
+    redis = require('redis'),
+    client = redis.createClient();
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
-  session({
-    store: new redisStorage({
-      host: host,
-      port: 6379,
-      client: client,
-    }),
-    secret: 'you secret key',
-    saveUninitialized: true,
-  })
-)
+    session({
+        store: new redisStorage({
+            host: host,
+            port: 6379,
+            client: client,
+        }),
+        secret: 'you secret key',
+        saveUninitialized: true,
+    })
+);
 
 app.post('/ad', (req, res) => {
-  if (!req.session.key) req.session.key = req.sessionID
+    if (!req.session.key) req.session.key = req.sessionID;
 
-  req.session.key[req.sessionID].showAd = req.body.showAd
-  res.sendStatus(200)
-})
+    req.session.key[req.sessionID].showAd = req.body.showAd;
+    res.sendStatus(200);
+});
 
 app.get('/', (req, res) => {
-  console.log(req.session.key[req.sessionID].showAd)
-  res.sendStatus(200)
-})
+    console.log(req.session.key[req.sessionID].showAd);
+    res.sendStatus(200);
+});
 
 app.listen(port, host, function () {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 Для записи данных пользователя в Redis свойству `key` сессии присваивается объект с ее уникальным идентификатором в виде ключа и объектом данных в качестве значения.
@@ -133,10 +133,10 @@ app.listen(port, host, function () {
 
 ```js
 app.use(
-  session({
-    store: new redisStorage({
-      ttl: 3600000,
-    }),
-  })
-)
+    session({
+        store: new redisStorage({
+            ttl: 3600000,
+        }),
+    })
+);
 ```

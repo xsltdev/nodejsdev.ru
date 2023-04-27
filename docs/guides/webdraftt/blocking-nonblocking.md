@@ -5,10 +5,10 @@
 Большинство синхронных методов в Node.js относятся к блокирующим, и чаще всего они выполняют операции ввода/вывода или работают с сетью. Практически все синхронные методы имеют в своем названии `Sync`.
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-console.log(fs.readFileSync('./file.txt'))
-console.log('After reading file')
+console.log(fs.readFileSync('./file.txt'));
+console.log('After reading file');
 ```
 
 Здесь с началом чтения файла `file.txt` процесс блокируется и продолжает работу только с завершением операции чтения. Результат работы приведенного кода.
@@ -21,13 +21,13 @@ After reading file
 Чтобы избежать блокировки event loop и тем самым создавать высокопроизводительные Node.js приложения, используйте асинхронные методы. Почти наверняка каждому синхронному блокирующему методу соответствует метод с точно таким же функционалом, но асинхронный.
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
 fs.readFile('./file.txt', (err, data) => {
-  if (err) throw err
-  console.log(data)
-})
-console.log('Before reading file')
+    if (err) throw err;
+    console.log(data);
+});
+console.log('Before reading file');
 ```
 
 В этом примере процесс не будет дожидаться окончания чтения файла, а продолжит выполнять следующий код. А когда содержимое файла будет получено - вызовет переданную методу `readFile()` callback-функцию. Результат работы кода примера.
@@ -44,25 +44,25 @@ Before reading file
 Самая распространенная ошибка при использовании асинхронных методов - полагать, что следующий за методом код будет выполнен после его завершения.
 
 ```js
-const fs = require('fs')
+const fs = require('fs');
 
-let fileContent
+let fileContent;
 
 fs.readFile('./file.txt', (err, data) => {
-  if (err) throw err
-  fileContent = data
-})
+    if (err) throw err;
+    fileContent = data;
+});
 
-console.log(fileContent)
+console.log(fileContent);
 ```
 
 Здесь в консоль будет выведено `undefined`, поскольку в момент вывода значения переменной `fileContent` операция чтения еще не будет завершена. Чтобы избежать этого, необходимо занести код вывода содержимого файла в callback-функцию метода `readFile()` или создать `Promise`.
 
 ```js
 fs.readFile('./file.txt', (err, data) => {
-  if (err) throw err
-  fileContent = data
+    if (err) throw err;
+    fileContent = data;
 
-  console.log(fileContent)
-})
+    console.log(fileContent);
+});
 ```

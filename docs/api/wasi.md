@@ -18,20 +18,20 @@ import { WASI } from 'wasi';
 import { argv, env } from 'node:process';
 
 const wasi = new WASI({
-  version: 'preview1',
-  args: argv,
-  env,
-  preopens: {
-    '/sandbox': '/some/real/path/that/wasm/can/access',
-  },
+    version: 'preview1',
+    args: argv,
+    env,
+    preopens: {
+        '/sandbox': '/some/real/path/that/wasm/can/access',
+    },
 });
 
 const wasm = await WebAssembly.compile(
-  await readFile(new URL('./demo.wasm', import.meta.url))
+    await readFile(new URL('./demo.wasm', import.meta.url))
 );
 const instance = await WebAssembly.instantiate(
-  wasm,
-  wasi.getImportObject()
+    wasm,
+    wasi.getImportObject()
 );
 
 wasi.start(instance);
@@ -45,24 +45,24 @@ const { argv, env } = require('node:process');
 const { join } = require('node:path');
 
 const wasi = new WASI({
-  version: 'preview1',
-  args: argv,
-  env,
-  preopens: {
-    '/sandbox': '/some/real/path/that/wasm/can/access',
-  },
+    version: 'preview1',
+    args: argv,
+    env,
+    preopens: {
+        '/sandbox': '/some/real/path/that/wasm/can/access',
+    },
 });
 
 (async () => {
-  const wasm = await WebAssembly.compile(
-    await readFile(join(__dirname, 'demo.wasm'))
-  );
-  const instance = await WebAssembly.instantiate(
-    wasm,
-    wasi.getImportObject()
-  );
+    const wasm = await WebAssembly.compile(
+        await readFile(join(__dirname, 'demo.wasm'))
+    );
+    const instance = await WebAssembly.instantiate(
+        wasm,
+        wasi.getImportObject()
+    );
 
-  wasi.start(instance);
+    wasi.start(instance);
 })();
 ```
 
@@ -112,15 +112,15 @@ $ wat2wasm demo.wat
 
 ### `новый WASI([опции])`
 
-- `options` {Object}
-  - `args` {Array} Массив строк, которые приложение WebAssembly будет воспринимать как аргументы командной строки. Первый аргумент - это виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
-  - `env` {Object} Объект, подобный `process.env`, который приложение WebAssembly будет воспринимать как свое окружение. **По умолчанию:** `{}`.
-  - `preopens` {Object} Этот объект представляет структуру каталогов "песочницы" приложения WebAssembly. Строковые ключи `preopens` рассматриваются как каталоги внутри песочницы. Соответствующие значения в `preopens` - это реальные пути к этим директориям на хост-машине.
-  - `returnOnExit` {boolean} По умолчанию приложения WASI завершают процесс Node.js с помощью функции `__wasi_proc_exit()`. Установка этой опции в `true` заставляет `wasi.start()` возвращать код выхода, а не завершать процесс. **По умолчанию:** `false`.
-  - `stdin` {целое} Дескриптор файла, используемый в качестве стандартного ввода в приложении WebAssembly. **По умолчанию:** `0`.
-  - `stdout` {целое число} Дескриптор файла, используемый в качестве стандартного вывода в приложении WebAssembly. **По умолчанию:** `1`.
-  - `stderr` {целое число} Дескриптор файла, используемый в качестве стандартной ошибки в приложении WebAssembly. **По умолчанию:** `2`.
-  - `version` {string} Запрашиваемая версия WASI. В настоящее время поддерживаются только версии `unstable` и `preview1`. **По умолчанию:** `preview1`.
+-   `options` {Object}
+    -   `args` {Array} Массив строк, которые приложение WebAssembly будет воспринимать как аргументы командной строки. Первый аргумент - это виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
+    -   `env` {Object} Объект, подобный `process.env`, который приложение WebAssembly будет воспринимать как свое окружение. **По умолчанию:** `{}`.
+    -   `preopens` {Object} Этот объект представляет структуру каталогов "песочницы" приложения WebAssembly. Строковые ключи `preopens` рассматриваются как каталоги внутри песочницы. Соответствующие значения в `preopens` - это реальные пути к этим директориям на хост-машине.
+    -   `returnOnExit` {boolean} По умолчанию приложения WASI завершают процесс Node.js с помощью функции `__wasi_proc_exit()`. Установка этой опции в `true` заставляет `wasi.start()` возвращать код выхода, а не завершать процесс. **По умолчанию:** `false`.
+    -   `stdin` {целое} Дескриптор файла, используемый в качестве стандартного ввода в приложении WebAssembly. **По умолчанию:** `0`.
+    -   `stdout` {целое число} Дескриптор файла, используемый в качестве стандартного вывода в приложении WebAssembly. **По умолчанию:** `1`.
+    -   `stderr` {целое число} Дескриптор файла, используемый в качестве стандартной ошибки в приложении WebAssembly. **По умолчанию:** `2`.
+    -   `version` {string} Запрашиваемая версия WASI. В настоящее время поддерживаются только версии `unstable` и `preview1`. **По умолчанию:** `preview1`.
 
 ### `wasi.getImportObject()`
 
@@ -140,7 +140,7 @@ $ wat2wasm demo.wat
 
 ### `wasi.start(instance)`
 
-- `instance` {WebAssembly.Instance}
+-   `instance` {WebAssembly.Instance}
 
 Попытка начать выполнение `instance` как команды WASI, вызвав ее экспорт `_start()`. Если `instance` не содержит экспорта `_start()`, или если `instance` содержит экспорт `_initialize()`, то возникает исключение.
 
@@ -150,7 +150,7 @@ $ wat2wasm demo.wat
 
 ### `wasi.initialize(instance)`
 
-- `instance` {WebAssembly.Instance}
+-   `instance` {WebAssembly.Instance}
 
 Попытка инициализировать `instance` как реактор WASI, вызывая его экспорт `_initialize()`, если он присутствует. Если `instance` содержит экспорт `_start()`, то будет выброшено исключение.
 
@@ -160,6 +160,6 @@ $ wat2wasm demo.wat
 
 ### `wasi.wasiImport`
 
-- {Object}
+-   {Object}
 
 `wasiImport` - это объект, реализующий API системных вызовов WASI. Этот объект должен быть передан как импорт `wasi_snapshot_preview1` во время инстанцирования [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance).

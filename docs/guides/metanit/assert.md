@@ -4,9 +4,9 @@
 
 ```js
 if (result !== expectedResult) {
-  throw new Error(
-    `Expected ${expectedResult}, but got ${result}`
-  );
+    throw new Error(
+        `Expected ${expectedResult}, but got ${result}`
+    );
 }
 ```
 
@@ -18,7 +18,7 @@ if (result !== expectedResult) {
 
 ```js
 module.exports.multiply = function (x, y) {
-  return x * y;
+    return x * y;
 };
 ```
 
@@ -29,9 +29,9 @@ var assert = require('assert');
 var operations = require('./operations');
 
 it('should multiply two numbers', function () {
-  var expected = 15;
-  var result = operations.multiply(3, 5);
-  assert.equal(result, expected);
+    var expected = 15;
+    var result = operations.multiply(3, 5);
+    assert.equal(result, expected);
 });
 ```
 
@@ -45,8 +45,8 @@ it('should multiply two numbers', function () {
 
 ```js
 it('should multiply two numbers', function () {
-  var expected = 15;
-  var result = operations.multiply(3, 5);
-  assert.notEqual(result, expected);
+    var expected = 15;
+    var result = operations.multiply(3, 5);
+    assert.notEqual(result, expected);
 });
 ```

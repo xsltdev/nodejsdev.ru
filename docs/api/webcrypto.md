@@ -18,26 +18,26 @@ Node.js предоставляет реализацию стандартного
 const { subtle } = globalThis.crypto;
 
 (async function () {
-  const key = await subtle.generateKey(
-    {
-      name: 'HMAC',
-      хэш: 'SHA-256',
-      length: 256,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    const key = await subtle.generateKey(
+        {
+            name: 'HMAC',
+            хэш: 'SHA-256',
+            length: 256,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  const enc = new TextEncoder();
-  const message = enc.encode('Я люблю кексы');
+    const enc = new TextEncoder();
+    const message = enc.encode('Я люблю кексы');
 
-  const digest = await subtle.sign(
-    {
-      name: 'HMAC',
-    },
-    key,
-    message
-  );
+    const digest = await subtle.sign(
+        {
+            name: 'HMAC',
+        },
+        key,
+        message
+    );
 })();
 ```
 
@@ -53,16 +53,16 @@ const { subtle } = globalThis.crypto;
 const { subtle } = globalThis.crypto;
 
 async function generateAesKey(length = 256) {
-  const key = await subtle.generateKey(
-    {
-      name: 'AES-CBC',
-      length,
-    },
-    true,
-    ['encrypt', 'decrypt']
-  );
+    const key = await subtle.generateKey(
+        {
+            name: 'AES-CBC',
+            length,
+        },
+        true,
+        ['encrypt', 'decrypt']
+    );
 
-  return key;
+    return key;
 }
 ```
 
@@ -72,19 +72,19 @@ async function generateAesKey(length = 256) {
 const { subtle } = globalThis.crypto;
 
 async function generateEcKey(namedCurve = 'P-521') {
-  const {
-    publicKey,
-    privateKey,
-  } = await subtle.generateKey(
-    {
-      name: 'ECDSA',
-      namedCurve,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    const {
+        publicKey,
+        privateKey,
+    } = await subtle.generateKey(
+        {
+            name: 'ECDSA',
+            namedCurve,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  return { publicKey, privateKey };
+    return { publicKey, privateKey };
 }
 ```
 
@@ -98,23 +98,23 @@ async function generateEcKey(namedCurve = 'P-521') {
 const { subtle } = globalThis.crypto;
 
 async function generateEd25519Key() {
-  return subtle.generateKey(
-    {
-      name: 'Ed25519',
-    },
-    true,
-    ['sign', 'verify']
-  );
+    return subtle.generateKey(
+        {
+            name: 'Ed25519',
+        },
+        true,
+        ['sign', 'verify']
+    );
 }
 
 async function generateX25519Key() {
-  return subtle.generateKey(
-    {
-      name: 'X25519',
-    },
-    true,
-    ['deriveKey']
-  );
+    return subtle.generateKey(
+        {
+            name: 'X25519',
+        },
+        true,
+        ['deriveKey']
+    );
 }
 ```
 
@@ -124,16 +124,16 @@ async function generateX25519Key() {
 const { subtle } = globalThis.crypto;
 
 async function generateHmacKey(hash = 'SHA-256') {
-  const key = await subtle.generateKey(
-    {
-      name: 'HMAC',
-      хэш,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    const key = await subtle.generateKey(
+        {
+            name: 'HMAC',
+            хэш,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  return key;
+    return key;
 }
 ```
 
@@ -144,24 +144,24 @@ const { subtle } = globalThis.crypto;
 const publicExponent = new Uint8Array([1, 0, 1]);
 
 async function generateRsaKey(
-  modulusLength = 2048,
-  hash = 'SHA-256'
+    modulusLength = 2048,
+    hash = 'SHA-256'
 ) {
-  const {
-    publicKey,
-    privateKey,
-  } = await subtle.generateKey(
-    {
-      name: 'RSASSA-PKCS1-v1_5',
-      modulusLength,
-      publicExponent,
-      хэш,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    const {
+        publicKey,
+        privateKey,
+    } = await subtle.generateKey(
+        {
+            name: 'RSASSA-PKCS1-v1_5',
+            modulusLength,
+            publicExponent,
+            хэш,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  return { publicKey, privateKey };
+    return { publicKey, privateKey };
 }
 ```
 
@@ -171,38 +171,38 @@ async function generateRsaKey(
 const crypto = globalThis.crypto;
 
 async function aesEncrypt(plaintext) {
-  const ec = new TextEncoder();
-  const key = await generateAesKey();
-  const iv = crypto.getRandomValues(new Uint8Array(16));
+    const ec = new TextEncoder();
+    const key = await generateAesKey();
+    const iv = crypto.getRandomValues(new Uint8Array(16));
 
-  const ciphertext = await crypto.subtle.encrypt(
-    {
-      name: 'AES-CBC',
-      iv,
-    },
-    key,
-    ec.encode(plaintext)
-  );
+    const ciphertext = await crypto.subtle.encrypt(
+        {
+            name: 'AES-CBC',
+            iv,
+        },
+        key,
+        ec.encode(plaintext)
+    );
 
-  return {
-    key,
-    iv,
-    ciphertext,
-  };
+    return {
+        key,
+        iv,
+        ciphertext,
+    };
 }
 
 async function aesDecrypt(ciphertext, key, iv) {
-  const dec = new TextDecoder();
-  const plaintext = await crypto.subtle.decrypt(
-    {
-      name: 'AES-CBC',
-      iv,
-    },
-    key,
-    ciphertext
-  );
+    const dec = new TextDecoder();
+    const plaintext = await crypto.subtle.decrypt(
+        {
+            name: 'AES-CBC',
+            iv,
+        },
+        key,
+        ciphertext
+    );
 
-  return dec.decode(plaintext);
+    return dec.decode(plaintext);
 }
 ```
 
@@ -212,38 +212,38 @@ async function aesDecrypt(ciphertext, key, iv) {
 const { subtle } = globalThis.crypto;
 
 async function generateAndExportHmacKey(
-  format = 'jwk',
-  hash = 'SHA-512'
+    format = 'jwk',
+    hash = 'SHA-512'
 ) {
-  const key = await subtle.generateKey(
-    {
-      name: 'HMAC',
-      hash,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    const key = await subtle.generateKey(
+        {
+            name: 'HMAC',
+            hash,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  return subtle.exportKey(format, key);
+    return subtle.exportKey(format, key);
 }
 
 async function importHmacKey(
-  keyData,
-  format = 'jwk',
-  hash = 'SHA-512'
-) {
-  const key = await subtle.importKey(
-    format,
     keyData,
-    {
-      name: 'HMAC',
-      hash,
-    },
-    true,
-    ['sign', 'verify']
-  );
+    format = 'jwk',
+    hash = 'SHA-512'
+) {
+    const key = await subtle.importKey(
+        format,
+        keyData,
+        {
+            name: 'HMAC',
+            hash,
+        },
+        true,
+        ['sign', 'verify']
+    );
 
-  return key;
+    return key;
 }
 ```
 
@@ -253,55 +253,55 @@ async function importHmacKey(
 const { subtle } = globalThis.crypto;
 
 async function generateAndWrapHmacKey(
-  format = 'jwk',
-  hash = 'SHA-512'
+    format = 'jwk',
+    hash = 'SHA-512'
 ) {
-  const [ключ, wrappingKey] = await Promise.all([
-    subtle.generateKey(
-      {
-        name: 'HMAC',
-        hash,
-      },
-      true,
-      ['sign', 'verify']
-    ),
-    subtle.generateKey(
-      {
-        name: 'AES-KW',
-        length: 256,
-      },
-      true,
-      ['wrapKey', 'unwrapKey']
-    ),
-  ]);
+    const [ключ, wrappingKey] = await Promise.all([
+        subtle.generateKey(
+            {
+                name: 'HMAC',
+                hash,
+            },
+            true,
+            ['sign', 'verify']
+        ),
+        subtle.generateKey(
+            {
+                name: 'AES-KW',
+                length: 256,
+            },
+            true,
+            ['wrapKey', 'unwrapKey']
+        ),
+    ]);
 
-  const wrappedKey = await subtle.wrapKey(
-    format,
-    key,
-    wrappingKey,
-    'AES-KW'
-  );
+    const wrappedKey = await subtle.wrapKey(
+        format,
+        key,
+        wrappingKey,
+        'AES-KW'
+    );
 
-  return { wrappedKey, wrappingKey };
+    return { wrappedKey, wrappingKey };
 }
 
 async function unwrapHmacKey(
-  wrappedKey,
-  wrappingKey,
-  format = 'jwk',
-  hash = 'SHA-512'
-) {
-  const key = await subtle.unwrapKey(
-    format,
     wrappedKey,
     wrappingKey,
-    'AES-KW',
-    { name: 'HMAC', hash },
-    true,
-    ['sign', 'verify']
-  );
+    format = 'jwk',
+    hash = 'SHA-512'
+) {
+    const key = await subtle.unwrapKey(
+        format,
+        wrappedKey,
+        wrappingKey,
+        'AES-KW',
+        { name: 'HMAC', hash },
+        true,
+        ['sign', 'verify']
+    );
 
-  return key;
+    return key;
 }
 ```
 
@@ -311,24 +311,24 @@ async function unwrapHmacKey(
 const { subtle } = globalThis.crypto;
 
 async function sign(key, data) {
-  const ec = new TextEncoder();
-  const signature = await subtle.sign(
-    'RSASSA-PKCS1-v1_5',
-    key,
-    ec.encode(data)
-  );
-  return signature;
+    const ec = new TextEncoder();
+    const signature = await subtle.sign(
+        'RSASSA-PKCS1-v1_5',
+        key,
+        ec.encode(data)
+    );
+    return signature;
 }
 
 async function verify(key, signature, data) {
-  const ec = new TextEncoder();
-  const verified = await subtle.verify(
-    'RSASSA-PKCS1-v1_5',
-    key,
-    signature,
-    ec.encode(data)
-  );
-  return verified;
+    const ec = new TextEncoder();
+    const verified = await subtle.verify(
+        'RSASSA-PKCS1-v1_5',
+        key,
+        signature,
+        ec.encode(data)
+    );
+    return verified;
 }
 ```
 
@@ -338,62 +338,62 @@ async function verify(key, signature, data) {
 const { subtle } = globalThis.crypto;
 
 async function pbkdf2(
-  pass,
-  salt,
-  iterations = 1000,
-  length = 256
+    pass,
+    salt,
+    iterations = 1000,
+    length = 256
 ) {
-  const ec = new TextEncoder();
-  const key = await subtle.importKey(
-    'raw',
-    ec.encode(pass),
-    'PBKDF2',
-    false,
-    ['deriveBits']
-  );
-  const bits = await subtle.deriveBits(
-    {
-      name: 'PBKDF2',
-      hash: 'SHA-512',
-      salt: ec.encode(salt),
-      iterations,
-    },
-    key,
-    length
-  );
-  return bits;
+    const ec = new TextEncoder();
+    const key = await subtle.importKey(
+        'raw',
+        ec.encode(pass),
+        'PBKDF2',
+        false,
+        ['deriveBits']
+    );
+    const bits = await subtle.deriveBits(
+        {
+            name: 'PBKDF2',
+            hash: 'SHA-512',
+            salt: ec.encode(salt),
+            iterations,
+        },
+        key,
+        length
+    );
+    return bits;
 }
 
 async function pbkdf2Key(
-  pass,
-  salt,
-  iterations = 1000,
-  length = 256
+    pass,
+    salt,
+    iterations = 1000,
+    length = 256
 ) {
-  const ec = new TextEncoder();
-  const keyMaterial = await subtle.importKey(
-    'raw',
-    ec.encode(pass),
-    'PBKDF2',
-    false,
-    ['deriveKey']
-  );
-  const key = await subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      hash: 'SHA-512',
-      salt: ec.encode(salt),
-      iterations,
-    },
-    keyMaterial,
-    {
-      name: 'AES-GCM',
-      length: 256,
-    },
-    true,
-    ['encrypt', 'decrypt']
-  );
-  return key;
+    const ec = new TextEncoder();
+    const keyMaterial = await subtle.importKey(
+        'raw',
+        ec.encode(pass),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+    );
+    const key = await subtle.deriveKey(
+        {
+            name: 'PBKDF2',
+            hash: 'SHA-512',
+            salt: ec.encode(salt),
+            iterations,
+        },
+        keyMaterial,
+        {
+            name: 'AES-GCM',
+            length: 256,
+        },
+        true,
+        ['encrypt', 'decrypt']
+    );
+    return key;
 }
 ```
 
@@ -403,12 +403,12 @@ async function pbkdf2Key(
 const { subtle } = globalThis.crypto;
 
 async function digest(data, algorithm = 'SHA-512') {
-  const ec = new TextEncoder();
-  const digest = await subtle.digest(
-    algorithm,
-    ec.encode(data)
-  );
-  return digest;
+    const ec = new TextEncoder();
+    const digest = await subtle.digest(
+        algorithm,
+        ec.encode(data)
+    );
+    return digest;
 }
 ```
 
@@ -759,14 +759,14 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `crypto.subtle`
 
-- Тип: {SubtleCrypto}
+-   Тип: {SubtleCrypto}
 
 Предоставляет доступ к API `SubtleCrypto`.
 
 ### `crypto.getRandomValues(typedArray)`
 
-- `typedArray` {Buffer|TypedArray}
-- Возвращает: {Buffer|TypedArray}
+-   `typedArray` {Buffer|TypedArray}
+-   Возвращает: {Buffer|TypedArray}
 
 Генерирует криптографически сильные случайные значения. Данный `typedArray` заполняется случайными значениями, и возвращается ссылка на `typedArray`.
 
@@ -776,7 +776,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `crypto.randomUUID()`
 
-- Возвращает: {строка}
+-   Возвращает: {строка}
 
 Генерирует случайный [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) UUID версии 4. UUID генерируется с помощью криптографического генератора псевдослучайных чисел.
 
@@ -784,7 +784,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKey.algorithm`
 
-- Тип: {AesKeyGenParams|RsaHashedKeyGenParams|EcKeyGenParams|HmacKeyGenParams}
+-   Тип: {AesKeyGenParams|RsaHashedKeyGenParams|EcKeyGenParams|HmacKeyGenParams}
 
 Объект, детализирующий алгоритм, для которого может быть использован ключ, вместе с дополнительными параметрами, специфичными для данного алгоритма.
 
@@ -792,7 +792,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKey.extractable`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Если `true`, {CryptoKey} может быть извлечен с помощью `subtleCrypto.exportKey()` или `subtleCrypto.wrapKey()`.
 
@@ -800,26 +800,26 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKey.type`
 
-- Тип: {строка} Одно из `'secret'`, `'private'` или `'public'`.
+-   Тип: {строка} Одно из `'secret'`, `'private'` или `'public'`.
 
 Строка, определяющая, является ли ключ симметричным (`'secret'`) или асимметричным (`'private'` или `'public'`) ключом.
 
 ### `cryptoKey.usages`
 
-- Тип: {string\[\]}
+-   Тип: {string\[\]}
 
 Массив строк, определяющих операции, для которых может быть использован ключ.
 
 Возможные варианты использования следующие:
 
-- `'encrypt'` - ключ может быть использован для шифрования данных.
-- `'decrypt'` - ключ может быть использован для расшифровки данных.
-- `'sign'` - Ключ может использоваться для создания цифровых подписей.
-- `'verify'` - Ключ может использоваться для проверки цифровых подписей.
-- `'deriveKey'` - Ключ может быть использован для получения нового ключа.
-- `'deriveBits'` - Ключ может быть использован для получения битов.
-- `'wrapKey'` - Ключ может быть использован для получения другого ключа.
-- `'unwrapKey'` - Ключ может быть использован для разворачивания другого ключа.
+-   `'encrypt'` - ключ может быть использован для шифрования данных.
+-   `'decrypt'` - ключ может быть использован для расшифровки данных.
+-   `'sign'` - Ключ может использоваться для создания цифровых подписей.
+-   `'verify'` - Ключ может использоваться для проверки цифровых подписей.
+-   `'deriveKey'` - Ключ может быть использован для получения нового ключа.
+-   `'deriveBits'` - Ключ может быть использован для получения битов.
+-   `'wrapKey'` - Ключ может быть использован для получения другого ключа.
+-   `'unwrapKey'` - Ключ может быть использован для разворачивания другого ключа.
 
 Допустимые варианты использования ключа зависят от алгоритма ключа (определяется `cryptokey.algorithm.name`).
 
@@ -977,36 +977,36 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKeyPair.privateKey`
 
-- Тип: {CryptoKey} Криптоключ {CryptoKey}, `тип` которого будет `'private'`.
+-   Тип: {CryptoKey} Криптоключ {CryptoKey}, `тип` которого будет `'private'`.
 
 ### `cryptoKeyPair.publicKey`
 
-- Тип: {CryptoKey} Криптоключ {CryptoKey}, `тип` которого будет `"public"`.
+-   Тип: {CryptoKey} Криптоключ {CryptoKey}, `тип` которого будет `"public"`.
 
 ## Класс: `SubtleCrypto`
 
 ### `subtle.decrypt(algorithm, key, data)`
 
-- `algorithm`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
-- `key`: {CryptoKey}
-- `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `algorithm`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
+-   `key`: {CryptoKey}
+-   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}.
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `key`, `subtle.decrypt()` пытается расшифровать предоставленные `data`. В случае успеха, возвращаемое обещание будет разрешено с {ArrayBuffer}, содержащим результат в виде открытого текста.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `RSA-OAEP`
-- `AES-CTR`
-- `AES-CBC`
-- `AES-GCM`
+-   `RSA-OAEP`
+-   `AES-CTR`
+-   `AES-CBC`
+-   `AES-GCM`
 
 ### `subtle.deriveBits(algorithm, baseKey, length)`
 
-- `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
-- `baseKey`: {CryptoKey}
-- `length`: {number|null}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
+-   `baseKey`: {CryptoKey}
+-   `length`: {number|null}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}.
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `baseKey`, `subtle.deriveBits()` пытается сгенерировать биты `length`.
 
@@ -1018,20 +1018,20 @@ async function digest(data, algorithm = 'SHA-512') {
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `'ECDH'`
-- `'X25519'`
-- `'X448'`
-- `'HKDF'`
-- `'PBKDF2'`
+-   `'ECDH'`
+-   `'X25519'`
+-   `'X448'`
+-   `'HKDF'`
+-   `'PBKDF2'`
 
 ### `subtle.deriveKey(algorithm, baseKey, derivedKeyAlgorithm, extractable, keyUsages)`
 
-- `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
-- `baseKey`: {CryptoKey}
-- `derivedKeyAlgorithm`: {HmacKeyGenParams|AesKeyGenParams}
-- `extractable`: {boolean}
-- `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
-- Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
+-   `baseKey`: {CryptoKey}
+-   `derivedKeyAlgorithm`: {HmacKeyGenParams|AesKeyGenParams}
+-   `extractable`: {boolean}
+-   `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
+-   Возвращает: {Promise}, содержащий {CryptoKey}.
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `baseKey`, `subtle.deriveKey()` пытается сгенерировать новый {CryptoKey} на основе метода и параметров в `derivedKeyAlgorithm`.
 
@@ -1039,49 +1039,49 @@ async function digest(data, algorithm = 'SHA-512') {
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `'ECDH'`
-- `'X25519'` <span class="experimental-inline"></span>\[11\]
-- `'X448'` <span class="experimental-inline"></span>\[12\]
-- `'HKDF'`
-- `ПБКДФ2`
+-   `'ECDH'`
+-   `'X25519'` <span class="experimental-inline"></span>\[11\]
+-   `'X448'` <span class="experimental-inline"></span>\[12\]
+-   `'HKDF'`
+-   `ПБКДФ2`
 
 ### `subtle.digest(algorithm, data)`
 
-- `алгоритм`: {string|Object}
-- `данные`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}
+-   `алгоритм`: {string|Object}
+-   `данные`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}
 
 Используя метод, определенный `алгоритмом`, `subtle.digest()` пытается сгенерировать дайджест `данных`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим вычисленный дайджест.
 
 Если `algorithm` указан как {string}, он должен быть одним из:
 
-- `'SHA-1'`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`.
+-   `'SHA-1'`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`.
 
 Если `algorithm` предоставлен как {Object}, он должен иметь свойство `name`, значение которого является одним из вышеперечисленных.
 
 ### `subtle.encrypt(algorithm, key, data)`
 
-- `алгоритм`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
-- `ключ`: {CryptoKey}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `алгоритм`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
+-   `ключ`: {CryptoKey}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}.
 
 Используя метод и параметры, указанные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.encrypt()` пытается зашифровать `данные`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим зашифрованный результат.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `RSA-OAEP`
-- `AES-CTR`
-- `AES-CBC`
-- `AES-GCM`
+-   `RSA-OAEP`
+-   `AES-CTR`
+-   `AES-CBC`
+-   `AES-GCM`
 
 ### `subtle.exportKey(format, key)`
 
-- `format`: {string} Must be one of `'raw'`, `'pkcs8'`, `'spki'`, or `'jwk'`.
-- `key`: {CryptoKey}
-- Возвращает: {Promise}, содержащий {ArrayBuffer|Object}.
+-   `format`: {string} Must be one of `'raw'`, `'pkcs8'`, `'spki'`, or `'jwk'`.
+-   `key`: {CryptoKey}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer|Object}.
 
 Экспортирует заданный ключ в указанный формат, если он поддерживается.
 
@@ -1205,44 +1205,44 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.generateKey(algorithm, extractable, keyUsages)`
 
-- `algorithm`: {AlgorithmIdentifier|RsaHashedKeyGenParams|EcKeyGenParams|HmacKeyGenParams|AesKeyGenParams}
+-   `algorithm`: {AlgorithmIdentifier|RsaHashedKeyGenParams|EcKeyGenParams|HmacKeyGenParams|AesKeyGenParams}
 
 <!-- end list -->
 
-- `extractable`: {boolean}
-- `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
-- Возвращает: {Promise}, содержащий {CryptoKey|CryptoKeyPair}.
+-   `extractable`: {boolean}
+-   `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
+-   Возвращает: {Promise}, содержащий {CryptoKey|CryptoKeyPair}.
 
 Используя метод и параметры, указанные в `algorithm`, `subtle.generateKey()` пытается сгенерировать новый ключевой материал. В зависимости от используемого метода, метод может генерировать либо один {CryptoKey}, либо {CryptoKeyPair}.
 
 Поддерживаемые алгоритмы генерации {CryptoKeyPair} (открытого и закрытого ключа) включают:
 
-- `'RSASSA-PKCS1-v1_5'`
-- `'RSA-PSS'`
-- `'RSA-OAEP'`
-- `'ECDSA'`
-- `'Ed25519'`
-- `'Ed448'`
-- `'ECDH'`
-- `'X25519'`
-- `'X448'`
+-   `'RSASSA-PKCS1-v1_5'`
+-   `'RSA-PSS'`
+-   `'RSA-OAEP'`
+-   `'ECDSA'`
+-   `'Ed25519'`
+-   `'Ed448'`
+-   `'ECDH'`
+-   `'X25519'`
+-   `'X448'`
 
 Поддерживаются следующие алгоритмы генерации {CryptoKey} (секретного ключа):
 
-- `HMAC`
-- `AES-CTR`
-- `AES-CBC`
-- `AES-GCM`
-- `AES-KW`
+-   `HMAC`
+-   `AES-CTR`
+-   `AES-CBC`
+-   `AES-GCM`
+-   `AES-KW`
 
 ### `subtle.importKey(format, keyData, algorithm, extractable, keyUsages)`
 
-- `format`: {строка}. Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
-- `keyData`: {ArrayBuffer|TypedArray|DataView|Buffer|Object}
-- `algorithm`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
-- `extractable`: {boolean}
-- `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
-- Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `format`: {строка}. Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `keyData`: {ArrayBuffer|TypedArray|DataView|Buffer|Object}
+-   `algorithm`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
+-   `extractable`: {boolean}
+-   `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
+-   Возвращает: {Promise}, содержащий {CryptoKey}.
 
 Метод `subtle.importKey()` пытается интерпретировать предоставленные `keyData` в заданном `формате` для создания экземпляра {CryptoKey} с использованием предоставленных аргументов `algorithm`, `extractable` и `keyUsages`. Если импорт прошел успешно, возвращаемое обещание будет разрешено с созданным {CryptoKey}.
 
@@ -1378,96 +1378,96 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.sign(algorithm, key, data)`
 
-- `algorithm`: {AlgorithmIdentifier|RsaPssParams|EcdsaParams|Ed448Params}
-- `key`: {CryptoKey}
-- `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `algorithm`: {AlgorithmIdentifier|RsaPssParams|EcdsaParams|Ed448Params}
+-   `key`: {CryptoKey}
+-   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}.
 
 Используя метод и параметры, заданные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.sign()` пытается сгенерировать криптографическую подпись `data`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим сгенерированную подпись.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `'RSASSA-PKCS1-v1_5'`
-- `'RSA-PSS'`
-- `'ECDSA'`
-- `'Ed25519'` <span class="experimental-inline"></span>\[23\]
-- `'Ed448'` <span class="experimental-inline"></span>\[24\]
-- `'HMAC'`
+-   `'RSASSA-PKCS1-v1_5'`
+-   `'RSA-PSS'`
+-   `'ECDSA'`
+-   `'Ed25519'` <span class="experimental-inline"></span>\[23\]
+-   `'Ed448'` <span class="experimental-inline"></span>\[24\]
+-   `'HMAC'`
 
 ### `subtle.unwrapKey(format, wrappedKey, unwrappingKey, unwrapAlgo, unwrappedKeyAlgo, extractable, keyUsages)`.
 
-- `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
-- `wrappedKey`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- `unwrappingKey`: {CryptoKey}
-- `unwrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
-- `unwrappedKeyAlgo`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
-- `extractable`: {boolean}
-- `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
-- Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `wrappedKey`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   `unwrappingKey`: {CryptoKey}
+-   `unwrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
+-   `unwrappedKeyAlgo`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
+-   `extractable`: {boolean}
+-   `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
+-   Возвращает: {Promise}, содержащий {CryptoKey}.
 
 В криптографии "обертывание ключа" означает экспорт и последующее шифрование ключевого материала. Метод `subtle.unwrapKey()` пытается расшифровать обернутый ключ и создать экземпляр {CryptoKey}. Это эквивалентно вызову `subtle.decrypt()` сначала на зашифрованных ключевых данных (используя аргументы `wrappedKey`, `unwrapAlgo` и `unwrappingKey` в качестве входных данных), а затем передаче результатов в метод `subtle.importKey()`, используя аргументы `unwrappedKeyAlgo`, `extractable` и `keyUsages` в качестве входных данных. В случае успеха возвращаемое обещание разрешается с объектом {CryptoKey}.
 
 В настоящее время поддерживаются следующие алгоритмы обертывания:
 
-- `'RSA-OAEP'`
-- `'AES-CTR'`
-- `'AES-CBC'`
-- `'AES-GCM'`
-- `'AES-KW'`
+-   `'RSA-OAEP'`
+-   `'AES-CTR'`
+-   `'AES-CBC'`
+-   `'AES-GCM'`
+-   `'AES-KW'`
 
 Поддерживаемые алгоритмы развернутого ключа включают:
 
-- `'RSASSA-PKCS1-v1_5'`
-- `'RSA-PSS'`
-- `'RSA-OAEP'`
-- `'ECDSA'`
-- `'Ed25519'` <span class="experimental-inline"></span>\[25\]
-- `'Ed448'` <span class="experimental-inline"></span>\[26\]
-- `'ECDH'`
-- `'X25519'` <span class="experimental-inline"></span>\[27\]
-- `'X448'` <span class="experimental-inline"></span>\[28\]
-- `'HMAC'`
-- `'AES-CTR'`
-- `'AES-CBC'`
-- `'AES-GCM'`
-- `'AES-KW'`
+-   `'RSASSA-PKCS1-v1_5'`
+-   `'RSA-PSS'`
+-   `'RSA-OAEP'`
+-   `'ECDSA'`
+-   `'Ed25519'` <span class="experimental-inline"></span>\[25\]
+-   `'Ed448'` <span class="experimental-inline"></span>\[26\]
+-   `'ECDH'`
+-   `'X25519'` <span class="experimental-inline"></span>\[27\]
+-   `'X448'` <span class="experimental-inline"></span>\[28\]
+-   `'HMAC'`
+-   `'AES-CTR'`
+-   `'AES-CBC'`
+-   `'AES-GCM'`
+-   `'AES-KW'`
 
 ### `subtle.verify(algorithm, key, signature, data)`
 
-- `algorithm`: {AlgorithmIdentifier|RsaPssParams|EcdsaParams|Ed448Params}
-- `key`: {CryptoKey}
-- `signature`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
-- Возвращает: {Promise}, содержащий {boolean}.
+-   `algorithm`: {AlgorithmIdentifier|RsaPssParams|EcdsaParams|Ed448Params}
+-   `key`: {CryptoKey}
+-   `signature`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Возвращает: {Promise}, содержащий {boolean}.
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `key`, `subtle.verify()` пытается проверить, что `signature` является действительной криптографической подписью `данных`. Возвращаемое обещание разрешается либо с `true`, либо с `false`.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
-- `'RSASSA-PKCS1-v1_5'`
-- `'RSA-PSS'`
-- `'ECDSA'`
-- `'Ed25519'`
-- `'Ed448'`
-- `'HMAC'`
+-   `'RSASSA-PKCS1-v1_5'`
+-   `'RSA-PSS'`
+-   `'ECDSA'`
+-   `'Ed25519'`
+-   `'Ed448'`
+-   `'HMAC'`
 
 ### `subtle.wrapKey(format, key, wrappingKey, wrapAlgo)`.
 
-- `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
-- `key`: {CryptoKey}
-- `wrappingKey`: {CryptoKey}
-- `wrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
-- Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `key`: {CryptoKey}
+-   `wrappingKey`: {CryptoKey}
+-   `wrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
+-   Возвращает: {Promise}, содержащий {ArrayBuffer}.
 
 В криптографии "обертывание ключа" означает экспорт и последующее шифрование ключевого материала. Метод `subtle.wrapKey()` экспортирует ключевой материал в формат, определенный `format`, затем шифрует его, используя метод и параметры, указанные `wrapAlgo`, и ключевой материал, предоставленный `wrappingKey`. Это эквивалентно вызову `subtle.exportKey()` с использованием `format` и `key` в качестве аргументов, затем передаче результата методу `subtle.encrypt()` с использованием `wrappingKey` и `wrapAlgo` в качестве входных данных. В случае успеха возвращенное обещание будет разрешено с {ArrayBuffer}, содержащим зашифрованные ключевые данные.
 
 В настоящее время поддерживаются следующие алгоритмы обертывания:
 
-- `RSA-OAEP`
-- `AES-CTR`
-- `AES-CBC`
-- `AES-GCM`
-- `AES-KW`
+-   `RSA-OAEP`
+-   `AES-CTR`
+-   `AES-CBC`
+-   `AES-GCM`
+-   `AES-KW`
 
 ## Параметры алгоритма
 
@@ -1477,25 +1477,25 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `algorithmIdentifier.name`
 
-- Тип: {строка}
+-   Тип: {строка}
 
 ### Класс: `AesCbcParams`
 
 #### `aesCbcParams.iv`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Предоставляет вектор инициализации. Он должен быть длиной ровно 16 байт и должен быть непредсказуемым и криптографически случайным.
 
 #### `aesCbcParams.name`
 
-- Тип: {строка} Должно быть `AES-CBC`.
+-   Тип: {строка} Должно быть `AES-CBC`.
 
 ### Класс: `AesCtrParams`
 
 #### `aesCtrParams.counter`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Начальное значение блока счетчика. Оно должно быть длиной ровно 16 байт.
 
@@ -1503,23 +1503,23 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `aesCtrParams.length`
 
-- Тип: {число} Количество битов в `aesCtrParams.counter`, которые будут использоваться в качестве счетчика.
+-   Тип: {число} Количество битов в `aesCtrParams.counter`, которые будут использоваться в качестве счетчика.
 
 #### `aesCtrParams.name`
 
-- Тип: {строка} Должно быть `AES-CTR`.
+-   Тип: {строка} Должно быть `AES-CTR`.
 
 ### Класс: `AesGcmParams`
 
 #### `aesGcmParams.additionalData`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer|undefined}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer|undefined}
 
 В методе AES-GCM `additionalData` - это дополнительные входные данные, которые не шифруются, но включаются в проверку подлинности данных. Использование `additionalData` является необязательным.
 
 #### `aesGcmParams.iv`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Вектор инициализации должен быть уникальным для каждой операции шифрования с использованием данного ключа.
 
@@ -1527,33 +1527,33 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `aesGcmParams.name`
 
-- Тип: {строка} Должно быть `AES-GCM`.
+-   Тип: {строка} Должно быть `AES-GCM`.
 
 #### `aesGcmParams.tagLength`
 
-- Тип: {число} Размер в битах генерируемого тега аутентификации. Это значение должно быть одним из `32`, `64`, `96`, `104`, `112`, `120` или `128`. **По умолчанию:** `128`.
+-   Тип: {число} Размер в битах генерируемого тега аутентификации. Это значение должно быть одним из `32`, `64`, `96`, `104`, `112`, `120` или `128`. **По умолчанию:** `128`.
 
 ### Класс: `AesKeyGenParams`
 
 #### `aesKeyGenParams.length`
 
-- Тип: {число}
+-   Тип: {число}
 
 Длина генерируемого ключа AES. Она должна быть либо `128`, либо `192`, либо `256`.
 
 #### `aesKeyGenParams.name`
 
-- Тип: {строка} Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'` или `'AES-KW'`.
+-   Тип: {строка} Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'` или `'AES-KW'`.
 
 ### Класс: `EcdhKeyDeriveParams`
 
 #### `ecdhKeyDeriveParams.name`
 
-- Тип: {строка} Должно быть `ECDH`, `X25519` или `X448`.
+-   Тип: {строка} Должно быть `ECDH`, `X25519` или `X448`.
 
 #### `ecdhKeyDeriveParams.public`
 
-- Тип: {CryptoKey}
+-   Тип: {CryptoKey}
 
 ECDH-производство ключей работает, принимая на вход закрытый ключ одной стороны и открытый ключ другой стороны, и используя их оба для генерации общего разделяемого секрета. Свойство `ecdhKeyDeriveParams.public` устанавливается на открытый ключ другой стороны.
 
@@ -1561,50 +1561,50 @@ ECDH-производство ключей работает, принимая н
 
 #### `ecdsaParams.hash`
 
-- Тип: {строка|Объект}
+-   Тип: {строка|Объект}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`.
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`.
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `ecdsaParams.name`
 
-- Тип: {строка} Должно быть `ECDSA`.
+-   Тип: {строка} Должно быть `ECDSA`.
 
 ### Класс: `EcKeyGenParams`
 
 #### `ecKeyGenParams.name`
 
-- Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
+-   Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyGenParams.namedCurve`
 
-- Тип: {строка} Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
+-   Тип: {строка} Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EcKeyImportParams`
 
 #### `ecKeyImportParams.name`
 
-- Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
+-   Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyImportParams.namedCurve`
 
-- Тип: {строка} Должна быть одной из `'P-256'`, `'P-384'`, `'P-521'`.
+-   Тип: {строка} Должна быть одной из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `Ed448Params`
 
 #### `ed448Params.name`
 
-- Тип: {строка} Должно быть `ed448`.
+-   Тип: {строка} Должно быть `ed448`.
 
 #### `ed448Params.context`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer|undefined}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer|undefined}
 
 Член `context` представляет необязательные данные контекста для связи с сообщением. Реализация Node.js Web Crypto API поддерживает только контекст нулевой длины, что эквивалентно отсутствию контекста вообще.
 
@@ -1612,30 +1612,30 @@ ECDH-производство ключей работает, принимая н
 
 #### `hkdfParams.hash`
 
-- Тип: {строка|Объект}
+-   Тип: {строка|Объект}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`.
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`.
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hkdfParams.info`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Предоставляет контекстный вход для алгоритма HKDF, специфичный для приложения. Он может быть нулевой длины, но должен быть предоставлен.
 
 #### `hkdfParams.name`
 
-- Тип: {строка} Должно быть `HKDF`.
+-   Тип: {строка} Должно быть `HKDF`.
 
 #### `hkdfParams.salt`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Значение соли значительно повышает стойкость алгоритма HKDF. Оно должно быть случайным или псевдослучайным и иметь ту же длину, что и выход функции дайджеста (например, если в качестве дайджеста используется `'SHA-256'`, соль должна представлять собой 256 бит случайных данных).
 
@@ -1643,80 +1643,80 @@ ECDH-производство ключей работает, принимая н
 
 #### `hmacImportParams.hash`
 
-- Тип: {string|Object}
+-   Тип: {string|Object}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hmacImportParams.length`
 
-- Тип: {число}
+-   Тип: {число}
 
 Необязательное количество битов в ключе HMAC. Это необязательное значение, и в большинстве случаев его следует опускать.
 
 #### `hmacImportParams.name`
 
-- Тип: {строка} Должно быть `HMAC`.
+-   Тип: {строка} Должно быть `HMAC`.
 
 ### Класс: `HmacKeyGenParams`
 
 #### `hmacKeyGenParams.hash`
 
-- Тип: {string|Object}
+-   Тип: {string|Object}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hmacKeyGenParams.length`
 
-- Тип: {число}
+-   Тип: {число}
 
 Количество битов для генерации ключа HMAC. Если опущено, длина будет определяться используемым алгоритмом хэширования. Этот параметр является необязательным и в большинстве случаев должен быть опущен.
 
 #### `hmacKeyGenParams.name`
 
-- Тип: {строка} Должно быть `HMAC`.
+-   Тип: {строка} Должно быть `HMAC`.
 
 ### Класс: `Pbkdf2Params`
 
 #### `pbkdb2Params.hash`
 
-- Тип: {string|Object}
+-   Тип: {string|Object}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `pbkdf2Params.iterations`
 
-- Тип: {число}
+-   Тип: {число}
 
 Количество итераций, которые должен сделать алгоритм PBKDF2 при выведении битов.
 
 #### `pbkdf2Params.name`
 
-- Тип: {строка} Должно быть `'PBKDF2'`.
+-   Тип: {строка} Должно быть `'PBKDF2'`.
 
 #### `pbkdf2Params.salt`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Должно быть не менее 16 случайных или псевдослучайных байт.
 
@@ -1724,49 +1724,49 @@ ECDH-производство ключей работает, принимая н
 
 #### `rsaHashedImportParams.hash`
 
-- Тип: {string|Object}
+-   Тип: {string|Object}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `rsaHashedImportParams.name`
 
-- Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
+-   Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
 
 ### Класс: `RsaHashedKeyGenParams`
 
 #### `rsaHashedKeyGenParams.hash`
 
-- Тип: {string|Object}
+-   Тип: {string|Object}
 
 Если представлено как {строка}, значение должно быть одним из:
 
-- `SHA-1`
-- `SHA-256`
-- `SHA-384`
-- `SHA-512`
+-   `SHA-1`
+-   `SHA-256`
+-   `SHA-384`
+-   `SHA-512`
 
 Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `rsaHashedKeyGenParams.modulusLength`
 
-- Тип: {число}
+-   Тип: {число}
 
 Длина в битах модуля RSA. В соответствии с наилучшей практикой, она должна быть не менее `2048`.
 
 #### `rsaHashedKeyGenParams.name`
 
-- Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
+-   Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
 
 #### `rsaHashedKeyGenParams.publicExponent`
 
-- Тип: {Uint8Array}
+-   Тип: {Uint8Array}
 
 Публичная экспонента RSA. Это должен быть {Uint8Array}, содержащий беззнаковое целое число, которое должно укладываться в 32 бита. Массив {Uint8Array} может содержать произвольное количество старших нулевых битов. Значение должно быть простым числом. Если нет причин использовать другое значение, используйте `new Uint8Array([1, 0, 1])` (65537) в качестве публичной экспоненты.
 
@@ -1774,7 +1774,7 @@ ECDH-производство ключей работает, принимая н
 
 #### `rsaOaepParams.label`
 
-- Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
+-   Тип: {ArrayBuffer|TypedArray|DataView|Buffer}
 
 Дополнительная коллекция байтов, которые не будут зашифрованы, но будут привязаны к сгенерированному шифротексту.
 
@@ -1782,16 +1782,16 @@ ECDH-производство ключей работает, принимая н
 
 #### `rsaOaepParams.name`
 
-- Тип: {строка} должно быть `RSA-OAEP`.
+-   Тип: {строка} должно быть `RSA-OAEP`.
 
 ### Класс: `RsaPssParams`
 
 #### `rsaPssParams.name`
 
-- Тип: {строка} Должно быть `RSA-PSS`.
+-   Тип: {строка} Должно быть `RSA-PSS`.
 
 #### `rsaPssParams.saltLength`
 
-- Тип: {число}
+-   Тип: {число}
 
 Длина (в байтах) используемой случайной соли.

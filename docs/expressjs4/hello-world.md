@@ -7,16 +7,16 @@
 В каталоге `myapp` создайте файл с именем `app.js` и добавьте следующий код:
 
 ```js
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 
 app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+    res.send('Hello World!');
+});
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
-})
+    console.log('Example app listening on port 3000!');
+});
 ```
 
 Приложение запускает сервер и слушает соединения на порте 3000. Приложение выдает ответ "Hello World!" на запросы, адресованные корневому URL (`/`) или _маршруту_. Для всех остальных путей ответом будет **404 Not Found**.

@@ -30,13 +30,13 @@ const repl = require('node:repl');
 
 Следующие специальные команды поддерживаются всеми экземплярами REPL:
 
-- `.break`: В процессе ввода многострочного выражения введите команду `.break` (или нажмите Ctrl+C), чтобы прервать дальнейший ввод или обработку этого выражения.
-- `.clear`: Сбрасывает REPL `context` на пустой объект и очищает любое вводимое многострочное выражение.
-- `.exit`: Закрывает поток ввода/вывода, вызывая выход из REPL.
-- `.help`: Показать список специальных команд.
-- `.save`: Сохранить текущую сессию REPL в файл: `> .save ./file/to/save.js`.
-- `.load`: Загрузить файл в текущий сеанс REPL. `> .load ./file/to/load.js`.
-- `.editor`: Войти в режим редактора (Ctrl+D для завершения, Ctrl+C для отмены).
+-   `.break`: В процессе ввода многострочного выражения введите команду `.break` (или нажмите Ctrl+C), чтобы прервать дальнейший ввод или обработку этого выражения.
+-   `.clear`: Сбрасывает REPL `context` на пустой объект и очищает любое вводимое многострочное выражение.
+-   `.exit`: Закрывает поток ввода/вывода, вызывая выход из REPL.
+-   `.help`: Показать список специальных команд.
+-   `.save`: Сохранить текущую сессию REPL в файл: `> .save ./file/to/save.js`.
+-   `.load`: Загрузить файл в текущий сеанс REPL. `> .load ./file/to/load.js`.
+-   `.editor`: Войти в режим редактора (Ctrl+D для завершения, Ctrl+C для отмены).
 
 <!-- end list -->
 
@@ -60,9 +60,9 @@ welcome('Node.js User');
 
 Следующие комбинации клавиш в REPL имеют такие специальные эффекты:
 
-- Ctrl+C: При однократном нажатии имеет тот же эффект, что и команда `.break`. При двойном нажатии на пустой строке имеет тот же эффект, что и команда `.exit`.
-- Ctrl+D: имеет тот же эффект, что и команда `.exit`.
-- Tab: При нажатии на пустой строке отображает глобальные и локальные (область видимости) переменные. При нажатии во время ввода других данных отображает соответствующие опции автозавершения.
+-   Ctrl+C: При однократном нажатии имеет тот же эффект, что и команда `.break`. При двойном нажатии на пустой строке имеет тот же эффект, что и команда `.exit`.
+-   Ctrl+D: имеет тот же эффект, что и команда `.exit`.
+-   Tab: При нажатии на пустой строке отображает глобальные и локальные (область видимости) переменные. При нажатии во время ввода других данных отображает соответствующие опции автозавершения.
 
 Связки клавиш, связанные с обратным поиском, см. в [`reverse-i-search`](#reverse-i-search). Обо всех остальных привязках клавиш см. в [TTY keybindings](readline.md#tty-keybindings).
 
@@ -126,9 +126,9 @@ const msg = 'message';
 
 const r = repl.start('> ');
 Object.defineProperty(r.context, 'm', {
-  configurable: false,
-  enumerable: true,
-  value: msg,
+    configurable: false,
+    enumerable: true,
+    value: msg,
 });
 ```
 
@@ -152,22 +152,22 @@ Object.defineProperty(r.context, 'm', {
 
 Использование модуля [`domain`](domain.md) в REPL имеет следующие побочные эффекты:
 
-- Не пойманные исключения вызывают событие [`'uncaughtException'`](process.md#event-uncaughtexception) только в автономном REPL. Добавление слушателя этого события в REPL в другой программе Node.js приводит к [`ERR_INVALID_REPL_INPUT`](errors.md#err_invalid_repl_input).
+-   Не пойманные исключения вызывают событие [`'uncaughtException'`](process.md#event-uncaughtexception) только в автономном REPL. Добавление слушателя этого события в REPL в другой программе Node.js приводит к [`ERR_INVALID_REPL_INPUT`](errors.md#err_invalid_repl_input).
 
-  ```js
-  const r = repl.start();
+    ```js
+    const r = repl.start();
 
-  r.write(
-    'process.on("uncaughtException", () => console.log("Foobar"));\n'
-  );
-  // Выходной поток включает:
-  // TypeError [ERR_INVALID_REPL_INPUT]: Слушатели для `uncaughtException`
-  // не могут быть использованы в REPL
+    r.write(
+        'process.on("uncaughtException", () => console.log("Foobar"));\n'
+    );
+    // Выходной поток включает:
+    // TypeError [ERR_INVALID_REPL_INPUT]: Слушатели для `uncaughtException`
+    // не могут быть использованы в REPL
 
-  r.close();
-  ```
+    r.close();
+    ```
 
-- Попытка использовать [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) бросает ошибку [`ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE`](errors.md#err_domain_cannot_set_uncaught_exception_capture).
+-   Попытка использовать [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) бросает ошибку [`ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE`](errors.md#err_domain_cannot_set_uncaught_exception_capture).
 
 #### Присвоение переменной `_` (подчеркивание).
 
@@ -271,7 +271,7 @@ const { Translator } = require('translator');
 const myTranslator = new Translator('en', 'fr');
 
 function myEval(cmd, context, filename, callback) {
-  callback(null, myTranslator.translate(cmd));
+    callback(null, myTranslator.translate(cmd));
 }
 
 repl.start({ prompt: '> ', eval: myEval });
@@ -287,24 +287,24 @@ repl.start({ prompt: '> ', eval: myEval });
 
 ```js
 function myEval(cmd, context, filename, callback) {
-  let result;
-  try {
-    result = vm.runInThisContext(cmd);
-  } catch (e) {
-    if (isRecoverableError(e)) {
-      return callback(new repl.Recoverable(e));
+    let result;
+    try {
+        result = vm.runInThisContext(cmd);
+    } catch (e) {
+        if (isRecoverableError(e)) {
+            return callback(new repl.Recoverable(e));
+        }
     }
-  }
-  callback(null, result);
+    callback(null, result);
 }
 
 function isRecoverableError(error) {
-  if (error.name === 'SyntaxError') {
-    return /^(Unexpected end of input|Unexpected token)/.test(
-      error.message
-    );
-  }
-  return false;
+    if (error.name === 'SyntaxError') {
+        return /^(Unexpected end of input|Unexpected token)/.test(
+            error.message
+        );
+    }
+    return false;
 }
 ```
 
@@ -340,17 +340,17 @@ false
 const repl = require('node:repl');
 
 const r = repl.start({
-  prompt: '> ',
-  eval: myEval,
-  writer: myWriter,
+    prompt: '> ',
+    eval: myEval,
+    writer: myWriter,
 });
 
 function myEval(cmd, context, filename, callback) {
-  callback(null, cmd);
+    callback(null, cmd);
 }
 
 function myWriter(output) {
-  return output.toUpperCase();
+    return output.toUpperCase();
 }
 ```
 
@@ -358,8 +358,8 @@ function myWriter(output) {
 
 ## Класс: `REPLServer`
 
-- `options` {Object|string} См. [`repl.start()`](#replstartoptions)
-- Расширяет: {readline.Interface}
+-   `options` {Object|string} См. [`repl.start()`](#replstartoptions)
+-   Расширяет: {readline.Interface}
 
 Экземпляры `repl.REPLServer` создаются с помощью метода [`repl.start()`](#replstartoptions) или непосредственно с помощью ключевого слова JavaScript `new`.
 
@@ -384,8 +384,8 @@ const secondInstance = new repl.REPLServer(options);
 
 ```js
 replServer.on('exit', () => {
-  console.log('Received "exit" event from repl!');
-  process.exit();
+    console.log('Received "exit" event from repl!');
+    process.exit();
 });
 ```
 
@@ -403,7 +403,7 @@ replServer.on('exit', () => {
 const repl = require('node:repl');
 
 function initializeContext(context) {
-  context.m = 'test';
+    context.m = 'test';
 }
 
 const r = repl.start({ prompt: '> ' });
@@ -437,13 +437,13 @@ Clearing context...
 
 ### `replServer.defineCommand(keyword, cmd)`
 
-- `ключевое слово` {строка} Ключевое слово команды (_без_ ведущего символа `.`).
-- `cmd` {Object|Function} Функция, вызываемая при обработке команды.
+-   `ключевое слово` {строка} Ключевое слово команды (_без_ ведущего символа `.`).
+-   `cmd` {Object|Function} Функция, вызываемая при обработке команды.
 
 Метод `replServer.defineCommand()` используется для добавления новых команд с префиксом `.` в экземпляр REPL. Такие команды вызываются путем ввода символа `.`, за которым следует `ключевое слово`. Команда `cmd` является либо `функцией`, либо `объектом` со следующими свойствами:
 
-- `help` {string} Текст справки, который будет отображаться при вводе `.help` (необязательно).
-- `action` {Function} Функция для выполнения, по желанию принимающая один строковый аргумент.
+-   `help` {string} Текст справки, который будет отображаться при вводе `.help` (необязательно).
+-   `action` {Function} Функция для выполнения, по желанию принимающая один строковый аргумент.
 
 В следующем примере показаны две новые команды, добавленные в экземпляр REPL:
 
@@ -454,16 +454,16 @@ const repl = require('node:repl');
 
 const replServer = repl.start({ prompt: '> ' });
 replServer.defineCommand('sayhello', {
-  help: 'Say hello',
-  action(name) {
-    this.clearBufferedCommand();
-    console.log(`Hello, ${name}!`);
-    this.displayPrompt();
-  },
+    help: 'Say hello',
+    action(name) {
+        this.clearBufferedCommand();
+        console.log(`Hello, ${name}!`);
+        this.displayPrompt();
+    },
 });
 replServer.defineCommand('saybye', function saybye() {
-  console.log('Goodbye!');
-  this.close();
+    console.log('Goodbye!');
+    this.close();
 });
 ```
 
@@ -484,7 +484,7 @@ Goodbye!
 
 ### `replServer.displayPrompt([preserveCursor])`
 
-- `preserveCursor` {boolean}
+-   `preserveCursor` {boolean}
 
 Метод `replServer.displayPrompt()` готовит экземпляр REPL к вводу данных пользователем, печатая настроенный `prompt` на новой строке в `output` и возобновляя `input` для приема нового ввода.
 
@@ -502,36 +502,36 @@ Goodbye!
 
 > Стабильность: 0 - Утратил актуальность.
 
-- `ключевое слово` {строка} потенциальное ключевое слово для разбора и выполнения
-- `rest` {any} любые параметры команды ключевого слова.
-- Возвращает: {boolean}
+-   `ключевое слово` {строка} потенциальное ключевое слово для разбора и выполнения
+-   `rest` {any} любые параметры команды ключевого слова.
+-   Возвращает: {boolean}
 
 Внутренний метод, используемый для разбора и выполнения ключевых слов `REPLServer`. Возвращает `true`, если `keyword` является правильным ключевым словом, иначе `false`.
 
 ### `replServer.setupHistory(historyPath, callback)`.
 
-- `historyPath` {строка} путь к файлу истории
-- `callback` {функция} вызывается, когда запись истории готова или при ошибке
-  - `err` {Ошибка}
-  - `repl` {repl.REPLServer}
+-   `historyPath` {строка} путь к файлу истории
+-   `callback` {функция} вызывается, когда запись истории готова или при ошибке
+    -   `err` {Ошибка}
+    -   `repl` {repl.REPLServer}
 
 Инициализирует файл журнала истории для экземпляра REPL. При выполнении бинарного файла Node.js и использовании командной строки REPL файл истории инициализируется по умолчанию. Однако при создании REPL программным способом это не так. Используйте этот метод для инициализации файла журнала истории при программной работе с экземплярами REPL.
 
 ## `repl.builtinModules`
 
-- {string\[\]}
+-   {string\[\]}
 
 Список имен всех модулей Node.js, например, `'http'`.
 
 ## `repl.start([options])`
 
-- `options` {Object|string}
-  - `prompt` {string} Вводная подсказка для отображения. **По умолчанию:** `'>` (с пробелом).
-  - `input` {stream.Readable} Поток `Readable`, из которого будет считываться ввод REPL. **По умолчанию:** `process.stdin`.
-  - `output` {stream.Writable} Поток `Writable`, в который будет записываться вывод REPL. **По умолчанию:** `process.stdout`.
-  - `terminal` {boolean} Если `true`, указывает, что `вывод` должен рассматриваться как TTY-терминал. **По умолчанию:** проверка значения свойства `isTTY` для потока `output` при инстанцировании.
-  - `eval` {Функция} Функция, которая будет использоваться при оценке каждой заданной строки ввода. **По умолчанию:** асинхронная обертка для функции JavaScript `eval()`. Функция `eval` может ошибаться с `repl.Recoverable`, чтобы указать, что ввод был неполным, и запросить дополнительные строки.
-  - `useColors` {boolean} Если `true`, указывает, что функция по умолчанию `writer` должна включать в REPL стилизацию цветов ANSI.
+-   `options` {Object|string}
+    -   `prompt` {string} Вводная подсказка для отображения. **По умолчанию:** `'>` (с пробелом).
+    -   `input` {stream.Readable} Поток `Readable`, из которого будет считываться ввод REPL. **По умолчанию:** `process.stdin`.
+    -   `output` {stream.Writable} Поток `Writable`, в который будет записываться вывод REPL. **По умолчанию:** `process.stdout`.
+    -   `terminal` {boolean} Если `true`, указывает, что `вывод` должен рассматриваться как TTY-терминал. **По умолчанию:** проверка значения свойства `isTTY` для потока `output` при инстанцировании.
+    -   `eval` {Функция} Функция, которая будет использоваться при оценке каждой заданной строки ввода. **По умолчанию:** асинхронная обертка для функции JavaScript `eval()`. Функция `eval` может ошибаться с `repl.Recoverable`, чтобы указать, что ввод был неполным, и запросить дополнительные строки.
+    -   `useColors` {boolean} Если `true`, указывает, что функция по умолчанию `writer` должна включать в REPL стилизацию цветов ANSI.
 
 <!-- 0043.part.md -->
 
@@ -545,7 +545,7 @@ Goodbye!
       - `breakEvalOnSigint` {boolean} Остановить оценку текущего фрагмента кода при получении `SIGINT`, например, при нажатии Ctrl+C. Это нельзя использовать вместе с пользовательской функцией `eval`. **По умолчанию:** `false`.
       - `preview` {boolean} Определяет, печатает ли repl автозаполнение и предварительный просмотр вывода или нет. **По умолчанию:** `true` при использовании функции eval по умолчанию и `false` в случае использования пользовательской функции eval. Если `terminal` является falsy, то предварительные просмотры отсутствуют и значение `preview` не влияет.
 
-- Возвращает: {repl.REPLServer}
+-   Возвращает: {repl.REPLServer}
 
 Метод `repl.start()` создает и запускает экземпляр [`repl.REPLServer`](#class-replserver).
 
@@ -588,9 +588,9 @@ undefined
 
 Различные поведения Node.js REPL могут быть настроены с помощью следующих переменных окружения:
 
-- `NODE_REPL_HISTORY`: Когда указан правильный путь, постоянная история REPL будет сохраняться в указанном файле, а не в `.node_repl_history` в домашнем каталоге пользователя. Установка этого значения в `''`'' (пустая строка) отключает постоянную историю REPL. Пробелы будут обрезаны из значения. На платформах Windows переменные окружения с пустыми значениями недействительны, поэтому установите в этой переменной один или несколько пробелов, чтобы отключить постоянную историю REPL.
-- `NODE_REPL_HISTORY_SIZE`: Определяет, сколько строк истории будет сохранено, если история доступна. Должно быть положительным числом. **По умолчанию:** `1000`.
-- `NODE_REPL_MODE`: Может быть либо `'sloppy'`, либо `'strict'`. **По умолчанию:** `'sloppy'`, что позволит выполнять код в нестрогом режиме.
+-   `NODE_REPL_HISTORY`: Когда указан правильный путь, постоянная история REPL будет сохраняться в указанном файле, а не в `.node_repl_history` в домашнем каталоге пользователя. Установка этого значения в `''`'' (пустая строка) отключает постоянную историю REPL. Пробелы будут обрезаны из значения. На платформах Windows переменные окружения с пустыми значениями недействительны, поэтому установите в этой переменной один или несколько пробелов, чтобы отключить постоянную историю REPL.
+-   `NODE_REPL_HISTORY_SIZE`: Определяет, сколько строк истории будет сохранено, если история доступна. Должно быть положительным числом. **По умолчанию:** `1000`.
+-   `NODE_REPL_MODE`: Может быть либо `'sloppy'`, либо `'strict'`. **По умолчанию:** `'sloppy'`, что позволит выполнять код в нестрогом режиме.
 
 ### Постоянная история
 
@@ -624,40 +624,32 @@ const repl = require('node:repl');
 let connections = 0;
 
 repl.start({
-  prompt: 'Node.js via stdin> ',
-  input: process.stdin,
-  output: process.stdout,
+    prompt: 'Node.js via stdin> ',
+    input: process.stdin,
+    output: process.stdout,
 });
 
-net
-  .createServer((socket) => {
+net.createServer((socket) => {
     connections += 1;
-    repl
-      .start({
+    repl.start({
         prompt: 'Node.js via Unix socket> ',
         input: socket,
         output: socket,
-      })
-      .on('exit', () => {
+    }).on('exit', () => {
         socket.end();
-      });
-  })
-  .listen('/tmp/node-repl-sock');
+    });
+}).listen('/tmp/node-repl-sock');
 
-net
-  .createServer((socket) => {
+net.createServer((socket) => {
     connections += 1;
-    repl
-      .start({
+    repl.start({
         prompt: 'Node.js via TCP socket> ',
         input: socket,
         output: socket,
-      })
-      .on('exit', () => {
+    }).on('exit', () => {
         socket.end();
-      });
-  })
-  .listen(5001);
+    });
+}).listen(5001);
 ```
 
 <!-- 0051.part.md -->

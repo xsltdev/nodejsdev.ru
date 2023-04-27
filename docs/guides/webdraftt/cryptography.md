@@ -8,9 +8,9 @@
 let crypto;
 
 try {
-  crypto = require('crypto');
+    crypto = require('crypto');
 } catch (err) {
-  console.log('Crypto module is unavailable');
+    console.log('Crypto module is unavailable');
 }
 ```
 
@@ -26,21 +26,21 @@ console.log(crypto.getCiphers());
 
 Шифрование данных по заданному алгоритму осуществляется в три этапа:
 
-- Создание объекта `Cipher`;
-- Добавление к созданному объекту данных, которые необходимо зашифровать;
-- Завершение процесса шифрования.
+-   Создание объекта `Cipher`;
+-   Добавление к созданному объекту данных, которые необходимо зашифровать;
+-   Завершение процесса шифрования.
 
 Объект `Cipher` создается вызовом метода `crypto.createCipheriv()`, который принимает три параметра:
 
-- алгоритм;
-- ключ;
-- вектор инициализации (необязательный).
+-   алгоритм;
+-   ключ;
+-   вектор инициализации (необязательный).
 
 Обогащение созданного объекта `Cipher` данными осуществляется с помощью метода `[CipherInstance].update()`, которому можно передать следующие аргументы:
 
-- данные для шифрования;
-- кодировка исходных данных (необязательный);
-- кодировка возвращаемого методом значения (необязательный).
+-   данные для шифрования;
+-   кодировка исходных данных (необязательный);
+-   кодировка возвращаемого методом значения (необязательный).
 
 Завершение процесса шифрования осуществляется вызовом метода `final()`, принимающему кодировку зашифрованных данных.
 
@@ -55,9 +55,9 @@ const iv = crypto.randomBytes(16); //генерация вектора иниц�
 const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 const encyptedData = crypto
-  .createCipheriv('aes-256-cbc', key, iv)
-  .update('Any data', 'utf8', 'hex')
-  .final('hex');
+    .createCipheriv('aes-256-cbc', key, iv)
+    .update('Any data', 'utf8', 'hex')
+    .final('hex');
 
 console.log(encryptedData);
 ```
@@ -77,9 +77,9 @@ const iv = crypto.randomBytes(16); //генерация вектора иниц�
 const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 const decyptedData = crypto
-  .createDecipheriv('aes-256-cbc', key, iv)
-  .update(encryptedData, 'hex', 'utf8')
-  .final('utf8');
+    .createDecipheriv('aes-256-cbc', key, iv)
+    .update(encryptedData, 'hex', 'utf8')
+    .final('utf8');
 
 console.log(decryptedData); //Any data
 ```
@@ -95,32 +95,32 @@ const iv = crypto.randomBytes(16); //генерация вектора иниц�
 const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
 
 let cipherStream = crypto.createCipheriv(
-  'aes-256-cbc',
-  key,
-  iv
+    'aes-256-cbc',
+    key,
+    iv
 );
 
 let encryptedData = '';
 
 cipherStream.on(
-  'data',
-  (data) => (encryptedData += data.toString('hex'))
+    'data',
+    (data) => (encryptedData += data.toString('hex'))
 );
 
 cipherStream.write('Any data');
 cipherStream.end();
 
 let decipherStream = crypto.createDecipheriv(
-  'aes-256-cbc',
-  key,
-  iv
+    'aes-256-cbc',
+    key,
+    iv
 );
 
 let decryptedData = '';
 
 decipherStream.on(
-  'data',
-  (data) => (decryptedData += data)
+    'data',
+    (data) => (decryptedData += data)
 );
 decipherStream.on('end', () => console.log(decryptedData)); //'Any data'
 

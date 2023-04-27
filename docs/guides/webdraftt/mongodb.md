@@ -17,32 +17,32 @@ npm install mongodb --save
 _connection.js_
 
 ```js
-const mongo = require('mongodb').MongoClient
+const mongo = require('mongodb').MongoClient;
 
 mongo.connect(
-  'mongodb://localhost:27017',
-  (err, client) => {
-    if (err) {
-      console.log('Connection error: ', err)
-      throw err
+    'mongodb://localhost:27017',
+    (err, client) => {
+        if (err) {
+            console.log('Connection error: ', err);
+            throw err;
+        }
+
+        console.log('Connected');
+
+        client.close();
     }
-
-    console.log('Connected')
-
-    client.close()
-  }
-)
+);
 ```
 
 Подключение осуществляется с помощью метода `connect()` экземпляра `MongoClient`, который принимает URL, по которому доступна MongoDB (по умолчанию `http://127.0.0.1:27017`), и callback-функцию, которой передается два параметра:
 
-- ошибка подключения (`null`, если подключение прошло успешно);
-- экземпляр объекта подключения к MongoDB, через API которого создаются новые БД и осуществляется доступ к уже существующим.
+-   ошибка подключения (`null`, если подключение прошло успешно);
+-   экземпляр объекта подключения к MongoDB, через API которого создаются новые БД и осуществляется доступ к уже существующим.
 
 После окончания работы с сервером MongoDB не забывайте закрывать соединение с сервером базы данных.
 
 ```js
-client.close()
+client.close();
 ```
 
 ## Создание базы данных
@@ -50,7 +50,7 @@ client.close()
 Для создания/подключения к базе данных используется метод `db()` экземпляра объекта подключения, который принимает название БД и возвращает объект для выполнения . Если указанная база не существует, то она будет создана.
 
 ```js
-const db = client.db('db_name')
+const db = client.db('db_name');
 ```
 
 !!! note ""
@@ -62,22 +62,22 @@ const db = client.db('db_name')
 Коллекции создаются вызовом метода `createCollection()`, принимающего название коллекции и callback-функцию с ошибкой и результатом в качестве параметров.
 
 ```js
-const db = client.db('db_name')
-const users = db.createCollection('users')
+const db = client.db('db_name');
+const users = db.createCollection('users');
 ```
 
 Для удаления коллекции используйте применительно к ней метод `drop()`, который в качестве аргумента принимает callback-функцию с двумя параметрами:
 
-- ошибка (если удаление прошло успешно - `null`);
-- объект с успешным результатом.
+-   ошибка (если удаление прошло успешно - `null`);
+-   объект с успешным результатом.
 
 ```js
 users.drop((err, result) => {
-  if (err) {
-    console.log('Unable drop collection: ', err)
-    throw err
-  }
-})
+    if (err) {
+        console.log('Unable drop collection: ', err);
+        throw err;
+    }
+});
 ```
 
 !!! note ""
@@ -90,41 +90,46 @@ users.drop((err, result) => {
 
 ```js
 users.insertOne(
-  { id: 1, login: 'login1', name: 'name1', gender: 'male' },
-  (err, result) => {
-    if (err) {
-      console.log('Unable insert user: ', err)
-      throw err
+    {
+        id: 1,
+        login: 'login1',
+        name: 'name1',
+        gender: 'male',
+    },
+    (err, result) => {
+        if (err) {
+            console.log('Unable insert user: ', err);
+            throw err;
+        }
     }
-  }
-)
+);
 ```
 
 Чтобы вставить сразу несколько записей имеется метод `insertMany()`.
 
 ```js
 users.insertMany(
-  [
-    {
-      id: 2,
-      login: 'login2',
-      name: 'name2',
-      gender: 'male',
-    },
-    {
-      id: 3,
-      login: 'login3',
-      name: 'name3',
-      gender: 'female',
-    },
-  ],
-  (err, result) => {
-    if (err) {
-      console.log('Unable insert user: ', err)
-      throw err
+    [
+        {
+            id: 2,
+            login: 'login2',
+            name: 'name2',
+            gender: 'male',
+        },
+        {
+            id: 3,
+            login: 'login3',
+            name: 'name3',
+            gender: 'female',
+        },
+    ],
+    (err, result) => {
+        if (err) {
+            console.log('Unable insert user: ', err);
+            throw err;
+        }
     }
-  }
-)
+);
 ```
 
 ## Получение записи
@@ -132,44 +137,44 @@ users.insertMany(
 Для получения всех записей в коллекции используйте метод `find()` экземпляра коллекции.
 
 ```js
-users.find()
+users.find();
 ```
 
 Методу `find()` в качестве параметра можно передать объект, выполняющий роль фильтра для извлекаемых записей. Например, в следующем примере возвращаются все записи, у которых поле `gender` равно `male`.
 
 ```js
-users.find({ gender: 'male' })
+users.find({ gender: 'male' });
 ```
 
 Чтобы получить только первую запись выборки, используйте метод `findOne()`.
 
 ```js
-users.findOne()
-users.findOne({ gender: 'male' })
+users.findOne();
+users.findOne({ gender: 'male' });
 ```
 
 Для получения n-первых записей имеется метод `limit()`, принимающий количество возвращаемых записей.
 
 ```js
-users.find().limit(5)
+users.find().limit(5);
 ```
 
 Сортировка полученного результата осуществляется с помощью метода `sort()`, который принимает объект, в котором ключ - сортирующее поле, а значение - порядок сортировки (`1` - по возрастанию, а `-1` - по убыванию).
 
 ```js
-users.find().sort(1)
+users.find().sort(1);
 ```
 
 Ограничение по выборке и сортировку можно задать в объекте, передаваемом вторым необязательным параметром.
 
 ```js
 users.find(
-  {},
-  {
-    limit: 5,
-    sort: 1,
-  }
-)
+    {},
+    {
+        limit: 5,
+        sort: 1,
+    }
+);
 ```
 
 С полным списком параметров можно ознакомиться в [официальной документации](http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#find).
@@ -180,32 +185,32 @@ users.find(
 
 ```js
 users
-  .aggregate([
-    {
-      $lookup: {
-        from: 'rooms',
-        localField: 'room_id',
-        foreignField: 'id',
-        as: 'room_details',
-      },
-    },
-  ])
-  .toArray((err, res) => {
-    if (err) {
-      console.log('Aggregate error: ', err)
-      throw err
-    }
+    .aggregate([
+        {
+            $lookup: {
+                from: 'rooms',
+                localField: 'room_id',
+                foreignField: 'id',
+                as: 'room_details',
+            },
+        },
+    ])
+    .toArray((err, res) => {
+        if (err) {
+            console.log('Aggregate error: ', err);
+            throw err;
+        }
 
-    console.log(res)
-  })
+        console.log(res);
+    });
 ```
 
 Метод `aggregate()` принимает массив с описанием объединений с другими коллекциями. Объединение определяется объектом с ключом `$lookup`, значением для которого служит объект конфигурации со следующими свойствами:
 
-- `from` - название коллекции, с которой происходит слияние;
-- `localField` - наименование поля, по которому будет осуществляться объединение с внешней коллекцией;
-- `foreignField` - наименование объединяющего поля из внешней коллекции;
-- `as` - название поля в текущей коллекции, которое будет содержать данные, полученные в результате слияния.
+-   `from` - название коллекции, с которой происходит слияние;
+-   `localField` - наименование поля, по которому будет осуществляться объединение с внешней коллекцией;
+-   `foreignField` - наименование объединяющего поля из внешней коллекции;
+-   `as` - название поля в текущей коллекции, которое будет содержать данные, полученные в результате слияния.
 
 ## Обновление записи
 
@@ -213,15 +218,15 @@ users
 
 ```js
 users.updateOne(
-  { id: 1 },
-  { $set: { gender: 'female' } },
-  (err, result) => {
-    if (err) {
-      console.log('Unable update user: ', err)
-      throw err
+    { id: 1 },
+    { $set: { gender: 'female' } },
+    (err, result) => {
+        if (err) {
+            console.log('Unable update user: ', err);
+            throw err;
+        }
     }
-  }
-)
+);
 ```
 
 ## Удаление записи
@@ -230,11 +235,11 @@ users.updateOne(
 
 ```js
 users.deleteOne({ id: 3 }, (err, result) => {
-  if (err) {
-    console.log('Unable delete user: ', err)
-    throw err
-  }
-})
+    if (err) {
+        console.log('Unable delete user: ', err);
+        throw err;
+    }
+});
 ```
 
 Более подробную информацию о возможностях драйвера для Node.js MongoDB можно получить на [официальном сайте](https://mongodb.github.io/node-mongodb-native/).

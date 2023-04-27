@@ -5,15 +5,15 @@
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Главная</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>{header}</h1>
-    <p>{message}</p>
-  </body>
-  <html></html>
+    <head>
+        <title>Главная</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>{header}</h1>
+        <p>{message}</p>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -22,24 +22,22 @@
 Изменим файл `app.js`:
 
 ```js
-const http = require('http')
-const fs = require('fs')
+const http = require('http');
+const fs = require('fs');
 
-http
-  .createServer(function (request, response) {
+http.createServer(function (request, response) {
     fs.readFile('index.html', 'utf8', function (
-      error,
-      data
+        error,
+        data
     ) {
-      let message = 'Изучаем Node.js'
-      let header = 'Главная страница'
-      data = data
-        .replace('{header}', header)
-        .replace('{message}', message)
-      response.end(data)
-    })
-  })
-  .listen(3000)
+        let message = 'Изучаем Node.js';
+        let header = 'Главная страница';
+        data = data
+            .replace('{header}', header)
+            .replace('{message}', message);
+        response.end(data);
+    });
+}).listen(3000);
 ```
 
 Здесь получаем содержимое файла и проводим его дополнительную обработку, заменяя плейсхолдеры на конкретный текст с помощью метода `data.replace()`.

@@ -29,7 +29,7 @@ const querystring = require('node:querystring');
 
 ## `querystring.escape(str)`
 
-- `str` {string}
+-   `str` {string}
 
 Метод `querystring.escape()` выполняет процентное кодирование URL для заданного `str` способом, оптимизированным для специфических требований строк запросов URL.
 
@@ -37,12 +37,12 @@ const querystring = require('node:querystring');
 
 ## `querystring.parse(str[, sep[, eq[, options]]])`
 
-- `str` {string} Строка запроса URL для разбора
-- `sep` {string} Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
-- `eq` {string}. Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
-- `options` {Object}.
-  - `decodeURIComponent` {Функция} Функция, которую следует использовать при декодировании символов в строке запроса. **По умолчанию:** `querystring.unescape()`.
-  - `maxKeys` {number} Определяет максимальное количество ключей для разбора. Укажите `0`, чтобы снять ограничения на подсчет ключей. **По умолчанию:** `1000`.
+-   `str` {string} Строка запроса URL для разбора
+-   `sep` {string} Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
+-   `eq` {string}. Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
+-   `options` {Object}.
+    -   `decodeURIComponent` {Функция} Функция, которую следует использовать при декодировании символов в строке запроса. **По умолчанию:** `querystring.unescape()`.
+    -   `maxKeys` {number} Определяет максимальное количество ключей для разбора. Укажите `0`, чтобы снять ограничения на подсчет ключей. **По умолчанию:** `1000`.
 
 Метод `querystring.parse()` анализирует строку запроса URL (`str`) в набор пар ключей и значений.
 
@@ -63,17 +63,17 @@ const querystring = require('node:querystring');
 // Предполагается, что функция gbkDecodeURIComponent уже существует...
 
 querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null, {
-  decodeURIComponent: gbkDecodeURIComponent,
+    decodeURIComponent: gbkDecodeURIComponent,
 });
 ```
 
 ## `querystring.stringify(obj[, sep[, eq[, options]]])`
 
-- `obj` {Объект} Объект для сериализации в строку запроса URL
-- `sep` {string} Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
-- `eq` {string}. Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
-- `options`.
-  - `encodeURIComponent` {Функция} Функция, которую следует использовать при преобразовании небезопасных для URL символов в процентное кодирование в строке запроса. **По умолчанию:** `querystring.escape()`.
+-   `obj` {Объект} Объект для сериализации в строку запроса URL
+-   `sep` {string} Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
+-   `eq` {string}. Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
+-   `options`.
+    -   `encodeURIComponent` {Функция} Функция, которую следует использовать при преобразовании небезопасных для URL символов в процентное кодирование в строке запроса. **По умолчанию:** `querystring.escape()`.
 
 Метод `querystring.stringify()` создает строку запроса URL из заданного `obj` путем итерации по "собственным свойствам" объекта.
 
@@ -81,9 +81,9 @@ querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null, {
 
 ```js
 querystring.stringify({
-  foo: 'bar',
-  baz: ['qux', 'quux'],
-  corge: '',
+    foo: 'bar',
+    baz: ['qux', 'quux'],
+    corge: '',
 });
 // Возвращает 'foo=bar&baz=qux&baz=quux&corge='
 
@@ -97,16 +97,16 @@ querystring.stringify({ foo: 'bar', baz: 'qux' }, ';', ':');
 // Предполагается, что функция gbkEncodeURIComponent уже существует,
 
 querystring.stringify(
-  { w: '中文', foo: 'bar' },
-  null,
-  null,
-  { encodeURIComponent: gbkEncodeURIComponent }
+    { w: '中文', foo: 'bar' },
+    null,
+    null,
+    { encodeURIComponent: gbkEncodeURIComponent }
 );
 ```
 
 ## `querystring.unescape(str)`
 
-- `str` {string}
+-   `str` {string}
 
 Метод `querystring.unescape()` выполняет декодирование символов, закодированных в процентах URL, на заданном `str`.
 

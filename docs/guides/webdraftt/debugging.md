@@ -26,30 +26,30 @@ _app.js_
 
 ```js
 const express = require('express'),
-  app = express()
+    app = express();
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 app.get('/', (req, res) => {
-  let counter = 0
-  counter += 5
-  debugger
-  res.send('Node js inspector')
-})
+    let counter = 0;
+    counter += 5;
+    debugger;
+    res.send('Node js inspector');
+});
 
 app.listen(port, host, () =>
-  console.log(`Server listens http://${host}:${port}`)
-)
+    console.log(`Server listens http://${host}:${port}`)
+);
 ```
 
 После запуска приведенного примера командой `inspect`, отладчик остановится на первой строке и предложит ввести команду. Список возможных команд:
 
-- `cont` - продолжает выполнение скрипта;
-- `next` - следующее действие (переходит на следующую строку кода);
-- `step` - "входит" в исходный код текущего исполняемого выражения;
-- `step` - "входит" в исходный код текущего исполняемого выражения;
-- `pause` - ставит на паузу выполнение скрипта.
+-   `cont` - продолжает выполнение скрипта;
+-   `next` - следующее действие (переходит на следующую строку кода);
+-   `step` - "входит" в исходный код текущего исполняемого выражения;
+-   `step` - "входит" в исходный код текущего исполняемого выражения;
+-   `pause` - ставит на паузу выполнение скрипта.
 
 ![Отладка](debugging-1.png)
 

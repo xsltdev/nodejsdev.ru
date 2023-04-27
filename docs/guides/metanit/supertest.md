@@ -15,7 +15,7 @@ const express = require('express');
 var app = express();
 
 app.get('/', function (request, response) {
-  response.send('Hello Test');
+    response.send('Hello Test');
 });
 
 app.listen(3000);
@@ -35,7 +35,7 @@ const request = require('supertest');
 var app = require('./app').app;
 
 it('should return Hello Test', function (done) {
-  request(app).get('/').expect('Hello Test').end(done);
+    request(app).get('/').expect('Hello Test').end(done);
 });
 ```
 
@@ -69,18 +69,18 @@ end(done);
 
 ```json
 {
-  "name": "testapp",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "mocha *.test.js"
-  },
-  "devDependencies": {
-    "mocha": "^3.2.0",
-    "supertest": "^2.0.1"
-  },
-  "dependencies": {
-    "express": "^4.14.0"
-  }
+    "name": "testapp",
+    "version": "1.0.0",
+    "scripts": {
+        "test": "mocha *.test.js"
+    },
+    "devDependencies": {
+        "mocha": "^3.2.0",
+        "supertest": "^2.0.1"
+    },
+    "dependencies": {
+        "express": "^4.14.0"
+    }
 }
 ```
 
@@ -97,15 +97,15 @@ const express = require('express');
 var app = express();
 
 app.get('/', function (request, response) {
-  response.send('Hello Test');
+    response.send('Hello Test');
 });
 
 app.get('/error', function (request, response) {
-  response.status(404).send('NotFound');
+    response.status(404).send('NotFound');
 });
 
 app.get('/user', function (request, response) {
-  response.send({ name: 'Tom', age: 22 });
+    response.send({ name: 'Tom', age: 22 });
 });
 
 app.listen(3000);
@@ -122,27 +122,27 @@ const assert = require('assert');
 var app = require('./app').app;
 
 it('should return Hello Test', function (done) {
-  request(app).get('/').expect('Hello Test').end(done);
+    request(app).get('/').expect('Hello Test').end(done);
 });
 
 it('should return NotFound with status 404', function (done) {
-  request(app)
-    .get('/error')
-    .expect(404)
-    .expect('NotFound')
-    .end(done);
+    request(app)
+        .get('/error')
+        .expect(404)
+        .expect('NotFound')
+        .end(done);
 });
 
 it('should return user with name Tom and age 22', function (done) {
-  request(app)
-    .get('/user')
-    .expect(function (response) {
-      assert.deepEqual(response.body, {
-        name: 'Tom',
-        age: 22,
-      });
-    })
-    .end(done);
+    request(app)
+        .get('/user')
+        .expect(function (response) {
+            assert.deepEqual(response.body, {
+                name: 'Tom',
+                age: 22,
+            });
+        })
+        .end(done);
 });
 ```
 

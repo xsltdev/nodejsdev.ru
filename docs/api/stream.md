@@ -37,10 +37,10 @@ const stream = require('node:stream');
 
 В Node.js существует четыре основных типа потоков:
 
-- [`Writable`](#class-streamwritable): потоки, в которые можно записывать данные (например, [`fs.createWriteStream()`](fs.md#fscreatewritestreampath-options)).
-- [`Readable`](#class-streamreadable): потоки, из которых можно читать данные (например, [`fs.createReadStream()`](fs.md#fscreatereadstreampath-options)).
-- [`Duplex`](#class-streamduplex): потоки, которые являются одновременно `Readable` и `Writable` (например, [`net.Socket`](net.md#class-netsocket)).
-- [`Transform`](#class-streamtransform): `дуплексные` потоки, которые могут изменять или преобразовывать данные по мере их записи и чтения (например, [`zlib.createDeflate()`](zlib.md#zlibcreatedeflateoptions)).
+-   [`Writable`](#class-streamwritable): потоки, в которые можно записывать данные (например, [`fs.createWriteStream()`](fs.md#fscreatewritestreampath-options)).
+-   [`Readable`](#class-streamreadable): потоки, из которых можно читать данные (например, [`fs.createReadStream()`](fs.md#fscreatereadstreampath-options)).
+-   [`Duplex`](#class-streamduplex): потоки, которые являются одновременно `Readable` и `Writable` (например, [`net.Socket`](net.md#class-netsocket)).
+-   [`Transform`](#class-streamtransform): `дуплексные` потоки, которые могут изменять или преобразовывать данные по мере их записи и чтения (например, [`zlib.createDeflate()`](zlib.md#zlibcreatedeflateoptions)).
 
 Кроме того, в этот модуль входят служебные функции [`stream.pipeline()`](#streampipelinesource-transforms-destination-callback), [`stream.finished()`](#streamfinishedstream-options-callback), [`stream.Readable.from()`](#streamreadablefromiterable-options) и [`stream.addAbortSignal()`](#streamaddabortsignalsignal-stream).
 
@@ -58,19 +58,19 @@ API `stream/promises` предоставляет альтернативный н
 
 ### `stream.pipeline(streams[, options])`
 
-- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]}
-- `source` {Stream|Iterable|AsyncIterable|Function}
-  - Возвращает: {Promise|AsyncIterable}
-- `...transforms` {Stream|Function}
-  - `source` {AsyncIterable}
-  - Возвращает: {Promise|AsyncIterable}
-- `destination` {Stream|Function}
-  - `source` {AsyncIterable}
-  - Возвращает: {Promise|AsyncIterable}
-- `options` {Object}
-  - `сигнал` {AbortSignal}
-  - `end` {boolean}
-- Возвращает: {Promise} Выполняется, когда конвейер завершен.
+-   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]}
+-   `source` {Stream|Iterable|AsyncIterable|Function}
+    -   Возвращает: {Promise|AsyncIterable}
+-   `...transforms` {Stream|Function}
+    -   `source` {AsyncIterable}
+    -   Возвращает: {Promise|AsyncIterable}
+-   `destination` {Stream|Function}
+    -   `source` {AsyncIterable}
+    -   Возвращает: {Promise|AsyncIterable}
+-   `options` {Object}
+    -   `сигнал` {AbortSignal}
+    -   `end` {boolean}
+-   Возвращает: {Promise} Выполняется, когда конвейер завершен.
 
 <!-- конец списка -->
 
@@ -80,12 +80,12 @@ const fs = require('node:fs');
 const zlib = require('node:zlib');
 
 async function run() {
-  await pipeline(
-    fs.createReadStream('archive.tar'),
-    zlib.createGzip(),
-    fs.createWriteStream('archive.tar.gz')
-  );
-  console.log('Pipeline succeeded.');
+    await pipeline(
+        fs.createReadStream('archive.tar'),
+        zlib.createGzip(),
+        fs.createWriteStream('archive.tar.gz')
+    );
+    console.log('Pipeline succeeded.');
 }
 
 run().catch(console.error);
@@ -94,15 +94,15 @@ run().catch(console.error);
 ```mjs
 import { pipeline } from 'node:stream/promises';
 import {
-  createReadStream,
-  createWriteStream,
+    createReadStream,
+    createWriteStream,
 } from 'node:fs';
 import { createGzip } from 'node:zlib';
 
 await pipeline(
-  createReadStream('archive.tar'),
-  createGzip(),
-  createWriteStream('archive.tar.gz')
+    createReadStream('archive.tar'),
+    createGzip(),
+    createWriteStream('archive.tar.gz')
 );
 console.log('Pipeline succeeded.');
 ```
@@ -115,16 +115,16 @@ const fs = require('node:fs');
 const zlib = require('node:zlib');
 
 async function run() {
-  const ac = new AbortController();
-  const signal = ac.signal;
+    const ac = new AbortController();
+    const signal = ac.signal;
 
-  setImmediate(() => ac.abort());
-  await pipeline(
-    fs.createReadStream('archive.tar'),
-    zlib.createGzip(),
-    fs.createWriteStream('archive.tar.gz'),
-    { signal }
-  );
+    setImmediate(() => ac.abort());
+    await pipeline(
+        fs.createReadStream('archive.tar'),
+        zlib.createGzip(),
+        fs.createWriteStream('archive.tar.gz'),
+        { signal }
+    );
 }
 
 run().catch(console.error); // AbortError
@@ -133,8 +133,8 @@ run().catch(console.error); // AbortError
 ```mjs
 import { pipeline } from 'node:stream/promises';
 import {
-  createReadStream,
-  createWriteStream,
+    createReadStream,
+    createWriteStream,
 } from 'node:fs';
 import { createGzip } from 'node:zlib';
 
@@ -142,14 +142,14 @@ const ac = new AbortController();
 const { signal } = ac;
 setImmediate(() => ac.abort());
 try {
-  await pipeline(
-    createReadStream('archive.tar'),
-    createGzip(),
-    createWriteStream('archive.tar.gz'),
-    { signal }
-  );
+    await pipeline(
+        createReadStream('archive.tar'),
+        createGzip(),
+        createWriteStream('archive.tar.gz'),
+        { signal }
+    );
 } catch (err) {
-  console.error(err); // AbortError
+    console.error(err); // AbortError
 }
 ```
 
@@ -160,17 +160,17 @@ const { pipeline } = require('node:stream/promises');
 const fs = require('node:fs');
 
 async function run() {
-  await pipeline(
-    fs.createReadStream('lowercase.txt'),
-    async function* (source, { signal }) {
-      source.setEncoding('utf8'); // Работаем со строками, а не с `буфером`.
-      for await (const chunk of source) {
-        yield await processChunk(chunk, { signal });
-      }
-    },
-    fs.createWriteStream('uppercase.txt')
-  );
-  console.log('Pipeline succeeded.');
+    await pipeline(
+        fs.createReadStream('lowercase.txt'),
+        async function* (source, { signal }) {
+            source.setEncoding('utf8'); // Работаем со строками, а не с `буфером`.
+            for await (const chunk of source) {
+                yield await processChunk(chunk, { signal });
+            }
+        },
+        fs.createWriteStream('uppercase.txt')
+    );
+    console.log('Pipeline succeeded.');
 }
 
 run().catch(console.error);
@@ -180,8 +180,8 @@ run().catch(console.error);
 import { pipeline } from 'node:stream/promises';
 import fs from 'node:fs';
 await pipeline(async function* ({ signal }) {
-  await someLongRunningfn({ signal });
-  yield 'asd';
+    await someLongRunningfn({ signal });
+    yield 'asd';
 }, fs.createWriteStream('uppercase.txt'));
 console.log('Pipeline succeeded.');
 ```
@@ -192,13 +192,13 @@ API `pipeline` предоставляет [версию обратного вы�
 
 ### `stream.finished(stream[, options])`
 
-- `stream` {Stream}
-- `options` {Object}
-  - `error` {boolean|undefined}
-  - `readable` {boolean|undefined}
-  - `writable` {boolean|undefined}
-  - `сигнал`: {AbortSignal|undefined}
-- Возвращает: {Promise} Выполняется, когда поток больше не доступен для чтения или записи.
+-   `stream` {Stream}
+-   `options` {Object}
+    -   `error` {boolean|undefined}
+    -   `readable` {boolean|undefined}
+    -   `writable` {boolean|undefined}
+    -   `сигнал`: {AbortSignal|undefined}
+-   Возвращает: {Promise} Выполняется, когда поток больше не доступен для чтения или записи.
 
 <!-- конец списка -->
 
@@ -209,8 +209,8 @@ const fs = require('node:fs');
 const rs = fs.createReadStream('archive.tar');
 
 async function run() {
-  await finished(rs);
-  console.log('Поток закончил чтение.');
+    await finished(rs);
+    console.log('Поток закончил чтение.');
 }
 
 run().catch(console.error);
@@ -224,8 +224,8 @@ import { createReadStream } from 'node:fs';
 const rs = createReadStream('archive.tar');
 
 async function run() {
-  await finished(rs);
-  console.log('Поток закончил чтение.');
+    await finished(rs);
+    console.log('Поток закончил чтение.');
 }
 
 run().catch(console.error);
@@ -274,32 +274,32 @@ API `finished` предоставляет [версию обратного вы�
 const http = require('node:http');
 
 const server = http.createServer((req, res) => {
-  // `req` - это http.IncomingMessage, который является читаемым потоком.
-  // `res` - это http.ServerResponse, который является записываемым потоком.
+    // `req` - это http.IncomingMessage, который является читаемым потоком.
+    // `res` - это http.ServerResponse, который является записываемым потоком.
 
-  let body = '';
-  // Получаем данные в виде строк utf8.
-  // Если кодировка не задана, будут получены объекты Buffer.
-  req.setEncoding('utf8');
+    let body = '';
+    // Получаем данные в виде строк utf8.
+    // Если кодировка не задана, будут получены объекты Buffer.
+    req.setEncoding('utf8');
 
-  // Читаемые потоки испускают события 'data' после добавления слушателя.
-  req.on('data', (chunk) => {
-    body += chunk;
-  });
+    // Читаемые потоки испускают события 'data' после добавления слушателя.
+    req.on('data', (chunk) => {
+        body += chunk;
+    });
 
-  // Событие 'end' означает, что все тело было получено.
-  req.on('end', () => {
-    try {
-      const data = JSON.parse(body);
-      // Записываем обратно что-нибудь интересное для пользователя:
-      res.write(typeof data);
-      res.end();
-    } catch (er) {
-      // ой! плохой json!
-      res.statusCode = 400;
-      return res.end(`error: ${er.message}`);
-    }
-  });
+    // Событие 'end' означает, что все тело было получено.
+    req.on('end', () => {
+        try {
+            const data = JSON.parse(body);
+            // Записываем обратно что-нибудь интересное для пользователя:
+            res.write(typeof data);
+            res.end();
+        } catch (er) {
+            // ой! плохой json!
+            res.statusCode = 400;
+            return res.end(`error: ${er.message}`);
+        }
+    });
 });
 
 server.listen(1337);
@@ -332,14 +332,14 @@ server.listen(1337);
 
 Примеры [`Writable`](#class-streamwritable) потоков включают:
 
-- [HTTP-запросы, на клиенте](http.md#class-httpclientrequest)
-- [HTTP ответы, на сервере](http.md#class-httpserverresponse)
-- [потоки записи fs](fs.md#class-fswritestream)
-- [потоки zlib](zlib.md)
-- [crypto streams](crypto.md)
-- [TCP сокеты](net.md#class-netsocket)
-- [stdin дочернего процесса](child_process.md#subprocessstdin)
-- [`process.stdout`](process.md#processstdout), [`process.stderr`](process.md#processstderr)
+-   [HTTP-запросы, на клиенте](http.md#class-httpclientrequest)
+-   [HTTP ответы, на сервере](http.md#class-httpserverresponse)
+-   [потоки записи fs](fs.md#class-fswritestream)
+-   [потоки zlib](zlib.md)
+-   [crypto streams](crypto.md)
+-   [TCP сокеты](net.md#class-netsocket)
+-   [stdin дочернего процесса](child_process.md#subprocessstdin)
+-   [`process.stdout`](process.md#processstdout), [`process.stderr`](process.md#processstderr)
 
 Некоторые из этих примеров на самом деле являются потоками [`Duplex`](#class-streamduplex), которые реализуют интерфейс [`Writable`](#class-streamwritable).
 
@@ -376,32 +376,32 @@ myStream.end('закончил запись данных');
 // Записываем данные в предоставленный поток с возможностью записи миллион раз.
 // Будьте внимательны к обратному давлению.
 function writeOneMillionTimes(
-  writer,
-  data,
-  encoding,
-  callback
+    writer,
+    data,
+    encoding,
+    callback
 ) {
-  let i = 1000000;
-  write();
-  function write() {
-    let ok = true;
-    do {
-      i--;
-      if (i === 0) {
-        // Последний раз!
-        writer.write(data, encoding, callback);
-      } else {
-        // Узнайте, должны ли мы продолжить или подождать.
-        // Не передавайте обратный вызов, потому что мы еще не закончили.
-        ok = writer.write(data, encoding);
-      }
-    } while (i > 0 && ok);
-    if (i > 0) {
-      // Пришлось остановиться раньше времени!
-      // Напишем еще немного, когда все стечет.
-      writer.once('drain', write);
+    let i = 1000000;
+    write();
+    function write() {
+        let ok = true;
+        do {
+            i--;
+            if (i === 0) {
+                // Последний раз!
+                writer.write(data, encoding, callback);
+            } else {
+                // Узнайте, должны ли мы продолжить или подождать.
+                // Не передавайте обратный вызов, потому что мы еще не закончили.
+                ok = writer.write(data, encoding);
+            }
+        } while (i > 0 && ok);
+        if (i > 0) {
+            // Пришлось остановиться раньше времени!
+            // Напишем еще немного, когда все стечет.
+            writer.once('drain', write);
+        }
     }
-  }
 }
 ```
 
@@ -409,7 +409,7 @@ function writeOneMillionTimes(
 
 ##### Событие: `error`
 
-- {Error}
+-   {Error}
 
 Событие `'error'` генерируется, если во время записи или передачи данных произошла ошибка. При вызове обратного вызова слушателя ему передается единственный аргумент `Error`.
 
@@ -426,10 +426,10 @@ function writeOneMillionTimes(
 ```js
 const writer = getWritableStreamSomehow();
 for (let i = 0; i < 100; i++) {
-  writer.write(`hello, #${i}!\n`);
+    writer.write(`hello, #${i}!\n`);
 }
 writer.on('finish', () => {
-  console.log('Все записи завершены');
+    console.log('Все записи завершены');
 });
 writer.end('Это конец\n');
 ```
@@ -438,7 +438,7 @@ writer.end('Это конец\n');
 
 ##### Событие: `pipe`
 
-- `src` {stream.Readable} исходный поток, который передается по трубопроводу в этот объект записи
+-   `src` {stream.Readable} исходный поток, который передается по трубопроводу в этот объект записи
 
 Событие `pipe` возникает, когда метод [`stream.pipe()`](#readablepipedestination-options) вызывается на потоке readable, добавляя этот writable к его набору пунктов назначения.
 
@@ -446,8 +446,8 @@ writer.end('Это конец\n');
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('pipe', (src) => {
-  console.log('Что-то передается в писатель');
-  assert.equal(src, reader);
+    console.log('Что-то передается в писатель');
+    assert.equal(src, reader);
 });
 reader.pipe(writer);
 ```
@@ -456,7 +456,7 @@ reader.pipe(writer);
 
 ##### Событие: `unpipe`
 
-- `src` {stream.Readable} Исходный поток, который [unpipeed](#readableunpipedestination) этот writable
+-   `src` {stream.Readable} Исходный поток, который [unpipeed](#readableunpipedestination) этот writable
 
 Событие `unpipe` испускается, когда метод [`stream.unpipe()`](#readableunpipedestination) вызывается на потоке [`Readable`](#class-streamreadable), удаляя этот [`Writable`](#class-streamwritable) из его набора пунктов назначения.
 
@@ -466,8 +466,8 @@ reader.pipe(writer);
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('unpipe', (src) => {
-  console.log('Что-то перестало поступать в писатель');
-  assert.equal(src, reader);
+    console.log('Что-то перестало поступать в писатель');
+    assert.equal(src, reader);
 });
 reader.pipe(writer);
 reader.unpipe(writer);
@@ -487,8 +487,8 @@ reader.unpipe(writer);
 
 ##### `writable.destroy([error])`
 
-- `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `'error'`.
-- Возвращает: {this}
+-   `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `'error'`.
+-   Возвращает: {this}
 
 Уничтожить поток. Опционально выдает событие `'error'` и выдает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова поток, доступный для записи, завершен, и последующие вызовы `write()` или `end()` приведут к ошибке `ERR_STREAM_DESTROYED`. Это деструктивный и немедленный способ уничтожения потока. Предыдущие вызовы `write()` могут не уничтожить поток и вызвать ошибку `ERR_STREAM_DESTROYED`. Используйте `end()` вместо destroy, если данные должны быть удалены до закрытия, или дождитесь события `'drain'` перед уничтожением потока.
 
@@ -500,7 +500,7 @@ const myStream = new Writable();
 const fooErr = new Error('ошибка foo');
 myStream.destroy(fooErr);
 myStream.on('error', (fooErr) =>
-  console.error(fooErr.message)
+    console.error(fooErr.message)
 ); // ошибка foo
 ```
 
@@ -531,7 +531,7 @@ myStream.write('foo', (error) => console.error(error.code));
 
 ##### `writable.closed`
 
-- {булево}
+-   {булево}
 
 Является `true` после испускания `close`.
 
@@ -539,7 +539,7 @@ myStream.write('foo', (error) => console.error(error.code));
 
 ##### `writable.destroyed`
 
-- {boolean}
+-   {boolean}
 
 Является `true` после вызова [`writable.destroy()`](#writabledestroyerror).
 
@@ -557,10 +557,10 @@ console.log(myStream.destroyed); // true
 
 ##### `writable.end([chunk[, encoding]][, callback])`
 
-- `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
-- `encoding` {string} Кодировка, если `chunk` является строкой.
-- `callback` {функция} Обратный вызов для завершения потока.
-- Возвращает: {this}
+-   `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+-   `encoding` {string} Кодировка, если `chunk` является строкой.
+-   `callback` {функция} Обратный вызов для завершения потока.
+-   Возвращает: {this}
 
 Вызов метода `writable.end()` сигнализирует о том, что данные больше не будут записываться в [`Writable`](#class-streamwritable). Необязательные аргументы `chunk` и `encoding` позволяют записать последний дополнительный фрагмент данных непосредственно перед закрытием потока.
 
@@ -579,8 +579,8 @@ file.end('world!');
 
 ##### `writable.setDefaultEncoding(encoding)`
 
-- `encoding` {string} Новая кодировка по умолчанию
-- Возвращает: {this}
+-   `encoding` {string} Новая кодировка по умолчанию
+-   Возвращает: {this}
 
 Метод `writable.setDefaultEncoding()` устанавливает `кодировку по умолчанию` для потока [`Writable`](#class-streamwritable).
 
@@ -607,9 +607,9 @@ stream.write('some ');
 stream.cork();
 stream.write('data ');
 process.nextTick(() => {
-  stream.uncork();
-  // Данные не будут удалены до тех пор, пока функция uncork() не будет вызвана во второй раз.
-  stream.uncork();
+    stream.uncork();
+    // Данные не будут удалены до тех пор, пока функция uncork() не будет вызвана во второй раз.
+    stream.uncork();
 });
 ```
 
@@ -619,7 +619,7 @@ process.nextTick(() => {
 
 ##### `writable.writable`
 
-- {boolean}
+-   {boolean}
 
 Является `true`, если безопасно вызывать [`writable.write()`](#writablewritechunk-encoding-callback), что означает, что поток не был уничтожен, ошибочен или завершен.
 
@@ -631,7 +631,7 @@ process.nextTick(() => {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- {boolean}
+-   {boolean}
 
 Возвращает, был ли поток уничтожен или ошибочен перед выдачей `'finish'`.
 
@@ -639,7 +639,7 @@ process.nextTick(() => {
 
 ##### `writable.writableEnded`
 
-- {булево}
+-   {булево}
 
 Является `true` после вызова [`writable.end()`](#writableendchunk-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](#writablewritablefinished).
 
@@ -647,7 +647,7 @@ process.nextTick(() => {
 
 ##### `writable.writableCorked`
 
-- {целое число}
+-   {целое число}
 
 Количество раз, которое необходимо вызвать [`writable.uncork()`](#writableuncork), чтобы полностью откупорить поток.
 
@@ -655,7 +655,7 @@ process.nextTick(() => {
 
 ##### `writable.errored`
 
-- {Error}
+-   {Error}
 
 Возвращает ошибку, если поток был уничтожен с ошибкой.
 
@@ -663,7 +663,7 @@ process.nextTick(() => {
 
 ##### `writable.writableFinished`
 
-- {boolean}
+-   {boolean}
 
 Устанавливается в `true` непосредственно перед испусканием события [`'finish'`](#event-finish).
 
@@ -671,7 +671,7 @@ process.nextTick(() => {
 
 ##### `writable.writableHighWaterMark`
 
-- {число}
+-   {число}
 
 Возвращает значение `highWaterMark`, переданное при создании этой `записываемой`.
 
@@ -679,7 +679,7 @@ process.nextTick(() => {
 
 ##### `writable.writableLength`
 
-- {число}
+-   {число}
 
 Это свойство содержит количество байтов (или объектов) в очереди, готовых к записи. Значение предоставляет данные интроспекции относительно состояния `highWaterMark`.
 
@@ -687,7 +687,7 @@ process.nextTick(() => {
 
 ##### `writable.writableNeedDrain`
 
-- {boolean}
+-   {boolean}
 
 Является `true`, если буфер потока был заполнен и поток будет издавать сигнал `'drain'`.
 
@@ -695,7 +695,7 @@ process.nextTick(() => {
 
 ##### `writable.writableObjectMode`
 
-- {boolean}
+-   {boolean}
 
 Получатель для свойства `objectMode` данного потока `Writable`.
 
@@ -703,10 +703,10 @@ process.nextTick(() => {
 
 ##### `writable.write(chunk[, encoding][, callback])`
 
-- `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
-- `encoding` {string|null} Кодировка, если `chunk` является строкой. **По умолчанию:** `'utf8'`.
-- `callback` {Function} Обратный вызов, когда этот фрагмент данных будет удален.
-- Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+-   `encoding` {string|null} Кодировка, если `chunk` является строкой. **По умолчанию:** `'utf8'`.
+-   `callback` {Function} Обратный вызов, когда этот фрагмент данных будет удален.
+-   Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `writable.write()` записывает некоторые данные в поток и вызывает предоставленный `callback`, когда данные будут полностью обработаны. Если произошла ошибка, будет вызван `callback` с ошибкой в качестве первого аргумента. Вызов `callback` происходит асинхронно и до того, как будет выдана `'error'`.
 
@@ -720,16 +720,16 @@ process.nextTick(() => {
 
 ```js
 function write(data, cb) {
-  if (!stream.write(data)) {
-    stream.once('drain', cb);
-  } else {
-    process.nextTick(cb);
-  }
+    if (!stream.write(data)) {
+        stream.once('drain', cb);
+    } else {
+        process.nextTick(cb);
+    }
 }
 
 // Wait for cb to be called before doing any other write.
 write('hello', () => {
-  console.log('Write completed, do more writes now.');
+    console.log('Write completed, do more writes now.');
 });
 ```
 
@@ -743,14 +743,14 @@ write('hello', () => {
 
 Примеры `Readable` потоков включают:
 
-- [HTTP ответы, на клиенте](http.md#class-httpincomingmessage)
-- [HTTP-запросы, на сервере](http.md#class-httpincomingmessage)
-- [потоки чтения fs](fs.md#class-fsreadstream)
-- [потоки zlib](zlib.md)
-- [crypto streams](crypto.md)
-- [TCP сокеты](net.md#class-netsocket)
-- [stdout и stderr дочернего процесса](child_process.md#subprocessstdout)
-- [`process.stdin`](process.md#processstdin)
+-   [HTTP ответы, на клиенте](http.md#class-httpincomingmessage)
+-   [HTTP-запросы, на сервере](http.md#class-httpincomingmessage)
+-   [потоки чтения fs](fs.md#class-fsreadstream)
+-   [потоки zlib](zlib.md)
+-   [crypto streams](crypto.md)
+-   [TCP сокеты](net.md#class-netsocket)
+-   [stdout и stderr дочернего процесса](child_process.md#subprocessstdout)
+-   [`process.stdin`](process.md#processstdin)
 
 Все потоки [`Readable`](#class-streamreadable) реализуют интерфейс, определенный классом `stream.Readable`.
 
@@ -760,20 +760,20 @@ write('hello', () => {
 
 Потоки `Readable` эффективно работают в одном из двух режимов: текущем и приостановленном. Эти режимы отличаются от [объектного режима](#object-mode). Поток [`Readable`](#class-streamreadable) может быть в объектном режиме или нет, независимо от того, находится ли он в потоковом режиме или в режиме паузы.
 
-- В режиме потока данные считываются из базовой системы автоматически и предоставляются приложению как можно быстрее с помощью событий через интерфейс [`EventEmitter`](events.md#class-eventemitter).
+-   В режиме потока данные считываются из базовой системы автоматически и предоставляются приложению как можно быстрее с помощью событий через интерфейс [`EventEmitter`](events.md#class-eventemitter).
 
-- В режиме паузы для чтения фрагментов данных из потока необходимо явно вызывать метод [`stream.read()`](#readablereadsize).
+-   В режиме паузы для чтения фрагментов данных из потока необходимо явно вызывать метод [`stream.read()`](#readablereadsize).
 
 Все потоки [`Readable`](#class-streamreadable) начинаются в режиме паузы, но могут быть переключены в режим потока одним из следующих способов:
 
-- Добавление обработчика события [`'data'`](#event-data).
-- Вызов метода [`stream.resume()`](#readableresume).
-- Вызов метода [`stream.pipe()`](#readablepipedestination-options) для отправки данных на [`Writable`](#class-streamwritable).
+-   Добавление обработчика события [`'data'`](#event-data).
+-   Вызов метода [`stream.resume()`](#readableresume).
+-   Вызов метода [`stream.pipe()`](#readablepipedestination-options) для отправки данных на [`Writable`](#class-streamwritable).
 
 `Readable` может переключиться обратно в режим паузы, используя одно из следующих действий:
 
-- Если нет мест назначения, вызвав метод [`stream.pause()`](#readablepause).
-- Если есть места назначения труб, то путем удаления всех мест назначения труб. Несколько мест назначения труб можно удалить, вызвав метод [`stream.unpipe()`](#readableunpipedestination).
+-   Если нет мест назначения, вызвав метод [`stream.pause()`](#readablepause).
+-   Если есть места назначения труб, то путем удаления всех мест назначения труб. Несколько мест назначения труб можно удалить, вызвав метод [`stream.unpipe()`](#readableunpipedestination).
 
 Важно помнить, что `Readable` не будет генерировать данные, пока не будет предоставлен механизм для потребления или игнорирования этих данных. Если механизм потребления отключен или убран, `Readable` будет _пытаться_ прекратить генерировать данные.
 
@@ -791,9 +791,9 @@ write('hello', () => {
 
 В частности, в любой момент времени каждый `Readable` находится в одном из трех возможных состояний:
 
-- `readable.readableFlowing === null`
-- `readable.readableFlowing === false`
-- `readable.readableFlowing === true`.
+-   `readable.readableFlowing === null`
+-   `readable.readableFlowing === false`
+-   `readable.readableFlowing === true`.
 
 Когда `readable.readableFlowing` имеет значение `null`, механизм потребления данных потока не предусмотрен. Поэтому поток не будет генерировать данные. В этом состоянии прикрепление слушателя для события `'data'`, вызов метода `readable.pipe()` или вызов метода `readable.resume()` переключит `readable.readableFlowing` в `true`, заставляя `Readable` начать активно генерировать события по мере генерации данных.
 
@@ -809,7 +809,7 @@ pass.unpipe(writable);
 // readableFlowing теперь false.
 
 pass.on('data', (chunk) => {
-  console.log(chunk.toString());
+    console.log(chunk.toString());
 });
 // readableFlowing все еще ложно.
 pass.write('ok'); // Не будет выдавать 'data'.
@@ -841,7 +841,7 @@ API потока `Readable` развивался на протяжении не�
 
 ##### Событие: `data`
 
-- `chunk` {Buffer|string|any} Кусок данных. Для потоков, не работающих в объектном режиме, чанк будет либо строкой, либо `буфером`. Для потоков, работающих в объектном режиме, чанк может быть любым значением JavaScript, кроме `null`.
+-   `chunk` {Buffer|string|any} Кусок данных. Для потоков, не работающих в объектном режиме, чанк будет либо строкой, либо `буфером`. Для потоков, работающих в объектном режиме, чанк может быть любым значением JavaScript, кроме `null`.
 
 Событие `'data'` генерируется всякий раз, когда поток передает право собственности на кусок данных потребителю. Это может происходить всякий раз, когда поток переключается в режим потока, вызывая `readable.pipe()`, `readable.resume()` или присоединяя обратный вызов слушателя к событию `'data'`. Событие `'data'` также будет возникать всякий раз, когда вызывается метод `readable.read()` и фрагмент данных доступен для возврата.
 
@@ -852,7 +852,7 @@ API потока `Readable` развивался на протяжении не�
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Принято ${chunk.length} байт данных.`);
+    console.log(`Принято ${chunk.length} байт данных.`);
 });
 ```
 
@@ -867,10 +867,10 @@ readable.on('data', (chunk) => {
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Получено ${chunk.length} байт данных.`);
+    console.log(`Получено ${chunk.length} байт данных.`);
 });
 readable.on('end', () => {
-  console.log('Больше данных не будет.');
+    console.log('Больше данных не будет.');
 });
 ```
 
@@ -878,7 +878,7 @@ readable.on('end', () => {
 
 ##### Событие: `error`
 
-- {Error}
+-   {Error}
 
 Событие `'error'` может быть вызвано реализацией `Readable` в любое время. Как правило, это может произойти, если базовый поток не может генерировать данные из-за внутреннего сбоя или когда реализация потока пытается передать недопустимый фрагмент данных.
 
@@ -899,12 +899,12 @@ readable.on('end', () => {
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('readable', function () {
-  // Теперь есть некоторые данные для чтения.
-  let data;
+    // Теперь есть некоторые данные для чтения.
+    let data;
 
-  while ((data = this.read()) !== null) {
-    console.log(data);
-  }
+    while ((data = this.read()) !== null) {
+        console.log(data);
+    }
 });
 ```
 
@@ -914,10 +914,10 @@ readable.on('readable', function () {
 const fs = require('node:fs');
 const rr = fs.createReadStream('foo.txt');
 rr.on('readable', () => {
-  console.log(`readable: ${rr.read()}`);
+    console.log(`readable: ${rr.read()}`);
 });
 rr.on('end', () => {
-  console.log('end');
+    console.log('end');
 });
 ```
 
@@ -945,8 +945,8 @@ end
 
 ##### `readable.destroy([error])`
 
-- `error` {Error} Ошибка, которая будет передана в качестве полезной нагрузки в событии `'error'`.
-- Возвращает: {this}
+-   `error` {Error} Ошибка, которая будет передана в качестве полезной нагрузки в событии `'error'`.
+-   Возвращает: {this}
 
 Уничтожить поток. Опционально испускает событие `'error'` и испускает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова читаемый поток освободит все внутренние ресурсы, и последующие вызовы `push()` будут игнорироваться.
 
@@ -958,7 +958,7 @@ end
 
 ##### `readable.closed`
 
-- {boolean}
+-   {boolean}
 
 Является `true` после испускания `close`.
 
@@ -966,7 +966,7 @@ end
 
 ##### `readable.destroyed`
 
-- {boolean}
+-   {boolean}
 
 Является `true` после вызова [`readable.destroy()`](#readabledestroyerror).
 
@@ -974,7 +974,7 @@ end
 
 ##### `readable.isPaused()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Метод `readable.isPaused()` возвращает текущее рабочее состояние `Readable`. Он используется в основном механизмом, который лежит в основе метода `readable.pipe()`. В большинстве типичных случаев нет причин использовать этот метод напрямую.
 
@@ -992,22 +992,24 @@ readable.isPaused(); // === false
 
 ##### `readable.pause()`
 
-- Возвращает: {this}
+-   Возвращает: {this}
 
 Метод `readable.pause()` заставит поток в режиме потока прекратить испускать события [`'data'`](#event-data), переходя из режима потока. Любые данные, которые становятся доступными, остаются во внутреннем буфере.
 
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-  console.log(`Получено ${chunk.length} байт данных.`);
-  readable.pause();
-  console.log(
-    'Дополнительных данных не будет в течение 1 секунды.'
-  );
-  setTimeout(() => {
-    console.log('Теперь данные начнут поступать снова.');
-    readable.resume();
-  }, 1000);
+    console.log(`Получено ${chunk.length} байт данных.`);
+    readable.pause();
+    console.log(
+        'Дополнительных данных не будет в течение 1 секунды.'
+    );
+    setTimeout(() => {
+        console.log(
+            'Теперь данные начнут поступать снова.'
+        );
+        readable.resume();
+    }, 1000);
 });
 ```
 
@@ -1017,10 +1019,10 @@ readable.on('data', (chunk) => {
 
 ##### `readable.pipe(destination[, options])`
 
-- `destination` {stream.Writable} Место назначения для записи данных
-- `options` {Object} Опции трубы
-  - `end` {boolean} Завершить запись при завершении чтения. **По умолчанию:** `true`.
-- Возвращает: {stream.Writable} конечный пункт, позволяющий создавать цепочку труб, если это поток [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform).
+-   `destination` {stream.Writable} Место назначения для записи данных
+-   `options` {Object} Опции трубы
+    -   `end` {boolean} Завершить запись при завершении чтения. **По умолчанию:** `true`.
+-   Возвращает: {stream.Writable} конечный пункт, позволяющий создавать цепочку труб, если это поток [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform).
 
 Метод `readable.pipe()` присоединяет поток [`Writable`](#class-streamwritable) к `readable`, заставляя его автоматически переключаться в режим потока и передавать все свои данные в присоединенный [`Writable`](#class-streamwritable). Поток данных будет автоматически управляться таким образом, чтобы конечный поток `Writable` не был перегружен более быстрым потоком `Readable`.
 
@@ -1052,7 +1054,7 @@ r.pipe(z).pipe(w);
 ```js
 reader.pipe(writer, { end: false });
 reader.on('end', () => {
-  writer.end('Goodbye\n');
+    writer.end('Goodbye\n');
 });
 ```
 
@@ -1064,8 +1066,8 @@ reader.on('end', () => {
 
 ##### `readable.read([size])`
 
-- `size` {число} Необязательный аргумент, указывающий, сколько данных нужно прочитать.
-- Возвращает: {string|Buffer|null|any}
+-   `size` {число} Необязательный аргумент, указывающий, сколько данных нужно прочитать.
+-   Возвращает: {string|Buffer|null|any}
 
 Метод `readable.read()` считывает данные из внутреннего буфера и возвращает их. Если данные не доступны для чтения, возвращается `null`. По умолчанию данные возвращаются в виде объекта `Buffer`, если только кодировка не была указана с помощью метода `readable.setEncoding()` или поток работает в объектном режиме.
 
@@ -1082,19 +1084,21 @@ const readable = getReadableStreamSomehow();
 
 // 'readable' может быть вызван несколько раз по мере буферизации данных
 readable.on('readable', () => {
-  let chunk;
-  console.log(
-    'Stream is readable (новые данные получены в буфер)'
-  );
-  // Используйте цикл, чтобы убедиться, что мы прочитали все доступные в данный момент данные
-  while (null !== (chunk = readable.read())) {
-    console.log(`Прочитано ${chunk.length} байт данных...`);
-  }
+    let chunk;
+    console.log(
+        'Stream is readable (новые данные получены в буфер)'
+    );
+    // Используйте цикл, чтобы убедиться, что мы прочитали все доступные в данный момент данные
+    while (null !== (chunk = readable.read())) {
+        console.log(
+            `Прочитано ${chunk.length} байт данных...`
+        );
+    }
 });
 
 // 'end' будет срабатывать один раз, когда больше не будет данных
 readable.on('end', () => {
-  console.log('Достигнут конец потока.');
+    console.log('Достигнут конец потока.');
 });
 ```
 
@@ -1106,14 +1110,14 @@ readable.on('end', () => {
 const chunks = [];
 
 readable.on('readable', () => {
-  let chunk;
-  while (null !== (chunk = readable.read())) {
-    chunks.push(chunk);
-  }
+    let chunk;
+    while (null !== (chunk = readable.read())) {
+        chunks.push(chunk);
+    }
 });
 
 readable.on('end', () => {
-  const content = chunks.join('');
+    const content = chunks.join('');
 });
 ```
 
@@ -1127,7 +1131,7 @@ readable.on('end', () => {
 
 ##### `readable.readable`
 
-- {boolean}
+-   {boolean}
 
 Является `true`, если безопасно вызывать [`readable.read()`](#readablereadsize), что означает, что поток не был уничтожен или выдал `'error'` или `'end'`.
 
@@ -1139,7 +1143,7 @@ readable.on('end', () => {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- {boolean}
+-   {boolean}
 
 Возвращает, был ли поток уничтожен или ошибочен перед выдачей `'end'`.
 
@@ -1151,7 +1155,7 @@ readable.on('end', () => {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- {boolean}
+-   {boolean}
 
 Возвращает, были ли испущены `данные`.
 
@@ -1159,7 +1163,7 @@ readable.on('end', () => {
 
 ##### `readable.readableEncoding`
 
-- {null|string}
+-   {null|string}
 
 Получатель свойства `encoding` для данного потока `Readable`. Свойство `encoding` может быть установлено с помощью метода [`readable.setEncoding()`](#readablesetencodingencoding).
 
@@ -1167,7 +1171,7 @@ readable.on('end', () => {
 
 ##### `readable.readableEnded`
 
-- {boolean}
+-   {boolean}
 
 Становится `true`, когда испускается событие [`'end'`](#event-end).
 
@@ -1175,7 +1179,7 @@ readable.on('end', () => {
 
 ##### `readable.errored`
 
-- {Error}
+-   {Error}
 
 Возвращает ошибку, если поток был уничтожен с ошибкой.
 
@@ -1183,7 +1187,7 @@ readable.on('end', () => {
 
 ##### `readable.readableFlowing`
 
-- {boolean}
+-   {boolean}
 
 Это свойство отражает текущее состояние потока `Readable`, как описано в разделе [Три состояния](#three-states).
 
@@ -1191,7 +1195,7 @@ readable.on('end', () => {
 
 ##### `readable.readableHighWaterMark`
 
-- {число}
+-   {число}
 
 Возвращает значение `highWaterMark`, переданное при создании этого `Readable`.
 
@@ -1199,7 +1203,7 @@ readable.on('end', () => {
 
 ##### `readable.readableLength`
 
-- {число}
+-   {число}
 
 Это свойство содержит количество байтов (или объектов) в очереди, готовых к чтению. Значение предоставляет данные интроспекции относительно состояния `highWaterMark`.
 
@@ -1207,7 +1211,7 @@ readable.on('end', () => {
 
 ##### `readable.readableObjectMode`
 
-- {boolean}
+-   {boolean}
 
 Получатель для свойства `objectMode` данного потока `Readable`.
 
@@ -1215,7 +1219,7 @@ readable.on('end', () => {
 
 ##### `readable.resume()`
 
-- Возвращает: {this}
+-   Возвращает: {this}
 
 Метод `readable.resume()` заставляет явно приостановленный поток `Readable` возобновить испускание событий [`'data'`](#event-data), переводя поток в режим потока.
 
@@ -1223,10 +1227,10 @@ readable.on('end', () => {
 
 ```js
 getReadableStreamSomehow()
-  .resume()
-  .on('end', () => {
-    console.log('Достиг конца, но ничего не прочитал.');
-  });
+    .resume()
+    .on('end', () => {
+        console.log('Достиг конца, но ничего не прочитал.');
+    });
 ```
 
 Метод `readable.resume()` не имеет эффекта, если существует слушатель события `'readable'`.
@@ -1235,8 +1239,8 @@ getReadableStreamSomehow()
 
 ##### `readable.setEncoding(encoding)`
 
-- `encoding` {string} Кодировка, которую следует использовать.
-- Возвращает: {this}
+-   `encoding` {string} Кодировка, которую следует использовать.
+-   Возвращает: {this}
 
 Метод `readable.setEncoding()` устанавливает кодировку символов для данных, считываемых из потока `Readable`.
 
@@ -1248,11 +1252,11 @@ getReadableStreamSomehow()
 const readable = getReadableStreamSomehow();
 readable.setEncoding('utf8');
 readable.on('data', (chunk) => {
-  assert.equal(typeof chunk, 'string');
-  console.log(
-    'Получено %d символов строковых данных:',
-    chunk.length
-  );
+    assert.equal(typeof chunk, 'string');
+    console.log(
+        'Получено %d символов строковых данных:',
+        chunk.length
+    );
 });
 ```
 
@@ -1260,8 +1264,8 @@ readable.on('data', (chunk) => {
 
 ##### `readable.unpipe([destination])`
 
-- `destination` {stream.Writable} Необязательный конкретный поток для распайки
-- Возвращает: {this}
+-   `destination` {stream.Writable} Необязательный конкретный поток для распайки
+-   Возвращает: {this}
 
 Метод `readable.unpipe()` отсоединяет поток `Writable`, ранее присоединенный с помощью метода [`stream.pipe()`](#readablepipedestination-options).
 
@@ -1277,10 +1281,10 @@ const writable = fs.createWriteStream('file.txt');
 // но только в течение первой секунды.
 readable.pipe(writable);
 setTimeout(() => {
-  console.log('Остановить запись в файл.txt.');
-  readable.unpipe(writable);
-  console.log('Вручную закрыть поток файлов.');
-  writable.end();
+    console.log('Остановить запись в файл.txt.');
+    readable.unpipe(writable);
+    console.log('Вручную закрыть поток файлов.');
+    writable.end();
 }, 1000);
 ```
 
@@ -1288,8 +1292,8 @@ setTimeout(() => {
 
 ##### `readable.unshift(chunk[, encoding])`
 
-- `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для выгрузки в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
-- `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
+-   `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для выгрузки в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+-   `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
 
 Передача `chunk` как `null` сигнализирует о конце потока (EOF) и ведет себя так же, как `readable.push(null)`, после чего данные больше не могут быть записаны. Сигнал EOF ставится в конце буфера, и все буферизованные данные все равно будут смыты.
 
@@ -1305,32 +1309,35 @@ setTimeout(() => {
 // Вызываем обратный вызов с (error, header, stream).
 const { StringDecoder } = require('node:string_decoder');
 function parseHeader(stream, callback) {
-  stream.on('error', callback);
-  stream.on('readable', onReadable);
-  const decoder = new StringDecoder('utf8');
-  let header = '';
-  function onReadable() {
-    let chunk;
-    while (null !== (chunk = stream.read())) {
-      const str = decoder.write(chunk);
-      if (str.includes('\n\n')) {
-        // Найдена граница заголовка.
-        const split = str.split(/\n\n/);
-        header += split.shift();
-        const remaining = split.join('\n\n');
-        const buf = Buffer.from(remaining, 'utf8');
-        stream.removeListener('error', callback);
-        // Удалите слушателя 'readable' перед разгруппировкой.
-        stream.removeListener('readable', onReadable);
-        if (buf.length) stream.unshift(buf);
-        // Теперь тело сообщения может быть прочитано из потока.
-        callback(null, header, stream);
-        return;
-      }
-      // Продолжаем читать заголовок.
-      header += str;
+    stream.on('error', callback);
+    stream.on('readable', onReadable);
+    const decoder = new StringDecoder('utf8');
+    let header = '';
+    function onReadable() {
+        let chunk;
+        while (null !== (chunk = stream.read())) {
+            const str = decoder.write(chunk);
+            if (str.includes('\n\n')) {
+                // Найдена граница заголовка.
+                const split = str.split(/\n\n/);
+                header += split.shift();
+                const remaining = split.join('\n\n');
+                const buf = Buffer.from(remaining, 'utf8');
+                stream.removeListener('error', callback);
+                // Удалите слушателя 'readable' перед разгруппировкой.
+                stream.removeListener(
+                    'readable',
+                    onReadable
+                );
+                if (buf.length) stream.unshift(buf);
+                // Теперь тело сообщения может быть прочитано из потока.
+                callback(null, header, stream);
+                return;
+            }
+            // Продолжаем читать заголовок.
+            header += str;
+        }
     }
-  }
 }
 ```
 
@@ -1340,8 +1347,8 @@ function parseHeader(stream, callback) {
 
 ##### `readable.wrap(stream)`
 
-- `stream` {Stream} Читаемый поток "старого стиля"
-- Возвращает: {this}
+-   `stream` {Stream} Читаемый поток "старого стиля"
+-   Возвращает: {this}
 
 До версии Node.js 0.10 потоки не реализовывали весь API модуля `node:stream`, как он определен в настоящее время. (Более подробную информацию смотрите в [Совместимость](#compatibility-with-older-nodejs-versions)).
 
@@ -1356,7 +1363,7 @@ const oreader = new OldReader();
 const myReader = new Readable().wrap(oreader);
 
 myReader.on('readable', () => {
-  myReader.read(); // и т.д.
+    myReader.read(); // и т.д.
 });
 ```
 
@@ -1364,7 +1371,7 @@ myReader.on('readable', () => {
 
 ##### `readable[Symbol.asyncIterator]()`
 
-- Возвращает: {AsyncIterator} для полного потребления потока.
+-   Возвращает: {AsyncIterator} для полного потребления потока.
 
 <!-- конец списка -->
 
@@ -1372,12 +1379,12 @@ myReader.on('readable', () => {
 const fs = require('node:fs');
 
 async function print(readable) {
-  readable.setEncoding('utf8');
-  let data = '';
-  for await (const chunk of readable) {
-    data += chunk;
-  }
-  console.log(data);
+    readable.setEncoding('utf8');
+    let data = '';
+    for await (const chunk of readable) {
+        data += chunk;
+    }
+    console.log(data);
 }
 
 print(fs.createReadStream('file')).catch(console.error);
@@ -1393,10 +1400,10 @@ print(fs.createReadStream('file')).catch(console.error);
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `stream` {Stream|Iterable|AsyncIterable|Function}
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Duplex} поток, составленный с потоком `stream`.
+-   `stream` {Stream|Iterable|AsyncIterable|Function}
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Duplex} поток, составленный с потоком `stream`.
 
 <!-- конец списка -->
 
@@ -1404,18 +1411,18 @@ print(fs.createReadStream('file')).catch(console.error);
 import { Readable } from 'node:stream';
 
 async function* splitToWords(source) {
-  for await (const chunk of source) {
-    const words = String(chunk).split(' ');
+    for await (const chunk of source) {
+        const words = String(chunk).split(' ');
 
-    for (const word of words) {
-      yield word;
+        for (const word of words) {
+            yield word;
+        }
     }
-  }
 }
 
 const wordsStream = Readable.from([
-  'this is',
-  'compose as operator',
+    'this is',
+    'compose as operator',
 ]).compose(splitToWords);
 const words = await wordsStream.toArray();
 
@@ -1432,9 +1439,9 @@ console.log(words); // печатает ['this', 'is', 'compose', 'as', 'operato
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `options` {Object}
-  - `destroyOnReturn` {boolean} Если установлено значение `false`, вызов `return` на асинхронном итераторе или завершение итерации `for await...of` с помощью `break`, `return` или `throw` не будет уничтожать поток. **По умолчанию:** `true`.
-- Возвращает: {AsyncIterator} для потребления потока.
+-   `options` {Object}
+    -   `destroyOnReturn` {boolean} Если установлено значение `false`, вызов `return` на асинхронном итераторе или завершение итерации `for await...of` с помощью `break`, `return` или `throw` не будет уничтожать поток. **По умолчанию:** `true`.
+-   Возвращает: {AsyncIterator} для потребления потока.
 
 Итератор, созданный этим методом, дает пользователям возможность отменить уничтожение потока, если цикл `for await...of` будет завершен `return`, `break` или `throw`, или если итератор должен уничтожить поток, если поток выдал ошибку во время итерации.
 
@@ -1442,36 +1449,38 @@ console.log(words); // печатает ['this', 'is', 'compose', 'as', 'operato
 const { Readable } = require('node:stream');
 
 async function printIterator(readable) {
-  for await (const chunk of readable.iterator({
-    destroyOnReturn: false,
-  })) {
-    console.log(chunk); // 1
-    break;
-  }
+    for await (const chunk of readable.iterator({
+        destroyOnReturn: false,
+    })) {
+        console.log(chunk); // 1
+        break;
+    }
 
-  console.log(readable.destroyed); // false
+    console.log(readable.destroyed); // false
 
-  for await (const chunk of readable.iterator({
-    destroyOnReturn: false,
-  })) {
-    console.log(chunk); // Будет выведено 2, а затем 3
-  }
+    for await (const chunk of readable.iterator({
+        destroyOnReturn: false,
+    })) {
+        console.log(chunk); // Будет выведено 2, а затем 3
+    }
 
-  console.log(readable.destroyed); // True, поток был полностью уничтожен
+    console.log(readable.destroyed); // True, поток был полностью уничтожен
 }
 
 async function printSymbolAsyncIterator(readable) {
-  for await (const chunk of readable) {
-    console.log(chunk); // 1
-    break;
-  }
+    for await (const chunk of readable) {
+        console.log(chunk); // 1
+        break;
+    }
 
-  console.log(readable.destroyed); // true
+    console.log(readable.destroyed); // true
 }
 
 async function showBoth() {
-  await printIterator(Readable.from([1, 2, 3]));
-  await printSymbolAsyncIterator(Readable.from([1, 2, 3]));
+    await printIterator(Readable.from([1, 2, 3]));
+    await printSymbolAsyncIterator(
+        Readable.from([1, 2, 3])
+    );
 }
 
 showBoth();
@@ -1485,14 +1494,14 @@ showBoth();
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для отображения каждого куска данных в потоке.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
+-   `fn` {Function|AsyncFunction} функция для отображения каждого куска данных в потоке.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
 
 Этот метод позволяет выполнять отображение над потоком. Функция `fn` будет вызываться для каждого чанка в потоке. Если функция `fn` возвращает обещание - это обещание будет `ожидаться` перед передачей в поток результатов.
 
@@ -1502,21 +1511,21 @@ import { Resolver } from 'node:dns/promises';
 
 // С синхронным маппером.
 for await (const chunk of Readable.from([1, 2, 3, 4]).map(
-  (x) => x * 2
+    (x) => x * 2
 )) {
-  console.log(chunk); // 2, 4, 6, 8
+    console.log(chunk); // 2, 4, 6, 8
 }
 // С асинхронным маппером, делая не более 2 запросов за раз.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-  'nodejs.org',
-  'openjsf.org',
-  'www.linuxfoundation.org',
+    'nodejs.org',
+    'openjsf.org',
+    'www.linuxfoundation.org',
 ]).map((domain) => resolver.resolve4(domain), {
-  concurrency: 2,
+    concurrency: 2,
 });
 for await (const result of dnsResults) {
-  console.log(result); // Выводит в журнал DNS-результат resolver.resolve4.
+    console.log(result); // Выводит в журнал DNS-результат resolver.resolve4.
 }
 ```
 
@@ -1528,14 +1537,14 @@ for await (const result of dnsResults) {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для фильтрации фрагментов из потока.
-  - `data` {any} кусок данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток, отфильтрованный с помощью предиката `fn`.
+-   `fn` {Function|AsyncFunction} функция для фильтрации фрагментов из потока.
+    -   `data` {any} кусок данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток, отфильтрованный с помощью предиката `fn`.
 
 Этот метод позволяет фильтровать поток. Для каждого куска в потоке будет вызвана функция `fn`, и если она вернет истинное значение, то кусок будет передан в поток результатов. Если функция `fn` возвращает обещание - это обещание будет `ожидаться`.
 
@@ -1545,31 +1554,34 @@ import { Resolver } from 'node:dns/promises';
 
 // С синхронным предикатом.
 for await (const chunk of Readable.from([
-  1,
-  2,
-  3,
-  4,
+    1,
+    2,
+    3,
+    4,
 ]).filter((x) => x > 2)) {
-  console.log(chunk); // 3, 4
+    console.log(chunk); // 3, 4
 }
 // С асинхронным предикатом, делая не более 2 запросов за раз.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-  'nodejs.org',
-  'openjsf.org',
-  'www.linuxfoundation.org',
+    'nodejs.org',
+    'openjsf.org',
+    'www.linuxfoundation.org',
 ]).filter(
-  async (domain) => {
-    const { address } = await resolver.resolve4(domain, {
-      ttl: true,
-    });
-    return address.ttl > 60;
-  },
-  { concurrency: 2 }
+    async (domain) => {
+        const { address } = await resolver.resolve4(
+            domain,
+            {
+                ttl: true,
+            }
+        );
+        return address.ttl > 60;
+    },
+    { concurrency: 2 }
 );
 for await (const result of dnsResults) {
-  // Заносит в журнал домены с разрешенной dns-записью более 60 секунд.
-  console.log(result);
+    // Заносит в журнал домены с разрешенной dns-записью более 60 секунд.
+    console.log(result);
 }
 ```
 
@@ -1581,14 +1593,14 @@ for await (const result of dnsResults) {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Promise} обещание о завершении потока.
+-   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Promise} обещание о завершении потока.
 
 Этот метод позволяет итерировать поток. Для каждого куска в потоке будет вызвана функция `fn`. Если функция `fn` возвращает обещание - это обещание будет `await`.
 
@@ -1602,31 +1614,34 @@ import { Resolver } from 'node:dns/promises';
 
 // С синхронным предикатом.
 for await (const chunk of Readable.from([
-  1,
-  2,
-  3,
-  4,
+    1,
+    2,
+    3,
+    4,
 ]).filter((x) => x > 2)) {
-  console.log(chunk); // 3, 4
+    console.log(chunk); // 3, 4
 }
 // С асинхронным предикатом, делая не более 2 запросов за раз.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-  'nodejs.org',
-  'openjsf.org',
-  'www.linuxfoundation.org',
+    'nodejs.org',
+    'openjsf.org',
+    'www.linuxfoundation.org',
 ]).map(
-  async (domain) => {
-    const { address } = await resolver.resolve4(domain, {
-      ttl: true,
-    });
-    return address;
-  },
-  { concurrency: 2 }
+    async (domain) => {
+        const { address } = await resolver.resolve4(
+            domain,
+            {
+                ttl: true,
+            }
+        );
+        return address;
+    },
+    { concurrency: 2 }
 );
 await dnsResults.forEach((result) => {
-  // Выводит результат в журнал, аналогично `for await (const result of dnsResults)`.
-  console.log(result);
+    // Выводит результат в журнал, аналогично `for await (const result of dnsResults)`.
+    console.log(result);
 });
 console.log('done'); // Поток завершен
 ```
@@ -1639,9 +1654,9 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет отменить операцию toArray, если сигнал прерван.
-- Возвращает: {Promise} обещание, содержащее массив с содержимым потока.
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет отменить операцию toArray, если сигнал прерван.
+-   Возвращает: {Promise} обещание, содержащее массив с содержимым потока.
 
 Этот метод позволяет легко получить содержимое потока.
 
@@ -1656,20 +1671,23 @@ await Readable.from([1, 2, 3, 4]).toArray(); // [1, 2, 3, 4]
 // Выполняем параллельные dns-запросы с помощью .map и собираем
 // результаты в массив с помощью toArray
 const dnsResults = await Readable.from([
-  'nodejs.org',
-  'openjsf.org',
-  'www.linuxfoundation.org',
+    'nodejs.org',
+    'openjsf.org',
+    'www.linuxfoundation.org',
 ])
-  .map(
-    async (domain) => {
-      const { address } = await resolver.resolve4(domain, {
-        ttl: true,
-      });
-      return address;
-    },
-    { concurrency: 2 }
-  )
-  .toArray();
+    .map(
+        async (domain) => {
+            const { address } = await resolver.resolve4(
+                domain,
+                {
+                    ttl: true,
+                }
+            );
+            return address;
+        },
+        { concurrency: 2 }
+    )
+    .toArray();
 ```
 
 <!-- 0076.part.md -->
@@ -1680,14 +1698,14 @@ const dnsResults = await Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение хотя бы для одного из чанков.
+-   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение хотя бы для одного из чанков.
 
 Этот метод похож на `Array.prototype.some` и вызывает `fn` на каждом куске в потоке, пока ожидаемое возвращаемое значение не станет `true` (или любым истинным значением). Как только вызов `fn` на куске, ожидающем возврата значения, становится истинным, поток уничтожается и обещание выполняется с `true`. Если ни один из вызовов `fn` на чанках не возвращает истинное значение, обещание выполняется с `false`.
 
@@ -1701,15 +1719,15 @@ await Readable.from([1, 2, 3, 4]).some((x) => x < 0); // false
 
 // С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
 const anyBigFile = await Readable.from([
-  'file1',
-  'file2',
-  'file3',
+    'file1',
+    'file2',
+    'file3',
 ]).some(
-  async (fileName) => {
-    const stats = await stat(fileName);
-    return stats.size > 1024 * 1024;
-  },
-  { concurrency: 2 }
+    async (fileName) => {
+        const stats = await stat(fileName);
+        return stats.size > 1024 * 1024;
+    },
+    { concurrency: 2 }
 );
 console.log(anyBigFile); // `true`, если любой файл в списке больше 1MB
 console.log('done'); // Поток завершен
@@ -1723,14 +1741,14 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Promise} обещание, оценивающее первый чанк, для которого `fn` имеет истинностное значение, или `undefined`, если элемент не был найден.
+-   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Promise} обещание, оценивающее первый чанк, для которого `fn` имеет истинностное значение, или `undefined`, если элемент не был найден.
 
 Этот метод похож на `Array.prototype.find` и вызывает `fn` на каждом куске в потоке, чтобы найти кусок с истинностным значением для `fn`. Как только ожидаемое возвращаемое значение вызова `fn` становится истинным, поток уничтожается, а обещание выполняется значением, для которого `fn` вернул истинное значение. Если все вызовы `fn` в чанках возвращают ложное значение, обещание выполняется с `undefined`.
 
@@ -1745,15 +1763,15 @@ await Readable.from([1, 2, 3, 4]).find((x) => x > 10); // неопределен
 
 // С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
 const foundBigFile = await Readable.from([
-  'file1',
-  'file2',
-  'file3',
+    'file1',
+    'file2',
+    'file3',
 ]).find(
-  async (fileName) => {
-    const stats = await stat(fileName);
-    return stats.size > 1024 * 1024;
-  },
-  { concurrency: 2 }
+    async (fileName) => {
+        const stats = await stat(fileName);
+        return stats.size > 1024 * 1024;
+    },
+    { concurrency: 2 }
 );
 console.log(foundBigFile); // Имя файла большого файла, если какой-либо файл в списке больше 1MB
 console.log('done'); // Поток завершен
@@ -1767,14 +1785,14 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция для вызова на каждом куске потока.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение для всех чанков.
+-   `fn` {Function|AsyncFunction} функция для вызова на каждом куске потока.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Promise} обещание, оценивающее `true`, если `fn` вернул истинное значение для всех чанков.
 
 Этот метод похож на `Array.prototype.every` и вызывает `fn` на каждом куске в потоке, чтобы проверить, являются ли все ожидаемые возвращаемые значения истинным значением для `fn`. Как только вызов `fn` на чанке, ожидающем возврата значения, оказывается ложным, поток уничтожается, а обещание выполняется с `false`. Если все вызовы `fn` на чанках возвращают истинное значение, обещание выполняется с `true`.
 
@@ -1788,15 +1806,15 @@ await Readable.from([1, 2, 3, 4]).every((x) => x > 0); // true
 
 // С асинхронным предикатом, выполняющим не более 2 проверок файлов за раз.
 const allBigFiles = await Readable.from([
-  'file1',
-  'file2',
-  'file3',
+    'file1',
+    'file2',
+    'file3',
 ]).every(
-  async (fileName) => {
-    const stats = await stat(fileName);
-    return stats.size > 1024 * 1024;
-  },
-  { concurrency: 2 }
+    async (fileName) => {
+        const stats = await stat(fileName);
+        return stats.size > 1024 * 1024;
+    },
+    { concurrency: 2 }
 );
 // `true`, если все файлы в списке больше 1MiB
 console.log(allBigFiles);
@@ -1811,14 +1829,14 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncGeneratorFunction|AsyncFunction} функция для отображения каждого куска в потоке.
-  - `data` {any} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `options` {Object}
-  - `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
+-   `fn` {Function|AsyncGeneratorFunction|AsyncFunction} функция для отображения каждого куска в потоке.
+    -   `data` {any} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `options` {Object}
+    -   `concurrency` {number} максимальное количество одновременных вызовов `fn` для потока. **По умолчанию:** `1`.
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток, отображенный с помощью функции `fn`.
 
 Этот метод возвращает новый поток, применяя заданный обратный вызов к каждому фрагменту потока и затем сглаживая результат.
 
@@ -1830,23 +1848,23 @@ import { createReadStream } from 'node:fs';
 
 // С синхронным маппером.
 for await (const chunk of Readable.from([
-  1,
-  2,
-  3,
-  4,
+    1,
+    2,
+    3,
+    4,
 ]).flatMap((x) => [x, x])) {
-  console.log(chunk); // 1, 1, 2, 2, 2, 3, 3, 4, 4
+    console.log(chunk); // 1, 1, 2, 2, 2, 3, 3, 4, 4
 }
 // С помощью асинхронного маппера объедините содержимое 4 файлов
 const concatResult = Readable.from([
-  './1.mjs',
-  './2.mjs',
-  './3.mjs',
-  './4.mjs',
+    './1.mjs',
+    './2.mjs',
+    './3.mjs',
+    './4.mjs',
 ]).flatMap((fileName) => createReadStream(fileName));
 for await (const result of concatResult) {
-  // Это будет содержать содержимое (все чанки) всех 4 файлов
-  console.log(result);
+    // Это будет содержать содержимое (все чанки) всех 4 файлов
+    console.log(result);
 }
 ```
 
@@ -1858,10 +1876,10 @@ for await (const result of concatResult) {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `limit` {number} количество кусков, которые нужно отбросить из читаемого файла.
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток с `лимитом` отброшенных чанков.
+-   `limit` {number} количество кусков, которые нужно отбросить из читаемого файла.
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток с `лимитом` отброшенных чанков.
 
 Этот метод возвращает новый поток с первым `лимитом` отброшенных кусков.
 
@@ -1879,10 +1897,10 @@ await Readable.from([1, 2, 3, 4]).drop(2).toArray(); // [3, 4]
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `limit` {number} количество кусков, которые нужно взять из читаемого файла.
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток с `лимитом` занятых фрагментов.
+-   `limit` {number} количество кусков, которые нужно взять из читаемого файла.
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток с `лимитом` занятых фрагментов.
 
 Этот метод возвращает новый поток с первыми `лимитными` чанками.
 
@@ -1900,9 +1918,9 @@ await Readable.from([1, 2, 3, 4]).take(2).toArray(); // [1, 2]
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Readable} поток индексированных пар.
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Readable} поток индексированных пар.
 
 Этот метод возвращает новый поток с фрагментами базового потока в паре со счетчиком в виде `[index, chunk]`. Первое значение индекса равно 0, и оно увеличивается на 1 для каждого полученного куска.
 
@@ -1910,8 +1928,8 @@ await Readable.from([1, 2, 3, 4]).take(2).toArray(); // [1, 2]
 import { Readable } from 'node:stream';
 
 const pairs = await Readable.from(['a', 'b', 'c'])
-  .asIndexedPairs()
-  .toArray();
+    .asIndexedPairs()
+    .toArray();
 console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 ```
 
@@ -1923,15 +1941,15 @@ console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `fn` {Function|AsyncFunction} функция редуктора для вызова над каждым куском в потоке.
-  - `previous` {любое} значение, полученное от последнего вызова `fn` или `initial`, если указано, или первый чанк потока в противном случае.
-  - `data` {любой} фрагмент данных из потока.
-  - `options` {Object}
-    - `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
-- `initial` {любой} начальное значение для использования в сокращении.
-- `options` {Object}
-  - `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
-- Возвращает: {Promise} обещание конечного значения редукции.
+-   `fn` {Function|AsyncFunction} функция редуктора для вызова над каждым куском в потоке.
+    -   `previous` {любое} значение, полученное от последнего вызова `fn` или `initial`, если указано, или первый чанк потока в противном случае.
+    -   `data` {любой} фрагмент данных из потока.
+    -   `options` {Object}
+        -   `signal` {AbortSignal} прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
+-   `initial` {любой} начальное значение для использования в сокращении.
+-   `options` {Object}
+    -   `signal` {AbortSignal} позволяет уничтожить поток, если сигнал прерван.
+-   Возвращает: {Promise} обещание конечного значения редукции.
 
 Этот метод вызывает `fn` на каждом куске потока по порядку, передавая ему результат вычисления на предыдущем элементе. Он возвращает обещание конечного значения редукции.
 
@@ -1943,9 +1961,9 @@ console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 import { Readable } from 'node:stream';
 
 const ten = await Readable.from([1, 2, 3, 4]).reduce(
-  (previous, data) => {
-    return previous + data;
-  }
+    (previous, data) => {
+        return previous + data;
+    }
 );
 console.log(ten); // 10
 ```
@@ -1962,15 +1980,15 @@ console.log(ten); // 10
 
 Примерами `дуплексных` потоков являются:
 
-- [TCP сокеты](net.md#class-netsocket)
-- [zlib streams](zlib.md)
-- [crypto streams](crypto.md)
+-   [TCP сокеты](net.md#class-netsocket)
+-   [zlib streams](zlib.md)
+-   [crypto streams](crypto.md)
 
 <!-- 0086.part.md -->
 
 ##### `duplex.allowHalfOpen`
 
-- {boolean}
+-   {boolean}
 
 Если `false`, то поток будет автоматически завершать записываемую сторону, когда заканчивается читаемая сторона. Изначально устанавливается опцией конструктора `allowHalfOpen`, которая по умолчанию имеет значение `true`.
 
@@ -1984,15 +2002,15 @@ console.log(ten); // 10
 
 Примеры потоков `Transform` включают:
 
-- [zlib streams](zlib.md)
-- [crypto streams](crypto.md)
+-   [zlib streams](zlib.md)
+-   [crypto streams](crypto.md)
 
 <!-- 0088.part.md -->
 
 ##### `transform.destroy([error])`
 
-- `error` {Ошибка}
-- Возвращает: {this}
+-   `error` {Ошибка}
+-   Возвращает: {this}
 
 Уничтожить поток и, по желанию, выдать событие `'error'`. После этого вызова поток преобразования освободит все внутренние ресурсы. Реализаторы не должны переопределять этот метод, а вместо этого реализовать [`readable._destroy()`](#readable_destroyerr-callback). Реализация по умолчанию `_destroy()` для `Transform` также испускает `'close'`, если `emitClose` не установлен в false.
 
@@ -2002,21 +2020,21 @@ console.log(ten); // 10
 
 ### `stream.finished(stream[, options], callback)`
 
-- `stream` {Stream|ReadableStream|WritableStream}
+-   `stream` {Stream|ReadableStream|WritableStream}
 
 Читаемый и/или записываемый поток/вебстрим.
 
-- `options` {Object}
+-   `options` {Object}
 
-  - `error` {boolean} Если установлено значение `false`, то вызов `emit('error', err)` не рассматривается как завершенный. **По умолчанию:** `true`.
-  - `readable` {boolean} Если установлено значение `false`, обратный вызов будет вызван, когда поток завершится, даже если поток все еще может быть доступен для чтения. **По умолчанию:** `true`.
-  - `writable` {boolean} Если установлено значение `false`, обратный вызов будет вызван при завершении потока, даже если поток может быть доступен для записи. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} позволяет прервать ожидание завершения потока. Основной поток не будет прерван, если сигнал прерван. Обратный вызов будет вызван с сообщением `AbortError`. Все зарегистрированные слушатели, добавленные этой функцией, также будут удалены.
-  - `cleanup` {boolean} удалить все зарегистрированные слушатели потока. **По умолчанию:** `false`.
+    -   `error` {boolean} Если установлено значение `false`, то вызов `emit('error', err)` не рассматривается как завершенный. **По умолчанию:** `true`.
+    -   `readable` {boolean} Если установлено значение `false`, обратный вызов будет вызван, когда поток завершится, даже если поток все еще может быть доступен для чтения. **По умолчанию:** `true`.
+    -   `writable` {boolean} Если установлено значение `false`, обратный вызов будет вызван при завершении потока, даже если поток может быть доступен для записи. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} позволяет прервать ожидание завершения потока. Основной поток не будет прерван, если сигнал прерван. Обратный вызов будет вызван с сообщением `AbortError`. Все зарегистрированные слушатели, добавленные этой функцией, также будут удалены.
+    -   `cleanup` {boolean} удалить все зарегистрированные слушатели потока. **По умолчанию:** `false`.
 
-- `callback` {функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
+-   `callback` {функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
 
-- Возвращает: {Function} Функция очистки, которая удаляет всех зарегистрированных слушателей.
+-   Возвращает: {Function} Функция очистки, которая удаляет всех зарегистрированных слушателей.
 
 Функция для получения уведомления, когда поток больше не доступен для чтения, записи или произошла ошибка или событие преждевременного закрытия.
 
@@ -2027,11 +2045,11 @@ const fs = require('node:fs');
 const rs = fs.createReadStream('archive.tar');
 
 finished(rs, (err) => {
-  if (err) {
-    console.error('Stream failed.', err);
-  } else {
-    console.log('Поток закончил чтение.');
-  }
+    if (err) {
+        console.error('Stream failed.', err);
+    } else {
+        console.log('Поток закончил чтение.');
+    }
 });
 
 rs.resume(); // Слить поток.
@@ -2045,8 +2063,8 @@ API `finished` предоставляет [promise version](#streamfinishedstrea
 
 ```js
 const cleanup = finished(rs, (err) => {
-  cleanup();
-  // ...
+    cleanup();
+    // ...
 });
 ```
 
@@ -2058,19 +2076,19 @@ const cleanup = finished(rs, (err) => {
 
 ### `stream.pipeline(streams, callback)`
 
-- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
-- `source` {Stream|Iterable|AsyncIterable|Function|ReadableStream}
-  - Возвращает: {Iterable|AsyncIterable}
-- `...transforms` {Stream|Function|TransformStream}
-  - `source` {AsyncIterable}
-  - Возвращает: {AsyncIterable}
-- `destination` {Stream|Function|WritableStream}
-  - `source` {AsyncIterable}
-  - Возвращает: {AsyncIterable|Promise}
-- `callback` {Function} Вызывается, когда конвейер полностью завершен.
-  - `err` {Ошибка}
-  - `val` Разрешенное значение `Promise`, возвращенное `destination`.
-- Возвращает: {Stream}
+-   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
+-   `source` {Stream|Iterable|AsyncIterable|Function|ReadableStream}
+    -   Возвращает: {Iterable|AsyncIterable}
+-   `...transforms` {Stream|Function|TransformStream}
+    -   `source` {AsyncIterable}
+    -   Возвращает: {AsyncIterable}
+-   `destination` {Stream|Function|WritableStream}
+    -   `source` {AsyncIterable}
+    -   Возвращает: {AsyncIterable|Promise}
+-   `callback` {Function} Вызывается, когда конвейер полностью завершен.
+    -   `err` {Ошибка}
+    -   `val` Разрешенное значение `Promise`, возвращенное `destination`.
+-   Возвращает: {Stream}
 
 Метод модуля для передачи данных между потоками и генераторами, пересылающими ошибки и должным образом очищающими их, а также предоставляющими обратный вызов, когда конвейер завершен.
 
@@ -2085,16 +2103,16 @@ const zlib = require('node:zlib');
 // Конвейер для эффективного gzip потенциально огромного tar-файла:
 
 pipeline(
-  fs.createReadStream('archive.tar'),
-  zlib.createGzip(),
-  fs.createWriteStream('archive.tar.gz'),
-  (err) => {
-    if (err) {
-      console.error('Pipeline failed.', err);
-    } else {
-      console.log('Pipeline succeeded.');
+    fs.createReadStream('archive.tar'),
+    zlib.createGzip(),
+    fs.createWriteStream('archive.tar.gz'),
+    (err) => {
+        if (err) {
+            console.error('Pipeline failed.', err);
+        } else {
+            console.log('Pipeline succeeded.');
+        }
     }
-  }
 );
 ```
 
@@ -2102,8 +2120,8 @@ API `pipeline` предоставляет [promise version](#streampipelinesourc
 
 `stream.pipeline()` будет вызывать `stream.destroy(err)` для всех потоков, кроме:
 
-- `Readable` потоков, которые выдали команду `'end'` или `'close'`.
-- `Writable` потоков, которые выдали `'finish'` или `'close'`.
+-   `Readable` потоков, которые выдали команду `'end'` или `'close'`.
+-   `Writable` потоков, которые выдали `'finish'` или `'close'`.
 
 `stream.pipeline()` оставляет висящие слушатели событий на потоках после вызова `callback`. В случае повторного использования потоков после сбоя это может привести к утечке слушателей событий и проглоченным ошибкам. Если последний поток доступен для чтения, висячие слушатели событий будут удалены, чтобы последний поток мог быть использован позже.
 
@@ -2115,16 +2133,16 @@ const http = require('node:http');
 const { pipeline } = require('node:stream');
 
 const server = http.createServer((req, res) => {
-  const fileStream = fs.createReadStream(
-    './fileNotExist.txt'
-  );
-  pipeline(fileStream, res, (err) => {
-    if (err) {
-      console.log(err); // Нет такого файла
-      // Это сообщение не может быть отправлено после того, как `pipeline` уже уничтожил сокет
-      return res.end('error!!!');
-    }
-  });
+    const fileStream = fs.createReadStream(
+        './fileNotExist.txt'
+    );
+    pipeline(fileStream, res, (err) => {
+        if (err) {
+            console.log(err); // Нет такого файла
+            // Это сообщение не может быть отправлено после того, как `pipeline` уже уничтожил сокет
+            return res.end('error!!!');
+        }
+    });
 });
 ```
 
@@ -2138,8 +2156,8 @@ const server = http.createServer((req, res) => {
 
     `stream.compose` является экспериментальным.
 
-- `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
-- Возвращает: {stream.Duplex}
+-   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
+-   Возвращает: {stream.Duplex}
 
 Объединяет два или более потоков в поток `Duplex`, который пишет в первый поток и читает из последнего. Каждый предоставленный поток передается в следующий, используя `stream.pipeline`. Если какой-либо из потоков ошибается, то все они уничтожаются, включая внешний поток `Duplex`.
 
@@ -2151,22 +2169,22 @@ const server = http.createServer((req, res) => {
 import { compose, Transform } from 'node:stream';
 
 const removeSpaces = new Transform({
-  transform(chunk, encoding, callback) {
-    callback(null, String(chunk).replace(' ', ''));
-  },
+    transform(chunk, encoding, callback) {
+        callback(null, String(chunk).replace(' ', ''));
+    },
 });
 
 async function* toUpper(source) {
-  for await (const chunk of source) {
-    yield String(chunk).toUpperCase();
-  }
+    for await (const chunk of source) {
+        yield String(chunk).toUpperCase();
+    }
 }
 
 let res = '';
 for await (const buf of compose(removeSpaces, toUpper).end(
-  'hello world'
+    'hello world'
 )) {
-  res += buf;
+    res += buf;
 }
 
 console.log(res); // prints 'HELLOWORLD'
@@ -2174,9 +2192,9 @@ console.log(res); // prints 'HELLOWORLD'
 
 `stream.compose` можно использовать для преобразования асинхронных итерабельных, генераторов и функций в потоки.
 
-- `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
-- `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
-- `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
+-   `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
+-   `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
+-   `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
 
 <!-- конец списка -->
 
@@ -2186,26 +2204,26 @@ import { finished } from 'node:stream/promises';
 
 // Преобразуем AsyncIterable в читаемый Duplex.
 const s1 = compose(
-  (async function* () {
-    yield 'Hello';
-    yield 'World';
-  })()
+    (async function* () {
+        yield 'Hello';
+        yield 'World';
+    })()
 );
 
 // Преобразуем AsyncGenerator в преобразуемый Duplex.
 const s2 = compose(async function* (source) {
-  for await (const chunk of source) {
-    yield String(chunk).toUpperCase();
-  }
+    for await (const chunk of source) {
+        yield String(chunk).toUpperCase();
+    }
 });
 
 let res = '';
 
 // Преобразуем AsyncFunction в записываемый Duplex.
 const s3 = compose(async function (source) {
-  for await (const chunk of source) {
-    res += chunk;
-  }
+    for await (const chunk of source) {
+        res += chunk;
+    }
 });
 
 await finished(compose(s1, s2, s3));
@@ -2219,9 +2237,9 @@ console.log(res); // печатает 'HELLOWORLD'
 
 ### `stream.Readable.from(iterable[, options])`
 
-- `iterable` {Iterable} Объект, реализующий протокол итератора `Symbol.asyncIterator` или `Symbol.iterator`. Выдает событие 'error', если передано нулевое значение.
-- `options` {Object} Параметры, предоставляемые `new stream.Readable([options])`. По умолчанию, `Readable.from()` будет устанавливать `options.objectMode` в `true`, если это не будет явно отклонено установкой `options.objectMode` в `false`.
-- Возвращает: {stream.Readable}
+-   `iterable` {Iterable} Объект, реализующий протокол итератора `Symbol.asyncIterator` или `Symbol.iterator`. Выдает событие 'error', если передано нулевое значение.
+-   `options` {Object} Параметры, предоставляемые `new stream.Readable([options])`. По умолчанию, `Readable.from()` будет устанавливать `options.objectMode` в `true`, если это не будет явно отклонено установкой `options.objectMode` в `false`.
+-   Возвращает: {stream.Readable}
 
 Метод утилиты для создания читаемых потоков из итераторов.
 
@@ -2229,14 +2247,14 @@ console.log(res); // печатает 'HELLOWORLD'
 const { Readable } = require('node:stream');
 
 async function* generate() {
-  yield 'hello';
-  yield 'streams';
+    yield 'hello';
+    yield 'streams';
 }
 
 const readable = Readable.from(generate());
 
 readable.on('data', (chunk) => {
-  console.log(chunk);
+    console.log(chunk);
 });
 ```
 
@@ -2248,10 +2266,12 @@ readable.on('data', (chunk) => {
 const { Readable } = require('node:stream');
 
 Readable.from([
-  new Promise((resolve) => setTimeout(resolve('1'), 1500)),
-  new Promise((_, reject) =>
-    setTimeout(reject(new Error('2')), 1000)
-  ), // Не обработанный отказ
+    new Promise((resolve) =>
+        setTimeout(resolve('1'), 1500)
+    ),
+    new Promise((_, reject) =>
+        setTimeout(reject(new Error('2')), 1000)
+    ), // Не обработанный отказ
 ]);
 ```
 
@@ -2263,13 +2283,13 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `readableStream` {ReadableStream}
-- `options` {Object}
-  - `encoding` {string}
-  - `highWaterMark` {number}
-  - `objectMode` {boolean}
-  - `сигнал` {AbortSignal}
-- Возвращает: {stream.Readable}
+-   `readableStream` {ReadableStream}
+-   `options` {Object}
+    -   `encoding` {string}
+    -   `highWaterMark` {number}
+    -   `objectMode` {boolean}
+    -   `сигнал` {AbortSignal}
+-   Возвращает: {stream.Readable}
 
 <!-- 0095.part.md -->
 
@@ -2279,8 +2299,8 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `stream` {stream.Readable|ReadableStream}
-- Возвращает: `boolean`.
+-   `stream` {stream.Readable|ReadableStream}
+-   Возвращает: `boolean`.
 
 Возвращает, был ли поток прочитан или отменен.
 
@@ -2292,8 +2312,8 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `stream` {Readable|Writable|Duplex|WritableStream|ReadableStream}
-- Возвращает: {boolean}
+-   `stream` {Readable|Writable|Duplex|WritableStream|ReadableStream}
+-   Возвращает: {boolean}
 
 Возвращает, столкнулся ли поток с ошибкой.
 
@@ -2305,8 +2325,8 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `stream` {Readable|Duplex|ReadableStream}
-- Возвращает: {boolean}
+-   `stream` {Readable|Duplex|ReadableStream}
+-   Возвращает: {boolean}
 
 Возвращает, является ли поток читаемым.
 
@@ -2318,14 +2338,14 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `streamReadable` {stream.Readable}
-- `options` {Object}
-  - `стратегия` {Объект}
-    - `highWaterMark` {number} Максимальный размер внутренней очереди (созданного `ReadableStream`) перед применением обратного давления при чтении из данного `stream.Readable`. Если значение не указано, оно будет взято из данного `stream.Readable`.
-    - `size` {Функция} Функция, определяющая размер заданного куска данных. Если значение не указано, размер будет равен `1` для всех чанков.
-      - `chunk` {любой}
-      - Возвращает: {число}
-- Возвращает: {ReadableStream}
+-   `streamReadable` {stream.Readable}
+-   `options` {Object}
+    -   `стратегия` {Объект}
+        -   `highWaterMark` {number} Максимальный размер внутренней очереди (созданного `ReadableStream`) перед применением обратного давления при чтении из данного `stream.Readable`. Если значение не указано, оно будет взято из данного `stream.Readable`.
+        -   `size` {Функция} Функция, определяющая размер заданного куска данных. Если значение не указано, размер будет равен `1` для всех чанков.
+            -   `chunk` {любой}
+            -   Возвращает: {число}
+-   Возвращает: {ReadableStream}
 
 <!-- 0099.part.md -->
 
@@ -2335,13 +2355,13 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `writableStream` {WritableStream}
-- `options` {Object}
-  - `decodeStrings` {boolean}
-  - `highWaterMark` {число}
-  - `objectMode` {boolean}
-  - `signal` {AbortSignal}
-- Возвращает: {stream.Writable}
+-   `writableStream` {WritableStream}
+-   `options` {Object}
+    -   `decodeStrings` {boolean}
+    -   `highWaterMark` {число}
+    -   `objectMode` {boolean}
+    -   `signal` {AbortSignal}
+-   Возвращает: {stream.Writable}
 
 <!-- 0100.part.md -->
 
@@ -2351,29 +2371,29 @@ Readable.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `streamWritable` {stream.Writable}
-- Возвращает: {WritableStream}
+-   `streamWritable` {stream.Writable}
+-   Возвращает: {WritableStream}
 
 <!-- 0101.part.md -->
 
 ### `stream.Duplex.from(src)`
 
-- `src` {Stream|Blob|ArrayBuffer|string|Iterable|AsyncIterable| AsyncGeneratorFunction|AsyncFunction|Promise|Object| ReadableStream|WritableStream}
+-   `src` {Stream|Blob|ArrayBuffer|string|Iterable|AsyncIterable| AsyncGeneratorFunction|AsyncFunction|Promise|Object| ReadableStream|WritableStream}
 
 Утилита для создания дуплексных потоков.
 
-- `Stream` преобразует записываемый поток в записываемый `Duplex` и читаемый поток в `Duplex`.
-- `Blob` преобразует читаемый поток в читаемый `Duplex`.
-- `string` преобразует в читаемый `Duplex`.
-- `ArrayBuffer` преобразуется в читаемый `Duplex`.
-- `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
-- `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
-- `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
-- `Object ({ writable, readable })` преобразует `readable` и `writable` в `Stream` и затем объединяет их в `Duplex`, где `Duplex` будет писать в `writable` и читать из `readable`.
-- `Promise` преобразуется в читаемый `Duplex`. Значение `null` игнорируется.
-- `ReadableStream` преобразуется в читаемый `Duplex`.
-- `WritableStream` преобразуется в записываемый `Duplex`.
-- Возвращает: {stream.Duplex}
+-   `Stream` преобразует записываемый поток в записываемый `Duplex` и читаемый поток в `Duplex`.
+-   `Blob` преобразует читаемый поток в читаемый `Duplex`.
+-   `string` преобразует в читаемый `Duplex`.
+-   `ArrayBuffer` преобразуется в читаемый `Duplex`.
+-   `AsyncIterable` преобразуется в читаемый `Duplex`. Не может выдать `null`.
+-   `AsyncGeneratorFunction` преобразует в читаемое/записываемое преобразование `Duplex`. В качестве первого параметра должна принимать исходный `AsyncIterable`. Не может выдавать `null`.
+-   `AsyncFunction` преобразует в записываемое `Duplex`. Должна возвращать либо `null`, либо `undefined`.
+-   `Object ({ writable, readable })` преобразует `readable` и `writable` в `Stream` и затем объединяет их в `Duplex`, где `Duplex` будет писать в `writable` и читать из `readable`.
+-   `Promise` преобразуется в читаемый `Duplex`. Значение `null` игнорируется.
+-   `ReadableStream` преобразуется в читаемый `Duplex`.
+-   `WritableStream` преобразуется в записываемый `Duplex`.
+-   Возвращает: {stream.Duplex}
 
 Если в качестве аргумента передан объект `Iterable`, содержащий обещания, это может привести к необработанному отказу.
 
@@ -2381,10 +2401,12 @@ Readable.from([
 const { Duplex } = require('node:stream');
 
 Duplex.from([
-  new Promise((resolve) => setTimeout(resolve('1'), 1500)),
-  new Promise((_, reject) =>
-    setTimeout(reject(new Error('2')), 1000)
-  ), // Не обработанный отказ
+    new Promise((resolve) =>
+        setTimeout(resolve('1'), 1500)
+    ),
+    new Promise((_, reject) =>
+        setTimeout(reject(new Error('2')), 1000)
+    ), // Не обработанный отказ
 ]);
 ```
 
@@ -2396,86 +2418,86 @@ Duplex.from([
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `pair` {Object}
-  - `readable` {ReadableStream}
-  - `writable` {WritableStream}
-- `options` {Object}
-  - `allowHalfOpen` {boolean}
-  - `decodeStrings` {boolean}
-  - `encoding` {string}
-  - `highWaterMark` {number}
-  - `objectMode` {boolean}
-  - `сигнал` {AbortSignal}
-- Возвращает: {stream.Duplex}
+-   `pair` {Object}
+    -   `readable` {ReadableStream}
+    -   `writable` {WritableStream}
+-   `options` {Object}
+    -   `allowHalfOpen` {boolean}
+    -   `decodeStrings` {boolean}
+    -   `encoding` {string}
+    -   `highWaterMark` {number}
+    -   `objectMode` {boolean}
+    -   `сигнал` {AbortSignal}
+-   Возвращает: {stream.Duplex}
 
 <!-- конец списка -->
 
 ```mjs
 import { Duplex } from 'node:stream';
 import {
-  ReadableStream,
-  WritableStream,
+    ReadableStream,
+    WritableStream,
 } from 'node:stream/web';
 
 const readable = new ReadableStream({
-  start(controller) {
-    controller.enqueue('world');
-  },
+    start(controller) {
+        controller.enqueue('world');
+    },
 });
 
 const writable = new WritableStream({
-  write(chunk) {
-    console.log('writable', chunk);
-  },
+    write(chunk) {
+        console.log('writable', chunk);
+    },
 });
 
 const pair = {
-  readable,
-  writable,
+    readable,
+    writable,
 };
 const duplex = Duplex.fromWeb(pair, {
-  encoding: 'utf8',
-  objectMode: true,
+    encoding: 'utf8',
+    objectMode: true,
 });
 
 duplex.write('hello');
 
 for await (const chunk of duplex) {
-  console.log('readable', chunk);
+    console.log('readable', chunk);
 }
 ```
 
 ```cjs
 const { Duplex } = require('node:stream');
 const {
-  ReadableStream,
-  WritableStream,
+    ReadableStream,
+    WritableStream,
 } = require('node:stream/web');
 
 const readable = new ReadableStream({
-  start(controller) {
-    controller.enqueue('world');
-  },
+    start(controller) {
+        controller.enqueue('world');
+    },
 });
 
 const writable = new WritableStream({
-  write(chunk) {
-    console.log('writable', chunk);
-  },
+    write(chunk) {
+        console.log('writable', chunk);
+    },
 });
 
 const pair = {
-  readable,
-  writable,
+    readable,
+    writable,
 };
 const duplex = Duplex.fromWeb(pair, {
-  encoding: 'utf8',
-  objectMode: true,
+    encoding: 'utf8',
+    objectMode: true,
 });
 
 duplex.write('hello');
 duplex.once('readable', () =>
-  console.log('readable', duplex.read())
+    console.log('readable', duplex.read())
 );
 ```
 
@@ -2487,10 +2509,10 @@ duplex.once('readable', () =>
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `streamDuplex` {stream.Duplex}
-- Возвращает: {Object}
-  - `читаемый` {ReadableStream}
-  - `записываемый` {WritableStream}
+-   `streamDuplex` {stream.Duplex}
+-   Возвращает: {Object}
+    -   `читаемый` {ReadableStream}
+    -   `записываемый` {WritableStream}
 
 <!-- конец списка -->
 
@@ -2498,15 +2520,15 @@ duplex.once('readable', () =>
 import { Duplex } from 'node:stream';
 
 const duplex = Duplex({
-  objectMode: true,
-  read() {
-    this.push('world');
-    this.push(null);
-  },
-  write(chunk, encoding, callback) {
-    console.log('writable', chunk);
-    callback();
-  },
+    objectMode: true,
+    read() {
+        this.push('world');
+        this.push(null);
+    },
+    write(chunk, encoding, callback) {
+        console.log('writable', chunk);
+        callback();
+    },
 });
 
 const { readable, writable } = Duplex.toWeb(duplex);
@@ -2520,34 +2542,34 @@ console.log('readable', value);
 const { Duplex } = require('node:stream');
 
 const duplex = Duplex({
-  objectMode: true,
-  read() {
-    this.push('world');
-    this.push(null);
-  },
-  write(chunk, encoding, callback) {
-    console.log('writable', chunk);
-    callback();
-  },
+    objectMode: true,
+    read() {
+        this.push('world');
+        this.push(null);
+    },
+    write(chunk, encoding, callback) {
+        console.log('writable', chunk);
+        callback();
+    },
 });
 
 const { readable, writable } = Duplex.toWeb(duplex);
 writable.getWriter().write('hello');
 
 readable
-  .getReader()
-  .read()
-  .then((result) => {
-    console.log('readable', result.value);
-  });
+    .getReader()
+    .read()
+    .then((result) => {
+        console.log('readable', result.value);
+    });
 ```
 
 <!-- 0104.part.md -->
 
 ### `stream.addAbortSignal(signal, stream)`
 
-- `signal` {AbortSignal} Сигнал, представляющий возможную отмену
-- `stream` {Stream|ReadableStream|WritableStream}
+-   `signal` {AbortSignal} Сигнал, представляющий возможную отмену
+-   `stream` {Stream|ReadableStream|WritableStream}
 
 Поток, к которому нужно прикрепить сигнал.
 
@@ -2560,8 +2582,8 @@ const fs = require('node:fs');
 
 const controller = new AbortController();
 const read = addAbortSignal(
-  controller.signal,
-  fs.createReadStream('object.json')
+    controller.signal,
+    fs.createReadStream('object.json')
 );
 // Later, abort the operation closing the stream
 controller.abort();
@@ -2573,21 +2595,21 @@ controller.abort();
 const controller = new AbortController();
 setTimeout(() => controller.abort(), 10_000); // set a timeout
 const stream = addAbortSignal(
-  controller.signal,
-  fs.createReadStream('object.json')
+    controller.signal,
+    fs.createReadStream('object.json')
 );
 (async () => {
-  try {
-    for await (const chunk of stream) {
-      await process(chunk);
+    try {
+        for await (const chunk of stream) {
+            await process(chunk);
+        }
+    } catch (e) {
+        if (e.name === 'AbortError') {
+            // The operation was cancelled
+        } else {
+            throw e;
+        }
     }
-  } catch (e) {
-    if (e.name === 'AbortError') {
-      // The operation was cancelled
-    } else {
-      throw e;
-    }
-  }
 })();
 ```
 
@@ -2596,29 +2618,29 @@ const stream = addAbortSignal(
 ```js
 const controller = new AbortController();
 const rs = new ReadableStream({
-  start(controller) {
-    controller.enqueue('hello');
-    controller.enqueue('world');
-    controller.close();
-  },
+    start(controller) {
+        controller.enqueue('hello');
+        controller.enqueue('world');
+        controller.close();
+    },
 });
 
 addAbortSignal(controller.signal, rs);
 
 finished(rs, (err) => {
-  if (err) {
-    if (err.name === 'AbortError') {
-      // The operation was cancelled
+    if (err) {
+        if (err.name === 'AbortError') {
+            // The operation was cancelled
+        }
     }
-  }
 });
 
 const reader = rs.getReader();
 
 reader.read().then(({ value, done }) => {
-  console.log(value); // hello
-  console.log(done); // false
-  controller.abort();
+    console.log(value); // hello
+    console.log(done); // false
+    controller.abort();
 });
 ```
 
@@ -2634,10 +2656,10 @@ API модуля `node:stream` был разработан для того, чт
 const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
-  constructor({ highWaterMark, ...options }) {
-    super({ highWaterMark });
-    // ...
-  }
+    constructor({ highWaterMark, ...options }) {
+        super({ highWaterMark });
+        // ...
+    }
 }
 ```
 
@@ -2664,15 +2686,15 @@ class MyWritable extends Writable {
 const { Writable } = require('node:stream');
 
 const myWritable = new Writable({
-  construct(callback) {
-    // Инициализация состояния и загрузка ресурсов...
-  },
-  write(chunk, encoding, callback) {
-    // ...
-  },
-  destroy() {
-    // Освободить ресурсы...
-  },
+    construct(callback) {
+        // Инициализация состояния и загрузка ресурсов...
+    },
+    write(chunk, encoding, callback) {
+        // ...
+    },
+    destroy() {
+        // Освободить ресурсы...
+    },
 });
 ```
 
@@ -2688,19 +2710,19 @@ const myWritable = new Writable({
 
 #### `new stream.Writable([options])`
 
-- `options` {Object}
-  - `highWaterMark` {number} Уровень буфера, когда [`stream.write()`](#writablewritechunk-encoding-callback) начинает возвращать `false`. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
-  - `decodeStrings` {boolean} Кодировать ли `строки`, переданные в [`stream.write()`](#writablewritechunk-encoding-callback) в `буфер` (с кодировкой, указанной в вызове [`stream.write()`](#writablewritechunk-encoding-callback)) перед передачей их в [`stream._write()`](#writable_writechunk-encoding-callback). Другие типы данных не преобразуются (т.е. `буфер` не декодируется в `строку`). Установка значения false предотвращает преобразование `строк`. **По умолчанию:** `true`.
-  - `defaultEncoding` {string} Кодировка по умолчанию, которая используется, если в качестве аргумента [`stream.write()`](#writablewritechunk-encoding-callback) не указана кодировка. **По умолчанию:** `'utf8'`.
-  - `objectMode` {boolean} Является ли [`stream.write(anyObj)`](#writablewritechunk-encoding-callback) допустимой операцией. Если установлено, становится возможной запись JavaScript-значений, отличных от string, `Buffer` или `Uint8Array`, если это поддерживается реализацией потока. **По умолчанию:** `false`.
-  - `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
-  - `write` {Функция} Реализация метода [`stream._write()`](#writable_writechunk-encoding-callback).
-  - `writev` {Функция} Реализация для метода [`stream._writev()`](#writable_writevchunks-callback).
-  - `destroy` {Функция} Реализация для метода [`stream._destroy()`](#writable_destroyerr-callback).
-  - `final` {Функция} Реализация метода [`stream._final()`](#writable_finalcallback).
-  - `construct` {Функция} Реализация для метода [`stream._construct()`](#writable_constructcallback).
-  - `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
+-   `options` {Object}
+    -   `highWaterMark` {number} Уровень буфера, когда [`stream.write()`](#writablewritechunk-encoding-callback) начинает возвращать `false`. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
+    -   `decodeStrings` {boolean} Кодировать ли `строки`, переданные в [`stream.write()`](#writablewritechunk-encoding-callback) в `буфер` (с кодировкой, указанной в вызове [`stream.write()`](#writablewritechunk-encoding-callback)) перед передачей их в [`stream._write()`](#writable_writechunk-encoding-callback). Другие типы данных не преобразуются (т.е. `буфер` не декодируется в `строку`). Установка значения false предотвращает преобразование `строк`. **По умолчанию:** `true`.
+    -   `defaultEncoding` {string} Кодировка по умолчанию, которая используется, если в качестве аргумента [`stream.write()`](#writablewritechunk-encoding-callback) не указана кодировка. **По умолчанию:** `'utf8'`.
+    -   `objectMode` {boolean} Является ли [`stream.write(anyObj)`](#writablewritechunk-encoding-callback) допустимой операцией. Если установлено, становится возможной запись JavaScript-значений, отличных от string, `Buffer` или `Uint8Array`, если это поддерживается реализацией потока. **По умолчанию:** `false`.
+    -   `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
+    -   `write` {Функция} Реализация метода [`stream._write()`](#writable_writechunk-encoding-callback).
+    -   `writev` {Функция} Реализация для метода [`stream._writev()`](#writable_writevchunks-callback).
+    -   `destroy` {Функция} Реализация для метода [`stream._destroy()`](#writable_destroyerr-callback).
+    -   `final` {Функция} Реализация метода [`stream._final()`](#writable_finalcallback).
+    -   `construct` {Функция} Реализация для метода [`stream._construct()`](#writable_constructcallback).
+    -   `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
 
 <!-- конец списка -->
 
@@ -2708,11 +2730,11 @@ const myWritable = new Writable({
 const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
-  constructor(options) {
-    // Вызывает конструктор stream.Writable().
-    super(options);
-    // ...
-  }
+    constructor(options) {
+        // Вызывает конструктор stream.Writable().
+        super(options);
+        // ...
+    }
 }
 ```
 
@@ -2723,9 +2745,9 @@ const { Writable } = require('node:stream');
 const util = require('node:util');
 
 function MyWritable(options) {
-  if (!(this instanceof MyWritable))
-    return new MyWritable(options);
-  Writable.call(this, options);
+    if (!(this instanceof MyWritable))
+        return new MyWritable(options);
+    Writable.call(this, options);
 }
 util.inherits(MyWritable, Writable);
 ```
@@ -2753,13 +2775,13 @@ const { Writable } = require('node:stream');
 
 const controller = new AbortController();
 const myWritable = new Writable({
-  write(chunk, encoding, callback) {
-    // ...
-  },
-  writev(chunks, callback) {
-    // ...
-  },
-  signal: controller.signal,
+    write(chunk, encoding, callback) {
+        // ...
+    },
+    writev(chunks, callback) {
+        // ...
+    },
+    signal: controller.signal,
 });
 // Later, abort the operation closing the stream
 controller.abort();
@@ -2769,7 +2791,7 @@ controller.abort();
 
 #### `writable._construct(callback)`
 
-- `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
+-   `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
 
 Метод `_construct()` НЕ ДОЛЖЕН вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Writable`.
 
@@ -2780,31 +2802,31 @@ const { Writable } = require('node:stream');
 const fs = require('node:fs');
 
 class WriteStream extends Writable {
-  constructor(filename) {
-    super();
-    this.filename = filename;
-    this.fd = null;
-  }
-  _construct(callback) {
-    fs.open(this.filename, (err, fd) => {
-      if (err) {
-        callback(err);
-      } else {
-        this.fd = fd;
-        callback();
-      }
-    });
-  }
-  _write(chunk, encoding, callback) {
-    fs.write(this.fd, chunk, callback);
-  }
-  _destroy(err, callback) {
-    if (this.fd) {
-      fs.close(this.fd, (er) => callback(er || err));
-    } else {
-      callback(err);
+    constructor(filename) {
+        super();
+        this.filename = filename;
+        this.fd = null;
     }
-  }
+    _construct(callback) {
+        fs.open(this.filename, (err, fd) => {
+            if (err) {
+                callback(err);
+            } else {
+                this.fd = fd;
+                callback();
+            }
+        });
+    }
+    _write(chunk, encoding, callback) {
+        fs.write(this.fd, chunk, callback);
+    }
+    _destroy(err, callback) {
+        if (this.fd) {
+            fs.close(this.fd, (er) => callback(er || err));
+        } else {
+            callback(err);
+        }
+    }
 }
 ```
 
@@ -2812,9 +2834,9 @@ class WriteStream extends Writable {
 
 #### `writable._write(chunk, encoding, callback)`
 
-- `chunk` {Buffer|string|any} Записываемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
-- `encoding` {string} Если чанк является строкой, то `encoding` - это кодировка символов этой строки. Если чанк является `буфером`, или если поток работает в объектном режиме, `encoding` может быть проигнорирован.
-- `callback` {Функция} Вызвать эту функцию (опционально с аргументом об ошибке), когда обработка будет завершена для предоставленного чанка.
+-   `chunk` {Buffer|string|any} Записываемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+-   `encoding` {string} Если чанк является строкой, то `encoding` - это кодировка символов этой строки. Если чанк является `буфером`, или если поток работает в объектном режиме, `encoding` может быть проигнорирован.
+-   `callback` {Функция} Вызвать эту функцию (опционально с аргументом об ошибке), когда обработка будет завершена для предоставленного чанка.
 
 Все реализации потока `Writable` должны предоставлять метод [`writable._write()`](#writable_writechunk-encoding-callback) и/или [`writable._writev()`](#writable_writevchunks-callback) для отправки данных на базовый ресурс.
 
@@ -2834,10 +2856,10 @@ class WriteStream extends Writable {
 
 #### `writable._writev(chunks, callback)`
 
-- `куски` {Объект\[\]} Данные, которые должны быть записаны. Значение представляет собой массив {Object}, каждый из которых представляет собой отдельный фрагмент данных для записи. Свойствами этих объектов являются:
-  - `chunk` {Buffer|string} Экземпляр буфера или строка, содержащая данные для записи. Объект `chunk` будет строкой, если `Writable` был создан с опцией `decodeStrings`, установленной в `false`, и строка была передана в `write()`.
-  - `encoding` {string} Кодировка символов для `chunk`. Если `chunk` является `буфером`, то `encoding` будет `'buffer'`.
-- `callback` {Function} Функция обратного вызова (опционально с аргументом ошибки), которая будет вызвана, когда обработка будет завершена для предоставленных чанков.
+-   `куски` {Объект\[\]} Данные, которые должны быть записаны. Значение представляет собой массив {Object}, каждый из которых представляет собой отдельный фрагмент данных для записи. Свойствами этих объектов являются:
+    -   `chunk` {Buffer|string} Экземпляр буфера или строка, содержащая данные для записи. Объект `chunk` будет строкой, если `Writable` был создан с опцией `decodeStrings`, установленной в `false`, и строка была передана в `write()`.
+    -   `encoding` {string} Кодировка символов для `chunk`. Если `chunk` является `буфером`, то `encoding` будет `'buffer'`.
+-   `callback` {Function} Функция обратного вызова (опционально с аргументом ошибки), которая будет вызвана, когда обработка будет завершена для предоставленных чанков.
 
 Эта функция НЕ ДОЛЖНА вызываться кодом приложения напрямую. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Writable`.
 
@@ -2849,8 +2871,8 @@ class WriteStream extends Writable {
 
 #### `writable._destroy(err, callback)`
 
-- `err` {Ошибка} Возможная ошибка.
-- `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
+-   `err` {Ошибка} Возможная ошибка.
+-   `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
 
 Метод `_destroy()` вызывается [`writable.destroy()`](#writabledestroyerror). Он может быть переопределен дочерними классами, но **не должен** вызываться напрямую. Кроме того, `callback` не следует смешивать с async/await, поскольку он выполняется при разрешении обещания.
 
@@ -2858,7 +2880,7 @@ class WriteStream extends Writable {
 
 #### `writable._final(callback)`
 
-- `callback` {Функция} Вызов этой функции (опционально с аргументом об ошибке) при завершении записи оставшихся данных.
+-   `callback` {Функция} Вызов этой функции (опционально с аргументом об ошибке) при завершении записи оставшихся данных.
 
 Метод `_final()` **не должен** вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Writable`.
 
@@ -2876,13 +2898,13 @@ class WriteStream extends Writable {
 const { Writable } = require('node:stream');
 
 const myWritable = new Writable({
-  write(chunk, encoding, callback) {
-    if (chunk.toString().indexOf('a') >= 0) {
-      callback(new Error('chunk is invalid'));
-    } else {
-      callback();
-    }
-  },
+    write(chunk, encoding, callback) {
+        if (chunk.toString().indexOf('a') >= 0) {
+            callback(new Error('chunk is invalid'));
+        } else {
+            callback();
+        }
+    },
 });
 ```
 
@@ -2896,13 +2918,13 @@ const myWritable = new Writable({
 const { Writable } = require('node:stream');
 
 class MyWritable extends Writable {
-  _write(chunk, encoding, callback) {
-    if (chunk.toString().indexOf('a') >= 0) {
-      callback(new Error('chunk is invalid'));
-    } else {
-      callback();
+    _write(chunk, encoding, callback) {
+        if (chunk.toString().indexOf('a') >= 0) {
+            callback(new Error('chunk is invalid'));
+        } else {
+            callback();
+        }
     }
-  }
 }
 ```
 
@@ -2917,24 +2939,24 @@ const { Writable } = require('node:stream');
 const { StringDecoder } = require('node:string_decoder');
 
 class StringWritable extends Writable {
-  constructor(options) {
-    super(options);
-    this._decoder = new StringDecoder(
-      options && options.defaultEncoding
-    );
-    this.data = '';
-  }
-  _write(chunk, encoding, callback) {
-    if (encoding === 'buffer') {
-      chunk = this._decoder.write(chunk);
+    constructor(options) {
+        super(options);
+        this._decoder = new StringDecoder(
+            options && options.defaultEncoding
+        );
+        this.data = '';
     }
-    this.data += chunk;
-    callback();
-  }
-  _final(callback) {
-    this.data += this._decoder.end();
-    callback();
-  }
+    _write(chunk, encoding, callback) {
+        if (encoding === 'buffer') {
+            chunk = this._decoder.write(chunk);
+        }
+        this.data += chunk;
+        callback();
+    }
+    _final(callback) {
+        this.data += this._decoder.end();
+        callback();
+    }
 }
 
 const euro = [[0xe2, 0x82], [0xac]].map(Buffer.from);
@@ -2959,16 +2981,16 @@ console.log(w.data); // валюта: €
 
 #### `new stream.Readable([options])`
 
-- `options` {Object}
-  - `highWaterMark` {number} Максимальное [количество байт](#highwatermark-discrepancy-after-calling-readablesetencoding) для хранения во внутреннем буфере перед прекращением чтения из базового ресурса. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
-  - `encoding` {string} Если указано, то буферы будут декодированы в строки с использованием указанной кодировки. **По умолчанию:** `null`.
-  - `objectMode` {boolean} Должен ли этот поток вести себя как поток объектов. Это означает, что [`stream.read(n)`](#readablereadsize) возвращает одно значение вместо `Buffer` размером `n`. **По умолчанию:** `false`.
-  - `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
-  - `read` {Функция} Реализация метода [`stream._read()`](#readable_readsize).
-  - `destroy` {Функция} Реализация для метода [`stream._destroy()`](#readable_destroyerr-callback).
-  - `construct` {Функция} Реализация метода [`stream._construct()`](#readable_constructcallback).
-  - `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
-  - `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
+-   `options` {Object}
+    -   `highWaterMark` {number} Максимальное [количество байт](#highwatermark-discrepancy-after-calling-readablesetencoding) для хранения во внутреннем буфере перед прекращением чтения из базового ресурса. **По умолчанию:** `16384` (16 KiB), или `16` для потоков `objectMode`.
+    -   `encoding` {string} Если указано, то буферы будут декодированы в строки с использованием указанной кодировки. **По умолчанию:** `null`.
+    -   `objectMode` {boolean} Должен ли этот поток вести себя как поток объектов. Это означает, что [`stream.read(n)`](#readablereadsize) возвращает одно значение вместо `Buffer` размером `n`. **По умолчанию:** `false`.
+    -   `emitClose` {boolean} Должен ли поток издавать сигнал `'close'' после его уничтожения. **По умолчанию:** `true`.
+    -   `read` {Функция} Реализация метода [`stream._read()`](#readable_readsize).
+    -   `destroy` {Функция} Реализация для метода [`stream._destroy()`](#readable_destroyerr-callback).
+    -   `construct` {Функция} Реализация метода [`stream._construct()`](#readable_constructcallback).
+    -   `autoDestroy` {boolean} Должен ли этот поток автоматически вызывать `.destroy()` на себя после завершения. **По умолчанию:** `true`.
+    -   `signal` {AbortSignal} Сигнал, представляющий возможную отмену.
 
 <!-- конец списка -->
 
@@ -2976,11 +2998,11 @@ console.log(w.data); // валюта: €
 const { Readable } = require('node:stream');
 
 class MyReadable extends Readable {
-  constructor(options) {
-    // Вызывает конструктор stream.Readable(options).
-    super(options);
-    // ...
-  }
+    constructor(options) {
+        // Вызывает конструктор stream.Readable(options).
+        super(options);
+        // ...
+    }
 }
 ```
 
@@ -2991,9 +3013,9 @@ const { Readable } = require('node:stream');
 const util = require('node:util');
 
 function MyReadable(options) {
-  if (!(this instanceof MyReadable))
-    return new MyReadable(options);
-  Readable.call(this, options);
+    if (!(this instanceof MyReadable))
+        return new MyReadable(options);
+    Readable.call(this, options);
 }
 util.inherits(MyReadable, Readable);
 ```
@@ -3004,9 +3026,9 @@ util.inherits(MyReadable, Readable);
 const { Readable } = require('node:stream');
 
 const myReadable = new Readable({
-  read(size) {
-    // ...
-  },
+    read(size) {
+        // ...
+    },
 });
 ```
 
@@ -3016,10 +3038,10 @@ const myReadable = new Readable({
 const { Readable } = require('node:stream');
 const controller = new AbortController();
 const read = new Readable({
-  read(size) {
-    // ...
-  },
-  signal: controller.signal,
+    read(size) {
+        // ...
+    },
+    signal: controller.signal,
 });
 // Позже прервите операцию, закрыв поток
 controller.abort();
@@ -3029,7 +3051,7 @@ controller.abort();
 
 #### `readable._construct(callback)`
 
-- `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
+-   `callback` {Функция} Вызовите эту функцию (опционально с аргументом об ошибке), когда поток закончит инициализацию.
 
 Метод `_construct()` НЕ ДОЛЖЕН вызываться напрямую. Он может быть реализован дочерними классами, и если это так, то будет вызываться только внутренними методами класса `Readable`.
 
@@ -3040,40 +3062,49 @@ const { Readable } = require('node:stream');
 const fs = require('node:fs');
 
 class ReadStream extends Readable {
-  constructor(filename) {
-    super();
-    this.filename = filename;
-    this.fd = null;
-  }
-  _construct(callback) {
-    fs.open(this.filename, (err, fd) => {
-      if (err) {
-        callback(err);
-      } else {
-        this.fd = fd;
-        callback();
-      }
-    });
-  }
-  _read(n) {
-    const buf = Buffer.alloc(n);
-    fs.read(this.fd, buf, 0, n, null, (err, bytesRead) => {
-      if (err) {
-        this.destroy(err);
-      } else {
-        this.push(
-          bytesRead > 0 ? buf.slice(0, bytesRead) : null
-        );
-      }
-    });
-  }
-  _destroy(err, callback) {
-    if (this.fd) {
-      fs.close(this.fd, (er) => callback(er || err));
-    } else {
-      callback(err);
+    constructor(filename) {
+        super();
+        this.filename = filename;
+        this.fd = null;
     }
-  }
+    _construct(callback) {
+        fs.open(this.filename, (err, fd) => {
+            if (err) {
+                callback(err);
+            } else {
+                this.fd = fd;
+                callback();
+            }
+        });
+    }
+    _read(n) {
+        const buf = Buffer.alloc(n);
+        fs.read(
+            this.fd,
+            buf,
+            0,
+            n,
+            null,
+            (err, bytesRead) => {
+                if (err) {
+                    this.destroy(err);
+                } else {
+                    this.push(
+                        bytesRead > 0
+                            ? buf.slice(0, bytesRead)
+                            : null
+                    );
+                }
+            }
+        );
+    }
+    _destroy(err, callback) {
+        if (this.fd) {
+            fs.close(this.fd, (er) => callback(er || err));
+        } else {
+            callback(err);
+        }
+    }
 }
 ```
 
@@ -3081,7 +3112,7 @@ class ReadStream extends Readable {
 
 #### `readable._read(size)`
 
-- `size` {number} Количество байт для асинхронного чтения
+-   `size` {number} Количество байт для асинхронного чтения
 
 Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
@@ -3099,8 +3130,8 @@ class ReadStream extends Readable {
 
 #### `readable._destroy(err, callback)`
 
-- `err` {Ошибка} Возможная ошибка.
-- `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
+-   `err` {Ошибка} Возможная ошибка.
+-   `callback` {Функция} Функция обратного вызова, принимающая необязательный аргумент ошибки.
 
 Метод `_destroy()` вызывается [`readable.destroy()`](#readabledestroyerror). Он может быть переопределен дочерними классами, но **не должен** вызываться напрямую.
 
@@ -3108,9 +3139,9 @@ class ReadStream extends Readable {
 
 #### `readable.push(chunk[, encoding])`
 
-- `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для передачи в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
-- `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
-- Возвращает: {boolean} `true`, если можно продолжать проталкивать дополнительные куски данных; `false` в противном случае.
+-   `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для передачи в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+-   `encoding` {string} Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
+-   Возвращает: {boolean} `true`, если можно продолжать проталкивать дополнительные куски данных; `false` в противном случае.
 
 Если `chunk` является `буфером`, `Uint8Array` или `строкой`, то `кусок` данных будет добавлен во внутреннюю очередь для потребления пользователями потока. Передача `chunk` как `null` сигнализирует о конце потока (EOF), после чего данные больше не могут быть записаны.
 
@@ -3126,27 +3157,27 @@ class ReadStream extends Readable {
 // член `onend`, который вызывается, когда данные заканчиваются.
 
 class SourceWrapper extends Readable {
-  constructor(options) {
-    super(options);
+    constructor(options) {
+        super(options);
 
-    this._source = getLowLevelSourceObject();
+        this._source = getLowLevelSourceObject();
 
-    // Каждый раз, когда есть данные, заталкиваем их во внутренний буфер.
-    this._source.ondata = (chunk) => {
-      // Если push() возвращает false, то прекратите чтение из источника.
-      if (!this.push(chunk)) this._source.readStop();
-    };
+        // Каждый раз, когда есть данные, заталкиваем их во внутренний буфер.
+        this._source.ondata = (chunk) => {
+            // Если push() возвращает false, то прекратите чтение из источника.
+            if (!this.push(chunk)) this._source.readStop();
+        };
 
-    // Когда источник закончится, вытолкните чанк `null` с сигналом EOF.
-    this._source.onend = () => {
-      this.push(null);
-    };
-  }
-  // _read() будет вызвана, когда поток захочет получить больше данных.
-  // Совещательный аргумент size в этом случае игнорируется.
-  _read(size) {
-    this._source.readStart();
-  }
+        // Когда источник закончится, вытолкните чанк `null` с сигналом EOF.
+        this._source.onend = () => {
+            this.push(null);
+        };
+    }
+    // _read() будет вызвана, когда поток захочет получить больше данных.
+    // Совещательный аргумент size в этом случае игнорируется.
+    _read(size) {
+        this._source.readStart();
+    }
 }
 ```
 
@@ -3164,14 +3195,14 @@ class SourceWrapper extends Readable {
 const { Readable } = require('node:stream');
 
 const myReadable = new Readable({
-  read(size) {
-    const err = checkSomeErrorCondition();
-    if (err) {
-      this.destroy(err);
-    } else {
-      // Выполните какую-нибудь работу.
-    }
-  },
+    read(size) {
+        const err = checkSomeErrorCondition();
+        if (err) {
+            this.destroy(err);
+        } else {
+            // Выполните какую-нибудь работу.
+        }
+    },
 });
 ```
 
@@ -3185,21 +3216,21 @@ const myReadable = new Readable({
 const { Readable } = require('node:stream');
 
 class Counter extends Readable {
-  constructor(opt) {
-    super(opt);
-    this._max = 1000000;
-    this._index = 1;
-  }
-
-  _read() {
-    const i = this._index++;
-    if (i > this._max) this.push(null);
-    else {
-      const str = String(i);
-      const buf = Buffer.from(str, 'ascii');
-      this.push(buf);
+    constructor(opt) {
+        super(opt);
+        this._max = 1000000;
+        this._index = 1;
     }
-  }
+
+    _read() {
+        const i = this._index++;
+        if (i > this._max) this.push(null);
+        else {
+            const str = String(i);
+            const buf = Buffer.from(str, 'ascii');
+            this.push(buf);
+        }
+    }
 }
 ```
 
@@ -3219,14 +3250,14 @@ class Counter extends Readable {
 
 #### `new stream.Duplex(options)`
 
-- `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
-  - `allowHalfOpen` {boolean} Если установлено значение `false`, то поток будет автоматически завершать записываемую сторону, когда завершается читаемая сторона. **По умолчанию:** `true`.
-  - `readable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для чтения. **По умолчанию:** `true`.
-  - `writable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для записи. **По умолчанию:** `true`.
-  - `readableObjectMode` {boolean} Устанавливает `objectMode` для читаемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
-  - `writableObjectMode` {boolean} Устанавливает `objectMode` для записываемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
-  - `readableHighWaterMark` {number} Устанавливает `highWaterMark` для читаемой стороны потока. Не имеет эффекта, если `highWaterMark` предоставлен.
-  - `writableHighWaterMark` {number} Устанавливает `highWaterMark` для записываемой стороны потока. Не имеет эффекта, если задана `highWaterMark`.
+-   `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
+    -   `allowHalfOpen` {boolean} Если установлено значение `false`, то поток будет автоматически завершать записываемую сторону, когда завершается читаемая сторона. **По умолчанию:** `true`.
+    -   `readable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для чтения. **По умолчанию:** `true`.
+    -   `writable` {boolean} Устанавливает, должен ли `Duplex` быть доступен для записи. **По умолчанию:** `true`.
+    -   `readableObjectMode` {boolean} Устанавливает `objectMode` для читаемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
+    -   `writableObjectMode` {boolean} Устанавливает `objectMode` для записываемой стороны потока. Не имеет эффекта, если `objectMode` равен `true`. **По умолчанию:** `false`.
+    -   `readableHighWaterMark` {number} Устанавливает `highWaterMark` для читаемой стороны потока. Не имеет эффекта, если `highWaterMark` предоставлен.
+    -   `writableHighWaterMark` {number} Устанавливает `highWaterMark` для записываемой стороны потока. Не имеет эффекта, если задана `highWaterMark`.
 
 <!-- конец списка -->
 
@@ -3234,10 +3265,10 @@ class Counter extends Readable {
 const { Duplex } = require('node:stream');
 
 class MyDuplex extends Duplex {
-  constructor(options) {
-    super(options);
-    // ...
-  }
+    constructor(options) {
+        super(options);
+        // ...
+    }
 }
 ```
 
@@ -3248,9 +3279,9 @@ const { Duplex } = require('node:stream');
 const util = require('node:util');
 
 function MyDuplex(options) {
-  if (!(this instanceof MyDuplex))
-    return new MyDuplex(options);
-  Duplex.call(this, options);
+    if (!(this instanceof MyDuplex))
+        return new MyDuplex(options);
+    Duplex.call(this, options);
 }
 util.inherits(MyDuplex, Duplex);
 ```
@@ -3261,12 +3292,12 @@ util.inherits(MyDuplex, Duplex);
 const { Duplex } = require('node:stream');
 
 const myDuplex = new Duplex({
-  read(size) {
-    // ...
-  },
-  write(chunk, encoding, callback) {
-    // ...
-  },
+    read(size) {
+        // ...
+    },
+    write(chunk, encoding, callback) {
+        // ...
+    },
 });
 ```
 
@@ -3277,36 +3308,36 @@ const { Transform, pipeline } = require('node:stream');
 const fs = require('node:fs');
 
 pipeline(
-  fs.createReadStream('object.json').setEncoding('utf8'),
-  new Transform({
-    decodeStrings: false, // Принимать строковый ввод, а не буферы
-    construct(callback) {
-      this.data = '';
-      callback();
-    },
-    transform(chunk, encoding, callback) {
-      this.data += chunk;
-      callback();
-    },
-    flush(callback) {
-      try {
-        // Убедитесь, что это корректный json.
-        JSON.parse(this.data);
-        this.push(this.data);
-        callback();
-      } catch (err) {
-        callback(err);
-      }
-    },
-  }),
-  fs.createWriteStream('valid-object.json'),
-  (err) => {
-    if (err) {
-      console.error('failed', err);
-    } else {
-      console.log('completed');
+    fs.createReadStream('object.json').setEncoding('utf8'),
+    new Transform({
+        decodeStrings: false, // Принимать строковый ввод, а не буферы
+        construct(callback) {
+            this.data = '';
+            callback();
+        },
+        transform(chunk, encoding, callback) {
+            this.data += chunk;
+            callback();
+        },
+        flush(callback) {
+            try {
+                // Убедитесь, что это корректный json.
+                JSON.parse(this.data);
+                this.push(this.data);
+                callback();
+            } catch (err) {
+                callback(err);
+            }
+        },
+    }),
+    fs.createWriteStream('valid-object.json'),
+    (err) => {
+        if (err) {
+            console.error('failed', err);
+        } else {
+            console.log('completed');
+        }
     }
-  }
 );
 ```
 
@@ -3321,23 +3352,27 @@ const { Duplex } = require('node:stream');
 const kSource = Symbol('source');
 
 class MyDuplex extends Duplex {
-  constructor(source, options) {
-    super(options);
-    this[kSource] = source;
-  }
+    constructor(source, options) {
+        super(options);
+        this[kSource] = source;
+    }
 
-  _write(chunk, encoding, callback) {
-    // Базовый источник работает только со строками.
-    if (Buffer.isBuffer(chunk)) chunk = chunk.toString();
-    this[kSource].writeSomeData(chunk);
-    callback();
-  }
+    _write(chunk, encoding, callback) {
+        // Базовый источник работает только со строками.
+        if (Buffer.isBuffer(chunk))
+            chunk = chunk.toString();
+        this[kSource].writeSomeData(chunk);
+        callback();
+    }
 
-  _read(size) {
-    this[kSource].fetchSomeData(size, (data, encoding) => {
-      this.push(Buffer.from(data, encoding));
-    });
-  }
+    _read(size) {
+        this[kSource].fetchSomeData(
+            size,
+            (data, encoding) => {
+                this.push(Buffer.from(data, encoding));
+            }
+        );
+    }
 }
 ```
 
@@ -3356,18 +3391,18 @@ const { Transform } = require('node:stream');
 
 // Все потоки Transform также являются дуплексными потоками.
 const myTransform = new Transform({
-  writableObjectMode: true,
+    writableObjectMode: true,
 
-  transform(chunk, encoding, callback) {
-    // При необходимости преобразуем чанк в число.
-    chunk |= 0;
+    transform(chunk, encoding, callback) {
+        // При необходимости преобразуем чанк в число.
+        chunk |= 0;
 
-    // Преобразуем чанк во что-то другое.
-    const data = chunk.toString(16);
+        // Преобразуем чанк во что-то другое.
+        const data = chunk.toString(16);
 
-    // Передаем данные в очередь на чтение.
-    callback(null, '0'.repeat(data.length % 2) + data);
-  },
+        // Передаем данные в очередь на чтение.
+        callback(null, '0'.repeat(data.length % 2) + data);
+    },
 });
 
 myTransform.setEncoding('ascii');
@@ -3399,9 +3434,9 @@ myTransform.write(100);
 
 #### `new stream.Transform([options])`
 
-- `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
-  - `transform` {Функция} Реализация метода [`stream._transform()`](#transform_transformchunk-encoding-callback).
-  - `flush` {Функция} Реализация для метода [`stream._flush()`](#transform_flushcallback).
+-   `options` {Object} Передается конструкторам `Writable` и `Readable`. Также имеет следующие поля:
+    -   `transform` {Функция} Реализация метода [`stream._transform()`](#transform_transformchunk-encoding-callback).
+    -   `flush` {Функция} Реализация для метода [`stream._flush()`](#transform_flushcallback).
 
 <!-- конец списка -->
 
@@ -3409,10 +3444,10 @@ myTransform.write(100);
 const { Transform } = require('node:stream');
 
 class MyTransform extends Transform {
-  constructor(options) {
-    super(options);
-    // ...
-  }
+    constructor(options) {
+        super(options);
+        // ...
+    }
 }
 ```
 
@@ -3423,9 +3458,9 @@ const { Transform } = require('node:stream');
 const util = require('node:util');
 
 function MyTransform(options) {
-  if (!(this instanceof MyTransform))
-    return new MyTransform(options);
-  Transform.call(this, options);
+    if (!(this instanceof MyTransform))
+        return new MyTransform(options);
+    Transform.call(this, options);
 }
 util.inherits(MyTransform, Transform);
 ```
@@ -3436,9 +3471,9 @@ util.inherits(MyTransform, Transform);
 const { Transform } = require('node:stream');
 
 const myTransform = new Transform({
-  transform(chunk, encoding, callback) {
-    // ...
-  },
+    transform(chunk, encoding, callback) {
+        // ...
+    },
 });
 ```
 
@@ -3458,7 +3493,7 @@ const myTransform = new Transform({
 
 #### `transform._flush(callback)`
 
-- `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана, когда оставшиеся данные будут удалены.
+-   `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана, когда оставшиеся данные будут удалены.
 
 Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
@@ -3474,9 +3509,9 @@ const myTransform = new Transform({
 
 #### `transform._transform(chunk, encoding, callback)`
 
-- `chunk` {Buffer|string|any} Преобразуемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
-- `encoding` {string} Если чанк является строкой, то это тип кодировки. Если чанк является буфером, то это специальное значение `'buffer''. В этом случае игнорируйте его.
-- `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана после обработки предоставленного `чанка`.
+-   `chunk` {Buffer|string|any} Преобразуемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+-   `encoding` {string} Если чанк является строкой, то это тип кодировки. Если чанк является буфером, то это специальное значение `'buffer''. В этом случае игнорируйте его.
+-   `callback` {Функция} Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана после обработки предоставленного `чанка`.
 
 Эта функция НЕ ДОЛЖНА вызываться непосредственно кодом приложения. Она должна быть реализована дочерними классами и вызываться только внутренними методами класса `Readable`.
 
@@ -3490,20 +3525,20 @@ const myTransform = new Transform({
 
 ```js
 transform.prototype._transform = function (
-  data,
-  encoding,
-  callback
+    data,
+    encoding,
+    callback
 ) {
-  this.push(data);
-  callback();
+    this.push(data);
+    callback();
 };
 
 transform.prototype._transform = function (
-  data,
-  encoding,
-  callback
+    data,
+    encoding,
+    callback
 ) {
-  callback(null, data);
+    callback(null, data);
 };
 ```
 
@@ -3535,9 +3570,9 @@ transform.prototype._transform = function (
 
 ```js
 (async function () {
-  for await (const chunk of readable) {
-    console.log(chunk);
-  }
+    for await (const chunk of readable) {
+        console.log(chunk);
+    }
 })();
 ```
 
@@ -3556,19 +3591,19 @@ const ac = new AbortController();
 const signal = ac.signal;
 
 async function* generate() {
-  yield 'a';
-  await someLongRunningFn({ signal });
-  yield 'b';
-  yield 'c';
+    yield 'a';
+    await someLongRunningFn({ signal });
+    yield 'b';
+    yield 'c';
 }
 
 const readable = Readable.from(generate());
 readable.on('close', () => {
-  ac.abort();
+    ac.abort();
 });
 
 readable.on('data', (chunk) => {
-  console.log(chunk);
+    console.log(chunk);
 });
 ```
 
@@ -3582,7 +3617,7 @@ readable.on('data', (chunk) => {
 const fs = require('node:fs');
 const { pipeline } = require('node:stream');
 const {
-  pipeline: pipelinePromise,
+    pipeline: pipelinePromise,
 } = require('node:stream/promises');
 
 const writable = fs.createWriteStream('./file');
@@ -3594,24 +3629,24 @@ const iterator = createIterator({ signal });
 
 // Шаблон обратного вызова
 pipeline(iterator, writable, (err, value) => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(value, 'возвращаемое значение');
-  }
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(value, 'возвращаемое значение');
+    }
 }).on('close', () => {
-  ac.abort();
+    ac.abort();
 });
 
 // Шаблон обещания
 pipelinePromise(iterator, writable)
-  .then((value) => {
-    console.log(value, 'значение возвращено');
-  })
-  .catch((err) => {
-    console.error(err);
-    ac.abort();
-  });
+    .then((value) => {
+        console.log(value, 'значение возвращено');
+    })
+    .catch((err) => {
+        console.error(err);
+        ac.abort();
+    });
 ```
 
 <!-- 0141.part.md -->
@@ -3620,32 +3655,30 @@ pipelinePromise(iterator, writable)
 
 До версии Node.js 0.10 интерфейс потока `Readable` был более простым, но также менее мощным и менее полезным.
 
-- Вместо того чтобы ждать вызова метода [`stream.read()`](#readablereadsize), события [`'data'`](#event-data) начинали испускаться немедленно. Приложения, которые должны были выполнить определенный объем работы, чтобы решить, как обрабатывать данные, должны были хранить прочитанные данные в буферах, чтобы данные не были потеряны.
-- Метод [`stream.pause()`](#readablepause) был рекомендательным, а не гарантированным. Это означало, что необходимо быть готовым к получению событий [`данные`](#event-data) _даже когда поток находится в состоянии паузы_.
+-   Вместо того чтобы ждать вызова метода [`stream.read()`](#readablereadsize), события [`'data'`](#event-data) начинали испускаться немедленно. Приложения, которые должны были выполнить определенный объем работы, чтобы решить, как обрабатывать данные, должны были хранить прочитанные данные в буферах, чтобы данные не были потеряны.
+-   Метод [`stream.pause()`](#readablepause) был рекомендательным, а не гарантированным. Это означало, что необходимо быть готовым к получению событий [`данные`](#event-data) _даже когда поток находится в состоянии паузы_.
 
 В Node.js 0.10 был добавлен класс [`Readable`](#class-streamreadable). Для обратной совместимости со старыми программами Node.js, потоки `Readable` переходят в "текущий режим" при добавлении обработчика события [`'data'`](#event-data) или при вызове метода [`stream.resume()`](#readableresume). В результате, даже если не использовать новый метод [`stream.read()`](#readablereadsize) и событие [`'readable'`](#event-readable), больше не нужно беспокоиться о потере кусков [`'data'`](#event-data).
 
 Хотя большинство приложений будут продолжать нормально функционировать, это вводит крайний случай в следующих условиях:
 
-- Не добавлен слушатель событий [`'data'`](#event-data).
-- Метод [`stream.resume()`](#readableresume) никогда не вызывается.
-- Поток не передается ни в одно записываемое место назначения.
+-   Не добавлен слушатель событий [`'data'`](#event-data).
+-   Метод [`stream.resume()`](#readableresume) никогда не вызывается.
+-   Поток не передается ни в одно записываемое место назначения.
 
 Например, рассмотрим следующий код:
 
 ```js
 // ВНИМАНИЕ!  СЛОМАНО!
-net
-  .createServer((socket) => {
+net.createServer((socket) => {
     // Мы добавляем слушателя 'end', но никогда не потребляем данные.
     socket.on('end', () => {
-      // Оно никогда не дойдет до нас.
-      socket.end(
-        'Сообщение было получено, но не было обработано.\n'
-      );
+        // Оно никогда не дойдет до нас.
+        socket.end(
+            'Сообщение было получено, но не было обработано.\n'
+        );
     });
-  })
-  .listen(1337);
+}).listen(1337);
 ```
 
 До Node.js 0.10 данные входящего сообщения просто отбрасывались. Однако в Node.js 0.10 и последующих версиях сокет остается приостановленным навсегда.
@@ -3654,18 +3687,16 @@ net
 
 ```js
 // Обходной путь.
-net
-  .createServer((socket) => {
+net.createServer((socket) => {
     socket.on('end', () => {
-      socket.end(
-        'Сообщение было получено, но не было обработано.\n'
-      );
+        socket.end(
+            'Сообщение было получено, но не было обработано.\n'
+        );
     });
 
     // Начните поток данных, отбрасывая их.
     socket.resume();
-  })
-  .listen(1337);
+}).listen(1337);
 ```
 
 В дополнение к новым потокам `Readable`, переходящим в режим потока, потоки в стиле pre-0.10 могут быть обернуты в класс `Readable` с помощью метода [`readable.wrap()`](#readablewrapstream).

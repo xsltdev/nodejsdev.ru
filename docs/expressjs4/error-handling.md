@@ -4,22 +4,22 @@
 
 ```js
 app.use(function (err, req, res, next) {
-  console.error(err.stack)
-  res.status(500).send('Something broke!')
-})
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 ```
 
 Промежуточный обработчик для обработки ошибок должен быть определен последним, после указания всех `app.use()` и вызовов маршрутов; например:
 
 ```js
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 
-app.use(bodyParser())
-app.use(methodOverride())
+app.use(bodyParser());
+app.use(methodOverride());
 app.use(function (err, req, res, next) {
-  // logic
-})
+    // logic
+});
 ```
 
 Ответы, поступающие из функции промежуточной обработки, могут иметь любой формат, в зависимости от ваших предпочтений. Например, это может быть страница сообщения об ошибке HTML, простое сообщение или строка JSON.
@@ -27,22 +27,22 @@ app.use(function (err, req, res, next) {
 В целях упорядочения (и для фреймворков более высокого уровня) можно определить несколько функций промежуточной обработки ошибок, точно так же, как это допускается для обычных функций промежуточной обработки. Например, для того чтобы определить обработчик ошибок для запросов, совершаемых с помощью `XHR`, и для остальных запросов, можно воспользоваться следующими командами:
 
 ```js
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 
-app.use(bodyParser())
-app.use(methodOverride())
-app.use(logErrors)
-app.use(clientErrorHandler)
-app.use(errorHandler)
+app.use(bodyParser());
+app.use(methodOverride());
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
 ```
 
 В данном примере базовый код `logErrors` может записывать информацию о запросах и ошибках в `stderr`, например:
 
 ```js
 function logErrors(err, req, res, next) {
-  console.error(err.stack)
-  next(err)
+    console.error(err.stack);
+    next(err);
 }
 ```
 
@@ -50,11 +50,13 @@ function logErrors(err, req, res, next) {
 
 ```js
 function clientErrorHandler(err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send({ error: 'Something failed!' })
-  } else {
-    next(err)
-  }
+    if (req.xhr) {
+        res.status(500).send({
+            error: 'Something failed!',
+        });
+    } else {
+        next(err);
+    }
 }
 ```
 
@@ -62,8 +64,8 @@ function clientErrorHandler(err, req, res, next) {
 
 ```js
 function errorHandler(err, req, res, next) {
-  res.status(500)
-  res.render('error', { error: err })
+    res.status(500);
+    res.render('error', { error: err });
 }
 ```
 
@@ -73,20 +75,20 @@ function errorHandler(err, req, res, next) {
 
 ```js
 app.get(
-  '/a_route_behind_paywall',
-  function checkIfPaidSubscriber(req, res, next) {
-    if (!req.user.hasPaid) {
-      // continue handling this request
-      next('route')
+    '/a_route_behind_paywall',
+    function checkIfPaidSubscriber(req, res, next) {
+        if (!req.user.hasPaid) {
+            // continue handling this request
+            next('route');
+        }
+    },
+    function getPaidContent(req, res, next) {
+        PaidContent.find(function (err, doc) {
+            if (err) return next(err);
+            res.json(doc);
+        });
     }
-  },
-  function getPaidContent(req, res, next) {
-    PaidContent.find(function (err, doc) {
-      if (err) return next(err)
-      res.json(doc)
-    })
-  }
-)
+);
 ```
 
 В данном примере обработчик `getPaidContent` будет пропущен, но выполнение всех остальных обработчиков в `app` для `/a_route_behind_paywall` будет продолжено.
@@ -103,15 +105,14 @@ app.get(
 
 При вызове `next()` с ошибкой после начала записи ответа (например, если ошибка обнаружена во время включения ответа в поток, направляемый клиенту), стандартный обработчик ошибок Express закрывает соединение и отклоняет запрос.
 
-Поэтому при добавлении нестандартного обработчика ошибок вам потребуется делегирование в стандартные
-механизмы обработки ошибок в Express в случае, если заголовки уже были отправлены клиенту:
+Поэтому при добавлении нестандартного обработчика ошибок вам потребуется делегирование в стандартные механизмы обработки ошибок в Express в случае, если заголовки уже были отправлены клиенту:
 
 ```js
 function errorHandler(err, req, res, next) {
-  if (res.headersSent) {
-    return next(err)
-  }
-  res.status(500)
-  res.render('error', { error: err })
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.status(500);
+    res.render('error', { error: err });
 }
 ```

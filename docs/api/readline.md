@@ -55,18 +55,18 @@ const readline = require('node:readline');
 ```mjs
 import * as readline from 'node:readline/promises';
 import {
-  stdin as input,
-  stdout as output,
+    stdin as input,
+    stdout as output,
 } from 'node:process';
 
 const rl = readline.createInterface({ input, output });
 
 const answer = await rl.question(
-  'What do you think of Node.js? '
+    'What do you think of Node.js? '
 );
 
 console.log(
-  `Thank you for your valuable feedback: ${answer}`
+    `Thank you for your valuable feedback: ${answer}`
 );
 
 rl.close();
@@ -79,19 +79,19 @@ rl.close();
 ```cjs
 const readline = require('node:readline');
 const {
-  stdin: input,
-  stdout: output,
+    stdin: input,
+    stdout: output,
 } = require('node:process');
 
 const rl = readline.createInterface({ input, output });
 
 rl.question('What do you think of Node.js? ', (answer) => {
-  // TODO: Log the answer in a database
-  console.log(
-    `Thank you for your valuable feedback: ${answer}`
-  );
+    // TODO: Log the answer in a database
+    console.log(
+        `Thank you for your valuable feedback: ${answer}`
+    );
 
-  rl.close();
+    rl.close();
 });
 ```
 
@@ -101,7 +101,7 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 ## Class: `InterfaceConstructor`
 
-- Extends: {EventEmitter}
+-   Extends: {EventEmitter}
 
 Экземпляры класса `InterfaceConstructor` создаются с помощью метода `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
@@ -109,10 +109,10 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 Событие `close` возникает, когда происходит одно из следующих событий:
 
-- Вызывается метод `rl.close()` и экземпляр `InterfaceConstructor` теряет контроль над потоками `input` и `output`;
-- Поток `input` получает событие `'end'`;
-- Поток `вход` получает Ctrl+D для сигнализации окончания передачи (EOT);
-- Поток `input` получает Ctrl+C для сигнала `SIGINT` и на экземпляре `InterfaceConstructor` не зарегистрирован слушатель события `'SIGINT'`.
+-   Вызывается метод `rl.close()` и экземпляр `InterfaceConstructor` теряет контроль над потоками `input` и `output`;
+-   Поток `input` получает событие `'end'`;
+-   Поток `вход` получает Ctrl+D для сигнализации окончания передачи (EOT);
+-   Поток `input` получает Ctrl+C для сигнала `SIGINT` и на экземпляре `InterfaceConstructor` не зарегистрирован слушатель события `'SIGINT'`.
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
@@ -130,7 +130,7 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 ```js
 rl.on('line', (input) => {
-  console.log(`Received: ${input}`);
+    console.log(`Received: ${input}`);
 });
 ```
 
@@ -148,7 +148,7 @@ rl.on('line', (input) => {
 
 ```js
 rl.on('history', (history) => {
-  console.log(`Received: ${history}`);
+    console.log(`Received: ${history}`);
 });
 ```
 
@@ -158,8 +158,8 @@ rl.on('history', (history) => {
 
 Событие `pause` возникает, когда происходит одно из следующих событий:
 
-- Поток `input` приостановлен.
-- Входной поток не приостановлен и получает событие `'SIGCONT'`. (См. события [`'SIGTSTP'`](#event-sigtstp) и [`'SIGCONT'`](#event-sigcont)).
+-   Поток `input` приостановлен.
+-   Входной поток не приостановлен и получает событие `'SIGCONT'`. (См. события [`'SIGTSTP'`](#event-sigtstp) и [`'SIGCONT'`](#event-sigcont)).
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
@@ -167,7 +167,7 @@ rl.on('history', (history) => {
 
 ```js
 rl.on('pause', () => {
-  console.log('Readline paused.');
+    console.log('Readline paused.');
 });
 ```
 
@@ -183,7 +183,7 @@ rl.on('pause', () => {
 
 ```js
 rl.on('resume', () => {
-  console.log('Readline resumed.');
+    console.log('Readline resumed.');
 });
 ```
 
@@ -201,8 +201,8 @@ rl.on('resume', () => {
 
 ```js
 rl.on('SIGCONT', () => {
-  // `prompt` will automatically resume the stream
-  rl.prompt();
+    // `prompt` will automatically resume the stream
+    rl.prompt();
 });
 ```
 
@@ -220,12 +220,12 @@ rl.on('SIGCONT', () => {
 
 ```js
 rl.on('SIGINT', () => {
-  rl.question(
-    'Are you sure you want to exit? ',
-    (answer) => {
-      if (answer.match(/^y(es)?$/i)) rl.pause();
-    }
-  );
+    rl.question(
+        'Are you sure you want to exit? ',
+        (answer) => {
+            if (answer.match(/^y(es)?$/i)) rl.pause();
+        }
+    );
 });
 ```
 
@@ -245,9 +245,9 @@ rl.on('SIGINT', () => {
 
 ```js
 rl.on('SIGTSTP', () => {
-  // This will override SIGTSTP and prevent the program from going to the
-  // background.
-  console.log('Caught SIGTSTP.');
+    // This will override SIGTSTP and prevent the program from going to the
+    // background.
+    console.log('Caught SIGTSTP.');
 });
 ```
 
@@ -269,7 +269,7 @@ rl.on('SIGTSTP', () => {
 
 ### `rl.prompt([preserveCursor])`.
 
-- `preserveCursor` {boolean} Если `true`, предотвращает сброс установки курсора на `0`.
+-   `preserveCursor` {boolean} Если `true`, предотвращает сброс установки курсора на `0`.
 
 Метод `rl.prompt()` записывает экземпляры `InterfaceConstructor`, настроенные на `prompt`, на новую строку в `output`, чтобы предоставить пользователю новое место для ввода.
 
@@ -283,24 +283,24 @@ rl.on('SIGTSTP', () => {
 
 ### `rl.setPrompt(prompt)`
 
-- `prompt` {string}
+-   `prompt` {string}
 
 Метод `rl.setPrompt()` устанавливает подсказку, которая будет записываться в `output` при каждом вызове `rl.prompt()`.
 
 ### `rl.getPrompt()`
 
-- Возвращает: {строка} текущая строка подсказки
+-   Возвращает: {строка} текущая строка подсказки
 
 Метод `rl.getPrompt()` возвращает текущую подсказку, используемую `rl.prompt()`.
 
 ### `rl.write(data[, key])`
 
-- `data` {string}
-- `key` {Object}
-  - `ctrl` {boolean} `true` to indicate the <kbd>Ctrl</kbd> key.
-  - `meta` {boolean} `true` to indicate the <kbd>Meta</kbd> key.
-  - `shift` {boolean} `true` to indicate the <kbd>Shift</kbd> key.
-  - `name` {string} The name of the a key.
+-   `data` {string}
+-   `key` {Object}
+    -   `ctrl` {boolean} `true` to indicate the <kbd>Ctrl</kbd> key.
+    -   `meta` {boolean} `true` to indicate the <kbd>Meta</kbd> key.
+    -   `shift` {boolean} `true` to indicate the <kbd>Shift</kbd> key.
+    -   `name` {string} The name of the a key.
 
 Метод `rl.write()` записывает на `выход` либо `данные`, либо последовательность ключей, идентифицированную `key`. Аргумент `key` поддерживается только если `output` является текстовым терминалом [TTY](tty.md). Список комбинаций клавиш см. в [TTY keybindings](#tty-keybindings).
 
@@ -324,7 +324,7 @@ rl.write(null, { ctrl: true, name: 'u' });
 
 ### `rl[Symbol.asyncIterator]()`.
 
-- Возвращает: {AsyncIterator}
+-   Возвращает: {AsyncIterator}
 
 Создает объект `AsyncIterator`, который итерирует каждую строку во входном потоке как строку. Этот метод позволяет асинхронную итерацию объектов `InterfaceConstructor` через циклы `for await...of`.
 
@@ -338,14 +338,14 @@ rl.write(null, { ctrl: true, name: 'u' });
 
 ```js
 async function processLineByLine() {
-  const rl = readline.createInterface({
-    // ...
-  });
+    const rl = readline.createInterface({
+        // ...
+    });
 
-  for await (const line of rl) {
-    // Each line in the readline input will be successively available here as
-    // `line`.
-  }
+    for await (const line of rl) {
+        // Each line in the readline input will be successively available here as
+        // `line`.
+    }
 }
 ```
 
@@ -355,7 +355,7 @@ async function processLineByLine() {
 
 ### `rl.line`
 
-- {строка}
+-   {строка}
 
 Текущие входные данные, обрабатываемые узлом.
 
@@ -373,15 +373,15 @@ async function processLineByLine() {
 const values = ['lorem ipsum', 'dolor sit amet'];
 const rl = readline.createInterface(process.stdin);
 const showResults = debounce(() => {
-  console.log(
-    '\n',
-    values
-      .filter((val) => val.startsWith(rl.line))
-      .join(' ')
-  );
+    console.log(
+        '\n',
+        values
+            .filter((val) => val.startsWith(rl.line))
+            .join(' ')
+    );
 }, 300);
 process.stdin.on('keypress', (c, k) => {
-  showResults();
+    showResults();
 });
 ```
 
@@ -389,7 +389,7 @@ process.stdin.on('keypress', (c, k) => {
 
 ### `rl.cursor`
 
-- {number|undefined}
+-   {number|undefined}
 
 Позиция курсора относительно `rl.line`.
 
@@ -397,9 +397,9 @@ process.stdin.on('keypress', (c, k) => {
 
 ### `rl.getCursorPos()`.
 
-- Возвращает: {Object}
-  - `rows` {число} строка подсказки, на которой в данный момент находится курсор
-  - `cols` {число} столбец экрана, на котором в данный момент находится курсор
+-   Возвращает: {Object}
+    -   `rows` {число} строка подсказки, на которой в данный момент находится курсор
+    -   `cols` {число} столбец экрана, на котором в данный момент находится курсор
 
 Возвращает реальную позицию курсора по отношению к строке + подсказке ввода. Длинные строки ввода (обертка), а также многострочные подсказки включаются в вычисления.
 
@@ -409,16 +409,16 @@ process.stdin.on('keypress', (c, k) => {
 
 ### Класс: `readlinePromises.Interface`.
 
-- Расширяет: {readline.InterfaceConstructor}
+-   Расширяет: {readline.InterfaceConstructor}
 
 Экземпляры класса `readlinePromises.Interface` создаются с помощью метода `readlinePromises.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
 #### `rl.question(query[, options])`.
 
-- `query` {string} Оператор или запрос для записи на `вывод`, добавляемый к подсказке.
-- `options` {Object}
-  - `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью сигнала `AbortSignal`.
-- Возвращает: {Promise} Обещание, которое будет выполнено с вводом пользователя в ответ на `query`.
+-   `query` {string} Оператор или запрос для записи на `вывод`, добавляемый к подсказке.
+-   `options` {Object}
+    -   `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью сигнала `AbortSignal`.
+-   Возвращает: {Promise} Обещание, которое будет выполнено с вводом пользователя в ответ на `query`.
 
 Метод `rl.question()` отображает `запрос`, записывая его в `вывод`, ожидает ввода данных пользователем в `ввод`, затем вызывает функцию `обратный вызов`, передавая введенные данные в качестве первого аргумента.
 
@@ -434,7 +434,7 @@ process.stdin.on('keypress', (c, k) => {
 
 ```mjs
 const answer = await rl.question(
-  'What is your favorite food? '
+    'What is your favorite food? '
 );
 console.log(`Oh, so your favorite food is ${answer}`);
 ```
@@ -449,16 +449,16 @@ console.log(`Oh, so your favorite food is ${answer}`);
 const signal = AbortSignal.timeout(10_000);
 
 signal.addEventListener(
-  'abort',
-  () => {
-    console.log('The food question timed out');
-  },
-  { once: true }
+    'abort',
+    () => {
+        console.log('The food question timed out');
+    },
+    { once: true }
 );
 
 const answer = await rl.question(
-  'What is your favorite food? ',
-  { signal }
+    'What is your favorite food? ',
+    { signal }
 );
 console.log(`Oh, so your favorite food is ${answer}`);
 ```
@@ -469,69 +469,69 @@ console.log(`Oh, so your favorite food is ${answer}`);
 
 #### `новый readlinePromises.Readline(stream[, options])`.
 
-- `stream` {stream.Writable} [TTY](tty.md) поток.
-- `options` {Object}
-  - `autoCommit` {boolean} Если `true`, не нужно вызывать `rl.commit()`.
+-   `stream` {stream.Writable} [TTY](tty.md) поток.
+-   `options` {Object}
+    -   `autoCommit` {boolean} Если `true`, не нужно вызывать `rl.commit()`.
 
 #### `rl.clearLine(dir)`.
 
-- `dir` {integer}
-  - `-1`: влево от курсора
-  - `1`: вправо от курсора
-  - `0`: вся строка
-- Возвращает: this
+-   `dir` {integer}
+    -   `-1`: влево от курсора
+    -   `1`: вправо от курсора
+    -   `0`: вся строка
+-   Возвращает: this
 
 Метод `rl.clearLine()` добавляет во внутренний список ожидающих выполнения действий действие, которое очищает текущую строку связанного с ней `потока` в указанном направлении, обозначенном `dir`. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
 
 #### `rl.clearScreenDown()`.
 
-- Возвращает: this
+-   Возвращает: this
 
 Метод `rl.clearScreenDown()` добавляет во внутренний список ожидающих действий действие, которое очищает связанный поток от текущей позиции курсора вниз. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
 
 #### `rl.commit()`.
 
-- Возвращает: {Promise}
+-   Возвращает: {Promise}
 
 Метод `rl.commit()` отправляет все отложенные действия в связанный `поток` и очищает внутренний список отложенных действий.
 
 #### `rl.cursorTo(x[, y])`.
 
-- `x` {целое число}
-- `y` {целое число}
-- Возвращает: this
+-   `x` {целое число}
+-   `y` {целое число}
+-   Возвращает: this
 
 Метод `rl.cursorTo()` добавляет во внутренний список ожидающих действий действие, которое перемещает курсор в указанную позицию в связанном `потоке`. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
 
 #### `rl.moveCursor(dx, dy)`.
 
-- `dx` {целое число}
-- `dy` {целое число}
-- Возвращает: this
+-   `dx` {целое число}
+-   `dy` {целое число}
+-   Возвращает: this
 
 Метод `rl.moveCursor()` добавляет во внутренний список ожидающих выполнения действий действие, которое перемещает курсор _относительно_ его текущей позиции в связанном `потоке`. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
 
 #### `rl.rollback()`.
 
-- Возвращает: this
+-   Возвращает: this
 
 Методы `rl.rollback` очищают внутренний список ожидающих действий без отправки его в связанный `поток`.
 
 ### `readlinePromises.createInterface(options)`
 
-- `options` {Object}
-  - `вход` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-  - `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
-  - `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
-  - `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
-  - `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
-  - `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл, только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории вообще не инициализируется. **По умолчанию:** `30`.
-  - `removeHistoryDuplicates` {boolean} Если `true`, когда новая строка ввода, добавленная в список истории, дублирует более старую строку, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-  - `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
-  - `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
-  - `escapeCodeTimeout` {число} Продолжительность, в течение которой `readlinePromises` будет ожидать символа (при чтении неоднозначной последовательности клавиш в миллисекундах, которая может как сформировать полную последовательность клавиш, используя прочитанный на данный момент ввод, так и принять дополнительный ввод для завершения более длинной последовательности клавиш). **По умолчанию:** `500`.
-  - `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
-- Возвращает: {readlinePromises.Interface}
+-   `options` {Object}
+    -   `вход` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
+    -   `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
+    -   `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
+    -   `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл, только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории вообще не инициализируется. **По умолчанию:** `30`.
+    -   `removeHistoryDuplicates` {boolean} Если `true`, когда новая строка ввода, добавленная в список истории, дублирует более старую строку, это удаляет более старую строку из списка. **По умолчанию:** `false`.
+    -   `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
+    -   `escapeCodeTimeout` {число} Продолжительность, в течение которой `readlinePromises` будет ожидать символа (при чтении неоднозначной последовательности клавиш в миллисекундах, которая может как сформировать полную последовательность клавиш, используя прочитанный на данный момент ввод, так и принять дополнительный ввод для завершения более длинной последовательности клавиш). **По умолчанию:** `500`.
+    -   `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
+-   Возвращает: {readlinePromises.Interface}
 
 Метод `readlinePromises.createInterface()` создает новый экземпляр `readlinePromises.Interface`.
 
@@ -540,8 +540,8 @@ console.log(`Oh, so your favorite food is ${answer}`);
 ```js
 const readlinePromises = require('node:readline/promises');
 const rl = readlinePromises.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
 ```
 
@@ -553,7 +553,7 @@ const rl = readlinePromises.createInterface({
 
 ```js
 rl.on('line', (line) => {
-  console.log(`Received: ${line}`);
+    console.log(`Received: ${line}`);
 });
 ```
 
@@ -565,8 +565,8 @@ rl.on('line', (line) => {
 
 Функция `completer` принимает в качестве аргумента текущую строку, введенную пользователем, и возвращает `Array` с 2 записями:
 
-- Массив `Array` с соответствующими записями для завершения.
-- Подстрока, которая была использована для сопоставления.
+-   Массив `Array` с соответствующими записями для завершения.
+-   Подстрока, которая была использована для сопоставления.
 
 Например: `[[substr1, substr2, ...], originalsubstring]`.
 
@@ -574,14 +574,14 @@ rl.on('line', (line) => {
 
 ```js
 function completer(line) {
-  const completions = '.help .error .exit .quit .q'.split(
-    ' '
-  );
-  const hits = completions.filter((c) =>
-    c.startsWith(line)
-  );
-  // Show all completions if none found
-  return [hits.length ? hits : completions, line];
+    const completions = '.help .error .exit .quit .q'.split(
+        ' '
+    );
+    const hits = completions.filter((c) =>
+        c.startsWith(line)
+    );
+    // Show all completions if none found
+    return [hits.length ? hits : completions, line];
 }
 ```
 
@@ -593,8 +593,8 @@ function completer(line) {
 
 ```js
 async function completer(linePartial) {
-  await someAsyncWork();
-  return [['123'], linePartial];
+    await someAsyncWork();
+    return [['123'], linePartial];
 }
 ```
 
@@ -604,16 +604,16 @@ async function completer(linePartial) {
 
 ### Класс: `readline.Interface`
 
-- Расширяет: {readline.InterfaceConstructor}
+-   Расширяет: {readline.InterfaceConstructor}
 
 Экземпляры класса `readline.Interface` создаются с помощью метода `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
 #### `rl.question(query[, options], callback)`.
 
-- `query` {string} Утверждение или запрос для записи в `вывод`, добавляемый к подсказке.
-- `options` {Object}
-  - `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью `AbortController`.
-- `callback` {Function} Функция обратного вызова, которая вызывается с вводом пользователя в ответ на `вопрос`.
+-   `query` {string} Утверждение или запрос для записи в `вывод`, добавляемый к подсказке.
+-   `options` {Object}
+    -   `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью `AbortController`.
+-   `callback` {Function} Функция обратного вызова, которая вызывается с вводом пользователя в ответ на `вопрос`.
 
 Метод `rl.question()` отображает `запрос`, записывая его на `вывод`, ждет ввода данных пользователем на `вводе`, затем вызывает функцию `обратного вызова`, передавая введенные данные в качестве первого аргумента.
 
@@ -631,7 +631,7 @@ async function completer(linePartial) {
 
 ```js
 rl.question('What is your favorite food? ', (answer) => {
-  console.log(`Oh, so your favorite food is ${answer}`);
+    console.log(`Oh, so your favorite food is ${answer}`);
 });
 ```
 
@@ -646,19 +646,21 @@ const ac = new AbortController();
 const signal = ac.signal;
 
 rl.question(
-  'What is your favorite food? ',
-  { signal },
-  (answer) => {
-    console.log(`Oh, so your favorite food is ${answer}`);
-  }
+    'What is your favorite food? ',
+    { signal },
+    (answer) => {
+        console.log(
+            `Oh, so your favorite food is ${answer}`
+        );
+    }
 );
 
 signal.addEventListener(
-  'abort',
-  () => {
-    console.log('The food question timed out');
-  },
-  { once: true }
+    'abort',
+    () => {
+        console.log('The food question timed out');
+    },
+    { once: true }
 );
 
 setTimeout(() => ac.abort(), 10000);
@@ -668,40 +670,40 @@ setTimeout(() => ac.abort(), 10000);
 
 ### `readline.clearLine(stream, dir[, callback])`
 
-- `stream` {stream.Writable}
-- `dir` {число}
-  - `-1`: влево от курсора
-  - `1`: вправо от курсора
-  - `0`: вся строка
-- `callback` {Функция} Вызывается после завершения операции.
-- Возвращает: {булево} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` {stream.Writable}
+-   `dir` {число}
+    -   `-1`: влево от курсора
+    -   `1`: вправо от курсора
+    -   `0`: вся строка
+-   `callback` {Функция} Вызывается после завершения операции.
+-   Возвращает: {булево} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.clearLine()` очищает текущую строку данного потока [TTY](tty.md) в указанном направлении, обозначенном `dir`.
 
 ### `readline.clearScreenDown(stream[, callback])`.
 
-- `stream` {stream.Writable}
-- `callback` {Function} Вызывается по завершении операции.
-- Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` {stream.Writable}
+-   `callback` {Function} Вызывается по завершении операции.
+-   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.clearScreenDown()` очищает данный поток [TTY](tty.md) от текущей позиции курсора вниз.
 
 ### `readline.createInterface(options)`.
 
-- `options` {Object}
-  - `input` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-  - `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
-  - `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
-  - `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
-  - `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
-  - `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `30`.
-  - `removeHistoryDuplicates` {boolean} Если `true`, когда новая входная строка, добавленная в список истории, дублирует более старую, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-  - `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
-  - `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
-  - `escapeCodeTimeout` {число} Продолжительность `readline` будет
-  - `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
-  - `signal` {AbortSignal} Позволяет закрыть интерфейс с помощью сигнала AbortSignal. Прерывание сигнала приведет к внутреннему вызову `close` на интерфейсе.
-- Возвращает: {readline.Interface}
+-   `options` {Object}
+    -   `input` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
+    -   `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
+    -   `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
+    -   `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `30`.
+    -   `removeHistoryDuplicates` {boolean} Если `true`, когда новая входная строка, добавленная в список истории, дублирует более старую, это удаляет более старую строку из списка. **По умолчанию:** `false`.
+    -   `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
+    -   `escapeCodeTimeout` {число} Продолжительность `readline` будет
+    -   `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
+    -   `signal` {AbortSignal} Позволяет закрыть интерфейс с помощью сигнала AbortSignal. Прерывание сигнала приведет к внутреннему вызову `close` на интерфейсе.
+-   Возвращает: {readline.Interface}
 
 Метод `readline.createInterface()` создает новый экземпляр `readline.Interface`.
 
@@ -710,8 +712,8 @@ setTimeout(() => ac.abort(), 10000);
 ```js
 const readline = require('node:readline');
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
 ```
 
@@ -723,7 +725,7 @@ const rl = readline.createInterface({
 
 ```js
 rl.on('line', (line) => {
-  console.log(`Received: ${line}`);
+    console.log(`Received: ${line}`);
 });
 ```
 
@@ -737,8 +739,8 @@ rl.on('line', (line) => {
 
 Функция `completer` принимает в качестве аргумента текущую строку, введенную пользователем, и возвращает `Array` с 2 записями:
 
-- Массив `Array` с соответствующими записями для завершения.
-- Подстрока, которая была использована для сопоставления.
+-   Массив `Array` с соответствующими записями для завершения.
+-   Подстрока, которая была использована для сопоставления.
 
 Например: `[[substr1, substr2, ...], originalsubstring]`.
 
@@ -746,14 +748,14 @@ rl.on('line', (line) => {
 
 ```js
 function completer(line) {
-  const completions = '.help .error .exit .quit .q'.split(
-    ' '
-  );
-  const hits = completions.filter((c) =>
-    c.startsWith(line)
-  );
-  // Show all completions if none found
-  return [hits.length ? hits : completions, line];
+    const completions = '.help .error .exit .quit .q'.split(
+        ' '
+    );
+    const hits = completions.filter((c) =>
+        c.startsWith(line)
+    );
+    // Show all completions if none found
+    return [hits.length ? hits : completions, line];
 }
 ```
 
@@ -765,7 +767,7 @@ function completer(line) {
 
 ```js
 function completer(linePartial, callback) {
-  callback(null, [['123'], linePartial]);
+    callback(null, [['123'], linePartial]);
 }
 ```
 
@@ -773,28 +775,28 @@ function completer(linePartial, callback) {
 
 ### `readline.cursorTo(stream, x[, y][, callback])`.
 
-- `stream` {stream.Writable}
-- `x` {число}
-- `y` {число}
-- `callback` {функция} Вызывается после завершения операции.
-- Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` {stream.Writable}
+-   `x` {число}
+-   `y` {число}
+-   `callback` {функция} Вызывается после завершения операции.
+-   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.cursorTo()` перемещает курсор в указанную позицию в данном [TTY](tty.md) `потоке`.
 
 ### `readline.moveCursor(stream, dx, dy[, callback])`.
 
-- `stream` {stream.Writable}
-- `dx` {число}
-- `dy` {число}
-- `callback` {функция} Вызывается после завершения операции.
-- Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` {stream.Writable}
+-   `dx` {число}
+-   `dy` {число}
+-   `callback` {функция} Вызывается после завершения операции.
+-   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.moveCursor()` перемещает курсор _относительно_ его текущей позиции в данном [TTY](tty.md) `потоке`.
 
 ## `readline.emitKeypressEvents(stream[, interface])`.
 
-- `поток` {stream.Readable}
-- `интерфейс` {readline.InterfaceConstructor}
+-   `поток` {stream.Readable}
+-   `интерфейс` {readline.InterfaceConstructor}
 
 Метод `readline.emitKeypressEvents()` заставляет данный поток [Readable](stream.md#readable-streams) начать испускать события `'keypress'`, соответствующие полученным входным данным.
 
@@ -822,28 +824,28 @@ if (process.stdin.isTTY) process.stdin.setRawMode(true);
 ```js
 const readline = require('node:readline');
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  prompt: 'OHAI> ',
+    input: process.stdin,
+    output: process.stdout,
+    prompt: 'OHAI> ',
 });
 
 rl.prompt();
 
 rl.on('line', (line) => {
-  switch (line.trim()) {
-    case 'hello':
-      console.log('world!');
-      break;
-    default:
-      console.log(
-        `Say what? I might have heard '${line.trim()}'`
-      );
-      break;
-  }
-  rl.prompt();
+    switch (line.trim()) {
+        case 'hello':
+            console.log('world!');
+            break;
+        default:
+            console.log(
+                `Say what? I might have heard '${line.trim()}'`
+            );
+            break;
+    }
+    rl.prompt();
 }).on('close', () => {
-  console.log('Have a great day!');
-  process.exit(0);
+    console.log('Have a great day!');
+    process.exit(0);
 });
 ```
 
@@ -860,19 +862,19 @@ const fs = require('node:fs');
 const readline = require('node:readline');
 
 async function processLineByLine() {
-  const fileStream = fs.createReadStream('input.txt');
+    const fileStream = fs.createReadStream('input.txt');
 
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-  });
-  // Note: we use the crlfDelay option to recognize all instances of CR LF
-  // ('\r\n') in input.txt as a single line break.
+    const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+    });
+    // Note: we use the crlfDelay option to recognize all instances of CR LF
+    // ('\r\n') in input.txt as a single line break.
 
-  for await (const line of rl) {
-    // Each line in input.txt will be successively available here as `line`.
-    console.log(`Line from file: ${line}`);
-  }
+    for await (const line of rl) {
+        // Each line in input.txt will be successively available here as `line`.
+        console.log(`Line from file: ${line}`);
+    }
 }
 
 processLineByLine();
@@ -889,12 +891,12 @@ const fs = require('node:fs');
 const readline = require('node:readline');
 
 const rl = readline.createInterface({
-  input: fs.createReadStream('sample.txt'),
-  crlfDelay: Infinity,
+    input: fs.createReadStream('sample.txt'),
+    crlfDelay: Infinity,
 });
 
 rl.on('line', (line) => {
-  console.log(`Line from file: ${line}`);
+    console.log(`Line from file: ${line}`);
 });
 ```
 
@@ -910,22 +912,22 @@ const { createReadStream } = require('node:fs');
 const { createInterface } = require('node:readline');
 
 (async function processLineByLine() {
-  try {
-    const rl = createInterface({
-      input: createReadStream('big-file.txt'),
-      crlfDelay: Infinity,
-    });
+    try {
+        const rl = createInterface({
+            input: createReadStream('big-file.txt'),
+            crlfDelay: Infinity,
+        });
 
-    rl.on('line', (line) => {
-      // Process the line.
-    });
+        rl.on('line', (line) => {
+            // Process the line.
+        });
 
-    await once(rl, 'close');
+        await once(rl, 'close');
 
-    console.log('File processed.');
-  } catch (err) {
-    console.error(err);
-  }
+        console.log('File processed.');
+    } catch (err) {
+        console.error(err);
+    }
 })();
 ```
 

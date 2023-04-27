@@ -41,48 +41,50 @@ const test = require('test');
 
 ```js
 test('synchronous passing test', (t) => {
-  // Этот тест проходит, потому что он не выбрасывает исключение.
-  assert.strictEqual(1, 1);
+    // Этот тест проходит, потому что он не выбрасывает исключение.
+    assert.strictEqual(1, 1);
 });
 
 test('synchronous failing test', (t) => {
-  // Этот тест не проходит, потому что выбрасывает исключение.
-  assert.strictEqual(1, 2);
+    // Этот тест не проходит, потому что выбрасывает исключение.
+    assert.strictEqual(1, 2);
 });
 
 test('асинхронный тест на прохождение', async (t) => {
-  // Этот тест проходит, потому что Promise, возвращаемый асинхронной функцией.
-  // функция не отвергается.
-  assert.strictEqual(1, 1);
+    // Этот тест проходит, потому что Promise, возвращаемый асинхронной функцией.
+    // функция не отвергается.
+    assert.strictEqual(1, 1);
 });
 
 test('asynchronous failing test', async (t) => {
-  // Этот тест не проходит, потому что Promise, возвращаемый асинхронной функцией.
-  // функция отклоняется.
-  assert.strictEqual(1, 2);
+    // Этот тест не проходит, потому что Promise, возвращаемый асинхронной функцией.
+    // функция отклоняется.
+    assert.strictEqual(1, 2);
 });
 
 test('неудачный тест с использованием обещаний', (t) => {
-  // Обещания можно использовать и напрямую.
-  return new Promise((resolve, reject) => {
-    setImmediate(() => {
-      reject(new Error('это приведет к неудаче теста'));
+    // Обещания можно использовать и напрямую.
+    return new Promise((resolve, reject) => {
+        setImmediate(() => {
+            reject(
+                new Error('это приведет к неудаче теста')
+            );
+        });
     });
-  });
 });
 
 test('callback passing test', (t, done) => {
-  // done() - это функция обратного вызова. Когда выполняется setImmediate(), она вызывает функцию
-  // done() без аргументов.
-  setImmediate(done);
+    // done() - это функция обратного вызова. Когда выполняется setImmediate(), она вызывает функцию
+    // done() без аргументов.
+    setImmediate(done);
 });
 
 test('callback failing test', (t, done) => {
-  // Когда выполняется setImmediate(), done() вызывается с объектом Error и
-  // тест проваливается.
-  setImmediate(() => {
-    done(new Error('callback failure'));
-  });
+    // Когда выполняется setImmediate(), done() вызывается с объектом Error и
+    // тест проваливается.
+    setImmediate(() => {
+        done(new Error('callback failure'));
+    });
 });
 ```
 
@@ -94,13 +96,13 @@ test('callback failing test', (t, done) => {
 
 ```js
 test('тест верхнего уровня', async (t) => {
-  await t.test('подтест 1', (t) => {
-    assert.strictEqual(1, 1);
-  });
+    await t.test('подтест 1', (t) => {
+        assert.strictEqual(1, 1);
+    });
 
-  await t.test('субтест 2', (t) => {
-    assert.strictEqual(2, 2);
-  });
+    await t.test('субтест 2', (t) => {
+        assert.strictEqual(2, 2);
+    });
 });
 ```
 
@@ -113,26 +115,26 @@ test('тест верхнего уровня', async (t) => {
 ```js
 // Опция пропуска используется, но сообщение не выдается.
 test('skip option', { skip: true }, (t) => {
-  // Этот код никогда не выполняется.
+    // Этот код никогда не выполняется.
 });
 
 // Опция пропуска используется, и выдается сообщение.
 test(
-  'skip option with message',
-  { skip: 'это пропущено' },
-  (t) => {
-    // Этот код никогда не выполняется.
-  }
+    'skip option with message',
+    { skip: 'это пропущено' },
+    (t) => {
+        // Этот код никогда не выполняется.
+    }
 );
 
 test('метод skip()', (t) => {
-  // Обязательно вернитесь сюда, если тест содержит дополнительную логику.
-  t.skip();
+    // Обязательно вернитесь сюда, если тест содержит дополнительную логику.
+    t.skip();
 });
 
 test('пропустить() метод с сообщением', (t) => {
-  // Обязательно вернитесь сюда, если тест содержит дополнительную логику.
-  t.skip('это пропущено');
+    // Обязательно вернитесь сюда, если тест содержит дополнительную логику.
+    t.skip('это пропущено');
 });
 ```
 
@@ -142,19 +144,19 @@ test('пропустить() метод с сообщением', (t) => {
 
 ```js
 describe('вещь', () => {
-  it('должно работать', () => {
-    assert.strictEqual(1, 1);
-  });
-
-  description('Все должно быть хорошо', () => {
-    assert.strictEqual(2, 2);
-  });
-
-  describe('вложенная вещь', () => {
     it('должно работать', () => {
-      assert.strictEqual(3, 3);
+        assert.strictEqual(1, 1);
     });
-  });
+
+    description('Все должно быть хорошо', () => {
+        assert.strictEqual(2, 2);
+    });
+
+    describe('вложенная вещь', () => {
+        it('должно работать', () => {
+            assert.strictEqual(3, 3);
+        });
+    });
 });
 ```
 
@@ -176,27 +178,27 @@ const { describe, it } = require('node:test');
 // Предположим, что Node.js запускается с опцией командной строки --test-only.
 // Опция 'only' установлена, поэтому этот тест будет запущен.
 test('этот тест запущен', { only: true }, async (t) => {
-  // Внутри этого теста по умолчанию запускаются все подтесты.
-  await t.test('запуск подтеста');
+    // Внутри этого теста по умолчанию запускаются все подтесты.
+    await t.test('запуск подтеста');
 
-  // Контекст теста может быть обновлен для запуска подтестов с опцией 'only'.
-  t.runOnly(true);
-  await t.test('этот подтест теперь пропущен');
-  await t.test('этот подтест запущен', { only: true });
+    // Контекст теста может быть обновлен для запуска подтестов с опцией 'only'.
+    t.runOnly(true);
+    await t.test('этот подтест теперь пропущен');
+    await t.test('этот подтест запущен', { only: true });
 
-  // Переключите контекст обратно, чтобы выполнить все тесты.
-  t.runOnly(false);
-  await t.test('этот подтест запущен');
+    // Переключите контекст обратно, чтобы выполнить все тесты.
+    t.runOnly(false);
+    await t.test('этот подтест запущен');
 
-  // Явно не запускать эти тесты.
-  await t.test('пропущен подтест 3', { only: false });
-  await t.test('пропущен подтест 4', { skip: true });
+    // Явно не запускать эти тесты.
+    await t.test('пропущен подтест 3', { only: false });
+    await t.test('пропущен подтест 4', { skip: true });
 });
 
 // Опция 'only' не установлена, поэтому этот тест пропускается.
 test('этот тест не выполняется', () => {
-  // Этот код не выполняется.
-  throw new Error('fail');
+    // Этот код не выполняется.
+    throw new Error('fail');
 });
 ```
 
@@ -208,13 +210,13 @@ test('этот тест не выполняется', () => {
 
 ```js
 test('test 1', async (t) => {
-  await t.test('test 2');
-  await t.test('test 3');
+    await t.test('test 2');
+    await t.test('test 3');
 });
 
 test('Тест 4', async (t) => {
-  await t.test('Тест 5');
-  await t.test('Тест 6');
+    await t.test('Тест 5');
+    await t.test('Тест 6');
 });
 ```
 
@@ -232,20 +234,20 @@ test('Тест 4', async (t) => {
 
 ```js
 test('тест, создающий асинхронную активность', (t) => {
-  setImmediate(() => {
-    t.test(
-      'подтест, который создается слишком поздно',
-      (t) => {
-        throw new Error('error1');
-      }
-    );
-  });
+    setImmediate(() => {
+        t.test(
+            'подтест, который создается слишком поздно',
+            (t) => {
+                throw new Error('error1');
+            }
+        );
+    });
 
-  setImmediate(() => {
-    throw new Error('error2');
-  });
+    setImmediate(() => {
+        throw new Error('error2');
+    });
 
-  // Тест завершается после этой строки.
+    // Тест завершается после этой строки.
 });
 ```
 
@@ -285,15 +287,15 @@ node --test test1.js test2.mjs custom_test_dir/
 
 При поиске тестовых файлов для выполнения бегунок тестирования ведет себя следующим образом:
 
-- Выполняются любые файлы, явно указанные пользователем.
-- Если пользователь явно не указал пути, то в текущем рабочем каталоге производится рекурсивный поиск файлов, как указано в следующих шагах.
-- Каталоги `node_modules` пропускаются, если только пользователь не указал их явно.
-- Если встречается каталог с именем `test`, программа запуска тестов будет рекурсивно искать в нем все файлы `.js`, `.cjs` и `.mjs`. Все эти файлы рассматриваются как тестовые, и им не обязательно соответствовать определенному соглашению об именовании, описанному ниже. Это сделано для удобства проектов, которые размещают все свои тесты в одном каталоге `test`.
-- Во всех остальных каталогах файлы `.js`, `.cjs` и `.mjs`, соответствующие следующим шаблонам, рассматриваются как тестовые файлы:
-  - `^test$` - Файлы, чьим основным именем является строка `'test'`. Примеры: `test.js`, `test.cjs`, `test.mjs`.
-  - `^test-.+` - Файлы, основное имя которых начинается со строки `'test-'`, за которой следует один или несколько символов. Примеры: `test-example.js`, `test-another-example.mjs`.
-  - `.+[\.\-\_]test$` - Файлы, основное имя которых заканчивается на `.test`, `-test` или `_test`, перед которым следует один или несколько символов. Примеры: `example.test.js`, `example-test.cjs`, `example_test.mjs`.
-  - Другие типы файлов, понимаемые Node.js, такие как `.node` и `.json`, не выполняются автоматически программой запуска тестов, но поддерживаются, если явно указаны в командной строке.
+-   Выполняются любые файлы, явно указанные пользователем.
+-   Если пользователь явно не указал пути, то в текущем рабочем каталоге производится рекурсивный поиск файлов, как указано в следующих шагах.
+-   Каталоги `node_modules` пропускаются, если только пользователь не указал их явно.
+-   Если встречается каталог с именем `test`, программа запуска тестов будет рекурсивно искать в нем все файлы `.js`, `.cjs` и `.mjs`. Все эти файлы рассматриваются как тестовые, и им не обязательно соответствовать определенному соглашению об именовании, описанному ниже. Это сделано для удобства проектов, которые размещают все свои тесты в одном каталоге `test`.
+-   Во всех остальных каталогах файлы `.js`, `.cjs` и `.mjs`, соответствующие следующим шаблонам, рассматриваются как тестовые файлы:
+    -   `^test$` - Файлы, чьим основным именем является строка `'test'`. Примеры: `test.js`, `test.cjs`, `test.mjs`.
+    -   `^test-.+` - Файлы, основное имя которых начинается со строки `'test-'`, за которой следует один или несколько символов. Примеры: `test-example.js`, `test-another-example.mjs`.
+    -   `.+[\.\-\_]test$` - Файлы, основное имя которых заканчивается на `.test`, `-test` или `_test`, перед которым следует один или несколько символов. Примеры: `example.test.js`, `example-test.cjs`, `example_test.mjs`.
+    -   Другие типы файлов, понимаемые Node.js, такие как `.node` и `.json`, не выполняются автоматически программой запуска тестов, но поддерживаются, если явно указаны в командной строке.
 
 Каждый соответствующий файл теста выполняется в отдельном дочернем процессе. Если дочерний процесс завершается с кодом выхода 0, тест считается пройденным. В противном случае тест считается проваленным. Файлы тестов должны быть исполняемыми Node.js, но не обязаны использовать внутренний модуль `node:test`.
 
@@ -310,10 +312,10 @@ node --test test1.js test2.mjs custom_test_dir/
 ```js
 /* node:coverage disable */
 if (anAlwaysFalseCondition) {
-  // Код в этой ветке никогда не будет выполнен, но строки игнорируются для
-  // целей покрытия. Все строки, следующие за комментарием 'disable', игнорируются.
-  // пока не встретится соответствующий комментарий 'enable'.
-  console.log('this is never executed');
+    // Код в этой ветке никогда не будет выполнен, но строки игнорируются для
+    // целей покрытия. Все строки, следующие за комментарием 'disable', игнорируются.
+    // пока не встретится соответствующий комментарий 'enable'.
+    console.log('this is never executed');
 }
 /* node:coverage enable */
 ```
@@ -323,20 +325,20 @@ if (anAlwaysFalseCondition) {
 ```js
 /* node:coverage ignore next */
 if (anAlwaysFalseCondition) {
-  console.log('this is never executed');
+    console.log('this is never executed');
 }
 
 /* node:coverage ignore next 3 */
 if (anAlwaysFalseCondition) {
-  console.log('this is never executed');
+    console.log('this is never executed');
 }
 ```
 
 Функциональность покрытия кода в бегуне тестирования имеет следующие ограничения, которые будут устранены в будущем выпуске Node.js:
 
-- Хотя данные о покрытии собираются для дочерних процессов, эта информация не включается в отчет о покрытии. Поскольку бегунок тестирования командной строки использует дочерние процессы для выполнения тестовых файлов, его нельзя использовать с `--experimental-test-coverage`.
-- Карты исходных текстов не поддерживаются.
-- Исключение определенных файлов или каталогов из отчета о покрытии не поддерживается.
+-   Хотя данные о покрытии собираются для дочерних процессов, эта информация не включается в отчет о покрытии. Поскольку бегунок тестирования командной строки использует дочерние процессы для выполнения тестовых файлов, его нельзя использовать с `--experimental-test-coverage`.
+-   Карты исходных текстов не поддерживаются.
+-   Исключение определенных файлов или каталогов из отчета о покрытии не поддерживается.
 
 ## Mocking
 
@@ -347,21 +349,21 @@ import assert from 'node:assert';
 import { mock, test } from 'node:test';
 
 test('шпионит за функцией', () => {
-  const sum = mock.fn((a, b) => {
-    return a + b;
-  });
+    const sum = mock.fn((a, b) => {
+        return a + b;
+    });
 
-  assert.strictEqual(sum.mock.calls.length, 0);
-  assert.strictEqual(sum(3, 4), 7);
-  assert.strictEqual(sum.mock.calls.length, 1);
+    assert.strictEqual(sum.mock.calls.length, 0);
+    assert.strictEqual(sum(3, 4), 7);
+    assert.strictEqual(sum.mock.calls.length, 1);
 
-  const call = sum.mock.calls[0];
-  assert.deepStrictEqual(call.arguments, [3, 4]);
-  assert.strictEqual(call.result, 7);
-  assert.strictEqual(call.error, undefined);
+    const call = sum.mock.calls[0];
+    assert.deepStrictEqual(call.arguments, [3, 4]);
+    assert.strictEqual(call.result, 7);
+    assert.strictEqual(call.error, undefined);
 
-  // Сбросьте глобально отслеживаемые макеты.
-  mock.reset();
+    // Сбросьте глобально отслеживаемые макеты.
+    mock.reset();
 });
 ```
 
@@ -371,21 +373,21 @@ const assert = require('node:assert');
 const { mock, test } = require('node:test');
 
 test('шпионит за функцией', () => {
-  const sum = mock.fn((a, b) => {
-    return a + b;
-  });
+    const sum = mock.fn((a, b) => {
+        return a + b;
+    });
 
-  assert.strictEqual(sum.mock.calls.length, 0);
-  assert.strictEqual(sum(3, 4), 7);
-  assert.strictEqual(sum.mock.calls.length, 1);
+    assert.strictEqual(sum.mock.calls.length, 0);
+    assert.strictEqual(sum(3, 4), 7);
+    assert.strictEqual(sum.mock.calls.length, 1);
 
-  const call = sum.mock.calls[0];
-  assert.deepStrictEqual(call.arguments, [3, 4]);
-  assert.strictEqual(call.result, 7);
-  assert.strictEqual(call.error, undefined);
+    const call = sum.mock.calls[0];
+    assert.deepStrictEqual(call.arguments, [3, 4]);
+    assert.strictEqual(call.result, 7);
+    assert.strictEqual(call.error, undefined);
 
-  // Сбросьте глобально отслеживаемые макеты.
-  mock.reset();
+    // Сбросьте глобально отслеживаемые макеты.
+    mock.reset();
 });
 ```
 
@@ -393,24 +395,24 @@ test('шпионит за функцией', () => {
 
 ```js
 test('шпионит за методом объекта', (t) => {
-  const number = {
-    значение: 5,
-    add(a) {
-      return this.value + a;
-    },
-  };
+    const number = {
+        значение: 5,
+        add(a) {
+            return this.value + a;
+        },
+    };
 
-  t.mock.method(number, 'add');
-  assert.strictEqual(number.add.mock.calls.length, 0);
-  assert.strictEqual(number.add(3), 8);
-  assert.strictEqual(number.add.mock.calls.length, 1);
+    t.mock.method(number, 'add');
+    assert.strictEqual(number.add.mock.calls.length, 0);
+    assert.strictEqual(number.add(3), 8);
+    assert.strictEqual(number.add.mock.calls.length, 1);
 
-  const call = number.add.mock.calls[0];
+    const call = number.add.mock.calls[0];
 
-  assert.deepStrictEqual(call.arguments, [3]);
-  assert.strictEqual(call.result, 8);
-  assert.strictEqual(call.target, undefined);
-  assert.strictEqual(call.this, number);
+    assert.deepStrictEqual(call.arguments, [3]);
+    assert.strictEqual(call.result, 8);
+    assert.strictEqual(call.target, undefined);
+    assert.strictEqual(call.this, number);
 });
 ```
 
@@ -420,11 +422,11 @@ test('шпионит за методом объекта', (t) => {
 
 Поддерживаются следующие встроенные репортеры:
 
-- `tap` Репортер `tap` выводит результаты тестирования в формате [TAP](https://testanything.org/).
+-   `tap` Репортер `tap` выводит результаты тестирования в формате [TAP](https://testanything.org/).
 
-- `spec` Репортер `spec` выводит результаты тестирования в человекочитаемом формате.
+-   `spec` Репортер `spec` выводит результаты тестирования в человекочитаемом формате.
 
-- `dot` Отчетчик `dot` выводит результаты тестирования в компактном формате, где каждый пройденный тест представлен символом `.`, а каждый проваленный тест представлен символом `X`.
+-   `dot` Отчетчик `dot` выводит результаты тестирования в компактном формате, где каждый пройденный тест представлен символом `.`, а каждый проваленный тест представлен символом `X`.
 
 Если `stdout` является [TTY] (tty.md), по умолчанию используется репортер `spec`. В противном случае по умолчанию используется репортер `tap`.
 
@@ -440,36 +442,45 @@ test('шпионит за методом объекта', (t) => {
 import { Transform } from 'node:stream';
 
 const customReporter = new Transform({
-  writableObjectMode: true,
-  transform(event, encoding, callback) {
-    switch (event.type) {
-      case 'test:start':
-        callback(null, `test ${event.data.name} started`);
-        break;
-      case 'test:pass':
-        callback(null, `тест ${event.data.name} прошел`);
-        break;
-      case 'test:fail':
-        callback(null, `test ${event.data.name} failed`);
-        break;
-      case 'test:plan':
-        callback(null, 'test plan');
-        break;
-      case 'test:diagnostic':
-        callback(null, event.data.message);
-        break;
-      case 'test:coverage': {
-        const {
-          totalLineCount,
-        } = event.data.summary.totals;
-        callback(
-          null,
-          `total line count: ${totalLineCount}\n`
-        );
-        break;
-      }
-    }
-  },
+    writableObjectMode: true,
+    transform(event, encoding, callback) {
+        switch (event.type) {
+            case 'test:start':
+                callback(
+                    null,
+                    `test ${event.data.name} started`
+                );
+                break;
+            case 'test:pass':
+                callback(
+                    null,
+                    `тест ${event.data.name} прошел`
+                );
+                break;
+            case 'test:fail':
+                callback(
+                    null,
+                    `test ${event.data.name} failed`
+                );
+                break;
+            case 'test:plan':
+                callback(null, 'test plan');
+                break;
+            case 'test:diagnostic':
+                callback(null, event.data.message);
+                break;
+            case 'test:coverage': {
+                const {
+                    totalLineCount,
+                } = event.data.summary.totals;
+                callback(
+                    null,
+                    `total line count: ${totalLineCount}\n`
+                );
+                break;
+            }
+        }
+    },
 });
 
 export default customReporter;
@@ -479,36 +490,45 @@ export default customReporter;
 const { Transform } = require('node:stream');
 
 const customReporter = new Transform({
-  writableObjectMode: true,
-  transform(event, encoding, callback) {
-    switch (event.type) {
-      case 'test:start':
-        callback(null, `test ${event.data.name} started`);
-        break;
-      case 'test:pass':
-        callback(null, `тест ${event.data.name} прошел`);
-        break;
-      case 'test:fail':
-        callback(null, `test ${event.data.name} failed`);
-        break;
-      case 'test:plan':
-        callback(null, 'test plan');
-        break;
-      case 'test:diagnostic':
-        callback(null, event.data.message);
-        break;
-      case 'test:coverage': {
-        const {
-          totalLineCount,
-        } = event.data.summary.totals;
-        callback(
-          null,
-          `total line count: ${totalLineCount}\n`
-        );
-        break;
-      }
-    }
-  },
+    writableObjectMode: true,
+    transform(event, encoding, callback) {
+        switch (event.type) {
+            case 'test:start':
+                callback(
+                    null,
+                    `test ${event.data.name} started`
+                );
+                break;
+            case 'test:pass':
+                callback(
+                    null,
+                    `тест ${event.data.name} прошел`
+                );
+                break;
+            case 'test:fail':
+                callback(
+                    null,
+                    `test ${event.data.name} failed`
+                );
+                break;
+            case 'test:plan':
+                callback(null, 'test plan');
+                break;
+            case 'test:diagnostic':
+                callback(null, event.data.message);
+                break;
+            case 'test:coverage': {
+                const {
+                    totalLineCount,
+                } = event.data.summary.totals;
+                callback(
+                    null,
+                    `total line count: ${totalLineCount}\n`
+                );
+                break;
+            }
+        }
+    },
 });
 
 module.exports = customReporter;
@@ -518,63 +538,63 @@ module.exports = customReporter;
 
 ```mjs
 export default async function* customReporter(source) {
-  for await (const event of source) {
-    switch (event.type) {
-      case 'test:start':
-        yield `test ${event.data.name} started\n`;
-        break;
-      case 'test:pass':
-        yield `test ${event.data.name} passed\n`;
-        break;
-      case 'test:fail':
-        yield `test ${event.data.name} failed\n`;
-        break;
-      case 'test:plan':
-        yield 'test plan';
-        break;
-      case 'test:diagnostic':
-        yield `${event.data.message}\n`;
-        break;
-      case 'test:coverage': {
-        const {
-          totalLineCount,
-        } = event.data.summary.totals;
-        yield `total line count: ${totalLineCount}\n`;
-        break;
-      }
+    for await (const event of source) {
+        switch (event.type) {
+            case 'test:start':
+                yield `test ${event.data.name} started\n`;
+                break;
+            case 'test:pass':
+                yield `test ${event.data.name} passed\n`;
+                break;
+            case 'test:fail':
+                yield `test ${event.data.name} failed\n`;
+                break;
+            case 'test:plan':
+                yield 'test plan';
+                break;
+            case 'test:diagnostic':
+                yield `${event.data.message}\n`;
+                break;
+            case 'test:coverage': {
+                const {
+                    totalLineCount,
+                } = event.data.summary.totals;
+                yield `total line count: ${totalLineCount}\n`;
+                break;
+            }
+        }
     }
-  }
 }
 ```
 
 ```cjs
 module.exports = async function* customReporter(source) {
-  for await (const event of source) {
-    switch (event.type) {
-      case 'test:start':
-        yield `test ${event.data.name} started\n`;
-        break;
-      case 'test:pass':
-        yield `test ${event.data.name} passed\n`;
-        break;
-      case 'test:fail':
-        yield `test ${event.data.name} failed\n`;
-        break;
-      case 'test:plan':
-        yield 'test plan\n';
-        break;
-      case 'test:diagnostic':
-        yield `${event.data.message}\n`;
-        break;
-      case 'test:coverage': {
-        const {
-          totalLineCount,
-        } = event.data.summary.totals;
-        yield `total line count: ${totalLineCount}\n`;
-        break;
-      }
+    for await (const event of source) {
+        switch (event.type) {
+            case 'test:start':
+                yield `test ${event.data.name} started\n`;
+                break;
+            case 'test:pass':
+                yield `test ${event.data.name} passed\n`;
+                break;
+            case 'test:fail':
+                yield `test ${event.data.name} failed\n`;
+                break;
+            case 'test:plan':
+                yield 'test plan\n';
+                break;
+            case 'test:diagnostic':
+                yield `${event.data.message}\n`;
+                break;
+            case 'test:coverage': {
+                const {
+                    totalLineCount,
+                } = event.data.summary.totals;
+                yield `total line count: ${totalLineCount}\n`;
+                break;
+            }
+        }
     }
-  }
 };
 ```
 
@@ -594,33 +614,33 @@ node --test-reporter=spec --test-reporter=dot --test-reporter-destination=stdout
 
 ## `run([options])`
 
-- `options` {Object} Параметры конфигурации для запуска тестов. Поддерживаются следующие свойства:
-  - `concurrency` {number|boolean} Если указано число, то такое количество файлов будет запускаться параллельно. Если `true`, то параллельно будет запускаться `os.availableParallelism() - 1` тестовых файлов. Если `false`, то будет выполняться только один тестовый файл за раз. **По умолчанию:** `false`.
-  - `files`: {Array} Массив, содержащий список файлов для запуска. **По умолчанию** соответствующие файлы из [модели выполнения тестового бегуна](#test-runner-execution-model).
-  - `setup` {Function} Функция, которая принимает экземпляр `TestsStream` и может быть использована для настройки слушателей перед запуском любых тестов. **По умолчанию:** `undefined`.
-  - `signal` {AbortSignal} Позволяет прервать текущее выполнение теста.
-  - `timeout` {number} Число миллисекунд, через которое выполнение теста завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
-  - `inspectPort` {number|Function} Устанавливает порт инспектора дочернего процесса теста. Это может быть число или функция, которая не принимает аргументов и возвращает число. Если указано значение nullish, каждый процесс получает свой собственный порт, увеличивающийся от `process.debugPort` первичного процесса. **По умолчанию:** `undefined`.
-- Возвращает: {TestsStream}
+-   `options` {Object} Параметры конфигурации для запуска тестов. Поддерживаются следующие свойства:
+    -   `concurrency` {number|boolean} Если указано число, то такое количество файлов будет запускаться параллельно. Если `true`, то параллельно будет запускаться `os.availableParallelism() - 1` тестовых файлов. Если `false`, то будет выполняться только один тестовый файл за раз. **По умолчанию:** `false`.
+    -   `files`: {Array} Массив, содержащий список файлов для запуска. **По умолчанию** соответствующие файлы из [модели выполнения тестового бегуна](#test-runner-execution-model).
+    -   `setup` {Function} Функция, которая принимает экземпляр `TestsStream` и может быть использована для настройки слушателей перед запуском любых тестов. **По умолчанию:** `undefined`.
+    -   `signal` {AbortSignal} Позволяет прервать текущее выполнение теста.
+    -   `timeout` {number} Число миллисекунд, через которое выполнение теста завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+    -   `inspectPort` {number|Function} Устанавливает порт инспектора дочернего процесса теста. Это может быть число или функция, которая не принимает аргументов и возвращает число. Если указано значение nullish, каждый процесс получает свой собственный порт, увеличивающийся от `process.debugPort` первичного процесса. **По умолчанию:** `undefined`.
+-   Возвращает: {TestsStream}
 
 ```js
 run({ files: [path.resolve('./tests/test.js')] }).pipe(
-  process.stdout
+    process.stdout
 );
 ```
 
 ## `test([name][, options][, fn])`
 
-- `name` {string} Имя теста, которое отображается при выводе результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
-- `options` {Object} Параметры конфигурации теста. Поддерживаются следующие свойства:
-  - `concurrency` {number|boolean} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то параллельно будет выполняться `os.availableParallelism() - 1` тестов. Для подтестов это будет `бесконечность` тестов параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `false`.
-  - `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
-  - `signal` {AbortSignal} Позволяет прервать проходящий тест.
-  - `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
-  - `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, то эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
-  - `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
-- `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
-- Возвращает: {Promise}. Возвращается с `undefined` после завершения теста или сразу, если тест выполняется в рамках [`describe()`](#describename-options-fn).
+-   `name` {string} Имя теста, которое отображается при выводе результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` {Object} Параметры конфигурации теста. Поддерживаются следующие свойства:
+    -   `concurrency` {number|boolean} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то параллельно будет выполняться `os.availableParallelism() - 1` тестов. Для подтестов это будет `бесконечность` тестов параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `false`.
+    -   `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
+    -   `signal` {AbortSignal} Позволяет прервать проходящий тест.
+    -   `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
+    -   `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, то эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
+    -   `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
+-   Возвращает: {Promise}. Возвращается с `undefined` после завершения теста или сразу, если тест выполняется в рамках [`describe()`](#describename-options-fn).
 
 Функция `test()` - это значение, импортируемое из модуля `test`. Каждый вызов этой функции приводит к сообщению о тесте в {TestsStream}.
 
@@ -630,17 +650,17 @@ run({ files: [path.resolve('./tests/test.js')] }).pipe(
 
 ```js
 test('top level test', async (t) => {
-  // SetTimeout() в следующем подтесте приведет к тому, что он опередит родительский тест.
-  // родительский тест, если убрать 'await' в следующей строке. Как только родительский тест
-  // завершится, он отменит все оставшиеся подтесты.
-  await t.test(
-    'дольше выполняющийся подтест',
-    async (t) => {
-      return new Promise((resolve, reject) => {
-        setTimeout(resolve, 1000);
-      });
-    }
-  );
+    // SetTimeout() в следующем подтесте приведет к тому, что он опередит родительский тест.
+    // родительский тест, если убрать 'await' в следующей строке. Как только родительский тест
+    // завершится, он отменит все оставшиеся подтесты.
+    await t.test(
+        'дольше выполняющийся подтест',
+        async (t) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, 1000);
+            });
+        }
+    );
 });
 ```
 
@@ -648,10 +668,10 @@ test('top level test', async (t) => {
 
 ## `describe([name][, options][, fn])`
 
-- `name` {string} Имя набора, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
-- `options` {Object} Параметры конфигурации для набора. Поддерживает те же параметры, что и `test([name][, options][, fn])`.
-- `fn` {Function|AsyncFunction} Функция под набором, объявляющая все подтесты и поднаборы. Первым аргументом этой функции является объект [`SuiteContext`](#class-suitecontext). **По умолчанию:** Безоперационная функция.
-- Возвращает: `undefined`.
+-   `name` {string} Имя набора, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` {Object} Параметры конфигурации для набора. Поддерживает те же параметры, что и `test([name][, options][, fn])`.
+-   `fn` {Function|AsyncFunction} Функция под набором, объявляющая все подтесты и поднаборы. Первым аргументом этой функции является объект [`SuiteContext`](#class-suitecontext). **По умолчанию:** Безоперационная функция.
+-   Возвращает: `undefined`.
 
 Функция `describe()`, импортированная из модуля `node:test`. Каждый вызов этой функции приводит к созданию субтеста. После вызова функций верхнего уровня `describe` будут выполнены все тесты и наборы верхнего уровня.
 
@@ -687,79 +707,87 @@ test('top level test', async (t) => {
 
 ## `before([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед запуском набора.
 
 ```js
 describe('tests', async () => {
-  before(() =>
-    console.log('собирается запустить какой-то тест')
-  );
-  it('is a subtest', () => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    before(() =>
+        console.log('собирается запустить какой-то тест')
+    );
+    it('is a subtest', () => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
 ## `after([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после выполнения набора.
 
 ```js
 describe('tests', async () => {
-  after(() => console.log('закончен запуск тестов'));
-  it('is a subtest', () => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    after(() => console.log('закончен запуск тестов'));
+    it('is a subtest', () => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
 ## `beforeEach([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед каждым подтестом текущего набора.
 
 ```js
 describe('tests', async () => {
-  beforeEach(() =>
-    console.log('собирается запустить тест')
-  );
-  it('is a subtest', () => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    beforeEach(() =>
+        console.log('собирается запустить тест')
+    );
+    it('is a subtest', () => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
 ## `afterEach([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после каждого подтеста текущего теста.
 
 ```js
 describe('tests', async () => {
-  afterEach(() =>
-    console.log('закончено выполнение теста')
-  );
-  it('is a subtest', () => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    afterEach(() =>
+        console.log('закончено выполнение теста')
+    );
+    it('is a subtest', () => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
@@ -769,26 +797,26 @@ describe('tests', async () => {
 
 ### `ctx.calls`
 
-- {Array}
+-   {Array}
 
 Геттер, возвращающий копию внутреннего массива, используемого для отслеживания вызовов имитатора. Каждая запись в массиве представляет собой объект со следующими свойствами.
 
-- `arguments` {Array} Массив аргументов, переданных в функцию mock.
-- `error` {любой} Если имитируемая функция бросила, то это свойство содержит значение брошенной функции. **По умолчанию:** `undefined`.
-- `result` {любой} Значение, возвращаемое имитируемой функцией.
-- `stack` {Error} Объект `Error`, стек которого может быть использован для определения места вызова осмеиваемой функции.
-- `target` {Function|undefined} Если высмеиваемая функция является конструктором, то это поле содержит конструируемый класс. В противном случае это будет `undefined`.
-- `this` {любой} Значение `this` высмеиваемой функции.
+-   `arguments` {Array} Массив аргументов, переданных в функцию mock.
+-   `error` {любой} Если имитируемая функция бросила, то это свойство содержит значение брошенной функции. **По умолчанию:** `undefined`.
+-   `result` {любой} Значение, возвращаемое имитируемой функцией.
+-   `stack` {Error} Объект `Error`, стек которого может быть использован для определения места вызова осмеиваемой функции.
+-   `target` {Function|undefined} Если высмеиваемая функция является конструктором, то это поле содержит конструируемый класс. В противном случае это будет `undefined`.
+-   `this` {любой} Значение `this` высмеиваемой функции.
 
 ### `ctx.callCount()`
 
-- Возвращает: {целое число} Количество раз, когда этот имитатор был вызван.
+-   Возвращает: {целое число} Количество раз, когда этот имитатор был вызван.
 
 Эта функция возвращает количество раз, когда этот имитатор был вызван. Эта функция более эффективна, чем проверка `ctx.calls.length`, поскольку `ctx.calls` - это геттер, который создает копию внутреннего массива отслеживания вызовов.
 
 ### `ctx.mockImplementation(implementation)`
 
-- `implementation` {Function|AsyncFunction} Функция, которая будет использоваться в качестве новой реализации имитатора.
+-   `implementation` {Function|AsyncFunction} Функция, которая будет использоваться в качестве новой реализации имитатора.
 
 Эта функция используется для изменения поведения существующего макета.
 
@@ -796,31 +824,31 @@ describe('tests', async () => {
 
 ```js
 test('изменяет поведение mock', (t) => {
-  let cnt = 0;
+    let cnt = 0;
 
-  function addOne() {
-    cnt++;
-    return cnt;
-  }
+    function addOne() {
+        cnt++;
+        return cnt;
+    }
 
-  function addTwo() {
-    cnt += 2;
-    return cnt;
-  }
+    function addTwo() {
+        cnt += 2;
+        return cnt;
+    }
 
-  const fn = t.mock.fn(addOne);
+    const fn = t.mock.fn(addOne);
 
-  assert.strictEqual(fn(), 1);
-  fn.mock.mockImplementation(addTwo);
-  assert.strictEqual(fn(), 3);
-  assert.strictEqual(fn(), 5);
+    assert.strictEqual(fn(), 1);
+    fn.mock.mockImplementation(addTwo);
+    assert.strictEqual(fn(), 3);
+    assert.strictEqual(fn(), 5);
 });
 ```
 
 ### `ctx.mockImplementationOnce(implementation[, onCall])`
 
-- `implementation` {Function|AsyncFunction} Функция, которая будет использоваться в качестве реализации макета для номера вызова, указанного в `onCall`.
-- `onCall` {integer} Номер вызова, для которого будет использоваться `implementation`. Если указанный вызов уже произошел, то будет выброшено исключение. **По умолчанию:** Номер следующего вызова.
+-   `implementation` {Function|AsyncFunction} Функция, которая будет использоваться в качестве реализации макета для номера вызова, указанного в `onCall`.
+-   `onCall` {integer} Номер вызова, для которого будет использоваться `implementation`. Если указанный вызов уже произошел, то будет выброшено исключение. **По умолчанию:** Номер следующего вызова.
 
 Эта функция используется для изменения поведения существующего mock для одного вызова. После вызова `onCall` имитатор вернется к тому поведению, которое он использовал бы, если бы не была вызвана `mockImplementationOnce()`.
 
@@ -828,24 +856,24 @@ test('изменяет поведение mock', (t) => {
 
 ```js
 test('изменяет поведение mock один раз', (t) => {
-  let cnt = 0;
+    let cnt = 0;
 
-  function addOne() {
-    cnt++;
-    return cnt;
-  }
+    function addOne() {
+        cnt++;
+        return cnt;
+    }
 
-  function addTwo() {
-    cnt += 2;
-    return cnt;
-  }
+    function addTwo() {
+        cnt += 2;
+        return cnt;
+    }
 
-  const fn = t.mock.fn(addOne);
+    const fn = t.mock.fn(addOne);
 
-  assert.strictEqual(fn(), 1);
-  fn.mock.mockImplementationOnce(addTwo);
-  assert.strictEqual(fn(), 3);
-  assert.strictEqual(fn(), 4);
+    assert.strictEqual(fn(), 1);
+    fn.mock.mockImplementationOnce(addTwo);
+    assert.strictEqual(fn(), 3);
+    assert.strictEqual(fn(), 4);
 });
 ```
 
@@ -863,11 +891,11 @@ test('изменяет поведение mock один раз', (t) => {
 
 ### `mock.fn([original[, implementation]][, options])`
 
-- `original` {Function|AsyncFunction} Необязательная функция для создания имитатора. **По умолчанию:** Безоперационная функция.
-- `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации макета для `оригинала`. Это полезно для создания имитаторов, которые демонстрируют одно поведение в течение определенного количества вызовов, а затем восстанавливают поведение `оригинала`. **По умолчанию:** Функция, указанная `original`.
-- `options` {Object} Необязательные параметры конфигурации для имитатора функции. Поддерживаются следующие свойства:
-  - `times` {integer} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитатор будет вызван `times` раз, он автоматически восстановит поведение `original`. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
-- Возвращает: {Proxy} Имитируемая функция. Подражаемая функция содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения подражаемой функции.
+-   `original` {Function|AsyncFunction} Необязательная функция для создания имитатора. **По умолчанию:** Безоперационная функция.
+-   `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации макета для `оригинала`. Это полезно для создания имитаторов, которые демонстрируют одно поведение в течение определенного количества вызовов, а затем восстанавливают поведение `оригинала`. **По умолчанию:** Функция, указанная `original`.
+-   `options` {Object} Необязательные параметры конфигурации для имитатора функции. Поддерживаются следующие свойства:
+    -   `times` {integer} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитатор будет вызван `times` раз, он автоматически восстановит поведение `original`. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
+-   Возвращает: {Proxy} Имитируемая функция. Подражаемая функция содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения подражаемой функции.
 
 Эта функция используется для создания имитируемой функции.
 
@@ -906,38 +934,44 @@ test('mocks a counting function', (t) => {
 
 ### `mock.method(object, methodName[, implementation][, options])`
 
-- `object` {Object} Объект, метод которого высмеивается.
-- `methodName` {string|symbol} Идентификатор метода на `объекте`, который нужно высмеять. Если `object[methodName]` не является функцией, будет выдана ошибка.
-- `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации mock для `object[methodName]`. **По умолчанию:** Оригинальный метод, указанный `object[methodName]`.
-- `options` {Object} Необязательные параметры конфигурации для имитатора метода. Поддерживаются следующие свойства:
-  - `getter` {boolean} Если `true`, то `object[methodName]` рассматривается как getter. Этот параметр нельзя использовать с параметром `setter`. **По умолчанию:** false.
-  - `setter` {boolean} Если `true`, то `object[methodName]` рассматривается как setter. Эта опция не может быть использована с опцией `getter`. **По умолчанию:** false.
-  - `times` {целое число} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитируемый метод будет вызван `times` раз, он автоматически восстановит исходное поведение. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
-- Возвращает: {Proxy} Имитированный метод. Осмеиваемый метод содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения осмеиваемого метода.
+-   `object` {Object} Объект, метод которого высмеивается.
+-   `methodName` {string|symbol} Идентификатор метода на `объекте`, который нужно высмеять. Если `object[methodName]` не является функцией, будет выдана ошибка.
+-   `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации mock для `object[methodName]`. **По умолчанию:** Оригинальный метод, указанный `object[methodName]`.
+-   `options` {Object} Необязательные параметры конфигурации для имитатора метода. Поддерживаются следующие свойства:
+    -   `getter` {boolean} Если `true`, то `object[methodName]` рассматривается как getter. Этот параметр нельзя использовать с параметром `setter`. **По умолчанию:** false.
+    -   `setter` {boolean} Если `true`, то `object[methodName]` рассматривается как setter. Эта опция не может быть использована с опцией `getter`. **По умолчанию:** false.
+    -   `times` {целое число} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитируемый метод будет вызван `times` раз, он автоматически восстановит исходное поведение. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
+-   Возвращает: {Proxy} Имитированный метод. Осмеиваемый метод содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения осмеиваемого метода.
 
 Эта функция используется для создания имитатора на существующем методе объекта. Следующий пример демонстрирует, как создается имитатор для существующего метода объекта.
 
 ```js
 test('шпионит за объектным методом', (t) => {
-  const number = {
-    значение: 5,
-    subtract(a) {
-      return this.value - a;
-    },
-  };
+    const number = {
+        значение: 5,
+        subtract(a) {
+            return this.value - a;
+        },
+    };
 
-  t.mock.method(number, 'subtract');
-  assert.strictEqual(number.subtract.mock.calls.length, 0);
-  assert.strictEqual(number.subtract(3), 2);
-  assert.strictEqual(number.subtract.mock.calls.length, 1);
+    t.mock.method(number, 'subtract');
+    assert.strictEqual(
+        number.subtract.mock.calls.length,
+        0
+    );
+    assert.strictEqual(number.subtract(3), 2);
+    assert.strictEqual(
+        number.subtract.mock.calls.length,
+        1
+    );
 
-  const call = number.subtract.mock.calls[0];
+    const call = number.subtract.mock.calls[0];
 
-  assert.deepStrictEqual(call.arguments, [3]);
-  assert.strictEqual(call.result, 2);
-  assert.strictEqual(call.error, undefined);
-  assert.strictEqual(call.target, undefined);
-  assert.strictEqual(call.this, number);
+    assert.deepStrictEqual(call.arguments, [3]);
+    assert.strictEqual(call.result, 2);
+    assert.strictEqual(call.error, undefined);
+    assert.strictEqual(call.target, undefined);
+    assert.strictEqual(call.this, number);
 });
 ```
 
@@ -957,94 +991,94 @@ test('шпионит за объектным методом', (t) => {
 
 ## Класс: `TestsStream`
 
-- Расширяет {ReadableStream}
+-   Расширяет {ReadableStream}
 
 Успешный вызов метода [`run()`](#runoptions) вернет новый объект {TestsStream}, передающий серию событий, представляющих выполнение тестов. `TestsStream` будет испускать события в порядке определения тестов
 
 ### Событие: `'test:coverage'`
 
-- `данные` {Объект}
-  - `summary` {Object} Объект, содержащий отчет о покрытии.
-    - `files` {Array} Массив отчетов о покрытии для отдельных файлов. Каждый отчет представляет собой объект со следующей схемой:
-      - `path` {string} Абсолютный путь к файлу.
-      - `totalLineCount` {number} Общее количество строк.
-      - `totalBranchCount` {number} Общее количество ветвей.
-      - `totalFunctionCount` {number} Общее количество функций.
-      - `coveredLineCount` {number} Количество покрытых линий.
-      - `coveredBranchCount` {number} Количество покрытых ветвей.
-      - `coveredFunctionCount` {number} Количество охваченных функций.
-      - `coveredLinePercent` {number} Процент охваченных линий.
-      - `coveredBranchPercent` {number} Процент охваченных ветвей.
-      - `coveredFunctionPercent` {number} Процент охваченных функций.
-      - `uncoveredLineNumbers` {Array} Массив целых чисел, представляющих номера строк, которые не охвачены.
-    - `totals` {Object} Объект, содержащий сводку покрытия для всех файлов.
-      - `totalLineCount` {number} Общее количество строк.
-      - `totalBranchCount` {number} Общее количество ветвей.
-      - `totalFunctionCount` {number} Общее количество функций.
-      - `coveredLineCount` {number} Количество покрытых линий.
-      - `coveredBranchCount` {number} Количество покрытых ветвей.
-      - `coveredFunctionCount` {number} Количество охваченных функций.
-      - `coveredLinePercent` {number} Процент охваченных линий.
-      - `coveredBranchPercent` {number} Процент охваченных ветвей.
-      - `coveredFunctionPercent` {число} Процент охваченных функций.
-    - `workingDirectory` {строка} Рабочий каталог, когда началось покрытие кода. Это полезно для отображения имен относительных путей в случае, если тесты изменили рабочий каталог процесса Node.js.
-  - `nesting` {number} Уровень вложенности теста.
+-   `данные` {Объект}
+    -   `summary` {Object} Объект, содержащий отчет о покрытии.
+        -   `files` {Array} Массив отчетов о покрытии для отдельных файлов. Каждый отчет представляет собой объект со следующей схемой:
+            -   `path` {string} Абсолютный путь к файлу.
+            -   `totalLineCount` {number} Общее количество строк.
+            -   `totalBranchCount` {number} Общее количество ветвей.
+            -   `totalFunctionCount` {number} Общее количество функций.
+            -   `coveredLineCount` {number} Количество покрытых линий.
+            -   `coveredBranchCount` {number} Количество покрытых ветвей.
+            -   `coveredFunctionCount` {number} Количество охваченных функций.
+            -   `coveredLinePercent` {number} Процент охваченных линий.
+            -   `coveredBranchPercent` {number} Процент охваченных ветвей.
+            -   `coveredFunctionPercent` {number} Процент охваченных функций.
+            -   `uncoveredLineNumbers` {Array} Массив целых чисел, представляющих номера строк, которые не охвачены.
+        -   `totals` {Object} Объект, содержащий сводку покрытия для всех файлов.
+            -   `totalLineCount` {number} Общее количество строк.
+            -   `totalBranchCount` {number} Общее количество ветвей.
+            -   `totalFunctionCount` {number} Общее количество функций.
+            -   `coveredLineCount` {number} Количество покрытых линий.
+            -   `coveredBranchCount` {number} Количество покрытых ветвей.
+            -   `coveredFunctionCount` {number} Количество охваченных функций.
+            -   `coveredLinePercent` {number} Процент охваченных линий.
+            -   `coveredBranchPercent` {number} Процент охваченных ветвей.
+            -   `coveredFunctionPercent` {число} Процент охваченных функций.
+        -   `workingDirectory` {строка} Рабочий каталог, когда началось покрытие кода. Это полезно для отображения имен относительных путей в случае, если тесты изменили рабочий каталог процесса Node.js.
+    -   `nesting` {number} Уровень вложенности теста.
 
 Выводится, когда включено покрытие кода и все тесты завершены.
 
 ### Событие: `test:diagnostic`
 
-- `data` {Объект}
-  - `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-  - `message` {string} Диагностическое сообщение.
-  - `nesting` {number} Уровень вложенности теста.
+-   `data` {Объект}
+    -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
+    -   `message` {string} Диагностическое сообщение.
+    -   `nesting` {number} Уровень вложенности теста.
 
 Выдается при вызове [`context.diagnostic`](#contextdiagnosticmessage).
 
 ### Событие: `'test:fail'`
 
-- `данные` {Объект}
-  - `details` {Object} Дополнительные метаданные о выполнении.
-    - `duration` {number} Продолжительность теста в миллисекундах.
-    - `error` {Ошибка} Ошибка, вызванная тестом.
-  - `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-  - `name` {string} Имя теста.
-  - `nesting` {number} Уровень вложенности теста.
-  - `testNumber` {number} Порядковый номер теста.
-  - `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
-  - `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage).
+-   `данные` {Объект}
+    -   `details` {Object} Дополнительные метаданные о выполнении.
+        -   `duration` {number} Продолжительность теста в миллисекундах.
+        -   `error` {Ошибка} Ошибка, вызванная тестом.
+    -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
+    -   `name` {string} Имя теста.
+    -   `nesting` {number} Уровень вложенности теста.
+    -   `testNumber` {number} Порядковый номер теста.
+    -   `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
+    -   `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage).
 
 Выдается при неудачном прохождении теста.
 
 ### Событие: `'test:pass'`
 
-- `данные` {Объект}
-  - `details` {Object} Дополнительные метаданные о выполнении.
-    - `duration` {number} Продолжительность теста в миллисекундах.
-  - `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-  - `name` {string} Имя теста.
-  - `nesting` {number} Уровень вложенности теста.
-  - `testNumber` {number} Порядковый номер теста.
-  - `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
-  - `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage)
+-   `данные` {Объект}
+    -   `details` {Object} Дополнительные метаданные о выполнении.
+        -   `duration` {number} Продолжительность теста в миллисекундах.
+    -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
+    -   `name` {string} Имя теста.
+    -   `nesting` {number} Уровень вложенности теста.
+    -   `testNumber` {number} Порядковый номер теста.
+    -   `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
+    -   `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage)
 
 Выдается, когда тест пройден.
 
 ### Событие: `'test:plan'`
 
-- `data` {Объект}
-  - `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-  - `nesting` {number} Уровень вложенности теста.
-  - `count` {number} Количество подтестов, которые были выполнены.
+-   `data` {Объект}
+    -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
+    -   `nesting` {number} Уровень вложенности теста.
+    -   `count` {number} Количество подтестов, которые были выполнены.
 
 Выдается, когда все подтесты завершены для данного теста.
 
 ### Событие: `'test:start'`
 
-- `data` {Объект}
-  - `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-  - `name` {string} Имя теста.
-  - `nesting` {number} Уровень вложенности теста.
+-   `data` {Объект}
+    -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
+    -   `name` {string} Имя теста.
+    -   `nesting` {number} Уровень вложенности теста.
 
 Выдается при запуске теста.
 
@@ -1054,71 +1088,75 @@ test('шпионит за объектным методом', (t) => {
 
 ### `context.beforeEach([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед каждым подтестом текущего теста.
 
 ```js
 test('top level test', async (t) => {
-  t.beforeEach((t) =>
-    t.diagnostic(`собирается выполнить ${t.name}`)
-  );
-  await t.test('Это подтест', (t) => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    t.beforeEach((t) =>
+        t.diagnostic(`собирается выполнить ${t.name}`)
+    );
+    await t.test('Это подтест', (t) => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
 ### `context.after([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, который запускается после завершения текущего теста.
 
 ```js
 test('тест верхнего уровня', async (t) => {
-  t.after((t) =>
-    t.diagnostic(`закончено выполнение ${t.name}`)
-  );
-  assert.ok('некоторое релевантное утверждение здесь');
+    t.after((t) =>
+        t.diagnostic(`закончено выполнение ${t.name}`)
+    );
+    assert.ok('некоторое релевантное утверждение здесь');
 });
 ```
 
 ### `context.afterEach([fn][, options])`
 
-- `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
-- `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-  - `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-  - `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
+-   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
+    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после каждого подтеста текущего теста.
 
 ```js
 test('top level test', async (t) => {
-  t.afterEach((t) =>
-    t.diagnostic(`закончено выполнение ${t.name}`)
-  );
-  await t.test('Это подтест', (t) => {
-    assert.ok('некоторое релевантное утверждение здесь');
-  });
+    t.afterEach((t) =>
+        t.diagnostic(`закончено выполнение ${t.name}`)
+    );
+    await t.test('Это подтест', (t) => {
+        assert.ok(
+            'некоторое релевантное утверждение здесь'
+        );
+    });
 });
 ```
 
 ### `context.diagnostic(message)`
 
-- `message` {string} Сообщение, которое должно быть сообщено.
+-   `message` {string} Сообщение, которое должно быть сообщено.
 
 Эта функция используется для записи диагностики в вывод. Любая диагностическая информация включается в конец результатов теста. Эта функция не возвращает значения.
 
 ```js
 test('тест верхнего уровня', (t) => {
-  t.diagnostic('Диагностическое сообщение');
+    t.diagnostic('Диагностическое сообщение');
 });
 ```
 
@@ -1128,86 +1166,88 @@ test('тест верхнего уровня', (t) => {
 
 ### `context.runOnly(shouldRunOnlyTests)`
 
-- `shouldRunOnlyTests` {boolean} Следует ли запускать `только` тесты.
+-   `shouldRunOnlyTests` {boolean} Следует ли запускать `только` тесты.
 
 Если `shouldRunOnlyTests` истинно, контекст тестирования будет запускать только те тесты, для которых установлена опция `only`. В противном случае запускаются все тесты. Если Node.js не был запущен с опцией командной строки [`--test-only`](cli.md#--test-only), эта функция не работает.
 
 ```js
 test('top level test', (t) => {
-  // Контекст теста может быть настроен на запуск подтестов с помощью опции 'only'.
-  t.runOnly(true);
-  return Promise.all([
-    t.test('этот подтест теперь пропущен'),
-    t.test('этот подтест запущен', { only: true }),
-  ]);
+    // Контекст теста может быть настроен на запуск подтестов с помощью опции 'only'.
+    t.runOnly(true);
+    return Promise.all([
+        t.test('этот подтест теперь пропущен'),
+        t.test('этот подтест запущен', { only: true }),
+    ]);
 });
 ```
 
 ### `context.signal`
 
-- {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.
+-   {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.
 
 ```js
 test('тест верхнего уровня', async (t) => {
-  await fetch('some/uri', { signal: t.signal });
+    await fetch('some/uri', { signal: t.signal });
 });
 ```
 
 ### `context.skip([message])`
 
-- `message` {string} Необязательное сообщение о пропуске.
+-   `message` {string} Необязательное сообщение о пропуске.
 
 Эта функция заставляет вывод теста указывать на то, что тест пропущен. Если указано `message`, оно включается в вывод. Вызов `skip()` не завершает выполнение тестовой функции. Эта функция не возвращает значения.
 
 ```js
 test('top level test', (t) => {
-  // Не забудьте вернуть значение и здесь, если тест содержит дополнительную логику.
-  t.skip('это пропущено');
+    // Не забудьте вернуть значение и здесь, если тест содержит дополнительную логику.
+    t.skip('это пропущено');
 });
 ```
 
 ### `context.todo([message])`
 
-- `message` {string} Необязательное сообщение `TODO`.
+-   `message` {string} Необязательное сообщение `TODO`.
 
 Эта функция добавляет директиву `TODO` в вывод теста. Если указано `message`, оно будет включено в вывод. Вызов `todo()` не завершает выполнение тестовой функции. Эта функция не возвращает значения.
 
 ```js
 test('top level test', (t) => {
-  // Этот тест помечен как `TODO`
-  t.todo('this is a todo');
+    // Этот тест помечен как `TODO`
+    t.todo('this is a todo');
 });
 ```
 
 ### `context.test([name][, options][, fn])`
 
-- `name` {string} Имя подтеста, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
-- `options` {Object} Параметры конфигурации для подтеста. Поддерживаются следующие свойства:
-  - `concurrency` {number|boolean|null} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то все подтесты будут выполняться параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, то подтесты наследуют это значение от своего родителя. **По умолчанию:** `null`.
-  - `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
-  - `signal` {AbortSignal} Позволяет прервать проходящий тест.
-  - `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
-  - `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
-  - `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
-- `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
-- Возвращает: {Promise}. Возвращается с `undefined` после завершения теста.
+-   `name` {string} Имя подтеста, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` {Object} Параметры конфигурации для подтеста. Поддерживаются следующие свойства:
+    -   `concurrency` {number|boolean|null} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то все подтесты будут выполняться параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, то подтесты наследуют это значение от своего родителя. **По умолчанию:** `null`.
+    -   `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
+    -   `signal` {AbortSignal} Позволяет прервать проходящий тест.
+    -   `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
+    -   `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
+    -   `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
+-   Возвращает: {Promise}. Возвращается с `undefined` после завершения теста.
 
 Эта функция используется для создания подтестов под текущим тестом. Эта функция ведет себя так же, как и функция верхнего уровня [`test()`](#testname-options-fn).
 
 ```js
 test('тест верхнего уровня', async (t) => {
-  await t.test(
-    'This is a subtest',
-    {
-      only: false,
-      skip: false,
-      concurrency: 1,
-      todo: false,
-    },
-    (t) => {
-      assert.ok('некоторое релевантное утверждение здесь');
-    }
-  );
+    await t.test(
+        'This is a subtest',
+        {
+            only: false,
+            skip: false,
+            concurrency: 1,
+            todo: false,
+        },
+        (t) => {
+            assert.ok(
+                'некоторое релевантное утверждение здесь'
+            );
+        }
+    );
 });
 ```
 
@@ -1221,4 +1261,4 @@ test('тест верхнего уровня', async (t) => {
 
 ### `context.signal`
 
-- {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.
+-   {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.

@@ -7,45 +7,45 @@
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>О сайте</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>О сайте</h1>
-  </body>
-  <html></html>
+    <head>
+        <title>О сайте</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>О сайте</h1>
+    </body>
+    <html></html>
 </html>
 ```
 
 В итоге проект будет выглядеть следующим образом:
 
-- `app.js`
-- `node_modules`
-- `package.json`
-- `public`
-  - `about.html`
+-   `app.js`
+-   `node_modules`
+-   `package.json`
+-   `public`
+    -   `about.html`
 
 Теперь изменим файл `app.js`:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 
 app.use('/', function (request, response) {
-  response.send('<h1>Главная страница</h1>')
-})
+    response.send('<h1>Главная страница</h1>');
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 Чтобы встроить компонент `express.static` в процесс обработки запроса, вызывается функция `app.use()`. Эта функция позволяет добавлять различные компоненты, которые еще называются middleware, в конвейер обработки запроса:
 
 ```js
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 ```
 
 Причем данный вызов помещается до всех остальных вызовов функции `app.get()`.
@@ -61,17 +61,17 @@ app.use(express.static(__dirname + '/public'))
 Дополнительно мы можем изменить путь к каталогу статических файлов:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.use('/static', express.static(__dirname + '/public'))
+app.use('/static', express.static(__dirname + '/public'));
 
 app.use('/', function (request, response) {
-  response.send('<h1>Главная страница</h1>')
-})
+    response.send('<h1>Главная страница</h1>');
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 Теперь чтобы обратиться к файлу `about.html`, необходимо отправить запрос `http://localhost:3000/static/about.html`.

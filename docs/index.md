@@ -2,8 +2,8 @@
 title: Главная
 description: Node.js - это программная платформа, которая транслирует JavaScript в машинный код, исполняемый на стороне сервера
 hide:
-  - toc
-  - navigation
+    - toc
+    - navigation
 ---
 
 # ![Node.js](nodejs.svg){: style="height:64px;width:64px;vertical-align:middle;"} Справочник Node.js

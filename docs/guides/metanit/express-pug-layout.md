@@ -42,25 +42,25 @@ Pug позволяет внедрять одни предствления в д�
 Сам файл приложение остается тем же, что и в прошлой теме:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
 app.use('/contact', function (request, response) {
-  response.render('contact', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 ![4.31.png](4.31.png)

@@ -62,9 +62,9 @@ path.posix.basename('/tmp/myfile.html');
 
 ## `path.basename(path[, suffix])`
 
-- `путь` {строка}
-- `suffix` {строка} Необязательный суффикс для удаления
-- Возвращает: {строка}
+-   `путь` {строка}
+-   `suffix` {строка} Необязательный суффикс для удаления
+-   Возвращает: {строка}
 
 Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Заглавные [разделители каталогов](#pathsep) игнорируются.
 
@@ -92,12 +92,12 @@ path.win32.basename('C:\foo.HTML', '.html');
 
 ## `path.delimiter`
 
-- {строка}
+-   {строка}
 
 Предоставляет специфический для платформы разделитель путей:
 
-- `;` для Windows
-- `:` для POSIX
+-   `;` для Windows
+-   `:` для POSIX
 
 Например, на POSIX:
 
@@ -123,8 +123,8 @@ process.env.PATH.split(path.delimiter);
 
 ## `path.dirname(path)`
 
-- `path` {строка}
-- Возвращает: {строка}
+-   `path` {строка}
+-   Возвращает: {строка}
 
 Метод `path.dirname()` возвращает имя каталога `пути`, аналогично команде Unix `dirname`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
@@ -139,8 +139,8 @@ path.dirname('/foo/bar/baz/asdf/quux');
 
 ## `path.extname(path)`
 
-- `path` {строка}
-- Возвращает: {строка}
+-   `path` {строка}
+-   Возвращает: {строка}
 
 Метод `path.extname()` возвращает расширение `пути`, начиная с последнего появления символа `.` (точка) до конца строки в последней части `пути`. Если в последней части `path` нет символа `.`, или если нет символов `.`, кроме первого символа основного имени `path` (см. `path.basename()`), возвращается пустая строка.
 
@@ -170,20 +170,20 @@ path.extname('.index.md');
 
 ## `path.format(pathObject)`
 
-- `pathObject` {Object} Любой объект JavaScript, имеющий следующие свойства:
-  - `dir` {string}
-  - `root` {string}
-  - `base` {string}
-  - `name` {string}
-  - `ext` {string}
-- Возвращает: {строка}
+-   `pathObject` {Object} Любой объект JavaScript, имеющий следующие свойства:
+    -   `dir` {string}
+    -   `root` {string}
+    -   `base` {string}
+    -   `name` {string}
+    -   `ext` {string}
+-   Возвращает: {строка}
 
 Метод `path.format()` возвращает строку пути из объекта. Это противоположность [`path.parse()`](#pathparsepath).
 
 При задании свойств для `pathObject` помните, что существуют комбинации, в которых одно свойство имеет приоритет над другим:
 
-- `pathObject.root` игнорируется, если указано `pathObject.dir`.
-- `pathObject.ext` и `pathObject.name` игнорируются, если существует `pathObject.base`.
+-   `pathObject.root` игнорируется, если указано `pathObject.dir`.
+-   `pathObject.ext` и `pathObject.name` игнорируются, если существует `pathObject.base`.
 
 Например, на POSIX:
 
@@ -192,9 +192,9 @@ path.extname('.index.md');
 // `${dir}${path.sep}${base}`
 // будет возвращен. `root` игнорируется.
 path.format({
-  root: '/ignored',
-  dir: '/home/user/dir',
-  base: 'file.txt',
+    root: '/ignored',
+    dir: '/home/user/dir',
+    base: 'file.txt',
 });
 // Возвращает: '/home/user/dir/file.txt'
 
@@ -202,25 +202,25 @@ path.format({
 // Если указан только `root` или `dir` равен `root`, то разделитель платформы не будет включен.
 // платформенный разделитель не будет включен. `ext` будет проигнорирован.
 path.format({
-  root: '/',
-  base: 'file.txt',
-  ext: 'ignored',
+    root: '/',
+    base: 'file.txt',
+    ext: 'ignored',
 });
 // Возвращает: '/file.txt'
 
 // `name` + `ext` будут использованы, если `base` не указан.
 path.format({
-  root: '/',
-  name: 'file',
-  ext: '.txt',
+    root: '/',
+    name: 'file',
+    ext: '.txt',
 });
 // Возвращает: '/file.txt'
 
 // Точка будет добавлена, если она не указана в `ext`.
 path.format({
-  root: '/',
-  name: 'file',
-  ext: 'txt',
+    root: '/',
+    name: 'file',
+    ext: 'txt',
 });
 // Возвращает: '/file.txt'
 ```
@@ -229,8 +229,8 @@ path.format({
 
 ```js
 path.format({
-  dir: 'C:pathdir',
-  base: 'file.txt',
+    dir: 'C:pathdir',
+    base: 'file.txt',
 });
 // Возвращает: 'C:\path\dir\file.txt'
 ```
@@ -239,8 +239,8 @@ path.format({
 
 ## `path.isAbsolute(path)`
 
-- `путь` {строка}
-- Возвращает: {boolean}
+-   `путь` {строка}
+-   Возвращает: {boolean}
 
 Метод `path.isAbsolute()` определяет, является ли `path` абсолютным путем.
 
@@ -273,8 +273,8 @@ path.isAbsolute('.'); // false
 
 ## `path.join([...paths])`
 
-- `...paths` {строка} Последовательность сегментов пути
-- Возвращает: {строка}
+-   `...paths` {строка} Последовательность сегментов пути
+-   Возвращает: {строка}
 
 Метод `path.join()` объединяет все заданные сегменты `пути` вместе, используя в качестве разделителя специфический для платформы разделитель, а затем нормализует полученный путь.
 
@@ -294,8 +294,8 @@ path.join('foo', {}, 'bar');
 
 ## `path.normalize(path)`
 
-- `путь` {строка}
-- Возвращает: {строка}
+-   `путь` {строка}
+-   Возвращает: {строка}
 
 Метод `path.normalize()` нормализует заданный `путь`, разрешая сегменты `...` и `...`.
 
@@ -330,18 +330,18 @@ path.win32.normalize('C:////temp\\////foo/bar');
 
 ## `path.parse(path)`
 
-- `путь` {строка}
-- Возвращает: {Объект}
+-   `путь` {строка}
+-   Возвращает: {Объект}
 
 Метод `path.parse()` возвращает объект, свойства которого представляют значимые элементы `пути`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
 Возвращаемый объект будет иметь следующие свойства:
 
-- `dir` {строка}
-- `root` {строка}
-- `база` {строка}
-- `name` {string}
-- `ext` {string}
+-   `dir` {строка}
+-   `root` {строка}
+-   `база` {строка}
+-   `name` {string}
+-   `ext` {string}
 
 Например, на POSIX:
 
@@ -393,7 +393,7 @@ path.parse('C:\\path\\dir\\file.txt');
 
 ## `path.posix`
 
-- {Object}
+-   {Object}
 
 Свойство `path.posix` предоставляет доступ к POSIX-специфическим реализациям методов `path`.
 
@@ -403,9 +403,9 @@ API доступен через `require('node:path').posix` или `require('no
 
 ## `path.relative(from, to)`
 
-- `from` {string}
-- `to` {string}
-- Возвращает: {string}
+-   `from` {string}
+-   `to` {string}
+-   Возвращает: {string}
 
 Метод `path.relative()` возвращает относительный путь от `from` к `to` на основе текущего рабочего каталога. Если `from` и `to` разрешаются в один и тот же путь (после вызова `path.resolve()` для каждого), возвращается строка нулевой длины.
 
@@ -415,8 +415,8 @@ API доступен через `require('node:path').posix` или `require('no
 
 ```js
 path.relative(
-  '/data/orandea/test/aaa',
-  '/data/orandea/impl/bbb'
+    '/data/orandea/test/aaa',
+    '/data/orandea/impl/bbb'
 );
 // Возвращает: '../../impl/bbb'
 ```
@@ -434,8 +434,8 @@ path.relative('C:orandea\testaaa', 'C:orandeaimpl\bb');
 
 ## `path.resolve([...paths])`
 
-- `...paths` {строка} Последовательность путей или сегментов путей
-- Возвращает: {строка}
+-   `...paths` {строка} Последовательность путей или сегментов путей
+-   Возвращает: {строка}
 
 Метод `path.resolve()` преобразует последовательность путей или сегментов путей в абсолютный путь.
 
@@ -457,9 +457,9 @@ path.resolve('/foo/bar', '/tmp/file/');
 // Возвращает: '/tmp/file'
 
 path.resolve(
-  'wwwroot',
-  'static_files/png/',
-  '../gif/image.gif'
+    'wwwroot',
+    'static_files/png/',
+    '../gif/image.gif'
 );
 // Если текущий рабочий каталог - /home/myself/node,
 // это возвращает '/home/myself/node/wwwroot/static_files/gif/image.gif'
@@ -471,12 +471,12 @@ path.resolve(
 
 ## `path.sep`
 
-- {string}
+-   {string}
 
 Предоставляет специфический для платформы разделитель сегментов пути:
 
-- `\` в Windows
-- `/` на POSIX
+-   `\` в Windows
+-   `/` на POSIX
 
 Например, на POSIX:
 
@@ -498,8 +498,8 @@ path.resolve(
 
 ## `path.toNamespacedPath(path)`
 
-- `путь` {строка}
-- Возвращает: {string}
+-   `путь` {строка}
+-   Возвращает: {string}
 
 Только в системах Windows, возвращает эквивалентный [namespace-prefixed path](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#namespaces) для заданного `path`. Если `path` не является строкой, `path` будет возвращен без изменений.
 
@@ -509,7 +509,7 @@ path.resolve(
 
 ## `path.win32`
 
-- {Object}
+-   {Object}
 
 Свойство `path.win32` предоставляет доступ к Windows-специфическим реализациям методов `path`.
 

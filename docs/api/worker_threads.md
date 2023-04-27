@@ -23,34 +23,34 @@ const worker = require('node:worker_threads');
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  parentPort,
-  workerData,
+    Worker,
+    isMainThread,
+    parentPort,
+    workerData,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  module.exports = function parseJSAsync(script) {
-    return new Promise((resolve, reject) => {
-      const worker = new Worker(__filename, {
-        workerData: script,
-      });
-      worker.on('message', resolve);
-      worker.on('error', reject);
-      worker.on('exit', (code) => {
-        if (code !== 0)
-          reject(
-            new Error(
-              `Worker stopped with exit code ${code}`
-            )
-          );
-      });
-    });
-  };
+    module.exports = function parseJSAsync(script) {
+        return new Promise((resolve, reject) => {
+            const worker = new Worker(__filename, {
+                workerData: script,
+            });
+            worker.on('message', resolve);
+            worker.on('error', reject);
+            worker.on('exit', (code) => {
+                if (code !== 0)
+                    reject(
+                        new Error(
+                            `Worker stopped with exit code ${code}`
+                        )
+                    );
+            });
+        });
+    };
 } else {
-  const { parse } = require('some-js-parsing-library');
-  const script = workerData;
-  parentPort.postMessage(parse(script));
+    const { parse } = require('some-js-parsing-library');
+    const script = workerData;
+    parentPort.postMessage(parse(script));
 }
 ```
 
@@ -64,24 +64,24 @@ if (isMainThread) {
 
 ## `worker.getEnvironmentData(key)`
 
-- `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
-- Возвращает: {any}
+-   `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
+-   Возвращает: {any}
 
 Внутри рабочего потока `worker.getEnvironmentData()` возвращает клон данных, переданных в порождающий поток `worker.setEnvironmentData()`. Каждый новый `Worker` получает свою собственную копию данных окружения автоматически.
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  setEnvironmentData,
-  getEnvironmentData,
+    Worker,
+    isMainThread,
+    setEnvironmentData,
+    getEnvironmentData,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  setEnvironmentData('Hello', 'World!');
-  const worker = new Worker(__filename);
+    setEnvironmentData('Hello', 'World!');
+    const worker = new Worker(__filename);
 } else {
-  console.log(getEnvironmentData('Hello')); // Печатает 'World!'.
+    console.log(getEnvironmentData('Hello')); // Печатает 'World!'.
 }
 ```
 
@@ -89,22 +89,22 @@ if (isMainThread) {
 
 ## `worker.isMainThread`
 
-- {boolean}
+-   {boolean}
 
 Является `true`, если этот код не выполняется внутри потока [`Worker`](#class-worker).
 
 ```js
 const {
-  Worker,
-  isMainThread,
+    Worker,
+    isMainThread,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  // Это перезагружает текущий файл внутри экземпляра Worker.
-  new Worker(__filename);
+    // Это перезагружает текущий файл внутри экземпляра Worker.
+    new Worker(__filename);
 } else {
-  console.log('Внутри Worker!');
-  console.log(isMainThread); // Выводит 'false'.
+    console.log('Внутри Worker!');
+    console.log(isMainThread); // Выводит 'false'.
 }
 ```
 
@@ -120,8 +120,8 @@ if (isMainThread) {
 
 ```js
 const {
-  MessageChannel,
-  markAsUntransferable,
+    MessageChannel,
+    markAsUntransferable,
 } = require('node:worker_threads');
 
 const pooledBuffer = new ArrayBuffer(8);
@@ -147,11 +147,11 @@ console.log(typedArray2);
 
 ## `worker.moveMessagePortToContext(port, contextifiedSandbox)`
 
-- `port` {MessagePort} Порт сообщения для передачи.
+-   `port` {MessagePort} Порт сообщения для передачи.
 
-- `contextifiedSandbox` {Объект} Объект [contextified](vm.md#what-does-it-mean-to-contextify-an-object), возвращенный методом `vm.createContext()`.
+-   `contextifiedSandbox` {Объект} Объект [contextified](vm.md#what-does-it-mean-to-contextify-an-object), возвращенный методом `vm.createContext()`.
 
-- Возвращает: {MessagePort}
+-   Возвращает: {MessagePort}
 
 Переносит `порт сообщения` в другой [`vm`](vm.md) Context. Исходный объект `port` становится непригодным для использования, а его место занимает возвращаемый экземпляр `MessagePort`.
 
@@ -163,28 +163,28 @@ console.log(typedArray2);
 
 ## `worker.parentPort`
 
-- {null|MessagePort}
+-   {null|MessagePort}
 
 Если данный поток является [`Worker`](#class-worker), то это [`MessagePort`](#class-messageport), обеспечивающий связь с родительским потоком. Сообщения, отправленные с помощью `parentPort.postMessage()`, доступны в родительском потоке с помощью `worker.on('message')`, а сообщения, отправленные из родительского потока с помощью `worker.postMessage()`, доступны в этом потоке с помощью `parentPort.on('message')`.
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  parentPort,
+    Worker,
+    isMainThread,
+    parentPort,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  worker.once('message', (message) => {
-    console.log(message); // Печатает 'Hello, world!'.
-  });
-  worker.postMessage('Hello, world!');
+    const worker = new Worker(__filename);
+    worker.once('message', (message) => {
+        console.log(message); // Печатает 'Hello, world!'.
+    });
+    worker.postMessage('Hello, world!');
 } else {
-  // Когда получено сообщение от родительского потока, отправьте его обратно:
-  parentPort.once('message', (message) => {
-    parentPort.postMessage(message);
-  });
+    // Когда получено сообщение от родительского потока, отправьте его обратно:
+    parentPort.once('message', (message) => {
+        parentPort.postMessage(message);
+    });
 }
 ```
 
@@ -192,16 +192,16 @@ if (isMainThread) {
 
 ## `worker.receiveMessageOnPort(port)`
 
-- `port` {MessagePort|BroadcastChannel}
+-   `port` {MessagePort|BroadcastChannel}
 
-- Возвращает: {Object|undefined}
+-   Возвращает: {Object|undefined}
 
 Получение одного сообщения от заданного `MessagePort`. Если сообщение недоступно, возвращается `undefined`, иначе - объект с единственным свойством `message`, содержащим полезную нагрузку сообщения, соответствующую самому старому сообщению в очереди `MessagePort`.
 
 ```js
 const {
-  MessageChannel,
-  receiveMessageOnPort,
+    MessageChannel,
+    receiveMessageOnPort,
 } = require('node:worker_threads');
 const { port1, port2 } = new MessageChannel();
 port1.postMessage({ hello: 'world' });
@@ -218,11 +218,11 @@ console.log(receiveMessageOnPort(port2));
 
 ## `worker.resourceLimits`
 
-- {Object}
-  - `maxYoungGenerationSizeMb` {number}
-  - `maxOldGenerationSizeMb` {number}
-  - `codeRangeSizeMb` {число}
-  - `stackSizeMb` {number}
+-   {Object}
+    -   `maxYoungGenerationSizeMb` {number}
+    -   `maxOldGenerationSizeMb` {number}
+    -   `codeRangeSizeMb` {число}
+    -   `stackSizeMb` {number}
 
 Предоставляет набор ограничений на ресурсы JS-движка внутри этого потока Worker. Если параметр `resourceLimits` был передан конструктору [`Worker`](#class-worker), этот параметр соответствует его значениям.
 
@@ -232,20 +232,20 @@ console.log(receiveMessageOnPort(port2));
 
 ## `worker.SHARE_ENV`
 
-- {символ}
+-   {символ}
 
 Специальное значение, которое может быть передано в качестве опции `env` конструктора [`Worker`](#class-worker), чтобы указать, что текущий поток и поток Worker должны иметь общий доступ на чтение и запись к одному и тому же набору переменных окружения.
 
 ```js
 const {
-  Worker,
-  SHARE_ENV,
+    Worker,
+    SHARE_ENV,
 } = require('node:worker_threads');
 new Worker('process.env.SET_IN_WORKER = "foo"', {
-  eval: true,
-  env: SHARE_ENV,
+    eval: true,
+    env: SHARE_ENV,
 }).on('exit', () => {
-  console.log(process.env.SET_IN_WORKER); // Печатает 'foo'.
+    console.log(process.env.SET_IN_WORKER); // Печатает 'foo'.
 });
 ```
 
@@ -253,8 +253,8 @@ new Worker('process.env.SET_IN_WORKER = "foo"', {
 
 ## `worker.setEnvironmentData(key[, value])`
 
-- `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
-- `value` {любой} Любое произвольное, клонируемое значение JavaScript, которое будет клонироваться и автоматически передаваться всем новым экземплярам `Worker`. Если `value` передано как `undefined`, любое ранее установленное значение для `key` будет удалено.
+-   `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
+-   `value` {любой} Любое произвольное, клонируемое значение JavaScript, которое будет клонироваться и автоматически передаваться всем новым экземплярам `Worker`. Если `value` передано как `undefined`, любое ранее установленное значение для `key` будет удалено.
 
 API `worker.setEnvironmentData()` устанавливает содержимое `worker.getEnvironmentData()` в текущем потоке и во всех новых экземплярах `Worker`, порожденных из текущего контекста.
 
@@ -262,7 +262,7 @@ API `worker.setEnvironmentData()` устанавливает содержимо�
 
 ## `worker.threadId`
 
-- {integer}
+-   {integer}
 
 Целочисленный идентификатор текущего потока. На соответствующем объекте worker (если он есть) он доступен как [`worker.threadId`](#workerthreadid_1). Это значение уникально для каждого экземпляра [`Worker`](#class-worker) внутри одного процесса.
 
@@ -276,17 +276,17 @@ API `worker.setEnvironmentData()` устанавливает содержимо�
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  workerData,
+    Worker,
+    isMainThread,
+    workerData,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename, {
-    workerData: 'Hello, world!',
-  });
+    const worker = new Worker(__filename, {
+        workerData: 'Hello, world!',
+    });
 } else {
-  console.log(workerData); // Печатает 'Hello, world!'.
+    console.log(workerData); // Печатает 'Hello, world!'.
 }
 ```
 
@@ -300,23 +300,23 @@ if (isMainThread) {
 'use strict';
 
 const {
-  isMainThread,
-  BroadcastChannel,
-  Worker,
+    isMainThread,
+    BroadcastChannel,
+    Worker,
 } = require('node:worker_threads');
 
 const bc = new BroadcastChannel('hello');
 
 if (isMainThread) {
-  let c = 0;
-  bc.onmessage = (event) => {
-    console.log(event.data);
-    if (++c === 10) bc.close();
-  };
-  for (let n = 0; n < 10; n++) new Worker(__filename);
+    let c = 0;
+    bc.onmessage = (event) => {
+        console.log(event.data);
+        if (++c === 10) bc.close();
+    };
+    for (let n = 0; n < 10; n++) new Worker(__filename);
 } else {
-  bc.postMessage('hello from every worker');
-  bc.close();
+    bc.postMessage('hello from every worker');
+    bc.close();
 }
 ```
 
@@ -324,7 +324,7 @@ if (isMainThread) {
 
 ### `new BroadcastChannel(name)`
 
-- `name` {любой} Имя канала, к которому нужно подключиться. Допускается любое значение JavaScript, которое может быть преобразовано в строку с помощью `${name}`.
+-   `name` {любой} Имя канала, к которому нужно подключиться. Допускается любое значение JavaScript, которое может быть преобразовано в строку с помощью `${name}`.
 
 <!-- 0013.part.md -->
 
@@ -336,19 +336,19 @@ if (isMainThread) {
 
 ### `broadcastChannel.onmessage`
 
-- Тип: {Функция} Вызывается с одним аргументом `MessageEvent` при получении сообщения.
+-   Тип: {Функция} Вызывается с одним аргументом `MessageEvent` при получении сообщения.
 
 <!-- 0015.part.md -->
 
 ### `broadcastChannel.onmessageerror`
 
-- Тип: {Function} Вызывается при получении сообщения, которое не может быть десериализовано.
+-   Тип: {Function} Вызывается при получении сообщения, которое не может быть десериализовано.
 
 <!-- 0016.part.md -->
 
 ### `broadcastChannel.postMessage(message)`
 
-- `message` {any} Любое клонируемое значение JavaScript.
+-   `message` {any} Любое клонируемое значение JavaScript.
 
 <!-- 0017.part.md -->
 
@@ -373,7 +373,7 @@ const { MessageChannel } = require('node:worker_threads');
 
 const { port1, port2 } = new MessageChannel();
 port1.on('message', (message) =>
-  console.log('received', message)
+    console.log('received', message)
 );
 port2.postMessage({ foo: 'bar' });
 // Выводит: получено { foo: 'bar' } от слушателя `port1.on('message')`.
@@ -383,7 +383,7 @@ port2.postMessage({ foo: 'bar' });
 
 ## Класс: `MessagePort`
 
-- Расширяет: {EventTarget}
+-   Расширяет: {EventTarget}
 
 Экземпляры класса `worker.MessagePort` представляют собой один конец асинхронного двустороннего канала связи. Он может использоваться для передачи структурированных данных, областей памяти и других `MessagePort` между различными [`Worker`](#class-worker)s.
 
@@ -413,7 +413,7 @@ port1.close();
 
 ### Событие: `message`
 
-- `значение` {любое} Передаваемое значение
+-   `значение` {любое} Передаваемое значение
 
 Событие `'message'` испускается для любого входящего сообщения, содержащего клонированный вход [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
@@ -423,7 +423,7 @@ port1.close();
 
 ### Событие: `messageerror`
 
-- `error` {Error} Объект ошибки
+-   `error` {Error} Объект ошибки
 
 Событие `'messageerror'` возникает при неудачной десериализации сообщения.
 
@@ -441,26 +441,26 @@ port1.close();
 
 ### `port.postMessage(value[, transferList])`
 
-- `значение` {любой}
-- `transferList` {Object\[\]}
+-   `значение` {любой}
+-   `transferList` {Object\[\]}
 
 Отправляет значение JavaScript на принимающую сторону этого канала. Передача `value` осуществляется способом, совместимым с [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 
 В частности, существенными отличиями от `JSON` являются:
 
-- `значение` может содержать круговые ссылки.
-- `значение` может содержать экземпляры встроенных типов JS, таких как `RegExp`, `BigInt`, `Map`, `Set` и т.д.
-- `значение` может содержать типизированные массивы, как с использованием `ArrayBuffer`, так и `SharedArrayBuffer`.
-- `значение` может содержать экземпляры [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
-- `value` не может содержать нативные (поддерживаемые C++) объекты, кроме:
-  - {CryptoKey}s,
-  - {FileHandle}s,
-  - {Histogram}s,
-  - {KeyObject}s,
-  - {MessagePort}s,
-  - {net.BlockList}s,
-  - {net.SocketAddress}es,
-  - {X509Certificate}s.
+-   `значение` может содержать круговые ссылки.
+-   `значение` может содержать экземпляры встроенных типов JS, таких как `RegExp`, `BigInt`, `Map`, `Set` и т.д.
+-   `значение` может содержать типизированные массивы, как с использованием `ArrayBuffer`, так и `SharedArrayBuffer`.
+-   `значение` может содержать экземпляры [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
+-   `value` не может содержать нативные (поддерживаемые C++) объекты, кроме:
+    -   {CryptoKey}s,
+    -   {FileHandle}s,
+    -   {Histogram}s,
+    -   {KeyObject}s,
+    -   {MessagePort}s,
+    -   {net.BlockList}s,
+    -   {net.SocketAddress}es,
+    -   {X509Certificate}s.
 
 <!-- конец списка -->
 
@@ -497,7 +497,7 @@ port2.postMessage(uint8Array, [uint8Array.buffer]);
 // The memory for the `sharedUint8Array` is accessible from both the
 // original and the copy received by `.on('message')`:
 const sharedUint8Array = new Uint8Array(
-  new SharedArrayBuffer(4)
+    new SharedArrayBuffer(4)
 );
 port2.postMessage(sharedUint8Array);
 
@@ -506,7 +506,7 @@ port2.postMessage(sharedUint8Array);
 // multiple `Worker` threads that are children of the same parent thread.
 const otherChannel = new MessageChannel();
 port2.postMessage({ port: otherChannel.port1 }, [
-  otherChannel.port1,
+    otherChannel.port1,
 ]);
 ```
 
@@ -551,15 +551,15 @@ console.log(u2.length); // печатает 0
 const b = Symbol('b');
 
 class Foo {
-  #a = 1;
-  constructor() {
-    this[b] = 2;
-    this.c = 3;
-  }
+    #a = 1;
+    constructor() {
+        this[b] = 2;
+        this.c = 3;
+    }
 
-  get d() {
-    return 4;
-  }
+    get d() {
+        return 4;
+    }
 }
 
 const { port1, port2 } = new MessageChannel();
@@ -591,7 +591,7 @@ port2.postMessage(new URL('https://example.org'));
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- Возвращает: {boolean}
+-   Возвращает: {boolean}
 
 Если true, то объект `MessagePort` будет поддерживать активным цикл событий Node.js.
 
@@ -623,24 +623,24 @@ port2.postMessage(new URL('https://example.org'));
 
 ## Класс: `Worker`
 
-- Расширяет: {EventEmitter}
+-   Расширяет: {EventEmitter}
 
 Класс `Worker` представляет собой независимый поток выполнения JavaScript. Большинство API Node.js доступны внутри него.
 
 Заметными отличиями внутри среды Worker являются:
 
-- Потоки [`process.stdin`](process.md#processstdin), [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) могут быть перенаправлены родительским потоком.
-- Свойство [`require('node:worker_threads').isMainThread`](#workerismainthread) установлено в `false`.
-- Порт сообщения [`require('node:worker_threads').parentPort`](#workerparentport) доступен.
-- [`process.exit()`](process.md#processexitcode) не останавливает всю программу, только отдельный поток, а [`process.abort()`](process.md#processabort) недоступен.
-- [`process.chdir()`](process.md#processchdirdirectory) и методы `process`, задающие идентификаторы групп или пользователей, недоступны.
-- [`process.env`](process.md#processenv) - это копия переменных окружения родительского потока, если не указано иное. Изменения в одной копии не видны в других потоках и не видны встроенным дополнениям (если только [`worker.SHARE_ENV`](#workershare_env) не передан в качестве опции `env` конструктору [`Worker`](#class-worker)).
-- [`process.title`](process.md#processtitle) не может быть изменен.
-- Сигналы не передаются через [`process.on('...')`](process.md#signal-events).
-- Выполнение может остановиться в любой момент в результате вызова [`worker.terminate()`](#workerterminate).
-- IPC-каналы от родительских процессов недоступны.
-- Модуль [`trace_events`](tracing.md) не поддерживается.
-- Нативные дополнения могут быть загружены из нескольких потоков только при выполнении [определенных условий](addons.md#worker-support).
+-   Потоки [`process.stdin`](process.md#processstdin), [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) могут быть перенаправлены родительским потоком.
+-   Свойство [`require('node:worker_threads').isMainThread`](#workerismainthread) установлено в `false`.
+-   Порт сообщения [`require('node:worker_threads').parentPort`](#workerparentport) доступен.
+-   [`process.exit()`](process.md#processexitcode) не останавливает всю программу, только отдельный поток, а [`process.abort()`](process.md#processabort) недоступен.
+-   [`process.chdir()`](process.md#processchdirdirectory) и методы `process`, задающие идентификаторы групп или пользователей, недоступны.
+-   [`process.env`](process.md#processenv) - это копия переменных окружения родительского потока, если не указано иное. Изменения в одной копии не видны в других потоках и не видны встроенным дополнениям (если только [`worker.SHARE_ENV`](#workershare_env) не передан в качестве опции `env` конструктору [`Worker`](#class-worker)).
+-   [`process.title`](process.md#processtitle) не может быть изменен.
+-   Сигналы не передаются через [`process.on('...')`](process.md#signal-events).
+-   Выполнение может остановиться в любой момент в результате вызова [`worker.terminate()`](#workerterminate).
+-   IPC-каналы от родительских процессов недоступны.
+-   Модуль [`trace_events`](tracing.md) не поддерживается.
+-   Нативные дополнения могут быть загружены из нескольких потоков только при выполнении [определенных условий](addons.md#worker-support).
 
 Создание экземпляров `Worker` внутри других `Worker` возможно.
 
@@ -653,29 +653,30 @@ port2.postMessage(new URL('https://example.org'));
 ```js
 const assert = require('node:assert');
 const {
-  Worker,
-  MessageChannel,
-  MessagePort,
-  isMainThread,
-  parentPort,
+    Worker,
+    MessageChannel,
+    MessagePort,
+    isMainThread,
+    parentPort,
 } = require('node:worker_threads');
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  const subChannel = new MessageChannel();
-  worker.postMessage({ hereIsYourPort: subChannel.port1 }, [
-    subChannel.port1,
-  ]);
-  subChannel.port2.on('message', (value) => {
-    console.log('received:', value);
-  });
-} else {
-  parentPort.once('message', (value) => {
-    assert(value.hereIsYourPort instanceof MessagePort);
-    value.hereIsYourPort.postMessage(
-      'рабочий отправляет это'
+    const worker = new Worker(__filename);
+    const subChannel = new MessageChannel();
+    worker.postMessage(
+        { hereIsYourPort: subChannel.port1 },
+        [subChannel.port1]
     );
-    value.hereIsYourPort.close();
-  });
+    subChannel.port2.on('message', (value) => {
+        console.log('received:', value);
+    });
+} else {
+    parentPort.once('message', (value) => {
+        assert(value.hereIsYourPort instanceof MessagePort);
+        value.hereIsYourPort.postMessage(
+            'рабочий отправляет это'
+        );
+        value.hereIsYourPort.close();
+    });
 }
 ```
 
@@ -683,23 +684,23 @@ if (isMainThread) {
 
 ### `new Worker(filename[, options])`
 
-- `filename` {string|URL} Путь к основному скрипту или модулю Рабочего. Должен быть либо абсолютным путем, либо относительным путем (т.е. относительно текущего рабочего каталога), начинающимся с `./` или `../`, либо объектом WHATWG `URL`, использующим протокол `file:` или `data:`. При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) данные интерпретируются на основе MIME-типа с помощью [ECMAScript module loader](esm.md#data-imports). Если `options.eval` имеет значение `true`, то это строка, содержащая код JavaScript, а не путь.
-- `options` {Object}
-  - `argv` {любой\[\]} Список аргументов, которые будут строфицированы и добавлены в `process.argv` в рабочем. Это в основном похоже на `workerData`, но значения доступны в глобальном `process.argv`, как если бы они были переданы как опции CLI скрипту.
-  - `env` {Object} Если установлено, определяет начальное значение `process.env` внутри потока Worker. В качестве специального значения можно использовать [`worker.SHARE_ENV`](#workershare_env), чтобы указать, что родительский и дочерний потоки должны совместно использовать свои переменные окружения; в этом случае изменения объекта `process.env` одного потока влияют и на другой поток. **По умолчанию:** `process.env`.
-  - `eval` {boolean} Если `true` и первый аргумент является `строкой`, интерпретируйте первый аргумент конструктора как сценарий, который будет выполнен, как только рабочий будет запущен.
-  - `execArgv` {string\[\]} Список опций CLI узла, передаваемых рабочему. Опции V8 (такие как `--max-old-space-size`) и опции, влияющие на процесс (такие как `--title`), не поддерживаются. Если опция задана, она передается как [`process.execArgv`](process.md#processexecargv) внутри рабочего. По умолчанию опции наследуются от родительского потока.
-  - `stdin` {boolean} Если параметр имеет значение `true`, то `worker.stdin` предоставляет записываемый поток, содержимое которого отображается как `process.stdin` внутри рабочего. По умолчанию данные не предоставляются.
-  - `stdout` {boolean} Если установлено значение `true`, то `worker.stdout` не будет автоматически передаваться в `process.stdout` родителя.
-  - `stderr` {boolean} Если установлено значение `true`, то `worker.stderr` не будет автоматически передаваться в `process.stderr` родителя.
-  - `workerData` {any} Любое значение JavaScript, которое клонируется и становится доступным как [`require('node:worker_threads').workerData`](#workerworkerdata). Клонирование происходит, как описано в [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), и если объект не может быть клонирован (например, потому что он содержит `функции`), возникает ошибка.
-  - `trackUnmanagedFds` {boolean} Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
+-   `filename` {string|URL} Путь к основному скрипту или модулю Рабочего. Должен быть либо абсолютным путем, либо относительным путем (т.е. относительно текущего рабочего каталога), начинающимся с `./` или `../`, либо объектом WHATWG `URL`, использующим протокол `file:` или `data:`. При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) данные интерпретируются на основе MIME-типа с помощью [ECMAScript module loader](esm.md#data-imports). Если `options.eval` имеет значение `true`, то это строка, содержащая код JavaScript, а не путь.
+-   `options` {Object}
+    -   `argv` {любой\[\]} Список аргументов, которые будут строфицированы и добавлены в `process.argv` в рабочем. Это в основном похоже на `workerData`, но значения доступны в глобальном `process.argv`, как если бы они были переданы как опции CLI скрипту.
+    -   `env` {Object} Если установлено, определяет начальное значение `process.env` внутри потока Worker. В качестве специального значения можно использовать [`worker.SHARE_ENV`](#workershare_env), чтобы указать, что родительский и дочерний потоки должны совместно использовать свои переменные окружения; в этом случае изменения объекта `process.env` одного потока влияют и на другой поток. **По умолчанию:** `process.env`.
+    -   `eval` {boolean} Если `true` и первый аргумент является `строкой`, интерпретируйте первый аргумент конструктора как сценарий, который будет выполнен, как только рабочий будет запущен.
+    -   `execArgv` {string\[\]} Список опций CLI узла, передаваемых рабочему. Опции V8 (такие как `--max-old-space-size`) и опции, влияющие на процесс (такие как `--title`), не поддерживаются. Если опция задана, она передается как [`process.execArgv`](process.md#processexecargv) внутри рабочего. По умолчанию опции наследуются от родительского потока.
+    -   `stdin` {boolean} Если параметр имеет значение `true`, то `worker.stdin` предоставляет записываемый поток, содержимое которого отображается как `process.stdin` внутри рабочего. По умолчанию данные не предоставляются.
+    -   `stdout` {boolean} Если установлено значение `true`, то `worker.stdout` не будет автоматически передаваться в `process.stdout` родителя.
+    -   `stderr` {boolean} Если установлено значение `true`, то `worker.stderr` не будет автоматически передаваться в `process.stderr` родителя.
+    -   `workerData` {any} Любое значение JavaScript, которое клонируется и становится доступным как [`require('node:worker_threads').workerData`](#workerworkerdata). Клонирование происходит, как описано в [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), и если объект не может быть клонирован (например, потому что он содержит `функции`), возникает ошибка.
+    -   `trackUnmanagedFds` {boolean} Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
 
 <!-- 0034.part.md -->
 
 ### Событие: `error`
 
-- `err` {Ошибка}
+-   `err` {Ошибка}
 
 Событие `'error'` происходит, если рабочий поток бросает не пойманное исключение. В этом случае рабочий поток завершается.
 
@@ -707,7 +708,7 @@ if (isMainThread) {
 
 ### Событие: `exit`
 
-- `exitCode` {целое число}
+-   `exitCode` {целое число}
 
 Событие `'exit'` испускается, когда рабочий остановился. Если рабочий завершился вызовом [`process.exit()`](process.md#processexitcode), то параметром `exitCode` будет переданный код завершения. Если рабочий был завершен, параметр `exitCode` равен `1`.
 
@@ -717,7 +718,7 @@ if (isMainThread) {
 
 ### Событие: `message`
 
-- `значение` {любое} Переданное значение
+-   `значение` {любое} Переданное значение
 
 Событие `'message'` происходит, когда рабочий поток вызвал [`require('node:worker_threads').parentPort.postMessage()`](#workerpostmessagevalue-transferlist). Подробнее см. событие [`port.on('message')`](#event-message).
 
@@ -727,7 +728,7 @@ if (isMainThread) {
 
 ### Событие: `messageerror`
 
-- `error` {Error} Объект ошибки
+-   `error` {Error} Объект ошибки
 
 Событие `'messageerror'` возникает, когда десериализация сообщения не удалась.
 
@@ -741,10 +742,10 @@ if (isMainThread) {
 
 ### `worker.getHeapSnapshot([options])`
 
-- `options` {Object}
-  - `exposeInternals` {boolean} Если true, раскрывать внутренние компоненты в снимке кучи. **По умолчанию:** `false`.
-  - `exposeNumericValues` {boolean} Если true, раскрывать числовые значения в искусственных полях. **По умолчанию:** `false`.
-- Возвращает: {Promise} Обещание для читаемого потока, содержащего снимок кучи V8.
+-   `options` {Object}
+    -   `exposeInternals` {boolean} Если true, раскрывать внутренние компоненты в снимке кучи. **По умолчанию:** `false`.
+    -   `exposeNumericValues` {boolean} Если true, раскрывать числовые значения в искусственных полях. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Обещание для читаемого потока, содержащего снимок кучи V8.
 
 Возвращает читаемый поток для V8-снимка текущего состояния Worker. Подробнее см. в [`v8.getHeapSnapshot()`](v8.md#v8getheapsnapshotoptions).
 
@@ -760,12 +761,12 @@ if (isMainThread) {
 
 #### `performance.eventLoopUtilization([utilization1[, utilization2]])`.
 
-- `utilization1` {Объект} Результат предыдущего вызова `eventLoopUtilization()`.
-- `utilization2` {Object} Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
-- Возвращает {Object}
-  - `idle` {number}
-  - `active` {number}
-  - `использование` {число}
+-   `utilization1` {Объект} Результат предыдущего вызова `eventLoopUtilization()`.
+-   `utilization2` {Object} Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
+-   Возвращает {Object}
+    -   `idle` {number}
+    -   `active` {number}
+    -   `использование` {число}
 
 Тот же вызов, что и [`perf_hooks` `eventLoopUtilization()`](perf_hooks.md#performanceeventlooputilizationutilization1-utilization2), за исключением того, что возвращаются значения рабочего экземпляра.
 
@@ -775,26 +776,28 @@ if (isMainThread) {
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  parentPort,
+    Worker,
+    isMainThread,
+    parentPort,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  setInterval(() => {
-    worker.postMessage('hi');
-    console.log(worker.performance.eventLoopUtilization());
-  }, 100).unref();
-  return;
+    const worker = new Worker(__filename);
+    setInterval(() => {
+        worker.postMessage('hi');
+        console.log(
+            worker.performance.eventLoopUtilization()
+        );
+    }, 100).unref();
+    return;
 }
 
 parentPort.on('message', () => console.log('msg')).unref();
 (function r(n) {
-  if (--n < 0) return;
-  const t = Date.now();
-  while (Date.now() - t < 300);
-  setImmediate(r, n);
+    if (--n < 0) return;
+    const t = Date.now();
+    while (Date.now() - t < 300);
+    setImmediate(r, n);
 })(10);
 ```
 
@@ -804,8 +807,8 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.postMessage(value[, transferList])`
 
-- `значение` {любой}
-- `transferList` {Object\[\]}
+-   `значение` {любой}
+-   `transferList` {Object\[\]}
 
 Отправка сообщения на рабочий, полученного через [`require('node:worker_threads').parentPort.on('message')`](#event-message). Подробнее см. в [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
@@ -819,11 +822,11 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.resourceLimits`
 
-- {Object}
-  - `maxYoungGenerationSizeMb` {number}
-  - `maxOldGenerationSizeMb` {number}
-  - `codeRangeSizeMb` {число}
-  - `stackSizeMb` {number}
+-   {Object}
+    -   `maxYoungGenerationSizeMb` {number}
+    -   `maxOldGenerationSizeMb` {number}
+    -   `codeRangeSizeMb` {число}
+    -   `stackSizeMb` {number}
 
 Предоставляет набор ограничений ресурсов JS-движка для этого потока Worker. Если параметр `resourceLimits` был передан конструктору [`Worker`](#class-worker), то он соответствует его значениям.
 
@@ -833,7 +836,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.stderr`
 
-- {stream.Readable}
+-   {stream.Readable}
 
 Это читаемый поток, который содержит данные, записанные в [`process.stderr`](process.md#processstderr) внутри рабочего потока. Если `stderr: true` не было передано в конструктор [`Worker`](#class-worker), то данные передаются в поток [`process.stderr`](process.md#processstderr) родительского потока.
 
@@ -841,7 +844,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.stdin`
 
-- {null|stream.Writable}
+-   {null|stream.Writable}
 
 Если конструктору [`Worker`](#class-worker) было передано значение `stdin: true`, то это поток с возможностью записи. Данные, записанные в этот поток, будут доступны в рабочем потоке как [`process.stdin`](process.md#processstdin).
 
@@ -849,7 +852,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.stdout`
 
-- {stream.Readable}
+-   {stream.Readable}
 
 Это читаемый поток, который содержит данные, записанные в [`process.stdout`](process.md#processstdout) внутри рабочего потока. Если в конструктор [`Worker`](#class-worker) не было передано `stdout: true`, то данные передаются в поток [`process.stdout`](process.md#processstdout) родительского потока.
 
@@ -857,7 +860,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.terminate()`
 
-- Возвращает: { Обещание}
+-   Возвращает: { Обещание}
 
 Остановить выполнение JavaScript в рабочем потоке как можно скорее. Возвращает обещание для кода выхода, который выполняется, когда происходит событие [`'exit'`'](#event-exit).
 
@@ -865,7 +868,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.threadId`
 
-- {integer}
+-   {integer}
 
 Целочисленный идентификатор для ссылающегося потока. Внутри рабочего потока он доступен как [`require('node:worker_threads').threadId`](#workerthreadid). Это значение уникально для каждого экземпляра `Worker` внутри одного процесса.
 
@@ -889,13 +892,13 @@ parentPort.on('message', () => console.log('msg')).unref();
 import { Worker, isMainThread } from 'worker_threads';
 
 if (isMainThread) {
-  new Worker(new URL(import.meta.url));
-  for (let n = 0; n < 1e10; n++) {
-    // Looping to simulate work.
-  }
+    new Worker(new URL(import.meta.url));
+    for (let n = 0; n < 1e10; n++) {
+        // Looping to simulate work.
+    }
 } else {
-  // This output will be blocked by the for loop in the main thread.
-  console.log('foo');
+    // This output will be blocked by the for loop in the main thread.
+    console.log('foo');
 }
 ```
 
@@ -903,18 +906,18 @@ if (isMainThread) {
 'use strict';
 
 const {
-  Worker,
-  isMainThread,
+    Worker,
+    isMainThread,
 } = require('node:worker_threads');
 
 if (isMainThread) {
-  new Worker(__filename);
-  for (let n = 0; n < 1e10; n++) {
-    // Looping to simulate work.
-  }
+    new Worker(__filename);
+    for (let n = 0; n < 1e10; n++) {
+        // Looping to simulate work.
+    }
 } else {
-  // This output will be blocked by the for loop in the main thread.
-  console.log('foo');
+    // This output will be blocked by the for loop in the main thread.
+    console.log('foo');
 }
 ```
 

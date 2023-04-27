@@ -11,17 +11,19 @@ localhost:3000/about/user?id=3&name=Tome
 Название параметра должно включать символы из диапазона `[A-Za-z0-9_]`. В определении маршрута параметры предваряются знаком двоеточия:
 
 ```js
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
 app.get('/products/:productId', function (
-  request,
-  response
+    request,
+    response
 ) {
-  response.send('productId: ' + request.params['productId'])
-})
+    response.send(
+        'productId: ' + request.params['productId']
+    );
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 В данном случае параметр называется `productId`. Через коллекцию `request.params` можно получить все параметры и, в частности, значение параметра `productId`.
@@ -36,13 +38,15 @@ app.listen(3000)
 
 ```js
 app.get(
-  '/categories/:categoryId/products/:productId',
-  function (request, response) {
-    let catId = request.params['categoryId']
-    let prodId = request.params['productId']
-    response.send(`Категория: ${catId}  Товар: ${prodId}`)
-  }
-)
+    '/categories/:categoryId/products/:productId',
+    function (request, response) {
+        let catId = request.params['categoryId'];
+        let prodId = request.params['productId'];
+        response.send(
+            `Категория: ${catId}  Товар: ${prodId}`
+        );
+    }
+);
 ```
 
 ![4.16.png](4.16.png)
@@ -51,13 +55,15 @@ app.get(
 
 ```js
 app.get('/book/:pageName.:pageExt', function (
-  request,
-  response
+    request,
+    response
 ) {
-  let pageName = request.params['pageName']
-  let pageExt = request.params['pageExt']
-  response.send(`Запрошенный файл: ${pageName}.${pageExt}`)
-})
+    let pageName = request.params['pageName'];
+    let pageExt = request.params['pageExt'];
+    response.send(
+        `Запрошенный файл: ${pageName}.${pageExt}`
+    );
+});
 ```
 
 ![4.17.png](4.17.png)

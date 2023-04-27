@@ -18,7 +18,11 @@ description: Модуль dns обеспечивает разрешение им
 const dns = require('node:dns');
 
 dns.lookup('example.org', (err, address, family) => {
-  console.log('address: %j family: IPv%s', address, family);
+    console.log(
+        'address: %j family: IPv%s',
+        address,
+        family
+    );
 });
 // address: "93.184.216.34" family: IPv4
 ```
@@ -29,20 +33,22 @@ dns.lookup('example.org', (err, address, family) => {
 const dns = require('node:dns');
 
 dns.resolve4('archive.org', (err, addresses) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log(`addresses: ${JSON.stringify(addresses)}`);
+    console.log(`addresses: ${JSON.stringify(addresses)}`);
 
-  addresses.forEach((a) => {
-    dns.reverse(a, (err, hostnames) => {
-      if (err) {
-        throw err;
-      }
-      console.log(
-        `reverse for ${a}: ${JSON.stringify(hostnames)}`
-      );
+    addresses.forEach((a) => {
+        dns.reverse(a, (err, hostnames) => {
+            if (err) {
+                throw err;
+            }
+            console.log(
+                `reverse for ${a}: ${JSON.stringify(
+                    hostnames
+                )}`
+            );
+        });
     });
-  });
 });
 ```
 
@@ -61,28 +67,28 @@ resolver.setServers(['4.4.4.4']);
 
 // Этот запрос будет использовать сервер по адресу 4.4.4.4, независимо от глобальных настроек.
 resolver.resolve4('example.org', (err, addresses) => {
-  // ...
+    // ...
 });
 ```
 
 Доступны следующие методы из модуля `node:dns`:
 
-- [`resolver.getServers()`](#dnsgetservers)
-- [`resolver.resolve()`](#dnsresolvehostname-rrtype-callback)
-- [`resolver.resolve4()`](#dnsresolve4hostname-options-callback)
-- [`resolver.resolve6()`](#dnsresolve6hostname-options-callback)
-- [`resolver.resolveAny()`](#dnsresolveanyhostname-callback)
-- [`resolver.resolveCaa()`](#dnsresolvecaahostname-callback)
-- [`resolver.resolveCname()`](#dnsresolvecnamehostname-callback)
-- [`resolver.resolveMx()`](#dnsresolvemxhostname-callback)
-- [`resolver.resolveNaptr()`](#dnsresolvenaptrhostname-callback)
-- [`resolver.resolveNs()`](#dnsresolvenshostname-callback)
-- [`resolver.resolvePtr()`](#dnsresolveptrhostname-callback)
-- [`resolver.resolveSoa()`](#dnsresolvesoahostname-callback)
-- [`resolver.resolveSrv()`](#dnsresolvesrvhostname-callback)
-- [`resolver.resolveTxt()`](#dnsresolvetxthostname-callback)
-- [`resolver.reverse()`](#dnsreverseip-callback)
-- [`resolver.setServers()`](#dnssetserversservers)
+-   [`resolver.getServers()`](#dnsgetservers)
+-   [`resolver.resolve()`](#dnsresolvehostname-rrtype-callback)
+-   [`resolver.resolve4()`](#dnsresolve4hostname-options-callback)
+-   [`resolver.resolve6()`](#dnsresolve6hostname-options-callback)
+-   [`resolver.resolveAny()`](#dnsresolveanyhostname-callback)
+-   [`resolver.resolveCaa()`](#dnsresolvecaahostname-callback)
+-   [`resolver.resolveCname()`](#dnsresolvecnamehostname-callback)
+-   [`resolver.resolveMx()`](#dnsresolvemxhostname-callback)
+-   [`resolver.resolveNaptr()`](#dnsresolvenaptrhostname-callback)
+-   [`resolver.resolveNs()`](#dnsresolvenshostname-callback)
+-   [`resolver.resolvePtr()`](#dnsresolveptrhostname-callback)
+-   [`resolver.resolveSoa()`](#dnsresolvesoahostname-callback)
+-   [`resolver.resolveSrv()`](#dnsresolvesrvhostname-callback)
+-   [`resolver.resolveTxt()`](#dnsresolvetxthostname-callback)
+-   [`resolver.reverse()`](#dnsreverseip-callback)
+-   [`resolver.setServers()`](#dnssetserversservers)
 
 <!-- 0001.part.md -->
 
@@ -90,9 +96,9 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 Создайте новый резольвер.
 
-- `options` {Object}
-  - `timeout` {integer} Таймаут запроса в миллисекундах, или `-1` для использования таймаута по умолчанию.
-  - `tries` {integer} Количество попыток, которое преобразователь будет пытаться выполнить, связываясь с каждым сервером имен, прежде чем сдаться. **По умолчанию:** `4`.
+-   `options` {Object}
+    -   `timeout` {integer} Таймаут запроса в миллисекундах, или `-1` для использования таймаута по умолчанию.
+    -   `tries` {integer} Количество попыток, которое преобразователь будет пытаться выполнить, связываясь с каждым сервером имен, прежде чем сдаться. **По умолчанию:** `4`.
 
 <!-- 0002.part.md -->
 
@@ -104,8 +110,8 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ### `resolver.setLocalAddress([ipv4][, ipv6])`
 
-- `ipv4` {string} Строковое представление адреса IPv4. **По умолчанию:** `0.0.0.0.0`.
-- `ipv6` {string} Строковое представление адреса IPv6. **По умолчанию:** `::0`.
+-   `ipv4` {string} Строковое представление адреса IPv4. **По умолчанию:** `0.0.0.0.0`.
+-   `ipv6` {string} Строковое представление адреса IPv6. **По умолчанию:** `::0`.
 
 Экземпляр резолвера будет посылать свои запросы с указанного IP-адреса. Это позволяет программам указывать исходящие интерфейсы при использовании на многохоумных системах.
 
@@ -117,16 +123,16 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ## `dns.getServers()`
 
-- Возвращает: {string\[\]}
+-   Возвращает: {string\[\]}
 
 Возвращает массив строк IP-адресов, отформатированных в соответствии с [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6), которые в настоящее время настроены для разрешения DNS. Строка будет включать раздел порта, если используется пользовательский порт.
 
 ```js
 [
-  '4.4.4.4',
-  '2001:4860:4860::8888',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '2001:4860:4860::8888',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ];
 ```
 
@@ -134,16 +140,16 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ## `dns.lookup(hostname[, options], callback)`
 
-- `hostname` {string}
-- `options` {integer | Object}
-  - `family` {integer|string} Семейство записей. Должно быть `4`, `6` или `0`. По причинам обратной совместимости, `'IPv4'` и `'IPv6'` интерпретируются как `4` и `6` соответственно. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
-  - `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
-  - `all` {boolean} Если `true`, обратный вызов возвращает все разрешенные адреса в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
-  - `verbatim` {boolean} Если `true`, обратный вызов получает адреса IPv4 и IPv6 в том порядке, в котором их вернул DNS-резольвер. При `false` адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** `true` (адреса не переупорядочиваются). Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder).
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `address` {string} Строковое представление адреса IPv4 или IPv6.
-  - `family` {integer} `4` или `6`, обозначающие семейство `адреса`, или `0`, если адрес не является адресом IPv4 или IPv6. `0` является вероятным индикатором ошибки в службе разрешения имен, используемой операционной системой.
+-   `hostname` {string}
+-   `options` {integer | Object}
+    -   `family` {integer|string} Семейство записей. Должно быть `4`, `6` или `0`. По причинам обратной совместимости, `'IPv4'` и `'IPv6'` интерпретируются как `4` и `6` соответственно. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
+    -   `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
+    -   `all` {boolean} Если `true`, обратный вызов возвращает все разрешенные адреса в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
+    -   `verbatim` {boolean} Если `true`, обратный вызов получает адреса IPv4 и IPv6 в том порядке, в котором их вернул DNS-резольвер. При `false` адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** `true` (адреса не переупорядочиваются). Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder).
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `address` {string} Строковое представление адреса IPv4 или IPv6.
+    -   `family` {integer} `4` или `6`, обозначающие семейство `адреса`, или `0`, если адрес не является адресом IPv4 или IPv6. `0` является вероятным индикатором ошибки в службе разрешения имен, используемой операционной системой.
 
 Разрешает имя хоста (например, `'nodejs.org'`) в первую найденную запись A (IPv4) или AAAA (IPv6). Все свойства `option` являются необязательными. Если `options` - целое число, то оно должно быть `4` или `6` - если `options` равно `0` или не указано, то возвращаются оба адреса IPv4 и IPv6, если они найдены.
 
@@ -158,18 +164,22 @@ resolver.resolve4('example.org', (err, addresses) => {
 ```js
 const dns = require('node:dns');
 const options = {
-  family: 6,
-  hints: dns.ADDRCONFIG | dns.V4MAPPED,
+    family: 6,
+    hints: dns.ADDRCONFIG | dns.V4MAPPED,
 };
 dns.lookup('example.com', options, (err, address, family) =>
-  console.log('address: %j family: IPv%s', address, family)
+    console.log(
+        'address: %j family: IPv%s',
+        address,
+        family
+    )
 );
 // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
 
 // When options.all is true, the result will be an Array.
 options.all = true;
 dns.lookup('example.com', options, (err, addresses) =>
-  console.log('addresses: %j', addresses)
+    console.log('addresses: %j', addresses)
 );
 // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
 ```
@@ -182,20 +192,20 @@ dns.lookup('example.com', options, (err, addresses) =>
 
 Следующие флаги могут быть переданы в качестве подсказок в [`dns.lookup()`](#dnslookuphostname-options-callback).
 
-- `dns.ADDRCONFIG`: Ограничивает возвращаемые типы адресов типами непетлевых адресов, настроенных в системе. Например, адреса IPv4 возвращаются только в том случае, если в текущей системе настроен хотя бы один адрес IPv4.
-- `dns.V4MAPPED`: Если было указано семейство IPv6, но IPv6-адреса не были найдены, то возвращаются IPv4-маппированные IPv6-адреса. Не поддерживается в некоторых операционных системах (например, FreeBSD 10.1).
-- `dns.ALL`: Если указано `dns.V4MAPPED`, то возвращаются разрешенные IPv6-адреса, а также IPv4-маппированные IPv6-адреса.
+-   `dns.ADDRCONFIG`: Ограничивает возвращаемые типы адресов типами непетлевых адресов, настроенных в системе. Например, адреса IPv4 возвращаются только в том случае, если в текущей системе настроен хотя бы один адрес IPv4.
+-   `dns.V4MAPPED`: Если было указано семейство IPv6, но IPv6-адреса не были найдены, то возвращаются IPv4-маппированные IPv6-адреса. Не поддерживается в некоторых операционных системах (например, FreeBSD 10.1).
+-   `dns.ALL`: Если указано `dns.V4MAPPED`, то возвращаются разрешенные IPv6-адреса, а также IPv4-маппированные IPv6-адреса.
 
 <!-- 0007.part.md -->
 
 ## `dns.lookupService(address, port, callback)`
 
-- `адрес` {строка}
-- `порт` {число}
-- `callback` {функция}
-  - `err` {ошибка}
-  - `hostname` {строка} например, `example.com`
-  - `сервис` {строка}, например `http`.
+-   `адрес` {строка}
+-   `порт` {число}
+-   `callback` {функция}
+    -   `err` {ошибка}
+    -   `hostname` {строка} например, `example.com`
+    -   `сервис` {строка}, например `http`.
 
 Разрешает заданные `address` и `port` в имя хоста и сервис, используя базовую реализацию операционной системы `getnameinfo`.
 
@@ -206,12 +216,12 @@ dns.lookup('example.com', options, (err, addresses) =>
 ```js
 const dns = require('node:dns');
 dns.lookupService(
-  '127.0.0.1',
-  22,
-  (err, hostname, service) => {
-    console.log(hostname, service);
-    // Опечатка: localhost ssh
-  }
+    '127.0.0.1',
+    22,
+    (err, hostname, service) => {
+        console.log(hostname, service);
+        // Опечатка: localhost ssh
+    }
 );
 ```
 
@@ -221,11 +231,11 @@ dns.lookupService(
 
 ## `dns.resolve(hostname[, rrtype], callback)`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `rrtype` {string} Тип записи ресурса. **По умолчанию:** `'A'`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `records` {string\[\] | Object\[\] | Object}
+-   `hostname` {string} Имя хоста для разрешения.
+-   `rrtype` {string} Тип записи ресурса. **По умолчанию:** `'A'`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `records` {string\[\] | Object\[\] | Object}
 
 Использует протокол DNS для преобразования имени хоста (например, `'nodejs.org'`) в массив записей ресурсов. Функция `callback` имеет аргументы `(err, records)`. В случае успеха `records` будет представлять собой массив записей ресурсов. Тип и структура отдельных результатов зависит от `rrtype`:
 
@@ -250,12 +260,12 @@ dns.lookupService(
 
 ## `dns.resolve4(hostname[, options], callback)`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `options` {Object}
-  - `ttl` {boolean} Извлекает значение времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `addresses` {string\[\] | Object\[\]}
+-   `hostname` {string} Имя хоста для разрешения.
+-   `options` {Object}
+    -   `ttl` {boolean} Извлекает значение времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `addresses` {string\[\] | Object\[\]}
 
 Использует протокол DNS для разрешения адресов IPv4 (записи `A`) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив IPv4-адресов (например, `['74.125.79.104', '74.125.79.105', '74.125.79.106']`).
 
@@ -263,12 +273,12 @@ dns.lookupService(
 
 ## `dns.resolve6(hostname[, options], callback)`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `options` {Object}
-  - `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `addresses` {string\[\] | Object\[\]}
+-   `hostname` {string} Имя хоста для разрешения.
+-   `options` {Object}
+    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `addresses` {string\[\] | Object\[\]}
 
 Использует протокол DNS для разрешения адресов IPv6 (записи `AAAA`) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив IPv6-адресов.
 
@@ -276,10 +286,10 @@ dns.lookupService(
 
 ## `dns.resolveAny(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `ret` {Объект\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `ret` {Объект\[\]}
 
 Использует протокол DNS для разрешения всех записей (также известный как `ANY` или `*` запрос). Аргумент `ret`, передаваемый в функцию `callback`, будет массивом, содержащим различные типы записей. Каждый объект имеет свойство `type`, которое указывает на тип текущей записи. В зависимости от `type` у объекта будут присутствовать дополнительные свойства:
 
@@ -300,28 +310,28 @@ dns.lookupService(
 
 ```js
 [
-  { type: 'A', address: '127.0.0.1', ttl: 299 },
-  { type: 'CNAME', value: 'example.com' },
-  {
-    type: 'MX',
-    exchange: 'alt4.aspmx.l.example.com',
-    priority: 50,
-  },
-  { type: 'NS', value: 'ns1.example.com' },
-  {
-    type: 'TXT',
-    entries: ['v=spf1 include:_spf.example.com ~all'],
-  },
-  {
-    type: 'SOA',
-    nsname: 'ns1.example.com',
-    hostmaster: 'admin.example.com',
-    serial: 156696742,
-    refresh: 900,
-    retry: 900,
-    expire: 1800,
-    minttl: 60,
-  },
+    { type: 'A', address: '127.0.0.1', ttl: 299 },
+    { type: 'CNAME', value: 'example.com' },
+    {
+        type: 'MX',
+        exchange: 'alt4.aspmx.l.example.com',
+        priority: 50,
+    },
+    { type: 'NS', value: 'ns1.example.com' },
+    {
+        type: 'TXT',
+        entries: ['v=spf1 include:_spf.example.com ~all'],
+    },
+    {
+        type: 'SOA',
+        nsname: 'ns1.example.com',
+        hostmaster: 'admin.example.com',
+        serial: 156696742,
+        refresh: 900,
+        retry: 900,
+        expire: 1800,
+        minttl: 60,
+    },
 ];
 ```
 
@@ -331,10 +341,10 @@ dns.lookupService(
 
 ## `dns.resolveCname(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {string\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {string\[\]}
 
 Использует протокол DNS для разрешения записей `CNAME` для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив канонических записей имен, доступных для `имени хоста` (например, `['bar.example.com']`).
 
@@ -342,10 +352,10 @@ dns.lookupService(
 
 ## `dns.resolveCaa(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `records` {Object\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `records` {Object\[\]}
 
 Использует протокол DNS для разрешения записей `CAA` для имени `hostname`. Аргумент `addresses`, передаваемый функции `callback`, будет содержать массив записей авторизации центра сертификации, доступных для имени `hostname` (например, `[{critical: 0, iodef: 'mailto:pki@example.com'}, {critical: 128, issue: 'pki.example.com'}]`).
 
@@ -353,10 +363,10 @@ dns.lookupService(
 
 ## `dns.resolveMx(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {Object\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения записей почтового обмена (`MX` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив объектов, содержащих свойства `приоритет` и `обмен` (например, `[{приоритет: 10, обмен: 'mx.example.com'}, ...]`).
 
@@ -364,19 +374,19 @@ dns.lookupService(
 
 ## `dns.resolveNaptr(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {Object\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения записей на основе регулярных выражений (`NAPTR` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив объектов со следующими свойствами:
 
-- `flags`
-- `service`
-- `regexp`
-- `replacement`
-- `order`
-- `preference`
+-   `flags`
+-   `service`
+-   `regexp`
+-   `replacement`
+-   `order`
+-   `preference`
 
 <!-- end list -->
 
@@ -395,10 +405,10 @@ dns.lookupService(
 
 ## `dns.resolveNs(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {string\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {string\[\]}
 
 Использует протокол DNS для разрешения записей сервера имен (`NS` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив записей сервера имен, доступных для `hostname` (например, `['ns1.example.com', 'ns2.example.com']`).
 
@@ -406,10 +416,10 @@ dns.lookupService(
 
 ## `dns.resolvePtr(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {string\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {string\[\]}
 
 Использует протокол DNS для разрешения записей указателей (`PTR` записей) для имени `hostname`. Аргумент `addresses`, передаваемый функции `callback`, будет представлять собой массив строк, содержащих ответные записи.
 
@@ -417,20 +427,20 @@ dns.lookupService(
 
 ## `dns.resolveSoa(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `address` {Object}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `address` {Object}
 
 Использует протокол DNS для разрешения записи начала полномочий (`SOA` запись) для `имени хоста`. Аргумент `address`, передаваемый в функцию `callback`, будет объектом со следующими свойствами:
 
-- `nsname`
-- `hostmaster`
-- `serial`
-- `refresh`
-- `retry`
-- `expire`
-- `minttl`
+-   `nsname`
+-   `hostmaster`
+-   `serial`
+-   `refresh`
+-   `retry`
+-   `expire`
+-   `minttl`
 
 <!-- end list -->
 
@@ -450,17 +460,17 @@ dns.lookupService(
 
 ## `dns.resolveSrv(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `addresses` {Object\[\]}
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения служебных записей (`SRV` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет представлять собой массив объектов со следующими свойствами:
 
-- `priority`
-- `weight`
-- `port`
-- `name`
+-   `priority`
+-   `weight`
+-   `port`
+-   `name`
 
 <!-- end list -->
 
@@ -477,10 +487,10 @@ dns.lookupService(
 
 ## `dns.resolveTxt(hostname, callback)`
 
-- `hostname` {string}
-- `callback` {Function}
-  - `err` {Error}
-  - `records` \<string\[\]\[\]\>
+-   `hostname` {string}
+-   `callback` {Function}
+    -   `err` {Error}
+    -   `records` \<string\[\]\[\]\>
 
 Использует протокол DNS для разрешения текстовых запросов (`TXT` записей) для `имени хоста`. Аргумент `records`, передаваемый функции `callback`, представляет собой двумерный массив текстовых записей, доступных для `hostname` (например, `[ ['v=spf1 ip4:0.0.0.0 ', '~all' ]`). Каждый подмассив содержит TXT-фрагменты одной записи. В зависимости от случая использования, они могут быть либо объединены вместе, либо рассматриваться отдельно.
 
@@ -488,10 +498,10 @@ dns.lookupService(
 
 ## `dns.reverse(ip, callback)`
 
-- `ip` {строка}
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `hostnames` {string\[\]}
+-   `ip` {строка}
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `hostnames` {string\[\]}
 
 Выполняет обратный DNS запрос, который разрешает IPv4 или IPv6 адрес в массив имен хостов.
 
@@ -501,12 +511,12 @@ dns.lookupService(
 
 ## `dns.setDefaultResultOrder(order)`
 
-- `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
+-   `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
 
 Установите значение по умолчанию `verbatim` в [`dns.lookup()`](#dnslookuphostname-options-callback) и [`dnsPromises.lookup()`](#dnspromiseslookuphostname-options). Значение может быть следующим:
 
-- `ipv4first`: устанавливает по умолчанию `verbatim` `false`.
-- `verbatim`: устанавливает значение по умолчанию `verbatim` `true`.
+-   `ipv4first`: устанавливает по умолчанию `verbatim` `false`.
+-   `verbatim`: устанавливает значение по умолчанию `verbatim` `true`.
 
 По умолчанию `verbatim` и [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) имеют более высокий приоритет, чем [`--dns-result-order`](cli.md#--dns-result-orderorder). При использовании [рабочих потоков](worker_threads.md), [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) из главного потока не влияет на стандартные dns-заказы в рабочих.
 
@@ -514,16 +524,16 @@ dns.lookupService(
 
 ## `dns.setServers(servers)`
 
-- `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
+-   `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
 
 Устанавливает IP-адрес и порт серверов, которые будут использоваться при выполнении разрешения DNS. Аргумент `servers` представляет собой массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6). Если порт является портом DNS по умолчанию IANA (53), его можно опустить.
 
 ```js
 dns.setServers([
-  '4.4.4.4',
-  '[2001:4860:4860::8888]',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '[2001:4860:4860::8888]',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]);
 ```
 
@@ -556,33 +566,35 @@ resolver.setServers(['4.4.4.4']);
 
 // Этот запрос будет использовать сервер по адресу 4.4.4.4, независимо от глобальных настроек.
 resolver.resolve4('example.org').then((addresses) => {
-  // ...
+    // ...
 });
 
 // Альтернативно, тот же код можно написать, используя стиль async-await.
 (async function () {
-  const addresses = await resolver.resolve4('example.org');
+    const addresses = await resolver.resolve4(
+        'example.org'
+    );
 })();
 ```
 
 Доступны следующие методы из API `dnsPromises`:
 
-- [`resolver.getServers()`](#dnspromisesgetservers)
-- [`resolver.resolve()`](#dnspromisesresolvehostname-rrtype)
-- [`resolver.resolve4()`](#dnspromisesresolve4hostname-options)
-- [`resolver.resolve6()`](#dnspromisesresolve6hostname-options)
-- [`resolver.resolveAny()`](#dnspromisesresolveanyhostname)
-- [`resolver.resolveCaa()`](#dnspromisesresolvecaahostname)
-- [`resolver.resolveCname()`](#dnspromisesresolvecnamehostname)
-- [`resolver.resolveMx()`](#dnspromisesresolvemxhostname)
-- [`resolver.resolveNaptr()`](#dnspromisesresolvenaptrhostname)
-- [`resolver.resolveNs()`](#dnspromisesresolvenshostname)
-- [`resolver.resolvePtr()`](#dnspromisesresolveptrhostname)
-- [`resolver.resolveSoa()`](#dnspromisesresolvesoahostname)
-- [`resolver.resolveSrv()`](#dnspromisesresolvesrvhostname)
-- [`resolver.resolveTxt()`](#dnspromisesresolvetxthostname)
-- [`resolver.reverse()`](#dnspromisesreverseip)
-- [`resolver.setServers()`](#dnspromisessetserversservers)
+-   [`resolver.getServers()`](#dnspromisesgetservers)
+-   [`resolver.resolve()`](#dnspromisesresolvehostname-rrtype)
+-   [`resolver.resolve4()`](#dnspromisesresolve4hostname-options)
+-   [`resolver.resolve6()`](#dnspromisesresolve6hostname-options)
+-   [`resolver.resolveAny()`](#dnspromisesresolveanyhostname)
+-   [`resolver.resolveCaa()`](#dnspromisesresolvecaahostname)
+-   [`resolver.resolveCname()`](#dnspromisesresolvecnamehostname)
+-   [`resolver.resolveMx()`](#dnspromisesresolvemxhostname)
+-   [`resolver.resolveNaptr()`](#dnspromisesresolvenaptrhostname)
+-   [`resolver.resolveNs()`](#dnspromisesresolvenshostname)
+-   [`resolver.resolvePtr()`](#dnspromisesresolveptrhostname)
+-   [`resolver.resolveSoa()`](#dnspromisesresolvesoahostname)
+-   [`resolver.resolveSrv()`](#dnspromisesresolvesrvhostname)
+-   [`resolver.resolveTxt()`](#dnspromisesresolvetxthostname)
+-   [`resolver.reverse()`](#dnspromisesreverseip)
+-   [`resolver.setServers()`](#dnspromisessetserversservers)
 
 <!-- 0026.part.md -->
 
@@ -594,16 +606,16 @@ resolver.resolve4('example.org').then((addresses) => {
 
 ### `dnsPromises.getServers()`
 
-- Возвращает: {string\[\]}
+-   Возвращает: {string\[\]}
 
 Возвращает массив строк IP-адресов, отформатированных в соответствии с [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6), которые в настоящее время настроены для разрешения DNS. Строка будет включать раздел порта, если используется пользовательский порт.
 
 ```js
 [
-  '4.4.4.4',
-  '2001:4860:4860::8888',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '2001:4860:4860::8888',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ];
 ```
 
@@ -611,12 +623,12 @@ resolver.resolve4('example.org').then((addresses) => {
 
 ### `dnsPromises.lookup(hostname[, options])`
 
-- `hostname` {string}
-- `options` {integer | Object}
-  - `family` {integer} Семейство записей. Должно быть `4`, `6` или `0`. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
-  - `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
-  - `all` {boolean} Если `true`, то `Promise` разрешается со всеми адресами в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
-  - `verbatim` {boolean} Когда `true`, `Promise` разрешается с адресами IPv4 и IPv6 в том порядке, в котором их вернул преобразователь DNS. Когда `false`, адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** в настоящее время `false` (адреса переупорядочиваются), но ожидается, что в ближайшем будущем это изменится. Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder). В новом коде следует использовать `{ verbatim: true }`.
+-   `hostname` {string}
+-   `options` {integer | Object}
+    -   `family` {integer} Семейство записей. Должно быть `4`, `6` или `0`. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
+    -   `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
+    -   `all` {boolean} Если `true`, то `Promise` разрешается со всеми адресами в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
+    -   `verbatim` {boolean} Когда `true`, `Promise` разрешается с адресами IPv4 и IPv6 в том порядке, в котором их вернул преобразователь DNS. Когда `false`, адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** в настоящее время `false` (адреса переупорядочиваются), но ожидается, что в ближайшем будущем это изменится. Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder). В новом коде следует использовать `{ verbatim: true }`.
 
 Разрешает имя хоста (например, `'nodejs.org'`) в первую найденную запись A (IPv4) или AAAA (IPv6). Все свойства `option` являются необязательными. Если `options` является целым числом, то оно должно быть `4` или `6` - если `options` не указано, то возвращаются оба адреса IPv4 и IPv6, если они найдены.
 
@@ -632,37 +644,37 @@ resolver.resolve4('example.org').then((addresses) => {
 const dns = require('node:dns');
 const dnsPromises = dns.promises;
 const options = {
-  family: 6,
-  hints: dns.ADDRCONFIG | dns.V4MAPPED,
+    family: 6,
+    hints: dns.ADDRCONFIG | dns.V4MAPPED,
 };
 
 dnsPromises
-  .lookup('example.com', options)
-  .then((result) => {
-    console.log(
-      'address: %j family: IPv%s',
-      result.address,
-      result.family
-    );
-    // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
-  });
+    .lookup('example.com', options)
+    .then((result) => {
+        console.log(
+            'address: %j family: IPv%s',
+            result.address,
+            result.family
+        );
+        // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
+    });
 
 // When options.all is true, the result will be an Array.
 options.all = true;
 dnsPromises
-  .lookup('example.com', options)
-  .then((result) => {
-    console.log('addresses: %j', result);
-    // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
-  });
+    .lookup('example.com', options)
+    .then((result) => {
+        console.log('addresses: %j', result);
+        // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
+    });
 ```
 
 <!-- 0029.part.md -->
 
 ### `dnsPromises.lookupService(address, port)`
 
-- `адрес` {строка}
-- `порт` {число}
+-   `адрес` {строка}
+-   `порт` {число}
 
 Разрешает заданные `address` и `port` в имя хоста и сервис, используя реализацию `getnameinfo` операционной системы.
 
@@ -673,19 +685,19 @@ dnsPromises
 ```js
 const dnsPromises = require('node:dns').promises;
 dnsPromises
-  .lookupService('127.0.0.1', 22)
-  .then((result) => {
-    console.log(result.hostname, result.service);
-    // Опечатка: localhost ssh
-  });
+    .lookupService('127.0.0.1', 22)
+    .then((result) => {
+        console.log(result.hostname, result.service);
+        // Опечатка: localhost ssh
+    });
 ```
 
 <!-- 0030.part.md -->
 
 ### `dnsPromises.resolve(hostname[, rrtype])`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `rrtype` {строка} Тип записи ресурса. **По умолчанию:** `A`.
+-   `hostname` {string} Имя хоста для разрешения.
+-   `rrtype` {строка} Тип записи ресурса. **По умолчанию:** `A`.
 
 Использует протокол DNS для преобразования имени хоста (например, `'nodejs.org'`) в массив записей ресурсов. В случае успеха `Promise` разрешается в массив записей ресурсов. Тип и структура отдельных результатов зависят от `rrtype`:
 
@@ -710,9 +722,9 @@ dnsPromises
 
 ### `dnsPromises.resolve4(hostname[, options])`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `options` {Object}
-  - `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массивом строк, с TTL, выраженным в секундах.
+-   `hostname` {string} Имя хоста для разрешения.
+-   `options` {Object}
+    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массивом строк, с TTL, выраженным в секундах.
 
 Использует протокол DNS для разрешения адресов IPv4 (записи `A`) для имени `hostname`. В случае успеха `Promise` преобразуется в массив IPv4-адресов (например, `['74.125.79.104', '74.125.79.105', '74.125.79.106']`).
 
@@ -720,9 +732,9 @@ dnsPromises
 
 ### `dnsPromises.resolve6(hostname[, options])`
 
-- `hostname` {string} Имя хоста для разрешения.
-- `options` {Object}
-  - `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массива строк, с TTL, выраженным в секундах.
+-   `hostname` {string} Имя хоста для разрешения.
+-   `options` {Object}
+    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массива строк, с TTL, выраженным в секундах.
 
 Использует протокол DNS для разрешения адресов IPv6 (записи `AAAA`) для имени `hostname`. В случае успеха `Promise` преобразуется в массив IPv6-адресов.
 
@@ -730,7 +742,7 @@ dnsPromises
 
 ### `dnsPromises.resolveAny(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения всех записей (также известный как `ANY` или `*` запрос). В случае успеха, `Promise` разрешается с массивом, содержащим различные типы записей. Каждый объект имеет свойство `type`, которое указывает на тип текущей записи. В зависимости от `type` у объекта будут присутствовать дополнительные свойства:
 
@@ -751,28 +763,28 @@ dnsPromises
 
 ```js
 [
-  { type: 'A', address: '127.0.0.1', ttl: 299 },
-  { type: 'CNAME', value: 'example.com' },
-  {
-    type: 'MX',
-    exchange: 'alt4.aspmx.l.example.com',
-    priority: 50,
-  },
-  { type: 'NS', value: 'ns1.example.com' },
-  {
-    type: 'TXT',
-    entries: ['v=spf1 include:_spf.example.com ~all'],
-  },
-  {
-    type: 'SOA',
-    nsname: 'ns1.example.com',
-    hostmaster: 'admin.example.com',
-    serial: 156696742,
-    refresh: 900,
-    retry: 900,
-    expire: 1800,
-    minttl: 60,
-  },
+    { type: 'A', address: '127.0.0.1', ttl: 299 },
+    { type: 'CNAME', value: 'example.com' },
+    {
+        type: 'MX',
+        exchange: 'alt4.aspmx.l.example.com',
+        priority: 50,
+    },
+    { type: 'NS', value: 'ns1.example.com' },
+    {
+        type: 'TXT',
+        entries: ['v=spf1 include:_spf.example.com ~all'],
+    },
+    {
+        type: 'SOA',
+        nsname: 'ns1.example.com',
+        hostmaster: 'admin.example.com',
+        serial: 156696742,
+        refresh: 900,
+        retry: 900,
+        expire: 1800,
+        minttl: 60,
+    },
 ];
 ```
 
@@ -780,7 +792,7 @@ dnsPromises
 
 ### `dnsPromises.resolveCaa(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей `CAA` для имени `hostname`. При успехе `Promise` разрешается с массивом объектов, содержащих доступные записи авторизации центра сертификации, доступные для `имени хоста` (например, `[{критический: 0, iodef: 'mailto:pki@example.com'},{критический: 128, issue: 'pki.example.com'}]`).
 
@@ -788,7 +800,7 @@ dnsPromises
 
 ### `dnsPromises.resolveCname(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей `CNAME` для имени `hostname`. В случае успеха `Promise` разрешается с массивом канонических записей имен, доступных для `имени хоста` (например, `['bar.example.com']`).
 
@@ -796,7 +808,7 @@ dnsPromises
 
 ### `dnsPromises.resolveMx(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей почтового обмена (`MX` записей) для `имени хоста`. В случае успеха, `Promise` разрешается с массивом объектов, содержащих свойства `приоритет` и `обмен` (например, `[{приоритет: 10, обмен: 'mx.example.com'}, ...]`).
 
@@ -804,16 +816,16 @@ dnsPromises
 
 ### `dnsPromises.resolveNaptr(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей на основе регулярных выражений (`NAPTR` записей) для `hostname`. В случае успеха, `Promise` разрешается с массивом объектов со следующими свойствами:
 
-- `flags`
-- `service`
-- `regexp`
-- `replacement`
-- `order`
-- `preference`
+-   `flags`
+-   `service`
+-   `regexp`
+-   `replacement`
+-   `order`
+-   `preference`
 
 <!-- end list -->
 
@@ -832,7 +844,7 @@ dnsPromises
 
 ### `dnsPromises.resolveNs(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей сервера имен (`NS` записей) для `имени хоста`. В случае успеха `Promise` разрешается с массивом записей сервера имен, доступных для `hostname` (например, `['ns1.example.com', 'ns2.example.com']`).
 
@@ -840,7 +852,7 @@ dnsPromises
 
 ### `dnsPromises.resolvePtr(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записей указателей (`PTR` записей) для `имени хоста`. В случае успеха `Promise` разрешается с массивом строк, содержащих ответные записи.
 
@@ -848,17 +860,17 @@ dnsPromises
 
 ### `dnsPromises.resolveSoa(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения записи начала полномочий (`SOA` запись) для `hostname`. В случае успеха `Promise` разрешается объект со следующими свойствами:
 
-- `nsname`
-- `hostmaster`
-- `serial`
-- `refresh`
-- `retry`
-- `expire`
-- `minttl`
+-   `nsname`
+-   `hostmaster`
+-   `serial`
+-   `refresh`
+-   `retry`
+-   `expire`
+-   `minttl`
 
 <!-- end list -->
 
@@ -878,14 +890,14 @@ dnsPromises
 
 ### `dnsPromises.resolveSrv(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения служебных записей (`SRV` записей) для `hostname`. В случае успеха `Promise` разрешается с массивом объектов со следующими свойствами:
 
-- `priority`
-- `weight`
-- `port`
-- `name`
+-   `priority`
+-   `weight`
+-   `port`
+-   `name`
 
 <!-- end list -->
 
@@ -902,7 +914,7 @@ dnsPromises
 
 ### `dnsPromises.resolveTxt(hostname)`
 
-- `hostname` {string}
+-   `hostname` {string}
 
 Использует протокол DNS для разрешения текстовых запросов (записей `TXT`) для имени `hostname`. В случае успеха `Promise` разрешается двумерный массив текстовых записей, доступных для `hostname` (например, `[ ['v=spf1 ip4:0.0.0.0 ', '~all' ]`). Каждый подмассив содержит TXT-фрагменты одной записи. В зависимости от случая использования, они могут быть либо объединены вместе, либо рассматриваться отдельно.
 
@@ -910,7 +922,7 @@ dnsPromises
 
 ### `dnsPromises.reverse(ip)`
 
-- `ip` {строка}
+-   `ip` {строка}
 
 Выполняет обратный DNS-запрос, который разрешает адрес IPv4 или IPv6 в массив имен хостов.
 
@@ -920,12 +932,12 @@ dnsPromises
 
 ### `dnsPromises.setDefaultResultOrder(order)`
 
-- `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
+-   `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
 
 Установите значение по умолчанию `verbatim` в [`dns.lookup()`](#dnslookuphostname-options-callback) и [`dnsPromises.lookup()`](#dnspromiseslookuphostname-options). Значение может быть следующим:
 
-- `ipv4first`: устанавливает по умолчанию `verbatim` `false`.
-- `verbatim`: устанавливает значение по умолчанию `verbatim` `true`.
+-   `ipv4first`: устанавливает по умолчанию `verbatim` `false`.
+-   `verbatim`: устанавливает значение по умолчанию `verbatim` `true`.
 
 По умолчанию `verbatim` и [`dnsPromises.setDefaultResultOrder()`](#dnspromisessetdefaultresultorderorder) имеют более высокий приоритет, чем [`--dns-result-order`](cli.md#--dns-result-orderorder). При использовании [рабочих потоков](worker_threads.md), [`dnsPromises.setDefaultResultOrder()`](#dnspromisessetdefaultresultorderorder) из главного потока не влияет на стандартные dns-заказы в рабочих.
 
@@ -933,16 +945,16 @@ dnsPromises
 
 ### `dnsPromises.setServers(servers)`
 
-- `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
+-   `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
 
 Устанавливает IP-адрес и порт серверов, которые будут использоваться при выполнении разрешения DNS. Аргумент `servers` представляет собой массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6). Если порт является портом DNS по умолчанию IANA (53), его можно опустить.
 
 ```js
 dnsPromises.setServers([
-  '4.4.4.4',
-  '[2001:4860:4860::8888]',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '[2001:4860:4860::8888]',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]);
 ```
 
@@ -958,30 +970,30 @@ dnsPromises.setServers([
 
 Каждый запрос DNS может вернуть один из следующих кодов ошибок:
 
-- `dns.NODATA`: DNS-сервер вернул ответ без данных.
-- `dns.FORMERR`: DNS-сервер утверждает, что запрос был неправильно отформатирован.
-- `dns.SERVFAIL`: DNS-сервер вернул общий отказ.
-- `dns.NOTFOUND`: Доменное имя не найдено.
-- `dns.NOTIMP`: DNS-сервер не выполняет запрошенную операцию.
-- `dns.REFUSED`: DNS-сервер отклонил запрос.
-- `dns.BADQUERY`: Неправильно отформатированный DNS-запрос.
-- `dns.BADNAME`: Неправильное форматирование имени хоста.
-- `dns.BADFAMILY`: Неподдерживаемое семейство адресов.
-- `dns.BADRESP`: Неправильное форматирование ответа DNS.
-- `dns.CONNREFUSED`: Не удалось связаться с DNS-серверами.
-- `dns.TIMEOUT`: Таймаут при обращении к DNS-серверам.
-- `dns.EOF`: Конец файла.
-- `dns.FILE`: Ошибка чтения файла.
-- `dns.NOMEM`: Закончилась память.
-- `dns.DESTRUCTION`: Канал уничтожается.
-- `dns.BADSTR`: Неправильно отформатированная строка.
-- `dns.BADFLAGS`: Указаны нелегальные флаги.
-- `dns.NONAME`: Заданное имя хоста не является числовым.
-- `dns.BADHINTS`: Указаны недопустимые флаги подсказок.
-- `dns.NOTINITIALIZED`: инициализация библиотеки c-ares еще не выполнена.
-- `dns.LOADIPHLPAPI`: Ошибка при загрузке `iphlpapi.dll`.
-- `dns.ADDRGETNETWORKPARAMS`: Не удалось найти функцию `GetNetworkParams`.
-- `dns.CANCELLED`: DNS-запрос отменен.
+-   `dns.NODATA`: DNS-сервер вернул ответ без данных.
+-   `dns.FORMERR`: DNS-сервер утверждает, что запрос был неправильно отформатирован.
+-   `dns.SERVFAIL`: DNS-сервер вернул общий отказ.
+-   `dns.NOTFOUND`: Доменное имя не найдено.
+-   `dns.NOTIMP`: DNS-сервер не выполняет запрошенную операцию.
+-   `dns.REFUSED`: DNS-сервер отклонил запрос.
+-   `dns.BADQUERY`: Неправильно отформатированный DNS-запрос.
+-   `dns.BADNAME`: Неправильное форматирование имени хоста.
+-   `dns.BADFAMILY`: Неподдерживаемое семейство адресов.
+-   `dns.BADRESP`: Неправильное форматирование ответа DNS.
+-   `dns.CONNREFUSED`: Не удалось связаться с DNS-серверами.
+-   `dns.TIMEOUT`: Таймаут при обращении к DNS-серверам.
+-   `dns.EOF`: Конец файла.
+-   `dns.FILE`: Ошибка чтения файла.
+-   `dns.NOMEM`: Закончилась память.
+-   `dns.DESTRUCTION`: Канал уничтожается.
+-   `dns.BADSTR`: Неправильно отформатированная строка.
+-   `dns.BADFLAGS`: Указаны нелегальные флаги.
+-   `dns.NONAME`: Заданное имя хоста не является числовым.
+-   `dns.BADHINTS`: Указаны недопустимые флаги подсказок.
+-   `dns.NOTINITIALIZED`: инициализация библиотеки c-ares еще не выполнена.
+-   `dns.LOADIPHLPAPI`: Ошибка при загрузке `iphlpapi.dll`.
+-   `dns.ADDRGETNETWORKPARAMS`: Не удалось найти функцию `GetNetworkParams`.
+-   `dns.CANCELLED`: DNS-запрос отменен.
 
 API `dnsPromises` также экспортирует вышеуказанные коды ошибок, например, `dnsPromises.NODATA`.
 

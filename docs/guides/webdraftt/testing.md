@@ -7,7 +7,7 @@
 _app.js_
 
 ```js
-module.exports = app
+module.exports = app;
 ```
 
 Экземпляр сервера, созданного с помощью Express, экспортируется для последующего его использования при написании тестов.
@@ -25,178 +25,191 @@ npm install mocha chai chai-http --save
 _test.js_
 
 ```js
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'test';
 
 const chai = require('chai'),
-  chaiHttp = require('chai-http'),
-  expect = chai.expect
-;(fs = require('fs')), (server = require('./app'))
+    chaiHttp = require('chai-http'),
+    expect = chai.expect;
+(fs = require('fs')), (server = require('./app'));
 
-chai.use(chaiHttp)
+chai.use(chaiHttp);
 
 describe('Users API', () => {
-  before(() => {
-    const TEST_DATA = {
-      1: { id: 1, login: 'login1', password: 'password1' },
-      2: { id: 2, login: 'login2', password: 'password2' },
-    }
+    before(() => {
+        const TEST_DATA = {
+            1: {
+                id: 1,
+                login: 'login1',
+                password: 'password1',
+            },
+            2: {
+                id: 2,
+                login: 'login2',
+                password: 'password2',
+            },
+        };
 
-    fs.writeFileSync(
-      'data-test.json',
-      JSON.stringify(TEST_DATA)
-    )
-  })
+        fs.writeFileSync(
+            'data-test.json',
+            JSON.stringify(TEST_DATA)
+        );
+    });
 
-  it('should get all users', (done) => {
-    chai
-      .request(server)
-      .get('/api/users')
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.body).to.haveOwnProperty('data')
+    it('should get all users', (done) => {
+        chai.request(server)
+            .get('/api/users')
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200);
+                expect(res.body).to.haveOwnProperty('data');
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it('should get user by id', (done) => {
-    chai
-      .request(server)
-      .get('/api/users')
-      .query({ id: 2 })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.body).to.haveOwnProperty('data')
-        expect(res.body.data.id).to.equal(2)
+    it('should get user by id', (done) => {
+        chai.request(server)
+            .get('/api/users')
+            .query({ id: 2 })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200);
+                expect(res.body).to.haveOwnProperty('data');
+                expect(res.body.data.id).to.equal(2);
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it("shouldn't get non-existing user", (done) => {
-    chai
-      .request(server)
-      .get('/api/users')
-      .query({ id: 4 })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(404)
-        expect(res.body).to.haveOwnProperty('message')
+    it("shouldn't get non-existing user", (done) => {
+        chai.request(server)
+            .get('/api/users')
+            .query({ id: 4 })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(404);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it('should create user', (done) => {
-    chai
-      .request(server)
-      .post('/api/users')
-      .send({
-        user: {
-          id: 3,
-          login: 'login3',
-          password: 'password3',
-        },
-      })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.body).to.haveOwnProperty('message')
+    it('should create user', (done) => {
+        chai.request(server)
+            .post('/api/users')
+            .send({
+                user: {
+                    id: 3,
+                    login: 'login3',
+                    password: 'password3',
+                },
+            })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it("shouldn't create user with existing id", (done) => {
-    chai
-      .request(server)
-      .post('/api/users')
-      .send({
-        user: {
-          id: 3,
-          login: 'login3',
-          password: 'password3',
-        },
-      })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(409)
-        expect(res.body).to.haveOwnProperty('message')
+    it("shouldn't create user with existing id", (done) => {
+        chai.request(server)
+            .post('/api/users')
+            .send({
+                user: {
+                    id: 3,
+                    login: 'login3',
+                    password: 'password3',
+                },
+            })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(409);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it('should update user', (done) => {
-    chai
-      .request(server)
-      .put('/api/users')
-      .send({
-        user: {
-          id: 3,
-          login: 'login_3',
-          password: 'password_3',
-        },
-      })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.body).to.haveOwnProperty('message')
+    it('should update user', (done) => {
+        chai.request(server)
+            .put('/api/users')
+            .send({
+                user: {
+                    id: 3,
+                    login: 'login_3',
+                    password: 'password_3',
+                },
+            })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it("shouldn't update non-existing user", (done) => {
-    chai
-      .request(server)
-      .put('/api/users')
-      .send({
-        user: {
-          id: 4,
-          login: 'login_4',
-          password: 'password_4',
-        },
-      })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(404)
-        expect(res.body).to.haveOwnProperty('message')
+    it("shouldn't update non-existing user", (done) => {
+        chai.request(server)
+            .put('/api/users')
+            .send({
+                user: {
+                    id: 4,
+                    login: 'login_4',
+                    password: 'password_4',
+                },
+            })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(404);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it('should delete user', (done) => {
-    chai
-      .request(server)
-      .delete('/api/users')
-      .query({ id: 2 })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.body).to.haveOwnProperty('message')
+    it('should delete user', (done) => {
+        chai.request(server)
+            .delete('/api/users')
+            .query({ id: 2 })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
+                done();
+            });
+    });
 
-  it("shouldn't delete non-existing user", (done) => {
-    chai
-      .request(server)
-      .delete('/api/users')
-      .query({ id: 4 })
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(404)
-        expect(res.body).to.haveOwnProperty('message')
+    it("shouldn't delete non-existing user", (done) => {
+        chai.request(server)
+            .delete('/api/users')
+            .query({ id: 4 })
+            .end((err, res) => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(404);
+                expect(res.body).to.haveOwnProperty(
+                    'message'
+                );
 
-        done()
-      })
-  })
-})
+                done();
+            });
+    });
+});
 ```
 
 Результат в консоли должен быть таким.
@@ -213,22 +226,22 @@ describe('Users API', () => {
 
 Для конфигурации запроса используются следующие методы:
 
-- `set` - задает HTTP-заголовки;
-- `query` - устанавливает GET-параметры;
-- `send` - задает тело запроса (для POST- или PUT-запросов);
-- `attach` - позволяет прикреплять к запросу файлы.
+-   `set` - задает HTTP-заголовки;
+-   `query` - устанавливает GET-параметры;
+-   `send` - задает тело запроса (для POST- или PUT-запросов);
+-   `attach` - позволяет прикреплять к запросу файлы.
 
 Вызов `request()` инициирует запуск сервера и после выполнения запроса автоматически вызывает метод `close()` завершая его работу. Но в процессе тестирования скорее всего придется осуществлять более одного запроса и тогда запуск и остановка сервера для каждого запроса потребует больше вычислительных мощностей и займет больше времени. Чтобы избежать этого, используйте метод `keepOn()`.
 
 ```js
-let requester = chai.request(app).keepOpen()
+let requester = chai.request(app).keepOpen();
 
 Promise.all([
-  requester.get('/api/users'),
-  requester.get('/api/users').query({ id: 2 }),
+    requester.get('/api/users'),
+    requester.get('/api/users').query({ id: 2 }),
 ])
-  .then((responses) => {}) //массив ответов
-  .then(() => requester.close())
+    .then((responses) => {}) //массив ответов
+    .then(() => requester.close());
 ```
 
 Использование `keepOn()` не завершает работу сервера после выполнения запроса(ов), для этого необходимо самостоятельно вызвать метод `close()`.
@@ -244,44 +257,44 @@ Promise.all([
 `header` - проверяет наличие определенного HTTP-заголовка;
 
 ```js
-expect(res).to.have.header('content-type', 'text/html')
+expect(res).to.have.header('content-type', 'text/html');
 ```
 
 `headers` - проверяет наличие HTTP-заголовков в целом;
 
 ```js
-expect(res).to.have.headers
+expect(res).to.have.headers;
 ```
 
 `ip` - проверяет, является ли переданная строка IP-адресом;
 
 ```js
-expect('127.0.0.1').to.be.an.ip
+expect('127.0.0.1').to.be.an.ip;
 ```
 
 `json`/`text`/`html` - проверяет значение заголовка `Content-type`;
 
 ```js
-expect(res).to.be.json
-expect(res).to.be.text
-expect(res).to.be.html
+expect(res).to.be.json;
+expect(res).to.be.text;
+expect(res).to.be.html;
 ```
 
 `redirect` - проверяет соответствие кода ответа к одному из кодов редиректа;
 
 ```js
-expect(res).to.redirect
+expect(res).to.redirect;
 ```
 
 `redirectTo` - проверяет, был ли редирект на определенный маршрут;
 
 ```js
-expect(res).to.redirectTo('http://redirect.com')
+expect(res).to.redirectTo('http://redirect.com');
 ```
 
 `cookie` - проверяет наличие и значение cookie-файлов.
 
 ```js
-expect(req).to.have.cookie('token')
-expect(req).to.have.cookie('token', 'abcdefg')
+expect(req).to.have.cookie('token');
+expect(req).to.have.cookie('token', 'abcdefg');
 ```

@@ -7,56 +7,72 @@
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Регистрация</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>Введите данные</h1>
-    <form name="registerForm">
-      <label>Имя</label><br />
-      <input type="text" name="userName" /><br /><br />
-      <label>Возраст</label><br />
-      <input type="number" name="userAge" /><br /><br />
-      <button type="submit" id="submit">Отправить</button>
-    </form>
-    <script>
-      document
-        .getElementById('submit')
-        .addEventListener('click', function (e) {
-          e.preventDefault()
-          // получаем данные формы
-          let registerForm = document.forms['registerForm']
-          let userName =
-            registerForm.elements['userName'].value
-          let userAge =
-            registerForm.elements['userAge'].value
-          // сериализуем данные в json
-          let user = JSON.stringify({
-            userName: userName,
-            userAge: userAge,
-          })
-          let request = new XMLHttpRequest()
-          // посылаем запрос на адрес "/user"
-          request.open('POST', '/user', true)
-          request.setRequestHeader(
-            'Content-Type',
-            'application/json'
-          )
-          request.addEventListener('load', function () {
-            // получаем и парсим ответ сервера
-            let receivedUser = JSON.parse(request.response)
-            console.log(
-              receivedUser.userName,
-              '-',
-              receivedUser.userAge
-            ) // смотрим ответ сервера
-          })
-          request.send(user)
-        })
-    </script>
-  </body>
-  <html></html>
+    <head>
+        <title>Регистрация</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Введите данные</h1>
+        <form name="registerForm">
+            <label>Имя</label><br />
+            <input
+                type="text"
+                name="userName"
+            /><br /><br />
+            <label>Возраст</label><br />
+            <input
+                type="number"
+                name="userAge"
+            /><br /><br />
+            <button type="submit" id="submit">
+                Отправить
+            </button>
+        </form>
+        <script>
+            document
+                .getElementById('submit')
+                .addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // получаем данные формы
+                    let registerForm =
+                        document.forms['registerForm'];
+                    let userName =
+                        registerForm.elements['userName']
+                            .value;
+                    let userAge =
+                        registerForm.elements['userAge']
+                            .value;
+                    // сериализуем данные в json
+                    let user = JSON.stringify({
+                        userName: userName,
+                        userAge: userAge,
+                    });
+                    let request = new XMLHttpRequest();
+                    // посылаем запрос на адрес "/user"
+                    request.open('POST', '/user', true);
+                    request.setRequestHeader(
+                        'Content-Type',
+                        'application/json'
+                    );
+                    request.addEventListener(
+                        'load',
+                        function () {
+                            // получаем и парсим ответ сервера
+                            let receivedUser = JSON.parse(
+                                request.response
+                            );
+                            console.log(
+                                receivedUser.userName,
+                                '-',
+                                receivedUser.userAge
+                            ); // смотрим ответ сервера
+                        }
+                    );
+                    request.send(user);
+                });
+        </script>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -65,30 +81,30 @@
 Далее определим в главном файле приложения - в `app.js` код, который бы принимал отправленные данные:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 // создаем парсер для данных в формате json
-const jsonParser = express.json()
+const jsonParser = express.json();
 
 app.post('/user', jsonParser, function (request, response) {
-  console.log(request.body)
-  if (!request.body) return response.sendStatus(400)
+    console.log(request.body);
+    if (!request.body) return response.sendStatus(400);
 
-  response.json(request.body) // отправляем пришедший ответ обратно
-})
+    response.json(request.body); // отправляем пришедший ответ обратно
+});
 
 app.get('/', function (request, response) {
-  response.sendFile(__dirname + '/index.html')
-})
+    response.sendFile(__dirname + '/index.html');
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 Прежде всего для получения данных в формате json необходимо создать парсер с помощью функции `json`:
 
 ```js
-const jsonParser = express.json()
+const jsonParser = express.json();
 ```
 
 В реальности данный парсер будет использовать модуль `bodyParser`, который использовался нами ранее для парсинга данных отправленной формы.
@@ -97,11 +113,11 @@ const jsonParser = express.json()
 
 ```js
 app.post('/user', jsonParser, function (request, response) {
-  console.log(request.body)
-  if (!request.body) return response.sendStatus(400)
+    console.log(request.body);
+    if (!request.body) return response.sendStatus(400);
 
-  response.json(request.body) // отправляем пришедший ответ обратно
-})
+    response.json(request.body); // отправляем пришедший ответ обратно
+});
 ```
 
 Следует отметить, что в принципе мы можем отправить объект и с помощью стандартного метода `response.send(request.body)`. В реальности метод `response.json()` устанавливает для заголовка `Content-Type` значение `application/json`, серилизует данные в json с помощью функции `JSON.stringify()` и затем отправляет данные с помощью `response.send()`.

@@ -6,11 +6,11 @@
 
 Эти объекты доступны во всех модулях. Следующие переменные могут показаться глобальными, но это не так. Они существуют только в составе модулей, см. [документация по модульной системе](modules.md):
 
-- [`__dirname`](modules.md#__dirname)
-- [`__filename`](modules.md#__filename)
-- [`exports`](modules.md#exports)
-- [`module`](modules.md#module)
-- [`require()`](modules.md#requireid)
+-   [`__dirname`](modules.md#__dirname)
+-   [`__filename`](modules.md#__filename)
+-   [`exports`](modules.md#exports)
+-   [`module`](modules.md#module)
+-   [`require()`](modules.md#requireid)
 
 Перечисленные здесь объекты относятся к Node.js. Есть [встроенные объекты](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) которые являются частью самого языка JavaScript и также доступны во всем мире.
 
@@ -34,9 +34,9 @@ changes:
 const ac = new AbortController();
 
 ac.signal.addEventListener(
-  'abort',
-  () => console.log('Aborted!'),
-  { once: true }
+    'abort',
+    () => console.log('Aborted!'),
+    { once: true }
 );
 
 ac.abort();
@@ -62,7 +62,7 @@ added:
   - v14.17.0
 -->
 
-- Тип: {AbortSignal}
+-   Тип: {AbortSignal}
 
 ### Класс: `AbortSignal`
 
@@ -72,7 +72,7 @@ added:
   - v14.17.0
 -->
 
-- Расширяется: {EventTarget}
+-   Расширяется: {EventTarget}
 
 В `AbortSignal` используется для уведомления наблюдателей, когда `abortController.abort()` вызывается метод.
 
@@ -84,7 +84,7 @@ added:
   - v14.17.0
 -->
 
-- Возвращает: {AbortSignal}
+-   Возвращает: {AbortSignal}
 
 Возвращает новый, уже прерванный `AbortSignal`.
 
@@ -106,11 +106,11 @@ ac.signal.onabort = () => console.log('aborted!');
 
 // Or the EventTarget API...
 ac.signal.addEventListener(
-  'abort',
-  (event) => {
-    console.log(event.type); // Prints 'abort'
-  },
-  { once: true }
+    'abort',
+    (event) => {
+        console.log(event.type); // Prints 'abort'
+    },
+    { once: true }
 );
 
 ac.abort();
@@ -128,7 +128,7 @@ added:
   - v14.17.0
 -->
 
-- Тип: {логическое} Истина после `AbortController` был прерван.
+-   Тип: {логическое} Истина после `AbortController` был прерван.
 
 #### `abortSignal.onabort`
 
@@ -138,7 +138,7 @@ added:
   - v14.17.0
 -->
 
-- Тип: {Функция}
+-   Тип: {Функция}
 
 Необязательная функция обратного вызова, которая может быть установлена кодом пользователя, чтобы получать уведомление, когда `abortController.abort()` функция была вызвана.
 
@@ -150,7 +150,7 @@ added: v0.1.103
 
 <!-- type=global -->
 
-- {Функция}
+-   {Функция}
 
 Используется для обработки двоичных данных. Увидеть [буферная секция](buffer.md).
 
@@ -220,7 +220,7 @@ added: v0.1.100
 
 <!-- type=global -->
 
-- {Объект}
+-   {Объект}
 
 Используется для печати в stdout и stderr. Увидеть [`console`](console.md) раздел.
 
@@ -264,7 +264,7 @@ added: v0.1.27
 
 <!-- type=global -->
 
-- {Object} Объект глобального пространства имен.
+-   {Object} Объект глобального пространства имен.
 
 В браузерах область верхнего уровня - это глобальная область. Это означает, что в браузере `var something` определит новую глобальную переменную. В Node.js все по-другому. Область верхнего уровня не является глобальной областью; `var something` внутри модуля Node.js будет локальным для этого модуля.
 
@@ -314,7 +314,7 @@ added: v0.1.7
 
 <!-- type=global -->
 
-- {Объект}
+-   {Объект}
 
 Объект процесса. Увидеть [`process` объект](process.md#process) раздел.
 
@@ -326,7 +326,7 @@ added: v11.0.0
 
 <!-- type=global -->
 
-- `callback` {Функция} Функция для постановки в очередь.
+-   `callback` {Функция} Функция для постановки в очередь.
 
 В `queueMicrotask()` метод ставит в очередь микрозадачу для вызова `callback`. Если `callback` выдает исключение, [`process` объект](process.md#process) `'uncaughtException'` событие будет выпущено.
 
@@ -339,17 +339,17 @@ added: v11.0.0
 // before any other promise jobs.
 
 DataHandler.prototype.load = async function load(key) {
-  const hit = this._cache.get(key);
-  if (hit !== undefined) {
-    queueMicrotask(() => {
-      this.emit('load', hit);
-    });
-    return;
-  }
+    const hit = this._cache.get(key);
+    if (hit !== undefined) {
+        queueMicrotask(() => {
+            this.emit('load', hit);
+        });
+        return;
+    }
 
-  const data = await fetchData(key);
-  this._cache.set(key, data);
-  this.emit('load', data);
+    const data = await fetchData(key);
+    this._cache.set(key, data);
+    this.emit('load', data);
 };
 ```
 
@@ -445,6 +445,6 @@ added: v8.0.0
 
 <!-- type=global -->
 
-- {Объект}
+-   {Объект}
 
 Объект, который действует как пространство имен для всех W3C [WebAssembly](https://webassembly.org) связанные функции. Увидеть [Сеть разработчиков Mozilla](https://developer.mozilla.org/en-US/docs/WebAssembly) для использования и совместимости.

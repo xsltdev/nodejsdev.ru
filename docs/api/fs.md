@@ -43,10 +43,10 @@ const fs = require('node:fs');
 import { unlink } from 'node:fs/promises';
 
 try {
-  await unlink('/tmp/hello');
-  console.log('successfully deleted /tmp/hello');
+    await unlink('/tmp/hello');
+    console.log('successfully deleted /tmp/hello');
 } catch (error) {
-  console.error('произошла ошибка:', error.message);
+    console.error('произошла ошибка:', error.message);
 }
 ```
 
@@ -54,12 +54,12 @@ try {
 const { unlink } = require('node:fs/promises');
 
 (async function (path) {
-  try {
-    await unlink(path);
-    console.log(`successfully deleted ${path}`);
-  } catch (error) {
-    console.error('произошла ошибка:', error.message);
-  }
+    try {
+        await unlink(path);
+        console.log(`successfully deleted ${path}`);
+    } catch (error) {
+        console.error('произошла ошибка:', error.message);
+    }
 })('/tmp/hello');
 ```
 
@@ -71,8 +71,8 @@ const { unlink } = require('node:fs/promises');
 import { unlink } from 'node:fs';
 
 unlink('/tmp/hello', (err) => {
-  if (err) throw err;
-  console.log('успешно удалено /tmp/hello');
+    if (err) throw err;
+    console.log('успешно удалено /tmp/hello');
 });
 ```
 
@@ -80,8 +80,8 @@ unlink('/tmp/hello', (err) => {
 const { unlink } = require('node:fs');
 
 unlink('/tmp/hello', (err) => {
-  if (err) throw err;
-  console.log('successfully deleted /tmp/hello');
+    if (err) throw err;
+    console.log('successfully deleted /tmp/hello');
 });
 ```
 
@@ -95,10 +95,10 @@ unlink('/tmp/hello', (err) => {
 import { unlinkSync } from 'node:fs';
 
 try {
-  unlinkSync('/tmp/hello');
-  console.log('successfully deleted /tmp/hello');
+    unlinkSync('/tmp/hello');
+    console.log('successfully deleted /tmp/hello');
 } catch (err) {
-  // обрабатываем ошибку
+    // обрабатываем ошибку
 }
 ```
 
@@ -106,10 +106,10 @@ try {
 const { unlinkSync } = require('node:fs');
 
 try {
-  unlinkSync('/tmp/hello');
-  console.log('successfully deleted /tmp/hello');
+    unlinkSync('/tmp/hello');
+    console.log('successfully deleted /tmp/hello');
 } catch (err) {
-  // обрабатываем ошибку
+    // обрабатываем ошибку
 }
 ```
 
@@ -135,10 +135,10 @@ API обещаний использует базовый пул потоков N
 
 #### `filehandle.appendFile(data[, options])`
 
-- `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8'`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8'`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Псевдоним [`filehandle.writeFile()`](#filehandlewritefiledata-options).
 
@@ -146,22 +146,22 @@ API обещаний использует базовый пул потоков N
 
 #### `filehandle.chmod(mode)`
 
-- `mode` {целое число} битовая маска режима файла.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `mode` {целое число} битовая маска режима файла.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Изменяет права доступа к файлу. См. chmod(2).
 
 #### `filehandle.chown(uid, gid)`
 
-- `uid` {целое число} Идентификатор пользователя нового владельца файла.
-- `gid` {целое число} Идентификатор группы новой группы файла.
-- Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
+-   `uid` {целое число} Идентификатор пользователя нового владельца файла.
+-   `gid` {целое число} Идентификатор группы новой группы файла.
+-   Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
 
 Изменяет право собственности на файл. Обертка для chown(2).
 
 #### `filehandle.close()`
 
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Закрывает хэндл файла после ожидания завершения любой ожидающей операции над ним.
 
@@ -170,22 +170,22 @@ import { open } from 'node:fs/promises';
 
 let filehandle;
 try {
-  filehandle = await open('thefile.txt', 'r');
+    filehandle = await open('thefile.txt', 'r');
 } finally {
-  await filehandle?.close();
+    await filehandle?.close();
 }
 ```
 
 #### `filehandle.createReadStream([options])`
 
-- `options` {Object}
-  - `encoding` {string} **По умолчанию:** `null`
-  - `autoClose` {boolean} **По умолчанию:** `true`
-  - `emitClose` {boolean} **По умолчанию:** `true`
-  - `start` {integer}
-  - `end` {integer} **По умолчанию:** `бесконечность`
-  - `highWaterMark` {integer} **По умолчанию:** `64 * 1024`.
-- Возвращает: {fs.ReadStream}
+-   `options` {Object}
+    -   `encoding` {string} **По умолчанию:** `null`
+    -   `autoClose` {boolean} **По умолчанию:** `true`
+    -   `emitClose` {boolean} **По умолчанию:** `true`
+    -   `start` {integer}
+    -   `end` {integer} **По умолчанию:** `бесконечность`
+    -   `highWaterMark` {integer} **По умолчанию:** `64 * 1024`.
+-   Возвращает: {fs.ReadStream}
 
 В отличие от 16 KiB по умолчанию `highWaterMark` для {stream.Readable}, поток, возвращаемый этим методом, имеет `highWaterMark` по умолчанию 64 KiB.
 
@@ -202,14 +202,14 @@ const fd = await open('/dev/input/event0');
 // Создаем поток из некоторого символьного устройства.
 const stream = fd.createReadStream();
 setTimeout(() => {
-  stream.close(); // Это может не закрыть поток.
-  // Искусственное обозначение конца потока, как если бы базовый ресурс сам по себе
-  // сам по себе указал конец файла, позволяет потоку закрыться.
-  // Это не отменяет ожидающие операции чтения, и если такая операция есть, то процесс может не закрыть поток.
-  // операция, процесс все равно не сможет успешно завершиться.
-  // пока она не завершится.
-  stream.push(null);
-  stream.read(0);
+    stream.close(); // Это может не закрыть поток.
+    // Искусственное обозначение конца потока, как если бы базовый ресурс сам по себе
+    // сам по себе указал конец файла, позволяет потоку закрыться.
+    // Это не отменяет ожидающие операции чтения, и если такая операция есть, то процесс может не закрыть поток.
+    // операция, процесс все равно не сможет успешно завершиться.
+    // пока она не завершится.
+    stream.push(null);
+    stream.read(0);
 }, 100);
 ```
 
@@ -226,12 +226,12 @@ fd.createReadStream({ start: 90, end: 99 });
 
 #### `filehandle.createWriteStream([options])`
 
-- `options` {Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'\*\*.
-  - `autoClose` {boolean} **По умолчанию:** `true`
-  - `emitClose` {boolean} **По умолчанию:** `true`
-  - `start` {integer}
-- Возвращает: {fs.WriteStream}
+-   `options` {Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'\*\*.
+    -   `autoClose` {boolean} **По умолчанию:** `true`
+    -   `emitClose` {boolean} **По умолчанию:** `true`
+    -   `start` {integer}
+-   Возвращает: {fs.WriteStream}
 
 `options` может также включать опцию `start`, чтобы разрешить запись данных в некоторую позицию после начала файла, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)\]. Модификация файла, а не его замена может потребовать, чтобы опция `flags` `open` была установлена в `r+`, а не в `r` по умолчанию. Кодировка `encoding` может быть любой из тех, которые принимаются {Buffer}.
 
@@ -241,7 +241,7 @@ fd.createReadStream({ start: 90, end: 99 });
 
 #### `filehandle.datasync()`
 
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Переводит все текущие операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода операционной системы. Подробности см. в документации POSIX fdatasync(2).
 
@@ -249,17 +249,17 @@ fd.createReadStream({ start: 90, end: 99 });
 
 #### `filehandle.fd`
 
-- {number} Числовой дескриптор файла, управляемый объектом {FileHandle}.
+-   {number} Числовой дескриптор файла, управляемый объектом {FileHandle}.
 
 #### `filehandle.read(buffer, offset, length, position)`
 
-- `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
-- `offset` {integer} Место в буфере, с которого начнется заполнение.
-- `length` {integer} Количество байт для чтения.
-- `position` {integer|null} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считаны из текущей позиции файла, и позиция будет обновлена. Если `position` - целое число, текущая позиция файла останется неизменной.
-- Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
-  - `bytesRead` {integer} Количество прочитанных байтов
-  - `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
+-   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
+-   `offset` {integer} Место в буфере, с которого начнется заполнение.
+-   `length` {integer} Количество байт для чтения.
+-   `position` {integer|null} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считаны из текущей позиции файла, и позиция будет обновлена. Если `position` - целое число, текущая позиция файла останется неизменной.
+-   Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
+    -   `bytesRead` {integer} Количество прочитанных байтов
+    -   `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
 
 Считывает данные из файла и сохраняет их в заданном буфере.
 
@@ -267,14 +267,14 @@ fd.createReadStream({ start: 90, end: 99 });
 
 #### `filehandle.read([options])`
 
-- `options` {Object}
-  - `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла. **По умолчанию:** `Buffer.alloc(16384)`.
-  - `offset` {integer} Место в буфере, с которого начнется заполнение. **По умолчанию:** `0`.
-  - `length` {integer} Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`.
-  - `позиция` {integer|null} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считываться из текущей позиции файла, и позиция будет обновляться. Если `position` - целое число, текущая позиция файла останется неизменной. **По умолчанию:**: `null`.
-- Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
-  - `bytesRead` {integer} Количество прочитанных байтов
-  - `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
+-   `options` {Object}
+    -   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла. **По умолчанию:** `Buffer.alloc(16384)`.
+    -   `offset` {integer} Место в буфере, с которого начнется заполнение. **По умолчанию:** `0`.
+    -   `length` {integer} Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`.
+    -   `позиция` {integer|null} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считываться из текущей позиции файла, и позиция будет обновляться. Если `position` - целое число, текущая позиция файла останется неизменной. **По умолчанию:**: `null`.
+-   Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
+    -   `bytesRead` {integer} Количество прочитанных байтов
+    -   `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
 
 Считывает данные из файла и сохраняет их в заданном буфере.
 
@@ -282,14 +282,14 @@ fd.createReadStream({ start: 90, end: 99 });
 
 #### `filehandle.read(buffer[, options])`
 
-- `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
-- `options` {Object}
-  - `offset` {integer} Место в буфере, с которого начнется заполнение. **По умолчанию:** `0`.
-  - `length` {integer} Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`.
-  - `позиция` {целое число} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считываться из текущей позиции файла, и позиция будет обновляться. Если `position` - целое число, текущая позиция файла останется неизменной. **По умолчанию:**: `null`.
-- Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
-  - `bytesRead` {integer} Количество прочитанных байтов
-  - `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
+-   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
+-   `options` {Object}
+    -   `offset` {integer} Место в буфере, с которого начнется заполнение. **По умолчанию:** `0`.
+    -   `length` {integer} Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`.
+    -   `позиция` {целое число} Место, с которого следует начать чтение данных из файла. Если `null`, данные будут считываться из текущей позиции файла, и позиция будет обновляться. Если `position` - целое число, текущая позиция файла останется неизменной. **По умолчанию:**: `null`.
+-   Возвращает: {Promise} Выполняется при успехе с объектом с двумя свойствами:
+    -   `bytesRead` {integer} Количество прочитанных байтов
+    -   `buffer` {Buffer|TypedArray|DataView} Ссылка на переданный аргумент `buffer`.
 
 Считывает данные из файла и сохраняет их в заданном буфере.
 
@@ -301,7 +301,7 @@ fd.createReadStream({ start: 90, end: 99 });
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- Возвращает: {ReadableStream}
+-   Возвращает: {ReadableStream}
 
 Возвращает `ReadableStream`, который может быть использован для чтения данных файла.
 
@@ -313,7 +313,7 @@ import { open } from 'node:fs/promises';
 const file = await open('./some/file/to/read');
 
 for await (const chunk of file.readableWebStream())
-  console.log(chunk);
+    console.log(chunk);
 
 await file.close();
 ```
@@ -322,12 +322,12 @@ await file.close();
 const { open } = require('node:fs/promises');
 
 (async () => {
-  const file = await open('./some/file/to/read');
+    const file = await open('./some/file/to/read');
 
-  for await (const chunk of file.readableWebStream())
-    console.log(chunk);
+    for await (const chunk of file.readableWebStream())
+        console.log(chunk);
 
-  await file.close();
+    await file.close();
 })();
 ```
 
@@ -335,10 +335,10 @@ const { open } = require('node:fs/promises');
 
 #### `filehandle.readFile(options)`
 
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `null`.
-  - `signal` {AbortSignal} позволяет прервать выполняющееся чтение файла.
-- Возвращает: {Promise} Выполняется после успешного чтения с содержимым файла. Если кодировка не указана (с помощью `options.encoding`), данные возвращаются в виде объекта {Buffer}. В противном случае данные будут строкой.
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `null`.
+    -   `signal` {AbortSignal} позволяет прервать выполняющееся чтение файла.
+-   Возвращает: {Promise} Выполняется после успешного чтения с содержимым файла. Если кодировка не указана (с помощью `options.encoding`), данные возвращаются в виде объекта {Buffer}. В противном случае данные будут строкой.
 
 Асинхронно считывает все содержимое файла.
 
@@ -350,14 +350,14 @@ const { open } = require('node:fs/promises');
 
 #### `filehandle.readLines([options])`
 
-- `options` {Object}
-  - `encoding` {string} **По умолчанию:** `null`
-  - `autoClose` {boolean} **По умолчанию:** `true`
-  - `emitClose` {boolean} **По умолчанию:** `true`
-  - `start` {integer}
-  - `end` {integer} **По умолчанию:** `бесконечность`
-  - `highWaterMark` {integer} **По умолчанию:** `64 * 1024`.
-- Возвращает: {readline.InterfaceConstructor}
+-   `options` {Object}
+    -   `encoding` {string} **По умолчанию:** `null`
+    -   `autoClose` {boolean} **По умолчанию:** `true`
+    -   `emitClose` {boolean} **По умолчанию:** `true`
+    -   `start` {integer}
+    -   `end` {integer} **По умолчанию:** `бесконечность`
+    -   `highWaterMark` {integer} **По умолчанию:** `64 * 1024`.
+-   Возвращает: {readline.InterfaceConstructor}
 
 Удобный метод для создания интерфейса `readline` и потоковой передачи файла. Параметры см. в [`filehandle.createReadStream()`](#filehandlecreatereadstreamoptions).
 
@@ -367,7 +367,7 @@ import { open } from 'node:fs/promises';
 const file = await open('./some/file/to/read');
 
 for await (const line of file.readLines()) {
-  console.log(line);
+    console.log(line);
 }
 ```
 
@@ -375,40 +375,40 @@ for await (const line of file.readLines()) {
 const { open } = require('node:fs/promises');
 
 (async () => {
-  const file = await open('./some/file/to/read');
+    const file = await open('./some/file/to/read');
 
-  for await (const line of file.readLines()) {
-    console.log(line);
-  }
+    for await (const line of file.readLines()) {
+        console.log(line);
+    }
 })();
 ```
 
 #### `filehandle.readv(buffers[, position])`
 
-- `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
-- `position` {integer|null} Смещение от начала файла, из которого должны быть считаны данные. Если `position` не является `число`, данные будут считаны из текущей позиции. **По умолчанию:** `null`.
-- Возвращает: {Promise} В случае успеха создает объект, содержащий два свойства:
-  - `bytesRead` {целое число} количество прочитанных байт.
-  - `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]} свойство, содержащее ссылку на вход `buffers`.
+-   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
+-   `position` {integer|null} Смещение от начала файла, из которого должны быть считаны данные. Если `position` не является `число`, данные будут считаны из текущей позиции. **По умолчанию:** `null`.
+-   Возвращает: {Promise} В случае успеха создает объект, содержащий два свойства:
+    -   `bytesRead` {целое число} количество прочитанных байт.
+    -   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]} свойство, содержащее ссылку на вход `buffers`.
 
 Чтение из файла и запись в массив {ArrayBufferView}
 
 #### `filehandle.stat([options])`
 
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с объектом {fs.Stats} для файла.
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для файла.
 
 #### `filehandle.sync()`
 
-- Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
+-   Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
 
 Запрос на сброс всех данных для открытого дескриптора файла на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. Более подробную информацию см. в документации POSIX fsync(2).
 
 #### `filehandle.truncate(len)`
 
-- `len` {целое число} **По умолчанию:** `0`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `len` {целое число} **По умолчанию:** `0`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Усекает файл.
 
@@ -421,10 +421,10 @@ import { open } from 'node:fs/promises';
 
 let filehandle = null;
 try {
-  filehandle = await open('temp.txt', 'r+');
-  await filehandle.truncate(4);
+    filehandle = await open('temp.txt', 'r+');
+    await filehandle.truncate(4);
 } finally {
-  await filehandle.close();
+    await filehandle.close();
 }
 ```
 
@@ -434,26 +434,26 @@ try {
 
 #### `filehandle.utimes(atime, mtime)`
 
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- Возвращает: {Promise}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   Возвращает: {Promise}
 
 Изменяет временные метки файловой системы объекта, на который ссылается {FileHandle}, затем разрешает обещание без аргументов в случае успеха.
 
 #### `filehandle.write(buffer, offset[, length[, position]])`
 
-- `buffer` {Buffer|TypedArray|DataView}
-- `offset` {integer} Начальная позиция в `буфере`, с которой начинается запись данных.
-- `length` {integer} Количество байт из `буфера` для записи. **По умолчанию:** `buffer.byteLength - offset`.
-- `позиция` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `буфера`. Если `position` не является `число`, данные будут записаны в текущую позицию. Более подробно см. документацию POSIX pwrite(2). **По умолчанию:** `null`.
-- Возвращает: {обещание}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `offset` {integer} Начальная позиция в `буфере`, с которой начинается запись данных.
+-   `length` {integer} Количество байт из `буфера` для записи. **По умолчанию:** `buffer.byteLength - offset`.
+-   `позиция` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `буфера`. Если `position` не является `число`, данные будут записаны в текущую позицию. Более подробно см. документацию POSIX pwrite(2). **По умолчанию:** `null`.
+-   Возвращает: {обещание}
 
 Записать `буфер` в файл.
 
 Обещание разрешается в объект, содержащий два свойства:
 
-- `bytesWritten` {целое число} количество записанных байт.
-- `buffer` {Buffer|TypedArray|DataView} ссылка на записанный `буфер`.
+-   `bytesWritten` {целое число} количество записанных байт.
+-   `buffer` {Buffer|TypedArray|DataView} ссылка на записанный `буфер`.
 
 Небезопасно использовать `filehandle.write()` несколько раз для одного и того же файла, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
 
@@ -461,12 +461,12 @@ try {
 
 #### `filehandle.write(buffer[, options])`
 
-- `buffer` {Buffer|TypedArray|DataView}
-- `options` {Object}
-  - `offset` {integer} **По умолчанию:** `0`
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-  - `позиция` {целое число} **По умолчанию:** `null`.
-- Возвращает: { Обещание}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `options` {Object}
+    -   `offset` {integer} **По умолчанию:** `0`
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+    -   `позиция` {целое число} **По умолчанию:** `null`.
+-   Возвращает: { Обещание}
 
 Записывает `буфер` в файл.
 
@@ -474,17 +474,17 @@ try {
 
 #### `filehandle.write(string[, position[, encoding]])`
 
-- `строка` {строка}
-- `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `string`. Если `position` не является `число`, то данные будут записаны в текущей позиции. Более подробно см. документацию POSIX pwrite(2). **По умолчанию:** `null`.
-- `encoding` {string} Ожидаемая кодировка строки. **По умолчанию:** `'utf8'`.
-- Возвращает: {обещание}
+-   `строка` {строка}
+-   `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `string`. Если `position` не является `число`, то данные будут записаны в текущей позиции. Более подробно см. документацию POSIX pwrite(2). **По умолчанию:** `null`.
+-   `encoding` {string} Ожидаемая кодировка строки. **По умолчанию:** `'utf8'`.
+-   Возвращает: {обещание}
 
 Записать `строку` в файл. Если `string` не является строкой, обещание будет отклонено с ошибкой.
 
 Обещание разрешается в объект, содержащий два свойства:
 
-- `bytesWritten` {целое число} количество записанных байт.
-- `buffer` {строка} ссылка на записанную `строку`.
+-   `bytesWritten` {целое число} количество записанных байт.
+-   `buffer` {строка} ссылка на записанную `строку`.
 
 Небезопасно использовать `filehandle.write()` несколько раз на одном и том же файле, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
 
@@ -492,10 +492,10 @@ try {
 
 #### `filehandle.writeFile(data, options)`
 
-- `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
-- `options` {Object|string}
-  - `encoding` {string|null} Ожидаемая кодировка символов, когда `data` является строкой. **По умолчанию:** `'utf8'`.
-- Возвращает: {Promise}
+-   `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
+-   `options` {Object|string}
+    -   `encoding` {string|null} Ожидаемая кодировка символов, когда `data` является строкой. **По умолчанию:** `'utf8'`.
+-   Возвращает: {Promise}
 
 Асинхронно записывает данные в файл, заменяя файл, если он уже существует. `data` может быть строкой, буфером, объектом {AsyncIterable} или {Iterable}. Обещание разрешается без аргументов в случае успеха.
 
@@ -509,16 +509,16 @@ try {
 
 #### `filehandle.writev(buffers[, position])`
 
-- `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
-- `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `буферов`. Если `position` не является `число`, данные будут записаны в текущую позицию. **По умолчанию:** `null`.
-- Возвращает: {Promise}
+-   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
+-   `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `буферов`. Если `position` не является `число`, данные будут записаны в текущую позицию. **По умолчанию:** `null`.
+-   Возвращает: {Promise}
 
 Записать массив {ArrayBufferView}s в файл.
 
 Обещание разрешается в объект, содержащий два свойства:
 
-- `bytesWritten` {целое число} количество записанных байт.
-- `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]} ссылку на вход `buffers`.
+-   `bytesWritten` {целое число} количество записанных байт.
+-   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]} ссылку на вход `buffers`.
 
 Небезопасно вызывать `writev()` несколько раз для одного и того же файла, не дожидаясь разрешения (или отказа) обещания.
 
@@ -526,9 +526,9 @@ try {
 
 ### `fsPromises.access(path[, mode])`
 
-- `path` {string|Buffer|URL}
-- `mode` {integer} **По умолчанию:** `fs.constants.F_OK`.
-- Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
+-   `path` {string|Buffer|URL}
+-   `mode` {integer} **По умолчанию:** `fs.constants.F_OK`.
+-   Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
 
 Проверяет права доступа пользователя к файлу или каталогу, указанному в `path`. Аргумент `mode` является необязательным целым числом, которое определяет проверку доступности, которая должна быть выполнена. `mode` должно быть либо значением `fs.constants.F_OK`, либо маской, состоящей из побитового OR любого из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Проверьте [File access constants](#file-access-constants) на возможные значения `mode`.
 
@@ -538,13 +538,13 @@ try {
 import { access, constants } from 'node:fs/promises';
 
 try {
-  await access(
-    '/etc/passwd',
-    constants.R_OK | constants.W_OK
-  );
-  console.log('can access');
+    await access(
+        '/etc/passwd',
+        constants.R_OK | constants.W_OK
+    );
+    console.log('can access');
 } catch {
-  console.error('невозможно получить доступ');
+    console.error('невозможно получить доступ');
 }
 ```
 
@@ -552,13 +552,13 @@ try {
 
 ### `fsPromises.appendFile(path, data[, options])`
 
-- `path` {string|Buffer|URL|FileHandle} имя файла или {FileHandle}
-- `данные` {string|Buffer}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `utf8`
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL|FileHandle} имя файла или {FileHandle}
+-   `данные` {string|Buffer}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `utf8`
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Асинхронно добавляет данные в файл, создавая файл, если он еще не существует. `data` может быть строкой или {Buffer}.
 
@@ -570,30 +570,30 @@ try {
 
 ### `fsPromises.chmod(path, mode)`
 
-- `path` {string|Buffer|URL}
-- `mode` {string|integer}
-- Возвращает: {обещание} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `mode` {string|integer}
+-   Возвращает: {обещание} Выполняется с `undefined` при успехе.
 
 Изменяет права доступа к файлу.
 
 ### `fsPromises.chown(path, uid, gid)`
 
-- `path` {string|Buffer|URL}
-- `uid` {целое число}
-- `gid` {целое число}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `uid` {целое число}
+-   `gid` {целое число}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Изменяет право собственности на файл.
 
 ### `fsPromises.copyFile(src, dest[, mode])`
 
-- `src` {string|Buffer|URL} имя исходного файла для копирования
-- `dest` {string|Buffer|URL} имя файла назначения операции копирования
-- `mode` {integer} Необязательные модификаторы, определяющие поведение операции копирования. Можно создать маску, состоящую из побитового ИЛИ двух или более значений (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`) **По умолчанию:** `0`.
-  - `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
-  - `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
-  - `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
-- Возвращает: {Promise}. Выполняется с `undefined` в случае успеха.
+-   `src` {string|Buffer|URL} имя исходного файла для копирования
+-   `dest` {string|Buffer|URL} имя файла назначения операции копирования
+-   `mode` {integer} Необязательные модификаторы, определяющие поведение операции копирования. Можно создать маску, состоящую из побитового ИЛИ двух или более значений (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`) **По умолчанию:** `0`.
+    -   `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
+    -   `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
+    -   `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
+-   Возвращает: {Promise}. Выполняется с `undefined` в случае успеха.
 
 Асинхронно копирует `src` в `dest`. По умолчанию `dest` перезаписывается, если он уже существует.
 
@@ -603,26 +603,26 @@ try {
 import { copyFile, constants } from 'node:fs/promises';
 
 try {
-  await copyFile('source.txt', 'destination.txt');
-  console.log(
-    'source.txt был скопирован в destination.txt'
-  );
+    await copyFile('source.txt', 'destination.txt');
+    console.log(
+        'source.txt был скопирован в destination.txt'
+    );
 } catch {
-  console.error('Файл не удалось скопировать');
+    console.error('Файл не удалось скопировать');
 }
 
 // При использовании COPYFILE_EXCL операция завершится неудачей, если файл destination.txt существует.
 try {
-  await copyFile(
-    'source.txt',
-    'destination.txt',
-    constants.COPYFILE_EXCL
-  );
-  console.log(
-    'source.txt был скопирован в destination.txt'
-  );
+    await copyFile(
+        'source.txt',
+        'destination.txt',
+        constants.COPYFILE_EXCL
+    );
+    console.log(
+        'source.txt был скопирован в destination.txt'
+    );
 } catch {
-  console.error('Файл не удалось скопировать');
+    console.error('Файл не удалось скопировать');
 }
 ```
 
@@ -632,20 +632,20 @@ try {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `src` {string|URL} путь к источнику для копирования.
-- `dest` {string|URL} путь назначения для копирования.
-- `options` {Object}
-  - `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
-  - `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
-  - `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. Может также возвращать `Promise`, который разрешается в `true` или `false` **По умолчанию:** `undefined`.
-    - `src` {string} путь к источнику для копирования.
-    - `dest` {строка} путь назначения для копирования.
-    - Возвращает: {boolean|Promise}
-  - `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
-  - `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
-  - `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
-  - `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `src` {string|URL} путь к источнику для копирования.
+-   `dest` {string|URL} путь назначения для копирования.
+-   `options` {Object}
+    -   `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
+    -   `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
+    -   `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. Может также возвращать `Promise`, который разрешается в `true` или `false` **По умолчанию:** `undefined`.
+        -   `src` {string} путь к источнику для копирования.
+        -   `dest` {строка} путь назначения для копирования.
+        -   Возвращает: {boolean|Promise}
+    -   `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
+    -   `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
+    -   `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
+    -   `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Асинхронно копирует всю структуру каталога из `src` в `dest`, включая подкаталоги и файлы.
 
@@ -653,9 +653,9 @@ try {
 
 ### `fsPromises.lchmod(path, mode)`
 
-- `path` {string|Buffer|URL}
-- `mode` {целое число}
-- Возвращает: {обещание} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `mode` {целое число}
+-   Возвращает: {обещание} Выполняется с `undefined` при успехе.
 
 Изменяет разрешения на символическую ссылку.
 
@@ -663,46 +663,46 @@ try {
 
 ### `fsPromises.lchown(path, uid, gid)`
 
-- `path` {string|Buffer|URL}
-- `uid` {целое число}
-- `gid` {целое число}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `uid` {целое число}
+-   `gid` {целое число}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Изменяет права собственности на символическую ссылку.
 
 ### `fsPromises.lutimes(path, atime, mtime)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Изменяет время доступа и модификации файла так же, как [`fsPromises.utimes()`](#fspromisesutimespath-atime-mtime), с той разницей, что если путь ссылается на символическую ссылку, то ссылка не разыменовывается: вместо этого изменяются временные метки самой символической ссылки.
 
 ### `fsPromises.link(existingPath, newPath)`
 
-- `existingPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `existingPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Создает новую ссылку с `existingPath` на `newPath`. Более подробную информацию см. в документации POSIX link(2).
 
 ### `fsPromises.lstat(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданной символической ссылки `path`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданной символической ссылки `path`.
 
 Эквивалентен [`fsPromises.stat()`](#fspromisesstatpath-options), если только `path` не ссылается на символическую ссылку, в этом случае статизируется сама ссылка, а не файл, на который она ссылается. Более подробную информацию см. в документе POSIX lstat(2).
 
 ### `fsPromises.mkdir(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object|integer}
-  - `recursive` {boolean} **По умолчанию:** `false`
-  - `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
-- Возвращает: {Promise} При успехе выполняет `undefined`, если `recursive` равно `false`, или первый созданный путь к каталогу, если `recursive` равно `true`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object|integer}
+    -   `recursive` {boolean} **По умолчанию:** `false`
+    -   `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
+-   Возвращает: {Promise} При успехе выполняет `undefined`, если `recursive` равно `false`, или первый созданный путь к каталогу, если `recursive` равно `true`.
 
 Асинхронно создает каталог.
 
@@ -712,17 +712,17 @@ try {
 import { mkdir } from 'node:fs/promises';
 
 try {
-  const projectFolder = new URL(
-    './test/project/',
-    import.meta.url
-  );
-  const createDir = await mkdir(projectFolder, {
-    recursive: true,
-  });
+    const projectFolder = new URL(
+        './test/project/',
+        import.meta.url
+    );
+    const createDir = await mkdir(projectFolder, {
+        recursive: true,
+    });
 
-  console.log(`created ${createDir}`);
+    console.log(`created ${createDir}`);
 } catch (err) {
-  console.error(err.message);
+    console.error(err.message);
 }
 ```
 
@@ -731,13 +731,17 @@ const { mkdir } = require('node:fs/promises');
 const { join } = require('node:path');
 
 async function makeDirectory() {
-  const projectFolder = join(__dirname, 'test', 'project');
-  const dirCreation = await mkdir(projectFolder, {
-    recursive: true,
-  });
+    const projectFolder = join(
+        __dirname,
+        'test',
+        'project'
+    );
+    const dirCreation = await mkdir(projectFolder, {
+        recursive: true,
+    });
 
-  console.log(dirCreation);
-  return dirCreation;
+    console.log(dirCreation);
+    return dirCreation;
 }
 
 makeDirectory().catch(console.error);
@@ -745,10 +749,10 @@ makeDirectory().catch(console.error);
 
 ### `fsPromises.mkdtemp(prefix[, options])`
 
-- `prefix` {string}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {Promise} Выполняется строкой, содержащей путь к файловой системе вновь созданного временного каталога.
+-   `prefix` {string}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {Promise} Выполняется строкой, содержащей путь к файловой системе вновь созданного временного каталога.
 
 Создает уникальный временный каталог. Уникальное имя каталога генерируется путем добавления шести случайных символов к концу предоставленного `префикса`. Из-за несоответствия платформ избегайте символов `X` в `prefix`. Некоторые платформы, в частности BSD, могут возвращать более шести случайных символов и заменять символы `X` в `prefix` случайными символами.
 
@@ -760,9 +764,9 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 try {
-  await mkdtemp(join(tmpdir(), 'foo-'));
+    await mkdtemp(join(tmpdir(), 'foo-'));
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -770,10 +774,10 @@ try {
 
 ### `fsPromises.open(path, flags[, mode])`
 
-- `path` {string|Buffer|URL}
-- `flags` {string|number} См. [поддержка файловой системы `flags`](#file-system-flags). **По умолчанию:** `'r'`.
-- `mode` {string|integer} Устанавливает режим файла (разрешение и биты залипания) при создании файла. **По умолчанию:** `0o666` (доступен для чтения и записи).
-- Возвращает: {Promise} Выполняется с объектом {FileHandle}.
+-   `path` {string|Buffer|URL}
+-   `flags` {string|number} См. [поддержка файловой системы `flags`](#file-system-flags). **По умолчанию:** `'r'`.
+-   `mode` {string|integer} Устанавливает режим файла (разрешение и биты залипания) при создании файла. **По умолчанию:** `0o666` (доступен для чтения и записи).
+-   Возвращает: {Promise} Выполняется с объектом {FileHandle}.
 
 Открывает {FileHandle}.
 
@@ -783,11 +787,11 @@ try {
 
 ### `fsPromises.opendir(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
-- Возвращает: {Promise} Выполняется с помощью {fs.Dir}.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
+-   Возвращает: {Promise} Выполняется с помощью {fs.Dir}.
 
 Асинхронно открывает каталог для итеративного сканирования. Более подробно см. документацию POSIX opendir(3).
 
@@ -801,10 +805,11 @@ try {
 import { opendir } from 'node:fs/promises';
 
 try {
-  const dir = await opendir('./');
-  for await (const dirent of dir) console.log(dirent.name);
+    const dir = await opendir('./');
+    for await (const dirent of dir)
+        console.log(dirent.name);
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -812,11 +817,11 @@ try {
 
 ### `fsPromises.readdir(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-  - `withFileTypes` {boolean} **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с массивом имен файлов в каталоге, исключая `...` и `...`.
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+    -   `withFileTypes` {boolean} **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с массивом имен файлов в каталоге, исключая `...` и `...`.
 
 Считывает содержимое каталога.
 
@@ -828,21 +833,21 @@ try {
 import { readdir } from 'node:fs/promises';
 
 try {
-  const files = await readdir(path);
-  for (const file of files) console.log(file);
+    const files = await readdir(path);
+    for (const file of files) console.log(file);
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
 ### `fsPromises.readFile(path[, options])`
 
-- `path` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `null`
-  - `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
-  - `signal` {AbortSignal} позволяет прервать выполняющееся чтение файла.
-- Возвращает: {Promise} Выполняется с содержимым файла.
+-   `path` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `null`
+    -   `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
+    -   `signal` {AbortSignal} позволяет прервать выполняющееся чтение файла.
+-   Возвращает: {Promise} Выполняется с содержимым файла.
 
 Асинхронно считывает все содержимое файла.
 
@@ -857,16 +862,16 @@ try {
 ```mjs
 import { readFile } from 'node:fs/promises';
 try {
-  const filePath = new URL(
-    './package.json',
-    import.meta.url
-  );
-  const contents = await readFile(filePath, {
-    encoding: 'utf8',
-  });
-  console.log(contents);
+    const filePath = new URL(
+        './package.json',
+        import.meta.url
+    );
+    const contents = await readFile(filePath, {
+        encoding: 'utf8',
+    });
+    console.log(contents);
 } catch (err) {
-  console.error(err.message);
+    console.error(err.message);
 }
 ```
 
@@ -874,15 +879,15 @@ try {
 const { readFile } = require('node:fs/promises');
 const { resolve } = require('node:path');
 async function logFile() {
-  try {
-    const filePath = resolve('./package.json');
-    const contents = await readFile(filePath, {
-      encoding: 'utf8',
-    });
-    console.log(contents);
-  } catch (err) {
-    console.error(err.message);
-  }
+    try {
+        const filePath = resolve('./package.json');
+        const contents = await readFile(filePath, {
+            encoding: 'utf8',
+        });
+        console.log(contents);
+    } catch (err) {
+        console.error(err.message);
+    }
 }
 logFile();
 ```
@@ -893,17 +898,17 @@ logFile();
 import { readFile } from 'node:fs/promises';
 
 try {
-  const controller = new AbortController();
-  const { signal } = controller;
-  const promise = readFile(fileName, { signal });
+    const controller = new AbortController();
+    const { signal } = controller;
+    const promise = readFile(fileName, { signal });
 
-  // Прервать запрос до того, как обещание исполнится.
-  controller.abort();
+    // Прервать запрос до того, как обещание исполнится.
+    controller.abort();
 
-  await promise;
+    await promise;
 } catch (err) {
-  // Когда запрос прерывается - err является AbortError
-  console.error(err);
+    // Когда запрос прерывается - err является AbortError
+    console.error(err);
 }
 ```
 
@@ -913,10 +918,10 @@ try {
 
 ### `fsPromises.readlink(path[, options])`
 
-- `путь` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {Promise} Выполняется с `linkString` при успехе.
+-   `путь` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {Promise} Выполняется с `linkString` при успехе.
 
 Читает содержимое символической ссылки, на которую ссылается `path`. Более подробно см. документацию POSIX readlink(2). Обещание выполняется с `linkString` после успеха.
 
@@ -924,10 +929,10 @@ try {
 
 ### `fsPromises.realpath(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {Promise} Выполняется с разрешенным путем при успехе.
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {Promise} Выполняется с разрешенным путем при успехе.
 
 Определяет фактическое местоположение `path`, используя ту же семантику, что и функция `fs.realpath.native()`.
 
@@ -939,20 +944,20 @@ try {
 
 ### `fsPromises.rename(oldPath, newPath)`
 
-- `oldPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `oldPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Переименовывает `oldPath` в `newPath`.
 
 ### `fsPromises.rmdir(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `maxRetries` {integer} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `maxRetries` {integer} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Удаляет каталог, идентифицированный `path`.
 
@@ -962,36 +967,36 @@ try {
 
 ### `fsPromises.rm(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
-  - `maxRetries` {integer} Если возникла ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` {integer} Если возникла ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Удаляет файлы и каталоги (по образцу стандартной утилиты POSIX `rm`).
 
 ### `fsPromises.stat(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданного `пути`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданного `пути`.
 
 ### `fsPromises.statfs(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {Promise} Выполняется с объектом {fs.StatFs} для заданного `пути`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {Promise} Выполняется с объектом {fs.StatFs} для заданного `пути`.
 
 ### `fsPromises.symlink(target, path[, type])`
 
-- `target` {string|Buffer|URL}
-- `path` {string|Buffer|URL}
-- `type` {string|null} **По умолчанию:** `null`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `target` {string|Buffer|URL}
+-   `path` {string|Buffer|URL}
+-   `type` {string|null} **По умолчанию:** `null`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Создает символическую ссылку.
 
@@ -999,44 +1004,44 @@ try {
 
 ### `fsPromises.truncate(path[, len])`
 
-- `path` {string|Buffer|URL}
-- `len` {целое число} **По умолчанию:** `0`.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `len` {целое число} **По умолчанию:** `0`.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Усекает (сокращает или увеличивает длину) содержимое по адресу `path` до `len` байт.
 
 ### `fsPromises.unlink(path)`
 
-- `path` {string|Buffer|URL}
-- Возвращает: {обещание} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   Возвращает: {обещание} Выполняется с `undefined` при успехе.
 
 Если `path` ссылается на символическую ссылку, то ссылка удаляется, не затрагивая файл или каталог, на который ссылается эта ссылка. Если `path` ссылается на путь к файлу, который не является символической ссылкой, то файл удаляется. Более подробно см. документацию POSIX unlink(2).
 
 ### `fsPromises.utimes(path, atime, mtime)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Изменяет временные метки файловой системы объекта, на который ссылается `path`.
 
 Аргументы `atime` и `mtime` следуют этим правилам:
 
-- Значения могут быть либо числами, представляющими время эпохи Unix, либо `Date`, либо числовой строкой типа `'123456789.0'`.
-- Если значение не может быть преобразовано в число, или является `NaN`, `Infinity`, или `-Infinity`, будет выдана `ошибка`.
+-   Значения могут быть либо числами, представляющими время эпохи Unix, либо `Date`, либо числовой строкой типа `'123456789.0'`.
+-   Если значение не может быть преобразовано в число, или является `NaN`, `Infinity`, или `-Infinity`, будет выдана `ошибка`.
 
 ### `fsPromises.watch(filename[, options])`
 
-- `filename` {string|Buffer|URL}
-- `options` {string|Object}
-  - `persistent` {boolean} Указывает, должен ли процесс продолжать выполняться, пока ведется наблюдение за файлами. **По умолчанию:** `true`.
-  - `recursive` {boolean} Указывает, должны ли просматриваться все подкаталоги или только текущий каталог. Применяется, если указан каталог, и только на поддерживаемых платформах (см. [caveats](#caveats)). **По умолчанию:** `false`.
-  - `encoding` {string} Указывает кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
-  - `signal` {AbortSignal} Сигнал {AbortSignal}, используемый для сигнализации о том, что наблюдатель должен остановиться.
-- Возвращает: {AsyncIterator} объектов со свойствами:
-  - `eventType` {string} Тип изменения
-  - `filename` {string|Buffer} Имя измененного файла.
+-   `filename` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `persistent` {boolean} Указывает, должен ли процесс продолжать выполняться, пока ведется наблюдение за файлами. **По умолчанию:** `true`.
+    -   `recursive` {boolean} Указывает, должны ли просматриваться все подкаталоги или только текущий каталог. Применяется, если указан каталог, и только на поддерживаемых платформах (см. [caveats](#caveats)). **По умолчанию:** `false`.
+    -   `encoding` {string} Указывает кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
+    -   `signal` {AbortSignal} Сигнал {AbortSignal}, используемый для сигнализации о том, что наблюдатель должен остановиться.
+-   Возвращает: {AsyncIterator} объектов со свойствами:
+    -   `eventType` {string} Тип изменения
+    -   `filename` {string|Buffer} Имя измененного файла.
 
 Возвращает асинхронный итератор, который отслеживает изменения в `filename`, где `filename` - это либо файл, либо каталог.
 
@@ -1048,13 +1053,14 @@ const { signal } = ac;
 setTimeout(() => ac.abort(), 10000);
 
 (async () => {
-  try {
-    const watcher = watch(__filename, { signal });
-    for await (const event of watcher) console.log(event);
-  } catch (err) {
-    if (err.name === 'AbortError') return;
-    throw err;
-  }
+    try {
+        const watcher = watch(__filename, { signal });
+        for await (const event of watcher)
+            console.log(event);
+    } catch (err) {
+        if (err.name === 'AbortError') return;
+        throw err;
+    }
 })();
 ```
 
@@ -1064,14 +1070,14 @@ setTimeout(() => ac.abort(), 10000);
 
 ### `fsPromises.writeFile(file, data[, options])`
 
-- `file` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
-- `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
-  - `signal` {AbortSignal} позволяет прервать текущую запись файла.
-- Возвращает: {Promise} Выполняется с `undefined` при успехе.
+-   `file` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
+-   `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
+    -   `signal` {AbortSignal} позволяет прервать текущую запись файла.
+-   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Асинхронно записывает данные в файл, заменяя файл, если он уже существует. `data` может быть строкой, буфером, объектом {AsyncIterable} или {Iterable}.
 
@@ -1094,20 +1100,22 @@ import { writeFile } from 'node:fs/promises';
 import { Buffer } from 'node:buffer';
 
 try {
-  const controller = new AbortController();
-  const { signal } = controller;
-  const data = new Uint8Array(Buffer.from('Hello Node.js'));
-  const promise = writeFile('message.txt', data, {
-    signal,
-  });
+    const controller = new AbortController();
+    const { signal } = controller;
+    const data = new Uint8Array(
+        Buffer.from('Hello Node.js')
+    );
+    const promise = writeFile('message.txt', data, {
+        signal,
+    });
 
-  // Прервите запрос до того, как обещание установится.
-  controller.abort();
+    // Прервите запрос до того, как обещание установится.
+    controller.abort();
 
-  await promise;
+    await promise;
 } catch (err) {
-  // Когда запрос прерывается - err является AbortError
-  console.error(err);
+    // Когда запрос прерывается - err является AbortError
+    console.error(err);
 }
 ```
 
@@ -1115,7 +1123,7 @@ try {
 
 ### `fsPromises.constants`
 
-- {Object}
+-   {Object}
 
 Возвращает объект, содержащий часто используемые константы для операций с файловой системой. Объект аналогичен `fs.constants`. Более подробную информацию смотрите в [FS constants](#fs-constants).
 
@@ -1127,10 +1135,10 @@ API обратного вызова используют базовый пул �
 
 ### `fs.access(path[, mode], callback)`
 
-- `path` {string|Buffer|URL}
-- `mode` {integer} **По умолчанию:** `fs.constants.F_OK`
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `mode` {integer} **По умолчанию:** `fs.constants.F_OK`
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Проверяет права доступа пользователя к файлу или каталогу, указанному в `path`. Аргумент `mode` является необязательным целым числом, которое указывает, какие проверки доступности должны быть выполнены. `mode` должно быть либо значением `fs.constants.F_OK`, либо маской, состоящей из побитового OR любого из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Возможные значения `mode` смотрите в [File access constants](#file-access-constants).
 
@@ -1143,30 +1151,32 @@ const file = 'package.json';
 
 // Проверяем, существует ли файл в текущем каталоге.
 access(file, constants.F_OK, (err) => {
-  console.log(
-    `${файл} ${err ? 'не существует' : 'существует'}`
-  );
+    console.log(
+        `${файл} ${err ? 'не существует' : 'существует'}`
+    );
 });
 
 // Проверяем, доступен ли файл для чтения.
 access(file, constants.R_OK, (err) => {
-  console.log(
-    `${file} ${err ? 'is not readable' : 'is readable'}`
-  );
+    console.log(
+        `${file} ${err ? 'is not readable' : 'is readable'}`
+    );
 });
 
 // Проверьте, доступен ли файл для записи.
 access(file, constants.W_OK, (err) => {
-  console.log(
-    `${file} ${err ? 'is not writable' : 'is writable'}`
-  );
+    console.log(
+        `${file} ${err ? 'is not writable' : 'is writable'}`
+    );
 });
 
 // Проверьте, доступен ли файл для чтения и записи.
 access(file, constants.R_OK | constants.W_OK, (err) => {
-  console.log(
-    `${file} ${err ? 'is not' : 'is'} readable and writable`
-  );
+    console.log(
+        `${file} ${
+            err ? 'is not' : 'is'
+        } readable and writable`
+    );
 });
 ```
 
@@ -1178,22 +1188,22 @@ access(file, constants.R_OK | constants.W_OK, (err) => {
 import { access, open, close } from 'node:fs';
 
 access('myfile', (err) => {
-  if (!err) {
-    console.error('myfile уже существует');
-    return;
-  }
-
-  open('myfile', 'wx', (err, fd) => {
-    if (err) throw err;
-
-    try {
-      writeMyData(fd);
-    } finally {
-      close(fd, (err) => {
-        if (err) throw err;
-      });
+    if (!err) {
+        console.error('myfile уже существует');
+        return;
     }
-  });
+
+    open('myfile', 'wx', (err, fd) => {
+        if (err) throw err;
+
+        try {
+            writeMyData(fd);
+        } finally {
+            close(fd, (err) => {
+                if (err) throw err;
+            });
+        }
+    });
 });
 ```
 
@@ -1203,22 +1213,22 @@ access('myfile', (err) => {
 import { open, close } from 'node:fs';
 
 open('myfile', 'wx', (err, fd) => {
-  if (err) {
-    if (err.code === 'EEXIST') {
-      console.error('myfile уже существует');
-      return;
+    if (err) {
+        if (err.code === 'EEXIST') {
+            console.error('myfile уже существует');
+            return;
+        }
+
+        throw err;
     }
 
-    throw err;
-  }
-
-  try {
-    writeMyData(fd);
-  } finally {
-    close(fd, (err) => {
-      if (err) throw err;
-    });
-  }
+    try {
+        writeMyData(fd);
+    } finally {
+        close(fd, (err) => {
+            if (err) throw err;
+        });
+    }
 });
 ```
 
@@ -1227,26 +1237,26 @@ open('myfile', 'wx', (err, fd) => {
 ```mjs
 import { access, open, close } from 'node:fs';
 access('myfile', (err) => {
-  if (err) {
-    if (err.code === 'ENOENT') {
-      console.error('myfile does not exist');
-      return;
+    if (err) {
+        if (err.code === 'ENOENT') {
+            console.error('myfile does not exist');
+            return;
+        }
+
+        throw err;
     }
 
-    throw err;
-  }
-
-  open('myfile', 'r', (err, fd) => {
-    if (err) throw err;
-
-    try {
-      readMyData(fd);
-    } finally {
-      close(fd, (err) => {
+    open('myfile', 'r', (err, fd) => {
         if (err) throw err;
-      });
-    }
-  });
+
+        try {
+            readMyData(fd);
+        } finally {
+            close(fd, (err) => {
+                if (err) throw err;
+            });
+        }
+    });
 });
 ```
 
@@ -1256,22 +1266,22 @@ access('myfile', (err) => {
 import { open, close } from 'node:fs';
 
 open('myfile', 'r', (err, fd) => {
-  if (err) {
-    if (err.code === 'ENOENT') {
-      console.error('myfile does not exist');
-      return;
+    if (err) {
+        if (err.code === 'ENOENT') {
+            console.error('myfile does not exist');
+            return;
+        }
+
+        throw err;
     }
 
-    throw err;
-  }
-
-  try {
-    readMyData(fd);
-  } finally {
-    close(fd, (err) => {
-      if (err) throw err;
-    });
-  }
+    try {
+        readMyData(fd);
+    } finally {
+        close(fd, (err) => {
+            if (err) throw err;
+        });
+    }
 });
 ```
 
@@ -1283,14 +1293,14 @@ open('myfile', 'r', (err, fd) => {
 
 ### `fs.appendFile(path, data[, options], callback)`
 
-- `path` {string|Buffer|URL|number} имя файла или дескриптор файла
-- `data` {string|Buffer}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL|number} имя файла или дескриптор файла
+-   `data` {string|Buffer}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронно добавляет данные в файл, создавая файл, если он еще не существует. `data` может быть строкой или {Buffer}.
 
@@ -1300,14 +1310,14 @@ open('myfile', 'r', (err, fd) => {
 import { appendFile } from 'node:fs';
 
 appendFile(
-  'message.txt',
-  'данные для добавления',
-  (err) => {
-    if (err) throw err;
-    console.log(
-      'Данные "data to append" были добавлены в файл!'
-    );
-  }
+    'message.txt',
+    'данные для добавления',
+    (err) => {
+        if (err) throw err;
+        console.log(
+            'Данные "data to append" были добавлены в файл!'
+        );
+    }
 );
 ```
 
@@ -1317,10 +1327,10 @@ appendFile(
 import { appendFile } from 'node:fs';
 
 appendFile(
-  'message.txt',
-  'data to append',
-  'utf8',
-  callback
+    'message.txt',
+    'data to append',
+    'utf8',
+    callback
 );
 ```
 
@@ -1330,37 +1340,37 @@ appendFile(
 import { open, close, appendFile } from 'node:fs';
 
 function closeFd(fd) {
-  close(fd, (err) => {
-    if (err) throw err;
-  });
+    close(fd, (err) => {
+        if (err) throw err;
+    });
 }
 
 open('message.txt', 'a', (err, fd) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  try {
-    appendFile(
-      fd,
-      'данные для добавления',
-      'utf8',
-      (err) => {
+    try {
+        appendFile(
+            fd,
+            'данные для добавления',
+            'utf8',
+            (err) => {
+                closeFd(fd);
+                if (err) throw err;
+            }
+        );
+    } catch (err) {
         closeFd(fd);
-        if (err) throw err;
-      }
-    );
-  } catch (err) {
-    closeFd(fd);
-    throw err;
-  }
+        throw err;
+    }
 });
 ```
 
 ### `fs.chmod(path, mode, callback)`
 
-- `path` {string|Buffer|URL}
-- `mode` {string|integer}
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `mode` {string|integer}
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронно изменяет разрешения файла. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1370,10 +1380,10 @@ open('message.txt', 'a', (err, fd) => {
 import { chmod } from 'node:fs';
 
 chmod('my_file.txt', 0o775, (err) => {
-  if (err) throw err;
-  console.log(
-    'Разрешения для файла "my_file.txt" были изменены!'
-  );
+    if (err) throw err;
+    console.log(
+        'Разрешения для файла "my_file.txt" были изменены!'
+    );
 });
 ```
 
@@ -1485,9 +1495,9 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 Например, восьмеричное значение `0o765` означает:
 
-- Владелец может читать, записывать и выполнять файл.
-- Группа может читать и записывать файл.
-- Другие могут читать и исполнять файл.
+-   Владелец может читать, записывать и выполнять файл.
+-   Группа может читать и записывать файл.
+-   Другие могут читать и исполнять файл.
 
 При использовании необработанных чисел, где ожидаются файловые режимы, любое значение больше `0o777` может привести к специфическому для платформы поведению, которое не поддерживается для последовательной работы. Поэтому константы типа `S_ISVTX`, `S_ISGID` или `S_ISUID` не раскрываются в `fs.constants`.
 
@@ -1495,11 +1505,11 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 ### `fs.chown(path, uid, gid, callback)`
 
-- `path` {string|Buffer|URL}
-- `uid` {целое число}
-- `gid` {целое число}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `uid` {целое число}
+-   `gid` {целое число}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Асинхронно изменяет владельца и группу файла. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1507,9 +1517,9 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 ### `fs.close(fd[, callback])`
 
-- `fd` {целое число}
-- `callback` {функция}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `callback` {функция}
+    -   `err` {Ошибка}
 
 Закрывает дескриптор файла. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1519,27 +1529,27 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 ### `fs.copyFile(src, dest[, mode], callback)`
 
-- `src` {string|Buffer|URL} имя исходного файла для копирования
-- `dest` {string|Buffer|URL} имя файла назначения операции копирования
-- `mode` {целое число} модификаторы для операции копирования. **По умолчанию:** `0`.
-- `callback` {функция}
+-   `src` {string|Buffer|URL} имя исходного файла для копирования
+-   `dest` {string|Buffer|URL} имя файла назначения операции копирования
+-   `mode` {целое число} модификаторы для операции копирования. **По умолчанию:** `0`.
+-   `callback` {функция}
 
 Асинхронно копирует `src` в `dest`. По умолчанию, `dest` перезаписывается, если он уже существует. Никаких аргументов, кроме возможного исключения, функции обратного вызова не передается. Node.js не дает никаких гарантий относительно атомарности операции копирования. Если после открытия файла назначения для записи произошла ошибка, Node.js попытается удалить его.
 
 `mode` - необязательное целое число, определяющее поведение операции копирования. Можно создать маску, состоящую из побитового ИЛИ двух или более значений (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
 
-- `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
-- `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
-- `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
+-   `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
+-   `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
+-   `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
 
 ```mjs
 import { copyFile, constants } from 'node:fs';
 
 function callback(err) {
-  if (err) throw err;
-  console.log(
-    'source.txt был скопирован в destination.txt'
-  );
+    if (err) throw err;
+    console.log(
+        'source.txt был скопирован в destination.txt'
+    );
 }
 
 // destination.txt будет создан или перезаписан по умолчанию.
@@ -1547,10 +1557,10 @@ copyFile('source.txt', 'destination.txt', callback);
 
 // При использовании COPYFILE_EXCL операция завершится неудачно, если файл destination.txt существует.
 copyFile(
-  'source.txt',
-  'destination.txt',
-  constants.COPYFILE_EXCL,
-  callback
+    'source.txt',
+    'destination.txt',
+    constants.COPYFILE_EXCL,
+    callback
 );
 ```
 
@@ -1560,20 +1570,20 @@ copyFile(
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `src` {string|URL} путь к источнику для копирования.
-- `dest` {string|URL} путь назначения для копирования.
-- `options` {Object}
-  - `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
-  - `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
-  - `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. Может также возвращать `Promise`, который разрешается в `true` или `false` **По умолчанию:** `undefined`.
-    - `src` {string} путь к источнику для копирования.
-    - `dest` {строка} путь назначения для копирования.
-    - Возвращает: {boolean|Promise}
-  - `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
-  - `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
-  - `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
-  - `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
-- `callback` {Функция}
+-   `src` {string|URL} путь к источнику для копирования.
+-   `dest` {string|URL} путь назначения для копирования.
+-   `options` {Object}
+    -   `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
+    -   `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
+    -   `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. Может также возвращать `Promise`, который разрешается в `true` или `false` **По умолчанию:** `undefined`.
+        -   `src` {string} путь к источнику для копирования.
+        -   `dest` {строка} путь назначения для копирования.
+        -   Возвращает: {boolean|Promise}
+    -   `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
+    -   `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
+    -   `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
+    -   `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
+-   `callback` {Функция}
 
 Асинхронно копирует всю структуру каталога из `src` в `dest`, включая подкаталоги и файлы.
 
@@ -1581,20 +1591,20 @@ copyFile(
 
 ### `fs.createReadStream(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `flags` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
-  - `encoding` {string} **По умолчанию:** `null`.
-  - `fd` {integer|FileHandle} **По умолчанию:** `null`.
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `autoClose` {boolean} **По умолчанию:** `true`
-  - `emitClose` {boolean} **По умолчанию:** `true`
-  - `start` {integer}
-  - `end` {integer} **По умолчанию:** `бесконечность`
-  - `highWaterMark` {integer} **По умолчанию:** `64 * 1024`
-  - `fs` {Object|null} **По умолчанию:** `null`.
-  - `signal` {AbortSignal|null} **По умолчанию:** `null`.
-- Возвращает: {fs.ReadStream}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `flags` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
+    -   `encoding` {string} **По умолчанию:** `null`.
+    -   `fd` {integer|FileHandle} **По умолчанию:** `null`.
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `autoClose` {boolean} **По умолчанию:** `true`
+    -   `emitClose` {boolean} **По умолчанию:** `true`
+    -   `start` {integer}
+    -   `end` {integer} **По умолчанию:** `бесконечность`
+    -   `highWaterMark` {integer} **По умолчанию:** `64 * 1024`
+    -   `fs` {Object|null} **По умолчанию:** `null`.
+    -   `signal` {AbortSignal|null} **По умолчанию:** `null`.
+-   Возвращает: {fs.ReadStream}
 
 В отличие от 16 KiB по умолчанию `highWaterMark` для {stream.Readable}, поток, возвращаемый этим методом, имеет `highWaterMark` по умолчанию 64 KiB.
 
@@ -1614,14 +1624,14 @@ import { createReadStream } from 'node:fs';
 // Создаем поток из некоторого символьного устройства.
 const stream = createReadStream('/dev/input/event0');
 setTimeout(() => {
-  stream.close(); // Это может не закрыть поток.
-  // Искусственное обозначение конца потока, как если бы базовый ресурс сам по себе
-  // сам по себе обозначил конец файла, позволяет потоку закрыться.
-  // Это не отменяет ожидающие операции чтения, и если такая операция есть, то процесс может не закрыть поток.
-  // операция, процесс все равно не сможет успешно завершиться.
-  // пока она не завершится.
-  stream.push(null);
-  stream.read(0);
+    stream.close(); // Это может не закрыть поток.
+    // Искусственное обозначение конца потока, как если бы базовый ресурс сам по себе
+    // сам по себе обозначил конец файла, позволяет потоку закрыться.
+    // Это не отменяет ожидающие операции чтения, и если такая операция есть, то процесс может не закрыть поток.
+    // операция, процесс все равно не сможет успешно завершиться.
+    // пока она не завершится.
+    stream.push(null);
+    stream.read(0);
 }, 100);
 ```
 
@@ -1641,18 +1651,18 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 
 ### `fs.createWriteStream(path[, options])`
 
-- `путь` {string|Buffer|URL}
-- `options` {string|Object}
-  - `flags` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-  - `fd` {integer|FileHandle} **По умолчанию:** `null`.
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `autoClose` {boolean} **По умолчанию:** `true`
-  - `emitClose` {boolean} **По умолчанию:** `true`
-  - `start` {integer}
-  - `fs` {Object|null} **По умолчанию:** `null`.
-  - `signal` {AbortSignal|null} **По умолчанию:** `null`.
-- Возвращает: {fs.WriteStream}
+-   `путь` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `flags` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+    -   `fd` {integer|FileHandle} **По умолчанию:** `null`.
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `autoClose` {boolean} **По умолчанию:** `true`
+    -   `emitClose` {boolean} **По умолчанию:** `true`
+    -   `start` {integer}
+    -   `fs` {Object|null} **По умолчанию:** `null`.
+    -   `signal` {AbortSignal|null} **По умолчанию:** `null`.
+-   Возвращает: {fs.WriteStream}
 
 `options` может также включать опцию `start`, чтобы разрешить запись данных в некоторой позиции после начала файла, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)\]. Модификация файла, а не его замена может потребовать установки опции `flags` в значение `r+`, а не `w` по умолчанию. Кодировка `encoding` может быть любой из тех, которые принимает {Buffer}.
 
@@ -1674,9 +1684,9 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 
     Вместо этого используйте [`fs.stat()`](#fsstatpath-options-callback) или [`fs.access()`](#fsaccesspath-mode-callback).
 
-- `path` {string|Buffer|URL}
-- `callback` {Function}
-  - `exists` {boolean}
+-   `path` {string|Buffer|URL}
+-   `callback` {Function}
+    -   `exists` {boolean}
 
 Проверяет, существует ли заданный путь, сверяясь с файловой системой. Затем вызовите аргумент `callback`, указав true или false:
 
@@ -1684,7 +1694,7 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 import { exists } from 'node:fs';
 
 exists('/etc/passwd', (e) => {
-  console.log(e ? 'он существует' : 'нет passwd!');
+    console.log(e ? 'он существует' : 'нет passwd!');
 });
 ```
 
@@ -1698,21 +1708,21 @@ exists('/etc/passwd', (e) => {
 import { exists, open, close } from 'node:fs';
 
 exists('myfile', (e) => {
-  if (e) {
-    console.error('myfile уже существует');
-  } else {
-    open('myfile', 'wx', (err, fd) => {
-      if (err) throw err;
+    if (e) {
+        console.error('myfile уже существует');
+    } else {
+        open('myfile', 'wx', (err, fd) => {
+            if (err) throw err;
 
-      try {
-        writeMyData(fd);
-      } finally {
-        close(fd, (err) => {
-          if (err) throw err;
+            try {
+                writeMyData(fd);
+            } finally {
+                close(fd, (err) => {
+                    if (err) throw err;
+                });
+            }
         });
-      }
-    });
-  }
+    }
 });
 ```
 
@@ -1721,22 +1731,22 @@ exists('myfile', (e) => {
 ```mjs
 import { open, close } from 'node:fs';
 open('myfile', 'wx', (err, fd) => {
-  if (err) {
-    if (err.code === 'EEXIST') {
-      console.error('myfile уже существует');
-      return;
+    if (err) {
+        if (err.code === 'EEXIST') {
+            console.error('myfile уже существует');
+            return;
+        }
+
+        throw err;
     }
 
-    throw err;
-  }
-
-  try {
-    writeMyData(fd);
-  } finally {
-    close(fd, (err) => {
-      if (err) throw err;
-    });
-  }
+    try {
+        writeMyData(fd);
+    } finally {
+        close(fd, (err) => {
+            if (err) throw err;
+        });
+    }
 });
 ```
 
@@ -1746,21 +1756,21 @@ open('myfile', 'wx', (err, fd) => {
 import { open, close, exists } from 'node:fs';
 
 exists('myfile', (e) => {
-  if (e) {
-    open('myfile', 'r', (err, fd) => {
-      if (err) throw err;
+    if (e) {
+        open('myfile', 'r', (err, fd) => {
+            if (err) throw err;
 
-      try {
-        readMyData(fd);
-      } finally {
-        close(fd, (err) => {
-          if (err) throw err;
+            try {
+                readMyData(fd);
+            } finally {
+                close(fd, (err) => {
+                    if (err) throw err;
+                });
+            }
         });
-      }
-    });
-  } else {
-    console.error('myfile does not exist');
-  }
+    } else {
+        console.error('myfile does not exist');
+    }
 });
 ```
 
@@ -1770,22 +1780,22 @@ exists('myfile', (e) => {
 import { open, close } from 'node:fs';
 
 open('myfile', 'r', (err, fd) => {
-  if (err) {
-    if (err.code === 'ENOENT') {
-      console.error('myfile не существует');
-      return;
+    if (err) {
+        if (err.code === 'ENOENT') {
+            console.error('myfile не существует');
+            return;
+        }
+
+        throw err;
     }
 
-    throw err;
-  }
-
-  try {
-    readMyData(fd);
-  } finally {
-    close(fd, (err) => {
-      if (err) throw err;
-    });
-  }
+    try {
+        readMyData(fd);
+    } finally {
+        close(fd, (err) => {
+            if (err) throw err;
+        });
+    }
 });
 ```
 
@@ -1795,10 +1805,10 @@ open('myfile', 'r', (err, fd) => {
 
 ### `fs.fchmod(fd, mode, callback)`
 
-- `fd` {целое число}
-- `mode` {string|integer}
-- `callback` {функция}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `mode` {string|integer}
+-   `callback` {функция}
+    -   `err` {Ошибка}
 
 Устанавливает разрешения на файл. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1806,11 +1816,11 @@ open('myfile', 'r', (err, fd) => {
 
 ### `fs.fchown(fd, uid, gid, callback)`
 
-- `fd` {целое число}
-- `uid` {integer}
-- `gid` {integer}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `uid` {integer}
+-   `gid` {integer}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Устанавливает владельца файла. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1818,20 +1828,20 @@ open('myfile', 'r', (err, fd) => {
 
 ### `fs.fdatasync(fd, callback)`
 
-- `fd` {целое число}
-- `callback` {функция}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `callback` {функция}
+    -   `err` {Ошибка}
 
 Переводит все текущие операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода операционной системы. Подробности см. в документации POSIX fdatasync(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
 ### `fs.fstat(fd[, options], callback)`
 
-- `fd` {integer}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `stats` {fs.Stats}
+-   `fd` {integer}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `stats` {fs.Stats}
 
 Вызывает обратный вызов с {fs.Stats} для дескриптора файла.
 
@@ -1839,18 +1849,18 @@ open('myfile', 'r', (err, fd) => {
 
 ### `fs.fsync(fd, callback)`
 
-- `fd` {целое число}
-- `callback` {функция}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `callback` {функция}
+    -   `err` {Ошибка}
 
 Запрос на то, чтобы все данные для открытого файлового дескриптора были сброшены на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. За более подробной информацией обратитесь к документации POSIX fsync(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
 ### `fs.ftruncate(fd[, len], callback)`
 
-- `fd` {целое число}
-- `len` {целое число} **По умолчанию:** `0`
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `len` {целое число} **По умолчанию:** `0`
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Усекает дескриптор файла. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1864,23 +1874,23 @@ open('myfile', 'r', (err, fd) => {
 import { open, close, ftruncate } from 'node:fs';
 
 function closeFd(fd) {
-  close(fd, (err) => {
-    if (err) throw err;
-  });
+    close(fd, (err) => {
+        if (err) throw err;
+    });
 }
 
 open('temp.txt', 'r+', (err, fd) => {
-  if (err) throw err;
-
-  try {
-    ftruncate(fd, 4, (err) => {
-      closeFd(fd);
-      if (err) throw err;
-    });
-  } catch (err) {
-    closeFd(fd);
     if (err) throw err;
-  }
+
+    try {
+        ftruncate(fd, 4, (err) => {
+            closeFd(fd);
+            if (err) throw err;
+        });
+    } catch (err) {
+        closeFd(fd);
+        if (err) throw err;
+    }
 });
 ```
 
@@ -1890,20 +1900,20 @@ open('temp.txt', 'r+', (err, fd) => {
 
 ### `fs.futimes(fd, atime, mtime, callback)`
 
-- `fd` {целое число}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `fd` {целое число}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Изменяет временные метки файловой системы объекта, на который ссылается предоставленный файловый дескриптор. См. [`fs.utimes()`](#fsutimespath-atime-mtime-callback).
 
 ### `fs.lchmod(path, mode, callback)`
 
-- `path` {string|Buffer|URL}
-- `mode` {integer}
-- `callback` {функция}
-  - `err` {Error|AggregateError}
+-   `path` {string|Buffer|URL}
+-   `mode` {integer}
+-   `callback` {функция}
+    -   `err` {Error|AggregateError}
 
 Изменяет права доступа к символической ссылке. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1913,11 +1923,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 ### `fs.lchown(path, uid, gid, callback)`
 
-- `path` {string|Buffer|URL}
-- `uid` {integer}
-- `gid` {целое число}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `uid` {integer}
+-   `gid` {целое число}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Установить владельца символической ссылки. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -1925,11 +1935,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 ### `fs.lutimes(path, atime, mtime, callback)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Изменяет время доступа и модификации файла так же, как [`fs.utimes()`](#fsutimespath-atime-mtime-callback), с той разницей, что если путь ссылается на символическую ссылку, то ссылка не разыменовывается: вместо этого изменяются временные метки самой символической ссылки.
 
@@ -1937,21 +1947,21 @@ open('temp.txt', 'r+', (err, fd) => {
 
 ### `fs.link(existingPath, newPath, callback)`
 
-- `existingPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `existingPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Создает новую ссылку с `existingPath` на `newPath`. Более подробно см. документацию POSIX link(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
 ### `fs.lstat(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `stats` {fs.Stats}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `stats` {fs.Stats}
 
 Получает {fs.Stats} для символической ссылки, на которую ссылается путь. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.Stats}. `lstat()` идентичен `stat()`, за исключением того, что если `path` является символической ссылкой, то статизируется сама ссылка, а не файл, на который она ссылается.
 
@@ -1959,13 +1969,13 @@ open('temp.txt', 'r+', (err, fd) => {
 
 ### `fs.mkdir(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object|integer}
-  - `recursive` {boolean} **По умолчанию:** `false`
-  - `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `path` {string|undefined} Присутствует, только если каталог создается с `recursive`, установленным в `true`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object|integer}
+    -   `recursive` {boolean} **По умолчанию:** `false`
+    -   `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `path` {string|undefined} Присутствует, только если каталог создается с `recursive`, установленным в `true`.
 
 Асинхронно создает каталог.
 
@@ -1978,7 +1988,7 @@ import { mkdir } from 'node:fs';
 
 // Создает /tmp/a/apple, независимо от того, существуют ли `/tmp` и /tmp/a.
 mkdir('/tmp/a/apple', { recursive: true }, (err) => {
-  if (err) throw err;
+    if (err) throw err;
 });
 ```
 
@@ -1988,7 +1998,7 @@ mkdir('/tmp/a/apple', { recursive: true }, (err) => {
 import { mkdir } from 'node:fs';
 
 mkdir('/', { recursive: true }, (err) => {
-  // => [Error: EPERM: операция не разрешена, mkdir 'C:\']
+    // => [Error: EPERM: операция не разрешена, mkdir 'C:\']
 });
 ```
 
@@ -1996,12 +2006,12 @@ mkdir('/', { recursive: true }, (err) => {
 
 ### `fs.mkdtemp(prefix[, options], callback)`
 
-- `prefix` {string}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `directory` {string}
+-   `prefix` {string}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `directory` {string}
 
 Создает уникальный временный каталог.
 
@@ -2017,9 +2027,9 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 mkdtemp(join(tmpdir(), 'foo-'), (err, directory) => {
-  if (err) throw err;
-  console.log(directory);
-  // Печатает: /tmp/foo-itXde2 или C:\Users\...\AppData\Local\Temp\foo-itXde2
+    if (err) throw err;
+    console.log(directory);
+    // Печатает: /tmp/foo-itXde2 или C:\Users\...\AppData\Local\Temp\foo-itXde2
 });
 ```
 
@@ -2034,32 +2044,32 @@ const tmpDir = tmpdir();
 
 // Этот метод *НЕПРАВИЛЬНЫЙ*:
 mkdtemp(tmpDir, (err, directory) => {
-  if (err) throw err;
-  console.log(directory);
-  // Будет выведено что-то похожее на `/tmpabc123`.
-  // Новый временный каталог создается в корне файловой системы.
-  // а не *внутри* каталога /tmp.
+    if (err) throw err;
+    console.log(directory);
+    // Будет выведено что-то похожее на `/tmpabc123`.
+    // Новый временный каталог создается в корне файловой системы.
+    // а не *внутри* каталога /tmp.
 });
 
 // Этот метод является *КОРРЕКТНЫМ*:
 import { sep } from 'node:path';
 mkdtemp(`${tmpDir}${sep}`, (err, directory) => {
-  if (err) throw err;
-  console.log(directory);
-  // Будет выведено что-то похожее на `/tmp/abc123`.
-  // Создается новый временный каталог внутри
-  // каталога /tmp.
+    if (err) throw err;
+    console.log(directory);
+    // Будет выведено что-то похожее на `/tmp/abc123`.
+    // Создается новый временный каталог внутри
+    // каталога /tmp.
 });
 ```
 
 ### `fs.open(path[, flags[, mode]], callback)`
 
-- `path` {string|Buffer|URL}
-- `flags` {string|number} См. [поддержка файловой системы `flags`](#file-system-flags). **По умолчанию:** `'r'`.
-- `mode` {string|integer} **По умолчанию:** `0o666` (доступен для чтения и записи).
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `fd` {integer}
+-   `path` {string|Buffer|URL}
+-   `flags` {string|number} См. [поддержка файловой системы `flags`](#file-system-flags). **По умолчанию:** `'r'`.
+-   `mode` {string|integer} **По умолчанию:** `0o666` (доступен для чтения и записи).
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `fd` {integer}
 
 Асинхронное открытие файла. Подробнее см. документацию POSIX open(2).
 
@@ -2077,10 +2087,10 @@ mkdtemp(`${tmpDir}${sep}`, (err, directory) => {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `type` {string} Необязательный тип mime для блоба.
-- Возвращает: {Promise}, содержащий {Blob}.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `type` {string} Необязательный тип mime для блоба.
+-   Возвращает: {Promise}, содержащий {Blob}.
 
 Возвращает {Blob}, данные которого хранятся в указанном файле.
 
@@ -2098,21 +2108,21 @@ blob.stream();
 const { openAsBlob } = require('node:fs');
 
 (async () => {
-  const blob = await openAsBlob('the.file.txt');
-  const ab = await blob.arrayBuffer();
-  blob.stream();
+    const blob = await openAsBlob('the.file.txt');
+    const ab = await blob.arrayBuffer();
+    blob.stream();
 })();
 ```
 
 ### `fs.opendir(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `dir` {fs.Dir}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `dir` {fs.Dir}
 
 Асинхронно открыть каталог. Подробнее см. документацию POSIX opendir(3).
 
@@ -2122,15 +2132,15 @@ const { openAsBlob } = require('node:fs');
 
 ### `fs.read(fd, buffer, offset, length, position, callback)`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView} Буфер, в который будут записаны данные.
-- `offset` {integer} Позиция в `buffer` для записи данных.
-- `length` {integer} Количество байтов для чтения.
-- `position` {integer|bigint|null} Указывает, с какого места в файле начинать чтение. Если `position` равно `null` или `-1`, данные будут прочитаны из текущей позиции файла, а позиция файла будет обновлена. Если `position` - целое число, позиция файла останется неизменной.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesRead` {целое число}
-  - `buffer` {Буфер}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView} Буфер, в который будут записаны данные.
+-   `offset` {integer} Позиция в `buffer` для записи данных.
+-   `length` {integer} Количество байтов для чтения.
+-   `position` {integer|bigint|null} Указывает, с какого места в файле начинать чтение. Если `position` равно `null` или `-1`, данные будут прочитаны из текущей позиции файла, а позиция файла будет обновлена. Если `position` - целое число, позиция файла останется неизменной.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesRead` {целое число}
+    -   `buffer` {Буфер}
 
 Чтение данных из файла, указанного `fd`.
 
@@ -2142,43 +2152,43 @@ const { openAsBlob } = require('node:fs');
 
 ### `fs.read(fd[, options], callback)`
 
-- `fd` {integer}
-- `options` {Object}
-  - `buffer` {Buffer|TypedArray|DataView} **По умолчанию:** `Buffer.alloc(16384)`
-  - `offset` {integer} **По умолчанию:** `0`
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-  - `позиция` {integer|bigint|null} **По умолчанию:** `null`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesRead` {integer}
-  - `buffer` {Буфер}
+-   `fd` {integer}
+-   `options` {Object}
+    -   `buffer` {Buffer|TypedArray|DataView} **По умолчанию:** `Buffer.alloc(16384)`
+    -   `offset` {integer} **По умолчанию:** `0`
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+    -   `позиция` {integer|bigint|null} **По умолчанию:** `null`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesRead` {integer}
+    -   `buffer` {Буфер}
 
 Подобно функции [`fs.read()`](#fsreadfd-buffer-offset-length-position-callback), эта версия принимает необязательный объект `options`. Если объект `options` не указан, то по умолчанию будут использоваться вышеуказанные значения.
 
 ### `fs.read(fd, buffer[, options], callback)`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView} Буфер, в который будут записаны данные.
-- `options` {Object}
-  - `offset` {integer} **По умолчанию:** `0`.
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`.
-  - `позиция` {integer|bigint} **По умолчанию:** `null`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesRead` {integer}
-  - `buffer` {Буфер}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView} Буфер, в который будут записаны данные.
+-   `options` {Object}
+    -   `offset` {integer} **По умолчанию:** `0`.
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`.
+    -   `позиция` {integer|bigint} **По умолчанию:** `null`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesRead` {integer}
+    -   `buffer` {Буфер}
 
 Подобно функции [`fs.read()`](#fsreadfd-buffer-offset-length-position-callback), эта версия принимает необязательный объект `options`. Если объект `options` не указан, то по умолчанию будут использоваться вышеуказанные значения.
 
 ### `fs.readdir(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-  - `withFileTypes` {boolean} **По умолчанию:** `false`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `files` {string\[\]|Buffer\[\]|fs.Dirent\[\]}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+    -   `withFileTypes` {boolean} **По умолчанию:** `false`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `files` {string\[\]|Buffer\[\]|fs.Dirent\[\]}
 
 Читает содержимое каталога. Обратный вызов получает два аргумента `(err, files)`, где `files` - массив имен файлов в каталоге, исключая `'.'` и `...`.
 
@@ -2190,14 +2200,14 @@ const { openAsBlob } = require('node:fs');
 
 ### `fs.readFile(path[, options], callback)`
 
-- `path` {string|Buffer|URL|integer} имя файла или дескриптор файла
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `null`
-  - `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
-  - `signal` {AbortSignal} позволяет прервать выполняющийся readFile
-- `callback` {Функция}
-  - `err` {Error|AggregateError}
-  - `data` {string|Buffer}
+-   `path` {string|Buffer|URL|integer} имя файла или дескриптор файла
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `null`
+    -   `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
+    -   `signal` {AbortSignal} позволяет прервать выполняющийся readFile
+-   `callback` {Функция}
+    -   `err` {Error|AggregateError}
+    -   `data` {string|Buffer}
 
 Асинхронно считывает все содержимое файла.
 
@@ -2205,8 +2215,8 @@ const { openAsBlob } = require('node:fs');
 import { readFile } from 'node:fs';
 
 readFile('/etc/passwd', (err, data) => {
-  if (err) throw err;
-  console.log(data);
+    if (err) throw err;
+    console.log(data);
 });
 ```
 
@@ -2229,12 +2239,12 @@ import { readFile } from 'node:fs';
 
 // macOS, Linux и Windows
 readFile('<директория>', (err, data) => {
-  // => [Error: EISDIR: недопустимая операция над каталогом, read <directory>]
+    // => [Error: EISDIR: недопустимая операция над каталогом, read <directory>]
 });
 
 // FreeBSD
 readFile('<директория>', (err, data) => {
-  // => null, <data>
+    // => null, <data>
 });
 ```
 
@@ -2246,7 +2256,7 @@ import { readFile } from 'node:fs';
 const controller = new AbortController();
 const signal = controller.signal;
 readFile(fileInfo[0].name, { signal }, (err, buf) => {
-  // ...
+    // ...
 });
 // Когда вы хотите прервать запрос
 controller.abort();
@@ -2274,12 +2284,12 @@ controller.abort();
 
 ### `fs.readlink(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `linkString` {string|Buffer}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `linkString` {string|Buffer}
 
 Читает содержимое символической ссылки, на которую ссылается `path`. Обратный вызов получает два аргумента `(err, linkString)`.
 
@@ -2289,13 +2299,13 @@ controller.abort();
 
 ### `fs.readv(fd, buffers[, position], callback)`
 
-- `fd` {целое число}
-- `buffers` {ArrayBufferView\[\]}
-- `position` {integer|null} **По умолчанию:** `null`
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesRead` {integer}
-  - `buffers` {ArrayBufferView\[\]}
+-   `fd` {целое число}
+-   `buffers` {ArrayBufferView\[\]}
+-   `position` {integer|null} **По умолчанию:** `null`
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesRead` {integer}
+    -   `buffers` {ArrayBufferView\[\]}
 
 Чтение из файла, указанного `fd`, и запись в массив `ArrayBufferView` с помощью `readv()`.
 
@@ -2307,12 +2317,12 @@ controller.abort();
 
 ### `fs.realpath(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `resolvedPath` {string|Buffer}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `resolvedPath` {string|Buffer}
 
 Асинхронно вычисляет каноническое имя пути, разрешая `.`, `..` и символические ссылки.
 
@@ -2334,12 +2344,12 @@ controller.abort();
 
 ### `fs.realpath.native(path[, options], callback)`
 
-- `путь` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `resolvedPath` {string|Buffer}
+-   `путь` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `resolvedPath` {string|Buffer}
 
 Асинхронный realpath(3).
 
@@ -2353,10 +2363,10 @@ controller.abort();
 
 ### `fs.rename(oldPath, newPath, callback)`
 
-- `oldPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `oldPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Асинхронно переименовать файл по адресу `oldPath` в имя пути, указанное как `newPath`. В случае, если `newPath` уже существует, он будет перезаписан. Если по адресу `newPath` существует каталог, то вместо этого будет выдана ошибка. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -2366,20 +2376,20 @@ controller.abort();
 import { rename } from 'node:fs';
 
 rename('oldFile.txt', 'newFile.txt', (err) => {
-  if (err) throw err;
-  console.log('Переименование завершено!');
+    if (err) throw err;
+    console.log('Переименование завершено!');
 });
 ```
 
 ### `fs.rmdir(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `maxRetries` {целое число} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `maxRetries` {целое число} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронный rmdir(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -2389,25 +2399,25 @@ rename('oldFile.txt', 'newFile.txt', (err) => {
 
 ### `fs.rm(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
-  - `maxRetries` {integer} Если возникла ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` {integer} Если возникла ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронно удаляет файлы и каталоги (по образцу стандартной утилиты POSIX `rm`). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
 ### `fs.stat(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `stats` {fs.Stats}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `stats` {fs.Stats}
 
 Асинхронный stat(2). Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.Stats}.
 
@@ -2433,10 +2443,10 @@ import { stat } from 'node:fs';
 const pathsToCheck = ['./txtDir', './txtDir/file.txt'];
 
 for (let i = 0; i < pathsToCheck.length; i++) {
-  stat(pathsToCheck[i], (err, stats) => {
-    console.log(stats.isDirectory());
-    console.log(stats);
-  });
+    stat(pathsToCheck[i], (err, stats) => {
+        console.log(stats.isDirectory());
+        console.log(stats);
+    });
 }
 ```
 
@@ -2489,12 +2499,12 @@ Stats {
 
 ### `fs.statfs(path[, options], callback)`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `stats` {fs.StatFs}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `stats` {fs.StatFs}
 
 Асинхронный statfs(2). Возвращает информацию о смонтированной файловой системе, содержащей `path`. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.StatFs}.
 
@@ -2502,11 +2512,11 @@ Stats {
 
 ### `fs.symlink(target, path[, type], callback)`
 
-- `target` {string|Buffer|URL}
-- `path` {string|Buffer|URL}
-- `type` {string|null} **По умолчанию:** `null`
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `target` {string|Buffer|URL}
+-   `path` {string|Buffer|URL}
+-   `type` {string|null} **По умолчанию:** `null`
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Создает ссылку с именем `path`, указывающую на `target`. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -2533,10 +2543,10 @@ $ tree .
 
 ### `fs.truncate(path[, len], callback)`
 
-- `path` {string|Buffer|URL}
-- `len` {целое число} **По умолчанию:** `0`
-- `callback` {Function}
-  - `err` {Error|AggregateError}
+-   `path` {string|Buffer|URL}
+-   `len` {целое число} **По умолчанию:** `0`
+-   `callback` {Function}
+    -   `err` {Error|AggregateError}
 
 Усекает файл. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения. В качестве первого аргумента может быть передан дескриптор файла. В этом случае вызывается `fs.ftruncate()`.
 
@@ -2544,8 +2554,8 @@ $ tree .
 import { truncate } from 'node:fs';
 // Предполагаем, что 'path/file.txt' - обычный файл.
 truncate('path/file.txt', (err) => {
-  if (err) throw err;
-  console.log('path/file.txt was truncated');
+    if (err) throw err;
+    console.log('path/file.txt was truncated');
 });
 ```
 
@@ -2553,8 +2563,8 @@ truncate('path/file.txt', (err) => {
 const { truncate } = require('node:fs');
 // Предполагаем, что 'path/file.txt' - обычный файл.
 truncate('path/file.txt', (err) => {
-  if (err) throw err;
-  console.log('path/file.txt was truncated');
+    if (err) throw err;
+    console.log('path/file.txt was truncated');
 });
 ```
 
@@ -2564,9 +2574,9 @@ truncate('path/file.txt', (err) => {
 
 ### `fs.unlink(path, callback)`
 
-- `path` {string|Buffer|URL}
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронно удаляет файл или символическую ссылку. Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
@@ -2574,8 +2584,8 @@ truncate('path/file.txt', (err) => {
 import { unlink } from 'node:fs';
 // Предполагается, что 'path/file.txt' - обычный файл.
 unlink('path/file.txt', (err) => {
-  if (err) throw err;
-  console.log('path/file.txt был удален');
+    if (err) throw err;
+    console.log('path/file.txt был удален');
 });
 ```
 
@@ -2585,8 +2595,8 @@ unlink('path/file.txt', (err) => {
 
 ### `fs.unwatchFile(filename[, listener])`
 
-- `filename` {string|Buffer|URL}
-- `listener` {Function} Необязательно, слушатель, ранее подключенный с помощью `fs.watchFile()`.
+-   `filename` {string|Buffer|URL}
+-   `listener` {Function} Необязательно, слушатель, ранее подключенный с помощью `fs.watchFile()`.
 
 Прекратить наблюдение за изменениями в `filename`. Если указан `listener`, то удаляется только этот конкретный слушатель. В противном случае удаляются _все_ слушатели, фактически прекращая наблюдение за `filename`.
 
@@ -2596,31 +2606,31 @@ unlink('path/file.txt', (err) => {
 
 ### `fs.utimes(path, atime, mtime, callback)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
-- `callback` {Function}
-  - `err` {Ошибка}
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
+-   `callback` {Function}
+    -   `err` {Ошибка}
 
 Изменение временных меток файловой системы объекта, на который ссылается `path`.
 
 Аргументы `atime` и `mtime` следуют этим правилам:
 
-- Значения могут быть либо числами, представляющими время эпохи Unix в секундах, `Date`, либо числовой строкой типа `'123456789.0'`.
-- Если значение не может быть преобразовано в число, или является `NaN`, `Infinity`, или `-Infinity`, будет выдана ошибка `Error`.
+-   Значения могут быть либо числами, представляющими время эпохи Unix в секундах, `Date`, либо числовой строкой типа `'123456789.0'`.
+-   Если значение не может быть преобразовано в число, или является `NaN`, `Infinity`, или `-Infinity`, будет выдана ошибка `Error`.
 
 ### `fs.watch(filename[, options][, listener])`
 
-- `filename` {string|Buffer|URL}
-- `options` {string|Object}
-  - `persistent` {boolean} Указывает, должен ли процесс продолжать выполняться, пока просматриваются файлы. **По умолчанию:** `true`.
-  - `recursive` {boolean} Указывает, должны ли просматриваться все подкаталоги или только текущий каталог. Применяется, если указан каталог, и только на поддерживаемых платформах (см. [caveats](#caveats)). **По умолчанию:** `false`.
-  - `encoding` {string} Указывает кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
-  - `signal` {AbortSignal} позволяет закрыть наблюдатель с помощью сигнала AbortSignal.
-- `listener` {Function|undefined} **По умолчанию:** `undefined`.
-  - `eventType` {string}
-  - `filename` {string|Buffer}
-- Возвращает: {fs.FSWatcher}
+-   `filename` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `persistent` {boolean} Указывает, должен ли процесс продолжать выполняться, пока просматриваются файлы. **По умолчанию:** `true`.
+    -   `recursive` {boolean} Указывает, должны ли просматриваться все подкаталоги или только текущий каталог. Применяется, если указан каталог, и только на поддерживаемых платформах (см. [caveats](#caveats)). **По умолчанию:** `false`.
+    -   `encoding` {string} Указывает кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
+    -   `signal` {AbortSignal} позволяет закрыть наблюдатель с помощью сигнала AbortSignal.
+-   `listener` {Function|undefined} **По умолчанию:** `undefined`.
+    -   `eventType` {string}
+    -   `filename` {string|Buffer}
+-   Возвращает: {fs.FSWatcher}
 
 Следит за изменениями в `filename`, где `filename` - это либо файл, либо каталог.
 
@@ -2644,13 +2654,13 @@ API `fs.watch` не на 100% совместим на разных платфо�
 
 Эта возможность зависит от того, предоставляет ли базовая операционная система способ уведомления об изменениях в файловой системе.
 
-- В системах Linux для этого используется [`inotify(7)`](https://man7.org/linux/man-pages/man7/inotify.7.html).
-- В системах BSD для этого используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2).
-- В macOS используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2) для файлов и [`FSEvents`](https://developer.apple.com/documentation/coreservices/file_system_events) для каталогов.
-- В системах SunOS (включая Solaris и SmartOS) для этого используется [`event ports`](https://illumos.org/man/port_create).
-- В системах Windows эта функция зависит от [`ReadDirectoryChangesW`](https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesw).
-- В системах AIX эта функция зависит от [`AHAFS`](https://developer.ibm.com/articles/au-aix_event_infrastructure/), который должен быть включен.
-- В системах IBM i эта функция не поддерживается.
+-   В системах Linux для этого используется [`inotify(7)`](https://man7.org/linux/man-pages/man7/inotify.7.html).
+-   В системах BSD для этого используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2).
+-   В macOS используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2) для файлов и [`FSEvents`](https://developer.apple.com/documentation/coreservices/file_system_events) для каталогов.
+-   В системах SunOS (включая Solaris и SmartOS) для этого используется [`event ports`](https://illumos.org/man/port_create).
+-   В системах Windows эта функция зависит от [`ReadDirectoryChangesW`](https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesw).
+-   В системах AIX эта функция зависит от [`AHAFS`](https://developer.ibm.com/articles/au-aix_event_infrastructure/), который должен быть включен.
+-   В системах IBM i эта функция не поддерживается.
 
 Если базовая функциональность по какой-то причине недоступна, то `fs.watch()` не сможет работать и может выдать исключение. Например, наблюдение за файлами или каталогами может быть ненадежным, а в некоторых случаях невозможным, на сетевых файловых системах (NFS, SMB и т.д.) или файловых системах хостов при использовании программ виртуализации, таких как Vagrant или Docker.
 
@@ -2669,26 +2679,26 @@ API `fs.watch` не на 100% совместим на разных платфо�
 ```mjs
 import { watch } from 'node:fs';
 watch('somedir', (eventType, filename) => {
-  console.log(`тип события: ${eventType}`);
-  if (filename) {
-    console.log(`filename provided: ${filename}`);
-  } else {
-    console.log('filename not provided');
-  }
+    console.log(`тип события: ${eventType}`);
+    if (filename) {
+        console.log(`filename provided: ${filename}`);
+    } else {
+        console.log('filename not provided');
+    }
 });
 ```
 
 ### `fs.watchFile(filename[, options], listener)`
 
-- `filename` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} **По умолчанию:** `false`
-  - `persistent` {boolean} **По умолчанию:** `true`
-  - `интервал` {целое число} **По умолчанию:** `5007`.
-- `слушатель` {функция}
-  - `текущий` {fs.Stats}
-  - `предыдущий` {fs.Stats}
-- Возвращает: {fs.StatWatcher}
+-   `filename` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} **По умолчанию:** `false`
+    -   `persistent` {boolean} **По умолчанию:** `true`
+    -   `интервал` {целое число} **По умолчанию:** `5007`.
+-   `слушатель` {функция}
+    -   `текущий` {fs.Stats}
+    -   `предыдущий` {fs.Stats}
+-   Возвращает: {fs.StatWatcher}
 
 Следит за изменениями в `filename`. Обратный вызов `listener` будет вызываться каждый раз при обращении к файлу.
 
@@ -2700,8 +2710,8 @@ watch('somedir', (eventType, filename) => {
 import { watchFile } from 'node:fs';
 
 watchFile('message.text', (curr, prev) => {
-  console.log(`the current mtime is: ${curr.mtime}`);
-  console.log(`предыдущее время было: ${prev.mtime}`);
+    console.log(`the current mtime is: ${curr.mtime}`);
+    console.log(`предыдущее время было: ${prev.mtime}`);
 });
 ```
 
@@ -2717,20 +2727,20 @@ watchFile('message.text', (curr, prev) => {
 
 Это происходит, когда:
 
-- файл удаляется, а затем восстанавливается
-- файл переименовывается, а затем переименовывается во второй раз, возвращаясь к своему первоначальному имени
+-   файл удаляется, а затем восстанавливается
+-   файл переименовывается, а затем переименовывается во второй раз, возвращаясь к своему первоначальному имени
 
 ### `fs.write(fd, buffer, offset[, length[, position]], callback)`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `offset` {integer} **По умолчанию:** `0`
-- `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-- `позиция` {integer|null} **По умолчанию:** `null`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesWritten` {integer}
-  - `buffer` {Buffer|TypedArray|DataView}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `offset` {integer} **По умолчанию:** `0`
+-   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+-   `позиция` {integer|null} **По умолчанию:** `null`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesWritten` {integer}
+    -   `buffer` {Buffer|TypedArray|DataView}
 
 Записывает `buffer` в файл, указанный `fd`.
 
@@ -2748,16 +2758,16 @@ watchFile('message.text', (curr, prev) => {
 
 ### `fs.write(fd, buffer[, options], callback)`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `options` {Object}
-  - `offset` {integer} **По умолчанию:** `0`
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-  - `позиция` {целое число} **По умолчанию:** `null`.
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesWritten` {integer}
-  - `buffer` {Buffer|TypedArray|DataView}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `options` {Object}
+    -   `offset` {integer} **По умолчанию:** `0`
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+    -   `позиция` {целое число} **По умолчанию:** `null`.
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesWritten` {integer}
+    -   `buffer` {Buffer|TypedArray|DataView}
 
 Запись `buffer` в файл, указанный `fd`.
 
@@ -2765,14 +2775,14 @@ watchFile('message.text', (curr, prev) => {
 
 ### `fs.write(fd, string[, position[, encoding]], callback)`
 
-- `fd` {целое}
-- `строка` {строка}
-- `position` {integer|null} **По умолчанию:** `null`
-- `encoding` {string} **По умолчанию:** `'utf8'`.
-- `callback` {Function}
-  - `err` {Ошибка}
-  - `written` {integer}
-  - `string` {string}
+-   `fd` {целое}
+-   `строка` {строка}
+-   `position` {integer|null} **По умолчанию:** `null`
+-   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   `callback` {Function}
+    -   `err` {Ошибка}
+    -   `written` {integer}
+    -   `string` {string}
 
 Записывает `string` в файл, указанный `fd`. Если `string` не является строкой, будет выдано исключение.
 
@@ -2790,15 +2800,15 @@ watchFile('message.text', (curr, prev) => {
 
 ### `fs.writeFile(file, data[, options], callback)`
 
-- `file` {string|Buffer|URL|integer} имя файла или дескриптор файла
-- `data` {string|Buffer|TypedArray|DataView}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
-  - `signal` {AbortSignal} позволяет прервать выполняющуюся записьFile
-- `callback` {Function}
-  - `err` {Error|AggregateError}
+-   `file` {string|Buffer|URL|integer} имя файла или дескриптор файла
+-   `data` {string|Buffer|TypedArray|DataView}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
+    -   `signal` {AbortSignal} позволяет прервать выполняющуюся записьFile
+-   `callback` {Function}
+    -   `err` {Error|AggregateError}
 
 Если `file` - имя файла, асинхронно записывает данные в файл, заменяя файл, если он уже существует. `data` может быть строкой или буфером.
 
@@ -2814,8 +2824,8 @@ import { Buffer } from 'node:buffer';
 
 const data = new Uint8Array(Buffer.from('Hello Node.js'));
 writeFile('message.txt', data, (err) => {
-  if (err) throw err;
-  console.log('Файл был сохранен!');
+    if (err) throw err;
+    console.log('Файл был сохранен!');
 });
 ```
 
@@ -2841,7 +2851,7 @@ const controller = new AbortController();
 const { signal } = controller;
 const data = new Uint8Array(Buffer.from('Hello Node.js'));
 writeFile('message.txt', data, { signal }, (err) => {
-  // Когда запрос прерывается - обратный вызов вызывается с AbortError
+    // Когда запрос прерывается - обратный вызов вызывается с AbortError
 });
 // Когда запрос должен быть прерван
 controller.abort();
@@ -2868,13 +2878,13 @@ write(fd, Buffer.from(data, options.encoding), callback);
 
 ### `fs.writev(fd, buffers[, position], callback)`
 
-- `fd` {целое число}
-- `buffers` {ArrayBufferView\[\]}
-- `position` {integer|null} **По умолчанию:** `null`
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `bytesWritten` {integer}
-  - `буферы` {ArrayBufferView\[\]}
+-   `fd` {целое число}
+-   `buffers` {ArrayBufferView\[\]}
+-   `position` {integer|null} **По умолчанию:** `null`
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `bytesWritten` {integer}
+    -   `буферы` {ArrayBufferView\[\]}
 
 Запись массива `ArrayBufferView` в файл, указанный `fd`, с помощью `writev()`.
 
@@ -2894,8 +2904,8 @@ write(fd, Buffer.from(data, options.encoding), callback);
 
 ### `fs.accessSync(path[, mode])`
 
-- `path` {string|Buffer|URL}
-- `mode` {integer} **По умолчанию:** `fs.constants.F_OK`.
+-   `path` {string|Buffer|URL}
+-   `mode` {integer} **По умолчанию:** `fs.constants.F_OK`.
 
 Синхронно проверяет разрешения пользователя для файла или каталога, указанного `path`. Аргумент `mode` является необязательным целым числом, которое указывает, какие проверки доступности должны быть выполнены. `mode` должно быть либо значением `fs.constants.F_OK`, либо маской, состоящей из побитового OR любого из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Проверьте [File access constants](#file-access-constants) на возможные значения `mode`.
 
@@ -2905,21 +2915,24 @@ write(fd, Buffer.from(data, options.encoding), callback);
 import { accessSync, constants } from 'node:fs';
 
 try {
-  accessSync('etc/passwd', constants.R_OK | constants.W_OK);
-  console.log('can read/write');
+    accessSync(
+        'etc/passwd',
+        constants.R_OK | constants.W_OK
+    );
+    console.log('can read/write');
 } catch (err) {
-  console.error('нет доступа!');
+    console.error('нет доступа!');
 }
 ```
 
 ### `fs.appendFileSync(path, data[, options])`
 
-- `path` {string|Buffer|URL|number} имя файла или дескриптор файла
-- `data` {string|Buffer}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
+-   `path` {string|Buffer|URL|number} имя файла или дескриптор файла
+-   `data` {string|Buffer}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'a'`.
 
 Синхронно добавлять данные в файл, создавая файл, если он еще не существует. `data` может быть строкой или {Buffer}.
 
@@ -2929,12 +2942,12 @@ try {
 import { appendFileSync } from 'node:fs';
 
 try {
-  appendFileSync('message.txt', 'данные для добавления');
-  console.log(
-    'Данные "data to append" были добавлены в файл!'
-  );
+    appendFileSync('message.txt', 'данные для добавления');
+    console.log(
+        'Данные "data to append" были добавлены в файл!'
+    );
 } catch (err) {
-  /* Обработка ошибки */
+    /* Обработка ошибки */
 }
 ```
 
@@ -2950,27 +2963,27 @@ appendFileSync('message.txt', 'data to append', 'utf8');
 
 ```mjs
 import {
-  openSync,
-  closeSync,
-  appendFileSync,
+    openSync,
+    closeSync,
+    appendFileSync,
 } from 'node:fs';
 
 let fd;
 
 try {
-  fd = openSync('message.txt', 'a');
-  appendFileSync(fd, 'data to append', 'utf8');
+    fd = openSync('message.txt', 'a');
+    appendFileSync(fd, 'data to append', 'utf8');
 } catch (err) {
-  /* Обработка ошибки */
+    /* Обработка ошибки */
 } finally {
-  if (fd !== undefined) closeSync(fd);
+    if (fd !== undefined) closeSync(fd);
 }
 ```
 
 ### `fs.chmodSync(path, mode)`
 
-- `path` {string|Buffer|URL}
-- `mode` {string|integer}
+-   `path` {string|Buffer|URL}
+-   `mode` {string|integer}
 
 За подробной информацией обратитесь к документации асинхронной версии этого API: [`fs.chmod()`](#fschmodpath-mode-callback).
 
@@ -2978,9 +2991,9 @@ try {
 
 ### `fs.chownSync(path, uid, gid)`
 
-- `path` {string|Buffer|URL}
-- `uid` {целое число}
-- `gid` {целое число}
+-   `path` {string|Buffer|URL}
+-   `uid` {целое число}
+-   `gid` {целое число}
 
 Синхронно изменяет владельца и группу файла. Возвращает `undefined`. Это синхронная версия [`fs.chown()`](#fschownpath-uid-gid-callback).
 
@@ -2988,7 +3001,7 @@ try {
 
 ### `fs.closeSync(fd)`
 
-- `fd` {целое число}
+-   `fd` {целое число}
 
 Закрывает дескриптор файла. Возвращает `undefined`.
 
@@ -2998,17 +3011,17 @@ try {
 
 ### `fs.copyFileSync(src, dest[, mode])`
 
-- `src` {string|Buffer|URL} имя исходного файла для копирования
-- `dest` {string|Buffer|URL} имя файла назначения операции копирования
-- `mode` {целое число} модификаторы для операции копирования. **По умолчанию:** `0`.
+-   `src` {string|Buffer|URL} имя исходного файла для копирования
+-   `dest` {string|Buffer|URL} имя файла назначения операции копирования
+-   `mode` {целое число} модификаторы для операции копирования. **По умолчанию:** `0`.
 
 Синхронно копирует `src` в `dest`. По умолчанию `dest` перезаписывается, если он уже существует. Возвращает `undefined`. Node.js не дает никаких гарантий относительно атомарности операции копирования. Если после открытия файла назначения для записи произошла ошибка, Node.js попытается удалить его.
 
 `mode` - необязательное целое число, определяющее поведение операции копирования. Можно создать маску, состоящую из побитового ИЛИ двух или более значений (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
 
-- `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
-- `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
-- `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
+-   `fs.constants.COPYFILE_EXCL`: Операция копирования завершится неудачно, если `dest` уже существует.
+-   `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
+-   `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
 
 ```mjs
 import { copyFileSync, constants } from 'node:fs';
@@ -3019,9 +3032,9 @@ console.log('source.txt был скопирован в destination.txt');
 
 // При использовании COPYFILE_EXCL операция завершится неудачей, если файл destination.txt существует.
 copyFileSync(
-  'source.txt',
-  'destination.txt',
-  constants.COPYFILE_EXCL
+    'source.txt',
+    'destination.txt',
+    constants.COPYFILE_EXCL
 );
 ```
 
@@ -3031,19 +3044,19 @@ copyFileSync(
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-- `src` {string|URL} путь к источнику для копирования.
-- `dest` {string|URL} путь назначения для копирования.
-- `options` {Object}
-  - `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
-  - `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
-  - `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. **По умолчанию:** `undefined`.
-    - `src` {string} путь к источнику для копирования.
-    - `dest` {строка} путь назначения для копирования.
-    - Возвращает: {boolean}
-  - `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
-  - `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
-  - `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
-  - `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
+-   `src` {string|URL} путь к источнику для копирования.
+-   `dest` {string|URL} путь назначения для копирования.
+-   `options` {Object}
+    -   `dereference` {boolean} разыменовывать симлинки. **По умолчанию:** `false`.
+    -   `errorOnExist` {boolean} если `force` равно `false`, а место назначения существует, выдать ошибку. **По умолчанию:** `false`.
+    -   `filter` {Function} Функция для фильтрации скопированных файлов/каталогов. Возвращает `true` для копирования элемента, `false` для его игнорирования. **По умолчанию:** `undefined`.
+        -   `src` {string} путь к источнику для копирования.
+        -   `dest` {строка} путь назначения для копирования.
+        -   Возвращает: {boolean}
+    -   `force` {boolean} перезаписать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если вы установите значение false, а место назначения существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
+    -   `preserveTimestamps` {boolean} При значении `true` временные метки из `src` будут сохранены. **По умолчанию:** `false`.
+    -   `recursive` {boolean} копировать каталоги рекурсивно **По умолчанию:** `false`.
+    -   `verbatimSymlinks` {boolean} Если `true`, разрешение путей для симлинков будет пропущено. **По умолчанию:** `false`.
 
 Синхронно копирует всю структуру каталога из `src` в `dest`, включая подкаталоги и файлы.
 
@@ -3051,8 +3064,8 @@ copyFileSync(
 
 ### `fs.existsSync(path)`
 
-- `path` {string|Buffer|URL}
-- Возвращает: {boolean}
+-   `path` {string|Buffer|URL}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если путь существует, `false` в противном случае.
 
@@ -3064,13 +3077,13 @@ copyFileSync(
 import { existsSync } from 'node:fs';
 
 if (existsSync('/etc/passwd'))
-  console.log('Путь существует.');
+    console.log('Путь существует.');
 ```
 
 ### `fs.fchmodSync(fd, mode)`
 
-- `fd` {целое число}
-- `mode` {string|integer}
+-   `fd` {целое число}
+-   `mode` {string|integer}
 
 Устанавливает разрешения на файл. Возвращает `неопределенное`.
 
@@ -3078,9 +3091,9 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.fchownSync(fd, uid, gid)`
 
-- `fd` {целое число}
-- `uid` {целое число} Идентификатор пользователя нового владельца файла.
-- `gid` {целое число} Идентификатор группы новой группы файла.
+-   `fd` {целое число}
+-   `uid` {целое число} Идентификатор пользователя нового владельца файла.
+-   `gid` {целое число} Идентификатор группы новой группы файла.
 
 Устанавливает владельца файла. Возвращает `неопределено`.
 
@@ -3088,16 +3101,16 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.fdatasyncSync(fd)`
 
-- `fd` {целое число}
+-   `fd` {целое число}
 
 Переводит все текущие операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода операционной системы. Подробности см. в документации POSIX fdatasync(2). Возвращает `undefined`.
 
 ### `fs.fstatSync(fd[, options])`
 
-- `fd` {integer}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {fs.Stats}
+-   `fd` {integer}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {fs.Stats}
 
 Получает {fs.Stats} для дескриптора файла.
 
@@ -3105,14 +3118,14 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.fsyncSync(fd)`
 
-- `fd` {целое число}
+-   `fd` {целое число}
 
 Запрос на то, чтобы все данные для открытого дескриптора файла были сброшены на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. За более подробной информацией обратитесь к документации POSIX fsync(2). Возвращает `undefined`.
 
 ### `fs.ftruncateSync(fd[, len])`
 
-- `fd` {целое число}
-- `len` {целое число} **По умолчанию:** `0`.
+-   `fd` {целое число}
+-   `len` {целое число} **По умолчанию:** `0`.
 
 Усекает дескриптор файла. Возвращает `undefined`.
 
@@ -3120,16 +3133,16 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.futimesSync(fd, atime, mtime)`
 
-- `fd` {целое число}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
+-   `fd` {целое число}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
 
 Синхронная версия [`fs.futimes()`](#fsfutimesfd-atime-mtime-callback). Возвращает `undefined`.
 
 ### `fs.lchmodSync(path, mode)`
 
-- `path` {string|Buffer|URL}
-- `mode` {integer}
+-   `path` {string|Buffer|URL}
+-   `mode` {integer}
 
 Изменяет разрешения на символическую ссылку. Возвращает `не определено`.
 
@@ -3139,9 +3152,9 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.lchownSync(path, uid, gid)`
 
-- `path` {string|Buffer|URL}
-- `uid` {integer} Идентификатор пользователя нового владельца файла.
-- `gid` {целое число} Идентификатор группы новой группы файла.
+-   `path` {string|Buffer|URL}
+-   `uid` {integer} Идентификатор пользователя нового владельца файла.
+-   `gid` {целое число} Идентификатор группы новой группы файла.
 
 Установить владельца для пути. Возвращает `неопределено`.
 
@@ -3149,26 +3162,26 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.lutimesSync(path, atime, mtime)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
 
 Изменение временных меток файловой системы символической ссылки, на которую ссылается `path`. Возвращает `undefined`, или выбрасывает исключение, если параметры неверны или операция не удалась. Это синхронная версия [`fs.lutimes()`](#fslutimespath-atime-mtime-callback).
 
 ### `fs.linkSync(existingPath, newPath)`
 
-- `existingPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
+-   `existingPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
 
 Создает новую ссылку с `existingPath` на `newPath`. Более подробно см. документацию POSIX link(2). Возвращает `undefined`.
 
 ### `fs.lstatSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-  - `throwIfNoEntry` {boolean} Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
-- Возвращает: {fs.Stats}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` {boolean} Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
+-   Возвращает: {fs.Stats}
 
 Получает {fs.Stats} для символической ссылки, на которую ссылается `path`.
 
@@ -3176,11 +3189,11 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.mkdirSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object|integer}
-  - `recursive` {boolean} **По умолчанию:** `false`
-  - `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
-- Возвращает: {string|undefined}
+-   `path` {string|Buffer|URL}
+-   `options` {Object|integer}
+    -   `recursive` {boolean} **По умолчанию:** `false`
+    -   `mode` {string|integer} Не поддерживается в Windows. **По умолчанию:** `0o777`.
+-   Возвращает: {string|undefined}
 
 Синхронно создает каталог. Возвращает `undefined`, или, если `recursive` равно `true`, первый созданный путь к каталогу. Это синхронная версия [`fs.mkdir()`](#fsmkdirpath-options-callback).
 
@@ -3188,10 +3201,10 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.mkdtempSync(prefix[, options])`
 
-- `prefix` {string}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {string}
+-   `prefix` {string}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {string}
 
 Возвращает путь к созданной директории.
 
@@ -3201,11 +3214,11 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.opendirSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
-- Возвращает: {fs.Dir}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `bufferSize` {number} Количество записей каталога, которые буферизируются внутри каталога при чтении из него. Большие значения приводят к лучшей производительности, но увеличивают потребление памяти. **По умолчанию:** `32`.
+-   Возвращает: {fs.Dir}
 
 Синхронно открывает каталог. См. opendir(3).
 
@@ -3215,10 +3228,10 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.openSync(path[, flags[, mode]])`
 
-- `path` {string|Buffer|URL}
-- `flags` {string|number} **По умолчанию:** `'r'`. См. [поддержка `флагов файловой системы`](#file-system-flags).
-- `mode` {string|integer} **По умолчанию:** `0o666`.
-- Возвращает: {число}
+-   `path` {string|Buffer|URL}
+-   `flags` {string|number} **По умолчанию:** `'r'`. См. [поддержка `флагов файловой системы`](#file-system-flags).
+-   `mode` {string|integer} **По умолчанию:** `0o666`.
+-   Возвращает: {число}
 
 Возвращает целое число, представляющее дескриптор файла.
 
@@ -3226,11 +3239,11 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.readdirSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8''
-  - `withFileTypes` {boolean} **По умолчанию:** `false`.
-- Возвращает: {string\[\]|Buffer\[\]|fs.Dirent\[\]}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8''
+    -   `withFileTypes` {boolean} **По умолчанию:** `false`.
+-   Возвращает: {string\[\]|Buffer\[\]|fs.Dirent\[\]}
 
 Читает содержимое каталога.
 
@@ -3242,11 +3255,11 @@ if (existsSync('/etc/passwd'))
 
 ### `fs.readFileSync(path[, options])`
 
-- `path` {string|Buffer|URL|integer} имя файла или дескриптор файла
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `null`
-  - `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
-- Возвращает: {string|Buffer}
+-   `path` {string|Buffer|URL|integer} имя файла или дескриптор файла
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `null`
+    -   `flag` {string} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'r'`.
+-   Возвращает: {string|Buffer}
 
 Возвращает содержимое `пути`.
 
@@ -3269,10 +3282,10 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.readlinkSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {string|Buffer}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {string|Buffer}
 
 Возвращает строковое значение символической ссылки.
 
@@ -3282,12 +3295,12 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.readSync(fd, buffer, offset, length[, position])`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `offset` {integer}
-- `length` {integer}
-- `позиция` {integer|bigint|null} **По умолчанию:** `null`.
-- Возвращает: {number}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `offset` {integer}
+-   `length` {integer}
+-   `позиция` {integer|bigint|null} **По умолчанию:** `null`.
+-   Возвращает: {number}
 
 Возвращает количество `bytesRead`.
 
@@ -3295,13 +3308,13 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.readSync(fd, buffer[, options])`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `options` {Object}
-  - `offset` {integer} **По умолчанию:** `0`
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-  - `позиция` {integer|bigint|null} **По умолчанию:** `null`.
-- Возвращает: {number}
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `options` {Object}
+    -   `offset` {integer} **По умолчанию:** `0`
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+    -   `позиция` {integer|bigint|null} **По умолчанию:** `null`.
+-   Возвращает: {number}
 
 Возвращает количество `bytesRead`.
 
@@ -3311,19 +3324,19 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.readvSync(fd, buffers[, position])`
 
-- `fd` {целое число}
-- `buffers` {ArrayBufferView\[\]}
-- `position` {integer|null} **По умолчанию:** `null`.
-- Возвращает: {number} Количество прочитанных байтов.
+-   `fd` {целое число}
+-   `buffers` {ArrayBufferView\[\]}
+-   `position` {integer|null} **По умолчанию:** `null`.
+-   Возвращает: {number} Количество прочитанных байтов.
 
 Для получения подробной информации смотрите документацию асинхронной версии этого API: [`fs.readv()`](#fsreadvfd-buffers-position-callback).
 
 ### `fs.realpathSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {string|Buffer}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {string|Buffer}
 
 Возвращает разрешенное имя пути.
 
@@ -3331,10 +3344,10 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.realpathSync.native(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {string|Object}
-  - `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {string|Buffer}
+-   `path` {string|Buffer|URL}
+-   `options` {string|Object}
+    -   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {string|Buffer}
 
 Синхронный realpath(3).
 
@@ -3346,8 +3359,8 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.renameSync(oldPath, newPath)`
 
-- `oldPath` {string|Buffer|URL}
-- `newPath` {string|Buffer|URL}
+-   `oldPath` {string|Buffer|URL}
+-   `newPath` {string|Buffer|URL}
 
 Переименовывает файл из `oldPath` в `newPath`. Возвращает `undefined`.
 
@@ -3355,11 +3368,11 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.rmdirSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `maxRetries` {integer} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `maxRetries` {integer} Если встречается ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не равен `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`. **удалено.**
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
 
 Синхронный rmdir(2). Возвращает `undefined`.
 
@@ -3369,31 +3382,31 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.rmSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
-  - `maxRetries` {integer} При возникновении ошибки `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
-  - `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
-  - `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `force` {boolean} Если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` {integer} При возникновении ошибки `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js будет повторять операцию с линейным ожиданием обратного хода на `retryDelay` миллисекунд дольше при каждой попытке. Этот параметр представляет собой количество повторных попыток. Этот параметр игнорируется, если параметр `recursive` не является `true`. **По умолчанию:** `0`.
+    -   `recursive` {boolean} Если `true`, выполнить рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при неудаче. **По умолчанию:** `false`.
+    -   `retryDelay` {integer} Количество времени в миллисекундах для ожидания между повторными попытками. Эта опция игнорируется, если опция `recursive` не является `true`. **По умолчанию:** `100`.
 
 Синхронно удаляет файлы и каталоги (по образцу стандартной утилиты POSIX `rm`). Возвращает `undefined`.
 
 ### `fs.statSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
-  - `throwIfNoEntry` {boolean} Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
-- Возвращает: {fs.Stats}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` {boolean} Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
+-   Возвращает: {fs.Stats}
 
 Получает {fs.Stats} для пути.
 
 ### `fs.statfsSync(path[, options])`
 
-- `path` {string|Buffer|URL}
-- `options` {Object}
-  - `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
-- Возвращает: {fs.StatFs}
+-   `path` {string|Buffer|URL}
+-   `options` {Object}
+    -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: {fs.StatFs}
 
 Синхронный statfs(2). Возвращает информацию о смонтированной файловой системе, содержащей `path`.
 
@@ -3401,9 +3414,9 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.symlinkSync(target, path[, type])`
 
-- `target` {string|Buffer|URL}
-- `path` {string|Buffer|URL}
-- `type` {string|null} **По умолчанию:** `null`.
+-   `target` {string|Buffer|URL}
+-   `path` {string|Buffer|URL}
+-   `type` {string|null} **По умолчанию:** `null`.
 
 Возвращает `undefined`.
 
@@ -3411,8 +3424,8 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.truncateSync(path[, len])`
 
-- `path` {string|Buffer|URL}
-- `len` {целое число} **По умолчанию:** `0`.
+-   `path` {string|Buffer|URL}
+-   `len` {целое число} **По умолчанию:** `0`.
 
 Усекает файл. Возвращает `undefined`. В качестве первого аргумента можно также передать дескриптор файла. В этом случае вызывается `fs.ftruncateSync()`.
 
@@ -3420,15 +3433,15 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.unlinkSync(path)`
 
-- `path` {string|Buffer|URL}
+-   `path` {string|Buffer|URL}
 
 Синхронная развязка(2). Возвращает `undefined`.
 
 ### `fs.utimesSync(path, atime, mtime)`
 
-- `path` {string|Buffer|URL}
-- `atime` {number|string|Date}
-- `mtime` {number|string|Date}
+-   `path` {string|Buffer|URL}
+-   `atime` {number|string|Date}
+-   `mtime` {number|string|Date}
 
 Возвращает `неопределенное`.
 
@@ -3436,12 +3449,12 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.writeFileSync(file, data[, options])`
 
-- `file` {string|Buffer|URL|integer} имя файла или дескриптор файла
-- `data` {string|Buffer|TypedArray|DataView}
-- `options` {Object|string}
-  - `encoding` {string|null} **По умолчанию:** `'utf8''
-  - `mode` {integer} **По умолчанию:** `0o666`
-  - `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
+-   `file` {string|Buffer|URL|integer} имя файла или дескриптор файла
+-   `data` {string|Buffer|TypedArray|DataView}
+-   `options` {Object|string}
+    -   `encoding` {string|null} **По умолчанию:** `'utf8''
+    -   `mode` {integer} **По умолчанию:** `0o666`
+    -   `флаг` {строка} См. [поддержка `флагов файловой системы`](#file-system-flags). **По умолчанию:** `'w'`.
 
 Возвращает `undefined`.
 
@@ -3451,43 +3464,43 @@ readFileSync('<директория>'); // => <данные>
 
 ### `fs.writeSync(fd, buffer, offset[, length[, position]])`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `offset` {integer} **По умолчанию:** `0`
-- `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-- `позиция` {integer|null} **По умолчанию:** `null`.
-- Возвращает: {number} Количество записанных байт.
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `offset` {integer} **По умолчанию:** `0`
+-   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+-   `позиция` {integer|null} **По умолчанию:** `null`.
+-   Возвращает: {number} Количество записанных байт.
 
 Подробную информацию смотрите в документации асинхронной версии этого API: [`fs.write(fd, buffer...)`](#fswritefd-buffer-offset-length-position-callback).
 
 ### `fs.writeSync(fd, buffer[, options])`
 
-- `fd` {integer}
-- `buffer` {Buffer|TypedArray|DataView}
-- `options` {Object}
-  - `offset` {integer} **По умолчанию:** `0`
-  - `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
-  - `позиция` {целое число} **По умолчанию:** `null`.
-- Возвращает: {number} Количество записанных байтов.
+-   `fd` {integer}
+-   `buffer` {Buffer|TypedArray|DataView}
+-   `options` {Object}
+    -   `offset` {integer} **По умолчанию:** `0`
+    -   `length` {integer} **По умолчанию:** `buffer.byteLength - offset`
+    -   `позиция` {целое число} **По умолчанию:** `null`.
+-   Возвращает: {number} Количество записанных байтов.
 
 Подробную информацию смотрите в документации асинхронной версии этого API: [`fs.write(fd, buffer...)`](#fswritefd-buffer-offset-length-position-callback).
 
 ### `fs.writeSync(fd, string[, position[, encoding]])`
 
-- `fd` {целое число}
-- `строка` {строка}
-- `position` {integer|null} **По умолчанию:** `null`
-- `encoding` {string} **По умолчанию:** `'utf8'`.
-- Возвращает: {number} Количество записанных байт.
+-   `fd` {целое число}
+-   `строка` {строка}
+-   `position` {integer|null} **По умолчанию:** `null`
+-   `encoding` {string} **По умолчанию:** `'utf8'`.
+-   Возвращает: {number} Количество записанных байт.
 
 Подробную информацию смотрите в документации асинхронной версии этого API: [`fs.write(fd, string...)`](#fswritefd-string-position-encoding-callback).
 
 ### `fs.writevSync(fd, buffers[, position])`
 
-- `fd` {целое число}
-- `buffers` {ArrayBufferView\[\]}
-- `position` {integer|null} **По умолчанию:** `null`.
-- Возвращает: {number} Количество записанных байт.
+-   `fd` {целое число}
+-   `buffers` {ArrayBufferView\[\]}
+-   `position` {integer|null} **По умолчанию:** `null`.
+-   Возвращает: {number} Количество записанных байт.
 
 Для получения подробной информации смотрите документацию асинхронной версии этого API: [`fs.writev()`](#fswritevfd-buffers-position-callback).
 
@@ -3505,10 +3518,11 @@ readFileSync('<директория>'); // => <данные>
 import { opendir } from 'node:fs/promises';
 
 try {
-  const dir = await opendir('./');
-  for await (const dirent of dir) console.log(dirent.name);
+    const dir = await opendir('./');
+    for await (const dirent of dir)
+        console.log(dirent.name);
 } catch (err) {
-  console.error(err);
+    console.error(err);
 }
 ```
 
@@ -3516,7 +3530,7 @@ try {
 
 #### `dir.close()`
 
-- Возвращает: {Promise}
+-   Возвращает: {Promise}
 
 Асинхронно закрывает хэндл ресурса, лежащего в основе каталога. Последующие чтения приведут к ошибкам.
 
@@ -3524,8 +3538,8 @@ try {
 
 #### `dir.close(callback)`
 
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Асинхронно закрывает базовый ресурс каталога. Последующие чтения приведут к ошибкам.
 
@@ -3537,13 +3551,13 @@ try {
 
 #### `dir.path`
 
-- {строка}
+-   {строка}
 
 Путь к этой директории, доступный только для чтения, как было указано в [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()`](#fsopendirsyncpath-options) или [`fsPromises.opendir()`](#fspromisesopendirpath-options).
 
 #### `dir.read()`
 
-- Возвращает: {Promise}, содержащий {fs.Dirent|null}.
+-   Возвращает: {Promise}, содержащий {fs.Dirent|null}.
 
 Асинхронно считывает следующую запись каталога через readdir(3) как {fs.Dirent}.
 
@@ -3553,9 +3567,9 @@ try {
 
 #### `dir.read(callback)`
 
-- `callback` {Функция}
-  - `err` {Ошибка}
-  - `dirent` {fs.Dirent|null}
+-   `callback` {Функция}
+    -   `err` {Ошибка}
+    -   `dirent` {fs.Dirent|null}
 
 Асинхронно считывает следующую запись каталога через readdir(3) как {fs.Dirent}.
 
@@ -3565,7 +3579,7 @@ try {
 
 #### `dir.readSync()`
 
-- Возвращает: {fs.Dirent|null}
+-   Возвращает: {fs.Dirent|null}
 
 Синхронно считывает следующую запись каталога как {fs.Dirent}. Более подробно см. документацию POSIX readdir(3).
 
@@ -3575,7 +3589,7 @@ try {
 
 #### `dir[Symbol.asyncIterator]()`
 
-- Возвращает: {AsyncIterator} из {fs.Dirent}.
+-   Возвращает: {AsyncIterator} из {fs.Dirent}.
 
 Асинхронно перебирает каталог, пока не будут прочитаны все записи. Более подробную информацию см. в документации POSIX readdir(3).
 
@@ -3593,55 +3607,55 @@ try {
 
 #### `dirent.isBlockDevice()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает блочное устройство.
 
 #### `dirent.isCharacterDevice()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает символьное устройство.
 
 #### `dirent.isDirectory()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает каталог файловой системы.
 
 #### `dirent.isFIFO()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает трубу типа "первый-первый-выход" (FIFO).
 
 #### `dirent.isFile()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает обычный файл.
 
 #### `dirent.isSocket()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает сокет.
 
 #### `dirent.isSymbolicLink()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Dirent} описывает символическую ссылку.
 
 #### `dirent.name`
 
-- {string|Buffer}
+-   {string|Buffer}
 
 Имя файла, на который ссылается данный объект {fs.Dirent}. Тип этого значения определяется `options.encoding`, переданным в [`fs.readdir()`](#fsreaddirpath-options-callback) или [`fs.readdirSync()`](#fsreaddirsyncpath-options).
 
 ### Класс: `fs.FSWatcher`
 
-- Расширяет {EventEmitter}
+-   Расширяет {EventEmitter}
 
 Успешный вызов метода [`fs.watch()`](#fswatchfilename-options-listener) вернет новый объект {fs.FSWatcher}.
 
@@ -3649,8 +3663,8 @@ try {
 
 #### Событие: `change`
 
-- `eventType` {string} Тип произошедшего события изменения
-- `filename` {string|Buffer} Имя файла, которое изменилось (если уместно/доступно).
+-   `eventType` {string} Тип произошедшего события изменения
+-   `filename` {string|Buffer} Имя файла, которое изменилось (если уместно/доступно).
 
 Выдается, когда что-то меняется в просматриваемом каталоге или файле. Подробнее см. в [`fs.watch()`](#fswatchfilename-options-listener).
 
@@ -3660,14 +3674,14 @@ try {
 import { watch } from 'node:fs';
 // Пример обработки через слушатель fs.watch()
 watch(
-  './tmp',
-  { encoding: 'buffer' },
-  (eventType, filename) => {
-    if (filename) {
-      console.log(filename);
-      // Печатает: <Буфер ...>
+    './tmp',
+    { encoding: 'buffer' },
+    (eventType, filename) => {
+        if (filename) {
+            console.log(filename);
+            // Печатает: <Буфер ...>
+        }
     }
-  }
 );
 ```
 
@@ -3677,7 +3691,7 @@ watch(
 
 #### Событие: `error`
 
-- `error` {Ошибка}
+-   `error` {Ошибка}
 
 Выдается при возникновении ошибки во время просмотра файла. Объект {fs.FSWatcher} с ошибкой больше не используется в обработчике события.
 
@@ -3687,7 +3701,7 @@ watch(
 
 #### `watcher.ref()`
 
-- Возвращает: {fs.FSWatcher}
+-   Возвращает: {fs.FSWatcher}
 
 При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока {fs.FSWatcher} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
 
@@ -3695,19 +3709,19 @@ watch(
 
 #### `watcher.unref()`
 
-- Возвращает: {fs.FSWatcher}.
+-   Возвращает: {fs.FSWatcher}.
 
 При вызове активный объект {fs.FSWatcher} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {fs.FSWatcher}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
 
 ### Класс: `fs.StatWatcher`
 
-- Расширяет {EventEmitter}
+-   Расширяет {EventEmitter}
 
 Успешный вызов метода `fs.watchFile()` вернет новый объект {fs.StatWatcher}.
 
 #### `watcher.ref()`
 
-- Возвращает: {fs.StatWatcher}
+-   Возвращает: {fs.StatWatcher}
 
 При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался до тех пор, пока {fs.StatWatcher} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
 
@@ -3715,13 +3729,13 @@ watch(
 
 #### `watcher.unref()`
 
-- Возвращает: {fs.StatWatcher}.
+-   Возвращает: {fs.StatWatcher}.
 
 При вызове активный объект {fs.StatWatcher} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {fs.StatWatcher}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
 
 ### Класс: `fs.ReadStream`
 
-- Расширяет: {stream.Readable}
+-   Расширяет: {stream.Readable}
 
 Экземпляры {fs.ReadStream} создаются и возвращаются с помощью функции [`fs.createReadStream()`](#fscreatereadstreampath-options).
 
@@ -3731,7 +3745,7 @@ watch(
 
 #### Событие: `open`
 
-- `fd` {integer} Целочисленный файловый дескриптор, используемый {fs.ReadStream}.
+-   `fd` {integer} Целочисленный файловый дескриптор, используемый {fs.ReadStream}.
 
 Выдается, когда дескриптор файла {fs.ReadStream} был открыт.
 
@@ -3743,19 +3757,19 @@ watch(
 
 #### `readStream.bytesRead`
 
-- {число}
+-   {число}
 
 Количество байтов, которые были прочитаны на данный момент.
 
 #### `readStream.path`
 
-- {string|Buffer}
+-   {string|Buffer}
 
 Путь к файлу, из которого читается поток, указанный в первом аргументе `fs.createReadStream()`. Если `path` передан как строка, то `readStream.path` будет строкой. Если `path` передан как {Buffer}, то `readStream.path` будет {Buffer}. Если указано `fd`, то `readStream.path` будет `undefined`.
 
 #### `readStream.pending`
 
-- {boolean}
+-   {boolean}
 
 Это свойство равно `true`, если базовый файл еще не был открыт, т.е. до того, как будет выдано событие `'ready'`.
 
@@ -3817,19 +3831,19 @@ BigIntStats {
 
 #### `stats.isBlockDevice()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Stats} описывает блочное устройство.
 
 #### `stats.isCharacterDevice()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Stats} описывает символьное устройство.
 
 #### `stats.isDirectory()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Stats} описывает каталог файловой системы.
 
@@ -3837,25 +3851,25 @@ BigIntStats {
 
 #### `stats.isFIFO()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Stats} описывает трубу типа "первый вошел - первый вышел" (FIFO).
 
 #### `stats.isFile()`
 
-- Возвращает: {boolean}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если объект {fs.Stats} описывает обычный файл.
 
 #### `stats.isSocket()`
 
-- Возвращает: {boolean}
+-   Возвращает: {boolean}
 
 Возвращает `true`, если объект {fs.Stats} описывает сокет.
 
 #### `stats.isSymbolicLink()`
 
-- Возвращает: {булево}
+-   Возвращает: {булево}
 
 Возвращает `true`, если объект {fs.Stats} описывает символическую ссылку.
 
@@ -3863,49 +3877,49 @@ BigIntStats {
 
 #### `stats.dev`
 
-- {number|bigint}
+-   {number|bigint}
 
 Числовой идентификатор устройства, содержащего файл.
 
 #### `stats.ino`
 
-- {number|bigint}
+-   {number|bigint}
 
 Номер "Inode" файла, специфичный для файловой системы.
 
 #### `stats.mode`
 
-- {number|bigint}
+-   {number|bigint}
 
 Битовое поле, описывающее тип и режим файла.
 
 #### `stats.nlink`
 
-- {number|bigint}
+-   {number|bigint}
 
 Количество жестких ссылок, существующих для данного файла.
 
 #### `stats.uid`
 
-- {number|bigint}
+-   {number|bigint}
 
 Числовой идентификатор пользователя, которому принадлежит файл (POSIX).
 
 #### `stats.gid`
 
-- {number|bigint}
+-   {number|bigint}
 
 Числовой идентификатор группы, которой принадлежит файл (POSIX).
 
 #### `stats.rdev`
 
-- {number|bigint}
+-   {number|bigint}
 
 Числовой идентификатор устройства, если файл представляет устройство.
 
 #### `stats.size`
 
-- {number|bigint}
+-   {number|bigint}
 
 Размер файла в байтах.
 
@@ -3913,85 +3927,85 @@ BigIntStats {
 
 #### `stats.blksize`
 
-- {number|bigint}
+-   {number|bigint}
 
 Размер блока файловой системы для операций ввода-вывода.
 
 #### `stats.blocks`
 
-- {number|bigint}
+-   {number|bigint}
 
 Количество блоков, выделенных для этого файла.
 
 #### `stats.atimeMs`
 
-- {number|bigint}
+-   {number|bigint}
 
 Временная метка, указывающая на последнее обращение к этому файлу, выраженная в миллисекундах с момента наступления эпохи POSIX.
 
 #### `stats.mtimeMs`
 
-- {number|bigint}
+-   {number|bigint}
 
 Временная метка, указывающая на последнее изменение этого файла, выраженная в миллисекундах с момента наступления эпохи POSIX.
 
 #### `stats.ctimeMs`
 
-- {number|bigint}
+-   {number|bigint}
 
 Временная метка, указывающая на последнее изменение статуса файла, выраженная в миллисекундах с эпохи POSIX.
 
 #### `stats.birthtimeMs`
 
-- {number|bigint}
+-   {number|bigint}
 
 Временная метка, указывающая на время создания этого файла, выраженная в миллисекундах от эпохи POSIX.
 
 #### `stats.atimeNs`
 
-- {bigint}
+-   {bigint}
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на последнее обращение к этому файлу, выраженная в наносекундах с момента наступления эпохи POSIX.
 
 #### `stats.mtimeNs`
 
-- {bigint}
+-   {bigint}
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на последнее изменение этого файла, выраженная в наносекундах от эпохи POSIX.
 
 #### `stats.ctimeNs`
 
-- {bigint}
+-   {bigint}
 
 Присутствует только тогда, когда `bigint: true` передано в метод, создающий объект. Временная метка, указывающая на последнее изменение статуса файла, выраженная в наносекундах от эпохи POSIX.
 
 #### `stats.birthtimeNs`
 
-- {bigint}
+-   {bigint}
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на время создания этого файла, выраженная в наносекундах от эпохи POSIX.
 
 #### `stats.atime`
 
-- {Дата}
+-   {Дата}
 
 Временная метка, указывающая на последнее обращение к этому файлу.
 
 #### `stats.mtime`
 
-- {Дата}
+-   {Дата}
 
 Временная метка, указывающая на последнее изменение этого файла.
 
 #### `stats.ctime`
 
-- {Дата}
+-   {Дата}
 
 Временная метка, указывающая на последнее изменение статуса файла.
 
 #### `stats.birthtime`
 
-- {Дата}
+-   {Дата}
 
 Временная метка, указывающая на время создания этого файла.
 
@@ -4005,10 +4019,10 @@ BigIntStats {
 
 Времена в объекте stat имеют следующую семантику:
 
-- `atime` "Время доступа": Время последнего обращения к данным файла. Изменяется системными вызовами mknod(2), utimes(2) и read(2).
-- `mtime` "Modified Time": Время последнего изменения данных файла. Изменяется системными вызовами mknod(2), utimes(2) и write(2).
-- `ctime` "Время изменения": Время последнего изменения статуса файла (модификация данных inode). Изменяется системными вызовами chmod(2), chown(2), link(2), mknod(2), rename(2), unlink(2), utimes(2), read(2) и write(2).
-- `birthtime` "Время рождения": Время создания файла. Устанавливается один раз при создании файла. На файловых системах, где время рождения недоступно, это поле может содержать либо `ctime`, либо `1970-01-01T00:00Z` (т.е. временная метка эпохи Unix `0`). В этом случае это значение может быть больше, чем `atime` или `mtime`. На Darwin и других вариантах FreeBSD также устанавливается, если `atime` явно установлено в более раннее значение, чем текущее `birthtime` с помощью системного вызова utimes(2).
+-   `atime` "Время доступа": Время последнего обращения к данным файла. Изменяется системными вызовами mknod(2), utimes(2) и read(2).
+-   `mtime` "Modified Time": Время последнего изменения данных файла. Изменяется системными вызовами mknod(2), utimes(2) и write(2).
+-   `ctime` "Время изменения": Время последнего изменения статуса файла (модификация данных inode). Изменяется системными вызовами chmod(2), chown(2), link(2), mknod(2), rename(2), unlink(2), utimes(2), read(2) и write(2).
+-   `birthtime` "Время рождения": Время создания файла. Устанавливается один раз при создании файла. На файловых системах, где время рождения недоступно, это поле может содержать либо `ctime`, либо `1970-01-01T00:00Z` (т.е. временная метка эпохи Unix `0`). В этом случае это значение может быть больше, чем `atime` или `mtime`. На Darwin и других вариантах FreeBSD также устанавливается, если `atime` явно установлено в более раннее значение, чем текущее `birthtime` с помощью системного вызова utimes(2).
 
 До версии Node.js 0.12 `ctime` хранил время рождения в системах Windows. Начиная с версии 0.12, `ctime` не является "временем создания", а в Unix-системах оно никогда им не было.
 
@@ -4046,49 +4060,49 @@ StatFs {
 
 #### `statfs.bavail`
 
-- {number|bigint}
+-   {number|bigint}
 
 Свободные блоки, доступные непривилегированным пользователям.
 
 #### `statfs.bfree`
 
-- {number|bigint}
+-   {number|bigint}
 
 Свободные блоки в файловой системе.
 
 #### `statfs.blocks`
 
-- {number|bigint}
+-   {number|bigint}
 
 Общее количество блоков данных в файловой системе.
 
 #### `statfs.bsize`
 
-- {number|bigint}
+-   {number|bigint}
 
 Оптимальный размер блока переноса.
 
 #### `statfs.ffree`
 
-- {number|bigint}
+-   {number|bigint}
 
 Свободные файловые узлы в файловой системе.
 
 #### `statfs.files`
 
-- {number|bigint}
+-   {number|bigint}
 
 Общее количество файловых узлов в файловой системе.
 
 #### `statfs.type`
 
-- {number|bigint}
+-   {number|bigint}
 
 Тип файловой системы.
 
 ### Класс: `fs.WriteStream`
 
-- Расширяет {stream.Writable}
+-   Расширяет {stream.Writable}
 
 Экземпляры {fs.WriteStream} создаются и возвращаются с помощью функции [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
@@ -4098,7 +4112,7 @@ StatFs {
 
 #### Событие: `open`
 
-- `fd` {integer} Целочисленный дескриптор файла, используемый {fs.WriteStream}.
+-   `fd` {integer} Целочисленный дескриптор файла, используемый {fs.WriteStream}.
 
 Выдается при открытии файла {fs.WriteStream}.
 
@@ -4114,8 +4128,8 @@ StatFs {
 
 #### `writeStream.close([callback])`
 
-- `callback` {Функция}
-  - `err` {Ошибка}
+-   `callback` {Функция}
+    -   `err` {Ошибка}
 
 Закрывает `writeStream`. Опционально принимает обратный вызов, который будет выполнен после закрытия `writeStream`.
 
@@ -4125,13 +4139,13 @@ StatFs {
 
 #### `writeStream.pending`
 
-- {boolean}
+-   {boolean}
 
 Это свойство равно `true`, если базовый файл еще не был открыт, т.е. до того, как будет выдано событие `'ready'`.
 
 ### `fs.constants`
 
-- {Object}
+-   {Object}
 
 Возвращает объект, содержащий часто используемые константы для операций с файловой системой.
 
@@ -4151,11 +4165,11 @@ import { open, constants } from 'node:fs';
 const { O_RDWR, O_CREAT, O_EXCL } = constants;
 
 open(
-  '/path/to/my/file',
-  O_RDWR | O_CREAT | O_EXCL,
-  (err, fd) => {
-    // ...
-  }
+    '/path/to/my/file',
+    O_RDWR | O_CREAT | O_EXCL,
+    (err, fd) => {
+        // ...
+    }
 );
 ```
 
@@ -5007,12 +5021,12 @@ File mode indicating executable by others.
 const fs = require('node:fs');
 
 fs.rename('/tmp/hello', '/tmp/world', (err) => {
-  if (err) throw err;
-  console.log('переименование завершено');
+    if (err) throw err;
+    console.log('переименование завершено');
 });
 fs.stat('/tmp/world', (err, stats) => {
-  if (err) throw err;
-  console.log(`stats: ${JSON.stringify(stats)}`);
+    if (err) throw err;
+    console.log(`stats: ${JSON.stringify(stats)}`);
 });
 ```
 
@@ -5025,11 +5039,11 @@ const oldPath = '/tmp/hello';
 const newPath = '/tmp/world';
 
 try {
-  await rename(oldPath, newPath);
-  const stats = await stat(newPath);
-  console.log(`stats: ${JSON.stringify(stats)}`);
+    await rename(oldPath, newPath);
+    const stats = await stat(newPath);
+    console.log(`stats: ${JSON.stringify(stats)}`);
 } catch (error) {
-  console.error('произошла ошибка:', error.message);
+    console.error('произошла ошибка:', error.message);
 }
 ```
 
@@ -5037,13 +5051,13 @@ try {
 const { rename, stat } = require('node:fs/promises');
 
 (async function (oldPath, newPath) {
-  try {
-    await rename(oldPath, newPath);
-    const stats = await stat(newPath);
-    console.log(`stats: ${JSON.stringify(stats)}`);
-  } catch (error) {
-    console.error('произошла ошибка:', error.message);
-  }
+    try {
+        await rename(oldPath, newPath);
+        const stats = await stat(newPath);
+        console.log(`stats: ${JSON.stringify(stats)}`);
+    } catch (error) {
+        console.error('произошла ошибка:', error.message);
+    }
 })('/tmp/hello', '/tmp/world');
 ```
 
@@ -5053,11 +5067,11 @@ const { rename, stat } = require('node:fs/promises');
 import { rename, stat } from 'node:fs';
 
 rename('/tmp/hello', '/tmp/world', (err) => {
-  if (err) throw err;
-  stat('/tmp/world', (err, stats) => {
     if (err) throw err;
-    console.log(`stats: ${JSON.stringify(stats)}`);
-  });
+    stat('/tmp/world', (err, stats) => {
+        if (err) throw err;
+        console.log(`stats: ${JSON.stringify(stats)}`);
+    });
 });
 ```
 
@@ -5065,11 +5079,11 @@ rename('/tmp/hello', '/tmp/world', (err) => {
 const { rename, stat } = require('node:fs/promises');
 
 rename('/tmp/hello', '/tmp/world', (err) => {
-  if (err) throw err;
-  stat('/tmp/world', (err, stats) => {
     if (err) throw err;
-    console.log(`stats: ${JSON.stringify(stats)}`);
-  });
+    stat('/tmp/world', (err, stats) => {
+        if (err) throw err;
+        console.log(`stats: ${JSON.stringify(stats)}`);
+    });
 });
 ```
 
@@ -5088,10 +5102,10 @@ import { open } from 'node:fs/promises';
 
 let fd;
 try {
-  fd = await open('/open/some/file.txt', 'r');
-  // Делаем что-нибудь с файлом
+    fd = await open('/open/some/file.txt', 'r');
+    // Делаем что-нибудь с файлом
 } finally {
-  await fd?.close();
+    await fd?.close();
 }
 ```
 
@@ -5102,10 +5116,10 @@ import { open } from 'node:fs/promises';
 
 let fd;
 try {
-  fd = await open('file.txt', 'r');
-  // Делаем что-нибудь с файлом
+    fd = await open('file.txt', 'r');
+    // Делаем что-нибудь с файлом
 } finally {
-  await fd?.close();
+    await fd?.close();
 }
 ```
 
@@ -5139,7 +5153,7 @@ readFileSync(new URL('file:///C:/tmp/hello'));
 
 // - URL-адреса файлов WHATWG без имени хоста должны содержать буквы дисков
 readFileSync(
-  new URL('file:///notdriveletter/p/a/t/h/file')
+    new URL('file:///notdriveletter/p/a/t/h/file')
 );
 readFileSync(new URL('file:///c/p/a/t/h/file'));
 // TypeError [ERR_INVALID_FILE_URL_PATH]: Путь к URL файла должен быть абсолютным
@@ -5207,10 +5221,13 @@ import { Buffer } from 'node:buffer';
 
 let fd;
 try {
-  fd = await open(Buffer.from('/open/some/file.txt'), 'r');
-  // Делаем что-нибудь с файлом
+    fd = await open(
+        Buffer.from('/open/some/file.txt'),
+        'r'
+    );
+    // Делаем что-нибудь с файлом
 } finally {
-  await fd?.close();
+    await fd?.close();
 }
 ```
 
@@ -5230,28 +5247,28 @@ try {
 import { open, close, fstat } from 'node:fs';
 
 function closeFd(fd) {
-  close(fd, (err) => {
-    if (err) throw err;
-  });
+    close(fd, (err) => {
+        if (err) throw err;
+    });
 }
 
 open('/open/some/file.txt', 'r', (err, fd) => {
-  if (err) throw err;
-  try {
-    fstat(fd, (err, stat) => {
-      if (err) {
+    if (err) throw err;
+    try {
+        fstat(fd, (err, stat) => {
+            if (err) {
+                closeFd(fd);
+                throw err;
+            }
+
+            // использовать stat
+
+            closeFd(fd);
+        });
+    } catch (err) {
         closeFd(fd);
         throw err;
-      }
-
-      // использовать stat
-
-      closeFd(fd);
-    });
-  } catch (err) {
-    closeFd(fd);
-    throw err;
-  }
+    }
 });
 ```
 
@@ -5262,11 +5279,11 @@ import { open } from 'node:fs/promises';
 
 let file;
 try {
-  file = await open('/open/some/file.txt', 'r');
-  const stat = await file.stat();
-  // использовать stat
+    file = await open('/open/some/file.txt', 'r');
+    const stat = await file.stat();
+    // использовать stat
 } finally {
-  await file.close();
+    await file.close();
 }
 ```
 
@@ -5278,35 +5295,35 @@ try {
 
 Следующие флаги доступны везде, где опция `flag` принимает строку.
 
-- `'a'`: Открыть файл для добавления. Файл создается, если он не существует.
+-   `'a'`: Открыть файл для добавления. Файл создается, если он не существует.
 
-- `'ax'`: Аналогично `'a'`, но не работает, если путь существует.
+-   `'ax'`: Аналогично `'a'`, но не работает, если путь существует.
 
-- `'a+'`: Открыть файл для чтения и добавления. Файл создается, если он не существует.
+-   `'a+'`: Открыть файл для чтения и добавления. Файл создается, если он не существует.
 
-- `'ax+'`: Аналогично `'a+'`, но не работает, если путь существует.
+-   `'ax+'`: Аналогично `'a+'`, но не работает, если путь существует.
 
-- `'as'`: Открыть файл для добавления в синхронном режиме. Файл создается, если он не существует.
+-   `'as'`: Открыть файл для добавления в синхронном режиме. Файл создается, если он не существует.
 
-- `'as+'`: Открыть файл для чтения и добавления в синхронном режиме. Файл создается, если он не существует.
+-   `'as+'`: Открыть файл для чтения и добавления в синхронном режиме. Файл создается, если он не существует.
 
-- `'r'`: Открыть файл для чтения. Возникает исключение, если файл не существует.
+-   `'r'`: Открыть файл для чтения. Возникает исключение, если файл не существует.
 
-- `'r+'`: Открыть файл для чтения и записи. Возникает исключение, если файл не существует.
+-   `'r+'`: Открыть файл для чтения и записи. Возникает исключение, если файл не существует.
 
-- `'rs+'`: Открыть файл для чтения и записи в синхронном режиме. Указывает операционной системе обойти кэш локальной файловой системы.
+-   `'rs+'`: Открыть файл для чтения и записи в синхронном режиме. Указывает операционной системе обойти кэш локальной файловой системы.
 
-  Это в первую очередь полезно при открытии файлов на монтировании NFS, так как позволяет обойти потенциально устаревший локальный кэш. Это очень сильно влияет на производительность ввода-вывода, поэтому использовать этот флаг не рекомендуется, если в этом нет необходимости.
+    Это в первую очередь полезно при открытии файлов на монтировании NFS, так как позволяет обойти потенциально устаревший локальный кэш. Это очень сильно влияет на производительность ввода-вывода, поэтому использовать этот флаг не рекомендуется, если в этом нет необходимости.
 
-  Это не превращает `fs.open()` или `fsPromises.open()` в синхронный блокирующий вызов. Если требуется синхронная работа, следует использовать что-то вроде `fs.openSync()`.
+    Это не превращает `fs.open()` или `fsPromises.open()` в синхронный блокирующий вызов. Если требуется синхронная работа, следует использовать что-то вроде `fs.openSync()`.
 
-- `'w'`: Открыть файл для записи. Файл создается (если он не существует) или усекается (если он существует).
+-   `'w'`: Открыть файл для записи. Файл создается (если он не существует) или усекается (если он существует).
 
-- `'wx'`: Аналогично `'w'`, но не работает, если путь существует.
+-   `'wx'`: Аналогично `'w'`, но не работает, если путь существует.
 
-- `'w+'`: Открыть файл для чтения и записи. Файл создается (если он не существует) или усекается (если он существует).
+-   `'w+'`: Открыть файл для чтения и записи. Файл создается (если он не существует) или усекается (если он существует).
 
-- `'wx+'`: Аналогично `'w+'`, но не работает, если путь существует.
+-   `'wx+'`: Аналогично `'w+'`, но не работает, если путь существует.
 
 `flag` также может быть числом, как документировано в open(2); часто используемые константы доступны из `fs.constants`. В Windows флаги переводятся в их эквиваленты, где это применимо, например, `O_WRONLY` в `FILE_GENERIC_WRITE`, или `O_EXCL|O_CREAT` в `CREATE_NEW`, что принимается `CreateFileW`.
 
@@ -5321,12 +5338,12 @@ try {
 ```js
 // macOS и Linux
 fs.open('<директория>', 'a+', (err, fd) => {
-  // => [Ошибка: EISDIR: недопустимая операция над каталогом, открыть <каталог>]
+    // => [Ошибка: EISDIR: недопустимая операция над каталогом, открыть <каталог>]
 });
 
 // Windows и FreeBSD
 fs.open('<directory>', 'a+', (err, fd) => {
-  // => null, <fd>
+    // => null, <fd>
 });
 ```
 

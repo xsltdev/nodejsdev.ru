@@ -21,15 +21,15 @@ npm install hbs --save
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Контакты</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>Контакты</h1>
-    <p>Электронный адрес: admin@mycorp.com</p>
-  </body>
-  <html></html>
+    <head>
+        <title>Контакты</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Контакты</h1>
+        <p>Электронный адрес: admin@mycorp.com</p>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -38,25 +38,25 @@ npm install hbs --save
 Изменим файл приложения `app.js`:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs');
 
 app.use('/contact', function (request, response) {
-  response.render('contact.hbs')
-})
+    response.render('contact.hbs');
+});
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 Чтобы установить Handlebars в качестве движка представлений в Express, вызывается функция:
 
 ```js
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs');
 ```
 
 Для маршрута `/contact` используется функция обработчика, которая производит рендеринг представления `contact.hbs` с помощью функции `response.render()`. Эта функция на основе представления создает страницу html, которая отправляется клиенту.
@@ -72,23 +72,23 @@ app.set('view engine', 'hbs')
 Так, изменим файл `app.js` следующим образом:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs');
 
 app.use('/contact', function (request, response) {
-  response.render('contact.hbs', {
-    title: 'Мои контакты',
-    email: 'gavgav@mycorp.com',
-    phone: '+1234567890',
-  })
-})
+    response.render('contact.hbs', {
+        title: 'Мои контакты',
+        email: 'gavgav@mycorp.com',
+        phone: '+1234567890',
+    });
+});
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 Теперь в качестве второго параметра в функцию `response.render()` передается специальный объект с тремя свойствами.
@@ -98,16 +98,16 @@ app.listen(3000)
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>{{title}}</h1>
-    <p>Электронный адрес: {{email}}</p>
-    <p>Телефон: {{phone}}</p>
-  </body>
-  <html></html>
+    <head>
+        <title>{{title}}</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>{{title}}</h1>
+        <p>Электронный адрес: {{email}}</p>
+        <p>Телефон: {{phone}}</p>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -120,24 +120,24 @@ app.listen(3000)
 Рассмотрим более сложный случай, пусть в представление передается массив:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
-app.set('view engine', 'hbs')
+const app = express();
+app.set('view engine', 'hbs');
 
 app.use('/contact', function (request, response) {
-  response.render('contact.hbs', {
-    title: 'Мои контакты',
-    emailsVisible: true,
-    emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
-    phone: '+1234567890',
-  })
-})
+    response.render('contact.hbs', {
+        title: 'Мои контакты',
+        emailsVisible: true,
+        emails: ['gavgav@mycorp.com', 'mioaw@mycorp.com'],
+        phone: '+1234567890',
+    });
+});
 
 app.use('/', function (request, response) {
-  response.send('Главная страница')
-})
-app.listen(3000)
+    response.send('Главная страница');
+});
+app.listen(3000);
 ```
 
 Для вывода данных изменим представление `contact.hbs`:
@@ -145,24 +145,24 @@ app.listen(3000)
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>{{title}}</h1>
+    <head>
+        <title>{{title}}</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>{{title}}</h1>
 
-    {{#if emailsVisible}}
-    <h3>Электронные адреса</h3>
-    <ul>
-      {{#each emails}}
-      <li>{{this}}</li>
-      {{/each}}
-    </ul>
-    {{/if}}
-    <p>Телефон: {{phone}}</p>
-  </body>
-  <html></html>
+        {{#if emailsVisible}}
+        <h3>Электронные адреса</h3>
+        <ul>
+            {{#each emails}}
+            <li>{{this}}</li>
+            {{/each}}
+        </ul>
+        {{/if}}
+        <p>Телефон: {{phone}}</p>
+    </body>
+    <html></html>
 </html>
 ```
 
@@ -195,18 +195,18 @@ app.listen(3000)
 По умолчанию представления помещаются в папку `views`, но мы можем выбрать любую другую папку в проекте. Для этого необходимо установить параметр `views`:
 
 ```js
-const express = require('express')
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'hbs')
-app.set('views', 'templates') // установка пути к представлениям
+app.set('view engine', 'hbs');
+app.set('views', 'templates'); // установка пути к представлениям
 
 app.use('/contact', function (request, response) {
-  response.render('contact')
-})
+    response.render('contact');
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 В данном случае в качестве папки представлений используется папка `templates`.

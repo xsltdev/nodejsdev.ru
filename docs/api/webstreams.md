@@ -19,9 +19,9 @@ description: Реализация WHATWG Streams Standard
 
 Существует три основных типа объектов:
 
-- `ReadableStream` - Представляет источник потоковых данных.
-- `WritableStream` - Представляет место назначения для потоковых данных.
-- `TransformStream` - Представляет алгоритм преобразования потоковых данных.
+-   `ReadableStream` - Представляет источник потоковых данных.
+-   `WritableStream` - Представляет место назначения для потоковых данных.
+-   `TransformStream` - Представляет алгоритм преобразования потоковых данных.
 
 ### Пример `ReadableStream`
 
@@ -37,10 +37,10 @@ import { performance } from 'node:perf_hooks';
 const SECOND = 1000;
 
 const stream = new ReadableStream({
-  async start(controller) {
-    for await (const _ of every(SECOND))
-      controller.enqueue(performance.now());
-  },
+    async start(controller) {
+        for await (const _ of every(SECOND))
+            controller.enqueue(performance.now());
+    },
 });
 
 for await (const value of stream) console.log(value);
@@ -50,7 +50,7 @@ for await (const value of stream) console.log(value);
 const { ReadableStream } = require('node:stream/web');
 
 const {
-  setInterval: every,
+    setInterval: every,
 } = require('node:timers/promises');
 
 const { performance } = require('node:perf_hooks');
@@ -58,14 +58,14 @@ const { performance } = require('node:perf_hooks');
 const SECOND = 1000;
 
 const stream = new ReadableStream({
-  async start(controller) {
-    for await (const _ of every(SECOND))
-      controller.enqueue(performance.now());
-  },
+    async start(controller) {
+        for await (const _ of every(SECOND))
+            controller.enqueue(performance.now());
+    },
 });
 
 (async () => {
-  for await (const value of stream) console.log(value);
+    for await (const value of stream) console.log(value);
 })();
 ```
 
@@ -75,40 +75,40 @@ const stream = new ReadableStream({
 
 #### `новый ReadableStream([underlyingSource [, strategy]])`
 
-- `underlyingSource` {Object}
-  - `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `ReadableStream`.
-    - `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
-    - Возвращает: `undefined` или обещание, выполненное с `undefined`.
-  - `pull` {Функция} Определяемая пользователем функция, которая вызывается многократно, когда внутренняя очередь `ReadableStream` не заполнена. Операция может быть синхронной или асинхронной. Если async, то функция не будет вызываться снова, пока не будет выполнено ранее возвращенное обещание.
-    - `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `cancel` {Функция} Определяемая пользователем функция, которая вызывается при отмене `ReadableStream`.
-    - `reason` {любая}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `type` {string} Должно быть `'bytes` или `undefined`.
-  - `autoAllocateChunkSize` {number} Используется только когда `type` равен `'bytes'`.
-- `strategy` {Object}
-  - `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-  - `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-    - `chunk` {любой}
-    - Возвращает: {число}
+-   `underlyingSource` {Object}
+    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `ReadableStream`.
+        -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
+        -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
+    -   `pull` {Функция} Определяемая пользователем функция, которая вызывается многократно, когда внутренняя очередь `ReadableStream` не заполнена. Операция может быть синхронной или асинхронной. Если async, то функция не будет вызываться снова, пока не будет выполнено ранее возвращенное обещание.
+        -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `cancel` {Функция} Определяемая пользователем функция, которая вызывается при отмене `ReadableStream`.
+        -   `reason` {любая}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `type` {string} Должно быть `'bytes` или `undefined`.
+    -   `autoAllocateChunkSize` {number} Используется только когда `type` равен `'bytes'`.
+-   `strategy` {Object}
+    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` {любой}
+        -   Возвращает: {число}
 
 #### `readableStream.locked`
 
-- Тип: {boolean} Устанавливается в `true`, если существует активный читатель для данного {ReadableStream}.
+-   Тип: {boolean} Устанавливается в `true`, если существует активный читатель для данного {ReadableStream}.
 
 По умолчанию свойство `readableStream.locked` имеет значение `false`, и переключается на `true`, если есть активный читатель, потребляющий данные потока.
 
 #### `readableStream.cancel([reason])`
 
-- `reason` {любая}
-- Возвращает: Обещание, выполненное с `undefined` после завершения отмены.
+-   `reason` {любая}
+-   Возвращает: Обещание, выполненное с `undefined` после завершения отмены.
 
 #### `readableStream.getReader([options])`
 
-- `options` {Object}
-  - `mode` {строка} `'byob` или `undefined`
-- Возвращает: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}
+-   `options` {Object}
+    -   `mode` {строка} `'byob` или `undefined`
+-   Возвращает: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}
 
 ```mjs
 import { ReadableStream } from 'node:stream/web';
@@ -132,15 +132,15 @@ reader.read().then(console.log);
 
 #### `readableStream.pipeThrough(transform[, options])`
 
-- `transform` {Object}
-  - `readable` {ReadableStream} `ReadableStream`, в который `transform.writable` будет пересылать потенциально измененные данные, полученные из этого `ReadableStream`.
-  - `writable` {WritableStream} `WritableStream`, в который будут записываться данные этого `ReadableStream`.
-- `options` {Object}
-  - `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `transform.writable`.
-  - `preventCancel` {boolean} Когда `true`, ошибки в назначении `transform.writable` не приводят к отмене этого `ReadableStream`.
-  - `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приводит к закрытию `transform.writable`.
-  - `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
-- Возвращает: {ReadableStream} Из `transform.readable`.
+-   `transform` {Object}
+    -   `readable` {ReadableStream} `ReadableStream`, в который `transform.writable` будет пересылать потенциально измененные данные, полученные из этого `ReadableStream`.
+    -   `writable` {WritableStream} `WritableStream`, в который будут записываться данные этого `ReadableStream`.
+-   `options` {Object}
+    -   `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `transform.writable`.
+    -   `preventCancel` {boolean} Когда `true`, ошибки в назначении `transform.writable` не приводят к отмене этого `ReadableStream`.
+    -   `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приводит к закрытию `transform.writable`.
+    -   `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
+-   Возвращает: {ReadableStream} Из `transform.readable`.
 
 Подключает этот {ReadableStream} к паре {ReadableStream} и {WritableStream}, указанной в аргументе `transform`, таким образом, что данные из этого {ReadableStream} записываются в `transform.writable`, возможно, трансформируются, затем выталкиваются в `transform.readable`. Когда конвейер настроен, возвращается `transform.readable`.
 
@@ -148,69 +148,69 @@ reader.read().then(console.log);
 
 ```mjs
 import {
-  ReadableStream,
-  TransformStream,
+    ReadableStream,
+    TransformStream,
 } from 'node:stream/web';
 
 const stream = new ReadableStream({
-  start(controller) {
-    controller.enqueue('a');
-  },
+    start(controller) {
+        controller.enqueue('a');
+    },
 });
 
 const transform = new TransformStream({
-  transform(chunk, controller) {
-    controller.enqueue(chunk.toUpperCase());
-  },
+    transform(chunk, controller) {
+        controller.enqueue(chunk.toUpperCase());
+    },
 });
 
 const transformedStream = stream.pipeThrough(transform);
 
 for await (const chunk of transformedStream)
-  console.log(chunk);
+    console.log(chunk);
 ```
 
 ```cjs
 const {
-  ReadableStream,
-  TransformStream,
+    ReadableStream,
+    TransformStream,
 } = require('node:stream/web');
 
 const stream = new ReadableStream({
-  start(controller) {
-    controller.enqueue('a');
-  },
+    start(controller) {
+        controller.enqueue('a');
+    },
 });
 
 const transform = new TransformStream({
-  transform(chunk, controller) {
-    controller.enqueue(chunk.toUpperCase());
-  },
+    transform(chunk, controller) {
+        controller.enqueue(chunk.toUpperCase());
+    },
 });
 
 const transformedStream = stream.pipeThrough(transform);
 
 (async () => {
-  for await (const chunk of transformedStream)
-    console.log(chunk);
+    for await (const chunk of transformedStream)
+        console.log(chunk);
 })();
 ```
 
 #### `readableStream.pipeTo(destination[, options])`
 
-- `destination` {WritableStream} {WritableStream}, в который будут записаны данные этого `ReadableStream`.
-- `options` {Object}
-  - `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `destination`.
-  - `preventCancel` {boolean} Когда `true`, ошибки в `назначении` не приведут к отмене этого `ReadableStream`.
-  - `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приведет к закрытию `destination`.
-  - `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `destination` {WritableStream} {WritableStream}, в который будут записаны данные этого `ReadableStream`.
+-   `options` {Object}
+    -   `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `destination`.
+    -   `preventCancel` {boolean} Когда `true`, ошибки в `назначении` не приведут к отмене этого `ReadableStream`.
+    -   `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приведет к закрытию `destination`.
+    -   `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Приводит `readableStream.locked` к значению `true`, пока активна операция pipe.
 
 #### `readableStream.tee()`
 
-- Возвращает: {ReadableStream\[\]}
+-   Возвращает: {ReadableStream\[\]}
 
 Возвращает пару новых экземпляров {ReadableStream}, которым будут переданы данные этого `ReadableStream`. Каждый из них будет получать одни и те же данные.
 
@@ -218,8 +218,8 @@ const transformedStream = stream.pipeThrough(transform);
 
 #### `readableStream.values([options])`
 
-- `options` {Object}
-  - `preventCancel` {boolean} Если `true`, предотвращает закрытие {ReadableStream} при внезапном завершении асинхронного итератора. **По умолчанию**: `false`.
+-   `options` {Object}
+    -   `preventCancel` {boolean} Если `true`, предотвращает закрытие {ReadableStream} при внезапном завершении асинхронного итератора. **По умолчанию**: `false`.
 
 Создает и возвращает асинхронный итератор, пригодный для потребления данных этого `ReadableStream`.
 
@@ -231,9 +231,9 @@ import { Buffer } from 'node:buffer';
 const stream = new ReadableStream(getSomeSource());
 
 for await (const chunk of stream.values({
-  preventCancel: true,
+    preventCancel: true,
 }))
-  console.log(Buffer.from(chunk).toString());
+    console.log(Buffer.from(chunk).toString());
 ```
 
 #### Асинхронная итерация
@@ -246,7 +246,7 @@ import { Buffer } from 'node:buffer';
 const stream = new ReadableStream(getSomeSource());
 
 for await (const chunk of stream)
-  console.log(Buffer.from(chunk).toString());
+    console.log(Buffer.from(chunk).toString());
 ```
 
 Асинхронный итератор будет потреблять {ReadableStream} до тех пор, пока не завершится.
@@ -261,18 +261,17 @@ for await (const chunk of stream)
 
 ```js
 const stream = new ReadableStream(
-  getReadableSourceSomehow()
+    getReadableSourceSomehow()
 );
 
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-  data
-    .getReader()
-    .read()
-    .then((chunk) => {
-      console.log(chunk);
-    });
+    data.getReader()
+        .read()
+        .then((chunk) => {
+            console.log(chunk);
+        });
 };
 
 port2.postMessage(stream, [stream]);
@@ -284,26 +283,26 @@ port2.postMessage(stream, [stream]);
 
 #### `new ReadableStreamDefaultReader(stream)`
 
-- `stream` {ReadableStream}
+-   `stream` {ReadableStream}
 
 Создает новый {ReadableStreamDefaultReader}, который привязан к заданному {ReadableStream}.
 
 #### `readableStreamDefaultReader.cancel([reason])`
 
-- `reason` {любая}
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `reason` {любая}
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Отменяет {ReadableStream} и возвращает обещание, которое выполняется, если базовый поток был отменен.
 
 #### `readableStreamDefaultReader.closed`
 
-- Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до завершения закрытия потока.
+-   Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до завершения закрытия потока.
 
 #### `readableStreamDefaultReader.read()`
 
-- Возвращает: Обещание, выполненное с объектом:
-  - `value` {ArrayBuffer}
-  - `done` {boolean}
+-   Возвращает: Обещание, выполненное с объектом:
+    -   `value` {ArrayBuffer}
+    -   `done` {boolean}
 
 Запрашивает следующий фрагмент данных из базового {ReadableStream} и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
 
@@ -325,44 +324,44 @@ import { ReadableStream } from 'node:stream/web';
 import { Buffer } from 'node:buffer';
 
 class Source {
-  type = 'bytes';
-  autoAllocateChunkSize = 1024;
+    type = 'bytes';
+    autoAllocateChunkSize = 1024;
 
-  async start(controller) {
-    this.file = await open(new URL(import.meta.url));
-    this.controller = controller;
-  }
-
-  async pull(controller) {
-    const view = controller.byobRequest?.view;
-    const { bytesRead } = await this.file.read({
-      buffer: view,
-      offset: view.byteOffset,
-      length: view.byteLength,
-    });
-
-    if (bytesRead === 0) {
-      await this.file.close();
-      this.controller.close();
+    async start(controller) {
+        this.file = await open(new URL(import.meta.url));
+        this.controller = controller;
     }
-    controller.byobRequest.respond(bytesRead);
-  }
+
+    async pull(controller) {
+        const view = controller.byobRequest?.view;
+        const { bytesRead } = await this.file.read({
+            buffer: view,
+            offset: view.byteOffset,
+            length: view.byteLength,
+        });
+
+        if (bytesRead === 0) {
+            await this.file.close();
+            this.controller.close();
+        }
+        controller.byobRequest.respond(bytesRead);
+    }
 }
 
 const stream = new ReadableStream(new Source());
 
 async function read(stream) {
-  const reader = stream.getReader({ mode: 'byob' });
+    const reader = stream.getReader({ mode: 'byob' });
 
-  const chunks = [];
-  let result;
-  do {
-    result = await reader.read(Buffer.alloc(100));
-    if (result.value !== undefined)
-      chunks.push(Buffer.from(result.value));
-  } while (!result.done);
+    const chunks = [];
+    let result;
+    do {
+        result = await reader.read(Buffer.alloc(100));
+        if (result.value !== undefined)
+            chunks.push(Buffer.from(result.value));
+    } while (!result.done);
 
-  return Buffer.concat(chunks);
+    return Buffer.concat(chunks);
 }
 
 const data = await read(stream);
@@ -371,27 +370,27 @@ console.log(Buffer.from(data).toString());
 
 #### `new ReadableStreamBYOBReader(stream)`
 
-- `stream` {ReadableStream}
+-   `stream` {ReadableStream}
 
 Создает новый `ReadableStreamBYOBReader`, который заблокирован на заданный {ReadableStream}.
 
 #### `readableStreamBYOBReader.cancel([reason])`
 
-- `reason` {любая}
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `reason` {любая}
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Отменяет {ReadableStream} и возвращает обещание, которое выполняется, если базовый поток был отменен.
 
 #### `readableStreamBYOBReader.closed`
 
-- Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до того, как поток завершит закрытие.
+-   Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до того, как поток завершит закрытие.
 
 #### `readableStreamBYOBReader.read(view)`
 
-- `view` {Buffer|TypedArray|DataView}
-- Возвращает: Обещание, выполненное с объектом:
-  - `value` {ArrayBuffer}
-  - `done` {boolean}
+-   `view` {Buffer|TypedArray|DataView}
+-   Возвращает: Обещание, выполненное с объектом:
+    -   `value` {ArrayBuffer}
+    -   `done` {boolean}
 
 Запрашивает следующий фрагмент данных из базового {ReadableStream} и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
 
@@ -411,19 +410,19 @@ console.log(Buffer.from(data).toString());
 
 #### `readableStreamDefaultController.desiredSize`
 
-- Тип: {число}
+-   Тип: {число}
 
 Возвращает количество данных, оставшихся для заполнения очереди {ReadableStream}.
 
 #### `readableStreamDefaultController.enqueue([chunk])`
 
-- `chunk` {любой}
+-   `chunk` {любой}
 
 Добавляет новый фрагмент данных в очередь {ReadableStream}.
 
 #### `readableStreamDefaultController.error([error])`
 
-- `error` {любая}
+-   `error` {любая}
 
 Сигнализирует об ошибке, которая вызывает ошибку и закрытие {ReadableStream}.
 
@@ -433,7 +432,7 @@ console.log(Buffer.from(data).toString());
 
 #### `readableByteStreamController.byobRequest`
 
-- Тип: {ReadableStreamBYOBRequest}
+-   Тип: {ReadableStreamBYOBRequest}
 
 #### `readableByteStreamController.close()`
 
@@ -441,19 +440,19 @@ console.log(Buffer.from(data).toString());
 
 #### `readableByteStreamController.desiredSize`
 
-- Тип: {число}
+-   Тип: {число}
 
 Возвращает количество данных, оставшихся для заполнения очереди {ReadableStream}.
 
 #### `readableByteStreamController.enqueue(chunk)`
 
-- `chunk`: {Buffer|TypedArray|DataView}.
+-   `chunk`: {Buffer|TypedArray|DataView}.
 
 Добавляет новый фрагмент данных в очередь {ReadableStream}.
 
 #### `readableByteStreamController.error([error])`
 
-- `error` {любая}
+-   `error` {любая}
 
 Сигнализирует об ошибке, которая вызывает ошибку и закрытие {ReadableStream}.
 
@@ -463,19 +462,19 @@ console.log(Buffer.from(data).toString());
 
 #### `readableStreamBYOBRequest.respond(bytesWritten)`
 
-- `bytesWritten` {number}
+-   `bytesWritten` {number}
 
 Сигнализирует, что в `readableStreamBYOBRequest.view` было записано `bytesWritten` количество байт.
 
 #### `readableStreamBYOBRequest.respondWithNewView(view)`
 
-- `view` {Buffer|TypedArray|DataView}
+-   `view` {Buffer|TypedArray|DataView}
 
 Сигнализирует, что запрос был выполнен с записью байтов в новый `Buffer`, `TypedArray` или `DataView`.
 
 #### `readableStreamBYOBRequest.view`
 
-- Тип: {Buffer|TypedArray|DataView}
+-   Тип: {Buffer|TypedArray|DataView}
 
 ### Класс: `WritableStream`
 
@@ -485,9 +484,9 @@ console.log(Buffer.from(data).toString());
 import { WritableStream } from 'node:stream/web';
 
 const stream = new WritableStream({
-  write(chunk) {
-    console.log(chunk);
-  },
+    write(chunk) {
+        console.log(chunk);
+    },
 });
 
 await stream.getWriter().write('Hello World');
@@ -495,48 +494,48 @@ await stream.getWriter().write('Hello World');
 
 #### `new WritableStream([underlyingSink[, strategy]])`
 
-- `underlyingSink` {Объект}
-  - `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `WritableStream`.
-    - `controller` {WritableStreamDefaultController}
-    - Возвращает: `undefined` или обещание, выполненное с `undefined`.
-  - `write` {Function} Определяемая пользователем функция, которая вызывается, когда фрагмент данных был записан в `WritableStream`.
-    - `chunk` {любой}
-    - `controller` {WritableStreamDefaultController}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `close` {Функция} Определяемая пользователем функция, которая вызывается при закрытии `WritableStream`.
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `abort` {Function} Определяемая пользователем функция, которая вызывается для резкого закрытия `WritableStream`.
-    - `reason` {любая}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `type` {любой} Опция `type` зарезервирована для будущего использования и _должна_ быть неопределенной.
-- `strategy` {Object}
-  - `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-  - `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-    - `chunk` {любой}
-    - Возвращает: {число}
+-   `underlyingSink` {Объект}
+    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `WritableStream`.
+        -   `controller` {WritableStreamDefaultController}
+        -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
+    -   `write` {Function} Определяемая пользователем функция, которая вызывается, когда фрагмент данных был записан в `WritableStream`.
+        -   `chunk` {любой}
+        -   `controller` {WritableStreamDefaultController}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `close` {Функция} Определяемая пользователем функция, которая вызывается при закрытии `WritableStream`.
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `abort` {Function} Определяемая пользователем функция, которая вызывается для резкого закрытия `WritableStream`.
+        -   `reason` {любая}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `type` {любой} Опция `type` зарезервирована для будущего использования и _должна_ быть неопределенной.
+-   `strategy` {Object}
+    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` {любой}
+        -   Возвращает: {число}
 
 #### `writableStream.abort([reason])`
 
-- `reason` {любая}
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `reason` {любая}
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Резко завершает `WritableStream`. Все записи в очереди будут отменены, а связанные с ними обещания отклонены.
 
 #### `writableStream.close()`
 
-- Возвращает: Обещание, выполненное с `undefined`.
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Закрывает `WritableStream`, если не ожидается дополнительных записей.
 
 #### `writableStream.getWriter()`
 
-- Возвращает: {WritableStreamDefaultWriter}.
+-   Возвращает: {WritableStreamDefaultWriter}.
 
 Создает новый экземпляр писателя, который может быть использован для записи данных в `WritableStream`.
 
 #### `writableStream.locked`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Свойство `writableStream.locked` по умолчанию имеет значение `false`, и переключается на `true`, если к данному `WritableStream` прикреплен активный писатель.
 
@@ -550,7 +549,7 @@ const stream = new WritableStream(getWritableSinkSomehow());
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-  data.getWriter().write('hello');
+    data.getWriter().write('hello');
 };
 
 port2.postMessage(stream, [stream]);
@@ -560,36 +559,36 @@ port2.postMessage(stream, [stream]);
 
 #### `new WritableStreamDefaultWriter(stream)`
 
-- `поток` {WritableStream}
+-   `поток` {WritableStream}
 
 Создает новый `WritableStreamDefaultWriter`, который заблокирован для данного `WritableStream`.
 
 #### `writableStreamDefaultWriter.abort([reason])`
 
-- `reason` {любая}
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `reason` {любая}
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Резко завершает `WritableStream`. Все записи в очереди будут отменены, а связанные с ними обещания отклонены.
 
 #### `writableStreamDefaultWriter.close()`
 
-- Возвращает: Обещание, выполненное с `undefined`.
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Закрывает `WritableStream`, если не ожидается дополнительных записей.
 
 #### `writableStreamDefaultWriter.closed`
 
-- Тип: {Promise} Выполняется с `undefined`, когда связанный {WritableStream} закрывается или отклоняется, если поток ошибается или блокировка писателя освобождается до завершения закрытия потока.
+-   Тип: {Promise} Выполняется с `undefined`, когда связанный {WritableStream} закрывается или отклоняется, если поток ошибается или блокировка писателя освобождается до завершения закрытия потока.
 
 #### `writableStreamDefaultWriter.desiredSize`
 
-- Тип: {число}
+-   Тип: {число}
 
 Количество данных, необходимое для заполнения очереди {WritableStream}.
 
 #### `writableStreamDefaultWriter.ready`
 
-- тип: Обещание, которое выполняется с `undefined`, когда писатель готов к использованию.
+-   тип: Обещание, которое выполняется с `undefined`, когда писатель готов к использованию.
 
 #### `writableStreamDefaultWriter.releaseLock()`
 
@@ -597,8 +596,8 @@ port2.postMessage(stream, [stream]);
 
 #### `writableStreamDefaultWriter.write([chunk])`
 
-- `chunk`: {любой}
-- Возвращает: Обещание, выполненное с `undefined`.
+-   `chunk`: {любой}
+-   Возвращает: Обещание, выполненное с `undefined`.
 
 Добавляет новый фрагмент данных в очередь {WritableStream}.
 
@@ -608,13 +607,13 @@ port2.postMessage(stream, [stream]);
 
 #### `writableStreamDefaultController.error([error])`
 
-- `error` {любая}
+-   `error` {любая}
 
 Вызывается пользовательским кодом для сигнализации о том, что произошла ошибка при обработке данных `WritableStream`. После вызова {WritableStream} будет прерван, а текущие записи будут отменены.
 
 #### `writableStreamDefaultController.signal`
 
-- Тип: {AbortSignal} Сигнал `AbortSignal`, который можно использовать для отмены ожидающих операций записи или закрытия, когда {WritableStream} прерывается.
+-   Тип: {AbortSignal} Сигнал `AbortSignal`, который можно использовать для отмены ожидающих операций записи или закрытия, когда {WritableStream} прерывается.
 
 ### Класс: `TransformStream`
 
@@ -624,50 +623,50 @@ port2.postMessage(stream, [stream]);
 import { TransformStream } from 'node:stream/web';
 
 const transform = new TransformStream({
-  transform(chunk, controller) {
-    controller.enqueue(chunk.toUpperCase());
-  },
+    transform(chunk, controller) {
+        controller.enqueue(chunk.toUpperCase());
+    },
 });
 
 await Promise.all([
-  transform.writable.getWriter().write('A'),
-  transform.readable.getReader().read(),
+    transform.writable.getWriter().write('A'),
+    transform.readable.getReader().read(),
 ]);
 ```
 
 #### `new TransformStream([transformer[, writableStrategy[, readableStrategy]]])`
 
-- `transformer` {Объект}
-  - `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `TransformStream`.
-    - `controller` {TransformStreamDefaultController}
-    - Возвращает: `undefined` или обещание, выполненное с `undefined`.
-  - `transform` {Function} Определяемая пользователем функция, которая получает и потенциально изменяет фрагмент данных, записанный в `transformStream.writable`, перед тем как передать его в `transformStream.readable`.
-    - `chunk` {любой}
-    - `контроллер` {TransformStreamDefaultController}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `flush` {Функция} Определяемая пользователем функция, которая вызывается непосредственно перед закрытием записываемой стороны `TransformStream`, сигнализируя об окончании процесса преобразования.
-    - `controller` {TransformStreamDefaultController}
-    - Возвращает: Обещание, выполненное с `undefined`.
-  - `readableType` {любой} Опция `readableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
-  - `writableType` {любой} опция `writableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
-- `writableStrategy` {Object}
-  - `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-  - `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-    - `chunk` {любой}
-    - Возвращает: {число}
-- `readableStrategy` {Object}
-  - `highWaterMark` {число} Максимальный размер внутренней очереди перед применением обратного давления.
-  - `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-    - `chunk` {любой}
-    - Возвращает: {число}
+-   `transformer` {Объект}
+    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `TransformStream`.
+        -   `controller` {TransformStreamDefaultController}
+        -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
+    -   `transform` {Function} Определяемая пользователем функция, которая получает и потенциально изменяет фрагмент данных, записанный в `transformStream.writable`, перед тем как передать его в `transformStream.readable`.
+        -   `chunk` {любой}
+        -   `контроллер` {TransformStreamDefaultController}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `flush` {Функция} Определяемая пользователем функция, которая вызывается непосредственно перед закрытием записываемой стороны `TransformStream`, сигнализируя об окончании процесса преобразования.
+        -   `controller` {TransformStreamDefaultController}
+        -   Возвращает: Обещание, выполненное с `undefined`.
+    -   `readableType` {любой} Опция `readableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
+    -   `writableType` {любой} опция `writableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
+-   `writableStrategy` {Object}
+    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` {любой}
+        -   Возвращает: {число}
+-   `readableStrategy` {Object}
+    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением обратного давления.
+    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` {любой}
+        -   Возвращает: {число}
 
 #### `transformStream.readable`
 
-- Тип: {ReadableStream}
+-   Тип: {ReadableStream}
 
 #### `transformStream.writable`
 
-- Тип: {WritableStream}
+-   Тип: {WritableStream}
 
 #### Передача с помощью postMessage()
 
@@ -679,8 +678,8 @@ const stream = new TransformStream();
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-  const { writable, readable } = data;
-  // ...
+    const { writable, readable } = data;
+    // ...
 };
 
 port2.postMessage(stream, [stream]);
@@ -692,19 +691,19 @@ port2.postMessage(stream, [stream]);
 
 #### `transformStreamDefaultController.desiredSize`
 
-- Тип: {число}
+-   Тип: {число}
 
 Количество данных, необходимое для заполнения очереди читаемой стороны.
 
 #### `transformStreamDefaultController.enqueue([chunk])`
 
-- `chunk` {любой}
+-   `chunk` {любой}
 
 Добавляет фрагмент данных в очередь читаемой стороны.
 
 #### `transformStreamDefaultController.error([reason])`
 
-- `reason` {любая}
+-   `reason` {любая}
 
 Сигнализирует как читаемой, так и записываемой стороне, что при обработке данных преобразования произошла ошибка, в результате чего обе стороны будут резко закрыты.
 
@@ -716,35 +715,35 @@ port2.postMessage(stream, [stream]);
 
 #### `new ByteLengthQueuingStrategy(options)`
 
-- `options` {Object}
-  - `highWaterMark` {number}
+-   `options` {Object}
+    -   `highWaterMark` {number}
 
 #### `byteLengthQueuingStrategy.highWaterMark`
 
-- Тип: {число}
+-   Тип: {число}
 
 #### `byteLengthQueuingStrategy.size`
 
-- Тип: {Function}
-  - `chunk` {любой}
-  - Возвращает: {число}
+-   Тип: {Function}
+    -   `chunk` {любой}
+    -   Возвращает: {число}
 
 ### Класс: `CountQueuingStrategy`
 
 #### `new CountQueuingStrategy(options)`
 
-- `options` {Object}
-  - `highWaterMark` {number}
+-   `options` {Object}
+    -   `highWaterMark` {number}
 
 #### `countQueuingStrategy.highWaterMark`
 
-- Тип: {число}
+-   Тип: {число}
 
 #### `countQueuingStrategy.size`
 
-- Тип: {Function}
-  - `chunk` {любой}
-  - Возвращает: {число}
+-   Тип: {Function}
+    -   `chunk` {любой}
+    -   Возвращает: {число}
 
 ### Класс: `TextEncoderStream`
 
@@ -754,82 +753,82 @@ port2.postMessage(stream, [stream]);
 
 #### `textEncoderStream.encoding`
 
-- Тип: {строка}
+-   Тип: {строка}
 
 Кодировка, поддерживаемая экземпляром `TextEncoderStream`.
 
 #### `textEncoderStream.readable`
 
-- Тип: {ReadableStream}
+-   Тип: {ReadableStream}
 
 #### `textEncoderStream.writable`
 
-- Тип: {WritableStream}
+-   Тип: {WritableStream}
 
 ### Класс: `TextDecoderStream`
 
 #### `new TextDecoderStream([encoding[, options]])`
 
-- `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `текстового декодера`. **По умолчанию:** `'utf-8'`.
-- `options` {Object}
-  - `fatal` {boolean} `true`, если сбои декодирования являются фатальными.
-  - `ignoreBOM` {boolean} Когда `true`, `TextDecoderStream` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
+-   `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `текстового декодера`. **По умолчанию:** `'utf-8'`.
+-   `options` {Object}
+    -   `fatal` {boolean} `true`, если сбои декодирования являются фатальными.
+    -   `ignoreBOM` {boolean} Когда `true`, `TextDecoderStream` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
 
 Создает новый экземпляр `TextDecoderStream`.
 
 #### `textDecoderStream.encoding`
 
-- Тип: {строка}
+-   Тип: {строка}
 
 Кодировка, поддерживаемая экземпляром `TextDecoderStream`.
 
 #### `textDecoderStream.fatal`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Значение будет `true`, если в результате ошибок декодирования будет выброшена `TypeError`.
 
 #### `textDecoderStream.ignoreBOM`
 
-- Тип: {boolean}
+-   Тип: {boolean}
 
 Значение будет `true`, если результат декодирования будет включать метку порядка байтов.
 
 #### `textDecoderStream.readable`
 
-- Тип: {ReadableStream}
+-   Тип: {ReadableStream}
 
 #### `textDecoderStream.writable`
 
-- Тип: {WritableStream}
+-   Тип: {WritableStream}
 
 ### Класс: `CompressionStream`
 
 #### `new CompressionStream(format)`
 
-- `format` {строка} Один из `deflate` или `gzip`.
+-   `format` {строка} Один из `deflate` или `gzip`.
 
 #### `compressionStream.readable`
 
-- Тип: {ReadableStream}
+-   Тип: {ReadableStream}
 
 #### `compressionStream.writable`
 
-- Тип: {WritableStream}
+-   Тип: {WritableStream}
 
 ### Класс: `DecompressionStream`
 
 #### `new DecompressionStream(format)`
 
-- `format` {строка} Один из `deflate` или `gzip`.
+-   `format` {строка} Один из `deflate` или `gzip`.
 
 #### `decompressionStream.readable`
 
-- Тип: {ReadableStream}
+-   Тип: {ReadableStream}
 
 #### `decompressionStream.writable`
 
-- Тип: {WritableStream}
+-   Тип: {WritableStream}
 
 ### Утилитарные потребители
 
@@ -839,28 +838,28 @@ port2.postMessage(stream, [stream]);
 
 ```mjs
 import {
-  arrayBuffer,
-  blob,
-  buffer,
-  json,
-  text,
+    arrayBuffer,
+    blob,
+    buffer,
+    json,
+    text,
 } from 'node:stream/consumers';
 ```
 
 ```cjs
 const {
-  arrayBuffer,
-  blob,
-  buffer,
-  json,
-  text,
+    arrayBuffer,
+    blob,
+    buffer,
+    json,
+    text,
 } = require('node:stream/consumers');
 ```
 
 #### `streamConsumers.arrayBuffer(stream)`
 
-- `stream` {ReadableStream|stream.Readable|AsyncIterator}
-- Возвращает: {Promise} Выполняется с `ArrayBuffer`, содержащим полное содержимое потока.
+-   `stream` {ReadableStream|stream.Readable|AsyncIterator}
+-   Возвращает: {Promise} Выполняется с `ArrayBuffer`, содержащим полное содержимое потока.
 
 ```mjs
 import { buffer as arrayBuffer } from 'node:stream/consumers';
@@ -869,7 +868,7 @@ import { TextEncoder } from 'node:util';
 
 const encoder = new TextEncoder();
 const dataArray = encoder.encode(
-  'привет миру от потребителей!'
+    'привет миру от потребителей!'
 );
 
 const readable = Readable.from(dataArray);
@@ -884,18 +883,18 @@ const { TextEncoder } = require('node:util');
 
 const encoder = new TextEncoder();
 const dataArray = encoder.encode(
-  'hello world from consumers!'
+    'hello world from consumers!'
 );
 const readable = Readable.from(dataArray);
 arrayBuffer(readable).then((data) => {
-  console.log(`из readable: ${data.byteLength}`);
+    console.log(`из readable: ${data.byteLength}`);
 });
 ```
 
 #### `streamConsumers.blob(stream)`
 
-- `stream` {ReadableStream|stream.Readable|AsyncIterator}
-- Возвращает: {Promise} Выполняется с помощью {Blob}, содержащего полное содержимое потока.
+-   `stream` {ReadableStream|stream.Readable|AsyncIterator}
+-   Возвращает: {Promise} Выполняется с помощью {Blob}, содержащего полное содержимое потока.
 
 ```mjs
 import { blob } from 'node:stream/consumers';
@@ -914,14 +913,14 @@ const dataBlob = new Blob(['hello world from consumers!']);
 
 const readable = dataBlob.stream();
 blob(readable).then((data) => {
-  console.log(`из readable: ${data.size}`);
+    console.log(`из readable: ${data.size}`);
 });
 ```
 
 #### `streamConsumers.buffer(stream)`
 
-- `stream` {ReadableStream|stream.Readable|AsyncIterator}
-- Возвращает: {Promise} Выполняется с {Buffer}, содержащим полное содержимое потока.
+-   `stream` {ReadableStream|stream.Readable|AsyncIterator}
+-   Возвращает: {Promise} Выполняется с {Buffer}, содержащим полное содержимое потока.
 
 ```mjs
 import { buffer } from 'node:stream/consumers';
@@ -929,7 +928,7 @@ import { Readable } from 'node:stream';
 import { Buffer } from 'node:buffer';
 
 const dataBuffer = Buffer.from(
-  'hello world from consumers!'
+    'hello world from consumers!'
 );
 
 const readable = Readable.from(dataBuffer);
@@ -943,31 +942,31 @@ const { Readable } = require('node:stream');
 const { Buffer } = require('node:buffer');
 
 const dataBuffer = Buffer.from(
-  'привет миру от потребителей!'
+    'привет миру от потребителей!'
 );
 
 const readable = Readable.from(dataBuffer);
 buffer(readable).then((data) => {
-  console.log(`из readable: ${data.length}`);
+    console.log(`из readable: ${data.length}`);
 });
 ```
 
 #### `streamConsumers.json(stream)`
 
-- `stream` {ReadableStream|stream.Readable|AsyncIterator}
-- Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8, которая затем передается через `JSON.parse()`.
+-   `stream` {ReadableStream|stream.Readable|AsyncIterator}
+-   Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8, которая затем передается через `JSON.parse()`.
 
 ```mjs
 import { json } from 'node:stream/consumers';
 import { Readable } from 'node:stream';
 
 const items = Array.from(
-  {
-    length: 100,
-  },
-  () => ({
-    сообщение: 'hello world from consumers!',
-  })
+    {
+        length: 100,
+    },
+    () => ({
+        сообщение: 'hello world from consumers!',
+    })
 );
 
 const readable = Readable.from(JSON.stringify(items));
@@ -980,31 +979,31 @@ const { json } = require('node:stream/consumers');
 const { Readable } = require('node:stream');
 
 const items = Array.from(
-  {
-    length: 100,
-  },
-  () => ({
-    сообщение: 'hello world from consumers!',
-  })
+    {
+        length: 100,
+    },
+    () => ({
+        сообщение: 'hello world from consumers!',
+    })
 );
 
 const readable = Readable.from(JSON.stringify(items));
 json(readable).then((data) => {
-  console.log(`из readable: ${data.length}`);
+    console.log(`из readable: ${data.length}`);
 });
 ```
 
 #### `streamConsumers.text(stream)`
 
-- `stream` {ReadableStream|stream.Readable|AsyncIterator}
-- Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8.
+-   `stream` {ReadableStream|stream.Readable|AsyncIterator}
+-   Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8.
 
 ```mjs
 import { text } from 'node:stream/consumers';
 import { Readable } from 'node:stream';
 
 const readable = Readable.from(
-  'Hello world from consumers!'
+    'Hello world from consumers!'
 );
 const data = await text(readable);
 console.log(`from readable: ${data.length}`);
@@ -1015,10 +1014,10 @@ const { text } = require('node:stream/consumers');
 const { Readable } = require('node:stream');
 
 const readable = Readable.from(
-  'Привет миру от потребителей!'
+    'Привет миру от потребителей!'
 );
 text(readable).then((data) => {
-  console.log(`из readable: ${data.length}`);
+    console.log(`из readable: ${data.length}`);
 });
 ```
 

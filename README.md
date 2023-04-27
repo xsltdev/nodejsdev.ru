@@ -4,13 +4,11 @@
 
 ## Участие
 
-Чтобы исправить ошибку или добавить что-то новое в этот репозиторий, вам нужно открыть пулл-реквест на Гитхабе.
-Кроме того, на каждой странице сайта справа от заголовка есть иконка редактирования (карандаш).
+Чтобы исправить ошибку или добавить что-то новое в этот репозиторий, вам нужно открыть пулл-реквест на Гитхабе. Кроме того, на каждой странице сайта справа от заголовка есть иконка редактирования (карандаш).
 
 ## Сборка справочника
 
-Для сборки справочника нужно [установить MKDocs](https://www.mkdocs.org/#installation),
-[расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/):
+Для сборки справочника нужно [установить MKDocs](https://www.mkdocs.org/#installation), [расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/):
 
 ```
 pip3 install -r ./requirements.txt

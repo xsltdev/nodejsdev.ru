@@ -13,20 +13,26 @@ npm install body-parser --save
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Регистрация</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>Введите данные</h1>
-    <form action="/register" method="post">
-      <label>Имя</label><br />
-      <input type="text" name="userName" /><br /><br />
-      <label>Возраст</label><br />
-      <input type="number" name="userAge" /><br /><br />
-      <input type="submit" value="Отправить" />
-    </form>
-  </body>
+    <head>
+        <title>Регистрация</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Введите данные</h1>
+        <form action="/register" method="post">
+            <label>Имя</label><br />
+            <input
+                type="text"
+                name="userName"
+            /><br /><br />
+            <label>Возраст</label><br />
+            <input
+                type="number"
+                name="userAge"
+            /><br /><br />
+            <input type="submit" value="Отправить" />
+        </form>
+    </body>
 </html>
 ```
 
@@ -35,46 +41,46 @@ npm install body-parser --save
 В файле `app.js` определим следующий код:
 
 ```js
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const app = express()
+const app = express();
 
 // создаем парсер для данных application/x-www-form-urlencoded
 const urlencodedParser = bodyParser.urlencoded({
-  extended: false,
-})
+    extended: false,
+});
 
 app.get('/register', urlencodedParser, function (
-  request,
-  response
+    request,
+    response
 ) {
-  response.sendFile(__dirname + '/register.html')
-})
+    response.sendFile(__dirname + '/register.html');
+});
 app.post('/register', urlencodedParser, function (
-  request,
-  response
+    request,
+    response
 ) {
-  if (!request.body) return response.sendStatus(400)
-  console.log(request.body)
-  response.send(
-    `${request.body.userName} - ${request.body.userAge}`
-  )
-})
+    if (!request.body) return response.sendStatus(400);
+    console.log(request.body);
+    response.send(
+        `${request.body.userName} - ${request.body.userAge}`
+    );
+});
 
 app.get('/', function (request, response) {
-  response.send('Главная страница')
-})
+    response.send('Главная страница');
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 Прежде всего для получения отправленных данных необходимо создать парсер:
 
 ```js
 const urlencodedParser = bodyParser.urlencoded({
-  extended: false,
-})
+    extended: false,
+});
 ```
 
 Поскольку данные отправляются с помощью формы, то для создания парсера применяется функция `urlencoded()`. В эту функцию передается объект, устанавливающий параметры парсинга. Значение `extended: false` указывает, что объект - результат парсинга будет представлять набор пар ключ-значение, а каждое значение может быть представлено в виде строки или массива.
@@ -85,15 +91,15 @@ const urlencodedParser = bodyParser.urlencoded({
 
 ```js
 app.post('/register', urlencodedParser, function (
-  request,
-  response
+    request,
+    response
 ) {
-  if (!request.body) return response.sendStatus(400)
-  console.log(request.body)
-  response.send(
-    `${request.body.userName} - ${request.body.userAge}`
-  )
-})
+    if (!request.body) return response.sendStatus(400);
+    console.log(request.body);
+    response.send(
+        `${request.body.userName} - ${request.body.userAge}`
+    );
+});
 ```
 
 Для получения самих отправленных данных используем выражения типа `request.body.userName`, где `request.body` инкапсулирует данные формы, а `userName` - ключ данных, который соответствует значению атрибута name поля ввода на html-странице:

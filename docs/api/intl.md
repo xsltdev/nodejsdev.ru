@@ -9,18 +9,18 @@ description: Node.js имеет множество функций, которы�
 
 Node.js имеет множество функций, которые облегчают написание интернационализированных программ. Вот некоторые из них:
 
-- Функции, чувствительные к локали или Unicode в [ECMAScript Language Specification](https://tc39.github.io/ecma262/):
-  - [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
-  - [`String.prototype.toLowerCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase)
-  - [`String.prototype.toUpperCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
-- Вся функциональность, описанная в [ECMAScript Internationalization API Specification](https://tc39.github.io/ecma402/) (она же ECMA-402):
-  - [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) объект
-  - Методы, чувствительные к локализации, такие как [`String.prototype.localeCompare()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare) и [`Date.prototype.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
-- Поддержка [интернационализированных доменных имен](https://en.wikipedia.org/wiki/Internationalized_domain_name) (IDN) в [WHATWG URL parser](url.md#the-whatwg-url-api).
-- [`require('node:buffer').transcode()`](buffer.md#buffertranscodesource-fromenc-toenc)
-- Более точное редактирование строк [REPL](repl.md#repl)
-- [`require('node:util').TextDecoder`](util.md#class-utiltextdecoder)
-- [`RegExp` Unicode Property Escapes](https://github.com/tc39/proposal-regexp-unicode-property-escapes)
+-   Функции, чувствительные к локали или Unicode в [ECMAScript Language Specification](https://tc39.github.io/ecma262/):
+    -   [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
+    -   [`String.prototype.toLowerCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase)
+    -   [`String.prototype.toUpperCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
+-   Вся функциональность, описанная в [ECMAScript Internationalization API Specification](https://tc39.github.io/ecma402/) (она же ECMA-402):
+    -   [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) объект
+    -   Методы, чувствительные к локализации, такие как [`String.prototype.localeCompare()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare) и [`Date.prototype.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
+-   Поддержка [интернационализированных доменных имен](https://en.wikipedia.org/wiki/Internationalized_domain_name) (IDN) в [WHATWG URL parser](url.md#the-whatwg-url-api).
+-   [`require('node:buffer').transcode()`](buffer.md#buffertranscodesource-fromenc-toenc)
+-   Более точное редактирование строк [REPL](repl.md#repl)
+-   [`require('node:util').TextDecoder`](util.md#class-utiltextdecoder)
+-   [`RegExp` Unicode Property Escapes](https://github.com/tc39/proposal-regexp-unicode-property-escapes)
 
 Node.js и лежащий в основе движок V8 используют [International Components for Unicode (ICU)](http://site.icu-project.org/) для реализации этих возможностей в родном коде на C/C++. Полный набор данных ICU предоставляется Node.js по умолчанию. Однако, из-за размера файла данных ICU, предоставляется несколько опций для настройки набора данных ICU при сборке или запуске Node.js.
 
@@ -28,10 +28,10 @@ Node.js и лежащий в основе движок V8 используют [
 
 Чтобы контролировать использование ICU в Node.js, во время компиляции доступны четыре опции `configure`. Дополнительные подробности о том, как компилировать Node.js, описаны в [BUILDING.md](https://github.com/nodejs/node/blob/HEAD/BUILDING.md).
 
-- `--with-intl=none`/`--without-intl`
-- `--with-intl=system-icu`
-- `--with-intl=small-icu`
-- `--with-intl=full-icu` (default)
+-   `--with-intl=none`/`--without-intl`
+-   `--with-intl=system-icu`
+-   `--with-intl=small-icu`
+-   `--with-intl=full-icu` (default)
 
 Обзор доступных возможностей Node.js и JavaScript для каждой опции `configure`:
 
@@ -168,10 +168,10 @@ Node.js может ссылаться на сборку ICU, уже устано
 ```js
 const january = new Date(9e8);
 const english = new Intl.DateTimeFormat('en', {
-  month: 'long',
+    month: 'long',
 });
 const spanish = new Intl.DateTimeFormat('es', {
-  month: 'long',
+    month: 'long',
 });
 
 console.log(english.format(january));
@@ -187,17 +187,17 @@ console.log(spanish.format(january));
 
 Если используется опция `small-icu`, можно предоставить дополнительные данные о локали во время выполнения, чтобы методы JS работали для всех локалей ICU. Предполагая, что файл данных хранится в `/some/directory`, его можно сделать доступным для ICU либо через:
 
-- [`NODE_ICU_DATA`](cli.md#node_icu_datafile) переменную окружения:
+-   [`NODE_ICU_DATA`](cli.md#node_icu_datafile) переменную окружения:
 
-  ```bash
-  env NODE_ICU_DATA=/some/directory node
-  ```
+    ```bash
+    env NODE_ICU_DATA=/some/directory node
+    ```
 
-- CLI-параметр [`--icu-data-dir`](cli.md#--icu-data-dirfile):
+-   CLI-параметр [`--icu-data-dir`](cli.md#--icu-data-dirfile):
 
-  ```bash
-  node --icu-data-dir=/some/directory
-  ```
+    ```bash
+    node --icu-data-dir=/some/directory
+    ```
 
 (Если указаны оба параметра, приоритет имеет параметр CLI `--icu-data-dir`).
 
@@ -239,5 +239,5 @@ const hasFullICU = (() => {
 
 Для более подробных тестов на поддержку `Intl` могут быть полезны следующие ресурсы:
 
-- [btest402](https://github.com/srl295/btest402): Обычно используется для проверки правильности сборки Node.js с поддержкой `Intl`.
-- [Test262](https://github.com/tc39/test262/tree/HEAD/test/intl402): Официальный набор тестов соответствия ECMAScript включает раздел, посвященный ECMA-402.
+-   [btest402](https://github.com/srl295/btest402): Обычно используется для проверки правильности сборки Node.js с поддержкой `Intl`.
+-   [Test262](https://github.com/tc39/test262/tree/HEAD/test/intl402): Официальный набор тестов соответствия ECMAScript включает раздел, посвященный ECMA-402.

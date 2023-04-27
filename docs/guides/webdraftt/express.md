@@ -13,39 +13,39 @@ npm install express --save
 _app.js_
 
 ```js
-const app = require('express')()
+const app = require('express')();
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '127.0.0.1';
+const port = 7000;
 
 app.get('/home', (req, res) => {
-  res.status(200).type('text/plain')
-  res.send('Home page')
-})
+    res.status(200).type('text/plain');
+    res.send('Home page');
+});
 
 app.get('/about', (req, res) => {
-  res.status(200).type('text/plain')
-  res.send('About page')
-})
+    res.status(200).type('text/plain');
+    res.send('About page');
+});
 
 app.post('/api/admin', (req, res) => {
-  res.status(200).type('text/plain')
-  res.send('Create admin request')
-})
+    res.status(200).type('text/plain');
+    res.send('Create admin request');
+});
 
 app.post('/api/user', (req, res) => {
-  res.status(200).type('text/plain')
-  res.send('Create user request')
-})
+    res.status(200).type('text/plain');
+    res.send('Create user request');
+});
 
 app.use((req, res, next) => {
-  res.status(404).type('text/plain')
-  res.send('Not found')
-})
+    res.status(404).type('text/plain');
+    res.send('Not found');
+});
 
 app.listen(port, host, function () {
-  console.log(`Server listens http://${host}:${port}`)
-})
+    console.log(`Server listens http://${host}:${port}`);
+});
 ```
 
 Node.js Express имеет готовые функции обработки HTTP запросов, причем для каждого HTTP метода имеется своя функция, что особенно удобно при создании [REST API](rest-api.md). И это далеко не единственная причина использования Express.

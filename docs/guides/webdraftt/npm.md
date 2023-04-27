@@ -20,15 +20,15 @@ npm init
 
 Вам будет предложено ввести некоторые данные, на основе которых Node.js npm сгенерирует файл `package.json`. Структура файла:
 
-- `name` - название приложения;
-- `version` - версия;
-- `description` - описание;
-- `main` - главный файл приложения, который отвечает за его запуск (хорошей практикой считается давать название `app.js` или `index.js`);
-- `scripts` - объект, описывающий команды, которые часто приходится выполнять в процессе разработки и упрощающий их использование;
-- `repository` - ссылка на Git репозиторий, где хранится проект;
-- `keywords` - массив ключевых слов, по которым будет осуществляться поиск модуля на сайте npm (если он будет там опубликован);
-- `author` - разработчик;
-- `license` - лицензия, под которой будет распространяться приложение.
+-   `name` - название приложения;
+-   `version` - версия;
+-   `description` - описание;
+-   `main` - главный файл приложения, который отвечает за его запуск (хорошей практикой считается давать название `app.js` или `index.js`);
+-   `scripts` - объект, описывающий команды, которые часто приходится выполнять в процессе разработки и упрощающий их использование;
+-   `repository` - ссылка на Git репозиторий, где хранится проект;
+-   `keywords` - массив ключевых слов, по которым будет осуществляться поиск модуля на сайте npm (если он будет там опубликован);
+-   `author` - разработчик;
+-   `license` - лицензия, под которой будет распространяться приложение.
 
 Пример, как может выглядеть `package.json`.
 
@@ -36,20 +36,26 @@ _package.json_
 
 ```json
 {
-  "name": "webdraftt.com",
-  "version": "1.0.0",
-  "description": "My first Node js application",
-  "main": "app.js",
-  "scripts": {
-    "build": "webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/webdraftt/webfraftt"
-  },
-  "keywords": ["angular", "rxjs", "ngrx", "node js", "npm"],
-  "author": "webdraftt",
-  "license": "ISC"
+    "name": "webdraftt.com",
+    "version": "1.0.0",
+    "description": "My first Node js application",
+    "main": "app.js",
+    "scripts": {
+        "build": "webpack"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/webdraftt/webfraftt"
+    },
+    "keywords": [
+        "angular",
+        "rxjs",
+        "ngrx",
+        "node js",
+        "npm"
+    ],
+    "author": "webdraftt",
+    "license": "ISC"
 }
 ```
 
@@ -87,9 +93,9 @@ _package.json_
 
 ```json
 {
-  "dependencies": {
-    "express": ">= 1.2.0"
-  }
+    "dependencies": {
+        "express": ">= 1.2.0"
+    }
 }
 ```
 
@@ -122,12 +128,12 @@ _package.json_
 
 ```json
 {
-  "dependencies": {
-    "express": ">= 1.2.0"
-  },
-  "devDependencies": {
-    "logger-service": ">= 1.0.2"
-  }
+    "dependencies": {
+        "express": ">= 1.2.0"
+    },
+    "devDependencies": {
+        "logger-service": ">= 1.0.2"
+    }
 }
 ```
 

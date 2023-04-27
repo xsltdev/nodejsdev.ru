@@ -17,26 +17,26 @@ description: Модуль trace_events предоставляет механиз
 
 Доступны следующие категории:
 
-- `node`: Пустой заполнитель.
-- `node.async_hooks`: Включает захват подробных данных трассировки [`async_hooks`](async_hooks.md). События [`async_hooks`](async_hooks.md) имеют уникальный `asyncId` и специальное свойство `triggerId` `triggerAsyncId`.
-- `node.bootstrap`: Позволяет перехватывать вехи загрузки Node.js.
-- `node.console`: Включает захват вывода `console.time()` и `console.count()`.
-- `node.threadpoolwork.sync`: Включает захват данных трассировки для синхронных операций пула потоков, таких как `blob`, `zlib`, `crypto` и `node_api`.
-- `node.threadpoolwork.async`: Включает захват данных трассировки для асинхронных операций threadpool, таких как `blob`, `zlib`, `crypto` и `node_api`.
-- `node.dns.native`: Включает захват данных трассировки для DNS-запросов.
-- `node.net.native`: Включает захват данных трассировки для сети.
-- `node.environment`: Включает захват вех окружения Node.js.
-- `node.fs.sync`: Включает захват данных трассировки для методов синхронизации файловой системы.
-- `node.fs_dir.sync`: Включает захват данных трассировки для методов синхронизации каталогов файловой системы.
-- `node.fs.async`: Включает захват данных трассировки для асинхронных методов файловой системы.
-- `node.fs_dir.async`: Включает захват данных трассировки для асинхронных методов каталогов файловой системы.
-- `node.perf`: Включает захват измерений [Performance API](perf_hooks.md).
-  - `node.perf.usertiming`: Включает захват только мер и меток пользовательского тайминга Performance API.
-  - `node.perf.timerify`: Включает захват только измерений таймерификации API производительности.
-- `node.promises.rejections`: Включает захват данных трассировки, отслеживающих количество необработанных отказов Promise и обработанных после отказов.
-- `node.vm.script`: Позволяет перехватывать данные трассировки для методов `node:vm` модуля `runInNewContext()`, `runInContext()` и `runInThisContext()`.
-- `v8`: События [V8](v8.md) связаны с GC, компиляцией и выполнением.
-- `node.http`: Включает захват данных трассировки для http-запросов/ответов.
+-   `node`: Пустой заполнитель.
+-   `node.async_hooks`: Включает захват подробных данных трассировки [`async_hooks`](async_hooks.md). События [`async_hooks`](async_hooks.md) имеют уникальный `asyncId` и специальное свойство `triggerId` `triggerAsyncId`.
+-   `node.bootstrap`: Позволяет перехватывать вехи загрузки Node.js.
+-   `node.console`: Включает захват вывода `console.time()` и `console.count()`.
+-   `node.threadpoolwork.sync`: Включает захват данных трассировки для синхронных операций пула потоков, таких как `blob`, `zlib`, `crypto` и `node_api`.
+-   `node.threadpoolwork.async`: Включает захват данных трассировки для асинхронных операций threadpool, таких как `blob`, `zlib`, `crypto` и `node_api`.
+-   `node.dns.native`: Включает захват данных трассировки для DNS-запросов.
+-   `node.net.native`: Включает захват данных трассировки для сети.
+-   `node.environment`: Включает захват вех окружения Node.js.
+-   `node.fs.sync`: Включает захват данных трассировки для методов синхронизации файловой системы.
+-   `node.fs_dir.sync`: Включает захват данных трассировки для методов синхронизации каталогов файловой системы.
+-   `node.fs.async`: Включает захват данных трассировки для асинхронных методов файловой системы.
+-   `node.fs_dir.async`: Включает захват данных трассировки для асинхронных методов каталогов файловой системы.
+-   `node.perf`: Включает захват измерений [Performance API](perf_hooks.md).
+    -   `node.perf.usertiming`: Включает захват только мер и меток пользовательского тайминга Performance API.
+    -   `node.perf.timerify`: Включает захват только измерений таймерификации API производительности.
+-   `node.promises.rejections`: Включает захват данных трассировки, отслеживающих количество необработанных отказов Promise и обработанных после отказов.
+-   `node.vm.script`: Позволяет перехватывать данные трассировки для методов `node:vm` модуля `runInNewContext()`, `runInContext()` и `runInThisContext()`.
+-   `v8`: События [V8](v8.md) связаны с GC, компиляцией и выполнением.
+-   `node.http`: Включает захват данных трассировки для http-запросов/ответов.
 
 По умолчанию включены категории `node`, `node.async_hooks` и `v8`.
 
@@ -68,7 +68,7 @@ node --trace-event-categories v8,node,node.async_hooks
 
 #### `tracing.categories`
 
-- {строка}
+-   {строка}
 
 Список категорий событий трассировки, охватываемых этим объектом `Tracing`, разделенный запятыми.
 
@@ -81,10 +81,10 @@ node --trace-event-categories v8,node,node.async_hooks
 ```js
 const trace_events = require('node:trace_events');
 const t1 = trace_events.createTracing({
-  categories: ['node', 'v8'],
+    categories: ['node', 'v8'],
 });
 const t2 = trace_events.createTracing({
-  categories: ['node.perf', 'node'],
+    categories: ['node.perf', 'node'],
 });
 t1.enable();
 t2.enable();
@@ -104,13 +104,13 @@ console.log(trace_events.getEnabledCategories());
 
 #### `tracing.enabled`
 
-- {булево} `true` только если объект `Tracing` был включен.
+-   {булево} `true` только если объект `Tracing` был включен.
 
 ### `trace_events.createTracing(options)`
 
-- `options` {Object}
-  - `categories` {string\[\]} Массив имен категорий трассировки. Значения, включенные в массив, по возможности приводятся к строке. Если значение не может быть приведено к строке, будет выдана ошибка.
-- Возвращает: {Tracing}.
+-   `options` {Object}
+    -   `categories` {string\[\]} Массив имен категорий трассировки. Значения, включенные в массив, по возможности приводятся к строке. Если значение не может быть приведено к строке, будет выдана ошибка.
+-   Возвращает: {Tracing}.
 
 Создает и возвращает объект `Tracing` для заданного набора `категорий`.
 
@@ -125,7 +125,7 @@ tracing.disable();
 
 ### `trace_events.getEnabledCategories()`
 
-- Возвращает: {строка}
+-   Возвращает: {строка}
 
 Возвращает список всех включенных в данный момент категорий событий трассировки, разделенных запятыми. Текущий набор включенных категорий событий трассировки определяется _объединением_ всех включенных в данный момент объектов `Tracing` и любых категорий, включенных с помощью флага `--trace-event-categories`.
 
@@ -134,13 +134,13 @@ tracing.disable();
 ```js
 const trace_events = require('node:trace_events');
 const t1 = trace_events.createTracing({
-  categories: ['node.async_hooks'],
+    categories: ['node.async_hooks'],
 });
 const t2 = trace_events.createTracing({
-  categories: ['node.perf'],
+    categories: ['node.perf'],
 });
 const t3 = trace_events.createTracing({
-  categories: ['v8'],
+    categories: ['v8'],
 });
 
 t1.enable();
@@ -161,31 +161,31 @@ const session = new Session();
 session.connect();
 
 function post(message, data) {
-  return new Promise((resolve, reject) => {
-    session.post(message, data, (err, result) => {
-      if (err) reject(new Error(JSON.stringify(err)));
-      else resolve(result);
+    return new Promise((resolve, reject) => {
+        session.post(message, data, (err, result) => {
+            if (err) reject(new Error(JSON.stringify(err)));
+            else resolve(result);
+        });
     });
-  });
 }
 
 async function collect() {
-  const data = [];
-  session.on('NodeTracing.dataCollected', (chunk) =>
-    data.push(chunk)
-  );
-  session.on('NodeTracing.tracingComplete', () => {
-    // сделано
-  });
-  const traceConfig = { includedCategories: ['v8'] };
-  await post('NodeTracing.start', { traceConfig });
-  // сделайте что-нибудь
-  setTimeout(() => {
-    post('NodeTracing.stop').then(() => {
-      session.disconnect();
-      console.log(data);
+    const data = [];
+    session.on('NodeTracing.dataCollected', (chunk) =>
+        data.push(chunk)
+    );
+    session.on('NodeTracing.tracingComplete', () => {
+        // сделано
     });
-  }, 1000);
+    const traceConfig = { includedCategories: ['v8'] };
+    await post('NodeTracing.start', { traceConfig });
+    // сделайте что-нибудь
+    setTimeout(() => {
+        post('NodeTracing.stop').then(() => {
+            session.disconnect();
+            console.log(data);
+        });
+    }, 1000);
 }
 
 collect();

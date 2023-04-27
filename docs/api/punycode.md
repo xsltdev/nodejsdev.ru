@@ -26,7 +26,7 @@ const punycode = require('punycode');
 
 ## `punycode.decode(string)`
 
-- `string` {string}
+-   `string` {string}
 
 Метод `punycode.decode()` преобразует строку [Punycode](https://tools.ietf.org/html/rfc3492) из символов только ASCII в эквивалентную строку кодовых точек Unicode.
 
@@ -37,7 +37,7 @@ punycode.decode('--dqo34k'); // '☃-⌘'
 
 ## `punycode.encode(string)`
 
-- `string` {string}
+-   `string` {string}
 
 Метод `punycode.encode()` преобразует строку кодовых точек Unicode в [Punycode](https://tools.ietf.org/html/rfc3492) строку символов только ASCII.
 
@@ -48,7 +48,7 @@ punycode.encode('☃-⌘'); // '--dqo34k'
 
 ## `punycode.toASCII(domain)`
 
-- `domain` {string}
+-   `domain` {string}
 
 Метод `punycode.toASCII()` преобразует строку Unicode, представляющую интернационализированное доменное имя, в [Punycode](https://tools.ietf.org/html/rfc3492). Преобразуются только части доменного имени, не относящиеся к коду ASCII. Вызов `punycode.toASCII()` для строки, которая уже содержит только символы ASCII, не будет иметь никакого эффекта.
 
@@ -61,7 +61,7 @@ punycode.toASCII('example.com'); // 'example.com'
 
 ## `punycode.toUnicode(domain)`
 
-- `domain` {string}
+-   `domain` {string}
 
 Метод `punycode.toUnicode()` преобразует строку, представляющую имя домена, содержащую символы в кодировке [Punycode](https://tools.ietf.org/html/rfc3492), в Юникод. Преобразуются только части доменного имени, закодированные [Punycode](https://tools.ietf.org/html/rfc3492).
 
@@ -76,7 +76,7 @@ punycode.toUnicode('example.com'); // 'example.com'
 
 ### `punycode.ucs2.decode(string)`
 
-- `string` {string}
+-   `string` {string}
 
 Метод `punycode.ucs2.decode()` возвращает массив, содержащий числовые значения кодовых точек каждого символа Unicode в строке.
 
@@ -88,7 +88,7 @@ punycode.ucs2.decode('\uD834\uDF06'); // [0x1D306]
 
 ### `punycode.ucs2.encode(codePoints)`
 
-- `codePoints` {целое число\[\]}
+-   `codePoints` {целое число\[\]}
 
 Метод `punycode.ucs2.encode()` возвращает строку, основанную на массиве числовых значений кодовых точек.
 
@@ -99,6 +99,6 @@ punycode.ucs2.encode([0x1d306]); // '\uD834\uDF06'
 
 ## `punycode.version`
 
-- {string}
+-   {string}
 
 Возвращает строку, определяющую номер текущей версии [Punycode.js](https://github.com/bestiejs/punycode.js).
