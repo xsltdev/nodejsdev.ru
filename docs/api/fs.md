@@ -1493,8 +1493,6 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 Предостережения: в Windows можно изменить только разрешение на запись, а различие между разрешениями группы, владельца или других не реализовано.
 
-Переведено с помощью www.DeepL.com/Translator (бесплатная версия)
-
 ### `fs.chown(path, uid, gid, callback)`
 
 - `path` {string|Buffer|URL}
