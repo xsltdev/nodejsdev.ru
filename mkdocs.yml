@@ -1,4 +1,4 @@
-site_name: Node.js
+site_name: Справочник Node.js
 site_url: https://nodejsdev.ru/
 site_description: Справочник Node.js с примерами кода
 site_author: nodejsdev.ru
@@ -10,8 +10,6 @@ repo_url: 'https://github.com/xsltdev/nodejsdev.ru'
 theme:
     name: material
     custom_dir: overrides
-    # name: null
-    # custom_dir: 'theme/material'
     palette:
         - media: '(prefers-color-scheme: light)'
           scheme: default
@@ -32,6 +30,7 @@ theme:
         - navigation.tabs
         - navigation.tracking
         - navigation.top
+        - navigation.footer
         - navigation.indexes
         - content.action.edit
         - content.tabs.link
@@ -70,20 +69,29 @@ extra:
 
 markdown_extensions:
     - admonition
-    - codehilite:
-          guess_lang: false
-          linenums: false
     - toc:
           permalink: true
     - pymdownx.extra
+    - pymdownx.critic
+    - pymdownx.caret
+    - pymdownx.keys
+    - pymdownx.mark
+    - pymdownx.tilde
     - pymdownx.details
     - pymdownx.emoji:
           emoji_index: !!python/name:materialx.emoji.twemoji
           emoji_generator: !!python/name:materialx.emoji.to_svg
     - pymdownx.tabbed:
           alternate_style: true
-    - pymdownx.superfences
+    - pymdownx.highlight:
+          pygments_lang_class: true
+          linenums: true
+    - pymdownx.inlinehilite
     - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.arithmatex:
+          generic: true
+    - pymdownx.smartsymbols
 
 plugins:
     - search:
@@ -94,4 +102,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css?6'
+    - '/assets/stylesheets/styles.css?7'

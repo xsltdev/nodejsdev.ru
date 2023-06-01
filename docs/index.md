@@ -6,37 +6,43 @@ hide:
     - navigation
 ---
 
-# ![Node.js](nodejs.svg){: style="height:64px;width:64px;vertical-align:middle;"} Справочник Node.js
+# ![Node.js](nodejs.svg){: style="height:42px;width:42px;vertical-align:middle;"} Справочник Node.js
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-column-gap: 30px; place-items: stretch;" markdown>
+[**Node.js®** :octicons-link-external-16:](https://nodejs.org/ru) — это кроссплатформенная среда выполнения JavaScript с открытым исходным кодом.
 
-[![Node.js](nodejs.svg){: style="height:20px;width:20px;vertical-align:middle;"} **Node.js®**](https://nodejs.org/ru) — это кроссплатформенная среда выполнения JavaScript с открытым исходным кодом.
+<div class="grid cards" style="margin-top: 1.6em" markdown>
 
-!!! success "Справочник API v18.x.x :octicons-tag-24:"
+-   :simple-nodedotjs:{ .lg .middle } **Справочник**
 
-    Цель написания этой документации состоит в том, чтобы всесторонне объяснить **Node.js API** как с общепринятой, так и с концептуальной точки зрения.
+    ***
 
-    [API Node.js](api/index.md){ .md-button }
+    Перевод официальной документации
 
-!!! success "Гайды"
+    **[:octicons-arrow-right-24: Node.js API](api/index.md)** <small>18.x.x</small>
 
-    Гайды по Node.js от различных авторов:
+    [:octicons-arrow-right-24: Карта обучения :octicons-link-external-16:](https://devmaps.ru/nodejs-2020)
 
-    - [Руководство новичка](guides/freecodecamp.md)
-    - [Гайд от webdraftt](guides/webdraftt/index.md)
-    - [Гайд от metanit](guides/metanit/index.md)
+-   :fontawesome-regular-file-code:{ .lg .middle } **Гайды**
 
-!!! info "Документация Express.js"
+    ***
 
-    **Express** &mdash; это минималистичный и гибкий веб-фреймворк для приложений Node.js, предоставляющий обширный набор функций для мобильных и веб-приложений.
+    Гайды по Node.js от различных авторов
 
-    [Express.js 4.x](expressjs4/index.md){ .md-button }
+    [:octicons-arrow-right-24: Руководство новичка](guides/freecodecamp.md)
 
-!!! info "Карта обучения"
+    [:octicons-arrow-right-24: Гайд от webdraftt](guides/webdraftt/index.md)
 
-    Современный курс по технологии Node.js
+    [:octicons-arrow-right-24: Гайд от metanit](guides/metanit/index.md)
 
-    [Карта обучения :fontawesome-solid-diagram-project:](https://devmaps.ru/nodejs-2020){ .md-button }
+-   :material-server:{ .lg .middle } **Фреймворки**
+
+    ***
+
+    Документация по серверным фреймворкам
+
+    [:octicons-arrow-right-24: Express.js](expressjs4/index.md) <small>4.x</small>
+
+    :octicons-arrow-right-24: Nest.js <small>9.x</small>
 
 </div>
 

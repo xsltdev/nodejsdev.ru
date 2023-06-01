@@ -1,5 +1,5 @@
 nav:
-    - index.md
+    - 🏠: index.md
     - api
     - guides
     - expressjs4
