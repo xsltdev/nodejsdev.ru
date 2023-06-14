@@ -153,7 +153,7 @@ API обещаний использует базовый пул потоков N
 
 Событие `'close'` происходит, когда {FileHandle} был закрыт и больше не может быть использован.
 
-#### appendFile
+#### filehandle.appendFile
 
 ```js
 filehandle.appendFile(data[, options])
@@ -168,7 +168,7 @@ filehandle.appendFile(data[, options])
 
 При работе с файловыми дескрипторами режим не может быть изменен с того, который был установлен с помощью [`fsPromises.open()`](#fspromisesopenpath-flags-mode). Поэтому это эквивалентно [`filehandle.writeFile()`](#filehandlewritefiledata-options).
 
-#### chmod
+#### filehandle.chmod
 
 ```js
 filehandle.chmod(mode);
@@ -179,7 +179,7 @@ filehandle.chmod(mode);
 
 Изменяет права доступа к файлу. См. chmod(2).
 
-#### chown
+#### filehandle.chown
 
 ```js
 filehandle.chown(uid, gid);
@@ -191,13 +191,17 @@ filehandle.chown(uid, gid);
 
 Изменяет право собственности на файл. Обертка для chown(2).
 
-#### `filehandle.close()`
+#### filehandle.close
+
+```js
+filehandle.close();
+```
 
 -   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
 Закрывает хэндл файла после ожидания завершения любой ожидающей операции над ним.
 
-```mjs
+```js title="Пример"
 import { open } from 'node:fs/promises';
 
 let filehandle;
@@ -208,7 +212,11 @@ try {
 }
 ```
 
-#### `filehandle.createReadStream([options])`
+#### filehandle.createReadStream
+
+```js
+filehandle.createReadStream([options]);
+```
 
 -   `options` {Object}
     -   `encoding` {string} **По умолчанию:** `null`
@@ -227,7 +235,7 @@ try {
 
 По умолчанию поток будет выдавать событие `закрытие` после его уничтожения. Установите опцию `emitClose` в `false`, чтобы изменить это поведение.
 
-```mjs
+```js
 import { open } from 'node:fs/promises';
 
 const fd = await open('/dev/input/event0');
@@ -249,14 +257,18 @@ setTimeout(() => {
 
 Пример для чтения последних 10 байт файла длиной 100 байт:
 
-```mjs
+```js
 import { open } from 'node:fs/promises';
 
 const fd = await open('sample.txt');
 fd.createReadStream({ start: 90, end: 99 });
 ```
 
-#### `filehandle.createWriteStream([options])`
+#### filehandle.createWriteStream
+
+```js
+filehandle.createWriteStream([options]);
+```
 
 -   `options` {Object}
     -   `encoding` {string} **По умолчанию:** `'utf8'\*\*.
@@ -271,7 +283,11 @@ fd.createReadStream({ start: 90, end: 99 });
 
 По умолчанию поток будет испускать событие `закрытие` после его уничтожения. Установите опцию `emitClose` в `false`, чтобы изменить это поведение.
 
-#### `filehandle.datasync()`
+#### filehandle.datasync
+
+```js
+filehandle.datasync();
+```
 
 -   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
@@ -279,11 +295,15 @@ fd.createReadStream({ start: 90, end: 99 });
 
 В отличие от `filehandle.sync`, этот метод не сбрасывает измененные метаданные.
 
-#### `filehandle.fd`
+#### filehandle.fd
 
 -   {number} Числовой дескриптор файла, управляемый объектом {FileHandle}.
 
-#### `filehandle.read(buffer, offset, length, position)`
+#### filehandle.read
+
+```js
+filehandle.read(buffer, offset, length, position);
+```
 
 -   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
 -   `offset` {integer} Место в буфере, с которого начнется заполнение.
@@ -297,7 +317,9 @@ fd.createReadStream({ start: 90, end: 99 });
 
 Если файл не модифицируется параллельно, конец файла будет достигнут, когда количество прочитанных байт будет равно нулю.
 
-#### `filehandle.read([options])`
+```js
+filehandle.read([options]);
+```
 
 -   `options` {Object}
     -   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла. **По умолчанию:** `Buffer.alloc(16384)`.
@@ -312,7 +334,9 @@ fd.createReadStream({ start: 90, end: 99 });
 
 Если файл не модифицируется параллельно, конец файла будет достигнут, когда количество прочитанных байт будет равно нулю.
 
-#### `filehandle.read(buffer[, options])`
+```js
+filehandle.read(buffer[, options])
+```
 
 -   `buffer` {Buffer|TypedArray|DataView} Буфер, который будет заполнен прочитанными данными файла.
 -   `options` {Object}
@@ -327,7 +351,11 @@ fd.createReadStream({ start: 90, end: 99 });
 
 Если файл не модифицируется параллельно, конец файла будет достигнут, когда количество прочитанных байт будет равно нулю.
 
-#### `filehandle.readableWebStream()`
+#### filehandle.readableWebStream
+
+```js
+filehandle.readableWebStream();
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -339,33 +367,41 @@ fd.createReadStream({ start: 90, end: 99 });
 
 Если этот метод вызывается более одного раза или вызывается после закрытия или завершения `FileHandle`, будет выдана ошибка.
 
-```mjs
-import { open } from 'node:fs/promises';
+=== "MJS"
 
-const file = await open('./some/file/to/read');
+    ```js
+    import { open } from 'node:fs/promises';
 
-for await (const chunk of file.readableWebStream())
-    console.log(chunk);
-
-await file.close();
-```
-
-```cjs
-const { open } = require('node:fs/promises');
-
-(async () => {
     const file = await open('./some/file/to/read');
 
     for await (const chunk of file.readableWebStream())
-        console.log(chunk);
+    	console.log(chunk);
 
     await file.close();
-})();
-```
+    ```
+
+=== "CJS"
+
+    ```js
+    const { open } = require('node:fs/promises');
+
+    (async () => {
+    	const file = await open('./some/file/to/read');
+
+    	for await (const chunk of file.readableWebStream())
+    		console.log(chunk);
+
+    	await file.close();
+    })();
+    ```
 
 Хотя `ReadableStream` прочитает файл до конца, он не закроет `FileHandle` автоматически. Пользовательский код все равно должен вызвать метод `fileHandle.close()`.
 
-#### `filehandle.readFile(options)`
+#### filehandle.readFile
+
+```js
+filehandle.readFile(options);
+```
 
 -   `options` {Object|string}
     -   `encoding` {string|null} **По умолчанию:** `null`.
@@ -380,7 +416,11 @@ const { open } = require('node:fs/promises');
 
 Если для файлового хэндла выполняется один или несколько вызовов `filehandle.read()`, а затем вызов `filehandle.readFile()`, данные будут прочитаны с текущей позиции до конца файла. Не всегда чтение происходит с начала файла.
 
-#### `filehandle.readLines([options])`
+#### filehandle.readLines
+
+```js
+filehandle.readLines([options]);
+```
 
 -   `options` {Object}
     -   `encoding` {string} **По умолчанию:** `null`
@@ -391,31 +431,39 @@ const { open } = require('node:fs/promises');
     -   `highWaterMark` {integer} **По умолчанию:** `64 * 1024`.
 -   Возвращает: {readline.InterfaceConstructor}
 
-Удобный метод для создания интерфейса `readline` и потоковой передачи файла. Параметры см. в [`filehandle.createReadStream()`](#filehandlecreatereadstreamoptions).
+Удобный метод для создания интерфейса `readline` и потоковой передачи файла. Параметры см. в `filehandle.createReadStream()`.
 
-```mjs
-import { open } from 'node:fs/promises';
+=== "MJS"
 
-const file = await open('./some/file/to/read');
+    ```js
+    import { open } from 'node:fs/promises';
 
-for await (const line of file.readLines()) {
-    console.log(line);
-}
-```
-
-```cjs
-const { open } = require('node:fs/promises');
-
-(async () => {
     const file = await open('./some/file/to/read');
 
     for await (const line of file.readLines()) {
-        console.log(line);
+    	console.log(line);
     }
-})();
-```
+    ```
 
-#### `filehandle.readv(buffers[, position])`
+=== "CJS"
+
+    ```js
+    const { open } = require('node:fs/promises');
+
+    (async () => {
+    	const file = await open('./some/file/to/read');
+
+    	for await (const line of file.readLines()) {
+    		console.log(line);
+    	}
+    })();
+    ```
+
+#### filehandle.readv
+
+```js
+filehandle.readv(buffers[, position])
+```
 
 -   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
 -   `position` {integer|null} Смещение от начала файла, из которого должны быть считаны данные. Если `position` не является `число`, данные будут считаны из текущей позиции. **По умолчанию:** `null`.
@@ -425,19 +473,31 @@ const { open } = require('node:fs/promises');
 
 Чтение из файла и запись в массив {ArrayBufferView}
 
-#### `filehandle.stat([options])`
+#### filehandle.stat
+
+```js
+filehandle.stat([options]);
+```
 
 -   `options` {Object}
     -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
 -   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для файла.
 
-#### `filehandle.sync()`
+#### filehandle.sync
+
+```js
+filehandle.sync();
+```
 
 -   Возвращает: {Promise} Выполняется с `undefined` в случае успеха.
 
 Запрос на сброс всех данных для открытого дескриптора файла на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. Более подробную информацию см. в документации POSIX fsync(2).
 
-#### `filehandle.truncate(len)`
+#### filehandle.truncate
+
+```js
+filehandle.truncate(len);
+```
 
 -   `len` {целое число} **По умолчанию:** `0`.
 -   Возвращает: {Promise} Выполняется с `undefined` при успехе.
@@ -448,7 +508,7 @@ const { open } = require('node:fs/promises');
 
 Следующий пример сохраняет только первые четыре байта файла:
 
-```mjs
+```js
 import { open } from 'node:fs/promises';
 
 let filehandle = null;
@@ -464,7 +524,11 @@ try {
 
 Если `len` отрицательно, то будет использоваться `0`.
 
-#### `filehandle.utimes(atime, mtime)`
+#### filehandle.utimes
+
+```js
+filehandle.utimes(atime, mtime);
+```
 
 -   `atime` {number|string|Date}
 -   `mtime` {number|string|Date}
@@ -472,7 +536,11 @@ try {
 
 Изменяет временные метки файловой системы объекта, на который ссылается {FileHandle}, затем разрешает обещание без аргументов в случае успеха.
 
-#### `filehandle.write(buffer, offset[, length[, position]])`
+#### filehandle.write
+
+```js
+filehandle.write(buffer, offset[, length[, position]])
+```
 
 -   `buffer` {Buffer|TypedArray|DataView}
 -   `offset` {integer} Начальная позиция в `буфере`, с которой начинается запись данных.
@@ -487,11 +555,13 @@ try {
 -   `bytesWritten` {целое число} количество записанных байт.
 -   `buffer` {Buffer|TypedArray|DataView} ссылка на записанный `буфер`.
 
-Небезопасно использовать `filehandle.write()` несколько раз для одного и того же файла, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Небезопасно использовать `filehandle.write()` несколько раз для одного и того же файла, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте `filehandle.createWriteStream()`.
 
 В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда добавляет данные в конец файла.
 
-#### `filehandle.write(buffer[, options])`
+```js
+filehandle.write(buffer[, options])
+```
 
 -   `buffer` {Buffer|TypedArray|DataView}
 -   `options` {Object}
@@ -504,7 +574,9 @@ try {
 
 Подобно описанной выше функции `filehandle.write`, эта версия принимает необязательный объект `options`. Если объект `options` не указан, то по умолчанию будут использоваться вышеуказанные значения.
 
-#### `filehandle.write(string[, position[, encoding]])`
+```js
+filehandle.write(string[, position[, encoding]])
+```
 
 -   `строка` {строка}
 -   `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `string`. Если `position` не является `число`, то данные будут записаны в текущей позиции. Более подробно см. документацию POSIX pwrite(2). **По умолчанию:** `null`.
@@ -518,11 +590,15 @@ try {
 -   `bytesWritten` {целое число} количество записанных байт.
 -   `buffer` {строка} ссылка на записанную `строку`.
 
-Небезопасно использовать `filehandle.write()` несколько раз на одном и том же файле, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Небезопасно использовать `filehandle.write()` несколько раз на одном и том же файле, не дожидаясь разрешения (или отклонения) обещания. Для этого сценария используйте `filehandle.createWriteStream()`.
 
 В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда добавляет данные в конец файла.
 
-#### `filehandle.writeFile(data, options)`
+#### filehandle.writeFile
+
+```js
+filehandle.writeFile(data, options);
+```
 
 -   `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
 -   `options` {Object|string}
@@ -539,7 +615,11 @@ try {
 
 Если для файлового хэндла выполняется один или несколько вызовов `filehandle.write()`, а затем вызов `filehandle.writeFile()`, данные будут записаны с текущей позиции до конца файла. Не всегда запись производится с начала файла.
 
-#### `filehandle.writev(buffers[, position])`
+#### filehandle.writev
+
+```js
+filehandle.writev(buffers[, position])
+```
 
 -   `buffers` {Buffer\[\]|TypedArray\[\]|DataView\[\]}
 -   `position` {integer|null} Смещение от начала файла, куда должны быть записаны данные из `буферов`. Если `position` не является `число`, данные будут записаны в текущую позицию. **По умолчанию:** `null`.
@@ -721,7 +801,11 @@ fsPromises.lchmod(path, mode);
 
 Этот метод реализован только на macOS.
 
-### `fsPromises.lchown(path, uid, gid)`
+### fsPromises.lchown
+
+```js
+fsPromises.lchown(path, uid, gid);
+```
 
 -   `path` {string|Buffer|URL}
 -   `uid` {целое число}
@@ -730,16 +814,24 @@ fsPromises.lchmod(path, mode);
 
 Изменяет права собственности на символическую ссылку.
 
-### `fsPromises.lutimes(path, atime, mtime)`
+### fsPromises.lutimes
+
+```js
+fsPromises.lutimes(path, atime, mtime);
+```
 
 -   `path` {string|Buffer|URL}
 -   `atime` {number|string|Date}
 -   `mtime` {number|string|Date}
 -   Возвращает: {Promise} Выполняется с `undefined` при успехе.
 
-Изменяет время доступа и модификации файла так же, как [`fsPromises.utimes()`](#fspromisesutimespath-atime-mtime), с той разницей, что если путь ссылается на символическую ссылку, то ссылка не разыменовывается: вместо этого изменяются временные метки самой символической ссылки.
+Изменяет время доступа и модификации файла так же, как `fsPromises.utimes()`, с той разницей, что если путь ссылается на символическую ссылку, то ссылка не разыменовывается: вместо этого изменяются временные метки самой символической ссылки.
 
-### `fsPromises.link(existingPath, newPath)`
+### fsPromises.link
+
+```js
+fsPromises.link(existingPath, newPath);
+```
 
 -   `existingPath` {string|Buffer|URL}
 -   `newPath` {string|Buffer|URL}
@@ -747,16 +839,24 @@ fsPromises.lchmod(path, mode);
 
 Создает новую ссылку с `existingPath` на `newPath`. Более подробную информацию см. в документации POSIX link(2).
 
-### `fsPromises.lstat(path[, options])`
+### fsPromises.lstat
+
+```js
+fsPromises.lstat(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
     -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
 -   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданной символической ссылки `path`.
 
-Эквивалентен [`fsPromises.stat()`](#fspromisesstatpath-options), если только `path` не ссылается на символическую ссылку, в этом случае статизируется сама ссылка, а не файл, на который она ссылается. Более подробную информацию см. в документе POSIX lstat(2).
+Эквивалентен `fsPromises.stat()`, если только `path` не ссылается на символическую ссылку, в этом случае статизируется сама ссылка, а не файл, на который она ссылается. Более подробную информацию см. в документе POSIX lstat(2).
 
-### `fsPromises.mkdir(path[, options])`
+### fsPromises.mkdir
+
+```js
+fsPromises.mkdir(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object|integer}
@@ -768,46 +868,54 @@ fsPromises.lchmod(path, mode);
 
 Необязательный аргумент `options` может быть целым числом, определяющим `режим` (разрешение и липкие биты), или объектом со свойством `режим` и свойством `recursive`, указывающим, следует ли создавать родительские каталоги. Вызов `fsPromises.mkdir()`, когда `path` является существующим каталогом, приводит к отказу только в том случае, если `recursive` равно false.
 
-```mjs
-import { mkdir } from 'node:fs/promises';
+=== "MJS"
 
-try {
-    const projectFolder = new URL(
-        './test/project/',
-        import.meta.url
-    );
-    const createDir = await mkdir(projectFolder, {
-        recursive: true,
-    });
+    ```js
+    import { mkdir } from 'node:fs/promises';
 
-    console.log(`created ${createDir}`);
-} catch (err) {
-    console.error(err.message);
-}
+    try {
+    	const projectFolder = new URL(
+    		'./test/project/',
+    		import.meta.url
+    	);
+    	const createDir = await mkdir(projectFolder, {
+    		recursive: true,
+    	});
+
+    	console.log(`created ${createDir}`);
+    } catch (err) {
+    	console.error(err.message);
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { mkdir } = require('node:fs/promises');
+    const { join } = require('node:path');
+
+    async function makeDirectory() {
+    	const projectFolder = join(
+    		__dirname,
+    		'test',
+    		'project'
+    	);
+    	const dirCreation = await mkdir(projectFolder, {
+    		recursive: true,
+    	});
+
+    	console.log(dirCreation);
+    	return dirCreation;
+    }
+
+    makeDirectory().catch(console.error);
+    ```
+
+### fsPromises.mkdtemp
+
+```js
+fsPromises.mkdtemp(prefix[, options])
 ```
-
-```cjs
-const { mkdir } = require('node:fs/promises');
-const { join } = require('node:path');
-
-async function makeDirectory() {
-    const projectFolder = join(
-        __dirname,
-        'test',
-        'project'
-    );
-    const dirCreation = await mkdir(projectFolder, {
-        recursive: true,
-    });
-
-    console.log(dirCreation);
-    return dirCreation;
-}
-
-makeDirectory().catch(console.error);
-```
-
-### `fsPromises.mkdtemp(prefix[, options])`
 
 -   `prefix` {string}
 -   `options` {string|Object}
@@ -818,7 +926,7 @@ makeDirectory().catch(console.error);
 
 Необязательный аргумент `options` может быть строкой, указывающей кодировку, или объектом со свойством `encoding`, указывающим используемую кодировку.
 
-```mjs
+```js
 import { mkdtemp } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -832,7 +940,11 @@ try {
 
 Метод `fsPromises.mkdtemp()` добавит шесть случайно выбранных символов непосредственно к строке `prefix`. Например, при заданном каталоге `/tmp`, если предполагается создать временный каталог _внутри_ `/tmp`, то `префикс` должен заканчиваться идущим в конце разделителем путей, специфичным для платформы (`require('node:path').sep`).
 
-### `fsPromises.open(path, flags[, mode])`
+### fsPromises.open
+
+```js
+fsPromises.open(path, flags[, mode])
+```
 
 -   `path` {string|Buffer|URL}
 -   `flags` {string|number} См. [поддержка файловой системы `flags`](#file-system-flags). **По умолчанию:** `'r'`.
@@ -845,7 +957,11 @@ try {
 
 Некоторые символы (`< > : " / \ | ? *`) зарезервированы в Windows, как описано в [Naming Files, Paths, and Namespaces](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file). В NTFS, если имя файла содержит двоеточие, Node.js откроет поток файловой системы, как описано на [этой странице MSDN](https://docs.microsoft.com/en-us/windows/desktop/FileIO/using-streams).
 
-### `fsPromises.opendir(path[, options])`
+### fsPromises.opendir
+
+```js
+fsPromises.opendir(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
@@ -861,7 +977,7 @@ try {
 
 Пример с использованием асинхронной итерации:
 
-```mjs
+```js
 import { opendir } from 'node:fs/promises';
 
 try {
@@ -875,7 +991,11 @@ try {
 
 При использовании асинхронного итератора объект {fs.Dir} будет автоматически закрыт после выхода итератора.
 
-### `fsPromises.readdir(path[, options])`
+### fsPromises.readdir
+
+```js
+fsPromises.readdir(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -889,7 +1009,7 @@ try {
 
 Если `options.withFileTypes` имеет значение `true`, разрешаемый массив будет содержать объекты {fs.Dirent}.
 
-```mjs
+```js
 import { readdir } from 'node:fs/promises';
 
 try {
@@ -900,7 +1020,11 @@ try {
 }
 ```
 
-### `fsPromises.readFile(path[, options])`
+### fsPromises.readFile
+
+```js
+fsPromises.readFile(path[, options])
+```
 
 -   `path` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
 -   `options` {Object|string}
@@ -919,42 +1043,46 @@ try {
 
 Пример чтения файла `package.json`, расположенного в той же директории, что и запущенный код:
 
-```mjs
-import { readFile } from 'node:fs/promises';
-try {
-    const filePath = new URL(
-        './package.json',
-        import.meta.url
-    );
-    const contents = await readFile(filePath, {
-        encoding: 'utf8',
-    });
-    console.log(contents);
-} catch (err) {
-    console.error(err.message);
-}
-```
+=== "MJS"
 
-```cjs
-const { readFile } = require('node:fs/promises');
-const { resolve } = require('node:path');
-async function logFile() {
+    ```js
+    import { readFile } from 'node:fs/promises';
     try {
-        const filePath = resolve('./package.json');
-        const contents = await readFile(filePath, {
-            encoding: 'utf8',
-        });
-        console.log(contents);
+    	const filePath = new URL(
+    		'./package.json',
+    		import.meta.url
+    	);
+    	const contents = await readFile(filePath, {
+    		encoding: 'utf8',
+    	});
+    	console.log(contents);
     } catch (err) {
-        console.error(err.message);
+    	console.error(err.message);
     }
-}
-logFile();
-```
+    ```
+
+=== "CJS"
+
+    ```js
+    const { readFile } = require('node:fs/promises');
+    const { resolve } = require('node:path');
+    async function logFile() {
+    	try {
+    		const filePath = resolve('./package.json');
+    		const contents = await readFile(filePath, {
+    			encoding: 'utf8',
+    		});
+    		console.log(contents);
+    	} catch (err) {
+    		console.error(err.message);
+    	}
+    }
+    logFile();
+    ```
 
 Можно прервать текущий `readFile`, используя {AbortSignal}. Если запрос прерывается, то возвращаемое обещание отклоняется с `AbortError`:
 
-```mjs
+```js
 import { readFile } from 'node:fs/promises';
 
 try {
@@ -976,7 +1104,11 @@ try {
 
 Любой указанный {FileHandle} должен поддерживать чтение.
 
-### `fsPromises.readlink(path[, options])`
+### fsPromises.readlink
+
+```js
+fsPromises.readlink(path[, options])
+```
 
 -   `путь` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -987,7 +1119,11 @@ try {
 
 Необязательный аргумент `options` может быть строкой, указывающей кодировку, или объектом со свойством `encoding`, указывающим кодировку символов, которую следует использовать для возвращаемого пути к ссылке. Если `encoding` имеет значение `'buffer'`, то возвращаемый путь по ссылке будет передан как объект {Buffer}.
 
-### `fsPromises.realpath(path[, options])`
+### fsPromises.realpath
+
+```js
+fsPromises.realpath(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -1002,7 +1138,11 @@ try {
 
 В Linux, когда Node.js слинкован с musl libc, файловая система procfs должна быть смонтирована на `/proc`, чтобы эта функция работала. В Glibc такого ограничения нет.
 
-### `fsPromises.rename(oldPath, newPath)`
+### fsPromises.rename
+
+```js
+fsPromises.rename(oldPath, newPath);
+```
 
 -   `oldPath` {string|Buffer|URL}
 -   `newPath` {string|Buffer|URL}
@@ -1010,7 +1150,11 @@ try {
 
 Переименовывает `oldPath` в `newPath`.
 
-### `fsPromises.rmdir(path[, options])`
+### fsPromises.rmdir
+
+```js
+fsPromises.rmdir(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
@@ -1025,7 +1169,11 @@ try {
 
 Чтобы получить поведение, аналогичное Unix-команде `rm -rf`, используйте [`fsPromises.rm()`](#fspromisesrmpath-options) с опциями `{ recursive: true, force: true }`.
 
-### `fsPromises.rm(path[, options])`
+### fsPromises.rm
+
+```js
+fsPromises.rm(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
@@ -1037,21 +1185,33 @@ try {
 
 Удаляет файлы и каталоги (по образцу стандартной утилиты POSIX `rm`).
 
-### `fsPromises.stat(path[, options])`
+### fsPromises.stat
+
+```js
+fsPromises.stat(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
     -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
 -   Возвращает: {Promise} Выполняется с объектом {fs.Stats} для заданного `пути`.
 
-### `fsPromises.statfs(path[, options])`
+### fsPromises.statfs
+
+```js
+fsPromises.statfs(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
     -   `bigint` {boolean} Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
 -   Возвращает: {Promise} Выполняется с объектом {fs.StatFs} для заданного `пути`.
 
-### `fsPromises.symlink(target, path[, type])`
+### fsPromises.symlink
+
+```js
+fsPromises.symlink(target, path[, type])
+```
 
 -   `target` {string|Buffer|URL}
 -   `path` {string|Buffer|URL}
@@ -1062,7 +1222,11 @@ try {
 
 Аргумент `type` используется только на платформах Windows и может быть одним из `'dir'`, `'file'` или `'junction'`. Если аргумент `type` не является строкой, Node.js автоматически определит тип `target` и использует `'file'` или `'dir'`. Если `target` не существует, будет использован `'file'`. Точки пересечения Windows требуют, чтобы путь назначения был абсолютным. При использовании `'junction'` аргумент `target` будет автоматически нормализован к абсолютному пути.
 
-### `fsPromises.truncate(path[, len])`
+### fsPromises.truncate
+
+```js
+fsPromises.truncate(path[, len])
+```
 
 -   `path` {string|Buffer|URL}
 -   `len` {целое число} **По умолчанию:** `0`.
@@ -1070,14 +1234,22 @@ try {
 
 Усекает (сокращает или увеличивает длину) содержимое по адресу `path` до `len` байт.
 
-### `fsPromises.unlink(path)`
+### fsPromises.unlink
+
+```js
+fsPromises.unlink(path);
+```
 
 -   `path` {string|Buffer|URL}
 -   Возвращает: {обещание} Выполняется с `undefined` при успехе.
 
 Если `path` ссылается на символическую ссылку, то ссылка удаляется, не затрагивая файл или каталог, на который ссылается эта ссылка. Если `path` ссылается на путь к файлу, который не является символической ссылкой, то файл удаляется. Более подробно см. документацию POSIX unlink(2).
 
-### `fsPromises.utimes(path, atime, mtime)`
+### fsPromises.utimes
+
+```js
+fsPromises.utimes(path, atime, mtime);
+```
 
 -   `path` {string|Buffer|URL}
 -   `atime` {number|string|Date}
@@ -1091,7 +1263,11 @@ try {
 -   Значения могут быть либо числами, представляющими время эпохи Unix, либо `Date`, либо числовой строкой типа `'123456789.0'`.
 -   Если значение не может быть преобразовано в число, или является `NaN`, `Infinity`, или `-Infinity`, будет выдана `ошибка`.
 
-### `fsPromises.watch(filename[, options])`
+### fsPromises.watch
+
+```js
+fsPromises.watch(filename[, options])
+```
 
 -   `filename` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -1128,7 +1304,11 @@ setTimeout(() => ac.abort(), 10000);
 
 Все [caveats](#caveats) для `fs.watch()` также применимы к `fsPromises.watch()`.
 
-### `fsPromises.writeFile(file, data[, options])`
+### fsPromises.writeFile
+
+```js
+fsPromises.writeFile(file, data[, options])
+```
 
 -   `file` {string|Buffer|URL|FileHandle} имя файла или `FileHandle`
 -   `data` {string|Buffer|TypedArray|DataView|AsyncIterable|Iterable|Stream}
@@ -1151,11 +1331,11 @@ setTimeout(() => ac.abort(), 10000);
 
 Небезопасно использовать `fsPromises.writeFile()` несколько раз на одном и том же файле, не дожидаясь выполнения обещания.
 
-Аналогично `fsPromises.readFile` - `fsPromises.writeFile` является удобным методом, который выполняет несколько внутренних вызовов `write` для записи переданного ему буфера. Для кода, чувствительного к производительности, используйте [`fs.createWriteStream()`](#fscreatewritestreampath-options) или [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Аналогично `fsPromises.readFile` - `fsPromises.writeFile` является удобным методом, который выполняет несколько внутренних вызовов `write` для записи переданного ему буфера. Для кода, чувствительного к производительности, используйте [`fs.createWriteStream()`](#fscreatewritestream) или [`filehandle.createWriteStream()`](#filehandlecreatewritestream).
 
 Можно использовать {AbortSignal} для отмены `fsPromises.writeFile()`. Отмена происходит "из лучших побуждений", и некоторое количество данных, вероятно, все еще будет записано.
 
-```mjs
+```js
 import { writeFile } from 'node:fs/promises';
 import { Buffer } from 'node:buffer';
 
@@ -1193,7 +1373,11 @@ API обратного вызова выполняют все операции �
 
 API обратного вызова используют базовый пул потоков Node.js для выполнения операций с файловой системой вне потока цикла событий. Эти операции не синхронизированы и не безопасны для потоков. Необходимо соблюдать осторожность при выполнении нескольких одновременных модификаций одного и того же файла, иначе может произойти повреждение данных.
 
-### `fs.access(path[, mode], callback)`
+### fs.access
+
+```js
+fs.access(path[, mode], callback)
+```
 
 -   `path` {string|Buffer|URL}
 -   `mode` {integer} **По умолчанию:** `fs.constants.F_OK`
@@ -1204,7 +1388,7 @@ API обратного вызова используют базовый пул �
 
 Последний аргумент, `callback`, представляет собой функцию обратного вызова, которая вызывается с возможным аргументом ошибки. Если какая-либо из проверок доступности не прошла, аргументом ошибки будет объект `Error`. Следующие примеры проверяют, существует ли файл `package.json`, а также доступен ли он для чтения или записи.
 
-```mjs
+```js
 import { access, constants } from 'node:fs';
 
 const file = 'package.json';
@@ -1242,108 +1426,110 @@ access(file, constants.R_OK | constants.W_OK, (err) => {
 
 Не используйте `fs.access()` для проверки доступности файла перед вызовом `fs.open()`, `fs.readFile()` или `fs.writeFile()`. Это создает условия гонки, поскольку другие процессы могут изменить состояние файла между двумя вызовами. Вместо этого пользовательский код должен открывать/читать/записывать файл напрямую и обрабатывать ошибку, возникающую, если файл недоступен.
 
-**запись (НЕ РЕКОМЕНДУЕТСЯ)**.
+=== "запись (НЕ РЕКОМЕНДУЕТСЯ)"
 
-```mjs
-import { access, open, close } from 'node:fs';
+    ```js
+    import { access, open, close } from 'node:fs';
 
-access('myfile', (err) => {
-    if (!err) {
-        console.error('myfile уже существует');
-        return;
-    }
+    access('myfile', (err) => {
+    	if (!err) {
+    		console.error('myfile уже существует');
+    		return;
+    	}
+
+    	open('myfile', 'wx', (err, fd) => {
+    		if (err) throw err;
+
+    		try {
+    			writeMyData(fd);
+    		} finally {
+    			close(fd, (err) => {
+    				if (err) throw err;
+    			});
+    		}
+    	});
+    });
+    ```
+
+=== "запись (РЕКОМЕНДУЕТСЯ)"
+
+    ```js
+    import { open, close } from 'node:fs';
 
     open('myfile', 'wx', (err, fd) => {
-        if (err) throw err;
+    	if (err) {
+    		if (err.code === 'EEXIST') {
+    			console.error('myfile уже существует');
+    			return;
+    		}
 
-        try {
-            writeMyData(fd);
-        } finally {
-            close(fd, (err) => {
-                if (err) throw err;
-            });
-        }
+    		throw err;
+    	}
+
+    	try {
+    		writeMyData(fd);
+    	} finally {
+    		close(fd, (err) => {
+    			if (err) throw err;
+    		});
+    	}
     });
-});
-```
+    ```
 
-**запись (РЕКОМЕНДУЕТСЯ)**.
+---
 
-```mjs
-import { open, close } from 'node:fs';
+=== "чтение (НЕ РЕКОМЕНДУЕТСЯ)"
 
-open('myfile', 'wx', (err, fd) => {
-    if (err) {
-        if (err.code === 'EEXIST') {
-            console.error('myfile уже существует');
-            return;
-        }
+    ```mjs
+    import { access, open, close } from 'node:fs';
+    access('myfile', (err) => {
+    	if (err) {
+    		if (err.code === 'ENOENT') {
+    			console.error('myfile does not exist');
+    			return;
+    		}
 
-        throw err;
-    }
+    		throw err;
+    	}
 
-    try {
-        writeMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
-});
-```
+    	open('myfile', 'r', (err, fd) => {
+    		if (err) throw err;
 
-**читать (НЕ РЕКОМЕНДУЕТСЯ)**.
+    		try {
+    			readMyData(fd);
+    		} finally {
+    			close(fd, (err) => {
+    				if (err) throw err;
+    			});
+    		}
+    	});
+    });
+    ```
 
-```mjs
-import { access, open, close } from 'node:fs';
-access('myfile', (err) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile does not exist');
-            return;
-        }
+=== "чтение (РЕКОМЕНДУЕТСЯ)"
 
-        throw err;
-    }
+    ```mjs
+    import { open, close } from 'node:fs';
 
     open('myfile', 'r', (err, fd) => {
-        if (err) throw err;
+    	if (err) {
+    		if (err.code === 'ENOENT') {
+    			console.error('myfile does not exist');
+    			return;
+    		}
 
-        try {
-            readMyData(fd);
-        } finally {
-            close(fd, (err) => {
-                if (err) throw err;
-            });
-        }
+    		throw err;
+    	}
+
+    	try {
+    		readMyData(fd);
+    	} finally {
+    		close(fd, (err) => {
+    			if (err) throw err;
+    		});
+    	}
     });
-});
-```
-
-**read (RECOMMENDED)**
-
-```mjs
-import { open, close } from 'node:fs';
-
-open('myfile', 'r', (err, fd) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile does not exist');
-            return;
-        }
-
-        throw err;
-    }
-
-    try {
-        readMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
-});
-```
+    ```
 
 Примеры "не рекомендуется" выше проверяют доступность, а затем используют файл; примеры "рекомендуется" лучше, поскольку они используют файл напрямую и обрабатывают ошибку, если она возникла.
 
@@ -1351,7 +1537,11 @@ open('myfile', 'r', (err, fd) => {
 
 В Windows политики контроля доступа (ACL) в каталоге могут ограничивать доступ к файлу или каталогу. Функция `fs.access()`, однако, не проверяет ACL и поэтому может сообщить, что путь доступен, даже если ACL ограничивает пользователю чтение или запись в него.
 
-### `fs.appendFile(path, data[, options], callback)`
+### fs.appendFile
+
+```js
+fs.appendFile(path, data[, options], callback)
+```
 
 -   `path` {string|Buffer|URL|number} имя файла или дескриптор файла
 -   `data` {string|Buffer}
@@ -1364,9 +1554,9 @@ open('myfile', 'r', (err, fd) => {
 
 Асинхронно добавляет данные в файл, создавая файл, если он еще не существует. `data` может быть строкой или {Buffer}.
 
-Опция `mode` влияет только на вновь созданный файл. Подробнее см. в [`fs.open()`](#fsopenpath-flags-mode-callback).
+Опция `mode` влияет только на вновь созданный файл. Подробнее см. в [`fs.open()`](#fsopen).
 
-```mjs
+```js
 import { appendFile } from 'node:fs';
 
 appendFile(
@@ -1383,7 +1573,7 @@ appendFile(
 
 Если `options` - строка, то она определяет кодировку:
 
-```mjs
+```js
 import { appendFile } from 'node:fs';
 
 appendFile(
@@ -1396,7 +1586,7 @@ appendFile(
 
 Путь может быть указан как числовой дескриптор файла, который был открыт для добавления (с помощью `fs.open()` или `fs.openSync()`). Дескриптор файла не будет закрыт автоматически.
 
-```mjs
+```js
 import { open, close, appendFile } from 'node:fs';
 
 function closeFd(fd) {
@@ -1425,7 +1615,11 @@ open('message.txt', 'a', (err, fd) => {
 });
 ```
 
-### `fs.chmod(path, mode, callback)`
+### fs.chmod
+
+```js
+fs.chmod(path, mode, callback);
+```
 
 -   `path` {string|Buffer|URL}
 -   `mode` {string|integer}
@@ -1436,7 +1630,7 @@ open('message.txt', 'a', (err, fd) => {
 
 Более подробно см. документацию POSIX chmod(2).
 
-```mjs
+```js
 import { chmod } from 'node:fs';
 
 chmod('my_file.txt', 0o775, (err) => {
@@ -1447,9 +1641,9 @@ chmod('my_file.txt', 0o775, (err) => {
 });
 ```
 
-#### File modes
+**Файловые режимы**
 
-The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods is a numeric bitmask created using a logical OR of the following constants:
+Аргумент `mode`, используемый в методах `fs.chmod()` и `fs.chmodSync()`, представляет собой числовую битовую маску, созданную с помощью логического ИЛИ из следующих констант:
 
 <table>
 <thead>
@@ -1563,7 +1757,11 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 Предостережения: в Windows можно изменить только разрешение на запись, а различие между разрешениями группы, владельца или других не реализовано.
 
-### `fs.chown(path, uid, gid, callback)`
+### fs.chown
+
+```js
+fs.chown(path, uid, gid, callback);
+```
 
 -   `path` {string|Buffer|URL}
 -   `uid` {целое число}
@@ -1575,7 +1773,11 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 Более подробно см. документацию POSIX chown(2).
 
-### `fs.close(fd[, callback])`
+### fs.close
+
+```js
+fs.close(fd[, callback])
+```
 
 -   `fd` {целое число}
 -   `callback` {функция}
@@ -1587,7 +1789,11 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 
 Более подробную информацию смотрите в документации POSIX close(2).
 
-### `fs.copyFile(src, dest[, mode], callback)`
+### fs.copyFile
+
+```js
+fs.copyFile(src, dest[, mode], callback)
+```
 
 -   `src` {string|Buffer|URL} имя исходного файла для копирования
 -   `dest` {string|Buffer|URL} имя файла назначения операции копирования
@@ -1602,7 +1808,7 @@ The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods i
 -   `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать ссылку "копия на запись". Если платформа не поддерживает копирование при записи, то используется механизм резервного копирования.
 -   `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования будет пытаться создать ссылку "копия на запись". Если платформа не поддерживает копирование по записи, то операция завершится неудачей.
 
-```mjs
+```js
 import { copyFile, constants } from 'node:fs';
 
 function callback(err) {
@@ -1624,7 +1830,11 @@ copyFile(
 );
 ```
 
-### `fs.cp(src, dest[, options], callback)`
+### fs.cp
+
+```js
+fs.cp(src, dest[, options], callback)
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1649,7 +1859,11 @@ copyFile(
 
 При копировании каталога в другой каталог глобы не поддерживаются, и поведение аналогично `cp dir1/ dir2/`.
 
-### `fs.createReadStream(path[, options])`
+### fs.createReadStream
+
+```js
+fs.createReadStream(path[, options])
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -1668,17 +1882,17 @@ copyFile(
 
 В отличие от 16 KiB по умолчанию `highWaterMark` для {stream.Readable}, поток, возвращаемый этим методом, имеет `highWaterMark` по умолчанию 64 KiB.
 
-`options` может включать значения `start` и `end` для чтения диапазона байт из файла, а не всего файла. Оба значения `start` и `end` являются инклюзивными и начинают отсчет с 0, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)\]. Если указано `fd` и `start` опущено или `не определено`, `fs.createReadStream()` читает последовательно с текущей позиции файла. Кодировка `encoding` может быть любой из тех, которые принимаются {Buffer}.
+`options` может включать значения `start` и `end` для чтения диапазона байт из файла, а не всего файла. Оба значения `start` и `end` являются инклюзивными и начинают отсчет с 0, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)\]. Если указано `fd` и `start` опущено или `не определено`, `fs.createReadStream()` читает последовательно с текущей позиции файла. Кодировка `encoding` может быть любой из тех, которые принимаются {Buffer}.
 
-Если указано `fd`, `ReadStream` будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'' не будет выдано. `fd`должен быть блокирующим; неблокирующие`fd` должны быть переданы в {net.Socket}.
+Если указано `fd`, `ReadStream` будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'` не будет выдано. `fd` должен быть блокирующим; неблокирующие `fd` должны быть переданы в {net.Socket}.
 
 Если `fd` указывает на символьное устройство, которое поддерживает только блокирующие чтения (например, клавиатура или звуковая карта), операции чтения не завершатся, пока данные не станут доступны. Это может помешать завершению процесса и естественному закрытию потока.
 
-По умолчанию поток будет выдавать событие `закрытие` после его уничтожения. Установите опцию `emitClose` в `false`, чтобы изменить это поведение.
+По умолчанию поток будет выдавать событие `close` после его уничтожения. Установите опцию `emitClose` в `false`, чтобы изменить это поведение.
 
 Предоставив опцию `fs`, можно переопределить соответствующие реализации `fs` для `open`, `read` и `close`. При указании опции `fs` требуется переопределение для `read`. Если опция `fd` не предоставлена, также требуется переопределение для `open`. Если `autoClose` имеет значение `true`, также требуется переопределение для `close`.
 
-```mjs
+```js
 import { createReadStream } from 'node:fs';
 
 // Создаем поток из некоторого символьного устройства.
@@ -1695,13 +1909,13 @@ setTimeout(() => {
 }, 100);
 ```
 
-Если `autoClose` равно false, то дескриптор файла не будет закрыт, даже если произошла ошибка. Приложение обязано закрыть его и убедиться в отсутствии утечки файлового дескриптора. Если `autoClose` установлено в true (поведение по умолчанию), при `ошибке` или `завершении` дескриптор файла будет закрыт автоматически.
+Если `autoClose` равно `false`, то дескриптор файла не будет закрыт, даже если произошла ошибка. Приложение обязано закрыть его и убедиться в отсутствии утечки файлового дескриптора. Если `autoClose` установлено в `true` (поведение по умолчанию), при `error` или `close` дескриптор файла будет закрыт автоматически.
 
 `mode` устанавливает режим файла (разрешение и липкие биты), но только если файл был создан.
 
 Пример для чтения последних 10 байт файла длиной 100 байт:
 
-```mjs
+```js
 import { createReadStream } from 'node:fs';
 
 createReadStream('sample.txt', { start: 90, end: 99 });
@@ -1709,7 +1923,11 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 
 Если `options` - строка, то она определяет кодировку.
 
-### `fs.createWriteStream(path[, options])`
+### fs.createWriteStream
+
+```js
+fs.createWriteStream(path[, options])
+```
 
 -   `путь` {string|Buffer|URL}
 -   `options` {string|Object}
@@ -1736,7 +1954,11 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 
 Если `options` - строка, то она указывает кодировку.
 
-### `fs.exists(path, callback)`
+### fs.exists
+
+```js
+fs.exists(path, callback);
+```
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1750,7 +1972,7 @@ createReadStream('sample.txt', { start: 90, end: 99 });
 
 Проверяет, существует ли заданный путь, сверяясь с файловой системой. Затем вызовите аргумент `callback`, указав true или false:
 
-```mjs
+```js
 import { exists } from 'node:fs';
 
 exists('/etc/passwd', (e) => {
@@ -1762,108 +1984,112 @@ exists('/etc/passwd', (e) => {
 
 Использование `fs.exists()` для проверки существования файла перед вызовом `fs.open()`, `fs.readFile()` или `fs.writeFile()` не рекомендуется. Это создает условия гонки, поскольку другие процессы могут изменить состояние файла между двумя вызовами. Вместо этого пользовательский код должен открывать/читать/записывать файл напрямую и обрабатывать ошибку, возникающую, если файл не существует.
 
-**запись (НЕ РЕКОМЕНДУЕТСЯ)**.
+=== "запись (НЕ РЕКОМЕНДУЕТСЯ)"
 
-```mjs
-import { exists, open, close } from 'node:fs';
+    ```js
+    import { exists, open, close } from 'node:fs';
 
-exists('myfile', (e) => {
-    if (e) {
-        console.error('myfile уже существует');
-    } else {
-        open('myfile', 'wx', (err, fd) => {
-            if (err) throw err;
+    exists('myfile', (e) => {
+    	if (e) {
+    		console.error('myfile уже существует');
+    	} else {
+    		open('myfile', 'wx', (err, fd) => {
+    			if (err) throw err;
 
-            try {
-                writeMyData(fd);
-            } finally {
-                close(fd, (err) => {
-                    if (err) throw err;
-                });
-            }
-        });
-    }
-});
-```
+    			try {
+    				writeMyData(fd);
+    			} finally {
+    				close(fd, (err) => {
+    					if (err) throw err;
+    				});
+    			}
+    		});
+    	}
+    });
+    ```
 
-**запись (РЕКОМЕНДУЕТСЯ)**.
+=== "запись (РЕКОМЕНДУЕТСЯ)"
 
-```mjs
-import { open, close } from 'node:fs';
-open('myfile', 'wx', (err, fd) => {
-    if (err) {
-        if (err.code === 'EEXIST') {
-            console.error('myfile уже существует');
-            return;
-        }
+    ```js
+    import { open, close } from 'node:fs';
+    open('myfile', 'wx', (err, fd) => {
+    	if (err) {
+    		if (err.code === 'EEXIST') {
+    			console.error('myfile уже существует');
+    			return;
+    		}
 
-        throw err;
-    }
+    		throw err;
+    	}
 
-    try {
-        writeMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
-});
-```
+    	try {
+    		writeMyData(fd);
+    	} finally {
+    		close(fd, (err) => {
+    			if (err) throw err;
+    		});
+    	}
+    });
+    ```
 
-**читать (НЕ РЕКОМЕНДУЕТСЯ)**.
+=== "читать (НЕ РЕКОМЕНДУЕТСЯ)"
 
-```mjs
-import { open, close, exists } from 'node:fs';
+    ```js
+    import { open, close, exists } from 'node:fs';
 
-exists('myfile', (e) => {
-    if (e) {
-        open('myfile', 'r', (err, fd) => {
-            if (err) throw err;
+    exists('myfile', (e) => {
+    	if (e) {
+    		open('myfile', 'r', (err, fd) => {
+    			if (err) throw err;
 
-            try {
-                readMyData(fd);
-            } finally {
-                close(fd, (err) => {
-                    if (err) throw err;
-                });
-            }
-        });
-    } else {
-        console.error('myfile does not exist');
-    }
-});
-```
+    			try {
+    				readMyData(fd);
+    			} finally {
+    				close(fd, (err) => {
+    					if (err) throw err;
+    				});
+    			}
+    		});
+    	} else {
+    		console.error('myfile does not exist');
+    	}
+    });
+    ```
 
-**читать (РЕКОМЕНДУЕТСЯ)**.
+=== "читать (РЕКОМЕНДУЕТСЯ)"
 
-```mjs
-import { open, close } from 'node:fs';
+    ```js
+    import { open, close } from 'node:fs';
 
-open('myfile', 'r', (err, fd) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile не существует');
-            return;
-        }
+    open('myfile', 'r', (err, fd) => {
+    	if (err) {
+    		if (err.code === 'ENOENT') {
+    			console.error('myfile не существует');
+    			return;
+    		}
 
-        throw err;
-    }
+    		throw err;
+    	}
 
-    try {
-        readMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
-});
-```
+    	try {
+    		readMyData(fd);
+    	} finally {
+    		close(fd, (err) => {
+    			if (err) throw err;
+    		});
+    	}
+    });
+    ```
 
 Приведенные выше "не рекомендуемые" примеры проверяют существование, а затем используют файл; "рекомендуемые" примеры лучше, поскольку они используют файл напрямую и обрабатывают ошибку, если таковая возникла.
 
 Вообще, проверяйте существование файла только в том случае, если файл не будет использоваться напрямую, например, если его существование является сигналом от другого процесса.
 
-### `fs.fchmod(fd, mode, callback)`
+### fs.fchmod
+
+```js
+fs.fchmod(fd, mode, callback);
+```
 
 -   `fd` {целое число}
 -   `mode` {string|integer}
@@ -1874,7 +2100,11 @@ open('myfile', 'r', (err, fd) => {
 
 Более подробно см. документацию POSIX fchmod(2).
 
-### `fs.fchown(fd, uid, gid, callback)`
+### fs.fchown
+
+```js
+fs.fchown(fd, uid, gid, callback);
+```
 
 -   `fd` {целое число}
 -   `uid` {integer}
@@ -1886,7 +2116,11 @@ open('myfile', 'r', (err, fd) => {
 
 Более подробно см. документацию POSIX fchown(2).
 
-### `fs.fdatasync(fd, callback)`
+### fs.fdatasync
+
+```js
+fs.fdatasync(fd, callback);
+```
 
 -   `fd` {целое число}
 -   `callback` {функция}
@@ -1894,7 +2128,11 @@ open('myfile', 'r', (err, fd) => {
 
 Переводит все текущие операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода операционной системы. Подробности см. в документации POSIX fdatasync(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
-### `fs.fstat(fd[, options], callback)`
+### fs.fstat
+
+```js
+fs.fstat(fd[, options], callback)
+```
 
 -   `fd` {integer}
 -   `options` {Object}
@@ -1907,7 +2145,11 @@ open('myfile', 'r', (err, fd) => {
 
 Более подробно см. документацию POSIX fstat(2).
 
-### `fs.fsync(fd, callback)`
+### fs.fsync
+
+```js
+fs.fsync(fd, callback);
+```
 
 -   `fd` {целое число}
 -   `callback` {функция}
@@ -1915,7 +2157,11 @@ open('myfile', 'r', (err, fd) => {
 
 Запрос на то, чтобы все данные для открытого файлового дескриптора были сброшены на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. За более подробной информацией обратитесь к документации POSIX fsync(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
-### `fs.ftruncate(fd[, len], callback)`
+### fs.ftruncate
+
+```js
+fs.ftruncate(fd[, len], callback)
+```
 
 -   `fd` {целое число}
 -   `len` {целое число} **По умолчанию:** `0`
@@ -1930,7 +2176,7 @@ open('myfile', 'r', (err, fd) => {
 
 Например, следующая программа сохраняет только первые четыре байта файла:
 
-```mjs
+```js
 import { open, close, ftruncate } from 'node:fs';
 
 function closeFd(fd) {
@@ -1958,7 +2204,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Если `len` отрицательно, то будет использоваться `0`.
 
-### `fs.futimes(fd, atime, mtime, callback)`
+### fs.futimes
+
+```js
+fs.futimes(fd, atime, mtime, callback);
+```
 
 -   `fd` {целое число}
 -   `atime` {number|string|Date}
@@ -1968,7 +2218,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Изменяет временные метки файловой системы объекта, на который ссылается предоставленный файловый дескриптор. См. [`fs.utimes()`](#fsutimespath-atime-mtime-callback).
 
-### `fs.lchmod(path, mode, callback)`
+### fs.lchmod
+
+```js
+fs.lchmod(path, mode, callback);
+```
 
 -   `path` {string|Buffer|URL}
 -   `mode` {integer}
@@ -1981,7 +2235,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Более подробную информацию см. в документации POSIX lchmod(2).
 
-### `fs.lchown(path, uid, gid, callback)`
+### fs.lchown
+
+```js
+fs.lchown(path, uid, gid, callback);
+```
 
 -   `path` {string|Buffer|URL}
 -   `uid` {integer}
@@ -1993,7 +2251,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Более подробно см. документацию POSIX lchown(2).
 
-### `fs.lutimes(path, atime, mtime, callback)`
+### fs.lutimes
+
+```js
+fs.lutimes(path, atime, mtime, callback);
+```
 
 -   `path` {string|Buffer|URL}
 -   `atime` {number|string|Date}
@@ -2005,7 +2267,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Обратному вызову завершения не передается никаких аргументов, кроме возможного исключения.
 
-### `fs.link(existingPath, newPath, callback)`
+### fs.link
+
+```js
+fs.link(existingPath, newPath, callback);
+```
 
 -   `existingPath` {string|Buffer|URL}
 -   `newPath` {string|Buffer|URL}
@@ -2014,7 +2280,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Создает новую ссылку с `existingPath` на `newPath`. Более подробно см. документацию POSIX link(2). Никакие аргументы, кроме возможного исключения, не передаются обратному вызову завершения.
 
-### `fs.lstat(path[, options], callback)`
+### fs.lstat
+
+```js
+fs.lstat(path[, options], callback)
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object}
@@ -2027,7 +2297,11 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Более подробно см. документацию POSIX lstat(2).
 
-### `fs.mkdir(path[, options], callback)`
+### fs.mkdir
+
+```js
+fs.mkdir(path[, options], callback)
+```
 
 -   `path` {string|Buffer|URL}
 -   `options` {Object|integer}
@@ -2043,7 +2317,7 @@ open('temp.txt', 'r+', (err, fd) => {
 
 Необязательный аргумент `options` может быть целым числом, определяющим `режим` (разрешение и липкие биты), или объектом со свойством `режим` и свойством `recursive`, указывающим, следует ли создавать родительские каталоги. Вызов `fs.mkdir()`, когда `path` является существующим каталогом, приводит к ошибке, только если `recursive` равно false.
 
-```mjs
+```js
 import { mkdir } from 'node:fs';
 
 // Создает /tmp/a/apple, независимо от того, существуют ли `/tmp` и /tmp/a.
@@ -2054,7 +2328,7 @@ mkdir('/tmp/a/apple', { recursive: true }, (err) => {
 
 В Windows использование `fs.mkdir()` для корневого каталога даже с рекурсией приведет к ошибке:
 
-```mjs
+```js
 import { mkdir } from 'node:fs';
 
 mkdir('/', { recursive: true }, (err) => {
