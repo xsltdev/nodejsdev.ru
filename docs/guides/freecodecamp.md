@@ -1106,7 +1106,7 @@ const _ = require('lodash');
 
 и npx найдет местоположение пакета.
 
-### Руководство по пакету.json {#the-package-json-guide}
+### Руководство по package.json {#the-package-json-guide}
 
 Файл package.json является ключевым элементом во многих кодовых базах приложений, основанных на экосистеме Node.js.
 
