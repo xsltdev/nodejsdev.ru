@@ -19,11 +19,11 @@ description: Интерфейсы HTTP в Node.js разработаны для 
 ```js
 {
 	'content-length': '123',
-  'content-type': 'text/plain',
-  'connection': 'keep-alive',
-  'host': 'example.com',
-  'accept': '*/*'
-  }
+    'content-type': 'text/plain',
+    'connection': 'keep-alive',
+    'host': 'example.com',
+    'accept': '*/*'
+}
 ```
 
 Ключи приводятся в нижнем регистре. Значения не изменяются.
@@ -53,7 +53,7 @@ description: Интерфейсы HTTP в Node.js разработаны для 
 
 <!-- 0000.part.md -->
 
-## Класс: `http.Agent`
+## Класс http.Agent
 
 Агент отвечает за управление сохранением и повторным использованием соединений для HTTP-клиентов. Он поддерживает очередь ожидающих запросов для данного хоста и порта, повторно используя одно сокетное соединение для каждого до тех пор, пока очередь не опустеет, после чего сокет либо уничтожается, либо помещается в пул, где он хранится для повторного использования для запросов к тому же хосту и порту. Будет ли он уничтожен или помещен в пул, зависит от `keepAlive` [опция](#new-agentoptions).
 
@@ -93,7 +93,11 @@ http.get(
 
 <!-- 0001.part.md -->
 
-### `new Agent([options])`
+### new Agent
+
+```js
+new Agent([options]);
+```
 
 -   `options` {Object} Набор конфигурируемых опций для установки на агента. Может иметь следующие поля:
     -   `keepAlive` {boolean} Сохранять сокеты даже при отсутствии невыполненных запросов, чтобы их можно было использовать для будущих запросов без необходимости восстанавливать TCP-соединение. Не путать со значением `keep-alive` заголовка `Connection`. Заголовок `Connection: keep-alive` всегда отправляется при использовании агента, за исключением случаев, когда заголовок `Connection` указан явно или когда опции `keepAlive` и `maxSockets` соответственно установлены в `false` и `Infinity`, в этом случае будет использоваться `Connection: close`. **По умолчанию:** `false`.
@@ -101,14 +105,14 @@ http.get(
     -   `maxSockets` {number} Максимальное количество сокетов, разрешенное для одного хоста. Если один и тот же хост открывает несколько одновременных соединений, каждый запрос будет использовать новый сокет, пока не будет достигнуто значение `maxSockets`. Если хост пытается открыть больше соединений, чем `maxSockets`, дополнительные запросы попадают в очередь ожидающих запросов и переходят в состояние активного соединения, когда существующее соединение завершается. Это гарантирует, что в любой момент времени с данного хоста будет не более `maxSockets` активных соединений. **По умолчанию:** `бесконечность`.
     -   `maxTotalSockets` {number} Максимальное количество сокетов, разрешенное для всех хостов в целом. Каждый запрос будет использовать новый сокет, пока не будет достигнуто максимальное значение. **По умолчанию:** `Infinity`.
     -   `maxFreeSockets` {number} Максимальное количество сокетов на хосте, которое можно оставить открытым в свободном состоянии. Имеет значение, только если `keepAlive` установлено в `true`. **По умолчанию:** `256`.
-    -   `scheduling` {string} Стратегия планирования, которую следует применять при выборе следующего свободного сокета для использования. Это может быть `'fifo'' или `'lifo''. Основное различие между этими двумя стратегиями планирования заключается в том, что `'lifo'` выбирает последний использованный сокет, а `'fifo'` выбирает наименее использованный сокет. В случае низкой скорости запросов в секунду, планирование `'lifo'` снижает риск выбора сокета, который мог быть закрыт сервером из-за неактивности. В случае высокой скорости запросов в секунду, планирование `'fifo'` будет максимизировать количество открытых сокетов, в то время как планирование `'lifo'` будет поддерживать его на минимально возможном уровне. **По умолчанию:** `'lifo'`.
+    -   `scheduling` {string} Стратегия планирования, которую следует применять при выборе следующего свободного сокета для использования. Это может быть `'fifo'` или `'lifo'`. Основное различие между этими двумя стратегиями планирования заключается в том, что `'lifo'` выбирает последний использованный сокет, а `'fifo'` выбирает наименее использованный сокет. В случае низкой скорости запросов в секунду, планирование `'lifo'` снижает риск выбора сокета, который мог быть закрыт сервером из-за неактивности. В случае высокой скорости запросов в секунду, планирование `'fifo'` будет максимизировать количество открытых сокетов, в то время как планирование `'lifo'` будет поддерживать его на минимально возможном уровне. **По умолчанию:** `'lifo'`.
     -   `timeout` {number} Таймаут сокета в миллисекундах. Таймаут устанавливается при создании сокета.
 
 Также поддерживаются `опции` в [`socket.connect()`](net.md#socketconnectoptions-connectlistener).
 
 В стандартном [`http.globalAgent`](#httpglobalagent), который используется [`http.request()`](#httprequestoptions-callback), все эти значения установлены по умолчанию.
 
-Для настройки любого из них необходимо создать пользовательский экземпляр [`http.Agent`](#class-httpagent).
+Для настройки любого из них необходимо создать пользовательский экземпляр [`http.Agent`](#httpagent).
 
 ```js
 const http = require('node:http');
@@ -117,7 +121,11 @@ options.agent = keepAliveAgent;
 http.request(options, onResponseCallback);
 ```
 
-### `agent.createConnection(options[, callback])`
+### agent.createConnection
+
+```js
+agent.createConnection(options[, callback])
+```
 
 -   `options` {Object} Опции, содержащие детали соединения. Формат опций смотрите в [`net.createConnection()`](net.md#netcreateconnectionoptions-connectlistener)
 -   `callback` {Function} Функция обратного вызова, которая получает созданный сокет
@@ -135,7 +143,11 @@ http.request(options, onResponseCallback);
 
 <!-- 0003.part.md -->
 
-### `agent.keepSocketAlive(socket)`
+### agent.keepSocketAlive
+
+```js
+agent.keepSocketAlive(socket);
+```
 
 -   `socket` {stream.Duplex}
 
@@ -153,7 +165,11 @@ return true;
 
 <!-- 0004.part.md -->
 
-### `agent.reuseSocket(socket, request)`
+### agent.reuseSocket
+
+```js
+agent.reuseSocket(socket, request);
+```
 
 -   `socket` {stream.Duplex}
 -   `request` {http.ClientRequest}
@@ -170,7 +186,11 @@ socket.ref();
 
 <!-- 0005.part.md -->
 
-### `agent.destroy()`
+### agent.destroy
+
+```js
+agent.destroy();
+```
 
 Уничтожьте все сокеты, которые в настоящее время используются агентом.
 
@@ -178,7 +198,7 @@ socket.ref();
 
 <!-- 0006.part.md -->
 
-### `agent.freeSockets`
+### agent.freeSockets
 
 -   {Object}
 
@@ -188,7 +208,11 @@ socket.ref();
 
 <!-- 0007.part.md -->
 
-### `agent.getName([options])`
+### agent.getName
+
+```js
+agent.getName([options]);
+```
 
 -   `options` {Object} Набор опций, предоставляющих информацию для генерации имени
     -   `host` {string} Доменное имя или IP-адрес сервера, на который будет отправлен запрос
@@ -201,7 +225,7 @@ socket.ref();
 
 <!-- 0008.part.md -->
 
-### `agent.maxFreeSockets`
+### agent.maxFreeSockets
 
 -   {число}
 
@@ -209,7 +233,7 @@ socket.ref();
 
 <!-- 0009.part.md -->
 
-### `agent.maxSockets`
+### agent.maxSockets
 
 -   {число}
 
@@ -217,7 +241,7 @@ socket.ref();
 
 <!-- 0010.part.md -->
 
-### `agent.maxTotalSockets`
+### agent.maxTotalSockets
 
 -   {число}
 
@@ -225,7 +249,7 @@ socket.ref();
 
 <!-- 0011.part.md -->
 
-### `agent.requests`
+### agent.requests
 
 -   {Object}
 
@@ -233,7 +257,7 @@ socket.ref();
 
 <!-- 0012.part.md -->
 
-### `agent.sockets`
+### agent.sockets
 
 -   {Object}
 
@@ -241,15 +265,15 @@ socket.ref();
 
 <!-- 0013.part.md -->
 
-## Класс: `http.ClientRequest`
+## Класс http.ClientRequest
 
 -   Расширяет: {http.OutgoingMessage}
 
 Этот объект создается внутри и возвращается из [`http.request()`](#httprequestoptions-callback). Он представляет _проходящий_ запрос, заголовок которого уже поставлен в очередь. Заголовок все еще можно изменить с помощью API [`setHeader(name, value)`](#requestsetheadername-value), [`getHeader(name)`](#requestgetheadername), [`removeHeader(name)`](#requestremoveheadername). Фактический заголовок будет отправлен вместе с первым куском данных или при вызове [`request.end()`](#requestenddata-encoding-callback).
 
-Чтобы получить ответ, добавьте к объекту запроса слушатель для [`'response'`](#event-response). [`'response'`](#event-response) будет испущен из объекта запроса, когда будут получены заголовки ответа. Событие [`'response'`](#event-response) выполняется с одним аргументом, который является экземпляром [`http.IncomingMessage`](#class-httpincomingmessage).
+Чтобы получить ответ, добавьте к объекту запроса слушатель для [`'response'`](#response). [`'response'`](#response) будет испущен из объекта запроса, когда будут получены заголовки ответа. Событие [`'response'`](#response) выполняется с одним аргументом, который является экземпляром [`http.IncomingMessage`](#httpincomingmessage).
 
-Во время события [`response`](#event-response) можно добавить слушателей к объекту ответа, в частности, для прослушивания события `данные`.
+Во время события [`response`](#response) можно добавить слушателей к объекту ответа, в частности, для прослушивания события `данные`.
 
 Если обработчик [`response`](#event-response) не добавлен, то ответ будет полностью отброшен. Однако если обработчик события [`'response'`](#event-response) добавлен, то данные из объекта ответа **должны** быть потреблены, либо вызовом `response.read()` при каждом событии `'readable'`, либо добавлением обработчика `'data'`, либо вызовом метода `.resume()`. Пока данные не будут прочитаны, событие `'end'` не произойдет. Кроме того, пока данные не будут считаны, будет расходоваться память, что в конечном итоге может привести к ошибке "процесс вышел из памяти".
 
@@ -261,7 +285,7 @@ socket.ref();
 
 <!-- 0014.part.md -->
 
-### Событие: `abort`
+### Событие abort
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -273,13 +297,13 @@ socket.ref();
 
 <!-- 0015.part.md -->
 
-### Событие: `close`
+### Событие close
 
 Указывает, что запрос завершен, или его базовое соединение было прервано преждевременно (до завершения ответа).
 
 <!-- 0016.part.md -->
 
-### Событие: `connect`
+### Событие connect
 
 -   `ответ` {http.IncomingMessage}
 -   `сокет` {stream.Duplex}
@@ -355,19 +379,19 @@ proxy.listen(1337, '127.0.0.1', () => {
 
 <!-- 0017.part.md -->
 
-### Событие: `continue`.
+### Событие continue
 
 Выдается, когда сервер посылает HTTP-ответ '100 Continue', обычно потому, что запрос содержит 'Expect: 100-continue'. Это указание, что клиент должен отправить тело запроса.
 
 <!-- 0018.part.md -->
 
-### Событие: `finish`.
+### Событие finish
 
 Вызывается, когда запрос отправлен. Точнее, это событие возникает, когда последний сегмент заголовков и тела ответа был передан операционной системе для передачи по сети. Это не означает, что сервер уже что-то получил.
 
 <!-- 0019.part.md -->
 
-### Событие: `information`
+### Событие information
 
 -   `info` {Object}
     -   `httpVersion` {string}
@@ -400,11 +424,11 @@ req.on('information', (info) => {
 });
 ```
 
-Статусы 101 Upgrade не вызывают этого события из-за отхода от традиционной цепочки HTTP-запросов/ответов, таких как веб-сокеты, обновления TLS на месте или HTTP 2.0. Чтобы получать уведомления о 101 обновлении, вместо этого слушайте событие [`'upgrade'`](#event-upgrade).
+Статусы 101 Upgrade не вызывают этого события из-за отхода от традиционной цепочки HTTP-запросов/ответов, таких как веб-сокеты, обновления TLS на месте или HTTP 2.0. Чтобы получать уведомления о 101 обновлении, вместо этого слушайте событие [`'upgrade'`](#upgrade).
 
 <!-- 0020.part.md -->
 
-### Событие: `response`
+### Событие response
 
 -   `response` {http.IncomingMessage}
 
@@ -412,7 +436,7 @@ req.on('information', (info) => {
 
 <!-- 0021.part.md -->
 
-### Событие: `socket`
+### Событие socket
 
 -   `socket` {stream.Duplex}
 
@@ -420,7 +444,7 @@ req.on('information', (info) => {
 
 <!-- 0022.part.md -->
 
-### Событие: `timeout`
+### Событие timeout
 
 Выдается, когда базовый сокет завершает работу от бездействия. Это только уведомляет о том, что сокет бездействовал. Запрос должен быть уничтожен вручную.
 
@@ -428,7 +452,7 @@ req.on('information', (info) => {
 
 <!-- 0023.part.md -->
 
-### Событие: `upgrade`
+### Событие upgrade
 
 -   `ответ` {http.IncomingMessage}
 -   `сокет` {stream.Duplex}
@@ -484,7 +508,11 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0024.part.md -->
 
-### `request.abort()`
+### request.abort
+
+```js
+request.abort();
+```
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -496,7 +524,7 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0025.part.md -->
 
-### `request.aborted`
+### request.aborted
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -510,7 +538,7 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0026.part.md -->
 
-### `request.connection`
+### request.connection
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -524,13 +552,21 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0027.part.md -->
 
-### `request.cork()`
+### request.cork
+
+```js
+request.cork();
+```
 
 См. [`writable.cork()`](stream.md#writablecork).
 
 <!-- 0028.part.md -->
 
-### `request.end([data[, encoding]][, callback])`
+### request.end
+
+```js
+request.end([data[, encoding]][, callback])
+```
 
 -   `данные` {string|Buffer|Uint8Array}
 -   `encoding` {string}
@@ -545,7 +581,11 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0029.part.md -->
 
-### `request.destroy([error])`
+### request.destroy
+
+```js
+request.destroy([error]);
+```
 
 -   `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `'error'`.
 -   Возвращает: {this}
@@ -556,7 +596,7 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0030.part.md -->
 
-#### `request.destroyed`
+#### request.destroyed
 
 -   {boolean}
 
@@ -566,7 +606,7 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0031.part.md -->
 
-### `request.finished`
+### request.finished
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -580,7 +620,11 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0032.part.md -->
 
-### `request.flushHeaders()`
+### request.flushHeaders
+
+```js
+request.flushHeaders();
+```
 
 Смывает заголовки запроса.
 
@@ -590,7 +634,11 @@ server.listen(1337, '127.0.0.1', () => {
 
 <!-- 0033.part.md -->
 
-### `request.getHeader(name)`
+### request.getHeader
+
+```js
+request.getHeader(name);
+```
 
 -   `name` {string}
 -   Возвращает: {любой}
@@ -617,7 +665,11 @@ const cookie = request.getHeader('Cookie');
 
 <!-- 0034.part.md -->
 
-### `request.getHeaderNames()`
+### request.getHeaderNames
+
+```js
+request.getHeaderNames();
+```
 
 -   Возвращает: {string\[\]}
 
@@ -633,7 +685,11 @@ const headerNames = request.getHeaderNames();
 
 <!-- 0035.part.md -->
 
-### `request.getHeaders()`
+### request.getHeaders
+
+```js
+request.getHeaders();
+```
 
 -   Возвращает: {Object}
 
@@ -651,7 +707,11 @@ const headers = request.getHeaders();
 
 <!-- 0036.part.md -->
 
-### `request.getRawHeaderNames()`
+### request.getRawHeaderNames
+
+```js
+request.getRawHeaderNames();
+```
 
 -   Возвращает: {string\[\]}
 
