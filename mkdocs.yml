@@ -65,6 +65,9 @@ extra:
         - icon: fontawesome/solid/code
           link: 'https://xsltdev.ru/'
           name: XSLT docs
+        - icon: fontawesome/solid/database
+          link: 'https://dbasedev.ru/'
+          name: Базы данных
 
 #google_analytics:
 #    - UA-34215161-1
