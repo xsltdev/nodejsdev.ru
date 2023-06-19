@@ -675,7 +675,7 @@ export { state };
 
 ### `name`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -689,7 +689,7 @@ export { state };
 
 ### `main`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -714,7 +714,7 @@ require('./path/to/directory');
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -728,7 +728,7 @@ require('./path/to/directory');
 
 ### `type`
 
--   Тип: {string}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Поле `"type"` определяет формат модуля, который Node.js использует для всех файлов `.js`, ближайшим родителем которых является файл `package.json`.
 
@@ -761,7 +761,7 @@ import './startup.js'; // Загружается как ES-модуль из-з�
 
 ### `exports`
 
--   Type: {Object} | {string} | {string\[\]}
+-   Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -777,7 +777,7 @@ import './startup.js'; // Загружается как ES-модуль из-з�
 
 ### `imports`
 
--   Тип: {Объект}
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 <!-- конец списка -->
 
@@ -801,3 +801,4 @@ import './startup.js'; // Загружается как ES-модуль из-з�
 Импорт пакетов разрешает сопоставление с внешними пакетами.
 
 Это поле определяет [subpath imports](#subpath-imports) для текущего пакета.
+

@@ -241,3 +241,4 @@ const hasFullICU = (() => {
 
 -   [btest402](https://github.com/srl295/btest402): Обычно используется для проверки правильности сборки Node.js с поддержкой `Intl`.
 -   [Test262](https://github.com/tc39/test262/tree/HEAD/test/intl402): Официальный набор тестов соответствия ECMAScript включает раздел, посвященный ECMA-402.
+

@@ -62,9 +62,9 @@ path.posix.basename('/tmp/myfile.html');
 
 ## `path.basename(path[, suffix])`
 
--   `путь` {строка}
--   `suffix` {строка} Необязательный суффикс для удаления
--   Возвращает: {строка}
+-   `путь` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `suffix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный суффикс для удаления
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Заглавные [разделители каталогов](#pathsep) игнорируются.
 
@@ -92,7 +92,7 @@ path.win32.basename('C:\foo.HTML', '.html');
 
 ## `path.delimiter`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Предоставляет специфический для платформы разделитель путей:
 
@@ -123,8 +123,8 @@ process.env.PATH.split(path.delimiter);
 
 ## `path.dirname(path)`
 
--   `path` {строка}
--   Возвращает: {строка}
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.dirname()` возвращает имя каталога `пути`, аналогично команде Unix `dirname`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
@@ -139,8 +139,8 @@ path.dirname('/foo/bar/baz/asdf/quux');
 
 ## `path.extname(path)`
 
--   `path` {строка}
--   Возвращает: {строка}
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.extname()` возвращает расширение `пути`, начиная с последнего появления символа `.` (точка) до конца строки в последней части `пути`. Если в последней части `path` нет символа `.`, или если нет символов `.`, кроме первого символа основного имени `path` (см. `path.basename()`), возвращается пустая строка.
 
@@ -170,13 +170,13 @@ path.extname('.index.md');
 
 ## `path.format(pathObject)`
 
--   `pathObject` {Object} Любой объект JavaScript, имеющий следующие свойства:
-    -   `dir` {string}
-    -   `root` {string}
-    -   `base` {string}
-    -   `name` {string}
-    -   `ext` {string}
--   Возвращает: {строка}
+-   `pathObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любой объект JavaScript, имеющий следующие свойства:
+    -   `dir` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `root` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `ext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.format()` возвращает строку пути из объекта. Это противоположность [`path.parse()`](#pathparsepath).
 
@@ -239,8 +239,8 @@ path.format({
 
 ## `path.isAbsolute(path)`
 
--   `путь` {строка}
--   Возвращает: {boolean}
+-   `путь` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `path.isAbsolute()` определяет, является ли `path` абсолютным путем.
 
@@ -273,8 +273,8 @@ path.isAbsolute('.'); // false
 
 ## `path.join([...paths])`
 
--   `...paths` {строка} Последовательность сегментов пути
--   Возвращает: {строка}
+-   `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность сегментов пути
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.join()` объединяет все заданные сегменты `пути` вместе, используя в качестве разделителя специфический для платформы разделитель, а затем нормализует полученный путь.
 
@@ -294,8 +294,8 @@ path.join('foo', {}, 'bar');
 
 ## `path.normalize(path)`
 
--   `путь` {строка}
--   Возвращает: {строка}
+-   `путь` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.normalize()` нормализует заданный `путь`, разрешая сегменты `...` и `...`.
 
@@ -330,18 +330,18 @@ path.win32.normalize('C:////temp\\////foo/bar');
 
 ## `path.parse(path)`
 
--   `путь` {строка}
--   Возвращает: {Объект}
+-   `путь` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Метод `path.parse()` возвращает объект, свойства которого представляют значимые элементы `пути`. Заглавные разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
 Возвращаемый объект будет иметь следующие свойства:
 
--   `dir` {строка}
--   `root` {строка}
--   `база` {строка}
--   `name` {string}
--   `ext` {string}
+-   `dir` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `root` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `база` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `ext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Например, на POSIX:
 
@@ -393,7 +393,7 @@ path.parse('C:\\path\\dir\\file.txt');
 
 ## `path.posix`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `path.posix` предоставляет доступ к POSIX-специфическим реализациям методов `path`.
 
@@ -403,9 +403,9 @@ API доступен через `require('node:path').posix` или `require('no
 
 ## `path.relative(from, to)`
 
--   `from` {string}
--   `to` {string}
--   Возвращает: {string}
+-   `from` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `to` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.relative()` возвращает относительный путь от `from` к `to` на основе текущего рабочего каталога. Если `from` и `to` разрешаются в один и тот же путь (после вызова `path.resolve()` для каждого), возвращается строка нулевой длины.
 
@@ -434,8 +434,8 @@ path.relative('C:orandea\testaaa', 'C:orandeaimpl\bb');
 
 ## `path.resolve([...paths])`
 
--   `...paths` {строка} Последовательность путей или сегментов путей
--   Возвращает: {строка}
+-   `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность путей или сегментов путей
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.resolve()` преобразует последовательность путей или сегментов путей в абсолютный путь.
 
@@ -471,7 +471,7 @@ path.resolve(
 
 ## `path.sep`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Предоставляет специфический для платформы разделитель сегментов пути:
 
@@ -498,8 +498,8 @@ path.resolve(
 
 ## `path.toNamespacedPath(path)`
 
--   `путь` {строка}
--   Возвращает: {string}
+-   `путь` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Только в системах Windows, возвращает эквивалентный [namespace-prefixed path](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#namespaces) для заданного `path`. Если `path` не является строкой, `path` будет возвращен без изменений.
 
@@ -509,10 +509,11 @@ path.resolve(
 
 ## `path.win32`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `path.win32` предоставляет доступ к Windows-специфическим реализациям методов `path`.
 
 API доступен через `require('node:path').win32` или `require('node:path/win32')`.
 
 <!-- 0016.part.md -->
+

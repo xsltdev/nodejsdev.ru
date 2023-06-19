@@ -2421,7 +2421,7 @@ fs.read(fd, buffer, offset, length, position, callback);
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `buffer` {Буфер}
+    -   `buffer` [`<Buffer>`](buffer.md#buffer)
 
 Чтение данных из файла, указанного `fd`.
 
@@ -2444,7 +2444,7 @@ fs.read(fd[, options], callback)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `buffer` {Буфер}
+    -   `buffer` [`<Buffer>`](buffer.md#buffer)
 
 Подобно функции [`fs.read()`](#fsread), эта версия принимает необязательный объект `options`. Если объект `options` не указан, то по умолчанию будут использоваться вышеуказанные значения.
 
@@ -2461,7 +2461,7 @@ fs.read(fd, buffer[, options], callback)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `buffer` {Буфер}
+    -   `buffer` [`<Buffer>`](buffer.md#buffer)
 
 Подобно функции [`fs.read()`](#fsread), эта версия принимает необязательный объект `options`. Если объект `options` не указан, то по умолчанию будут использоваться вышеуказанные значения.
 
@@ -2987,7 +2987,7 @@ fs.watch(filename[, options][, listener])
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type) **По умолчанию:** `undefined`.
     -   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
--   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}
+-   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
 Следит за изменениями в `filename`, где `filename` - это либо файл, либо каталог.
 
@@ -2997,9 +2997,9 @@ fs.watch(filename[, options][, listener])
 
 На большинстве платформ событие `'rename'` происходит всякий раз, когда имя файла появляется или исчезает в каталоге.
 
-Обратный вызов слушателя прикрепляется к событию `'change'`, запускаемому {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}, но это не то же самое, что значение `'change'` в `eventType`.
+Обратный вызов слушателя прикрепляется к событию `'change'`, запускаемому [`<fs.FSWatcher>`](fs.md#fsfswatcher), но это не то же самое, что значение `'change'` в `eventType`.
 
-Если передан `signal`, прерывание соответствующего AbortController закроет возвращенный {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
+Если передан `signal`, прерывание соответствующего AbortController закроет возвращенный [`<fs.FSWatcher>`](fs.md#fsfswatcher).
 
 **Предостережения**
 
@@ -3144,7 +3144,7 @@ fs.write(fd, buffer[, options], callback)
 fs.write(fd, string[, position[, encoding]], callback)
 ```
 
--   `fd` {целое}
+-   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`.
@@ -3705,7 +3705,7 @@ fs.openSync(path[, flags[, mode]])
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `flags` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `'r'`.
 -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`.
--   Возвращает: {число}
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает целое число, представляющее дескриптор файла.
 
@@ -3721,7 +3721,7 @@ fs.readdirSync(path[, options])
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8''
     -   `withFileTypes` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
--   Возвращает: {string\[\]|Buffer\[\]|fs.Dirent\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<fs.Dirent[]>`](fs.md#fsdirent)
 
 Читает содержимое каталога.
 
@@ -4269,13 +4269,13 @@ dirent.name;
 
 Имя файла, на который ссылается данный объект [`<fs.Dirent>`](fs.md#fsdirent). Тип этого значения определяется `options.encoding`, переданным в [`fs.readdir()`](#fsreaddir) или [`fs.readdirSync()`](#fsreaddirsync).
 
-### [`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)
+### [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
 -   Расширяет [`<EventEmitter>`](events.md#eventemitter)
 
-Успешный вызов метода [`fs.watch()`](#fswatch) вернет новый объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
+Успешный вызов метода [`fs.watch()`](#fswatch) вернет новый объект [`<fs.FSWatcher>`](fs.md#fsfswatcher).
 
-Все объекты {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} испускают событие `'change'` всякий раз, когда определенный наблюдаемый файл изменяется.
+Все объекты [`<fs.FSWatcher>`](fs.md#fsfswatcher) испускают событие `'change'` всякий раз, когда определенный наблюдаемый файл изменяется.
 
 #### Событие: `change`
 
@@ -4303,13 +4303,13 @@ watch(
 
 #### Событие: `close`
 
-Выдается, когда наблюдатель перестает следить за изменениями. Закрытый объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} больше не может использоваться в обработчике события.
+Выдается, когда наблюдатель перестает следить за изменениями. Закрытый объект [`<fs.FSWatcher>`](fs.md#fsfswatcher) больше не может использоваться в обработчике события.
 
 #### Событие: `error`
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Выдается при возникновении ошибки во время просмотра файла. Объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} с ошибкой больше не используется в обработчике события.
+Выдается при возникновении ошибки во время просмотра файла. Объект [`<fs.FSWatcher>`](fs.md#fsfswatcher) с ошибкой больше не используется в обработчике события.
 
 #### watcher.close
 
@@ -4317,7 +4317,7 @@ watch(
 watcher.close();
 ```
 
-Прекращает наблюдение за изменениями на данном {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}. После остановки объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} больше не может использоваться.
+Прекращает наблюдение за изменениями на данном [`<fs.FSWatcher>`](fs.md#fsfswatcher). После остановки объект [`<fs.FSWatcher>`](fs.md#fsfswatcher) больше не может использоваться.
 
 #### watcher.ref
 
@@ -4325,11 +4325,11 @@ watcher.close();
 watcher.ref();
 ```
 
--   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}
+-   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
-При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
+При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока [`<fs.FSWatcher>`](fs.md#fsfswatcher) активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
 
-По умолчанию все объекты {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} являются "ref", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
+По умолчанию все объекты [`<fs.FSWatcher>`](fs.md#fsfswatcher) являются "ref", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
 
 #### watcher.unref
 
@@ -4337,9 +4337,9 @@ watcher.ref();
 watcher.unref();
 ```
 
--   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
+-   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher).
 
-При вызове активный объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
+При вызове активный объект [`<fs.FSWatcher>`](fs.md#fsfswatcher) не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта [`<fs.FSWatcher>`](fs.md#fsfswatcher). Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
 
 ### fs.StatWatcher
 
@@ -4393,7 +4393,7 @@ watcher.unref();
 
 #### readStream.bytesRead
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество байтов, которые были прочитаны на данный момент.
 
@@ -4766,7 +4766,7 @@ StatFs {
 
 ### fs.WriteStream
 
--   Расширяет {stream.Writable}
+-   Расширяет [`<stream.Writable>`](stream.md#streamwritable)
 
 Экземпляры [`<fs.WriteStream>`](fs.md#fswritestream) создаются и возвращаются с помощью функции [`fs.createWriteStream()`](#fscreatewritestream).
 
@@ -5218,7 +5218,7 @@ try {
 
 ### Использование пула потоков
 
-Все API файловой системы, основанные на обратных вызовах и обещаниях (за исключением `[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)()`), используют пул потоков libuv. Это может иметь неожиданные и негативные последствия для производительности некоторых приложений. Дополнительную информацию смотрите в документации [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
+Все API файловой системы, основанные на обратных вызовах и обещаниях (за исключением [`<fs.FSWatcher>`](fs.md#fsfswatcher)), используют пул потоков libuv. Это может иметь неожиданные и негативные последствия для производительности некоторых приложений. Дополнительную информацию смотрите в документации [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
 
 ### Флаги файловой системы
 

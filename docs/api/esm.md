@@ -185,13 +185,13 @@ fs.readFileSync === readFileSync;
 
 ## `import.meta`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Мета-свойство `import.meta` представляет собой `объект`, содержащий следующие свойства.
 
 ### `import.meta.url`
 
--   {string} Абсолютный `файл:` URL модуля.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный `файл:` URL модуля.
 
 Определяется точно так же, как и в браузерах, предоставляя URL текущего файла модуля.
 
@@ -210,9 +210,9 @@ const buffer = readFileSync(
 
 Эта функция доступна только при включенном флаге команды `--experimental-import-meta-resolve`.
 
--   `specifier` {string} Спецификатор модуля для разрешения относительно `parent`.
--   `parent` {string|URL} Абсолютный URL родительского модуля для преобразования. Если не указан, то по умолчанию используется значение `import.meta.url`.
--   Возвращает: {Promise}
+-   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор модуля для разрешения относительно `parent`.
+-   `parent` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Абсолютный URL родительского модуля для преобразования. Если не указан, то по умолчанию используется значение `import.meta.url`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Предоставляет функцию разрешения относительно модуля, относящуюся к каждому модулю и возвращающую строку URL.
 
@@ -507,19 +507,19 @@ export function resize(img, size) {
 
 > В настоящее время API загрузчиков перерабатывается. Этот хук может исчезнуть или его сигнатура может измениться. Не полагайтесь на API, описанный ниже.
 
--   `specifier` {string}
--   `контекст` {Объект}
-    -   `условия` {string\[\]} Условия экспорта соответствующего `package.json`.
-    -   `importAssertions` {Object} Объект, пары ключ-значение которого представляют утверждения для импортируемого модуля
+-   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `контекст` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `условия` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`.
+    -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, пары ключ-значение которого представляют утверждения для импортируемого модуля
     -   `parentURL` {string|undefined} Модуль, импортирующий данный модуль, или undefined, если это точка входа Node.js
--   `nextResolve` {функция} Следующий хук `resolve` в цепочке, или хук `resolve` по умолчанию Node.js после последнего пользовательского хука `resolve`.
-    -   `спецификатор` {строка}
-    -   `context` {Object}
--   Возвращает: {Object}
+-   `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий хук `resolve` в цепочке, или хук `resolve` по умолчанию Node.js после последнего пользовательского хука `resolve`.
+    -   `спецификатор` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `формат` {string|null|undefined} Подсказка для крючка загрузки (может быть проигнорирована) `'builtin' | 'commonjs' | 'json' | 'module' | 'wasm'`.
     -   `importAssertions` {Object|undefined} Утверждения импорта для использования при кэшировании модуля (необязательно; если исключить, то будут использоваться входные данные)
     -   `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
-    -   `url` {string} Абсолютный URL, к которому разрешается данный вход.
+    -   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный URL, к которому разрешается данный вход.
 
 Цепочка хуков `resolve` отвечает за указание Node.js, где найти и как кэшировать заданный оператор `import` или выражение. По желанию она может возвращать его формат (например, `'module'`) в качестве подсказки для хука `load`. Если формат не указан, крючок `load` в конечном итоге отвечает за предоставление окончательного значения `формата` (и он может игнорировать подсказку, предоставленную `resolve`); если `resolve` предоставляет `формат`, требуется пользовательский крючок `load`, даже если только для передачи значения крючку Node.js по умолчанию `load`.
 
@@ -574,16 +574,16 @@ export async function resolve(
 
 > В предыдущей версии этого API эта функция была разделена на 3 отдельных, ныне устаревших хука (`getFormat`, `getSource` и `transformSource`).
 
--   `url` {строка} URL, возвращаемый цепочкой `resolve`.
--   `context` {Object}
-    -   `conditions` {string\[\]} Условия экспорта соответствующего `package.json`.
+-   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращаемый цепочкой `resolve`.
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`.
     -   `формат` {string|null|undefined} Формат, опционально предоставляемый цепочкой хуков `resolve`.
-    -   `importAssertions` {Object}
--   `nextLoad` {Function} Следующий `load` хук в цепочке, или `load` хук по умолчанию Node.js после последнего пользовательского `load` хука.
-    -   `спецификатор` {строка}
-    -   `context` {Object}
--   Возвращает: {Object}
-    -   `формат` {string}
+    -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий `load` хук в цепочке, или `load` хук по умолчанию Node.js после последнего пользовательского `load` хука.
+    -   `спецификатор` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `формат` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `shortCircuit` {undefined|boolean} Сигнал о том, что этот хук намерен прервать цепочку хуков `resolve`. **По умолчанию:** `false`.
     -   `source` {string|ArrayBuffer|TypedArray} Источник для оценки Node.js
 
@@ -674,9 +674,9 @@ export async function load(url, context, nextLoad) {
 
 > В предыдущей версии этого API этот хук назывался `getGlobalPreloadCode`.
 
--   `context` {Object} Информация для помощи коду предварительной загрузки
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Информация для помощи коду предварительной загрузки
     -   `port` {MessagePort}
--   Возвращает: {строка} Код для запуска перед стартом приложения
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код для запуска перед стартом приложения
 
 Иногда может потребоваться запустить некоторый код внутри той же глобальной области видимости, в которой запускается приложение. Этот хук позволяет вернуть строку, которая будет запущена как скрипт в небрежном режиме при запуске приложения.
 
@@ -1182,3 +1182,4 @@ _defaultConditions_ - это массив имен условного окруж
 ### Настройка алгоритма разрешения спецификатора ESM
 
 API [Loaders API](#loaders) предоставляет механизм для настройки алгоритма разрешения спецификаторов ESM. Примером загрузчика, обеспечивающего разрешение ESM-спецификаторов в стиле CommonJS, является [commonjs-extension-resolution-loader](https://github.com/nodejs/loaders-test/tree/main/commonjs-extension-resolution-loader).
+

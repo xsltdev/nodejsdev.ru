@@ -99,14 +99,14 @@ http.get(
 new Agent([options]);
 ```
 
--   `options` {Object} Набор конфигурируемых опций для установки на агента. Может иметь следующие поля:
-    -   `keepAlive` {boolean} Сохранять сокеты даже при отсутствии невыполненных запросов, чтобы их можно было использовать для будущих запросов без необходимости восстанавливать TCP-соединение. Не путать со значением `keep-alive` заголовка `Connection`. Заголовок `Connection: keep-alive` всегда отправляется при использовании агента, за исключением случаев, когда заголовок `Connection` указан явно или когда опции `keepAlive` и `maxSockets` соответственно установлены в `false` и `Infinity`, в этом случае будет использоваться `Connection: close`. **По умолчанию:** `false`.
-    -   `keepAliveMsecs` {number} При использовании опции `keepAlive` указывает [начальную задержку](net.md#socketsetkeepaliveenable-initialdelay) для пакетов TCP Keep-Alive. Игнорируется, если опция `keepAlive` имеет значение `false` или `undefined`. **По умолчанию:** `1000`.
-    -   `maxSockets` {number} Максимальное количество сокетов, разрешенное для одного хоста. Если один и тот же хост открывает несколько одновременных соединений, каждый запрос будет использовать новый сокет, пока не будет достигнуто значение `maxSockets`. Если хост пытается открыть больше соединений, чем `maxSockets`, дополнительные запросы попадают в очередь ожидающих запросов и переходят в состояние активного соединения, когда существующее соединение завершается. Это гарантирует, что в любой момент времени с данного хоста будет не более `maxSockets` активных соединений. **По умолчанию:** `бесконечность`.
-    -   `maxTotalSockets` {number} Максимальное количество сокетов, разрешенное для всех хостов в целом. Каждый запрос будет использовать новый сокет, пока не будет достигнуто максимальное значение. **По умолчанию:** `Infinity`.
-    -   `maxFreeSockets` {number} Максимальное количество сокетов на хосте, которое можно оставить открытым в свободном состоянии. Имеет значение, только если `keepAlive` установлено в `true`. **По умолчанию:** `256`.
-    -   `scheduling` {string} Стратегия планирования, которую следует применять при выборе следующего свободного сокета для использования. Это может быть `'fifo'` или `'lifo'`. Основное различие между этими двумя стратегиями планирования заключается в том, что `'lifo'` выбирает последний использованный сокет, а `'fifo'` выбирает наименее использованный сокет. В случае низкой скорости запросов в секунду, планирование `'lifo'` снижает риск выбора сокета, который мог быть закрыт сервером из-за неактивности. В случае высокой скорости запросов в секунду, планирование `'fifo'` будет максимизировать количество открытых сокетов, в то время как планирование `'lifo'` будет поддерживать его на минимально возможном уровне. **По умолчанию:** `'lifo'`.
-    -   `timeout` {number} Таймаут сокета в миллисекундах. Таймаут устанавливается при создании сокета.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор конфигурируемых опций для установки на агента. Может иметь следующие поля:
+    -   `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сохранять сокеты даже при отсутствии невыполненных запросов, чтобы их можно было использовать для будущих запросов без необходимости восстанавливать TCP-соединение. Не путать со значением `keep-alive` заголовка `Connection`. Заголовок `Connection: keep-alive` всегда отправляется при использовании агента, за исключением случаев, когда заголовок `Connection` указан явно или когда опции `keepAlive` и `maxSockets` соответственно установлены в `false` и `Infinity`, в этом случае будет использоваться `Connection: close`. **По умолчанию:** `false`.
+    -   `keepAliveMsecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) При использовании опции `keepAlive` указывает [начальную задержку](net.md#socketsetkeepaliveenable-initialdelay) для пакетов TCP Keep-Alive. Игнорируется, если опция `keepAlive` имеет значение `false` или `undefined`. **По умолчанию:** `1000`.
+    -   `maxSockets` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сокетов, разрешенное для одного хоста. Если один и тот же хост открывает несколько одновременных соединений, каждый запрос будет использовать новый сокет, пока не будет достигнуто значение `maxSockets`. Если хост пытается открыть больше соединений, чем `maxSockets`, дополнительные запросы попадают в очередь ожидающих запросов и переходят в состояние активного соединения, когда существующее соединение завершается. Это гарантирует, что в любой момент времени с данного хоста будет не более `maxSockets` активных соединений. **По умолчанию:** `бесконечность`.
+    -   `maxTotalSockets` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сокетов, разрешенное для всех хостов в целом. Каждый запрос будет использовать новый сокет, пока не будет достигнуто максимальное значение. **По умолчанию:** `Infinity`.
+    -   `maxFreeSockets` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сокетов на хосте, которое можно оставить открытым в свободном состоянии. Имеет значение, только если `keepAlive` установлено в `true`. **По умолчанию:** `256`.
+    -   `scheduling` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Стратегия планирования, которую следует применять при выборе следующего свободного сокета для использования. Это может быть `'fifo'` или `'lifo'`. Основное различие между этими двумя стратегиями планирования заключается в том, что `'lifo'` выбирает последний использованный сокет, а `'fifo'` выбирает наименее использованный сокет. В случае низкой скорости запросов в секунду, планирование `'lifo'` снижает риск выбора сокета, который мог быть закрыт сервером из-за неактивности. В случае высокой скорости запросов в секунду, планирование `'fifo'` будет максимизировать количество открытых сокетов, в то время как планирование `'lifo'` будет поддерживать его на минимально возможном уровне. **По умолчанию:** `'lifo'`.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут сокета в миллисекундах. Таймаут устанавливается при создании сокета.
 
 Также поддерживаются `опции` в [`socket.connect()`](net.md#socketconnectoptions-connectlistener).
 
@@ -127,8 +127,8 @@ http.request(options, onResponseCallback);
 agent.createConnection(options[, callback])
 ```
 
--   `options` {Object} Опции, содержащие детали соединения. Формат опций смотрите в [`net.createConnection()`](net.md#netcreateconnectionoptions-connectlistener)
--   `callback` {Function} Функция обратного вызова, которая получает созданный сокет
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Опции, содержащие детали соединения. Формат опций смотрите в [`net.createConnection()`](net.md#netcreateconnectionoptions-connectlistener)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, которая получает созданный сокет
 -   Возвращает: {stream.Duplex}
 
 Создает сокет/поток, который будет использоваться для HTTP-запросов.
@@ -137,7 +137,7 @@ agent.createConnection(options[, callback])
 
 Сокет/поток может быть предоставлен одним из двух способов: путем возврата сокета/потока из этой функции или путем передачи сокета/потока в `callback`.
 
-Этот метод гарантированно возвращает экземпляр класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Этот метод гарантированно возвращает экземпляр класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 `callback` имеет сигнатуру `(err, stream)`.
 
@@ -161,7 +161,7 @@ return true;
 
 Этот метод может быть переопределен конкретным подклассом `Agent`. Если этот метод возвращает ложное значение, то сокет будет уничтожен, а не сохранен для использования при следующем запросе.
 
-Аргумент `socket` может быть экземпляром {net.Socket}, подкласса {stream.Duplex}.
+Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}.
 
 <!-- 0004.part.md -->
 
@@ -182,7 +182,7 @@ socket.ref();
 
 Этот метод может быть переопределен конкретным подклассом `Agent`.
 
-Аргумент `socket` может быть экземпляром {net.Socket}, подкласса {stream.Duplex}.
+Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}.
 
 <!-- 0005.part.md -->
 
@@ -200,7 +200,7 @@ agent.destroy();
 
 ### agent.freeSockets
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект, который содержит массивы сокетов, ожидающих использования агентом, когда включено `keepAlive`. Не модифицируйте.
 
@@ -214,12 +214,12 @@ agent.destroy();
 agent.getName([options]);
 ```
 
--   `options` {Object} Набор опций, предоставляющих информацию для генерации имени
-    -   `host` {string} Доменное имя или IP-адрес сервера, на который будет отправлен запрос
-    -   `port` {число} Порт удаленного сервера
-    -   `localAddress` {string} Локальный интерфейс для привязки сетевых соединений при выдаче запроса
-    -   `family` {integer} Должно быть 4 или 6, если это не равно `undefined`.
--   Возвращает: {string}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор опций, предоставляющих информацию для генерации имени
+    -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Доменное имя или IP-адрес сервера, на который будет отправлен запрос
+    -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт удаленного сервера
+    -   `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальный интерфейс для привязки сетевых соединений при выдаче запроса
+    -   `family` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Должно быть 4 или 6, если это не равно `undefined`.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получает уникальное имя для набора опций запроса, чтобы определить, может ли соединение быть использовано повторно. Для HTTP-агента это возвращает `host:port:localAddress` или `host:port:localAddress:family`. Для HTTPS-агента имя включает CA, cert, шифры и другие специфические для HTTPS/TLS опции, определяющие возможность повторного использования сокета.
 
@@ -227,7 +227,7 @@ agent.getName([options]);
 
 ### agent.maxFreeSockets
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 По умолчанию установлено значение 256. Для агентов с включенной опцией `keepAlive` задается максимальное количество сокетов, которые будут оставлены открытыми в свободном состоянии.
 
@@ -235,7 +235,7 @@ agent.getName([options]);
 
 ### agent.maxSockets
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 По умолчанию установлено на `бесконечность`. Определяет, сколько одновременных сокетов может быть открыто агентом для каждого origin. Origin - это возвращаемое значение [`agent.getName()`](#agentgetnameoptions).
 
@@ -243,7 +243,7 @@ agent.getName([options]);
 
 ### agent.maxTotalSockets
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 По умолчанию имеет значение `бесконечность`. Определяет, сколько одновременных сокетов может быть открыто у агента. В отличие от `maxSockets`, этот параметр применяется ко всем источникам.
 
@@ -251,7 +251,7 @@ agent.getName([options]);
 
 ### agent.requests
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект, содержащий очереди запросов, которые еще не были назначены на сокеты. Не модифицируйте.
 
@@ -259,7 +259,7 @@ agent.getName([options]);
 
 ### agent.sockets
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект, содержащий массивы сокетов, используемых агентом в данный момент. Не модифицировать.
 
@@ -307,11 +307,11 @@ agent.getName([options]);
 
 -   `ответ` {http.IncomingMessage}
 -   `сокет` {stream.Duplex}
--   `head` {Buffer}
+-   `head` [`<Buffer>`](buffer.md#buffer)
 
 Выдается каждый раз, когда сервер отвечает на запрос методом `CONNECT`. Если это событие не прослушивается, клиенты, получающие метод `CONNECT`, закрывают свои соединения.
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 Пара клиент-сервер демонстрирует, как слушать событие `'connect'`:
 
@@ -393,14 +393,14 @@ proxy.listen(1337, '127.0.0.1', () => {
 
 ### Событие information
 
--   `info` {Object}
-    -   `httpVersion` {string}
-    -   `httpVersionMajor` {целое число}
-    -   `httpVersionMinor` {целое число}
-    -   `statusCode` {integer}
-    -   `statusMessage` {string}
-    -   `headers` {Object}
-    -   `rawHeaders` {string\[\]}
+-   `info` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `httpVersion` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `httpVersionMajor` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `httpVersionMinor` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `statusCode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `statusMessage` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `rawHeaders` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Выдается, когда сервер посылает промежуточный ответ 1xx (исключая 101 Upgrade). Слушатели этого события получат объект, содержащий версию HTTP, код статуса, сообщение о статусе, объект заголовков с ключевыми значениями и массив с именами необработанных заголовков, за которыми следуют их соответствующие значения.
 
@@ -440,7 +440,7 @@ req.on('information', (info) => {
 
 -   `socket` {stream.Duplex}
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 <!-- 0022.part.md -->
 
@@ -456,11 +456,11 @@ req.on('information', (info) => {
 
 -   `ответ` {http.IncomingMessage}
 -   `сокет` {stream.Duplex}
--   `head` {Buffer}
+-   `head` [`<Buffer>`](buffer.md#buffer)
 
 Выдается каждый раз, когда сервер отвечает на запрос с обновлением. Если это событие не прослушивается и код состояния ответа равен 101 Switching Protocols, клиенты, получившие заголовок обновления, закрывают свои соединения.
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 Пара клиент-сервер демонстрирует, как прослушивать событие `update`.
 
@@ -532,7 +532,7 @@ request.abort();
 
     Вместо этого проверьте [`request.destroyed`](#requestdestroyed).
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `request.aborted` будет `true`, если запрос был прерван.
 
@@ -569,8 +569,8 @@ request.end([data[, encoding]][, callback])
 ```
 
 -   `данные` {string|Buffer|Uint8Array}
--   `encoding` {string}
--   `callback` {функция}
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {this}
 
 Завершает отправку запроса. Если какие-либо части тела остались неотправленными, он спустит их в поток. Если запрос чанкирован, то будет отправлено завершающее `'0\r\n\r\n'`.
@@ -587,7 +587,7 @@ request.end([data[, encoding]][, callback])
 request.destroy([error]);
 ```
 
--   `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `'error'`.
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательно, ошибка, которую нужно выдать с событием `'error'`.
 -   Возвращает: {this}
 
 Уничтожить запрос. Опционально выдает событие `'error'` и выдает событие `'close'`. Вызов этой функции приведет к тому, что оставшиеся данные в ответе будут сброшены, а сокет будет уничтожен.
@@ -598,7 +598,7 @@ request.destroy([error]);
 
 #### request.destroyed
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true` после вызова [`request.destroy()`](#requestdestroyerror).
 
@@ -614,7 +614,7 @@ request.destroy([error]);
 
     Используйте [`request.writableEnded`](#requestwritableended).
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `request.finished` будет `true`, если был вызван [`request.end()`](#requestenddata-encoding-callback). Свойство `request.end()` будет вызвано автоматически, если запрос был инициирован через [`http.get()`](#httpgetoptions-callback).
 
@@ -640,8 +640,8 @@ request.flushHeaders();
 request.getHeader(name);
 ```
 
--   `name` {string}
--   Возвращает: {любой}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Считывает заголовок запроса. Имя не чувствительно к регистру. Тип возвращаемого значения зависит от аргументов, переданных в [`request.setHeader()`](#requestsetheadername-value).
 
@@ -671,7 +671,7 @@ const cookie = request.getHeader('Cookie');
 request.getHeaderNames();
 ```
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив, содержащий уникальные имена текущих исходящих заголовков. Все имена заголовков в нижнем регистре.
 
@@ -691,7 +691,7 @@ const headerNames = request.getHeaderNames();
 request.getHeaders();
 ```
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает неглубокую копию текущих исходящих заголовков. Поскольку используется неглубокая копия, значения массива могут быть изменены без дополнительных вызовов различных методов модуля http, связанных с заголовками. Ключами возвращаемого объекта являются имена заголовков, а значениями - соответствующие значения заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -713,7 +713,7 @@ const headers = request.getHeaders();
 request.getRawHeaderNames();
 ```
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив, содержащий уникальные имена текущих исходящих необработанных заголовков. Имена заголовков возвращаются с установленным точным регистром.
 
@@ -729,8 +729,8 @@ const headerNames = request.getRawHeaderNames();
 
 ### `request.hasHeader(name)`
 
--   `name` {string}
--   Возвращает: {boolean}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если заголовок, обозначенный `name`, в настоящее время установлен в исходящих заголовках. Соответствие имени заголовка не чувствительно к регистру.
 
@@ -742,7 +742,7 @@ const hasContentType = request.hasHeader('content-type');
 
 ### `request.maxHeadersCount`
 
--   {число} **По умолчанию:** `2000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`.
 
 Ограничивает максимальное количество заголовков ответа. Если установлено значение 0, ограничение не будет применяться.
 
@@ -750,31 +750,31 @@ const hasContentType = request.hasHeader('content-type');
 
 ### `request.path`
 
--   {строка} Путь запроса.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь запроса.
 
 <!-- 0040.part.md -->
 
 ### `request.method`
 
--   {строка} Метод запроса.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метод запроса.
 
 <!-- 0041.part.md -->
 
 ### `request.host`
 
--   {строка} Хост запроса.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост запроса.
 
 <!-- 0042.part.md -->
 
 ### `request.protocol`
 
--   {строка} Протокол запроса.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Протокол запроса.
 
 <!-- 0043.part.md -->
 
 ### `request.removeHeader(name)`
 
--   `name` {string}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Удаляет заголовок, который уже определен в объекте headers.
 
@@ -786,7 +786,7 @@ request.removeHeader('Content-Type');
 
 ### `request.reusedSocket`
 
--   {boolean} Отправляется ли запрос через повторно используемый сокет.
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Отправляется ли запрос через повторно используемый сокет.
 
 При отправке запроса через агент с поддержкой keep-alive, базовый сокет может быть использован повторно. Но если сервер закроет соединение в неудачное время, клиент может столкнуться с ошибкой 'ECONNRESET'.
 
@@ -838,8 +838,8 @@ retriableRequest();
 
 ### `request.setHeader(name, value)`
 
--   `имя` {строка}
--   `value` {любой}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Устанавливает значение одного заголовка для объекта headers. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`request.getHeader()`](#requestgetheadername) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети.
 
@@ -874,7 +874,7 @@ request.setHeader(
 
 ### `request.setNoDelay([noDelay])`
 
--   `noDelay` {boolean}
+-   `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Как только сокет будет назначен этому запросу и подключен [`socket.setNoDelay()`](net.md#socketsetnodelaynodelay) будет вызван.
 
@@ -882,8 +882,8 @@ request.setHeader(
 
 ### `request.setSocketKeepAlive([enable][, initialDelay])`
 
--   `enable` {boolean}
--   `initialDelay` {число}
+-   `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Как только сокет будет назначен этому запросу и подключен [`socket.setKeepAlive()`](net.md#socketsetkeepaliveenable-initialdelay) будет вызван.
 
@@ -891,8 +891,8 @@ request.setHeader(
 
 ### `request.setTimeout(timeout[, callback])`
 
--   `timeout` {число} Миллисекунды до завершения запроса.
--   `callback` {функция} Необязательная функция, которая будет вызвана, когда произойдет таймаут. Аналогично привязке к событию `timeout`.
+-   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды до завершения запроса.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, которая будет вызвана, когда произойдет таймаут. Аналогично привязке к событию `timeout`.
 -   Возвращает: {http.ClientRequest}
 
 Когда сокет назначен этому запросу и подключен, будет вызвана функция [`socket.setTimeout()`](net.md#socketsettimeouttimeout-callback).
@@ -922,7 +922,7 @@ req.once('response', (res) => {
 });
 ```
 
-Это свойство гарантированно является экземпляром класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от {net.Socket}.
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 <!-- 0050.part.md -->
 
@@ -934,7 +934,7 @@ req.once('response', (res) => {
 
 ### `request.writableEnded`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true` после вызова [`request.end()`](#requestenddata-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`request.writableFinished`](#requestwritablefinished).
 
@@ -942,7 +942,7 @@ req.once('response', (res) => {
 
 ### `request.writableFinished`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если все данные были выгружены в базовую систему, непосредственно перед тем, как будет выпущено событие [`'finish'`](#event-finish).
 
@@ -951,9 +951,9 @@ req.once('response', (res) => {
 ### `request.write(chunk[, encoding][, callback])`
 
 -   `chunk` {string|Buffer|Uint8Array}
--   `encoding` {string}
--   `обратный вызов` {функция}
--   Возвращает: {boolean}
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `обратный вызов` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Отправляет фрагмент тела. Этот метод может быть вызван несколько раз. Если не задана `Content-Length`, данные будут автоматически закодированы в кодировке передачи HTTP Chunked, чтобы сервер знал, когда данные заканчиваются. Добавляется заголовок `Transfer-Encoding: chunked`. Вызов [`request.end()`](#requestenddata-encoding-callback) необходим для завершения отправки запроса.
 
@@ -999,12 +999,12 @@ req.once('response', (res) => {
 
 ### Событие: `clientError`
 
--   `exception` {Ошибка}
+-   `exception` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 -   `socket` {stream.Duplex}
 
 Если клиентское соединение испускает событие `'error'', оно будет передано сюда. Слушатель этого события отвечает за закрытие/уничтожение базового сокета. Например, можно пожелать более изящно закрыть сокет с помощью пользовательского HTTP-ответа вместо резкого разрыва соединения. Сокет **должен быть закрыт или уничтожен** до завершения работы слушателя.
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 Поведение по умолчанию заключается в попытке закрыть сокет с HTTP '400 Bad Request', или HTTP '431 Request Header Fields Too Large' в случае ошибки [`HPE_HEADER_OVERFLOW`](errors.md#hpe_header_overflow). Если сокет не доступен для записи или были отправлены заголовки текущего присоединенного [`http.ServerResponse`](#class-httpserverresponse), он немедленно уничтожается.
 
@@ -1053,11 +1053,11 @@ server.on('clientError', (err, socket) => {
 
 -   `request` {http.IncomingMessage} Аргументы для HTTP-запроса, как в событии [`'request'`](#event-request)
 -   `socket` {stream.Duplex} Сетевой сокет между сервером и клиентом
--   `head` {Buffer} Первый пакет туннелируемого потока (может быть пустым).
+-   `head` [`<Buffer>`](buffer.md#buffer) Первый пакет туннелируемого потока (может быть пустым).
 
 Выдается каждый раз, когда клиент запрашивает метод HTTP `CONNECT`. Если это событие не прослушивается, то клиенты, запрашивающие метод `CONNECT`, будут иметь закрытые соединения.
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 После испускания этого события сокет запроса не будет иметь слушателя события `'data'`, что означает, что для обработки данных, отправленных на сервер по этому сокету, его нужно будет привязать.
 
@@ -1073,7 +1073,7 @@ server.on('clientError', (err, socket) => {
 
 Если здесь вызывается `socket.setTimeout()`, то таймаут будет заменен на `server.keepAliveTimeout`, когда сокет обслужит запрос (если `server.keepAliveTimeout` ненулевой).
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 <!-- 0061.part.md -->
 
@@ -1099,19 +1099,19 @@ server.on('clientError', (err, socket) => {
 
 -   `request` {http.IncomingMessage} Аргументы для HTTP-запроса, как в событии [`'request'`](#event-request)
 -   `socket` {stream.Duplex} Сетевой сокет между сервером и клиентом
--   `head` {Buffer} Первый пакет обновленного потока (может быть пустым).
+-   `head` [`<Buffer>`](buffer.md#buffer) Первый пакет обновленного потока (может быть пустым).
 
 Выдается каждый раз, когда клиент запрашивает обновление HTTP. Прослушивание этого события необязательно, и клиенты не могут настаивать на смене протокола.
 
 После испускания этого события сокет запроса не будет иметь слушателя события `'data'`, что означает, что его нужно будет привязать, чтобы обрабатывать данные, отправленные серверу на этом сокете.
 
-Это событие гарантированно передается экземпляру класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от {net.Socket}.
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 <!-- 0064.part.md -->
 
 ### `server.close([callback])`
 
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Останавливает сервер от приема новых соединений и закрывает все соединения, подключенные к этому серверу, которые не посылают запрос или не ожидают ответа. См. [`net.Server.close()`](net.md#serverclosecallback).
 
@@ -1131,7 +1131,7 @@ server.on('clientError', (err, socket) => {
 
 ### `server.headersTimeout`
 
--   {число} **По умолчанию:** Минимальное значение между [`server.requestTimeout`](#serverrequesttimeout) или `60000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** Минимальное значение между [`server.requestTimeout`](#serverrequesttimeout) или `60000`.
 
 Ограничивает количество времени, в течение которого парсер будет ждать получения полных заголовков HTTP.
 
@@ -1149,13 +1149,13 @@ server.on('clientError', (err, socket) => {
 
 ### `server.listening`
 
--   {boolean} Указывает, прослушивает ли сервер соединения или нет.
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Указывает, прослушивает ли сервер соединения или нет.
 
 <!-- 0070.part.md -->
 
 ### `server.maxHeadersCount`
 
--   {число} **По умолчанию:** `2000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`.
 
 Ограничивает максимальное количество входящих заголовков. Если установлено значение 0, ограничение не будет применяться.
 
@@ -1163,7 +1163,7 @@ server.on('clientError', (err, socket) => {
 
 ### `server.requestTimeout`
 
--   {число} **По умолчанию:** `300000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`.
 
 Устанавливает значение таймаута в миллисекундах для получения всего запроса от клиента.
 
@@ -1175,8 +1175,8 @@ server.on('clientError', (err, socket) => {
 
 ### `server.setTimeout([msecs][, callback])`
 
--   `msecs` {число} **По умолчанию:** 0 (без таймаута)
--   `callback` {функция}
+-   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.Server}
 
 Устанавливает значение тайм-аута для сокетов и выдает событие `'timeout'` на объект Server, передавая сокет в качестве аргумента, если тайм-аут произошел.
@@ -1189,7 +1189,7 @@ server.on('clientError', (err, socket) => {
 
 ### `server.maxRequestsPerSocket`
 
--   {number} Запросы на сокет. **По умолчанию:** 0 (без ограничений).
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Запросы на сокет. **По умолчанию:** 0 (без ограничений).
 
 Максимальное количество запросов, которое может обработать сокет перед закрытием соединения keep alive.
 
@@ -1201,7 +1201,7 @@ server.on('clientError', (err, socket) => {
 
 ### `server.timeout`
 
--   {number} Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
 Количество миллисекунд бездействия, после которого считается, что сокет завершил работу.
 
@@ -1213,7 +1213,7 @@ server.on('clientError', (err, socket) => {
 
 ### `server.keepAliveTimeout`
 
--   {number} Таймаут в миллисекундах. **По умолчанию:** `5000` (5 секунд).
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** `5000` (5 секунд).
 
 Количество миллисекунд бездействия, в течение которых сервер должен ждать новых входящих данных, после того как он закончил писать последний ответ, прежде чем сокет будет уничтожен. Если сервер получит новые данные до истечения таймаута keep-alive, он сбросит обычный таймаут бездействия, т.е. [`server.timeout`](#servertimeout).
 
@@ -1245,7 +1245,7 @@ server.on('clientError', (err, socket) => {
 
 ### `response.addTrailers(headers)`
 
--   `headers` {Object}
+-   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Этот метод добавляет к ответу HTTP трейлерные заголовки (заголовок, но в конце сообщения).
 
@@ -1292,8 +1292,8 @@ response.end();
 ### `response.end([data[, encoding]][, callback])`
 
 -   `данные` {string|Buffer|Uint8Array}
--   `encoding` {string}
--   `callback` {функция}
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {this}
 
 Этот метод сигнализирует серверу, что все заголовки и тело ответа были отправлены; сервер должен считать это сообщение завершенным. Метод `response.end()` ДОЛЖЕН вызываться в каждом ответе.
@@ -1308,7 +1308,7 @@ response.end();
 
 > Стабильность: 0 - Утратил актуальность. Используйте [`response.writableEnded`](#responsewritableended).
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `response.finished` будет `true`, если был вызван [`response.end()`](#responseenddata-encoding-callback).
 
@@ -1322,8 +1322,8 @@ response.end();
 
 ### `response.getHeader(name)`
 
--   `name` {string}
--   Возвращает: {любой}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Считывает заголовок, который уже был поставлен в очередь, но не отправлен клиенту. Имя не чувствительно к регистру. Тип возвращаемого значения зависит от аргументов, переданных в [`response.setHeader()`](#responsesetheadername-value).
 
@@ -1349,7 +1349,7 @@ const setCookie = response.getHeader('set-cookie');
 
 ### `response.getHeaderNames()`
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив, содержащий уникальные имена текущих исходящих заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -1365,7 +1365,7 @@ const headerNames = response.getHeaderNames();
 
 ### `response.getHeaders()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает неглубокую копию текущих исходящих заголовков. Поскольку используется неглубокая копия, значения массива могут быть изменены без дополнительных вызовов различных методов модуля http, связанных с заголовками. Ключами возвращаемого объекта являются имена заголовков, а значениями - соответствующие значения заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -1383,8 +1383,8 @@ const headers = response.getHeaders();
 
 ### `response.hasHeader(name)`
 
--   `name` {string}
--   Возвращает: {boolean}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если заголовок, обозначенный `name`, в настоящее время установлен в исходящих заголовках. Соответствие имени заголовка не чувствительно к регистру.
 
@@ -1396,7 +1396,7 @@ const hasContentType = response.hasHeader('content-type');
 
 ### `response.headersSent`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Булево (только для чтения). True, если заголовки были отправлены, false в противном случае.
 
@@ -1404,7 +1404,7 @@ const hasContentType = response.hasHeader('content-type');
 
 ### `response.removeHeader(name)`
 
--   `name` {string}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Удаляет заголовок, поставленный в очередь для неявной отправки.
 
@@ -1424,7 +1424,7 @@ response.removeHeader('Content-Encoding');
 
 ### `response.sendDate`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 При значении true заголовок Date будет автоматически сгенерирован и отправлен в ответ, если он еще не присутствует в заголовках. По умолчанию установлено значение true.
 
@@ -1434,8 +1434,8 @@ response.removeHeader('Content-Encoding');
 
 ### `response.setHeader(name, value)`
 
--   `имя` {строка}
--   `значение` {любой}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: {http.ServerResponse}
 
 Возвращает объект ответа.
@@ -1475,8 +1475,8 @@ const server = http.createServer((req, res) => {
 
 ### `response.setTimeout(msecs[, callback])`
 
--   `msecs` {число}
--   `callback` {функция}
+-   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ServerResponse}
 
 Устанавливает значение тайм-аута сокета в `msecs`. Если указан обратный вызов, то он добавляется в качестве слушателя события `'timeout'` на объекте ответа.
@@ -1504,13 +1504,13 @@ const server = http
     .listen(3000);
 ```
 
-Это свойство гарантированно является экземпляром класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от {net.Socket}.
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
 <!-- 0096.part.md -->
 
 ### `response.statusCode`
 
--   {число} **По умолчанию:** `200`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `200`.
 
 При использовании неявных заголовков (не вызывая [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) явно), это свойство контролирует код статуса, который будет отправлен клиенту, когда заголовки будут смыты.
 
@@ -1524,7 +1524,7 @@ response.statusCode = 404;
 
 ### `response.statusMessage`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 При использовании неявных заголовков (не вызывая [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) явно), это свойство управляет сообщением о статусе, которое будет отправлено клиенту, когда заголовки будут смыты. Если оставить это свойство как `undefined`, то будет использоваться стандартное сообщение для кода статуса.
 
@@ -1538,7 +1538,7 @@ response.statusMessage = 'Not found';
 
 ### `response.strictContentLength`
 
--   {boolean} **По умолчанию:** `false`.
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 
 Если установлено значение `true`, Node.js будет проверять, равны ли значение заголовка `Content-Length` и размер тела в байтах. Несоответствие значения заголовка `Content-Length` приведет к возникновению `ошибки`, определяемой `кодом:` [`'ERR_HTTP_CONTENT_LENGTH_MISMATCH'`] (errors.md#err_http_content_length_mismatch).
 
@@ -1552,7 +1552,7 @@ response.statusMessage = 'Not found';
 
 ### `response.writableEnded`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true` после вызова [`response.end()`](#responseenddata-encoding-callback). Это свойство не указывает, были ли данные удалены, для этого используйте [`response.writableFinished`](#responsewritablefinished).
 
@@ -1560,7 +1560,7 @@ response.statusMessage = 'Not found';
 
 ### `response.writableFinished`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если все данные были выгружены в базовую систему, непосредственно перед тем, как будет выпущено событие [`'finish'`](#event-finish).
 
@@ -1569,9 +1569,9 @@ response.statusMessage = 'Not found';
 ### `response.write(chunk[, encoding][, callback])`
 
 -   `chunk` {string|Buffer|Uint8Array}
--   `encoding` {string} **По умолчанию:** `'utf8''
--   `callback` {функция}
--   Возвращает: {boolean}
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8''
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если этот метод вызван и [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers) не был вызван, он переключится в режим неявных заголовков и промоет неявные заголовки.
 
@@ -1597,8 +1597,8 @@ response.statusMessage = 'Not found';
 
 ### `response.writeEarlyHints(hints[, callback])`
 
--   `hints` {Object}
--   `callback` {Функция}
+-   `hints` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Отправляет сообщение HTTP/1.1 103 Early Hints клиенту с заголовком Link, указывая, что пользовательский агент может предварительно загрузить/подключить связанные ресурсы. `hints` - это объект, содержащий значения заголовков, которые должны быть отправлены с сообщением ранних подсказок. Необязательный аргумент `callback` будет вызван, когда сообщение ответа будет записано.
 
@@ -1634,8 +1634,8 @@ response.writeEarlyHints(
 
 ### `response.writeHead(statusCode[, statusMessage][, headers])`
 
--   `statusCode` {число}
--   `statusMessage` {строка}
+-   `statusCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `statusMessage` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `headers` {Object|Array}
 -   Возвращает: {http.ServerResponse}
 
@@ -1687,11 +1687,11 @@ const server = http.createServer((req, res) => {
 
 ## Класс: `http.IncomingMessage`
 
--   Расширяет: {stream.Readable}
+-   Расширяет: [`<stream.Readable>`](stream.md#streamreadable)
 
 Объект `IncomingMessage` создается [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest) и передается в качестве первого аргумента в события [`'request'`](#event-request) и [`'response'`](#event-response) соответственно. Он может быть использован для доступа к статусу ответа, заголовкам и данным.
 
-В отличие от своего значения `socket`, которое является подклассом {stream.Duplex}, само `IncomingMessage` расширяет {stream.Readable} и создается отдельно для разбора и выдачи входящих HTTP-заголовков и полезной нагрузки, поскольку базовый сокет может быть использован многократно в случае keep-alive.
+В отличие от своего значения `socket`, которое является подклассом {stream.Duplex}, само `IncomingMessage` расширяет [`<stream.Readable>`](stream.md#streamreadable) и создается отдельно для разбора и выдачи входящих HTTP-заголовков и полезной нагрузки, поскольку базовый сокет может быть использован многократно в случае keep-alive.
 
 <!-- 0108.part.md -->
 
@@ -1721,7 +1721,7 @@ const server = http.createServer((req, res) => {
 
     Проверьте `message.destroyed` из {stream.Readable}.
 
--   {boolean}.
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 Свойство `message.aborted` будет `true`, если запрос был прерван.
 
@@ -1729,7 +1729,7 @@ const server = http.createServer((req, res) => {
 
 ### `message.complete`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `message.complete` будет иметь значение `true`, если было получено и успешно разобрано полное HTTP-сообщение.
 
@@ -1770,7 +1770,7 @@ const req = http.request(
 
 ### `message.destroy([error])`
 
--   `error` {Ошибка}
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 -   Возвращает: {this}
 
 Вызывает `destroy()` на сокете, который получил `IncomingMessage`. Если указано `error`, то на сокете испускается событие `'error`, а `error` передается в качестве аргумента всем слушателям этого события.
@@ -1779,7 +1779,7 @@ const req = http.request(
 
 ### `message.headers`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект заголовков запроса/ответа.
 
@@ -1805,7 +1805,7 @@ console.log(request.headers);
 
 ### `message.headersDistinct`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Аналогично [`message.headers`](#messageheaders), но нет логики объединения и значения всегда являются массивами строк, даже для заголовков, полученных только один раз.
 
@@ -1822,7 +1822,7 @@ console.log(request.headersDistinct);
 
 ### `message.httpVersion`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 В случае запроса сервера, версия HTTP, отправленная клиентом. В случае ответа клиента, версия HTTP подключенного сервера. Возможно, либо `'1.1'`, либо `'1.0'`.
 
@@ -1832,7 +1832,7 @@ console.log(request.headersDistinct);
 
 ### `message.method`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 **Действителен только для запроса, полученного с [`http.Server`](#class-httpserver).**.
 
@@ -1842,7 +1842,7 @@ console.log(request.headersDistinct);
 
 ### `message.rawHeaders`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список необработанных заголовков запроса/ответа в том виде, в котором они были получены.
 
@@ -1868,7 +1868,7 @@ console.log(request.rawHeaders);
 
 ### `message.rawTrailers`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Необработанные ключи и значения трейлеров запроса/ответа точно в том виде, в котором они были получены. Заполняются только при событии `конец`.
 
@@ -1876,8 +1876,8 @@ console.log(request.rawHeaders);
 
 ### `message.setTimeout(msecs[, callback])`
 
--   `msecs` {число}
--   `callback` {функция}
+-   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.IncomingMessage}
 
 Вызывает `message.socket.setTimeout(msecs, callback)`.
@@ -1892,13 +1892,13 @@ console.log(request.rawHeaders);
 
 При поддержке HTTPS используйте [`request.socket.getPeerCertificate()`](tls.md#tlssocketgetpeercertificatedetailed) для получения аутентификационных данных клиента.
 
-Это свойство гарантированно является экземпляром класса {net.Socket}, подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от {net.Socket}, или не обнулен внутренне.
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket), или не обнулен внутренне.
 
 <!-- 0122.part.md -->
 
 ### `message.statusCode`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 **Действительно только для ответа, полученного от [`http.ClientRequest`](#class-httpclientrequest).**.
 
@@ -1908,7 +1908,7 @@ console.log(request.rawHeaders);
 
 ### `message.statusMessage`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 **Действительно только для ответа, полученного из [`http.ClientRequest`](#class-httpclientrequest).**.
 
@@ -1918,7 +1918,7 @@ console.log(request.rawHeaders);
 
 ### `message.trailers`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект трейлеров запроса/ответа. Заполняется только при событии `end`.
 
@@ -1926,7 +1926,7 @@ console.log(request.rawHeaders);
 
 ### `message.trailersDistinct`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Аналогичен [`message.trailers`](#messagetrailers), но здесь нет логики объединения и значения всегда являются массивами строк, даже для заголовков, полученных только один раз. Заполняется только при событии `end`.
 
@@ -1934,7 +1934,7 @@ console.log(request.rawHeaders);
 
 ### `message.url`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 **Действительно только для запроса, полученного с [`http.Server`](#class-httpserver).**.
 
@@ -1976,7 +1976,7 @@ URL {
 
 ## Класс: `http.OutgoingMessage`
 
--   Расширяет: {Stream}
+-   Расширяет: [`<Stream>`](stream.md#stream)
 
 Этот класс служит в качестве родительского класса для [`http.ClientRequest`](#class-httpclientrequest) и [`http.ServerResponse`](#class-httpserverresponse). Это абстрактное исходящее сообщение с точки зрения участников HTTP-транзакции.
 
@@ -2002,7 +2002,7 @@ URL {
 
 ### `outgoingMessage.addTrailers(headers)`
 
--   `headers` {Object}
+-   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Добавляет HTTP трейлеры (заголовки, но в конце сообщения) к сообщению.
 
@@ -2028,7 +2028,7 @@ message.end();
 
 ### `outgoingMessage.appendHeader(name, value)`
 
--   `name` {string} имя заголовка
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя заголовка
 -   `value` {string|string\[\]} Значение заголовка
 -   Возвращает: {this}
 
@@ -2062,7 +2062,7 @@ message.end();
 
 ### `outgoingMessage.destroy([error])`
 
--   `error` {Error} Необязательно, ошибка, которую нужно выдать с событием `error`.
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательно, ошибка, которую нужно выдать с событием `error`.
 -   Возвращает: {this}
 
 Уничтожает сообщение. Если сокет связан с сообщением и подключен, этот сокет также будет уничтожен.
@@ -2072,8 +2072,8 @@ message.end();
 ### `outgoingMessage.end(chunk[, encoding][, callback])`
 
 -   `chunk` {string|Buffer|Uint8Array}
--   `encoding` {string} Необязательно, **по умолчанию**: `utf8`
--   `callback` {функция} Необязательно
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно, **по умолчанию**: `utf8`
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательно
 -   Возвращает: {this}
 
 Завершает исходящее сообщение. Если какие-либо части тела остались неотправленными, то они будут переданы в базовую систему. Если сообщение разбито на части, будет отправлен завершающий фрагмент `0\r\n\r\n`, и отправлены трейлеры (если они есть).
@@ -2096,7 +2096,7 @@ message.end();
 
 ### `outgoingMessage.getHeader(name)`
 
--   `name` {string} Имя заголовка
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
 -   Возвращает {string | undefined}
 
 Получает значение HTTP-заголовка с заданным именем. Если этот заголовок не установлен, возвращаемое значение будет `undefined`.
@@ -2105,7 +2105,7 @@ message.end();
 
 ### `outgoingMessage.getHeaderNames()`
 
--   Возвращает {string\[\]}
+-   Возвращает [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив, содержащий уникальные имена текущих заголовков исходящих сообщений. Все имена в нижнем регистре.
 
@@ -2113,7 +2113,7 @@ message.end();
 
 ### `outgoingMessage.getHeaders()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает неглубокую копию текущих заголовков исходящего сообщения. Поскольку используется неглубокая копия, значения массива могут быть изменены без дополнительных вызовов различных методов модуля HTTP, связанных с заголовками. Ключами возвращаемого объекта являются имена заголовков, а значениями - соответствующие значения заголовков. Все имена заголовков пишутся в нижнем регистре.
 
@@ -2134,8 +2134,8 @@ const headers = outgoingMessage.getHeaders();
 
 ### `outgoingMessage.hasHeader(name)`
 
--   `name` {string}
--   Возвращает {boolean}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если заголовок, обозначенный `name`, в настоящее время установлен в исходящих заголовках. Имя заголовка не чувствительно к регистру.
 
@@ -2149,7 +2149,7 @@ const hasContentType = outgoingMessage.hasHeader(
 
 ### `outgoingMessage.headersSent`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Только для чтения. `true`, если заголовки были отправлены, иначе `false`.
 
@@ -2165,7 +2165,7 @@ const hasContentType = outgoingMessage.hasHeader(
 
 ### `outgoingMessage.removeHeader(name)`
 
--   `name` {string} Имя заголовка
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
 
 Удаляет заголовок, который находится в очереди на неявную отправку.
 
@@ -2177,8 +2177,8 @@ outgoingMessage.removeHeader('Content-Encoding');
 
 ### `outgoingMessage.setHeader(name, value)`
 
--   `name` {string} Имя заголовка
--   `value` {любое} Значение заголовка
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение заголовка
 -   Возвращает: {this}
 
 Устанавливает одно значение заголовка. Если заголовок уже существует в отправляемых заголовках, его значение будет заменено. Используйте массив строк для отправки нескольких заголовков с одинаковым именем.
@@ -2224,8 +2224,8 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.setTimeout(msesc[, callback])`
 
--   `msesc` {число}
--   `callback` {функция} Необязательная функция, которая будет вызываться при возникновении тайм-аута. Аналогично привязке к событию `timeout`.
+-   `msesc` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, которая будет вызываться при возникновении тайм-аута. Аналогично привязке к событию `timeout`.
 -   Возвращает: {this}
 
 Когда сокет связан с сообщением и подключен, будет вызвана функция [`socket.setTimeout()`](net.md#socketsettimeouttimeout-callback) с `msecs` в качестве первого параметра.
@@ -2250,7 +2250,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableCorked`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество раз, когда `outgoingMessage.cork()` был вызван.
 
@@ -2258,7 +2258,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableEnded`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если была вызвана функция `outgoingMessage.end()`. Это свойство не указывает, были ли данные удалены. Для этого используйте `message.writableFinished`.
 
@@ -2266,7 +2266,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableFinished`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если все данные были переданы в базовую систему.
 
@@ -2274,7 +2274,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableHighWaterMark`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 `highWaterMark` базового сокета, если он назначен. Иначе, уровень буфера по умолчанию, когда [`writable.write()`](stream.md#writablewritechunk-encoding-callback) начинает возвращать false (`16384`).
 
@@ -2282,7 +2282,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableLength`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество буферизованных байтов.
 
@@ -2290,7 +2290,7 @@ const server = http.createServer((req, res) => {
 
 ### `outgoingMessage.writableObjectMode`
 
--   {булево}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Всегда `false`.
 
@@ -2299,9 +2299,9 @@ const server = http.createServer((req, res) => {
 ### `outgoingMessage.write(chunk[, encoding][, callback])`
 
 -   `chunk` {string|Buffer|Uint8Array}
--   `encoding` {string} **По умолчанию**: `utf8`
--   `callback` {функция}
--   Возвращает {boolean}
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию**: `utf8`
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Отправляет фрагмент тела. Этот метод может быть вызван несколько раз.
 
@@ -2315,7 +2315,7 @@ const server = http.createServer((req, res) => {
 
 ## `http.METHODS`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список методов HTTP, которые поддерживаются парсером.
 
@@ -2323,7 +2323,7 @@ const server = http.createServer((req, res) => {
 
 ## `http.STATUS_CODES`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Коллекция всех стандартных кодов состояния ответа HTTP и краткое описание каждого из них. Например, `http.STATUS_CODES[404] === 'Not Found'`.
 
@@ -2331,24 +2331,24 @@ const server = http.createServer((req, res) => {
 
 ## `http.createServer([options][, requestListener])`
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
     -   `connectionsCheckingInterval`: Устанавливает значение интервала в миллисекундах для проверки таймаута запроса и заголовков в неполных запросах. **По умолчанию:** `30000`.
     -   `headersTimeout`: Устанавливает значение таймаута в миллисекундах для получения полных заголовков HTTP от клиента. Дополнительную информацию смотрите в [`server.headersTimeout`](#serverheaderstimeout). **По умолчанию:** `60000`.
-    -   `insecureHTTPParser` {boolean} Использовать небезопасный парсер HTTP, который принимает недействительные заголовки HTTP, если `true`. Следует избегать использования небезопасного парсера. Дополнительную информацию смотрите в [`--insecure-http-parser`](cli.md#--insecure-http-parser). **По умолчанию:** `false`.
+    -   `insecureHTTPParser` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Использовать небезопасный парсер HTTP, который принимает недействительные заголовки HTTP, если `true`. Следует избегать использования небезопасного парсера. Дополнительную информацию смотрите в [`--insecure-http-parser`](cli.md#--insecure-http-parser). **По умолчанию:** `false`.
     -   `IncomingMessage` {http.IncomingMessage} Определяет класс `IncomingMessage`, который будет использоваться. Полезно для расширения оригинального `IncomingMessage`. **По умолчанию:** `IncomingMessage`.
-    -   `keepAlive` {boolean} Если установлено значение `true`, это включает функцию keep-alive на сокете сразу после получения нового входящего соединения, аналогично тому, как это делается в \[`socket.setKeepAlive([enable][, initialDelay])`\]\[`socket.setKeepAlive(enable, initialDelay)`\]. **По умолчанию:** `false`.
-    -   `keepAliveInitialDelay` {number} Если задано положительное число, оно устанавливает начальную задержку перед отправкой первого зонда keepalive на неработающем сокете. **По умолчанию:** `0`.
+    -   `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, это включает функцию keep-alive на сокете сразу после получения нового входящего соединения, аналогично тому, как это делается в \[`socket.setKeepAlive([enable][, initialDelay])`\]\[`socket.setKeepAlive(enable, initialDelay)`\]. **По умолчанию:** `false`.
+    -   `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано положительное число, оно устанавливает начальную задержку перед отправкой первого зонда keepalive на неработающем сокете. **По умолчанию:** `0`.
     -   `keepAliveTimeout`: Количество миллисекунд бездействия, в течение которых сервер должен ожидать поступления дополнительных данных, после того как он закончил писать последний ответ, прежде чем сокет будет уничтожен. Дополнительную информацию смотрите в [`server.keepAliveTimeout`](#serverkeepalivetimeout). **По умолчанию:** `5000`.
-    -   `maxHeaderSize` {number} Опционально переопределяет значение параметра [`--max-http-header-size`](cli.md#--max-http-header-sizesize) для запросов, полученных этим сервером, т.е. максимальную длину заголовков запроса в байтах. **По умолчанию:** 16384 (16 KiB).
-    -   `noDelay` {boolean} Если установлено значение `true`, то отключает использование алгоритма Нагла сразу после получения нового входящего соединения. **По умолчанию:** `true`.
+    -   `maxHeaderSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Опционально переопределяет значение параметра [`--max-http-header-size`](cli.md#--max-http-header-sizesize) для запросов, полученных этим сервером, т.е. максимальную длину заголовков запроса в байтах. **По умолчанию:** 16384 (16 KiB).
+    -   `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то отключает использование алгоритма Нагла сразу после получения нового входящего соединения. **По умолчанию:** `true`.
     -   `requestTimeout`: Устанавливает значение таймаута в миллисекундах для получения всего запроса от клиента. Дополнительную информацию смотрите в [`server.requestTimeout`](#serverrequesttimeout). **По умолчанию:** `300000`.
-    -   `requireHostHeader` {boolean} Заставляет сервер отвечать кодом состояния 400 (Bad Request) на любой запрос HTTP/1.1, в котором отсутствует заголовок Host (как предписано спецификацией). **По умолчанию:** `true`.
-    -   `joinDuplicateHeaders` {boolean} Объединяет значения строк полей нескольких заголовков в запросе с помощью `,` вместо того, чтобы отбрасывать дубликаты. Более подробную информацию смотрите в [`message.headers`](#messageheaders). **По умолчанию:** `false`.
+    -   `requireHostHeader` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Заставляет сервер отвечать кодом состояния 400 (Bad Request) на любой запрос HTTP/1.1, в котором отсутствует заголовок Host (как предписано спецификацией). **По умолчанию:** `true`.
+    -   `joinDuplicateHeaders` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Объединяет значения строк полей нескольких заголовков в запросе с помощью `,` вместо того, чтобы отбрасывать дубликаты. Более подробную информацию смотрите в [`message.headers`](#messageheaders). **По умолчанию:** `false`.
     -   `ServerResponse` {http.ServerResponse} Определяет класс `ServerResponse`, который будет использоваться. Полезен для расширения оригинального `ServerResponse`. **По умолчанию:** `ServerResponse`.
-    -   `uniqueHeaders` {Array} Список заголовков ответа, которые должны быть отправлены только один раз. Если значение заголовка представляет собой массив, элементы будут объединены с помощью `;`.
+    -   `uniqueHeaders` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Список заголовков ответа, которые должны быть отправлены только один раз. Если значение заголовка представляет собой массив, элементы будут объединены с помощью `;`.
 
--   `requestListener` {Функция}
+-   `requestListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 -   Возвращает: {http.Server}
 
@@ -2404,8 +2404,8 @@ server.listen(8000);
 ## `http.get(url[, options][, callback])`
 
 -   `url` {string | URL}
--   `options` {Object} Принимает те же `options`, что и [`http.request()`](#httprequestoptions-callback), с `method`, всегда установленным на `GET`. Свойства, унаследованные от прототипа, игнорируются.
--   `callback` {Функция}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает те же `options`, что и [`http.request()`](#httprequestoptions-callback), с `method`, всегда установленным на `GET`. Свойства, унаследованные от прототипа, игнорируются.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
 Поскольку большинство запросов - это GET-запросы без тела, Node.js предоставляет этот удобный метод. Единственное отличие этого метода от [`http.request()`](#httprequestoptions-callback) в том, что он устанавливает метод на GET и автоматически вызывает `req.end()`. Обратный вызов должен позаботиться о потреблении данных ответа по причинам, указанным в разделе [`http.ClientRequest`](#class-httpclientrequest).
@@ -2482,7 +2482,7 @@ server.listen(8000);
 
 ## `http.maxHeaderSize`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство только для чтения, определяющее максимально допустимый размер HTTP-заголовков в байтах. По умолчанию 16 килобайт. Настраивается с помощью опции CLI [`--max-http-header-size`](cli.md#--max-http-header-sizesize).
 
@@ -2497,35 +2497,35 @@ server.listen(8000);
 ## `http.request(url[, options][, callback])`.
 
 -   `url` {string | URL}
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `agent` {http.Agent | boolean} Управляет поведением [`Agent`](#class-httpagent). Возможные значения:
         -   `undefined` (по умолчанию): использовать [`http.globalAgent`](#httpglobalagent) для данного хоста и порта.
         -   `Agent` объект: явно использовать переданный `Agent`.
         -   `false`: заставляет использовать новый `Agent` со значениями по умолчанию.
-    -   `auth` {string} Базовая аутентификация (`'user:password'`) для вычисления заголовка Authorization.
-    -   `createConnection` {функция} Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnectionoptions-callback). Любой поток [`Duplex`](stream.md#class-streamduplex) является допустимым возвращаемым значением.
-    -   `defaultPort` {number} Порт по умолчанию для протокола. **По умолчанию:** `agent.defaultPort`, если используется `Agent`, иначе `undefined`.
-    -   `family` {number} Семейство IP-адресов для использования при разрешении `host` или `hostname`. Допустимыми значениями являются `4` или `6`. Если значение не указано, будут использоваться IP v4 и v6.
-    -   `headers` {Object} Объект, содержащий заголовки запроса.
-    -   `hints` {number} Необязательные [`dns.lookup()` hints](dns.md#supported-getaddrinfo-flags).
-    -   `host` {string} Доменное имя или IP-адрес сервера, на который будет отправлен запрос. **По умолчанию:** `'localhost'`.
-    -   `hostname` {string} Псевдоним для `host`. Для поддержки [`url.parse()`](url.md#urlparseurlstring-parsequerystring-slashesdenotehost), `hostname` будет использоваться, если указаны и `host` и `hostname`.
-    -   `insecureHTTPParser` {boolean} Использовать небезопасный парсер HTTP, который принимает недействительные заголовки HTTP, если `true`. Следует избегать использования небезопасного парсера. Дополнительную информацию смотрите в [`--insecure-http-parser`](cli.md#--insecure-http-parser). **По умолчанию:** `false`.
-    -   `localAddress` {string} Локальный интерфейс для привязки сетевых соединений.
-    -   `localPort` {number} Локальный порт для подключения.
-    -   `lookup` {функция} Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`](dns.md#dnslookuphostname-options-callback).
-    -   `maxHeaderSize` {number} Опционально переопределяет значение параметра [`--max-http-header-size`](cli.md#--max-http-header-sizesize) (максимальная длина заголовков ответа в байтах) для ответов, полученных от сервера. **По умолчанию:** 16384 (16 KiB).
-    -   `method` {string} Строка, определяющая метод запроса HTTP. **По умолчанию:** `GET`.
-    -   `path` {string} Путь запроса. Должен включать строку запроса, если таковая имеется. Например, `'/index.html?page=12'`. Исключение возникает, если путь запроса содержит недопустимые символы. В настоящее время отклоняются только пробелы, но в будущем это может измениться. **По умолчанию:** `'/'`.
-    -   `port` {number} Порт удаленного сервера. **По умолчанию:** `defaultPort`, если установлен, иначе `80`.
-    -   `protocol` {string} Используемый протокол. **По умолчанию:** `'http:'`.
-    -   `setHost` {boolean}: Определяет, следует ли автоматически добавлять заголовок `Host`. По умолчанию `true`.
-    -   `signal` {AbortSignal}: Сигнал прерывания, который может быть использован для прерывания текущего запроса.
-    -   `socketPath` {string}. Сокет домена Unix. Не может быть использован, если указано одно из `host` или `port`, так как они определяют TCP-сокет.
-    -   `timeout` {число}: Число, определяющее таймаут сокета в миллисекундах. Это задает таймаут до подключения сокета.
-    -   `uniqueHeaders` {Array}. Список заголовков запроса, которые должны быть отправлены только один раз. Если значение заголовка представляет собой массив, элементы будут объединены с помощью `;`.
-    -   `joinDuplicateHeaders` {boolean} Объединяет значения строк полей нескольких заголовков в запросе с помощью `,` вместо того, чтобы отбрасывать дубликаты. Более подробную информацию смотрите в [`message.headers`](#messageheaders). **По умолчанию:** `false`.
--   `callback` {Функция}
+    -   `auth` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовая аутентификация (`'user:password'`) для вычисления заголовка Authorization.
+    -   `createConnection` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnectionoptions-callback). Любой поток [`Duplex`](stream.md#class-streamduplex) является допустимым возвращаемым значением.
+    -   `defaultPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт по умолчанию для протокола. **По умолчанию:** `agent.defaultPort`, если используется `Agent`, иначе `undefined`.
+    -   `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство IP-адресов для использования при разрешении `host` или `hostname`. Допустимыми значениями являются `4` или `6`. Если значение не указано, будут использоваться IP v4 и v6.
+    -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий заголовки запроса.
+    -   `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательные [`dns.lookup()` hints](dns.md#supported-getaddrinfo-flags).
+    -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Доменное имя или IP-адрес сервера, на который будет отправлен запрос. **По умолчанию:** `'localhost'`.
+    -   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Псевдоним для `host`. Для поддержки [`url.parse()`](url.md#urlparseurlstring-parsequerystring-slashesdenotehost), `hostname` будет использоваться, если указаны и `host` и `hostname`.
+    -   `insecureHTTPParser` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Использовать небезопасный парсер HTTP, который принимает недействительные заголовки HTTP, если `true`. Следует избегать использования небезопасного парсера. Дополнительную информацию смотрите в [`--insecure-http-parser`](cli.md#--insecure-http-parser). **По умолчанию:** `false`.
+    -   `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальный интерфейс для привязки сетевых соединений.
+    -   `localPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Локальный порт для подключения.
+    -   `lookup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`](dns.md#dnslookuphostname-options-callback).
+    -   `maxHeaderSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Опционально переопределяет значение параметра [`--max-http-header-size`](cli.md#--max-http-header-sizesize) (максимальная длина заголовков ответа в байтах) для ответов, полученных от сервера. **По умолчанию:** 16384 (16 KiB).
+    -   `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, определяющая метод запроса HTTP. **По умолчанию:** `GET`.
+    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь запроса. Должен включать строку запроса, если таковая имеется. Например, `'/index.html?page=12'`. Исключение возникает, если путь запроса содержит недопустимые символы. В настоящее время отклоняются только пробелы, но в будущем это может измениться. **По умолчанию:** `'/'`.
+    -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт удаленного сервера. **По умолчанию:** `defaultPort`, если установлен, иначе `80`.
+    -   `protocol` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемый протокол. **По умолчанию:** `'http:'`.
+    -   `setHost` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): Определяет, следует ли автоматически добавлять заголовок `Host`. По умолчанию `true`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal): Сигнал прерывания, который может быть использован для прерывания текущего запроса.
+    -   `socketPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Сокет домена Unix. Не может быть использован, если указано одно из `host` или `port`, так как они определяют TCP-сокет.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): Число, определяющее таймаут сокета в миллисекундах. Это задает таймаут до подключения сокета.
+    -   `uniqueHeaders` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array). Список заголовков запроса, которые должны быть отправлены только один раз. Если значение заголовка представляет собой массив, элементы будут объединены с помощью `;`.
+    -   `joinDuplicateHeaders` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Объединяет значения строк полей нескольких заголовков в запросе с помощью `,` вместо того, чтобы отбрасывать дубликаты. Более подробную информацию смотрите в [`message.headers`](#messageheaders). **По умолчанию:** `false`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
 Также поддерживаются `опции` в [`socket.connect()`] (net.md#socketconnectoptions-connectlistener).
@@ -2692,8 +2692,8 @@ const req = http.request(options, (res) => {
 
 ## `http.validateHeaderName(name[, label])`
 
--   `name` {string}
--   `label` {string} Метка для сообщения об ошибке. **По умолчанию:** `Имя заголовка`.
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка для сообщения об ошибке. **По умолчанию:** `Имя заголовка`.
 
 Выполняет низкоуровневые проверки предоставленного `name`, которые выполняются при вызове `res.setHeader(name, value)`.
 
@@ -2719,8 +2719,8 @@ try {
 
 ## `http.validateHeaderValue(name, value)`
 
--   `имя` {строка}
--   `значение` {любое}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Выполняет низкоуровневые проверки предоставленного `значения`, которые выполняются при вызове `res.setHeader(name, value)`.
 
@@ -2759,8 +2759,9 @@ try {
 
 ## `http.setMaxIdleHTTPParsers(max)`
 
--   `max` {число} **По умолчанию:** `1000`.
+-   `max` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1000`.
 
 Устанавливает максимальное количество неработающих парсеров HTTP.
 
 <!-- 0169.part.md -->
+

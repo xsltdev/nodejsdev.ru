@@ -50,30 +50,30 @@ doSomeLongRunningProcess(() => {
 
 ### `performance.clearMarks([name])`
 
--   `имя` {строка}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если `name` не указано, удаляет все объекты `PerformanceMark` с временной шкалы производительности. Если `имя` указано, удаляется только именованная метка.
 
 ### `performance.clearMeasures([name])`.
 
--   `имя` {строка}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если `name` не указано, удаляет все объекты `PerformanceMeasure` из временной шкалы производительности. Если `имя` указано, удаляется только названная мера.
 
 ### `performance.clearResourceTimings([name])`
 
--   `name` {string}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если `name` не указано, удаляет все объекты `PerformanceResourceTiming` из временной шкалы ресурсов. Если `имя` указано, удаляется только именованный ресурс.
 
 ### `performance.eventLoopUtilization([utilization1[, utilization2]])`
 
--   `utilization1` {Object} Результат предыдущего вызова `eventLoopUtilization()`.
--   `utilization2` {Object} Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
--   Возвращает {Object}
-    -   `idle` {number}
-    -   `active` {number}
-    -   `использование` {число}
+-   `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()`.
+-   `utilization2` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
+-   Возвращает [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `active` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `использование` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `eventLoopUtilization()` возвращает объект, содержащий суммарную продолжительность времени, в течение которого цикл событий был как холост, так и активен, в виде таймера с высоким разрешением в миллисекундах. Значение `utilization` - это вычисленная утилита цикла событий (ELU).
 
@@ -113,25 +113,25 @@ setImmediate(() => {
 
 ### `performance.getEntriesByName(name[, type])`
 
--   `name` {string}
--   `тип` {строка}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: {PerformanceEntry\[\]}
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чье `performanceEntry.name` равно `name`, и, опционально, чей `performanceEntry.entryType` равен `type`.
 
 ### `performance.getEntriesByType(type)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: {PerformanceEntry\[\]}
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чей `performanceEntry.entryType` равен `type`.
 
 ### `performance.mark(name[, options])`
 
--   `имя` {строка}
--   `options` {Object}
-    -   `detail` {any} Дополнительные необязательные детали для включения в метку.
-    -   `startTime` {число} Необязательная метка времени, которая будет использоваться в качестве времени метки. **По умолчанию**: `performance.now()`.
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные детали для включения в метку.
+    -   `startTime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательная метка времени, которая будет использоваться в качестве времени метки. **По умолчанию**: `performance.now()`.
 
 Создает новую запись `PerformanceMark` на временной шкале исполнения. `PerformanceMark` - это подкласс `PerformanceEntry`, чей `performanceEntry.entryType` всегда `'mark'`, а `performanceEntry.duration` всегда `0`. Метки исполнения используются для обозначения определенных значимых моментов на временной шкале исполнения.
 
@@ -139,11 +139,11 @@ setImmediate(() => {
 
 ### `performance.markResourceTiming(timingInfo, requestedUrl, initiatorType, global, cacheMode)`.
 
--   `timingInfo` {Object} [Fetch Timing Info](https://fetch.spec.whatwg.org/#fetch-timing-info)
--   `requestedUrl` {string} url ресурса
--   `initiatorType` {string} Имя инициатора, например: 'fetch'.
--   `global` {Object}
--   `cacheMode` {string} Режим кэширования должен быть пустой строкой ('') или 'local'.
+-   `timingInfo` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Fetch Timing Info](https://fetch.spec.whatwg.org/#fetch-timing-info)
+-   `requestedUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) url ресурса
+-   `initiatorType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя инициатора, например: 'fetch'.
+-   `global` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `cacheMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Режим кэширования должен быть пустой строкой ('') или 'local'.
 
 _Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
 
@@ -153,13 +153,13 @@ _Это свойство является расширением Node.js. Оно
 
 ### `performance.measure(name[, startMarkOrOptions[, endMark]])`.
 
--   `имя` {строка}
+-   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `startMarkOrOptions` {string|Object} Необязательно.
-    -   `detail` {любой} Дополнительная необязательная информация для включения в меру.
-    -   `duration` {number} Продолжительность между начальным и конечным временем.
-    -   `end` {number|string} Временная метка, которая будет использоваться в качестве времени окончания, или строка, идентифицирующая ранее записанную метку.
-    -   `start` {number|string} Временная метка, которая будет использоваться в качестве времени начала, или строка, идентифицирующая ранее записанную метку.
--   `endMark` {строка} Необязательно. Должен быть опущен, если `startMarkOrOptions` является {Object}.
+    -   `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительная необязательная информация для включения в меру.
+    -   `duration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность между начальным и конечным временем.
+    -   `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Временная метка, которая будет использоваться в качестве времени окончания, или строка, идентифицирующая ранее записанную метку.
+    -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Временная метка, которая будет использоваться в качестве времени начала, или строка, идентифицирующая ранее записанную метку.
+-   `endMark` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Должен быть опущен, если `startMarkOrOptions` является [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object).
 
 Создает новую запись `PerformanceMeasure` на временной шкале исполнения. `PerformanceMeasure` - это подкласс `PerformanceEntry`, чей `performanceEntry.entryType` всегда `'measure'`, и чья `performanceEntry.duration` измеряет количество миллисекунд, прошедших с `startMark` и `endMark`.
 
@@ -179,7 +179,7 @@ _Это свойство является расширением Node.js. Оно
 
 ### `performance.now()`.
 
--   Возвращает: {число}
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает текущую миллисекундную временную метку высокого разрешения, где 0 означает начало текущего процесса `node`.
 
@@ -191,14 +191,14 @@ _Это свойство является расширением Node.js. Оно
 
 ### `performance.timeOrigin`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 [`timeOrigin`](https://w3c.github.io/hr-time/#dom-performance-timeorigin) указывает миллисекундную метку времени высокого разрешения, с которой начался текущий процесс `node`, измеряемую в Unix-времени.
 
 ### `performance.timerify(fn[, options])`
 
--   `fn` {Функция}
--   `options` {Object}
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `histogram` {RecordableHistogram} Объект гистограммы, созданный с помощью `perf_hooks.createHistogram()`, который будет записывать длительность выполнения в наносекундах.
 
 _Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
@@ -246,13 +246,13 @@ wrapped();
 
 ### `performanceEntry.duration`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Общее количество миллисекунд, прошедших для этой записи. Это значение будет иметь смысл не для всех типов Performance Entry.
 
 ### `performanceEntry.entryType`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Тип записи выступления. Он может быть одним из:
 
@@ -266,13 +266,13 @@ wrapped();
 
 ### `performanceEntry.name`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя записи производительности.
 
 ### `performanceEntry.startTime`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, отмечающая время начала записи Performance Entry.
 
@@ -284,7 +284,7 @@ wrapped();
 
 ### `performanceMark.detail`
 
--   {любой}
+-   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительная деталь, указанная при создании методом `Performance.mark()`.
 
@@ -298,7 +298,7 @@ wrapped();
 
 ### `performanceMeasure.detail`
 
--   {любой}
+-   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительная деталь, указанная при создании методом `Performance.measure()`.
 
@@ -314,7 +314,7 @@ _Этот класс является расширением Node.js. Он не�
 
 ### `performanceNodeEntry.detail`
 
--   {любой}
+-   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительная информация, специфичная для `entryType`.
 
@@ -322,7 +322,7 @@ _Этот класс является расширением Node.js. Он не�
 
 > Стабильность: 0 - Утратил силу: Используйте `performanceNodeEntry.detail` вместо этого.
 
--   {number}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.flags` содержит дополнительную информацию об операции сборки мусора. Значение может быть одним из:
 
@@ -338,7 +338,7 @@ _Этот класс является расширением Node.js. Он не�
 
 > Стабильность: 0 - Утратил актуальность: Используйте `performanceNodeEntry.detail` вместо этого.
 
--   {number}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.kind` идентифицирует тип операции сборки мусора, которая произошла. Значение может быть одним из:
 
@@ -349,14 +349,14 @@ _Этот класс является расширением Node.js. Он не�
 
 ### Детали сборки мусора ('gc')
 
-Когда `performanceEntry.type` равен `'gc'`, свойство `performanceNodeEntry.detail` будет {Object} с двумя свойствами:
+Когда `performanceEntry.type` равен `'gc'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с двумя свойствами:
 
--   `kind` {number} Одно из:
+-   `kind` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR`
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR`
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL`
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB`
--   `флаги` {число} Одно из:
+-   `флаги` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO`
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED`
     -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED`
@@ -367,52 +367,52 @@ _Этот класс является расширением Node.js. Он не�
 
 ### Детали HTTP ('http')
 
-Если `performanceEntry.type` равен `'http'`, свойство `performanceNodeEntry.detail` будет {Object}, содержащим дополнительную информацию.
+Если `performanceEntry.type` равен `'http'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
 
-Если `performanceEntry.name` равно `HttpClient`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет {Object}, содержащим `method`, `url`, `headers`, а свойство `res` будет {Object}, содержащим `statusCode`, `statusMessage`, `headers`.
+Если `performanceEntry.name` равно `HttpClient`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `method`, `url`, `headers`, а свойство `res` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `statusCode`, `statusMessage`, `headers`.
 
-Если `performanceEntry.name` равно `HttpRequest`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет {Object}, содержащим `method`, `url`, `headers`, а свойство `res` будет {Object}, содержащим `statusCode`, `statusMessage`, `headers`.
+Если `performanceEntry.name` равно `HttpRequest`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `method`, `url`, `headers`, а свойство `res` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `statusCode`, `statusMessage`, `headers`.
 
 Это может привести к дополнительным затратам памяти и должно использоваться только в диагностических целях, а не включаться в production по умолчанию.
 
 ### Подробности HTTP/2 ('http2')
 
-Если `performanceEntry.type` равен `'http2'`, свойство `performanceNodeEntry.detail` будет представлять собой {Object}, содержащий дополнительную информацию о производительности.
+Если `performanceEntry.type` равен `'http2'`, свойство `performanceNodeEntry.detail` будет представлять собой [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащий дополнительную информацию о производительности.
 
 Если `performanceEntry.name` равно `Http2Stream`, то `detail` будет содержать следующие свойства:
 
--   `bytesRead` {число} Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
--   `bytesWritten` {number} Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
--   `id` {number} Идентификатор связанного `Http2Stream`.
--   `timeToFirstByte` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
--   `timeToFirstByteSent` {number} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
--   `timeToFirstHeader` {число} Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
+-   `bytesRead` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
+-   `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
+-   `id` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор связанного `Http2Stream`.
+-   `timeToFirstByte` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
+-   `timeToFirstByteSent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
+-   `timeToFirstHeader` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
 
 Если `performanceEntry.name` равно `Http2Session`, то `detail` будет содержать следующие свойства:
 
--   `bytesRead` {number} Количество байт, полученных для данного `Http2Session`.
--   `bytesWritten` {number} Количество отправленных байт для этой `Http2Session`.
--   `framesReceived` {number} Количество кадров HTTP/2, полученных `Http2Session`.
--   `framesSent` {number} Количество кадров HTTP/2, отправленных `Http2Session`.
--   `maxConcurrentStreams` {number} Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
--   `pingRTT` {число} Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
--   `streamAverageDuration` {number} Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
--   `streamCount` {number} Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
--   `type` {string} Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
+-   `bytesRead` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт, полученных для данного `Http2Session`.
+-   `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество отправленных байт для этой `Http2Session`.
+-   `framesReceived` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество кадров HTTP/2, полученных `Http2Session`.
+-   `framesSent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество кадров HTTP/2, отправленных `Http2Session`.
+-   `maxConcurrentStreams` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
+-   `pingRTT` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
+-   `streamAverageDuration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
+-   `streamCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
 
 ### Детали таймерификации ('функция')
 
-Когда `performanceEntry.type` равен `'function'`, свойство `performanceNodeEntry.detail` будет представлять собой {Array}, перечисляющий входные аргументы для функции с таймером.
+Когда `performanceEntry.type` равен `'function'`, свойство `performanceNodeEntry.detail` будет представлять собой [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array), перечисляющий входные аргументы для функции с таймером.
 
 ### Net ('net') Details
 
-Если `performanceEntry.type` равен `'net'`, свойство `performanceNodeEntry.detail` будет {Object}, содержащим дополнительную информацию.
+Если `performanceEntry.type` равен `'net'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
 
 Если `performanceEntry.name` равно `connect`, то `detail` будет содержать следующие свойства: `host`, `port`.
 
 ### Детали DNS ('dns')
 
-Когда `performanceEntry.type` равен `'dns'`, свойство `performanceNodeEntry.detail` будет {Object}, содержащим дополнительную информацию.
+Когда `performanceEntry.type` равен `'dns'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
 
 Если `performanceEntry.name` равно `lookup`, то `detail` будет содержать следующие свойства: `hostname`, `family`, `hints`, `verbatim`, `addresses`.
 
@@ -430,43 +430,43 @@ _Это свойство является расширением Node.js. Оно
 
 ### `performanceNodeTiming.bootstrapComplete`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная метка времени высокого разрешения, когда процесс Node.js завершил начальную загрузку. Если бутстраппинг еще не завершен, свойство имеет значение -1.
 
 ### `performanceNodeTiming.environment`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, в которой была инициализирована среда Node.js.
 
 ### `performanceNodeTiming.idleTime`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения количества времени, в течение которого цикл событий простаивал в провайдере событий цикла событий (например, `epoll_wait`). При этом не учитывается использование процессора. Если цикл событий еще не запущен (например, в первом тике основного скрипта), свойство имеет значение 0.
 
 ### `performanceNodeTiming.loopExit`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, в которой цикл событий Node.js завершился. Если цикл событий еще не завершился, свойство имеет значение -1. Оно может иметь значение не -1 только в обработчике события [`'exit'`](process.md#event-exit).
 
 ### `performanceNodeTiming.loopStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная метка времени высокого разрешения, с которой начался цикл событий Node.js. Если цикл событий еще не начался (например, в первом тике основного скрипта), свойство имеет значение -1.
 
 ### `performanceNodeTiming.nodeStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, в которой был инициализирован процесс Node.js.
 
 ### `performanceNodeTiming.v8Start`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, в которую была инициализирована платформа V8.
 
@@ -480,85 +480,85 @@ _Это свойство является расширением Node.js. Оно
 
 ### `performanceResourceTiming.workerStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная метка времени высокого разрешения непосредственно перед отправкой запроса `fetch`. Если ресурс не перехвачен рабочим, свойство всегда будет возвращать 0.
 
 ### `performanceResourceTiming.redirectStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, которая представляет время начала выборки, инициирующей перенаправление.
 
 ### `performanceResourceTiming.redirectEnd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, которая будет создана сразу после получения последнего байта ответа последнего редиректа.
 
 ### `performanceResourceTiming.fetchStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Временная метка высокого разрешения в миллисекундах непосредственно перед тем, как Node.js начнет выборку ресурса.
 
 ### `performanceResourceTiming.domainLookupStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Временная метка высокого разрешения в миллисекундах непосредственно перед тем, как Node.js начнет поиск доменного имени для ресурса.
 
 ### `performanceResourceTiming.domainLookupEnd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время сразу после того, как Node.js завершил поиск доменного имени для ресурса.
 
 ### `performanceResourceTiming.connectStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js начнет устанавливать соединение с сервером для получения ресурса.
 
 ### `performanceResourceTiming.connectEnd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время сразу после того, как Node.js завершает установление соединения с сервером для получения ресурса.
 
 ### `performanceResourceTiming.secureConnectionStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js начнет процесс рукопожатия для защиты текущего соединения.
 
 ### `performanceResourceTiming.requestStart`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js получит первый байт ответа от сервера.
 
 ### `performanceResourceTiming.responseEnd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная временная метка высокого разрешения, представляющая время сразу после получения Node.js последнего байта ресурса или непосредственно перед закрытием транспортного соединения, в зависимости от того, что наступит раньше.
 
 ### `performanceResourceTiming.transferSize`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число, представляющее размер (в октетах) полученного ресурса. Размер включает поля заголовка ответа плюс тело полезной нагрузки ответа.
 
 ### `performanceResourceTiming.encodedBodySize`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число, представляющее размер (в октетах), полученный при выборке (HTTP или кэш), тела полезной нагрузки, до удаления любых примененных кодировок содержимого.
 
 ### `performanceResourceTiming.decodedBodySize`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число, представляющее размер (в октетах), полученный при выборке (HTTP или кэш), тела сообщения после удаления любых примененных кодировок содержимого.
 
@@ -570,13 +570,13 @@ _Это свойство является расширением Node.js. Оно
 
 ### `PerformanceObserver.supportedEntryTypes`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получить поддерживаемые типы.
 
 ### `новый PerformanceObserver(callback)`.
 
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `список` {PerformanceObserverEntryList}
     -   `обсервер` {PerformanceObserver}
 
@@ -610,10 +610,10 @@ performance.mark('test');
 
 ### `performanceObserver.observe(options)`
 
--   `options` {Object}
-    -   `type` {string} Один тип {PerformanceEntry}. Не должно быть задано, если `entryTypes` уже указан.
-    -   `entryTypes` {string\[\]} Массив строк, идентифицирующих типы экземпляров {PerformanceEntry}, которые интересуют наблюдателя. Если он не указан, будет выдана ошибка.
-    -   `buffered` {boolean} Если true, обратный вызов наблюдателя вызывается со списком глобальных буферизованных записей `PerformanceEntry`. Если false, только `PerformanceEntry`, созданные после временной точки, передаются обратному вызову наблюдателя. **По умолчанию:** `false`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один тип {PerformanceEntry}. Не должно быть задано, если `entryTypes` уже указан.
+    -   `entryTypes` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк, идентифицирующих типы экземпляров {PerformanceEntry}, которые интересуют наблюдателя. Если он не указан, будет выдана ошибка.
+    -   `buffered` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если true, обратный вызов наблюдателя вызывается со списком глобальных буферизованных записей `PerformanceEntry`. Если false, только `PerformanceEntry`, созданные после временной точки, передаются обратному вызову наблюдателя. **По умолчанию:** `false`.
 
 Подписывает экземпляр {PerformanceObserver} на уведомления о новых экземплярах {PerformanceEntry}, идентифицированных либо по `options.entryTypes`, либо по `options.type`:
 
@@ -680,8 +680,8 @@ performance.mark('meow');
 
 ### `performanceObserverEntryList.getEntriesByName(name[, type])`
 
--   `name` {string}
--   `тип` {строка}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: {PerformanceEntry\[\]}
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чье `performanceEntry.name` равно `name`, и, опционально, чей `performanceEntry.entryType` равен `type`.
@@ -747,7 +747,7 @@ performance.mark('meow');
 
 ### `performanceObserverEntryList.getEntriesByType(type)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: {PerformanceEntry\[\]}
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чей `performanceEntry.entryType` равен `type`.
@@ -792,18 +792,18 @@ performance.mark('meow');
 
 ## `perf_hooks.createHistogram([options])`
 
--   `options` {Object}
-    -   `lowest` {number|bigint} Наименьшее различимое значение. Должно быть целое значение больше 0. **По умолчанию:** `1`.
-    -   `highest` {number|bigint} Наибольшее регистрируемое значение. Должно быть целочисленным значением, которое равно или больше чем в два раза `lowest`. **По умолчанию:** `число.MAX_SAFE_INTEGER`.
-    -   `фигуры` {number} Количество цифр точности. Должно быть числом от `1` до `5`. **По умолчанию:** `3`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `lowest` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Наименьшее различимое значение. Должно быть целое значение больше 0. **По умолчанию:** `1`.
+    -   `highest` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Наибольшее регистрируемое значение. Должно быть целочисленным значением, которое равно или больше чем в два раза `lowest`. **По умолчанию:** `число.MAX_SAFE_INTEGER`.
+    -   `фигуры` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество цифр точности. Должно быть числом от `1` до `5`. **По умолчанию:** `3`.
 -   Returns {RecordableHistogram}
 
 Возвращает {RecordableHistogram}.
 
 ## `perf_hooks.monitorEventLoopDelay([options])`
 
--   `options` {Object}
-    -   `resolution` {number} Частота дискретизации в миллисекундах. Должно быть больше нуля. **По умолчанию:** `10`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `resolution` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Частота дискретизации в миллисекундах. Должно быть больше нуля. **По умолчанию:** `10`.
 -   Возвращает: {IntervalHistogram}
 
 \_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах.
@@ -833,69 +833,69 @@ console.log(h.percentile(99));
 
 ### `histogram.count`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество образцов, записанных гистограммой.
 
 ### `histogram.countBigInt`
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Количество образцов, записанных гистограммой.
 
 ### `histogram.exceeds`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество раз, когда задержка цикла событий превысила максимальный порог задержки цикла событий в 1 час.
 
 ### `histogram.exceedsBigInt`
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Количество раз, когда задержка цикла событий превысила максимальный порог задержки цикла событий в 1 час.
 
 ### `histogram.max`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Максимальная задержка цикла записи события.
 
 ### `histogram.maxBigInt`
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Максимальная задержка цикла записанных событий.
 
 ### `histogram.mean`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Среднее значение записанных задержек циклов событий.
 
 ### `histogram.min`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Минимальная зарегистрированная задержка цикла событий.
 
 ### `histogram.minBigInt`
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Минимальная зарегистрированная задержка цикла событий.
 
 ### `histogram.percentile(percentile)`
 
--   `percentile` {number} Значение перцентиля в диапазоне (0, 100\].
--   Возвращает: {number}
+-   `percentile` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение перцентиля в диапазоне (0, 100\].
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает значение в заданном процентиле.
 
 ### `histogram.percentileBigInt(percentile)`.
 
--   `percentile` {number} Значение перцентиля в диапазоне (0, 100\).
--   Возвращает: {bigint}
+-   `percentile` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение перцентиля в диапазоне (0, 100\).
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Возвращает значение в заданном процентиле.
 
@@ -917,7 +917,7 @@ console.log(h.percentile(99));
 
 ### `histogram.stddev`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Стандартное отклонение записанных задержек циклов событий.
 
@@ -927,13 +927,13 @@ console.log(h.percentile(99));
 
 ### `histogram.disable()`.
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Отключает таймер интервала обновления. Возвращает `true`, если таймер был остановлен, `false`, если он уже был остановлен.
 
 ### `histogram.enable()`.
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Включает таймер интервала обновления. Возвращает `true`, если таймер был запущен, `false`, если он уже был запущен.
 
@@ -951,7 +951,7 @@ console.log(h.percentile(99));
 
 ### `histogram.record(val)`
 
--   `val` {number|bigint} Величина для записи в гистограмму.
+-   `val` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Величина для записи в гистограмму.
 
 ### `histogram.recordDelta()`
 
@@ -1101,3 +1101,4 @@ obs.observe({ entryTypes: ['dns'] });
 dns.lookup('localhost', () => {});
 dns.promises.resolve('localhost');
 ```
+

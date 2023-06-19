@@ -62,7 +62,7 @@ added:
   - v14.17.0
 -->
 
--   Тип: {AbortSignal}
+-   Тип: [`<AbortSignal>`](globals.md#abortsignal)
 
 ### Класс: `AbortSignal`
 
@@ -84,7 +84,7 @@ added:
   - v14.17.0
 -->
 
--   Возвращает: {AbortSignal}
+-   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
 
 Возвращает новый, уже прерванный `AbortSignal`.
 
@@ -138,7 +138,7 @@ added:
   - v14.17.0
 -->
 
--   Тип: {Функция}
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Необязательная функция обратного вызова, которая может быть установлена кодом пользователя, чтобы получать уведомление, когда `abortController.abort()` функция была вызвана.
 
@@ -150,7 +150,7 @@ added: v0.1.103
 
 <!-- type=global -->
 
--   {Функция}
+-   [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Используется для обработки двоичных данных. Увидеть [буферная секция](buffer.md).
 
@@ -220,7 +220,7 @@ added: v0.1.100
 
 <!-- type=global -->
 
--   {Объект}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Используется для печати в stdout и stderr. Увидеть [`console`](console.md) раздел.
 
@@ -264,7 +264,7 @@ added: v0.1.27
 
 <!-- type=global -->
 
--   {Object} Объект глобального пространства имен.
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имен.
 
 В браузерах область верхнего уровня - это глобальная область. Это означает, что в браузере `var something` определит новую глобальную переменную. В Node.js все по-другому. Область верхнего уровня не является глобальной областью; `var something` внутри модуля Node.js будет локальным для этого модуля.
 
@@ -314,7 +314,7 @@ added: v0.1.7
 
 <!-- type=global -->
 
--   {Объект}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект процесса. Увидеть [`process` объект](process.md#process) раздел.
 
@@ -326,7 +326,7 @@ added: v11.0.0
 
 <!-- type=global -->
 
--   `callback` {Функция} Функция для постановки в очередь.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
 В `queueMicrotask()` метод ставит в очередь микрозадачу для вызова `callback`. Если `callback` выдает исключение, [`process` объект](process.md#process) `'uncaughtException'` событие будет выпущено.
 
@@ -445,6 +445,7 @@ added: v8.0.0
 
 <!-- type=global -->
 
--   {Объект}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект, который действует как пространство имен для всех W3C [WebAssembly](https://webassembly.org) связанные функции. Увидеть [Сеть разработчиков Mozilla](https://developer.mozilla.org/en-US/docs/WebAssembly) для использования и совместимости.
+

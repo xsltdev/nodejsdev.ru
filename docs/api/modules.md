@@ -447,7 +447,7 @@ in main, a.done = true, b.done = true
 
 ### `__dirname`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя каталога текущего модуля. Это то же самое, что [`path.dirname()`](path.md#pathdirnamepath) из [`__filename`](#__filename).
 
@@ -464,7 +464,7 @@ console.log(path.dirname(__filename));
 
 ### `__filename`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя файла текущего модуля. Это абсолютный путь к файлу текущего модуля с разрешенными симлинками.
 
@@ -494,7 +494,7 @@ console.log(__dirname);
 
 ### `exports`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Ссылка на `module.exports`, который короче по типу. Смотрите раздел о ярлыке [exports](#exports-shortcut) для подробностей о том, когда использовать `exports` и когда использовать `module.exports`.
 
@@ -510,8 +510,8 @@ console.log(__dirname);
 
 ### `require(id)`
 
--   `id` {строка} имя модуля или путь к нему
--   Возвращает: {любое} экспортированное содержимое модуля
+-   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя модуля или путь к нему
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) экспортированное содержимое модуля
 
 Используется для импорта модулей, `JSON` и локальных файлов. Модули могут быть импортированы из `node_modules`. Локальные модули и JSON файлы могут быть импортированы с использованием относительного пути (например, `./`, `./foo`, `./bar/baz`, `../foo`), который будет разрешен относительно каталога, названного [`__dirname`](#__dirname) (если определен) или текущего рабочего каталога. Относительные пути в стиле POSIX разрешаются независимо от ОС, то есть приведенные выше примеры будут работать на Windows так же, как и на Unix-системах.
 
@@ -531,7 +531,7 @@ const crypto = require('node:crypto');
 
 #### `require.cache`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Модули кэшируются в этом объекте, когда они требуются. Если удалить значение ключа из этого объекта, то при следующем `require` модуль будет перезагружен. Это не относится к [родным аддонам](addons.md), для которых перезагрузка приведет к ошибке.
 
@@ -556,7 +556,7 @@ assert.strictEqual(require('node:fs'), realFs);
 
     Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Указывает `require`, как обрабатывать определенные расширения файлов.
 
@@ -607,10 +607,10 @@ Module {
 
 #### `require.resolve(request[, options])`
 
--   `request` {string} Путь к модулю для разрешения.
--   `options` {Object}
-    -   `paths` {string\[\]} Пути для разрешения местоположения модуля. Если эти пути присутствуют, они используются вместо путей разрешения по умолчанию, за исключением [GLOBAL_FOLDERS](#loading-from-the-global-folders), таких как `$HOME/.node_modules`, которые всегда включаются. Каждый из этих путей используется как начальная точка для алгоритма разрешения модулей, что означает, что иерархия `node_modules` проверяется с этого места.
--   Возвращает: {строка}.
+-   `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к модулю для разрешения.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `paths` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Пути для разрешения местоположения модуля. Если эти пути присутствуют, они используются вместо путей разрешения по умолчанию, за исключением [GLOBAL_FOLDERS](#loading-from-the-global-folders), таких как `$HOME/.node_modules`, которые всегда включаются. Каждый из этих путей используется как начальная точка для алгоритма разрешения модулей, что означает, что иерархия `node_modules` проверяется с этого места.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type).
 
 Использует внутренний механизм `require()` для поиска местоположения модуля, но вместо загрузки модуля возвращает только имя разрешенного файла.
 
@@ -620,7 +620,7 @@ Module {
 
 ##### `require.resolve.paths(request)`
 
--   `request` {string} Путь модуля, пути поиска которого извлекаются.
+-   `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, пути поиска которого извлекаются.
 -   Возвращает: {string\[\]|null}
 
 Возвращает массив, содержащий пути, найденные при разрешении `request`, или `null`, если строка `request` ссылается на основной модуль, например `http` или `fs`.
@@ -629,7 +629,7 @@ Module {
 
 ## Объект `module`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 В каждом модуле свободная переменная `module` является ссылкой на объект, представляющий текущий модуль. Для удобства, `module.exports` также доступен через `exports` module-global. На самом деле `module` не является глобальным, а скорее локальным для каждого модуля.
 
@@ -645,7 +645,7 @@ Module {
 
 ### `module.exports`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект `module.exports` создается системой `Module`. Иногда это неприемлемо; многие хотят, чтобы их модуль был экземпляром какого-либо класса. Чтобы сделать это, назначьте нужный объект экспорта в `module.exports`. Присвоение нужного объекта в `exports` просто перепривяжет локальную переменную `exports`, что, вероятно, не является желаемым.
 
@@ -733,7 +733,7 @@ function require(/* ... */) {
 
 ### `module.filename`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Полностью разрешенное имя файла модуля.
 
@@ -741,7 +741,7 @@ function require(/* ... */) {
 
 ### `module.id`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор для модуля. Обычно это полностью разрешенное имя файла.
 
@@ -749,13 +749,13 @@ function require(/* ... */) {
 
 ### `module.isPreloading`
 
--   Тип: {boolean} `true`, если модуль запущен во время фазы предварительной загрузки Node.js.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль запущен во время фазы предварительной загрузки Node.js.
 
 <!-- 0032.part.md -->
 
 ### `module.loaded`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Завершил ли модуль загрузку или находится в процессе загрузки.
 
@@ -777,7 +777,7 @@ function require(/* ... */) {
 
 ### `module.path`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя каталога модуля. Обычно оно совпадает с [`path.dirname()`](path.md#pathdirnamepath) из [`module.id`](#moduleid).
 
@@ -785,7 +785,7 @@ function require(/* ... */) {
 
 ### `module.paths`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Пути поиска для модуля.
 
@@ -793,9 +793,10 @@ function require(/* ... */) {
 
 ### `module.require(id)`
 
--   `id` {строка}
--   Возвращает: {любое} экспортированное содержимое модуля
+-   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) экспортированное содержимое модуля
 
 Метод `module.require()` предоставляет возможность загрузить модуль так, как если бы `require()` был вызван из исходного модуля.
 
 Для этого необходимо получить ссылку на объект `module`. Поскольку `require()` возвращает `module.exports`, а `module` обычно _только_ доступен в коде конкретного модуля, для использования он должен быть явно экспортирован.
+

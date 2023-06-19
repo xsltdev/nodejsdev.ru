@@ -21,7 +21,7 @@ const os = require('node:os');
 
 ## `os.EOL`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Маркер конца строки, специфичный для операционной системы.
 
@@ -32,7 +32,7 @@ const os = require('node:os');
 
 ## `os.availableParallelism()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает оценку количества параллелизма по умолчанию, которое программа должна использовать. Всегда возвращает значение больше нуля.
 
@@ -42,7 +42,7 @@ const os = require('node:os');
 
 ## `os.arch()`
 
--   Возвращает: {string}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает архитектуру процессора операционной системы, для которой был скомпилирован двоичный файл Node.js. Возможные значения: `'arm'`, `'arm64'`, `'ia32'`, `'mips'`, `'mipsel'`, `'ppc'`, `'ppc64'`, `'s390'`, `'s390x'`, и `'x64'`.
 
@@ -52,7 +52,7 @@ const os = require('node:os');
 
 ## `os.constants`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Содержит часто используемые константы, специфичные для операционной системы, для кодов ошибок, сигналов процесса и так далее. Определенные константы описаны в [OS constants](#os-constants).
 
@@ -66,14 +66,14 @@ const os = require('node:os');
 
 Свойства, включенные в каждый объект, включают:
 
--   `модель` {строка}
--   `скорость` {число} (в МГц)
--   `times` {Object}
-    -   `user` {число} Количество миллисекунд, проведенных процессором в пользовательском режиме.
-    -   `nice` {number} Количество миллисекунд, проведенных процессором в приятном режиме.
-    -   `sys` {number} Количество миллисекунд, проведенных процессором в режиме sys.
-    -   `idle` {number} Количество миллисекунд, проведенных процессором в режиме простоя.
-    -   `irq` {number} Количество миллисекунд, проведенных процессором в режиме irq.
+-   `модель` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `скорость` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (в МГц)
+-   `times` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `user` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, проведенных процессором в пользовательском режиме.
+    -   `nice` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, проведенных процессором в приятном режиме.
+    -   `sys` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, проведенных процессором в режиме sys.
+    -   `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, проведенных процессором в режиме простоя.
+    -   `irq` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, проведенных процессором в режиме irq.
 
 <!-- конец списка -->
 
@@ -138,7 +138,7 @@ const os = require('node:os');
 
 ## `os.devNull`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Путь к файлу нулевого устройства в зависимости от платформы.
 
@@ -149,7 +149,7 @@ const os = require('node:os');
 
 ## `os.endianness()`
 
--   Возвращает: {string}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строку, определяющую эндианальность процессора, для которого был скомпилирован двоичный файл Node.js.
 
@@ -159,7 +159,7 @@ const os = require('node:os');
 
 ## `os.freemem()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает количество свободной системной памяти в байтах в виде целого числа.
 
@@ -167,8 +167,8 @@ const os = require('node:os');
 
 ## `os.getPriority([pid])`
 
--   `pid` {целое число} Идентификатор процесса для получения приоритета планирования. **По умолчанию:** `0`.
--   Возвращает: {integer}
+-   `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для получения приоритета планирования. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает приоритет планирования для процесса, указанного `pid`. Если `pid` не указан или равен `0`, возвращается приоритет текущего процесса.
 
@@ -176,7 +176,7 @@ const os = require('node:os');
 
 ## `os.homedir()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строковый путь к домашнему каталогу текущего пользователя.
 
@@ -188,7 +188,7 @@ const os = require('node:os');
 
 ## `os.hostname()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает имя хоста операционной системы в виде строки.
 
@@ -218,7 +218,7 @@ const os = require('node:os');
 
 ## `os.networkInterfaces()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект, содержащий сетевые интерфейсы, которым был присвоен сетевой адрес.
 
@@ -226,13 +226,13 @@ const os = require('node:os');
 
 Свойства, доступные для объекта назначенного сетевого адреса, включают:
 
--   `address` {строка} Назначенный адрес IPv4 или IPv6.
--   `netmask` {строка} Маска сети IPv4 или IPv6
--   `family` {string} либо `IPv4`, либо `IPv6`.
--   `mac` {string} MAC-адрес сетевого интерфейса
--   `internal` {boolean} `true`, если сетевой интерфейс является loopback или подобным интерфейсом, к которому нет удаленного доступа; иначе `false`.
--   `scopeid` {number} Числовой идентификатор области действия IPv6 (указывается только в том случае, если `family` - `IPv6`)
--   `cidr` {string} Назначенный IPv4 или IPv6 адрес с префиксом маршрутизации в нотации CIDR. Если `netmask` недействительна, это свойство устанавливается в `null`.
+-   `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Назначенный адрес IPv4 или IPv6.
+-   `netmask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Маска сети IPv4 или IPv6
+-   `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) либо `IPv4`, либо `IPv6`.
+-   `mac` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес сетевого интерфейса
+-   `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если сетевой интерфейс является loopback или подобным интерфейсом, к которому нет удаленного доступа; иначе `false`.
+-   `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой идентификатор области действия IPv6 (указывается только в том случае, если `family` - `IPv6`)
+-   `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Назначенный IPv4 или IPv6 адрес с префиксом маршрутизации в нотации CIDR. Если `netmask` недействительна, это свойство устанавливается в `null`.
 
 <!-- конец списка -->
 
@@ -283,7 +283,7 @@ const os = require('node:os');
 
 ## `os.platform()`
 
--   Возвращает: {string}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строку, идентифицирующую платформу операционной системы, для которой был скомпилирован двоичный файл Node.js. Значение устанавливается во время компиляции. Возможные значения: `'aix'`, `'darwin'`, `'freebsd'`, `'linux'`, `'openbsd'`, `'sunos'`, и `'win32'`.
 
@@ -295,7 +295,7 @@ const os = require('node:os');
 
 ## `os.release()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает операционную систему в виде строки.
 
@@ -305,8 +305,8 @@ const os = require('node:os');
 
 ## `os.setPriority([pid, ]priority)`
 
--   `pid` {целое число} Идентификатор процесса, для которого нужно установить приоритет планирования. **По умолчанию:** `0`.
--   `priority` {целое число} Приоритет планирования, который нужно назначить процессу.
+-   `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса, для которого нужно установить приоритет планирования. **По умолчанию:** `0`.
+-   `priority` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Приоритет планирования, который нужно назначить процессу.
 
 Пытается установить приоритет планирования для процесса, указанного `pid`. Если `pid` не указан или равен `0`, используется идентификатор текущего процесса.
 
@@ -318,7 +318,7 @@ const os = require('node:os');
 
 ## `os.tmpdir()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает каталог по умолчанию операционной системы для временных файлов в виде строки.
 
@@ -326,7 +326,7 @@ const os = require('node:os');
 
 ## `os.totalmem()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает общий объем системной памяти в байтах в виде целого числа.
 
@@ -334,7 +334,7 @@ const os = require('node:os');
 
 ## `os.type()`
 
--   Возвращает: {string}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает имя операционной системы, полученное с помощью [`uname(3)`](https://linux.die.net/man/3/uname). Например, возвращается `'Linux'` в Linux, `'Darwin'` в macOS и `'Windows_NT'` в Windows.
 
@@ -344,7 +344,7 @@ const os = require('node:os');
 
 ## `os.uptime()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает время работы системы в количестве секунд.
 
@@ -352,9 +352,9 @@ const os = require('node:os');
 
 ## `os.userInfo([options])`
 
--   `options` {Object}
-    -   `encoding` {string} Кодировка символов, используемая для интерпретации результирующих строк. Если `encoding` имеет значение `'buffer'`, значения `username`, `hell` и `homedir` будут экземплярами `Buffer`. **По умолчанию:** `'utf8'`.
--   Возвращает: {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов, используемая для интерпретации результирующих строк. Если `encoding` имеет значение `'buffer'`, значения `username`, `hell` и `homedir` будут экземплярами `Buffer`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает информацию о текущем действующем пользователе. На POSIX платформах это обычно подмножество файла паролей. Возвращаемый объект включает в себя `username`, `uid`, `gid`, `hell` и `homedir`. В Windows поля `uid` и `gid` равны `-1`, а `shell` - `null`.
 
@@ -3497,3 +3497,4 @@ Description
 </table>
 
 <!-- 0031.part.md -->
+

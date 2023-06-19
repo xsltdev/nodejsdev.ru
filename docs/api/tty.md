@@ -29,7 +29,7 @@ false
 
 ## Класс: `tty.ReadStream`
 
--   Расширяет: {net.Socket}
+-   Расширяет: [`<net.Socket>`](net.md#netsocket)
 
 Представляет читаемую сторону TTY. В обычных обстоятельствах [`process.stdin`](process.md#processstdin) будет единственным экземпляром `tty.ReadStream` в процессе Node.js, и не должно быть причин для создания дополнительных экземпляров.
 
@@ -43,7 +43,7 @@ false
 
 ### `readStream.setRawMode(mode)`
 
--   `mode` {boolean} If `true`, configures the `tty.ReadStream` to operate as a raw device. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to the resulting mode.
+-   `mode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, configures the `tty.ReadStream` to operate as a raw device. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to the resulting mode.
 -   Returns: {this} The read stream instance.
 
 Allows configuration of `tty.ReadStream` so that it operates as a raw device.
@@ -52,7 +52,7 @@ When in raw mode, input is always available character-by-character, not includin
 
 ## Класс: `tty.WriteStream`
 
--   Расширяет: {net.Socket}
+-   Расширяет: [`<net.Socket>`](net.md#netsocket)
 
 Представляет записываемую сторону TTY. В обычных обстоятельствах [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) будут единственными экземплярами `tty.WriteStream`, созданными для процесса Node.js, и не должно быть причин для создания дополнительных экземпляров.
 
@@ -71,19 +71,19 @@ process.stdout.on('resize', () => {
 
 ### `writeStream.clearLine(dir[, callback])`
 
--   `dir` {число}
+-   `dir` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `-1`: влево от курсора
     -   `1`: вправо от курсора
     -   `0`: вся строка
--   `callback` {функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 `writeStream.clearLine()` очищает текущую строку этого `WriteStream` в направлении, определенном `dir`.
 
 ### `writeStream.clearScreenDown([callback])`
 
--   `callback` {Функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 `writeStream.clearScreenDown()` очищает данный `WriteStream` от текущего курсора вниз.
 
@@ -93,17 +93,17 @@ process.stdout.on('resize', () => {
 
 ### `writeStream.cursorTo(x[, y][, callback])`
 
--   `x` {число}
--   `y` {число}
--   `callback` {функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `x` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `y` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 `writeStream.cursorTo()` перемещает курсор этого `WriteStream` в указанную позицию.
 
 ### `writeStream.getColorDepth([env])`
 
--   `env` {Object} Объект, содержащий переменные окружения для проверки. Это позволяет имитировать использование конкретного терминала. **По умолчанию:** `process.env`.
--   Возвращает: {число}
+-   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий переменные окружения для проверки. Это позволяет имитировать использование конкретного терминала. **По умолчанию:** `process.env`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает:
 
@@ -131,9 +131,9 @@ process.stdout.on('resize', () => {
 
 ### `writeStream.hasColors([count][, env])`
 
--   `count` {целое число} Количество запрашиваемых цветов (минимум 2). **По умолчанию:** 16.
--   `env` {Object} Объект, содержащий переменные окружения для проверки. Это позволяет имитировать использование конкретного терминала. **По умолчанию:** `process.env`.
--   Возвращает: {boolean}
+-   `count` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество запрашиваемых цветов (минимум 2). **По умолчанию:** 16.
+-   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий переменные окружения для проверки. Это позволяет имитировать использование конкретного терминала. **По умолчанию:** `process.env`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `writeStream` поддерживает по крайней мере столько цветов, сколько указано в `count`. Минимальная поддержка - 2 (черный и белый).
 
@@ -156,10 +156,10 @@ process.stdout.hasColors(2 ** 24, { TMUX: '1' });
 
 ### `writeStream.moveCursor(dx, dy[, callback])`
 
--   `dx` {число}
--   `dy` {число}
--   `callback` {функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `dx` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `dy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 `writeStream.moveCursor()` перемещает курсор этого `WriteStream` _относительно_ его текущей позиции.
 
@@ -169,7 +169,8 @@ process.stdout.hasColors(2 ** 24, { TMUX: '1' });
 
 ## `tty.isatty(fd)`
 
--   `fd` {number} Числовой дескриптор файла
--   Возвращает: {булево}
+-   `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой дескриптор файла
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `tty.isatty()` возвращает `true`, если данный `fd` ассоциирован с TTY, и `false`, если нет, включая случаи, когда `fd` не является неотрицательным целым числом.
+

@@ -12,7 +12,7 @@ description: Приложения, работающие в Node.js, обычно
 -   Пользовательские ошибки, вызванные кодом приложения.
 -   `AssertionError` - это специальный класс ошибок, которые могут быть вызваны, когда Node.js обнаруживает исключительное нарушение логики, которое никогда не должно происходить. Обычно их вызывает модуль `node:assert`.
 
-Все JavaScript и системные ошибки, вызываемые Node.js, наследуются от или являются экземплярами стандартного класса JavaScript {Error} и гарантированно предоставляют _по крайней мере_ свойства, доступные для этого класса.
+Все JavaScript и системные ошибки, вызываемые Node.js, наследуются от или являются экземплярами стандартного класса JavaScript [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) и гарантированно предоставляют _по крайней мере_ свойства, доступные для этого класса.
 
 <!-- 0000.part.md -->
 
@@ -146,7 +146,7 @@ try {
 
 ## Класс: `Error`
 
-Общий объект JavaScript {Error}, который не обозначает никаких конкретных обстоятельств того, почему произошла ошибка. Объекты `Error` фиксируют "трассировку стека", детализирующую точку в коде, в которой `Error` был инстанцирован, и могут предоставлять текстовое описание ошибки.
+Общий объект JavaScript [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), который не обозначает никаких конкретных обстоятельств того, почему произошла ошибка. Объекты `Error` фиксируют "трассировку стека", детализирующую точку в коде, в которой `Error` был инстанцирован, и могут предоставлять текстовое описание ошибки.
 
 Все ошибки, генерируемые Node.js, включая все системные ошибки и ошибки JavaScript, будут либо экземплярами класса `Error`, либо наследоваться от него.
 
@@ -154,9 +154,9 @@ try {
 
 ### ### `new Error(message[, options])`
 
--   `сообщение` {строка}
--   `options` {Object}
-    -   `cause` {any} Ошибка, которая вызвала вновь созданную ошибку.
+-   `сообщение` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `cause` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Ошибка, которая вызвала вновь созданную ошибку.
 
 Создает новый объект `Error` и устанавливает свойство `error.message` в предоставленное текстовое сообщение. Если в качестве `message` передан объект, текстовое сообщение генерируется вызовом `String(message)`. Если передана опция `cause`, она присваивается свойству `error.cause`. Свойство `error.stack` будет представлять точку в коде, в которой была вызвана `new Error()`. Трассировка стека зависит от [V8's stack trace API](https://v8.dev/docs/stack-trace-api). Трассировка стека распространяется только на (a) начало _синхронного выполнения кода_, или (b) количество кадров, заданное свойством `Error.stackTraceLimit`, в зависимости от того, что меньше.
 
@@ -164,8 +164,8 @@ try {
 
 ### `Error.captureStackTrace(targetObject[, constructorOpt])`
 
--   `targetObject` {Object}
--   `constructorOpt` {Функция}
+-   `targetObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `constructorOpt` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Создает свойство `.stack` на `targetObject`, которое при обращении к нему возвращает строку, представляющую место в коде, в котором была вызвана `Error.captureStackTrace()`.
 
@@ -196,7 +196,7 @@ new MyError().stack;
 
 ### `Error.stackTraceLimit`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `Error.stackTraceLimit` определяет количество кадров стека, собираемых трассировкой стека (независимо от того, генерируется ли она `new Error().stack` или `Error.captureStackTrace(obj)`).
 
@@ -248,7 +248,7 @@ console.log(symptom);
 
 ### `error.code`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `error.code` - это строковая метка, которая идентифицирует вид ошибки. `error.code` является наиболее стабильным способом идентификации ошибки. Он будет меняться только между основными версиями Node.js. В отличие от этого, строки `error.message` могут изменяться между любыми версиями Node.js. Подробности о конкретных кодах см. в [Node.js error codes](#nodejs-error-codes).
 
@@ -256,7 +256,7 @@ console.log(symptom);
 
 ### `error.message`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `error.message` - это строковое описание ошибки, заданное вызовом `new Error(message)`. Переданное конструктору `message` также появится в первой строке трассировки стека `Error`, однако изменение этого свойства после создания объекта `Error` может не изменить первую строку трассировки стека (например, если `error.stack` будет прочитан до изменения этого свойства).
 
@@ -270,7 +270,7 @@ console.error(err.message);
 
 ### `error.stack`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `error.stack` представляет собой строку, описывающую точку в коде, в которой `Error` была инстанцирована.
 
@@ -329,7 +329,7 @@ makeFaster();
 
 ## Класс: `AssertionError`
 
--   Расширяет: {errors.Error}
+-   Расширяет: [`<errors.Error>`](errors.md#error)
 
 Указывает на неудачу утверждения. Подробнее см. в [`Класс: assert.AssertionError`](assert.md#class-assertassertionerror).
 
@@ -337,7 +337,7 @@ makeFaster();
 
 ## Класс: `RangeError`
 
--   Расширяет: {errors.Error}
+-   Расширяет: [`<errors.Error>`](errors.md#error)
 
 Указывает, что предоставленный аргумент не входит в набор или диапазон допустимых значений для функции; будь то числовой диапазон, или вне набора опций для данного параметра функции.
 
@@ -352,7 +352,7 @@ Node.js будет генерировать и бросать экземпляр
 
 ## Класс: `ReferenceError`
 
--   Расширяет: {errors.Error}
+-   Расширяет: [`<errors.Error>`](errors.md#error)
 
 Указывает на попытку доступа к переменной, которая не определена. Такие ошибки обычно указывают на опечатки в коде или на другие сбои в программе.
 
@@ -369,7 +369,7 @@ doesNotExist;
 
 ## Класс: `SyntaxError`
 
--   Расширяет: {errors.Error}
+-   Расширяет: [`<errors.Error>`](errors.md#error)
 
 Указывает, что программа не является валидным JavaScript. Эти ошибки могут генерироваться и распространяться только в результате оценки кода. Оценка кода может происходить в результате `eval`, `Function`, `require` или [vm](vm.md). Эти ошибки почти всегда свидетельствуют о неработающей программе.
 
@@ -387,25 +387,25 @@ try {
 
 ## Класс: `SystemError`
 
--   Расширяет: {errors.Error}
+-   Расширяет: [`<errors.Error>`](errors.md#error)
 
 Node.js генерирует системные ошибки, когда в среде выполнения возникают исключения. Обычно они возникают, когда приложение нарушает ограничения операционной системы. Например, системная ошибка возникнет, если приложение попытается прочитать несуществующий файл.
 
--   `address` {строка} Если присутствует, адрес, с которым произошел сбой сетевого соединения.
--   `code` {string} Строковый код ошибки
--   `dest` {string} Если присутствует, назначение пути к файлу при сообщении об ошибке файловой системы
--   `errno` {number} Номер ошибки, предоставляемый системой
--   `info` {Object} Если присутствует, дополнительные сведения о состоянии ошибки
--   `message` {string} Предоставленное системой человекочитаемое описание ошибки
--   `path` {string} Если присутствует, путь к файлу при сообщении об ошибке файловой системы
--   `port` {number} Если присутствует, порт сетевого подключения, который недоступен
--   `syscall` {string} Имя системного вызова, вызвавшего ошибку
+-   `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, адрес, с которым произошел сбой сетевого соединения.
+-   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковый код ошибки
+-   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, назначение пути к файлу при сообщении об ошибке файловой системы
+-   `errno` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер ошибки, предоставляемый системой
+-   `info` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если присутствует, дополнительные сведения о состоянии ошибки
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Предоставленное системой человекочитаемое описание ошибки
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, путь к файлу при сообщении об ошибке файловой системы
+-   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если присутствует, порт сетевого подключения, который недоступен
+-   `syscall` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя системного вызова, вызвавшего ошибку
 
 <!-- 0015.part.md -->
 
 ### `error.address`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если присутствует, `error.address` - это строка, описывающая адрес, с которым не удалось установить сетевое соединение.
 
@@ -413,7 +413,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.code`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `error.code` - это строка, представляющая код ошибки.
 
@@ -421,7 +421,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.dest`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если присутствует, то `error.dest` является местом назначения пути к файлу при сообщении об ошибке файловой системы.
 
@@ -429,7 +429,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.errno`
 
--   {number}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `error.errno` - это отрицательное число, которое соответствует коду ошибки, определенному в [`libuv Error handling`](https://docs.libuv.org/en/v1.x/errors.html).
 
@@ -441,7 +441,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.info`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Если присутствует, `error.info` - это объект с подробной информацией о состоянии ошибки.
 
@@ -449,7 +449,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.message`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 `error.message` - это предоставленное системой человекочитаемое описание ошибки.
 
@@ -457,7 +457,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.path`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если присутствует, `error.path` - это строка, содержащая соответствующее неверное имя пути.
 
@@ -465,7 +465,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.port`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Если присутствует, `error.port` - это порт сетевого подключения, который недоступен.
 
@@ -473,7 +473,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ### `error.syscall`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `error.syscall` - это строка, описывающая [syscall](https://man7.org/linux/man-pages/man2/syscalls.2.html), который завершился неудачей.
 
@@ -515,7 +515,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 ## Класс: `TypeError`
 
--   Расширяет {errors.Error}
+-   Расширяет [`<errors.Error>`](errors.md#error)
 
 Указывает, что предоставленный аргумент не является допустимым типом. Например, передача функции в параметр, который ожидает строку, будет `TypeError`.
 
@@ -2276,7 +2276,7 @@ The `package.json` [`"exports"`](packages.md#exports) field does not export the 
 
 ### `ERR_PARSE_ARGS_INVALID_OPTION_VALUE`
 
-When `strict` set to `true`, thrown by [`util.parseArgs()`](util.md#utilparseargsconfig) if a {boolean} value is provided for an option of type {string}, or if a {string} value is provided for an option of type {boolean}.
+When `strict` set to `true`, thrown by [`util.parseArgs()`](util.md#utilparseargsconfig) if a [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) value is provided for an option of type [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), or if a [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) value is provided for an option of type [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 <a id="ERR_PARSE_ARGS_UNEXPECTED_POSITIONAL"></a>
 
@@ -3330,3 +3330,4 @@ Used when an attempt is made to use a `zlib` object after it has already been cl
 Собственный вызов из `process.cpuUsage` не может быть обработан.
 
 <!-- 0388.part.md -->
+

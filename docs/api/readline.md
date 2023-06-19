@@ -101,7 +101,7 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 ## Class: `InterfaceConstructor`
 
--   Extends: {EventEmitter}
+-   Extends: [`<EventEmitter>`](events.md#eventemitter)
 
 Экземпляры класса `InterfaceConstructor` создаются с помощью метода `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
@@ -269,7 +269,7 @@ rl.on('SIGTSTP', () => {
 
 ### `rl.prompt([preserveCursor])`.
 
--   `preserveCursor` {boolean} Если `true`, предотвращает сброс установки курсора на `0`.
+-   `preserveCursor` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, предотвращает сброс установки курсора на `0`.
 
 Метод `rl.prompt()` записывает экземпляры `InterfaceConstructor`, настроенные на `prompt`, на новую строку в `output`, чтобы предоставить пользователю новое место для ввода.
 
@@ -283,24 +283,24 @@ rl.on('SIGTSTP', () => {
 
 ### `rl.setPrompt(prompt)`
 
--   `prompt` {string}
+-   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `rl.setPrompt()` устанавливает подсказку, которая будет записываться в `output` при каждом вызове `rl.prompt()`.
 
 ### `rl.getPrompt()`
 
--   Возвращает: {строка} текущая строка подсказки
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) текущая строка подсказки
 
 Метод `rl.getPrompt()` возвращает текущую подсказку, используемую `rl.prompt()`.
 
 ### `rl.write(data[, key])`
 
--   `data` {string}
--   `key` {Object}
-    -   `ctrl` {boolean} `true` to indicate the <kbd>Ctrl</kbd> key.
-    -   `meta` {boolean} `true` to indicate the <kbd>Meta</kbd> key.
-    -   `shift` {boolean} `true` to indicate the <kbd>Shift</kbd> key.
-    -   `name` {string} The name of the a key.
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `key` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `ctrl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Ctrl</kbd> key.
+    -   `meta` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Meta</kbd> key.
+    -   `shift` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Shift</kbd> key.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the a key.
 
 Метод `rl.write()` записывает на `выход` либо `данные`, либо последовательность ключей, идентифицированную `key`. Аргумент `key` поддерживается только если `output` является текстовым терминалом [TTY](tty.md). Список комбинаций клавиш см. в [TTY keybindings](#tty-keybindings).
 
@@ -324,7 +324,7 @@ rl.write(null, { ctrl: true, name: 'u' });
 
 ### `rl[Symbol.asyncIterator]()`.
 
--   Возвращает: {AsyncIterator}
+-   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 
 Создает объект `AsyncIterator`, который итерирует каждую строку во входном потоке как строку. Этот метод позволяет асинхронную итерацию объектов `InterfaceConstructor` через циклы `for await...of`.
 
@@ -355,7 +355,7 @@ async function processLineByLine() {
 
 ### `rl.line`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Текущие входные данные, обрабатываемые узлом.
 
@@ -397,9 +397,9 @@ process.stdin.on('keypress', (c, k) => {
 
 ### `rl.getCursorPos()`.
 
--   Возвращает: {Object}
-    -   `rows` {число} строка подсказки, на которой в данный момент находится курсор
-    -   `cols` {число} столбец экрана, на котором в данный момент находится курсор
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `rows` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) строка подсказки, на которой в данный момент находится курсор
+    -   `cols` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) столбец экрана, на котором в данный момент находится курсор
 
 Возвращает реальную позицию курсора по отношению к строке + подсказке ввода. Длинные строки ввода (обертка), а также многострочные подсказки включаются в вычисления.
 
@@ -415,10 +415,10 @@ process.stdin.on('keypress', (c, k) => {
 
 #### `rl.question(query[, options])`.
 
--   `query` {string} Оператор или запрос для записи на `вывод`, добавляемый к подсказке.
--   `options` {Object}
-    -   `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью сигнала `AbortSignal`.
--   Возвращает: {Promise} Обещание, которое будет выполнено с вводом пользователя в ответ на `query`.
+-   `query` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Оператор или запрос для записи на `вывод`, добавляемый к подсказке.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Опционально позволяет отменить `question()` с помощью сигнала `AbortSignal`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание, которое будет выполнено с вводом пользователя в ответ на `query`.
 
 Метод `rl.question()` отображает `запрос`, записывая его в `вывод`, ожидает ввода данных пользователем в `ввод`, затем вызывает функцию `обратный вызов`, передавая введенные данные в качестве первого аргумента.
 
@@ -469,13 +469,13 @@ console.log(`Oh, so your favorite food is ${answer}`);
 
 #### `новый readlinePromises.Readline(stream[, options])`.
 
--   `stream` {stream.Writable} [TTY](tty.md) поток.
--   `options` {Object}
-    -   `autoCommit` {boolean} Если `true`, не нужно вызывать `rl.commit()`.
+-   `stream` [`<stream.Writable>`](stream.md#streamwritable) [TTY](tty.md) поток.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `autoCommit` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, не нужно вызывать `rl.commit()`.
 
 #### `rl.clearLine(dir)`.
 
--   `dir` {integer}
+-   `dir` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `-1`: влево от курсора
     -   `1`: вправо от курсора
     -   `0`: вся строка
@@ -491,22 +491,22 @@ console.log(`Oh, so your favorite food is ${answer}`);
 
 #### `rl.commit()`.
 
--   Возвращает: {Promise}
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Метод `rl.commit()` отправляет все отложенные действия в связанный `поток` и очищает внутренний список отложенных действий.
 
 #### `rl.cursorTo(x[, y])`.
 
--   `x` {целое число}
--   `y` {целое число}
+-   `x` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `y` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   Возвращает: this
 
 Метод `rl.cursorTo()` добавляет во внутренний список ожидающих действий действие, которое перемещает курсор в указанную позицию в связанном `потоке`. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
 
 #### `rl.moveCursor(dx, dy)`.
 
--   `dx` {целое число}
--   `dy` {целое число}
+-   `dx` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `dy` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   Возвращает: this
 
 Метод `rl.moveCursor()` добавляет во внутренний список ожидающих выполнения действий действие, которое перемещает курсор _относительно_ его текущей позиции в связанном `потоке`. Вызовите `rl.commit()`, чтобы увидеть эффект этого метода, если только `autoCommit: true` не было передано в конструктор.
@@ -519,18 +519,18 @@ console.log(`Oh, so your favorite food is ${answer}`);
 
 ### `readlinePromises.createInterface(options)`
 
--   `options` {Object}
-    -   `вход` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-    -   `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
-    -   `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
-    -   `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
-    -   `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
-    -   `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл, только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории вообще не инициализируется. **По умолчанию:** `30`.
-    -   `removeHistoryDuplicates` {boolean} Если `true`, когда новая строка ввода, добавленная в список истории, дублирует более старую строку, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-    -   `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
-    -   `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
-    -   `escapeCodeTimeout` {число} Продолжительность, в течение которой `readlinePromises` будет ожидать символа (при чтении неоднозначной последовательности клавиш в миллисекундах, которая может как сформировать полную последовательность клавиш, используя прочитанный на данный момент ввод, так и принять дополнительный ввод для завершения более длинной последовательности клавиш). **По умолчанию:** `500`.
-    -   `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `вход` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `completer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, используемая для автодополнения табуляции.
+    -   `терминал` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
+    -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
+    -   `historySize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл, только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории вообще не инициализируется. **По умолчанию:** `30`.
+    -   `removeHistoryDuplicates` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, когда новая строка ввода, добавленная в список истории, дублирует более старую строку, это удаляет более старую строку из списка. **По умолчанию:** `false`.
+    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `crlfDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
+    -   `escapeCodeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность, в течение которой `readlinePromises` будет ожидать символа (при чтении неоднозначной последовательности клавиш в миллисекундах, которая может как сформировать полную последовательность клавиш, используя прочитанный на данный момент ввод, так и принять дополнительный ввод для завершения более длинной последовательности клавиш). **По умолчанию:** `500`.
+    -   `tabSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
 -   Возвращает: {readlinePromises.Interface}
 
 Метод `readlinePromises.createInterface()` создает новый экземпляр `readlinePromises.Interface`.
@@ -587,7 +587,7 @@ function completer(line) {
 
 <!-- 0043.part.md -->
 
-Функция `completer` может также возвращать {Promise} или быть асинхронной:
+Функция `completer` может также возвращать [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или быть асинхронной:
 
 <!-- 0044.part.md -->
 
@@ -610,10 +610,10 @@ async function completer(linePartial) {
 
 #### `rl.question(query[, options], callback)`.
 
--   `query` {string} Утверждение или запрос для записи в `вывод`, добавляемый к подсказке.
--   `options` {Object}
-    -   `signal` {AbortSignal} Опционально позволяет отменить `question()` с помощью `AbortController`.
--   `callback` {Function} Функция обратного вызова, которая вызывается с вводом пользователя в ответ на `вопрос`.
+-   `query` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Утверждение или запрос для записи в `вывод`, добавляемый к подсказке.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Опционально позволяет отменить `question()` с помощью `AbortController`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, которая вызывается с вводом пользователя в ответ на `вопрос`.
 
 Метод `rl.question()` отображает `запрос`, записывая его на `вывод`, ждет ввода данных пользователем на `вводе`, затем вызывает функцию `обратного вызова`, передавая введенные данные в качестве первого аргумента.
 
@@ -670,39 +670,39 @@ setTimeout(() => ac.abort(), 10000);
 
 ### `readline.clearLine(stream, dir[, callback])`
 
--   `stream` {stream.Writable}
--   `dir` {число}
+-   `stream` [`<stream.Writable>`](stream.md#streamwritable)
+-   `dir` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `-1`: влево от курсора
     -   `1`: вправо от курсора
     -   `0`: вся строка
--   `callback` {Функция} Вызывается после завершения операции.
--   Возвращает: {булево} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.clearLine()` очищает текущую строку данного потока [TTY](tty.md) в указанном направлении, обозначенном `dir`.
 
 ### `readline.clearScreenDown(stream[, callback])`.
 
--   `stream` {stream.Writable}
--   `callback` {Function} Вызывается по завершении операции.
--   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` [`<stream.Writable>`](stream.md#streamwritable)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.clearScreenDown()` очищает данный поток [TTY](tty.md) от текущей позиции курсора вниз.
 
 ### `readline.createInterface(options)`.
 
--   `options` {Object}
-    -   `input` {stream.Readable} Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-    -   `output` {stream.Writable} Поток [Writable](stream.md#writable-streams) для записи данных readline.
-    -   `completer` {Function} Необязательная функция, используемая для автодополнения табуляции.
-    -   `терминал` {boolean} `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
-    -   `history` {string\[\]} Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
-    -   `historySize` {number} Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `30`.
-    -   `removeHistoryDuplicates` {boolean} Если `true`, когда новая входная строка, добавленная в список истории, дублирует более старую, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-    -   `prompt` {string} Используемая строка подсказки. **По умолчанию:** `'>``.
-    -   `crlfDelay` {число} Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
-    -   `escapeCodeTimeout` {число} Продолжительность `readline` будет
-    -   `tabSize` {целое число} Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
-    -   `signal` {AbortSignal} Позволяет закрыть интерфейс с помощью сигнала AbortSignal. Прерывание сигнала приведет к внутреннему вызову `close` на интерфейсе.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `input` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `completer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, используемая для автодополнения табуляции.
+    -   `терминал` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
+    -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
+    -   `historySize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `30`.
+    -   `removeHistoryDuplicates` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, когда новая входная строка, добавленная в список истории, дублирует более старую, это удаляет более старую строку из списка. **По умолчанию:** `false`.
+    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `crlfDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
+    -   `escapeCodeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность `readline` будет
+    -   `tabSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет закрыть интерфейс с помощью сигнала AbortSignal. Прерывание сигнала приведет к внутреннему вызову `close` на интерфейсе.
 -   Возвращает: {readline.Interface}
 
 Метод `readline.createInterface()` создает новый экземпляр `readline.Interface`.
@@ -775,27 +775,27 @@ function completer(linePartial, callback) {
 
 ### `readline.cursorTo(stream, x[, y][, callback])`.
 
--   `stream` {stream.Writable}
--   `x` {число}
--   `y` {число}
--   `callback` {функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` [`<stream.Writable>`](stream.md#streamwritable)
+-   `x` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `y` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.cursorTo()` перемещает курсор в указанную позицию в данном [TTY](tty.md) `потоке`.
 
 ### `readline.moveCursor(stream, dx, dy[, callback])`.
 
--   `stream` {stream.Writable}
--   `dx` {число}
--   `dy` {число}
--   `callback` {функция} Вызывается после завершения операции.
--   Возвращает: {boolean} `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
+-   `stream` [`<stream.Writable>`](stream.md#streamwritable)
+-   `dx` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `dy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения операции.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если `stream` хочет, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
 
 Метод `readline.moveCursor()` перемещает курсор _относительно_ его текущей позиции в данном [TTY](tty.md) `потоке`.
 
 ## `readline.emitKeypressEvents(stream[, interface])`.
 
--   `поток` {stream.Readable}
+-   `поток` [`<stream.Readable>`](stream.md#streamreadable)
 -   `интерфейс` {readline.InterfaceConstructor}
 
 Метод `readline.emitKeypressEvents()` заставляет данный поток [Readable](stream.md#readable-streams) начать испускать события `'keypress'`, соответствующие полученным входным данным.
@@ -1490,3 +1490,4 @@ Doesn’t work on Mac
 </table>
 
 <!-- 0070.part.md -->
+

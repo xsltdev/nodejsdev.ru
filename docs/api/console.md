@@ -84,13 +84,13 @@ const { Console } = console;
 
 ### `new Console(options)`
 
--   `options` {Object}
-    -   `stdout` {stream.Writable}
-    -   `stderr` {stream.Writable}
-    -   `ignoreErrors` {boolean} Игнорировать ошибки при записи в базовые потоки. **По умолчанию:** `true`.
-    -   `colorMode` {boolean|string} Устанавливает поддержку цвета для данного экземпляра `консоли`. Установка значения `true` включает раскраску при просмотре значений. Установка в `false` отключает раскраску при просмотре значений. Установка в `'auto'` делает поддержку цвета зависимой от значения свойства `isTTY` и значения, возвращаемого функцией `getColorDepth()` для соответствующего потока. Эта опция не может быть использована, если `inspectOptions.colors` также установлен. **По умолчанию:** `авто`.
-    -   `inspectOptions` {Object} Определяет опции, которые передаются в [`util.inspect()`](util.md#utilinspectobject-options).
-    -   `groupIndentation` {number} Установка отступа группы. **По умолчанию:** `2`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `stdout` [`<stream.Writable>`](stream.md#streamwritable)
+    -   `stderr` [`<stream.Writable>`](stream.md#streamwritable)
+    -   `ignoreErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Игнорировать ошибки при записи в базовые потоки. **По умолчанию:** `true`.
+    -   `colorMode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устанавливает поддержку цвета для данного экземпляра `консоли`. Установка значения `true` включает раскраску при просмотре значений. Установка в `false` отключает раскраску при просмотре значений. Установка в `'auto'` делает поддержку цвета зависимой от значения свойства `isTTY` и значения, возвращаемого функцией `getColorDepth()` для соответствующего потока. Эта опция не может быть использована, если `inspectOptions.colors` также установлен. **По умолчанию:** `авто`.
+    -   `inspectOptions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Определяет опции, которые передаются в [`util.inspect()`](util.md#utilinspectobject-options).
+    -   `groupIndentation` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Установка отступа группы. **По умолчанию:** `2`.
 
 Создает новую `Console` с одним или двумя экземплярами записываемого потока. `stdout` - записываемый поток для вывода журнала или информации. `stderr` используется для вывода предупреждений или ошибок. Если `stderr` не указан, `stdout` используется для `stderr`.
 
@@ -121,8 +121,8 @@ new Console({
 
 ### `console.assert(value[, ...message])`
 
--   `value` {любой} Значение, проверяемое на истинность.
--   `...message` {любой} Все аргументы, кроме `value`, используются в качестве сообщения об ошибке.
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, проверяемое на истинность.
+-   `...message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Все аргументы, кроме `value`, используются в качестве сообщения об ошибке.
 
 `console.assert()` пишет сообщение, если `value` является [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) или опущено. Она только пишет сообщение и никак иначе не влияет на выполнение. Вывод всегда начинается со слов `"Assertion failed"`. Если указано, то `сообщение` форматируется с помощью [`util.format()`](util.md#utilformatformat-args).
 
@@ -150,7 +150,7 @@ console.assert();
 
 ### `console.count([label])`
 
--   `label` {string} Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
 
 Ведет внутренний счетчик, специфичный для `label`, и выводит в `stdout` количество раз, когда `console.count()` был вызван с заданной `label`.
 
@@ -180,7 +180,7 @@ undefined
 
 ### `console.countReset([label])`
 
--   `label` {string} Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Отображаемая метка для счетчика. **По умолчанию:** `'default'`.
 
 Сбрасывает внутренний счетчик, специфичный для `label`.
 
@@ -201,7 +201,7 @@ undefined
 ### `console.debug(data[, ...args])`
 
 -   `данные` {любые}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Функция `console.debug()` является псевдонимом для [`console.log()`](#consolelogdata-args).
 
@@ -209,11 +209,11 @@ undefined
 
 ### `console.dir(obj[, options])`
 
--   `obj` {любой}
--   `options` {Object}
-    -   `showHidden` {boolean} Если `true`, то будут показаны также неперечислимые и символьные свойства объекта. **По умолчанию:** `false`.
-    -   `depth` {number} Указывает [`util.inspect()`](util.md#utilinspectobject-options), сколько раз пересматривать объект при форматировании. Это полезно при проверке больших сложных объектов. Чтобы заставить его выполнять возврат бесконечно, передайте `null`. **По умолчанию:** `2`.
-    -   `colors` {boolean} Если `true`, то вывод будет оформлен с использованием цветовых кодов ANSI. Цвета настраиваются; смотрите [настройка цветов `util.inspect()`](util.md#customizing-utilinspect-colors). **По умолчанию:** `false`.
+-   `obj` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `showHidden` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то будут показаны также неперечислимые и символьные свойства объекта. **По умолчанию:** `false`.
+    -   `depth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Указывает [`util.inspect()`](util.md#utilinspectobject-options), сколько раз пересматривать объект при форматировании. Это полезно при проверке больших сложных объектов. Чтобы заставить его выполнять возврат бесконечно, передайте `null`. **По умолчанию:** `2`.
+    -   `colors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то вывод будет оформлен с использованием цветовых кодов ANSI. Цвета настраиваются; смотрите [настройка цветов `util.inspect()`](util.md#customizing-utilinspect-colors). **По умолчанию:** `false`.
 
 Использует [`util.inspect()`](util.md#utilinspectobject-options) для `obj` и печатает полученную строку в `stdout`. Эта функция обходит любую пользовательскую функцию `inspect()`, определенную для `obj`.
 
@@ -221,7 +221,7 @@ undefined
 
 ### `console.dirxml(...data)`
 
--   `...data` {любой}
+-   `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Этот метод вызывает `console.log()`, передавая ему полученные аргументы. Этот метод не производит никакого форматирования XML.
 
@@ -230,7 +230,7 @@ undefined
 ### `console.error([data][, ...args])`
 
 -   `данные` {любые}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Печатает в `stderr` с новой строкой. Можно передать несколько аргументов, при этом первый используется как основное сообщение, а все дополнительные - как подстановочные значения, аналогично printf(3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
 
@@ -248,7 +248,7 @@ console.error('error', code);
 
 ### `console.group([...label])`
 
--   `...label` {любой}
+-   `...label` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Увеличивает отступ последующих строк на пробелы для длины `groupIndentation`.
 
@@ -271,7 +271,7 @@ console.error('error', code);
 ### `console.info([data][, ...args])`.
 
 -   `данные` {любые}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Функция `console.info()` является псевдонимом для [`console.log()`](#consolelogdata-args).
 
@@ -280,7 +280,7 @@ console.error('error', code);
 ### `console.log([data][, ...args])`
 
 -   `данные` {любые}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Печатает в `stdout` с новой строкой. Можно передавать несколько аргументов, при этом первый используется как основное сообщение, а все дополнительные - как подстановочные значения, аналогично printf(3) (все аргументы передаются в [`util.format()`](util.md#utilformatformat-args)).
 
@@ -298,8 +298,8 @@ console.log('count:', count);
 
 ### `console.table(tabularData[, properties])`
 
--   `табличные данные` {любой}
--   `свойства` {строка} Альтернативные свойства для построения таблицы.
+-   `табличные данные` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `свойства` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативные свойства для построения таблицы.
 
 Попробуйте построить таблицу со столбцами свойств `tabularData` (или используйте `properties`) и строками `tabularData` и запишите ее в журнал. Вернитесь к простому протоколированию аргумента, если он не может быть разобран как табличный.
 
@@ -341,7 +341,7 @@ console.table(
 
 ### `console.time([label])`
 
--   `label` {string} **По умолчанию:** 'default'.
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** 'default'.
 
 Запускает таймер, который может быть использован для вычисления продолжительности операции. Таймеры идентифицируются уникальной `label`. Используйте эту же `метку` при вызове [`console.timeEnd()`](#consoletimeendlabel) для остановки таймера и вывода прошедшего времени в соответствующих единицах времени в `stdout`. Например, если прошедшее время составляет 3869 мс, `console.timeEnd()` выводит "3.869s".
 
@@ -349,7 +349,7 @@ console.table(
 
 ### `console.timeEnd([label])`
 
--   `label` {string} **По умолчанию:** `'default'`.
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`.
 
 Останавливает таймер, который был ранее запущен вызовом [`console.time()`](#consoletimelabel) и печатает результат в `stdout`:
 
@@ -364,8 +364,8 @@ console.timeEnd('bunch-of-stuff');
 
 ### `console.timeLog([label][, ...data])`
 
--   `label` {string} **По умолчанию:** `'default'\*.
--   `...data` {любой}
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'\*.
+-   `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Для таймера, который был ранее запущен вызовом [`console.time()`](#consoletimelabel), печатает истекшее время и другие `данные` аргументов в `stdout`:
 
@@ -382,8 +382,8 @@ console.timeEnd('process');
 
 ### `console.trace([message][, ...args])`
 
--   `сообщение` {любое}
--   `...args` {любой}
+-   `сообщение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Печатает в `stderr` строку ` 'Trace:'``, затем [ `util.format()`](util.md#utilformatformat-args) отформатированное сообщение и трассировку стека до текущей позиции в коде.
 
@@ -408,7 +408,7 @@ console.trace('Show me');
 ### `console.warn([data][, ...args])`
 
 -   `данные` {любые}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Функция `console.warn()` является псевдонимом для [`console.error()`](#consoleerrordata-args).
 
@@ -422,7 +422,7 @@ console.trace('Show me');
 
 ### `console.profile([label])`
 
--   `label` {string}
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Этот метод ничего не отображает, если не используется в инспекторе. Метод `console.profile()` запускает профиль процессора JavaScript с необязательной меткой до вызова [`console.profileEnd()`](#consoleprofileendlabel). Затем профиль добавляется на панель **Profile** инспектора.
 
@@ -437,7 +437,7 @@ console.profileEnd('MyLabel');
 
 ### `console.profileEnd([label])`
 
--   `label` {string}
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Этот метод ничего не отображает, если не используется в инспекторе. Останавливает текущий сеанс профилирования процессора JavaScript, если он был запущен, и печатает отчет на панели **Profiles** инспектора. Пример см. в [`console.profile()`](#consoleprofilelabel).
 
@@ -447,8 +447,9 @@ console.profileEnd('MyLabel');
 
 ### `console.timeStamp([label])`
 
--   `label` {string}
+-   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Этот метод ничего не отображает, если не используется в инспекторе. Метод `console.timeStamp()` добавляет событие с меткой `'label'` на панель **Timeline** инспектора.
 
 <!-- 0026.part.md -->
+

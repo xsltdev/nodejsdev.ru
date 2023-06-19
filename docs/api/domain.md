@@ -224,7 +224,7 @@ serverDomain.run(() => {
 
 ## Класс: `Домен`
 
--   Расширяет: {EventEmitter}
+-   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Класс `Domain` инкапсулирует функциональность маршрутизации ошибок и не пойманных исключений в активный объект `Domain`.
 
@@ -232,7 +232,7 @@ serverDomain.run(() => {
 
 ### `domain.members`
 
--   {Array}
+-   [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 Массив таймеров и эмиттеров событий, которые были явно добавлены в домен.
 
@@ -248,8 +248,8 @@ serverDomain.run(() => {
 
 ### `domain.bind(callback)`.
 
--   `callback` {Функция} Функция обратного вызова
--   Возвращает: {Function} Связанная функция
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Связанная функция
 
 Возвращаемая функция будет оберткой вокруг предоставленной функции обратного вызова. При вызове возвращаемой функции все возникающие ошибки будут перенаправлены в событие домена `'error'`.
 
@@ -289,8 +289,8 @@ d.on('error', (er) => {
 
 ### `domain.intercept(callback)`
 
--   `callback` {Функция} Функция обратного вызова
--   Возвращает: {Function} Перехваченная функция
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Перехваченная функция
 
 Этот метод практически идентичен [`domain.bind(callback)`](#domainbindcallback). Однако, помимо перехвата брошенных ошибок, он также будет перехватывать объекты [`Error`](errors.md#class-error), переданные в качестве первого аргумента функции.
 
@@ -331,7 +331,7 @@ d.on('error', (er) => {
 
 ### `domain.run(fn[, ...args])`
 
--   `fn` {функция}
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `...args` {любая}
 
 Запускает указанную функцию в контексте домена, неявно связывая все эмиттеры событий, таймеры и низкоуровневые запросы, созданные в этом контексте. По желанию функции могут быть переданы аргументы.
@@ -399,3 +399,4 @@ d2.run(() => {
 ````
 
 Домены не будут вмешиваться в механизмы обработки ошибок для обещаний. Другими словами, для необработанных отказов `Promise` не будет выдаваться событие `'error'`.
+

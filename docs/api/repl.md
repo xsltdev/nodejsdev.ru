@@ -437,13 +437,13 @@ Clearing context...
 
 ### `replServer.defineCommand(keyword, cmd)`
 
--   `ключевое слово` {строка} Ключевое слово команды (_без_ ведущего символа `.`).
+-   `ключевое слово` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Ключевое слово команды (_без_ ведущего символа `.`).
 -   `cmd` {Object|Function} Функция, вызываемая при обработке команды.
 
 Метод `replServer.defineCommand()` используется для добавления новых команд с префиксом `.` в экземпляр REPL. Такие команды вызываются путем ввода символа `.`, за которым следует `ключевое слово`. Команда `cmd` является либо `функцией`, либо `объектом` со следующими свойствами:
 
--   `help` {string} Текст справки, который будет отображаться при вводе `.help` (необязательно).
--   `action` {Function} Функция для выполнения, по желанию принимающая один строковый аргумент.
+-   `help` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст справки, который будет отображаться при вводе `.help` (необязательно).
+-   `action` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для выполнения, по желанию принимающая один строковый аргумент.
 
 В следующем примере показаны две новые команды, добавленные в экземпляр REPL:
 
@@ -484,7 +484,7 @@ Goodbye!
 
 ### `replServer.displayPrompt([preserveCursor])`
 
--   `preserveCursor` {boolean}
+-   `preserveCursor` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `replServer.displayPrompt()` готовит экземпляр REPL к вводу данных пользователем, печатая настроенный `prompt` на новой строке в `output` и возобновляя `input` для приема нового ввода.
 
@@ -502,36 +502,36 @@ Goodbye!
 
 > Стабильность: 0 - Утратил актуальность.
 
--   `ключевое слово` {строка} потенциальное ключевое слово для разбора и выполнения
--   `rest` {any} любые параметры команды ключевого слова.
--   Возвращает: {boolean}
+-   `ключевое слово` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) потенциальное ключевое слово для разбора и выполнения
+-   `rest` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) любые параметры команды ключевого слова.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Внутренний метод, используемый для разбора и выполнения ключевых слов `REPLServer`. Возвращает `true`, если `keyword` является правильным ключевым словом, иначе `false`.
 
 ### `replServer.setupHistory(historyPath, callback)`.
 
--   `historyPath` {строка} путь к файлу истории
--   `callback` {функция} вызывается, когда запись истории готова или при ошибке
-    -   `err` {Ошибка}
+-   `historyPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь к файлу истории
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) вызывается, когда запись истории готова или при ошибке
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `repl` {repl.REPLServer}
 
 Инициализирует файл журнала истории для экземпляра REPL. При выполнении бинарного файла Node.js и использовании командной строки REPL файл истории инициализируется по умолчанию. Однако при создании REPL программным способом это не так. Используйте этот метод для инициализации файла журнала истории при программной работе с экземплярами REPL.
 
 ## `repl.builtinModules`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список имен всех модулей Node.js, например, `'http'`.
 
 ## `repl.start([options])`
 
 -   `options` {Object|string}
-    -   `prompt` {string} Вводная подсказка для отображения. **По умолчанию:** `'>` (с пробелом).
-    -   `input` {stream.Readable} Поток `Readable`, из которого будет считываться ввод REPL. **По умолчанию:** `process.stdin`.
-    -   `output` {stream.Writable} Поток `Writable`, в который будет записываться вывод REPL. **По умолчанию:** `process.stdout`.
-    -   `terminal` {boolean} Если `true`, указывает, что `вывод` должен рассматриваться как TTY-терминал. **По умолчанию:** проверка значения свойства `isTTY` для потока `output` при инстанцировании.
-    -   `eval` {Функция} Функция, которая будет использоваться при оценке каждой заданной строки ввода. **По умолчанию:** асинхронная обертка для функции JavaScript `eval()`. Функция `eval` может ошибаться с `repl.Recoverable`, чтобы указать, что ввод был неполным, и запросить дополнительные строки.
-    -   `useColors` {boolean} Если `true`, указывает, что функция по умолчанию `writer` должна включать в REPL стилизацию цветов ANSI.
+    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Вводная подсказка для отображения. **По умолчанию:** `'>` (с пробелом).
+    -   `input` [`<stream.Readable>`](stream.md#streamreadable) Поток `Readable`, из которого будет считываться ввод REPL. **По умолчанию:** `process.stdin`.
+    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток `Writable`, в который будет записываться вывод REPL. **По умолчанию:** `process.stdout`.
+    -   `terminal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, указывает, что `вывод` должен рассматриваться как TTY-терминал. **По умолчанию:** проверка значения свойства `isTTY` для потока `output` при инстанцировании.
+    -   `eval` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которая будет использоваться при оценке каждой заданной строки ввода. **По умолчанию:** асинхронная обертка для функции JavaScript `eval()`. Функция `eval` может ошибаться с `repl.Recoverable`, чтобы указать, что ввод был неполным, и запросить дополнительные строки.
+    -   `useColors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, указывает, что функция по умолчанию `writer` должна включать в REPL стилизацию цветов ANSI.
 
 <!-- 0043.part.md -->
 
@@ -663,3 +663,4 @@ net.createServer((socket) => {
 Пример запуска экземпляра REPL над [`curl(1)`](https://curl.haxx.se/docs/manpage.html), см: <https://gist.github.com/TooTallNate/2053342>.
 
 <!-- 0052.part.md -->
+

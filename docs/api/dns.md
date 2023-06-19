@@ -96,9 +96,9 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 Создайте новый резольвер.
 
--   `options` {Object}
-    -   `timeout` {integer} Таймаут запроса в миллисекундах, или `-1` для использования таймаута по умолчанию.
-    -   `tries` {integer} Количество попыток, которое преобразователь будет пытаться выполнить, связываясь с каждым сервером имен, прежде чем сдаться. **По умолчанию:** `4`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут запроса в миллисекундах, или `-1` для использования таймаута по умолчанию.
+    -   `tries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество попыток, которое преобразователь будет пытаться выполнить, связываясь с каждым сервером имен, прежде чем сдаться. **По умолчанию:** `4`.
 
 <!-- 0002.part.md -->
 
@@ -110,8 +110,8 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ### `resolver.setLocalAddress([ipv4][, ipv6])`
 
--   `ipv4` {string} Строковое представление адреса IPv4. **По умолчанию:** `0.0.0.0.0`.
--   `ipv6` {string} Строковое представление адреса IPv6. **По умолчанию:** `::0`.
+-   `ipv4` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковое представление адреса IPv4. **По умолчанию:** `0.0.0.0.0`.
+-   `ipv6` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковое представление адреса IPv6. **По умолчанию:** `::0`.
 
 Экземпляр резолвера будет посылать свои запросы с указанного IP-адреса. Это позволяет программам указывать исходящие интерфейсы при использовании на многохоумных системах.
 
@@ -123,7 +123,7 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ## `dns.getServers()`
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив строк IP-адресов, отформатированных в соответствии с [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6), которые в настоящее время настроены для разрешения DNS. Строка будет включать раздел порта, если используется пользовательский порт.
 
@@ -140,16 +140,16 @@ resolver.resolve4('example.org', (err, addresses) => {
 
 ## `dns.lookup(hostname[, options], callback)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `options` {integer | Object}
-    -   `family` {integer|string} Семейство записей. Должно быть `4`, `6` или `0`. По причинам обратной совместимости, `'IPv4'` и `'IPv6'` интерпретируются как `4` и `6` соответственно. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
-    -   `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
-    -   `all` {boolean} Если `true`, обратный вызов возвращает все разрешенные адреса в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
-    -   `verbatim` {boolean} Если `true`, обратный вызов получает адреса IPv4 и IPv6 в том порядке, в котором их вернул DNS-резольвер. При `false` адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** `true` (адреса не переупорядочиваются). Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder).
--   `callback` {Функция}
-    -   `err` {Ошибка}
-    -   `address` {string} Строковое представление адреса IPv4 или IPv6.
-    -   `family` {integer} `4` или `6`, обозначающие семейство `адреса`, или `0`, если адрес не является адресом IPv4 или IPv6. `0` является вероятным индикатором ошибки в службе разрешения имен, используемой операционной системой.
+    -   `family` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство записей. Должно быть `4`, `6` или `0`. По причинам обратной совместимости, `'IPv4'` и `'IPv6'` интерпретируются как `4` и `6` соответственно. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
+    -   `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
+    -   `all` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, обратный вызов возвращает все разрешенные адреса в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
+    -   `verbatim` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, обратный вызов получает адреса IPv4 и IPv6 в том порядке, в котором их вернул DNS-резольвер. При `false` адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** `true` (адреса не переупорядочиваются). Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder).
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковое представление адреса IPv4 или IPv6.
+    -   `family` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `4` или `6`, обозначающие семейство `адреса`, или `0`, если адрес не является адресом IPv4 или IPv6. `0` является вероятным индикатором ошибки в службе разрешения имен, используемой операционной системой.
 
 Разрешает имя хоста (например, `'nodejs.org'`) в первую найденную запись A (IPv4) или AAAA (IPv6). Все свойства `option` являются необязательными. Если `options` - целое число, то оно должно быть `4` или `6` - если `options` равно `0` или не указано, то возвращаются оба адреса IPv4 и IPv6, если они найдены.
 
@@ -200,12 +200,12 @@ dns.lookup('example.com', options, (err, addresses) =>
 
 ## `dns.lookupService(address, port, callback)`
 
--   `адрес` {строка}
--   `порт` {число}
--   `callback` {функция}
+-   `адрес` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `порт` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` {ошибка}
-    -   `hostname` {строка} например, `example.com`
-    -   `сервис` {строка}, например `http`.
+    -   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) например, `example.com`
+    -   `сервис` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), например `http`.
 
 Разрешает заданные `address` и `port` в имя хоста и сервис, используя базовую реализацию операционной системы `getnameinfo`.
 
@@ -231,28 +231,28 @@ dns.lookupService(
 
 ## `dns.resolve(hostname[, rrtype], callback)`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `rrtype` {string} Тип записи ресурса. **По умолчанию:** `'A'`.
--   `callback` {Функция}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `rrtype` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип записи ресурса. **По умолчанию:** `'A'`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `records` {string\[\] | Object\[\] | Object}
 
 Использует протокол DNS для преобразования имени хоста (например, `'nodejs.org'`) в массив записей ресурсов. Функция `callback` имеет аргументы `(err, records)`. В случае успеха `records` будет представлять собой массив записей ресурсов. Тип и структура отдельных результатов зависит от `rrtype`:
 
 | `rrtype` | `records` содержит | Тип результата | Метод сокращения | . |
 | --- | --- | --- | --- | --- |
-| `'A'` | IPv4-адреса (по умолчанию) | {string} | [`dns.resolve4()`](#dnsresolve4hostname-options-callback) |
-| `'AAAA'` | IPv6-адреса | {строка} | [`dns.resolve6()`](#dnsresolve6hostname-options-callback) |  |
-| `'ANY'` | любые записи | {Object} | [`dns.resolveAny()`](#dnsresolveanyhostname-callback) | {Объект} |
-| `'CAA'` | записи авторизации CA | {Object} | [`dns.resolveCaa()`](#dnsresolvecaahostname-callback) |
-| `'CNAME'` | записи канонических имен | {string} | [`dns.resolveCname()`](#dnsresolvecnamehostname-callback) |
-| `'MX'` | записи почтового обмена | {Object} | [`dns.resolveMx()`](#dnsresolvemxhostname-callback) | {Объект} |
-| `'NAPTR'` | записи указателей полномочий на имя | {Object} | [`dns.resolveNaptr()`](#dnsresolvenaptrhostname-callback) |
-| `'NS'` | записи сервера имен | {string} | [`dns.resolveNs()`](#dnsresolvenshostname-callback) |
-| `'PTR'` | записи указателей | {string} | [`dns.resolvePtr()`](#dnsresolveptrhostname-callback) |
-| `'SOA'` | начало авторитетных записей | {Object} | [`dns.resolveSoa()`](#dnsresolvesoahostname-callback) |
-| `'SRV'` | служебные записи | {Object} | [`dns.resolveSrv()`](#dnsresolvesrvhostname-callback) |
-| `'TXT'` | текстовые записи | {string\[\]} | [`dns.resolveTxt()`](#dnsresolvetxthostname-callback) |
+| `'A'` | IPv4-адреса (по умолчанию) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolve4()`](#dnsresolve4hostname-options-callback) |
+| `'AAAA'` | IPv6-адреса | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolve6()`](#dnsresolve6hostname-options-callback) |  |
+| `'ANY'` | любые записи | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveAny()`](#dnsresolveanyhostname-callback) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) |
+| `'CAA'` | записи авторизации CA | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveCaa()`](#dnsresolvecaahostname-callback) |
+| `'CNAME'` | записи канонических имен | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolveCname()`](#dnsresolvecnamehostname-callback) |
+| `'MX'` | записи почтового обмена | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveMx()`](#dnsresolvemxhostname-callback) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) |
+| `'NAPTR'` | записи указателей полномочий на имя | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveNaptr()`](#dnsresolvenaptrhostname-callback) |
+| `'NS'` | записи сервера имен | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolveNs()`](#dnsresolvenshostname-callback) |
+| `'PTR'` | записи указателей | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolvePtr()`](#dnsresolveptrhostname-callback) |
+| `'SOA'` | начало авторитетных записей | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveSoa()`](#dnsresolvesoahostname-callback) |
+| `'SRV'` | служебные записи | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dns.resolveSrv()`](#dnsresolvesrvhostname-callback) |
+| `'TXT'` | текстовые записи | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dns.resolveTxt()`](#dnsresolvetxthostname-callback) |
 
 При ошибке, `err` - это объект [`Error`](errors.md#class-error), где `err.code` - один из кодов ошибок DNS.
 
@@ -260,11 +260,11 @@ dns.lookupService(
 
 ## `dns.resolve4(hostname[, options], callback)`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `options` {Object}
-    -   `ttl` {boolean} Извлекает значение времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
--   `callback` {Функция}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Извлекает значение времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `addresses` {string\[\] | Object\[\]}
 
 Использует протокол DNS для разрешения адресов IPv4 (записи `A`) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив IPv4-адресов (например, `['74.125.79.104', '74.125.79.105', '74.125.79.106']`).
@@ -273,11 +273,11 @@ dns.lookupService(
 
 ## `dns.resolve6(hostname[, options], callback)`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `options` {Object}
-    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
--   `callback` {Функция}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Получение значения времени жизни (TTL) каждой записи. Если `true`, обратный вызов получает массив `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массив строк, с TTL, выраженным в секундах.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `addresses` {string\[\] | Object\[\]}
 
 Использует протокол DNS для разрешения адресов IPv6 (записи `AAAA`) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив IPv6-адресов.
@@ -286,9 +286,9 @@ dns.lookupService(
 
 ## `dns.resolveAny(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `ret` {Объект\[\]}
 
 Использует протокол DNS для разрешения всех записей (также известный как `ANY` или `*` запрос). Аргумент `ret`, передаваемый в функцию `callback`, будет массивом, содержащим различные типы записей. Каждый объект имеет свойство `type`, которое указывает на тип текущей записи. В зависимости от `type` у объекта будут присутствовать дополнительные свойства:
@@ -341,10 +341,10 @@ dns.lookupService(
 
 ## `dns.resolveCname(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
-    -   `addresses` {string\[\]}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей `CNAME` для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив канонических записей имен, доступных для `имени хоста` (например, `['bar.example.com']`).
 
@@ -352,9 +352,9 @@ dns.lookupService(
 
 ## `dns.resolveCaa(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `records` {Object\[\]}
 
 Использует протокол DNS для разрешения записей `CAA` для имени `hostname`. Аргумент `addresses`, передаваемый функции `callback`, будет содержать массив записей авторизации центра сертификации, доступных для имени `hostname` (например, `[{critical: 0, iodef: 'mailto:pki@example.com'}, {critical: 128, issue: 'pki.example.com'}]`).
@@ -363,9 +363,9 @@ dns.lookupService(
 
 ## `dns.resolveMx(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения записей почтового обмена (`MX` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив объектов, содержащих свойства `приоритет` и `обмен` (например, `[{приоритет: 10, обмен: 'mx.example.com'}, ...]`).
@@ -374,9 +374,9 @@ dns.lookupService(
 
 ## `dns.resolveNaptr(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения записей на основе регулярных выражений (`NAPTR` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив объектов со следующими свойствами:
@@ -405,10 +405,10 @@ dns.lookupService(
 
 ## `dns.resolveNs(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
-    -   `addresses` {string\[\]}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей сервера имен (`NS` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет содержать массив записей сервера имен, доступных для `hostname` (например, `['ns1.example.com', 'ns2.example.com']`).
 
@@ -416,10 +416,10 @@ dns.lookupService(
 
 ## `dns.resolvePtr(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
-    -   `addresses` {string\[\]}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей указателей (`PTR` записей) для имени `hostname`. Аргумент `addresses`, передаваемый функции `callback`, будет представлять собой массив строк, содержащих ответные записи.
 
@@ -427,10 +427,10 @@ dns.lookupService(
 
 ## `dns.resolveSoa(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
-    -   `address` {Object}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `address` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Использует протокол DNS для разрешения записи начала полномочий (`SOA` запись) для `имени хоста`. Аргумент `address`, передаваемый в функцию `callback`, будет объектом со следующими свойствами:
 
@@ -460,9 +460,9 @@ dns.lookupService(
 
 ## `dns.resolveSrv(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Ошибка}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `addresses` {Object\[\]}
 
 Использует протокол DNS для разрешения служебных записей (`SRV` записей) для имени `hostname`. Аргумент `addresses`, передаваемый в функцию `callback`, будет представлять собой массив объектов со следующими свойствами:
@@ -487,9 +487,9 @@ dns.lookupService(
 
 ## `dns.resolveTxt(hostname, callback)`
 
--   `hostname` {string}
--   `callback` {Function}
-    -   `err` {Error}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `records` \<string\[\]\[\]\>
 
 Использует протокол DNS для разрешения текстовых запросов (`TXT` записей) для `имени хоста`. Аргумент `records`, передаваемый функции `callback`, представляет собой двумерный массив текстовых записей, доступных для `hostname` (например, `[ ['v=spf1 ip4:0.0.0.0 ', '~all' ]`). Каждый подмассив содержит TXT-фрагменты одной записи. В зависимости от случая использования, они могут быть либо объединены вместе, либо рассматриваться отдельно.
@@ -498,10 +498,10 @@ dns.lookupService(
 
 ## `dns.reverse(ip, callback)`
 
--   `ip` {строка}
--   `callback` {Function}
-    -   `err` {Ошибка}
-    -   `hostnames` {string\[\]}
+-   `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `hostnames` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Выполняет обратный DNS запрос, который разрешает IPv4 или IPv6 адрес в массив имен хостов.
 
@@ -511,7 +511,7 @@ dns.lookupService(
 
 ## `dns.setDefaultResultOrder(order)`
 
--   `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
+-   `order` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) должен быть `'ipv4first'` или `'verbatim'`.
 
 Установите значение по умолчанию `verbatim` в [`dns.lookup()`](#dnslookuphostname-options-callback) и [`dnsPromises.lookup()`](#dnspromiseslookuphostname-options). Значение может быть следующим:
 
@@ -524,7 +524,7 @@ dns.lookupService(
 
 ## `dns.setServers(servers)`
 
--   `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
+-   `servers` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
 
 Устанавливает IP-адрес и порт серверов, которые будут использоваться при выполнении разрешения DNS. Аргумент `servers` представляет собой массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6). Если порт является портом DNS по умолчанию IANA (53), его можно опустить.
 
@@ -606,7 +606,7 @@ resolver.resolve4('example.org').then((addresses) => {
 
 ### `dnsPromises.getServers()`
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив строк IP-адресов, отформатированных в соответствии с [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6), которые в настоящее время настроены для разрешения DNS. Строка будет включать раздел порта, если используется пользовательский порт.
 
@@ -623,12 +623,12 @@ resolver.resolve4('example.org').then((addresses) => {
 
 ### `dnsPromises.lookup(hostname[, options])`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `options` {integer | Object}
-    -   `family` {integer} Семейство записей. Должно быть `4`, `6` или `0`. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
-    -   `hints` {number} Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
-    -   `all` {boolean} Если `true`, то `Promise` разрешается со всеми адресами в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
-    -   `verbatim` {boolean} Когда `true`, `Promise` разрешается с адресами IPv4 и IPv6 в том порядке, в котором их вернул преобразователь DNS. Когда `false`, адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** в настоящее время `false` (адреса переупорядочиваются), но ожидается, что в ближайшем будущем это изменится. Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder). В новом коде следует использовать `{ verbatim: true }`.
+    -   `family` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство записей. Должно быть `4`, `6` или `0`. Значение `0` указывает, что возвращаются адреса IPv4 и IPv6. **По умолчанию:** `0`.
+    -   `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Один или несколько поддерживаемых флагов `getaddrinfo`. Несколько флагов могут быть переданы путем побитового `OR` их значений.
+    -   `all` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то `Promise` разрешается со всеми адресами в массиве. В противном случае возвращается один адрес. **По умолчанию:** `false`.
+    -   `verbatim` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, `Promise` разрешается с адресами IPv4 и IPv6 в том порядке, в котором их вернул преобразователь DNS. Когда `false`, адреса IPv4 размещаются перед адресами IPv6. **По умолчанию:** в настоящее время `false` (адреса переупорядочиваются), но ожидается, что в ближайшем будущем это изменится. Значение по умолчанию настраивается с помощью [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) или [`--dns-result-order`](cli.md#--dns-result-orderorder). В новом коде следует использовать `{ verbatim: true }`.
 
 Разрешает имя хоста (например, `'nodejs.org'`) в первую найденную запись A (IPv4) или AAAA (IPv6). Все свойства `option` являются необязательными. Если `options` является целым числом, то оно должно быть `4` или `6` - если `options` не указано, то возвращаются оба адреса IPv4 и IPv6, если они найдены.
 
@@ -673,8 +673,8 @@ dnsPromises
 
 ### `dnsPromises.lookupService(address, port)`
 
--   `адрес` {строка}
--   `порт` {число}
+-   `адрес` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `порт` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Разрешает заданные `address` и `port` в имя хоста и сервис, используя реализацию `getnameinfo` операционной системы.
 
@@ -696,25 +696,25 @@ dnsPromises
 
 ### `dnsPromises.resolve(hostname[, rrtype])`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `rrtype` {строка} Тип записи ресурса. **По умолчанию:** `A`.
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `rrtype` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип записи ресурса. **По умолчанию:** `A`.
 
 Использует протокол DNS для преобразования имени хоста (например, `'nodejs.org'`) в массив записей ресурсов. В случае успеха `Promise` разрешается в массив записей ресурсов. Тип и структура отдельных результатов зависят от `rrtype`:
 
 | `rrtype` | `records` contains | Result type | Shorthand method |
 | --- | --- | --- | --- |
-| `'A'` | IPv4-адреса (по умолчанию) | {string} | [`dnsPromises.resolve4()`](#dnspromisesresolve4hostname-options) |
-| `'AAAA'` | IPv6-адреса | {строка} | [`dnsPromises.resolve6()`](#dnspromisesresolve6hostname-options) |  |
-| `'ANY'` | любые записи | {Object} | [`dnsPromises.resolveAny()`](#dnspromisesresolveanyhostname) |  |
-| `'CAA'` | записи авторизации CA | {Object} | [`dnsPromises.resolveCaa()`](#dnspromisesresolvecaahostname) |  |
-| `'CNAME'` | записи канонических имен | {string} | [`dnsPromises.resolveCname()`](#dnspromisesresolvecnamehostname) |  |
-| `'MX'` | записи почтового обмена | {Object} | [`dnsPromises.resolveMx()`](#dnspromisesresolvemxhostname) |  |
-| `'NAPTR'` | записи указателей полномочий на имя | {Object} | [`dnsPromises.resolveNaptr()`](#dnspromisesresolvenaptrhostname) |  |
-| `'NS'` | записи сервера имен | {string} | [`dnsPromises.resolveNs()`](#dnspromisesresolvenshostname) |  |
-| `'PTR'` | записи указателей | {строка} | [`dnsPromises.resolvePtr()`](#dnspromisesresolveptrhostname) |  |
-| `'SOA'` | начало авторитетных записей | {Object} | [`dnsPromises.resolveSoa()`](#dnspromisesresolvesoahostname) |  |
-| `'SRV'` | служебные записи | {Object} | [`dnsPromises.resolveSrv()`](#dnspromisesresolvesrvhostname) |  |
-| `'TXT'` | текстовые записи | {string\[\]} | [`dnsPromises.resolveTxt()`](#dnspromisesresolvetxthostname) |
+| `'A'` | IPv4-адреса (по умолчанию) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolve4()`](#dnspromisesresolve4hostname-options) |
+| `'AAAA'` | IPv6-адреса | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolve6()`](#dnspromisesresolve6hostname-options) |  |
+| `'ANY'` | любые записи | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveAny()`](#dnspromisesresolveanyhostname) |  |
+| `'CAA'` | записи авторизации CA | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveCaa()`](#dnspromisesresolvecaahostname) |  |
+| `'CNAME'` | записи канонических имен | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolveCname()`](#dnspromisesresolvecnamehostname) |  |
+| `'MX'` | записи почтового обмена | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveMx()`](#dnspromisesresolvemxhostname) |  |
+| `'NAPTR'` | записи указателей полномочий на имя | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveNaptr()`](#dnspromisesresolvenaptrhostname) |  |
+| `'NS'` | записи сервера имен | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolveNs()`](#dnspromisesresolvenshostname) |  |
+| `'PTR'` | записи указателей | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolvePtr()`](#dnspromisesresolveptrhostname) |  |
+| `'SOA'` | начало авторитетных записей | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveSoa()`](#dnspromisesresolvesoahostname) |  |
+| `'SRV'` | служебные записи | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`dnsPromises.resolveSrv()`](#dnspromisesresolvesrvhostname) |  |
+| `'TXT'` | текстовые записи | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`dnsPromises.resolveTxt()`](#dnspromisesresolvetxthostname) |
 
 При ошибке `Promise` отклоняется с объектом [`Error`](errors.md#class-error), где `err.code` - один из кодов ошибок DNS.
 
@@ -722,9 +722,9 @@ dnsPromises
 
 ### `dnsPromises.resolve4(hostname[, options])`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `options` {Object}
-    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массивом строк, с TTL, выраженным в секундах.
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{адрес: '1.2.3.4', ttl: 60 }` объектов, а не массивом строк, с TTL, выраженным в секундах.
 
 Использует протокол DNS для разрешения адресов IPv4 (записи `A`) для имени `hostname`. В случае успеха `Promise` преобразуется в массив IPv4-адресов (например, `['74.125.79.104', '74.125.79.105', '74.125.79.106']`).
 
@@ -732,9 +732,9 @@ dnsPromises
 
 ### `dnsPromises.resolve6(hostname[, options])`
 
--   `hostname` {string} Имя хоста для разрешения.
--   `options` {Object}
-    -   `ttl` {boolean} Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массива строк, с TTL, выраженным в секундах.
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Получение значения времени жизни (TTL) каждой записи. Если `true`, то `Promise` разрешается с массивом `{ address: '0:1:2:3:4:5:6:7', ttl: 60 }` объектов, а не массива строк, с TTL, выраженным в секундах.
 
 Использует протокол DNS для разрешения адресов IPv6 (записи `AAAA`) для имени `hostname`. В случае успеха `Promise` преобразуется в массив IPv6-адресов.
 
@@ -742,7 +742,7 @@ dnsPromises
 
 ### `dnsPromises.resolveAny(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения всех записей (также известный как `ANY` или `*` запрос). В случае успеха, `Promise` разрешается с массивом, содержащим различные типы записей. Каждый объект имеет свойство `type`, которое указывает на тип текущей записи. В зависимости от `type` у объекта будут присутствовать дополнительные свойства:
 
@@ -792,7 +792,7 @@ dnsPromises
 
 ### `dnsPromises.resolveCaa(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей `CAA` для имени `hostname`. При успехе `Promise` разрешается с массивом объектов, содержащих доступные записи авторизации центра сертификации, доступные для `имени хоста` (например, `[{критический: 0, iodef: 'mailto:pki@example.com'},{критический: 128, issue: 'pki.example.com'}]`).
 
@@ -800,7 +800,7 @@ dnsPromises
 
 ### `dnsPromises.resolveCname(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей `CNAME` для имени `hostname`. В случае успеха `Promise` разрешается с массивом канонических записей имен, доступных для `имени хоста` (например, `['bar.example.com']`).
 
@@ -808,7 +808,7 @@ dnsPromises
 
 ### `dnsPromises.resolveMx(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей почтового обмена (`MX` записей) для `имени хоста`. В случае успеха, `Promise` разрешается с массивом объектов, содержащих свойства `приоритет` и `обмен` (например, `[{приоритет: 10, обмен: 'mx.example.com'}, ...]`).
 
@@ -816,7 +816,7 @@ dnsPromises
 
 ### `dnsPromises.resolveNaptr(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей на основе регулярных выражений (`NAPTR` записей) для `hostname`. В случае успеха, `Promise` разрешается с массивом объектов со следующими свойствами:
 
@@ -844,7 +844,7 @@ dnsPromises
 
 ### `dnsPromises.resolveNs(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей сервера имен (`NS` записей) для `имени хоста`. В случае успеха `Promise` разрешается с массивом записей сервера имен, доступных для `hostname` (например, `['ns1.example.com', 'ns2.example.com']`).
 
@@ -852,7 +852,7 @@ dnsPromises
 
 ### `dnsPromises.resolvePtr(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записей указателей (`PTR` записей) для `имени хоста`. В случае успеха `Promise` разрешается с массивом строк, содержащих ответные записи.
 
@@ -860,7 +860,7 @@ dnsPromises
 
 ### `dnsPromises.resolveSoa(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения записи начала полномочий (`SOA` запись) для `hostname`. В случае успеха `Promise` разрешается объект со следующими свойствами:
 
@@ -890,7 +890,7 @@ dnsPromises
 
 ### `dnsPromises.resolveSrv(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения служебных записей (`SRV` записей) для `hostname`. В случае успеха `Promise` разрешается с массивом объектов со следующими свойствами:
 
@@ -914,7 +914,7 @@ dnsPromises
 
 ### `dnsPromises.resolveTxt(hostname)`
 
--   `hostname` {string}
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Использует протокол DNS для разрешения текстовых запросов (записей `TXT`) для имени `hostname`. В случае успеха `Promise` разрешается двумерный массив текстовых записей, доступных для `hostname` (например, `[ ['v=spf1 ip4:0.0.0.0 ', '~all' ]`). Каждый подмассив содержит TXT-фрагменты одной записи. В зависимости от случая использования, они могут быть либо объединены вместе, либо рассматриваться отдельно.
 
@@ -922,7 +922,7 @@ dnsPromises
 
 ### `dnsPromises.reverse(ip)`
 
--   `ip` {строка}
+-   `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Выполняет обратный DNS-запрос, который разрешает адрес IPv4 или IPv6 в массив имен хостов.
 
@@ -932,7 +932,7 @@ dnsPromises
 
 ### `dnsPromises.setDefaultResultOrder(order)`
 
--   `order` {string} должен быть `'ipv4first'` или `'verbatim'`.
+-   `order` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) должен быть `'ipv4first'` или `'verbatim'`.
 
 Установите значение по умолчанию `verbatim` в [`dns.lookup()`](#dnslookuphostname-options-callback) и [`dnsPromises.lookup()`](#dnspromiseslookuphostname-options). Значение может быть следующим:
 
@@ -945,7 +945,7 @@ dnsPromises
 
 ### `dnsPromises.setServers(servers)`
 
--   `servers` {string\[\]} массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
+-   `servers` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6)
 
 Устанавливает IP-адрес и порт серверов, которые будут использоваться при выполнении разрешения DNS. Аргумент `servers` представляет собой массив адресов в формате [RFC 5952](https://tools.ietf.org/html/rfc5952#section-6). Если порт является портом DNS по умолчанию IANA (53), его можно опустить.
 
@@ -1024,3 +1024,4 @@ API `dnsPromises` также экспортирует вышеуказанные
 Они не используют тот же набор конфигурационных файлов, что и [`dns.lookup()`](#dnslookuphostname-options-callback). Например, они не используют конфигурацию из `/etc/hosts`.
 
 <!-- 0050.part.md -->
+

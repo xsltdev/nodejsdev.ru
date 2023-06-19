@@ -64,8 +64,8 @@ if (isMainThread) {
 
 ## `worker.getEnvironmentData(key)`
 
--   `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
--   Возвращает: {any}
+-   `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Внутри рабочего потока `worker.getEnvironmentData()` возвращает клон данных, переданных в порождающий поток `worker.setEnvironmentData()`. Каждый новый `Worker` получает свою собственную копию данных окружения автоматически.
 
@@ -89,7 +89,7 @@ if (isMainThread) {
 
 ## `worker.isMainThread`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если этот код не выполняется внутри потока [`Worker`](#class-worker).
 
@@ -149,7 +149,7 @@ console.log(typedArray2);
 
 -   `port` {MessagePort} Порт сообщения для передачи.
 
--   `contextifiedSandbox` {Объект} Объект [contextified](vm.md#what-does-it-mean-to-contextify-an-object), возвращенный методом `vm.createContext()`.
+-   `contextifiedSandbox` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект [contextified](vm.md#what-does-it-mean-to-contextify-an-object), возвращенный методом `vm.createContext()`.
 
 -   Возвращает: {MessagePort}
 
@@ -218,11 +218,11 @@ console.log(receiveMessageOnPort(port2));
 
 ## `worker.resourceLimits`
 
--   {Object}
-    -   `maxYoungGenerationSizeMb` {number}
-    -   `maxOldGenerationSizeMb` {number}
-    -   `codeRangeSizeMb` {число}
-    -   `stackSizeMb` {number}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Предоставляет набор ограничений на ресурсы JS-движка внутри этого потока Worker. Если параметр `resourceLimits` был передан конструктору [`Worker`](#class-worker), этот параметр соответствует его значениям.
 
@@ -253,8 +253,8 @@ new Worker('process.env.SET_IN_WORKER = "foo"', {
 
 ## `worker.setEnvironmentData(key[, value])`
 
--   `key` {any} Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
--   `value` {любой} Любое произвольное, клонируемое значение JavaScript, которое будет клонироваться и автоматически передаваться всем новым экземплярам `Worker`. Если `value` передано как `undefined`, любое ранее установленное значение для `key` будет удалено.
+-   `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое произвольное, клонируемое значение JavaScript, которое может быть использовано в качестве ключа {Map}.
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое произвольное, клонируемое значение JavaScript, которое будет клонироваться и автоматически передаваться всем новым экземплярам `Worker`. Если `value` передано как `undefined`, любое ранее установленное значение для `key` будет удалено.
 
 API `worker.setEnvironmentData()` устанавливает содержимое `worker.getEnvironmentData()` в текущем потоке и во всех новых экземплярах `Worker`, порожденных из текущего контекста.
 
@@ -262,7 +262,7 @@ API `worker.setEnvironmentData()` устанавливает содержимо�
 
 ## `worker.threadId`
 
--   {integer}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Целочисленный идентификатор текущего потока. На соответствующем объекте worker (если он есть) он доступен как [`worker.threadId`](#workerthreadid_1). Это значение уникально для каждого экземпляра [`Worker`](#class-worker) внутри одного процесса.
 
@@ -324,7 +324,7 @@ if (isMainThread) {
 
 ### `new BroadcastChannel(name)`
 
--   `name` {любой} Имя канала, к которому нужно подключиться. Допускается любое значение JavaScript, которое может быть преобразовано в строку с помощью `${name}`.
+-   `name` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Имя канала, к которому нужно подключиться. Допускается любое значение JavaScript, которое может быть преобразовано в строку с помощью `${name}`.
 
 <!-- 0013.part.md -->
 
@@ -336,19 +336,19 @@ if (isMainThread) {
 
 ### `broadcastChannel.onmessage`
 
--   Тип: {Функция} Вызывается с одним аргументом `MessageEvent` при получении сообщения.
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается с одним аргументом `MessageEvent` при получении сообщения.
 
 <!-- 0015.part.md -->
 
 ### `broadcastChannel.onmessageerror`
 
--   Тип: {Function} Вызывается при получении сообщения, которое не может быть десериализовано.
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при получении сообщения, которое не может быть десериализовано.
 
 <!-- 0016.part.md -->
 
 ### `broadcastChannel.postMessage(message)`
 
--   `message` {any} Любое клонируемое значение JavaScript.
+-   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое клонируемое значение JavaScript.
 
 <!-- 0017.part.md -->
 
@@ -413,7 +413,7 @@ port1.close();
 
 ### Событие: `message`
 
--   `значение` {любое} Передаваемое значение
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Передаваемое значение
 
 Событие `'message'` испускается для любого входящего сообщения, содержащего клонированный вход [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
@@ -423,7 +423,7 @@ port1.close();
 
 ### Событие: `messageerror`
 
--   `error` {Error} Объект ошибки
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Объект ошибки
 
 Событие `'messageerror'` возникает при неудачной десериализации сообщения.
 
@@ -441,7 +441,7 @@ port1.close();
 
 ### `port.postMessage(value[, transferList])`
 
--   `значение` {любой}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `transferList` {Object\[\]}
 
 Отправляет значение JavaScript на принимающую сторону этого канала. Передача `value` осуществляется способом, совместимым с [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
@@ -454,7 +454,7 @@ port1.close();
 -   `значение` может содержать экземпляры [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
 -   `value` не может содержать нативные (поддерживаемые C++) объекты, кроме:
     -   {CryptoKey}s,
-    -   {FileHandle}s,
+    -   [`<FileHandle>`](fs.md#filehandle)s,
     -   {Histogram}s,
     -   {KeyObject}s,
     -   {MessagePort}s,
@@ -591,7 +591,7 @@ port2.postMessage(new URL('https://example.org'));
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   Возвращает: {boolean}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если true, то объект `MessagePort` будет поддерживать активным цикл событий Node.js.
 
@@ -623,7 +623,7 @@ port2.postMessage(new URL('https://example.org'));
 
 ## Класс: `Worker`
 
--   Расширяет: {EventEmitter}
+-   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Класс `Worker` представляет собой независимый поток выполнения JavaScript. Большинство API Node.js доступны внутри него.
 
@@ -684,23 +684,23 @@ if (isMainThread) {
 
 ### `new Worker(filename[, options])`
 
--   `filename` {string|URL} Путь к основному скрипту или модулю Рабочего. Должен быть либо абсолютным путем, либо относительным путем (т.е. относительно текущего рабочего каталога), начинающимся с `./` или `../`, либо объектом WHATWG `URL`, использующим протокол `file:` или `data:`. При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) данные интерпретируются на основе MIME-типа с помощью [ECMAScript module loader](esm.md#data-imports). Если `options.eval` имеет значение `true`, то это строка, содержащая код JavaScript, а не путь.
--   `options` {Object}
+-   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Путь к основному скрипту или модулю Рабочего. Должен быть либо абсолютным путем, либо относительным путем (т.е. относительно текущего рабочего каталога), начинающимся с `./` или `../`, либо объектом WHATWG `URL`, использующим протокол `file:` или `data:`. При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) данные интерпретируются на основе MIME-типа с помощью [ECMAScript module loader](esm.md#data-imports). Если `options.eval` имеет значение `true`, то это строка, содержащая код JavaScript, а не путь.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `argv` {любой\[\]} Список аргументов, которые будут строфицированы и добавлены в `process.argv` в рабочем. Это в основном похоже на `workerData`, но значения доступны в глобальном `process.argv`, как если бы они были переданы как опции CLI скрипту.
-    -   `env` {Object} Если установлено, определяет начальное значение `process.env` внутри потока Worker. В качестве специального значения можно использовать [`worker.SHARE_ENV`](#workershare_env), чтобы указать, что родительский и дочерний потоки должны совместно использовать свои переменные окружения; в этом случае изменения объекта `process.env` одного потока влияют и на другой поток. **По умолчанию:** `process.env`.
-    -   `eval` {boolean} Если `true` и первый аргумент является `строкой`, интерпретируйте первый аргумент конструктора как сценарий, который будет выполнен, как только рабочий будет запущен.
-    -   `execArgv` {string\[\]} Список опций CLI узла, передаваемых рабочему. Опции V8 (такие как `--max-old-space-size`) и опции, влияющие на процесс (такие как `--title`), не поддерживаются. Если опция задана, она передается как [`process.execArgv`](process.md#processexecargv) внутри рабочего. По умолчанию опции наследуются от родительского потока.
-    -   `stdin` {boolean} Если параметр имеет значение `true`, то `worker.stdin` предоставляет записываемый поток, содержимое которого отображается как `process.stdin` внутри рабочего. По умолчанию данные не предоставляются.
-    -   `stdout` {boolean} Если установлено значение `true`, то `worker.stdout` не будет автоматически передаваться в `process.stdout` родителя.
-    -   `stderr` {boolean} Если установлено значение `true`, то `worker.stderr` не будет автоматически передаваться в `process.stderr` родителя.
-    -   `workerData` {any} Любое значение JavaScript, которое клонируется и становится доступным как [`require('node:worker_threads').workerData`](#workerworkerdata). Клонирование происходит, как описано в [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), и если объект не может быть клонирован (например, потому что он содержит `функции`), возникает ошибка.
-    -   `trackUnmanagedFds` {boolean} Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
+    -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если установлено, определяет начальное значение `process.env` внутри потока Worker. В качестве специального значения можно использовать [`worker.SHARE_ENV`](#workershare_env), чтобы указать, что родительский и дочерний потоки должны совместно использовать свои переменные окружения; в этом случае изменения объекта `process.env` одного потока влияют и на другой поток. **По умолчанию:** `process.env`.
+    -   `eval` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true` и первый аргумент является `строкой`, интерпретируйте первый аргумент конструктора как сценарий, который будет выполнен, как только рабочий будет запущен.
+    -   `execArgv` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список опций CLI узла, передаваемых рабочему. Опции V8 (такие как `--max-old-space-size`) и опции, влияющие на процесс (такие как `--title`), не поддерживаются. Если опция задана, она передается как [`process.execArgv`](process.md#processexecargv) внутри рабочего. По умолчанию опции наследуются от родительского потока.
+    -   `stdin` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если параметр имеет значение `true`, то `worker.stdin` предоставляет записываемый поток, содержимое которого отображается как `process.stdin` внутри рабочего. По умолчанию данные не предоставляются.
+    -   `stdout` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то `worker.stdout` не будет автоматически передаваться в `process.stdout` родителя.
+    -   `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то `worker.stderr` не будет автоматически передаваться в `process.stderr` родителя.
+    -   `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript, которое клонируется и становится доступным как [`require('node:worker_threads').workerData`](#workerworkerdata). Клонирование происходит, как описано в [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), и если объект не может быть клонирован (например, потому что он содержит `функции`), возникает ошибка.
+    -   `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
 
 <!-- 0034.part.md -->
 
 ### Событие: `error`
 
--   `err` {Ошибка}
+-   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Событие `'error'` происходит, если рабочий поток бросает не пойманное исключение. В этом случае рабочий поток завершается.
 
@@ -708,7 +708,7 @@ if (isMainThread) {
 
 ### Событие: `exit`
 
--   `exitCode` {целое число}
+-   `exitCode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Событие `'exit'` испускается, когда рабочий остановился. Если рабочий завершился вызовом [`process.exit()`](process.md#processexitcode), то параметром `exitCode` будет переданный код завершения. Если рабочий был завершен, параметр `exitCode` равен `1`.
 
@@ -718,7 +718,7 @@ if (isMainThread) {
 
 ### Событие: `message`
 
--   `значение` {любое} Переданное значение
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
 Событие `'message'` происходит, когда рабочий поток вызвал [`require('node:worker_threads').parentPort.postMessage()`](#workerpostmessagevalue-transferlist). Подробнее см. событие [`port.on('message')`](#event-message).
 
@@ -728,7 +728,7 @@ if (isMainThread) {
 
 ### Событие: `messageerror`
 
--   `error` {Error} Объект ошибки
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Объект ошибки
 
 Событие `'messageerror'` возникает, когда десериализация сообщения не удалась.
 
@@ -742,10 +742,10 @@ if (isMainThread) {
 
 ### `worker.getHeapSnapshot([options])`
 
--   `options` {Object}
-    -   `exposeInternals` {boolean} Если true, раскрывать внутренние компоненты в снимке кучи. **По умолчанию:** `false`.
-    -   `exposeNumericValues` {boolean} Если true, раскрывать числовые значения в искусственных полях. **По умолчанию:** `false`.
--   Возвращает: {Promise} Обещание для читаемого потока, содержащего снимок кучи V8.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `exposeInternals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если true, раскрывать внутренние компоненты в снимке кучи. **По умолчанию:** `false`.
+    -   `exposeNumericValues` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если true, раскрывать числовые значения в искусственных полях. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание для читаемого потока, содержащего снимок кучи V8.
 
 Возвращает читаемый поток для V8-снимка текущего состояния Worker. Подробнее см. в [`v8.getHeapSnapshot()`](v8.md#v8getheapsnapshotoptions).
 
@@ -761,12 +761,12 @@ if (isMainThread) {
 
 #### `performance.eventLoopUtilization([utilization1[, utilization2]])`.
 
--   `utilization1` {Объект} Результат предыдущего вызова `eventLoopUtilization()`.
--   `utilization2` {Object} Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
--   Возвращает {Object}
-    -   `idle` {number}
-    -   `active` {number}
-    -   `использование` {число}
+-   `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()`.
+-   `utilization2` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
+-   Возвращает [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `active` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `использование` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Тот же вызов, что и [`perf_hooks` `eventLoopUtilization()`](perf_hooks.md#performanceeventlooputilizationutilization1-utilization2), за исключением того, что возвращаются значения рабочего экземпляра.
 
@@ -807,7 +807,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.postMessage(value[, transferList])`
 
--   `значение` {любой}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `transferList` {Object\[\]}
 
 Отправка сообщения на рабочий, полученного через [`require('node:worker_threads').parentPort.on('message')`](#event-message). Подробнее см. в [`port.postMessage()`](#portpostmessagevalue-transferlist).
@@ -822,11 +822,11 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.resourceLimits`
 
--   {Object}
-    -   `maxYoungGenerationSizeMb` {number}
-    -   `maxOldGenerationSizeMb` {number}
-    -   `codeRangeSizeMb` {число}
-    -   `stackSizeMb` {number}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Предоставляет набор ограничений ресурсов JS-движка для этого потока Worker. Если параметр `resourceLimits` был передан конструктору [`Worker`](#class-worker), то он соответствует его значениям.
 
@@ -836,7 +836,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.stderr`
 
--   {stream.Readable}
+-   [`<stream.Readable>`](stream.md#streamreadable)
 
 Это читаемый поток, который содержит данные, записанные в [`process.stderr`](process.md#processstderr) внутри рабочего потока. Если `stderr: true` не было передано в конструктор [`Worker`](#class-worker), то данные передаются в поток [`process.stderr`](process.md#processstderr) родительского потока.
 
@@ -852,7 +852,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.stdout`
 
--   {stream.Readable}
+-   [`<stream.Readable>`](stream.md#streamreadable)
 
 Это читаемый поток, который содержит данные, записанные в [`process.stdout`](process.md#processstdout) внутри рабочего потока. Если в конструктор [`Worker`](#class-worker) не было передано `stdout: true`, то данные передаются в поток [`process.stdout`](process.md#processstdout) родительского потока.
 
@@ -868,7 +868,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 ### `worker.threadId`
 
--   {integer}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Целочисленный идентификатор для ссылающегося потока. Внутри рабочего потока он доступен как [`require('node:worker_threads').threadId`](#workerthreadid). Это значение уникально для каждого экземпляра `Worker` внутри одного процесса.
 
@@ -928,3 +928,4 @@ if (isMainThread) {
 Будьте осторожны при запуске рабочих потоков из скриптов предварительной загрузки (скрипты, загруженные и запущенные с помощью флага командной строки `-r`). Если опция `execArgv` не установлена явно, новые рабочие потоки автоматически наследуют флаги командной строки от запущенного процесса и будут загружать те же сценарии предварительной загрузки, что и основной поток. Если сценарий предварительной загрузки безоговорочно запускает рабочий поток, каждый порожденный поток будет порождать другой, пока приложение не завершится.
 
 <!-- 0054.part.md -->
+

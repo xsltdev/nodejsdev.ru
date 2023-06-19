@@ -40,7 +40,7 @@ const inspector = require('node:inspector');
 
 ### Класс: `inspector.Session`
 
--   Расширяет: {EventEmitter}
+-   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 
@@ -50,7 +50,7 @@ const inspector = require('node:inspector');
 
 #### Событие: `inspectorNotification`
 
--   {Объект} Объект сообщения уведомления
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект сообщения уведомления
 
 Выдается при получении любого уведомления от инспектора V8.
 
@@ -66,7 +66,7 @@ session.on('inspectorNotification', (message) =>
 
 #### Событие: `<inspector-protocol-method>`
 
--   {Object} Объект сообщения уведомления
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект сообщения уведомления
 
 Выдается при получении уведомления инспектора, у которого поле method установлено в значение `<inspector-protocol-method>`.
 
@@ -93,9 +93,9 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.post(method[, params])`
 
--   `method` {строка}
--   `params` {Object}
--   Возвращает: {Promise}
+-   `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Отправляет сообщение на внутреннюю страницу инспектора.
 
@@ -176,7 +176,7 @@ fs.closeSync(fd);
 
 ### Класс: `inspector.Session`
 
--   Расширяет: {EventEmitter}
+-   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 
@@ -186,7 +186,7 @@ fs.closeSync(fd);
 
 #### Событие: `inspectorNotification`
 
--   {Объект} Объект сообщения уведомления
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект сообщения уведомления
 
 Выдается при получении любого уведомления от инспектора V8.
 
@@ -202,7 +202,7 @@ session.on('inspectorNotification', (message) =>
 
 #### Событие: `<inspector-protocol-method>`
 
--   {Object} Объект сообщения уведомления
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект сообщения уведомления
 
 Выдается при получении уведомления инспектора, у которого поле method установлено в значение `<inspector-protocol-method>`.
 
@@ -229,9 +229,9 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.post(method[, params][, callback])`
 
--   `method` {строка}
--   `params` {Object}
--   `callback` {Function}
+-   `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Отправляет сообщение на внутреннюю страницу инспектора. Функция `callback` будет уведомлена, когда будет получен ответ. `callback` - это функция, принимающая два необязательных аргумента: ошибку и результат, специфичный для сообщения.
 
@@ -325,7 +325,7 @@ session.post(
 
 ### `inspector.console`
 
--   {Object} Объект для отправки сообщений на консоль удаленного инспектора.
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект для отправки сообщений на консоль удаленного инспектора.
 
 ```js
 require('node:inspector').console.log('сообщение');
@@ -335,9 +335,9 @@ require('node:inspector').console.log('сообщение');
 
 ### `inspector.open([port[, host[, wait]]])`
 
--   `port` {number} Порт для прослушивания соединений инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
--   `host` {string} Хост, на котором будут прослушиваться соединения инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
--   `wait` {boolean} Блокировать до тех пор, пока клиент не подключится. Необязательно. **По умолчанию:** `false`.
+-   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для прослушивания соединений инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
+-   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, на котором будут прослушиваться соединения инспектора. Необязательно. **По умолчанию:** то, что было указано в CLI.
+-   `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Блокировать до тех пор, пока клиент не подключится. Необязательно. **По умолчанию:** `false`.
 
 Активировать инспектора на хосте и порту. Эквивалентно `node --inspect=[[host:]port]`, но может быть выполнено программно после запуска узла.
 
@@ -371,3 +371,4 @@ undefined
 Блокирует до тех пор, пока клиент (существующий или подключенный позже) не отправит команду `Runtime.runIfWaitingForDebugger`.
 
 Если нет активного инспектора, будет выдано исключение.
+

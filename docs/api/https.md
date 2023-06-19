@@ -52,11 +52,11 @@ try {
 
 ### `new Agent([options])`
 
--   `options` {Object} Набор конфигурируемых опций для установки на агента. Может иметь те же поля, что и для [`http.Agent(options)`](http.md#new-agentoptions), и
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор конфигурируемых опций для установки на агента. Может иметь те же поля, что и для [`http.Agent(options)`](http.md#new-agentoptions), и
 
-    -   `maxCachedSessions` {number} максимальное количество TLS кэшированных сессий. Используйте `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
+    -   `maxCachedSessions` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное количество TLS кэшированных сессий. Используйте `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
 
-    -   `servername` {string} значение расширения [Server Name Indication extension](https://en.wikipedia.org/wiki/Server_Name_Indication) для отправки на сервер. Используйте пустую строку `''`, чтобы отключить отправку расширения. **По умолчанию:** имя хоста целевого сервера, если только целевой сервер не указан с помощью IP-адреса, в этом случае по умолчанию используется `''` (без расширения).
+    -   `servername` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения [Server Name Indication extension](https://en.wikipedia.org/wiki/Server_Name_Indication) для отправки на сервер. Используйте пустую строку `''`, чтобы отключить отправку расширения. **По умолчанию:** имя хоста целевого сервера, если только целевой сервер не указан с помощью IP-адреса, в этом случае по умолчанию используется `''` (без расширения).
 
         Информацию о повторном использовании сеанса TLS см. в [`Session Resumption`](tls.md#session-resumption).
 
@@ -64,7 +64,7 @@ try {
 
 #### Событие: `keylog`
 
--   `line` {Буфер} Строка текста ASCII, в формате NSS `SSLKEYLOGFILE`.
+-   `line` [`<Buffer>`](buffer.md#buffer) Строка текста ASCII, в формате NSS `SSLKEYLOGFILE`.
 -   `tlsSocket` {tls.TLSSocket} Экземпляр `tls.TLSSocket`, на котором оно было сгенерировано.
 
 Событие `keylog` испускается, когда ключевой материал генерируется или принимается соединением, управляемым этим агентом (обычно до завершения рукопожатия, но не обязательно). Этот ключевой материал может быть сохранен для отладки, поскольку он позволяет расшифровать захваченный трафик TLS. Он может выдаваться несколько раз для каждого сокета.
@@ -92,7 +92,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.close([callback])`
 
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {https.Server}
 
 См. [`server.close()`](http.md#serverclosecallback) в модуле `node:http`.
@@ -113,7 +113,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.headersTimeout`
 
--   {число} **По умолчанию:** `60000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`.
 
 Смотрите [`server.headersTimeout`](http.md#serverheaderstimeout) в модуле `node:http`.
 
@@ -127,7 +127,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.maxHeadersCount`
 
--   {число} **По умолчанию:** `2000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`.
 
 Смотрите [`server.maxHeadersCount`](http.md#servermaxheaderscount) в модуле `node:http`.
 
@@ -135,7 +135,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.requestTimeout`
 
--   {число} **По умолчанию:** `300000`.
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`.
 
 Смотрите [`server.requestTimeout`](http.md#serverrequesttimeout) в модуле `node:http`.
 
@@ -143,8 +143,8 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.setTimeout([msecs][, callback])`
 
--   `msecs` {число} **По умолчанию:** `120000` (2 минуты)
--   `callback` {функция}
+-   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {https.Server}
 
 См. [`server.setTimeout()`](http.md#serversettimeoutmsecs-callback) в модуле `node:http`.
@@ -153,7 +153,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.timeout`
 
--   {число} **По умолчанию:** 0 (без таймаута).
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута).
 
 Смотрите [`server.timeout`](http.md#servertimeout) в модуле `node:http`.
 
@@ -161,7 +161,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.keepAliveTimeout`
 
--   {число} **По умолчанию:** `5000` (5 секунд)
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
 
 Смотрите [`server.keepAliveTimeout`](http.md#serverkeepalivetimeout) в модуле `node:http`.
 
@@ -169,8 +169,8 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ## `https.createServer([options][, requestListener])`
 
--   `options` {Object} Принимает `опции` из [`tls.createServer()`](tls.md#tlsscreateserveroptions-secureconnectionlistener), [`tls.createSecureContext()`](tls.md#tlsscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
--   `requestListener` {Функция} Слушатель, который будет добавлен к событию `'request'`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `опции` из [`tls.createServer()`](tls.md#tlsscreateserveroptions-secureconnectionlistener), [`tls.createSecureContext()`](tls.md#tlsscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
+-   `requestListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Слушатель, который будет добавлен к событию `'request'`.
 -   Возвращает: {https.Server}
 
 <!-- конец списка -->
@@ -226,7 +226,7 @@ https.createServer(options, (req, res) => {
 
 -   `url` {строка | URL}
 -   `options` {Object | string | URL} Принимает те же `опции`, что и [`https.request()`](#httpsrequestoptions-callback), с `методом`, всегда установленным на `GET`.
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Подобно [`http.get()`](http.md#httpgetoptions-callback), но для HTTPS.
 
@@ -266,7 +266,7 @@ https
     -   `protocol` **Default:** `'https:'`.
     -   `port` **По умолчанию:** `443`
     -   `agent` **По умолчанию:** `https.globalAgent`
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
 Делает запрос на защищенный веб-сервер.
@@ -467,3 +467,4 @@ headers: max-age=0; pin-sha256="WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18="; p
 ```
 
 <!-- 0021.part.md -->
+

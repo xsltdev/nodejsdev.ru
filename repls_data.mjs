@@ -1,14 +1,82 @@
 /**
  * Split types
+{
+  from: "",
+  to: "",
+},
  */
 const replsSplit = [
+	{
+		from: '{Array|string}',
+		to: '{Array} | {string}',
+	},
+	{
+		from: '{ArrayBuffer|SharedArrayBuffer}',
+		to: '{ArrayBuffer} | {SharedArrayBuffer}',
+	},
+	{
+		from: '{Buffer|Uint8Array}',
+		to: '{Buffer} | {Uint8Array}',
+	},
+	{
+		from: '{Buffer|string}',
+		to: '{Buffer} | {string}',
+	},
+	{
+		from: '{boolean|string}',
+		to: '{boolean} | {string}',
+	},
+	{
+		from: '{integer|string}',
+		to: '{integer} | {string}',
+	},
+	{
+		from: '{integer|undefined}',
+		to: '{integer} | {undefined}',
+	},
 	{
 		from: '{Function|undefined}',
 		to: '{Function} | {undefined}',
 	},
 	{
+		from: '{Function|Promise}',
+		to: '{Function} | {Promise}',
+	},
+	{
 		from: '{number|bigint}',
 		to: '{number} | {bigint}',
+	},
+	{
+		from: '{number|null}',
+		to: '{number} | {null}',
+	},
+	{
+		from: '{number|string}',
+		to: '{number} | {string}',
+	},
+	{
+		from: '{RegExp|Function}',
+		to: '{RegExp} | {Function}',
+	},
+	{
+		from: '{RegExp|Function|Object|Error}',
+		to: '{RegExp} | {Function} | {Object} | {Error}',
+	},
+	{
+		from: '{stream.Readable|null|undefined}',
+		to: '{stream.Readable} | {null} | {undefined}',
+	},
+	{
+		from: '{stream.Writable|null|undefined}',
+		to: '{stream.Writable} | {null} | {undefined}',
+	},
+	{
+		from: '{string|Array}',
+		to: '{string} | {Array}',
+	},
+	{
+		from: '{string|null}',
+		to: '{string} | {null}',
 	},
 	{
 		from: '{string|Buffer|TypedArray|DataView}',
@@ -16,9 +84,42 @@ const replsSplit = [
 			'{string} | {Buffer} | {TypedArray} | {DataView}',
 	},
 	{
-		from: '{string[]|Buffer[]|fs.Dirent[]}',
+		from: '{string|URL}',
+		to: '{string} | {URL}',
+	},
+	{
+		from: '{string|integer}',
+		to: '{string} | {integer}',
+	},
+	{
+		from: '{string|Buffer}',
+		to: '{string} | {Buffer}',
+	},
+	{
+		from: '{string|Buffer|Uint8Array|integer}',
 		to:
-			'{string\\[\\]} | {Buffer\\[\\] | {fs.Dirent\\[\\]}',
+			'{string} | {Buffer} | {Uint8Array} | {integer}',
+	},
+	{
+		from: '{string\\[\\]|Buffer\\[\\]|fs.Dirent\\[\\]}',
+		to:
+			'{string\\[\\]} | {Buffer\\[\\]} | {fs.Dirent\\[\\]}',
+	},
+	{
+		from:
+			'{string\\[\\]|ArrayBuffer\\[\\]|TypedArray\\[\\]|DataView\\[\\]|Blob\\[\\]}',
+		to:
+			'{string\\[\\]} | {ArrayBuffer\\[\\]} | {TypedArray\\[\\]} | {DataView\\[\\]} | {Blob\\[\\]}',
+	},
+	{
+		from: '{string|Error}',
+		to: '{string} | {Error}',
+	},
+	{
+		from:
+			'{string|Buffer|TypedArray|DataView|ArrayBuffer|SharedArrayBuffer}',
+		to:
+			'{string} | {Buffer} | {TypedArray} | {DataView} | {ArrayBuffer} | {SharedArrayBuffer}',
 	},
 ];
 
@@ -35,16 +136,41 @@ const replsInner = [
 		to: '[`<AbortSignal>`](globals.md#abortsignal)',
 	},
 	{
+		from: '{AsyncResource}',
+		to:
+			'[`<AsyncResource>`](async_hooks.md#asyncresource)',
+	},
+	{
+		from: '{AsyncHook}',
+		to: '`AsyncHook`',
+	},
+	{
 		from: '{Blob}',
 		to: '[`<Blob>`](buffer.md#blob)',
+	},
+	{
+		from: '{Blob\\[\\]}',
+		to: '[`<Blob[]>`](buffer.md#blob)',
 	},
 	{
 		from: '{Buffer}',
 		to: '[`<Buffer>`](buffer.md#buffer)',
 	},
 	{
+		from: '{Буфер}',
+		to: '[`<Buffer>`](buffer.md#buffer)',
+	},
+	{
 		from: '{Buffer\\[\\]}',
 		to: '[`<Buffer[]>`](buffer.md#buffer)',
+	},
+	{
+		from: '{ChildProcess}',
+		to: '`ChildProcess`',
+	},
+	{
+		from: '{errors.Error}',
+		to: '[`<errors.Error>`](errors.md#error)',
 	},
 	{
 		from: '{EventEmitter}',
@@ -79,12 +205,16 @@ const replsInner = [
 		to: '[`<fs.StatWatcher>`](fs.md#fsstatwatcher)',
 	},
 	{
-		from: 'fs.FSWatcher',
+		from: '{fs.FSWatcher}',
 		to: '[`<fs.FSWatcher>`](fs.md#fsfswatcher)',
 	},
 	{
 		from: '{fs.WriteStream}',
 		to: '[`<fs.WriteStream>`](fs.md#fswritestream)',
+	},
+	{
+		from: '{Handle}',
+		to: '`Handle`',
 	},
 	{
 		from: '{net.Socket}',
@@ -100,6 +230,11 @@ const replsInner = [
 			'[`<stream.Readable>`](stream.md#streamreadable)',
 	},
 	{
+		from: '{stream.Writable}',
+		to:
+			'[`<stream.Writable>`](stream.md#streamwritable)',
+	},
+	{
 		from: '{ReadableStream}',
 		to:
 			'[`<ReadableStream>`](webstreams.md#readablestream)',
@@ -112,8 +247,27 @@ const replsInner = [
 
 /**
  * MDN common types
+{
+  from: "",
+  to: "",
+},
  */
 const replsMDNCommon = [
+	{
+		from: '{any}',
+		to:
+			'[`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)',
+	},
+	{
+		from: '{любой}',
+		to:
+			'[`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)',
+	},
+	{
+		from: '{любое}',
+		to:
+			'[`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)',
+	},
 	{
 		from: '{boolean}',
 		to:
@@ -130,9 +284,24 @@ const replsMDNCommon = [
 			'[`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)',
 	},
 	{
+		from: '{целое}',
+		to:
+			'[`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)',
+	},
+	{
 		from: '{целое число}',
 		to:
 			'[`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)',
+	},
+	{
+		from: '{целое число\\[\\]}',
+		to:
+			'[`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)',
+	},
+	{
+		from: '{число}',
+		to:
+			'[`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)',
 	},
 	{
 		from: '{number}',
@@ -168,12 +337,36 @@ const replsMDNCommon = [
 
 /**
  * MDN Global Objects
+{
+  from: "",
+  to: "",
+},
  */
 const replsMDNGlobalObjects = [
 	{
 		from: '{AggregateError}',
 		to:
 			'[`<AggregateError>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)',
+	},
+	{
+		from: '{Массив}',
+		to:
+			'[`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)',
+	},
+	{
+		from: '{Array}',
+		to:
+			'[`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)',
+	},
+	{
+		from: '{ArrayBuffer}',
+		to:
+			'[`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)',
+	},
+	{
+		from: '{ArrayBuffer\\[\\]}',
+		to:
+			'[`<ArrayBuffer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)',
 	},
 	{
 		from: '{bigint}',
@@ -216,7 +409,17 @@ const replsMDNGlobalObjects = [
 			'[`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)',
 	},
 	{
+		from: '{Итератор}',
+		to:
+			'[`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)',
+	},
+	{
 		from: '{Функция}',
+		to:
+			'[`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)',
+	},
+	{
+		from: '{функция}',
 		to:
 			'[`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)',
 	},
@@ -231,6 +434,11 @@ const replsMDNGlobalObjects = [
 			'[`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)',
 	},
 	{
+		from: '{Объект}',
+		to:
+			'[`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)',
+	},
+	{
 		from: '{Promise}',
 		to:
 			'[`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)',
@@ -241,6 +449,16 @@ const replsMDNGlobalObjects = [
 			'[`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)',
 	},
 	{
+		from: '{RegExp}',
+		to:
+			'[`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp)',
+	},
+	{
+		from: '{SharedArrayBuffer}',
+		to:
+			'[`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)',
+	},
+	{
 		from: '{TypedArray}',
 		to:
 			'[`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)',
@@ -249,6 +467,16 @@ const replsMDNGlobalObjects = [
 		from: '{TypedArray\\[\\]}',
 		to:
 			'[`<TypedArray[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)',
+	},
+	{
+		from: '{Uint8Array}',
+		to:
+			'[`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)',
+	},
+	{
+		from: '{Uint8Array\\[\\]}',
+		to:
+			'[`<Uint8Array[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)',
 	},
 ];
 

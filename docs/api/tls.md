@@ -126,8 +126,8 @@ TLS-PSK является хорошим выбором только там, гд
 
 Чтобы снизить риск, повторное согласование ограничено тремя разами каждые десять минут. При превышении этого порога на экземпляре [`tls.TLSSocket`](#class-tlstlssocket) выдается событие `ошибка`. Пределы настраиваются:
 
--   `tls.CLIENT_RENEG_LIMIT` {number} Определяет количество запросов на повторное согласование. **По умолчанию:** `3`.
--   `tls.CLIENT_RENEG_WINDOW` {number} Задает временное окно ренегоциации в секундах. **По умолчанию:** `600` (10 минут).
+-   `tls.CLIENT_RENEG_LIMIT` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество запросов на повторное согласование. **По умолчанию:** `3`.
+-   `tls.CLIENT_RENEG_WINDOW` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задает временное окно ренегоциации в секундах. **По умолчанию:** `600` (10 минут).
 
 Не следует изменять установленные по умолчанию пределы повторного согласования без полного понимания последствий и рисков.
 
@@ -270,7 +270,7 @@ tls.DEFAULT_CIPHERS +=
 
 ## Коды ошибок сертификата X509
 
-Многие функции могут не сработать из-за ошибок сертификата, о которых сообщает OpenSSL. В таком случае функция предоставляет {Error} через свой обратный вызов, имеющий свойство `code`, которое может принимать одно из следующих значений:
+Многие функции могут не сработать из-за ошибок сертификата, о которых сообщает OpenSSL. В таком случае функция предоставляет [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) через свой обратный вызов, имеющий свойство `code`, которое может принимать одно из следующих значений:
 
 -   `'UNABLE_TO_GET_ISSUER_CERT'`: Невозможно получить сертификат эмитента.
 -   `'UNABLE_TO_GET_CRL'`: Невозможно получить CRL сертификата.
@@ -339,7 +339,7 @@ tls.DEFAULT_CIPHERS +=
 
 ### Событие: `keylog`
 
--   `line` {Буфер} Строка ASCII текста, в формате NSS `SSLKEYLOGFILE`.
+-   `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII текста, в формате NSS `SSLKEYLOGFILE`.
 -   `tlsSocket` {tls.TLSSocket} Экземпляр `tls.TLSSocket`, на котором оно было сгенерировано.
 
 Событие `keylog` испускается, когда ключевой материал генерируется или принимается соединением с этим сервером (обычно до завершения рукопожатия, но не обязательно). Этот ключевой материал может быть сохранен для отладки, поскольку он позволяет расшифровать захваченный трафик TLS. Он может выдаваться несколько раз для каждого сокета.
@@ -363,9 +363,9 @@ server.on('keylog', (line, tlsSocket) => {
 
 При вызове обратного вызова слушателю передаются три аргумента:
 
--   `sessionId` {Buffer} Идентификатор TLS-сессии
--   `sessionData` {Buffer} Данные TLS-сессии
--   `callback` {Функция} Функция обратного вызова без аргументов, которая должна быть вызвана, чтобы данные были отправлены или получены через защищенное соединение.
+-   `sessionId` [`<Buffer>`](buffer.md#buffer) Идентификатор TLS-сессии
+-   `sessionData` [`<Buffer>`](buffer.md#buffer) Данные TLS-сессии
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова без аргументов, которая должна быть вызвана, чтобы данные были отправлены или получены через защищенное соединение.
 
 Прослушивание этого события будет иметь эффект только для соединений, установленных после добавления слушателя события.
 
@@ -373,9 +373,9 @@ server.on('keylog', (line, tlsSocket) => {
 
 Событие `'OCSPRequest'` генерируется, когда клиент отправляет запрос на статус сертификата. При вызове обратного вызова слушателя ему передаются три аргумента:
 
--   `certificate` {Buffer} сертификат сервера
--   `issuer` {Buffer} Сертификат эмитента
--   `callback` {Function} Функция обратного вызова, которая должна быть вызвана для предоставления результатов запроса OCSP.
+-   `certificate` [`<Buffer>`](buffer.md#buffer) сертификат сервера
+-   `issuer` [`<Buffer>`](buffer.md#buffer) Сертификат эмитента
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, которая должна быть вызвана для предоставления результатов запроса OCSP.
 
 Текущий сертификат сервера может быть разобран для получения OCSP URL и ID сертификата; после получения OCSP ответа вызывается `callback(null, resp)`, где `resp` - экземпляр `Buffer`, содержащий OCSP ответ. И `certificate`, и `issuer` являются `Buffer` DER-представлениями основного сертификата и сертификата эмитента. Они могут быть использованы для получения ID сертификата OCSP и URL конечной точки OCSP.
 
@@ -401,10 +401,10 @@ server.on('keylog', (line, tlsSocket) => {
 
 Событие `'resumeSession'` генерируется, когда клиент запрашивает возобновление предыдущей TLS-сессии. При вызове обратного вызова слушателю передаются два аргумента:
 
--   `sessionId` {Buffer} Идентификатор TLS-сессии
--   `callback` {Функция} Функция обратного вызова, которая будет вызвана после восстановления предыдущей сессии: `callback([err[, sessionData]])`.
-    -   `err` {Ошибка}
-    -   `sessionData` {Буфер}
+-   `sessionId` [`<Buffer>`](buffer.md#buffer) Идентификатор TLS-сессии
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, которая будет вызвана после восстановления предыдущей сессии: `callback([err[, sessionData]])`.
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    -   `sessionData` [`<Buffer>`](buffer.md#buffer)
 
 Слушатель событий должен выполнить поиск во внешнем хранилище `sessionData`, сохраненных обработчиком события [`'newSession'`](#event-newsession), используя заданный `sessionId`. Если он найден, вызовите `callback(null, sessionData)` для возобновления сессии. Если не найден, сессия не может быть возобновлена. `callback()` должен быть вызван без `sessionData`, чтобы можно было продолжить квитирование и создать новую сессию. Можно вызвать `callback(err)`, чтобы прервать входящее соединение и уничтожить сокет.
 
@@ -439,13 +439,13 @@ server.on('resumeSession', (id, cb) => {
 
 Событие `'tlsClientError'` генерируется при возникновении ошибки до установления безопасного соединения. При вызове обратного вызова слушателю передаются два аргумента:
 
--   `exception` {Error} объект `Error`, описывающий ошибку
+-   `exception` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) объект `Error`, описывающий ошибку
 -   `tlsSocket` {tls.TLSSocket} Экземпляр `tls.TLSSocket`, с которого произошла ошибка.
 
 ### `server.addContext(hostname, context)`
 
--   `hostname` {string} Имя хоста SNI или подстановочный знак (например, `'*'`)
--   `context` {Object} Объект, содержащий любое из возможных свойств из аргументов [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) `options` (например, `key`, `cert`, `ca` и т.д.).
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста SNI или подстановочный знак (например, `'*'`)
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий любое из возможных свойств из аргументов [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) `options` (например, `key`, `cert`, `ca` и т.д.).
 
 Метод `server.addContext()` добавляет защищенный контекст, который будет использоваться, если имя SNI клиентского запроса совпадает с указанным именем `hostname` (или подстановочным знаком).
 
@@ -453,13 +453,13 @@ server.on('resumeSession', (id, cb) => {
 
 ### `server.address()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает связанный адрес, имя семейства адресов и порт сервера, как об этом сообщает операционная система. Дополнительную информацию смотрите в [`net.Server.address()`](net.md#serveraddress).
 
 ### `server.close([callback])`
 
--   `callback` {Функция} Обратный вызов слушателя, который будет зарегистрирован для прослушивания события `'close'' экземпляра сервера.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов слушателя, который будет зарегистрирован для прослушивания события `'close'' экземпляра сервера.
 -   Возвращает: {tls.Server}
 
 Метод `server.close()` останавливает сервер от приема новых соединений.
@@ -468,7 +468,7 @@ server.on('resumeSession', (id, cb) => {
 
 ### `server.getTicketKeys()`
 
--   Возвращает: {Buffer} 48-байтовый буфер, содержащий ключи билетов сессии.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) 48-байтовый буфер, содержащий ключи билетов сессии.
 
 Возвращает ключи билетов сеанса.
 
@@ -480,7 +480,7 @@ server.on('resumeSession', (id, cb) => {
 
 ### `server.setSecureContext(options)`
 
--   `options` {Object} Объект, содержащий любое из возможных свойств из аргументов [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) `options` (например, `key`, `cert`, `ca` и т.д.).
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий любое из возможных свойств из аргументов [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) `options` (например, `key`, `cert`, `ca` и т.д.).
 
 Метод `server.setSecureContext()` заменяет безопасный контекст существующего сервера. Существующие соединения с сервером не прерываются.
 
@@ -496,7 +496,7 @@ server.on('resumeSession', (id, cb) => {
 
 ## Класс: `tls.TLSSocket`
 
--   Расширяет: {net.Socket}
+-   Расширяет: [`<net.Socket>`](net.md#netsocket)
 
 Выполняет прозрачное шифрование записываемых данных и все необходимые переговоры TLS.
 
@@ -507,7 +507,7 @@ server.on('resumeSession', (id, cb) => {
 ### `new tls.TLSSocket(socket[, options])`
 
 -   `socket` {net.Socket|stream.Duplex} На стороне сервера, любой поток `Duplex`. На стороне клиента, любой экземпляр [`net.Socket`](net.md#class-netsocket) (для общей поддержки потока `Duplex` на стороне клиента, необходимо использовать [`tls.connect()`](#tlsconnectoptions-callback)).
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `enableTrace`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `isServer`: Протокол SSL/TLS является асимметричным, TLSSockets должны знать, должны ли они вести себя как сервер или как клиент. Если `true`, то TLS-сокет будет создан как сервер. **По умолчанию:** `false`.
     -   `server` {net.Server} Экземпляр [`net.Server`](net.md#class-netserver).
@@ -515,8 +515,8 @@ server.on('resumeSession', (id, cb) => {
     -   `rejectUnauthorized`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `ALPNProtocols`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `SNICallback`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
-    -   `session` {Buffer} Экземпляр `Buffer`, содержащий сессию TLS.
-    -   `requestOCSP` {boolean} Если `true`, указывает, что расширение запроса статуса OCSP будет добавлено в клиентский привет и событие `'OCSPResponse'` будет испущено на сокете перед установлением безопасного соединения.
+    -   `session` [`<Buffer>`](buffer.md#buffer) Экземпляр `Buffer`, содержащий сессию TLS.
+    -   `requestOCSP` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, указывает, что расширение запроса статуса OCSP будет добавлено в клиентский привет и событие `'OCSPResponse'` будет испущено на сокете перед установлением безопасного соединения.
     -   `secureContext`: Объект TLS контекста, созданный с помощью [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Если `secureContext` не предоставлен, он будет создан путем передачи всего объекта `options` в `tls.createSecureContext()`.
     -   ...: [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) опции, которые используются, если опция `ecureContext` отсутствует. В противном случае они игнорируются.
 
@@ -524,7 +524,7 @@ server.on('resumeSession', (id, cb) => {
 
 ### Событие: `keylog`
 
--   `line` {Буфер} Строка ASCII текста, в формате NSS `SSLKEYLOGFILE`.
+-   `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII текста, в формате NSS `SSLKEYLOGFILE`.
 
 Событие `keylog` испускается на `tls.TLSSocket`, когда ключевой материал генерируется или принимается сокетом. Этот ключевой материал может быть сохранен для отладки, поскольку он позволяет расшифровать перехваченный трафик TLS. Он может генерироваться несколько раз, до или после завершения квитирования.
 
@@ -542,7 +542,7 @@ tlsSocket.on('keylog', (line) => logFile.write(line));
 
 Событие `'OCSPResponse'` генерируется, если при создании `tls.TLSSocket` была установлена опция `requestOCSP` и был получен ответ OCSP. При вызове обратного вызова слушателя ему передается один аргумент:
 
--   `response` {Buffer} OCSP-ответ сервера.
+-   `response` [`<Buffer>`](buffer.md#buffer) OCSP-ответ сервера.
 
 Обычно `ответ` представляет собой объект с цифровой подписью от ЦС сервера, содержащий информацию о статусе отзыва сертификата сервера.
 
@@ -554,7 +554,7 @@ tlsSocket.on('keylog', (line) => logFile.write(line));
 
 ### Событие: `сессия`
 
--   `session` {Буфер}
+-   `session` [`<Buffer>`](buffer.md#buffer)
 
 Событие `'session'` выдается на клиенте `tls.TLSSocket`, когда доступна новая сессия или билет TLS. Это может произойти до завершения квитирования, в зависимости от версии протокола TLS, который был согласован. Событие не испускается на сервере, или если новая сессия не была создана, например, когда соединение было возобновлено. Для некоторых версий протокола TLS событие может быть вызвано несколько раз, в этом случае все сессии могут быть использованы для возобновления.
 
@@ -576,7 +576,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.address()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает связанный `адрес`, имя `семейства адресов` и `порт` базового сокета, как сообщает операционная система: `{ port: 12346, семейство: 'IPv4', адрес: '127.0.0.1' }`.
 
@@ -586,7 +586,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.authorized`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Это свойство равно `true`, если сертификат пира был подписан одним из CA, указанных при создании экземпляра `tls.TLSSocket`, иначе `false`.
 
@@ -606,7 +606,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getCertificate()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект, представляющий локальный сертификат. Возвращаемый объект имеет некоторые свойства, соответствующие полям сертификата.
 
@@ -616,10 +616,10 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getCipher()`
 
--   Возвращает: {Object}
-    -   `name` {string} Имя OpenSSL для набора шифров.
-    -   `standardName` {string} Имя IETF для набора шифров.
-    -   `version` {string} Минимальная версия протокола TLS, поддерживаемая этим набором шифров. Фактический согласованный протокол см. в [`tls.TLSSocket.getProtocol()`](#tlssocketgetprotocol).
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя OpenSSL для набора шифров.
+    -   `standardName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя IETF для набора шифров.
+    -   `version` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Минимальная версия протокола TLS, поддерживаемая этим набором шифров. Фактический согласованный протокол см. в [`tls.TLSSocket.getProtocol()`](#tlssocketgetprotocol).
 
 Возвращает объект, содержащий информацию о согласованном наборе шифров.
 
@@ -637,7 +637,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getEphemeralKeyInfo()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект, представляющий тип, имя и размер параметра эфемерного обмена ключами в режиме [perfect forward secrecy](#perfect-forward-secrecy) на клиентском соединении. Возвращает пустой объект, если обмен ключами не является эфемерным. Так как эта функция поддерживается только на клиентском сокете; `null` возвращается, если вызывается на серверном сокете. Поддерживаемые типы: `'DH'` и `'ECDH'`. Свойство `name` доступно только при типе `'ECDH'`.
 
@@ -653,8 +653,8 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getPeerCertificate([detailed])`
 
--   `detailed` {boolean} Включает полную цепочку сертификатов, если `true`, в противном случае включает только сертификат пира.
--   Возвращает: {Object} Объект сертификата.
+-   `detailed` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает полную цепочку сертификатов, если `true`, в противном случае включает только сертификат пира.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект сертификата.
 
 Возвращает объект, представляющий сертификат сверстника. Если пир не предоставил сертификат, будет возвращен пустой объект. Если сокет был уничтожен, будет возвращен `null`.
 
@@ -678,7 +678,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getProtocol()`
 
--   Возвращает: {string|null}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type)
 
 Возвращает строку, содержащую согласованную версию протокола SSL/TLS текущего соединения. Значение `'unknown'' будет возвращено для подключенных сокетов, которые не завершили процесс квитирования. Значение `null` будет возвращено для серверных сокетов или отключенных клиентских сокетов.
 
@@ -694,7 +694,7 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getSession()`
 
--   {Buffer}
+-   [`<Buffer>`](buffer.md#buffer)
 
 Возвращает данные сессии TLS или `undefined`, если сессия не была согласована. На клиенте эти данные могут быть переданы в опцию `session` опции [`tls.connect()`](#tlsconnectoptions-callback) для возобновления соединения. На сервере это может быть полезно для отладки.
 
@@ -704,13 +704,13 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.getSharedSigalgs()`
 
--   Возвращает: {Array} Список алгоритмов подписи, разделяемых между сервером и клиентом, в порядке убывания предпочтений.
+-   Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Список алгоритмов подписи, разделяемых между сервером и клиентом, в порядке убывания предпочтений.
 
 Смотрите [SSL_get_shared_sigalgs](https://www.openssl.org/docs/man1.1.1/man3/SSL_get_shared_sigalgs.html) для получения дополнительной информации.
 
 ### `tlsSocket.getTLSTicket()`
 
--   {Буфер}
+-   [`<Buffer>`](buffer.md#buffer)
 
 Для клиента возвращает билет сессии TLS, если он доступен, или `undefined`. Для сервера всегда возвращает `undefined`.
 
@@ -728,50 +728,50 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.isSessionReused()`
 
--   Возвращает: {булево} `true`, если сессия была использована повторно, `false` в противном случае.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если сессия была использована повторно, `false` в противном случае.
 
 Дополнительную информацию смотрите в [Возобновление сессии](#session-resumption).
 
 ### `tlsSocket.localAddress`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строковое представление локального IP-адреса.
 
 ### `tlsSocket.localPort`
 
--   {целое число}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает числовое представление локального порта.
 
 ### `tlsSocket.remoteAddress`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строковое представление удаленного IP-адреса. Например, `74.125.127.100` или `2001:4860:a005::68`.
 
 ### `tlsSocket.remoteFamily`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строковое представление семейства удаленных IP-адресов. `IPv4` или `IPv6`.
 
 ### `tlsSocket.remotePort`
 
--   {целое число}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает числовое представление удаленного порта. Например, `443`.
 
 ### `tlsSocket.renegotiate(options, callback)`
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-    -   `rejectUnauthorized` {boolean} Если не `false`, сертификат сервера проверяется по списку предоставленных CA. При неудачной проверке выдается событие `'error'`; `err.code` содержит код ошибки OpenSSL. **По умолчанию:** `true`.
+    -   `rejectUnauthorized` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если не `false`, сертификат сервера проверяется по списку предоставленных CA. При неудачной проверке выдается событие `'error'`; `err.code` содержит код ошибки OpenSSL. **По умолчанию:** `true`.
     -   `requestCert`
 
--   `callback` {Функция} Если `renegotiate()` возвращает `true`, обратный вызов присоединяется один раз к событию `'secure'`. Если `renegotiate()` вернула `false`, `callback` будет вызван в следующем тике с ошибкой, если только `tlsSocket` не был уничтожен, в этом случае `callback` не будет вызван вообще.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если `renegotiate()` возвращает `true`, обратный вызов присоединяется один раз к событию `'secure'`. Если `renegotiate()` вернула `false`, `callback` будет вызван в следующем тике с ошибкой, если только `tlsSocket` не был уничтожен, в этом случае `callback` не будет вызван вообще.
 
--   Возвращает: {boolean} `true`, если пересогласование было инициировано, `false` в противном случае.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если пересогласование было инициировано, `false` в противном случае.
 
 Метод `tlsSocket.renegotiate()` инициирует процесс TLS renegotiation. По завершении, функции `callback` будет передан единственный аргумент, который является либо `Error` (если запрос не прошел), либо `null`.
 
@@ -783,8 +783,8 @@ tlsSocket.once('session', (session) => {
 
 ### `tlsSocket.setMaxSendFragment(size)`
 
--   `size` {number} Максимальный размер фрагмента TLS. Максимальное значение - `16384`. **По умолчанию:** `16384`.
--   Возвращает: {boolean}
+-   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер фрагмента TLS. Максимальное значение - `16384`. **По умолчанию:** `16384`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `tlsSocket.setMaxSendFragment()` устанавливает максимальный размер фрагмента TLS. Возвращает `true`, если установка лимита прошла успешно; `false` в противном случае.
 
@@ -792,13 +792,13 @@ tlsSocket.once('session', (session) => {
 
 ## `tls.checkServerIdentity(hostname, cert)`
 
--   `hostname` {string} Имя хоста или IP-адрес для проверки сертификата.
--   `cert` {Object} [объект сертификата](#certificate-object), представляющий сертификат сверстника.
+-   `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста или IP-адрес для проверки сертификата.
+-   `cert` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [объект сертификата](#certificate-object), представляющий сертификат сверстника.
 -   Возвращает: {Error|undefined}
 
 Проверяет, что сертификат `cert` выдан для `hostname`.
 
-Возвращает объект {Error}, заполняя его `reason`, `host` и `cert` при неудаче. При успехе возвращает {undefined}.
+Возвращает объект [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), заполняя его `reason`, `host` и `cert` при неудаче. При успехе возвращает [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type).
 
 Эта функция предназначена для использования в сочетании с опцией `checkServerIdentity`, которая может быть передана в [`tls.connect()`](#tlsconnectoptions-callback) и как таковая работает с [объектом сертификата](#certificate-object). Для других целей вместо нее используйте [`x509.checkHost()`](crypto.md#x509checkhostname-options).
 
@@ -810,50 +810,50 @@ tlsSocket.once('session', (session) => {
 
 ## `tls.connect(options[, callback])`
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
     -   `enableTrace`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
 
-    -   `host` {string} Хост, к которому должен подключиться клиент. **По умолчанию:** `'localhost'`.
+    -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, к которому должен подключиться клиент. **По умолчанию:** `'localhost'`.
 
-    -   `port` {number} Порт, к которому должен подключиться клиент.
+    -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому должен подключиться клиент.
 
-    -   `path` {string} Создает соединение Unix сокета с путем. Если указана эта опция, `host` и `port` игнорируются.
+    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Создает соединение Unix сокета с путем. Если указана эта опция, `host` и `port` игнорируются.
 
     -   `socket` {stream.Duplex} Устанавливает безопасное соединение на заданном сокете вместо создания нового сокета. Обычно это экземпляр [`net.Socket`](net.md#class-netsocket), но допускается любой поток `Duplex`. Если указана эта опция, `path`, `host` и `port` игнорируются, за исключением проверки сертификата. Обычно сокет уже подключен, когда передается в `tls.connect()`, но он может быть подключен позже. За подключение/отключение/уничтожение `socket` отвечает пользователь; вызов `tls.connect()` не приведет к вызову `net.connect()`.
 
-    -   `allowHalfOpen` {boolean} Если установлено значение `false`, то сокет будет автоматически завершать доступную для записи сторону, когда завершится доступная для чтения сторона. Если установлена опция `socket`, эта опция не имеет никакого эффекта. Подробнее см. опцию `allowHalfOpen` в [`net.Socket`](net.md#class-netsocket). **По умолчанию:** `false`.
+    -   `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `false`, то сокет будет автоматически завершать доступную для записи сторону, когда завершится доступная для чтения сторона. Если установлена опция `socket`, эта опция не имеет никакого эффекта. Подробнее см. опцию `allowHalfOpen` в [`net.Socket`](net.md#class-netsocket). **По умолчанию:** `false`.
 
-    -   `rejectUnauthorized` {boolean} Если не `false`, сертификат сервера проверяется по списку предоставленных CA. При неудачной проверке выдается событие `'error'`; `err.code` содержит код ошибки OpenSSL. **По умолчанию:** `true`.
+    -   `rejectUnauthorized` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если не `false`, сертификат сервера проверяется по списку предоставленных CA. При неудачной проверке выдается событие `'error'`; `err.code` содержит код ошибки OpenSSL. **По умолчанию:** `true`.
 
-    -   `pskCallback` {Function}
+    -   `pskCallback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-        -   hint: {string} необязательное сообщение, отправляемое с сервера, чтобы помочь клиенту решить, какой идентификатор использовать во время переговоров. Всегда `null`, если используется TLS 1.3.
-        -   Возвращает: {Object} в форме `{ psk: <Buffer|TypedArray|DataView>, identity: <строка> }` или `null` для остановки процесса согласования. `psk` должен быть совместим с дайджестом выбранного шифра. `identity` должен использовать кодировку UTF-8.
+        -   hint: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) необязательное сообщение, отправляемое с сервера, чтобы помочь клиенту решить, какой идентификатор использовать во время переговоров. Всегда `null`, если используется TLS 1.3.
+        -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) в форме `{ psk: <Buffer|TypedArray|DataView>, identity: <строка> }` или `null` для остановки процесса согласования. `psk` должен быть совместим с дайджестом выбранного шифра. `identity` должен использовать кодировку UTF-8.
 
         При согласовании TLS-PSK (pre-shared keys) эта функция вызывается с необязательным идентификатором `hint`, предоставленным сервером, или `null` в случае TLS 1.3, где `hint` был удален. Для соединения необходимо будет предоставить собственный `tls.checkServerIdentity()`, так как по умолчанию он будет пытаться проверить имя хоста/IP сервера по сертификату, но это не применимо для PSK, так как сертификата не будет. Более подробную информацию можно найти в [RFC 4279](https://tools.ietf.org/html/rfc4279).
 
         -   `ALPNProtocols`: {string\[\]|Buffer\[\]|TypedArray\[\]|DataView\[\]|Buffer| TypedArray|DataView} Массив строк, `Buffer`, `TypedArray` или `DataView`, или один `Buffer`, `TypedArray` или `DataView`, содержащий поддерживаемые протоколы ALPN. `Буфер` должен иметь формат `[len][name][len][name]...`, например, `'\x08http/1.1\x08http/1.0'`, где `len` байт - это длина следующего имени протокола. Передача массива обычно намного проще, например, `['http/1.1', 'http/1.0']`. Протоколы, расположенные раньше в списке, имеют большее предпочтение, чем протоколы, расположенные позже.
 
-    -   `servername`: {строка} Имя сервера для расширения SNI (Server Name Indication) TLS. Это имя узла, к которому осуществляется подключение, и оно должно быть именем узла, а не IP-адресом. Оно может использоваться сервером с несколькими хостами для выбора правильного сертификата для предоставления клиенту, см. опцию `SNICallback` в [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener).
+    -   `servername`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сервера для расширения SNI (Server Name Indication) TLS. Это имя узла, к которому осуществляется подключение, и оно должно быть именем узла, а не IP-адресом. Оно может использоваться сервером с несколькими хостами для выбора правильного сертификата для предоставления клиенту, см. опцию `SNICallback` в [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener).
 
-    -   `checkServerIdentity(servername, cert)` {Function} Функция обратного вызова, которая будет использоваться (вместо встроенной функции `tls.checkServerIdentity()`) при проверке имени хоста сервера (или предоставленного `servername`, если оно задано явно) на соответствие сертификату. Метод должен возвращать {Error} при неудачной проверке. Метод должен возвращать `undefined`, если `servername` и `cert` проверены.
+    -   `checkServerIdentity(servername, cert)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, которая будет использоваться (вместо встроенной функции `tls.checkServerIdentity()`) при проверке имени хоста сервера (или предоставленного `servername`, если оно задано явно) на соответствие сертификату. Метод должен возвращать [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) при неудачной проверке. Метод должен возвращать `undefined`, если `servername` и `cert` проверены.
 
-    -   `session` {Buffer} Экземпляр `Buffer`, содержащий TLS-сессию.
+    -   `session` [`<Buffer>`](buffer.md#buffer) Экземпляр `Buffer`, содержащий TLS-сессию.
 
-    -   `minDHSize` {number} Минимальный размер параметра DH в битах для принятия TLS-соединения. Если сервер предлагает параметр DH с размером меньше, чем `minDHSize`, TLS-соединение разрушается и выдается ошибка. **По умолчанию:** `1024`.
+    -   `minDHSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальный размер параметра DH в битах для принятия TLS-соединения. Если сервер предлагает параметр DH с размером меньше, чем `minDHSize`, TLS-соединение разрушается и выдается ошибка. **По умолчанию:** `1024`.
 
-    -   `highWaterMark`: {число} Соответствует параметру читаемого потока `highWaterMark`. **По умолчанию:** `16 * 1024`.
+    -   `highWaterMark`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Соответствует параметру читаемого потока `highWaterMark`. **По умолчанию:** `16 * 1024`.
 
     -   `secureContext`: Объект контекста TLS, созданный с помощью [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Если `secureContext` не предоставлен, он будет создан путем передачи всего объекта `options` в `tls.createSecureContext()`.
 
-    -   `onread` {Object} Если опция `socket` отсутствует, входящие данные хранятся в одном `буфере` и передаются в указанный `callback`, когда данные поступают на сокет, в противном случае опция игнорируется. Подробнее см. опцию `onread` в [`net.Socket`](net.md#class-netsocket).
+    -   `onread` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если опция `socket` отсутствует, входящие данные хранятся в одном `буфере` и передаются в указанный `callback`, когда данные поступают на сокет, в противном случае опция игнорируется. Подробнее см. опцию `onread` в [`net.Socket`](net.md#class-netsocket).
 
     -   ...: [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) параметры, которые используются, если отсутствует параметр `secureContext`, в противном случае они игнорируются.
 
     -   ...: Любая опция [`socket.connect()`](net.md#socketconnectoptions-connectlistener), которая еще не перечислена.
 
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {tls.TLSSocket}
 
 Функция `callback`, если она указана, будет добавлена в качестве слушателя для события [`'secureConnect'`](#event-secureconnect).
@@ -902,9 +902,9 @@ socket.on('end', () => {
 
 ## `tls.connect(path[, options][, callback])`
 
--   `path` {string} Значение по умолчанию для `options.path`.
--   `options` {Object} См. [`tls.connect()`](#tlsconnectoptions-callback).
--   `callback` {Функция} См. [`tls.connect()`](#tlsconnectoptions-callback).
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение по умолчанию для `options.path`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`tls.connect()`](#tlsconnectoptions-callback).
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [`tls.connect()`](#tlsconnectoptions-callback).
 -   Возвращает: {tls.TLSSocket}
 
 Аналогично [`tls.connect()`](#tlsconnectoptions-callback), за исключением того, что `path` может быть предоставлен в качестве аргумента вместо опции.
@@ -913,10 +913,10 @@ socket.on('end', () => {
 
 ## `tls.connect(port[, host][, options][, callback])`.
 
--   `port` {number} Значение по умолчанию для `options.port`.
--   `host` {string} Значение по умолчанию для `options.host`.
--   `options` {Object} См. [`tls.connect()`](#tlsconnectoptions-callback).
--   `callback` {Функция} См. [`tls.connect()`](#tlsconnectoptions-callback).
+-   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение по умолчанию для `options.port`.
+-   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение по умолчанию для `options.host`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`tls.connect()`](#tlsconnectoptions-callback).
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [`tls.connect()`](#tlsconnectoptions-callback).
 -   Возвращает: {tls.TLSSocket}
 
 Аналогично [`tls.connect()`](#tlsconnectoptions-callback), за исключением того, что `port` и `host` могут быть предоставлены в качестве аргументов вместо опций.
@@ -925,28 +925,28 @@ socket.on('end', () => {
 
 ## `tls.createSecureContext([options])`
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `ca` {string|string\[\]|Buffer|Buffer\[\]} Опционально переопределяет доверенные сертификаты CA. По умолчанию доверяем известным ЦС, курируемым Mozilla. ЦС Mozilla полностью заменяются, если ЦС явно указаны с помощью этой опции. Значение может быть строкой или `буфером`, или `массивом` строк и/или `буферов`. Любая строка или `Буфер` может содержать несколько PEM CA, объединенных вместе. Для аутентификации соединения сертификат пирата должен быть связан цепочкой с ЦС, которому доверяет сервер. При использовании сертификатов, не имеющих цепочки с известным ЦС, ЦС сертификата должен быть явно указан как доверенный, иначе соединение не пройдет аутентификацию. Если пир использует сертификат, который не совпадает или не привязан к одному из ЦС по умолчанию, используйте опцию `ca`, чтобы предоставить сертификат ЦС, с которым сертификат пира может совпасть или привязаться. Для самоподписанных сертификатов сертификат является собственным ЦС и должен быть предоставлен. Для сертификатов в кодировке PEM поддерживаются следующие типы: "TRUSTED CERTIFICATE", "X509 CERTIFICATE" и "CERTIFICATE". См. также [`tls.rootCertificates`](#tlsrootcertificates).
     -   `cert` {string|string\[\]|Buffer|Buffer\[\]} Цепочки сертификатов в формате PEM. Для каждого закрытого ключа должна быть предоставлена одна цепочка сертификатов. Каждая цепочка сертификатов должна состоять из сертификата в формате PEM для предоставленного закрытого `ключа`, за которым следуют промежуточные сертификаты в формате PEM (если они есть), по порядку, не включая корневой CA (корневой CA должен быть заранее известен peer, см. раздел `ca`). При предоставлении нескольких цепочек сертификатов, они не должны располагаться в том же порядке, что и их закрытые ключи в `key`. Если промежуточные сертификаты не будут предоставлены, peer не сможет проверить сертификат, и рукопожатие завершится неудачей.
-    -   `sigalgs` {строка} Список поддерживаемых алгоритмов подписи, разделенный двоеточием. Список может содержать алгоритмы дайджеста (`SHA256`, `MD5` и т.д.), алгоритмы открытого ключа (`RSA-PSS`, `ECDSA` и т.д.), комбинацию обоих (например, 'RSA+SHA384') или имена схем TLS v1.3 (например, `rsa_pss_pss_sha512`). Более подробную информацию смотрите в [OpenSSL man pages](https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set1_sigalgs_list.html).
-    -   `ciphers` {string} Спецификация набора шифров, заменяющая набор по умолчанию. Для получения дополнительной информации смотрите [Изменение набора шифров TLS по умолчанию](#modifying-the-default-tls-cipher-suite). Разрешенные шифры можно получить через [`tls.getCiphers()`](#tlsgetciphers). Имена шифров должны быть написаны в верхнем регистре, чтобы OpenSSL мог их принять.
-    -   `clientCertEngine` {string} Имя механизма OpenSSL, который может предоставить сертификат клиента.
+    -   `sigalgs` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список поддерживаемых алгоритмов подписи, разделенный двоеточием. Список может содержать алгоритмы дайджеста (`SHA256`, `MD5` и т.д.), алгоритмы открытого ключа (`RSA-PSS`, `ECDSA` и т.д.), комбинацию обоих (например, 'RSA+SHA384') или имена схем TLS v1.3 (например, `rsa_pss_pss_sha512`). Более подробную информацию смотрите в [OpenSSL man pages](https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set1_sigalgs_list.html).
+    -   `ciphers` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификация набора шифров, заменяющая набор по умолчанию. Для получения дополнительной информации смотрите [Изменение набора шифров TLS по умолчанию](#modifying-the-default-tls-cipher-suite). Разрешенные шифры можно получить через [`tls.getCiphers()`](#tlsgetciphers). Имена шифров должны быть написаны в верхнем регистре, чтобы OpenSSL мог их принять.
+    -   `clientCertEngine` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя механизма OpenSSL, который может предоставить сертификат клиента.
     -   `crl` {string|string\[\]|Buffer|Buffer\[\]} CRL (списки отзыва сертификатов) в формате PEM.
-    -   `dhparam` {string|Buffer} `'auto'` или пользовательские параметры Диффи-Хеллмана, необходимые для не-ECDHE [perfect forward secrecy] (#perfect-forward-secrecy). Если параметры опущены или недействительны, они будут молча отброшены, и шифры DHE будут недоступны. [ECDHE](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman)-базированный [perfect forward secrecy](#perfect-forward-secrecy) будет по-прежнему доступен.
-    -   `ecdhCurve` {string} Строка, описывающая именованную кривую или список NID или имен кривых через двоеточие, например `P-521:P-384:P-256`, для использования при согласовании ключей ECDH. Установите значение `auto` для автоматического выбора кривой. Используйте [`crypto.getCurves()`](crypto.md#cryptogetcurves) для получения списка доступных имен кривых. В последних выпусках `openssl ecparam -list_curves` будет также отображать имя и описание каждой доступной эллиптической кривой. **По умолчанию:** [`tls.DEFAULT_ECDH_CURVE`](#tlsdefault_ecdh_curve).
-    -   `honorCipherOrder` {boolean} Попытка использовать предпочтения набора шифров сервера вместо предпочтений клиента. Когда `true`, вызывает установку `SSL_OP_CIPHER_SERVER_PREFERENCE` в `secureOptions`, подробнее см. в [OpenSSL Options](crypto.md#openssl-options).
+    -   `dhparam` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) `'auto'` или пользовательские параметры Диффи-Хеллмана, необходимые для не-ECDHE [perfect forward secrecy] (#perfect-forward-secrecy). Если параметры опущены или недействительны, они будут молча отброшены, и шифры DHE будут недоступны. [ECDHE](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman)-базированный [perfect forward secrecy](#perfect-forward-secrecy) будет по-прежнему доступен.
+    -   `ecdhCurve` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, описывающая именованную кривую или список NID или имен кривых через двоеточие, например `P-521:P-384:P-256`, для использования при согласовании ключей ECDH. Установите значение `auto` для автоматического выбора кривой. Используйте [`crypto.getCurves()`](crypto.md#cryptogetcurves) для получения списка доступных имен кривых. В последних выпусках `openssl ecparam -list_curves` будет также отображать имя и описание каждой доступной эллиптической кривой. **По умолчанию:** [`tls.DEFAULT_ECDH_CURVE`](#tlsdefault_ecdh_curve).
+    -   `honorCipherOrder` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Попытка использовать предпочтения набора шифров сервера вместо предпочтений клиента. Когда `true`, вызывает установку `SSL_OP_CIPHER_SERVER_PREFERENCE` в `secureOptions`, подробнее см. в [OpenSSL Options](crypto.md#openssl-options).
     -   `key` {string|string\[\]|Buffer|Buffer\[\]|Object\[\]} Закрытые ключи в формате PEM. PEM позволяет шифровать закрытые ключи. Зашифрованные ключи будут расшифрованы с помощью `options.passphrase`. Несколько ключей, использующих различные алгоритмы, могут быть предоставлены либо как массив незашифрованных ключевых строк или буферов, либо как массив объектов в виде `{pem: <string|buffer>[, passphrase: <string>]}`. Форма объекта может встречаться только в массиве. Объект `object.passphrase` является необязательным. Зашифрованные ключи будут расшифрованы с помощью `object.passphrase`, если он указан, или `options.passphrase`, если его нет.
-    -   `privateKeyEngine` {string} Имя механизма OpenSSL для получения закрытого ключа. Должно использоваться вместе с `privateKeyIdentifier`.
-    -   `privateKeyIdentifier` {string} Идентификатор закрытого ключа, управляемого движком OpenSSL. Должен использоваться вместе с `privateKeyEngine`. Не следует задавать вместе с `key`, поскольку обе опции определяют закрытый ключ по-разному.
-    -   `maxVersion` {строка} Опционально задает максимальную разрешенную версию TLS. Одна из `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. Не может быть указан вместе с опцией `secureProtocol`; используйте либо одно, либо другое. **По умолчанию:** [`tls.DEFAULT_MAX_VERSION`](#tlsdefault_max_version).
-    -   `minVersion` {string} Опционально задает минимальную разрешенную версию TLS. Одна из `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. Не может быть указан вместе с опцией `secureProtocol`; используйте либо одно, либо другое. Избегайте установки значения меньше, чем TLSv1.2, но это может потребоваться для совместимости. **По умолчанию:** [`tls.DEFAULT_MIN_VERSION`](#tlsdefault_min_version).
-    -   `passphrase` {string} Общая парольная фраза, используемая для одного закрытого ключа и/или PFX.
+    -   `privateKeyEngine` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя механизма OpenSSL для получения закрытого ключа. Должно использоваться вместе с `privateKeyIdentifier`.
+    -   `privateKeyIdentifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Идентификатор закрытого ключа, управляемого движком OpenSSL. Должен использоваться вместе с `privateKeyEngine`. Не следует задавать вместе с `key`, поскольку обе опции определяют закрытый ключ по-разному.
+    -   `maxVersion` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Опционально задает максимальную разрешенную версию TLS. Одна из `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. Не может быть указан вместе с опцией `secureProtocol`; используйте либо одно, либо другое. **По умолчанию:** [`tls.DEFAULT_MAX_VERSION`](#tlsdefault_max_version).
+    -   `minVersion` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Опционально задает минимальную разрешенную версию TLS. Одна из `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. Не может быть указан вместе с опцией `secureProtocol`; используйте либо одно, либо другое. Избегайте установки значения меньше, чем TLSv1.2, но это может потребоваться для совместимости. **По умолчанию:** [`tls.DEFAULT_MIN_VERSION`](#tlsdefault_min_version).
+    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Общая парольная фраза, используемая для одного закрытого ключа и/или PFX.
     -   `pfx` {string|string\[\]|Buffer|Buffer\[\]|Object\[\]} PFX или PKCS12 кодированный закрытый ключ и цепочка сертификатов. `pfx` является альтернативой предоставлению `key` и `cert` по отдельности. PFX обычно зашифрован, если это так, `passphrase` будет использоваться для его расшифровки. Несколько PFX могут быть предоставлены либо как массив незашифрованных буферов PFX, либо как массив объектов в форме `{buf: <string|buffer>[, passphrase: <string>]}`. Форма объекта может встречаться только в массиве. Объект `object.passphrase` является необязательным. Зашифрованный PFX будет расшифрован с помощью `object.passphrase`, если он указан, или `options.passphrase`, если его нет.
-    -   `secureOptions` {number} Опционально влияет на поведение протокола OpenSSL, что обычно не является необходимым. Это следует использовать осторожно, если вообще возможно\! Значение - числовая битовая маска опций `SSL_OP_*` из [OpenSSL Options](crypto.md#openssl-options).
-    -   `secureProtocol` {string} Устаревший механизм выбора используемой версии протокола TLS, не поддерживает независимый контроль минимальной и максимальной версии, а также не поддерживает ограничение протокола до TLSv1.3. Вместо этого используйте `minVersion` и `maxVersion`. Возможные значения перечислены как [SSL_METHODS](https://www.openssl.org/docs/man1.1.1/man7/ssl.html#Dealing-with-Protocol-Methods), используйте имена функций как строки. Например, используйте `'TLSv1_1_method'` для принудительного использования TLS версии 1.1, или `'TLS_method'` для разрешения любой версии протокола TLS вплоть до TLSv1.3. Не рекомендуется использовать TLS версии менее 1.2, но это может потребоваться для совместимости. **По умолчанию:** нет, см. `minVersion`.
-    -   `sessionIdContext` {string} Непрозрачный идентификатор, используемый серверами для того, чтобы состояние сеанса не было общим для разных приложений. Не используется клиентами.
-    -   `ticketKeys`: {Буфер} 48 байт криптографически сильных псевдослучайных данных. Дополнительную информацию см. в [Возобновление сеанса](#session-resumption).
-    -   `sessionTimeout` {число} Количество секунд, после которого TLS-сессия, созданная сервером, больше не будет возобновляться. Дополнительную информацию смотрите в разделе [Возобновление сеанса](#session-resumption). **По умолчанию:** `300`.
+    -   `secureOptions` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Опционально влияет на поведение протокола OpenSSL, что обычно не является необходимым. Это следует использовать осторожно, если вообще возможно\! Значение - числовая битовая маска опций `SSL_OP_*` из [OpenSSL Options](crypto.md#openssl-options).
+    -   `secureProtocol` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устаревший механизм выбора используемой версии протокола TLS, не поддерживает независимый контроль минимальной и максимальной версии, а также не поддерживает ограничение протокола до TLSv1.3. Вместо этого используйте `minVersion` и `maxVersion`. Возможные значения перечислены как [SSL_METHODS](https://www.openssl.org/docs/man1.1.1/man7/ssl.html#Dealing-with-Protocol-Methods), используйте имена функций как строки. Например, используйте `'TLSv1_1_method'` для принудительного использования TLS версии 1.1, или `'TLS_method'` для разрешения любой версии протокола TLS вплоть до TLSv1.3. Не рекомендуется использовать TLS версии менее 1.2, но это может потребоваться для совместимости. **По умолчанию:** нет, см. `minVersion`.
+    -   `sessionIdContext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Непрозрачный идентификатор, используемый серверами для того, чтобы состояние сеанса не было общим для разных приложений. Не используется клиентами.
+    -   `ticketKeys`: [`<Buffer>`](buffer.md#buffer) 48 байт криптографически сильных псевдослучайных данных. Дополнительную информацию см. в [Возобновление сеанса](#session-resumption).
+    -   `sessionTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество секунд, после которого TLS-сессия, созданная сервером, больше не будет возобновляться. Дополнительную информацию смотрите в разделе [Возобновление сеанса](#session-resumption). **По умолчанию:** `300`.
 
 [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener) устанавливает значение опции `honorCipherOrder` по умолчанию на `true`, другие API, создающие безопасные контексты, оставляют его без установки.
 
@@ -964,10 +964,10 @@ socket.on('end', () => {
 
 > Стабильность: 0 - Исправлено: Используйте [`tls.TLSSocket`](#class-tlstlssocket) вместо этого.
 
--   `context` {Object} Объект безопасного контекста, возвращаемый функцией `tls.createSecureContext()`.
--   `isServer` {boolean} `true` для указания того, что данное TLS-соединение должно быть открыто как сервер.
--   `requestCert` {boolean} `true` для указания того, должен ли сервер запрашивать сертификат у подключающегося клиента. Применяется, только если `isServer` равно `true`.
--   `rejectUnauthorized` {boolean} Если не `false`, сервер автоматически отклоняет клиентов с недействительными сертификатами. Применяется только в том случае, если `isServer` имеет значение `true`.
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект безопасного контекста, возвращаемый функцией `tls.createSecureContext()`.
+-   `isServer` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для указания того, что данное TLS-соединение должно быть открыто как сервер.
+-   `requestCert` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для указания того, должен ли сервер запрашивать сертификат у подключающегося клиента. Применяется, только если `isServer` равно `true`.
+-   `rejectUnauthorized` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если не `false`, сервер автоматически отклоняет клиентов с недействительными сертификатами. Применяется только в том случае, если `isServer` имеет значение `true`.
 -   `options`
     -   `enableTrace`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `secureContext`: Объект контекста TLS из [`tls.createSecureContext()`](#tlscreatesecurecontextoptions)
@@ -977,8 +977,8 @@ socket.on('end', () => {
     -   `rejectUnauthorized`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `ALPNProtocols`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
     -   `SNICallback`: См. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
-    -   `session` {Buffer} Экземпляр `Buffer`, содержащий сессию TLS.
-    -   `requestOCSP` {boolean} Если `true`, указывает, что расширение запроса статуса OCSP будет добавлено в клиентский привет и событие `'OCSPResponse'` будет испущено на сокете перед установлением безопасного соединения.
+    -   `session` [`<Buffer>`](buffer.md#buffer) Экземпляр `Buffer`, содержащий сессию TLS.
+    -   `requestOCSP` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, указывает, что расширение запроса статуса OCSP будет добавлено в клиентский привет и событие `'OCSPResponse'` будет испущено на сокете перед установлением безопасного соединения.
 
 Создает новый объект защищенной пары с двумя потоками, один из которых читает и записывает зашифрованные данные, а другой читает и записывает данные с открытым текстом. Как правило, зашифрованный поток направляется в/из входящего потока зашифрованных данных, а поток с открытым текстом используется в качестве замены исходного зашифрованного потока.
 
@@ -1004,41 +1004,41 @@ secureSocket = tls.TLSSocket(socket, options);
 
 ## `tls.createServer([options][, secureConnectionListener])`
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
     -   `ALPNProtocols`: {string\[\]|Buffer\[\]|TypedArray\[\]|DataView\[\]|Buffer| TypedArray|DataView} Массив строк, `Buffer`, `TypedArray` или `DataView`, или один `Buffer`, `TypedArray` или `DataView`, содержащий поддерживаемые протоколы ALPN. `Буфер` должен иметь формат `[len][name][len][name]...`, например, `0x05hello0x05world`, где первый байт - это длина следующего имени протокола. Передача массива обычно намного проще, например, `['hello', 'world']`. (Протоколы должны быть упорядочены по их приоритету).
 
-    -   `clientCertEngine` {string} Имя механизма OpenSSL, который может предоставить сертификат клиента.
+    -   `clientCertEngine` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя механизма OpenSSL, который может предоставить сертификат клиента.
 
-    -   `enableTrace` {boolean} Если `true`, то [`tls.TLSSocket.enableTrace()`](#tlssocketenabletrace) будет вызываться при новых соединениях. Трассировка может быть включена после установления защищенного соединения, но эта опция должна быть использована для отслеживания установки защищенного соединения. **По умолчанию:** `false`.
+    -   `enableTrace` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то [`tls.TLSSocket.enableTrace()`](#tlssocketenabletrace) будет вызываться при новых соединениях. Трассировка может быть включена после установления защищенного соединения, но эта опция должна быть использована для отслеживания установки защищенного соединения. **По умолчанию:** `false`.
 
-    -   `handshakeTimeout` {number} Прервать соединение, если SSL/TLS квитирование не завершится за указанное количество миллисекунд. Ошибка `'tlsClientError` выдается на объект `tls.Server` всякий раз, когда квитирование завершается. **По умолчанию:** `120000` (120 секунд).
+    -   `handshakeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Прервать соединение, если SSL/TLS квитирование не завершится за указанное количество миллисекунд. Ошибка `'tlsClientError` выдается на объект `tls.Server` всякий раз, когда квитирование завершается. **По умолчанию:** `120000` (120 секунд).
 
-    -   `rejectUnauthorized` {boolean} Если не `false`, то сервер будет отклонять любое соединение, которое не авторизовано с помощью списка предоставленных CA. Эта опция действует, только если `requestCert` имеет значение `true`. **По умолчанию:** `true`.
+    -   `rejectUnauthorized` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если не `false`, то сервер будет отклонять любое соединение, которое не авторизовано с помощью списка предоставленных CA. Эта опция действует, только если `requestCert` имеет значение `true`. **По умолчанию:** `true`.
 
-    -   `requestCert` {boolean} Если `true`, сервер будет запрашивать сертификат у подключающихся клиентов и пытаться проверить этот сертификат. **По умолчанию:** `false`.
+    -   `requestCert` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сервер будет запрашивать сертификат у подключающихся клиентов и пытаться проверить этот сертификат. **По умолчанию:** `false`.
 
-    -   `sessionTimeout` {number} Число секунд, после которого TLS-сессия, созданная сервером, больше не будет возобновляться. Дополнительную информацию смотрите в [Возобновление сеанса](#session-resumption). **По умолчанию:** `300`.
+    -   `sessionTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число секунд, после которого TLS-сессия, созданная сервером, больше не будет возобновляться. Дополнительную информацию смотрите в [Возобновление сеанса](#session-resumption). **По умолчанию:** `300`.
 
-    -   `SNICallback(servername, callback)` {Функция} Функция, которая будет вызвана, если клиент поддерживает расширение SNI TLS. При вызове будут переданы два аргумента: `servername` и `callback`. `callback` - это обратный вызов по ошибке, который принимает два необязательных аргумента: `error` и `ctx`. `ctx`, если предоставлен, является экземпляром `SecureContext`. [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) можно использовать для получения соответствующего `SecureContext`. Если `callback` будет вызван с фальшивым аргументом `ctx`, будет использован безопасный контекст сервера по умолчанию. Если `SNICallback` не был предоставлен, будет использован стандартный обратный вызов с высокоуровневым API (см. ниже).
+    -   `SNICallback(servername, callback)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которая будет вызвана, если клиент поддерживает расширение SNI TLS. При вызове будут переданы два аргумента: `servername` и `callback`. `callback` - это обратный вызов по ошибке, который принимает два необязательных аргумента: `error` и `ctx`. `ctx`, если предоставлен, является экземпляром `SecureContext`. [`tls.createSecureContext()`](#tlscreatesecurecontextoptions) можно использовать для получения соответствующего `SecureContext`. Если `callback` будет вызван с фальшивым аргументом `ctx`, будет использован безопасный контекст сервера по умолчанию. Если `SNICallback` не был предоставлен, будет использован стандартный обратный вызов с высокоуровневым API (см. ниже).
 
-    -   `ticketKeys`: {Буфер} 48 байт криптографически сильных псевдослучайных данных. Дополнительную информацию см. в [Возобновление сеанса](#session-resumption).
+    -   `ticketKeys`: [`<Buffer>`](buffer.md#buffer) 48 байт криптографически сильных псевдослучайных данных. Дополнительную информацию см. в [Возобновление сеанса](#session-resumption).
 
-    -   `pskCallback`: {Функция}
+    -   `pskCallback`: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
         -   сокет: {tls.TLSSocket} экземпляр сервера [`tls.TLSSocket`](#class-tlstlssocket) для этого соединения.
-        -   identity: {string} параметр идентификации, отправленный клиентом.
+        -   identity: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) параметр идентификации, отправленный клиентом.
         -   Возвращает: {Buffer|TypedArray|DataView} предварительный общий ключ, который должен быть либо буфером, либо `null` для остановки процесса согласования. Возвращаемый PSK должен быть совместим с дайджестом выбранного шифра.
 
         При согласовании TLS-PSK (pre-shared keys) эта функция вызывается с идентификатором, предоставленным клиентом. Если возвращаемое значение равно `null`, то процесс переговоров будет остановлен, а другой стороне будет отправлено сообщение "unknown_psk_identity". Если сервер хочет скрыть тот факт, что идентификатор PSK не был известен, обратный вызов должен предоставить некоторые случайные данные в качестве `psk`, чтобы соединение не было установлено с сообщением "decrypt_error" до завершения переговоров. Шифры PSK отключены по умолчанию, и использование TLS-PSK требует явного указания набора шифров с помощью опции `ciphers`. Более подробную информацию можно найти в [RFC 4279](https://tools.ietf.org/html/rfc4279).
 
-    -   `pskIdentityHint` {string} необязательная подсказка для отправки клиенту, чтобы помочь с выбором идентификатора во время согласования TLS-PSK. Будет игнорироваться в TLS 1.3. При неудачной попытке установить pskIdentityHint будет выдана ошибка `'tlsClientError'` с кодом `'ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED'`.
+    -   `pskIdentityHint` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) необязательная подсказка для отправки клиенту, чтобы помочь с выбором идентификатора во время согласования TLS-PSK. Будет игнорироваться в TLS 1.3. При неудачной попытке установить pskIdentityHint будет выдана ошибка `'tlsClientError'` с кодом `'ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED'`.
 
     -   ...: Может быть предоставлена любая опция [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Для серверов обычно требуются опции идентификации (`pfx`, `key`/`cert` или `pskCallback`).
 
     -   ...: Может быть предоставлена любая опция [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener).
 
--   `secureConnectionListener` {Функция}
+-   `secureConnectionListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {tls.Server}
 
 Создает новый [`tls.Server`](#class-tlsserver). Слушатель `secureConnectionListener`, если он указан, автоматически устанавливается в качестве слушателя события [`'secureConnection'`](#event-secureconnection).
@@ -1080,7 +1080,7 @@ server.listen(8000, () => {
 
 ## `tls.getCiphers()`.
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив с именами поддерживаемых шифров TLS. Имена приведены в нижнем регистре по историческим причинам, но должны быть приведены в верхнем регистре для использования в опции `ciphers` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions).
 
@@ -1094,7 +1094,7 @@ console.log(tls.getCiphers()); // ['aes128-gcm-sha256', 'aes128-sha', ...]
 
 ## `tls.rootCertificates`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Неизменяемый массив строк, представляющих корневые сертификаты (в формате PEM) из хранилища ЦС Mozilla, поставляемого текущей версией Node.js.
 
@@ -1106,12 +1106,13 @@ console.log(tls.getCiphers()); // ['aes128-gcm-sha256', 'aes128-sha', ...]
 
 ## `tls.DEFAULT_MAX_VERSION`
 
--   {строка} Значение по умолчанию опции `maxVersion` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ей может быть присвоена любая из поддерживаемых версий протокола TLS, `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. **По умолчанию:** `'TLSv1.3'`, если не изменено с помощью опций CLI. Использование `--tls-max-v1.2` устанавливает значение по умолчанию `'TLSv1.2'`. Использование `--tls-max-v1.3` устанавливает значение по умолчанию `'TLSv1.3'`. Если указано несколько опций, используется максимальная.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение по умолчанию опции `maxVersion` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ей может быть присвоена любая из поддерживаемых версий протокола TLS, `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. **По умолчанию:** `'TLSv1.3'`, если не изменено с помощью опций CLI. Использование `--tls-max-v1.2` устанавливает значение по умолчанию `'TLSv1.2'`. Использование `--tls-max-v1.3` устанавливает значение по умолчанию `'TLSv1.3'`. Если указано несколько опций, используется максимальная.
 
 ## `tls.DEFAULT_MIN_VERSION`
 
--   {строка} Значение по умолчанию опции `minVersion` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ей может быть присвоена любая из поддерживаемых версий протокола TLS, `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. **По умолчанию:** `'TLSv1.2'`, если не изменено с помощью опций CLI. Использование `--tls-min-v1.0` устанавливает значение по умолчанию `'TLSv1'`. Использование `--tls-min-v1.1` устанавливает значение по умолчанию `'TLSv1.1'`. Использование `--tls-min-v1.3` устанавливает значение по умолчанию `TLSv1.3`. Если указано несколько опций, то используется наименьшая минимальная.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение по умолчанию опции `minVersion` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ей может быть присвоена любая из поддерживаемых версий протокола TLS, `TLSv1.3`, `TLSv1.2`, `TLSv1.1` или `TLSv1`. **По умолчанию:** `'TLSv1.2'`, если не изменено с помощью опций CLI. Использование `--tls-min-v1.0` устанавливает значение по умолчанию `'TLSv1'`. Использование `--tls-min-v1.1` устанавливает значение по умолчанию `'TLSv1.1'`. Использование `--tls-min-v1.3` устанавливает значение по умолчанию `TLSv1.3`. Если указано несколько опций, то используется наименьшая минимальная.
 
 ## `tls.DEFAULT_CIPHERS`
 
--   {строка} Значение по умолчанию опции `ciphers` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ему может быть присвоен любой из поддерживаемых шифров OpenSSL. По умолчанию используется содержимое `crypto.constants.defaultCoreCipherList`, если не изменено с помощью опций CLI с помощью `--tls-default-ciphers`.
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение по умолчанию опции `ciphers` в [`tls.createSecureContext()`](#tlscreatesecurecontextoptions). Ему может быть присвоен любой из поддерживаемых шифров OpenSSL. По умолчанию используется содержимое `crypto.constants.defaultCoreCipherList`, если не изменено с помощью опций CLI с помощью `--tls-default-ciphers`.
+

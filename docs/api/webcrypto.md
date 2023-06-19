@@ -770,13 +770,13 @@ async function digest(data, algorithm = 'SHA-512') {
 
 Генерирует криптографически сильные случайные значения. Данный `typedArray` заполняется случайными значениями, и возвращается ссылка на `typedArray`.
 
-Данный `typedArray` должен быть целочисленным экземпляром {TypedArray}, т.е. `Float32Array` и `Float64Array` не принимаются.
+Данный `typedArray` должен быть целочисленным экземпляром [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), т.е. `Float32Array` и `Float64Array` не принимаются.
 
 Если размер заданного `typedArray` превышает 65,536 байт, будет выдана ошибка.
 
 ### `crypto.randomUUID()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерирует случайный [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) UUID версии 4. UUID генерируется с помощью криптографического генератора псевдослучайных чисел.
 
@@ -792,7 +792,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKey.extractable`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, {CryptoKey} может быть извлечен с помощью `subtleCrypto.exportKey()` или `subtleCrypto.wrapKey()`.
 
@@ -800,13 +800,13 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `cryptoKey.type`
 
--   Тип: {строка} Одно из `'secret'`, `'private'` или `'public'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'secret'`, `'private'` или `'public'`.
 
 Строка, определяющая, является ли ключ симметричным (`'secret'`) или асимметричным (`'private'` или `'public'`) ключом.
 
 ### `cryptoKey.usages`
 
--   Тип: {string\[\]}
+-   Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Массив строк, определяющих операции, для которых может быть использован ключ.
 
@@ -990,9 +990,9 @@ async function digest(data, algorithm = 'SHA-512') {
 -   `algorithm`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
 -   `key`: {CryptoKey}
 -   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `key`, `subtle.decrypt()` пытается расшифровать предоставленные `data`. В случае успеха, возвращаемое обещание будет разрешено с {ArrayBuffer}, содержащим результат в виде открытого текста.
+Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `key`, `subtle.decrypt()` пытается расшифровать предоставленные `data`. В случае успеха, возвращаемое обещание будет разрешено с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим результат в виде открытого текста.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
@@ -1005,8 +1005,8 @@ async function digest(data, algorithm = 'SHA-512') {
 
 -   `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
 -   `baseKey`: {CryptoKey}
--   `length`: {number|null}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   `length`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `baseKey`, `subtle.deriveBits()` пытается сгенерировать биты `length`.
 
@@ -1014,7 +1014,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 Когда `length` равно `null`, генерируется максимальное количество битов для данного алгоритма. Это разрешено для алгоритмов `'ECDH`, `'X25519` и `'X448`.
 
-В случае успеха возвращаемое обещание будет разрешено с {ArrayBuffer}, содержащим сгенерированные данные.
+В случае успеха возвращаемое обещание будет разрешено с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим сгенерированные данные.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
@@ -1029,9 +1029,9 @@ async function digest(data, algorithm = 'SHA-512') {
 -   `algorithm`: {AlgorithmIdentifier|EcdhKeyDeriveParams|HkdfParams|Pbkdf2Params}
 -   `baseKey`: {CryptoKey}
 -   `derivedKeyAlgorithm`: {HmacKeyGenParams|AesKeyGenParams}
--   `extractable`: {boolean}
--   `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
--   Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `extractable`: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `keyUsages`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [Key usages](#cryptokeyusages).
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {CryptoKey}.
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `baseKey`, `subtle.deriveKey()` пытается сгенерировать новый {CryptoKey} на основе метода и параметров в `derivedKeyAlgorithm`.
 
@@ -1049,26 +1049,26 @@ async function digest(data, algorithm = 'SHA-512') {
 
 -   `алгоритм`: {string|Object}
 -   `данные`: {ArrayBuffer|TypedArray|DataView|Buffer}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
-Используя метод, определенный `алгоритмом`, `subtle.digest()` пытается сгенерировать дайджест `данных`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим вычисленный дайджест.
+Используя метод, определенный `алгоритмом`, `subtle.digest()` пытается сгенерировать дайджест `данных`. В случае успеха возвращаемое обещание разрешается с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим вычисленный дайджест.
 
-Если `algorithm` указан как {string}, он должен быть одним из:
+Если `algorithm` указан как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), он должен быть одним из:
 
 -   `'SHA-1'`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`.
 
-Если `algorithm` предоставлен как {Object}, он должен иметь свойство `name`, значение которого является одним из вышеперечисленных.
+Если `algorithm` предоставлен как [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого является одним из вышеперечисленных.
 
 ### `subtle.encrypt(algorithm, key, data)`
 
 -   `алгоритм`: {RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
 -   `ключ`: {CryptoKey}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-Используя метод и параметры, указанные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.encrypt()` пытается зашифровать `данные`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим зашифрованный результат.
+Используя метод и параметры, указанные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.encrypt()` пытается зашифровать `данные`. В случае успеха возвращаемое обещание разрешается с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим зашифрованный результат.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
@@ -1079,15 +1079,15 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.exportKey(format, key)`
 
--   `format`: {string} Must be one of `'raw'`, `'pkcs8'`, `'spki'`, or `'jwk'`.
+-   `format`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be one of `'raw'`, `'pkcs8'`, `'spki'`, or `'jwk'`.
 -   `key`: {CryptoKey}
--   Возвращает: {Promise}, содержащий {ArrayBuffer|Object}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {ArrayBuffer|Object}.
 
 Экспортирует заданный ключ в указанный формат, если он поддерживается.
 
 Если {CryptoKey} не может быть извлечен, возвращаемое обещание будет отклонено.
 
-Если `формат` равен `'pkcs8'` или `'spki'` и экспорт успешен, возвращаемое обещание будет разрешено с {ArrayBuffer}, содержащим экспортированные данные ключа.
+Если `формат` равен `'pkcs8'` или `'spki'` и экспорт успешен, возвращаемое обещание будет разрешено с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим экспортированные данные ключа.
 
 Если `формат` равен `'jwk'` и экспорт успешен, возвращаемое обещание будет разрешено в объект JavaScript, соответствующий спецификации [JSON Web Key](https://tools.ietf.org/html/rfc7517).
 
@@ -1209,9 +1209,9 @@ async function digest(data, algorithm = 'SHA-512') {
 
 <!-- end list -->
 
--   `extractable`: {boolean}
--   `keyUsages`: {string\[\]} See [Key usages](#cryptokeyusages).
--   Возвращает: {Promise}, содержащий {CryptoKey|CryptoKeyPair}.
+-   `extractable`: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `keyUsages`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [Key usages](#cryptokeyusages).
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {CryptoKey|CryptoKeyPair}.
 
 Используя метод и параметры, указанные в `algorithm`, `subtle.generateKey()` пытается сгенерировать новый ключевой материал. В зависимости от используемого метода, метод может генерировать либо один {CryptoKey}, либо {CryptoKeyPair}.
 
@@ -1237,12 +1237,12 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.importKey(format, keyData, algorithm, extractable, keyUsages)`
 
--   `format`: {строка}. Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `format`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
 -   `keyData`: {ArrayBuffer|TypedArray|DataView|Buffer|Object}
 -   `algorithm`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
--   `extractable`: {boolean}
--   `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
--   Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `extractable`: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `keyUsages`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key Usages](#cryptokeyusages).
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {CryptoKey}.
 
 Метод `subtle.importKey()` пытается интерпретировать предоставленные `keyData` в заданном `формате` для создания экземпляра {CryptoKey} с использованием предоставленных аргументов `algorithm`, `extractable` и `keyUsages`. Если импорт прошел успешно, возвращаемое обещание будет разрешено с созданным {CryptoKey}.
 
@@ -1381,9 +1381,9 @@ async function digest(data, algorithm = 'SHA-512') {
 -   `algorithm`: {AlgorithmIdentifier|RsaPssParams|EcdsaParams|Ed448Params}
 -   `key`: {CryptoKey}
 -   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-Используя метод и параметры, заданные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.sign()` пытается сгенерировать криптографическую подпись `data`. В случае успеха возвращаемое обещание разрешается с {ArrayBuffer}, содержащим сгенерированную подпись.
+Используя метод и параметры, заданные `algorithm`, и ключевой материал, предоставленный `key`, `subtle.sign()` пытается сгенерировать криптографическую подпись `data`. В случае успеха возвращаемое обещание разрешается с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим сгенерированную подпись.
 
 В настоящее время поддерживаются следующие алгоритмы:
 
@@ -1396,14 +1396,14 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.unwrapKey(format, wrappedKey, unwrappingKey, unwrapAlgo, unwrappedKeyAlgo, extractable, keyUsages)`.
 
--   `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `format`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
 -   `wrappedKey`: {ArrayBuffer|TypedArray|DataView|Buffer}
 -   `unwrappingKey`: {CryptoKey}
 -   `unwrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
 -   `unwrappedKeyAlgo`: {AlgorithmIdentifier|RsaHashedImportParams|EcKeyImportParams|HmacImportParams}
--   `extractable`: {boolean}
--   `keyUsages`: {string\[\]} См. [Key Usages](#cryptokeyusages).
--   Возвращает: {Promise}, содержащий {CryptoKey}.
+-   `extractable`: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `keyUsages`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key Usages](#cryptokeyusages).
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {CryptoKey}.
 
 В криптографии "обертывание ключа" означает экспорт и последующее шифрование ключевого материала. Метод `subtle.unwrapKey()` пытается расшифровать обернутый ключ и создать экземпляр {CryptoKey}. Это эквивалентно вызову `subtle.decrypt()` сначала на зашифрованных ключевых данных (используя аргументы `wrappedKey`, `unwrapAlgo` и `unwrappingKey` в качестве входных данных), а затем передаче результатов в метод `subtle.importKey()`, используя аргументы `unwrappedKeyAlgo`, `extractable` и `keyUsages` в качестве входных данных. В случае успеха возвращаемое обещание разрешается с объектом {CryptoKey}.
 
@@ -1438,7 +1438,7 @@ async function digest(data, algorithm = 'SHA-512') {
 -   `key`: {CryptoKey}
 -   `signature`: {ArrayBuffer|TypedArray|DataView|Buffer}
 -   `data`: {ArrayBuffer|TypedArray|DataView|Buffer}
--   Возвращает: {Promise}, содержащий {boolean}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 Используя метод и параметры, указанные в `algorithm`, и ключевой материал, предоставленный `key`, `subtle.verify()` пытается проверить, что `signature` является действительной криптографической подписью `данных`. Возвращаемое обещание разрешается либо с `true`, либо с `false`.
 
@@ -1453,13 +1453,13 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### `subtle.wrapKey(format, key, wrappingKey, wrapAlgo)`.
 
--   `format`: {строка} Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
+-   `format`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `raw`, `pkcs8`, `spki` или `jwk`.
 -   `key`: {CryptoKey}
 -   `wrappingKey`: {CryptoKey}
 -   `wrapAlgo`: {AlgorithmIdentifier|RsaOaepParams|AesCtrParams|AesCbcParams|AesGcmParams}
--   Возвращает: {Promise}, содержащий {ArrayBuffer}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-В криптографии "обертывание ключа" означает экспорт и последующее шифрование ключевого материала. Метод `subtle.wrapKey()` экспортирует ключевой материал в формат, определенный `format`, затем шифрует его, используя метод и параметры, указанные `wrapAlgo`, и ключевой материал, предоставленный `wrappingKey`. Это эквивалентно вызову `subtle.exportKey()` с использованием `format` и `key` в качестве аргументов, затем передаче результата методу `subtle.encrypt()` с использованием `wrappingKey` и `wrapAlgo` в качестве входных данных. В случае успеха возвращенное обещание будет разрешено с {ArrayBuffer}, содержащим зашифрованные ключевые данные.
+В криптографии "обертывание ключа" означает экспорт и последующее шифрование ключевого материала. Метод `subtle.wrapKey()` экспортирует ключевой материал в формат, определенный `format`, затем шифрует его, используя метод и параметры, указанные `wrapAlgo`, и ключевой материал, предоставленный `wrappingKey`. Это эквивалентно вызову `subtle.exportKey()` с использованием `format` и `key` в качестве аргументов, затем передаче результата методу `subtle.encrypt()` с использованием `wrappingKey` и `wrapAlgo` в качестве входных данных. В случае успеха возвращенное обещание будет разрешено с [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим зашифрованные ключевые данные.
 
 В настоящее время поддерживаются следующие алгоритмы обертывания:
 
@@ -1477,7 +1477,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `algorithmIdentifier.name`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `AesCbcParams`
 
@@ -1489,7 +1489,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `aesCbcParams.name`
 
--   Тип: {строка} Должно быть `AES-CBC`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `AES-CBC`.
 
 ### Класс: `AesCtrParams`
 
@@ -1503,11 +1503,11 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `aesCtrParams.length`
 
--   Тип: {число} Количество битов в `aesCtrParams.counter`, которые будут использоваться в качестве счетчика.
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество битов в `aesCtrParams.counter`, которые будут использоваться в качестве счетчика.
 
 #### `aesCtrParams.name`
 
--   Тип: {строка} Должно быть `AES-CTR`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `AES-CTR`.
 
 ### Класс: `AesGcmParams`
 
@@ -1527,29 +1527,29 @@ async function digest(data, algorithm = 'SHA-512') {
 
 #### `aesGcmParams.name`
 
--   Тип: {строка} Должно быть `AES-GCM`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `AES-GCM`.
 
 #### `aesGcmParams.tagLength`
 
--   Тип: {число} Размер в битах генерируемого тега аутентификации. Это значение должно быть одним из `32`, `64`, `96`, `104`, `112`, `120` или `128`. **По умолчанию:** `128`.
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер в битах генерируемого тега аутентификации. Это значение должно быть одним из `32`, `64`, `96`, `104`, `112`, `120` или `128`. **По умолчанию:** `128`.
 
 ### Класс: `AesKeyGenParams`
 
 #### `aesKeyGenParams.length`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина генерируемого ключа AES. Она должна быть либо `128`, либо `192`, либо `256`.
 
 #### `aesKeyGenParams.name`
 
--   Тип: {строка} Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'` или `'AES-KW'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'` или `'AES-KW'`.
 
 ### Класс: `EcdhKeyDeriveParams`
 
 #### `ecdhKeyDeriveParams.name`
 
--   Тип: {строка} Должно быть `ECDH`, `X25519` или `X448`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `ECDH`, `X25519` или `X448`.
 
 #### `ecdhKeyDeriveParams.public`
 
@@ -1563,44 +1563,44 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {строка|Объект}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`.
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `ecdsaParams.name`
 
--   Тип: {строка} Должно быть `ECDSA`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `ECDSA`.
 
 ### Класс: `EcKeyGenParams`
 
 #### `ecKeyGenParams.name`
 
--   Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyGenParams.namedCurve`
 
--   Тип: {строка} Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EcKeyImportParams`
 
 #### `ecKeyImportParams.name`
 
--   Тип: {строка} Должно быть одним из `'ECDSA'` или `'ECDH'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyImportParams.namedCurve`
 
--   Тип: {строка} Должна быть одной из `'P-256'`, `'P-384'`, `'P-521'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должна быть одной из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `Ed448Params`
 
 #### `ed448Params.name`
 
--   Тип: {строка} Должно быть `ed448`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `ed448`.
 
 #### `ed448Params.context`
 
@@ -1614,14 +1614,14 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {строка|Объект}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`.
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hkdfParams.info`
 
@@ -1631,7 +1631,7 @@ ECDH-производство ключей работает, принимая н
 
 #### `hkdfParams.name`
 
--   Тип: {строка} Должно быть `HKDF`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `HKDF`.
 
 #### `hkdfParams.salt`
 
@@ -1645,24 +1645,24 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {string|Object}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hmacImportParams.length`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Необязательное количество битов в ключе HMAC. Это необязательное значение, и в большинстве случаев его следует опускать.
 
 #### `hmacImportParams.name`
 
--   Тип: {строка} Должно быть `HMAC`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `HMAC`.
 
 ### Класс: `HmacKeyGenParams`
 
@@ -1670,24 +1670,24 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {string|Object}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `hmacKeyGenParams.length`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество битов для генерации ключа HMAC. Если опущено, длина будет определяться используемым алгоритмом хэширования. Этот параметр является необязательным и в большинстве случаев должен быть опущен.
 
 #### `hmacKeyGenParams.name`
 
--   Тип: {строка} Должно быть `HMAC`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `HMAC`.
 
 ### Класс: `Pbkdf2Params`
 
@@ -1695,24 +1695,24 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {string|Object}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `pbkdf2Params.iterations`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество итераций, которые должен сделать алгоритм PBKDF2 при выведении битов.
 
 #### `pbkdf2Params.name`
 
--   Тип: {строка} Должно быть `'PBKDF2'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'PBKDF2'`.
 
 #### `pbkdf2Params.salt`
 
@@ -1726,18 +1726,18 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {string|Object}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `rsaHashedImportParams.name`
 
--   Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
 
 ### Класс: `RsaHashedKeyGenParams`
 
@@ -1745,30 +1745,30 @@ ECDH-производство ключей работает, принимая н
 
 -   Тип: {string|Object}
 
-Если представлено как {строка}, значение должно быть одним из:
+Если представлено как [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
 -   `SHA-1`
 -   `SHA-256`
 -   `SHA-384`
 -   `SHA-512`
 
-Если объект представлен в виде {Object}, он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
+Если объект представлен в виде [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), он должен иметь свойство `name`, значение которого равно одному из перечисленных выше значений.
 
 #### `rsaHashedKeyGenParams.modulusLength`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина в битах модуля RSA. В соответствии с наилучшей практикой, она должна быть не менее `2048`.
 
 #### `rsaHashedKeyGenParams.name`
 
--   Тип: {строка} Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или `'RSA-OAEP'`.
 
 #### `rsaHashedKeyGenParams.publicExponent`
 
--   Тип: {Uint8Array}
+-   Тип: [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
-Публичная экспонента RSA. Это должен быть {Uint8Array}, содержащий беззнаковое целое число, которое должно укладываться в 32 бита. Массив {Uint8Array} может содержать произвольное количество старших нулевых битов. Значение должно быть простым числом. Если нет причин использовать другое значение, используйте `new Uint8Array([1, 0, 1])` (65537) в качестве публичной экспоненты.
+Публичная экспонента RSA. Это должен быть [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), содержащий беззнаковое целое число, которое должно укладываться в 32 бита. Массив [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) может содержать произвольное количество старших нулевых битов. Значение должно быть простым числом. Если нет причин использовать другое значение, используйте `new Uint8Array([1, 0, 1])` (65537) в качестве публичной экспоненты.
 
 ### Класс: `RsaOaepParams`
 
@@ -1782,16 +1782,17 @@ ECDH-производство ключей работает, принимая н
 
 #### `rsaOaepParams.name`
 
--   Тип: {строка} должно быть `RSA-OAEP`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) должно быть `RSA-OAEP`.
 
 ### Класс: `RsaPssParams`
 
 #### `rsaPssParams.name`
 
--   Тип: {строка} Должно быть `RSA-PSS`.
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `RSA-PSS`.
 
 #### `rsaPssParams.saltLength`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина (в байтах) используемой случайной соли.
+

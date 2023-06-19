@@ -68,7 +68,7 @@ node --trace-event-categories v8,node,node.async_hooks
 
 #### `tracing.categories`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список категорий событий трассировки, охватываемых этим объектом `Tracing`, разделенный запятыми.
 
@@ -104,12 +104,12 @@ console.log(trace_events.getEnabledCategories());
 
 #### `tracing.enabled`
 
--   {булево} `true` только если объект `Tracing` был включен.
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` только если объект `Tracing` был включен.
 
 ### `trace_events.createTracing(options)`
 
--   `options` {Object}
-    -   `categories` {string\[\]} Массив имен категорий трассировки. Значения, включенные в массив, по возможности приводятся к строке. Если значение не может быть приведено к строке, будет выдана ошибка.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `categories` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив имен категорий трассировки. Значения, включенные в массив, по возможности приводятся к строке. Если значение не может быть приведено к строке, будет выдана ошибка.
 -   Возвращает: {Tracing}.
 
 Создает и возвращает объект `Tracing` для заданного набора `категорий`.
@@ -125,7 +125,7 @@ tracing.disable();
 
 ### `trace_events.getEnabledCategories()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает список всех включенных в данный момент категорий событий трассировки, разделенных запятыми. Текущий набор включенных категорий событий трассировки определяется _объединением_ всех включенных в данный момент объектов `Tracing` и любых категорий, включенных с помощью флага `--trace-event-categories`.
 
@@ -190,3 +190,4 @@ async function collect() {
 
 collect();
 ```
+

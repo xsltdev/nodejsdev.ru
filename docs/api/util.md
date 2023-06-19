@@ -23,8 +23,8 @@ const util = require('node:util');
 
 ## `util.callbackify(original)`
 
--   `original` {Function} Функция `async`.
--   Возвращает: {Function} функцию в стиле обратного вызова
+-   `original` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция `async`.
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функцию в стиле обратного вызова
 
 Принимает функцию `async` (или функцию, возвращающую `Promise`) и возвращает функцию в стиле обратного вызова по ошибке, т.е. принимая в качестве последнего аргумента обратный вызов `(err, value) => ...`. В обратном вызове первым аргументом будет причина отказа (или `null`, если `Promise` разрешилась), а вторым аргументом будет разрешенное значение.
 
@@ -81,9 +81,9 @@ callbackFunction((err, ret) => {
 
 ## `util.debuglog(section[, callback])`.
 
--   `section` {string} Строка, идентифицирующая часть приложения, для которой создается функция `debuglog`.
--   `callback` {функция} Обратный вызов, вызываемый при первом вызове функции логирования с аргументом функции, который является более оптимизированной функцией логирования.
--   Возвращает: {Function} Функция протоколирования.
+-   `section` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, идентифицирующая часть приложения, для которой создается функция `debuglog`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов, вызываемый при первом вызове функции логирования с аргументом функции, который является более оптимизированной функцией логирования.
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция протоколирования.
 
 Метод `util.debuglog()` используется для создания функции, которая условно записывает отладочные сообщения в `stderr` на основе существования переменной окружения `NODE_DEBUG`. Если имя `section` встречается в значении этой переменной окружения, то возвращаемая функция работает аналогично [`console.error()`](console.md#consoleerrordata-args). Если нет, то возвращаемая функция не работает.
 
@@ -152,7 +152,7 @@ let debuglog = util.debuglog('internals', (debug) => {
 
 ### `debuglog().enabled`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Геттер `util.debuglog().enabled` используется для создания теста, который может быть использован в условиях, основанных на существовании переменной окружения `NODE_DEBUG`. Если имя `section` встречается в значении этой переменной окружения, то возвращаемое значение будет `true`. Если нет, то возвращаемое значение будет `false`.
 
@@ -184,10 +184,10 @@ hello from foo [123]
 
 ## `util.deprecate(fn, msg[, code])`.
 
--   `fn` {Функция} Функция, которая устаревает.
--   `msg` {string} Предупреждающее сообщение, которое будет отображаться при вызове устаревшей функции.
--   `code` {string} Код устаревания.
--   Возвращает: {Функция} Устаревшая функция, обернутая для выдачи предупреждения.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которая устаревает.
+-   `msg` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Предупреждающее сообщение, которое будет отображаться при вызове устаревшей функции.
+-   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код устаревания.
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Устаревшая функция, обернутая для выдачи предупреждения.
 
 Метод `util.deprecate()` оборачивает `fn` (которая может быть функцией или классом) таким образом, что она помечается как устаревшая.
 
@@ -238,7 +238,7 @@ fn2(); // Does not emit a deprecation warning because it has the same code
 
 ## `util.format(format[, ...args])`
 
--   `format` {string} Строка формата, подобная `printf`.
+-   `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка формата, подобная `printf`.
 
 Метод `util.format()` возвращает отформатированную строку, используя первый аргумент как `printf`-подобную строку формата, которая может содержать ноль или более спецификаторов формата. Каждый спецификатор заменяется преобразованным значением соответствующего аргумента. Поддерживаются следующие спецификаторы:
 
@@ -251,7 +251,7 @@ fn2(); // Does not emit a deprecation warning because it has the same code
 -   `%O`: `Object`. Строковое представление объекта с общим форматированием объекта JavaScript. Аналогично `util.inspect()` без опций. Будет показан полный объект, не включая неперечисляемые свойства и прокси.
 -   `%c`: `CSS`. Этот спецификатор игнорируется и пропускает все переданные CSS.
 -   `%%`: одиночный знак процента (`'%'`). Аргумент не используется.
--   Возвращает: {строка} форматированная строка.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) форматированная строка.
 
 Если спецификатор не имеет соответствующего аргумента, он не заменяется:
 
@@ -303,8 +303,8 @@ util.format('%% %s');
 
 ## `util.formatWithOptions(inspectOptions, format[, ...args])`.
 
--   `inspectOptions` {Object}
--   `format` {string}
+-   `inspectOptions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Эта функция идентична [`util.format()`](#utilformatformat-args), за исключением того, что она принимает аргумент `inspectOptions`, который определяет опции, передаваемые [`util.inspect()`](#utilinspectobject-options).
 
@@ -322,8 +322,8 @@ util.formatWithOptions({ colors: true }, 'See object %O', {
 
 ## `util.getSystemErrorName(err)`
 
--   `err` {число}
--   Возвращает: {строка}
+-   `err` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строковое имя для числового кода ошибки, который поступает из API Node.js. Сопоставление между кодами ошибок и именами ошибок зависит от платформы. Имена распространенных ошибок см. в [Common System Errors](errors.md#common-system-errors).
 
@@ -360,8 +360,8 @@ fs.access('file/that/does/not/exist', (err) => {
 
 > Стабильность: 3 - Наследие: Используйте синтаксис классов ES2015 и ключевое слово `extends` вместо этого.
 
--   `constructor` {Function}
--   `superConstructor` {Функция}
+-   `constructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `superConstructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Использование `util.inherits()` не рекомендуется. Пожалуйста, используйте ключевые слова ES6 `class` и `extends`, чтобы получить поддержку наследования на уровне языка. Также обратите внимание, что эти два стиля [семантически несовместимы] (https://github.com/nodejs/node/issues/4179).
 
@@ -425,16 +425,16 @@ stream.write('With ES6');
 
 ## `util.inspect(object[, showHidden[, depth[, colors]]])`.
 
--   `object` {any} Любой примитив JavaScript или `Object`.
--   `options` {Object}
-    -   `showHidden` {boolean} Если `true`, то неперечисляемые символы и свойства `объекта` будут включены в отформатированный результат. Также включаются записи [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), а также определяемые пользователем свойства прототипа (за исключением свойств метода). **По умолчанию:** `false`.
-    -   `depth` {number} Определяет количество раз для перебора при форматировании `объекта`. Это полезно для проверки больших объектов. Для вызова до максимального размера стека вызовов передайте `Infinity` или `null`. **По умолчанию:** `2`.
-    -   `colors` {boolean} Если `true`, вывод будет оформлен с использованием цветовых кодов ANSI. Цвета можно настраивать. Смотрите [Настройка цветов `util.inspect`](#customizing-utilinspect-colors). **По умолчанию:** `false`.
-    -   `customInspect` {boolean}. Если `false`, то функции `[util.inspect.custom](depth, opts, inspect)` не вызываются. **По умолчанию:** `true`.
-    -   `showProxy` {boolean} Если `true`, то проверка `Proxy` включает объекты [`target` и `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology). **По умолчанию:** `false`.
-    -   `maxArrayLength` {целое число} Определяет максимальное количество элементов `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), которые следует включать при форматировании. Установите значение `null` или `Infinity`, чтобы показать все элементы. Установите значение `0` или отрицательное, чтобы не показывать никаких элементов. **По умолчанию:** `100`.
-    -   `maxStringLength` {целое число} Определяет максимальное количество символов для включения при форматировании. Установите значение `null` или `бесконечность`, чтобы показать все элементы. Установите `0` или отрицательное значение, чтобы не показывать никаких символов. **По умолчанию:** `10000`.
-    -   `breakLength` {целое число} Длина, при которой вводимые значения разбиваются на несколько строк. Установите значение `Infinity` для форматирования ввода в виде одной строки (в сочетании с `compact`, установленным в `true` или любым числом \>= `1`). **По умолчанию:** `80`.
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любой примитив JavaScript или `Object`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `showHidden` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то неперечисляемые символы и свойства `объекта` будут включены в отформатированный результат. Также включаются записи [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), а также определяемые пользователем свойства прототипа (за исключением свойств метода). **По умолчанию:** `false`.
+    -   `depth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество раз для перебора при форматировании `объекта`. Это полезно для проверки больших объектов. Для вызова до максимального размера стека вызовов передайте `Infinity` или `null`. **По умолчанию:** `2`.
+    -   `colors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, вывод будет оформлен с использованием цветовых кодов ANSI. Цвета можно настраивать. Смотрите [Настройка цветов `util.inspect`](#customizing-utilinspect-colors). **По умолчанию:** `false`.
+    -   `customInspect` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type). Если `false`, то функции `[util.inspect.custom](depth, opts, inspect)` не вызываются. **По умолчанию:** `true`.
+    -   `showProxy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то проверка `Proxy` включает объекты [`target` и `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology). **По умолчанию:** `false`.
+    -   `maxArrayLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет максимальное количество элементов `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet), которые следует включать при форматировании. Установите значение `null` или `Infinity`, чтобы показать все элементы. Установите значение `0` или отрицательное, чтобы не показывать никаких элементов. **По умолчанию:** `100`.
+    -   `maxStringLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет максимальное количество символов для включения при форматировании. Установите значение `null` или `бесконечность`, чтобы показать все элементы. Установите `0` или отрицательное значение, чтобы не показывать никаких символов. **По умолчанию:** `10000`.
+    -   `breakLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина, при которой вводимые значения разбиваются на несколько строк. Установите значение `Infinity` для форматирования ввода в виде одной строки (в сочетании с `compact`, установленным в `true` или любым числом \>= `1`). **По умолчанию:** `80`.
     -   `compact` {boolean|integer} Установка этого параметра в `false` приводит к тому, что каждый ключ объекта будет отображаться на новой строке. Текст, длина которого превышает `breakLength`, будет обрываться на новых строках. Если задано число, то наиболее `n` внутренних элементов объединяются на одной строке, пока все свойства помещаются в `breakLength`. Короткие элементы массива также группируются вместе. F
 
 <!-- 0045.part.md -->
@@ -443,7 +443,7 @@ stream.write('With ES6');
       - `getters` {boolean|string} Если установлено значение `true`, проверяются геттеры. Если установлено значение `'get'`, проверяются только геттеры без соответствующего сеттера. Если установлено значение `'set'`, проверяются только геттеры с соответствующим сеттером. Это может вызвать побочные эффекты в зависимости от функции getter. **По умолчанию:** `false`.
       - `numericSeparator` {boolean} Если установлено значение `true`, то подчеркивание используется для разделения каждых трех цифр во всех bigint и числах. **По умолчанию:** `false`.
 
--   Возвращает: {строка} Представление `объекта`.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Представление `объекта`.
 
 Метод `util.inspect()` возвращает строковое представление `объекта`, предназначенное для отладки. Вывод `util.inspect` может измениться в любой момент и не должен зависеть от него программно. Могут быть переданы дополнительные `опции`, которые изменяют результат. `util.inspect()` будет использовать имя конструктора и/или `@@toStringTag` для создания идентифицируемой метки для проверяемого значения.
 
@@ -858,9 +858,9 @@ console.log(arr); // logs the full array
 
 ## `util.isDeepStrictEqual(val1, val2)`
 
--   `val1` {любой}
--   `val2` {любой}
--   Возвращает: {boolean}
+-   `val1` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `val2` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если существует глубокое строгое равенство между `val1` и `val2`. В противном случае возвращается `false`.
 
@@ -878,7 +878,7 @@ MIME-строка - это структурированная строка, со
 
 ### Конструктор: `new MIMEType(input)`.
 
--   `input` {string} Входной MIME для разбора
+-   `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Входной MIME для разбора
 
 Создает новый объект `MIMEType` путем разбора `input`.
 
@@ -932,7 +932,7 @@ console.log(String(myMIME));
 
 #### `mime.type`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получает и устанавливает часть типа MIME.
 
@@ -972,7 +972,7 @@ console.log(String(myMIME));
 
 #### `mime.subtype`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получает и устанавливает часть подтипа MIME.
 
@@ -1012,7 +1012,7 @@ console.log(String(myMIME));
 
 #### `mime.essence`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получает сущность MIME. Это свойство доступно только для чтения. Используйте `mime.type` или `mime.subtype` для изменения MIME.
 
@@ -1058,7 +1058,7 @@ console.log(String(myMIME));
 
 #### `mime.toString()`.
 
--   Возвращает: {string}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `toString()` объекта `MIMEType` возвращает сериализованный MIME.
 
@@ -1066,7 +1066,7 @@ console.log(String(myMIME));
 
 #### `mime.toJSON()`.
 
--   Возвращает: {строка}.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type).
 
 Псевдоним для [`mime.toString()`](#mimetostring).
 
@@ -1132,7 +1132,7 @@ const myParams = new MIMEParams();
 
 #### `mimeParams.delete(name)`.
 
--   `name` {string}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Удаляет все пары имя-значение, имя которых равно `name`.
 
@@ -1144,21 +1144,21 @@ const myParams = new MIMEParams();
 
 #### `mimeParams.get(name)`.
 
--   `name` {string}
--   Возвращает: {string} или `null`, если не существует пары имя-значение с заданным `name`.
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) или `null`, если не существует пары имя-значение с заданным `name`.
 
 Возвращает значение первой пары имя-значение, имя которой равно `name`. Если таких пар нет, возвращается `null`.
 
 #### `mimeParams.has(name)`.
 
--   `name` {string}
--   Возвращает: {boolean}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если существует хотя бы одна пара имя-значение, имя которой равно `name`.
 
 #### `mimeParams.keys()`.
 
--   Возвращает: {Итератор}
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает итератор по именам каждой пары имя-значение.
 
@@ -1196,8 +1196,8 @@ for (const name of params.keys()) {
 
 #### `mimeParams.set(name, value)`.
 
--   `name` {string}
--   `value` {строка}
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Устанавливает значение в объекте `MIMEParams`, связанном с `name`, в `value`. Если существуют уже существующие пары имя-значение, имена которых равны `name`, установите значение первой такой пары в `value`.
 
@@ -1231,13 +1231,13 @@ console.log(params.toString());
 
 #### `mimeParams.values()`.
 
--   Возвращает: {Итератор}
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает итератор по значениям каждой пары имя-значение.
 
 #### `mimeParams[@@iterator]()`.
 
--   Возвращает: {Итератор}
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Псевдоним для [`mimeParams.entries()`](#mimeparamsentries).
 
@@ -1279,19 +1279,19 @@ for (const [name, value] of params) {
 
 ## `util.parseArgs([config])`
 
--   `config` {Объект} Используется для предоставления аргументов для разбора и для настройки парсера. `config` поддерживает следующие свойства:
-    -   `args` {string\[\]} массив строк аргументов. **По умолчанию:** `process.argv` с удаленными `execPath` и `filename`.
-    -   `options` {Object} Используется для описания аргументов, известных синтаксическому анализатору. Ключами `options` являются длинные имена опций, а значениями - {Object}, принимающие следующие свойства:
-        -   `type` {string} Тип аргумента, который должен быть либо `boolean`, либо `string`.
-        -   `multiple` {boolean} Может ли этот параметр быть указан несколько раз. Если `true`, все значения будут собраны в массив. Если `false`, то значения для опции будут последними. **По умолчанию:** `false`.
-        -   `short` {string} Односимвольный псевдоним для опции.
+-   `config` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Используется для предоставления аргументов для разбора и для настройки парсера. `config` поддерживает следующие свойства:
+    -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив строк аргументов. **По умолчанию:** `process.argv` с удаленными `execPath` и `filename`.
+    -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Используется для описания аргументов, известных синтаксическому анализатору. Ключами `options` являются длинные имена опций, а значениями - [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), принимающие следующие свойства:
+        -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип аргумента, который должен быть либо `boolean`, либо `string`.
+        -   `multiple` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Может ли этот параметр быть указан несколько раз. Если `true`, все значения будут собраны в массив. Если `false`, то значения для опции будут последними. **По умолчанию:** `false`.
+        -   `short` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Односимвольный псевдоним для опции.
         -   `default` {string | boolean | string\[\] | boolean\[\]} Значение опции по умолчанию, если оно не задано args. Оно должно быть того же типа, что и свойство `type`. Если `multiple` имеет значение `true`, это должен быть массив.
-    -   `strict` {boolean} Должна ли возникать ошибка при встрече неизвестных аргументов или при передаче аргументов, не соответствующих `типу`, заданному в `options`. **По умолчанию:** `true`.
-    -   `allowPositionals` {boolean} Принимает ли эта команда позиционные аргументы. **По умолчанию:** `false`, если `strict` равно `true`, иначе `true`.
-    -   `tokens` {boolean} Возвращает разобранные лексемы. Это полезно для расширения встроенного поведения, от добавления дополнительных проверок до переработки токенов различными способами. **По умолчанию:** `false`.
--   Возвращает: {Object} Разобранные аргументы командной строки:
-    -   `values` {Object} Отображение разобранных имен опций с их значениями {string} или {boolean}.
-    -   `positionals` {string\[\]} Позиционные аргументы.
+    -   `strict` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должна ли возникать ошибка при встрече неизвестных аргументов или при передаче аргументов, не соответствующих `типу`, заданному в `options`. **По умолчанию:** `true`.
+    -   `allowPositionals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Принимает ли эта команда позиционные аргументы. **По умолчанию:** `false`, если `strict` равно `true`, иначе `true`.
+    -   `tokens` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Возвращает разобранные лексемы. Это полезно для расширения встроенного поведения, от добавления дополнительных проверок до переработки токенов различными способами. **По умолчанию:** `false`.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Разобранные аргументы командной строки:
+    -   `values` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Отображение разобранных имен опций с их значениями [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) или [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+    -   `positionals` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Позиционные аргументы.
     -   `токены` {Object\[\] | undefined} См. раздел [parseArgs tokens](#parseargs-tokens). Возвращается только если `config` включает `tokens: true`.
 
 Предоставляет API более высокого уровня для разбора аргументов командной строки, чем непосредственное взаимодействие с `process.argv`. Принимает спецификацию ожидаемых аргументов и возвращает структурированный объект с разобранными опциями и позициями.
@@ -1349,15 +1349,15 @@ console.log(values, positionals);
 Детальная информация о разборе доступна для добавления пользовательского поведения, если указать `tokens: true` в конфигурации. Возвращаемые токены имеют свойства, описывающие:
 
 -   все токены
-    -   `kind` {string} Одно из 'option', 'positional' или 'option-terminator'.
-    -   `index` {число} Индекс элемента в `args`, содержащего токен. Таким образом, исходным аргументом для токена является `args[token.index]`.
+    -   `kind` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из 'option', 'positional' или 'option-terminator'.
+    -   `index` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс элемента в `args`, содержащего токен. Таким образом, исходным аргументом для токена является `args[token.index]`.
 -   токены опций
-    -   `name` {строка} Длинное имя опции.
-    -   `rawName` {строка} Как опция используется в args, например, `-f` из `--foo`.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Длинное имя опции.
+    -   `rawName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Как опция используется в args, например, `-f` из `--foo`.
     -   `value` {string | undefined} Значение опции, указанное в args. Неопределено для булевых опций.
     -   `inlineValue` {boolean | undefined} Указывается ли значение опции в строке, как `--foo=bar`.
 -   позиционные маркеры
-    -   `value` {string} Значение позиционного аргумента в args (т.е. `args[index]`).
+    -   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение позиционного аргумента в args (т.е. `args[index]`).
 -   опция-терминатор токена
 
 Возвращаемые лексемы располагаются в том порядке, в котором они встречаются во входных args. Опции, которые встречаются в args более одного раза, выдают маркер для каждого использования. Короткие группы опций, такие как `-xy`, расширяются до маркера для каждой опции. Таким образом, `-xxx` дает три токена.
@@ -1461,8 +1461,8 @@ $ node negate.js --no-logfile --logfile=test.log --color --no-color
 
 ## `util.promisify(original)`
 
--   `original` {Функция}
--   Возвращает: {Function}
+-   `original` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Принимает функцию, следуя общему стилю обратного вызова по ошибке, т.е. принимая `(err, value) => ...` обратный вызов в качестве последнего аргумента, и возвращает версию, которая возвращает обещания.
 
@@ -1607,8 +1607,8 @@ doSomething[kCustomPromisifiedSymbol] = (foo) => {
 
 ## `util.stripVTControlCharacters(str)`
 
--   `str` {строка}
--   Возвращает: {string}
+-   `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает `str` с удаленными кодами ANSI.
 
@@ -1688,10 +1688,10 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### `new TextDecoder([encoding[, options]])`.
 
--   `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `ТекстДекодера`. **По умолчанию:** `'utf-8'`.
--   `options` {Object}
-    -   `fatal` {boolean} `true`, если сбои декодирования являются фатальными. Эта опция не поддерживается, если ICU отключен (см. [Интернационализация](intl.md)). **По умолчанию:** `false`.
-    -   `ignoreBOM` {boolean} Когда `true`, `TextDecoder` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет `кодировку`, которую поддерживает данный экземпляр `ТекстДекодера`. **По умолчанию:** `'utf-8'`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `fatal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если сбои декодирования являются фатальными. Эта опция не поддерживается, если ICU отключен (см. [Интернационализация](intl.md)). **По умолчанию:** `false`.
+    -   `ignoreBOM` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, `TextDecoder` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
 
 Создает новый экземпляр `TextDecoder`. В `encoding` может быть указана одна из поддерживаемых кодировок или псевдоним.
 
@@ -1700,9 +1700,9 @@ console.log(decoder.decode(u8arr)); // Hello
 ### `textDecoder.decode([input[, options]])`.
 
 -   `вход` {ArrayBuffer|DataView|TypedArray} Экземпляр `ArrayBuffer`, `DataView` или `TypedArray`, содержащий закодированные данные.
--   `options` {Object}
-    -   `stream` {boolean} `true`, если ожидаются дополнительные порции данных. **По умолчанию:** `false`.
--   Возвращает: {строка}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `stream` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если ожидаются дополнительные порции данных. **По умолчанию:** `false`.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Декодирует `input` и возвращает строку. Если `options.stream` имеет значение `true`, все неполные последовательности байтов, встречающиеся в конце `ввода`, буферизируются внутри и выдаются после следующего вызова `textDecoder.decode()`.
 
@@ -1710,19 +1710,19 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### `textDecoder.encoding`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextDecoder`.
 
 ### `textDecoder.fatal`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Значение будет `true`, если в результате ошибок декодирования будет выброшена `TypeError`.
 
 ### `textDecoder.ignoreBOM`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Значение будет `true`, если результат декодирования будет включать метку порядка байтов.
 
@@ -1743,18 +1743,18 @@ const uint8array = encoder.encode('this is some data');
 
 ### `textEncoder.encode([input])`
 
--   `ввод` {строка} Текст для кодирования. **По умолчанию:** пустая строка.
--   Возвращает: {Uint8Array}
+-   `ввод` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст для кодирования. **По умолчанию:** пустая строка.
+-   Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
 UTF-8 кодирует строку `input` и возвращает `Uint8Array`, содержащий закодированные байты.
 
 ### `textEncoder.encodeInto(src, dest)`.
 
--   src` {строка} Текст для кодирования.
--   `dest` {Uint8Array} Массив для хранения результата кодирования.
--   Возвращает: {Object}
-    -   `read` {number} Прочитанные единицы кода Unicode src.
-    -   `written` {number} Записанные байты в формате UTF-8 из dest.
+-   src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст для кодирования.
+-   `dest` [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Массив для хранения результата кодирования.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `read` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Прочитанные единицы кода Unicode src.
+    -   `written` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Записанные байты в формате UTF-8 из dest.
 
 UTF-8 кодирует строку `rc` в Uint8Array `dest` и возвращает объект, содержащий считанные единицы кода Unicode и записанные байты UTF-8.
 
@@ -1771,13 +1771,13 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 ### `textEncoder.encoding`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextEncoder`. Всегда устанавливается на `'utf-8'`.
 
 ## `util.toUSVString(string)`.
 
--   `string` {string}
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает `строку` после замены любых суррогатных кодовых точек (или, эквивалентно, любых непарных суррогатных кодовых единиц) на "символ замены" Юникода U+FFFD.
 
@@ -1785,16 +1785,16 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 > Стабильность: 1 - Экспериментальный
 
-Создает и возвращает экземпляр {AbortController}, чей {AbortSignal} помечен как передаваемый и может быть использован с `structuredClone()` или `postMessage()`.
+Создает и возвращает экземпляр {AbortController}, чей [`<AbortSignal>`](globals.md#abortsignal) помечен как передаваемый и может быть использован с `structuredClone()` или `postMessage()`.
 
 ## `util.transferableAbortSignal(signal)`.
 
 > Стабильность: 1 - Экспериментальная
 
--   `signal` {AbortSignal}
--   Возвращает: {AbortSignal}
+-   `signal` [`<AbortSignal>`](globals.md#abortsignal)
+-   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
 
-Маркирует данный {AbortSignal} как передаваемый, чтобы его можно было использовать с `structuredClone()` и `postMessage()`.
+Маркирует данный [`<AbortSignal>`](globals.md#abortsignal) как передаваемый, чтобы его можно было использовать с `structuredClone()` и `postMessage()`.
 
 <!-- 0141.part.md -->
 
@@ -1812,9 +1812,9 @@ channel.port2.postMessage(signal, [signal]);
 
 > Стабильность: 1 - Экспериментальная
 
--   `signal` {AbortSignal}
--   `ресурс` {Объект} Любая ненулевая сущность, ссылка на которую удерживается слабо.
--   Возвращает: {Promise}
+-   `signal` [`<AbortSignal>`](globals.md#abortsignal)
+-   `ресурс` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любая ненулевая сущность, ссылка на которую удерживается слабо.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Слушает событие прерывания на предоставленном `signal` и возвращает обещание, которое будет выполнено, когда `signal` будет прерван. Если переданный `ресурс` будет собран до прерывания `signal`, возвращаемое обещание будет оставаться невыполненным неопределенное время.
 
@@ -1864,8 +1864,8 @@ API доступен через `require('node:util').types` или `require('no
 
 ### `util.types.isAnyArrayBuffer(value)`
 
--   `value` {any}
--   Возвращает: {boolean}
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) или [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
 
@@ -1882,8 +1882,8 @@ util.types.isAnyArrayBuffer(new SharedArrayBuffer()); // Returns true
 
 ### `util.types.isArrayBufferView(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром одного из представлений [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), таких как типизированные объекты массивов или [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView). Эквивалентно [`ArrayBuffer.isView()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView).
 
@@ -1902,8 +1902,8 @@ util.types.isArrayBufferView(new ArrayBuffer()); // false
 
 ### `util.types.isArgumentsObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является объектом `arguments`.
 
@@ -1919,8 +1919,8 @@ function foo() {
 
 ### `util.types.isArrayBuffer(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Это _не_ включает экземпляры [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer). Обычно желательно проверять оба варианта; см. об этом в [`util.types.isAnyArrayBuffer()`](#utiltypesisanyarraybuffervalue).
 
@@ -1935,8 +1935,8 @@ util.types.isArrayBuffer(new SharedArrayBuffer()); // Returns false
 
 ### `util.types.isAsyncFunction(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является [асинхронной функцией](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -1951,8 +1951,8 @@ util.types.isAsyncFunction(async function foo() {}); // Returns true
 
 ### `util.types.isBigInt64Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром `BigInt64Array`.
 
@@ -1967,8 +1967,8 @@ util.types.isBigInt64Array(new BigUint64Array()); // Returns false
 
 ### `util.types.isBigUint64Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром `BigUint64Array`.
 
@@ -1983,8 +1983,8 @@ util.types.isBigUint64Array(new BigUint64Array()); // Returns true
 
 ### `util.types.isBooleanObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является булевым объектом, например, созданным с помощью `new Boolean()`.
 
@@ -2003,8 +2003,8 @@ util.types.isBooleanObject(Boolean(true)); // Returns false
 
 ### `util.types.isBoxedPrimitive(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является любым объектом boxed primitive, например, созданным с помощью `new Boolean()`, `new String()` или `Object(Symbol())`.
 
@@ -2024,15 +2024,15 @@ util.types.isBoxedPrimitive(Object(BigInt(5))); // Returns true
 
 ### `util.types.isCryptoKey(value)`
 
--   `значение` {Объект}
--   Возвращает: {boolean}
+-   `значение` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `значение` является {CryptoKey}, `false` в противном случае.
 
 ### `util.types.isDataView(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView).
 
@@ -2050,8 +2050,8 @@ util.types.isDataView(new Float64Array()); // Returns false
 
 ### `util.types.isDate(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date).
 
@@ -2065,8 +2065,8 @@ util.types.isDate(new Date()); // Returns true
 
 ### `util.types.isExternal(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является родным `External` значением.
 
@@ -2110,8 +2110,8 @@ util.types.isExternal(new String('foo')); // returns false
 
 ### `util.types.isFloat32Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`Float32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array).
 
@@ -2127,8 +2127,8 @@ util.types.isFloat32Array(new Float64Array()); // Returns false
 
 ### `util.types.isFloat64Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`Float64Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array).
 
@@ -2144,8 +2144,8 @@ util.types.isFloat64Array(new Float64Array()); // Returns true
 
 ### `util.types.isGeneratorFunction(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является генераторной функцией. Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -2160,8 +2160,8 @@ util.types.isGeneratorFunction(function* foo() {}); // Returns true
 
 ### `util.types.isGeneratorObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является объектом генератора, возвращенным встроенной функцией генератора. Это только сообщает о том, что видит движок JavaScript; в частности, возвращаемое значение может не совпадать с исходным кодом, если использовался инструмент транспиляции.
 
@@ -2177,8 +2177,8 @@ util.types.isGeneratorObject(generator); // Returns true
 
 ### `util.types.isInt8Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array).
 
@@ -2194,8 +2194,8 @@ util.types.isInt8Array(new Float64Array()); // Returns false
 
 ### `util.types.isInt16Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array).
 
@@ -2211,8 +2211,8 @@ util.types.isInt16Array(new Float64Array()); // Returns false
 
 ### `util.types.isInt32Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Int32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array).
 
@@ -2228,15 +2228,15 @@ util.types.isInt32Array(new Float64Array()); // Returns false
 
 ### `util.types.isKeyObject(value)`
 
--   `значение` {Объект}
--   Возвращает: {boolean}
+-   `значение` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `value` является {KeyObject}, `false` в противном случае.
 
 ### `util.types.isMap(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенной [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
@@ -2250,8 +2250,8 @@ util.types.isMap(new Map()); // Returns true
 
 ### `util.types.isMapIterator(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является итератором, возвращаемым для встроенного экземпляра [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
@@ -2269,8 +2269,8 @@ util.types.isMapIterator(map[Symbol.iterator]()); // Returns true
 
 ### `util.types.isModuleNamespaceObject(value)`
 
--   `значение` {любой}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром [Module Namespace Object](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects).
 
@@ -2286,8 +2286,8 @@ util.types.isModuleNamespaceObject(ns); // Returns true
 
 ### `util.types.isNativeError(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение было возвращено конструктором [встроенного типа `Error`](https://tc39.es/ecma262/#sec-error-objects).
 
@@ -2340,8 +2340,8 @@ console.log(myError instanceof Error); // true
 
 ### `util.types.isNumberObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является числовым объектом, например, созданным с помощью `new Number()`.
 
@@ -2356,8 +2356,8 @@ util.types.isNumberObject(new Number(0)); // Returns true
 
 ### `util.types.isPromise(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
@@ -2371,8 +2371,8 @@ util.types.isPromise(Promise.resolve(42)); // Returns true
 
 ### `util.types.isProxy(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy).
 
@@ -2389,8 +2389,8 @@ util.types.isProxy(proxy); // Returns true
 
 ### `util.types.isRegExp(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является объектом регулярного выражения.
 
@@ -2405,8 +2405,8 @@ util.types.isRegExp(new RegExp('abc')); // Returns true
 
 ### `util.types.isSet(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
 
@@ -2420,8 +2420,8 @@ util.types.isSet(new Set()); // Returns true
 
 ### `util.types.isSetIterator(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является итератором, возвращаемым для встроенного экземпляра [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
 
@@ -2439,8 +2439,8 @@ util.types.isSetIterator(set[Symbol.iterator]()); // Returns true
 
 ### `util.types.isSharedArrayBuffer(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer). Это _не_ включает экземпляры [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Обычно желательно проверять оба варианта; см. об этом в [`util.types.isAnyArrayBuffer()`](#utiltypesisanyarraybuffervalue).
 
@@ -2455,8 +2455,8 @@ util.types.isSharedArrayBuffer(new SharedArrayBuffer()); // Returns true
 
 ### `util.types.isStringObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является строковым объектом, например, созданным с помощью `new String()`.
 
@@ -2471,8 +2471,8 @@ util.types.isStringObject(new String('foo')); // Returns true
 
 ### `util.types.isSymbolObject(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является объектом символа, созданным вызовом `Object()` на примитиве `Symbol`.
 
@@ -2488,8 +2488,8 @@ util.types.isSymbolObject(Object(symbol)); // Returns true
 
 ### `util.types.isTypedArray(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 
@@ -2507,8 +2507,8 @@ util.types.isTypedArray(new Float64Array()); // Returns true
 
 ### `util.types.isUint8Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
@@ -2524,8 +2524,8 @@ util.types.isUint8Array(new Float64Array()); // Returns false
 
 ### `util.types.isUint8ClampedArray(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является встроенным экземпляром [`Uint8ClampedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray).
 
@@ -2541,8 +2541,8 @@ util.types.isUint8ClampedArray(new Float64Array()); // Returns false
 
 ### `util.types.isUint16Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array).
 
@@ -2558,8 +2558,8 @@ util.types.isUint16Array(new Float64Array()); // Returns false
 
 ### `util.types.isUint32Array(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`Uint32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array).
 
@@ -2575,8 +2575,8 @@ util.types.isUint32Array(new Float64Array()); // Returns false
 
 ### `util.types.isWeakMap(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенной [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap).
 
@@ -2590,8 +2590,8 @@ util.types.isWeakMap(new WeakMap()); // Returns true
 
 ### `util.types.isWeakSet(value)`
 
--   `значение` {любое}
--   Возвращает: {boolean}
+-   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet).
 
@@ -2607,8 +2607,8 @@ util.types.isWeakSet(new WeakSet()); // Returns true
 
 > Стабильность: 0 - Утратил актуальность: Используйте `value instanceof WebAssembly.Module` вместо этого.
 
--   `value` {any}
--   Возвращает: {boolean}
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если значение является экземпляром встроенного [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
 
@@ -2629,8 +2629,8 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 > Стабильность: 0 - Устаревший: Вместо этого используйте [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign).
 
--   `target` {Object}
--   `источник` {Объект}
+-   `target` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `источник` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Метод `util._extend()` никогда не предназначался для использования вне внутренних модулей Node.js. Однако сообщество все равно нашло и использовало его.
 
@@ -2640,8 +2640,8 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 > Стабильность: 0 - Утратил актуальность: Вместо этого используйте [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Псевдоним для [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
@@ -2666,8 +2666,8 @@ util.isArray({});
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'boolean'`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `булевым`. В противном случае возвращается `false`.
 
@@ -2690,8 +2690,8 @@ util.isBoolean(false);
 
 > Стабильность: 0 - Исправлено: Используйте [`Buffer.isBuffer()`](buffer.md#static-method-bufferisbufferobj) вместо этого.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `буфером`. В противном случае возвращается `false`.
 
@@ -2714,8 +2714,8 @@ util.isBuffer(Buffer.from('hello world'));
 
 > Стабильность: 0 - Исправлено: Используйте [`util.types.isDate()`](#utiltypesisdatevalue) вместо этого.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `датой`. В противном случае возвращает `false`.
 
@@ -2738,8 +2738,8 @@ util.isDate({});
 
 > Стабильность: 0 - Исправлено: Используйте [`util.types.isNativeError()`](#utiltypesisnativeerrorvalue) вместо этого.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является [`ошибкой`](errors.md#class-error). В противном случае возвращается `false`.
 
@@ -2782,8 +2782,8 @@ util.isError(obj);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'function'`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `функцией`. В противном случае возвращает `false`.
 
@@ -2809,8 +2809,8 @@ util.isFunction(Bar);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === null`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` строго `null`. В противном случае возвращается `false`.
 
@@ -2833,8 +2833,8 @@ util.isNull(null);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined || value === null`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `null` или `undefined`. В противном случае возвращается `false`.
 
@@ -2857,8 +2857,8 @@ util.isNullOrUndefined(null);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'number'`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `число`. В противном случае возвращает `false`.
 
@@ -2883,8 +2883,8 @@ util.isNumber(NaN);
 
 > Стабильность: 0 - Исправлено: Используйте `value !== null && typeof value === 'object'` вместо этого.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `object` является строго `Object` **и** не `Function` (даже если функции являются объектами в JavaScript). В противном случае возвращается `false`.
 
@@ -2909,8 +2909,8 @@ util.isObject(() => {});
 
 > Стабильность: 0 - Исправлено: Используйте `(typeof value !== 'object' && typeof value !== 'function') || value === null` вместо этого.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `object` является примитивным типом. В противном случае возвращает `false`.
 
@@ -2945,8 +2945,8 @@ util.isPrimitive(new Date());
 
 > Стабильность: 0 - Утратил актуальность
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `RegExp`. В противном случае возвращается `false`.
 
@@ -2969,8 +2969,8 @@ util.isRegExp({});
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'string'`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `строкой`. В противном случае возвращает `false`.
 
@@ -2995,8 +2995,8 @@ util.isString(5);
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'symbol'`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `символом`. В противном случае возвращается `false`.
 
@@ -3019,8 +3019,8 @@ util.isSymbol(Symbol('foo'));
 
 > Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined`.
 
--   `object` {any}
--   Возвращает: {boolean}
+-   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если данный `объект` является `неопределенным`. В противном случае возвращает `false`.
 
@@ -3044,7 +3044,7 @@ util.isUndefined(null);
 
 > Стабильность: 0 - Утратил актуальность: Вместо этого используйте сторонний модуль.
 
--   `string` {string}
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `util.log()` печатает заданную `строку` в `stdout` с включенной меткой времени.
 
@@ -3059,3 +3059,4 @@ util.log('Timestamped message.');
 <!-- 0268.part.md -->
 
 <!-- 0269.part.md -->
+

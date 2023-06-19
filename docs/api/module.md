@@ -8,13 +8,13 @@ description: Предоставляет общие полезные методы
 
 ## Объект `Модуль`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Предоставляет общие полезные методы при взаимодействии с экземплярами `Module`, переменной [`module`](modules.md#the-module-object), часто встречающейся в модулях [CommonJS](modules.md). Доступ к ней осуществляется через `import 'node:module'` или `require('node:module')`.
 
 ### `module.builtinModules`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список имен всех модулей, предоставляемых Node.js. Может использоваться для проверки того, поддерживается ли модуль третьей стороной или нет.
 
@@ -34,7 +34,7 @@ const builtin = require('node:module').builtinModules;
 
 ### `module.createRequire(filename)`
 
--   `filename` {string|URL} Имя файла, которое будет использоваться для создания функции require. Должно быть объектом URL файла, строкой URL файла или строкой абсолютного пути.
+-   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Имя файла, которое будет использоваться для создания функции require. Должно быть объектом URL файла, строкой URL файла или строкой абсолютного пути.
 -   Возвращает: {require} Функция require
 
 <!-- конец списка -->
@@ -49,8 +49,8 @@ const siblingModule = require('./sibling-module');
 
 ### `module.isBuiltin(moduleName)`
 
--   `moduleName` {строка} имя модуля
--   Возвращает: {boolean} возвращает true, если модуль является встроенным, иначе возвращает false
+-   `moduleName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя модуля
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) возвращает true, если модуль является встроенным, иначе возвращает false
 
 <!-- конец списка -->
 
@@ -122,7 +122,7 @@ const { findSourceMap, SourceMap } = require('node:module');
 
 ### `module.findSourceMap(path)`
 
--   `path` {строка}
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: {module.SourceMap|undefined} Возвращает `module.SourceMap`, если карта источника найдена, `undefined` в противном случае.
 
 `path` - это разрешенный путь к файлу, для которого должна быть найдена соответствующая карта источников.
@@ -131,37 +131,38 @@ const { findSourceMap, SourceMap } = require('node:module');
 
 #### `новый SourceMap(payload)`
 
--   `payload` {Объект}
+-   `payload` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Создает новый экземпляр `sourceMap.
 
 `payload` - это объект с ключами, соответствующими [Source map v3 format](https://sourcemaps.info/spec.html#h.mofvlxcwqzej):
 
--   `file`: {строка}
--   `version`: {число}
--   `источники`: {string\[\]}
--   `sourcesContent`: {string\[\]}
--   `имена`: {string\[\]}
--   `mappings`: {строка}
--   `sourceRoot`: {string}
+-   `file`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `version`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `источники`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `sourcesContent`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `имена`: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `mappings`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `sourceRoot`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 #### `sourceMap.payload`.
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Получатель полезной нагрузки, используемой для построения экземпляра [`SourceMap`](#class-modulesourcemap).
 
 #### `sourceMap.findEntry(lineNumber, columnNumber)`.
 
--   `lineNumber` {number}
--   `columnNumber` {number}
--   Возвращает: {Object}
+-   `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Учитывая номер строки и номер столбца в сгенерированном исходном файле, возвращает объект, представляющий позицию в исходном файле. Возвращаемый объект состоит из следующих ключей:
 
--   generatedLine: {number}
--   generatedColumn: {число}
--   originalSource: {строка}
--   originalLine: {number}
--   originalColumn: {число}
--   имя: {строка}
+-   generatedLine: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   generatedColumn: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   originalSource: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   originalLine: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   originalColumn: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   имя: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+

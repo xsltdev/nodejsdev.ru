@@ -94,7 +94,7 @@ description: Модуль diagnostics_channel предоставляет API д�
 #### `diagnostics_channel.hasSubscribers(name)`
 
 -   `name` {string|symbol} Имя канала
--   Возвращает: {boolean} Если есть активные подписчики
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если есть активные подписчики
 
 Проверьте, есть ли активные подписчики на названный канал. Это полезно, если сообщение, которое вы хотите отправить, может быть дорого подготовлено.
 
@@ -142,8 +142,8 @@ const channel = diagnostics_channel.channel('my-channel');
 #### `diagnostics_channel.subscribe(name, onMessage)`
 
 -   `name` {string|symbol} Имя канала
--   `onMessage` {функция} Обработчик для получения сообщений канала
-    -   `message` {любой} Данные сообщения
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик для получения сообщений канала
+    -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные сообщения
     -   `name` {string|symbol} Имя канала
 
 Зарегистрируйте обработчик сообщений для подписки на этот канал. Этот обработчик сообщений будет выполняться синхронно каждый раз, когда сообщение будет опубликовано на канале. Любые ошибки, возникающие в обработчике сообщений, будут вызывать [`'uncaughtException'`](process.md#event-uncaughtexception).
@@ -173,8 +173,8 @@ diagnostics_channel.subscribe(
 #### `diagnostics_channel.unsubscribe(name, onMessage)`
 
 -   `name` {string|symbol} Имя канала
--   `onMessage` {функция} Предыдущий обработчик подписки для удаления
--   Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Предыдущий обработчик подписки для удаления
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик был найден, `false` в противном случае.
 
 Удаляет обработчик сообщений, ранее зарегистрированный на этот канал с помощью [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage).
 
@@ -208,7 +208,7 @@ diagnostics_channel.unsubscribe('my-channel', onMessage);
 
 #### `channel.hasSubscribers`
 
--   Возвращает: {boolean} Если есть активные подписчики
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если есть активные подписчики
 
 Проверяет, есть ли активные подписчики у этого канала. Это полезно, если сообщение, которое вы хотите отправить, может быть дорогостоящим в подготовке.
 
@@ -236,7 +236,7 @@ if (channel.hasSubscribers) {
 
 #### `channel.publish(message)`
 
--   `message` {any} Сообщение для отправки подписчикам канала
+-   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Сообщение для отправки подписчикам канала
 
 Публикует сообщение всем подписчикам канала. При этом обработчики сообщений будут запускаться синхронно, поэтому они будут выполняться в одном и том же контексте.
 
@@ -264,8 +264,8 @@ channel.publish({
 
 > Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage)
 
--   `onMessage` {Функция} Обработчик для получения сообщений канала
-    -   `message` {любой} Данные сообщения
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик для получения сообщений канала
+    -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные сообщения
     -   `name` {string|symbol} Имя канала
 
 Зарегистрируйте обработчик сообщений для подписки на этот канал. Этот обработчик сообщений будет выполняться синхронно каждый раз, когда сообщение будет опубликовано на канале. Любые ошибки, возникающие в обработчике сообщений, будут вызывать [`'uncaughtException'`](process.md#event-uncaughtexception).
@@ -294,8 +294,8 @@ channel.subscribe((message, name) => {
 
 > Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.unsubscribe(name, onMessage)`](#diagnostics_channelunsubscribename-onmessage)
 
--   `onMessage` {Function} Предыдущий обработчик подписки для удаления
--   Возвращает: {boolean} `true`, если обработчик был найден, `false` в противном случае.
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Предыдущий обработчик подписки для удаления
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик был найден, `false` в противном случае.
 
 Удаление обработчика сообщений, ранее зарегистрированного на этот канал с помощью [`channel.subscribe(onMessage)`](#channelsubscribeonmessage).
 
@@ -352,7 +352,7 @@ channel.unsubscribe(onMessage);
 
 -   `запрос` {http.IncomingMessage}
 -   `response` {http.ServerResponse}
--   `сокет` {net.Socket}
+-   `сокет` [`<net.Socket>`](net.md#netsocket)
 -   `server` {http.Server}
 
 Выдается, когда сервер получает запрос.
@@ -361,7 +361,7 @@ channel.unsubscribe(onMessage);
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
--   `socket` {net.Socket}
+-   `socket` [`<net.Socket>`](net.md#netsocket)
 -   `server` {http.Server}
 
 Выдается, когда сервер посылает ответ.
@@ -370,13 +370,13 @@ channel.unsubscribe(onMessage);
 
 `net.client.socket`
 
--   `socket` {net.Socket}
+-   `socket` [`<net.Socket>`](net.md#netsocket)
 
 Выдается при создании нового клиентского сокета TCP или pipe.
 
 `net.server.socket`
 
--   `socket` {net.Socket}
+-   `socket` [`<net.Socket>`](net.md#netsocket)
 
 Выдается при получении нового TCP- или pipe-соединения.
 
@@ -392,7 +392,7 @@ channel.unsubscribe(onMessage);
 
 `детский_процесс`
 
--   `process` {ChildProcess}
+-   `process` `ChildProcess`
 
 Выдается при создании нового процесса.
 
@@ -403,3 +403,4 @@ channel.unsubscribe(onMessage);
 -   `worker` [`Worker`](worker_threads.md#class-worker)
 
 Выдается при создании нового потока.
+

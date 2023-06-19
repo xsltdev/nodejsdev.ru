@@ -462,3 +462,4 @@ process.permission.deny('fs.read');
 const fd = fs.openSync('./README.md', 'r');
 // Ошибка: Доступ к этому API был ограничен
 ```
+

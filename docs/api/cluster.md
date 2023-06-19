@@ -118,7 +118,7 @@ Node.js не предоставляет логику маршрутизации.
 
 ## Класс: `Worker`
 
--   Расширяет: {EventEmitter}
+-   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Объект `Worker` содержит всю публичную информацию и метод о работнике. В первичной системе он может быть получен с помощью `cluster.workers`. В рабочем он может быть получен с помощью `cluster.worker`.
 
@@ -146,8 +146,8 @@ cluster.fork().on('disconnect', () => {
 
 ### Событие: `exit`
 
--   `code` {number} Код выхода, если выход произошел нормально.
--   `signal` {string} Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
+-   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если выход произошел нормально.
+-   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
 
 Аналогично событию `cluster.on('exit')`, но специфично для данного рабочего.
 
@@ -197,7 +197,7 @@ if (cluster.isPrimary) {
 
 ### Событие: `listening`
 
--   `адрес` {Объект}
+-   `адрес` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Аналогично событию `cluster.on('listening')`, но специфично для этого рабочего.
 
@@ -219,7 +219,7 @@ cluster.fork().on('listening', (address) => {
 
 ### Событие: `message`
 
--   `message` {Object}
+-   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `handle` {undefined|Object}
 
 Аналогично событию `'message'` из `cluster`, но специфично для этого рабочего.
@@ -381,7 +381,7 @@ if (cluster.isPrimary) {
 
 ### `worker.exitedAfterDisconnect`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Это свойство равно `true`, если рабочий вышел из системы в результате `.disconnect()`. Если рабочий вышел другим способом, оно равно `false`. Если рабочий не вышел, то `не определено`.
 
@@ -404,7 +404,7 @@ worker.kill();
 
 ### `worker.id`
 
--   {целое число}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Каждому новому работнику присваивается свой уникальный id, этот id хранится в `id`.
 
@@ -490,7 +490,7 @@ if (cluster.isPrimary) {
 
 ### `worker.kill([signal])`
 
--   `signal` {string} Имя сигнала kill, который нужно послать рабочему процессу. **По умолчанию:** `SIGTERM`.
+-   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала kill, который нужно послать рабочему процессу. **По умолчанию:** `SIGTERM`.
 
 Эта функция убивает рабочий процесс. В основном рабочем она делает это путем отключения `worker.process`, а после отключения убивает с помощью `signal`. В рабочем это происходит путем уничтожения процесса с помощью `signal`.
 
@@ -504,7 +504,7 @@ if (cluster.isPrimary) {
 
 ### `worker.process`
 
--   {ChildProcess}
+-   `ChildProcess`
 
 Все рабочие создаются с помощью [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options), возвращаемый объект из этой функции хранится как `.process`. В рабочем хранится глобальный `process`.
 
@@ -516,12 +516,12 @@ if (cluster.isPrimary) {
 
 ### `worker.send(message[, sendHandle[, options]][, callback])`
 
--   `message` {Object}
--   `sendHandle` {Handle}
--   `options` {Object} Аргумент `options`, если он присутствует, представляет собой объект, используемый для параметризации отправки определенных типов дескрипторов. `options` поддерживает следующие свойства:
-    -   `keepOpen` {boolean} Значение, которое может использоваться при передаче экземпляров `net.Socket`. Когда `true`, сокет остается открытым в процессе отправки. **По умолчанию:** `false`.
--   `callback` {Функция}
--   Возвращает: {boolean}
+-   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `sendHandle` `Handle`
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Аргумент `options`, если он присутствует, представляет собой объект, используемый для параметризации отправки определенных типов дескрипторов. `options` поддерживает следующие свойства:
+    -   `keepOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Значение, которое может использоваться при передаче экземпляров `net.Socket`. Когда `true`, сокет остается открытым в процессе отправки. **По умолчанию:** `false`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Отправка сообщения на рабочий или первичный сервер, опционально с хэндлом.
 
@@ -563,8 +563,8 @@ cluster.on('disconnect', (worker) => {
 ## Событие: `выход`
 
 -   `worker` {cluster.Worker}
--   `code` {number} Код выхода, если он вышел нормально.
--   `signal` {string} Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
+-   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если он вышел нормально.
+-   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
 
 Когда любой из рабочих умирает, кластерный модуль выдает событие `'exit'`.
 
@@ -614,7 +614,7 @@ cluster.on('exit', (worker, code, signal) => {
 ## Событие: `listening`
 
 -   `worker` {cluster.Worker}
--   `адрес` {Объект}
+-   `адрес` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 После вызова функции `listen()` от рабочего, когда событие `'listening'` испускается на сервере, событие `'listening'` также будет испущено на `cluster` в первичном.
 
@@ -640,7 +640,7 @@ cluster.on('listening', (worker, address) => {
 ## Событие: `message`
 
 -   `worker` {cluster.Worker}
--   `сообщение` {Object}
+-   `сообщение` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `handle` {undefined|Object}
 
 Выдается, когда основной кластер получает сообщение от любого рабочего.
@@ -667,7 +667,7 @@ cluster.on('online', (worker) => {
 
 ## Событие: `setup`
 
--   `settings` {Object}
+-   `settings` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Выдается каждый раз при вызове [`.setupPrimary()`](#clustersetupprimarysettings).
 
@@ -679,7 +679,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.disconnect([callback])`
 
--   `callback` {Функция} Вызывается, когда все рабочие отсоединены и ручки закрыты.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается, когда все рабочие отсоединены и ручки закрыты.
 
 Вызывает `.disconnect()` для каждого рабочего в `cluster.workers`.
 
@@ -693,7 +693,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.fork([env])`
 
--   `env` {Объект} Пары ключ/значение для добавления в окружение рабочего процесса.
+-   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары ключ/значение для добавления в окружение рабочего процесса.
 -   Возвращает: {cluster.Worker}
 
 Порождает новый рабочий процесс.
@@ -710,7 +710,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.isPrimary`
 
--   {булево}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Истина, если процесс является первичным. Это определяется `process.env.NODE_UNIQUE_ID`. Если `process.env.NODE_UNIQUE_ID` не определен, то `isPrimary` будет `true`.
 
@@ -718,7 +718,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.isWorker`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Истина, если процесс не является основным (это отрицание `cluster.isPrimary`).
 
@@ -736,18 +736,18 @@ cluster.on('online', (worker) => {
 
 ## `cluster.settings`
 
--   {Object}
-    -   `execArgv` {string\[\]} Список строковых аргументов, передаваемых исполняемому файлу Node.js. **По умолчанию:** `process.execArgv`.
-    -   `exec` {string} Путь к рабочему файлу. **По умолчанию:** `process.argv[1]`.
-    -   `args` {string\[\]} Строковые аргументы, передаваемые рабочему. **По умолчанию:** `process.argv.slice(2)`.
-    -   `cwd` {string} Текущий рабочий каталог рабочего процесса. **По умолчанию:** `undefined` (наследуется от родительского процесса).
-    -   `serialization` {string} Укажите вид сериализации, используемой для отправки сообщений между процессами. Возможные значения: `'json'' и `'advanced''. Подробнее см. в [Advanced serialization for `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
-    -   `silent` {boolean} Посылать ли вывод на родительский stdio. **По умолчанию:** `false`.
-    -   `stdio` {Array} Настраивает stdio вилочных процессов. Поскольку для работы кластерного модуля используется IPC, эта конфигурация должна содержать запись `'ipc'`. Когда эта опция указана, она отменяет `silent`.
-    -   `uid` {число} Устанавливает идентификатор пользователя процесса. (См. setuid(2).)
-    -   `gid` {число} Устанавливает групповую идентификацию процесса. (См. setgid(2).)
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `execArgv` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов, передаваемых исполняемому файлу Node.js. **По умолчанию:** `process.execArgv`.
+    -   `exec` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к рабочему файлу. **По умолчанию:** `process.argv[1]`.
+    -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковые аргументы, передаваемые рабочему. **По умолчанию:** `process.argv.slice(2)`.
+    -   `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текущий рабочий каталог рабочего процесса. **По умолчанию:** `undefined` (наследуется от родительского процесса).
+    -   `serialization` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Укажите вид сериализации, используемой для отправки сообщений между процессами. Возможные значения: `'json'' и `'advanced''. Подробнее см. в [Advanced serialization for `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
+    -   `silent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Посылать ли вывод на родительский stdio. **По умолчанию:** `false`.
+    -   `stdio` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Настраивает stdio вилочных процессов. Поскольку для работы кластерного модуля используется IPC, эта конфигурация должна содержать запись `'ipc'`. Когда эта опция указана, она отменяет `silent`.
+    -   `uid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает идентификатор пользователя процесса. (См. setuid(2).)
+    -   `gid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает групповую идентификацию процесса. (См. setgid(2).)
     -   `inspectPort` {number|Function} Задает инспекторский порт рабочего. Это может быть число или функция, которая не принимает аргументов и возвращает число. По умолчанию каждый рабочий получает свой собственный порт, увеличивающийся от `process.debugPort` первичного.
-    -   `windowsHide` {boolean} Скрыть консольное окно вилочных процессов, которое обычно создается в системах Windows. **По умолчанию:** `false`.
+    -   `windowsHide` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Скрыть консольное окно вилочных процессов, которое обычно создается в системах Windows. **По умолчанию:** `false`.
 
 После вызова [`.setupPrimary()`](#clustersetupprimarysettings) (или [`.fork()`](#clusterforkenv)) этот объект настроек будет содержать настройки, включая значения по умолчанию.
 
@@ -763,7 +763,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.setupPrimary([settings])`
 
--   `settings` {Object} См. [`cluster.settings`](#clustersettings).
+-   `settings` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`cluster.settings`](#clustersettings).
 
 `setupPrimary` используется для изменения поведения "вилки" по умолчанию. После вызова настройки будут присутствовать в `cluster.settings`.
 
@@ -811,7 +811,7 @@ cluster.fork(); // http worker
 
 ## `cluster.worker`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Ссылка на текущий объект worker. Недоступно в основном процессе.
 
@@ -843,7 +843,7 @@ if (cluster.isPrimary) {
 
 ## `cluster.workers`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Хэш, хранящий активные объекты рабочих, с ключом по полю `id`. Это позволяет легко перебирать всех рабочих. Он доступен только в основном процессе.
 
@@ -866,3 +866,4 @@ for (const worker of Object.values(cluster.workers)) {
 ```
 
 <!-- 0034.part.md -->
+

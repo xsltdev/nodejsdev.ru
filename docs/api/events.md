@@ -383,14 +383,14 @@ const EventEmitter = require('node:events');
 
 Он поддерживает следующую опцию:
 
--   `captureRejections` {boolean} Включает [автоматический перехват отказов обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+-   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматический перехват отказов обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
 
 <!-- 0006.part.md -->
 
 ### Событие: `'newListener'`
 
 -   `eventName` {string|symbol} Имя события, которое прослушивается
--   `listener` {функция} Функция обработчика события
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 
 Экземпляр `EventEmitter` будет испускать свое собственное событие `'newListener'` _до_ того, как слушатель будет добавлен в его внутренний массив слушателей.
 
@@ -449,7 +449,7 @@ myEmitter.emit('event');
 ### Событие: `'removeListener'`
 
 -   `eventName` {string|symbol} Имя события
--   `listener` {Function} Функция обработчика события
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 
 Событие `'removeListener'` испускается _после_ удаления `listener'`.
 
@@ -458,7 +458,7 @@ myEmitter.emit('event');
 ### `emitter.addListener(eventName, listener)`
 
 -   `eventName` {string|symbol}
--   `listener` {Function}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Псевдоним для `emitter.on(eventName, listener)`.
 
@@ -467,8 +467,8 @@ myEmitter.emit('event');
 ### `emitter.emit(eventName[, ...args])`
 
 -   `eventName` {string|symbol}
--   `...args` {любой}
--   Возвращает: {boolean}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Синхронно вызывает каждый из слушателей, зарегистрированных для события с именем `eventName`, в порядке их регистрации, передавая каждому из них указанные аргументы.
 
@@ -552,7 +552,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 
 ### `emitter.eventNames()`
 
--   Возвращает: {Array}
+-   Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 Возвращает массив, содержащий список событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или `символы`.
 
@@ -588,7 +588,7 @@ console.log(myEE.eventNames());
 
 ### `emitter.getMaxListeners()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает текущее максимальное значение слушателя для `EventEmitter`, которое либо установлено [`emitter.setMaxListeners(n)`](#emittersetmaxlistenersn), либо по умолчанию равно [`events.defaultMaxListeners`](#eventsdefaultmaxlisteners).
 
@@ -597,7 +597,7 @@ console.log(myEE.eventNames());
 ### `emitter.listenerCount(eventName)`
 
 -   `eventName` {string|symbol} Имя события, которое прослушивается
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает количество слушателей, прослушивающих событие с именем `eventName`.
 
@@ -623,8 +623,8 @@ console.log(util.inspect(server.listeners('connection')));
 ### `emitter.off(eventName, listener)`
 
 -   `eventName` {string|symbol}
--   `listener` {Function}
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Псевдоним для [`emitter.removeListener()`](#emitterremovelistenereventname-listener).
 
@@ -633,8 +633,8 @@ console.log(util.inspect(server.listeners('connection')));
 ### `emitter.on(eventName, listener)`
 
 -   `eventName` {string|symbol} Имя события.
--   `listener` {функция} Функция обратного вызова.
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Добавляет функцию `listener` в конец массива слушателей для события с именем `eventName`. Не проверяется, не был ли `listener` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
@@ -675,8 +675,8 @@ myEE.emit('foo');
 ### `emitter.once(eventName, listener)`
 
 -   `eventName` {string|symbol} Имя события.
--   `listener` {Function} Функция обратного вызова.
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName`. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
@@ -717,8 +717,8 @@ myEE.emit('foo');
 ### `emitter.prependListener(eventName, listener)`
 
 -   `eventName` {string|symbol} Имя события.
--   `listener` {Function} Функция обратного вызова.
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Добавляет функцию `listener` в _начало_ массива слушателей для события с именем `eventName`. Не проверяется, не был ли `слушатель` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
@@ -735,8 +735,8 @@ server.prependListener('connection', (stream) => {
 ### `emitter.prependOnceListener(eventName, listener)`
 
 -   `eventName` {string|symbol} Имя события.
--   `listener` {функция} Функция обратного вызова.
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName` в _начало_ массива слушателей. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
@@ -753,7 +753,7 @@ server.prependOnceListener('connection', (stream) => {
 ### `emitter.removeAllListeners([eventName])`
 
 -   `eventName` {string|symbol}
--   Возвращает: {EventEmitter}
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Удаляет всех слушателей или слушателей указанного `eventName`.
 
@@ -766,8 +766,8 @@ server.prependOnceListener('connection', (stream) => {
 ### `emitter.removeListener(eventName, listener)`
 
 -   `eventName` {string|symbol}
--   `listener` {Function}
--   Возвращает: {EventEmitter}
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 Удаляет указанный `listener` из массива слушателей для события с именем `eventName`.
 
@@ -888,8 +888,8 @@ ee.emit('ping');
 
 ### `emitter.setMaxListeners(n)`
 
--   `n` {целое число}
--   Возвращает: {EventEmitter}
+-   `n` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
 
 По умолчанию `EventEmitter` выводит предупреждение, если для определенного события добавлено более `10` слушателей. Это полезное значение по умолчанию, которое помогает найти утечки памяти. Метод `emitter.setMaxListeners()` позволяет изменить это ограничение для данного экземпляра `EventEmitter`. Значение может быть установлено в `бесконечность` (или `0`), чтобы указать неограниченное количество слушателей.
 
@@ -960,7 +960,7 @@ emitter.emit('log');
 
 -   `err` Ошибка
 -   `eventName` {string|symbol}
--   `...args` {любой}
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Метод `Symbol.for('nodejs.rejection')` вызывается в том случае, если при эмиссии события происходит отказ от обещания и на эмиттере включена функция [`captureRejections`](#capture-rejections-of-promises). Можно использовать [`events.captureRejectionSymbol`](#eventscapturerejectionsymbol) вместо `Symbol.for('nodejs.rejection')`.
 
@@ -1128,11 +1128,11 @@ const {
 
 ## `events.once(emitter, name[, options])`
 
--   `emitter` {EventEmitter}
--   `name` {string}
--   `options` {Object}
-    -   `signal` {AbortSignal} Может использоваться для отмены ожидания события.
--   Возвращает: {Promise}
+-   `emitter` [`<EventEmitter>`](events.md#eventemitter)
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидания события.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Создает `Promise`, которое будет выполнено, когда `EventEmitter` испустит данное событие, или которое будет отклонено, если `EventEmitter` испустит `'error'` во время ожидания. Обещание `Promise` будет разрешено массивом всех аргументов, испущенных для данного события.
 
@@ -1221,7 +1221,7 @@ ee.emit('error', new Error('boom'));
 // Выводит: ok boom
 ```
 
-Для отмены ожидания события можно использовать {AbortSignal}:
+Для отмены ожидания события можно использовать [`<AbortSignal>`](globals.md#abortsignal):
 
 ```mjs
 import { EventEmitter, once } from 'node:events';
@@ -1381,7 +1381,7 @@ foo().then(() => console.log('done'));
 
 ## `events.captureRejections`
 
-Значение: {boolean}
+Значение: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Изменение параметра по умолчанию `captureRejections` для всех новых объектов `EventEmitter`.
 
@@ -1403,7 +1403,7 @@ foo().then(() => console.log('done'));
 
     Вместо этого используйте [`emitter.listenerCount()`](#emitterlistenercounteventname).
 
--   `emitter` {EventEmitter} Эмиттер для запроса
+-   `emitter` [`<EventEmitter>`](events.md#eventemitter) Эмиттер для запроса
 -   `eventName` {string|symbol} Имя события
 
 Метод класса, который возвращает количество слушателей для данного `eventName`, зарегистрированных на данном `emitter`.
@@ -1435,11 +1435,11 @@ console.log(listenerCount(myEmitter, 'event'));
 
 ## `events.on(emitter, eventName[, options])`
 
--   `emitter` {EventEmitter}
+-   `emitter` [`<EventEmitter>`](events.md#eventemitter)
 -   `eventName` {string|symbol} Имя события, которое прослушивается
--   `options` {Object}
-    -   `signal` {AbortSignal} Может использоваться для отмены ожидающих событий.
--   Возвращает: {AsyncIterator}, итератор событий `eventName`, испускаемых `emitter`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидающих событий.
+-   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface), итератор событий `eventName`, испускаемых `emitter`.
 
 <!-- конец списка -->
 
@@ -1488,7 +1488,7 @@ const { on, EventEmitter } = require('node:events');
 
 Возвращает `AsyncIterator`, который итерирует события `eventName`. Если `EventEmitter` выдает `'error'`, он будет выброшен. Он удаляет всех слушателей при выходе из цикла. Значение `value`, возвращаемое каждой итерацией, представляет собой массив, состоящий из аргументов испускаемых событий.
 
-Для отмены ожидания событий можно использовать {AbortSignal}:
+Для отмены ожидания событий можно использовать [`<AbortSignal>`](globals.md#abortsignal):
 
 ```mjs
 import { on, EventEmitter } from 'node:events';
@@ -1551,8 +1551,8 @@ process.nextTick(() => ac.abort());
 
 ## `events.setMaxListeners(n[, ...eventTargets])`
 
--   `n` {number} Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
--   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или {EventEmitter}. Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и {EventEmitter}.
+-   `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
+-   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или [`<EventEmitter>`](events.md#eventemitter). Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и [`<EventEmitter>`](events.md#eventemitter).
 
 <!-- конец списка -->
 
@@ -1581,7 +1581,7 @@ setMaxListeners(5, target, emitter);
 
 ## Класс: `events.EventEmitterAsyncResource extends EventEmitter`
 
-Интегрирует `EventEmitter` с {AsyncResource} для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста] (async_context.md).
+Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста] (async_context.md).
 
 ```mjs
 import {
@@ -1662,23 +1662,23 @@ Promise.resolve().then(() => {
 
 ### `new events.EventEmitterAsyncResource([options])`
 
--   `options` {Object}
-    -   `captureRejections` {boolean} Включает [автоматическое фиксирование отказов от обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
-    -   `name` {string} Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
-    -   `triggerAsyncId` {number} ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
-    -   `requireManualDestroy` {boolean} Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматическое фиксирование отказов от обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
+    -   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
+    -   `requireManualDestroy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
 
 <!-- 0036.part.md -->
 
 ### `eventemitterasyncresource.asyncId`
 
--   Тип: {number} Уникальный `asyncId`, присвоенный ресурсу.
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId`, присвоенный ресурсу.
 
 <!-- 0037.part.md -->
 
 ### `eventemitterasyncresource.asyncResource`
 
--   Тип: Базовый {AsyncResource}.
+-   Тип: Базовый [`<AsyncResource>`](async_hooks.md#asyncresource).
 
 Возвращаемый объект `AsyncResource` имеет дополнительное свойство `eventEmitter`, которое предоставляет ссылку на этот `EventEmitterAsyncResource`.
 
@@ -1692,7 +1692,7 @@ Promise.resolve().then(() => {
 
 ### `eventemitterasyncresource.triggerAsyncId`
 
--   Тип: {number} Тот же `triggerAsyncId`, который передается конструктору `AsyncResource`.
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передается конструктору `AsyncResource`.
 
 <!-- 0040.part.md -->
 
@@ -1799,7 +1799,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.bubbles`
 
--   Тип: {boolean} Всегда возвращает `false`.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
 Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
 
@@ -1809,7 +1809,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 > Стабильность: 3 - Наследие: Вместо этого используйте [`event.stopPropagation()`](#eventstoppropagation).
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Псевдоним для `event.stopPropagation()`, если установлено значение `true`. Он не используется в Node.js и приведен исключительно для полноты.
 
@@ -1817,13 +1817,13 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.cancelable`
 
--   Тип: {boolean} Истина, если событие было создано с опцией `cancelable`.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Истина, если событие было создано с опцией `cancelable`.
 
 <!-- 0049.part.md -->
 
 #### `event.composed`
 
--   Тип: {boolean} Всегда возвращает `false`.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
 Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
 
@@ -1845,7 +1845,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.defaultPrevented`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true`, если `cancelable` является `true` и `event.preventDefault()` был вызван.
 
@@ -1853,7 +1853,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.eventPhase`
 
--   Тип: {число} Возвращает `0`, если событие не отправляется, `2`, если отправляется.
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Возвращает `0`, если событие не отправляется, `2`, если отправляется.
 
 Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
 
@@ -1861,9 +1861,9 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.isTrusted`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Событие {AbortSignal} `abort` испускается, если значение `isTrusted` установлено в `true`. Во всех остальных случаях значение `false`.
+Событие [`<AbortSignal>`](globals.md#abortsignal) `abort` испускается, если значение `isTrusted` установлено в `true`. Во всех остальных случаях значение `false`.
 
 <!-- 0055.part.md -->
 
@@ -1881,7 +1881,7 @@ target.addEventListener('foo', handler4, { once: true });
 
     Вместо этого используйте [`event.defaultPrevented`](#eventdefaultprevented).
 
--   Тип: {boolean} Истинно, если событие не было отменено.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Истинно, если событие не было отменено.
 
 Значение `event.returnValue` всегда противоположно `event.defaultPrevented`. Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
 
@@ -1921,7 +1921,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.timeStamp`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Миллисекундная метка времени, когда был создан объект `Event`.
 
@@ -1929,7 +1929,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.type`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор типа события.
 
@@ -1941,13 +1941,13 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `eventTarget.addEventListener(type, listener[, options])`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `listener` {Function|EventListener}
--   `options` {Object}
-    -   `once` {boolean} Если `true`, слушатель автоматически удаляется при первом вызове. **По умолчанию:** `false`.
-    -   `passive` {boolean} Когда `true`, служит подсказкой, что слушатель не будет вызывать метод `preventDefault()` объекта `Event`. **По умолчанию:** `false`.
-    -   `capture` {boolean} Не используется непосредственно в Node.js. Добавлен для полноты API. **По умолчанию:** `false`.
-    -   `signal` {AbortSignal} Слушатель будет удален при вызове метода `abort()` данного объекта AbortSignal.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `once` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, слушатель автоматически удаляется при первом вызове. **По умолчанию:** `false`.
+    -   `passive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, служит подсказкой, что слушатель не будет вызывать метод `preventDefault()` объекта `Event`. **По умолчанию:** `false`.
+    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Не используется непосредственно в Node.js. Добавлен для полноты API. **По умолчанию:** `false`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Слушатель будет удален при вызове метода `abort()` данного объекта AbortSignal.
 
 Добавляет новый обработчик для события `type`. Любой заданный `listener` добавляется только один раз для каждого `type` и для каждого значения опции `capture`.
 
@@ -1976,7 +1976,7 @@ target.removeEventListener('foo', handler, {
 #### `eventTarget.dispatchEvent(event)`
 
 -   `event` {Event}
--   Возвращает: {boolean} `true`, если либо значение атрибута `cancelable` события равно false, либо его метод `preventDefault()` не был вызван, иначе `false`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если либо значение атрибута `cancelable` события равно false, либо его метод `preventDefault()` не был вызван, иначе `false`.
 
 Отправляет `событие` в список обработчиков для `event.type`.
 
@@ -1986,10 +1986,10 @@ target.removeEventListener('foo', handler, {
 
 #### `eventTarget.removeEventListener(type, listener[, options])`
 
--   `тип` {строка}
+-   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `listener` {Function|EventListener}
--   `options` {Object}
-    -   `capture` {boolean}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Удаляет `listener` из списка обработчиков события `type`.
 
@@ -2013,7 +2013,7 @@ target.removeEventListener('foo', handler, {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   Тип: {любой} Возвращает пользовательские данные, переданные при инициализации.
+-   Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Возвращает пользовательские данные, переданные при инициализации.
 
 Только для чтения.
 
@@ -2029,7 +2029,7 @@ target.removeEventListener('foo', handler, {
 
 #### `nodeEventTarget.addListener(type, listener)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 -   `listener` {Function|EventListener}
 
@@ -2041,7 +2041,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.eventNames()`
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает массив имен событий `типа`, для которых зарегистрированы слушатели событий.
 
@@ -2049,9 +2049,9 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.listenerCount(type)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   Возвращает: {число}
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество слушателей событий, зарегистрированных для `type`.
 
@@ -2059,7 +2059,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.setMaxListeners(n)`
 
--   `n` {число}
+-   `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Node.js-специфическое расширение класса `EventTarget`, которое устанавливает число максимальных слушателей событий как `n`.
 
@@ -2067,7 +2067,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.getMaxListeners()`
 
--   Возвращает: {число}
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество максимальных слушателей событий.
 
@@ -2075,10 +2075,10 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.off(type, listener[, options])`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `listener` {Function|EventListener}
--   `options` {Object}
-    -   `capture` {boolean}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 -   Возвращает: {EventTarget} this
 
 Node.js-специфический псевдоним для `eventTarget.removeListener()`.
@@ -2087,7 +2087,7 @@ Node.js-специфический псевдоним для `eventTarget.remove
 
 #### `nodeEventTarget.on(type, listener)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 -   `listener` {Function|EventListener}
 
@@ -2099,7 +2099,7 @@ Node.js-специфический псевдоним для `eventTarget.addLis
 
 #### `nodeEventTarget.once(type, listener)`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 -   `listener` {Function|EventListener}
 
@@ -2111,7 +2111,7 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.removeAllListeners([type])`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 -   Возвращает: {EventTarget} this
 
@@ -2121,16 +2121,17 @@ Node.js-специфическое расширение класса `EventTarge
 
 #### `nodeEventTarget.removeListener(type, listener[, options])`
 
--   `type` {string}
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 -   `listener` {Function|EventListener}
 
--   `options` {Object}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-    -   `capture` {boolean}
+    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 -   Возвращает: {EventTarget} this
 
 Node.js-специфическое расширение класса `EventTarget`, которое удаляет `слушателя` для заданного `типа`. Единственная разница между `removeListener()` и `removeEventListener()` заключается в том, что `removeListener()` возвращает ссылку на `EventTarget`.
 
 <!-- 0080.part.md -->
+

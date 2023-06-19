@@ -614,12 +614,12 @@ node --test-reporter=spec --test-reporter=dot --test-reporter-destination=stdout
 
 ## `run([options])`
 
--   `options` {Object} Параметры конфигурации для запуска тестов. Поддерживаются следующие свойства:
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для запуска тестов. Поддерживаются следующие свойства:
     -   `concurrency` {number|boolean} Если указано число, то такое количество файлов будет запускаться параллельно. Если `true`, то параллельно будет запускаться `os.availableParallelism() - 1` тестовых файлов. Если `false`, то будет выполняться только один тестовый файл за раз. **По умолчанию:** `false`.
-    -   `files`: {Array} Массив, содержащий список файлов для запуска. **По умолчанию** соответствующие файлы из [модели выполнения тестового бегуна](#test-runner-execution-model).
-    -   `setup` {Function} Функция, которая принимает экземпляр `TestsStream` и может быть использована для настройки слушателей перед запуском любых тестов. **По умолчанию:** `undefined`.
-    -   `signal` {AbortSignal} Позволяет прервать текущее выполнение теста.
-    -   `timeout` {number} Число миллисекунд, через которое выполнение теста завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+    -   `files`: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив, содержащий список файлов для запуска. **По умолчанию** соответствующие файлы из [модели выполнения тестового бегуна](#test-runner-execution-model).
+    -   `setup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которая принимает экземпляр `TestsStream` и может быть использована для настройки слушателей перед запуском любых тестов. **По умолчанию:** `undefined`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать текущее выполнение теста.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, через которое выполнение теста завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
     -   `inspectPort` {number|Function} Устанавливает порт инспектора дочернего процесса теста. Это может быть число или функция, которая не принимает аргументов и возвращает число. Если указано значение nullish, каждый процесс получает свой собственный порт, увеличивающийся от `process.debugPort` первичного процесса. **По умолчанию:** `undefined`.
 -   Возвращает: {TestsStream}
 
@@ -631,16 +631,16 @@ run({ files: [path.resolve('./tests/test.js')] }).pipe(
 
 ## `test([name][, options][, fn])`
 
--   `name` {string} Имя теста, которое отображается при выводе результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
--   `options` {Object} Параметры конфигурации теста. Поддерживаются следующие свойства:
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя теста, которое отображается при выводе результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации теста. Поддерживаются следующие свойства:
     -   `concurrency` {number|boolean} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то параллельно будет выполняться `os.availableParallelism() - 1` тестов. Для подтестов это будет `бесконечность` тестов параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `false`.
-    -   `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
-    -   `signal` {AbortSignal} Позволяет прервать проходящий тест.
-    -   `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
-    -   `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, то эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
-    -   `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+    -   `only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать проходящий тест.
+    -   `skip` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
+    -   `todo` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если истина, тест помечается как `TODO`. Если указана строка, то эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 -   `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
--   Возвращает: {Promise}. Возвращается с `undefined` после завершения теста или сразу, если тест выполняется в рамках [`describe()`](#describename-options-fn).
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Возвращается с `undefined` после завершения теста или сразу, если тест выполняется в рамках [`describe()`](#describename-options-fn).
 
 Функция `test()` - это значение, импортируемое из модуля `test`. Каждый вызов этой функции приводит к сообщению о тесте в {TestsStream}.
 
@@ -668,8 +668,8 @@ test('top level test', async (t) => {
 
 ## `describe([name][, options][, fn])`
 
--   `name` {string} Имя набора, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
--   `options` {Object} Параметры конфигурации для набора. Поддерживает те же параметры, что и `test([name][, options][, fn])`.
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя набора, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для набора. Поддерживает те же параметры, что и `test([name][, options][, fn])`.
 -   `fn` {Function|AsyncFunction} Функция под набором, объявляющая все подтесты и поднаборы. Первым аргументом этой функции является объект [`SuiteContext`](#class-suitecontext). **По умолчанию:** Безоперационная функция.
 -   Возвращает: `undefined`.
 
@@ -708,9 +708,9 @@ test('top level test', async (t) => {
 ## `before([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед запуском набора.
 
@@ -730,9 +730,9 @@ describe('tests', async () => {
 ## `after([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после выполнения набора.
 
@@ -750,9 +750,9 @@ describe('tests', async () => {
 ## `beforeEach([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед каждым подтестом текущего набора.
 
@@ -772,9 +772,9 @@ describe('tests', async () => {
 ## `afterEach([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Функция хука. Если хук использует обратные вызовы, функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для крючка. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для крючка. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после каждого подтеста текущего теста.
 
@@ -797,20 +797,20 @@ describe('tests', async () => {
 
 ### `ctx.calls`
 
--   {Array}
+-   [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 Геттер, возвращающий копию внутреннего массива, используемого для отслеживания вызовов имитатора. Каждая запись в массиве представляет собой объект со следующими свойствами.
 
--   `arguments` {Array} Массив аргументов, переданных в функцию mock.
--   `error` {любой} Если имитируемая функция бросила, то это свойство содержит значение брошенной функции. **По умолчанию:** `undefined`.
--   `result` {любой} Значение, возвращаемое имитируемой функцией.
--   `stack` {Error} Объект `Error`, стек которого может быть использован для определения места вызова осмеиваемой функции.
--   `target` {Function|undefined} Если высмеиваемая функция является конструктором, то это поле содержит конструируемый класс. В противном случае это будет `undefined`.
--   `this` {любой} Значение `this` высмеиваемой функции.
+-   `arguments` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив аргументов, переданных в функцию mock.
+-   `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Если имитируемая функция бросила, то это свойство содержит значение брошенной функции. **По умолчанию:** `undefined`.
+-   `result` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, возвращаемое имитируемой функцией.
+-   `stack` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Объект `Error`, стек которого может быть использован для определения места вызова осмеиваемой функции.
+-   `target` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type) Если высмеиваемая функция является конструктором, то это поле содержит конструируемый класс. В противном случае это будет `undefined`.
+-   `this` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение `this` высмеиваемой функции.
 
 ### `ctx.callCount()`
 
--   Возвращает: {целое число} Количество раз, когда этот имитатор был вызван.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество раз, когда этот имитатор был вызван.
 
 Эта функция возвращает количество раз, когда этот имитатор был вызван. Эта функция более эффективна, чем проверка `ctx.calls.length`, поскольку `ctx.calls` - это геттер, который создает копию внутреннего массива отслеживания вызовов.
 
@@ -848,7 +848,7 @@ test('изменяет поведение mock', (t) => {
 ### `ctx.mockImplementationOnce(implementation[, onCall])`
 
 -   `implementation` {Function|AsyncFunction} Функция, которая будет использоваться в качестве реализации макета для номера вызова, указанного в `onCall`.
--   `onCall` {integer} Номер вызова, для которого будет использоваться `implementation`. Если указанный вызов уже произошел, то будет выброшено исключение. **По умолчанию:** Номер следующего вызова.
+-   `onCall` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер вызова, для которого будет использоваться `implementation`. Если указанный вызов уже произошел, то будет выброшено исключение. **По умолчанию:** Номер следующего вызова.
 
 Эта функция используется для изменения поведения существующего mock для одного вызова. После вызова `onCall` имитатор вернется к тому поведению, которое он использовал бы, если бы не была вызвана `mockImplementationOnce()`.
 
@@ -893,8 +893,8 @@ test('изменяет поведение mock один раз', (t) => {
 
 -   `original` {Function|AsyncFunction} Необязательная функция для создания имитатора. **По умолчанию:** Безоперационная функция.
 -   `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации макета для `оригинала`. Это полезно для создания имитаторов, которые демонстрируют одно поведение в течение определенного количества вызовов, а затем восстанавливают поведение `оригинала`. **По умолчанию:** Функция, указанная `original`.
--   `options` {Object} Необязательные параметры конфигурации для имитатора функции. Поддерживаются следующие свойства:
-    -   `times` {integer} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитатор будет вызван `times` раз, он автоматически восстановит поведение `original`. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательные параметры конфигурации для имитатора функции. Поддерживаются следующие свойства:
+    -   `times` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитатор будет вызван `times` раз, он автоматически восстановит поведение `original`. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
 -   Возвращает: {Proxy} Имитируемая функция. Подражаемая функция содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения подражаемой функции.
 
 Эта функция используется для создания имитируемой функции.
@@ -934,13 +934,13 @@ test('mocks a counting function', (t) => {
 
 ### `mock.method(object, methodName[, implementation][, options])`
 
--   `object` {Object} Объект, метод которого высмеивается.
+-   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, метод которого высмеивается.
 -   `methodName` {string|symbol} Идентификатор метода на `объекте`, который нужно высмеять. Если `object[methodName]` не является функцией, будет выдана ошибка.
 -   `implementation` {Function|AsyncFunction} Необязательная функция, используемая в качестве реализации mock для `object[methodName]`. **По умолчанию:** Оригинальный метод, указанный `object[methodName]`.
--   `options` {Object} Необязательные параметры конфигурации для имитатора метода. Поддерживаются следующие свойства:
-    -   `getter` {boolean} Если `true`, то `object[methodName]` рассматривается как getter. Этот параметр нельзя использовать с параметром `setter`. **По умолчанию:** false.
-    -   `setter` {boolean} Если `true`, то `object[methodName]` рассматривается как setter. Эта опция не может быть использована с опцией `getter`. **По умолчанию:** false.
-    -   `times` {целое число} Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитируемый метод будет вызван `times` раз, он автоматически восстановит исходное поведение. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательные параметры конфигурации для имитатора метода. Поддерживаются следующие свойства:
+    -   `getter` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то `object[methodName]` рассматривается как getter. Этот параметр нельзя использовать с параметром `setter`. **По умолчанию:** false.
+    -   `setter` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, то `object[methodName]` рассматривается как setter. Эта опция не может быть использована с опцией `getter`. **По умолчанию:** false.
+    -   `times` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество раз, когда имитатор будет использовать поведение `implementation`. После того, как имитируемый метод будет вызван `times` раз, он автоматически восстановит исходное поведение. Это значение должно быть целым числом больше нуля. **По умолчанию:** `бесконечность`.
 -   Возвращает: {Proxy} Имитированный метод. Осмеиваемый метод содержит специальное свойство `mock`, которое является экземпляром [`MockFunctionContext`](#class-mockfunctioncontext) и может быть использовано для проверки и изменения поведения осмеиваемого метода.
 
 Эта функция используется для создания имитатора на существующем методе объекта. Следующий пример демонстрирует, как создается имитатор для существующего метода объекта.
@@ -991,60 +991,60 @@ test('шпионит за объектным методом', (t) => {
 
 ## Класс: `TestsStream`
 
--   Расширяет {ReadableStream}
+-   Расширяет [`<ReadableStream>`](webstreams.md#readablestream)
 
 Успешный вызов метода [`run()`](#runoptions) вернет новый объект {TestsStream}, передающий серию событий, представляющих выполнение тестов. `TestsStream` будет испускать события в порядке определения тестов
 
 ### Событие: `'test:coverage'`
 
--   `данные` {Объект}
-    -   `summary` {Object} Объект, содержащий отчет о покрытии.
-        -   `files` {Array} Массив отчетов о покрытии для отдельных файлов. Каждый отчет представляет собой объект со следующей схемой:
-            -   `path` {string} Абсолютный путь к файлу.
-            -   `totalLineCount` {number} Общее количество строк.
-            -   `totalBranchCount` {number} Общее количество ветвей.
-            -   `totalFunctionCount` {number} Общее количество функций.
-            -   `coveredLineCount` {number} Количество покрытых линий.
-            -   `coveredBranchCount` {number} Количество покрытых ветвей.
-            -   `coveredFunctionCount` {number} Количество охваченных функций.
-            -   `coveredLinePercent` {number} Процент охваченных линий.
-            -   `coveredBranchPercent` {number} Процент охваченных ветвей.
-            -   `coveredFunctionPercent` {number} Процент охваченных функций.
-            -   `uncoveredLineNumbers` {Array} Массив целых чисел, представляющих номера строк, которые не охвачены.
-        -   `totals` {Object} Объект, содержащий сводку покрытия для всех файлов.
-            -   `totalLineCount` {number} Общее количество строк.
-            -   `totalBranchCount` {number} Общее количество ветвей.
-            -   `totalFunctionCount` {number} Общее количество функций.
-            -   `coveredLineCount` {number} Количество покрытых линий.
-            -   `coveredBranchCount` {number} Количество покрытых ветвей.
-            -   `coveredFunctionCount` {number} Количество охваченных функций.
-            -   `coveredLinePercent` {number} Процент охваченных линий.
-            -   `coveredBranchPercent` {number} Процент охваченных ветвей.
-            -   `coveredFunctionPercent` {число} Процент охваченных функций.
-        -   `workingDirectory` {строка} Рабочий каталог, когда началось покрытие кода. Это полезно для отображения имен относительных путей в случае, если тесты изменили рабочий каталог процесса Node.js.
-    -   `nesting` {number} Уровень вложенности теста.
+-   `данные` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `summary` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий отчет о покрытии.
+        -   `files` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив отчетов о покрытии для отдельных файлов. Каждый отчет представляет собой объект со следующей схемой:
+            -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный путь к файлу.
+            -   `totalLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество строк.
+            -   `totalBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество ветвей.
+            -   `totalFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество функций.
+            -   `coveredLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество покрытых линий.
+            -   `coveredBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество покрытых ветвей.
+            -   `coveredFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество охваченных функций.
+            -   `coveredLinePercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных линий.
+            -   `coveredBranchPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных ветвей.
+            -   `coveredFunctionPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных функций.
+            -   `uncoveredLineNumbers` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив целых чисел, представляющих номера строк, которые не охвачены.
+        -   `totals` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий сводку покрытия для всех файлов.
+            -   `totalLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество строк.
+            -   `totalBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество ветвей.
+            -   `totalFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество функций.
+            -   `coveredLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество покрытых линий.
+            -   `coveredBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество покрытых ветвей.
+            -   `coveredFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество охваченных функций.
+            -   `coveredLinePercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных линий.
+            -   `coveredBranchPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных ветвей.
+            -   `coveredFunctionPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Процент охваченных функций.
+        -   `workingDirectory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Рабочий каталог, когда началось покрытие кода. Это полезно для отображения имен относительных путей в случае, если тесты изменили рабочий каталог процесса Node.js.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
 
 Выводится, когда включено покрытие кода и все тесты завершены.
 
 ### Событие: `test:diagnostic`
 
--   `data` {Объект}
+-   `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-    -   `message` {string} Диагностическое сообщение.
-    -   `nesting` {number} Уровень вложенности теста.
+    -   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Диагностическое сообщение.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
 
 Выдается при вызове [`context.diagnostic`](#contextdiagnosticmessage).
 
 ### Событие: `'test:fail'`
 
--   `данные` {Объект}
-    -   `details` {Object} Дополнительные метаданные о выполнении.
-        -   `duration` {number} Продолжительность теста в миллисекундах.
-        -   `error` {Ошибка} Ошибка, вызванная тестом.
+-   `данные` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `details` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные метаданные о выполнении.
+        -   `duration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность теста в миллисекундах.
+        -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ошибка, вызванная тестом.
     -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-    -   `name` {string} Имя теста.
-    -   `nesting` {number} Уровень вложенности теста.
-    -   `testNumber` {number} Порядковый номер теста.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя теста.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
+    -   `testNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порядковый номер теста.
     -   `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
     -   `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage).
 
@@ -1052,13 +1052,13 @@ test('шпионит за объектным методом', (t) => {
 
 ### Событие: `'test:pass'`
 
--   `данные` {Объект}
-    -   `details` {Object} Дополнительные метаданные о выполнении.
-        -   `duration` {number} Продолжительность теста в миллисекундах.
+-   `данные` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `details` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные метаданные о выполнении.
+        -   `duration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность теста в миллисекундах.
     -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-    -   `name` {string} Имя теста.
-    -   `nesting` {number} Уровень вложенности теста.
-    -   `testNumber` {number} Порядковый номер теста.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя теста.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
+    -   `testNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порядковый номер теста.
     -   `todo` {string|boolean|undefined} Присутствует, если вызывается [`context.todo`](#contexttodomessage)
     -   `skip` {string|boolean|undefined} Присутствует, если вызывается [`context.skip`](#contextskipmessage)
 
@@ -1066,19 +1066,19 @@ test('шпионит за объектным методом', (t) => {
 
 ### Событие: `'test:plan'`
 
--   `data` {Объект}
+-   `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-    -   `nesting` {number} Уровень вложенности теста.
-    -   `count` {number} Количество подтестов, которые были выполнены.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
+    -   `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество подтестов, которые были выполнены.
 
 Выдается, когда все подтесты завершены для данного теста.
 
 ### Событие: `'test:start'`
 
--   `data` {Объект}
+-   `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `file` {string|undefined} Путь к файлу теста, не определен, если тест не запускается через файл.
-    -   `name` {string} Имя теста.
-    -   `nesting` {number} Уровень вложенности теста.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя теста.
+    -   `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень вложенности теста.
 
 Выдается при запуске теста.
 
@@ -1089,9 +1089,9 @@ test('шпионит за объектным методом', (t) => {
 ### `context.beforeEach([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого перед каждым подтестом текущего теста.
 
@@ -1111,9 +1111,9 @@ test('top level test', async (t) => {
 ### `context.after([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, который запускается после завершения текущего теста.
 
@@ -1129,9 +1129,9 @@ test('тест верхнего уровня', async (t) => {
 ### `context.afterEach([fn][, options])`
 
 -   `fn` {Function|AsyncFunction} Хук-функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если хук использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Безотзывная функция.
--   `options` {Object} Параметры конфигурации для хука. Поддерживаются следующие свойства:
-    -   `signal` {AbortSignal} Позволяет прервать выполняющийся хук.
-    -   `timeout` {number} Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для хука. Поддерживаются следующие свойства:
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать выполняющийся хук.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, по истечении которых хук будет прерван. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 
 Эта функция используется для создания хука, запускаемого после каждого подтеста текущего теста.
 
@@ -1150,7 +1150,7 @@ test('top level test', async (t) => {
 
 ### `context.diagnostic(message)`
 
--   `message` {string} Сообщение, которое должно быть сообщено.
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сообщение, которое должно быть сообщено.
 
 Эта функция используется для записи диагностики в вывод. Любая диагностическая информация включается в конец результатов теста. Эта функция не возвращает значения.
 
@@ -1166,7 +1166,7 @@ test('тест верхнего уровня', (t) => {
 
 ### `context.runOnly(shouldRunOnlyTests)`
 
--   `shouldRunOnlyTests` {boolean} Следует ли запускать `только` тесты.
+-   `shouldRunOnlyTests` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Следует ли запускать `только` тесты.
 
 Если `shouldRunOnlyTests` истинно, контекст тестирования будет запускать только те тесты, для которых установлена опция `only`. В противном случае запускаются все тесты. Если Node.js не был запущен с опцией командной строки [`--test-only`](cli.md#--test-only), эта функция не работает.
 
@@ -1183,7 +1183,7 @@ test('top level test', (t) => {
 
 ### `context.signal`
 
--   {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.
+-   [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для прерывания подзадач теста, когда тест был прерван.
 
 ```js
 test('тест верхнего уровня', async (t) => {
@@ -1193,7 +1193,7 @@ test('тест верхнего уровня', async (t) => {
 
 ### `context.skip([message])`
 
--   `message` {string} Необязательное сообщение о пропуске.
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное сообщение о пропуске.
 
 Эта функция заставляет вывод теста указывать на то, что тест пропущен. Если указано `message`, оно включается в вывод. Вызов `skip()` не завершает выполнение тестовой функции. Эта функция не возвращает значения.
 
@@ -1206,7 +1206,7 @@ test('top level test', (t) => {
 
 ### `context.todo([message])`
 
--   `message` {string} Необязательное сообщение `TODO`.
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное сообщение `TODO`.
 
 Эта функция добавляет директиву `TODO` в вывод теста. Если указано `message`, оно будет включено в вывод. Вызов `todo()` не завершает выполнение тестовой функции. Эта функция не возвращает значения.
 
@@ -1219,16 +1219,16 @@ test('top level test', (t) => {
 
 ### `context.test([name][, options][, fn])`
 
--   `name` {string} Имя подтеста, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
--   `options` {Object} Параметры конфигурации для подтеста. Поддерживаются следующие свойства:
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя подтеста, которое отображается при выдаче результатов тестирования. **По умолчанию:** Свойство `name` из `fn`, или `'<anonymous>'`, если `fn` не имеет имени.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации для подтеста. Поддерживаются следующие свойства:
     -   `concurrency` {number|boolean|null} Если указано число, то такое количество тестов будет выполняться параллельно. Если `true`, то все подтесты будут выполняться параллельно. Если `false`, то будет выполняться только один тест за раз. Если не указано, то подтесты наследуют это значение от своего родителя. **По умолчанию:** `null`.
-    -   `only` {boolean} Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
-    -   `signal` {AbortSignal} Позволяет прервать проходящий тест.
-    -   `skip` {boolean|string} Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
-    -   `todo` {boolean|string} Если истина, тест помечается как `TODO`. Если указана строка, эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
-    -   `timeout` {number} Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
+    -   `only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если значение истинно, и тестовый контекст настроен на выполнение `только` тестов, то этот тест будет выполнен. В противном случае тест будет пропущен. **По умолчанию:** `false`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет прервать проходящий тест.
+    -   `skip` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если значение истинно, тест будет пропущен. Если указана строка, эта строка отображается в результатах теста как причина пропуска теста. **По умолчанию:** `false`.
+    -   `todo` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если истина, тест помечается как `TODO`. Если указана строка, эта строка отображается в результатах теста как причина, по которой тест помечен как `TODO`. **По умолчанию:** `false`.
+    -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, через которое тест завершится неудачей. Если не указано, подтесты наследуют это значение от своего родителя. **По умолчанию:** `бесконечность`.
 -   `fn` {Function|AsyncFunction} Тестируемая функция. Первым аргументом этой функции является объект [`TestContext`](#class-testcontext). Если тест использует обратные вызовы, то функция обратного вызова передается в качестве второго аргумента. **По умолчанию:** Функция, не вызывающая обратного вызова.
--   Возвращает: {Promise}. Возвращается с `undefined` после завершения теста.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Возвращается с `undefined` после завершения теста.
 
 Эта функция используется для создания подтестов под текущим тестом. Эта функция ведет себя так же, как и функция верхнего уровня [`test()`](#testname-options-fn).
 
@@ -1261,4 +1261,5 @@ test('тест верхнего уровня', async (t) => {
 
 ### `context.signal`
 
--   {AbortSignal} Может использоваться для прерывания подзадач теста, когда тест был прерван.
+-   [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для прерывания подзадач теста, когда тест был прерван.
+

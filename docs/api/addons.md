@@ -402,7 +402,7 @@ NAPI_MODULE(NODE_GYP_MODULE_NAME, init)
 Когда файл `binding.gyp` готов, примеры аддонов можно настроить и собрать с помощью `node-gyp`:
 
 ```console
-$ node-gyp configure build
+> node-gyp configure build
 ```
 
 ### Аргументы функции

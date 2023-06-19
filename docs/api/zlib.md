@@ -451,16 +451,16 @@ http.createServer((request, response) => {
 
 Некоторые опции важны только при сжатии и игнорируются классами распаковки.
 
--   `flush` {integer} **По умолчанию:** `zlib.constants.Z_NO_FLUSH`.
--   `finishFlush` {integer} **По умолчанию:** `zlib.constants.Z_FINISH`
--   `chunkSize` {целое число} **По умолчанию:** `16 * 1024`
--   `windowBits` {integer}
--   `level` {integer} (только для сжатия)
--   `memLevel` {целое число} (только сжатие)
--   `стратегия` {целое число} (только сжатие)
+-   `flush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_NO_FLUSH`.
+-   `finishFlush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_FINISH`
+-   `chunkSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
+-   `windowBits` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `level` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только для сжатия)
+-   `memLevel` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
+-   `стратегия` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
 -   `dictionary` {Buffer|TypedArray|DataView|ArrayBuffer} (только дефлат/инфлат, по умолчанию пустой словарь)
--   `info` {boolean} (Если `true`, возвращает объект с `буфером` и `двигателем`).
--   `maxOutputLength` {integer} Ограничивает размер вывода при использовании [удобных методов](#convenience-methods). **По умолчанию:** [`buffer.kMaxLength`](buffer.md#bufferkmaxlength)
+-   `info` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) (Если `true`, возвращает объект с `буфером` и `двигателем`).
+-   `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер вывода при использовании [удобных методов](#convenience-methods). **По умолчанию:** [`buffer.kMaxLength`](buffer.md#bufferkmaxlength)
 
 Дополнительную информацию см. в документации по [`deflateInit2` и `inflateInit2`](https://zlib.net/manual.html#Advanced).
 
@@ -468,11 +468,11 @@ http.createServer((request, response) => {
 
 Каждый класс, основанный на Brotli, принимает объект `options`. Все опции являются необязательными.
 
--   `flush` {integer} **По умолчанию:** `zlib.constants.BROTLI_OPERATION_PROCESS`.
--   `finishFlush` {integer} **По умолчанию:** `zlib.constants.BROTLI_OPERATION_FINISH`
--   `chunkSize` {integer} **По умолчанию:** `16 * 1024`
--   `params` {Object} Объект ключ-значение, содержащий индексированные [параметры Brotli](#brotli-constants).
--   `maxOutputLength` {integer} Ограничивает размер вывода при использовании [удобных методов](#convenience-methods). **По умолчанию:** [`buffer.kMaxLength`](buffer.md#bufferkmaxlength).
+-   `flush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_PROCESS`.
+-   `finishFlush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_FINISH`
+-   `chunkSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
+-   `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект ключ-значение, содержащий индексированные [параметры Brotli](#brotli-constants).
+-   `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер вывода при использовании [удобных методов](#convenience-methods). **По умолчанию:** [`buffer.kMaxLength`](buffer.md#bufferkmaxlength).
 
 Например:
 
@@ -536,26 +536,26 @@ const stream = zlib.createBrotliCompress({
 
 > Стабильность: 0 - Утратил актуальность: Вместо этого используйте [`zlib.bytesWritten`](#zlibbyteswritten).
 
--   {number}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Утративший силу псевдоним для [`zlib.bytesWritten`](#zlibbyteswritten). Это оригинальное название было выбрано потому, что оно также имело смысл для интерпретации значения как количества байт, прочитанных движком, но не согласуется с другими потоками в Node.js, которые предоставляют значения под этими именами.
 
 ### `zlib.bytesWritten`
 
--   {number}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `zlib.bytesWritten` определяет количество байтов, записанных в движок, до обработки байтов (сжатия или распаковки, в зависимости от производного класса).
 
 ### `zlib.close([callback])`.
 
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Закрыть базовый хэндл.
 
 ### `zlib.flush([kind, ]callback)`.
 
 -   `kind` **По умолчанию:** `zlib.constants.Z_FULL_FLUSH` для потоков на основе zlib, `zlib.constants.BROTLI_OPERATION_FLUSH` для потоков на основе Brotli-.
--   `callback` {Функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Промыть ожидающие данные. Не вызывайте эту функцию легкомысленно, преждевременная очистка негативно влияет на эффективность алгоритма сжатия.
 
@@ -563,9 +563,9 @@ const stream = zlib.createBrotliCompress({
 
 ### `zlib.params(level, strategy, callback)`.
 
--   `уровень` {целое число}
--   `стратегия` {целое число}
--   `callback` {функция}
+-   `уровень` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `стратегия` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Эта функция доступна только для потоков на основе zlib, т.е. не Brotli.
 
@@ -645,7 +645,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {brotli options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.brotliCompressSync(buffer[, options])`
 
@@ -658,7 +658,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {brotli options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.brotliDecompressSync(buffer[, options])`
 
@@ -671,7 +671,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.deflateSync(buffer[, options])`
 
@@ -684,7 +684,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.deflateRawSync(buffer[, options])`
 
@@ -697,7 +697,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.gunzipSync(buffer[, options])`
 
@@ -710,7 +710,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.gzipSync(buffer[, options])`
 
@@ -723,7 +723,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.inflateSync(buffer[, options])`
 
@@ -736,7 +736,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.inflateRawSync(buffer[, options])`
 
@@ -749,7 +749,7 @@ const stream = zlib.createBrotliCompress({
 
 -   `buffer` {Buffer|TypedArray|DataView|ArrayBuffer|string}
 -   `options` {zlib options}
--   `callback` {Function}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.unzipSync(buffer[, options])`
 
@@ -757,3 +757,4 @@ const stream = zlib.createBrotliCompress({
 -   `options` {zlib options}
 
 Декомпрессия фрагмента данных с помощью [`Unzip`](#class-zlibunzip).
+

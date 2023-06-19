@@ -89,7 +89,7 @@ console.log('Это сообщение выводится первым.');
 
 ### Событие: `exit`
 
--   `code` {integer}
+-   `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Событие `'exit'` генерируется, когда процесс Node.js собирается завершиться в результате либо:
 
@@ -159,9 +159,9 @@ process.on('exit', (code) => {
 
     Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
 
--   `type` {string} Тип разрешения. Один из `'resolve'` или `'reject'`.
--   `promise` {Promise} Обещание, которое было разрешено или отвергнуто более одного раза.
--   `value` {любое} Значение, с которым обещание было разрешено или отвергнуто после первоначального разрешения.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип разрешения. Один из `'resolve'` или `'reject'`.
+-   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание, которое было разрешено или отвергнуто более одного раза.
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым обещание было разрешено или отвергнуто после первоначального разрешения.
 
 Событие `'multipleResolves'` испускается всякий раз, когда `обещание` было либо:
 
@@ -236,7 +236,7 @@ main().then(console.log);
 
 ### Событие: `rejectionHandled`
 
--   `promise` {Promise} Обещание, обработанное с опозданием.
+-   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание, обработанное с опозданием.
 
 Событие `'rejectionHandled'` испускается всякий раз, когда `Promise` было отклонено и к нему был присоединен обработчик ошибок (например, с помощью [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)) позже, чем один оборот цикла событий Node.js.
 
@@ -280,8 +280,8 @@ process.on('rejectionHandled', (promise) => {
 
 ### Событие: `'uncaughtException'`
 
--   `err` {Ошибка} Непойманное исключение.
--   `origin` {string} Указывает, происходит ли исключение из необработанного отказа или из синхронной ошибки. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в командной строке.
+-   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Непойманное исключение.
+-   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает, происходит ли исключение из необработанного отказа или из синхронной ошибки. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в командной строке.
 
 Событие `'uncaughtException'` генерируется, когда не пойманное исключение JavaScript прорывается обратно в цикл событий. По умолчанию Node.js обрабатывает такие исключения, печатая трассировку стека в `stderr` и завершая работу с кодом 1, переопределяя любой ранее установленный [`process.exitCode`](#processexitcode_1). Добавление обработчика для события `'uncaughtException'` отменяет это поведение по умолчанию. В качестве альтернативы измените [`process.exitCode`](#processexitcode_1) в обработчике события `'uncaughtException'`, что приведет к завершению процесса с указанным кодом выхода. В противном случае, при наличии такого обработчика процесс завершится с кодом 0.
 
@@ -345,8 +345,8 @@ console.log('This will not run.');
 
 ### Событие: `'uncaughtExceptionMonitor'`
 
--   `err` {Ошибка} Непойманное исключение.
--   `origin` {string} Указывает, происходит ли исключение из необработанного отказа или из синхронных ошибок. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в точке входа командной строки.
+-   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Непойманное исключение.
+-   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает, происходит ли исключение из необработанного отказа или из синхронных ошибок. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в точке входа командной строки.
 
 Событие `uncaughtExceptionMonitor` испускается до того, как испускается событие `uncaughtException` или вызывается хук, установленный через `process.setUncaughtExceptionCaptureCallback()`.
 
@@ -381,7 +381,7 @@ nonexistentFunc();
 ### Событие: `'unhandledRejection'`
 
 -   `reason` {Error|any} Объект, с которым обещание было отклонено (обычно это объект [`Error`](errors.md#class-error)).
--   `promise` {Promise} Отклоненное обещание.
+-   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Отклоненное обещание.
 
 Событие `'unhandledRejection'` возникает всякий раз, когда отвергается `Promise` и в течение одного оборота цикла событий к обещанию не присоединяется обработчик ошибки. При программировании с Promises исключения инкапсулируются как "отклоненные обещания". Отклонения могут быть пойманы и обработаны с помощью [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) и распространяются через цепочку `Promise`. Событие `'unhandledRejection'` полезно для обнаружения и отслеживания отклоненных обещаний, чьи отклонения еще не были обработаны.
 
@@ -457,10 +457,10 @@ const resource = new SomeResource();
 
 ### Событие: `warning`
 
--   `warning` {Ошибка} Ключевыми свойствами предупреждения являются:
-    -   `name` {string} Имя предупреждения. **По умолчанию:** `'Warning'`.
-    -   `message` {string} Описание предупреждения, предоставляемое системой.
-    -   `stack` {string} Трассировка стека до того места в коде, где было выдано предупреждение.
+-   `warning` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ключевыми свойствами предупреждения являются:
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя предупреждения. **По умолчанию:** `'Warning'`.
+    -   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Описание предупреждения, предоставляемое системой.
+    -   `stack` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Трассировка стека до того места в коде, где было выдано предупреждение.
 
 Событие `'warning'` выдается всякий раз, когда Node.js выдает предупреждение процесса.
 
@@ -666,7 +666,7 @@ allowedNodeEnvironmentFlags.forEach((flag) => {
 
 ## `process.arch`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Архитектура процессора операционной системы, для которой был скомпилирован двоичный файл Node.js. Возможные значения: `'arm'`, `'arm64'`, `'ia32'`, `'mips'`, `'mipsel'`, `'ppc'`, `'ppc64'`, `'s390'`, `'s390x'`, и `'x64'`.
 
@@ -686,7 +686,7 @@ console.log(`Эта архитектура процессора ${arch}`);
 
 ## `process.argv`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.argv` возвращает массив, содержащий аргументы командной строки, переданные при запуске процесса Node.js. Первым элементом будет [`process.execPath`](#processexecpath). Смотрите `process.argv0`, если необходим доступ к исходному значению `argv[0]`. Вторым элементом будет путь к выполняемому файлу JavaScript. Остальные элементы будут любыми дополнительными аргументами командной строки.
 
@@ -730,7 +730,7 @@ $ node process-args.js one two=three four
 
 ## `process.argv0`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.argv0` хранит только для чтения копию исходного значения `argv[0]`, переданного при запуске Node.js.
 
@@ -746,7 +746,7 @@ $ bash -c 'exec -a customArgv0 ./node'
 
 ## `process.channel`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Если процесс Node.js был порожден с IPC-каналом (см. документацию [Child Process](child_process.md)), свойство `process.channel` является ссылкой на IPC-канал. Если IPC-канала не существует, это свойство `не определено`.
 
@@ -770,7 +770,7 @@ $ bash -c 'exec -a customArgv0 ./node'
 
 ## `process.chdir(directory)`
 
--   `directory` {string}
+-   `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `process.chdir()` изменяет текущий рабочий каталог процесса Node.js или выбрасывает исключение, если это не удается (например, если указанный `каталог` не существует).
 
@@ -804,7 +804,7 @@ try {
 
 ## `process.config`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.config` возвращает замороженный `Object`, содержащий JavaScript-представление опций configure, используемых для компиляции текущего исполняемого файла Node.js. Это то же самое, что и файл `config.gypi`, который был создан при выполнении скрипта `./configure`.
 
@@ -841,7 +841,7 @@ try {
 
 ## `process.connected`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), свойство `process.connected` будет возвращать `true` до тех пор, пока IPC-канал подключен, и вернет `false` после вызова `process.disconnect()`.
 
@@ -865,10 +865,10 @@ try {
 
 ## `process.cpuUsage([previousValue])`
 
--   `previousValue` {Object} Предыдущее возвращаемое значение после вызова `process.cpuUsage()`.
--   Возвращает: {Object}
-    -   `user` {integer}
-    -   `система` {целое число}
+-   `previousValue` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Предыдущее возвращаемое значение после вызова `process.cpuUsage()`.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `user` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `система` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.cpuUsage()` возвращает пользовательское и системное использование процессорного времени текущего процесса в объекте со свойствами `user` и `ystem`, значения которых являются микросекундами (миллионными долями секунды). Эти значения измеряют время, проведенное в пользовательском и системном коде соответственно, и могут оказаться больше, чем реально прошедшее время, если несколько ядер процессора выполняют работу для данного процесса.
 
@@ -906,7 +906,7 @@ console.log(cpuUsage(startUsage));
 
 ## `process.cwd()`
 
--   Возвращает: {строка}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `process.cwd()` возвращает текущий рабочий каталог процесса Node.js.
 
@@ -926,7 +926,7 @@ console.log(`Current directory: ${cwd()}`);
 
 ## `process.debugPort`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Порт, используемый отладчиком Node.js, когда он включен.
 
@@ -957,7 +957,7 @@ process.debugPort = 5858;
 ## `process.dlopen(module, filename[, flags])`
 
 -   `модуль` {объект}
--   `filename` {string}
+-   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `флаги` {os.constants.dlopen} **По умолчанию:** `os.constants.dlopen.RTLD_LAZY`.
 
 Метод `process.dlopen()` позволяет динамически загружать общие объекты. Он в основном используется `require()` для загрузки C++ аддонов, и не должен использоваться напрямую, за исключением особых случаев. Другими словами, [`require()`](globals.md#require) следует предпочесть `process.dlopen()`, если нет особых причин, таких как пользовательские флаги dlopen или загрузка из модулей ES.
@@ -998,12 +998,12 @@ module.exports.foo();
 
 ## `process.emitWarning(warning[, options])`
 
--   `warning` {string|Error} Предупреждение, которое нужно выдать.
--   `options` {Object}
-    -   `type` {string} Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
-    -   `code` {string} Уникальный идентификатор для выдаваемого экземпляра предупреждения.
-    -   `ctor` {функция} Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
-    -   `detail` {string} Дополнительный текст для включения в ошибку.
+-   `warning` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Предупреждение, которое нужно выдать.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
+    -   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор для выдаваемого экземпляра предупреждения.
+    -   `ctor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
+    -   `detail` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Дополнительный текст для включения в ошибку.
 
 Метод `process.emitWarning()` может быть использован для выдачи пользовательских или специфических для приложения предупреждений процесса. Их можно прослушать, добавив обработчик к событию [`'warning'`](#event-warning).
 
@@ -1065,10 +1065,10 @@ process.on('warning', (warning) => {
 
 ## `process.emitWarning(warning[, type[, code]][, ctor])`.
 
--   `warning` {string|Error} Предупреждение, которое нужно выдать.
--   `type` {string} Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
--   `code` {string} Уникальный идентификатор для выдаваемого экземпляра предупреждения.
--   `ctor` {функция} Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
+-   `warning` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Предупреждение, которое нужно выдать.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
+-   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор для выдаваемого экземпляра предупреждения.
+-   `ctor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
 
 Метод `process.emitWarning()` может быть использован для выдачи пользовательских или специфических для приложения предупреждений процесса. Их можно прослушать, добавив обработчик к событию [`'warning'`](#event-warning).
 
@@ -1226,7 +1226,7 @@ emitMyWarning();
 
 ## `process.env`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.env` возвращает объект, содержащий пользовательское окружение. См. environ(7).
 
@@ -1337,7 +1337,7 @@ console.log(env.test);
 
 ## `process.execArgv`
 
--   {string\[\]}
+-   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.execArgv` возвращает набор специфических для Node.js опций командной строки, переданных при запуске процесса Node.js. Эти опции не появляются в массиве, возвращаемом свойством [`process.argv`](#processargv), и не включают исполняемый файл Node.js, имя скрипта или любые опции, следующие за именем скрипта. Эти опции полезны для порождения дочерних процессов с той же средой выполнения, что и родительский.
 
@@ -1363,7 +1363,7 @@ $ node --harmony script.js --version
 
 ## `process.execPath`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.execPath` возвращает абсолютное имя пути исполняемого файла, который запустил процесс Node.js. Символьные ссылки, если таковые имеются, разрешаются.
 
@@ -1470,7 +1470,7 @@ if (someConditionNotMet()) {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   Возвращает: {string\[\]}
+-   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `process.getActiveResourcesInfo()` возвращает массив строк, содержащих типы активных ресурсов, которые в настоящее время поддерживают цикл событий.
 
@@ -1526,7 +1526,7 @@ if (process.getegid) {
 
 ## `process.geteuid()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Метод `process.geteuid()` возвращает числовой эффективный идентификатор пользователя процесса. (См. geteuid(2).)
 
@@ -1552,7 +1552,7 @@ if (process.geteuid) {
 
 ## `process.getgid()`
 
--   Возвращает: {Object}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Метод `process.getgid()` возвращает числовой групповой идентификатор процесса. (См. getgid(2).)
 
@@ -1578,7 +1578,7 @@ if (process.getgid) {
 
 ## `process.getgroups()`
 
--   Возвращает: {целое число\[\]}
+-   Возвращает: [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.getgroups()` возвращает массив с идентификаторами дополнительных групп. POSIX не уточняет, включен ли идентификатор эффективной группы, но Node.js гарантирует, что он всегда включен.
 
@@ -1604,7 +1604,7 @@ if (process.getgroups) {
 
 ## `process.getuid()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.getuid()` возвращает числовой идентификатор пользователя процесса. (См. getuid(2).)
 
@@ -1630,7 +1630,7 @@ if (process.getuid) {
 
 ## `process.hasUncaughtExceptionCaptureCallback()`
 
--   Возвращает: {boolean}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Указывает, был ли установлен обратный вызов с помощью [`process.setUncaughtExceptionCaptureCallback()`](#processsetuncaughaughtexceptioncapturecallbackfn).
 
@@ -1699,7 +1699,7 @@ setTimeout(() => {
 
 ## `process.hrtime.bigint()`
 
--   Возвращает: {bigint}
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 `bigint` версия метода [`process.hrtime()`](#processhrtimetime), возвращающая текущее реальное время высокого разрешения в наносекундах в виде `bigint`.
 
@@ -1784,7 +1784,7 @@ console.log(getgroups()); // [ 27, 30, 46, 1000 ]
 
 ## `process.kill(pid[, signal])`
 
--   `pid` {число} Идентификатор процесса
+-   `pid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса
 -   `signal` {строка|число} Сигнал для отправки, либо в виде строки, либо в виде числа. **По умолчанию:** `'SIGTERM'`.
 
 Метод `process.kill()` посылает `signal` процессу, идентифицированному `pid`.
@@ -1833,7 +1833,7 @@ process.kill(process.pid, 'SIGHUP');
 
 > Стабильность: 0 - Утратил актуальность: Используйте [`require.main`](modules.md#accessing-the-main-module) вместо этого.
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.mainModule` предоставляет альтернативный способ получения [`require.main`](modules.md#accessing-the-main-module). Разница заключается в том, что если главный модуль меняется во время выполнения, [`require.main`](modules.md#accessing-the-main-module) может по-прежнему ссылаться на исходный главный модуль в модулях, которые были необходимы до изменения. В целом, можно считать, что эти две ссылки относятся к одному и тому же модулю.
 
@@ -1843,12 +1843,12 @@ process.kill(process.pid, 'SIGHUP');
 
 ## `process.memoryUsage()`
 
--   Возвращает: {Object}
-    -   `rss` {целое число}
-    -   `heapTotal` {целое число}
-    -   `heapUsed` {integer}
-    -   `external` {integer}
-    -   `arrayBuffers` {integer}
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `rss` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `heapTotal` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `heapUsed` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `external` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    -   `arrayBuffers` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает объект, описывающий использование памяти процессом Node.js, измеренное в байтах.
 
@@ -1893,7 +1893,7 @@ console.log(memoryUsage());
 
 ## `process.memoryUsage.rss()`
 
--   Возвращает: {целое число}
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.memoryUsage.rss()` возвращает целое число, представляющее размер резидентного набора (RSS) в байтах.
 
@@ -1919,7 +1919,7 @@ console.log(memoryUsage.rss());
 
 ## `process.nextTick(callback[, ...args])`
 
--   `callback` {функция}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `...args` {любые} Дополнительные аргументы для передачи при вызове `callback`.
 
 Функция `process.nextTick()` добавляет `callback` в "очередь следующего тика". Эта очередь полностью опустошается после завершения текущей операции на стеке JavaScript и перед тем, как цикл событий будет продолжен. Можно создать бесконечный цикл, если рекурсивно вызывать `process.nextTick()`. Дополнительную информацию см. в руководстве [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#process-nexttick).
@@ -2112,7 +2112,7 @@ console.log('scheduled');
 
 ## `process.noDeprecation`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `process.noDeprecation` указывает, установлен ли флаг `--no-deprecation` для текущего процесса Node.js. Более подробную информацию о поведении этого флага смотрите в документации к событию [`'warning'`'](#event-warning) и методу [`emitWarning()`](#processemitwarningwarning-type-code-ctor).
 
@@ -2120,7 +2120,7 @@ console.log('scheduled');
 
 ## `process.permission`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Этот API доступен через флаг [`--experimental-permission`](cli.md#--experimental-permission).
 
@@ -2130,9 +2130,9 @@ console.log('scheduled');
 
 ### `process.permission.deny(scope[, reference])`.
 
--   `scopes` {string}
--   `reference` {Array}
--   Возвращает: {boolean}
+-   `scopes` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `reference` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Запрет разрешений во время выполнения.
 
@@ -2155,9 +2155,9 @@ process.permission.deny('fs.write');
 
 ### `process.permission.has(scope[, reference])`.
 
--   `scopes` {string}
--   `reference` {string}
--   Возвращает: {boolean}
+-   `scopes` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `reference` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Проверяет, может ли процесс получить доступ к заданной области видимости и ссылке. Если ссылка не указана, предполагается глобальная область видимости, например, `process.permission.has('fs.read')` проверит, имеет ли процесс ВСЕ разрешения на чтение файловой системы.
 
@@ -2182,7 +2182,7 @@ process.permission.has('fs.read');
 
 ## `process.pid`
 
--   {целое число}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `process.pid` возвращает PID процесса.
 
@@ -2202,7 +2202,7 @@ console.log(`Этот процесс - pid ${pid}`);
 
 ## `process.platform`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.platform` возвращает строку, идентифицирующую платформу операционной системы, для которой был скомпилирован бинарный файл Node.js.
 
@@ -2236,7 +2236,7 @@ console.log(`Эта платформа - ${платформа}`);
 
 ## `process.ppid`
 
--   {целое число}
+-   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `process.ppid` возвращает PID родителя текущего процесса.
 
@@ -2256,15 +2256,15 @@ console.log(`Родительский процесс - pid ${ppid}`);
 
 ## `process.release`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.release` возвращает `Object`, содержащий метаданные, относящиеся к текущему релизу, включая URL-адреса исходного tarball и tarball только с заголовками.
 
 `process.release` содержит следующие свойства:
 
--   `name` {string} Значение, которое всегда будет `'node''.
--   `sourceUrl` {string} абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий исходный код текущего релиза.
--   `headersUrl`{string} абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий только заголовочные файлы исходного кода текущего выпуска. Этот файл значительно меньше полного исходного файла и может быть использован для компиляции нативных дополнений Node.js.
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение, которое всегда будет `'node''.
+-   `sourceUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий исходный код текущего релиза.
+-   `headersUrl`[`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий только заголовочные файлы исходного кода текущего выпуска. Этот файл значительно меньше полного исходного файла и может быть использован для компиляции нативных дополнений Node.js.
 -   `libUrl` {string|undefined} абсолютный URL, указывающий на файл _`node.lib`_, соответствующий архитектуре и версии текущего выпуска. Этот файл используется для компиляции встроенных дополнений Node.js. _Это свойство присутствует только в Windows-сборках Node.js и будет отсутствовать на всех остальных платформах._
 -   `lts` {string|undefined} строковая метка, идентифицирующая метку [LTS](https://github.com/nodejs/Release) для этого выпуска. Это свойство существует только для релизов LTS и является `неопределенным` для всех других типов релизов, включая релизы _Current_. Допустимые значения включают кодовые имена релизов LTS (включая те, которые больше не поддерживаются).
     -   `'Fermium'` для линейки 14.x LTS, начиная с 14.15.0.
@@ -2289,7 +2289,7 @@ console.log(`Родительский процесс - pid ${ppid}`);
 
 ## `process.report`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 `process.report` - это объект, методы которого используются для создания диагностических отчетов для текущего процесса. Дополнительная документация доступна в документации [report documentation](report.md).
 
@@ -2297,7 +2297,7 @@ console.log(`Родительский процесс - pid ${ppid}`);
 
 ### `process.report.compact`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Записывать отчеты в компактном формате, однострочном JSON, более удобном для систем обработки журналов, чем многострочный формат по умолчанию, предназначенный для человеческого потребления.
 
@@ -2318,7 +2318,7 @@ console.log(`Отчеты компактны? ${report.compact}`);
 
 ### `process.report.directory`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог, в который записывается отчет. Значение по умолчанию - пустая строка, указывающая, что отчеты записываются в текущий рабочий каталог процесса Node.js.
 
@@ -2338,7 +2338,7 @@ console.log(`Report directory is ${report.directory}`);
 
 ### `process.report.filename`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя файла, в который записывается отчет. Если установлено значение пустой строки, имя выходного файла будет состоять из метки времени, PID и номера последовательности. Значение по умолчанию - пустая строка.
 
@@ -2360,8 +2360,8 @@ console.log(`Report filename is ${report.filename}`);
 
 ### `process.report.getReport([err])`
 
--   `err` {Error} Пользовательская ошибка, используемая для отчета о стеке JavaScript.
--   Возвращает: {Object}
+-   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Пользовательская ошибка, используемая для отчета о стеке JavaScript.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает представление JavaScript-объекта диагностического отчета для запущенного процесса. Трассировка стека JavaScript в отчете берется из `err`, если присутствует.
 
@@ -2401,7 +2401,7 @@ fs.writeFileSync(
 
 ### `process.report.reportOnFatalError`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, генерируется диагностический отчет о фатальных ошибках, таких как ошибки выхода из памяти или неудачные утверждения C++.
 
@@ -2424,7 +2424,7 @@ console.log(``Отчет о фатальной ошибке: ${report.reportOnFa
 
 ### `process.report.reportOnSignal`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, диагностический отчет генерируется, когда процесс получает сигнал, указанный `process.report.signal`.
 
@@ -2444,7 +2444,7 @@ console.log(`Report on signal: ${report.reportOnSignal}`);
 
 ### `process.report.reportOnUncaughtException`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, диагностический отчет генерируется при не пойманном исключении.
 
@@ -2468,7 +2468,7 @@ console.log(
 
 ### `process.report.signal`
 
--   {строка}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Сигнал, используемый для запуска создания диагностического отчета. По умолчанию `'SIGUSR2'`.
 
@@ -2488,11 +2488,11 @@ console.log(`Сигнал отчета: ${report.signal}`);
 
 ### `process.report.writeReport([filename][, err])`.
 
--   `filename` {string} Имя файла, в который записывается отчет. Это должен быть относительный путь, который будет добавлен к директории, указанной в `process.report.directory`, или к текущей рабочей директории процесса Node.js, если она не указана.
+-   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла, в который записывается отчет. Это должен быть относительный путь, который будет добавлен к директории, указанной в `process.report.directory`, или к текущей рабочей директории процесса Node.js, если она не указана.
 
--   `err` {Ошибка} Пользовательская ошибка, используемая для отчета о стеке JavaScript.
+-   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Пользовательская ошибка, используемая для отчета о стеке JavaScript.
 
--   Возвращает: {string} Возвращает имя файла сгенерированного отчета.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Возвращает имя файла сгенерированного отчета.
 
 Записывает диагностический отчет в файл. Если `filename` не указано, имя файла по умолчанию включает дату, время, PID и порядковый номер. Трассировка стека JavaScript в отчете берется из `err`, если присутствует.
 
@@ -2516,23 +2516,23 @@ report.writeReport();
 
 ## `process.resourceUsage()`
 
--   Возвращает: {Object} использование ресурсов для текущего процесса. Все эти значения берутся из вызова `uv_getrusage`, который возвращает [`uv_rusage_t` struct](https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t).
-    -   `userCPUTime` {целое число} отображается на `ru_utime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().user`](#processcpuusagepreviousvalue).
-    -   `systemCPUTime` {integer} отображает `ru_stime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().system`](#processcpuusagepreviousvalue).
-    -   `maxRSS` {integer} отображается на `ru_maxrss`, который является максимальным размером используемого резидентного набора в килобайтах.
-    -   `sharedMemorySize` {integer} отображается на `ru_ixrss`, но не поддерживается ни одной платформой.
-    -   `unsharedDataSize` {целое число} соответствует `ru_idrss`, но не поддерживается ни одной платформой.
-    -   `unsharedStackSize` {целое число} соответствует `ru_isrss`, но не поддерживается ни одной платформой.
-    -   `minorPageFault` {целое число} отображается на `ru_minflt`, что является количеством мелких ошибок страниц для процесса, см. подробнее [эта статья](https://en.wikipedia.org/wiki/Page_fault#Minor).
-    -   `majorPageFault` {целое число} отображается на `ru_majflt`, которое является числом основных ошибок страниц для процесса, смотрите [эту статью подробнее](https://en.wikipedia.org/wiki/Page_fault#Major). Это поле не поддерживается в Windows.
-    -   `swappedOut` {integer} соответствует `ru_nswap`, но не поддерживается ни одной платформой.
-    -   `fsRead` {integer} отображается на `ru_inblock`, что является количеством раз, когда файловая система должна была выполнить ввод.
-    -   `fsWrite` {целое число} обозначает `ru_oublock`, т.е. количество раз, когда файловая система должна была выполнить вывод.
-    -   `ipcSent` {integer} соответствует `ru_msgsnd`, но не поддерживается ни одной платформой.
-    -   `ipcReceived` {целое число} соответствует `ru_msgrcv`, но не поддерживается ни одной платформой.
-    -   `signalsCount` {integer} отображается на `ru_nsignals`, но не поддерживается ни одной платформой.
-    -   `voluntaryContextSwitches` {целое число} отображается на `ru_nvcsw` и представляет собой количество случаев, когда переключение контекста процессора произошло из-за того, что процесс добровольно отдал процессор до завершения своего временного среза (обычно для ожидания доступности ресурса). Это поле не поддерживается в Windows.
-    -   `involuntaryContextSwitches` {целое число} отображает `ru_nivcsw`, которое представляет собой количество раз, когда переключение контекста процессора произошло из-за того, что процесс с более высоким приоритетом стал выполнимым или из-за того, что текущий процесс превысил свой временной срез. Это поле не поддерживается в Windows.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) использование ресурсов для текущего процесса. Все эти значения берутся из вызова `uv_getrusage`, который возвращает [`uv_rusage_t` struct](https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t).
+    -   `userCPUTime` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_utime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().user`](#processcpuusagepreviousvalue).
+    -   `systemCPUTime` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображает `ru_stime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().system`](#processcpuusagepreviousvalue).
+    -   `maxRSS` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_maxrss`, который является максимальным размером используемого резидентного набора в килобайтах.
+    -   `sharedMemorySize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_ixrss`, но не поддерживается ни одной платформой.
+    -   `unsharedDataSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_idrss`, но не поддерживается ни одной платформой.
+    -   `unsharedStackSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_isrss`, но не поддерживается ни одной платформой.
+    -   `minorPageFault` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_minflt`, что является количеством мелких ошибок страниц для процесса, см. подробнее [эта статья](https://en.wikipedia.org/wiki/Page_fault#Minor).
+    -   `majorPageFault` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_majflt`, которое является числом основных ошибок страниц для процесса, смотрите [эту статью подробнее](https://en.wikipedia.org/wiki/Page_fault#Major). Это поле не поддерживается в Windows.
+    -   `swappedOut` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nswap`, но не поддерживается ни одной платформой.
+    -   `fsRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_inblock`, что является количеством раз, когда файловая система должна была выполнить ввод.
+    -   `fsWrite` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) обозначает `ru_oublock`, т.е. количество раз, когда файловая система должна была выполнить вывод.
+    -   `ipcSent` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgsnd`, но не поддерживается ни одной платформой.
+    -   `ipcReceived` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgrcv`, но не поддерживается ни одной платформой.
+    -   `signalsCount` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_nsignals`, но не поддерживается ни одной платформой.
+    -   `voluntaryContextSwitches` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_nvcsw` и представляет собой количество случаев, когда переключение контекста процессора произошло из-за того, что процесс добровольно отдал процессор до завершения своего временного среза (обычно для ожидания доступности ресурса). Это поле не поддерживается в Windows.
+    -   `involuntaryContextSwitches` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображает `ru_nivcsw`, которое представляет собой количество раз, когда переключение контекста процессора произошло из-за того, что процесс с более высоким приоритетом стал выполнимым или из-за того, что текущий процесс превысил свой временной срез. Это поле не поддерживается в Windows.
 
 <!-- конец списка -->
 
@@ -2594,12 +2594,12 @@ console.log(resourceUsage());
 
 ## `process.send(message[, sendHandle[, options]][, callback])`
 
--   `message` {Object}
+-   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `sendHandle` {net.Server|net.Socket}
--   `options` {Object} используется для параметризации отправки определенных типов дескрипторов.`options` поддерживает следующие свойства:
-    -   `keepOpen` {boolean} Значение, которое может использоваться при передаче экземпляров `net.Socket`. Если `true`, сокет остается открытым в процессе отправки. **По умолчанию:** `false`.
--   `callback` {Функция}
--   Возвращает: {boolean}.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) используется для параметризации отправки определенных типов дескрипторов.`options` поддерживает следующие свойства:
+    -   `keepOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Значение, которое может использоваться при передаче экземпляров `net.Socket`. Если `true`, сокет остается открытым в процессе отправки. **По умолчанию:** `false`.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 Если Node.js порожден с IPC-каналом, метод `process.send()` может быть использован для отправки сообщений родительскому процессу. Сообщения будут получены как событие [`'message'`](child_process.md#event-message) на объекте [`ChildProcess`](child_process.md#class-childprocess) родительского процесса.
 
@@ -2725,7 +2725,7 @@ if (process.getgid && process.setgid) {
 
 ## `process.setgroups(groups)`
 
--   `groups` {целое число\[\]}
+-   `groups` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.setgroups()` устанавливает идентификаторы дополнительных групп для процесса Node.js. Это привилегированная операция, которая требует, чтобы процесс Node.js имел права `root` или `CAP_SETGID`.
 
@@ -2805,7 +2805,7 @@ if (process.getuid && process.setuid) {
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `val` {boolean}
+-   `val` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Эта функция включает или выключает поддержку [Source Map v3](https://sourcemaps.info/spec.html) для трассировки стека.
 
@@ -2831,7 +2831,7 @@ if (process.getuid && process.setuid) {
 
 ## `process.stderr`
 
--   {Stream}
+-   [`<Stream>`](stream.md#stream)
 
 Свойство `process.stderr` возвращает поток, подключенный к `stderr` (fd `2`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `2` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
 
@@ -2841,7 +2841,7 @@ if (process.getuid && process.setuid) {
 
 ### `process.stderr.fd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Это свойство относится к значению базового дескриптора файла `process.stderr`. Значение фиксировано на `2`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
 
@@ -2849,7 +2849,7 @@ if (process.getuid && process.setuid) {
 
 ## `process.stdin`
 
--   {Stream}
+-   [`<Stream>`](stream.md#stream)
 
 Свойство `process.stdin` возвращает поток, подключенный к `stdin` (fd `0`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `0` не ссылается на файл, в этом случае это [Readable](stream.md#readable-streams) поток.
 
@@ -2863,7 +2863,7 @@ if (process.getuid && process.setuid) {
 
 ### `process.stdin.fd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Это свойство относится к значению базового дескриптора файла `process.stdin`. Значение фиксировано на `0`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
 
@@ -2871,7 +2871,7 @@ if (process.getuid && process.setuid) {
 
 ## `process.stdout`
 
--   {Stream}
+-   [`<Stream>`](stream.md#stream)
 
 Свойство `process.stdout` возвращает поток, подключенный к `stdout` (fd `1`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `1` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
 
@@ -2895,7 +2895,7 @@ stdin.pipe(stdout);
 
 ### `process.stdout.fd`
 
--   {число}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Это свойство относится к значению базового дескриптора файла `process.stdout`. Значение фиксировано и равно `1`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
 
@@ -2938,7 +2938,7 @@ false
 
 ## `process.throwDeprecation`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Начальное значение `process.throwDeprecation` указывает, установлен ли флаг `--throw-deprecation` для текущего процесса Node.js. Значение `process.throwDeprecation` является изменяемым, поэтому то, приводят ли предупреждения о депривации к ошибкам, может быть изменено во время выполнения. Дополнительную информацию см. в документации к событию [`'warning'``](#event-warning) и методу [`emitWarning()``](#processemitwarningwarning-type-code-ctor).
 
@@ -2962,7 +2962,7 @@ true
 
 ## `process.title`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.title` возвращает текущий заголовок процесса (т.е. возвращает текущее значение `ps`). Присвоение нового значения `process.title` изменяет текущее значение `ps`.
 
@@ -2974,7 +2974,7 @@ true
 
 ## `process.traceDeprecation`
 
--   {boolean}
+-   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `process.traceDeprecation` указывает, установлен ли флаг `--trace-deprecation` для текущего процесса Node.js. Более подробную информацию о поведении этого флага смотрите в документации к событию [`'warning'`'](#event-warning) и методу [`emitWarning()`](#processemitwarningwarning-type-code-ctor).
 
@@ -2994,7 +2994,7 @@ true
 
 ## `process.umask(mask)`
 
--   `mask` {string|integer}
+-   `mask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 `process.umask(mask)` устанавливает маску создания файлового режима процесса Node.js. Дочерние процессы наследуют маску от родительского процесса. Возвращает предыдущую маску.
 
@@ -3028,7 +3028,7 @@ console.log(
 
 ## `process.uptime()`
 
--   Возвращает: {число}
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.uptime()` возвращает количество секунд, в течение которых работает текущий процесс Node.js.
 
@@ -3038,7 +3038,7 @@ console.log(
 
 ## `process.version`
 
--   {string}
+-   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.version` содержит строку версии Node.js.
 
@@ -3062,7 +3062,7 @@ console.log(`Version: ${version}`);
 
 ## `process.versions`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.versions` возвращает объект, содержащий строки версий Node.js и его зависимостей. `process.versions.modules` указывает текущую версию ABI, которая увеличивается всякий раз, когда изменяется C++ API. Node.js откажется загружать модули, которые были скомпилированы с другой версией ABI модуля.
 
@@ -3120,3 +3120,4 @@ Node.js обычно завершает работу с кодом состоя�
 -   `>128` **Сигнальные выходы**: Если Node.js получает фатальный сигнал, такой как `SIGKILL` или `SIGHUP`, то его код выхода будет равен `128` плюс значение кода сигнала. Это стандартная практика POSIX, поскольку коды выхода определены как 7-битные целые числа, а сигнальные выходы устанавливают старший бит, а затем содержат значение кода сигнала. Например, сигнал `SIGABRT` имеет значение `6`, поэтому ожидаемый код выхода будет `128` + `6`, или `134`.
 
 <!-- 0100.part.md -->
+

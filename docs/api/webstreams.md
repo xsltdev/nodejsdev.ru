@@ -75,27 +75,27 @@ const stream = new ReadableStream({
 
 #### `новый ReadableStream([underlyingSource [, strategy]])`
 
--   `underlyingSource` {Object}
-    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `ReadableStream`.
+-   `underlyingSource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается сразу после создания `ReadableStream`.
         -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
         -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
-    -   `pull` {Функция} Определяемая пользователем функция, которая вызывается многократно, когда внутренняя очередь `ReadableStream` не заполнена. Операция может быть синхронной или асинхронной. Если async, то функция не будет вызываться снова, пока не будет выполнено ранее возвращенное обещание.
+    -   `pull` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается многократно, когда внутренняя очередь `ReadableStream` не заполнена. Операция может быть синхронной или асинхронной. Если async, то функция не будет вызываться снова, пока не будет выполнено ранее возвращенное обещание.
         -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `cancel` {Функция} Определяемая пользователем функция, которая вызывается при отмене `ReadableStream`.
+    -   `cancel` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается при отмене `ReadableStream`.
         -   `reason` {любая}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `type` {string} Должно быть `'bytes` или `undefined`.
-    -   `autoAllocateChunkSize` {number} Используется только когда `type` равен `'bytes'`.
--   `strategy` {Object}
-    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-        -   `chunk` {любой}
-        -   Возвращает: {число}
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'bytes` или `undefined`.
+    -   `autoAllocateChunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Используется только когда `type` равен `'bytes'`.
+-   `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+        -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `readableStream.locked`
 
--   Тип: {boolean} Устанавливается в `true`, если существует активный читатель для данного {ReadableStream}.
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Устанавливается в `true`, если существует активный читатель для данного [`<ReadableStream>`](webstreams.md#readablestream).
 
 По умолчанию свойство `readableStream.locked` имеет значение `false`, и переключается на `true`, если есть активный читатель, потребляющий данные потока.
 
@@ -106,8 +106,8 @@ const stream = new ReadableStream({
 
 #### `readableStream.getReader([options])`
 
--   `options` {Object}
-    -   `mode` {строка} `'byob` или `undefined`
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'byob` или `undefined`
 -   Возвращает: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}
 
 ```mjs
@@ -132,17 +132,17 @@ reader.read().then(console.log);
 
 #### `readableStream.pipeThrough(transform[, options])`
 
--   `transform` {Object}
-    -   `readable` {ReadableStream} `ReadableStream`, в который `transform.writable` будет пересылать потенциально измененные данные, полученные из этого `ReadableStream`.
+-   `transform` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `readable` [`<ReadableStream>`](webstreams.md#readablestream) `ReadableStream`, в который `transform.writable` будет пересылать потенциально измененные данные, полученные из этого `ReadableStream`.
     -   `writable` {WritableStream} `WritableStream`, в который будут записываться данные этого `ReadableStream`.
--   `options` {Object}
-    -   `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `transform.writable`.
-    -   `preventCancel` {boolean} Когда `true`, ошибки в назначении `transform.writable` не приводят к отмене этого `ReadableStream`.
-    -   `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приводит к закрытию `transform.writable`.
-    -   `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
--   Возвращает: {ReadableStream} Из `transform.readable`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `preventAbort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `transform.writable`.
+    -   `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, ошибки в назначении `transform.writable` не приводят к отмене этого `ReadableStream`.
+    -   `preventClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream` не приводит к закрытию `transform.writable`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет отменить передачу данных с помощью {AbortController}.
+-   Возвращает: [`<ReadableStream>`](webstreams.md#readablestream) Из `transform.readable`.
 
-Подключает этот {ReadableStream} к паре {ReadableStream} и {WritableStream}, указанной в аргументе `transform`, таким образом, что данные из этого {ReadableStream} записываются в `transform.writable`, возможно, трансформируются, затем выталкиваются в `transform.readable`. Когда конвейер настроен, возвращается `transform.readable`.
+Подключает этот [`<ReadableStream>`](webstreams.md#readablestream) к паре [`<ReadableStream>`](webstreams.md#readablestream) и {WritableStream}, указанной в аргументе `transform`, таким образом, что данные из этого [`<ReadableStream>`](webstreams.md#readablestream) записываются в `transform.writable`, возможно, трансформируются, затем выталкиваются в `transform.readable`. Когда конвейер настроен, возвращается `transform.readable`.
 
 Заставляет `readableStream.locked` быть `true`, пока активна операция конвейера.
 
@@ -199,11 +199,11 @@ const transformedStream = stream.pipeThrough(transform);
 #### `readableStream.pipeTo(destination[, options])`
 
 -   `destination` {WritableStream} {WritableStream}, в который будут записаны данные этого `ReadableStream`.
--   `options` {Object}
-    -   `preventAbort` {boolean} Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `destination`.
-    -   `preventCancel` {boolean} Когда `true`, ошибки в `назначении` не приведут к отмене этого `ReadableStream`.
-    -   `preventClose` {boolean} Если `true`, закрытие этого `ReadableStream` не приведет к закрытию `destination`.
-    -   `signal` {AbortSignal} Позволяет отменить передачу данных с помощью {AbortController}.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `preventAbort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream` не приведут к прерыванию `destination`.
+    -   `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, ошибки в `назначении` не приведут к отмене этого `ReadableStream`.
+    -   `preventClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream` не приведет к закрытию `destination`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет отменить передачу данных с помощью {AbortController}.
 -   Возвращает: Обещание, выполненное с `undefined`.
 
 Приводит `readableStream.locked` к значению `true`, пока активна операция pipe.
@@ -212,14 +212,14 @@ const transformedStream = stream.pipeThrough(transform);
 
 -   Возвращает: {ReadableStream\[\]}
 
-Возвращает пару новых экземпляров {ReadableStream}, которым будут переданы данные этого `ReadableStream`. Каждый из них будет получать одни и те же данные.
+Возвращает пару новых экземпляров [`<ReadableStream>`](webstreams.md#readablestream), которым будут переданы данные этого `ReadableStream`. Каждый из них будет получать одни и те же данные.
 
 Приводит `readableStream.locked` к значению `true`.
 
 #### `readableStream.values([options])`
 
--   `options` {Object}
-    -   `preventCancel` {boolean} Если `true`, предотвращает закрытие {ReadableStream} при внезапном завершении асинхронного итератора. **По умолчанию**: `false`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, предотвращает закрытие [`<ReadableStream>`](webstreams.md#readablestream) при внезапном завершении асинхронного итератора. **По умолчанию**: `false`.
 
 Создает и возвращает асинхронный итератор, пригодный для потребления данных этого `ReadableStream`.
 
@@ -238,7 +238,7 @@ for await (const chunk of stream.values({
 
 #### Асинхронная итерация
 
-Объект {ReadableStream} поддерживает протокол асинхронного итератора, используя синтаксис `for await`.
+Объект [`<ReadableStream>`](webstreams.md#readablestream) поддерживает протокол асинхронного итератора, используя синтаксис `for await`.
 
 ```mjs
 import { Buffer } from 'node:buffer';
@@ -249,15 +249,15 @@ for await (const chunk of stream)
     console.log(Buffer.from(chunk).toString());
 ```
 
-Асинхронный итератор будет потреблять {ReadableStream} до тех пор, пока не завершится.
+Асинхронный итератор будет потреблять [`<ReadableStream>`](webstreams.md#readablestream) до тех пор, пока не завершится.
 
-По умолчанию, если асинхронный итератор завершается раньше времени (через `break`, `return` или `throw`), {ReadableStream} будет закрыт. Чтобы предотвратить автоматическое закрытие {ReadableStream}, используйте метод `readableStream.values()` для получения асинхронного итератора и установите опцию `preventCancel` в `true`.
+По умолчанию, если асинхронный итератор завершается раньше времени (через `break`, `return` или `throw`), [`<ReadableStream>`](webstreams.md#readablestream) будет закрыт. Чтобы предотвратить автоматическое закрытие [`<ReadableStream>`](webstreams.md#readablestream), используйте метод `readableStream.values()` для получения асинхронного итератора и установите опцию `preventCancel` в `true`.
 
-{ReadableStream} не должен быть заблокирован (то есть не должен иметь существующего активного читателя). Во время асинхронной итерации {ReadableStream} будет заблокирован.
+[`<ReadableStream>`](webstreams.md#readablestream) не должен быть заблокирован (то есть не должен иметь существующего активного читателя). Во время асинхронной итерации [`<ReadableStream>`](webstreams.md#readablestream) будет заблокирован.
 
 #### Передача с помощью `postMessage()`
 
-Экземпляр {ReadableStream} может быть передан с помощью {MessagePort}.
+Экземпляр [`<ReadableStream>`](webstreams.md#readablestream) может быть передан с помощью {MessagePort}.
 
 ```js
 const stream = new ReadableStream(
@@ -279,40 +279,40 @@ port2.postMessage(stream, [stream]);
 
 ### Класс: `ReadableStreamDefaultReader`
 
-По умолчанию вызов `readableStream.getReader()` без аргументов возвращает экземпляр `ReadableStreamDefaultReader`. Читатель по умолчанию рассматривает куски данных, передаваемые через поток, как непрозрачные значения, что позволяет {ReadableStream} работать с любыми значениями JavaScript.
+По умолчанию вызов `readableStream.getReader()` без аргументов возвращает экземпляр `ReadableStreamDefaultReader`. Читатель по умолчанию рассматривает куски данных, передаваемые через поток, как непрозрачные значения, что позволяет [`<ReadableStream>`](webstreams.md#readablestream) работать с любыми значениями JavaScript.
 
 #### `new ReadableStreamDefaultReader(stream)`
 
--   `stream` {ReadableStream}
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
-Создает новый {ReadableStreamDefaultReader}, который привязан к заданному {ReadableStream}.
+Создает новый {ReadableStreamDefaultReader}, который привязан к заданному [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableStreamDefaultReader.cancel([reason])`
 
 -   `reason` {любая}
 -   Возвращает: Обещание, выполненное с `undefined`.
 
-Отменяет {ReadableStream} и возвращает обещание, которое выполняется, если базовый поток был отменен.
+Отменяет [`<ReadableStream>`](webstreams.md#readablestream) и возвращает обещание, которое выполняется, если базовый поток был отменен.
 
 #### `readableStreamDefaultReader.closed`
 
--   Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до завершения закрытия потока.
+-   Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный [`<ReadableStream>`](webstreams.md#readablestream) закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до завершения закрытия потока.
 
 #### `readableStreamDefaultReader.read()`
 
 -   Возвращает: Обещание, выполненное с объектом:
-    -   `value` {ArrayBuffer}
-    -   `done` {boolean}
+    -   `value` [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+    -   `done` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Запрашивает следующий фрагмент данных из базового {ReadableStream} и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
+Запрашивает следующий фрагмент данных из базового [`<ReadableStream>`](webstreams.md#readablestream) и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
 
 #### `readableStreamDefaultReader.releaseLock()`
 
-Освобождает блокировку этого читателя на базовом {ReadableStream}.
+Освобождает блокировку этого читателя на базовом [`<ReadableStream>`](webstreams.md#readablestream).
 
 ### Класс: `ReadableStreamBYOBReader`
 
-`ReadableStreamBYOBReader` - это альтернативный потребитель для байт-ориентированных {ReadableStream} (тех, которые созданы с `underlyingSource.type`, установленным равным `'bytes'` при создании `ReadableStream`).
+`ReadableStreamBYOBReader` - это альтернативный потребитель для байт-ориентированных [`<ReadableStream>`](webstreams.md#readablestream) (тех, которые созданы с `underlyingSource.type`, установленным равным `'bytes'` при создании `ReadableStream`).
 
 Аббревиатура `BYOB` означает "принеси свой собственный буфер". Это паттерн, позволяющий более эффективно читать байт-ориентированные данные, избегая лишнего копирования.
 
@@ -370,65 +370,65 @@ console.log(Buffer.from(data).toString());
 
 #### `new ReadableStreamBYOBReader(stream)`
 
--   `stream` {ReadableStream}
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
-Создает новый `ReadableStreamBYOBReader`, который заблокирован на заданный {ReadableStream}.
+Создает новый `ReadableStreamBYOBReader`, который заблокирован на заданный [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableStreamBYOBReader.cancel([reason])`
 
 -   `reason` {любая}
 -   Возвращает: Обещание, выполненное с `undefined`.
 
-Отменяет {ReadableStream} и возвращает обещание, которое выполняется, если базовый поток был отменен.
+Отменяет [`<ReadableStream>`](webstreams.md#readablestream) и возвращает обещание, которое выполняется, если базовый поток был отменен.
 
 #### `readableStreamBYOBReader.closed`
 
--   Тип: {Promise} Выполняется с `undefined`, когда связанный {ReadableStream} закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до того, как поток завершит закрытие.
+-   Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный [`<ReadableStream>`](webstreams.md#readablestream) закрывается или отклоняется, если поток ошибается или блокировка читателя освобождается до того, как поток завершит закрытие.
 
 #### `readableStreamBYOBReader.read(view)`
 
 -   `view` {Buffer|TypedArray|DataView}
 -   Возвращает: Обещание, выполненное с объектом:
-    -   `value` {ArrayBuffer}
-    -   `done` {boolean}
+    -   `value` [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+    -   `done` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Запрашивает следующий фрагмент данных из базового {ReadableStream} и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
+Запрашивает следующий фрагмент данных из базового [`<ReadableStream>`](webstreams.md#readablestream) и возвращает обещание, которое будет выполнено с данными, как только они станут доступны.
 
-Не передавайте в этот метод экземпляр объединенного объекта {Buffer}. Пулированные объекты `Buffer` создаются с помощью `Buffer.allocUnsafe()`, или `Buffer.from()`, или часто возвращаются различными обратными вызовами модуля `node:fs`. Эти типы `Buffer` используют общий базовый объект {ArrayBuffer}, который содержит все данные из всех объединенных экземпляров `Buffer`. Когда `Буфер`, {TypedArray} или {DataView} передается в `readableStreamBYOBReader.read()`, базовый `ArrayBuffer` представления _отсоединяется_, аннулируя все существующие представления, которые могут существовать на этом `ArrayBuffer`. Это может иметь катастрофические последствия для вашего приложения.
+Не передавайте в этот метод экземпляр объединенного объекта [`<Buffer>`](buffer.md#buffer). Пулированные объекты `Buffer` создаются с помощью `Buffer.allocUnsafe()`, или `Buffer.from()`, или часто возвращаются различными обратными вызовами модуля `node:fs`. Эти типы `Buffer` используют общий базовый объект [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), который содержит все данные из всех объединенных экземпляров `Buffer`. Когда `Буфер`, [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) или [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) передается в `readableStreamBYOBReader.read()`, базовый `ArrayBuffer` представления _отсоединяется_, аннулируя все существующие представления, которые могут существовать на этом `ArrayBuffer`. Это может иметь катастрофические последствия для вашего приложения.
 
 #### `readableStreamBYOBReader.releaseLock()`
 
-Освобождает блокировку этого читателя на базовом {ReadableStream}.
+Освобождает блокировку этого читателя на базовом [`<ReadableStream>`](webstreams.md#readablestream).
 
 ### Класс: `ReadableStreamDefaultController`
 
-Каждый {ReadableStream} имеет контроллер, который отвечает за внутреннее состояние и управление очередью потока. Контроллер `ReadableStreamDefaultController` является реализацией контроллера по умолчанию для `ReadableStream`, которые не являются байт-ориентированными.
+Каждый [`<ReadableStream>`](webstreams.md#readablestream) имеет контроллер, который отвечает за внутреннее состояние и управление очередью потока. Контроллер `ReadableStreamDefaultController` является реализацией контроллера по умолчанию для `ReadableStream`, которые не являются байт-ориентированными.
 
 #### `readableStreamDefaultController.close()`
 
-Закрывает {ReadableStream}, с которым связан этот контроллер.
+Закрывает [`<ReadableStream>`](webstreams.md#readablestream), с которым связан этот контроллер.
 
 #### `readableStreamDefaultController.desiredSize`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Возвращает количество данных, оставшихся для заполнения очереди {ReadableStream}.
+Возвращает количество данных, оставшихся для заполнения очереди [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableStreamDefaultController.enqueue([chunk])`
 
--   `chunk` {любой}
+-   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
-Добавляет новый фрагмент данных в очередь {ReadableStream}.
+Добавляет новый фрагмент данных в очередь [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableStreamDefaultController.error([error])`
 
 -   `error` {любая}
 
-Сигнализирует об ошибке, которая вызывает ошибку и закрытие {ReadableStream}.
+Сигнализирует об ошибке, которая вызывает ошибку и закрытие [`<ReadableStream>`](webstreams.md#readablestream).
 
 ### Класс: `ReadableByteStreamController`
 
-Каждый {ReadableStream} имеет контроллер, который отвечает за внутреннее состояние и управление очередью потока. Контроллер `ReadableByteStreamController` предназначен для байт-ориентированных `ReadableStream`.
+Каждый [`<ReadableStream>`](webstreams.md#readablestream) имеет контроллер, который отвечает за внутреннее состояние и управление очередью потока. Контроллер `ReadableByteStreamController` предназначен для байт-ориентированных `ReadableStream`.
 
 #### `readableByteStreamController.byobRequest`
 
@@ -436,25 +436,25 @@ console.log(Buffer.from(data).toString());
 
 #### `readableByteStreamController.close()`
 
-Закрывает {ReadableStream}, с которым связан этот контроллер.
+Закрывает [`<ReadableStream>`](webstreams.md#readablestream), с которым связан этот контроллер.
 
 #### `readableByteStreamController.desiredSize`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Возвращает количество данных, оставшихся для заполнения очереди {ReadableStream}.
+Возвращает количество данных, оставшихся для заполнения очереди [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableByteStreamController.enqueue(chunk)`
 
 -   `chunk`: {Buffer|TypedArray|DataView}.
 
-Добавляет новый фрагмент данных в очередь {ReadableStream}.
+Добавляет новый фрагмент данных в очередь [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `readableByteStreamController.error([error])`
 
 -   `error` {любая}
 
-Сигнализирует об ошибке, которая вызывает ошибку и закрытие {ReadableStream}.
+Сигнализирует об ошибке, которая вызывает ошибку и закрытие [`<ReadableStream>`](webstreams.md#readablestream).
 
 ### Класс: `ReadableStreamBYOBRequest`
 
@@ -462,7 +462,7 @@ console.log(Buffer.from(data).toString());
 
 #### `readableStreamBYOBRequest.respond(bytesWritten)`
 
--   `bytesWritten` {number}
+-   `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Сигнализирует, что в `readableStreamBYOBRequest.view` было записано `bytesWritten` количество байт.
 
@@ -494,25 +494,25 @@ await stream.getWriter().write('Hello World');
 
 #### `new WritableStream([underlyingSink[, strategy]])`
 
--   `underlyingSink` {Объект}
-    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `WritableStream`.
+-   `underlyingSink` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается сразу после создания `WritableStream`.
         -   `controller` {WritableStreamDefaultController}
         -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
-    -   `write` {Function} Определяемая пользователем функция, которая вызывается, когда фрагмент данных был записан в `WritableStream`.
-        -   `chunk` {любой}
+    -   `write` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается, когда фрагмент данных был записан в `WritableStream`.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
         -   `controller` {WritableStreamDefaultController}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `close` {Функция} Определяемая пользователем функция, которая вызывается при закрытии `WritableStream`.
+    -   `close` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается при закрытии `WritableStream`.
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `abort` {Function} Определяемая пользователем функция, которая вызывается для резкого закрытия `WritableStream`.
+    -   `abort` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается для резкого закрытия `WritableStream`.
         -   `reason` {любая}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `type` {любой} Опция `type` зарезервирована для будущего использования и _должна_ быть неопределенной.
--   `strategy` {Object}
-    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-        -   `chunk` {любой}
-        -   Возвращает: {число}
+    -   `type` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Опция `type` зарезервирована для будущего использования и _должна_ быть неопределенной.
+-   `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+        -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `writableStream.abort([reason])`
 
@@ -535,7 +535,7 @@ await stream.getWriter().write('Hello World');
 
 #### `writableStream.locked`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `writableStream.locked` по умолчанию имеет значение `false`, и переключается на `true`, если к данному `WritableStream` прикреплен активный писатель.
 
@@ -578,11 +578,11 @@ port2.postMessage(stream, [stream]);
 
 #### `writableStreamDefaultWriter.closed`
 
--   Тип: {Promise} Выполняется с `undefined`, когда связанный {WritableStream} закрывается или отклоняется, если поток ошибается или блокировка писателя освобождается до завершения закрытия потока.
+-   Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный {WritableStream} закрывается или отклоняется, если поток ошибается или блокировка писателя освобождается до завершения закрытия потока.
 
 #### `writableStreamDefaultWriter.desiredSize`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество данных, необходимое для заполнения очереди {WritableStream}.
 
@@ -592,11 +592,11 @@ port2.postMessage(stream, [stream]);
 
 #### `writableStreamDefaultWriter.releaseLock()`
 
-Освобождает блокировку этого писателя на базовом {ReadableStream}.
+Освобождает блокировку этого писателя на базовом [`<ReadableStream>`](webstreams.md#readablestream).
 
 #### `writableStreamDefaultWriter.write([chunk])`
 
--   `chunk`: {любой}
+-   `chunk`: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: Обещание, выполненное с `undefined`.
 
 Добавляет новый фрагмент данных в очередь {WritableStream}.
@@ -613,11 +613,11 @@ port2.postMessage(stream, [stream]);
 
 #### `writableStreamDefaultController.signal`
 
--   Тип: {AbortSignal} Сигнал `AbortSignal`, который можно использовать для отмены ожидающих операций записи или закрытия, когда {WritableStream} прерывается.
+-   Тип: [`<AbortSignal>`](globals.md#abortsignal) Сигнал `AbortSignal`, который можно использовать для отмены ожидающих операций записи или закрытия, когда {WritableStream} прерывается.
 
 ### Класс: `TransformStream`
 
-Поток `TransformStream` состоит из {ReadableStream} и {WritableStream}, которые соединены таким образом, что данные, записанные в `WritableStream`, принимаются и потенциально преобразуются, прежде чем попасть в очередь `ReadableStream`.
+Поток `TransformStream` состоит из [`<ReadableStream>`](webstreams.md#readablestream) и {WritableStream}, которые соединены таким образом, что данные, записанные в `WritableStream`, принимаются и потенциально преобразуются, прежде чем попасть в очередь `ReadableStream`.
 
 ```mjs
 import { TransformStream } from 'node:stream/web';
@@ -636,33 +636,33 @@ await Promise.all([
 
 #### `new TransformStream([transformer[, writableStrategy[, readableStrategy]]])`
 
--   `transformer` {Объект}
-    -   `start` {Функция} Определяемая пользователем функция, которая вызывается сразу после создания `TransformStream`.
+-   `transformer` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается сразу после создания `TransformStream`.
         -   `controller` {TransformStreamDefaultController}
         -   Возвращает: `undefined` или обещание, выполненное с `undefined`.
-    -   `transform` {Function} Определяемая пользователем функция, которая получает и потенциально изменяет фрагмент данных, записанный в `transformStream.writable`, перед тем как передать его в `transformStream.readable`.
-        -   `chunk` {любой}
+    -   `transform` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая получает и потенциально изменяет фрагмент данных, записанный в `transformStream.writable`, перед тем как передать его в `transformStream.readable`.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
         -   `контроллер` {TransformStreamDefaultController}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `flush` {Функция} Определяемая пользователем функция, которая вызывается непосредственно перед закрытием записываемой стороны `TransformStream`, сигнализируя об окончании процесса преобразования.
+    -   `flush` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, которая вызывается непосредственно перед закрытием записываемой стороны `TransformStream`, сигнализируя об окончании процесса преобразования.
         -   `controller` {TransformStreamDefaultController}
         -   Возвращает: Обещание, выполненное с `undefined`.
-    -   `readableType` {любой} Опция `readableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
-    -   `writableType` {любой} опция `writableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
--   `writableStrategy` {Object}
-    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением противодавления.
-    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-        -   `chunk` {любой}
-        -   Возвращает: {число}
--   `readableStrategy` {Object}
-    -   `highWaterMark` {число} Максимальный размер внутренней очереди перед применением обратного давления.
-    -   `size` {Функция} Определяемая пользователем функция, используемая для определения размера каждого куска данных.
-        -   `chunk` {любой}
-        -   Возвращает: {число}
+    -   `readableType` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Опция `readableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
+    -   `writableType` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `writableType` зарезервирована для будущего использования и _должна_ быть `undefined`.
+-   `writableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди перед применением противодавления.
+    -   `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+        -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `readableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди перед применением обратного давления.
+    -   `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Определяемая пользователем функция, используемая для определения размера каждого куска данных.
+        -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+        -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `transformStream.readable`
 
--   Тип: {ReadableStream}
+-   Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `transformStream.writable`
 
@@ -691,13 +691,13 @@ port2.postMessage(stream, [stream]);
 
 #### `transformStreamDefaultController.desiredSize`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Количество данных, необходимое для заполнения очереди читаемой стороны.
 
 #### `transformStreamDefaultController.enqueue([chunk])`
 
--   `chunk` {любой}
+-   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Добавляет фрагмент данных в очередь читаемой стороны.
 
@@ -715,35 +715,35 @@ port2.postMessage(stream, [stream]);
 
 #### `new ByteLengthQueuingStrategy(options)`
 
--   `options` {Object}
-    -   `highWaterMark` {number}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.highWaterMark`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.size`
 
--   Тип: {Function}
-    -   `chunk` {любой}
-    -   Возвращает: {число}
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `CountQueuingStrategy`
 
 #### `new CountQueuingStrategy(options)`
 
--   `options` {Object}
-    -   `highWaterMark` {number}
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.highWaterMark`
 
--   Тип: {число}
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.size`
 
--   Тип: {Function}
-    -   `chunk` {любой}
-    -   Возвращает: {число}
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `TextEncoderStream`
 
@@ -753,13 +753,13 @@ port2.postMessage(stream, [stream]);
 
 #### `textEncoderStream.encoding`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextEncoderStream`.
 
 #### `textEncoderStream.readable`
 
--   Тип: {ReadableStream}
+-   Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textEncoderStream.writable`
 
@@ -769,34 +769,34 @@ port2.postMessage(stream, [stream]);
 
 #### `new TextDecoderStream([encoding[, options]])`
 
--   `encoding` {string} Определяет `кодировку`, которую поддерживает данный экземпляр `текстового декодера`. **По умолчанию:** `'utf-8'`.
--   `options` {Object}
-    -   `fatal` {boolean} `true`, если сбои декодирования являются фатальными.
-    -   `ignoreBOM` {boolean} Когда `true`, `TextDecoderStream` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет `кодировку`, которую поддерживает данный экземпляр `текстового декодера`. **По умолчанию:** `'utf-8'`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `fatal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если сбои декодирования являются фатальными.
+    -   `ignoreBOM` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, `TextDecoderStream` будет включать метку порядка байтов в результат декодирования. При `false` метка порядка байтов будет удалена из результата. Эта опция используется, только если `encoding` - `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
 
 Создает новый экземпляр `TextDecoderStream`.
 
 #### `textDecoderStream.encoding`
 
--   Тип: {строка}
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextDecoderStream`.
 
 #### `textDecoderStream.fatal`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Значение будет `true`, если в результате ошибок декодирования будет выброшена `TypeError`.
 
 #### `textDecoderStream.ignoreBOM`
 
--   Тип: {boolean}
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Значение будет `true`, если результат декодирования будет включать метку порядка байтов.
 
 #### `textDecoderStream.readable`
 
--   Тип: {ReadableStream}
+-   Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textDecoderStream.writable`
 
@@ -806,11 +806,11 @@ port2.postMessage(stream, [stream]);
 
 #### `new CompressionStream(format)`
 
--   `format` {строка} Один из `deflate` или `gzip`.
+-   `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один из `deflate` или `gzip`.
 
 #### `compressionStream.readable`
 
--   Тип: {ReadableStream}
+-   Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `compressionStream.writable`
 
@@ -820,11 +820,11 @@ port2.postMessage(stream, [stream]);
 
 #### `new DecompressionStream(format)`
 
--   `format` {строка} Один из `deflate` или `gzip`.
+-   `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один из `deflate` или `gzip`.
 
 #### `decompressionStream.readable`
 
--   Тип: {ReadableStream}
+-   Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `decompressionStream.writable`
 
@@ -859,7 +859,7 @@ const {
 #### `streamConsumers.arrayBuffer(stream)`
 
 -   `stream` {ReadableStream|stream.Readable|AsyncIterator}
--   Возвращает: {Promise} Выполняется с `ArrayBuffer`, содержащим полное содержимое потока.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `ArrayBuffer`, содержащим полное содержимое потока.
 
 ```mjs
 import { buffer as arrayBuffer } from 'node:stream/consumers';
@@ -894,7 +894,7 @@ arrayBuffer(readable).then((data) => {
 #### `streamConsumers.blob(stream)`
 
 -   `stream` {ReadableStream|stream.Readable|AsyncIterator}
--   Возвращает: {Promise} Выполняется с помощью {Blob}, содержащего полное содержимое потока.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с помощью [`<Blob>`](buffer.md#blob), содержащего полное содержимое потока.
 
 ```mjs
 import { blob } from 'node:stream/consumers';
@@ -920,7 +920,7 @@ blob(readable).then((data) => {
 #### `streamConsumers.buffer(stream)`
 
 -   `stream` {ReadableStream|stream.Readable|AsyncIterator}
--   Возвращает: {Promise} Выполняется с {Buffer}, содержащим полное содержимое потока.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с [`<Buffer>`](buffer.md#buffer), содержащим полное содержимое потока.
 
 ```mjs
 import { buffer } from 'node:stream/consumers';
@@ -954,7 +954,7 @@ buffer(readable).then((data) => {
 #### `streamConsumers.json(stream)`
 
 -   `stream` {ReadableStream|stream.Readable|AsyncIterator}
--   Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8, которая затем передается через `JSON.parse()`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8, которая затем передается через `JSON.parse()`.
 
 ```mjs
 import { json } from 'node:stream/consumers';
@@ -996,7 +996,7 @@ json(readable).then((data) => {
 #### `streamConsumers.text(stream)`
 
 -   `stream` {ReadableStream|stream.Readable|AsyncIterator}
--   Возвращает: {Promise} Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с содержимым потока, разобранным как строка в кодировке UTF-8.
 
 ```mjs
 import { text } from 'node:stream/consumers';
@@ -1022,3 +1022,4 @@ text(readable).then((data) => {
 ```
 
 <!-- 0104.part.md -->
+

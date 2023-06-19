@@ -112,15 +112,15 @@ $ wat2wasm demo.wat
 
 ### `новый WASI([опции])`
 
--   `options` {Object}
-    -   `args` {Array} Массив строк, которые приложение WebAssembly будет воспринимать как аргументы командной строки. Первый аргумент - это виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
-    -   `env` {Object} Объект, подобный `process.env`, который приложение WebAssembly будет воспринимать как свое окружение. **По умолчанию:** `{}`.
-    -   `preopens` {Object} Этот объект представляет структуру каталогов "песочницы" приложения WebAssembly. Строковые ключи `preopens` рассматриваются как каталоги внутри песочницы. Соответствующие значения в `preopens` - это реальные пути к этим директориям на хост-машине.
-    -   `returnOnExit` {boolean} По умолчанию приложения WASI завершают процесс Node.js с помощью функции `__wasi_proc_exit()`. Установка этой опции в `true` заставляет `wasi.start()` возвращать код выхода, а не завершать процесс. **По умолчанию:** `false`.
-    -   `stdin` {целое} Дескриптор файла, используемый в качестве стандартного ввода в приложении WebAssembly. **По умолчанию:** `0`.
-    -   `stdout` {целое число} Дескриптор файла, используемый в качестве стандартного вывода в приложении WebAssembly. **По умолчанию:** `1`.
-    -   `stderr` {целое число} Дескриптор файла, используемый в качестве стандартной ошибки в приложении WebAssembly. **По умолчанию:** `2`.
-    -   `version` {string} Запрашиваемая версия WASI. В настоящее время поддерживаются только версии `unstable` и `preview1`. **По умолчанию:** `preview1`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `args` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет воспринимать как аргументы командной строки. Первый аргумент - это виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
+    -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, подобный `process.env`, который приложение WebAssembly будет воспринимать как свое окружение. **По умолчанию:** `{}`.
+    -   `preopens` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Этот объект представляет структуру каталогов "песочницы" приложения WebAssembly. Строковые ключи `preopens` рассматриваются как каталоги внутри песочницы. Соответствующие значения в `preopens` - это реальные пути к этим директориям на хост-машине.
+    -   `returnOnExit` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию приложения WASI завершают процесс Node.js с помощью функции `__wasi_proc_exit()`. Установка этой опции в `true` заставляет `wasi.start()` возвращать код выхода, а не завершать процесс. **По умолчанию:** `false`.
+    -   `stdin` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартного ввода в приложении WebAssembly. **По умолчанию:** `0`.
+    -   `stdout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартного вывода в приложении WebAssembly. **По умолчанию:** `1`.
+    -   `stderr` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартной ошибки в приложении WebAssembly. **По умолчанию:** `2`.
+    -   `version` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Запрашиваемая версия WASI. В настоящее время поддерживаются только версии `unstable` и `preview1`. **По умолчанию:** `preview1`.
 
 ### `wasi.getImportObject()`
 
@@ -160,6 +160,7 @@ $ wat2wasm demo.wat
 
 ### `wasi.wasiImport`
 
--   {Object}
+-   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 `wasiImport` - это объект, реализующий API системных вызовов WASI. Этот объект должен быть передан как импорт `wasi_snapshot_preview1` во время инстанцирования [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance).
+
