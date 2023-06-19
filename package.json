@@ -19,5 +19,8 @@
 	"bugs": {
 		"url": "https://github.com/xsltdev/nodejsdev.ru/issues"
 	},
-	"homepage": "https://nodejsdev.ru/"
+	"homepage": "https://nodejsdev.ru/",
+	"dependencies": {
+		"@textlint/markdown-to-ast": "^13.3.2"
+	}
 }

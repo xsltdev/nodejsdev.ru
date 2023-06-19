@@ -471,7 +471,7 @@ filehandle.readv(buffers[, position])
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество прочитанных байт.
     -   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) свойство, содержащее ссылку на вход `buffers`.
 
-Чтение из файла и запись в массив {ArrayBufferView}
+Чтение из файла и запись в массив [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
 #### filehandle.stat
 
@@ -625,7 +625,7 @@ filehandle.writev(buffers[, position])
 -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) Смещение от начала файла, куда должны быть записаны данные из `буферов`. Если `position` не является `число`, данные будут записаны в текущую позицию. **По умолчанию:** `null`.
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Записать массив {ArrayBufferView}s в файл.
+Записать массив [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)s в файл.
 
 Обещание разрешается в объект, содержащий два свойства:
 
@@ -847,8 +847,8 @@ fsPromises.lstat(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом {fs.Stats} для заданной символической ссылки `path`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом [`<fs.Stats>`](fs.md#fsstats) для заданной символической ссылки `path`.
 
 Эквивалентен `fsPromises.stat()`, если только `path` не ссылается на символическую ссылку, в этом случае статизируется сама ссылка, а не файл, на который она ссылается. Более подробную информацию см. в документе POSIX lstat(2).
 
@@ -1007,7 +1007,7 @@ fsPromises.readdir(path[, options])
 
 Необязательный аргумент `options` может быть строкой, указывающей кодировку, или объектом со свойством `encoding`, указывающим кодировку символов, которую следует использовать для имен файлов. Если `encoding` имеет значение `'buffer'`, возвращаемые имена файлов будут передаваться как объекты [`<Buffer>`](buffer.md#buffer).
 
-Если `options.withFileTypes` имеет значение `true`, разрешаемый массив будет содержать объекты {fs.Dirent}.
+Если `options.withFileTypes` имеет значение `true`, разрешаемый массив будет содержать объекты [`<fs.Dirent>`](fs.md#fsdirent).
 
 ```js
 import { readdir } from 'node:fs/promises';
@@ -1193,8 +1193,8 @@ fsPromises.stat(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом {fs.Stats} для заданного `пути`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом [`<fs.Stats>`](fs.md#fsstats) для заданного `пути`.
 
 ### fsPromises.statfs
 
@@ -1204,8 +1204,8 @@ fsPromises.statfs(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом {fs.StatFs} для заданного `пути`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.StatFs>`](fs.md#fsstatfs) быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с объектом [`<fs.StatFs>`](fs.md#fsstatfs) для заданного `пути`.
 
 ### fsPromises.symlink
 
@@ -1807,7 +1807,7 @@ fs.createReadStream(path[, options])
 
 `options` может включать значения `start` и `end` для чтения диапазона байт из файла, а не всего файла. Оба значения `start` и `end` являются инклюзивными и начинают отсчет с 0, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)\]. Если указано `fd` и `start` опущено или `не определено`, `fs.createReadStream()` читает последовательно с текущей позиции файла. Кодировка `encoding` может быть любой из тех, которые принимаются [`<Buffer>`](buffer.md#buffer).
 
-Если указано `fd`, `ReadStream` будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'` не будет выдано. `fd` должен быть блокирующим; неблокирующие `fd` должны быть переданы в {net.Socket}.
+Если указано `fd`, `ReadStream` будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'` не будет выдано. `fd` должен быть блокирующим; неблокирующие `fd` должны быть переданы в [`<net.Socket>`](net.md#netsocket).
 
 Если `fd` указывает на символьное устройство, которое поддерживает только блокирующие чтения (например, клавиатура или звуковая карта), операции чтения не завершатся, пока данные не станут доступны. Это может помешать завершению процесса и естественному закрытию потока.
 
@@ -1873,7 +1873,7 @@ fs.createWriteStream(path[, options])
 
 Предоставив опцию `fs`, можно переопределить соответствующие реализации `fs` для `open`, `write`, `writev` и `close`. Переопределение `write()` без `writev()` может снизить производительность, так как некоторые оптимизации (`_writev()`) будут отключены. При предоставлении опции `fs` требуется переопределение хотя бы одной из `write` и `writev`. Если опция `fd` не указана, то также требуется переопределение для `open`. Если `autoClose` имеет значение `true`, также требуется переопределение для `close`.
 
-Как и [`<fs.ReadStream>`](fs.md#fsreadstream), если указан `fd`, [`<fs.WriteStream>`](fs.md#fswritestream) будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'` не будет выдано. `fd` должен быть блокирующим; неблокирующие`fd` должны быть переданы в {net.Socket}.
+Как и [`<fs.ReadStream>`](fs.md#fsreadstream), если указан `fd`, [`<fs.WriteStream>`](fs.md#fswritestream) будет игнорировать аргумент `path` и будет использовать указанный дескриптор файла. Это означает, что событие `'open'` не будет выдано. `fd` должен быть блокирующим; неблокирующие`fd` должны быть переданы в [`<net.Socket>`](net.md#netsocket).
 
 Если `options` - строка, то она указывает кодировку.
 
@@ -2059,12 +2059,12 @@ fs.fstat(fd[, options], callback)
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `stats` {fs.Stats}
+    -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Вызывает обратный вызов с {fs.Stats} для дескриптора файла.
+Вызывает обратный вызов с [`<fs.Stats>`](fs.md#fsstats) для дескриптора файла.
 
 Более подробно см. документацию POSIX fstat(2).
 
@@ -2211,12 +2211,12 @@ fs.lstat(path[, options], callback)
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `stats` {fs.Stats}
+    -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Получает {fs.Stats} для символической ссылки, на которую ссылается путь. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.Stats}. `lstat()` идентичен `stat()`, за исключением того, что если `path` является символической ссылкой, то статизируется сама ссылка, а не файл, на который она ссылается.
+Получает [`<fs.Stats>`](fs.md#fsstats) для символической ссылки, на которую ссылается путь. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект [`<fs.Stats>`](fs.md#fsstats). `lstat()` идентичен `stat()`, за исключением того, что если `path` является символической ссылкой, то статизируется сама ссылка, а не файл, на который она ссылается.
 
 Более подробно см. документацию POSIX lstat(2).
 
@@ -2232,7 +2232,7 @@ fs.mkdir(path[, options], callback)
     -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Не поддерживается в Windows. **По умолчанию:** `0o777`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | {undefined} Присутствует, только если каталог создается с `recursive`, установленным в `true`.
+    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type) Присутствует, только если каталог создается с `recursive`, установленным в `true`.
 
 Асинхронно создает каталог.
 
@@ -2359,11 +2359,11 @@ fs.openAsBlob(path[, options])
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный тип mime для блоба.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {Blob}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<Blob>`](buffer.md#blob).
 
-Возвращает {Blob}, данные которого хранятся в указанном файле.
+Возвращает [`<Blob>`](buffer.md#blob), данные которого хранятся в указанном файле.
 
-Файл не должен быть изменен после создания {Blob}. Любые изменения приведут к тому, что чтение данных {Blob} завершится с ошибкой `DOMException`. Синхронные stat-операции над файлом при создании `Blob` и перед каждым чтением, чтобы определить, были ли данные файла изменены на диске.
+Файл не должен быть изменен после создания [`<Blob>`](buffer.md#blob). Любые изменения приведут к тому, что чтение данных [`<Blob>`](buffer.md#blob) завершится с ошибкой `DOMException`. Синхронные stat-операции над файлом при создании `Blob` и перед каждым чтением, чтобы определить, были ли данные файла изменены на диске.
 
 === "MJS"
 
@@ -2417,7 +2417,7 @@ fs.read(fd, buffer, offset, length, position, callback);
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Буфер, в который будут записаны данные.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Позиция в `buffer` для записи данных.
 -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байтов для чтения.
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | {bigint} | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) Указывает, с какого места в файле начинать чтение. Если `position` равно `null` или `-1`, данные будут прочитаны из текущей позиции файла, а позиция файла будет обновлена. Если `position` - целое число, позиция файла останется неизменной.
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) Указывает, с какого места в файле начинать чтение. Если `position` равно `null` или `-1`, данные будут прочитаны из текущей позиции файла, а позиция файла будет обновлена. Если `position` - целое число, позиция файла останется неизменной.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2440,7 +2440,7 @@ fs.read(fd[, options], callback)
     -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) **По умолчанию:** `Buffer.alloc(16384)`
     -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
     -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.byteLength - offset`
-    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | {bigint} | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
+    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2457,7 +2457,7 @@ fs.read(fd, buffer[, options], callback)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`.
     -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.byteLength - offset`.
-    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | {bigint} **По умолчанию:** `null`.
+    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) **По умолчанию:** `null`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2477,7 +2477,7 @@ fs.readdir(path[, options], callback)
     -   `withFileTypes` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `files` {string\[\]} | [`<Buffer[]>`](buffer.md#buffer) | {fs.Dirent\[\]}
+    -   `files` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<fs.Dirent[]>`](fs.md#fsdirent)
 
 Читает содержимое каталога. Обратный вызов получает два аргумента `(err, files)`, где `files` - массив имен файлов в каталоге, исключая `'.'` и `...`.
 
@@ -2485,7 +2485,7 @@ fs.readdir(path[, options], callback)
 
 Необязательный аргумент `options` может быть строкой, указывающей кодировку, или объектом со свойством `encoding`, указывающим кодировку символов, которую следует использовать для имен файлов, передаваемых обратному вызову. Если `encoding` имеет значение `'buffer'`, возвращаемые имена файлов будут передаваться как объекты [`<Buffer>`](buffer.md#buffer).
 
-Если `options.withFileTypes` имеет значение `true`, массив `files` будет содержать объекты {fs.Dirent}.
+Если `options.withFileTypes` имеет значение `true`, массив `files` будет содержать объекты [`<fs.Dirent>`](fs.md#fsdirent).
 
 ### fs.readFile
 
@@ -2739,12 +2739,12 @@ fs.stat(path[, options], callback)
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `stats` {fs.Stats}
+    -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Асинхронный stat(2). Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.Stats}.
+Асинхронный stat(2). Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект [`<fs.Stats>`](fs.md#fsstats).
 
 В случае ошибки, `err.code` будет одним из [Common System Errors](errors.md#common-system-errors).
 
@@ -2830,12 +2830,12 @@ fs.statfs(path[, options], callback)
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.StatFs>`](fs.md#fsstatfs) быть `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `stats` {fs.StatFs}
+    -   `stats` [`<fs.StatFs>`](fs.md#fsstatfs)
 
-Асинхронный statfs(2). Возвращает информацию о смонтированной файловой системе, содержащей `path`. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект {fs.StatFs}.
+Асинхронный statfs(2). Возвращает информацию о смонтированной файловой системе, содержащей `path`. Обратный вызов получает два аргумента `(err, stats)`, где `stats` - объект [`<fs.StatFs>`](fs.md#fsstatfs).
 
 В случае ошибки, `err.code` будет одним из [Common System Errors](errors.md#common-system-errors).
 
@@ -2984,10 +2984,10 @@ fs.watch(filename[, options][, listener])
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Указывает, должны ли просматриваться все подкаталоги или только текущий каталог. Применяется, если указан каталог, и только на поддерживаемых платформах. **По умолчанию:** `false`.
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет закрыть наблюдатель с помощью сигнала AbortSignal.
--   `listener` {Function|undefined} **По умолчанию:** `undefined`.
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type) **По умолчанию:** `undefined`.
     -   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
--   Возвращает: {fs.FSWatcher}
+-   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}
 
 Следит за изменениями в `filename`, где `filename` - это либо файл, либо каталог.
 
@@ -2997,9 +2997,9 @@ fs.watch(filename[, options][, listener])
 
 На большинстве платформ событие `'rename'` происходит всякий раз, когда имя файла появляется или исчезает в каталоге.
 
-Обратный вызов слушателя прикрепляется к событию `'change'`, запускаемому {fs.FSWatcher}, но это не то же самое, что значение `'change'` в `eventType`.
+Обратный вызов слушателя прикрепляется к событию `'change'`, запускаемому {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}, но это не то же самое, что значение `'change'` в `eventType`.
 
-Если передан `signal`, прерывание соответствующего AbortController закроет возвращенный {fs.FSWatcher}.
+Если передан `signal`, прерывание соответствующего AbortController закроет возвращенный {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
 
 **Предостережения**
 
@@ -3057,9 +3057,9 @@ fs.watchFile(filename[, options], listener)
     -   `persistent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`
     -   `интервал` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5007`.
 -   `слушатель` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `текущий` {fs.Stats}
-    -   `предыдущий` {fs.Stats}
--   Возвращает: {fs.StatWatcher}
+    -   `текущий` [`<fs.Stats>`](fs.md#fsstats)
+    -   `предыдущий` [`<fs.Stats>`](fs.md#fsstats)
+-   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher)
 
 Следит за изменениями в `filename`. Обратный вызов `listener` будет вызываться каждый раз при обращении к файлу.
 
@@ -3174,7 +3174,7 @@ fs.writeFile(file, data[, options], callback)
 ```
 
 -   `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя файла или дескриптор файла
--   `data` {string|Buffer|TypedArray|DataView}
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `'utf8''
     -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
@@ -3535,10 +3535,10 @@ fs.fstatSync(fd[, options])
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
--   Возвращает: {fs.Stats}
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Получает {fs.Stats} для дескриптора файла.
+Получает [`<fs.Stats>`](fs.md#fsstats) для дескриптора файла.
 
 Более подробно см. документацию POSIX fstat(2).
 
@@ -3637,11 +3637,11 @@ fs.lstatSync(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
     -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
--   Возвращает: {fs.Stats}
+-   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Получает {fs.Stats} для символической ссылки, на которую ссылается `path`.
+Получает [`<fs.Stats>`](fs.md#fsstats) для символической ссылки, на которую ссылается `path`.
 
 Более подробную информацию смотрите в документации POSIX lstat(2).
 
@@ -3655,7 +3655,7 @@ fs.mkdirSync(path[, options])
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
     -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Не поддерживается в Windows. **По умолчанию:** `0o777`.
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | {undefined}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
 
 Синхронно создает каталог. Возвращает `undefined`, или, если `recursive` равно `true`, первый созданный путь к каталогу. Это синхронная версия [`fs.mkdir()`](#fsmkdir).
 
@@ -3729,7 +3729,7 @@ fs.readdirSync(path[, options])
 
 Необязательный аргумент `options` может быть строкой, указывающей кодировку, или объектом со свойством `encoding`, указывающим кодировку символов, которую следует использовать для возвращаемых имен файлов. Если `encoding` имеет значение `'buffer'`, возвращаемые имена файлов будут передаваться как объекты [`<Buffer>`](buffer.md#buffer).
 
-Если `options.withFileTypes` имеет значение `true`, результат будет содержать объекты {fs.Dirent}.
+Если `options.withFileTypes` имеет значение `true`, результат будет содержать объекты [`<fs.Dirent>`](fs.md#fsdirent).
 
 ### fs.readFileSync
 
@@ -3789,7 +3789,7 @@ fs.readSync(fd, buffer, offset, length[, position])
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | {bigint} | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
+-   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает количество `bytesRead`.
@@ -3805,7 +3805,7 @@ fs.readSync(fd, buffer[, options])
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
     -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.byteLength - offset`
-    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | {bigint} | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
+    -   `позиция` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `null`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает количество `bytesRead`.
@@ -3915,11 +3915,11 @@ fs.statSync(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.Stats} быть `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.Stats>`](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
     -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Будет ли выбрасываться исключение при отсутствии записи в файловой системе, а не возвращать `undefined`. **По умолчанию:** `true`.
--   Возвращает: {fs.Stats}
+-   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Получает {fs.Stats} для пути.
+Получает [`<fs.Stats>`](fs.md#fsstats) для пути.
 
 ### fs.statfsSync
 
@@ -3929,8 +3929,8 @@ fs.statfsSync(path[, options])
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте {fs.StatFs} быть `bigint`. **По умолчанию:** `false`.
--   Возвращает: {fs.StatFs}
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [`<fs.StatFs>`](fs.md#fsstatfs) быть `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<fs.StatFs>`](fs.md#fsstatfs)
 
 Синхронный statfs(2). Возвращает информацию о смонтированной файловой системе, содержащей `path`.
 
@@ -3994,7 +3994,7 @@ fs.writeFileSync(file, data[, options])
 ```
 
 -   `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя файла или дескриптор файла
--   `data` {string|Buffer|TypedArray|DataView}
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) **По умолчанию:** `'utf8''
     -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
@@ -4131,11 +4131,11 @@ dir.path;
 dir.read();
 ```
 
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий {fs.Dirent|null}.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), содержащий [`<fs.Dirent>`](fs.md#fsdirent) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type).
 
-Асинхронно считывает следующую запись каталога через readdir(3) как {fs.Dirent}.
+Асинхронно считывает следующую запись каталога через readdir(3) как [`<fs.Dirent>`](fs.md#fsdirent).
 
-Возвращается обещание, которое будет разрешено с {fs.Dirent}, или `null`, если больше нет записей каталога для чтения.
+Возвращается обещание, которое будет разрешено с [`<fs.Dirent>`](fs.md#fsdirent), или `null`, если больше нет записей каталога для чтения.
 
 Записи каталога, возвращаемые этой функцией, не имеют определенного порядка, как это предусмотрено механизмами каталога, лежащими в основе операционной системы. Записи, добавленные или удаленные во время итерации по каталогу, могут быть не включены в результаты итерации.
 
@@ -4145,11 +4145,11 @@ dir.read(callback);
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `dirent` {fs.Dirent|null}
+    -   `dirent` [`<fs.Dirent>`](fs.md#fsdirent) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type)
 
-Асинхронно считывает следующую запись каталога через readdir(3) как {fs.Dirent}.
+Асинхронно считывает следующую запись каталога через readdir(3) как [`<fs.Dirent>`](fs.md#fsdirent).
 
-После завершения чтения будет вызван `callback` с {fs.Dirent}, или `null`, если больше нет записей каталога для чтения.
+После завершения чтения будет вызван `callback` с [`<fs.Dirent>`](fs.md#fsdirent), или `null`, если больше нет записей каталога для чтения.
 
 Записи каталога, возвращаемые этой функцией, располагаются в порядке, не предусмотренном механизмами каталогов операционной системы. Записи, добавленные или удаленные во время итерации по каталогу, могут быть не включены в результаты итерации.
 
@@ -4159,9 +4159,9 @@ dir.read(callback);
 dir.readSync();
 ```
 
--   Возвращает: {fs.Dirent|null}
+-   Возвращает: [`<fs.Dirent>`](fs.md#fsdirent) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type)
 
-Синхронно считывает следующую запись каталога как {fs.Dirent}. Более подробно см. документацию POSIX readdir(3).
+Синхронно считывает следующую запись каталога как [`<fs.Dirent>`](fs.md#fsdirent). Более подробно см. документацию POSIX readdir(3).
 
 Если больше нет записей каталога для чтения, будет возвращен `null`.
 
@@ -4173,11 +4173,11 @@ dir.readSync();
 dir[Symbol.asyncIterator]();
 ```
 
--   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) из {fs.Dirent}.
+-   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) из [`<fs.Dirent>`](fs.md#fsdirent).
 
 Асинхронно перебирает каталог, пока не будут прочитаны все записи. Более подробную информацию см. в документации POSIX readdir(3).
 
-Записи, возвращаемые асинхронным итератором, всегда являются {fs.Dirent}. Случай `null` из `dir.read()` обрабатывается внутренне.
+Записи, возвращаемые асинхронным итератором, всегда являются [`<fs.Dirent>`](fs.md#fsdirent). Случай `null` из `dir.read()` обрабатывается внутренне.
 
 Пример см. в разделе [`fs.Dir`](#fsdir).
 
@@ -4187,7 +4187,7 @@ dir[Symbol.asyncIterator]();
 
 Представление записи каталога, которая может быть файлом или подкаталогом в каталоге, возвращаемое при чтении из [`fs.Dir`](#fsdir). Запись каталога представляет собой комбинацию пар имени файла и типа файла.
 
-Кроме того, когда вызывается [`fs.readdir()`](#fsreaddir) или [`fs.readdirSync()`](#fsreaddirsync) с опцией `withFileTypes`, установленной в `true`, результирующий массив заполняется объектами {fs.Dirent}, а не строками или [`<Buffer>`](buffer.md#buffer).
+Кроме того, когда вызывается [`fs.readdir()`](#fsreaddir) или [`fs.readdirSync()`](#fsreaddirsync) с опцией `withFileTypes`, установленной в `true`, результирующий массив заполняется объектами [`<fs.Dirent>`](fs.md#fsdirent), а не строками или [`<Buffer>`](buffer.md#buffer).
 
 #### dirent.isBlockDevice
 
@@ -4195,9 +4195,9 @@ dir[Symbol.asyncIterator]();
 dirent.isBlockDevice();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает блочное устройство.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает блочное устройство.
 
 #### dirent.isCharacterDevice
 
@@ -4205,9 +4205,9 @@ dirent.isBlockDevice();
 dirent.isCharacterDevice();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает символьное устройство.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает символьное устройство.
 
 #### dirent.isDirectory
 
@@ -4215,9 +4215,9 @@ dirent.isCharacterDevice();
 dirent.isDirectory();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает каталог файловой системы.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает каталог файловой системы.
 
 #### dirent.isFIFO
 
@@ -4225,9 +4225,9 @@ dirent.isDirectory();
 dirent.isFIFO();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает трубу типа "первый-первый-выход" (FIFO).
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает трубу типа "первый-первый-выход" (FIFO).
 
 #### dirent.isFile
 
@@ -4235,9 +4235,9 @@ dirent.isFIFO();
 dirent.isFile();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает обычный файл.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает обычный файл.
 
 #### dirent.isSocket
 
@@ -4245,9 +4245,9 @@ dirent.isFile();
 dirent.isSocket();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает сокет.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает сокет.
 
 #### dirent.isSymbolicLink
 
@@ -4255,9 +4255,9 @@ dirent.isSocket();
 dirent.isSymbolicLink();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Dirent} описывает символическую ссылку.
+Возвращает `true`, если объект [`<fs.Dirent>`](fs.md#fsdirent) описывает символическую ссылку.
 
 #### dirent.name
 
@@ -4267,15 +4267,15 @@ dirent.name;
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Имя файла, на который ссылается данный объект {fs.Dirent}. Тип этого значения определяется `options.encoding`, переданным в [`fs.readdir()`](#fsreaddir) или [`fs.readdirSync()`](#fsreaddirsync).
+Имя файла, на который ссылается данный объект [`<fs.Dirent>`](fs.md#fsdirent). Тип этого значения определяется `options.encoding`, переданным в [`fs.readdir()`](#fsreaddir) или [`fs.readdirSync()`](#fsreaddirsync).
 
-### fs.FSWatcher
+### [`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)
 
 -   Расширяет [`<EventEmitter>`](events.md#eventemitter)
 
-Успешный вызов метода [`fs.watch()`](#fswatch) вернет новый объект {fs.FSWatcher}.
+Успешный вызов метода [`fs.watch()`](#fswatch) вернет новый объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
 
-Все объекты {fs.FSWatcher} испускают событие `'change'` всякий раз, когда определенный наблюдаемый файл изменяется.
+Все объекты {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} испускают событие `'change'` всякий раз, когда определенный наблюдаемый файл изменяется.
 
 #### Событие: `change`
 
@@ -4303,13 +4303,13 @@ watch(
 
 #### Событие: `close`
 
-Выдается, когда наблюдатель перестает следить за изменениями. Закрытый объект {fs.FSWatcher} больше не может использоваться в обработчике события.
+Выдается, когда наблюдатель перестает следить за изменениями. Закрытый объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} больше не может использоваться в обработчике события.
 
 #### Событие: `error`
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Выдается при возникновении ошибки во время просмотра файла. Объект {fs.FSWatcher} с ошибкой больше не используется в обработчике события.
+Выдается при возникновении ошибки во время просмотра файла. Объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} с ошибкой больше не используется в обработчике события.
 
 #### watcher.close
 
@@ -4317,7 +4317,7 @@ watch(
 watcher.close();
 ```
 
-Прекращает наблюдение за изменениями на данном {fs.FSWatcher}. После остановки объект {fs.FSWatcher} больше не может использоваться.
+Прекращает наблюдение за изменениями на данном {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}. После остановки объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} больше не может использоваться.
 
 #### watcher.ref
 
@@ -4325,11 +4325,11 @@ watcher.close();
 watcher.ref();
 ```
 
--   Возвращает: {fs.FSWatcher}
+-   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}
 
-При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока {fs.FSWatcher} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
+При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
 
-По умолчанию все объекты {fs.FSWatcher} являются "ref", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
+По умолчанию все объекты {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} являются "ref", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
 
 #### watcher.unref
 
@@ -4337,15 +4337,15 @@ watcher.ref();
 watcher.unref();
 ```
 
--   Возвращает: {fs.FSWatcher}.
+-   Возвращает: {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}.
 
-При вызове активный объект {fs.FSWatcher} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {fs.FSWatcher}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
+При вызове активный объект {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
 
 ### fs.StatWatcher
 
 -   Расширяет [`<EventEmitter>`](events.md#eventemitter)
 
-Успешный вызов метода `fs.watchFile()` вернет новый объект {fs.StatWatcher}.
+Успешный вызов метода `fs.watchFile()` вернет новый объект [`<fs.StatWatcher>`](fs.md#fsstatwatcher).
 
 #### watcher.ref
 
@@ -4353,11 +4353,11 @@ watcher.unref();
 watcher.ref();
 ```
 
--   Возвращает: {fs.StatWatcher}
+-   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher)
 
-При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался до тех пор, пока {fs.StatWatcher} активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
+При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался до тех пор, пока [`<fs.StatWatcher>`](fs.md#fsstatwatcher) активен. Вызов `watcher.ref()` несколько раз не будет иметь никакого эффекта.
 
-По умолчанию все объекты {fs.StatWatcher} являются "ref'ed", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
+По умолчанию все объекты [`<fs.StatWatcher>`](fs.md#fsstatwatcher) являются "ref'ed", поэтому обычно нет необходимости вызывать `watcher.ref()`, если только `watcher.unref()` не был вызван ранее.
 
 #### watcher.unref
 
@@ -4365,9 +4365,9 @@ watcher.ref();
 watcher.unref();
 ```
 
--   Возвращает: {fs.StatWatcher}.
+-   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher).
 
-При вызове активный объект {fs.StatWatcher} не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта {fs.StatWatcher}. Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
+При вызове активный объект [`<fs.StatWatcher>`](fs.md#fsstatwatcher) не будет требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до того, как будет вызван обратный вызов объекта [`<fs.StatWatcher>`](fs.md#fsstatwatcher). Многократный вызов `watcher.unref()` не будет иметь никакого эффекта.
 
 ### fs.ReadStream
 
@@ -4411,7 +4411,7 @@ watcher.unref();
 
 ### fs.Stats
 
-Объект {fs.Stats} предоставляет информацию о файле.
+Объект [`<fs.Stats>`](fs.md#fsstats) предоставляет информацию о файле.
 
 Объекты, возвращаемые из [`fs.stat()`](#fsstat), [`fs.lstat()`](#fslstat), [`fs.fstat()`](#fsfstat), и их синхронные аналоги имеют этот тип. Если `bigint` в `options`, передаваемых этим методам, равно true, числовые значения будут `bigint` вместо `number`, и объект будет содержать дополнительные свойства с наносекундной точностью с суффиксом `Ns`.
 
@@ -4471,9 +4471,9 @@ BigIntStats {
 stats.isBlockDevice();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает блочное устройство.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает блочное устройство.
 
 #### stats.isCharacterDevice
 
@@ -4481,9 +4481,9 @@ stats.isBlockDevice();
 stats.isCharacterDevice();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает символьное устройство.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает символьное устройство.
 
 #### stats.isDirectory
 
@@ -4491,11 +4491,11 @@ stats.isCharacterDevice();
 stats.isDirectory();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает каталог файловой системы.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает каталог файловой системы.
 
-Если объект {fs.Stats} был получен из [`fs.lstat()`](#fslstat), этот метод всегда будет возвращать `false`. Это происходит потому, что [`fs.lstat()`](#fslstat) возвращает информацию о самой символической ссылке, а не о пути, к которому она разрешается.
+Если объект [`<fs.Stats>`](fs.md#fsstats) был получен из [`fs.lstat()`](#fslstat), этот метод всегда будет возвращать `false`. Это происходит потому, что [`fs.lstat()`](#fslstat) возвращает информацию о самой символической ссылке, а не о пути, к которому она разрешается.
 
 #### stats.isFIFO
 
@@ -4503,9 +4503,9 @@ stats.isDirectory();
 stats.isFIFO();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает трубу типа "первый вошел - первый вышел" (FIFO).
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает трубу типа "первый вошел - первый вышел" (FIFO).
 
 #### stats.isFile
 
@@ -4515,7 +4515,7 @@ stats.isFile();
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает обычный файл.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает обычный файл.
 
 #### stats.isSocket
 
@@ -4525,7 +4525,7 @@ stats.isSocket();
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает сокет.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает сокет.
 
 #### stats.isSymbolicLink
 
@@ -4533,57 +4533,57 @@ stats.isSocket();
 stats.isSymbolicLink();
 ```
 
--   Возвращает: {булево}
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если объект {fs.Stats} описывает символическую ссылку.
+Возвращает `true`, если объект [`<fs.Stats>`](fs.md#fsstats) описывает символическую ссылку.
 
 Этот метод действителен только при использовании [`fs.lstat()`](#fslstat).
 
 #### stats.dev
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Числовой идентификатор устройства, содержащего файл.
 
 #### stats.ino
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Номер "Inode" файла, специфичный для файловой системы.
 
 #### stats.mode
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Битовое поле, описывающее тип и режим файла.
 
 #### stats.nlink
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Количество жестких ссылок, существующих для данного файла.
 
 #### stats.uid
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Числовой идентификатор пользователя, которому принадлежит файл (POSIX).
 
 #### stats.gid
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Числовой идентификатор группы, которой принадлежит файл (POSIX).
 
 #### stats.rdev
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Числовой идентификатор устройства, если файл представляет устройство.
 
 #### stats.size
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Размер файла в байтах.
 
@@ -4591,85 +4591,85 @@ stats.isSymbolicLink();
 
 #### stats.blksize
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Размер блока файловой системы для операций ввода-вывода.
 
 #### stats.blocks
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Количество блоков, выделенных для этого файла.
 
 #### stats.atimeMs
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Временная метка, указывающая на последнее обращение к этому файлу, выраженная в миллисекундах с момента наступления эпохи POSIX.
 
 #### stats.mtimeMs
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Временная метка, указывающая на последнее изменение этого файла, выраженная в миллисекундах с момента наступления эпохи POSIX.
 
 #### stats.ctimeMs
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Временная метка, указывающая на последнее изменение статуса файла, выраженная в миллисекундах с эпохи POSIX.
 
 #### stats.birthtimeMs
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Временная метка, указывающая на время создания этого файла, выраженная в миллисекундах от эпохи POSIX.
 
 #### stats.atimeNs
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на последнее обращение к этому файлу, выраженная в наносекундах с момента наступления эпохи POSIX.
 
 #### stats.mtimeNs
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на последнее изменение этого файла, выраженная в наносекундах от эпохи POSIX.
 
 #### stats.ctimeNs
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Присутствует только тогда, когда `bigint: true` передано в метод, создающий объект. Временная метка, указывающая на последнее изменение статуса файла, выраженная в наносекундах от эпохи POSIX.
 
 #### stats.birthtimeNs
 
--   {bigint}
+-   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Присутствует только тогда, когда `bigint: true` передается в метод, создающий объект. Временная метка, указывающая на время создания этого файла, выраженная в наносекундах от эпохи POSIX.
 
 #### stats.atime
 
--   {Дата}
+-   [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 Временная метка, указывающая на последнее обращение к этому файлу.
 
 #### stats.mtime
 
--   {Дата}
+-   [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 Временная метка, указывающая на последнее изменение этого файла.
 
 #### stats.ctime
 
--   {Дата}
+-   [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 Временная метка, указывающая на последнее изменение статуса файла.
 
 #### stats.birthtime
 
--   {Дата}
+-   [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 Временная метка, указывающая на время создания этого файла.
 
@@ -4724,43 +4724,43 @@ StatFs {
 
 #### statfs.bavail
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Свободные блоки, доступные непривилегированным пользователям.
 
 #### statfs.bfree
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Свободные блоки в файловой системе.
 
 #### statfs.blocks
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Общее количество блоков данных в файловой системе.
 
 #### statfs.bsize
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Оптимальный размер блока переноса.
 
 #### statfs.ffree
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Свободные файловые узлы в файловой системе.
 
 #### statfs.files
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Общее количество файловых узлов в файловой системе.
 
 #### statfs.type
 
--   {number|bigint}
+-   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Тип файловой системы.
 
@@ -4894,7 +4894,7 @@ open(
 
 ##### Константы типа файла
 
-Следующие константы предназначены для использования со свойством `mode` объекта {fs.Stats} для определения типа файла.
+Следующие константы предназначены для использования со свойством `mode` объекта [`<fs.Stats>`](fs.md#fsstats) для определения типа файла.
 
 | Constant | Description |
 | --- | --- |
@@ -4913,7 +4913,7 @@ open(
 
 ##### Константы режима файла
 
-Следующие константы предназначены для использования со свойством `mode` объекта {fs.Stats} для определения разрешений доступа к файлу.
+Следующие константы предназначены для использования со свойством `mode` объекта [`<fs.Stats>`](fs.md#fsstats) для определения разрешений доступа к файлу.
 
 | Constant | Description |
 | --- | --- |
@@ -5218,7 +5218,7 @@ try {
 
 ### Использование пула потоков
 
-Все API файловой системы, основанные на обратных вызовах и обещаниях (за исключением `fs.FSWatcher()`), используют пул потоков libuv. Это может иметь неожиданные и негативные последствия для производительности некоторых приложений. Дополнительную информацию смотрите в документации [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
+Все API файловой системы, основанные на обратных вызовах и обещаниях (за исключением `[`<[`<[`<[`<[`<[`<[`<fs.FSWatcher>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)>`](fs.md#fsfswatcher)()`), используют пул потоков libuv. Это может иметь неожиданные и негативные последствия для производительности некоторых приложений. Дополнительную информацию смотрите в документации [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
 
 ### Флаги файловой системы
 
@@ -5268,3 +5268,4 @@ fs.open('<directory>', 'a+', (err, fd) => {
 В Windows открытие существующего скрытого файла с помощью флага `'w'` (либо через `fs.open()`, `fs.writeFile()`, либо `fsPromises.open()`) завершится неудачей с `EPERM`. Существующие скрытые файлы могут быть открыты для записи с помощью флага `'r+'`.
 
 Вызов `fs.ftruncate()` или `filehandle.truncate()` может быть использован для сброса содержимого файла.
+
