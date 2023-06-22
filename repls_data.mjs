@@ -1,11 +1,15 @@
 /**
  * Split types
 {
-  from: "",
-  to: "",
+    from: '',
+    to: '',
 },
  */
 const replsSplit = [
+	{
+		from: '{AbortSignal|undefined}',
+		to: '{AbortSignal} | {undefined}',
+	},
 	{
 		from: '{Array|string}',
 		to: '{Array} | {string}',
@@ -13,6 +17,10 @@ const replsSplit = [
 	{
 		from: '{ArrayBuffer|SharedArrayBuffer}',
 		to: '{ArrayBuffer} | {SharedArrayBuffer}',
+	},
+	{
+		from: '{Buffer|string|any}',
+		to: '{Buffer} | {string} | {any}',
 	},
 	{
 		from: '{Buffer|Uint8Array}',
@@ -23,8 +31,17 @@ const replsSplit = [
 		to: '{Buffer} | {string}',
 	},
 	{
+		from: '{Buffer|Uint8Array|string|null|any}',
+		to:
+			'{Buffer} | {Uint8Array} | {string} | {null} | {any}',
+	},
+	{
 		from: '{boolean|string}',
 		to: '{boolean} | {string}',
+	},
+	{
+		from: '{boolean|undefined}',
+		to: '{boolean} | {undefined}',
 	},
 	{
 		from: '{integer|string}',
@@ -43,6 +60,18 @@ const replsSplit = [
 		to: '{Function} | {Promise}',
 	},
 	{
+		from: '{Function|AsyncFunction}',
+		to: '{Function} | {AsyncFunction}',
+	},
+	{
+		from: '{Headers|Map}',
+		to: '{Headers} | {Map}',
+	},
+	{
+		from: '{null|string}',
+		to: '{null} | {string}',
+	},
+	{
 		from: '{number|bigint}',
 		to: '{number} | {bigint}',
 	},
@@ -55,12 +84,31 @@ const replsSplit = [
 		to: '{number} | {string}',
 	},
 	{
+		from: '{Object|Array}',
+		to: '{Object} | {Array}',
+	},
+	{
 		from: '{RegExp|Function}',
 		to: '{RegExp} | {Function}',
 	},
 	{
 		from: '{RegExp|Function|Object|Error}',
 		to: '{RegExp} | {Function} | {Object} | {Error}',
+	},
+	{
+		from: '{Stream|Function}',
+		to: '{Stream} | {Function}',
+	},
+	{
+		from:
+			'{Stream\\[\\]|Iterable\\[\\]|AsyncIterable\\[\\]|Function\\[\\]}',
+		to:
+			'{Stream\\[\\]} | {Iterable\\[\\]} | {AsyncIterable\\[\\]} | {Function\\[\\]}',
+	},
+	{
+		from: '{Stream|Iterable|AsyncIterable|Function}',
+		to:
+			'{Stream} | {Iterable} | {AsyncIterable} | {Function}',
 	},
 	{
 		from: '{stream.Readable|null|undefined}',
@@ -71,12 +119,32 @@ const replsSplit = [
 		to: '{stream.Writable} | {null} | {undefined}',
 	},
 	{
+		from: '{string|Buffer|null|any}',
+		to: '{string} | {Buffer} | {null} | {any}',
+	},
+	{
+		from: '{string|Buffer|Uint8Array|any}',
+		to: '{string} | {Buffer} | {Uint8Array} | {any}',
+	},
+	{
+		from: '{string|string\\[\\]}',
+		to: '{string} | {string\\[\\]}',
+	},
+	{
 		from: '{string|Array}',
 		to: '{string} | {Array}',
 	},
 	{
 		from: '{string|null}',
 		to: '{string} | {null}',
+	},
+	{
+		from: '{string|undefined}',
+		to: '{string} | {undefined}',
+	},
+	{
+		from: '{string|Buffer|Uint8Array}',
+		to: '{string} | {Buffer} | {Uint8Array}',
 	},
 	{
 		from: '{string|Buffer|TypedArray|DataView}',
@@ -120,6 +188,10 @@ const replsSplit = [
 			'{string|Buffer|TypedArray|DataView|ArrayBuffer|SharedArrayBuffer}',
 		to:
 			'{string} | {Buffer} | {TypedArray} | {DataView} | {ArrayBuffer} | {SharedArrayBuffer}',
+	},
+	{
+		from: '{Promise|AsyncIterable}',
+		to: '{Promise} | {AsyncIterable}',
 	},
 ];
 
@@ -327,6 +399,11 @@ const replsMDNCommon = [
 		from: '{строка}',
 		to:
 			'[`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)',
+	},
+	{
+		from: '{this}',
+		to:
+			'[`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)',
 	},
 	{
 		from: '{undefined}',

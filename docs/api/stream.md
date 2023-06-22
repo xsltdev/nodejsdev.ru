@@ -52,21 +52,25 @@ API `stream/promises` предоставляет альтернативный н
 
 <!-- 0003.part.md -->
 
-### `stream.pipeline(source[, ...transforms], destination[, options])`
+### stream.pipeline
 
-<!-- 0004.part.md -->
+```js
+stream.pipeline(source[, ...transforms], destination[, options])
+```
 
-### `stream.pipeline(streams[, options])`
+```js
+stream.pipeline(streams[, options])
+```
 
--   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]}
--   `source` {Stream|Iterable|AsyncIterable|Function}
-    -   Возвращает: {Promise|AsyncIterable}
--   `...transforms` {Stream|Function}
+-   `streams` {Stream\[\]} | {Iterable\[\]} | {AsyncIterable\[\]} | {Function\[\]}
+-   `source` [`<Stream>`](stream.md#stream) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+    -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
+-   `...transforms` [`<Stream>`](stream.md#stream) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `source` [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
-    -   Возвращает: {Promise|AsyncIterable}
--   `destination` {Stream|Function}
+    -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
+-   `destination` [`<Stream>`](stream.md#stream) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `source` [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
-    -   Возвращает: {Promise|AsyncIterable}
+    -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `сигнал` [`<AbortSignal>`](globals.md#abortsignal)
     -   `end` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -74,163 +78,183 @@ API `stream/promises` предоставляет альтернативный н
 
 <!-- конец списка -->
 
-```cjs
-const { pipeline } = require('node:stream/promises');
-const fs = require('node:fs');
-const zlib = require('node:zlib');
+=== "CJS"
 
-async function run() {
+    ```js
+    const { pipeline } = require('node:stream/promises');
+    const fs = require('node:fs');
+    const zlib = require('node:zlib');
+
+    async function run() {
+    	await pipeline(
+    		fs.createReadStream('archive.tar'),
+    		zlib.createGzip(),
+    		fs.createWriteStream('archive.tar.gz')
+    	);
+    	console.log('Pipeline succeeded.');
+    }
+
+    run().catch(console.error);
+    ```
+
+=== "MJS"
+
+    ```js
+    import { pipeline } from 'node:stream/promises';
+    import {
+    	createReadStream,
+    	createWriteStream,
+    } from 'node:fs';
+    import { createGzip } from 'node:zlib';
+
     await pipeline(
-        fs.createReadStream('archive.tar'),
-        zlib.createGzip(),
-        fs.createWriteStream('archive.tar.gz')
+    	createReadStream('archive.tar'),
+    	createGzip(),
+    	createWriteStream('archive.tar.gz')
     );
     console.log('Pipeline succeeded.');
-}
-
-run().catch(console.error);
-```
-
-```mjs
-import { pipeline } from 'node:stream/promises';
-import {
-    createReadStream,
-    createWriteStream,
-} from 'node:fs';
-import { createGzip } from 'node:zlib';
-
-await pipeline(
-    createReadStream('archive.tar'),
-    createGzip(),
-    createWriteStream('archive.tar.gz')
-);
-console.log('Pipeline succeeded.');
-```
+    ```
 
 Чтобы использовать `AbortSignal`, передайте его внутри объекта options в качестве последнего аргумента. Когда сигнал будет прерван, на базовом конвейере будет вызвана команда `destroy` с сообщением `AbortError`.
 
-```cjs
-const { pipeline } = require('node:stream/promises');
-const fs = require('node:fs');
-const zlib = require('node:zlib');
+=== "CJS"
 
-async function run() {
+    ```js
+    const { pipeline } = require('node:stream/promises');
+    const fs = require('node:fs');
+    const zlib = require('node:zlib');
+
+    async function run() {
+    	const ac = new AbortController();
+    	const signal = ac.signal;
+
+    	setImmediate(() => ac.abort());
+    	await pipeline(
+    		fs.createReadStream('archive.tar'),
+    		zlib.createGzip(),
+    		fs.createWriteStream('archive.tar.gz'),
+    		{ signal }
+    	);
+    }
+
+    run().catch(console.error); // AbortError
+    ```
+
+=== "MJS"
+
+    ```mjs
+    import { pipeline } from 'node:stream/promises';
+    import {
+    	createReadStream,
+    	createWriteStream,
+    } from 'node:fs';
+    import { createGzip } from 'node:zlib';
+
     const ac = new AbortController();
-    const signal = ac.signal;
-
+    const { signal } = ac;
     setImmediate(() => ac.abort());
-    await pipeline(
-        fs.createReadStream('archive.tar'),
-        zlib.createGzip(),
-        fs.createWriteStream('archive.tar.gz'),
-        { signal }
-    );
-}
-
-run().catch(console.error); // AbortError
-```
-
-```mjs
-import { pipeline } from 'node:stream/promises';
-import {
-    createReadStream,
-    createWriteStream,
-} from 'node:fs';
-import { createGzip } from 'node:zlib';
-
-const ac = new AbortController();
-const { signal } = ac;
-setImmediate(() => ac.abort());
-try {
-    await pipeline(
-        createReadStream('archive.tar'),
-        createGzip(),
-        createWriteStream('archive.tar.gz'),
-        { signal }
-    );
-} catch (err) {
-    console.error(err); // AbortError
-}
-```
+    try {
+    	await pipeline(
+    		createReadStream('archive.tar'),
+    		createGzip(),
+    		createWriteStream('archive.tar.gz'),
+    		{ signal }
+    	);
+    } catch (err) {
+    	console.error(err); // AbortError
+    }
+    ```
 
 API `pipeline` также поддерживает асинхронные генераторы:
 
-```cjs
-const { pipeline } = require('node:stream/promises');
-const fs = require('node:fs');
+=== "CJS"
 
-async function run() {
-    await pipeline(
-        fs.createReadStream('lowercase.txt'),
-        async function* (source, { signal }) {
-            source.setEncoding('utf8'); // Работаем со строками, а не с `буфером`.
-            for await (const chunk of source) {
-                yield await processChunk(chunk, { signal });
-            }
-        },
-        fs.createWriteStream('uppercase.txt')
-    );
+    ```cjs
+    const { pipeline } = require('node:stream/promises');
+    const fs = require('node:fs');
+
+    async function run() {
+    	await pipeline(
+    		fs.createReadStream('lowercase.txt'),
+    		async function* (source, { signal }) {
+    			source.setEncoding('utf8'); // Работаем со строками, а не с `буфером`.
+    			for await (const chunk of source) {
+    				yield await processChunk(chunk, { signal });
+    			}
+    		},
+    		fs.createWriteStream('uppercase.txt')
+    	);
+    	console.log('Pipeline succeeded.');
+    }
+
+    run().catch(console.error);
+    ```
+
+=== "MJS"
+
+    ```mjs
+    import { pipeline } from 'node:stream/promises';
+    import fs from 'node:fs';
+    await pipeline(async function* ({ signal }) {
+    	await someLongRunningfn({ signal });
+    	yield 'asd';
+    }, fs.createWriteStream('uppercase.txt'));
     console.log('Pipeline succeeded.');
-}
-
-run().catch(console.error);
-```
-
-```mjs
-import { pipeline } from 'node:stream/promises';
-import fs from 'node:fs';
-await pipeline(async function* ({ signal }) {
-    await someLongRunningfn({ signal });
-    yield 'asd';
-}, fs.createWriteStream('uppercase.txt'));
-console.log('Pipeline succeeded.');
-```
+    ```
 
 API `pipeline` предоставляет [версию обратного вызова](#streampipelinesource-transforms-destination-callback):
 
 <!-- 0005.part.md -->
 
-### `stream.finished(stream[, options])`
+### stream.finished
+
+```js
+stream.finished(stream[, options])
+```
 
 -   `stream` [`<Stream>`](stream.md#stream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `error` {boolean|undefined}
-    -   `readable` {boolean|undefined}
-    -   `writable` {boolean|undefined}
-    -   `сигнал`: {AbortSignal|undefined}
+    -   `error` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
+    -   `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
+    -   `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
+    -   `сигнал`: [`<AbortSignal>`](globals.md#abortsignal) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется, когда поток больше не доступен для чтения или записи.
 
 <!-- конец списка -->
 
-```cjs
-const { finished } = require('node:stream/promises');
-const fs = require('node:fs');
+=== "CJS"
 
-const rs = fs.createReadStream('archive.tar');
+    ```cjs
+    const { finished } = require('node:stream/promises');
+    const fs = require('node:fs');
 
-async function run() {
-    await finished(rs);
-    console.log('Поток закончил чтение.');
-}
+    const rs = fs.createReadStream('archive.tar');
 
-run().catch(console.error);
-rs.resume(); // Слить поток.
-```
+    async function run() {
+    	await finished(rs);
+    	console.log('Поток закончил чтение.');
+    }
 
-```mjs
-import { finished } from 'node:stream/promises';
-import { createReadStream } from 'node:fs';
+    run().catch(console.error);
+    rs.resume(); // Слить поток.
+    ```
 
-const rs = createReadStream('archive.tar');
+=== "MJS"
 
-async function run() {
-    await finished(rs);
-    console.log('Поток закончил чтение.');
-}
+    ```mjs
+    import { finished } from 'node:stream/promises';
+    import { createReadStream } from 'node:fs';
 
-run().catch(console.error);
-rs.resume(); // Слить поток.
-```
+    const rs = createReadStream('archive.tar');
+
+    async function run() {
+    	await finished(rs);
+    	console.log('Поток закончил чтение.');
+    }
+
+    run().catch(console.error);
+    rs.resume(); // Слить поток.
+    ```
 
 API `finished` предоставляет [версию обратного вызова](#streamfinishedstream-options-callback):
 
@@ -322,7 +346,7 @@ server.listen(1337);
 
 Приложениям, которые записывают данные в поток или потребляют данные из потока, не требуется реализовывать интерфейсы потоков напрямую, и у них, как правило, нет причин вызывать `require('node:stream')`.
 
-Разработчики, желающие реализовать новые типы потоков, должны обратиться к разделу [API для реализаторов потоков] (#api-for-stream-implementers).
+Разработчики, желающие реализовать новые типы потоков, должны обратиться к разделу [API для реализаторов потоков](#api-for-stream-implementers).
 
 <!-- 0009.part.md -->
 
@@ -356,19 +380,19 @@ myStream.end('закончил запись данных');
 
 <!-- 0010.part.md -->
 
-#### Класс: `stream.Writable`
+#### stream.Writable {: #class-streamwritable}
 
 <!-- 0011.part.md -->
 
-##### Событие: `close`
+##### Событие: close
 
 Событие `'close'` генерируется, когда поток и любой из его базовых ресурсов (например, дескриптор файла) закрыты. Это событие указывает на то, что больше не будет испускаться никаких событий, и никаких дальнейших вычислений не будет.
 
-Поток [`Writable`](#class-streamwritable) всегда будет испускать событие `'close`, если он создан с опцией `emitClose`.
+Поток [`Writable`](#class-streamwritable) всегда будет испускать событие `close`, если он создан с опцией `emitClose`.
 
 <!-- 0012.part.md -->
 
-##### Событие: `drain`
+##### Событие: drain
 
 Если вызов [`stream.write(chunk)`](#writablewritechunk-encoding-callback) возвращает `false`, событие `'drain'` будет выдано, когда будет уместно возобновить запись данных в поток.
 
@@ -407,7 +431,7 @@ function writeOneMillionTimes(
 
 <!-- 0013.part.md -->
 
-##### Событие: `error`
+##### Событие: error
 
 -   [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -419,7 +443,7 @@ function writeOneMillionTimes(
 
 <!-- 0014.part.md -->
 
-##### Событие: `'finish'`
+##### Событие: finish
 
 Событие `finish` возникает после вызова метода [`stream.end()`](#writableendchunk-encoding-callback), и все данные были переданы в базовую систему.
 
@@ -436,7 +460,7 @@ writer.end('Это конец\n');
 
 <!-- 0015.part.md -->
 
-##### Событие: `pipe`
+##### Событие: pipe
 
 -   `src` [`<stream.Readable>`](stream.md#streamreadable) исходный поток, который передается по трубопроводу в этот объект записи
 
@@ -454,7 +478,7 @@ reader.pipe(writer);
 
 <!-- 0016.part.md -->
 
-##### Событие: `unpipe`
+##### Событие: unpipe
 
 -   `src` [`<stream.Readable>`](stream.md#streamreadable) Исходный поток, который [unpipeed](#readableunpipedestination) этот writable
 
@@ -475,7 +499,11 @@ reader.unpipe(writer);
 
 <!-- 0017.part.md -->
 
-##### `writable.cork()`
+##### writable.cork
+
+```js
+writable.cork();
+```
 
 Метод `writable.cork()` заставляет все записанные данные буферизироваться в памяти. Буферизованные данные будут удалены при вызове методов [`stream.uncork()`](#writableuncork) или [`stream.end()`](#writableendchunk-encoding-callback).
 
@@ -485,14 +513,18 @@ reader.unpipe(writer);
 
 <!-- 0018.part.md -->
 
-##### `writable.destroy([error])`
+##### writable.destroy
+
+```js
+writable.destroy([error]);
+```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательно, ошибка, которую нужно выдать с событием `'error'`.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожить поток. Опционально выдает событие `'error'` и выдает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова поток, доступный для записи, завершен, и последующие вызовы `write()` или `end()` приведут к ошибке `ERR_STREAM_DESTROYED`. Это деструктивный и немедленный способ уничтожения потока. Предыдущие вызовы `write()` могут не уничтожить поток и вызвать ошибку `ERR_STREAM_DESTROYED`. Используйте `end()` вместо destroy, если данные должны быть удалены до закрытия, или дождитесь события `'drain'` перед уничтожением потока.
 
-```cjs
+```js
 const { Writable } = require('node:stream');
 
 const myStream = new Writable();
@@ -504,7 +536,9 @@ myStream.on('error', (fooErr) =>
 ); // ошибка foo
 ```
 
-```cjs
+---
+
+```js
 const { Writable } = require('node:stream');
 
 const myStream = new Writable();
@@ -513,7 +547,9 @@ myStream.destroy();
 myStream.on('error', function wontHappen() {});
 ```
 
-```cjs
+---
+
+```js
 const { Writable } = require('node:stream');
 
 const myStream = new Writable();
@@ -529,7 +565,7 @@ myStream.write('foo', (error) => console.error(error.code));
 
 <!-- 0019.part.md -->
 
-##### `writable.closed`
+##### writable.closed
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -537,13 +573,13 @@ myStream.write('foo', (error) => console.error(error.code));
 
 <!-- 0020.part.md -->
 
-##### `writable.destroyed`
+##### writable.destroyed
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Является `true` после вызова [`writable.destroy()`](#writabledestroyerror).
 
-```cjs
+```js
 const { Writable } = require('node:stream');
 
 const myStream = new Writable();
@@ -555,12 +591,16 @@ console.log(myStream.destroyed); // true
 
 <!-- 0021.part.md -->
 
-##### `writable.end([chunk[, encoding]][, callback])`
+##### writable.end
 
--   `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+```js
+writable.end([chunk[, encoding]][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка, если `chunk` является строкой.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов для завершения потока.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Вызов метода `writable.end()` сигнализирует о том, что данные больше не будут записываться в [`Writable`](#class-streamwritable). Необязательные аргументы `chunk` и `encoding` позволяют записать последний дополнительный фрагмент данных непосредственно перед закрытием потока.
 
@@ -577,16 +617,24 @@ file.end('world!');
 
 <!-- 0022.part.md -->
 
-##### `writable.setDefaultEncoding(encoding)`
+##### writable.setDefaultEncoding
+
+```js
+writable.setDefaultEncoding(encoding);
+```
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Новая кодировка по умолчанию
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Метод `writable.setDefaultEncoding()` устанавливает `кодировку по умолчанию` для потока [`Writable`](#class-streamwritable).
 
 <!-- 0023.part.md -->
 
-##### `writable.uncork()`
+##### writable.uncork
+
+```js
+writable.uncork();
+```
 
 Метод `writable.uncork()` очищает все данные, буферизованные с момента вызова [`stream.cork()`](#writablecork).
 
@@ -617,7 +665,7 @@ process.nextTick(() => {
 
 <!-- 0024.part.md -->
 
-##### `writable.writable`
+##### writable.writable
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -625,7 +673,7 @@ process.nextTick(() => {
 
 <!-- 0025.part.md -->
 
-##### `writable.writableAborted`
+##### writable.writableAborted
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -637,15 +685,15 @@ process.nextTick(() => {
 
 <!-- 0026.part.md -->
 
-##### `writable.writableEnded`
+##### writable.writableEnded
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Является `true` после вызова [`writable.end()`](#writableendchunk-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](#writablewritablefinished).
+Является `true` после вызова [`writable.end()`](#writableend). Это свойство не указывает, были ли данные выгружены, для этого используйте [`writable.writableFinished`](#writablewritablefinished).
 
 <!-- 0027.part.md -->
 
-##### `writable.writableCorked`
+##### writable.writableCorked
 
 -   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -653,7 +701,7 @@ process.nextTick(() => {
 
 <!-- 0028.part.md -->
 
-##### `writable.errored`
+##### writable.errored
 
 -   [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -661,7 +709,7 @@ process.nextTick(() => {
 
 <!-- 0029.part.md -->
 
-##### `writable.writableFinished`
+##### writable.writableFinished
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -669,15 +717,15 @@ process.nextTick(() => {
 
 <!-- 0030.part.md -->
 
-##### `writable.writableHighWaterMark`
+##### writable.writableHighWaterMark
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Возвращает значение `highWaterMark`, переданное при создании этой `записываемой`.
+Возвращает значение `highWaterMark`, переданное при создании этой `writable`.
 
 <!-- 0031.part.md -->
 
-##### `writable.writableLength`
+##### writable.writableLength
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -685,7 +733,7 @@ process.nextTick(() => {
 
 <!-- 0032.part.md -->
 
-##### `writable.writableNeedDrain`
+##### writable.writableNeedDrain
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -693,7 +741,7 @@ process.nextTick(() => {
 
 <!-- 0033.part.md -->
 
-##### `writable.writableObjectMode`
+##### writable.writableObjectMode
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -701,9 +749,13 @@ process.nextTick(() => {
 
 <!-- 0034.part.md -->
 
-##### `writable.write(chunk[, encoding][, callback])`
+##### writable.write
 
--   `chunk` {string|Buffer|Uint8Array|any} Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
+```js
+writable.write(chunk[, encoding][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные данные для записи. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript, кроме `null`.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) Кодировка, если `chunk` является строкой. **По умолчанию:** `'utf8'`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов, когда этот фрагмент данных будет удален.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток желает, чтобы вызывающий код дождался события `'drain'`, прежде чем продолжить запись дополнительных данных; иначе `true`.
@@ -714,7 +766,7 @@ process.nextTick(() => {
 
 Пока поток не осушен, вызовы `write()` будут буферизировать `chunk` и возвращать `false`. Когда все текущие буферизованные фрагменты будут осушены (приняты операционной системой для доставки), произойдет событие `'drain'`. Если `write()` возвращает `false`, не записывайте больше чанков, пока не произойдет событие `'drain'`. Хотя вызов `write()` на потоке, который не осушается, разрешен, Node.js будет буферизировать все записанные фрагменты до тех пор, пока не произойдет максимальное использование памяти, после чего произойдет безусловное прерывание. Даже до прерывания, высокое использование памяти приведет к плохой работе сборщика мусора и высокой RSS (которая обычно не возвращается в систему, даже после того, как память больше не требуется). Поскольку TCP-сокеты могут никогда не разряжаться, если удаленный пир не читает данные, запись в сокет, который не разряжается, может привести к уязвимости, которую можно использовать удаленно.
 
-Запись данных, пока поток не иссякает, особенно проблематична для [`Transform`](#class-streamtransform), поскольку потоки `Transform` по умолчанию приостанавливаются до тех пор, пока они не будут переданы по трубопроводу или не будет добавлен обработчик событий `data` или `readable`.
+Запись данных, пока поток не иссякает, особенно проблематична для [`Transform`](#streamtransform), поскольку потоки `Transform` по умолчанию приостанавливаются до тех пор, пока они не будут переданы по трубопроводу или не будет добавлен обработчик событий `data` или `readable`.
 
 Если данные для записи могут быть сгенерированы или получены по требованию, рекомендуется инкапсулировать логику в [`Readable`](#class-streamreadable) и использовать [`stream.pipe()`](#readablepipedestination-options). Однако, если вызов `write()` предпочтительнее, можно соблюсти обратное давление и избежать проблем с памятью, используя событие [`'drain'`](#event-drain):
 
@@ -761,7 +813,6 @@ write('hello', () => {
 Потоки `Readable` эффективно работают в одном из двух режимов: текущем и приостановленном. Эти режимы отличаются от [объектного режима](#object-mode). Поток [`Readable`](#class-streamreadable) может быть в объектном режиме или нет, независимо от того, находится ли он в потоковом режиме или в режиме паузы.
 
 -   В режиме потока данные считываются из базовой системы автоматически и предоставляются приложению как можно быстрее с помощью событий через интерфейс [`EventEmitter`](events.md#class-eventemitter).
-
 -   В режиме паузы для чтения фрагментов данных из потока необходимо явно вызывать метод [`stream.read()`](#readablereadsize).
 
 Все потоки [`Readable`](#class-streamreadable) начинаются в режиме паузы, но могут быть переключены в режим потока одним из следующих способов:
@@ -827,21 +878,21 @@ API потока `Readable` развивался на протяжении не�
 
 <!-- 0039.part.md -->
 
-#### Класс: `stream.Readable`
+#### stream.Readable
 
 <!-- 0040.part.md -->
 
-##### Событие: `close`
+##### Событие: close
 
-Событие `'close'` генерируется, когда поток и любой из его базовых ресурсов (например, дескриптор файла) закрыты. Это событие указывает на то, что больше не будет испускаться никаких событий, и никаких дальнейших вычислений не будет.
+Событие `close` генерируется, когда поток и любой из его базовых ресурсов (например, дескриптор файла) закрыты. Это событие указывает на то, что больше не будет испускаться никаких событий, и никаких дальнейших вычислений не будет.
 
 Поток [`Readable`](#class-streamreadable) всегда будет испускать событие `close`, если он создан с опцией `emitClose`.
 
 <!-- 0041.part.md -->
 
-##### Событие: `data`
+##### Событие: data
 
--   `chunk` {Buffer|string|any} Кусок данных. Для потоков, не работающих в объектном режиме, чанк будет либо строкой, либо `буфером`. Для потоков, работающих в объектном режиме, чанк может быть любым значением JavaScript, кроме `null`.
+-   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Кусок данных. Для потоков, не работающих в объектном режиме, чанк будет либо строкой, либо `буфером`. Для потоков, работающих в объектном режиме, чанк может быть любым значением JavaScript, кроме `null`.
 
 Событие `'data'` генерируется всякий раз, когда поток передает право собственности на кусок данных потребителю. Это может происходить всякий раз, когда поток переключается в режим потока, вызывая `readable.pipe()`, `readable.resume()` или присоединяя обратный вызов слушателя к событию `'data'`. Событие `'data'` также будет возникать всякий раз, когда вызывается метод `readable.read()` и фрагмент данных доступен для возврата.
 
@@ -858,7 +909,7 @@ readable.on('data', (chunk) => {
 
 <!-- 0042.part.md -->
 
-##### Событие: `end`
+##### Событие: end
 
 Событие `'end'` происходит, когда больше нет данных для потребления из потока.
 
@@ -876,7 +927,7 @@ readable.on('end', () => {
 
 <!-- 0043.part.md -->
 
-##### Событие: `error`
+##### Событие: error
 
 -   [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -886,13 +937,13 @@ readable.on('end', () => {
 
 <!-- 0044.part.md -->
 
-##### Событие: `pause`
+##### Событие: pause
 
 Событие `pause` происходит, когда вызывается [`stream.pause()`](#readablepause) и `readableFlowing` не равно `false`.
 
 <!-- 0045.part.md -->
 
-##### Событие: `'readable'`
+##### Событие: readable
 
 Событие `'readable'` генерируется, когда из потока доступны данные для чтения или когда достигнут конец потока. По сути, событие `'readable'` указывает на то, что в потоке есть новая информация. Если данные доступны, [`stream.read()`](#readablereadsize) вернет эти данные.
 
@@ -937,16 +988,20 @@ end
 
 <!-- 0046.part.md -->
 
-##### Событие: `'resume'`
+##### Событие: resume
 
 Событие `'resume'` происходит, когда вызывается [`stream.resume()`](#readableresume) и `readableFlowing` не является `true`.
 
 <!-- 0047.part.md -->
 
-##### `readable.destroy([error])`
+##### readable.destroy
+
+```js
+readable.destroy([error]);
+```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ошибка, которая будет передана в качестве полезной нагрузки в событии `'error'`.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожить поток. Опционально испускает событие `'error'` и испускает событие `'close'` (если `emitClose` не установлено в `false`). После этого вызова читаемый поток освободит все внутренние ресурсы, и последующие вызовы `push()` будут игнорироваться.
 
@@ -956,7 +1011,7 @@ end
 
 <!-- 0048.part.md -->
 
-##### `readable.closed`
+##### readable.closed
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -964,7 +1019,7 @@ end
 
 <!-- 0049.part.md -->
 
-##### `readable.destroyed`
+##### readable.destroyed
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -972,7 +1027,11 @@ end
 
 <!-- 0050.part.md -->
 
-##### `readable.isPaused()`
+##### readable.isPaused
+
+```js
+readable.isPaused();
+```
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -990,9 +1049,13 @@ readable.isPaused(); // === false
 
 <!-- 0051.part.md -->
 
-##### `readable.pause()`
+##### readable.pause
 
--   Возвращает: {this}
+```js
+readable.pause();
+```
+
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Метод `readable.pause()` заставит поток в режиме потока прекратить испускать события [`'data'`](#event-data), переходя из режима потока. Любые данные, которые становятся доступными, остаются во внутреннем буфере.
 
@@ -1017,12 +1080,16 @@ readable.on('data', (chunk) => {
 
 <!-- 0052.part.md -->
 
-##### `readable.pipe(destination[, options])`
+##### readable.pipe
+
+```js
+readable.pipe(destination[, options])
+```
 
 -   `destination` [`<stream.Writable>`](stream.md#streamwritable) Место назначения для записи данных
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Опции трубы
     -   `end` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Завершить запись при завершении чтения. **По умолчанию:** `true`.
--   Возвращает: [`<stream.Writable>`](stream.md#streamwritable) конечный пункт, позволяющий создавать цепочку труб, если это поток [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform).
+-   Возвращает: [`<stream.Writable>`](stream.md#streamwritable) конечный пункт, позволяющий создавать цепочку труб, если это поток [`Duplex`](#streamduplex) или [`Transform`](#streamtransform).
 
 Метод `readable.pipe()` присоединяет поток [`Writable`](#class-streamwritable) к `readable`, заставляя его автоматически переключаться в режим потока и передавать все свои данные в присоединенный [`Writable`](#class-streamwritable). Поток данных будет автоматически управляться таким образом, чтобы конечный поток `Writable` не был перегружен более быстрым потоком `Readable`.
 
@@ -1064,10 +1131,14 @@ reader.on('end', () => {
 
 <!-- 0053.part.md -->
 
-##### `readable.read([size])`
+##### readable.read
+
+```js
+readable.read([size]);
+```
 
 -   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательный аргумент, указывающий, сколько данных нужно прочитать.
--   Возвращает: {string|Buffer|null|any}
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Метод `readable.read()` считывает данные из внутреннего буфера и возвращает их. Если данные не доступны для чтения, возвращается `null`. По умолчанию данные возвращаются в виде объекта `Buffer`, если только кодировка не была указана с помощью метода `readable.setEncoding()` или поток работает в объектном режиме.
 
@@ -1129,7 +1200,7 @@ readable.on('end', () => {
 
 <!-- 0054.part.md -->
 
-##### `readable.readable`
+##### readable.readable
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1137,7 +1208,7 @@ readable.on('end', () => {
 
 <!-- 0055.part.md -->
 
-##### `readable.readableAborted`
+##### readable.readableAborted
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1149,7 +1220,7 @@ readable.on('end', () => {
 
 <!-- 0056.part.md -->
 
-##### `readable.readableDidRead`
+##### readable.readableDidRead
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1161,15 +1232,15 @@ readable.on('end', () => {
 
 <!-- 0057.part.md -->
 
-##### `readable.readableEncoding`
+##### readable.readableEncoding
 
--   {null|string}
+-   [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Получатель свойства `encoding` для данного потока `Readable`. Свойство `encoding` может быть установлено с помощью метода [`readable.setEncoding()`](#readablesetencodingencoding).
 
 <!-- 0058.part.md -->
 
-##### `readable.readableEnded`
+##### readable.readableEnded
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1177,7 +1248,7 @@ readable.on('end', () => {
 
 <!-- 0059.part.md -->
 
-##### `readable.errored`
+##### readable.errored
 
 -   [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -1185,7 +1256,7 @@ readable.on('end', () => {
 
 <!-- 0060.part.md -->
 
-##### `readable.readableFlowing`
+##### readable.readableFlowing
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1193,7 +1264,7 @@ readable.on('end', () => {
 
 <!-- 0061.part.md -->
 
-##### `readable.readableHighWaterMark`
+##### readable.readableHighWaterMark
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1201,7 +1272,7 @@ readable.on('end', () => {
 
 <!-- 0062.part.md -->
 
-##### `readable.readableLength`
+##### readable.readableLength
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1209,7 +1280,7 @@ readable.on('end', () => {
 
 <!-- 0063.part.md -->
 
-##### `readable.readableObjectMode`
+##### readable.readableObjectMode
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1217,9 +1288,13 @@ readable.on('end', () => {
 
 <!-- 0064.part.md -->
 
-##### `readable.resume()`
+##### readable.resume
 
--   Возвращает: {this}
+```js
+readable.resume();
+```
+
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Метод `readable.resume()` заставляет явно приостановленный поток `Readable` возобновить испускание событий [`'data'`](#event-data), переводя поток в режим потока.
 
@@ -1237,10 +1312,14 @@ getReadableStreamSomehow()
 
 <!-- 0065.part.md -->
 
-##### `readable.setEncoding(encoding)`
+##### readable.setEncoding
+
+```js
+readable.setEncoding(encoding);
+```
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка, которую следует использовать.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Метод `readable.setEncoding()` устанавливает кодировку символов для данных, считываемых из потока `Readable`.
 
@@ -1262,10 +1341,14 @@ readable.on('data', (chunk) => {
 
 <!-- 0066.part.md -->
 
-##### `readable.unpipe([destination])`
+##### readable.unpipe
+
+```js
+readable.unpipe([destination]);
+```
 
 -   `destination` [`<stream.Writable>`](stream.md#streamwritable) Необязательный конкретный поток для распайки
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Метод `readable.unpipe()` отсоединяет поток `Writable`, ранее присоединенный с помощью метода [`stream.pipe()`](#readablepipedestination-options).
 
@@ -1290,9 +1373,13 @@ setTimeout(() => {
 
 <!-- 0067.part.md -->
 
-##### `readable.unshift(chunk[, encoding])`
+##### readable.unshift
 
--   `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для выгрузки в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+```js
+readable.unshift(chunk[, encoding])
+```
+
+-   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Кусок данных для выгрузки в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer`, `Uint8Array` или `null`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
 
 Передача `chunk` как `null` сигнализирует о конце потока (EOF) и ведет себя так же, как `readable.push(null)`, после чего данные больше не могут быть записаны. Сигнал EOF ставится в конце буфера, и все буферизованные данные все равно будут смыты.
@@ -1345,10 +1432,14 @@ function parseHeader(stream, callback) {
 
 <!-- 0068.part.md -->
 
-##### `readable.wrap(stream)`
+##### readable.wrap
+
+```js
+readable.wrap(stream);
+```
 
 -   `stream` [`<Stream>`](stream.md#stream) Читаемый поток "старого стиля"
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 До версии Node.js 0.10 потоки не реализовывали весь API модуля `node:stream`, как он определен в настоящее время. (Более подробную информацию смотрите в [Совместимость](#compatibility-with-older-nodejs-versions)).
 
@@ -1369,7 +1460,11 @@ myReader.on('readable', () => {
 
 <!-- 0069.part.md -->
 
-##### `readable[Symbol.asyncIterator]()`
+##### readable\[Symbol.asyncIterator\]
+
+```js
+readable[Symbol.asyncIterator]();
+```
 
 -   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) для полного потребления потока.
 
@@ -1394,20 +1489,24 @@ print(fs.createReadStream('file')).catch(console.error);
 
 <!-- 0070.part.md -->
 
-##### `readable.compose(stream[, options])`
+##### readable.compose
+
+```js
+readable.compose(stream[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `stream` {Stream|Iterable|AsyncIterable|Function}
+-   `stream` [`<Stream>`](stream.md#stream) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет уничтожить поток, если сигнал прерван.
 -   Возвращает: {Duplex} поток, составленный с потоком `stream`.
 
 <!-- конец списка -->
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 
 async function* splitToWords(source) {
@@ -1433,7 +1532,11 @@ console.log(words); // печатает ['this', 'is', 'compose', 'as', 'operato
 
 <!-- 0071.part.md -->
 
-##### `readable.iterator([options])`
+##### readable.iterator
+
+```js
+readable.iterator([options]);
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1488,13 +1591,17 @@ showBoth();
 
 <!-- 0072.part.md -->
 
-##### `readable.map(fn[, options])`
+##### readable.map
+
+```js
+readable.map(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для отображения каждого куска данных в потоке.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для отображения каждого куска данных в потоке.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1505,7 +1612,7 @@ showBoth();
 
 Этот метод позволяет выполнять отображение над потоком. Функция `fn` будет вызываться для каждого чанка в потоке. Если функция `fn` возвращает обещание - это обещание будет `ожидаться` перед передачей в поток результатов.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { Resolver } from 'node:dns/promises';
 
@@ -1531,13 +1638,17 @@ for await (const result of dnsResults) {
 
 <!-- 0073.part.md -->
 
-##### `readable.filter(fn[, options])`
+##### readable.filter
+
+```js
+readable.filter(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для фильтрации фрагментов из потока.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для фильтрации фрагментов из потока.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) кусок данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1548,7 +1659,7 @@ for await (const result of dnsResults) {
 
 Этот метод позволяет фильтровать поток. Для каждого куска в потоке будет вызвана функция `fn`, и если она вернет истинное значение, то кусок будет передан в поток результатов. Если функция `fn` возвращает обещание - это обещание будет `ожидаться`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { Resolver } from 'node:dns/promises';
 
@@ -1587,13 +1698,17 @@ for await (const result of dnsResults) {
 
 <!-- 0074.part.md -->
 
-##### `readable.forEach(fn[, options])`
+##### readable.forEach
+
+```js
+readable.forEach(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для вызова на каждом фрагменте потока.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1604,11 +1719,11 @@ for await (const result of dnsResults) {
 
 Этот метод позволяет итерировать поток. Для каждого куска в потоке будет вызвана функция `fn`. Если функция `fn` возвращает обещание - это обещание будет `await`.
 
-Этот метод отличается от циклов `for await...of` тем, что он может обрабатывать фрагменты одновременно. Кроме того, итерацию `forEach` можно остановить только передав опцию `signal и прервав соответствующий `AbortController`, в то время как `for await...of`можно остановить с помощью`break`или`return`. В любом случае поток будет уничтожен.
+Этот метод отличается от циклов `for await...of` тем, что он может обрабатывать фрагменты одновременно. Кроме того, итерацию `forEach` можно остановить только передав опцию `signal` и прервав соответствующий `AbortController`, в то время как `for await...of` можно остановить с помощью`break`или`return`. В любом случае поток будет уничтожен.
 
 Этот метод отличается от прослушивания события [`'data'`](#event-data) тем, что он использует событие [`readable`](#class-streamreadable) в базовой машине и может ограничить количество одновременных вызовов `fn`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { Resolver } from 'node:dns/promises';
 
@@ -1648,7 +1763,11 @@ console.log('done'); // Поток завершен
 
 <!-- 0075.part.md -->
 
-##### `readable.toArray([options])`
+##### readable.toArray
+
+```js
+readable.toArray([options]);
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1662,7 +1781,7 @@ console.log('done'); // Поток завершен
 
 Поскольку этот метод считывает весь поток в память, он сводит на нет преимущества потоков. Он предназначен для совместимости и удобства, а не как основной способ потребления потоков.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { Resolver } from 'node:dns/promises';
 
@@ -1692,13 +1811,17 @@ const dnsResults = await Readable.from([
 
 <!-- 0076.part.md -->
 
-##### `readable.some(fn[, options])`
+##### readable.some
+
+```js
+readable.some(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для вызова на каждом фрагменте потока.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1709,7 +1832,7 @@ const dnsResults = await Readable.from([
 
 Этот метод похож на `Array.prototype.some` и вызывает `fn` на каждом куске в потоке, пока ожидаемое возвращаемое значение не станет `true` (или любым истинным значением). Как только вызов `fn` на куске, ожидающем возврата значения, становится истинным, поток уничтожается и обещание выполняется с `true`. Если ни один из вызовов `fn` на чанках не возвращает истинное значение, обещание выполняется с `false`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { stat } from 'node:fs/promises';
 
@@ -1741,7 +1864,7 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для вызова на каждом фрагменте потока.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для вызова на каждом фрагменте потока.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1785,7 +1908,7 @@ console.log('done'); // Поток завершен
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция для вызова на каждом куске потока.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция для вызова на каждом куске потока.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `signal` [`<AbortSignal>`](globals.md#abortsignal) прерывается, если поток уничтожается, позволяя прервать вызов `fn` раньше времени.
@@ -1941,7 +2064,7 @@ console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `fn` {Function|AsyncFunction} функция редуктора для вызова над каждым куском в потоке.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {AsyncFunction} функция редуктора для вызова над каждым куском в потоке.
     -   `previous` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение, полученное от последнего вызова `fn` или `initial`, если указано, или первый чанк потока в противном случае.
     -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) фрагмент данных из потока.
     -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -2010,7 +2133,7 @@ console.log(ten); // 10
 ##### `transform.destroy([error])`
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожить поток и, по желанию, выдать событие `'error'`. После этого вызова поток преобразования освободит все внутренние ресурсы. Реализаторы не должны переопределять этот метод, а вместо этого реализовать [`readable._destroy()`](#readable_destroyerr-callback). Реализация по умолчанию `_destroy()` для `Transform` также испускает `'close'`, если `emitClose` не установлен в false.
 
@@ -2834,7 +2957,7 @@ class WriteStream extends Writable {
 
 #### `writable._write(chunk, encoding, callback)`
 
--   `chunk` {Buffer|string|any} Записываемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+-   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Записываемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если чанк является строкой, то `encoding` - это кодировка символов этой строки. Если чанк является `буфером`, или если поток работает в объектном режиме, `encoding` может быть проигнорирован.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызвать эту функцию (опционально с аргументом об ошибке), когда обработка будет завершена для предоставленного чанка.
 
@@ -3139,7 +3262,7 @@ class ReadStream extends Readable {
 
 #### `readable.push(chunk[, encoding])`
 
--   `chunk` {Buffer|Uint8Array|string|null|any} Кусок данных для передачи в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
+-   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<null>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Null_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Кусок данных для передачи в очередь чтения. Для потоков, не работающих в объектном режиме, `chunk` должен быть строкой, `Buffer` или `Uint8Array`. Для потоков, работающих в объектном режиме, `chunk` может быть любым значением JavaScript.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка кусков строки. Должна быть правильной кодировкой `Buffer`, такой как `'utf8` или `'ascii`.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если можно продолжать проталкивать дополнительные куски данных; `false` в противном случае.
 
@@ -3509,7 +3632,7 @@ const myTransform = new Transform({
 
 #### `transform._transform(chunk, encoding, callback)`
 
--   `chunk` {Buffer|string|any} Преобразуемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
+-   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Преобразуемый `буфер`, преобразованный из `строки`, переданной в [`stream.write()`](#writablewritechunk-encoding-callback). Если опция потока `decodeStrings` равна `false` или поток работает в объектном режиме, чанк не будет преобразован и будет тем, что было передано в [`stream.write()`](#writablewritechunk-encoding-callback).
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если чанк является строкой, то это тип кодировки. Если чанк является буфером, то это специальное значение `'buffer''. В этом случае игнорируйте его.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова (опционально с аргументом ошибки и данными), которая будет вызвана после обработки предоставленного `чанка`.
 
@@ -3730,4 +3853,3 @@ net.createServer((socket) => {
 Это не является проблемой в обычных случаях с `latin1` или `ascii`. Но рекомендуется помнить о таком поведении при работе со строками, которые могут содержать многобайтовые символы.
 
 <!-- 0145.part.md -->
-

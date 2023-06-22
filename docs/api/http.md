@@ -55,7 +55,7 @@ description: Интерфейсы HTTP в Node.js разработаны для 
 
 ## Класс http.Agent
 
-Агент отвечает за управление сохранением и повторным использованием соединений для HTTP-клиентов. Он поддерживает очередь ожидающих запросов для данного хоста и порта, повторно используя одно сокетное соединение для каждого до тех пор, пока очередь не опустеет, после чего сокет либо уничтожается, либо помещается в пул, где он хранится для повторного использования для запросов к тому же хосту и порту. Будет ли он уничтожен или помещен в пул, зависит от `keepAlive` [опция](#new-agentoptions).
+Агент отвечает за управление сохранением и повторным использованием соединений для HTTP-клиентов. Он поддерживает очередь ожидающих запросов для данного хоста и порта, повторно используя одно сокетное соединение для каждого до тех пор, пока очередь не опустеет, после чего сокет либо уничтожается, либо помещается в пул, где он хранится для повторного использования для запросов к тому же хосту и порту. Будет ли он уничтожен или помещен в пул, зависит от `keepAlive` [опция](#new-agent).
 
 Для пула соединений включена функция TCP Keep-Alive, но серверы могут закрывать простаивающие соединения, в этом случае они будут удалены из пула, а новое соединение будет создано при новом HTTP-запросе на этот хост и порт. Серверы также могут отказаться разрешать несколько запросов через одно и то же соединение, в этом случае соединение будет создаваться заново для каждого запроса и не может быть объединено в пул. Агент будет по-прежнему выполнять запросы к этому серверу, но каждый запрос будет выполняться через новое соединение.
 
@@ -112,7 +112,7 @@ new Agent([options]);
 
 В стандартном [`http.globalAgent`](#httpglobalagent), который используется [`http.request()`](#httprequestoptions-callback), все эти значения установлены по умолчанию.
 
-Для настройки любого из них необходимо создать пользовательский экземпляр [`http.Agent`](#httpagent).
+Для настройки любого из них необходимо создать пользовательский экземпляр `http.Agent`.
 
 ```js
 const http = require('node:http');
@@ -237,7 +237,7 @@ agent.getName([options]);
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-По умолчанию установлено на `бесконечность`. Определяет, сколько одновременных сокетов может быть открыто агентом для каждого origin. Origin - это возвращаемое значение [`agent.getName()`](#agentgetnameoptions).
+По умолчанию установлено на `бесконечность`. Определяет, сколько одновременных сокетов может быть открыто агентом для каждого origin. Origin - это возвращаемое значение [`agent.getName()`](#agentgetname).
 
 <!-- 0010.part.md -->
 
@@ -269,7 +269,7 @@ agent.getName([options]);
 
 -   Расширяет: {http.OutgoingMessage}
 
-Этот объект создается внутри и возвращается из [`http.request()`](#httprequestoptions-callback). Он представляет _проходящий_ запрос, заголовок которого уже поставлен в очередь. Заголовок все еще можно изменить с помощью API [`setHeader(name, value)`](#requestsetheadername-value), [`getHeader(name)`](#requestgetheadername), [`removeHeader(name)`](#requestremoveheadername). Фактический заголовок будет отправлен вместе с первым куском данных или при вызове [`request.end()`](#requestenddata-encoding-callback).
+Этот объект создается внутри и возвращается из [`http.request()`](#httprequest). Он представляет _проходящий_ запрос, заголовок которого уже поставлен в очередь. Заголовок все еще можно изменить с помощью API [`setHeader(name, value)`](#requestsetheader), [`getHeader(name)`](#requestgetheader), [`removeHeader(name)`](#requestremoveheader). Фактический заголовок будет отправлен вместе с первым куском данных или при вызове [`request.end()`](#requestend).
 
 Чтобы получить ответ, добавьте к объекту запроса слушатель для [`'response'`](#response). [`'response'`](#response) будет испущен из объекта запроса, когда будут получены заголовки ответа. Событие [`'response'`](#response) выполняется с одним аргументом, который является экземпляром [`http.IncomingMessage`](#httpincomingmessage).
 
@@ -568,10 +568,10 @@ request.cork();
 request.end([data[, encoding]][, callback])
 ```
 
--   `данные` {string|Buffer|Uint8Array}
+-   `данные` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Завершает отправку запроса. Если какие-либо части тела остались неотправленными, он спустит их в поток. Если запрос чанкирован, то будет отправлено завершающее `'0\r\n\r\n'`.
 
@@ -588,7 +588,7 @@ request.destroy([error]);
 ```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательно, ошибка, которую нужно выдать с событием `'error'`.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожить запрос. Опционально выдает событие `'error'` и выдает событие `'close'`. Вызов этой функции приведет к тому, что оставшиеся данные в ответе будут сброшены, а сокет будет уничтожен.
 
@@ -600,7 +600,7 @@ request.destroy([error]);
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Является `true` после вызова [`request.destroy()`](#requestdestroyerror).
+Является `true` после вызова [`request.destroy()`](#requestdestroy).
 
 Более подробную информацию смотрите в [`writable.destroyed`](stream.md#writabledestroyed).
 
@@ -616,7 +616,7 @@ request.destroy([error]);
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Свойство `request.finished` будет `true`, если был вызван [`request.end()`](#requestenddata-encoding-callback). Свойство `request.end()` будет вызвано автоматически, если запрос был инициирован через [`http.get()`](#httpgetoptions-callback).
+Свойство `request.finished` будет `true`, если был вызван [`request.end()`](#requestend). Свойство `request.end()` будет вызвано автоматически, если запрос был инициирован через [`http.get()`](#httpgetoptions-callback).
 
 <!-- 0032.part.md -->
 
@@ -727,7 +727,11 @@ const headerNames = request.getRawHeaderNames();
 
 <!-- 0037.part.md -->
 
-### `request.hasHeader(name)`
+### request.hasHeader
+
+```js
+request.hasHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -740,7 +744,7 @@ const hasContentType = request.hasHeader('content-type');
 
 <!-- 0038.part.md -->
 
-### `request.maxHeadersCount`
+### request.maxHeadersCount
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`.
 
@@ -748,31 +752,35 @@ const hasContentType = request.hasHeader('content-type');
 
 <!-- 0039.part.md -->
 
-### `request.path`
+### request.path
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь запроса.
 
 <!-- 0040.part.md -->
 
-### `request.method`
+### request.method
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метод запроса.
 
 <!-- 0041.part.md -->
 
-### `request.host`
+### request.host
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост запроса.
 
 <!-- 0042.part.md -->
 
-### `request.protocol`
+### request.protocol
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Протокол запроса.
 
 <!-- 0043.part.md -->
 
-### `request.removeHeader(name)`
+### request.removeHeader
+
+```js
+request.removeHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -784,7 +792,7 @@ request.removeHeader('Content-Type');
 
 <!-- 0044.part.md -->
 
-### `request.reusedSocket`
+### request.reusedSocket
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Отправляется ли запрос через повторно используемый сокет.
 
@@ -836,12 +844,16 @@ retriableRequest();
 
 <!-- 0045.part.md -->
 
-### `request.setHeader(name, value)`
+### request.setHeader
+
+```js
+request.setHeader(name, value);
+```
 
 -   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
-Устанавливает значение одного заголовка для объекта headers. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`request.getHeader()`](#requestgetheadername) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети.
+Устанавливает значение одного заголовка для объекта headers. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`request.getHeader()`](#requestgetheader) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети.
 
 ```js
 request.setHeader('Content-Type', 'application/json');
@@ -872,7 +884,11 @@ request.setHeader(
 
 <!-- 0046.part.md -->
 
-### `request.setNoDelay([noDelay])`
+### request.setNoDelay
+
+```js
+request.setNoDelay([noDelay]);
+```
 
 -   `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -880,7 +896,11 @@ request.setHeader(
 
 <!-- 0047.part.md -->
 
-### `request.setSocketKeepAlive([enable][, initialDelay])`
+### request.setSocketKeepAlive
+
+```js
+request.setSocketKeepAlive([enable][, initialDelay])
+```
 
 -   `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 -   `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -889,7 +909,11 @@ request.setHeader(
 
 <!-- 0048.part.md -->
 
-### `request.setTimeout(timeout[, callback])`
+### request.setTimeout
+
+```js
+request.setTimeout(timeout[, callback])
+```
 
 -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды до завершения запроса.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, которая будет вызвана, когда произойдет таймаут. Аналогично привязке к событию `timeout`.
@@ -899,7 +923,7 @@ request.setHeader(
 
 <!-- 0049.part.md -->
 
-### `request.socket`
+### request.socket
 
 -   {stream.Duplex}
 
@@ -926,21 +950,25 @@ req.once('response', (res) => {
 
 <!-- 0050.part.md -->
 
-### `request.uncork()`
+### request.uncork
+
+```js
+request.uncork();
+```
 
 См. [`writable.uncork()`](stream.md#writableuncork).
 
 <!-- 0051.part.md -->
 
-### `request.writableEnded`
+### request.writableEnded
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Является `true` после вызова [`request.end()`](#requestenddata-encoding-callback). Это свойство не указывает, были ли данные выгружены, для этого используйте [`request.writableFinished`](#requestwritablefinished).
+Является `true` после вызова [`request.end()`](#requestend). Это свойство не указывает, были ли данные выгружены, для этого используйте [`request.writableFinished`](#requestwritablefinished).
 
 <!-- 0052.part.md -->
 
-### `request.writableFinished`
+### request.writableFinished
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -948,14 +976,18 @@ req.once('response', (res) => {
 
 <!-- 0053.part.md -->
 
-### `request.write(chunk[, encoding][, callback])`
+### request.write
 
--   `chunk` {string|Buffer|Uint8Array}
+```js
+request.write(chunk[, encoding][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `обратный вызов` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Отправляет фрагмент тела. Этот метод может быть вызван несколько раз. Если не задана `Content-Length`, данные будут автоматически закодированы в кодировке передачи HTTP Chunked, чтобы сервер знал, когда данные заканчиваются. Добавляется заголовок `Transfer-Encoding: chunked`. Вызов [`request.end()`](#requestenddata-encoding-callback) необходим для завершения отправки запроса.
+Отправляет фрагмент тела. Этот метод может быть вызван несколько раз. Если не задана `Content-Length`, данные будут автоматически закодированы в кодировке передачи HTTP Chunked, чтобы сервер знал, когда данные заканчиваются. Добавляется заголовок `Transfer-Encoding: chunked`. Вызов [`request.end()`](#requestend) необходим для завершения отправки запроса.
 
 Аргумент `encoding` является необязательным и применяется только в том случае, если `chunk` является строкой. По умолчанию используется значение `'utf8`.
 
@@ -967,13 +999,13 @@ req.once('response', (res) => {
 
 <!-- 0054.part.md -->
 
-## Класс: `http.Server`
+## http.Server
 
 -   Расширяет: {net.Server}
 
 <!-- 0055.part.md -->
 
-### Событие: `'checkContinue'`
+### Событие: checkContinue
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
@@ -986,7 +1018,7 @@ req.once('response', (res) => {
 
 <!-- 0056.part.md -->
 
-### Событие: `'checkExpectation'`
+### Событие: checkExpectation
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
@@ -997,7 +1029,7 @@ req.once('response', (res) => {
 
 <!-- 0057.part.md -->
 
-### Событие: `clientError`
+### Событие: clientError
 
 -   `exception` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 -   `socket` {stream.Duplex}
@@ -1006,7 +1038,7 @@ req.once('response', (res) => {
 
 Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
 
-Поведение по умолчанию заключается в попытке закрыть сокет с HTTP '400 Bad Request', или HTTP '431 Request Header Fields Too Large' в случае ошибки [`HPE_HEADER_OVERFLOW`](errors.md#hpe_header_overflow). Если сокет не доступен для записи или были отправлены заголовки текущего присоединенного [`http.ServerResponse`](#class-httpserverresponse), он немедленно уничтожается.
+Поведение по умолчанию заключается в попытке закрыть сокет с HTTP '400 Bad Request', или HTTP '431 Request Header Fields Too Large' в случае ошибки [`HPE_HEADER_OVERFLOW`](errors.md#hpe_header_overflow). Если сокет не доступен для записи или были отправлены заголовки текущего присоединенного [`http.ServerResponse`](#httpserverresponse), он немедленно уничтожается.
 
 `socket` - это объект [`net.Socket`](net.md#class-netsocket), с которого произошла ошибка.
 
@@ -1043,13 +1075,13 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0058.part.md -->
 
-### Событие: `close`.
+### Событие: close
 
 Выдается при закрытии сервера.
 
 <!-- 0059.part.md -->
 
-### Событие: `connect`
+### Событие: connect
 
 -   `request` {http.IncomingMessage} Аргументы для HTTP-запроса, как в событии [`'request'`](#event-request)
 -   `socket` {stream.Duplex} Сетевой сокет между сервером и клиентом
@@ -1063,7 +1095,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0060.part.md -->
 
-### Событие: `connection`
+### Событие: connection
 
 -   `socket` {stream.Duplex}
 
@@ -1077,7 +1109,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0061.part.md -->
 
-### Событие: `dropRequest`
+### Событие: dropRequest
 
 -   `request` {http.IncomingMessage} Аргументы для HTTP-запроса, как в событии [`'request'`](#event-request)
 -   `socket` {stream.Duplex} Сетевой сокет между сервером и клиентом
@@ -1086,7 +1118,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0062.part.md -->
 
-### Событие: `request`
+### Событие: request
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
@@ -1095,7 +1127,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0063.part.md -->
 
-### Событие: `upgrade`
+### Событие: upgrade
 
 -   `request` {http.IncomingMessage} Аргументы для HTTP-запроса, как в событии [`'request'`](#event-request)
 -   `socket` {stream.Duplex} Сетевой сокет между сервером и клиентом
@@ -1109,7 +1141,11 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0064.part.md -->
 
-### `server.close([callback])`
+### server.close
+
+```js
+server.close([callback]);
+```
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -1117,19 +1153,27 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0065.part.md -->
 
-### `server.closeAllConnections()`
+### server.closeAllConnections
+
+```js
+server.closeAllConnections();
+```
 
 Закрывает все соединения, подключенные к этому серверу.
 
 <!-- 0066.part.md -->
 
-### `server.closeIdleConnections()`
+### server.closeIdleConnections
+
+```js
+server.closeIdleConnections();
+```
 
 Закрывает все соединения, подключенные к этому серверу, которые не посылают запрос и не ожидают ответа.
 
 <!-- 0067.part.md -->
 
-### `server.headersTimeout`
+### server.headersTimeout
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** Минимальное значение между [`server.requestTimeout`](#serverrequesttimeout) или `60000`.
 
@@ -1141,19 +1185,23 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0068.part.md -->
 
-### `server.listen()`
+### server.listen
+
+```js
+server.listen();
+```
 
 Запускает HTTP-сервер, прослушивающий соединения. Этот метод идентичен [`server.listen()`](net.md#serverlisten) из [`net.Server`](net.md#class-netserver).
 
 <!-- 0069.part.md -->
 
-### `server.listening`
+### server.listening
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Указывает, прослушивает ли сервер соединения или нет.
 
 <!-- 0070.part.md -->
 
-### `server.maxHeadersCount`
+### server.maxHeadersCount
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`.
 
@@ -1161,7 +1209,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0071.part.md -->
 
-### `server.requestTimeout`
+### server.requestTimeout
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`.
 
@@ -1173,7 +1221,11 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0072.part.md -->
 
-### `server.setTimeout([msecs][, callback])`
+### server.setTimeout
+
+```js
+server.setTimeout([msecs][, callback])
+```
 
 -   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1187,7 +1239,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0073.part.md -->
 
-### `server.maxRequestsPerSocket`
+### server.maxRequestsPerSocket
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Запросы на сокет. **По умолчанию:** 0 (без ограничений).
 
@@ -1199,7 +1251,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0074.part.md -->
 
-### `server.timeout`
+### server.timeout
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** 0 (таймаут отсутствует).
 
@@ -1211,7 +1263,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0075.part.md -->
 
-### `server.keepAliveTimeout`
+### server.keepAliveTimeout
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** `5000` (5 секунд).
 
@@ -1223,7 +1275,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0076.part.md -->
 
-## Класс: `http.ServerResponse`
+## http.ServerResponse
 
 -   Расширяет: {http.OutgoingMessage}
 
@@ -1231,25 +1283,29 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0077.part.md -->
 
-### Событие: `close`
+### Событие: close
 
 Указывает на то, что ответ завершен, или его базовое соединение было прервано преждевременно (до завершения ответа).
 
 <!-- 0078.part.md -->
 
-### Событие: `finish`
+### Событие: finish
 
 Вызывается, когда ответ был отправлен. Точнее, это событие возникает, когда последний сегмент заголовков и тела ответа был передан операционной системе для передачи по сети. Это не означает, что клиент уже что-то получил.
 
 <!-- 0079.part.md -->
 
-### `response.addTrailers(headers)`
+### response.addTrailers
+
+```js
+response.addTrailers(headers);
+```
 
 -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Этот метод добавляет к ответу HTTP трейлерные заголовки (заголовок, но в конце сообщения).
 
-Заголовки будут **только** если для ответа используется кодировка chunked; если это не так (например, если запрос был HTTP/1.0), они будут молча отброшены.
+Заголовки будут **только** если для ответа используется кодировка `chunked`; если это не так (например, если запрос был HTTP/1.0), они будут молча отброшены.
 
 HTTP требует отправки заголовка `Trailer` для эмиссии трейлеров, в значении которого содержится список полей заголовка. Например,
 
@@ -1269,7 +1325,7 @@ response.end();
 
 <!-- 0080.part.md -->
 
-### `response.connection`
+### response.connection
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1283,18 +1339,26 @@ response.end();
 
 <!-- 0081.part.md -->
 
-### `response.cork()`
+### response.cork
+
+```js
+response.cork();
+```
 
 См. [`writable.cork()`](stream.md#writablecork).
 
 <!-- 0082.part.md -->
 
-### `response.end([data[, encoding]][, callback])`
+### response.end
 
--   `данные` {string|Buffer|Uint8Array}
+```js
+response.end([data[, encoding]][, callback])
+```
+
+-   `данные` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Этот метод сигнализирует серверу, что все заголовки и тело ответа были отправлены; сервер должен считать это сообщение завершенным. Метод `response.end()` ДОЛЖЕН вызываться в каждом ответе.
 
@@ -1304,23 +1368,31 @@ response.end();
 
 <!-- 0083.part.md -->
 
-### `response.finished`
+### response.finished
 
 > Стабильность: 0 - Утратил актуальность. Используйте [`response.writableEnded`](#responsewritableended).
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Свойство `response.finished` будет `true`, если был вызван [`response.end()`](#responseenddata-encoding-callback).
+Свойство `response.finished` будет `true`, если был вызван [`response.end()`](#responseend).
 
 <!-- 0084.part.md -->
 
-### `response.flushHeaders()`
+### response.flushHeaders
+
+```js
+response.flushHeaders();
+```
 
 Промывает заголовки ответа. См. также: [`request.flushHeaders()`](#requestflushheaders).
 
 <!-- 0085.part.md -->
 
-### `response.getHeader(name)`
+### response.getHeader
+
+```js
+response.getHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -1347,7 +1419,11 @@ const setCookie = response.getHeader('set-cookie');
 
 <!-- 0086.part.md -->
 
-### `response.getHeaderNames()`
+### response.getHeaderNames
+
+```js
+response.getHeaderNames();
+```
 
 -   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1363,7 +1439,11 @@ const headerNames = response.getHeaderNames();
 
 <!-- 0087.part.md -->
 
-### `response.getHeaders()`
+### response.getHeaders
+
+```js
+response.getHeaders();
+```
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1381,7 +1461,11 @@ const headers = response.getHeaders();
 
 <!-- 0088.part.md -->
 
-### `response.hasHeader(name)`
+### response.hasHeader
+
+```js
+response.hasHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -1394,15 +1478,19 @@ const hasContentType = response.hasHeader('content-type');
 
 <!-- 0089.part.md -->
 
-### `response.headersSent`
+### response.headersSent
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Булево (только для чтения). True, если заголовки были отправлены, false в противном случае.
+Булево (только для чтения). `true`, если заголовки были отправлены, `false` в противном случае.
 
 <!-- 0090.part.md -->
 
-### `response.removeHeader(name)`
+### response.removeHeader
+
+```js
+response.removeHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1414,7 +1502,7 @@ response.removeHeader('Content-Encoding');
 
 <!-- 0091.part.md -->
 
-### `response.req`
+### response.req
 
 -   {http.IncomingMessage}
 
@@ -1422,7 +1510,7 @@ response.removeHeader('Content-Encoding');
 
 <!-- 0092.part.md -->
 
-### `response.sendDate`
+### response.sendDate
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1432,15 +1520,19 @@ response.removeHeader('Content-Encoding');
 
 <!-- 0093.part.md -->
 
-### `response.setHeader(name, value)`
+### response.setHeader
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+```js
+response.setHeader(name, value);
+```
+
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: {http.ServerResponse}
 
 Возвращает объект ответа.
 
-Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`response.getHeader()`](#responsegetheadername) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети. Один и тот же объект ответа возвращается вызывающей стороне, чтобы обеспечить возможность цепочки вызовов.
+Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`response.getHeader()`](#responsegetheader) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети. Один и тот же объект ответа возвращается вызывающей стороне, чтобы обеспечить возможность цепочки вызовов.
 
 ```js
 response.setHeader('Content-Type', 'text/html');
@@ -1457,7 +1549,7 @@ response.setHeader('Set-Cookie', [
 
 Попытка установить имя или значение поля заголовка, которое содержит недопустимые символы, приведет к возникновению [`TypeError`](errors.md#class-typeerror).
 
-Когда заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
+Когда заголовки были установлены с помощью [`response.setHeader()`](#responsesetheader), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
 ```js
 // Возвращает content-type = text/plain
@@ -1473,7 +1565,11 @@ const server = http.createServer((req, res) => {
 
 <!-- 0094.part.md -->
 
-### `response.setTimeout(msecs[, callback])`
+### response.setTimeout
+
+```js
+response.setTimeout(msecs[, callback])
+```
 
 -   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1485,11 +1581,11 @@ const server = http.createServer((req, res) => {
 
 <!-- 0095.part.md -->
 
-### `response.socket`
+### response.socket
 
 -   {stream.Duplex}
 
-Ссылка на базовый сокет. Обычно пользователи не хотят обращаться к этому свойству. В частности, сокет не будет выдавать события `'readable'' из-за того, как парсер протокола подключается к сокету. После `response.end()` свойство обнуляется.
+Ссылка на базовый сокет. Обычно пользователи не хотят обращаться к этому свойству. В частности, сокет не будет выдавать события `'readable'` из-за того, как парсер протокола подключается к сокету. После `response.end()` свойство обнуляется.
 
 ```js
 const http = require('node:http');
@@ -1508,7 +1604,7 @@ const server = http
 
 <!-- 0096.part.md -->
 
-### `response.statusCode`
+### response.statusCode
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `200`.
 
@@ -1522,7 +1618,7 @@ response.statusCode = 404;
 
 <!-- 0097.part.md -->
 
-### `response.statusMessage`
+### response.statusMessage
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1536,7 +1632,7 @@ response.statusMessage = 'Not found';
 
 <!-- 0098.part.md -->
 
-### `response.strictContentLength`
+### response.strictContentLength
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 
@@ -1544,21 +1640,25 @@ response.statusMessage = 'Not found';
 
 <!-- 0099.part.md -->
 
-### `response.uncork()`
+### response.uncork
+
+```js
+response.uncork();
+```
 
 См. [`writable.uncork()`](stream.md#writableuncork).
 
 <!-- 0100.part.md -->
 
-### `response.writableEnded`
+### response.writableEnded
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Является `true` после вызова [`response.end()`](#responseenddata-encoding-callback). Это свойство не указывает, были ли данные удалены, для этого используйте [`response.writableFinished`](#responsewritablefinished).
+Является `true` после вызова [`response.end()`](#responseend). Это свойство не указывает, были ли данные удалены, для этого используйте [`response.writableFinished`](#responsewritablefinished).
 
 <!-- 0101.part.md -->
 
-### `response.writableFinished`
+### response.writableFinished
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1566,9 +1666,13 @@ response.statusMessage = 'Not found';
 
 <!-- 0102.part.md -->
 
-### `response.write(chunk[, encoding][, callback])`
+### response.write
 
--   `chunk` {string|Buffer|Uint8Array}
+```js
+response.write(chunk[, encoding][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8''
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -1583,19 +1687,27 @@ response.statusMessage = 'Not found';
 
 Это необработанное тело HTTP и не имеет ничего общего с многокомпонентными кодировками тела более высокого уровня, которые могут быть использованы.
 
-При первом вызове [`response.write()`](#responsewritechunk-encoding-callback) клиенту будет отправлена буферизованная информация заголовка и первый фрагмент тела. При втором вызове [`response.write()`](#responsewritechunk-encoding-callback) Node.js предполагает, что данные будут передаваться потоком, и отправляет новые данные отдельно. То есть, ответ буферизируется до первого куска тела.
+При первом вызове [`response.write()`](#responsewrite) клиенту будет отправлена буферизованная информация заголовка и первый фрагмент тела. При втором вызове [`response.write()`](#responsewrite) Node.js предполагает, что данные будут передаваться потоком, и отправляет новые данные отдельно. То есть, ответ буферизируется до первого куска тела.
 
-Возвращает `true`, если все данные были успешно переданы в буфер ядра. Возвращает `false`, если все данные или их часть были помещены в пользовательскую память. Когда буфер снова освободится, будет выдано сообщение `'drain''.
+Возвращает `true`, если все данные были успешно переданы в буфер ядра. Возвращает `false`, если все данные или их часть были помещены в пользовательскую память. Когда буфер снова освободится, будет выдано сообщение `'drain'`.
 
 <!-- 0103.part.md -->
 
-### `response.writeContinue()`
+### response.writeContinue
+
+```js
+response.writeContinue();
+```
 
 Отправляет клиенту сообщение HTTP/1.1 100 Continue, указывающее на то, что тело запроса должно быть отправлено. См. событие [`'checkContinue'`](#event-checkcontinue) на `Server`.
 
 <!-- 0104.part.md -->
 
-### `response.writeEarlyHints(hints[, callback])`
+### response.writeEarlyHints
+
+```js
+response.writeEarlyHints(hints[, callback])
+```
 
 -   `hints` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1632,11 +1744,15 @@ response.writeEarlyHints(
 
 <!-- 0105.part.md -->
 
-### `response.writeHead(statusCode[, statusMessage][, headers])`
+### response.writeHead
+
+```js
+response.writeHead(statusCode[, statusMessage][, headers])
+```
 
 -   `statusCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `statusMessage` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `headers` {Object|Array}
+-   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 -   Возвращает: {http.ServerResponse}
 
 Отправляет заголовок ответа на запрос. Код статуса - это трехзначный код статуса HTTP, например `404`. Последний аргумент, `headers`, - это заголовки ответа. Опционально в качестве второго аргумента можно указать человекочитаемое `statusMessage`.
@@ -1655,13 +1771,13 @@ response
     .end(body);
 ```
 
-Этот метод должен быть вызван только один раз для сообщения, и он должен быть вызван до вызова [`response.end()`](#responseenddata-encoding-callback).
+Этот метод должен быть вызван только один раз для сообщения, и он должен быть вызван до вызова [`response.end()`](#responseend).
 
-Если [`response.write()`](#responsewritechunk-encoding-callback) или [`response.end()`](#responseenddata-encoding-callback) будут вызваны до вызова этой функции, неявные/изменяемые заголовки будут вычислены и вызовут эту функцию.
+Если [`response.write()`](#responsewrite) или [`response.end()`](#responseend) будут вызваны до вызова этой функции, неявные/изменяемые заголовки будут вычислены и вызовут эту функцию.
 
-Если заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
+Если заголовки были установлены с помощью [`response.setHeader()`](#responsesetheader), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewritehead), причем заголовки, переданные в [`response.writeHead()`](#responsewritehead), будут иметь приоритет.
 
-Если этот метод вызван, а [`response.setHeader()`](#responsesetheadername-value) не был вызван, он будет напрямую записывать переданные значения заголовков в сетевой канал без внутреннего кэширования, и [`response.getHeader()`](#responsegetheadername) по заголовку не даст ожидаемого результата. Если требуется постепенное накопление заголовков с возможным извлечением и изменением в будущем, используйте вместо этого [`response.setHeader()`](#responsesetheadername-value).
+Если этот метод вызван, а [`response.setHeader()`](#responsesetheader) не был вызван, он будет напрямую записывать переданные значения заголовков в сетевой канал без внутреннего кэширования, и [`response.getHeader()`](#responsegetheader) по заголовку не даст ожидаемого результата. Если требуется постепенное накопление заголовков с возможным извлечением и изменением в будущем, используйте вместо этого [`response.setHeader()`](#responsesetheader).
 
 ```js
 // Возвращает content-type = text/plain
@@ -1675,27 +1791,31 @@ const server = http.createServer((req, res) => {
 
 `Content-Length` считывается в байтах, а не в символах. Используйте [`Buffer.byteLength()`](buffer.md#static-method-bufferbytelengthstring-encoding) для определения длины тела в байтах. Node.js будет проверять, равны ли `Content-Length` и длина переданного тела или нет.
 
-Попытка установить имя или значение поля заголовка, которое содержит недопустимые символы, приведет к \[`Ошибка`\]\[\].
+Попытка установить имя или значение поля заголовка, которое содержит недопустимые символы, приведет к ошибке.
 
 <!-- 0106.part.md -->
 
-### `response.writeProcessing()`
+### response.writeProcessing
+
+```js
+response.writeProcessing();
+```
 
 Отправляет клиенту сообщение HTTP/1.1 102 Processing, указывающее на то, что тело запроса должно быть отправлено.
 
 <!-- 0107.part.md -->
 
-## Класс: `http.IncomingMessage`
+## http.IncomingMessage
 
 -   Расширяет: [`<stream.Readable>`](stream.md#streamreadable)
 
-Объект `IncomingMessage` создается [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest) и передается в качестве первого аргумента в события [`'request'`](#event-request) и [`'response'`](#event-response) соответственно. Он может быть использован для доступа к статусу ответа, заголовкам и данным.
+Объект `IncomingMessage` создается [`http.Server`](#httpserver) или [`http.ClientRequest`](#httpclientrequest) и передается в качестве первого аргумента в события [`'request'`](#request) и [`'response'`](#response) соответственно. Он может быть использован для доступа к статусу ответа, заголовкам и данным.
 
 В отличие от своего значения `socket`, которое является подклассом {stream.Duplex}, само `IncomingMessage` расширяет [`<stream.Readable>`](stream.md#streamreadable) и создается отдельно для разбора и выдачи входящих HTTP-заголовков и полезной нагрузки, поскольку базовый сокет может быть использован многократно в случае keep-alive.
 
 <!-- 0108.part.md -->
 
-### Событие: `aborted`
+### Событие: aborted
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1707,13 +1827,13 @@ const server = http.createServer((req, res) => {
 
 <!-- 0109.part.md -->
 
-### Событие: `close`
+### Событие: close
 
 Выдается, когда запрос завершен.
 
 <!-- 0110.part.md -->
 
-### `message.aborted`
+### message.aborted
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1727,7 +1847,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0111.part.md -->
 
-### `message.complete`
+### message.complete
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1756,7 +1876,7 @@ const req = http.request(
 
 <!-- 0112.part.md -->
 
-### `message.connection`
+### message.connection
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1768,16 +1888,20 @@ const req = http.request(
 
 <!-- 0113.part.md -->
 
-### `message.destroy([error])`
+### message.destroy
+
+```js
+message.destroy([error]);
+```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Вызывает `destroy()` на сокете, который получил `IncomingMessage`. Если указано `error`, то на сокете испускается событие `'error`, а `error` передается в качестве аргумента всем слушателям этого события.
 
 <!-- 0114.part.md -->
 
-### `message.headers`
+### message.headers
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1803,7 +1927,7 @@ console.log(request.headers);
 
 <!-- 0115.part.md -->
 
-### `message.headersDistinct`
+### message.headersDistinct
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1820,7 +1944,7 @@ console.log(request.headersDistinct);
 
 <!-- 0116.part.md -->
 
-### `message.httpVersion`
+### message.httpVersion
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1830,17 +1954,17 @@ console.log(request.headersDistinct);
 
 <!-- 0117.part.md -->
 
-### `message.method`
+### message.method
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действителен только для запроса, полученного с [`http.Server`](#class-httpserver).**.
+**Действителен только для запроса, полученного с [`http.Server`](#httpserver).**.
 
 Метод запроса в виде строки. Только для чтения. Примеры: `'GET'`, `'DELETE'`.
 
 <!-- 0118.part.md -->
 
-### `message.rawHeaders`
+### message.rawHeaders
 
 -   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1866,7 +1990,7 @@ console.log(request.rawHeaders);
 
 <!-- 0119.part.md -->
 
-### `message.rawTrailers`
+### message.rawTrailers
 
 -   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1874,7 +1998,11 @@ console.log(request.rawHeaders);
 
 <!-- 0120.part.md -->
 
-### `message.setTimeout(msecs[, callback])`
+### message.setTimeout
+
+```js
+message.setTimeout(msecs[, callback])
+```
 
 -   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1884,7 +2012,7 @@ console.log(request.rawHeaders);
 
 <!-- 0121.part.md -->
 
-### `message.socket`
+### message.socket
 
 -   {stream.Duplex}
 
@@ -1896,27 +2024,27 @@ console.log(request.rawHeaders);
 
 <!-- 0122.part.md -->
 
-### `message.statusCode`
+### message.statusCode
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-**Действительно только для ответа, полученного от [`http.ClientRequest`](#class-httpclientrequest).**.
+**Действительно только для ответа, полученного от [`http.ClientRequest`](#httpclientrequest).**.
 
 Трехзначный код состояния ответа HTTP. НАПРИМЕР, `404`.
 
 <!-- 0123.part.md -->
 
-### `message.statusMessage`
+### message.statusMessage
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действительно только для ответа, полученного из [`http.ClientRequest`](#class-httpclientrequest).**.
+**Действительно только для ответа, полученного из [`http.ClientRequest`](#httpclientrequest).**.
 
 Сообщение о статусе ответа HTTP (фраза причины). Например, `OK` или `Internal Server Error`.
 
 <!-- 0124.part.md -->
 
-### `message.trailers`
+### message.trailers
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1924,7 +2052,7 @@ console.log(request.rawHeaders);
 
 <!-- 0125.part.md -->
 
-### `message.trailersDistinct`
+### message.trailersDistinct
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1932,11 +2060,11 @@ console.log(request.rawHeaders);
 
 <!-- 0126.part.md -->
 
-### `message.url`
+### message.url
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действительно только для запроса, полученного с [`http.Server`](#class-httpserver).**.
+**Действительно только для запроса, полученного с [`http.Server`](#httpserver).**.
 
 Строка URL запроса. Она содержит только тот URL, который присутствует в фактическом HTTP-запросе. Возьмем следующий запрос:
 
@@ -1974,33 +2102,37 @@ URL {
 
 <!-- 0127.part.md -->
 
-## Класс: `http.OutgoingMessage`
+## http.OutgoingMessage
 
 -   Расширяет: [`<Stream>`](stream.md#stream)
 
-Этот класс служит в качестве родительского класса для [`http.ClientRequest`](#class-httpclientrequest) и [`http.ServerResponse`](#class-httpserverresponse). Это абстрактное исходящее сообщение с точки зрения участников HTTP-транзакции.
+Этот класс служит в качестве родительского класса для [`http.ClientRequest`](#httpclientrequest) и [`http.ServerResponse`](#httpserverresponse). Это абстрактное исходящее сообщение с точки зрения участников HTTP-транзакции.
 
 <!-- 0128.part.md -->
 
-### Событие: `drain`
+### Событие: drain
 
 Выдается, когда буфер сообщения снова свободен.
 
 <!-- 0129.part.md -->
 
-### Событие: `finish`
+### Событие: finish
 
 Выдается при успешном завершении передачи.
 
 <!-- 0130.part.md -->
 
-### Событие: `prefinish`.
+### Событие: prefinish
 
 Вызывается после вызова функции `outgoingMessage.end()`. Когда это событие происходит, все данные были обработаны, но не обязательно полностью смыты.
 
 <!-- 0131.part.md -->
 
-### `outgoingMessage.addTrailers(headers)`
+### outgoingMessage.addTrailers
+
+```js
+outgoingMessage.addTrailers(headers);
+```
 
 -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -2026,23 +2158,27 @@ message.end();
 
 <!-- 0132.part.md -->
 
-### `outgoingMessage.appendHeader(name, value)`
+### outgoingMessage.appendHeader
+
+```js
+outgoingMessage.appendHeader(name, value);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя заголовка
--   `value` {string|string\[\]} Значение заголовка
--   Возвращает: {this}
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение заголовка
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Добавляет одно значение заголовка для объекта заголовка.
 
 Если значение является массивом, это эквивалентно вызову этого метода несколько раз.
 
-Если предыдущего значения для заголовка не было, это эквивалентно вызову [`outgoingMessage.setHeader(name, value)`](#outgoingmessagesetheadername-value).
+Если предыдущего значения для заголовка не было, это эквивалентно вызову [`outgoingMessage.setHeader(name, value)`](#outgoingmessagesetheader).
 
 В зависимости от значения параметра `options.uniqueHeaders` при создании клиентского запроса или сервера, заголовок будет отправлен несколько раз или один раз со значениями, объединенными с помощью `;`.
 
 <!-- 0133.part.md -->
 
-### `outgoingMessage.connection`
+### outgoingMessage.connection
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -2054,27 +2190,39 @@ message.end();
 
 <!-- 0134.part.md -->
 
-### `outgoingMessage.cork()`
+### outgoingMessage.cork
+
+```js
+outgoingMessage.cork();
+```
 
 См. [`writable.cork()`](stream.md#writablecork).
 
 <!-- 0135.part.md -->
 
-### `outgoingMessage.destroy([error])`
+### outgoingMessage.destroy
+
+```js
+outgoingMessage.destroy([error]);
+```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательно, ошибка, которую нужно выдать с событием `error`.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожает сообщение. Если сокет связан с сообщением и подключен, этот сокет также будет уничтожен.
 
 <!-- 0136.part.md -->
 
-### `outgoingMessage.end(chunk[, encoding][, callback])`
+### outgoingMessage.end
 
--   `chunk` {string|Buffer|Uint8Array}
+```js
+outgoingMessage.end(chunk[, encoding][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно, **по умолчанию**: `utf8`
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательно
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Завершает исходящее сообщение. Если какие-либо части тела остались неотправленными, то они будут переданы в базовую систему. Если сообщение разбито на части, будет отправлен завершающий фрагмент `0\r\n\r\n`, и отправлены трейлеры (если они есть).
 
@@ -2084,7 +2232,11 @@ message.end();
 
 <!-- 0137.part.md -->
 
-### `outgoingMessage.flushHeaders()`
+### outgoingMessage.flushHeaders
+
+```js
+outgoingMessage.flushHeaders();
+```
 
 Смывает заголовки сообщений.
 
@@ -2094,16 +2246,24 @@ message.end();
 
 <!-- 0138.part.md -->
 
-### `outgoingMessage.getHeader(name)`
+### outgoingMessage.getHeader
+
+```js
+outgoingMessage.getHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
--   Возвращает {string | undefined}
+-   Возвращает [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Undefined_type)
 
 Получает значение HTTP-заголовка с заданным именем. Если этот заголовок не установлен, возвращаемое значение будет `undefined`.
 
 <!-- 0139.part.md -->
 
-### `outgoingMessage.getHeaderNames()`
+### outgoingMessage.getHeaderNames
+
+```js
+outgoingMessage.getHeaderNames();
+```
 
 -   Возвращает [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -2111,7 +2271,11 @@ message.end();
 
 <!-- 0140.part.md -->
 
-### `outgoingMessage.getHeaders()`
+### outgoingMessage.getHeaders
+
+```js
+outgoingMessage.getHeaders();
+```
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -2132,7 +2296,11 @@ const headers = outgoingMessage.getHeaders();
 
 <!-- 0141.part.md -->
 
-### `outgoingMessage.hasHeader(name)`
+### outgoingMessage.hasHeader
+
+```js
+outgoingMessage.hasHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2147,7 +2315,7 @@ const hasContentType = outgoingMessage.hasHeader(
 
 <!-- 0142.part.md -->
 
-### `outgoingMessage.headersSent`
+### outgoingMessage.headersSent
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2155,7 +2323,11 @@ const hasContentType = outgoingMessage.hasHeader(
 
 <!-- 0143.part.md -->
 
-### `outgoingMessage.pipe()`
+### outgoingMessage.pipe
+
+```js
+outgoingMessage.pipe();
+```
 
 Переопределяет метод `stream.pipe()`, унаследованный от унаследованного класса `Stream`, который является родительским классом `http.OutgoingMessage`.
 
@@ -2163,7 +2335,11 @@ const hasContentType = outgoingMessage.hasHeader(
 
 <!-- 0144.part.md -->
 
-### `outgoingMessage.removeHeader(name)`
+### outgoingMessage.removeHeader
+
+```js
+outgoingMessage.removeHeader(name);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
 
@@ -2175,19 +2351,27 @@ outgoingMessage.removeHeader('Content-Encoding');
 
 <!-- 0145.part.md -->
 
-### `outgoingMessage.setHeader(name, value)`
+### outgoingMessage.setHeader
+
+```js
+outgoingMessage.setHeader(name, value);
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя заголовка
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение заголовка
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Устанавливает одно значение заголовка. Если заголовок уже существует в отправляемых заголовках, его значение будет заменено. Используйте массив строк для отправки нескольких заголовков с одинаковым именем.
 
 <!-- 0146.part.md -->
 
-### `outgoingMessage.setHeaders(headers)`
+### outgoingMessage.setHeaders
 
--   `headers` {Headers|Map}
+```js
+outgoingMessage.setHeaders(headers);
+```
+
+-   `headers` {Headers} | {Map}
 -   Возвращает: {http.ServerResponse}
 
 Возвращает объект ответа.
@@ -2206,7 +2390,7 @@ const headers = new Map([['foo', 'bar']]);
 res.setHeaders(headers);
 ```
 
-Когда заголовки были установлены с помощью [`outgoingMessage.setHeaders()`](#outgoingmessagesetheadersheaders), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
+Когда заголовки были установлены с помощью [`outgoingMessage.setHeaders()`](#outgoingmessagesetheaders), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewritehead), причем заголовки, переданные в [`response.writeHead()`](#responsewritehead), будут иметь приоритет.
 
 ```js
 // Возвращает content-type = text/plain
@@ -2222,17 +2406,21 @@ const server = http.createServer((req, res) => {
 
 <!-- 0147.part.md -->
 
-### `outgoingMessage.setTimeout(msesc[, callback])`
+### outgoingMessage.setTimeout
+
+```js
+outgoingMessage.setTimeout(msesc[, callback])
+```
 
 -   `msesc` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, которая будет вызываться при возникновении тайм-аута. Аналогично привязке к событию `timeout`.
--   Возвращает: {this}
+-   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Когда сокет связан с сообщением и подключен, будет вызвана функция [`socket.setTimeout()`](net.md#socketsettimeouttimeout-callback) с `msecs` в качестве первого параметра.
 
 <!-- 0148.part.md -->
 
-### `outgoingMessage.socket`
+### outgoingMessage.socket
 
 -   {stream.Duplex}
 
@@ -2242,13 +2430,17 @@ const server = http.createServer((req, res) => {
 
 <!-- 0149.part.md -->
 
-### `outgoingMessage.uncork()`
+### outgoingMessage.uncork
+
+```js
+outgoingMessage.uncork();
+```
 
 См. [`writable.uncork()`](stream.md#writableuncork)
 
 <!-- 0150.part.md -->
 
-### `outgoingMessage.writableCorked`
+### outgoingMessage.writableCorked
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2256,7 +2448,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0151.part.md -->
 
-### `outgoingMessage.writableEnded`
+### outgoingMessage.writableEnded
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2264,7 +2456,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0152.part.md -->
 
-### `outgoingMessage.writableFinished`
+### outgoingMessage.writableFinished
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2272,7 +2464,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0153.part.md -->
 
-### `outgoingMessage.writableHighWaterMark`
+### outgoingMessage.writableHighWaterMark
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2280,7 +2472,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0154.part.md -->
 
-### `outgoingMessage.writableLength`
+### outgoingMessage.writableLength
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2288,7 +2480,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0155.part.md -->
 
-### `outgoingMessage.writableObjectMode`
+### outgoingMessage.writableObjectMode
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2296,9 +2488,13 @@ const server = http.createServer((req, res) => {
 
 <!-- 0156.part.md -->
 
-### `outgoingMessage.write(chunk[, encoding][, callback])`
+### outgoingMessage.write
 
--   `chunk` {string|Buffer|Uint8Array}
+```js
+outgoingMessage.write(chunk[, encoding][, callback])
+```
+
+-   `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию**: `utf8`
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2313,7 +2509,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0157.part.md -->
 
-## `http.METHODS`
+## http.METHODS
 
 -   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -2321,7 +2517,7 @@ const server = http.createServer((req, res) => {
 
 <!-- 0158.part.md -->
 
-## `http.STATUS_CODES`
+## http.STATUS_CODES
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -2329,7 +2525,11 @@ const server = http.createServer((req, res) => {
 
 <!-- 0159.part.md -->
 
-## `http.createServer([options][, requestListener])`
+## http.createServer
+
+```js
+http.createServer([options][, requestListener])
+```
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -2352,11 +2552,11 @@ const server = http.createServer((req, res) => {
 
 -   Возвращает: {http.Server}
 
-Возвращает новый экземпляр [`http.Server`](#class-httpserver).
+Возвращает новый экземпляр [`http.Server`](#httpserver).
 
 `requestListener` - это функция, которая автоматически добавляется к событию [`'request'`](#event-request).
 
-```cjs
+```js
 const http = require('node:http');
 
 // Создаем локальный сервер для получения данных
@@ -2374,7 +2574,9 @@ const server = http.createServer((req, res) => {
 server.listen(8000);
 ```
 
-```cjs
+---
+
+```js
 const http = require('node:http');
 
 // Создаем локальный сервер для получения данных
@@ -2397,20 +2599,24 @@ server.listen(8000);
 
 <!-- 0160.part.md -->
 
-## `http.get(options[, callback])`
+## http.get
 
-<!-- 0161.part.md -->
+```js
+http.get(options[, callback])
+```
 
-## `http.get(url[, options][, callback])`
+```js
+http.get(url[, options][, callback])
+```
 
--   `url` {string | URL}
+-   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает те же `options`, что и [`http.request()`](#httprequestoptions-callback), с `method`, всегда установленным на `GET`. Свойства, унаследованные от прототипа, игнорируются.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
-Поскольку большинство запросов - это GET-запросы без тела, Node.js предоставляет этот удобный метод. Единственное отличие этого метода от [`http.request()`](#httprequestoptions-callback) в том, что он устанавливает метод на GET и автоматически вызывает `req.end()`. Обратный вызов должен позаботиться о потреблении данных ответа по причинам, указанным в разделе [`http.ClientRequest`](#class-httpclientrequest).
+Поскольку большинство запросов - это GET-запросы без тела, Node.js предоставляет этот удобный метод. Единственное отличие этого метода от [`http.request()`](#httprequest) в том, что он устанавливает метод на GET и автоматически вызывает `req.end()`. Обратный вызов должен позаботиться о потреблении данных ответа по причинам, указанным в разделе [`http.ClientRequest`](#httpclientrequest).
 
-Обратный вызов вызывается с единственным аргументом, который является экземпляром [`http.IncomingMessage`](#class-httpincomingmessage).
+Обратный вызов вызывается с единственным аргументом, который является экземпляром [`http.IncomingMessage`](#httpincomingmessage).
 
 Пример получения JSON:
 
@@ -2472,7 +2678,7 @@ const server = http.createServer((req, res) => {
 server.listen(8000);
 ```
 
-## `http.globalAgent`
+## http.globalAgent
 
 -   {http.Agent}
 
@@ -2480,7 +2686,7 @@ server.listen(8000);
 
 <!-- 0163.part.md -->
 
-## `http.maxHeaderSize`
+## http.maxHeaderSize
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2490,20 +2696,28 @@ server.listen(8000);
 
 <!-- 0164.part.md -->
 
-## `http.request(options[, callback])`
+## http.request
+
+```js
+http.request(options[, callback])
+```
 
 <!-- 0165.part.md -->
 
-## `http.request(url[, options][, callback])`.
+## http.request
 
--   `url` {string | URL}
+```js
+http.request(url[, options][, callback])
+```
+
+-   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `agent` {http.Agent | boolean} Управляет поведением [`Agent`](#class-httpagent). Возможные значения:
+    -   `agent` {http.Agent} | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Управляет поведением [`Agent`](#httpagent). Возможные значения:
         -   `undefined` (по умолчанию): использовать [`http.globalAgent`](#httpglobalagent) для данного хоста и порта.
         -   `Agent` объект: явно использовать переданный `Agent`.
         -   `false`: заставляет использовать новый `Agent` со значениями по умолчанию.
     -   `auth` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовая аутентификация (`'user:password'`) для вычисления заголовка Authorization.
-    -   `createConnection` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnectionoptions-callback). Любой поток [`Duplex`](stream.md#class-streamduplex) является допустимым возвращаемым значением.
+    -   `createConnection` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnection). Любой поток [`Duplex`](stream.md#class-streamduplex) является допустимым возвращаемым значением.
     -   `defaultPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт по умолчанию для протокола. **По умолчанию:** `agent.defaultPort`, если используется `Agent`, иначе `undefined`.
     -   `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство IP-адресов для использования при разрешении `host` или `hostname`. Допустимыми значениями являются `4` или `6`. Если значение не указано, будут использоваться IP v4 и v6.
     -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий заголовки запроса.
@@ -2538,7 +2752,7 @@ Node.js поддерживает несколько соединений для 
 
 Необязательный параметр `callback` будет добавлен как одноразовый слушатель для события [`'response'`](#event-response).
 
-`http.request()` возвращает экземпляр класса [`http.ClientRequest`](#class-httpclientrequest). Экземпляр `ClientRequest` представляет собой поток, доступный для записи. Если нужно загрузить файл с помощью POST-запроса, то пишите в объект `ClientRequest`.
+`http.request()` возвращает экземпляр класса [`http.ClientRequest`](#httpclientrequest). Экземпляр `ClientRequest` представляет собой поток, доступный для записи. Если нужно загрузить файл с помощью POST-запроса, то пишите в объект `ClientRequest`.
 
 ```js
 const http = require('node:http');
@@ -2589,9 +2803,9 @@ req.end();
 
 -   Отправка заголовка 'Content-Length' отключит кодировку по умолчанию.
 
--   Отправка заголовка 'Expect' немедленно отправит заголовки запроса. Обычно при отправке 'Expect: 100-continue' следует установить таймаут и слушателя для события `'continue''. См. RFC 2616 Раздел 8.2.3 для получения дополнительной информации.
+-   Отправка заголовка 'Expect' немедленно отправит заголовки запроса. Обычно при отправке 'Expect: 100-continue' следует установить таймаут и слушателя для события `'continue'`. См. RFC 2616 Раздел 8.2.3 для получения дополнительной информации.
 
--   Отправка заголовка Authorization отменяет использование опции `auth` для вычисления базовой аутентификации.
+-   Отправка заголовка `Authorization` отменяет использование опции `auth` для вычисления базовой аутентификации.
 
 Пример с использованием [`URL`](url.md#the-whatwg-url-api) в качестве `options`:
 
@@ -2613,19 +2827,19 @@ const req = http.request(options, (res) => {
 
 В случае ошибки соединения будут выданы следующие события:
 
--   `'socket'`
+-   `socket`
 -   `error`
--   `close`.
+-   `close`
 
 В случае преждевременного закрытия соединения до получения ответа, будут выданы следующие события в следующем порядке:
 
--   `'socket'`
--   `'error'` с ошибкой с сообщением `'Error: socket hang up'` и кодом `'ECONNRESET'`
+-   `socket`
+-   `error` с ошибкой с сообщением `'Error: socket hang up'` и кодом `'ECONNRESET'`
 -   `close`
 
 В случае преждевременного закрытия соединения после получения ответа, следующие события будут выдаваться в следующем порядке:
 
--   `'socket'`
+-   `socket`
 -   `response`
     -   `data` любое количество раз, на объекте `res`.
 -   (здесь соединение закрыто)
@@ -2690,7 +2904,11 @@ const req = http.request(options, (res) => {
 
 <!-- 0166.part.md -->
 
-## `http.validateHeaderName(name[, label])`
+## http.validateHeaderName
+
+```js
+http.validateHeaderName(name[, label])
+```
 
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка для сообщения об ошибке. **По умолчанию:** `Имя заголовка`.
@@ -2717,10 +2935,14 @@ try {
 
 <!-- 0167.part.md -->
 
-## `http.validateHeaderValue(name, value)`
+## http.validateHeaderValue
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+```js
+http.validateHeaderValue(name, value);
+```
+
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Выполняет низкоуровневые проверки предоставленного `значения`, которые выполняются при вызове `res.setHeader(name, value)`.
 
@@ -2757,7 +2979,11 @@ try {
 
 <!-- 0168.part.md -->
 
-## `http.setMaxIdleHTTPParsers(max)`
+## http.setMaxIdleHTTPParsers
+
+```js
+http.setMaxIdleHTTPParsers(max);
+```
 
 -   `max` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1000`.
 
