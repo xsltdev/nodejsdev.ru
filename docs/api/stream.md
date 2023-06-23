@@ -380,7 +380,7 @@ myStream.end('закончил запись данных');
 
 <!-- 0010.part.md -->
 
-#### stream.Writable {: #class-streamwritable}
+#### stream.Writable
 
 <!-- 0011.part.md -->
 
@@ -1858,7 +1858,11 @@ console.log('done'); // Поток завершен
 
 <!-- 0077.part.md -->
 
-##### `readable.find(fn[, options])`
+##### readable.find
+
+```js
+readable.find(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1875,7 +1879,7 @@ console.log('done'); // Поток завершен
 
 Этот метод похож на `Array.prototype.find` и вызывает `fn` на каждом куске в потоке, чтобы найти кусок с истинностным значением для `fn`. Как только ожидаемое возвращаемое значение вызова `fn` становится истинным, поток уничтожается, а обещание выполняется значением, для которого `fn` вернул истинное значение. Если все вызовы `fn` в чанках возвращают ложное значение, обещание выполняется с `undefined`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { stat } from 'node:fs/promises';
 
@@ -1902,7 +1906,11 @@ console.log('done'); // Поток завершен
 
 <!-- 0078.part.md -->
 
-##### `readable.every(fn[, options])`
+##### readable.every
+
+```js
+readable.every(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1919,7 +1927,7 @@ console.log('done'); // Поток завершен
 
 Этот метод похож на `Array.prototype.every` и вызывает `fn` на каждом куске в потоке, чтобы проверить, являются ли все ожидаемые возвращаемые значения истинным значением для `fn`. Как только вызов `fn` на чанке, ожидающем возврата значения, оказывается ложным, поток уничтожается, а обещание выполняется с `false`. Если все вызовы `fn` на чанках возвращают истинное значение, обещание выполняется с `true`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { stat } from 'node:fs/promises';
 
@@ -1946,7 +1954,11 @@ console.log('done'); // Поток завершен
 
 <!-- 0079.part.md -->
 
-##### `readable.flatMap(fn[, options])`
+##### readable.flatMap
+
+```js
+readable.flatMap(fn[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1965,7 +1977,7 @@ console.log('done'); // Поток завершен
 
 Можно вернуть поток или другую итерабельную или асинхронную итерабельную функцию из `fn`, и потоки результатов будут объединены (сплющены) в возвращаемый поток.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 import { createReadStream } from 'node:fs';
 
@@ -1993,7 +2005,11 @@ for await (const result of concatResult) {
 
 <!-- 0080.part.md -->
 
-##### `readable.drop(limit[, options])`
+##### readable.drop
+
+```js
+readable.drop(limit[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -2006,7 +2022,7 @@ for await (const result of concatResult) {
 
 Этот метод возвращает новый поток с первым `лимитом` отброшенных кусков.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 
 await Readable.from([1, 2, 3, 4]).drop(2).toArray(); // [3, 4]
@@ -2014,7 +2030,11 @@ await Readable.from([1, 2, 3, 4]).drop(2).toArray(); // [3, 4]
 
 <!-- 0081.part.md -->
 
-##### `readable.take(limit[, options])`
+##### readable.take
+
+```js
+readable.take(limit[, options])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -2035,7 +2055,11 @@ await Readable.from([1, 2, 3, 4]).take(2).toArray(); // [1, 2]
 
 <!-- 0082.part.md -->
 
-##### `readable.asIndexedPairs([options])`
+##### readable.asIndexedPairs
+
+```js
+readable.asIndexedPairs([options]);
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -2047,7 +2071,7 @@ await Readable.from([1, 2, 3, 4]).take(2).toArray(); // [1, 2]
 
 Этот метод возвращает новый поток с фрагментами базового потока в паре со счетчиком в виде `[index, chunk]`. Первое значение индекса равно 0, и оно увеличивается на 1 для каждого полученного куска.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 
 const pairs = await Readable.from(['a', 'b', 'c'])
@@ -2058,7 +2082,11 @@ console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 
 <!-- 0083.part.md -->
 
-##### `readable.reduce(fn[, initial[, options]])`
+##### readable.reduce
+
+```js
+readable.reduce(fn[, initial[, options]])
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -2080,7 +2108,7 @@ console.log(pairs); // [[0, 'a'], [1, 'b'], [2, 'c']]
 
 Если значение `initial` не указано, то в качестве начального значения используется первый кусок потока. Если поток пуст, обещание отклоняется с `TypeError` со свойством кода `ERR_INVALID_ARGS`.
 
-```mjs
+```js
 import { Readable } from 'node:stream';
 
 const ten = await Readable.from([1, 2, 3, 4]).reduce(
@@ -2097,7 +2125,7 @@ console.log(ten); // 10
 
 <!-- 0085.part.md -->
 
-#### Класс: `stream.Duplex`
+#### stream.Duplex
 
 Двусторонние потоки - это потоки, которые реализуют оба интерфейса [`Readable`](#class-streamreadable) и [`Writable`](#class-streamwritable).
 
@@ -2109,7 +2137,7 @@ console.log(ten); // 10
 
 <!-- 0086.part.md -->
 
-##### `duplex.allowHalfOpen`
+##### duplex.allowHalfOpen
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2119,9 +2147,9 @@ console.log(ten); // 10
 
 <!-- 0087.part.md -->
 
-#### Класс: `stream.Transform`
+#### stream.Transform
 
-Потоки Transform - это потоки [`Duplex`](#class-streamduplex), в которых выход каким-то образом связан с входом. Как и все потоки [`Duplex`](#class-streamduplex), потоки `Transform` реализуют интерфейсы [`Readable`](#class-streamreadable) и [`Writable`](#class-streamwritable).
+Потоки `Transform` - это потоки [`Duplex`](#streamduplex), в которых выход каким-то образом связан с входом. Как и все потоки [`Duplex`](#streamduplex), потоки `Transform` реализуют интерфейсы [`Readable`](#streamreadable) и [`Writable`](#streamwritable).
 
 Примеры потоков `Transform` включают:
 
@@ -2130,7 +2158,11 @@ console.log(ten); // 10
 
 <!-- 0088.part.md -->
 
-##### `transform.destroy([error])`
+##### transform.destroy
+
+```js
+transform.destroy([error]);
+```
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 -   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
@@ -2141,22 +2173,23 @@ console.log(ten); // 10
 
 <!-- 0089.part.md -->
 
-### `stream.finished(stream[, options], callback)`
+### stream.finished
 
--   `stream` {Stream|ReadableStream|WritableStream}
+```js
+stream.finished(stream[, options], callback)
+```
+
+-   `stream` [`<Stream>`](stream.md#stream) | [`<ReadableStream>`](webstreams.md#readablestream) | {WritableStream}
 
 Читаемый и/или записываемый поток/вебстрим.
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
     -   `error` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `false`, то вызов `emit('error', err)` не рассматривается как завершенный. **По умолчанию:** `true`.
     -   `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `false`, обратный вызов будет вызван, когда поток завершится, даже если поток все еще может быть доступен для чтения. **По умолчанию:** `true`.
     -   `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `false`, обратный вызов будет вызван при завершении потока, даже если поток может быть доступен для записи. **По умолчанию:** `true`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет прервать ожидание завершения потока. Основной поток не будет прерван, если сигнал прерван. Обратный вызов будет вызван с сообщением `AbortError`. Все зарегистрированные слушатели, добавленные этой функцией, также будут удалены.
     -   `cleanup` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) удалить все зарегистрированные слушатели потока. **По умолчанию:** `false`.
-
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова, принимающая необязательный аргумент ошибки.
-
 -   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция очистки, которая удаляет всех зарегистрированных слушателей.
 
 Функция для получения уведомления, когда поток больше не доступен для чтения, записи или произошла ошибка или событие преждевременного закрытия.
@@ -2193,21 +2226,23 @@ const cleanup = finished(rs, (err) => {
 
 <!-- 0090.part.md -->
 
-### `stream.pipeline(source[, ...transforms], destination, callback)`
+### stream.pipeline
 
-<!-- 0091.part.md -->
+```js
+stream.pipeline(source[, ...transforms], destination, callback)
 
-### `stream.pipeline(streams, callback)`
+stream.pipeline(streams, callback)
+```
 
--   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
--   `source` {Stream|Iterable|AsyncIterable|Function|ReadableStream}
-    -   Возвращает: {Iterable|AsyncIterable}
--   `...transforms` {Stream|Function|TransformStream}
+-   `streams` {Stream\[\]} | {Iterable\[\]} | {AsyncIterable\[\]} | {Function\[\]} | {ReadableStream\[\]} | {WritableStream\[\]} | {TransformStream\[\]}
+-   `source` [`<Stream>`](stream.md#stream) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<ReadableStream>`](webstreams.md#readablestream)
+    -   Возвращает: [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
+-   `...transforms` [`<Stream>`](stream.md#stream) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {TransformStream}
     -   `source` [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
     -   Возвращает: [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
--   `destination` {Stream|Function|WritableStream}
+-   `destination` [`<Stream>`](stream.md#stream) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | {WritableStream}
     -   `source` [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
-    -   Возвращает: {AsyncIterable|Promise}
+    -   Возвращает: [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается, когда конвейер полностью завершен.
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `val` Разрешенное значение `Promise`, возвращенное `destination`.
@@ -2271,7 +2306,11 @@ const server = http.createServer((req, res) => {
 
 <!-- 0092.part.md -->
 
-### `stream.compose(...streams)`
+### stream.compose
+
+```js
+stream.compose(...streams);
+```
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -2279,7 +2318,7 @@ const server = http.createServer((req, res) => {
 
     `stream.compose` является экспериментальным.
 
--   `streams` {Stream\[\]|Iterable\[\]|AsyncIterable\[\]|Function\[\]| ReadableStream\[\]|WritableStream\[\]|TransformStream\[\]}
+-   `streams` {Stream\[\]} | {Iterable\[\]} | {AsyncIterable\[\]} | {Function\[\]} | {ReadableStream\[\]} | {WritableStream\[\]} | {TransformStream\[\]}
 -   Возвращает: {stream.Duplex}
 
 Объединяет два или более потоков в поток `Duplex`, который пишет в первый поток и читает из последнего. Каждый предоставленный поток передается в следующий, используя `stream.pipeline`. Если какой-либо из потоков ошибается, то все они уничтожаются, включая внешний поток `Duplex`.
@@ -2288,7 +2327,7 @@ const server = http.createServer((req, res) => {
 
 Если передается `Function`, то это должен быть фабричный метод, принимающий `Iterable` источника.
 
-```mjs
+```js
 import { compose, Transform } from 'node:stream';
 
 const removeSpaces = new Transform({
@@ -2321,7 +2360,7 @@ console.log(res); // prints 'HELLOWORLD'
 
 <!-- конец списка -->
 
-```mjs
+```js
 import { compose } from 'node:stream';
 import { finished } from 'node:stream/promises';
 
@@ -2358,7 +2397,11 @@ console.log(res); // печатает 'HELLOWORLD'
 
 <!-- 0093.part.md -->
 
-### `stream.Readable.from(iterable[, options])`
+### stream.Readable.from
+
+```js
+stream.Readable.from(iterable[, options])
+```
 
 -   `iterable` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Объект, реализующий протокол итератора `Symbol.asyncIterator` или `Symbol.iterator`. Выдает событие 'error', если передано нулевое значение.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры, предоставляемые `new stream.Readable([options])`. По умолчанию, `Readable.from()` будет устанавливать `options.objectMode` в `true`, если это не будет явно отклонено установкой `options.objectMode` в `false`.
@@ -2692,7 +2735,7 @@ readable
 ### `stream.addAbortSignal(signal, stream)`
 
 -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Сигнал, представляющий возможную отмену
--   `stream` {Stream|ReadableStream|WritableStream}
+-   `stream` [`<Stream>`](stream.md#stream) | [`<ReadableStream>`](webstreams.md#readablestream) | {WritableStream}
 
 Поток, к которому нужно прикрепить сигнал.
 

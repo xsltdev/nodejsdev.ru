@@ -101,6 +101,39 @@ const replsSplit = [
 	},
 	{
 		from:
+			'{Stream|Iterable|AsyncIterable|Function|ReadableStream}',
+		to:
+			'{Stream} | {Iterable} | {AsyncIterable} | {Function} | {ReadableStream}',
+	},
+	{
+		from: '{Iterable|AsyncIterable}',
+		to: '{Iterable} | {AsyncIterable}',
+	},
+	{
+		from: '{Stream|Function|TransformStream}',
+		to: '{Stream} | {Function} | {TransformStream}',
+	},
+	{
+		from: '{Stream|Function|WritableStream}',
+		to: '{Stream} | {Function} | {WritableStream}',
+	},
+	{
+		from: '{AsyncIterable|Promise}',
+		to: '{AsyncIterable} | {Promise}',
+	},
+	{
+		from:
+			'{Stream\\[\\]|Iterable\\[\\]|AsyncIterable\\[\\]|Function\\[\\]|ReadableStream\\[\\]|WritableStream\\[\\]|TransformStream\\[\\]}',
+		to:
+			'{Stream\\[\\]} | {Iterable\\[\\]} | {AsyncIterable\\[\\]} | {Function\\[\\]} | {ReadableStream\\[\\]} | {WritableStream\\[\\]} | {TransformStream\\[\\]}',
+	},
+	{
+		from: '{Stream|ReadableStream|WritableStream}',
+		to:
+			'{Stream} | {ReadableStream} | {WritableStream}',
+	},
+	{
+		from:
 			'{Stream\\[\\]|Iterable\\[\\]|AsyncIterable\\[\\]|Function\\[\\]}',
 		to:
 			'{Stream\\[\\]} | {Iterable\\[\\]} | {AsyncIterable\\[\\]} | {Function\\[\\]}',
