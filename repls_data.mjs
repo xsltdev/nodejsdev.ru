@@ -88,12 +88,22 @@ const replsSplit = [
 		to: '{Object} | {Array}',
 	},
 	{
+		from: '{Readable|Duplex|ReadableStream}',
+		to: '{Readable} | {Duplex} | {ReadableStream}',
+	},
+	{
 		from: '{RegExp|Function}',
 		to: '{RegExp} | {Function}',
 	},
 	{
 		from: '{RegExp|Function|Object|Error}',
 		to: '{RegExp} | {Function} | {Object} | {Error}',
+	},
+	{
+		from:
+			'{Stream|Blob|ArrayBuffer|string|Iterable|AsyncIterable|AsyncGeneratorFunction|AsyncFunction|Promise|Object|ReadableStream|WritableStream}',
+		to:
+			'{Stream} | {Blob} | {ArrayBuffer} | {string} | {Iterable} | {AsyncIterable} | {AsyncGeneratorFunction} | {AsyncFunction} | {Promise} | {Object} | {ReadableStream} | {WritableStream}',
 	},
 	{
 		from: '{Stream|Function}',
@@ -116,6 +126,16 @@ const replsSplit = [
 	{
 		from: '{Stream|Function|WritableStream}',
 		to: '{Stream} | {Function} | {WritableStream}',
+	},
+	{
+		from: '{stream.Readable|ReadableStream}',
+		to: '{stream.Readable} | {ReadableStream}',
+	},
+	{
+		from:
+			'{Readable|Writable|Duplex|WritableStream|ReadableStream}',
+		to:
+			'{Readable} | {Writable} | {Duplex} | {WritableStream} | {ReadableStream}',
 	},
 	{
 		from: '{AsyncIterable|Promise}',
