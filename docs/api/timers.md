@@ -49,7 +49,11 @@ description: Модуль timer предоставляет глобальный 
 
 ### `timeout.close()`
 
-> Стабильность: 3 - Наследие: Используйте [`clearTimeout()`](#cleartimeouttimeout) вместо этого.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+
+    Используйте [`clearTimeout()`](#cleartimeouttimeout) вместо этого.
 
 -   Возвращает: {Timeout} ссылку на `timeout`.
 
@@ -93,7 +97,11 @@ description: Модуль timer предоставляет глобальный 
 
 Таймер в Node.js - это внутренняя конструкция, которая вызывает заданную функцию через определенный период времени. Время вызова функции таймера зависит от того, какой метод был использован для создания таймера и какую другую работу выполняет цикл событий Node.js.
 
-### `setImmediate(callback[, ...args])`
+### `setImmediate()`
+
+```js
+setImmediate(callback[, ...args])
+```
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно вызвать в конце этого витка Node.js [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#setimmediate-vs-settimeout)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для передачи при вызове `callback`.
@@ -107,7 +115,11 @@ description: Модуль timer предоставляет глобальный 
 
 У этого метода есть собственный вариант для обещаний, который доступен с помощью [`timersPromises.setImmediate()`](#timerspromisessetimmediatevalue-options).
 
-### `setInterval(callback[, delay[, ...args]])`
+### `setInterval()`
+
+```js
+setInterval(callback[, delay[, ...args]])
+```
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для вызова по истечении таймера.
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
@@ -122,16 +134,20 @@ description: Модуль timer предоставляет глобальный 
 
 У этого метода есть собственный вариант для обещаний, который доступен с помощью [`timersPromises.setInterval()`](#timerspromisessetintervaldelay-value-options).
 
-### `setTimeout(callback[, delay[, ...args]])`
+### `setTimeout()`
+
+```js
+setTimeout(callback[, delay[, ...args]])
+```
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для вызова по истечении таймера.
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд, которое нужно выждать перед вызовом `callback`. **По умолчанию:** `1`.
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы, которые нужно передать при вызове `обратного действия`.
 -   Возвращает: {Timeout} для использования с [`clearTimeout()`](#cleartimeouttimeout)
 
-Планирует выполнение однократного `обратного вызова` через `задержку` миллисекунд.
+Планирует выполнение однократного `callback` через `delay` миллисекунд.
 
-Скорее всего, `обратный вызов` не будет вызван точно через `delay` миллисекунд. Node.js не дает никаких гарантий относительно точного времени срабатывания обратных вызовов, а также их порядка. Обратный вызов будет вызван как можно ближе к указанному времени.
+Скорее всего, `callback` не будет вызван точно через `delay` миллисекунд. Node.js не дает никаких гарантий относительно точного времени срабатывания обратных вызовов, а также их порядка. Обратный вызов будет вызван как можно ближе к указанному времени.
 
 Если `delay` больше `2147483647` или меньше `1`, `delay` будет установлен в `1`. Нецелые задержки усекаются до целого числа.
 
@@ -187,19 +203,31 @@ setTimeoutPromise(1000, 'foobar', { signal })
 ac.abort();
 ```
 
-### `clearImmediate(immediate)`
+### `clearImmediate()`
+
+```js
+clearImmediate(immediate);
+```
 
 -   `immediate` {Immediate} Объект `Immediate`, возвращенный командой [`setImmediate()`](#setimmediatecallback-args).
 
 Отменяет объект `Immediate`, созданный [`setImmediate()`](#setimmediatecallback-args).
 
-### `clearInterval(timeout)`
+### `clearInterval()`
+
+```js
+clearInterval(timeout);
+```
 
 -   `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setInterval()`](#setintervalcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
 
 Отменяет объект `Timeout`, созданный [`setInterval()`](#setintervalcallback-delay-args).
 
-### `clearTimeout(timeout)`
+### `clearTimeout()`
+
+```js
+clearTimeout(timeout);
+```
 
 -   `timeout` {Timeout|string|number} Объект `Timeout`, возвращаемый [`setTimeout()`](#settimeoutcallback-delay-args) или [primitive](#timeoutsymboltoprimitive) объекта `Timeout` в виде строки или числа.
 
@@ -209,23 +237,31 @@ ac.abort();
 
 API `timers/promises` предоставляет альтернативный набор функций таймера, которые возвращают объекты `Promise`. API доступен через `require('node:timers/promises')`.
 
-```mjs
-import {
-    setTimeout,
-    setImmediate,
-    setInterval,
-} from 'timers/promises';
-```
+=== "MJS"
 
-```cjs
-const {
-    setTimeout,
-    setImmediate,
-    setInterval,
-} = require('node:timers/promises');
-```
+    ```js
+    import {
+    	setTimeout,
+    	setImmediate,
+    	setInterval,
+    } from 'timers/promises';
+    ```
 
-### `timersPromises.setTimeout([delay[, value[, options]]])`
+=== "CJS"
+
+    ```js
+    const {
+    	setTimeout,
+    	setImmediate,
+    	setInterval,
+    } = require('node:timers/promises');
+    ```
+
+### `timersPromises.setTimeout()`
+
+```js
+timersPromises.setTimeout([delay[, value[, options]]])
+```
 
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд ожидания перед выполнением обещания. **По умолчанию:** `1`.
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым будет выполнено обещание.
@@ -233,46 +269,62 @@ const {
     -   `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Устанавливается в `false`, чтобы указать, что запланированный `Timeout` не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout`.
 
-```mjs
-import { setTimeout } from 'timers/promises';
+=== "MJS"
 
-const res = await setTimeout(100, 'result');
+    ```js
+    import { setTimeout } from 'timers/promises';
 
-console.log(res); // Печатает 'result'
-```
+    const res = await setTimeout(100, 'result');
 
-```cjs
-const { setTimeout } = require('node:timers/promises');
-
-setTimeout(100, 'result').then((res) => {
     console.log(res); // Печатает 'result'
-});
-```
+    ```
 
-### `timersPromises.setImmediate([value[, options]])`.
+=== "CJS"
+
+    ```js
+    const { setTimeout } = require('node:timers/promises');
+
+    setTimeout(100, 'result').then((res) => {
+    	console.log(res); // Печатает 'result'
+    });
+    ```
+
+### `timersPromises.setImmediate()`
+
+```js
+timersPromises.setImmediate([value[, options]])
+```
 
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым обещание будет выполнено.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Устанавливается в `false`, чтобы указать, что запланированное `Immediate` не должно требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Immediate`.
 
-```mjs
-import { setImmediate } from 'timers/promises';
+=== "MJS"
 
-const res = await setImmediate('result');
+    ```js
+    import { setImmediate } from 'timers/promises';
 
-console.log(res); // Печатает 'result'
-```
+    const res = await setImmediate('result');
 
-```cjs
-const { setImmediate } = require('node:timers/promises');
-
-setImmediate('result').then((res) => {
     console.log(res); // Печатает 'result'
-});
-```
+    ```
 
-### `timersPromises.setInterval([delay[, value[, options]]])`
+=== "CJS"
+
+    ```js
+    const { setImmediate } = require('node:timers/promises');
+
+    setImmediate('result').then((res) => {
+    	console.log(res); // Печатает 'result'
+    });
+    ```
+
+### `timersPromises.setInterval()`
+
+```js
+timersPromises.setInterval([delay[, value[, options]]])
+```
 
 Возвращает асинхронный итератор, который генерирует значения в интервале `delay` мс. Если `ref` равно `true`, необходимо явно или неявно вызвать `next()` асинхронного итератора, чтобы сохранить цикл событий.
 
@@ -282,41 +334,51 @@ setImmediate('result').then((res) => {
     -   `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Устанавливается в `false`, чтобы указать, что запланированный `Timeout` между итерациями не должен требовать, чтобы цикл событий Node.js оставался активным. **По умолчанию:** `true`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Необязательный `AbortSignal`, который может быть использован для отмены запланированного `Timeout` между операциями.
 
-```mjs
-import { setInterval } from 'timers/promises';
+=== "MJS"
 
-const interval = 100;
-for await (const startTime of setInterval(
-    interval,
-    Date.now()
-)) {
-    const now = Date.now();
-    console.log(now);
-    if (now - startTime > 1000) break;
-}
-console.log(Date.now());
-```
+    ```js
+    import { setInterval } from 'timers/promises';
 
-```cjs
-const { setInterval } = require('node:timers/promises');
-const interval = 100;
-
-(async function () {
+    const interval = 100;
     for await (const startTime of setInterval(
-        interval,
-        Date.now()
+    	interval,
+    	Date.now()
     )) {
-        const now = Date.now();
-        console.log(now);
-        if (now - startTime > 1000) break;
+    	const now = Date.now();
+    	console.log(now);
+    	if (now - startTime > 1000) break;
     }
     console.log(Date.now());
-})();
+    ```
+
+=== "CJS"
+
+    ```js
+    const { setInterval } = require('node:timers/promises');
+    const interval = 100;
+
+    (async function () {
+    	for await (const startTime of setInterval(
+    		interval,
+    		Date.now()
+    	)) {
+    		const now = Date.now();
+    		console.log(now);
+    		if (now - startTime > 1000) break;
+    	}
+    	console.log(Date.now());
+    })();
+    ```
+
+### `timersPromises.scheduler.wait()`
+
+```js
+timersPromises.scheduler.wait(delay[, options])
 ```
 
-### `timersPromises.scheduler.wait(delay[, options])`
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-> Стабильность: 1 - Экспериментально
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, которое нужно подождать перед разрешением обещания.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -327,7 +389,7 @@ const interval = 100;
 
 Вызов `timersPromises.scheduler.wait(delay, options)` примерно эквивалентен вызову `timersPromises.setTimeout(delay, undefined, options)` за исключением того, что опция `ref` не поддерживается.
 
-```mjs
+```js
 import { scheduler } from 'node:timers/promises';
 
 await scheduler.wait(1000); // Подождите одну секунду перед продолжением
@@ -335,11 +397,12 @@ await scheduler.wait(1000); // Подождите одну секунду пер
 
 ### `timersPromises.scheduler.yield()`
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Экспериментальный API, определенный в проекте спецификации [Scheduling APIs](https://github.com/WICG/scheduling-apis), разрабатываемой как стандартный API для веб-платформы.
 
 Вызов `timersPromises.scheduler.yield()` эквивалентен вызову `timersPromises.setImmediate()` без аргументов.
-

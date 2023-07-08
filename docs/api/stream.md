@@ -1460,7 +1460,7 @@ myReader.on('readable', () => {
 
 <!-- 0069.part.md -->
 
-##### readable\[Symbol.asyncIterator\]
+##### `readable[Symbol.asyncIterator]`
 
 ```js
 readable[Symbol.asyncIterator]();

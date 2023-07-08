@@ -372,33 +372,37 @@ Node.js также поддерживает следующие двоично-т
 
 Экземпляры `Buffer` можно итерировать, используя синтаксис `for..of`:
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.from([1, 2, 3]);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-for (const b of buf) {
-    console.log(b);
-}
-// Печатает:
-// 1
-// 2
-// 3
-```
+    const buf = Buffer.from([1, 2, 3]);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    for (const b of buf) {
+    	console.log(b);
+    }
+    // Печатает:
+    // 1
+    // 2
+    // 3
+    ```
 
-const buf = Buffer.from([1, 2, 3]);
+=== "CJS"
 
-for (const b of buf) {
-    console.log(b);
-}
-// Печатает:
-// 1
-// 2
-// 3
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.from([1, 2, 3]);
+
+    for (const b of buf) {
+    	console.log(b);
+    }
+    // Печатает:
+    // 1
+    // 2
+    // 3
+    ```
 
 Кроме того, для создания итераторов можно использовать методы [`buf.values()`](#bufvalues), [`buf.keys()`](#bufkeys) и [`buf.entries()`](#bufentries).
 
@@ -406,7 +410,11 @@ for (const b of buf) {
 
 В [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) заключены неизменяемые, необработанные данные, которые могут безопасно использоваться несколькими рабочими потоками.
 
-### `new Buffer.Blob([sources[, options]])`
+### `new Buffer.Blob()`
+
+```js
+new Buffer.Blob([sources[, options]])
+```
 
 -   `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Blob[]>`](buffer.md#blob) Массив строк, [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или [`<Blob>`](buffer.md#blob) объектов, или любая смесь таких объектов, которые будут храниться в `Blob`.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -429,7 +437,11 @@ for (const b of buf) {
 
 Общий размер `блоба` в байтах.
 
-### `blob.slice([start[, end[, type]]])`
+### `blob.slice()`
+
+```js
+blob.slice([start[, end[, type]]])
+```
 
 -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальный индекс.
 -   `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Конечный индекс.
@@ -459,67 +471,77 @@ for (const b of buf) {
 
 После создания объекта [`<Blob>`](buffer.md#blob) он может быть отправлен через `MessagePort` в несколько пунктов назначения без передачи или немедленного копирования данных. Данные, содержащиеся в `Blob`, копируются только при вызове методов `arrayBuffer()` или `text()`.
 
-```mjs
-import { Blob, Buffer } from 'node:buffer';
-import { setTimeout as delay } from 'node:timers/promises';
+=== "MJS"
 
-const blob = new Blob(['hello there']);
+    ```js
+    import { Blob, Buffer } from 'node:buffer';
+    import { setTimeout as delay } from 'node:timers/promises';
 
-const mc1 = new MessageChannel();
-const mc2 = new MessageChannel();
+    const blob = new Blob(['hello there']);
 
-mc1.port1.onmessage = async ({ data }) => {
-    console.log(await data.arrayBuffer());
-    mc1.port1.close();
-};
+    const mc1 = new MessageChannel();
+    const mc2 = new MessageChannel();
 
-mc2.port1.onmessage = async ({ data }) => {
-    await delay(1000);
-    console.log(await data.arrayBuffer());
-    mc2.port1.close();
-};
+    mc1.port1.onmessage = async ({ data }) => {
+    	console.log(await data.arrayBuffer());
+    	mc1.port1.close();
+    };
 
-mc1.port2.postMessage(blob);
-mc2.port2.postMessage(blob);
+    mc2.port1.onmessage = async ({ data }) => {
+    	await delay(1000);
+    	console.log(await data.arrayBuffer());
+    	mc2.port1.close();
+    };
 
-// Blob все еще можно использовать после отправки сообщения.
-blob.text().then(console.log);
-```
+    mc1.port2.postMessage(blob);
+    mc2.port2.postMessage(blob);
 
-```cjs
-const { Blob, Buffer } = require('node:buffer');
-const {
-    setTimeout: delay,
-} = require('node:timers/promises');
+    // Blob все еще можно использовать после отправки сообщения.
+    blob.text().then(console.log);
+    ```
 
-const blob = new Blob(['hello there']);
+=== "CJS"
 
-const mc1 = new MessageChannel();
-const mc2 = new MessageChannel();
+    ```js
+    const { Blob, Buffer } = require('node:buffer');
+    const {
+    	setTimeout: delay,
+    } = require('node:timers/promises');
 
-mc1.port1.onmessage = async ({ data }) => {
-    console.log(await data.arrayBuffer());
-    mc1.port1.close();
-};
+    const blob = new Blob(['hello there']);
 
-mc2.port1.onmessage = async ({ data }) => {
-    await delay(1000);
-    console.log(await data.arrayBuffer());
-    mc2.port1.close();
-};
+    const mc1 = new MessageChannel();
+    const mc2 = new MessageChannel();
 
-mc1.port2.postMessage(blob);
-mc2.port2.postMessage(blob);
+    mc1.port1.onmessage = async ({ data }) => {
+    	console.log(await data.arrayBuffer());
+    	mc1.port1.close();
+    };
 
-// Blob все еще можно использовать после отправки сообщения.
-blob.text().then(console.log);
-```
+    mc2.port1.onmessage = async ({ data }) => {
+    	await delay(1000);
+    	console.log(await data.arrayBuffer());
+    	mc2.port1.close();
+    };
+
+    mc1.port2.postMessage(blob);
+    mc2.port2.postMessage(blob);
+
+    // Blob все еще можно использовать после отправки сообщения.
+    blob.text().then(console.log);
+    ```
 
 ## Класс: `Buffer`
 
 Класс `Buffer` - это глобальный тип для работы с двоичными данными напрямую. Он может быть построен различными способами.
 
-### Статический метод: `Buffer.alloc(size[, fill[, encoding]])`
+### `Buffer.alloc()`
+
+Статический метод:
+
+```js
+Buffer.alloc(size[, fill[, encoding]])
+```
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   `fill` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для предварительного заполнения нового `Buffer`. **По умолчанию:** `0`.
@@ -527,71 +549,89 @@ blob.text().then(console.log);
 
 Выделяет новый `Buffer` размером `size` байт. Если `fill` - `undefined`, `Buffer` будет заполнен нулями.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.alloc(5);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf);
-// Печатает: <Буфер 00 00 00 00 00 00 00>
-```
+    const buf = Buffer.alloc(5);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf);
+    // Печатает: <Буфер 00 00 00 00 00 00 00>
+    ```
 
-const buf = Buffer.alloc(5);
+=== "CJS"
 
-console.log(buf);
-// Печатает: <Буфер 00 00 00 00 00 00 00>
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.alloc(5);
+
+    console.log(buf);
+    // Печатает: <Буфер 00 00 00 00 00 00 00>
+    ```
 
 Если `size` больше чем [`buffer.constants.MAX_LENGTH`](#bufferconstantsmax_length) или меньше `0`, то будет выброшено [`ERR_INVALID_ARG_VALUE`](errors.md#err_invalid_arg_value).
 
 Если указано `fill`, выделенный `Buffer` будет инициализирован вызовом [`buf.fill(fill)`](#buffillvalue-offset-end-encoding).
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.alloc(5, 'a');
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf);
-// Печатает: <Буфер 61 61 61 61 61 61 61 61>
-```
+    const buf = Buffer.alloc(5, 'a');
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf);
+    // Печатает: <Буфер 61 61 61 61 61 61 61 61>
+    ```
 
-const buf = Buffer.alloc(5, 'a');
+=== "CJS"
 
-console.log(buf);
-// Печатает: <Буфер 61 61 61 61 61 61 61 61>
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.alloc(5, 'a');
+
+    console.log(buf);
+    // Печатает: <Буфер 61 61 61 61 61 61 61 61>
+    ```
 
 Если указаны и `fill`, и `encoding`, выделенный `Buffer` будет инициализирован вызовом [`buf.fill(fill, encoding)`](#buffillvalue-offset-end-encoding).
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf);
-// Печатает: <Буфер 68 65 6c 6c 6f 20 77 6f 72 6c 64>
-```
+    const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf);
+    // Печатает: <Буфер 68 65 6c 6c 6f 20 77 6f 72 6c 64>
+    ```
 
-const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
+=== "CJS"
 
-console.log(buf);
-// Печатает: <Буфер 68 65 6c 6c 6f 20 77 6f 72 6c 64>
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
+
+    console.log(buf);
+    // Печатает: <Буфер 68 65 6c 6c 6f 20 77 6f 72 6c 64>
+    ```
 
 Вызов `Buffer.alloc()` может быть ощутимо медленнее альтернативы `Buffer.allocUnsafe()`, но гарантирует, что содержимое вновь созданного экземпляра `Buffer` никогда не будет содержать конфиденциальных данных из предыдущих распределений, включая данные, которые могли быть выделены не для `Buffer`.
 
 Если `size` не является числом, будет выдана ошибка `TypeError`.
 
-### Статический метод: `Buffer.allocUnsafe(size)`
+### `Buffer.allocUnsafe()`
+
+Статический метод:
+
+```js
+Buffer.allocUnsafe(size);
+```
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 
@@ -599,41 +639,51 @@ console.log(buf);
 
 Базовая память для экземпляров `Buffer`, созданных таким образом, _не инициализируется_. Содержимое вновь созданного `Buffer` неизвестно и _может содержать конфиденциальные данные_. Вместо этого используйте `Buffer.alloc()` для инициализации экземпляров `Buffer` нулями.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.allocUnsafe(10);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf);
-// Печатает (содержимое может отличаться): <Буфер a0 8b 28 3f 01 00 00 00 00 50 32>
+    const buf = Buffer.allocUnsafe(10);
 
-buf.fill(0);
+    console.log(buf);
+    // Печатает (содержимое может отличаться): <Буфер a0 8b 28 3f 01 00 00 00 00 50 32>
 
-console.log(buf);
-// Печатает: <Буфер 00 00 00 00 00 00 00 00 00 00 00 00 00 00>
-```
+    buf.fill(0);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf);
+    // Печатает: <Буфер 00 00 00 00 00 00 00 00 00 00 00 00 00 00>
+    ```
 
-const buf = Buffer.allocUnsafe(10);
+=== "CJS"
 
-console.log(buf);
-// Печатает (содержимое может отличаться): <Буфер a0 8b 28 3f 01 00 00 00 00 50 32>
+    ```js
+    const { Buffer } = require('node:buffer');
 
-buf.fill(0);
+    const buf = Buffer.allocUnsafe(10);
 
-console.log(buf);
-// Печатает: <Буфер 00 00 00 00 00 00 00 00 00 00 00 00 00 00>
-```
+    console.log(buf);
+    // Печатает (содержимое может отличаться): <Буфер a0 8b 28 3f 01 00 00 00 00 50 32>
+
+    buf.fill(0);
+
+    console.log(buf);
+    // Печатает: <Буфер 00 00 00 00 00 00 00 00 00 00 00 00 00 00>
+    ```
 
 Если `size` не является числом, будет выдана ошибка `TypeError`.
 
 Модуль `Buffer` предварительно выделяет внутренний экземпляр `Buffer` размером `Buffer.poolSize`, который используется как пул для быстрого выделения новых экземпляров `Buffer`, созданных с помощью `Buffer.allocUnsafe()`, `Buffer. from(array)`, `Buffer.concat()`, и устаревшего конструктора `new Buffer(size)`, только если `size` меньше или равен `Buffer.poolSize >> 1` (пол `Buffer.poolSize` деленное на два).
 
-Использование этого предварительно распределенного внутреннего пула памяти является ключевым отличием между вызовом `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`. В частности, `Buffer.alloc(size, fill)` _никогда_ не будет использовать внутренний пул `Buffer`, в то время как `Buffer.allocUnsafe(size).fill(fill)` \*будет использовать внутренний пул `Buffer`, если `size` меньше или равен половине `Buffer.poolSize`. Разница едва заметна, но может быть важна, когда приложению требуется дополнительная производительность, которую обеспечивает `Buffer.allocUnsafe()`.
+Использование этого предварительно распределенного внутреннего пула памяти является ключевым отличием между вызовом `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`. В частности, `Buffer.alloc(size, fill)` _никогда_ не будет использовать внутренний пул `Buffer`, в то время как `Buffer.allocUnsafe(size).fill(fill)` будет использовать внутренний пул `Buffer`, если `size` меньше или равен половине `Buffer.poolSize`. Разница едва заметна, но может быть важна, когда приложению требуется дополнительная производительность, которую обеспечивает `Buffer.allocUnsafe()`.
 
-### Статический метод: `Buffer.allocUnsafeSlow(size)`
+### `Buffer.allocUnsafeSlow()`
+
+Статический метод:
+
+```js
+Buffer.allocUnsafeSlow(size);
+```
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 
@@ -645,49 +695,59 @@ console.log(buf);
 
 Однако в случае, когда разработчику может понадобиться сохранить небольшой участок памяти из пула на неопределенное время, может быть целесообразно создать экземпляр `Buffer` без пула, используя `Buffer.allocUnsafeSlow()` и затем скопировать соответствующие биты.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-// Нужно сохранить несколько небольших кусков памяти.
-const store = [];
+    ```js
+    import { Buffer } from 'node:buffer';
 
-socket.on('readable', () => {
-    let data;
-    while (null !== (data = readable.read())) {
-        // Выделяем место для сохраняемых данных.
-        const sb = Buffer.allocUnsafeSlow(10);
+    // Нужно сохранить несколько небольших кусков памяти.
+    const store = [];
 
-        // Копируем данные в новое выделение.
-        data.copy(sb, 0, 0, 10);
+    socket.on('readable', () => {
+    	let data;
+    	while (null !== (data = readable.read())) {
+    		// Выделяем место для сохраняемых данных.
+    		const sb = Buffer.allocUnsafeSlow(10);
 
-        store.push(sb);
-    }
-});
-```
+    		// Копируем данные в новое выделение.
+    		data.copy(sb, 0, 0, 10);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    		store.push(sb);
+    	}
+    });
+    ```
 
-// Нужно хранить несколько небольших кусков памяти.
-const store = [];
+=== "CJS"
 
-socket.on('readable', () => {
-    let data;
-    while (null !== (data = readable.read())) {
-        // Выделяем место для сохраняемых данных.
-        const sb = Buffer.allocUnsafeSlow(10);
+    ```js
+    const { Buffer } = require('node:buffer');
 
-        // Копируем данные в новое выделение.
-        data.copy(sb, 0, 0, 10);
+    // Нужно хранить несколько небольших кусков памяти.
+    const store = [];
 
-        store.push(sb);
-    }
-});
-```
+    socket.on('readable', () => {
+    	let data;
+    	while (null !== (data = readable.read())) {
+    		// Выделяем место для сохраняемых данных.
+    		const sb = Buffer.allocUnsafeSlow(10);
+
+    		// Копируем данные в новое выделение.
+    		data.copy(sb, 0, 0, 10);
+
+    		store.push(sb);
+    	}
+    });
+    ```
 
 Если `size` не является числом, будет выдана ошибка `TypeError`.
 
-### Статический метод: `Buffer.byteLength(string[, encoding])`
+### `Buffer.byteLength()`
+
+Статический метод:
+
+```js
+Buffer.byteLength(string[, encoding])
+```
 
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) Значение для вычисления длины.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` является строкой, то это ее кодировка. **По умолчанию:** `'utf8'`.
@@ -697,33 +757,43 @@ socket.on('readable', () => {
 
 Для `'base64'`, `'base64url'` и `'hex'` эта функция предполагает корректный ввод. Для строк, которые содержат данные не base64/hex-кодировки (например, пробелы), возвращаемое значение может быть больше, чем длина `буфера`, созданного из строки.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const str = '\u00bd + \u00bc = \u00be';
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(
-    `${str}: ${str.length} символов, ` +
-        `${Buffer.byteLength(str, 'utf8')} bytes`
-);
-// Печатает: ½ + ¼ = ¾: 9 символов, 12 байт
-```
+    const str = '\u00bd + \u00bc = \u00be';
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(
+    	`${str}: ${str.length} символов, ` +
+    		`${Buffer.byteLength(str, 'utf8')} bytes`
+    );
+    // Печатает: ½ + ¼ = ¾: 9 символов, 12 байт
+    ```
 
-const str = '\u00bd + \u00bc = \u00be';
+=== "CJS"
 
-console.log(
-    `${str}: ${str.length} символов, ` +
-        `${Buffer.byteLength(str, 'utf8')} bytes`
-);
-// Печатает: ½ + ¼ = ¾: 9 символов, 12 байт
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const str = '\u00bd + \u00bc = \u00be';
+
+    console.log(
+    	`${str}: ${str.length} символов, ` +
+    		`${Buffer.byteLength(str, 'utf8')} bytes`
+    );
+    // Печатает: ½ + ¼ = ¾: 9 символов, 12 байт
+    ```
 
 Если `string` является `Buffer`/[`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView)/[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)/ [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), возвращается длина байта, сообщенная `.byteLength`.
 
-### Статический метод: `Buffer.compare(buf1, buf2)`
+### `Buffer.compare()`
+
+Статический метод:
+
+```js
+Buffer.compare(buf1, buf2);
+```
 
 -   `buf1` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `buf2` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
@@ -731,89 +801,109 @@ console.log(
 
 Сравнивает `buf1` с `buf2`, обычно для сортировки массивов экземпляров `Buffer`. Это эквивалентно вызову [`buf1.compare(buf2)`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf1 = Buffer.from('1234');
-const buf2 = Buffer.from('0123');
-const arr = [buf1, buf2];
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(arr.sort(Buffer.compare));
-// Печатает: [ <Буфер 30 31 32 33>, <Буфер 31 32 33 34> ]
-// (Этот результат равен: [buf2, buf1]).
+    const buf1 = Buffer.from('1234');
+    const buf2 = Buffer.from('0123');
+    const arr = [buf1, buf2];
+
+    console.log(arr.sort(Buffer.compare));
+    // Печатает: [ <Буфер 30 31 32 33>, <Буфер 31 32 33 34> ]
+    // (Этот результат равен: [buf2, buf1]).
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf1 = Buffer.from('1234');
+    const buf2 = Buffer.from('0123');
+    const arr = [buf1, buf2];
+
+    console.log(arr.sort(Buffer.compare));
+    // Печатает: [ <Буфер 30 31 32 33>, <Буфер 31 32 33 34> ]
+    // (Этот результат равен: [buf2, buf1]).
+    ```
+
+### `Buffer.concat()`
+
+Статический метод:
+
+```js
+Buffer.concat(list[, totalLength])
 ```
-
-```cjs
-const { Buffer } = require('node:buffer');
-
-const buf1 = Buffer.from('1234');
-const buf2 = Buffer.from('0123');
-const arr = [buf1, buf2];
-
-console.log(arr.sort(Buffer.compare));
-// Печатает: [ <Буфер 30 31 32 33>, <Буфер 31 32 33 34> ]
-// (Этот результат равен: [buf2, buf1]).
-```
-
-### Статический метод: `Buffer.concat(list[, totalLength])`.
 
 -   `list` [`<Buffer[]>`](buffer.md#buffer) | [`<Uint8Array[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Список экземпляров `Buffer` или [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для конкатенации.
 -   `totalLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общая длина экземпляров `Buffer` в `списке` при конкатенации.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
-Возвращает новый `Буфер`, который является результатом объединения всех экземпляров `Буфера` в `списке`.
+Возвращает новый `Buffer`, который является результатом объединения всех экземпляров `Buffer` в `list`.
 
 Если в списке нет элементов или если `totalLength` равна 0, то возвращается новый `Buffer` нулевой длины.
 
 Если `totalLength` не указана, то она вычисляется из экземпляров `Buffer` в `list` путем сложения их длин.
 
-Если `totalLength` указана, она приводится к целому числу без знака. Если суммарная длина `буферов` в `списке` превышает `totalLength`, результат усекается до `totalLength`.
+Если `totalLength` указана, она приводится к целому числу без знака. Если суммарная длина `Buffer` в `list` превышает `totalLength`, результат усекается до `totalLength`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-// Создаем один `Buffer` из списка трех экземпляров `Buffer`.
+    ```js
+    import { Buffer } from 'node:buffer';
 
-const buf1 = Buffer.alloc(10);
-const buf2 = Buffer.alloc(14);
-const buf3 = Buffer.alloc(18);
-const totalLength = buf1.length + buf2.length + buf3.length;
+    // Создаем один `Buffer` из списка трех экземпляров `Buffer`.
 
-console.log(totalLength);
-// Печатает: 42
+    const buf1 = Buffer.alloc(10);
+    const buf2 = Buffer.alloc(14);
+    const buf3 = Buffer.alloc(18);
+    const totalLength = buf1.length + buf2.length + buf3.length;
 
-const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
+    console.log(totalLength);
+    // Печатает: 42
 
-console.log(bufA);
-// Печатает: <Буфер 00 00 00 00 00 ...
-console.log(bufA.length);
-// Печатает: 42
-```
+    const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(bufA);
+    // Печатает: <Буфер 00 00 00 00 00 ...
+    console.log(bufA.length);
+    // Печатает: 42
+    ```
 
-// Создаем один `Buffer` из списка трех экземпляров `Buffer`.
+=== "CJS"
 
-const buf1 = Buffer.alloc(10);
-const buf2 = Buffer.alloc(14);
-const buf3 = Buffer.alloc(18);
-const totalLength = buf1.length + buf2.length + buf3.length;
+    ```js
+    const { Buffer } = require('node:buffer');
 
-console.log(totalLength);
-// Печатает: 42
+    // Создаем один `Buffer` из списка трех экземпляров `Buffer`.
 
-const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
+    const buf1 = Buffer.alloc(10);
+    const buf2 = Buffer.alloc(14);
+    const buf3 = Buffer.alloc(18);
+    const totalLength = buf1.length + buf2.length + buf3.length;
 
-console.log(bufA);
-// Печатает: <Буфер 00 00 00 00 00 ...
-console.log(bufA.length);
-// Печатает: 42
-```
+    console.log(totalLength);
+    // Печатает: 42
+
+    const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
+
+    console.log(bufA);
+    // Печатает: <Буфер 00 00 00 00 00 ...
+    console.log(bufA.length);
+    // Печатает: 42
+    ```
 
 `Buffer.concat()` может также использовать внутренний пул `Buffer`, как это делает `Buffer.allocUnsafe()`.
 
-### Статический метод: `Buffer.copyBytesFrom(view[, offset[, length]])`
+### `Buffer.copyBytesFrom()`
+
+Статический метод:
+
+```js
+Buffer.copyBytesFrom(view[, offset[, length]])
+```
 
 -   `view` [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) для копирования.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальное смещение в `view`. **По умолчанию:**: `0`.
@@ -830,45 +920,59 @@ console.log(buf[0]); // 255
 console.log(buf[1]); // 255
 ```
 
-### Статический метод: `Buffer.from(array)`
+### `Buffer.from()`
+
+Статический метод:
+
+```js
+Buffer.from(array);
+```
 
 -   `array` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Выделяет новый `Буфер`, используя `массив` байтов в диапазоне `0` - `255`. Записи массива за пределами этого диапазона будут усечены, чтобы поместиться в него.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-// Создает новый буфер, содержащий байты UTF-8 строки 'buffer'.
-const buf = Buffer.from([
-    0x62,
-    0x75,
-    0x66,
-    0x66,
-    0x65,
-    0x72,
-]);
-```
+    ```js
+    import { Buffer } from 'node:buffer';
 
-```cjs
-const { Buffer } = require('node:buffer');
+    // Создает новый буфер, содержащий байты UTF-8 строки 'buffer'.
+    const buf = Buffer.from([
+    	0x62,
+    	0x75,
+    	0x66,
+    	0x66,
+    	0x65,
+    	0x72,
+    ]);
+    ```
 
-// Создает новый буфер, содержащий UTF-8 байты строки 'buffer'.
-const buf = Buffer.from([
-    0x62,
-    0x75,
-    0x66,
-    0x66,
-    0x65,
-    0x72,
-]);
-```
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    // Создает новый буфер, содержащий UTF-8 байты строки 'buffer'.
+    const buf = Buffer.from([
+    	0x62,
+    	0x75,
+    	0x66,
+    	0x66,
+    	0x65,
+    	0x72,
+    ]);
+    ```
 
 Если `array` не является `Array` или другим типом, подходящим для вариантов `Buffer.from()`, то будет выдан `TypeError`.
 
 `Buffer.from(array)` и `Buffer.from(string)` могут также использовать внутренний пул `Buffer`, как это делает `Buffer.allocUnsafe()`.
 
-### Статический метод: `Buffer.from(arrayBuffer[, byteOffset[, length]])`.
+Статический метод:
+
+```js
+Buffer.from(arrayBuffer[, byteOffset[, length]])
+```
 
 -   `arrayBuffer` [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), например, свойство `.buffer` для [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 -   `byteOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта для раскрытия. **По умолчанию:** `0`.
@@ -876,135 +980,155 @@ const buf = Buffer.from([
 
 Это создает представление [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) без копирования основной памяти. Например, при передаче ссылки на свойство `.buffer` экземпляра [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), вновь созданный `Buffer` будет использовать ту же выделенную память, что и основной `ArrayBuffer` [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const arr = new Uint16Array(2);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-arr[0] = 5000;
-arr[1] = 4000;
+    const arr = new Uint16Array(2);
 
-// Делит память с `arr`.
-const buf = Buffer.from(arr.buffer);
+    arr[0] = 5000;
+    arr[1] = 4000;
 
-console.log(buf);
-// Печатает: <Буфер 88 13 a0 0f>
+    // Делит память с `arr`.
+    const buf = Buffer.from(arr.buffer);
 
-// Изменение исходного Uint16Array изменяет и буфер.
-arr[1] = 6000;
+    console.log(buf);
+    // Печатает: <Буфер 88 13 a0 0f>
 
-console.log(buf);
-// Печатает: <Буфер 88 13 70 17>
-```
+    // Изменение исходного Uint16Array изменяет и буфер.
+    arr[1] = 6000;
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf);
+    // Печатает: <Буфер 88 13 70 17>
+    ```
 
-const arr = new Uint16Array(2);
+=== "CJS"
 
-arr[0] = 5000;
-arr[1] = 4000;
+    ```js
+    const { Buffer } = require('node:buffer');
 
-// Делит память с `arr`.
-const buf = Buffer.from(arr.buffer);
+    const arr = new Uint16Array(2);
 
-console.log(buf);
-// Печатает: <Буфер 88 13 a0 0f>
+    arr[0] = 5000;
+    arr[1] = 4000;
 
-// Изменение исходного Uint16Array изменяет и буфер.
-arr[1] = 6000;
+    // Делит память с `arr`.
+    const buf = Buffer.from(arr.buffer);
 
-console.log(buf);
-// Печатает: <Буфер 88 13 70 17>
-```
+    console.log(buf);
+    // Печатает: <Буфер 88 13 a0 0f>
+
+    // Изменение исходного Uint16Array изменяет и буфер.
+    arr[1] = 6000;
+
+    console.log(buf);
+    // Печатает: <Буфер 88 13 70 17>
+    ```
 
 Необязательные аргументы `byteOffset` и `length` задают диапазон памяти в `arrayBuffer`, который будет совместно использоваться `Buffer`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const ab = new ArrayBuffer(10);
-const buf = Buffer.from(ab, 0, 2);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf.length);
-// Печатает: 2
-```
+    const ab = new ArrayBuffer(10);
+    const buf = Buffer.from(ab, 0, 2);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf.length);
+    // Печатает: 2
+    ```
 
-const ab = new ArrayBuffer(10);
-const buf = Buffer.from(ab, 0, 2);
+=== "CJS"
 
-console.log(buf.length);
-// Печатает: 2
-```
+    ```js
+    const { Buffer } = require('node:buffer');
 
-Если `arrayBuffer` не является [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) или [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) или другим типом, подходящим для вариантов `Buffer.from()`, то будет выдан `TypeError`.
+    const ab = new ArrayBuffer(10);
+    const buf = Buffer.from(ab, 0, 2);
+
+    console.log(buf.length);
+    // Печатает: 2
+    ```
+
+Если `arrayBuffer` не является [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) или [`SharedArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) или другим типом, подходящим для вариантов `Buffer.from()`, то будет выдан `TypeError`.
 
 Важно помнить, что резервный `ArrayBuffer` может охватывать диапазон памяти, выходящий за границы представления `TypedArray`. Новый `Buffer`, созданный с помощью свойства `buffer` представления `TypedArray`:
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
-const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
-console.log(arrA.buffer === arrB.buffer); // true
+    ```js
+    import { Buffer } from 'node:buffer';
 
-const buf = Buffer.from(arrB.buffer);
-console.log(buf);
-// Prints: <Buffer 63 64 65 66>
+    const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
+    const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
+    console.log(arrA.buffer === arrB.buffer); // true
+
+    const buf = Buffer.from(arrB.buffer);
+    console.log(buf);
+    // Prints: <Buffer 63 64 65 66>
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
+    const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
+    console.log(arrA.buffer === arrB.buffer); // true
+
+    const buf = Buffer.from(arrB.buffer);
+    console.log(buf);
+    // Prints: <Buffer 63 64 65 66>
+    ```
+
+```js
+Buffer.from(buffer);
 ```
-
-```cjs
-const { Buffer } = require('node:buffer');
-
-const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
-const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
-console.log(arrA.buffer === arrB.buffer); // true
-
-const buf = Buffer.from(arrB.buffer);
-console.log(buf);
-// Prints: <Buffer 63 64 65 66>
-```
-
-### Статический метод: `Buffer.from(buffer)`
 
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого нужно скопировать данные.
 
 Копирует переданные данные `buffer` в новый экземпляр `Buffer`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf1 = Buffer.from('buffer');
-const buf2 = Buffer.from(buf1);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-buf1[0] = 0x61;
+    const buf1 = Buffer.from('buffer');
+    const buf2 = Buffer.from(buf1);
 
-console.log(buf1.toString());
-// Печатает: буфер
-console.log(buf2.toString());
-// Печатает: буфер
-```
+    buf1[0] = 0x61;
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf1.toString());
+    // Печатает: буфер
+    console.log(buf2.toString());
+    // Печатает: буфер
+    ```
 
-const buf1 = Buffer.from('buffer');
-const buf2 = Buffer.from(buf1);
+=== "CJS"
 
-buf1[0] = 0x61;
+    ```js
+    const { Buffer } = require('node:buffer');
 
-console.log(buf1.toString());
-// Печатает: буфер
-console.log(buf2.toString());
-// Печатает: буфер
-```
+    const buf1 = Buffer.from('buffer');
+    const buf2 = Buffer.from(buf1);
+
+    buf1[0] = 0x61;
+
+    console.log(buf1.toString());
+    // Печатает: буфер
+    console.log(buf2.toString());
+    // Печатает: буфер
+    ```
 
 Если `buffer` не является `Buffer` или другим типом, подходящим для вариантов `Buffer.from()`, то будет выдан `TypeError`.
 
-### Статический метод: `Buffer.from(object[, offsetOrEncoding[, length]])`
+```js
+Buffer.from(object[, offsetOrEncoding[, length]])
+```
 
 -   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, поддерживающий `Symbol.toPrimitive` или `valueOf()`.
 -   `offsetOrEncoding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Смещение байтов или кодировка.
@@ -1012,160 +1136,194 @@ console.log(buf2.toString());
 
 Для объектов, чья функция `valueOf()` возвращает значение, не равное строго `object`, возвращает `Buffer.from(object.valueOf(), offsetOrEncoding, length)`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf = Buffer.from(new String('this is a test'));
-// Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
-```
+    ```js
+    import { Buffer } from 'node:buffer';
 
-```cjs
-const { Buffer } = require('node:buffer');
+    const buf = Buffer.from(new String('this is a test'));
+    // Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
+    ```
 
-const buf = Buffer.from(new String('this is a test'));
-// Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
-```
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.from(new String('this is a test'));
+    // Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
+    ```
 
 Для объектов, поддерживающих `Symbol.toPrimitive`, возвращает `Buffer.from(object[Symbol.toPrimitive]('string'), offsetOrEncoding)`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-class Foo {
-    [Symbol.toPrimitive]() {
-        return 'это тест';
+    ```js
+    import { Buffer } from 'node:buffer';
+
+    class Foo {
+    	[Symbol.toPrimitive]() {
+    		return 'это тест';
+    	}
     }
-}
 
-const buf = Buffer.from(new Foo(), 'utf8');
-// Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>.
-```
+    const buf = Buffer.from(new Foo(), 'utf8');
+    // Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>.
+    ```
 
-```cjs
-const { Buffer } = require('node:buffer');
+=== "CJS"
 
-class Foo {
-    [Symbol.toPrimitive]() {
-        return 'это тест';
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    class Foo {
+    	[Symbol.toPrimitive]() {
+    		return 'это тест';
+    	}
     }
-}
 
-const buf = Buffer.from(new Foo(), 'utf8');
-// Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>.
-```
+    const buf = Buffer.from(new Foo(), 'utf8');
+    // Печатает: <Буфер 74 68 69 73 20 69 73 20 61 20 74 65 73 74>.
+    ```
 
 Если `object` не имеет упомянутых методов или не является другим типом, подходящим для вариантов `Buffer.from()`, будет выброшен `TypeError`.
 
-### Статический метод: `Buffer.from(string[, encoding])`
-
--   `строка` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `строки`. **По умолчанию:** `'utf8'`.
-
-Создает новый `буфер`, содержащий `строку`. Параметр `encoding` определяет кодировку символов, которая будет использоваться при преобразовании `строки` в байты.
-
-```mjs
-import { Buffer } from 'node:buffer';
-
-const buf1 = Buffer.from('this is a tést');
-const buf2 = Buffer.from(
-    '7468697320697320612074c3a97374',
-    'hex'
-);
-
-console.log(buf1.toString());
-// Печатает: это тэст
-console.log(buf2.toString());
-// Печатает: это тест
-console.log(buf1.toString('latin1'));
-// Выводит: это тэст
+```js
+Buffer.from(string[, encoding])
 ```
 
-```cjs
-const { Buffer } = require('node:buffer');
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
 
-const buf1 = Buffer.from('this is a tést');
-const buf2 = Buffer.from(
-    '7468697320697320612074c3a97374',
-    'hex'
-);
+Создает новый `Buffer`, содержащий `string`. Параметр `encoding` определяет кодировку символов, которая будет использоваться при преобразовании `string` в байты.
 
-console.log(buf1.toString());
-// Печатает: это тэст
-console.log(buf2.toString());
-// Печатает: это тест
-console.log(buf1.toString('latin1'));
-// Выводит: это тэст
-```
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+
+    const buf1 = Buffer.from('this is a tést');
+    const buf2 = Buffer.from(
+    	'7468697320697320612074c3a97374',
+    	'hex'
+    );
+
+    console.log(buf1.toString());
+    // Печатает: это тэст
+    console.log(buf2.toString());
+    // Печатает: это тест
+    console.log(buf1.toString('latin1'));
+    // Выводит: это тэст
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf1 = Buffer.from('this is a tést');
+    const buf2 = Buffer.from(
+    	'7468697320697320612074c3a97374',
+    	'hex'
+    );
+
+    console.log(buf1.toString());
+    // Печатает: это тэст
+    console.log(buf2.toString());
+    // Печатает: это тест
+    console.log(buf1.toString('latin1'));
+    // Выводит: это тэст
+    ```
 
 Если `string` не является строкой или другим типом, подходящим для вариантов `Buffer.from()`, будет выдан `TypeError`.
 
-### Статический метод: `Buffer.isBuffer(obj)`
+### `Buffer.isBuffer()`
+
+Статический метод:
+
+```js
+Buffer.isBuffer(obj);
+```
 
 -   `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `obj` является `Buffer`, `false` в противном случае.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-Buffer.isBuffer(Buffer.alloc(10)); // true
-Buffer.isBuffer(Buffer.from('foo')); // true
-Buffer.isBuffer('a string'); // false
-Buffer.isBuffer([]); // false
-Buffer.isBuffer(new Uint8Array(1024)); // false
+    ```js
+    import { Buffer } from 'node:buffer';
+
+    Buffer.isBuffer(Buffer.alloc(10)); // true
+    Buffer.isBuffer(Buffer.from('foo')); // true
+    Buffer.isBuffer('a string'); // false
+    Buffer.isBuffer([]); // false
+    Buffer.isBuffer(new Uint8Array(1024)); // false
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    Buffer.isBuffer(Buffer.alloc(10)); // true
+    Buffer.isBuffer(Buffer.from('foo')); // true
+    Buffer.isBuffer('a string'); // false
+    Buffer.isBuffer([]); // false
+    Buffer.isBuffer(new Uint8Array(1024)); // false
+    ```
+
+### `Buffer.isEncoding()`
+
+Статический метод:
+
+```js
+Buffer.isEncoding(encoding);
 ```
-
-```cjs
-const { Buffer } = require('node:buffer');
-
-Buffer.isBuffer(Buffer.alloc(10)); // true
-Buffer.isBuffer(Buffer.from('foo')); // true
-Buffer.isBuffer('a string'); // false
-Buffer.isBuffer([]); // false
-Buffer.isBuffer(new Uint8Array(1024)); // false
-```
-
-### Статический метод: `Buffer.isEncoding(encoding)`
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кодировки символов для проверки.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `encoding` является именем поддерживаемой кодировки символов, или `false` в противном случае.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-console.log(Buffer.isEncoding('utf8'));
-// Выводит: true
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(Buffer.isEncoding('hex'));
-// Печатает: true
+    console.log(Buffer.isEncoding('utf8'));
+    // Выводит: true
 
-console.log(Buffer.isEncoding('utf/8'));
-// Печатает: false
+    console.log(Buffer.isEncoding('hex'));
+    // Печатает: true
 
-console.log(Buffer.isEncoding(''));
-// Выводит: false
-```
+    console.log(Buffer.isEncoding('utf/8'));
+    // Печатает: false
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(Buffer.isEncoding(''));
+    // Выводит: false
+    ```
 
-console.log(Buffer.isEncoding('utf8'));
-// Выводит: true
+=== "CJS"
 
-console.log(Buffer.isEncoding('hex'));
-// Печатает: true
+    ```js
+    const { Buffer } = require('node:buffer');
 
-console.log(Buffer.isEncoding('utf/8'));
-// Печатает: false
+    console.log(Buffer.isEncoding('utf8'));
+    // Выводит: true
 
-console.log(Buffer.isEncoding(''));
-// Выводит: false
-```
+    console.log(Buffer.isEncoding('hex'));
+    // Печатает: true
 
-### Свойство класса: `Buffer.poolSize`
+    console.log(Buffer.isEncoding('utf/8'));
+    // Печатает: false
+
+    console.log(Buffer.isEncoding(''));
+    // Выводит: false
+    ```
+
+### `Buffer.poolSize`
 
 -   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `8192`.
 
@@ -1179,41 +1337,45 @@ console.log(Buffer.isEncoding(''));
 
 Этот оператор унаследован от `Uint8Array`, поэтому его поведение при доступе за пределы границ такое же, как и у `Uint8Array`. Другими словами, `buf[index]` возвращает `undefined`, когда `index` отрицателен или больше или равен `buf.length`, а `buf[index] = value` не изменяет буфер, если `index` отрицателен или `>= buf.length`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-// Копируем строку ASCII в `буфер` по одному байту за раз.
-// (Это работает только для ASCII-строк. В общем случае следует использовать
-// `Buffer.from()` для выполнения этого преобразования).
+    ```js
+    import { Buffer } from 'node:buffer';
 
-const str = 'Node.js';
-const buf = Buffer.allocUnsafe(str.length);
+    // Копируем строку ASCII в `буфер` по одному байту за раз.
+    // (Это работает только для ASCII-строк. В общем случае следует использовать
+    // `Buffer.from()` для выполнения этого преобразования).
 
-for (let i = 0; i < str.length; i++) {
-    buf[i] = str.charCodeAt(i);
-}
+    const str = 'Node.js';
+    const buf = Buffer.allocUnsafe(str.length);
 
-console.log(buf.toString('utf8'));
-// Печать: Node.js
-```
+    for (let i = 0; i < str.length; i++) {
+    	buf[i] = str.charCodeAt(i);
+    }
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf.toString('utf8'));
+    // Печать: Node.js
+    ```
 
-// Скопируйте ASCII-строку в `Buffer` по одному байту за раз.
-// (Это работает только для ASCII-строк. В общем случае следует использовать
-// `Buffer.from()` для выполнения этого преобразования).
+=== "CJS"
 
-const str = 'Node.js';
-const buf = Buffer.allocUnsafe(str.length);
+    ```js
+    const { Buffer } = require('node:buffer');
 
-for (let i = 0; i < str.length; i++) {
-    buf[i] = str.charCodeAt(i);
-}
+    // Скопируйте ASCII-строку в `Buffer` по одному байту за раз.
+    // (Это работает только для ASCII-строк. В общем случае следует использовать
+    // `Buffer.from()` для выполнения этого преобразования).
 
-console.log(buf.toString('utf8'));
-// Печать: Node.js
-```
+    const str = 'Node.js';
+    const buf = Buffer.allocUnsafe(str.length);
+
+    for (let i = 0; i < str.length; i++) {
+    	buf[i] = str.charCodeAt(i);
+    }
+
+    console.log(buf.toString('utf8'));
+    // Печать: Node.js
+    ```
 
 ### `buf.buffer`
 
@@ -1221,25 +1383,29 @@ console.log(buf.toString('utf8'));
 
 Не гарантируется, что этот `ArrayBuffer` будет точно соответствовать исходному `Buffer`. Подробности смотрите в примечаниях к `buf.byteOffset`.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const arrayBuffer = new ArrayBuffer(16);
-const buffer = Buffer.from(arrayBuffer);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buffer.buffer === arrayBuffer);
-// Печатает: true
-```
+    const arrayBuffer = new ArrayBuffer(16);
+    const buffer = Buffer.from(arrayBuffer);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buffer.buffer === arrayBuffer);
+    // Печатает: true
+    ```
 
-const arrayBuffer = new ArrayBuffer(16);
-const buffer = Buffer.from(arrayBuffer);
+=== "CJS"
 
-console.log(buffer.buffer === arrayBuffer);
-// Печатает: true
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const arrayBuffer = new ArrayBuffer(16);
+    const buffer = Buffer.from(arrayBuffer);
+
+    console.log(buffer.buffer === arrayBuffer);
+    // Печатает: true
+    ```
 
 ### `buf.byteOffset`
 
@@ -1251,61 +1417,69 @@ console.log(buffer.buffer === arrayBuffer);
 
 Частая проблема при создании объекта `TypedArray`, который разделяет свою память с `Buffer`, заключается в том, что в этом случае необходимо правильно указать `byteOffset`:
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-// Создаем буфер меньше, чем `Buffer.poolSize`.
-const nodeBuffer = Buffer.from([
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-]);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-// При приведении буфера Node.js к массиву Int8Array используйте смещение байтов.
-// для обращения только к той части `nodeBuffer.buffer`, которая содержит память
-// для `nodeBuffer`.
-new Int8Array(
-    nodeBuffer.buffer,
-    nodeBuffer.byteOffset,
-    nodeBuffer.length
-);
+    // Создаем буфер меньше, чем `Buffer.poolSize`.
+    const nodeBuffer = Buffer.from([
+    	0,
+    	1,
+    	2,
+    	3,
+    	4,
+    	5,
+    	6,
+    	7,
+    	8,
+    	9,
+    ]);
+
+    // При приведении буфера Node.js к массиву Int8Array используйте смещение байтов.
+    // для обращения только к той части `nodeBuffer.buffer`, которая содержит память
+    // для `nodeBuffer`.
+    new Int8Array(
+    	nodeBuffer.buffer,
+    	nodeBuffer.byteOffset,
+    	nodeBuffer.length
+    );
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    // Создаем буфер размером меньше, чем `Buffer.poolSize`.
+    const nodeBuffer = Buffer.from([
+    	0,
+    	1,
+    	2,
+    	3,
+    	4,
+    	5,
+    	6,
+    	7,
+    	8,
+    	9,
+    ]);
+
+    // При приведении буфера Node.js к массиву Int8Array используйте смещение байтов.
+    // для обращения только к той части `nodeBuffer.buffer`, которая содержит память
+    // для `nodeBuffer`.
+    new Int8Array(
+    	nodeBuffer.buffer,
+    	nodeBuffer.byteOffset,
+    	nodeBuffer.length
+    );
+    ```
+
+### `buf.compare()`
+
+```js
+buf.compare(target[, targetStart[, targetEnd[, sourceStart[, sourceEnd]]]])
 ```
-
-```cjs
-const { Buffer } = require('node:buffer');
-
-// Создаем буфер размером меньше, чем `Buffer.poolSize`.
-const nodeBuffer = Buffer.from([
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-]);
-
-// При приведении буфера Node.js к массиву Int8Array используйте смещение байтов.
-// для обращения только к той части `nodeBuffer.buffer`, которая содержит память
-// для `nodeBuffer`.
-new Int8Array(
-    nodeBuffer.buffer,
-    nodeBuffer.byteOffset,
-    nodeBuffer.length
-);
-```
-
-### `buf.compare(target[, targetStart[, targetEnd[, sourceStart[, sourceEnd]]]])`
 
 -   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Буфер` или [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), с которым нужно сравнить `buf`.
 -   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение внутри `target`, с которого следует начать сравнение. **По умолчанию:** `0`.
@@ -1320,83 +1494,95 @@ new Int8Array(
 -   `1` возвращается, если `цель` должна быть _перед_ `buf` при сортировке.
 -   `-1` возвращается, если `цель` должна быть _после_ `buf` при сортировке.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf1 = Buffer.from('ABC');
-const buf2 = Buffer.from('BCD');
-const buf3 = Buffer.from('ABCD');
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf1.compare(buf1));
-// Печатает: 0
-console.log(buf1.compare(buf2));
-// Печатает: -1
-console.log(buf1.compare(buf3));
-// Печатает: -1
-console.log(buf2.compare(buf1));
-// Печатает: 1
-console.log(buf2.compare(buf3));
-// Печатает: 1
-console.log([buf1, buf2, buf3].sort(Buffer.compare));
-// Печатает: [ <Буфер 41 42 43>, <Буфер 41 42 43 44>, <Буфер 42 43 44> ]
-// (Этот результат равен: [buf1, buf3, buf2]).
-```
+    const buf1 = Buffer.from('ABC');
+    const buf2 = Buffer.from('BCD');
+    const buf3 = Buffer.from('ABCD');
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf1.compare(buf1));
+    // Печатает: 0
+    console.log(buf1.compare(buf2));
+    // Печатает: -1
+    console.log(buf1.compare(buf3));
+    // Печатает: -1
+    console.log(buf2.compare(buf1));
+    // Печатает: 1
+    console.log(buf2.compare(buf3));
+    // Печатает: 1
+    console.log([buf1, buf2, buf3].sort(Buffer.compare));
+    // Печатает: [ <Буфер 41 42 43>, <Буфер 41 42 43 44>, <Буфер 42 43 44> ]
+    // (Этот результат равен: [buf1, buf3, buf2]).
+    ```
 
-const buf1 = Buffer.from('ABC');
-const buf2 = Buffer.from('BCD');
-const buf3 = Buffer.from('ABCD');
+=== "CJS"
 
-console.log(buf1.compare(buf1));
-// Печатает: 0
-console.log(buf1.compare(buf2));
-// Печатает: -1
-console.log(buf1.compare(buf3));
-// Печатает: -1
-console.log(buf2.compare(buf1));
-// Печатает: 1
-console.log(buf2.compare(buf3));
-// Печатает: 1
-console.log([buf1, buf2, buf3].sort(Buffer.compare));
-// Печатает: [ <Буфер 41 42 43>, <Буфер 41 42 43 44>, <Буфер 42 43 44> ]
-// (Этот результат равен: [buf1, buf3, buf2]).
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf1 = Buffer.from('ABC');
+    const buf2 = Buffer.from('BCD');
+    const buf3 = Buffer.from('ABCD');
+
+    console.log(buf1.compare(buf1));
+    // Печатает: 0
+    console.log(buf1.compare(buf2));
+    // Печатает: -1
+    console.log(buf1.compare(buf3));
+    // Печатает: -1
+    console.log(buf2.compare(buf1));
+    // Печатает: 1
+    console.log(buf2.compare(buf3));
+    // Печатает: 1
+    console.log([buf1, buf2, buf3].sort(Buffer.compare));
+    // Печатает: [ <Буфер 41 42 43>, <Буфер 41 42 43 44>, <Буфер 42 43 44> ]
+    // (Этот результат равен: [buf1, buf3, buf2]).
+    ```
 
 Дополнительные аргументы `targetStart`, `targetEnd`, `sourceStart` и `sourceEnd` могут быть использованы для ограничения сравнения определенными диапазонами в пределах `target` и `buf` соответственно.
 
-```mjs
-import { Buffer } from 'node:buffer';
+=== "MJS"
 
-const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
+    ```js
+    import { Buffer } from 'node:buffer';
 
-console.log(buf1.compare(buf2, 5, 9, 0, 4));
-// Печатает: 0
-console.log(buf1.compare(buf2, 0, 6, 4));
-// Печатает: -1
-console.log(buf1.compare(buf2, 5, 6, 5));
-// Печатается: 1
-```
+    const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
 
-```cjs
-const { Buffer } = require('node:buffer');
+    console.log(buf1.compare(buf2, 5, 9, 0, 4));
+    // Печатает: 0
+    console.log(buf1.compare(buf2, 0, 6, 4));
+    // Печатает: -1
+    console.log(buf1.compare(buf2, 5, 6, 5));
+    // Печатается: 1
+    ```
 
-const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
+=== "CJS"
 
-console.log(buf1.compare(buf2, 5, 9, 0, 4));
-// Печатает: 0
-console.log(buf1.compare(buf2, 0, 6, 4));
-// Печатает: -1
-console.log(buf1.compare(buf2, 5, 6, 5));
-// Печатается: 1
-```
+    ```js
+    const { Buffer } = require('node:buffer');
+
+    const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
+
+    console.log(buf1.compare(buf2, 5, 9, 0, 4));
+    // Печатает: 0
+    console.log(buf1.compare(buf2, 0, 6, 4));
+    // Печатает: -1
+    console.log(buf1.compare(buf2, 5, 6, 5));
+    // Печатается: 1
+    ```
 
 [`ERR_OUT_OF_RANGE`](errors.md#err_out_of_range) выбрасывается, если `targetStart < 0`, `sourceStart < 0`, `targetEnd > target.byteLength`, или `sourceEnd > source.byteLength`.
 
-### `buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])`
+### `buf.copy()`
+
+```js
+buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])
+```
 
 -   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Буфер или [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для копирования.
 -   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение внутри `target`, с которого следует начать запись. **По умолчанию:** `0`.
@@ -4349,4 +4535,3 @@ $ node --zero-fill-buffers
 При вызове `Buffer.allocUnsafe()` и `Buffer.allocUnsafeSlow()` сегмент выделенной памяти _неинициализируется_ (не обнуляется). Хотя такая конструкция делает выделение памяти довольно быстрым, выделенный сегмент памяти может содержать старые данные, которые потенциально могут быть конфиденциальными. Использование `буфера`, созданного с помощью `Buffer.allocUnsafe()` без _полной_ перезаписи памяти, может привести к утечке этих старых данных при чтении памяти `буфера`.
 
 Хотя использование `Buffer.allocUnsafe()` имеет очевидные преимущества в производительности, необходимо соблюдать особую осторожность, чтобы избежать появления уязвимостей в безопасности приложения.
-
