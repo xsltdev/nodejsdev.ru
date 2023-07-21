@@ -28,11 +28,13 @@ hide:
 
     Гайды по Node.js от различных авторов
 
-    [:octicons-arrow-right-24: Руководство новичка](guides/freecodecamp.md)
-
     [:octicons-arrow-right-24: Гайд от webdraftt](guides/webdraftt/index.md)
 
     [:octicons-arrow-right-24: Гайд от metanit](guides/metanit/index.md)
+
+    [:octicons-arrow-right-24: Руководство новичка](guides/freecodecamp.md)
+
+    [:octicons-arrow-right-24: Статьи](guides/index.md#articles)
 
 -   :material-server:{ .lg .middle } **Фреймворки**
 
