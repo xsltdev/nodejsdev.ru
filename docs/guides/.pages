@@ -1,6 +1,7 @@
 title: Гайды
 nav:
     - index.md
-    - freecodecamp.md
     - webdraftt
     - metanit
+    - freecodecamp.md
+    - testing-dark-scenarios.md
