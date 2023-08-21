@@ -48,6 +48,42 @@ hide:
 
 </div>
 
+<div class="grid cards" style="margin-top: 1.6em" markdown>
+
+-   :material-file-document-outline: **Статьи**
+
+    ***
+
+    {% include-markdown ".articles.md" %}
+
+-   :material-rss: **Новости**
+
+    ***
+
+    :date: 9.08.2023 [Node v20.5.1 (Current)](https://nodejs.org/en/blog/release/v20.5.1), [Node v18.17.1 (LTS)](https://nodejs.org/en/blog/release/v18.17.1), [Node v16.20.2 (LTS)](https://nodejs.org/en/blog/release/v16.20.2)
+
+    ***
+
+    :date: 9.08.2023 [Wednesday August 9th 2023 Security Releases](https://nodejs.org/en/blog/vulnerability/august-2023-security-releases)
+
+    ***
+
+    :date: 20.07.2023 [Node v20.5.0 (Current)](https://nodejs.org/en/blog/release/v20.5.0)
+
+    ***
+
+    :date: 18.07.2023 [Node v18.17.0 (LTS)](https://nodejs.org/en/blog/release/v18.17.0)
+
+    ***
+
+    :date: 5.07.2023 [Node v20.4.0 (Current)](https://nodejs.org/en/blog/release/v20.4.0)
+
+    ***
+
+    :date: 20.06.2023 [Node v20.3.1 (Current)](https://nodejs.org/en/blog/release/v20.3.1), [Node v18.16.1 (LTS)](https://nodejs.org/en/blog/release/v18.16.1), [Node v16.20.1 (LTS)](https://nodejs.org/en/blog/release/v16.20.1)
+
+</div>
+
 ---
 
 !!!abstract "Справочники"

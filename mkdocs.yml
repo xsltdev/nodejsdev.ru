@@ -102,6 +102,7 @@ plugins:
               - ru
               - en
     - awesome-pages
+    - include-markdown
     - social
 
 extra_css:
