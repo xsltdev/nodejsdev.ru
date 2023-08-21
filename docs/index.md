@@ -34,8 +34,6 @@ hide:
 
     [:octicons-arrow-right-24: Руководство новичка](guides/freecodecamp.md)
 
-    [:octicons-arrow-right-24: Статьи](guides/index.md#articles)
-
 -   :material-server:{ .lg .middle } **Фреймворки**
 
     ***
