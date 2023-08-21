@@ -416,37 +416,22 @@ async function digest(data, algorithm = 'SHA-512') {
 
 В таблице подробно описаны алгоритмы, поддерживаемые реализацией Node.js Web Crypto API, и API, поддерживаемые для каждого из них:
 
-<table style="width:100%;">
-<colgroup>
-<col style="width: 32%" />
-<col style="width: 7%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 3%" />
-<col style="width: 4%" />
-<col style="width: 4%" />
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th>Алгоритм</th>
-<th><code>generateKey</code></th>
-<th><code>exportKey</code></th>
-<th><code>importKey</code></th>
-<th><code>encrypt</code></th>
-<th><code>decrypt</code></th>
-<th><code>wrapKey</code></th>
-<th><code>unwrapKey</code></th>
-<th><code>deriveBits</code></th>
-<th><code>deriveKey</code></th>
-<th><code>sign</code></th>
-<th><code>verify</code></th>
-<th><code>digest</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>generateKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>exportKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>importKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>encrypt</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>decrypt</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>wrapKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>unwrapKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>deriveBits</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>deriveKey</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>sign</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>verify</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>digest</code></th>
 </tr>
 </thead>
 <tbody>
@@ -824,152 +809,20 @@ async function digest(data, algorithm = 'SHA-512') {
 Допустимые варианты использования ключа зависят от алгоритма ключа (определяется `cryptokey.algorithm.name`).
 
 <table>
-<colgroup>
-<col style="width: 38%" />
-<col style="width: 7%" />
-<col style="width: 7%" />
-<col style="width: 5%" />
-<col style="width: 6%" />
-<col style="width: 8%" />
-<col style="width: 9%" />
-<col style="width: 7%" />
-<col style="width: 8%" />
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Key Type</th>
-<th><code>'encrypt'</code></th>
-<th><code>'decrypt'</code></th>
-<th><code>'sign'</code></th>
-<th><code>'verify'</code></th>
-<th><code>'deriveKey'</code></th>
-<th><code>'deriveBits'</code></th>
-<th><code>'wrapKey'</code></th>
-<th><code>'unwrapKey'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'encrypt'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'decrypt'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'sign'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'verify'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'deriveKey'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'deriveBits'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'wrapKey'</code></th>
+<th style="writing-mode: vertical-lr; min-width: 0; padding: 5px 0;"><code>'unwrapKey'</code></th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td><code>'AES-CBC'</code></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr class="even">
-<td><code>'AES-CTR'</code></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr class="odd">
-<td><code>'AES-GCM'</code></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr class="even">
-<td><code>'AES-KW'</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr class="odd">
-<td><code>'ECDH'</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>'X25519'</code> <span class="experimental-inline"></span>[5]</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><code>'X448'</code> <span class="experimental-inline"></span>[6]</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>'ECDSA'</code></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><code>'Ed25519'</code> <span class="experimental-inline"></span>[7]</td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>'Ed448'</code> <span class="experimental-inline"></span>[8]</td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><code>'HDKF'</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<
+<tbody><tr><td><code>'AES-CBC'</code></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td></tr><tr><td><code>'AES-CTR'</code></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td></tr><tr><td><code>'AES-GCM'</code></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td></tr><tr><td><code>'AES-KW'</code></td><td></td><td></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td></tr><tr><td><code>'ECDH'</code></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td></tr><tr><td><code>'X25519'</code> <span class="experimental-inline"></span><sup><a href="#user-content-fn-1" id="user-content-fnref-1-5" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td></tr><tr><td><code>'X448'</code> <span class="experimental-inline"></span><sup><a href="#user-content-fn-1" id="user-content-fnref-1-6" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td></tr><tr><td><code>'ECDSA'</code></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr><tr><td><code>'Ed25519'</code> <span class="experimental-inline"></span><sup><a href="#user-content-fn-1" id="user-content-fnref-1-7" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr><tr><td><code>'Ed448'</code> <span class="experimental-inline"></span><sup><a href="#user-content-fn-1" id="user-content-fnref-1-8" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr><tr><td><code>'HDKF'</code></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td></tr><tr><td><code>'HMAC'</code></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr><tr><td><code>'PBKDF2'</code></td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td></tr><tr><td><code>'RSA-OAEP'</code></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td><td>✔</td><td>✔</td></tr><tr><td><code>'RSA-PSS'</code></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr><tr><td><code>'RSASSA-PKCS1-v1_5'</code></td><td></td><td></td><td>✔</td><td>✔</td><td></td><td></td><td></td><td></td></tr></tbody></table>
 
 ## Класс: `CryptoKeyPair`
 
@@ -1523,7 +1376,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 Вектор инициализации должен быть уникальным для каждой операции шифрования с использованием данного ключа.
 
-В идеале это детерминированное 12-байтовое значение, которое вычисляется таким образом, что гарантируется его уникальность для всех вызовов, использующих один и тот же ключ. В качестве альтернативы вектор инициализации может состоять как минимум из 12 криптографически случайных байтов. Более подробную информацию о построении векторов инициализации для AES-GCM см. в разделе 8 [NIST SP 800-38D] (https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf).
+В идеале это детерминированное 12-байтовое значение, которое вычисляется таким образом, что гарантируется его уникальность для всех вызовов, использующих один и тот же ключ. В качестве альтернативы вектор инициализации может состоять как минимум из 12 криптографически случайных байтов. Более подробную информацию о построении векторов инициализации для AES-GCM см. в разделе 8 [NIST SP 800-38D](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf).
 
 #### `aesGcmParams.name`
 
@@ -1795,4 +1648,3 @@ ECDH-производство ключей работает, принимая н
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина (в байтах) используемой случайной соли.
-
