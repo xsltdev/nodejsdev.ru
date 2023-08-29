@@ -5,6 +5,7 @@ nav:
     - metanit
     - freecodecamp.md
     - Статьи:
+        - rest-api-design
         - server_without_framework.md
         - testing-dark-scenarios.md
         - chatbot.md
