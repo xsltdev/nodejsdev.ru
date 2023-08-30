@@ -262,7 +262,9 @@ channel.publish({
 
 #### `channel.subscribe(onMessage)`
 
-> Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage)
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage)
 
 -   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик для получения сообщений канала
     -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные сообщения
@@ -292,7 +294,9 @@ channel.subscribe((message, name) => {
 
 #### `channel.unsubscribe(onMessage)`
 
-> Стабильность: 0 - Исправлено: Используйте [`diagnostics_channel.unsubscribe(name, onMessage)`](#diagnostics_channelunsubscribename-onmessage)
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`diagnostics_channel.unsubscribe(name, onMessage)`](#diagnostics_channelunsubscribename-onmessage)
 
 -   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Предыдущий обработчик подписки для удаления
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик был найден, `false` в противном случае.
@@ -329,9 +333,11 @@ channel.unsubscribe(onMessage);
 
 ### Встроенные каналы
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-В то время как API diagnostics_channel теперь считается стабильным, встроенные каналы, доступные в настоящее время, таковыми не являются. Каждый канал должен быть объявлен стабильным независимо.
+    Экспериментальный
+
+В то время как API `diagnostics_channel` теперь считается стабильным, встроенные каналы, доступные в настоящее время, таковыми не являются. Каждый канал должен быть объявлен стабильным независимо.
 
 #### HTTP
 
@@ -403,4 +409,3 @@ channel.unsubscribe(onMessage);
 -   `worker` [`Worker`](worker_threads.md#class-worker)
 
 Выдается при создании нового потока.
-

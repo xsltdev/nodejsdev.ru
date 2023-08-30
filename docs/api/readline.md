@@ -395,7 +395,7 @@ process.stdin.on('keypress', (c, k) => {
 
 Это позволяет отследить, где находится текущий курсор в строке ввода при чтении ввода из потока TTY. Позиция курсора определяет часть строки ввода, которая будет изменена при обработке ввода, а также столбец, в котором будет отображаться терминальный козырек.
 
-### `rl.getCursorPos()`.
+### `rl.getCursorPos()`
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `rows` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) строка подсказки, на которой в данный момент находится курсор
@@ -405,15 +405,17 @@ process.stdin.on('keypress', (c, k) => {
 
 ## Обещания API
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
 
-### Класс: `readlinePromises.Interface`.
+    Экспериментальный
+
+### Класс: `readlinePromises.Interface`
 
 -   Расширяет: {readline.InterfaceConstructor}
 
 Экземпляры класса `readlinePromises.Interface` создаются с помощью метода `readlinePromises.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
-#### `rl.question(query[, options])`.
+#### `rl.question(query[, options])`
 
 -   `query` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Оператор или запрос для записи на `вывод`, добавляемый к подсказке.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1490,4 +1492,3 @@ Doesn’t work on Mac
 </table>
 
 <!-- 0070.part.md -->
-

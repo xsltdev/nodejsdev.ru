@@ -168,7 +168,9 @@ added: v0.1.103
 added: v16.0.0
 -->
 
-> Стабильность: 3 - Наследие. Использовать `Buffer.from(data, 'base64')` вместо.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие. Использовать `Buffer.from(data, 'base64')` вместо.
 
 Глобальный псевдоним для [`buffer.atob()`](buffer.md#bufferatobdata).
 
@@ -178,7 +180,9 @@ added: v16.0.0
 added: v16.0.0
 -->
 
-> Стабильность: 3 - Наследие. Использовать `buf.toString('base64')` вместо.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие. Использовать `buf.toString('base64')` вместо.
 
 Глобальный псевдоним для [`buffer.btoa()`](buffer.md#bufferbtoadata).
 
@@ -448,4 +452,3 @@ added: v8.0.0
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект, который действует как пространство имен для всех W3C [WebAssembly](https://webassembly.org) связанные функции. Увидеть [Сеть разработчиков Mozilla](https://developer.mozilla.org/en-US/docs/WebAssembly) для использования и совместимости.
-

@@ -1831,7 +1831,9 @@ process.kill(process.pid, 'SIGHUP');
 
 ## `process.mainModule`
 
-> Стабильность: 0 - Утратил актуальность: Используйте [`require.main`](modules.md#accessing-the-main-module) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`require.main`](modules.md#accessing-the-main-module) вместо этого.
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

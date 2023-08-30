@@ -75,7 +75,7 @@ fs.readFile = newAPI;
 delete fs.readFileSync;
 
 function newAPI() {
-  // ...
+    // ...
 }
 
 fs.newAPI = newAPI;
@@ -83,20 +83,22 @@ fs.newAPI = newAPI;
 syncBuiltinESMExports();
 
 import('node:fs').then((esmFS) => {
-  // Он синхронизирует существующее свойство readFile с новым значением
-  assert.strictEqual(esmFS.readFile, newAPI);
-  // readFileSync был удален из требуемой fs
-  assert.strictEqual('readFileSync' in fs, false);
-  // syncBuiltinESMExports() не удаляет readFileSync из esmFS
-  assert.strictEqual('readFileSync' in esmFS, true);
-  // syncBuiltinESMExports() не добавляет имена
-  assert.strictEqual(esmFS.newAPI, undefined);
+    // Он синхронизирует существующее свойство readFile с новым значением
+    assert.strictEqual(esmFS.readFile, newAPI);
+    // readFileSync был удален из требуемой fs
+    assert.strictEqual('readFileSync' in fs, false);
+    // syncBuiltinESMExports() не удаляет readFileSync из esmFS
+    assert.strictEqual('readFileSync' in esmFS, true);
+    // syncBuiltinESMExports() не добавляет имена
+    assert.strictEqual(esmFS.newAPI, undefined);
 });
 ```
 
 ## Source map v3 support
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 Помощники для взаимодействия с кэшем карты источников. Этот кэш заполняется, когда включен разбор карты источников и [директивы включения карты источников](https://sourcemaps.info/spec.html#h.lmz475t4mvbx) найдены в нижнем колонтитуле модулей.
 
@@ -159,4 +161,3 @@ const { findSourceMap, SourceMap } = require('node:module');
 -   originalLine: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   originalColumn: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   name: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-

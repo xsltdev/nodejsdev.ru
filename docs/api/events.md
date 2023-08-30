@@ -1807,7 +1807,9 @@ target.addEventListener('foo', handler4, { once: true });
 
 #### `event.cancelBubble`
 
-> Стабильность: 3 - Наследие: Вместо этого используйте [`event.stopPropagation()`](#eventstoppropagation).
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие: Вместо этого используйте [`event.stopPropagation()`](#eventstoppropagation).
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 

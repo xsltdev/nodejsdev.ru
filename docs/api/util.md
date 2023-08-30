@@ -356,9 +356,11 @@ fs.access('file/that/does/not/exist', (err) => {
 
 <!-- 0040.part.md -->
 
-## `util.inherits(constructor, superConstructor)`.
+## `util.inherits(constructor, superConstructor)`
 
-> Стабильность: 3 - Наследие: Используйте синтаксис классов ES2015 и ключевое слово `extends` вместо этого.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие: Используйте синтаксис классов ES2015 и ключевое слово `extends` вместо этого.
 
 -   `constructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `superConstructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -868,7 +870,9 @@ console.log(arr); // logs the full array
 
 ## Класс: `util.MIMEType`
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 Реализация [класса MIMEType](https://bmeck.github.io/node-proposal-mime-api/).
 
@@ -876,7 +880,7 @@ console.log(arr); // logs the full array
 
 MIME-строка - это структурированная строка, содержащая несколько значимых компонентов. При разборе возвращается объект `MIMEType`, содержащий свойства для каждого из этих компонентов.
 
-### Конструктор: `new MIMEType(input)`.
+### Конструктор: `new MIMEType(input)`
 
 -   `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Входной MIME для разбора
 
@@ -1783,13 +1787,17 @@ const { read, written } = encoder.encodeInto(src, dest);
 
 ## `util.transferableAbortController()`.
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 Создает и возвращает экземпляр {AbortController}, чей [`<AbortSignal>`](globals.md#abortsignal) помечен как передаваемый и может быть использован с `structuredClone()` или `postMessage()`.
 
 ## `util.transferableAbortSignal(signal)`.
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 -   `signal` [`<AbortSignal>`](globals.md#abortsignal)
 -   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
@@ -1808,9 +1816,11 @@ channel.port2.postMessage(signal, [signal]);
 
 <!-- 0142.part.md -->
 
-## `util.aborted(signal, resource)`.
+## `util.aborted(signal, resource)`
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 -   `signal` [`<AbortSignal>`](globals.md#abortsignal)
 -   `ресурс` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любая ненулевая сущность, ссылка на которую удерживается слабо.
@@ -2605,7 +2615,9 @@ util.types.isWeakSet(new WeakSet()); // Returns true
 
 ### `util.types.isWebAssemblyCompiledModule(value)`.
 
-> Стабильность: 0 - Утратил актуальность: Используйте `value instanceof WebAssembly.Module` вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте `value instanceof WebAssembly.Module` вместо этого.
 
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2627,7 +2639,9 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 ### `util._extend(target, source)`.
 
-> Стабильность: 0 - Устаревший: Вместо этого используйте [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign).
 
 -   `target` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `источник` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -2638,7 +2652,9 @@ util.types.isWebAssemblyCompiledModule(module); // Returns true
 
 ### `util.isArray(object)`.
 
-> Стабильность: 0 - Утратил актуальность: Вместо этого используйте [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2664,7 +2680,9 @@ util.isArray({});
 
 ### `util.isBoolean(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'boolean'`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `typeof value === 'boolean'`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2688,7 +2706,9 @@ util.isBoolean(false);
 
 ### `util.isBuffer(object)`.
 
-> Стабильность: 0 - Исправлено: Используйте [`Buffer.isBuffer()`](buffer.md#static-method-bufferisbufferobj) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`Buffer.isBuffer()`](buffer.md#static-method-bufferisbufferobj) вместо этого.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2712,7 +2732,9 @@ util.isBuffer(Buffer.from('hello world'));
 
 ### `util.isDate(object)`.
 
-> Стабильность: 0 - Исправлено: Используйте [`util.types.isDate()`](#utiltypesisdatevalue) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`util.types.isDate()`](#utiltypesisdatevalue) вместо этого.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2736,7 +2758,9 @@ util.isDate({});
 
 ### `util.isError(object)`.
 
-> Стабильность: 0 - Исправлено: Используйте [`util.types.isNativeError()`](#utiltypesisnativeerrorvalue) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`util.types.isNativeError()`](#utiltypesisnativeerrorvalue) вместо этого.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2780,7 +2804,9 @@ util.isError(obj);
 
 ### `util.isFunction(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'function'`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `typeof value === 'function'`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2807,7 +2833,9 @@ util.isFunction(Bar);
 
 ### `util.isNull(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `value === null`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `value === null`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2831,7 +2859,9 @@ util.isNull(null);
 
 ### `util.isNullOrUndefined(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined || value === null`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `value === undefined || value === null`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2855,7 +2885,9 @@ util.isNullOrUndefined(null);
 
 ### `util.isNumber(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'number'`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `typeof value === 'number'`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2881,7 +2913,9 @@ util.isNumber(NaN);
 
 ### `util.isObject(object)`.
 
-> Стабильность: 0 - Исправлено: Используйте `value !== null && typeof value === 'object'` вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте `value !== null && typeof value === 'object'` вместо этого.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2907,7 +2941,9 @@ util.isObject(() => {});
 
 ### `util.isPrimitive(object)`.
 
-> Стабильность: 0 - Исправлено: Используйте `(typeof value !== 'object' && typeof value !== 'function') || value === null` вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте `(typeof value !== 'object' && typeof value !== 'function') || value === null` вместо этого.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2943,7 +2979,9 @@ util.isPrimitive(new Date());
 
 ### `util.isRegExp(object)`.
 
-> Стабильность: 0 - Утратил актуальность
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Утратил актуальность
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2967,7 +3005,9 @@ util.isRegExp({});
 
 ### `util.isString(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'string'`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `typeof value === 'string'`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2993,7 +3033,9 @@ util.isString(5);
 
 ### `util.isSymbol(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `typeof value === 'symbol'`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `typeof value === 'symbol'`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -3017,7 +3059,9 @@ util.isSymbol(Symbol('foo'));
 
 ### `util.isUndefined(object)`.
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `value === undefined`.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `value === undefined`.
 
 -   `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -3042,7 +3086,9 @@ util.isUndefined(null);
 
 ### `util.log(string)`.
 
-> Стабильность: 0 - Утратил актуальность: Вместо этого используйте сторонний модуль.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте сторонний модуль.
 
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

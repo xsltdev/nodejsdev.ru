@@ -320,7 +320,9 @@ _Этот класс является расширением Node.js. Он не�
 
 ### `performanceNodeEntry.flags`
 
-> Стабильность: 0 - Утратил силу: Используйте `performanceNodeEntry.detail` вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте `performanceNodeEntry.detail` вместо этого.
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -336,7 +338,9 @@ _Этот класс является расширением Node.js. Он не�
 
 ### `performanceNodeEntry.kind`.
 
-> Стабильность: 0 - Утратил актуальность: Используйте `performanceNodeEntry.detail` вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте `performanceNodeEntry.detail` вместо этого.
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1101,4 +1105,3 @@ obs.observe({ entryTypes: ['dns'] });
 dns.lookup('localhost', () => {});
 dns.promises.resolve('localhost');
 ```
-

@@ -568,7 +568,9 @@ console.log(JSON.stringify(myURLs));
 
 #### `URL.createObjectURL(blob)`
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 -   `blob` [`<Blob>`](buffer.md#blob)
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -593,7 +595,9 @@ console.log(otherBlob.size);
 
 #### `URL.revokeObjectURL(id)`
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 -   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL `'blob:nodedata:...`, возвращенная предыдущим вызовом `URL.createObjectURL()`.
 
@@ -1123,11 +1127,15 @@ console.log(urlToHttpOptions(myURL));
 
 ## Legacy URL API
 
-> Стабильность: 3 - Устаревший: Вместо него используйте API URL WHATWG.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Устаревший: Вместо него используйте API URL WHATWG.
 
 ### Legacy `urlObject`
 
-> Стабильность: 3 - Устаревший: Вместо этого используйте WHATWG URL API.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Устаревший: Вместо этого используйте WHATWG URL API.
 
 Унаследованный `urlObject` (`require('node:url').Url` или `import { Url } from 'node:url'`) создается и возвращается функцией `url.parse()`.
 
@@ -1211,7 +1219,9 @@ console.log(urlToHttpOptions(myURL));
 
 ### `url.format(urlObject)`
 
-> Стабильность: 3 - Наследие: Вместо этого используйте WHATWG URL API.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие: Вместо этого используйте WHATWG URL API.
 
 -   `urlObject` {Object|string} Объект URL (возвращенный функцией `url.parse()` или построенный иным образом). Если это строка, она преобразуется в объект путем передачи в `url.parse()`.
 
@@ -1269,7 +1279,9 @@ url.format({
 
 ### `url.parse(urlString[, parseQueryString[, slashesDenoteHost]])`
 
-> Стабильность: 0 - Утратил актуальность: Вместо этого используйте WHATWG URL API.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте WHATWG URL API.
 
 -   `urlString` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL для разбора.
 -   `parseQueryString` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, свойство `query` всегда будет установлено в объект, возвращаемый методом `parse()` модуля [`querystring`](querystring.md). Если `false`, свойство `query` возвращаемого объекта URL будет представлять собой непарсированную, не декодированную строку. **По умолчанию:** `false`.
@@ -1285,7 +1297,9 @@ url.format({
 
 ### `url.resolve(from, to)`
 
-> Стабильность: 3 - Наследие: Вместо этого используйте WHATWG URL API.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Наследие: Вместо этого используйте WHATWG URL API.
 
 -   `from` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовый URL, который следует использовать, если `to` - относительный URL.
 -   `to` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Целевой URL для преобразования.
@@ -1356,4 +1370,3 @@ console.log(myURL.href);
 console.log(myURL.origin);
 // Печатает https://xn--1xa.example.com
 ```
-

@@ -111,7 +111,9 @@ http.get('http://localhost:8080');
 
 ### Статический метод: `AsyncLocalStorage.bind(fn)`
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для привязки к текущему контексту выполнения.
 -   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новая функция, которая вызывает `fn` в захваченном контексте выполнения.
@@ -120,7 +122,9 @@ http.get('http://localhost:8080');
 
 ### Статический метод: `AsyncLocalStorage.snapshot()`
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 -   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новая функция с сигнатурой `(fn: (...args) : R, ...args) : R`.
 
@@ -152,7 +156,9 @@ console.log(asyncLocalStorage.run(321, () => foo.get())); // возвращае�
 
 ### `asyncLocalStorage.disable()`
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 Отключает экземпляр `AsyncLocalStorage`. Все последующие вызовы `asyncLocalStorage.getStore()` будут возвращать `undefined`, пока `asyncLocalStorage.run()` или `asyncLocalStorage.enterWith()` не будут вызваны снова.
 
@@ -170,7 +176,9 @@ console.log(asyncLocalStorage.run(321, () => foo.get())); // возвращае�
 
 ### `asyncLocalStorage.enterWith(store)`
 
-> Стабильность: 1 - Экспериментальный
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальный
 
 -   `store` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -237,7 +245,9 @@ try {
 
 ### `asyncLocalStorage.exit(callback[, ...args])`
 
-> Стабильность: 1 - Экспериментальная
+!!!warning "Стабильность: 1 – Экспериментальная"
+
+    Экспериментальная
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)

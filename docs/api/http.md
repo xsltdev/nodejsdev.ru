@@ -1370,7 +1370,9 @@ response.end([data[, encoding]][, callback])
 
 ### response.finished
 
-> Стабильность: 0 - Утратил актуальность. Используйте [`response.writableEnded`](#responsewritableended).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Утратил актуальность. Используйте [`response.writableEnded`](#responsewritableended).
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 

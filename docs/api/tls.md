@@ -303,7 +303,9 @@ tls.DEFAULT_CIPHERS +=
 
 ## Класс: `tls.CryptoStream`.
 
-> Стабильность: 0 - Утратил актуальность: Вместо него используйте [`tls.TLSSocket`](#class-tlstlssocket).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо него используйте [`tls.TLSSocket`](#class-tlstlssocket).
 
 Класс `tls.CryptoStream` представляет поток зашифрованных данных. Этот класс устарел и больше не должен использоваться.
 
@@ -313,7 +315,9 @@ tls.DEFAULT_CIPHERS +=
 
 ## Класс: `tls.SecurePair`
 
-> Стабильность: 0 - Утратил актуальность: Используйте [`tls.TLSSocket`](#class-tlstlssocket) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`tls.TLSSocket`](#class-tlstlssocket) вместо этого.
 
 Возвращается [`tls.createSecurePair()`](#tlscreatesecurepaircontext-isserver-requestcert-rejectunauthorized-options).
 
@@ -962,7 +966,9 @@ socket.on('end', () => {
 
 ## `tls.createSecurePair([context][, isServer][, requestCert][, rejectUnauthorized][, options])`
 
-> Стабильность: 0 - Исправлено: Используйте [`tls.TLSSocket`](#class-tlstlssocket) вместо этого.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте [`tls.TLSSocket`](#class-tlstlssocket) вместо этого.
 
 -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект безопасного контекста, возвращаемый функцией `tls.createSecureContext()`.
 -   `isServer` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для указания того, что данное TLS-соединение должно быть открыто как сервер.

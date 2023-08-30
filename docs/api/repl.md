@@ -500,7 +500,9 @@ Goodbye!
 
 ### `replServer.parseREPLKeyword(keyword[, rest])`.
 
-> Стабильность: 0 - Утратил актуальность.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Утратил актуальность.
 
 -   `ключевое слово` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) потенциальное ключевое слово для разбора и выполнения
 -   `rest` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) любые параметры команды ключевого слова.
@@ -663,4 +665,3 @@ net.createServer((socket) => {
 Пример запуска экземпляра REPL над [`curl(1)`](https://curl.haxx.se/docs/manpage.html), см: <https://gist.github.com/TooTallNate/2053342>.
 
 <!-- 0052.part.md -->
-

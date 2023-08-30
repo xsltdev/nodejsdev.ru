@@ -1055,7 +1055,9 @@ assert.fail(new TypeError('need array'));
 
 ## `assert.fail(actual, expected[, message[, operator[, stackStartFn]]])`
 
-> Стабильность: 0 - Исправлено: Вместо этого используйте `assert.fail([message])` или другие функции assert.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте `assert.fail([message])` или другие функции assert.
 
 -   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)

@@ -482,7 +482,9 @@ controller.abort();
 
 ### `socket.bufferSize`.
 
-> Стабильность: 0 - Утратил силу: Вместо этого используйте [`writable.writableLength`](stream.md#writablewritablelength).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Вместо этого используйте [`writable.writableLength`](stream.md#writablewritablelength).
 
 -   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 

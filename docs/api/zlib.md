@@ -534,7 +534,9 @@ const stream = zlib.createBrotliCompress({
 
 ### `zlib.bytesRead`.
 
-> Стабильность: 0 - Утратил актуальность: Вместо этого используйте [`zlib.bytesWritten`](#zlibbyteswritten).
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Утратил актуальность: Вместо этого используйте [`zlib.bytesWritten`](#zlibbyteswritten).
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -757,4 +759,3 @@ const stream = zlib.createBrotliCompress({
 -   `options` {zlib options}
 
 Декомпрессия фрагмента данных с помощью [`Unzip`](#class-zlibunzip).
-
