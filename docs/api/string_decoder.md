@@ -48,7 +48,7 @@ console.log(decoder.end(Buffer.from([0xAC]))));
 
 ### `new StringDecoder([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Символьная [кодировка] (buffer.md#buffers-and-character-encodings), которую будет использовать `StringDecoder`. **По умолчанию:** `'utf8'`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Символьная [кодировка](buffer.md#buffers-and-character-encodings), которую будет использовать `StringDecoder`. **По умолчанию:** `'utf8'`.
 
 Создает новый экземпляр `StringDecoder`.
 
@@ -67,4 +67,3 @@ console.log(decoder.end(Buffer.from([0xAC]))));
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает декодированную строку, гарантируя, что любые неполные многобайтовые символы в конце `Buffer`, или `TypedArray`, или `DataView` будут исключены из возвращаемой строки и сохранены во внутреннем буфере для следующего вызова `stringDecoder.write()` или `stringDecoder.end()`.
-

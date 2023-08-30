@@ -324,7 +324,7 @@ const req = https.request(options, (res) => {
 });
 ```
 
-В качестве альтернативы откажитесь от пула соединений, не используя [`Agent`] (#class-httpsagent).
+В качестве альтернативы откажитесь от пула соединений, не используя [`Agent`](#class-httpsagent).
 
 ```js
 const options = {
@@ -467,4 +467,3 @@ headers: max-age=0; pin-sha256="WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18="; p
 ```
 
 <!-- 0021.part.md -->
-

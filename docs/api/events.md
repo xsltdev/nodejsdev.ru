@@ -383,7 +383,7 @@ const EventEmitter = require('node:events');
 
 Он поддерживает следующую опцию:
 
--   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматический перехват отказов обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+-   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматический перехват отказов обещаний](#capture-rejections-of-promises). **По умолчанию:** `false`.
 
 <!-- 0006.part.md -->
 
@@ -1581,7 +1581,7 @@ setMaxListeners(5, target, emitter);
 
 ## Класс: `events.EventEmitterAsyncResource extends EventEmitter`
 
-Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста] (async_context.md).
+Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста](async_context.md).
 
 ```mjs
 import {
@@ -1663,7 +1663,7 @@ Promise.resolve().then(() => {
 ### `new events.EventEmitterAsyncResource([options])`
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматическое фиксирование отказов от обещаний] (#capture-rejections-of-promises). **По умолчанию:** `false`.
+    -   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматическое фиксирование отказов от обещаний](#capture-rejections-of-promises). **По умолчанию:** `false`.
     -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
     -   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
     -   `requireManualDestroy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
@@ -1793,7 +1793,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 ### Класс: `Event`
 
-Объект `Event` является адаптацией [`Event` Web API] (https://dom.spec.whatwg.org/#event). Экземпляры создаются внутри Node.js.
+Объект `Event` является адаптацией [`Event` Web API](https://dom.spec.whatwg.org/#event). Экземпляры создаются внутри Node.js.
 
 <!-- 0046.part.md -->
 
@@ -2134,4 +2134,3 @@ Node.js-специфическое расширение класса `EventTarge
 Node.js-специфическое расширение класса `EventTarget`, которое удаляет `слушателя` для заданного `типа`. Единственная разница между `removeListener()` и `removeEventListener()` заключается в том, что `removeListener()` возвращает ссылку на `EventTarget`.
 
 <!-- 0080.part.md -->
-

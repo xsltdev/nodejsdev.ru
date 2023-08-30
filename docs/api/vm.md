@@ -134,7 +134,7 @@ console.log(context);
 
 ### `script.runInNewContext([contextObject[, options]])`
 
--   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
+-   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован](#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
     -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
@@ -757,7 +757,7 @@ console.log(global.globalVar);
 -   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если данный объект `object` был [контекстирован] (#what-does-it-mean-to-contextify-an-object) с помощью [`vm.createContext()`] (#vmcreatecontextcontextobject-options).
+Возвращает `true`, если данный объект `object` был [контекстирован](#what-does-it-mean-to-contextify-an-object) с помощью [`vm.createContext()`](#vmcreatecontextcontextobject-options).
 
 ## `vm.measureMemory([options])`
 
@@ -858,7 +858,7 @@ console.log(contextObject);
 ## `vm.runInNewContext(code[, contextObject[, options]])`
 
 -   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции и запуска.
--   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован] (#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
+-   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован](#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
 -   `options` {Object|string}
     -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
     -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
@@ -1026,4 +1026,3 @@ vm.runInNewContext(
 Обратные вызовы Promise заносятся в очередь микрозадач того контекста, в котором они были созданы. Например, если в примере выше заменить `() => loop()` на просто `loop`, то `loop` будет помещена в глобальную очередь микрозадач, поскольку она является функцией из внешнего (основного) контекста, и, таким образом, также сможет избежать таймаута.
 
 Если внутри `vm.Context` доступны функции асинхронного планирования, такие как `process.nextTick()`, `queueMicrotask()`, `setTimeout()`, `setImmediate()` и т.д., то переданные им функции будут добавлены в глобальные очереди, общие для всех контекстов. Поэтому обратные вызовы, переданные этим функциям, также не контролируются через таймаут.
-

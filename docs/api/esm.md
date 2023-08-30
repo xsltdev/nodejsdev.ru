@@ -46,7 +46,7 @@ Node.js имеет две системы модулей: [CommonJS](modules.md) 
 
 ## Пакеты
 
-Этот раздел был перемещен в [Модули: Пакеты] (packages.md).
+Этот раздел был перемещен в [Модули: Пакеты](packages.md).
 
 ## Спецификаторы `импорта`
 
@@ -78,7 +78,7 @@ Node.js имеет две системы модулей: [CommonJS](modules.md) 
 
 Модули ES разрешаются и кэшируются как URL-адреса. Это означает, что специальные символы должны быть [percent-encoded](url.md#percent-encoding-in-urls), такие как `#` с `%23` и `?` с `%3F`.
 
-Поддерживаются схемы URL `file:`, `node:` и `data:`. Спецификатор типа `'https://example.com/app.js'` не поддерживается в Node.js, если только не используется [пользовательский HTTPS-загрузчик] (#https-loader).
+Поддерживаются схемы URL `file:`, `node:` и `data:`. Спецификатор типа `'https://example.com/app.js'` не поддерживается в Node.js, если только не используется [пользовательский HTTPS-загрузчик](#https-loader).
 
 #### `file:` URLs
 
@@ -1182,4 +1182,3 @@ _defaultConditions_ - это массив имен условного окруж
 ### Настройка алгоритма разрешения спецификатора ESM
 
 API [Loaders API](#loaders) предоставляет механизм для настройки алгоритма разрешения спецификаторов ESM. Примером загрузчика, обеспечивающего разрешение ESM-спецификаторов в стиле CommonJS, является [commonjs-extension-resolution-loader](https://github.com/nodejs/loaders-test/tree/main/commonjs-extension-resolution-loader).
-

@@ -541,7 +541,7 @@ controller.abort();
 -   `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, это отключает использование алгоритма Нагла сразу после установления сокета. **По умолчанию:** `false`.
 -   `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, это включает функцию keep-alive на сокете сразу после установления соединения, аналогично тому, как это делается в [`socket.setKeepAlive([enable][, initialDelay])`](#socketsetkeepaliveenable-initialdelay). **По умолчанию:** `false`.
 -   `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано положительное число, оно устанавливает начальную задержку перед отправкой первого зонда keepalive на незанятый сокет.**Умолчанию:** `0`.
--   `autoSelectFamily` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): Если установлено значение `true`, это включает алгоритм автоматического определения семейства, который слабо реализует секцию 5 из [RFC 8305] (https://www.rfc-editor.org/rfc/rfc8305.txt). Опция `all`, передаваемая в lookup, имеет значение `true`, и сокеты пытаются соединиться со всеми полученными адресами IPv6 и IPv4, последовательно, пока не будет установлено соединение. Первым пробует подключиться первый полученный AAAA-адрес, затем первый полученный A-адрес, затем второй полученный AAAA-адрес и так далее. Каждой попытке соединения дается время, заданное параметром `autoSelectFamilyAttemptTimeout`, прежде чем произойдет тайминг и попытка установить соединение со следующим адресом. Игнорируется, если опция `family` не равна `0` или если установлен `localAddress`. Ошибки соединения не выдаются, если хотя бы одно соединение успешно. **По умолчанию:** изначально `false`, но может быть изменен во время выполнения с помощью [`net.setDefaultAutoSelectFamily(value)`](#netsetdefaultautoselectfamilyvalue) или с помощью опции командной строки `--enable-network-family-autoselection`.
+-   `autoSelectFamily` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): Если установлено значение `true`, это включает алгоритм автоматического определения семейства, который слабо реализует секцию 5 из [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305.txt). Опция `all`, передаваемая в lookup, имеет значение `true`, и сокеты пытаются соединиться со всеми полученными адресами IPv6 и IPv4, последовательно, пока не будет установлено соединение. Первым пробует подключиться первый полученный AAAA-адрес, затем первый полученный A-адрес, затем второй полученный AAAA-адрес и так далее. Каждой попытке соединения дается время, заданное параметром `autoSelectFamilyAttemptTimeout`, прежде чем произойдет тайминг и попытка установить соединение со следующим адресом. Игнорируется, если опция `family` не равна `0` или если установлен `localAddress`. Ошибки соединения не выдаются, если хотя бы одно соединение успешно. **По умолчанию:** изначально `false`, но может быть изменен во время выполнения с помощью [`net.setDefaultAutoSelectFamily(value)`](#netsetdefaultautoselectfamilyvalue) или с помощью опции командной строки `--enable-network-family-autoselection`.
 -   `auto
 
 <!-- 0019.part.md -->
@@ -838,7 +838,7 @@ socket.on('timeout', () => {
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: [`<net.Socket>`](net.md#netsocket)
 
-Псевдоним для [`net.createConnection(port[, host][, connectListener])`] (#netcreateconnectionport-host-connectlistener).
+Псевдоним для [`net.createConnection(port[, host][, connectListener])`](#netcreateconnectionport-host-connectlistener).
 
 ## `net.createConnection()`.
 
@@ -914,7 +914,7 @@ const client = net.createConnection({
 
 ### `net.createConnection(port[, host][, connectListener])`.
 
--   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому должен подключиться сокет. Будет передан в [`socket.connect(port[, host][, connectListener])`] (#socketconnectport-host-connectlistener).
+-   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому должен подключиться сокет. Будет передан в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener).
 -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, к которому должен подключиться сокет. Будет передаваться в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener). **По умолчанию:** `'localhost'`.
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций [`net.createConnection()`](#netcreateconnection), "одноразовый" слушатель события `'connect'` на инициирующем сокете. Будет передан в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener).
 -   Возвращает: [`<net.Socket>`](net.md#netsocket) Вновь созданный сокет, используемый для запуска соединения.
@@ -1082,4 +1082,3 @@ net.isIPv6('fhqwhgads'); // returns false
 <!-- 0045.part.md -->
 
 <!-- 0046.part.md -->
-

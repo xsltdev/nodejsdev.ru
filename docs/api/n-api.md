@@ -1963,7 +1963,7 @@ NAPI_MODULE_INIT() {
 
 Переменные `env` и `exports` будут доступны в теле функции после вызова макроса.
 
-Подробнее о задании свойств объектам смотрите в разделе [Работа со свойствами JavaScript] (#working-with-javascript-properties).
+Подробнее о задании свойств объектам смотрите в разделе [Работа со свойствами JavaScript](#working-with-javascript-properties).
 
 Для получения более подробной информации о создании модулей аддонов в целом, обратитесь к существующему API.
 
@@ -3175,7 +3175,7 @@ napi_status napi_get_undefined(napi_env env, napi_value* result)
 
 ## Работа с JavaScript-значениями и абстрактными операциями
 
-Node-API предоставляет набор API для выполнения некоторых абстрактных операций над значениями JavaScript. Некоторые из этих операций документированы в [Разделе 7] (https://tc39.github.io/ecma262/#sec-abstract-operations) [Спецификации языка ECMAScript] (https://tc39.github.io/ecma262/).
+Node-API предоставляет набор API для выполнения некоторых абстрактных операций над значениями JavaScript. Некоторые из этих операций документированы в [Разделе 7](https://tc39.github.io/ecma262/#sec-abstract-operations) [Спецификации языка ECMAScript](https://tc39.github.io/ecma262/).
 
 Эти API поддерживают выполнение одного из следующих действий:
 
@@ -4776,7 +4776,7 @@ napi_status napi_create_async_work(napi_env env,
 <!-- 0372.part.md -->
 
 -   `[in] env`: Среда, в которой вызывается API.
--   `[in] async_resource`: Необязательный объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks] (async_hooks.md#initasyncid-type-triggerasyncid-resource).
+-   `[in] async_resource`: Необязательный объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks](async_hooks.md#initasyncid-type-triggerasyncid-resource).
 -   `[in] async_resource_name`: Идентификатор типа ресурса, который предоставляется для диагностической информации, раскрываемой API `async_hooks`.
 -   `[in] execute`: Собственная функция, которая должна быть вызвана для асинхронного выполнения логики. Данная функция вызывается из потока рабочего пула и может выполняться параллельно с основным потоком цикла событий.
 -   `[in] complete`: Собственная функция, которая будет вызвана, когда асинхронная логика будет завершена или отменена. Данная функция вызывается из главного потока цикла событий. [`napi_async_complete_callback`](#napi_async_complete_callback) предоставляет более подробную информацию.
@@ -4941,7 +4941,7 @@ NAPI_EXTERN napi_status napi_open_callback_scope(napi_env env,
 <!-- 0386.part.md -->
 
 -   `[in] env`: Среда, в которой вызывается API.
--   `[in] resource_object`: Объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks] (async_hooks.md#initasyncid-type-triggerasyncid-resource). Этот параметр был устаревшим и игнорируется во время выполнения. Вместо него используйте параметр `async_resource` в [`napi_async_init`](#napi_async_init).
+-   `[in] resource_object`: Объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks](async_hooks.md#initasyncid-type-triggerasyncid-resource). Этот параметр был устаревшим и игнорируется во время выполнения. Вместо него используйте параметр `async_resource` в [`napi_async_init`](#napi_async_init).
 -   `[in] context`: Контекст для асинхронной операции, которая вызывает обратный вызов. Это должно быть значение, полученное ранее из [`napi_async_init`](#napi_async_init).
 -   `[out] result`: Вновь созданная область видимости.
 
@@ -5278,7 +5278,7 @@ napi_create_threadsafe_function(napi_env env,
 
 -   `[in] env`: Среда, в которой вызывается API.
 -   `[in] func`: Необязательная функция JavaScript для вызова из другого потока. Она должна быть предоставлена, если `NULL` передан в `call_js_cb`.
--   `[in] async_resource`: Необязательный объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks] (async_hooks.md#initasyncid-type-triggerasyncid-resource).
+-   `[in] async_resource`: Необязательный объект, связанный с асинхронной работой, который будет передан возможным `async_hooks` [`init` hooks](async_hooks.md#initasyncid-type-triggerasyncid-resource).
 -   `[in] async_resource_name`: Строка JavaScript для предоставления идентификатора типа ресурса, который предоставляется для диагностической информации, раскрываемой API `async_hooks`.
 -   `[in] max_queue_size`: Максимальный размер очереди. `0` для отсутствия ограничений.
 -   `[in] initial_thread_count`: Начальное количество приобретений, т.е. начальное количество потоков, включая основной поток, которые будут использовать эту функцию.
@@ -5425,4 +5425,3 @@ node_api_get_module_file_name(napi_env env, const char** result);
 `result` может быть пустой строкой, если процесс загрузки дополнения не смог определить имя файла дополнения во время загрузки.
 
 <!-- 0429.part.md -->
-

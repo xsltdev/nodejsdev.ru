@@ -37,32 +37,26 @@ module.exports.hello = () => 'world';
 // hello.cc
 #include <node.h>
 
-
 namespace demo {
 
+	using v8::FunctionCallbackInfo;
+	using v8::Isolate;
+	using v8::Local;
+	using v8::Object;
+	using v8::String;
+	using v8::Value;
 
-using v8::FunctionCallbackInfo;
-using v8::Isolate;
-using v8::Local;
-using v8::Object;
-using v8::String;
-using v8::Value;
+	void Method(const FunctionCallbackInfo<Value>& args) {
+	Isolate* isolate = args.GetIsolate();
+	args.GetReturnValue().Set(String::NewFromUtf8(
+		isolate, "world").ToLocalChecked());
+	}
 
+	void Initialize(Local<Object> exports) {
+	NODE_SET_METHOD(exports, "hello", Method);
+	}
 
-void Method(const FunctionCallbackInfo<Value>& args) {
-  Isolate* isolate = args.GetIsolate();
-  args.GetReturnValue().Set(String::NewFromUtf8(
-      isolate, "world").ToLocalChecked());
-}
-
-
-void Initialize(Local<Object> exports) {
-  NODE_SET_METHOD(exports, "hello", Method);
-}
-
-
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
-
+	NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 
 }  // namespace demo
 ```
@@ -415,9 +409,7 @@ NAPI_MODULE(NODE_GYP_MODULE_NAME, init)
 // addon.cc
 #include <node.h>
 
-
 namespace demo {
-
 
 using v8::Exception;
 using v8::FunctionCallbackInfo;

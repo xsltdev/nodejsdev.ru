@@ -677,7 +677,7 @@ const server = net
     });
 ```
 
-Контексты промисов могут не получать точные `executionAsyncIds` по умолчанию. См. раздел [отслеживание выполнения промисов] (#promise-execution-tracking).
+Контексты промисов могут не получать точные `executionAsyncIds` по умолчанию. См. раздел [отслеживание выполнения промисов](#promise-execution-tracking).
 
 ### `async_hooks.triggerAsyncId()`
 

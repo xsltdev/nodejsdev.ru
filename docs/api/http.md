@@ -1636,7 +1636,7 @@ response.statusMessage = 'Not found';
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 
-Если установлено значение `true`, Node.js будет проверять, равны ли значение заголовка `Content-Length` и размер тела в байтах. Несоответствие значения заголовка `Content-Length` приведет к возникновению `ошибки`, определяемой `кодом:` [`'ERR_HTTP_CONTENT_LENGTH_MISMATCH'`] (errors.md#err_http_content_length_mismatch).
+Если установлено значение `true`, Node.js будет проверять, равны ли значение заголовка `Content-Length` и размер тела в байтах. Несоответствие значения заголовка `Content-Length` приведет к возникновению `ошибки`, определяемой `кодом:` [`'ERR_HTTP_CONTENT_LENGTH_MISMATCH'`](errors.md#err_http_content_length_mismatch).
 
 <!-- 0099.part.md -->
 
@@ -2742,7 +2742,7 @@ http.request(url[, options][, callback])
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
-Также поддерживаются `опции` в [`socket.connect()`] (net.md#socketconnectoptions-connectlistener).
+Также поддерживаются `опции` в [`socket.connect()`](net.md#socketconnectoptions-connectlistener).
 
 Node.js поддерживает несколько соединений для каждого сервера для выполнения HTTP-запросов. Эта функция позволяет прозрачно отправлять запросы.
 
@@ -2990,4 +2990,3 @@ http.setMaxIdleHTTPParsers(max);
 Устанавливает максимальное количество неработающих парсеров HTTP.
 
 <!-- 0169.part.md -->
-

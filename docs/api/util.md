@@ -363,7 +363,7 @@ fs.access('file/that/does/not/exist', (err) => {
 -   `constructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   `superConstructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Использование `util.inherits()` не рекомендуется. Пожалуйста, используйте ключевые слова ES6 `class` и `extends`, чтобы получить поддержку наследования на уровне языка. Также обратите внимание, что эти два стиля [семантически несовместимы] (https://github.com/nodejs/node/issues/4179).
+Использование `util.inherits()` не рекомендуется. Пожалуйста, используйте ключевые слова ES6 `class` и `extends`, чтобы получить поддержку наследования на уровне языка. Также обратите внимание, что эти два стиля [семантически несовместимы](https://github.com/nodejs/node/issues/4179).
 
 Наследуйте методы прототипа из одного [конструктора](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor) в другой. Прототип `constructor` будет установлен на новый объект, созданный из `superConstructor`.
 
@@ -2312,7 +2312,7 @@ console.log(util.types.isNativeError(new MyError())); // true
 
 <!-- 0196.part.md -->
 
-Значение, являющееся `stanceof` класса нативной ошибки, не эквивалентно тому, что `isNativeError()` возвращает `true` для этого значения. `isNativeError()` возвращает `true` для ошибок, которые приходят из другой [сферы] (https://tc39.es/ecma262/#realm), в то время как `instanceof Error` возвращает `false` для этих ошибок:
+Значение, являющееся `stanceof` класса нативной ошибки, не эквивалентно тому, что `isNativeError()` возвращает `true` для этого значения. `isNativeError()` возвращает `true` для ошибок, которые приходят из другой [сферы](https://tc39.es/ecma262/#realm), в то время как `instanceof Error` возвращает `false` для этих ошибок:
 
 <!-- 0197.part.md -->
 
@@ -3059,4 +3059,3 @@ util.log('Timestamped message.');
 <!-- 0268.part.md -->
 
 <!-- 0269.part.md -->
-

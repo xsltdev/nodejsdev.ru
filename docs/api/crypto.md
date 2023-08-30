@@ -782,7 +782,7 @@ console.log(decrypted);
 
 Метод `decipher.setAuthTag()` должен быть вызван до [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) для режима `CCM` или до [`decipher.final()`](#decipherfinaloutputencoding) для режимов `GCM` и `OCB` и `chacha20-poly1305`. `decipher.setAuthTag()` может быть вызван только один раз.
 
-При передаче строки в качестве тега аутентификации, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API] (#using-strings-as-inputs-to-cryptographic-apis).
+При передаче строки в качестве тега аутентификации, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
 
 <!-- 0020.part.md -->
 
@@ -1059,7 +1059,7 @@ assert.strictEqual(
 
 -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView}
 -   `curve` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка] (buffer.md#buffers-and-character-encodings) строки `key`.
+-   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `key`.
 -   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
 -   `формат` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `uncompressed`.
 -   Возвращает: {Буфер | строка}
@@ -1125,7 +1125,7 @@ console.log(uncompressedKey === ecdh.getPublicKey('hex'));
 ### `ecdh.computeSecret(otherPublicKey[, inputEncoding][, outputEncoding])`
 
 -   `otherPublicKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка] (buffer.md#buffers-and-character-encodings) строки `otherPublicKey`.
+-   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `otherPublicKey`.
 -   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
 -   Возвращает: {Буфер | строка}.
 
@@ -3161,7 +3161,7 @@ console.log(Buffer.from(derivedKey).toString('hex')); // '24156e2...5391653'
 
 Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
 
-При передаче строк для `password` или `salt`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входных данных для криптографических API] (#using-strings-as-inputs-to-cryptographic-apis).
+При передаче строк для `password` или `salt`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входных данных для криптографических API](#using-strings-as-inputs-to-cryptographic-apis).
 
 ```mjs
 const { pbkdf2 } = await import('node:crypto');
@@ -3858,7 +3858,7 @@ scrypt(
 
 Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
 
-При передаче строк для `password` или `salt` следует учитывать [предостережения при использовании строк в качестве входов в криптографические API] (#using-strings-as-inputs-to-cryptographic-apis).
+При передаче строк для `password` или `salt` следует учитывать [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
 
 При неудачном выводе ключа возникает исключение, в противном случае полученный ключ возвращается как [`буфер`](buffer.md).
 
@@ -5125,4 +5125,3 @@ Specifies the active default cipher list used by the current Node.js process.
 </table>
 
 <!-- 0156.part.md -->
-
