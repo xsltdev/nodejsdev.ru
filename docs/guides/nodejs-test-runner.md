@@ -786,3 +786,4 @@ node --test tests/app.test.js
 
 Для получения дополнительной информации посетите [страницу документации](https://nodejs.org/api/test.html). Если вам интересно узнать, как Node.js test runner сравнивается с другими фреймворками для тестирования, ознакомьтесь с нашим [руководством по сравнению](https://betterstack.com/community/guides/testing/best-node-testing-libraries/).
 
+<small>Источник &mdash; <https://betterstack.com/community/guides/testing/nodejs-test-runner/></small>
