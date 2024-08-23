@@ -589,4 +589,295 @@ Firstly, it is essential to say that the Fastify boot sequence is asynchronous t
 
     The boot process is baked by `Avvio`, a library that can also be used standalone. `Avvio` handles all the complexities concerning the asynchronous boot – error handling, loading order, and dispatching the ready event, enabling developers to ensure that the application is started after everything is loaded without any errors.
 
-**48**
+This somehow overshadowed and underrated feature is, in reality, one of the most powerful ones. Having an asynchronous boot process brings to the table some key benefits:
+
+-   After the `listen`/`ready` promise is resolved, we are sure that all plugins are loaded without errors and the boot sequence is over
+-   It allows us to always register our plugins in a deterministic way, ensuring the loading and closing orders
+-   If an error is thrown during the plugin registration, it will interrupt the boot sequence, enabling developers to act accordingly
+
+Even if Fastify’s boot process is very versatile, it handles almost everything out of the box. The exposed API is small – there are just two methods! The first one is the `register` method, which we have already used many times. The other one is `after`, and as we will see, it is rarely used because `register` integrates its functionalities for most of the use cases. Let’s take a deeper look at them.
+
+!!!note "thenable"
+
+    Several Fastify instance methods return `thenable`, an object that has the `then()` method. The most important property of `thenable` is that the promise chains and `async`/`await` work fine. Using `thenable` instead of a real promise has one main advantage – it enables the object to be simultaneously awaited and chained to other calls in a fluent API fashion.
+
+### The register instance method
+
+At this point, we almost know everything about this core method. Let’s start with its signature:
+
+```js
+.register(async function plugin(instance, pluginOptions), options)
+```
+
+The `options` parameter is fundamental to passing custom options to our plugins during the registration, and it is the gateway to plugin reusability. For example, we can register the same plugin that deals with the database with a different connection string or, as we saw, use another prefix option to register the same handler on different route paths. Moreover, if we don’t use the `fastify-plugin` module or the `skip-override` hidden property, `register` creates a new context, isolating whatever our plugin does.
+
+But what is the register return value? It is a `thenable` Fastify instance, and it brings two significant benefits to the table:
+
+-   It adds the ability to chain instance method calls.
+-   If needed, we can use `await` when calling `register`
+
+First, we will take a look at Fastify instance method chaining in `register-chain.cjs`:
+
+```js
+const Fastify = require('fastify');
+// [1]
+async function plugin1(fastify, options) {
+    app.log.info('plugin1');
+}
+async function plugin2(fastify, options) {
+    app.log.info('plugin2');
+}
+async function plugin3(fastify, options) {
+    app.log.info('plugin3');
+}
+const app = Fastify({ logger: true });
+app.register(plugin1) // [2]
+    .register(plugin2);
+app.register(plugin3); // [3]
+app.ready().then(() => {
+    console.log('app ready');
+});
+```
+
+We define three dummy plugins that do only one thing when registered – they log their function name (`[1]`). Then, at `[2]`, we register both of them using method chaining. The first `.register(plugin1)` invocation returns the Fastify instance, allowing the subsequent call, `.register(plugin2)`. We can use method chaining with the majority of instance methods. We can break the invocation chain and call the register directly on the instance (`[3]`).
+
+#### Awaiting register
+
+There is one more thing to say about the register method. We can use the `await` operator after every `register` call to wait for the registration to be done. The `await` operator can be used after any `register` call to wait for every plugin added up to that point to load, as we can see in the following `await-register.cjs` snippet:
+
+```js
+const Fastify = require('fastify');
+const fp = require('fastify-plugin');
+async function boot() {
+    // [1]
+    async function plugin1(fastify, options) {
+        fastify.decorate('plugin1Decorator', 'plugin1');
+    }
+    async function plugin2(fastify, options) {
+        fastify.decorate('plugin2Decorator', 'plugin2');
+    }
+    async function plugin3(fastify, options) {
+        fastify.decorate('plugin3Decorator', 'plugin3');
+    }
+    const app = Fastify({ logger: true });
+    await app // [2]
+        .register(fp(plugin1))
+        .register(fp(plugin2));
+    console.log(
+        'plugin1Decorator',
+        app.hasDecorator('plugin1Decorator')
+    );
+    console.log(
+        'plugin2Decorator',
+        app.hasDecorator('plugin2Decorator')
+    );
+    app.register(fp(plugin3)); // [3]
+    console.log(
+        'plugin3Decorator',
+        app.hasDecorator('plugin3Decorator')
+    );
+    await app.ready();
+    console.log('app ready');
+    console.log(
+        'plugin3Decorator',
+        app.hasDecorator('plugin3Decorator')
+    );
+}
+boot();
+```
+
+To understand what is going on, we will run this snippet:
+
+```sh
+$ node register-await.mjs
+plugin1Decorator true # [4]
+plugin2Decorator true
+plugin3Decorator false # [5]
+app ready
+plugin3Decorator true # [6]
+```
+
+Since this example is quite long and complex, let’s break it into smaller chunks:
+
+-   We declare three plugins `[1]`, each adding one decorator to the Fastify instance
+-   We use `fastify-plugin` to decorate the root instance and to register these plugins (`[2]` and `[3]`), as we learned in the previous section
+-   Even if our plugins are identical, we can see that the results of `console.log` are different; the two plugins registered with the `await` operator (`[2]`) have already decorated the root instance (`[4]`)
+-   Conversely, the last one registered without `await` (`[3]`) adds its decorator only after the ready event promise has been resolved (`[5]` and `[6]`)
+
+At this point, it should be clear that if we also want the third decorator to be available before the application is fully ready, it is sufficient to add the await operator on `[3]`!
+
+As a final note, we can say that we don’t need to wait when registering our plugins for most cases. The only exception might be when we need access to something that the plugin did during the loading. For example, we have a plugin that connects to an external source, and we want to be sure that it is connected before going on with the boot sequence.
+
+### The after instance method
+
+The function argument of the `after` method is called automatically by Fastify when all plugins added until that point have finished loading. As the only parameter, it defines a callback function with an optional error argument:
+
+```js
+.after(function (err) {})
+```
+
+If we don’t pass the callback, then `after` will return a `thenable` object that can be awaited. In this version, awaiting `after` can be replaced by just awaiting `register`; the behavior is the same. Because of that, in the `after.cjs` example, we will see the callback style version of the `after` method:
+
+```js
+const Fastify = require('fastify');
+const fp = require('fastify-plugin');
+async function boot() {
+    // [1]
+    async function plugin1(fastify, options) {
+        fastify.decorate('plugin1Decorator', 'plugin1');
+    }
+    async function plugin2(fastify, options) {
+        fastify.decorate('plugin2Decorator', 'plugin2');
+    }
+    async function plugin3(fastify, options) {
+        fastify.decorate('plugin3Decorator', 'plugin3');
+    }
+    const app = Fastify({ logger: true });
+    await app // [2]
+        .register(fp(plugin1))
+        .register(fp(plugin2))
+        .after((_error) => {
+            // [3]
+            console.log(
+                'plugin1Decorator',
+                app.hasDecorator('plugin1Decorator')
+            );
+            console.log(
+                'plugin2Decorator',
+                app.hasDecorator('plugin2Decorator')
+            );
+        })
+        .register(fp(plugin3)); // [4]
+    console.log(
+        'plugin3Decorator',
+        app.hasDecorator('plugin3Decorator')
+    );
+    await app.ready();
+    console.log('app ready');
+}
+boot();
+```
+
+We declare and then register the same three plugins from the last examples (`[1]`). On `[2]`, we start our chain of method calls, adding the `after` call (`[3]`) before the last `register` (`[4]`). Inside the `after` callback, we are sure, if the error is null, that the first two plugins are loaded correctly; in fact, the decorators have the correct values. If we run this snippet, we will have the same result as the previous one.
+
+Fastify guarantees that all `after` callbacks will be called before the application’s ready event is dispatched. This method can be helpful if we prefer chaining instance methods but still need control over the boot sequence.
+
+### A declaration order
+
+Even if Fastify keeps the correct order of plugin registration, we should still follow some good practices to maintain more consistent and predictable boot behavior. If something terrible happens during the loading, using the following declaration order will help figure out what the issue is:
+
+-   Plugins installed from `npmjs.com`
+-   Our plugins
+-   Decorators
+-   Hooks
+-   Services, routes, and so on
+
+This declaration order guarantees that all stuff declared in the current context will be accessible. Since in Fastify, everything can, and really should, be defined inside a plugin, we should replicate the preceding structure at every registration level.
+
+The boot sequence is the series of operations that Fastify performs to load all of the plugins that are registered and start the server. We learned how this process is deterministic, since the order of registration matters. Finally, we covered how developers have two methods at their disposal to fine- tune the boot sequence, despite Fastify providing a default behavior.
+
+During the boot sequence, one or more errors can occur. In the next section, we will cover the most common errors and learn how to deal with them.
+
+## Handling boot and plugin errors
+
+This section will analyze some of the most common Fastify boot errors and how we can deal with them. But what are boot errors anyway? All errors thrown during the initial load of our application, before the ready event is dispatched and the server listens for incoming connections, are called **boot errors**.
+
+These errors are usually thrown when something unexpected happens during the registration of a plugin. If there are any unhandled errors during a plugin registration, Fastify, with the help of `Avvio`, will notify us and stop the boot process.
+
+We can distinguish between two error types:
+
+-   Errors that we can recover from
+-   Errors that are not recoverable by any means
+
+First, we will look at the most common non-recoverable error, `ERR_AVVIO_PLUGIN_TIMEOUT`, which usually means we forgot to tell Fastify to continue with the boot process.
+
+Then, we will learn about the tools Fastify gives us to recover from other kinds of errors. It is important to note that we don’t want to recover from an error more often than not, and it is better to just make the server crash during the boot!
+
+### `ERR_AVVIO_PLUGIN_TIMEOUT`
+
+To prevent the boot process from being stuck indefinitely, Fastify has set a maximum amount of time a plugin can take to load. If a plugin takes longer than that, Fastify will throw an `ERR_AVVIO_PLUGIN_TIMEOUT` error. The default timeout is set to 10 seconds, but the value can be easily changed using the `pluginTimeout` server option.
+
+This is one of the most common boot errors, and usually, it happens for two reasons:
+
+-   We forgot to call the done callback when registering a plugin
+-   The registration promise isn’t resolved in time
+
+It is also the most confusing one, and it is certainly a non-recoverable error. The code written in `timeout-error.cjs` generates this error on purpose, allowing us to analyze the stack trace to understand how we can spot it and find where it originates:
+
+```js
+const Fastify = require('fastify');
+const app = Fastify({ logger: true });
+app.register(function myPlugin(fastify) {
+    console.log('Registering my first plugin.');
+});
+app.ready().then(() => {
+    console.log('app ready');
+});
+```
+
+Here, we register our plugin. We are giving it a name because, as we will see, it will help with the stack trace. Even if the plugin is not an `async` function, we deliberately don’t call the done callback to let Fastify know that the registration went without errors.
+
+If we run this snippet, we will receive the `ERR_AVVIO_PLUGIN_TIMEOUT` error:
+
+```sh
+$ node timeout-error.cjs
+Registering my first plugin.
+Error: ERR_AVVIO_PLUGIN_TIMEOUT: plugin did not start in time:
+myPlugin. You may have forgotten to call 'done' function or to resolve
+a Promise
+    at Timeout._onTimeout (/node_modules/avvio/plugin.js:123:19)
+    at listOnTimeout (internal/timers.js:554:17)
+    at processTimers (internal/timers.js:497:7) {
+  code: 'ERR_AVVIO_PLUGIN_TIMEOUT',
+  fn: [Function: myPlugin]
+}
+```
+
+As we can see immediately, the error is pretty straightforward. Fastify uses the function name, `myPlugin`, to point us in the correct direction. Moreover, it suggests that we might forget to call `'done'` or resolve the promise. It is worth mentioning that, in real-world scenarios, this error is usually thrown when there are some connection-related problems – for example, the database is not reachable at the time of the plugin registration.
+
+### Recovery from a boot error
+
+Usually, if an error happens during boot time, something serious prevents our application from starting. In such cases, as we already saw, the best thing Fastify can do is to stop the boot process and notify us about the errors it encountered. However, there are a few cases where we can recover from an error and continue with the boot process. For example, we have an optional plugin to measure application metrics, and we want to start the application even if it is not loading correctly.
+
+`error-after.cjs` shows how to recover from the error using our old friend, the `after` method:
+
+```js
+const Fastify = require('fastify');
+// [1]
+async function plugin1(fastify, options) {
+    throw new Error('Kaboom!');
+}
+const app = Fastify({ logger: true });
+app.register(plugin1).after((err) => {
+    if (err) {
+        // [2]
+        console.log(
+            `There was an error loading plugin1:
+          '${err.message}'. Skipping.`
+        );
+    }
+});
+app.ready().then(() => {
+    console.log('app ready');
+});
+```
+
+First, we declare a dummy plugin (`[1]`) that always throws. Then, we register it and use the `after` method to check for registration errors (`[2]`). If any error is found, we log it to the console. Calling `after` has the effect of “catching” the boot error, and therefore, the boot process will not stop since we handled the unexpected behavior. We can run the snippet to check that it works as expected:
+
+```sh
+$ node error-after.cjs
+There was an error loading plugin1: 'Kaboom!'. Skipping.
+app ready
+```
+
+Since the last logged line is `app ready`, we know that the boot process went well, and our application has started!
+
+## Summary
+
+In this chapter, we learned about the importance of plugins and how the Fastify boot process works. Everything in Fastify can and really should be put in a plugin. It is the base building block of scalable and maintainable applications, thanks to encapsulation and a predictable loading order. Furthermore, we can use `fastify-plugin` to control the default encapsulation and manage dependencies between plugins.
+
+We learned how our applications are nothing more than a bunch of Fastify plugins that work together. Some are used to encapsulate routers, using prefixes to namespace them. Others are used to add core functionalities, such as connections to databases or some other external systems. In addition to that, we can install and use core and community plugins directly from npm.
+
+Moreover, we covered the boot process’s asynchronous nature and how every step can be awaited if needed. It is guaranteed that if any error is encountered during the loading of plugins, the boot process will stop, and the error will be logged to the console.
+
+In the next chapter, we will learn all the ways to declare the endpoints of our application. We will see how to add route handlers and how to avoid the major pitfalls. Finally, what we learned in this chapter about plugins will be helpful when dealing with route scoping and route grouping!
