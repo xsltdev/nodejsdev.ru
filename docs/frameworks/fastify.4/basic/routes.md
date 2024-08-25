@@ -660,4 +660,639 @@ const app = fastify({
 });
 ```
 
-**75**
+The `rewriteUrl` parameter accepts an input sync function that must return a string. The returned line will be set as the request URL, and it will be used during the routing process. Note that the function argument is the standard `http.IncomingMessage` class and not the Fastify `Request` component.
+
+This technique could be useful as a URL expander or to avoid redirecting the client with the 302 HTTP response status code.
+
+!!!note "Logging the URL rewrite"
+
+    Unfortunately, the `rewriteUrl` function will not be bound to the Fastify root instance. This means you will not be able to use the `this` keyword in that context. Fastify will log the debug information if the function returns a different URL than the original. In any case, you will be able to use the `app.log` object at your convenience.
+
+We have explored how to make Fastify’s router more flexible in order to support a broad set of use cases that you may encounter in your daily job.
+
+Now, we will learn how to configure the router to be even more granular.
+
+### Registering the same URLs
+
+As we have seen previously, Fastify doesn’t register the same HTTP route path more than once. This is a limit, due to the Fastify router. The router searches the correct handler to execute by matching with the following rules:
+
+-   The request HTTP method
+-   The request string URL
+
+The search function must only return one handler; otherwise, Fastify can’t choose which one to execute. To overcome the limit, with Fastify, you can extend these two parameters to all the request’s parts, such as headers and request metadata!
+
+This feature is the **route constraint**. A constraint is a check performed when the HTTP request has been received by the server and must be routed to an endpoint. This step reads the raw `http.IncomingMessage` to pull out the value to apply the constraint check. Essentially, you can see two main logic steps:
+
+1.  The constraint configuration in the route option means that the endpoint can only be reached if the HTTP request meets the condition.
+2.  The constraint evaluation happens when the HTTP request is routed to a handler.
+
+A constraint can be mandatory if derived from the request, but we will look at an example later.
+
+Now, let’s assume we have an endpoint that must change the response payload. This action would be a breaking change for our customers. A breaking change means that all the clients connected to our application must update their code to read the data correctly.
+
+In this case, we can use **route versioning**. This feature lets us define the same HTTP route path with a different implementation, based on the version requested by the client. Consider the following working snippet:
+
+```js
+app.get('/user', function (request, reply) {
+    reply.send({ user: 'John Doe' });
+});
+app.get(
+    '/user',
+    {
+        constraints: {
+            version: '2.0.0',
+        },
+    },
+    function handler(request, reply) {
+        reply.send({ username: 'John Doe' });
+    }
+);
+```
+
+We have registered the same URL with the same HTTP method. The two routes reply with a different response object that is not backward compatible.
+
+!!!note "Backward compatibility"
+
+    An endpoint is backward compatible when changes to its business logic do not require client updates.
+
+The other difference is that the second endpoint has a new `constraints` option key, pointing to a JSON object input. This means that the router must match the URL path, the HTTP method, and all the constraints to apply that handler.
+
+By default, Fastify supports two constraints:
+
+-   The `host` constraint checks the `host` request header. This check is not mandatory, so if the request has the `host` header, but it doesn’t match with any constrained route, a generic endpoint without a constraint can be selected during the routing.
+-   The `version` constraint analyzes the `accept-version` request header. When a request contains this header, the check is mandatory, and a generic endpoint without a constraint can’t be considered during the routing.
+
+To explain these options better, let’s see them in action:
+
+```js
+app.get('/host', func0)
+app.get('/host', {
+  handler: func2,
+  constraints: {
+    host: /^bar.*/
+  }
+})
+app.get('/together, func0)
+app.get('/together', {
+  handler: func1,
+  constraints: {
+    version: '1.0.1',
+    host: 'foo.fastify.dev'
+  }
+})
+```
+
+The `/host` handler only executes when a request has the `host` header that starts with `bar`, so the following command will reply with the `func2` response:
+
+```sh
+$ curl --location --request GET "http://localhost:8080/host" --header
+"host: bar.fastify.dev"
+```
+
+Instead, setting the `host` header as `foo.fastify.dev` will execute the `func0` handler; this happens because the `host` constraint is not mandatory, and an HTTP request with a value can match a route that has no constraint configured.
+
+The `/together` endpoint configures two constraints. The handler will only be executed if the HTTP request’s header has both the corresponding HTTP headers:
+
+```sh
+$ curl --location --request GET "http://localhost:8080/together"
+--header "accept-version: 1.x" --header "host: foo.fastify.dev"
+```
+
+The `host` match is a simple string match; instead, the `accept-version` header is a **Semantic Versioning (SemVer)** range string matching.
+
+The SemVer is a specification to name a release of software in the Node.js ecosystem. Thanks to its clarity, it is broadly used in many contexts. This naming method defines three numbers referred to as **major.minor.patch**, such as `1.0.1`. Each number indicates the type of software changes that have been published:
+
+-   Major version: The change is not backward compatible, and the client must update how it processes the HTTP request.
+-   Minor bump version: A new feature is added to the software, keeping the endpoint I/O backward compatible.
+-   Patch version: Bug fixes that improve the endpoint without changing the exposed API.
+
+The specification defines how to query a SemVer string version, too. Our use case focuses on the `1.x` range, which means _the most recent major version 1_; the `1.0.x` translates to _the most recent major version 1, and minor equals 0_. For a complete overview of the SemVer query syntax, you can refer to <https://semver.org/>.
+
+So, the `version` constraint supports the SemVer query syntax as an HTTP header value to match the target endpoint.
+
+Note that, in this case, when a request has the `accept-version` header, the check is mandatory. This means that routes without a constraint can’t be used. Here, the rationale is that if the client wants a well-defined route version, it cannot reply from an unversioned route.
+
+!!!note "Multiple constraint match"
+
+Note that the constraints can face conflicts during the evaluation. If you define two routes with the same host regular expression, an HTTP request might match both of them. In this case, the last registered route will be executed by the router. It would be best if you avoided these cases by configuring your constraints carefully.
+
+As mentioned already, you can have many more constraints to route the HTTP request to your handlers. In fact, you can add as many constraints as you need to your routes, but it will have a performance cost. The routing selects the routes that match the HTTP method and path and will then process the constraints for every incoming request. Fastify gives you the option to implement custom constraints based on your needs. Creating a new constraint is not the goal of this book, but you can refer to this module at <https://github.com/Eomm/header-constraint-strategy>, which is maintained by the co-author of this book. Your journey with Fastify is not restricted to this practical book!
+
+At this stage, we have understood how to add a route and how to drive the HTTP requests to it. Now we are ready to jump into input management.
+
+## Reading the client’s input
+
+Every API must read the client’s input to behave. We already mentioned the four HTTP request input types, which are supported by Fastify:
+
+-   The path parameters are positional data, based on the endpoint’s URL format
+-   The query string is an additional part of the URL the client adds to provide variable data
+-   The headers are additional `key:value` pairs that pair information passing between the client and the server
+-   The body is the request payload that contains the client’s data submission
+
+Let’s take a look at each in more detail.
+
+### The path parameters
+
+The path parameters are variable pieces of a URL that could identify a resource in our application server. We already covered this aspect in [_Chapter 1_](./what-is-fastify.md), so we will not repeat ourselves. Instead, it will be interesting to show you a new useful example that we haven’t yet covered; this example sets two (or more) path parameters:
+
+```js
+app.get('/:userId/pets/:petId', function getPet(
+    request,
+    reply
+) {
+    reply.send(request.params);
+});
+```
+
+The `request.params` JSON object contains both parameters, `userId` and `petId`, which are declared in the URL string definition.
+
+The last thing to know about the path parameters is the maximum length they might have. By default, an URL parameter can’t be more than 100 characters. This is a security check that Fastify sets by default, and that you can customize in the root server instance initialization:
+
+```js
+const app = fastify({
+    maxParamLength: 40,
+});
+```
+
+Since all your application’s path parameters should not exceed a known length limit, it is good to reduce it. Consider that it is a global setting, and you can change it for a single route.
+
+If a client hits the parameter length limit, it will get a 404 Not Found response.
+
+### The query string
+
+The query string is an additional part of the URL string that the client can append after a question mark:
+
+```
+http://localhost:8080/foo/bar?param1=one&param2=two
+```
+
+These params let your clients submit information to those endpoints that don’t support the request payload, such as `GET` or `HEAD` `HTTP`. Note that it is possible to retrieve only input strings and not complex data such as a file.
+
+To read this information, you can access the `request.query` field wherever you have the `Request` component: hooks, decorators, or handlers.
+
+Fastify supports basic 1:1 relation mapping, so a `foo.bar=42` query parameter produces a `{"foo.bar":"42"}` query object. Meanwhile, we should expect a nested object like this:
+
+```json
+{
+    "foo": {
+        "bar": "42"
+    }
+}
+```
+
+To do so, we must change the default query string parser with `qs`, a new external module, (<https://www.npmjs.com/package/qs>):
+
+```js
+const qs = require('qs');
+const app = fastify({
+    querystringParser: function newParser(
+        queryParamString
+    ) {
+        return qs.parse(queryParamString, {
+            allowDots: true,
+        });
+    },
+});
+```
+
+This setup unlocks a comprehensive set of new syntaxes that you can use in query strings such as arrays, nested objects, and custom char separators.
+
+### The headers
+
+The headers are a key-value map that can be read as a JSON object within the `request.headers` property. Note that, by default, Node.js will apply a lowercase format to every header’s key. So, if your client sends to your Fastify server the `CustomHeader: AbC` header, you must access it with the `request.headers.customheader` statement.
+
+This logic follows the HTTP standard that stands for case-insensitive field names.
+
+If you need to get the original headers sent by the client, you must access the `request.raw.rawHeaders` property. Consider that `request.raw` gives you access to the Node.js `http.IncomingMessage` object, so you are free to read data added to the Node.js core implementation, such as the raw headers.
+
+### The body
+
+The request’s body can be read through the `request.body` property. Fastify handles two input content types:
+
+1.  The `application/json` produces a JSON object as a `body` value
+2.  The `text/plain` produces a string that will be set as a `request.body` value
+
+Note that the request payload will be read for the `POST`, `PUT`, `PATCH`, `OPTIONS`, and `DELETE` HTTP methods. The `GET` and `HEAD` ones don’t parse the body, as per the HTTP/1.1 specification.
+
+Fastify sets a length limit to the payload to protect the application from **Denial-of-Service (DOS)** attacks, sending a huge payload to block your server in the parsing phase. When a client hits the default 1-megabyte limit, it receives a **413 - Request body is too large** error response. For example, this could be an unwanted behavior during an image upload. So, you should customize the default body size limit by setting the options as follows:
+
+```js
+const app = fastify({
+    // [1]
+    bodyLimit: 1024, // 1 KB
+});
+app.post(
+    '/',
+    {
+        // [2]
+        bodyLimit: 2097152, // 2 MB
+    },
+    handler
+);
+```
+
+The `[1]` configuration defines the maximum length for every route without a custom limit, such as route `[2]`.
+
+!!!note "Security first"
+
+    It is a good practice to limit the default body size to the minimum value you expect, and to set a specific limit for routes that need more input data. Usually, 256 KB is enough for simple user input.
+
+The user input is not JSON and text only. We will discuss how to avoid body parsing or manage more content types such as `multipart/form-data` in [_Chapter 4_](./hooks.md).
+
+We have covered the route configuration and learned how to read the HTTP request input sources. Now we are ready to take a deeper look at the routes’ organization into plugins!
+
+## Managing the route’s scope
+
+In Fastify, an endpoint has two central aspects that you will set when defining a new route:
+
+1.  The route configuration
+2.  The server instance, where the route has been registered
+
+This metadata controls how the route behaves when the client calls it. Earlier in this chapter, we saw the first point, but now we must deepen the second aspect: the server instance context. The **route’s scope** is built on top of the server’s instance context where the entry point has been registered. Every route has its own route scope that is built during the startup phase, and it is like a settings container that tracks the handler’s configuration. Let’s see how it works.
+
+### The route server instance
+
+When we talk about the **route’s scope**, we must consider the server instance where the route has been added. This information is important because it will define the following:
+
+-   The handler execution context
+-   The request life cycle events
+-   The default route configuration
+
+The product of these three aspects is the route’s scope. The route’s scope cannot be modified after application startup, since it is an optimized object of all the components that must serve the HTTP requests.
+
+To see what this means in practice, we can play with the following code:
+
+```js
+app.get('/private', function handle(request, reply) {
+    reply.send({ secret: 'data' });
+});
+app.register(function privatePlugin(instance, opts, next) {
+    instance.addHook('onRequest', function isAdmin(
+        request,
+        reply,
+        done
+    ) {
+        if (request.headers['x-api-key'] === 'ADM1N') {
+            done();
+        } else {
+            done(new Error('you are not an admin'));
+        }
+    });
+    next();
+});
+```
+
+By calling the <http://localhost:8080/private> endpoint, the `isAdmin` hook **will never be executed because the route is defined in the app scope**. The `isAdmin` hook is declared in the `privatePlugin`’s context only.
+
+Moving the `/private` endpoint declaration into the `privatePlugin` context, and taking care of changing the `app.get` code to `instance.get`, will change the route’s server instance context. Restarting the application and making a new HTTP request will execute the `isAdmin` function because the route’s scope has changed.
+
+We have explored this aspect of the framework in [_Chapter 2_](./plugin-system.md), where we learned how the encapsulation scope affects the Fastify instances registered. In detail, I’m referring to **decorators and hooks**: a route that inherits all the **request life cycle hooks** registered in the server instance it belongs to, and the decorators too.
+
+Consequently, the server’s instance context impacts all the routes added in that scope and its children, as shown in the previous example.
+
+To consolidate this aspect, we can take a look at another example with more plugins:
+
+```js
+app.addHook('onRequest', function parseUserHook(
+    request,
+    reply,
+    done
+) {
+    const level = parseInt(request.headers.level) || 0;
+    request.user = {
+        level,
+        isAdmin: level === 42,
+    };
+    done();
+});
+app.get('/public', handler);
+app.register(rootChildPlugin);
+async function rootChildPlugin(plugin) {
+    plugin.addHook('onRequest', function level99Hook(
+        request,
+        reply,
+        done
+    ) {
+        if (request.user.level < 99) {
+            done(new Error('You need an higher level'));
+            return;
+        }
+        done();
+    });
+    plugin.get('/onlyLevel99', handler);
+    plugin.register(childPlugin);
+}
+async function childPlugin(plugin) {
+    plugin.addHook('onRequest', function adminHook(
+        request,
+        reply,
+        done
+    ) {
+        if (!request.isAdmin) {
+            done(new Error('You are not an admin'));
+            return;
+        }
+        done();
+    });
+    plugin.get('/onlyAdmin', handler);
+}
+```
+
+Take some time to read the previous code carefully; we have added one route and one `onRequest` hook into each context:
+
+-   The `/public` route in the root app application instance
+-   The `/onlyLevel99` URL in the `rootChildPlugin` function, which is the app context’s child
+-   The `/onlyAdmin` endpoint in the `childPlugin` context is registered in the `rootChildPlugin` function
+
+Now, if we try to call the `/onlyAdmin` endpoint, the following will happen:
+
+1.  The server receives the HTTP request and does the routing process, finding the right handler.
+2.  The handler is registered in the `childPlugin` context, which is a child server instance.
+3.  Fastify traverses the context’s tree till the root application instance and starts the **request life cycle** execution.
+4.  Every hook in the traversed contexts is executed sequentially. So, the executive order will be as follows:
+    1.  The `parseUserHook` hook function adds a user object to the HTTP request.
+    2.  The `level99Hook` will check whether the user object has the appropriate level to access the routes defined in that context and its children’s context.
+    3.  The `adminHook` finally checks whether the user object is an admin.
+
+It is worth repeating that if the `/onlyAdmin` route was registered in the app context, the fourth point would only execute the hooks added to that context.
+
+In our examples, we used hooks, but the concept would be the same for decorators: a decorator added in the `rootChildPlugin` context is not available to be used in the app’s context because it is a parent. Instead, the decorator will be ready to use in the `childPlugin` context because it is a child of `rootChildPlugin`.
+
+The route’s context is valuable because a route can access a database connection or trigger an authentication hook only if it has been added to the right server instance. For this reason, knowing in which context a route is registered is very important. There is a set of debugging techniques you can use to understand where a route is registered, which we will examine later.
+
+### Printing the routes tree
+
+During the development process, especially when developing the first Fastify application, you might feel overwhelmed by having to understand the functions executed when a request reaches an endpoint. Don’t panic! This is expected at the beginning, and the feeling is temporary.
+
+To reduce the stress, Fastify has a couple of debugging outputs and techniques that are helpful to unravel a complex code base.
+
+The utilities we are talking about can be used like so:
+
+```js
+app.ready().then(function started() {
+    console.log(app.printPlugins()); // [1]
+    console.log(app.printRoutes({ commonPrefix: false }));
+    // [2]
+});
+```
+
+The `printPlugins()` method of `[1]` returns a string with a tree representation containing all the encapsulated contexts and loading times. The output gives you a complete overview of all the plugins created and the nesting level. Instead, the `printRoutes()` method of `[2]` shows us the application’s routes list that we are going to see later.
+
+To view an example of the `printPlugins` function, consider the following code:
+
+```js
+app.register(async function pluginA(instance) {
+    instance.register(async function pluginB(instance) {
+        instance.register(function pluginC(
+            instance,
+            opts,
+            next
+        ) {
+            setTimeout(next, 1000);
+        });
+    });
+});
+app.register(async function pluginX() {});
+```
+
+We have created four plugins: three nested into each other and one at the root context. The `printPlugins` executions produce the following output string:
+
+```
+bound root 1026 ms
+├── bound _after 3 ms
+├─┬ pluginA 1017 ms
+│ └─┬ pluginB 1017 ms
+│   └── pluginC 1016 ms
+└── pluginX 0 ms
+```
+
+Here, we can see two interesting things:
+
+1.  The names in the output are the plugins’ function names: This reaffirms the importance of preferring named functions instead of anonymous ones. Otherwise, the debugging phase will be more complicated.
+2.  The loading times are cumulative: The root time loading is the sum of all its children’s contexts. For this reason, the `pluginC` loading time impacts the parent ones.
+
+This output helps us to do the following:
+
+-   Get a complete overview of the application tree. In fact, adding a new route to the `pluginB` context inherits the configuration of that scope and the parent ones.
+-   Identify the slower plugins to load.
+
+Fastify internals The output shows the `bound` `_after` string. You can simply ignore this string output because it is an internal Fastify behavior, and it does not give us information about our application.
+
+Looking at the `printRoutes()` method of `[2]` at the beginning of this section, we can get a complete list of all the routes that have been loaded by Fastify. This helps you to get an easy-to-read output tree:
+
+```
+└── / (GET)
+    ├── dogs (GET, POST, PUT)
+    │   └── /:id (GET)
+    ├── feline (GET)
+    │   ├── / (GET)
+    │   └── /cats (GET, POST, PUT)
+    │       /cats (GET) {"host":"cats.land"}
+    │       └── /:id (GET)
+    └── who-is-the-best (GET)
+```
+
+As you can see, the print lists all the routes within their HTTP methods and constraints.
+
+As you may remember, in the `printRoutes()` `[2]` statement, we used the `commonPrefix` option. This is necessary to overcome the internal Radix-tree we saw in the previous [Routing to the endpoint](#routing-to-the-endpoint) section. Without this parameter, Fastify will show you the internal representation of the routes. This means that the routes are grouped by the most common URL string. The following set of routes has three routes with the `hel` prefix in common:
+
+```js
+app.get('/hello', handler);
+app.get('/help', handler);
+app.get('/:help', handler);
+app.get('/helicopter', handler);
+app.get('/foo', handler);
+app.ready(() => {
+    console.log(app.printRoutes());
+});
+```
+
+Printing those routes by calling the `printRoutes()` function produces the following:
+
+```
+└── /
+    ├── hel
+    │   ├── lo (GET)
+    │   ├── p (GET)
+    │   └── icopter (GET)
+    ├── :help (GET)
+    └── foo (GET)
+```
+
+As the preceding output confirms, the `hel` string is the most shared URL string that groups three routes. Note that the `:help` route is not grouped: this happens because it is a path parameter and not a static string. As mentioned already, this output shows the router’s internal logic, and it may be hard to read and understand. Going deeper into the route’s internal details is beyond the scope of this book because it concerns the internal Radix-tree we mentioned in the [Routing to the endpoint](#routing-to-the-endpoint) section.
+
+The `printRoutes()` method supports another useful option flag: `includeHooks`. Let’s add the following Boolean:
+
+```js
+app.printRoutes({
+    commonPrefix: false,
+    includeHooks: true,
+});
+```
+
+This will print to the output tree all the hooks that the route will execute during the **request life cycle**! The print is extremely useful to spot hooks that run when you would not expect them!
+
+To set an example, let’s see the following sample code:
+
+```js
+app.addHook('preHandler', async function isAnimal() {});
+app.get('/dogs', handler);
+app.register(async function pluginA(instance) {
+    instance.addHook(
+        'onRequest',
+        async function isCute() {}
+    );
+    instance.addHook(
+        'preHandler',
+        async function isFeline() {}
+    );
+    instance.get(
+        '/cats',
+        {
+            onRequest: async function hasClaw() {}, // [1]
+        },
+        handler
+    );
+});
+await app.ready();
+console.log(
+    app.printRoutes({
+        commonPrefix: false,
+        includeHooks: true,
+    })
+);
+```
+
+Print out the string:
+
+```
+└── / (-)
+    ├── cats (GET)
+    │   • (onRequest) ["isCute()","hasClaw()"]
+    │   • (preHandler) ["isAnimal()","isFeline()"]
+    └── dogs (GET)
+        • (preHandler) ["isAnimal()"]
+```
+
+The output tree is immediately readable, and it is telling us which function runs for each hook registered! Moreover, the functions are ordered by execution, so we are sure that `isFeline` runs after the `isAnimal` function. In this snippet, we used the route hook registration `[1]` to highlight how the hooks append each other in sequence.
+
+!!!note "Named functions"
+
+    As mentioned in the [_Adding basic routes_](./what-is-fastify.md#adding-basic-routes) section of Chapter 1, using arrow functions to define the application’s hooks will return the `"anonymous()"` output string. This could hinder you from debugging the route
+
+Now you can literally see your application’s routes! You can use these simple functions to get an overview of the plugin’s structure and gain a more detailed output of each endpoint, to understand the flow that an HTTP request will follow.
+
+!!!note "Drawing a schema image of your application"
+
+    By using the `fastify-overview` plugin from <https://github.com/Eomm/fastify-overview>, you will be able to create a graphical layout of your application with all the hooks, decorators, and Fastify-encapsulated contexts highlighted! You should give it a try.
+
+Get ready for the next section, which will introduce more advanced topics, including how to start working with hooks and route configurations together.
+
+## Adding new behaviors to routes
+
+At the beginning of this chapter, we learned how to use the `routeOptions` object to configure a route, but we did not talk about the `config` option!
+
+This simple field gives us the power to do the following:
+
+-   Access the config in the handler and hook functions
+-   Implement the **Aspect-Oriented Programming (AOP)** that we are going to see later
+
+How does it work in practice? Let’s find out!
+
+### Accessing the route’s configuration
+
+With the `routerOption.config` parameter, you can specify a JSON that contains whatever you need. Then, it is possible to access it later within the `Request` component in the handlers or hooks’ function through the `context.config` field:
+
+```js
+async function operation(request, reply) {
+    return request.context.config;
+}
+app.get('/', {
+    handler: operation,
+    config: {
+        hello: 'world',
+    },
+});
+```
+
+In this way, you can create a business logic that depends on modifying the components’ behavior.
+
+For example, we can have a `preHandler` hook that runs before the `schedule` handler function in each route:
+
+```js
+app.addHook('preHandler', async function calculatePriority
+(request) {
+  request.priority = request.context.config.priority   10
+})
+app.get('/private', {
+  handler: schedule,
+  config: { priority: 5 }
+})
+app.get('/public', {
+  handler: schedule,
+  config: { priority: 1 }
+})
+```
+
+The `calculatePriority` hook adds a level of priority to the request object, based on the route configuration: the `/public` URL has less importance than the `/private` one.
+
+By doing so, you could have generic components: handlers or hooks that act differently based on the route’s options.
+
+### AOP
+
+The AOP paradigm focuses on isolating cross-cutting concerns from the business logic and improving the system’s modularity.
+
+To be less theoretical and more practical, AOP in Fastify means that you can isolate boring stuff into hooks and add it to the routes that need it!
+
+Here is a complete example:
+
+```js
+app.addHook('onRoute', function hook(routeOptions) {
+    if (routeOptions.config.private === true) {
+        routeOptions.onRequest = async function auth(
+            request
+        ) {
+            if (request.headers.token !== 'admin') {
+                const authError = new Error('Private zone');
+                authError.statusCode = 401;
+                throw authError;
+            }
+        };
+    }
+});
+app.get('/private', {
+    config: { private: true },
+    handler,
+});
+app.get('/public', {
+    config: { private: false },
+    handler,
+});
+```
+
+Since the first chapter, we have marginally discussed hooks. In the code, we introduced another hook example: the `onRoute` application hook, which listens for every route registered in the app context (and its children contexts). It can mutate the `routeOptions` object before Fastify instantiates the route endpoint.
+
+The routes have `config.private` fields that tell the `hook` function to add an `onRequest` hook to the endpoint, which is only created if the value is `true`.
+
+Let’s list all the advantages here:
+
+-   You can isolate a behavior into a plugin that adds hooks to the routes only if needed.
+-   Adding a generic hook function that runs when it is not necessary consumes resources and reduces the overall performance.
+-   A centralized registration of the application’s crucial aspects, which reduces the route’s configuration verbosity. In a real-world application, you will have more and more APIs that you will need to configure.
+-   You can keep building plugins with company-wide behavior and reuse them across your organization.
+
+This example shows you the power of the `onRoute` hook in conjunction with the `routeOptions.config` object. In future chapters, you will see other use cases that are going to leverage this creational middleware pattern to give you more tools and ideas to build applications faster than ever.
+
+We have just seen how powerful the route’s config property is and how to use it across the application.
+
+## Summary
+
+This chapter has explained how routing works in Fastify, from route definition to request evaluation.
+
+Now, you know how to add new endpoints and implement an effective handler function, both async or sync, with all the different aspects that might impact the request flow. You know how to access the client’s input to accomplish your business logic and reply effectively with a success or an error.
+
+We saw how the server context could impact the route handler implementation, executing the hooks in that encapsulated context and accessing the decorators registered. Moreover, you learned how to tweak the route initialization by using the `onRoute` hook and the route’s `config`: using Fastify’s features together gives us new ways to build software even more quickly!
+
+The routing has no more secrets for you, and you can define a complete set of flexible routes to evolve thanks to the constraints and manage a broad set of real-world use cases to get things done.
+
+In the next chapter, we will discuss, in detail, one of Fastify’s core concepts, which we have already mentioned briefly and seen many times in our examples: hooks and decorators!
