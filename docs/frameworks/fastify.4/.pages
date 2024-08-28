@@ -2,5 +2,5 @@ title: Fastify
 nav:
     - index.md
     - basic
-    # - real-project
-    # - advanced
+    - real-project
+    - advanced
