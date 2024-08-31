@@ -189,7 +189,7 @@ You can call the `addHook()` method multiple times to queue the hooks’ functio
 
 All these phases can be schematized into this execution flow:
 
-![Figure 1.1 – Application lifecycle](./what-is-fastify1.png)
+![Figure 1.1 – Application lifecycle](./what-is-fastify-1.png)
 
 <center>Figure 1.1 – Application lifecycle</center>
 
@@ -716,7 +716,7 @@ Running the preceding code will execute `[2]` and `[4]` just one time, because i
 
 This feature comes with an endless list of benefits that you will “get to know” through this book. To better explain the bigger advantage of this feature, imagine every plugin as an isolated box that may contain other boxes, and so on, where the Root application instance is the primary container of all the plugins. The previous code can be schematized in this diagram:
 
-![Figure 1.2 – Encapsulated contexts](what-is-fastify2.png)
+![Figure 1.2 – Encapsulated contexts](what-is-fastify-2.png)
 
 <center>Figure 1.2 – Encapsulated contexts</center>
 

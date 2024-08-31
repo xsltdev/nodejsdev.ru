@@ -380,7 +380,7 @@ The entities that are affected by scoping are:
 
 As we can see, since **routes** are affected by context, we already used encapsulation in the previous section, even if we didn’t know it at the time. We registered the same route on the same root instance twice, but with different prefixes. In real-world applications, more complex scenarios with several child and grandchild contexts are widespread. We can use the following diagram to examine a more complex example:
 
-![Figure 2.1: An example of a complex plugin hierarchy](plugin-system1.png)
+![Figure 2.1: An example of a complex plugin hierarchy](plugin-system-1.png)
 
 <center>Figure 2.1: An example of a complex plugin hierarchy</center>
 

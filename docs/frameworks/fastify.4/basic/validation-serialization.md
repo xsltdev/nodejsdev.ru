@@ -33,7 +33,7 @@ Fastify has been built with a focus on the developer’s experience, and on redu
 
 The aim is to find solutions for and prevent the most common security attacks, such as code injection or sensitive data exposure. The answer is declaring the expected input and output data format for every route. Therefore, the validation and serialization processes have been introduced into the framework by design:
 
-![Figure 5.1 – The Validation and Serialization phases](validation-serialization1.png)
+![Figure 5.1 – The Validation and Serialization phases](validation-serialization-1.png)
 
 <center>Figure 5.1 – The Validation and Serialization phases</center>
 

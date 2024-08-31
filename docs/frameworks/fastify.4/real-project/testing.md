@@ -614,4 +614,340 @@ Now, whenever you and your team need to run the tests, it will no longer be nece
 
 The application’s tests have not been completed yet, nor has the source code refactoring. This process is a continuous evolution and still requires some iteration before becoming stable. We have written just one single test file. The next challenge will be to write a new test file, without duplicating the source code. So, let’s complete our tests in the next section.
 
-**229**
+## Dealing with complex tests
+
+So far, we have seen simple test cases that did not require multiple API requests. So, let’s create the `test/login.test.js` file to verify the sign-up and first user login to our application. We will use what we have learned so far, keeping in mind that we don’t want to replicate code.
+
+We need to build the Fastify instance to write new test cases, as we did in the `test/basic.test.js` file. To do so, we need to do the following:
+
+1.  Create a new utility file and call it `test/helper.js`.
+2.  In the `test/helper.js` file, move the `buildApp` function and its configuration variables, `startArgs` and `envParam`. This action requires some copying and pasting.
+3.  Update the `test/basic.test.js` file within the new import, `const { buildApp } = require('./helper')`.
+
+By doing so, we can reuse code to instantiate the Fastify application across all the test files we are going to create. We are now ready to write more complex tests.
+
+### Reusing multiple requests
+
+Every route has data requirements that can be satisfied by replicating a client’s workflow – for example, we need to create a user first to test user deletion. So, we can start writing test cases for the login process. The test suite should answer these questions:
+
+-   Does the authorization check block unauthorized users?
+-   Do the register and login endpoints work as expected?
+
+The first check should verify that the protected routes are protected, so we can implement a bit more logic into the test’s source code:
+
+```js
+t.test('cannot access protected routes', async (t) => {
+  const app = await buildApp(t)
+  const privateRoutes = [ '/me' ]
+  for (const url of privateRoutes) {
+    const response = await app.inject({ method: 'GET', url
+    })
+    t.equal(response.statusCode, 401)
+    t.same(response.json(), {
+      statusCode: 401,
+      error: 'Unauthorized',
+      message: 'No Authorization was found in
+      request.headers'
+    })
+  }
+})
+```
+
+We can iterate the `privateRoutes` array to check that the routes are secured. Here, I’m showing how to automate code without repeating yourself.
+
+Before logging into the application, the user must register to the platform, so we should add a test for it. This is a simple task nowadays, but here is the code for completeness:
+
+```js
+t.test('register the user', async (t) => {
+    const app = await buildApp(t);
+    const response = await app.inject({
+        method: 'POST',
+        url: '/register',
+        payload: {
+            username: 'test',
+            password: 'icanpass',
+        },
+    });
+    t.equal(response.statusCode, 201);
+    t.same(response.json(), { registered: true });
+});
+```
+
+Then, we need to test the login endpoint to verify that it works as expected. It must return a **JWT token** (as discussed in [Chapter 8](./auth.md)), and we can use it to access the `privateRoutes` endpoints. As you can imagine, the login test is straightforward, as follows:
+
+```js
+t.test('successful login', async (t) => {
+    const app = await buildApp(t);
+    const login = await app.inject({
+        method: 'POST',
+        url: '/authenticate',
+        payload: {
+            username: 'test',
+            password: 'icanpass',
+        },
+    });
+    t.equal(login.statusCode, 200);
+    t.match(login.json(), { token: /(\w*\.){2}.*/ });
+});
+```
+
+The authentication test executes a `POST` call, providing the correct user’s data and verifying that the service returns a token string. You can apply a stricter validation to the output token as well. Now, we can use the generated token by adding a new sub-test after the `t.match()` assertion:
+
+```js
+t.test('access protected route', async (t) => {
+    const response = await app.inject({
+        method: 'GET',
+        url: '/me',
+        headers: {
+            authorization: `Bearer ${login.json().token}`,
+        },
+    });
+    t.equal(response.statusCode, 200);
+    t.match(response.json(), { username: 'John Doe' });
+});
+```
+
+The `access protected route` test relies on the `login` object to authenticate the request and successfully access the endpoint. Note that the sub-test does not need to build the application; we can use the one created by the parent test case. It is possible to create complex workflows and simulate every scenario to cover the business cases.
+
+### Mocking the data
+
+To complete our test journey, we must talk about **mocks**. A mock is a fake implementation of a real application’s component that acts conditionally to simulate behaviors that would be hard to replicate. We will use a mock to test a failed registration while the service inserts data into a database.
+
+Many tools help you write mocks, but we will keep it at a low level to understand how they work. Let’s jump into the code:
+
+```js
+function cleanCache() {
+    Object.keys(require.cache).forEach(function (key) {
+        delete require.cache[key];
+    });
+}
+t.test('register error', async (t) => {
+    const path = '../routes/data-store.js';
+    cleanCache(); // [1]
+    require(path); // [2]
+    require.cache[require.resolve(path)].exports = {
+        // [3]
+        async store() {
+            throw new Error('Fail to store');
+        },
+    };
+    t.teardown(cleanCache); // [4]
+    const app = await buildApp(t);
+    const response = await app.inject({
+        url: '/register',
+        // ...
+    });
+    t.equal(response.statusCode, 500);
+});
+```
+
+Mocks rely on how Node.js loads the source code of an application. For this reason, we need to take over the default logic for our scope. Every time a `require('something')` statement runs, a global cache is fulfilled within the `module.exports` exported data, so if you run the `require` statement twice, the file is loaded just once. That being said, we need a function to clean this cache to inject our mock implementation. We need the `cleanCache` function that removes all the loaded code. This is not performant at all. You could filter the output based on your project path to optimize it.
+
+The test implementation does a few things before calling the `buildApp` function (as seen in the preceding code block):
+
+1.  `[1]` cleans the cache; we need to remove all the cached files that use the `path` file. It is unmanageable to know every file that uses it, so we will clean the whole cache as a demonstration.
+2.  At `[2]` we load the target file we are going to mock.
+3.  The `[3]` applies the mock to the cache. To do it, we need to know the `path` file interface. As you can understand, this is an invasive test that does not adapt to any refactor.
+4.  Finally the `[4]` block must remove the mock implementation when the test ends to let Node.js reload the original file. We can’t clean just the `path` cache because all the files that used the mock have been cached within the mock itself.
+
+As you can see, the mock testing technique requires knowledge of the Node.js internals. The modules that help you mock your code work as the previous code snippet but provide a better user experience. Moreover, this test may change over time when the `path` file changes. You should evaluate whether you need to couple your tests within the code base.
+
+Sometimes, this technique is not an option. An example is a third-party module that you don’t need to test in your test suite, such as an external authorization library.
+
+Now you have added new tools to your test toolkit that you will use to evaluate more options during your test suite implementation. We have slowed down the test by clearing the cache in the previous section. Let’s find out how to speed up the tests in the next section.
+
+## Speeding up the test suite
+
+There are not many tests in the actual application, but they’re all pretty fast. While your project will grow, the tests will become more and more time-consuming and more annoying to run. It is not uncommon to have a test suite that runs in a span of 15 minutes, but that is too much time! Now, we are going to see how to speed up a test run to avoid a situation like this, by parallelizing the tests’ executions and evaluating the pitfall this technique carries.
+
+### Running tests in parallel
+
+To improve our test run, we need to update the test script in `package.json`:
+
+```json
+"test": "tap test/**/**.test.js",
+```
+
+The `npm test` command will execute all the files in the `test/` folder that ends with the `test.js` suffix. The cool thing is that each file runs in parallel on a dedicated Node.js process! That being said, it hides some considerations you must be aware of when writing tests:
+
+-   `process.env` is different for every test file
+-   There are no shared global variables across files (and tests)
+-   The `require` module is performed at least once per Node.js process spawned
+-   Executing `process.exit()` will stop one execution file
+
+These are not limitations, but having these rules helps you to organize code in the best way possible, and to run tests the fastest. Moreover, you are forced to avoid global objects and functions that add [side effects](https://softwareengineering.stackexchange.com/questions/40297/what-is-a-side-effect). For this reason, the factory pattern we have adopted since the first chapter is a big win – every test case will build its own objects with its own configuration, without conflicting with other files.
+
+!!!note "The `--jobs` argument"
+
+    The `tap` command interface accepts a `-j=<n> --job=<n>` parameter that sets how many test files can be run in parallel. By default, it is set as the system’s CPU core count. Setting it to `1` disables the parallelism.
+
+The `node-tap` framework has a comprehensive section about [running tests in parallel](https://node-tap.org/docs/api/parallel-tests/).
+
+### How to manage shared resources?
+
+Managing shared resources is a parallelism con. We need to implement the last refactor on our test suite to achieve this result. The shared resource I’m talking about is a database. Using the `helper-docker` utility in every test file is not an option. We would face errors due to the host’s port already in use or a Docker conflict, such as the following:
+
+```
+Conflict. The container name "/fastify-mongo" is already in use by
+container "e24326". You have to remove (or rename) that container to
+be able to reuse that name
+```
+
+There are some options to solve this issue:
+
+-   Customize the configuration of each test file. Running a database container for every file requires a lot of system resources, so you must evaluate this option carefully. It is the easiest way to fix the issue, but we would slow down the suite as a result.
+-   Change the database. Right now, we are turning on an actual database, but there are many alternatives in the npm ecosystem, such as in-memory databases that emulated NoSQL databases or SQL ones. This is for sure a good option you must take into account.
+-   Create the pre-test and the post-test scripts to spin up the shared resources before the tests’ execution. Note that every file needs its own dataset or database schema to border the assertions, or one test could erase all the data for other tests!
+
+These are the most common solutions to the shared resources problem. The first option does not work with limited resources. The second option does not work if you use a database that does not have an in-memory implementation. So, we will implement the third option because it teaches you one real scenario that works every time. Don’t be afraid. It is a matter of refactoring the source code a bit.
+
+Let’s create a new `test/run-before.js` file; cut and paste the `before/teardown` code from the `test/basic.test.js` file. The new file outcome will be as follows:
+
+```js
+const t = require('tap');
+const dockerHelper = require('./helper-docker');
+const docker = dockerHelper();
+const { Containers } = dockerHelper;
+t.before(async function before() {
+    await docker.startContainer(Containers.mongo);
+});
+```
+
+The `basic.test.js` file will be smaller and smaller at every refactor. It means we are doing great. Now, we need another file called `test/run-after.js`. It will be similar to the `run-before` one, but in place of `t.before()`, we must cut the `teardown` function:
+
+```js
+t.teardown(async () => {
+    await docker.stopContainer(Containers.mongo);
+});
+```
+
+We are almost done with our refactoring. Now, we must update the `basic.test.js` file by updating all the `buildApp` usages and setting the default database:
+
+```js
+const app = await buildApp(t, {
+    MONGO_URL: 'mongodb://localhost:27017/basis-test-db',
+});
+```
+
+Then, it is the `login.test.js` file’s turn to set up its own database instance:
+
+```js
+const app = await buildApp(t, {
+    MONGO_URL: 'mongodb://localhost:27017/login-test-db',
+});
+```
+
+Finally, we need to use two new `node-tap` arguments by editing `package.json`:
+
+```json
+"test": "tap --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
+"test:nostop": "tap --before=test/before.js test/**/**.test.js"
+```
+
+The `--before` parameter will execute the input file before the whole test suite. The `--after` argument does the same but at the end of the test suite run. Note that the `test:nostop` addition is equal to the `test` script but does not stop and clean the database server at the end of the process. This script is really helpful when you are developing and you need to check the data on your database manually.
+
+Do you find it difficult to manage shared resources? If yes, then thanks to the Fastify coding style pattern, you should become very comfortable with these refactors. We can only do so because there are no global objects, and we can instantiate as many Fastify instances as we need without caring about the host’s ports.
+
+Now, you have the initial knowledge to deal with parallelism complexity. It is not easy, but you can overcome the complexity with clear code and reusable functions.
+
+In the next section, we will provide some suggestions to push your code base to the stars.
+
+## Where tests should run
+
+Up until now, we have executed our test manually on our PC. That is fine, and it is mandatory during the development phase. However, this is not enough because our installation could be edited, or we could have some uncommitted files.
+
+To solve this issue, it is possible to add a **Continuous Integration (CI)** pipeline that runs remotely to manage our repository. The CI pipeline’s primary duties are as follows:
+
+-   Running the test suite to check the code in the remote Git repository
+-   Building a code base to create artifacts if necessary
+-   Releasing the artifacts by triggering a **Continuous Delivery (CD)** pipeline to deploy the software
+
+The CI workflow will notify us about its status, and if it is in a red state, the application’s tests are failing with the last commit. Running the test remotely will prevent false-positive issues due to our local environment setup.
+
+We will build a simple CI workflow by adopting GitHub Actions. This is a free service for public repositories, with a free limited quota for private ones. We will not go into detail and just take a quick look at how easy it is to start using a CI pipeline.
+
+To create a CI workflow, you need to create a new file named `.github/workflows/ci.yml`. The source must be as follows:
+
+```yml
+name: CI
+on: [push, pull_request]
+jobs:
+    test-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the source code
+              uses: actions/checkout@v2
+            - name: Install Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 18
+            - name: Install Dependencies
+              run: npm install
+            - name: Run Tests
+              run: npm test
+```
+
+As you can see, the script maps every step you should follow to run the project:
+
+1.  Check out the source code.
+2.  Install the desired Node.js version.
+3.  Install the project.
+4.  Run the test script.
+
+This step-by-step process is crucial in a CI configuration. If you want to try other vendors, such as CircleCI, Bitbucket Pipelines, or Travis CI, you will need to change the configuration file’s syntax, but the logic will be unaltered.
+
+Committing the previous code example will trigger the GitHub action automatically. You can see it by looking at the repository’s **Actions** tab, as shown in the following screenshot:
+
+![Figure 9.2 – The CI executions](testing-2.png)
+
+<center>Figure 9.2 – The CI executions</center>
+
+As you can see in _Figure 9.2_, the workflow will fail on the first try. We need to fix our test script. So, we must read the console’s output in order to understand what was not working properly.
+
+The observant among you would have noticed this error output at the end of the `npm test` command, even if the tests were successful:
+
+```
+ERROR: Coverage for lines (85.41%) does not meet global threshold
+(100%)
+ERROR: Coverage for functions (91.66%) does not meet global threshold
+(100%)
+ERROR: Coverage for branches (0%) does not meet global threshold
+(100%)
+ERROR: Coverage for statements (85.41%) does not meet global threshold
+(100%)
+```
+
+The error is due to a default `node-tap` configuration that requires 100% coverage. To reach this coverage level, we must add a new flag to the `package.json`’s test script:
+
+```json
+"test": "tap --before=test/run-before.js test/**/**.test.js --after=test/run-after.js --no-check-coverage",
+"test:coverage": "tap --coverage-report=html --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
+```
+
+The `--no-check-coverage` argument solves the test failure due to its coverage below the 100% threshold.
+
+The last addition to complete this journey into the `node-tap` framework and application tests is the `test:coverage` script, added in the previous code snippet. Running the script by executing the `npm run test:coverage` command should open your system’s browser at the end, showing a nice HTML report as follows:
+
+![Figure 9.3 – A coverage HTML report](testing-3.png)
+
+<center>Figure 9.3 – A coverage HTML report</center>
+
+If the browser doesn’t open automatically the web page, it is possible to open it manually by clicking on the `coverage/lcov-report/index.html` file, that has been generated in the project’s root path during the test execution.
+
+_Figure 9.3_ shows how you can build a coverage report that you can navigate using your browser. By clicking on the blue highlighted links, you will see every repository’s file and how many times a single code line has been executed during the test execution:
+
+![Figure 9.4 – Source code coverage](testing-4.png)
+
+<center>Figure 9.4 – Source code coverage</center>
+
+The coverage output helps you understand what is not tested in your application, allowing you to make appropriate decisions.
+
+## Summary
+
+This chapter is dense with information about new processes and tools. Now, you should be comfortable designing a test suite for a Node.js backend application. You should be able to evaluate a testing framework that fits your needs and boosts your productivity.
+
+You have learned how to use `node-tap`, from basic assertions to advanced parallel test execution. Moreover, you can test a Fastify application and take advantage of Fastify’s `inject` feature. You don’t have to worry about testing your API’s routes, whatever the level of complexity is.
+
+Finally, we have seen how to integrate a CI pipeline using GitHub Actions and its logic to keep our repository away from regressions and production issues.
+
+Now, you are ready to proceed to the next step and build a secure and reliable application. We mentioned CD earlier in this chapter; it is now time to see it in action in [Chapter 10](./deploy.md).
