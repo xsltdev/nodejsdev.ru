@@ -378,4 +378,222 @@ Now, we can implement the answers to all these questions by enhancing the log’
     res: function (reply) { ...
 ```
 
-**274**
+The new `req` configuration emulates the default one and adds more helpful information:
+
+-   The `routeUrl` property seems redundant, but it prints the route’s URL. This is useful for those URLs that contain path parameters: in this case, the `url` log entry includes the input values set by the client. So, for example, you will get `url: '/foo/42'`, `routeUrl: '/foo/:id'`.
+-   The `user` field shows who made the HTTP request and whether the client had a valid login. Since the login process happens at different moments, this property is expected only when the `reply` object is logged.
+-   The `headers` occurrence outputs the request’s headers. Note that this is an example. It would be best to define what headers you need to log first and then print out only a limited set.
+-   The `body` property logs the request’s payload. The first thing to note is that logging all the request’s body could be harmful due to the size of the body itself or due to sensible data content. It is possible to configure the routes that must log the payload by setting a custom field into the route’s options object:
+
+    ```js
+    fastify.post('/', {
+        config: { logBody: true },
+        handler: async function testLog(request, reply) {
+            return { root: true };
+        },
+    });
+    ```
+
+Another detail you need to pay attention to is the `|| undefined` condition to avoid falsy values in the logline. `pino` evicts all the `undefined` properties from the log record, but it prints the `null` ones.
+
+We have added more and more context to the request’s logline, which helps us to collect all the information we need to debug an error response or simply track the application’s routes usage.
+
+Printing the context into the logs may expose sensitive information, such as passwords, access tokens, or personal data (email, mobile numbers, and so on). Log-sensitive data should not happen, but let’s see how you can hide this data in the next section.
+
+### How to hide sensitive data
+
+In the previous section, we printed out a lot of information, but how can we protect this data? We mentioned that a good logline must provide security. Therefore, we must execute **data redaction**, which masks the strings before they are logged. `pino` supports this feature out of the box, so it is necessary to tweak the `configs/logger-options.js` file once more:
+
+```js
+module.exports = {
+    level: process.env.LOG_LEVEL || 'warn',
+    redact: {
+        censor: '***',
+        paths: [
+            'req.headers.authorization',
+            'req.body.password',
+            'req.body.email',
+        ],
+    },
+    serializers: {
+        // ...
+    },
+};
+```
+
+The `redact` option lets us customize which lookup paths should be masked within the `censor` string to use in place of the original value. We set three direct lookups in the code example. Let’s examine `req.body.password`: if the logger finds a `req` object within a `body` entity and a `password` property, it will apply the reduction.
+
+The redact configuration option in action will hide the property’s value from the log as follows:
+
+```json
+{
+    // ...
+    "req": {
+        "method": "POST",
+        "url": "/login",
+        "routeUrl": "/login",
+        "headers": {
+            "authorization": "***",
+            "content-length": "60"
+        },
+        "body": {
+            "email": "***",
+            "password": "***"
+        }
+        /// ...
+    },
+    "res": {
+        "statusCode": 200,
+        "responseTime": 11.697166919708252
+    },
+    "msg": "request completed"
+}
+```
+
+The log redaction is a mandatory step to provide a secure system and avoid potential data leaks. You need to have a clear idea about which routes will log the user’s input. The `logBody` route option we have seen in the previous section helps you control it and act accordingly.
+
+Note that the redaction will not be executed if the `password` field is moved into a JSON wrapper object. It won’t work if the property changes its case to `Password` (capital letter). The redact supports wildcards such as `*.password`, but it also heavily impacts the logger’s performance and, consequently, the application itself. You can gather further information on this aspect by reading the [official documentation](https://github.com/pinojs/pino/blob/master/docs/redaction.md#path-syntax).
+
+To be sure that a detailed configuration, like the one we’re discussing, is running properly, we can write a test that checks the correctness censorship configuration. We can create a `test/logger.test.js` file to cover this case. We are going to redirect the application’s log messages to a custom stream, where we will be able to process each log line. To do so, we must run `npm install split2` to ease the stream handling. Then, we can implement the following test:
+
+```js
+const split = require('split2');
+t.test('logger must redact sensible data', async (t) => {
+    t.plan(2);
+    const stream = split(JSON.parse);
+    const app = await buildApp(
+        t,
+        { LOG_LEVEL: 'info' },
+        { logger: { stream } }
+    );
+    await app.inject({
+        method: 'POST',
+        url: '/login',
+        payload: { username: 'test', password: 'icanpass' },
+    });
+    for await (const line of stream) {
+        // [1]
+    }
+});
+```
+
+The code snippet is a scaffolding test that reads all the log lines that our application emits. We provide the `logger.stream` option to redirect the output of `pino` without modifying the `configs/logger-options.js` options, such as the reduct option. After the HTTP request injection, we can check the emitted logs. The assertions in `[1]` will look as follows:
+
+```js
+if (line.msg === 'request completed') {
+    t.ok(line.req.body, 'the request does log the body');
+    t.equal(
+        line.req.body.password,
+        '***',
+        'field redacted'
+    );
+    break;
+}
+```
+
+Whether the test we just created passes or not depends on your `.env` file settings. This is caused by an error during the loading phase. If you try to think about the application’s files load sequence when you run the tests, you will get the following steps:
+
+1.  The `.env` file is loaded by the `fastify-cli` plugin.
+2.  The `fastify-cli` plugin loads the `configs/server-options.js` file.
+3.  The `configs/logger-options.js` file is loaded to build the Fastify instance. It will use the current `process.env.LOG_LEVEL` environment variable.
+4.  Still, the `fastify-cli` plugin merges the loaded configuration with the third `buildApp` parameter, where we set the `stream` option.
+5.  The `@fastify/autoload` plugin will load all the applications, including the `plugins/config.js` file, which will read the test’s `configData` property that we saw in [Chapter 9](./testing.md).
+
+How can we fix this situation? Luckily, `pino` supports the log level set at runtime. So we need to update the `plugins/config.js` file, adding this statement:
+
+```js
+module.exports = fp(async function configLoader (fastify, opts) {
+  await fastify.register(fastifyEnv, { ... })
+  fastify.log.level = fastify.secrets.LOG_LEVEL
+  // ...
+})
+```
+
+It is possible to update the log level at runtime, and it gives us the control to customize the log level from the tests without impacting the production scenario. Moreover, we have learned that we can change the log severity at runtime by changing the verbosity in the [How to use Fastify’s logger](#how-to-use-fastifys-logger) section! This enables you to adapt the log to situations, such as logging for a fixed amount of time in the `debug` mode and then back to `warn` automatically without restarting the server. The possibilities are truly endless.
+
+Now you know the best setup to print out a useful context and provide security to every single logline. Now, let’s find out how to store them.
+
+## Collecting the logs
+
+Reading the logs can be done on your PC during development, but it is unrealistic to carry it out during production or even in a shared test environment. Reading the records is not scalable, but if you try to estimate the number of logs your application will write at the `info` level, you will get an idea.
+
+Having 10 clients send 5 requests per second is equal to 100 lines per second per day. Therefore, the log file would be more than 8 million rows, just for a single application installation. If we scale the application to two nodes, we need to search in two different files, but if we followed this path, the log files would be useless because they would be inaccessible.
+
+As mentioned at the beginning of this chapter, a good log setup allows us to consolidate to a log management software destination, so let’s see how to design it.
+
+### How to consolidate the logs
+
+Before considering where to consolidate the logs, we must focus on the actor who submits the logs to the destination. All the most famous log management software systems expose an HTTP endpoint to submit the records to, so the question is, should our application submit the log to an external system?
+
+The answer is _no_, and we will learn why starting with the following diagram:
+
+![Figure 11.2 – Node.js process submits the logs](logging-2.png)
+
+<center>Figure 11.2 – Node.js process submits the logs</center>
+
+In the scenario in _Figure 11.2_, we can see a hypothetical production configuration where our application, packed into a Docker container, sends the log output directly to the log management software. `pino` transporters are capable of spinning up a new Node.js child process to reduce the application’s cost of logging to a minimum. Now that we know more about this excellent optimization, we would still like to pose the following questions:
+
+-   What if the log management software is offline due to maintenance or a server issue?
+-   Should the application start if it can’t connect to the external log destination?
+-   Should logging impact the application performance?
+-   Should the application be aware of the logs’ destination?
+
+We think you will agree that the only possible answer to all these questions is _no_. Note that this scenario applies to all the system architectures because _Figure 11.2_ shows a Docker container that runs our application. Still, it could be a server that runs our Node.js application manually. For this reason, the right action to implement the log consolidation is a two-step process, as shown in the following corrected schema:
+
+![Figure 11.3 – External agent submits the logs](logging-3.png)
+
+<center>Figure 11.3 – External agent submits the logs</center>
+
+In the architecture shown in _Figure 11.3_, you will notice that the application should log to the `stdout` and `stderr` output streams. By doing this, you don’t need to configure a `pino` transport, and the container’s host will use fewer resources. The container orchestrator will be responsible for reading and processing the messages. This task is carried out by a software **agent**, which is usually provided by the log management software. Within this schema, we decoupled the log application logic from the log’s destination, isolating the former by whatever issue the external store may face.
+
+Decoupling the log message producer from the message consumer is not 100% accurate: your application should generate a supported structure through the log management software, so you need to verify this with the carrier you choose.
+
+For example, some external log stores require a `@timestamp` field instead of Fastify’s default `time` property, but it can be easily configured by tweaking the `timestamp` option of `pino`. For completeness, here is an example of editing the `configs/logger-options.js` file:
+
+```js
+module.exports = {
+    level: process.env.LOG_LEVEL,
+    timestamp: () => {
+        const dateString = new Date(
+            Date.now()
+        ).toISOString();
+        return `,"@timestamp":"${dateString}"`;
+    },
+    redact: {
+        // ...
+    },
+};
+```
+
+The previous code example shows that it is possible to customize the output date format too, replacing the default epoch time with the number of milliseconds since January 1st, 1970 at 00:00 GMT.
+
+Nevertheless, you will need to configure a log retention policy. The logs may not be helpful after a reasonable amount of time, or you may need to archive the messages for a longer amount of time to accomplish some legal agreement. Good log management software helps you solve all these trivial tasks.
+
+On the other hand, you may face the need to submit your application’s log directly to an external service. You might not have a container orchestrator at your disposal or want to log to the file. So, let’s see how to deal with this use case.
+
+### Consolidating logs by using Pino transports
+
+Pino transports are the components designed to submit the logs to a destination, such as a filesystem or log management software. Every transport is a Node.js **worker thread**. A worker thread enables you to execute JavaScript in parallel and is more valuable when it performs CPU-intensive operations. By doing this, `pino` saves the main application from running trivial code to manage the logs.
+
+As usual, you can configure it by setting the `configs/logger-options.js` file. The first experiment is to log in to the filesystem, so let’s have a look at the following code:
+
+```js
+module.exports = {
+    level: process.env.LOG_LEVEL,
+    transport: {
+        target: 'pino/file',
+        options: {
+            destination: require('path').join(
+                __dirname,
+                '../logs/errors.log'
+            ),
+        },
+        level: 'error',
+    },
+    timestamp: () => {
+        // ...
+    },
+};
+```
+
+**281**
