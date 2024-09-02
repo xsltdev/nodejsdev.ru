@@ -1,12 +1,16 @@
-# Build a Real-World Project
+---
+description: В этой части мы спроектируем и построим практическое RESTful-приложение с нуля, уделяя особое внимание созданию компонентов многократного использования
+---
 
-In this part, we will design and build a practical RESTful application from scratch, with a focus on creating highly reusable components. We will showcase the efficiency of the development process using Fastify by utilizing the appropriate components in the most proficient manner.
+# Создание реального проекта
 
-In this part, we cover the following chapters:
+В этой части мы спроектируем и построим практическое RESTful-приложение с нуля, уделяя особое внимание созданию компонентов многократного использования. Мы продемонстрируем эффективность процесса разработки с помощью Fastify, используя соответствующие компоненты наиболее эффективным образом.
 
--   Chapter 6, Project Structure and Configuration Management
--   Chapter 7, Building a RESTful API
--   Chapter 8, Authentication, Authorization, and File Handling
--   Chapter 9, Application Testing
--   Chapter 10, Deployment and Process Monitoring for a Healthy Application
--   Chapter 11, Meaningful Application Logging
+В этой части мы рассмотрим следующие главы:
+
+-   [Структура проекта и управление конфигурацией](./project-structure.md)
+-   [Построение RESTful API](./restful-api.md)
+-   [Аутентификация, авторизация и работа с файлами](./auth.md)
+-   [Тестирование приложений](./testing.md)
+-   [Развертывание и мониторинг процессов для здорового приложения](./deploy.md)
+-   [Ведение полноценного журнала приложений](./logging.md)

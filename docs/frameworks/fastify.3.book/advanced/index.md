@@ -1,10 +1,10 @@
-# Advanced Topics
+# Продвинутые темы
 
-After covering the basics of the framework and developing a full-fledged, real-world, production-grade application, it’s time to move on and see some advanced scenarios. Fastify is flexible enough to run on both your development machine and internet-scale infrastructure. The chapters in this part will touch on distinct auto-conclusive topics that might be crucial to your application’s success!
+После изучения основ фреймворка и разработки полноценного, реального, производственного приложения пришло время перейти к рассмотрению некоторых продвинутых сценариев. Fastify достаточно гибок, чтобы работать как на вашей машине для разработки, так и на инфраструктуре интернет-масштаба. Главы этой части будут посвящены отдельным автоконкретным темам, которые могут оказаться решающими для успеха вашего приложения!
 
-In this part, we cover the following chapters:
+В этой части мы рассмотрим следующие главы:
 
--   Chapter 12, From a Monolith to Microservices
--   Chapter 13, Performance Assessment and Improvement
--   Chapter 14, Developing a GraphQL API
--   Chapter 15, Type-Safe Fastify
+-   [От монолита к микросервисам](./microservices.md)
+-   [Оценка и повышение производительности](./performance.md)
+-   [Разработка GraphQL API](./graphql.md)
+-   [Type-Safe Fastify](./type-safe.md)

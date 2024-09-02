@@ -40,9 +40,9 @@ hide:
 
     Документация по серверным фреймворкам
 
-    [:octicons-arrow-right-24: Express.js](expressjs4/index.md) <small>4.x</small>
+    [:octicons-arrow-right-24: Fastify](./frameworks/fastify.3.book/index.md) <small>3.x</small>
 
-    :octicons-arrow-right-24: Nest.js <small>9.x</small>
+    [:octicons-arrow-right-24: Express.js](./frameworks/express.4/index.md) <small>4.x</small>
 
 </div>
 
