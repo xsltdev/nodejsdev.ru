@@ -1,47 +1,51 @@
-# The Plugin System and the Boot Process
+---
+description: Эта глава начинается с объявления простого плагина, а затем, шаг за шагом, добавляет к нему новые слои. Мы узнаем, почему параметр options имеет решающее значение и как метод регистрации Fastify использует его во время последовательности загрузки. Последняя цель - понять, как плагины взаимодействуют друг с другом благодаря инкапсуляции
+---
 
-A Fastify plugin is an essential tool at the disposal of a developer. Every functionality except the root instance of the server should be wrapped in a plugin. Plugins are the key to reusability, code sharing, and achieving proper encapsulation between Fastify instances.
+# Система плагинов и процесс загрузки
 
-Fastify’s root instance will load all registered plugins asynchronously following the registration order during the boot sequence. Furthermore, a plugin can depend on others, and Fastify checks these dependencies and exits the boot sequence with an error if it finds missing ones.
+Плагин Fastify - это важный инструмент в распоряжении разработчика. Каждая функциональность, кроме корневого экземпляра сервера, должна быть обернута в плагин. Плагины - это ключ к многократному использованию, совместному использованию кода и достижению правильной инкапсуляции между экземплярами Fastify.
 
-This chapter starts with the declaration of a simple plugin and then, step by step, adds more layers to it. We will learn why the `options` parameter is crucial and how the Fastify register method uses it during the boot sequence. The final goal is to understand how plugins interact with each other thanks to encapsulation.
+Корневой экземпляр Fastify будет загружать все зарегистрированные плагины асинхронно, следуя порядку регистрации во время последовательности загрузки. Кроме того, плагин может зависеть от других, и Fastify проверяет эти зависимости и завершает последовательность загрузки с ошибкой, если обнаруживает их отсутствие.
 
-To understand this challenging topic, we will introduce and learn about some core concepts:
+Эта глава начинается с объявления простого плагина, а затем, шаг за шагом, добавляет к нему новые слои. Мы узнаем, почему параметр `options` имеет решающее значение и как метод регистрации Fastify использует его во время последовательности загрузки. Последняя цель - понять, как плагины взаимодействуют друг с другом благодаря инкапсуляции.
 
--   What is a plugin?
--   The `options` parameter
--   Encapsulation
--   The boot sequence
--   Handling boot and plugin errors
+Чтобы разобраться в этой непростой теме, мы познакомимся с некоторыми основными понятиями:
 
-## Technical requirements
+-   Что такое плагин?
+-   Параметр `options`
+-   Инкапсуляция
+-   Последовательность загрузки
+-   Обработка ошибок загрузки и плагинов
 
-To follow this chapter, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A text editor, such as VS Code
--   A working Node.js v18 installation
--   Access to a shell, such as Bash or CMD
+Чтобы изучить эту главу, вам понадобится следующее:
 
-All the code examples in this chapter can be found on GitHub at <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%202>.
+-   Текстовый редактор, например VS Code
+-   Рабочая установка Node.js v18
+-   Доступ к оболочке, например Bash или CMD.
 
-## What is a plugin?
+Все примеры кода в этой главе можно найти на GitHub по адресу <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%202>.
 
-A Fastify **plugin** is a component that allows developers to extend and add functionalities to their server applications. Some of the most common use cases for developing a plugin are handling a database connection or extending default capabilities – for example, to request parsing or response serialization.
+## Что такое плагин? {#what-is-a-plugin}
 
-Thanks to their unique properties, plugins are the basic building blocks of our application. Some of the most prominent properties are the following:
+Fastify **плагин** - это компонент, который позволяет разработчикам расширять и добавлять функциональные возможности в свои серверные приложения. Одними из наиболее распространенных вариантов использования плагина являются обработка подключения к базе данных или расширение возможностей по умолчанию - например, разбор запроса или сериализация ответа.
 
--   A plugin can register other plugins inside it.
--   A plugin creates, by default, a new scope that inherits from the parent. This behavior also applies to its children and so on, although using the parent’s context is still possible.
--   A plugin can receive an `options` parameter that can be used to control its behavior, construction, and reusability.
--   A plugin can define scoped and prefixed routes, making it the perfect router.
+Благодаря своим уникальным свойствам плагины являются основными строительными блоками нашего приложения. Среди наиболее заметных свойств можно выделить следующие:
 
-At this point, it should be clear that where other frameworks have different entities, such as middleware, routers, and plugins, Fastify has only plugins. So, even if Fastify plugins are notoriously hard to master, we can reuse our knowledge for almost everything once we understand them!
+-   Плагин может регистрировать другие плагины внутри себя.
+-   Плагин по умолчанию создает новую область видимости, которая наследуется от родительской. Это поведение распространяется и на его дочерние области и так далее, хотя использование контекста родителя все еще возможно.
+-   Плагин может получать параметр `options`, который можно использовать для управления его поведением, построением и возможностью повторного использования.
+-   Плагин может определять маршруты с диапазоном и префиксом, что делает его идеальным маршрутизатором.
 
-We need to start our journey into the plugin world from the beginning. In the following two sections, we will learn how to declare and use our first plugin.
+На данный момент должно быть понятно, что там, где в других фреймворках есть различные сущности, такие как промежуточное ПО, маршрутизаторы и плагины, в Fastify есть только плагины. Таким образом, даже если плагины Fastify печально известны своей сложностью в освоении, мы можем использовать наши знания практически для всего, как только поймем их!
 
-### Creating our first plugin
+Мы должны начать наше путешествие в мир плагинов с самого начала. В следующих двух разделах мы узнаем, как объявить и использовать наш первый плагин.
 
-Let’s see how to develop our first dummy plugin. To be able to test it, we need to register it to a root instance. Since we focus on plugins here, we will keep our Fastify server as simple as possible, reusing the basic one we saw in [_Chapter 1_](./what-is-fastify.md) and making only one minor change. In `index.cjs`, we will declare our plugin inline, and then we will see how to use separate files for different plugins:
+### Создание нашего первого плагина {#creating-our-first-plugin}
+
+Давайте посмотрим, как создать наш первый фиктивный плагин. Чтобы его можно было протестировать, нам нужно зарегистрировать его в корневом экземпляре. Так как мы сосредоточимся на плагинах, мы сохраним наш сервер Fastify как можно более простым, повторив базовый сервер, который мы видели в [Глава 1](./what-is-fastify.md), и внеся лишь одно небольшое изменение. В файле `index.cjs` мы объявим наш плагин в строке, а затем посмотрим, как использовать отдельные файлы для разных плагинов:
 
 ```js
 const Fastify = require('fastify')
@@ -55,19 +59,19 @@ app.ready() // [3]
 })
 ```
 
-After creating a Fastify root instance (`[1]`), we add our first plugin. We achieve this by passing a plugin definition function as the first argument (`[2]`) to `register`. This function receives a new Fastify instance, inheriting everything the root instance has until this point and an `options` argument.
+После создания корневого экземпляра Fastify (`[1]`) мы добавляем наш первый плагин. Для этого мы передаем функцию определения плагина в качестве первого аргумента (`[2]`) в `register`. Эта функция получает новый экземпляр Fastify, наследуя все, что было у корневого экземпляра до этого момента, и аргумент `options`.
 
-!!!note "The options argument"
+!!!note "Аргумент `options`"
 
-    We are not using the `options` argument at the moment. However, in the next section, we will learn about its importance and how to use it.
+    В данный момент мы не используем аргумент `options`. Однако в следующем разделе мы узнаем о его важности и о том, как его использовать.
 
-Finally, we call the ready method (`[3]`). This function starts the boot sequence and returns `Promise`, which will be settled when all plugins have been loaded. For the moment, we don’t need a listening server in our examples, so it is acceptable to call `ready` instead. Moreover, `listen` internally awaits for the `.ready()` event to be dispatched anyway.
+Наконец, мы вызываем метод ready (`[3]`). Эта функция запускает последовательность загрузки и возвращает `Promise`, который будет выполнен, когда все плагины будут загружены. На данный момент в наших примерах нам не нужен прослушивающий сервер, поэтому вместо него допустимо вызвать `ready`. Более того, `listen` внутренне ожидает события `.ready()`, которое будет отправлено в любом случае.
 
-!!!note "The boot sequence"
+!!!note "Порядок загрузки"
 
-    The Fastify boot sequence is a series of operations that the Fastify primary instance performs to load all of the plugins, hooks, and decorators. If no errors are encountered, the server will start and listen on the provided port. We will learn more about it in a separate section.
+    Последовательность загрузки Fastify - это ряд операций, которые выполняет основной экземпляр Fastify для загрузки всех плагинов, хуков и декораторов. Если ошибок не возникнет, сервер запустится и будет слушать указанный порт. Подробнее об этом мы расскажем в отдельном разделе.
 
-Let’s run the previous snippet in the terminal and look at the output:
+Давайте запустим предыдущий фрагмент в терминале и посмотрим на результат:
 
 ```sh
 $ node index.cjs
@@ -77,21 +81,21 @@ local","msg":"Registering my first plugin."}
 local","msg":"All plugins are now registered!"}
 ```
 
-Let’s break down the execution of our snippet:
+Давайте разберем выполнение нашего сниппета:
 
-1.  The Fastify instance is created with the logger enabled.
-2.  The Fastify root instance registers our first plugin, and the code inside the plugin function is executed.
-3.  The `Promise` instance returned by the ready method is resolved after the ready event is dispatched.
+1.  Создается экземпляр Fastify с включенным логгером.
+2.  В корневом экземпляре Fastify регистрируется наш первый плагин, и выполняется код внутри функции плагина.
+3.  Экземпляр `Promise`, возвращаемый методом `ready`, разрешается после отправки события `ready`.
 
-This Node.js process exits without any errors; this happens because we used `ready` instead of the `listen` method. The declaration method we just saw is only one of the two that are possible. In the next section, we will look at the other one, since many online examples use it.
+Этот процесс Node.js завершается без каких-либо ошибок; это происходит потому, что мы использовали `ready` вместо метода `listen`. Метод объявления, который мы только что рассмотрели, является лишь одним из двух возможных. В следующем разделе мы рассмотрим другой, поскольку многие примеры в Интернете используют именно его.
 
-### The alternative plugin function signature
+### Альтернативная сигнатура функции плагина {#the-alternative-plugin-function-signature}
 
-As with almost every API it exposes, Fastify has two alternative ways to declare a plugin function. The only difference is the presence, or absence, of the third callback function argument, usually called `done`. Following the good old Node.js callback pattern, this function has to be invoked to notify that the loading of the current plugin is done with no errors.
+Как и почти в каждом API, Fastify имеет два альтернативных способа объявить функцию плагина. Единственное различие заключается в наличии или отсутствии третьего аргумента колбек-функции, обычно называемого `done`. Следуя старому доброму шаблону колбек-функции Node.js, эта функция должна быть вызвана, чтобы сообщить, что загрузка текущего плагина завершена без ошибок.
 
-On the other hand, if an error occurs during the loading, `done` can receive an optional `err` argument that can be used to interrupt the boot sequence. This same thing happens in the promise world – if the promise is resolved, the plugin is loaded; if the promise is rejected, the rejection will be passed up to the root instance, and the boot process will terminate.
+С другой стороны, если во время загрузки произошла ошибка, `done` может получить необязательный аргумент `err`, который может быть использован для прерывания последовательности загрузки. То же самое происходит и в мире промисов - если промис разрешен, плагин загружается; если промис отклонен, отказ будет передан корневому экземпляру, и процесс загрузки завершится.
 
-Let’s see the `callbacks.cjs` snippet that uses the callback style plugin definition:
+Давайте посмотрим фрагмент `callbacks.cjs`, в котором используется определение плагина в стиле callback:
 
 ```js
 //...
@@ -112,50 +116,50 @@ try {
 })
 ```
 
-The first plugin loads without any errors, thanks to the done call with no arguments passed (`[1]`). On the other hand, the second one throws before `done()` (`[2]`) is called. Here, we can see the importance of error catching and calling `done(err)` (`[3]`); without this call, Fastify would think no errors happened during the registering process, continuing the boot sequence!
+Первый плагин загружается без ошибок, благодаря вызову `done` без переданных аргументов (`[1]`). С другой стороны, второй вылетает до вызова `done()` (`[2]`). Здесь мы видим, как важно перехватывать ошибки и вызывать `done(err)` (`[3]`); без этого вызова Fastify будет думать, что в процессе регистрации не произошло никаких ошибок, и продолжит последовательность загрузки!
 
-No matter which style you use, plugins are always asynchronous functions, and every pattern has its error handling. It is essential not to mix the two styles and to be consistent when choosing one or another:
+Независимо от того, какой стиль вы используете, плагины всегда являются асинхронными функциями, и каждый паттерн имеет свою обработку ошибок. Важно не смешивать эти два стиля и быть последовательным при выборе того или иного:
 
--   Calling `done` if the callback style is used
--   Resolving/rejecting the promise if promise-based is the flavor we chose
+-   Вызов `done`, если используется стиль обратного вызова
+-   Разрешение/отклонение промиса, если мы выбрали стиль, основанный на промисах.
 
-We will come back to this argument again in the [Boot errors](#boot-errors) section, where we will see what happens if we misuse promises and callbacks.
+Мы еще вернемся к этому аргументу в разделе [Ошибки загрузки](#recovery-from-a-boot-error), где мы увидим, что произойдет, если мы неправильно используем промисы и обратные вызовы.
 
-!!!note "Promise-based examples"
+!!!note "Примеры, основанные на промисах"
 
-    This book uses promise-based signatures since they are easier to follow, thanks to the async/await keywords.
+    В этой книге используются сигнатуры на основе промисов, так как их легче выполнять благодаря ключевым словам `async`/`await`.
 
-In this section, we learned the two different methods to declare our first plugin and register it with a Fastify instance. However, we have just scratched the surface of Fastify plugins. In the next section, we will look at the `options` parameter and how it comes in handy when dealing with sharing functionalities.
+В этом разделе мы изучили два различных метода объявления нашего первого плагина и его регистрации в экземпляре Fastify. Однако мы только нащупали грань возможностей плагинов Fastify. В следующем разделе мы рассмотрим параметр `options` и то, как он может пригодиться при работе с разделяемыми функциями.
 
-## Exploring the options parameter
+## Изучение параметра options {#exploring-the-options-parameter}
 
-This section is a deep look at the optional options parameter and how we can develop reusable plugins. A plugin declaration function isn’t anything more than a factory function that, instead of returning some new entity as factory functions usually do, adds behaviors to a Fastify instance. If we look at it like this, we can think about the `options` parameter as our constructor’s arguments.
+В этом разделе мы подробно рассмотрим необязательный параметр options и то, как мы можем разрабатывать многократно используемые плагины. Функция объявления плагина - это не что иное, как фабричная функция, которая вместо того, чтобы возвращать новую сущность, как это обычно делают фабричные функции, добавляет поведение в экземпляр Fastify. Если мы посмотрим на это так, то можем считать параметр `options` аргументами нашего конструктора.
 
-Firstly, let’s recall the plugin declaration function signature:
+Для начала вспомним сигнатуру функции объявления плагина:
 
 ```js
 async function myPlugin(fastify, [options])
 ```
 
-How can we pass our custom arguments to the `options` parameter? It turns out that the register method has a second parameter too. So, the object we use as the argument will be passed by Fastify as Plugin’s `options` parameter:
+Как мы можем передать наши пользовательские аргументы в параметр `options`? Оказывается, у метода `register` есть и второй параметр. Таким образом, объект, который мы используем в качестве аргумента, будет передан Fastify в качестве параметра `options` плагина:
 
 ```js
 app.register(myPlugin, { first: 'option' });
 ```
 
-Now, inside the `myPlugin` function, we can access this value simply using `options.first`.
+Теперь, внутри функции `myPlugin`, мы можем получить доступ к этому значению, просто используя `options.first`.
 
-It is worth mentioning that Fastify reserves three specific options that have a special meaning:
+Стоит отметить, что Fastify оставляет за собой три специфические опции, которые имеют особое значение:
 
 -   `prefix`
 -   `logLevel`
 -   `logSerializers`
 
-!!!note "Logger options"
+!!!note "Опции журнала"
 
-    We will cover `logLevel` and `logSerializer` in a dedicated chapter. Here, we will focus only on `prefix` and custom options.
+    Мы рассмотрим `logLevel` и `logSerializer` в отдельной главе. Здесь же мы сосредоточимся только на `prefix` и пользовательских опциях.
 
-Bear in mind that, in the future, more reserved options might be added. Consequently, developers should always consider using a namespace to avoid future collisions, even if it is not mandatory. We can see an example in the `options-namespacing.cjs` snippet:
+Имейте в виду, что в будущем могут быть добавлены дополнительные зарезервированные опции. Следовательно, разработчикам следует всегда рассматривать возможность использования пространства имен, чтобы избежать будущих коллизий, даже если это не является обязательным. Пример можно увидеть в фрагменте `options-namespacing.cjs`:
 
 ```js
 app.register(
@@ -171,13 +175,13 @@ app.register(
 );
 ```
 
-Instead of adding our custom properties at the top level of the `options` parameter, we will group them in a custom key, lowering the chances for future name collisions. Passing an object is fine in most cases, but sometimes, we need more flexibility.
+Вместо того чтобы добавлять наши пользовательские свойства на верхнем уровне параметра `options`, мы сгруппируем их в пользовательском ключе, что снизит вероятность коллизии имен в будущем. В большинстве случаев передача объекта - это хорошо, но иногда нам нужна большая гибкость.
 
-In the next section, we will learn more about the `options` parameter type and leverage it to do more complex stuff.
+В следующем разделе мы узнаем больше о типе параметров `options` и используем его для выполнения более сложных задач.
 
-### The options parameter type
+### Тип параметра options {#the-options-parameter-type}
 
-So far, we have seen that the `options` parameter is an object with some reserved and custom properties. But `options` can also be a function that returns an object. If a function is passed, Fastify will invoke it and pass the returned object as the `options` parameter to the plugin. To better understand this, in the `options-function.cjs` snippet, we will rewrite the previous example using the function instead:
+До сих пор мы видели, что параметр `options` - это объект с некоторыми зарезервированными и пользовательскими свойствами. Но `options` также может быть функцией, которая возвращает объект. Если передана функция, Fastify вызовет ее и передаст возвращаемый объект в качестве параметра `options` плагину. Чтобы лучше понять это, в фрагменте `options-function.cjs` мы перепишем предыдущий пример, используя функцию вместо объекта:
 
 ```js
 app.register(
@@ -196,9 +200,9 @@ app.register(
 );
 ```
 
-At first glance, it shouldn’t be clear why we have this alternative type for options, but looking at the signature points us in the right direction – it receives Fastify’s parent instance as the only argument.
+На первый взгляд, не должно быть понятно, зачем нам этот альтернативный тип для опций, но взгляд на сигнатуру указывает нам на правильное направление - она получает родительский экземпляр Fastify в качестве единственного аргумента.
 
-Looking at the `options-function-parent.cjs` example should clarify how we can access the parent options:
+Рассмотрение примера `options-function-parent.cjs` должно прояснить, как мы можем получить доступ к родительским опциям:
 
 ```js
 const Fastify = require('fastify');
@@ -218,16 +222,16 @@ app.register(async function myPlugin(fastify, options) {
 app.ready();
 ```
 
-First, we decorate the root instance with a custom property (`[1]`), and then we pass it as a value to our plugin (`[2]`). In a real-world scenario, `mySpecialProp` could be a database connection, any value that depends on the environment, or even something another plugin has added.
+Сначала мы декорируем корневой экземпляр пользовательским свойством (`[1]`), а затем передаем его в качестве значения нашему плагину (`[2]`). В реальном сценарии `mySpecialProp` может быть соединением с базой данных, любым значением, зависящим от окружения, или даже тем, что добавил другой плагин.
 
-### The prefix option
+### Опция префикса {#the-prefix-option}
 
-At the beginning of this chapter, we learned that we can define routes inside a plugin. The `prefix` option comes in handy here because it allows us to add a namespace to our route declarations. There are several use cases for this, and we will see most of them in the more advanced chapters, but it is worth mentioning a couple of them here:
+В начале этой главы мы узнали, что можем определять маршруты внутри плагина. Опция `prefix` пригодится нам здесь, потому что она позволяет добавить пространство имен к объявлению маршрута. Существует несколько вариантов использования этой опции, и большинство из них мы рассмотрим в более продвинутых главах, но здесь стоит упомянуть пару из них:
 
--   Maintaining different versions of our APIs
--   Reusing the same plugin and routes definition for various applications, giving another mount point each time
+-   Поддержка различных версий наших API
+-   Повторное использование одного и того же плагина и определения маршрутов для различных приложений, каждый раз предоставляя другую точку монтирования
 
-The `users-router.cjs` snippet will help us understand this parameter better. First of all, we define a plugin in a separate file and export it:
+Сниппет `users-router.cjs` поможет нам лучше понять этот параметр. Прежде всего, мы определяем плагин в отдельном файле и экспортируем его:
 
 ```js
 module.exports = async function usersRouter(fastify, _) {
@@ -249,13 +253,13 @@ module.exports = async function usersRouter(fastify, _) {
 };
 ```
 
-!!!note "Route declaration"
+!!!note "Декларация маршрута"
 
-    Since we are focusing on plugins here and trying to keep the examples as short as possible, this section uses the “shorthand declaration” style for routes. Moreover, schemas and some other crucial options are missing too. We will see through this book that there are much better, formally correct, and complete options for route declarations.
+    Так как мы фокусируемся на плагинах и стараемся сделать примеры как можно короче, в этом разделе используется стиль «короткого объявления» для маршрутов. Более того, схемы и некоторые другие важные опции также отсутствуют. Мы увидим в этой книге, что существуют гораздо лучшие, формально корректные и полные варианты объявления маршрутов.
 
-We define two routes; the first one returns all of the elements in our collection (`[1]`), and the second one enables us to add entries to the user’s array (`[2]`). Since we don’t want to add complexity to the discussion, we use an array as our data source; it is defined on the root Fastify instance, as we will learn in the following snippet. In a real-world scenario, this would be, of course, some kind of database access. Finally, at `[3]`, we prefix all of the routes we define with the user’s namespace in the old RESTful fashion.
+Мы определяем два маршрута; первый возвращает все элементы нашей коллекции (`[1]`), а второй позволяет нам добавлять записи в массив пользователя (`[2]`). Поскольку мы не хотим усложнять обсуждение, в качестве источника данных мы используем массив; он определяется на корневом экземпляре Fastify, как мы узнаем из следующего фрагмента. В реальном сценарии это, конечно же, был бы какой-то доступ к базе данных. Наконец, в пункте `[3]` мы добавляем ко всем определенным нами маршрутам префикс с пространством имен пользователя, как это принято в RESTful.
 
-Now that we have defined the namespace, we can import and add this **router** to the root instance in `index-with-router.cjs`. We can also use the **prefix** option to give a unique namespace to our routes and handle API versioning:
+Теперь, когда мы определили пространство имен, мы можем импортировать и добавить этот **router** к корневому экземпляру в `index-with-router.cjs`. Мы также можем использовать опцию **prefix** для присвоения уникального пространства имен нашим маршрутам и обработки версионности API:
 
 ```js
 const Fastify = require('fastify');
@@ -293,13 +297,13 @@ app.ready().then(() => {
 }); // [6]
 ```
 
-First of all, we decorate the Fastify root instance with the `users` property (`[1]`); as previously, this will act as our database for this example. On `[2]`, we register our user’s router with the `v1` prefix. Then, we register a new inline-declared plugin (`[3]`), using the `v2` namespace (every route added in this plugin will have the `v2` namespace). On `[4]`, we register the same user’s routes for a second time, and we also add a newly declared `delete` route (`[5]`).
+Прежде всего, мы украшаем корневой экземпляр Fastify свойством `users` (`[1]`); как и ранее, он будет выступать в качестве нашей базы данных в этом примере. На `[2]` мы регистрируем маршрутизатор нашего пользователя с префиксом `v1`. Затем мы регистрируем новый плагин с объявлением inline (`[3]`), используя пространство имен `v2` (каждый маршрут, добавленный в этот плагин, будет иметь пространство имен `v2`). На `[4]` мы регистрируем маршруты того же пользователя во второй раз, а также добавляем новый объявленный маршрут `delete` (`[5]`).
 
-!!!note "The printRoutes method"
+!!!note "Метод `printRoutes`"
 
-    This method can be helpful during development. If we are not sure of the full path of our routes, it prints all of them for us!
+    Этот метод может быть полезен во время разработки. Если мы не уверены в полном пути наших маршрутов, он напечатает их все за нас!
 
-Thanks to `[6]`, we can discover all the routes we mounted:
+Благодаря `[6]` мы можем обнаружить все смонтированные нами маршруты:
 
 ```
 $ node users-router-index.cjs
@@ -318,31 +322,31 @@ $ node users-router-index.cjs
     └── v2/users/:name (DELETE)
 ```
 
-Indeed, prefixing route definitions is a compelling feature. It allows us to reuse the same route declarations more than once. It is one of the crucial elements of the reusability of the Fastify plugins. In our example, we have just two levels of prefix nesting, but there are no limits in practice. We avoid code duplication, using the same `GET` and `POST` definitions twice and adding only one new `DELETE` route to the same user’s namespace when needed.
+Действительно, префиксные определения маршрутов - это очень интересная функция. Она позволяет нам повторно использовать одни и те же объявления маршрутов более одного раза. Это один из важнейших элементов многократного использования плагинов Fastify. В нашем примере мы используем всего два уровня вложенности префиксов, но на практике ограничений нет. Мы избегаем дублирования кода, дважды используя одни и те же определения `GET` и `POST` и добавляя только один новый маршрут `DELETE` к одному и тому же пространству имен пользователя, когда это необходимо.
 
-This section covered how to use the `options` parameter to achieve better plugin reusability and control its registration on the Fastify instance. This parameter has some reserved properties used to tell Fastify how to handle the registering plugin. Furthermore, we can add as many properties as needed by the plugin, knowing that Fastify will pass them during the registration phase.
+В этом разделе мы рассмотрели, как использовать параметр `options` для достижения лучшей многоразовости плагина и управления его регистрацией в экземпляре Fastify. Этот параметр имеет несколько зарезервированных свойств, используемых для указания Fastify, как обращаться с регистрируемым плагином. Более того, мы можем добавить столько свойств, сколько необходимо плагину, зная, что Fastify передаст их на этапе регистрации.
 
-Since we have already used **encapsulation** in this section without even knowing it, it will be the topic of the next section.
+Поскольку мы уже использовали **инкапсуляцию** в этом разделе, даже не подозревая об этом, она станет темой следующего раздела.
 
-## Understanding encapsulation
+## Понимание инкапсуляции {#understanding-encapsulation}
 
-So far, we’ve written a few plugins. We are pretty confident about how they are structured and what arguments a plugin receives. We still need to discuss one missing thing about them – the concept of encapsulation.
+До сих пор мы написали несколько плагинов. Мы достаточно хорошо знаем, как они устроены и какие аргументы получает плагин. Но нам еще предстоит обсудить одну недостающую вещь - концепцию инкапсуляции.
 
-Let’s recall the plugin function definition signature:
+Давайте вспомним сигнатуру определения функции плагина:
 
 ```js
 async function myPlugin(fastify, options)
 ```
 
-As we know at this point, the first parameter is a Fastify instance. This instance is a newly created one that inherits from the outside scope. Let’s suppose something has been added to the root instance, for example, using a decorator. In that case, it will be attached to the plugin’s Fastify instance, and it will be usable as if it is defined inside the current plugin.
+Как мы уже знаем, первым параметром является экземпляр Fastify. Этот экземпляр создается заново и наследуется от внешней области видимости. Предположим, что к корневому экземпляру было добавлено что-то, например, с помощью декоратора. В этом случае он будет присоединен к экземпляру Fastify плагина, и его можно будет использовать, как если бы он был определен внутри текущего плагина.
 
-The opposite isn’t true, though. If we add functionalities inside a plugin, those things will be visible only in the current plugin’s context.
+Однако обратное не верно. Если мы добавляем функциональные возможности внутри плагина, то они будут видны только в контексте текущего плагина.
 
-!!!note "Context versus scope"
+!!!note "Контекст против области видимости"
 
-Firstly, let’s take a look at the definitions of both terms. The _context_ indicates the current value of the implicit `‘this’` method variable. The _scope_ is a set of rules that manages the visibility of a variable from a function point of view. In the Fastify community, these two terms are used interchangeably and refer to the Fastify instance we are currently working with. For this reason, in this book, we will use both words, meaning the same thing.
+    Прежде всего, давайте рассмотрим определения обоих терминов. _Контекст_ указывает на текущее значение неявной переменной метода `'this'`. Область видимости (_scope_) - это набор правил, управляющих видимостью переменной с точки зрения функции. В сообществе Fastify эти два термина используются как взаимозаменяемые и относятся к экземпляру Fastify, с которым мы сейчас работаем. По этой причине в этой книге мы будем использовать оба слова, означающие одно и то же.
 
-Let’s take a look at the example in `encapsulation.cjs`:
+Давайте рассмотрим пример в файле `encapsulation.cjs`:
 
 ```js
 const Fastify = require('fastify');
@@ -359,7 +363,7 @@ app.ready().then(() => {
 });
 ```
 
-Running this snippet will produce this output:
+Запуск этого фрагмента приведет к такому результату:
 
 ```sh
 $ node encapsulation.cjs
@@ -369,37 +373,37 @@ root --  hello from the root instance.
 root --  undefined
 ```
 
-Firstly, we decorate the root instance (`[1]`), adding a string to it. Then, inside `myPlugin`, we print the root decorated value and add a new property to the Fastify instance. In the plugin definition body, we log both values in the console to ensure they are set (`[2]`). Finally, we can see that after the Fastify application is ready, at the root level, we can only access the value we added outside of our plugin (`[3]`). But what happened here? In both cases, we used the `.decorate` method to add our value to the instance. Why are both values visible in `myPlugin` but only the root one visible at the top level? This is the intended behavior, and it happens thanks to encapsulation – Fastify creates a new context every time it enters a new plugin. We call these new contexts **child contexts**. A child context inherits only from the parent contexts, and everything added inside a child context will not be visible to its parent or its siblings’ contexts. The parent-child annidation level is infinite, and we can have contexts that are children to their parents and parents to their children.
+Сначала мы декорируем корневой экземпляр (`[1]`), добавляя к нему строку. Затем внутри `myPlugin` мы печатаем декорированное значение корневого экземпляра и добавляем новое свойство к экземпляру Fastify. В теле определения плагина мы выводим оба значения в консоль, чтобы убедиться, что они заданы (`[2]`). Наконец, мы видим, что после того, как приложение Fastify готово, на корневом уровне мы можем получить доступ к добавленному нами значению только вне нашего плагина (`[3]`). Но что же здесь произошло? В обоих случаях мы использовали метод `.decorate` для добавления нашего значения в экземпляр. Почему оба значения видны в `myPlugin`, но на верхнем уровне видно только корневое значение? Так и должно быть, и это происходит благодаря инкапсуляции - Fastify создает новый контекст каждый раз, когда входит в новый плагин. Мы называем эти новые контексты **дочерними контекстами**. Дочерний контекст наследует только от родительского, и все, что добавляется в дочерний контекст, не будет видно ни в родительском, ни в контекстах братьев и сестер. Уровень аннексии родитель-ребенок бесконечен, и мы можем иметь контексты, которые являются детьми для своих родителей и родителями для своих детей.
 
-The entities that are affected by scoping are:
+К сущностям, на которые влияет область видимости, относятся:
 
--   **Decorators**
--   **Hooks**
--   **Plugins**
--   **Routes**
+-   **Декораторы**
+-   **Хуки**
+-   **Плагины**
+-   **маршруты**.
 
-As we can see, since **routes** are affected by context, we already used encapsulation in the previous section, even if we didn’t know it at the time. We registered the same route on the same root instance twice, but with different prefixes. In real-world applications, more complex scenarios with several child and grandchild contexts are widespread. We can use the following diagram to examine a more complex example:
+Как мы видим, поскольку **маршруты** зависят от контекста, мы уже использовали инкапсуляцию в предыдущем разделе, даже если тогда мы этого не знали. Мы дважды зарегистрировали один и тот же маршрут на одном и том же корневом экземпляре, но с разными префиксами. В реальных приложениях широко распространены более сложные сценарии с несколькими дочерними и внучатыми контекстами. Мы можем использовать следующую диаграмму для рассмотрения более сложного примера:
 
-![Figure 2.1: An example of a complex plugin hierarchy](plugin-system-1.png)
+![Рисунок 2.1: Пример сложной иерархии плагинов](plugin-system-1.png)
 
-<center>Figure 2.1: An example of a complex plugin hierarchy</center>
+<center>Рисунок 2.1: Пример сложной иерархии плагинов</center>.
 
-In _Figure 2.1_, we can see a rather complex scenario. We have a root Fastify instance that registers two root plugins. Every root plugin creates a new child context where we can again declare and register as many plugins as we want. That’s it – we can have infinite nesting for our plugins, and every level depth will create a new encapsulated context.
+На _рисунке 2.1_ мы видим довольно сложный сценарий. У нас есть корневой экземпляр Fastify, который регистрирует два корневых плагина. Каждый корневой плагин создает новый дочерний контекст, в котором мы снова можем объявить и зарегистрировать столько плагинов, сколько захотим. Вот и все - мы можем иметь бесконечную вложенность для наших плагинов, и каждый уровень глубины будет создавать новый инкапсулированный контекст.
 
-However, Fastify leaves complete control over encapsulation for the developer, and we will see how to control it in the next section.
+Однако Fastify оставляет полный контроль над инкапсуляцией разработчику, и мы рассмотрим, как управлять этим в следующем разделе.
 
-### Handling the context
+### Обработка контекста {#handling-the-context}
 
-Until now, the context we relied upon was based on the default Fastify behavior. It works most of the time, but there are some cases where we need more flexibility. If we need to share context between siblings or alter a parent context, we can still do it. This comes in handy for more complex plugins, such as ones that handle database connections.
+До сих пор контекст, на который мы опирались, был основан на поведении Fastify по умолчанию. В большинстве случаев это работает, но есть случаи, когда нам нужна большая гибкость. Если нам нужно разделить контекст между соседями или изменить родительский контекст, мы все равно можем это сделать. Это пригодится для более сложных плагинов, например тех, которые работают с соединениями с базами данных.
 
-We have a couple of tools at our disposal:
+В нашем распоряжении есть несколько инструментов:
 
--   The `skip-override` hidden property
--   The `fastify-plugin` package
+-   Скрытое свойство `skip-override`.
+-   пакет `fastify-plugin`.
 
-We will start using `skip-override` and then move on to `fastify-plugin`; even though they can be used to achieve the same result, the latter has additional features.
+Мы начнем с использования `skip-override`, а затем перейдем к `fastify-plugin`; хотя они могут быть использованы для достижения одного и того же результата, последний имеет дополнительные возможности.
 
-Here, we will use the same example we used before but now add the `skip-override` hidden property to ensure we can access the decorated variable at the top-level scope. The `skip-override.cjs` snippet will help us understand its usage:
+Здесь мы будем использовать тот же пример, что и раньше, но теперь добавим скрытое свойство `skip-override`, чтобы обеспечить доступ к декорированной переменной в области видимости верхнего уровня. Сниппет `skip-override.cjs` поможет нам понять его использование:
 
 ```js
 const Fastify = require('fastify');
@@ -418,7 +422,7 @@ app.ready().then(() => {
 });
 ```
 
-There is only one major change in this code snippet from the previous one, which is that we use `Symbol.for('skip-override')` to prevent Fastify from creating a new context (`[1]`). This alone is enough to have the root decorated with the `fastify.myPlugin` variable (`[2]`). We can see that the decorator is also accessible from the outer scope (`[3]`); here is the output:
+В этом фрагменте кода есть только одно существенное изменение по сравнению с предыдущим: мы используем `Symbol.for('skip-override')`, чтобы предотвратить создание Fastify нового контекста (`[1]`). Одного этого достаточно, чтобы корень был декорирован переменной `fastify.myPlugin` (`[2]`). Мы видим, что декоратор также доступен из внешней области видимости (`[3]`); вот результат:
 
 ```sh
 $ node skip-override.cjs
@@ -428,57 +432,57 @@ root --  hello from the root instance.
 root --  hello from myPlugin.
 ```
 
-!!!note "Symbol.for"
+!!!note "`Symbol.for`"
 
-    Instead of using just the `skip-override` property as a string, Fastify uses `Symbol.for` to hide it and avoid name collisions. When a symbol is created, it is added to a runtime-wide symbol registry. Upon the invocation, the `.for` method checks whether the symbol we are trying to access is already present. If not, it first creates it and then returns it. More on symbols can be found at <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol>.
+    Вместо того чтобы использовать просто свойство `skip-override` в виде строки, Fastify использует `Symbol.for`, чтобы скрыть его и избежать коллизий имен. Когда символ создается, он добавляется в реестр символов во время выполнения. При вызове метод `.for` проверяет, присутствует ли уже символ, к которому мы пытаемся получить доступ. Если нет, он сначала создает его, а затем возвращает. [Подробнее о символах](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
 
-### fastify-plugin
+### fastify-plugin {#fastify-plugin}
 
-Using `skip-override` is perfectly fine, but there is a better way to control encapsulation behavior. Like many things in the Fastify world, the `fastify-plugin` module is nothing more than a function that wraps a plugin, adds some metadata to it, and returns it.
+Использование `skip-override` вполне нормально, но есть лучший способ контролировать поведение инкапсуляции. Как и многое в мире Fastify, модуль `fastify-plugin` - это не более чем функция, которая оборачивает плагин, добавляет к нему некоторые метаданные и возвращает их.
 
-The main features included with `fastify-plugin` are the following:
+Основные функции, включенные в `fastify-plugin`, следующие:
 
--   Adding the `skip-override` property for us
--   Providing the name for the plugin, if no explicit one is passed
--   Checking the minimum version of Fastify
--   Attaching the provided custom metadata to the returned plugin
+-   Добавление свойства `skip-override` за нас
+-   Предоставление имени для плагина, если оно не передано явно
+-   Проверка минимальной версии Fastify
+-   Прикрепление предоставленных пользовательских метаданных к возвращаемому плагину.
 
-We should use `fastify-plugin` every time we have a plugin that needs to add behavior to the parent context. To be able to use it, we first need to install it from the <npmjs.com> registry:
+Мы должны использовать `fastify-plugin` каждый раз, когда у нас есть плагин, который должен добавить поведение в родительский контекст. Чтобы иметь возможность использовать его, нам сначала нужно установить его из реестра `npmjs.com`:
 
 ```sh
 $ npm i fastify-plugin
 ```
 
-Its signature resembles the `.register` method. It takes two parameters:
+Его сигнатура напоминает метод `.register`. Он принимает два параметра:
 
-1.  The exact plugin function definition, as we have already seen
-2.  An optional `options` object with four optional properties:
+1.  Точное определение функции плагина, как мы уже видели
+2.  Необязательный объект `options` с четырьмя необязательными свойствами:
 
 `name`
 
-: We can use this string property to give a name to our plugin. Giving a name to our plugin is fundamental because it allows us to pass it into the dependencies array, as we will see soon. Moreover, if something unexpected happens during the boot, Fastify will use this property for better stack traces.
+: Мы можем использовать это строковое свойство, чтобы дать имя нашему плагину. Присвоение имени нашему плагину очень важно, так как позволяет передать его в массив зависимостей, как мы скоро увидим. Кроме того, если во время загрузки произойдет что-то непредвиденное, Fastify будет использовать это свойство для более точной трассировки стека.
 
 `fastify`
 
-: We can use this string property to check the minimum Fastify version that our plugin needs to work correctly. This property accepts as a value any valid **SemVer** range.
+: Мы можем использовать это строковое свойство для проверки минимальной версии Fastify, которая необходима нашему плагину для корректной работы. Это свойство принимает в качестве значения любой допустимый диапазон **SemVer**.
 
 `decorators`
 
-: We can use this object to ensure the parent instance has been decorated with properties that we use inside our plugin.
+: Мы можем использовать этот объект, чтобы убедиться, что родительский экземпляр был украшен свойствами, которые мы используем в нашем плагине.
 
 `dependencies`
 
-: If our plugin depends on other plugins’ functionalities, we can use this array of strings to check that all dependencies are met – the values are the plugin name. We will take a deeper look at this property in the next chapter, since it is related to the boot process.
+: Если наш плагин зависит от функциональности других плагинов, мы можем использовать этот массив строк для проверки соблюдения всех зависимостей - значениями являются имена плагинов. Мы более подробно рассмотрим это свойство в следующей главе, поскольку оно связано с процессом загрузки.
 
 !!!note "SemVer"
 
-    **SemVer** stands for **Semantic Versioning**, and its purpose is to help developers manage their dependencies. It is composed of three numbers separated by two dots, following the `MAJOR.MINOR.PATCH` schema. If any breaking changes are added to the code, then the `MAJOR` number needs to be increased. On the other hand, if new features are added but no breaking changes are introduced, then the `MINOR` number should be increased. Finally, if all of the changes are done only to fix bugs, then the `PATCH` number is bumped.
+    **SemVer** расшифровывается как **Semantic Versioning**, и его цель - помочь разработчикам управлять своими зависимостями. Она состоит из трех чисел, разделенных двумя точками, по схеме `MAJOR.MINOR.PATCH`. Если в код добавляются какие-либо разрушающие изменения, то число `MAJOR` должно быть увеличено. С другой стороны, если добавлены новые возможности, но нет никаких ломающих изменений, то номер `MINOR` должен быть увеличен. Наконец, если все изменения делаются только для исправления ошибок, то номер `PATCH` увеличивается.
 
-!!!note "The fp naming convention"
+!!!note "Соглашение об именовании fp"
 
-    In the Fastify community, it is common to import the `fastify-plugin` package as `fp` because it is a short yet meaningful variable name. In this book, we will use this convention every time we deal with it.
+    В сообществе Fastify принято импортировать пакет `fastify-plugin` как `fp`, потому что это короткое, но многозначительное имя переменной. В этой книге мы будем использовать это соглашение каждый раз, когда будем иметь с ним дело.
 
-Let’s take a look at the `fp-myplugin.cjs` example that uses the optional metadata properties:
+Давайте рассмотрим пример `fp-myplugin.cjs`, в котором используются необязательные свойства метаданных:
 
 ```js
 const fp = require('fastify-plugin');
@@ -494,15 +498,15 @@ module.exports = fp(myPlugin, {
 });
 ```
 
-At `[1]`, we pass `myPlugin` as the first argument and export the wrapped plugin as the default export. The second argument is the options objects:
+В `[1]` мы передаем `myPlugin` в качестве первого аргумента и экспортируем обернутый плагин в качестве экспорта по умолчанию. Второй аргумент - это объекты опций:
 
--   We give an explicit name to our plugin (`[2]`).
--   We set the minimum Fastify version to `4.x` (`[3]`).
--   The `decorators` property accepts the keys of the entities that can be decorated – `fastify`, `request`, and `reply`. Here, we check whether the Fastify parent instance has the `root` property set (`[4]`).
+-   Мы задаем явное имя нашему плагину (`[2]`).
+-   Мы устанавливаем минимальную версию Fastify на `4.x` (`[3]`).
+-   Свойство `decorators` принимает ключи сущностей, которые могут быть украшены - `fastify`, `request` и `reply`. Здесь мы проверяем, установлено ли у родительского экземпляра Fastify свойство `root` (`[4]`).
 
-The `fastify-plugin` attaches the `options` object to our plugin in the unique hidden property called `Symbol.for('plugin-meta')`. Fastify will look for this property during the plugin registration, and if found, it will act accordingly to its content.
+В `fastify-plugin` объект `options` прикрепляется к нашему плагину в уникальном скрытом свойстве под названием `Symbol.for('plugin-meta')`. Fastify будет искать это свойство во время регистрации плагина, и если найдет, то будет действовать в соответствии с его содержимым.
 
-In the `fp-myplugin-index.cjs` snippet, we import and register our plugin, checking the different outcomes:
+В фрагменте `fp-myplugin-index.cjs` мы импортируем и регистрируем наш плагин, проверяя различные результаты:
 
 ```js
 const Fastify = require('fastify');
@@ -516,7 +520,7 @@ app.ready().then(() => {
 });
 ```
 
-First, we decorate the root fastify instance with a string property (`[1]`). Then, we register our plugin (`[2]`). Remember that we specified the root property as mandatory inside the metadata of `fastify-plugin`. Before registering `myPlugin`, Fastify checks whether the property is declared on the parent context, and since it is there, it goes on with the boot process. Finally, since `fastify-plugin` adds the `skip-override` property for us, we can access the `myPlugin` property in the root scope with no issues (`[3]`). Let’s take a look at the output of this snippet:
+Сначала мы украшаем корневой экземпляр fastify строковым свойством (`[1]`). Затем мы регистрируем наш плагин (`[2]`). Помните, что мы указали корневое свойство как обязательное в метаданных `fastify-plugin`. Перед регистрацией `myPlugin`, Fastify проверяет, объявлено ли свойство в родительском контексте, и если оно там есть, то переходит к процессу загрузки. Наконец, поскольку `fastify-plugin` добавляет свойство `skip-override` для нас, мы можем получить доступ к свойству `myPlugin` в корневой области видимости без каких-либо проблем (`[3]`). Давайте посмотрим на результат этого фрагмента:
 
 ```sh
 $ node fp-myplugin-index.cjs
@@ -525,9 +529,9 @@ root --  hello from the root instance.
 root --  hello from myPlugin.
 ```
 
-Everything works as expected!
+Все работает, как и ожидалось!
 
-Now, looking at `fp-myplugin-index-missing-root.cjs`, we can check what happens if the `root` decorator is missing from the root instance, as it was declared in `fp-myplugin-index.cjs` at `[1]`, as shown previously:
+Теперь, посмотрев на `fp-myplugin-index-missing-root.cjs`, мы можем проверить, что произойдет, если декоратор `root` будет отсутствовать у экземпляра `root`, как он был объявлен в `fp-myplugin-index.cjs` по адресу `[1]`, как было показано ранее:
 
 ```js
 const Fastify = require('fastify');
@@ -540,7 +544,7 @@ app.ready().then(() => {
 });
 ```
 
-Running this file will throw and abort the boot process:
+Запуск этого файла приведет к сбою и прерыванию процесса загрузки:
 
 ```sh
 $ node fp-myplugin-index-missing-root.cjs
@@ -569,54 +573,54 @@ queues:83:21) {
 }
 ```
 
-We can see that Fastify used the `myPlugin` name in the `FST_ERR_PLUGIN_NOT_PRESENT_IN_INSTANCE` error, helping us to understand the issue. This is very helpful when dealing with dozens of registered plugins.
+Мы видим, что Fastify использовал имя `myPlugin` в ошибке `FST_ERR_PLUGIN_NOT_PRESENT_IN_IN_STANCE`, что помогает нам понять проблему. Это очень полезно при работе с десятками зарегистрированных плагинов.
 
-!!!note "The name property"
+!!!note "Свойство name"
 
-    We saw that the `fastify-plugin` `options` parameter is optional, and so is its `name` property. But what happens if we don’t pass it? It turns out that a name will be generated and attached to the plugin. If our plugin is a named function (it contains the name property), it will be used as the plugin name. Otherwise, the filename is the next candidate. In both cases, a standard part will be appended – `auto-{N}`. The `N` is an auto-incremented number that starts from 0. The appended part is needed to avoid naming collisions since the developer does not provide these names, and Fastify doesn’t want to block the boot process for unintended collisions. It is important to remember that giving an explicit name to our plugins is considered a best practice.
+    Мы видели, что параметр `fastify-plugin` `options` является необязательным, как и его свойство `name`. Но что произойдет, если мы не передадим его? Оказывается, имя будет сгенерировано и прикреплено к плагину. Если наш плагин является именованной функцией (содержит свойство name), то оно будет использовано в качестве имени плагина. В противном случае следующим кандидатом будет имя файла. В обоих случаях будет добавлена стандартная часть - `auto-{N}`. `N` - это автоматически увеличивающееся число, начинающееся с 0. Добавляемая часть нужна для того, чтобы избежать коллизий в именах, поскольку разработчик не предоставляет эти имена, а Fastify не хочет блокировать процесс загрузки из-за непреднамеренных коллизий. Важно помнить, что присвоение явного имени нашим плагинам считается лучшей практикой.
 
-This section covered one of the core yet most difficult concepts in Fastify – **encapsulation**. We learned how Fastify provides default behavior that suits the most common cases but gives full power to the developer whenever needed. In addition, tools such as `skip-override` and `fastify-plugin` are fundamental when dealing with more complex scenarios, where control over the context is crucial.
+В этом разделе мы рассмотрели одну из основных, но самых сложных концепций Fastify - **капсуляцию**. Мы узнали, как Fastify обеспечивает поведение по умолчанию, которое подходит для наиболее распространенных случаев, но дает разработчику полную власть, когда это необходимо. Кроме того, такие инструменты, как `skip-override` и `fastify-plugin`, являются основополагающими при работе с более сложными сценариями, где контроль над контекстом имеет решающее значение.
 
-But how does Fastify know the correct order of plugin registration? Is it even a deterministic process? We will discover this and more about the boot sequence in the next section.
+Но как Fastify узнает правильный порядок регистрации плагинов? Является ли этот процесс детерминированным? Мы узнаем это и многое другое о последовательности загрузки в следующем разделе.
 
-## Exploring the boot sequence
+## Изучение последовательности загрузки {#exploring-the-boot-sequence}
 
-We learned in the previous section that a plugin is just an asynchronous function with well-defined parameters. We’ve also seen how Fastify plugins are the core entity we use to add features and functionalities to our applications. In this section, we will learn what the boot sequence is, how plugins interact with each other, and how Fastify ensures that all the developer’s constraints are met, before running the HTTP server.
+В предыдущем разделе мы узнали, что плагин - это просто асинхронная функция с четко определенными параметрами. Мы также увидели, что плагины Fastify - это основная сущность, которую мы используем для добавления возможностей и функций в наши приложения. В этом разделе мы узнаем, что такое последовательность загрузки, как плагины взаимодействуют друг с другом и как Fastify обеспечивает соблюдение всех ограничений разработчика, прежде чем запустить HTTP-сервер.
 
-Firstly, it is essential to say that the Fastify boot sequence is asynchronous too. Fastify loads every plugin added with the `register` method, one by one, respecting the order of the registration. Fastify starts this process only after `.listen()` or `.ready()` are called. After that, it waits for all promises to be settled (or for all completed callbacks to be called, if the callback style is used), and then it emits the ready event. If we have already got this far, we can be sure that our application is up and running and ready to receive incoming requests.
+Прежде всего, необходимо сказать, что последовательность загрузки Fastify также является асинхронной. Fastify загружает каждый плагин, добавленный с помощью метода `register`, по очереди, соблюдая порядок регистрации. Fastify начинает этот процесс только после вызова `.listen()` или `.ready()`. После этого он ждет выполнения всех промисов (или вызова всех завершенных обратных вызовов, если используется стиль обратных вызовов), а затем выдает событие готовности. Если мы прошли этот путь, то можем быть уверены, что наше приложение работает и готово к приему входящих запросов.
 
 !!!note "Avvio"
 
-    The boot process is baked by `Avvio`, a library that can also be used standalone. `Avvio` handles all the complexities concerning the asynchronous boot – error handling, loading order, and dispatching the ready event, enabling developers to ensure that the application is started after everything is loaded without any errors.
+    За процесс загрузки отвечает `Avvio`, библиотека, которую можно использовать и отдельно. `Avvio` обрабатывает все сложности, связанные с асинхронной загрузкой - обработку ошибок, порядок загрузки, диспетчеризацию события ready, позволяя разработчикам гарантировать, что приложение будет запущено после того, как все загрузится без ошибок.
 
-This somehow overshadowed and underrated feature is, in reality, one of the most powerful ones. Having an asynchronous boot process brings to the table some key benefits:
+Эта почему-то недооцененная и переосмысленная функция на самом деле является одной из самых мощных. Асинхронный процесс загрузки дает несколько ключевых преимуществ:
 
--   After the `listen`/`ready` promise is resolved, we are sure that all plugins are loaded without errors and the boot sequence is over
--   It allows us to always register our plugins in a deterministic way, ensuring the loading and closing orders
--   If an error is thrown during the plugin registration, it will interrupt the boot sequence, enabling developers to act accordingly
+-   После разрешения промиса `listen`/`ready` мы уверены, что все плагины загружены без ошибок и последовательность загрузки завершена.
+-   Это позволяет нам всегда регистрировать наши плагины детерминированным способом, обеспечивая порядок загрузки и закрытия.
+-   Если во время регистрации плагина возникнет ошибка, она прервёт последовательность загрузки, что позволит разработчикам действовать соответствующим образом.
 
-Even if Fastify’s boot process is very versatile, it handles almost everything out of the box. The exposed API is small – there are just two methods! The first one is the `register` method, which we have already used many times. The other one is `after`, and as we will see, it is rarely used because `register` integrates its functionalities for most of the use cases. Let’s take a deeper look at them.
+Несмотря на то, что процесс загрузки Fastify очень многогранен, он обрабатывает практически все из коробки. Открытый API невелик - в нем всего два метода! Первый - это метод `register`, который мы уже много раз использовали. Второй - `after`, и, как мы увидим, он используется редко, потому что `register` интегрирует свой функционал для большинства случаев использования. Давайте рассмотрим их подробнее.
 
 !!!note "thenable"
 
-    Several Fastify instance methods return `thenable`, an object that has the `then()` method. The most important property of `thenable` is that the promise chains and `async`/`await` work fine. Using `thenable` instead of a real promise has one main advantage – it enables the object to be simultaneously awaited and chained to other calls in a fluent API fashion.
+    Несколько методов экземпляра Fastify возвращают `thenable`, объект, который имеет метод `then()`. Самое важное свойство `thenable` заключается в том, что цепочки промисов и `async`/`await` работают нормально. Использование `thenable` вместо настоящего промиса имеет одно основное преимущество - оно позволяет одновременно ожидать объект и связывать его с другими вызовами в цепочке, что позволяет свободно использовать API.
 
-### The register instance method
+### Метод регистрации экземпляра {#the-register-instance-method}
 
-At this point, we almost know everything about this core method. Let’s start with its signature:
+На данный момент мы почти все знаем об этом основном методе. Начнем с его сигнатуры:
 
 ```js
 .register(async function plugin(instance, pluginOptions), options)
 ```
 
-The `options` parameter is fundamental to passing custom options to our plugins during the registration, and it is the gateway to plugin reusability. For example, we can register the same plugin that deals with the database with a different connection string or, as we saw, use another prefix option to register the same handler on different route paths. Moreover, if we don’t use the `fastify-plugin` module or the `skip-override` hidden property, `register` creates a new context, isolating whatever our plugin does.
+Параметр `options` является основополагающим для передачи пользовательских опций нашим плагинам во время регистрации, и это ворота для многократного использования плагинов. Например, мы можем зарегистрировать один и тот же плагин, работающий с базой данных, с другой строкой подключения или, как мы видели, использовать другую опцию префикса для регистрации одного и того же обработчика на разных путях маршрута. Более того, если мы не используем модуль `fastify-plugin` или скрытое свойство `skip-override`, `register` создает новый контекст, изолируя все, что делает наш плагин.
 
-But what is the register return value? It is a `thenable` Fastify instance, and it brings two significant benefits to the table:
+Но что представляет собой возвращаемое значение `register`? Это `thenable` экземпляр Fastify, и он приносит два существенных преимущества:
 
--   It adds the ability to chain instance method calls.
--   If needed, we can use `await` when calling `register`
+-   Он добавляет возможность цепочки вызовов методов экземпляра.
+-   При необходимости мы можем использовать `await` при вызове `register`.
 
-First, we will take a look at Fastify instance method chaining in `register-chain.cjs`:
+Сначала мы рассмотрим цепочку методов экземпляра Fastify в файле `register-chain.cjs`:
 
 ```js
 const Fastify = require('fastify');
@@ -639,11 +643,11 @@ app.ready().then(() => {
 });
 ```
 
-We define three dummy plugins that do only one thing when registered – they log their function name (`[1]`). Then, at `[2]`, we register both of them using method chaining. The first `.register(plugin1)` invocation returns the Fastify instance, allowing the subsequent call, `.register(plugin2)`. We can use method chaining with the majority of instance methods. We can break the invocation chain and call the register directly on the instance (`[3]`).
+Мы определяем три фиктивных плагина, которые при регистрации делают только одну вещь - записывают в журнал имя своей функции (`[1]`). Затем, в пункте `[2]`, мы регистрируем их оба, используя цепочку методов. Первый вызов `.register(plugin1)` возвращает экземпляр Fastify, что позволяет выполнить последующий вызов, `.register(plugin2)`. Мы можем использовать цепочку методов с большинством методов экземпляра. Мы можем разорвать цепочку вызовов и вызвать регистр непосредственно на экземпляре (`[3]`).
 
-#### Awaiting register
+#### Ожидание регистра {#awaiting-register}
 
-There is one more thing to say about the register method. We can use the `await` operator after every `register` call to wait for the registration to be done. The `await` operator can be used after any `register` call to wait for every plugin added up to that point to load, as we can see in the following `await-register.cjs` snippet:
+Есть еще одна вещь, которую следует сказать о методе `register`. Мы можем использовать оператор `await` после каждого вызова `register`, чтобы дождаться завершения регистрации. Оператор `await` можно использовать после каждого вызова `register`, чтобы дождаться загрузки всех плагинов, добавленных до этого момента, как показано в следующем фрагменте `await-register.cjs`:
 
 ```js
 const Fastify = require('fastify');
@@ -686,7 +690,7 @@ async function boot() {
 boot();
 ```
 
-To understand what is going on, we will run this snippet:
+Чтобы понять, что происходит, запустим этот фрагмент:
 
 ```sh
 $ node register-await.mjs
@@ -697,26 +701,26 @@ app ready
 plugin3Decorator true # [6]
 ```
 
-Since this example is quite long and complex, let’s break it into smaller chunks:
+Поскольку этот пример довольно длинный и сложный, давайте разобьем его на более мелкие части:
 
--   We declare three plugins `[1]`, each adding one decorator to the Fastify instance
--   We use `fastify-plugin` to decorate the root instance and to register these plugins (`[2]` and `[3]`), as we learned in the previous section
--   Even if our plugins are identical, we can see that the results of `console.log` are different; the two plugins registered with the `await` operator (`[2]`) have already decorated the root instance (`[4]`)
--   Conversely, the last one registered without `await` (`[3]`) adds its decorator only after the ready event promise has been resolved (`[5]` and `[6]`)
+-   Мы объявляем три плагина `[1]`, каждый из которых добавляет по одному декоратору к экземпляру Fastify
+-   Мы используем `fastify-plugin` для декорирования корневого экземпляра и для регистрации этих плагинов (`[2]` и `[3]`), как мы узнали в предыдущем разделе.
+-   Даже если наши плагины идентичны, мы видим, что результаты `console.log` различны; два плагина, зарегистрированные с помощью оператора `await` (`[2]`), уже украсили корневой экземпляр (`[4]`)
+-   И наоборот, последний плагин, зарегистрированный без `await` (`[3]`), добавляет свой декоратор только после разрешения промиса события ready (`[5]` и `[6]`)
 
-At this point, it should be clear that if we also want the third decorator to be available before the application is fully ready, it is sufficient to add the await operator on `[3]`!
+Теперь должно быть понятно, что если мы также хотим, чтобы третий декоратор был доступен до полной готовности приложения, достаточно добавить оператор await на `[3]`!
 
-As a final note, we can say that we don’t need to wait when registering our plugins for most cases. The only exception might be when we need access to something that the plugin did during the loading. For example, we have a plugin that connects to an external source, and we want to be sure that it is connected before going on with the boot sequence.
+В заключение можно сказать, что в большинстве случаев нам не нужно ждать при регистрации наших плагинов. Единственным исключением может быть случай, когда нам нужен доступ к чему-то, что плагин сделал во время загрузки. Например, у нас есть плагин, который подключается к внешнему источнику, и мы хотим быть уверены, что он подключен, прежде чем продолжить последовательность загрузки.
 
-### The after instance method
+### Метод `after` экземпляра {#the-after-instance-method}
 
-The function argument of the `after` method is called automatically by Fastify when all plugins added until that point have finished loading. As the only parameter, it defines a callback function with an optional error argument:
+Аргумент функции метода `after` вызывается Fastify автоматически, когда все плагины, добавленные до этого момента, завершают загрузку. В качестве единственного параметра он определяет колбек-функцию с необязательным аргументом ошибки:
 
 ```js
 .after(function (err) {})
 ```
 
-If we don’t pass the callback, then `after` will return a `thenable` object that can be awaited. In this version, awaiting `after` can be replaced by just awaiting `register`; the behavior is the same. Because of that, in the `after.cjs` example, we will see the callback style version of the `after` method:
+Если мы не передадим обратный вызов, то `after` вернет объект `thenable`, который можно ожидать. В этой версии ожидание `after` можно заменить на ожидание `register`, поведение будет таким же. Поэтому в примере `after.cjs` мы увидим версию метода `after` в стиле callback:
 
 ```js
 const Fastify = require('fastify');
@@ -758,51 +762,51 @@ async function boot() {
 boot();
 ```
 
-We declare and then register the same three plugins from the last examples (`[1]`). On `[2]`, we start our chain of method calls, adding the `after` call (`[3]`) before the last `register` (`[4]`). Inside the `after` callback, we are sure, if the error is null, that the first two plugins are loaded correctly; in fact, the decorators have the correct values. If we run this snippet, we will have the same result as the previous one.
+Мы объявляем и затем регистрируем те же три плагина, что и в предыдущих примерах (`[1]`). На `[2]` мы начинаем нашу цепочку вызовов методов, добавляя вызов `after` (`[3]`) перед последним `register` (`[4]`). Внутри обратного вызова `after` мы убеждаемся, если ошибка равна null, что первые два плагина загружены правильно; на самом деле, декораторы имеют правильные значения. Если мы запустим этот фрагмент, то получим тот же результат, что и в предыдущем случае.
 
-Fastify guarantees that all `after` callbacks will be called before the application’s ready event is dispatched. This method can be helpful if we prefer chaining instance methods but still need control over the boot sequence.
+Fastify гарантирует, что все обратные вызовы `after` будут вызваны до того, как будет отправлено событие готовности приложения. Этот метод может быть полезен, если мы предпочитаем цепочку методов экземпляра, но при этом нам нужен контроль над последовательностью загрузки.
 
-### A declaration order
+### Порядок деклараций {#a-declaration-order}
 
-Even if Fastify keeps the correct order of plugin registration, we should still follow some good practices to maintain more consistent and predictable boot behavior. If something terrible happens during the loading, using the following declaration order will help figure out what the issue is:
+Даже если Fastify соблюдает правильный порядок регистрации плагинов, мы все равно должны следовать некоторым хорошим практикам, чтобы поддерживать более последовательное и предсказуемое поведение загрузки. Если во время загрузки происходит что-то ужасное, использование следующего порядка деклараций поможет выяснить, в чем проблема:
 
--   Plugins installed from `npmjs.com`
--   Our plugins
--   Decorators
--   Hooks
--   Services, routes, and so on
+-   Плагины, установленные с `npmjs.com`.
+-   Наши плагины
+-   Декораторы
+-   Хуки
+-   Сервисы, маршруты и так далее
 
-This declaration order guarantees that all stuff declared in the current context will be accessible. Since in Fastify, everything can, and really should, be defined inside a plugin, we should replicate the preceding structure at every registration level.
+Такой порядок объявления гарантирует, что все вещи, объявленные в текущем контексте, будут доступны. Поскольку в Fastify все может и должно быть определено внутри плагина, мы должны повторять предыдущую структуру на каждом уровне регистрации.
 
-The boot sequence is the series of operations that Fastify performs to load all of the plugins that are registered and start the server. We learned how this process is deterministic, since the order of registration matters. Finally, we covered how developers have two methods at their disposal to fine- tune the boot sequence, despite Fastify providing a default behavior.
+Последовательность загрузки - это серия операций, которые Fastify выполняет для загрузки всех зарегистрированных плагинов и запуска сервера. Мы узнали, что этот процесс является детерминированным, поскольку порядок регистрации имеет значение. Наконец, мы узнали, что в распоряжении разработчиков есть два метода тонкой настройки последовательности загрузки, несмотря на то, что Fastify предоставляет поведение по умолчанию.
 
-During the boot sequence, one or more errors can occur. In the next section, we will cover the most common errors and learn how to deal with them.
+Во время загрузки может произойти одна или несколько ошибок. В следующем разделе мы рассмотрим наиболее распространенные ошибки и узнаем, как с ними бороться.
 
-## Handling boot and plugin errors
+## Обработка ошибок загрузки и плагинов {#handling-boot-and-plugin-errors}
 
-This section will analyze some of the most common Fastify boot errors and how we can deal with them. But what are boot errors anyway? All errors thrown during the initial load of our application, before the ready event is dispatched and the server listens for incoming connections, are called **boot errors**.
+В этом разделе мы разберем некоторые наиболее распространенные ошибки загрузки Fastify и способы их устранения. Что же такое ошибки загрузки? Все ошибки, возникающие во время начальной загрузки нашего приложения, до того, как будет отправлено событие готовности и сервер начнет прослушивать входящие соединения, называются **ошибками загрузки**.
 
-These errors are usually thrown when something unexpected happens during the registration of a plugin. If there are any unhandled errors during a plugin registration, Fastify, with the help of `Avvio`, will notify us and stop the boot process.
+Эти ошибки обычно возникают, когда во время регистрации плагина происходит что-то непредвиденное. Если во время регистрации плагина возникнут необработанные ошибки, Fastify с помощью `Avvio` сообщит нам об этом и остановит процесс загрузки.
 
-We can distinguish between two error types:
+Можно выделить два типа ошибок:
 
--   Errors that we can recover from
--   Errors that are not recoverable by any means
+-   Ошибки, которые можно исправить
+-   Ошибки, которые не подлежат восстановлению никакими способами.
 
-First, we will look at the most common non-recoverable error, `ERR_AVVIO_PLUGIN_TIMEOUT`, which usually means we forgot to tell Fastify to continue with the boot process.
+Сначала мы рассмотрим самую распространенную невосстанавливаемую ошибку, `ERR_AVVIO_PLUGIN_TIMEOUT`, которая обычно означает, что мы забыли сообщить Fastify о необходимости продолжить процесс загрузки.
 
-Then, we will learn about the tools Fastify gives us to recover from other kinds of errors. It is important to note that we don’t want to recover from an error more often than not, and it is better to just make the server crash during the boot!
+Затем мы познакомимся с инструментами, которые Fastify предоставляет нам для восстановления после других видов ошибок. Важно отметить, что чаще всего мы не хотим восстанавливаться после ошибки, и лучше просто сделать так, чтобы сервер упал во время загрузки!
 
-### `ERR_AVVIO_PLUGIN_TIMEOUT`
+### `ERR_AVVIO_PLUGIN_TIMEOUT` {#err-avvio-plugin-timeout}
 
-To prevent the boot process from being stuck indefinitely, Fastify has set a maximum amount of time a plugin can take to load. If a plugin takes longer than that, Fastify will throw an `ERR_AVVIO_PLUGIN_TIMEOUT` error. The default timeout is set to 10 seconds, but the value can be easily changed using the `pluginTimeout` server option.
+Чтобы процесс загрузки не затягивался до бесконечности, Fastify установил максимальное время загрузки плагина. Если плагин загружается дольше этого времени, Fastify будет выбрасывать ошибку `ERR_AVVIO_PLUGIN_TIMEOUT`. По умолчанию таймаут установлен на 10 секунд, но это значение можно легко изменить с помощью серверной опции `pluginTimeout`.
 
-This is one of the most common boot errors, and usually, it happens for two reasons:
+Это одна из самых распространенных ошибок загрузки, и обычно она возникает по двум причинам:
 
--   We forgot to call the done callback when registering a plugin
--   The registration promise isn’t resolved in time
+-   Мы забыли вызвать обратный вызов done при регистрации плагина.
+-   Промис регистрации не был вовремя разрешен.
 
-It is also the most confusing one, and it is certainly a non-recoverable error. The code written in `timeout-error.cjs` generates this error on purpose, allowing us to analyze the stack trace to understand how we can spot it and find where it originates:
+Это также самая запутанная ошибка, и она, безусловно, является неустранимой. Код, написанный в `timeout-error.cjs`, специально генерирует эту ошибку, позволяя нам проанализировать трассировку стека, чтобы понять, как мы можем ее заметить и найти место ее возникновения:
 
 ```js
 const Fastify = require('fastify');
@@ -815,9 +819,9 @@ app.ready().then(() => {
 });
 ```
 
-Here, we register our plugin. We are giving it a name because, as we will see, it will help with the stack trace. Even if the plugin is not an `async` function, we deliberately don’t call the done callback to let Fastify know that the registration went without errors.
+Здесь мы регистрируем наш плагин. Мы даем ему имя, потому что, как мы увидим, оно поможет в трассировке стека. Даже если плагин не является `async`-функцией, мы намеренно не вызываем колбек-функцию done, чтобы дать Fastify понять, что регистрация прошла без ошибок.
 
-If we run this snippet, we will receive the `ERR_AVVIO_PLUGIN_TIMEOUT` error:
+Если мы запустим этот фрагмент, то получим ошибку `ERR_AVVIO_PLUGIN_TIMEOUT`:
 
 ```sh
 $ node timeout-error.cjs
@@ -833,13 +837,13 @@ a Promise
 }
 ```
 
-As we can see immediately, the error is pretty straightforward. Fastify uses the function name, `myPlugin`, to point us in the correct direction. Moreover, it suggests that we might forget to call `'done'` or resolve the promise. It is worth mentioning that, in real-world scenarios, this error is usually thrown when there are some connection-related problems – for example, the database is not reachable at the time of the plugin registration.
+Как мы сразу видим, ошибка довольно простая. Fastify использует имя функции `myPlugin`, чтобы указать нам правильное направление. Более того, она предполагает, что мы могли забыть вызвать `'done'` или разрешить промис. Стоит отметить, что в реальных сценариях эта ошибка обычно возникает при проблемах с подключением - например, база данных недоступна в момент регистрации плагина.
 
-### Recovery from a boot error
+### Восстановление после ошибки загрузки {#recovery-from-a-boot-error}
 
-Usually, if an error happens during boot time, something serious prevents our application from starting. In such cases, as we already saw, the best thing Fastify can do is to stop the boot process and notify us about the errors it encountered. However, there are a few cases where we can recover from an error and continue with the boot process. For example, we have an optional plugin to measure application metrics, and we want to start the application even if it is not loading correctly.
+Обычно, если во время загрузки происходит ошибка, значит, что-то серьезное мешает запуску нашего приложения. В таких случаях, как мы уже видели, лучшее, что может сделать Fastify, - это остановить процесс загрузки и уведомить нас об ошибках, с которыми он столкнулся. Однако есть несколько случаев, когда мы можем исправить ошибку и продолжить процесс загрузки. Например, у нас есть дополнительный плагин для измерения метрик приложения, и мы хотим запустить приложение, даже если оно загружается некорректно.
 
-`error-after.cjs` shows how to recover from the error using our old friend, the `after` method:
+В файле `error-after.cjs` показано, как восстановиться после ошибки с помощью нашего старого друга, метода `after`:
 
 ```js
 const Fastify = require('fastify');
@@ -862,7 +866,7 @@ app.ready().then(() => {
 });
 ```
 
-First, we declare a dummy plugin (`[1]`) that always throws. Then, we register it and use the `after` method to check for registration errors (`[2]`). If any error is found, we log it to the console. Calling `after` has the effect of “catching” the boot error, and therefore, the boot process will not stop since we handled the unexpected behavior. We can run the snippet to check that it works as expected:
+Сначала мы объявляем фиктивный плагин (`[1]`), который всегда бросает. Затем мы регистрируем его и используем метод `after` для проверки ошибок регистрации (`[2]`). Если ошибка найдена, мы выводим ее в консоль. Вызов `after` позволяет «поймать» ошибку загрузки, и поэтому процесс загрузки не остановится, так как мы справились с неожиданным поведением. Мы можем запустить сниппет, чтобы проверить, что он работает так, как ожидалось:
 
 ```sh
 $ node error-after.cjs
@@ -870,14 +874,14 @@ There was an error loading plugin1: 'Kaboom!'. Skipping.
 app ready
 ```
 
-Since the last logged line is `app ready`, we know that the boot process went well, and our application has started!
+Поскольку последней строкой в журнале является `app ready`, мы знаем, что процесс загрузки прошел успешно, и наше приложение запустилось!
 
-## Summary
+## Резюме {#summary}
 
-In this chapter, we learned about the importance of plugins and how the Fastify boot process works. Everything in Fastify can and really should be put in a plugin. It is the base building block of scalable and maintainable applications, thanks to encapsulation and a predictable loading order. Furthermore, we can use `fastify-plugin` to control the default encapsulation and manage dependencies between plugins.
+В этой главе мы узнали о важности плагинов и о том, как работает процесс загрузки Fastify. Все в Fastify можно и даже нужно поместить в плагин. Это базовый строительный блок масштабируемых и поддерживаемых приложений, благодаря инкапсуляции и предсказуемому порядку загрузки. Более того, мы можем использовать `fastify-plugin` для управления инкапсуляцией по умолчанию и управления зависимостями между плагинами.
 
-We learned how our applications are nothing more than a bunch of Fastify plugins that work together. Some are used to encapsulate routers, using prefixes to namespace them. Others are used to add core functionalities, such as connections to databases or some other external systems. In addition to that, we can install and use core and community plugins directly from npm.
+Мы узнали, что наши приложения - это не что иное, как набор плагинов Fastify, которые работают вместе. Некоторые из них используются для инкапсуляции маршрутизаторов, используя префиксы для их пространств имен. Другие используются для добавления основных функций, таких как подключение к базам данных или другим внешним системам. Кроме того, мы можем устанавливать и использовать плагины ядра и сообщества непосредственно из npm.
 
-Moreover, we covered the boot process’s asynchronous nature and how every step can be awaited if needed. It is guaranteed that if any error is encountered during the loading of plugins, the boot process will stop, and the error will be logged to the console.
+Кроме того, мы рассказали об асинхронном характере процесса загрузки и о том, как каждый шаг может быть отложен в случае необходимости. Гарантируется, что если во время загрузки плагинов возникнет какая-либо ошибка, процесс загрузки остановится, а ошибка будет записана в консоль.
 
-In the next chapter, we will learn all the ways to declare the endpoints of our application. We will see how to add route handlers and how to avoid the major pitfalls. Finally, what we learned in this chapter about plugins will be helpful when dealing with route scoping and route grouping!
+В следующей главе мы изучим все способы объявления конечных точек нашего приложения. Мы увидим, как добавлять обработчики маршрутов и как избежать основных подводных камней. И наконец, то, что мы узнали в этой главе о плагинах, пригодится нам при работе с маршрутизацией и группировкой маршрутов!
