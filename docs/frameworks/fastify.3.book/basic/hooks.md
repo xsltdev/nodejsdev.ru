@@ -13,7 +13,7 @@ In this chapter, we will focus on these concepts:
 -   Understanding the application lifecycle
 -   Understanding the request and reply lifecycle
 
-## Technical requirements
+## Technical requirements {#technical-requirements}
 
 To follow this chapter, you will need the following:
 
@@ -24,7 +24,7 @@ To follow this chapter, you will need the following:
 
 All the code snippets for this chapter are available on GitHub at <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%204>.
 
-## What is a lifecycle?
+## What is a lifecycle? {#what-is-a-lifecycle}
 
 When talking about a lifecycle in the context of a framework, we refer to the order in which the functions are executed. The tricky part is that application developers write only a subset of its code while the rest is developed and bundled by the framework developers.
 
@@ -44,7 +44,7 @@ When dealing with web frameworks, there are usually at least two main lifecycles
 
 Now that we understand more about the lifecycle types, we can spend the rest of the chapter learning how Fastify implements them.
 
-## Declaring hooks
+## Declaring hooks {#declaring-hooks}
 
 In the previous section, we saw that a server-side application usually has two main lifecycles. So, being a hook-based web framework and following its philosophy of giving complete control to developers, Fastify emits a specific event every time it advances to the next phase. Furthermore, these phases follow a rigid and well-defined execution order. Knowing it enables us to add functionality at a specific point during the boot or the execution of our application.
 
@@ -54,23 +54,24 @@ The mechanism described works because Fastify, under the hood, defines a “hook
 
 !!!note "Callback-based versus async hooks"
 
-In [_Chapter 2_](./plugin-system.md), we saw that we could declare plugins with two different styles: callback-based and async functions. The same applies here. Again, it is essential to choose one style and stick with it. Mixing them can lead to unexpected behavior. As already decided in this book, we will use only async functions. One last thing to remember is that some hooks are only synchronous. We will clarify this when speaking about them.
+    In [_Chapter 2_](./plugin-system.md), we saw that we could declare plugins with two different styles: callback-based and async functions. The same applies here. Again, it is essential to choose one style and stick with it. Mixing them can lead to unexpected behavior. As already decided in this book, we will use only async functions. One last thing to remember is that some hooks are only synchronous. We will clarify this when speaking about them.
 
 As we can see in the following `add-hook.cjs` snippet method, it takes two arguments:
 
-• A name of the event we want to listen • The callback function:
+-   A name of the event we want to listen
+-   The callback function:
 
-```js
-// ...
-fastify.addHook('onRequest', (...) => {})
-// ...
-```
+    ```js
+    // ...
+    fastify.addHook('onRequest', (...) => {})
+    // ...
+    ```
 
 Here, we omitted the callback’s signature and the return value since every hook has its own.
 
 We can call `addHook` on the same event multiple times to declare more than one hook. In the following sections, we will learn all the events emitted by Fastify and describe every callback function in depth.
 
-## Understanding the application lifecycle
+## Understanding the application lifecycle {#understanding-the-application-lifecycle}
 
 The application lifecycle covers the boot process and the execution of our application server. In particular, we refer to loading the plugins, adding routes, making the HTTP server run, and eventually closing it. Fastify will emit four different events, allowing us to interact with the behavior of every phase:
 
@@ -81,7 +82,7 @@ The application lifecycle covers the boot process and the execution of our appli
 
 Now, for every event of the previous list, let’s check the respective callback signature and most common use cases.
 
-### The onRoute hook
+### The `onRoute` hook {#the-onroute-hook}
 
 The `onRoute` hook event is triggered every time a route is added to the Fastify instance. This callback is a **synchronous function** that takes one argument, commonly called `routeOptions`. This argument is a mutable object reference to the route declaration object itself, and we can use it to modify route properties.
 
@@ -161,7 +162,7 @@ eqId":"req-1","msg":"Hi from customPreHandler!"}
 
 This example only scratches the surfaces of the possible use cases. We can find the complete definition of the routeOptions properties in the official documentation (<https://www.fastify.io/docs/latest/Reference/Routes/#routes-options>).
 
-### The onRegister hook
+### The `onRegister` hook {#the-onregister-hook}
 
 The `onRegister` hook is similar to the previous one regarding how it works, but we can use it when dealing with plugins. In fact, for every registered plugin that creates a new encapsulation context, the `onRegister` hooks are executed before the registration.
 
@@ -229,7 +230,7 @@ $ node on-register.cjs
 
 We can see that adding a property in `plugin1` hasn’t any repercussions on the top-level data property. On the other hand, since `plugin2` is loaded using `fastify-plugin`, it has the same context as the main Fastify instance (`[5]`), and the `onRegister` hook isn’t even called.
 
-### The onReady hook
+### The `onReady` hook {#the-onready-hook}
 
 The `onReady` hook is triggered after `fastify.ready()` is invoked and before the server starts listening. If the call to ready is omitted, then `listen` will automatically call it, and these hooks will be executed anyway. Since we can define multiple `onReady` hooks, the server will be ready to accept incoming requests only after all of them are completed.
 
@@ -272,7 +273,7 @@ Running this snippet will produce a short output:
 
 We can check that `mydata` is logged before the application is ready and that, indeed, we have access to the Fastify instance via `this`.
 
-### The onClose hook
+### The `onClose` hook {#the-onclose-hook}
 
 While the hooks we learned about in the last three sections are used during the boot process, on the other hand, `onClose` is triggered during the shutdown phase right after `fastify.close()` is called. Thus, it is handy when plugins need to do something right before stopping the server, such as cleaning database connections. This hook is asynchronous and accepts one argument, the Fastify instance. As usual, when dealing with async functionalities, there is also an optional `done` callback (the second argument) if the async function isn’t used.
 
@@ -296,7 +297,7 @@ app.ready()
     });
 ```
 
-After adding a dummy `onClose` ([1]) hook, we explicitly call `app.close()` on [2] to trigger it.
+After adding a dummy `onClose` (`[1]`) hook, we explicitly call `app.close()` on `[2]` to trigger it.
 
 After running the example, we can see that the last thing logged is indeed the hook line:
 
@@ -309,7 +310,7 @@ After running the example, we can see that the last thing logged is indeed the h
 
 With the `onClose` hook, we have finished our discussion about the application-level lifecycle. Now, we will move to the more numerous and, therefore, exciting request-reply hooks.
 
-## Understanding the request and reply lifecycle
+## Understanding the request and reply lifecycle {#understanding-the-request-and-reply-lifecycle}
 
 When executing a Fastify server application, the vast majority of the time is spent in the request-reply cycle. As developers, we define routes that the clients will call and produce a response based on the incoming conditions. In true Fastify philosophy, we have several events at our disposal to interact with this cycle. As usual, they will be triggered automatically by the framework only when needed. These hooks are fully encapsulated so that we can control their execution context with the `register` method.
 
@@ -341,7 +342,7 @@ The dashed bubble contains the reply phase, whose hooks are called after the use
 
 We will learn more about request and reply hooks in the subsequent sections, starting from error handling.
 
-### Handling errors inside hooks
+### Handling errors inside hooks {#handling-errors-inside-hooks}
 
 During the hook execution, an error can occur. Since hooks are just asynchronous callback functions automatically invoked by the framework, error handling follows the same rules for standard JavaScript functions. Again, the only main difference is the two styles defining them.
 
@@ -365,7 +366,7 @@ Since we have access to the reply object, we can also change the reply’s respo
 
 Now that we understand how errors modify the request-reply flow, we can finally start analyzing every hook Fastify puts at our disposal.
 
-### The onRequest hook
+### The `onRequest` hook {#the-onrequest-hook}
 
 As the name implies, the `onRequest` hook is triggered every time there is an incoming request. Since it is the first event on the execution list, the `body` request is always null because body parsing doesn’t happen yet. The hook function is asynchronous and accepts two parameters, the `Request` and `Reply` Fastify objects.
 
@@ -471,7 +472,7 @@ hook."}
 
 This time, the logs show that only the top-level hook was triggered. This is an expected behavior, and we can use it to add hooks scoped to specific plugins only.
 
-### The preParsing hook
+### The `preParsing` hook {#the-preparsing-hook}
 
 Declaring a `preParsing` hook allows us to transform the incoming request payload before it is parsed. This callback is asynchronous and accepts three parameters: `Request`, `Reply`, and the payload stream. Again, the `body` request is null since this hook is triggered before `preValidation`. Therefore, we must return a stream if we want to modify the incoming payload. Moreover, developers are also in charge of adding and updating the `receivedEncodedLength` property of the returned value.
 
@@ -549,7 +550,7 @@ Returning to the server terminal, we can see this output:
 
 Those logs show us how the payload changed after the `preParsing` call. Now, looking back at the `pre-parsing.cjs` snippet, the first call to the logger (`[2]`) logged the original body we sent from `curl`, while the second call (`[3]`) logged the `newPayload` content.
 
-### The preValidation hook
+### The `preValidation` hook {#the-prevalidation-hook}
 
 We can use the `preValidation` hook to change the incoming payload before it is validated. Since the parsing has already happened, we finally have access to the `body` request, which we can modify directly.
 
@@ -606,7 +607,7 @@ request"}
 422516,"msg":"request completed"}
 ```
 
-### The preHandler hook
+### The `preHandler` hook {#the-prehandler-hook}
 
 The `preHandlder` hook is an async function that receives the request and the reply as its arguments, and it is the last callback invoked before the route handler. Therefore, at this point of the execution, the `request.body` object is fully parsed and validated. However, as we can see in `pre-handler.cjs` example, we can still modify the body or query values using this hook to perform additional checks or request manipulation before executing the handler:
 
@@ -635,7 +636,7 @@ Usually, this is the most used hook by developers, but it shouldn’t be the cas
 
 Since this last snippet doesn’t add anything new, we are omitting the output of running it. If needed, the same steps we used to run `pre-validation.cjs` can also be used here.
 
-### The preSerialization hook
+### The `preSerialization` hook {#the-preserialization-hook}
 
 The `preSerialization` hook is in the group of three hooks that are called after the route handler. The other two are `onSend` and `onResponse`, and we will cover them in the following sections.
 
@@ -683,7 +684,7 @@ $ curl localhost:3000
 {"foo":"bar","preSerialization":"added"}
 ```
 
-### The onSend hook
+### The `onSend` hook {#the-onsend-hook}
 
 The `onSend` hook is the last hook invoked before replying to the client. Contrary to `preSerialization`, the `onSend` hook receives a payload that is already serialized. Moreover, it is always called, no matter the type of response payload. Even if it is harder to do, we can use this hook to change our response too, but this time we have to return one of `string`, `Buffer`, `stream`, or `null`. Finally, the signature is identical to `preSerialization`.
 
@@ -709,7 +710,7 @@ Since the payload is already serialized as a `string`, we can use the `replace` 
 
 We can use the same `curl` method we already know to check whether the returned payload has `foo` replaced with `onSend`.
 
-### The onResponse hook
+### The `onResponse` hook {#the-onresponse-hook}
 
 The `onResponse` hook is the last hook of the request-reply lifecycle. This callback is called after the reply has already been sent to the client. Therefore, we can’t change the payload anymore. However, we can use it to perform additional logic, such as calling external services or collecting metrics. It takes two arguments, `request` and `reply`, and doesn’t return any value. We can see a concrete example in `on-response.cjs`:
 
@@ -740,7 +741,7 @@ app.addHook('onResponse', async (request, reply) => {
 
 Even if the client receives the response correctly, our server will throw the `"Reply was already sent."` error. The error doesn’t affect the request-response cycle, and it is only printed on the output. As usual, we can try this behavior by running the server and making a request using `curl`.
 
-### The onError hook
+### The `onError` hook {#the-onerror-hook}
 
 This hook is triggered only when the server sends an error as the payload to the client. It runs after `customErrorHandler` if provided or after the default one integrated into Fastify. Its primary use is to do additional logging or to modify the reply headers. We should keep the error intact and avoid calling `reply.send` directly. The latter will result in the same error we encountered trying to do the same inside the `onResponse` hook. The snippet shown in the `on-error.cjs` example makes it easier to understand:
 
@@ -785,7 +786,7 @@ $ curl localhost:3000/bar
 
 Checking the server log terminal will show us that, in both cases, the `onError` hook was triggered correctly.
 
-### The onTimeout hook
+### The `onTimeout` hook {#the-ontimeout-hook}
 
 This is the last hook we still need to discuss. It depends on the `connectionTimeout` option, whose default value is 0. Therefore, `onTimeout` will be called if we pass a custom `connectionTimeout` value to the Fastify factory. In `on-timeout.cjs`, we use this hook to monitor the requests that time out. Since it is only executed when the connection socket is hung up, we can’t send any data to the client:
 
@@ -840,7 +841,7 @@ request"}
 localhost","reqId":"req-1","msg":"The connection is closed."}
 ```
 
-### Replying from a hook
+### Replying from a hook {#replying-from-a-hook}
 
 Besides throwing an error, there is another way of early exiting from the request phase execution flow at any point. Terminating the chain is just a matter of sending the reply from a hook: this will prevent everything that comes after the current hook from being executed. For example, this can be useful when implementing authentication and authorization logic.
 
@@ -861,33 +862,35 @@ app.addHook('preParsing', async (request, reply) => {
 
 We check whether the current user is authorized to access the resource `[1]`. Then, when the user misses the correct permissions, we reply from the hook directly `[2]` and return the `reply` object to signal it `[3]`. We are sure that the hook chain will stop its execution here, and the user will receive the `'Unauthorized'` message.
 
-### Route-level hooks
+### Route-level hooks {#route-level-hooks}
 
 Until now, we declared our hooks at the application level. However, as we mentioned previously in this chapter, request/response hooks can also be declared on a route level. Thus, as we can see in `route-level-hooks.cjs`, we can use the route definition to add as many hooks as we like, allowing us to perform actions only for a specific route:
 
 ```js
 app.route({
-  method: 'GET',
-  url: '/',
-  onRequest: async (request, reply) => {},
-  onResponse: async (request, reply) => {},
-  preParsing: async (request, reply) => {},
-  preValidation: async (request, reply) => {},
-  preHandler: async (request, reply) => {},
-  preSerialization: async (request, reply, payload) => {},
-  onSend: [async (request, reply, payload) => {}, async
-    (request, reply, payload) => {}], // [1]
-  onError: async (request, reply, error) => {},
-  onTimeout: async (request, reply) => {},
-  handler: function (request, reply) {},
-})
+    method: 'GET',
+    url: '/',
+    onRequest: async (request, reply) => {},
+    onResponse: async (request, reply) => {},
+    preParsing: async (request, reply) => {},
+    preValidation: async (request, reply) => {},
+    preHandler: async (request, reply) => {},
+    preSerialization: async (request, reply, payload) => {},
+    onSend: [
+        async (request, reply, payload) => {},
+        async (request, reply, payload) => {},
+    ], // [1]
+    onError: async (request, reply, error) => {},
+    onTimeout: async (request, reply) => {},
+    handler: function (request, reply) {},
+});
 ```
 
 If we need to declare more than one hook for each category, we can define an array of hooks instead (`[1]`). As a final note, it is worth mentioning that these hooks are always executed as last in the chain.
 
 Route-level hooks conclude this section. It is undoubtedly a longer one, but it is packed with concepts that are the core of the Fastify framework.
 
-## Summary
+## Summary {#summary}
 
 In this chapter, we learned one of the Fastify concepts that make it different from most web frameworks. Even if it might be a new concept to many developers, mastering hooks will unleash the path to highly performant, maintainable, and reusable application components. In fact, contrary to middleware, when we define a hook, we are guaranteed that our code is executed only when it makes sense, boosting the application’s performance. Furthermore, having a well-defined order of execution can help with debugging and runtime checking.
 

@@ -14,7 +14,7 @@ This is the learning path we will cover in this chapter:
 -   Managing the validator compiler
 -   Understanding the serialization process
 
-## Technical requirements
+## Technical requirements {#technical-requirements}
 
 As mentioned in the previous chapters, you will need the following:
 
@@ -22,9 +22,9 @@ As mentioned in the previous chapters, you will need the following:
 -   A text editor to try the example code
 -   An HTTP client to test out code, such as CURL or Postman
 
-All the snippets in this chapter are on GitHub at <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%205>.
+All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%205).
 
-## Understanding validation and serialization
+## Understanding validation and serialization {#understanding-validation-and-serialization}
 
 Fastify has been built with a focus on the developer’s experience, and on reducing the developer effort needed to draft a new project. For this reason, Fastify has built-in features to reduce the following burdens:
 
@@ -47,7 +47,7 @@ The next question is: how do you define the information passing through the vali
 
 But what is JSON Schema? We are going to understand this important application’s concept, which focuses on security and speed. The following sections are more theoretical than practical: we need to know how the system works before seeing it in action, otherwise, we may miss important concepts.
 
-### The JSON Schema specification
+### The JSON Schema specification {#the-json-schema-specification}
 
 The JSON Schema standard describes the structure of JSON documents. Therefore, by using a JSON Schema interpreter, it is possible to verify whether a JSON object adapts to a defined structure and act accordingly.
 
@@ -107,7 +107,7 @@ So far, we have talked about the JSON object’s validation, but we haven’t me
 
 The example schema we have just seen is a demo showing the basic schema syntax, which will become more intuitive. JSON Schema supports a large set of keywords to implement strict validation, such as default values, recursive objects, date and time input types, email format, and so on.
 
-Providing a complete overview of the JSON Schema specification could take up the whole book. This is why you can deepen your knowledge of this aspect by checking the official website at <https:// json-schema.org/>. We will have looked at other keywords by the end of this chapter and new ones will be introduced and described gradually.
+Providing a complete overview of the JSON Schema specification could take up the whole book. This is why you can deepen your knowledge of this aspect by checking [the official website](https://json-schema.org/). We will have looked at other keywords by the end of this chapter and new ones will be introduced and described gradually.
 
 As you may have noticed reading the previous schema example, some keywords have the dollar symbol prefix, `$`. This is special metadata defined in the draft standard. One of the most important and most used ones is the `$id` property. It identifies the JSON Schema univocally, and Fastify relies upon it to process the schema objects and reuse them across the application.
 
@@ -115,7 +115,7 @@ The `$schema` keyword in the example tells us the JSON document’s format, whic
 
 Now we have an idea of what a schema is, but how does it integrate with Fastify’s logic? Let’s find out.
 
-### Compiling a JSON Schema
+### Compiling a JSON Schema {#compiling-a-json-schema}
 
 A JSON Schema is not enough to validate a JSON document. We need to transform the schema into a function that our software can execute. For this reason, it is necessary to use a **compiler** that does the work.
 
@@ -131,7 +131,7 @@ By following this step, you can define only the data you want to enter your serv
 
 We have now clarified the JSON Schema and explained how it can help improve an application within a compiler component. Let’s understand how Fastify has integrated this logic into the framework.
 
-### Fastify’s compilers
+### Fastify’s compilers {#fastifys-compilers}
 
 Fastify has two compilers by default:
 
@@ -153,7 +153,7 @@ As you can see, there are two distinct processes:
 
 Now you should have a complete overview of Fastify’s generic components and the logic they implement. It’s time to see it all in action. Note that to ease understanding and avoid confusion, we will discuss validation and serialization separately.
 
-## Understanding the validation process
+## Understanding the validation process {#understanding-the-validation-process}
 
 The validation process in Fastify follows the same logic to validate the incoming HTTP request parts. This business logic comprises two main steps, as we saw in _Figure 5.2_:
 
@@ -162,7 +162,7 @@ The validation process in Fastify follows the same logic to validate the incomin
 
 We will discuss these aspects one by one.
 
-### The validator compiler
+### The validator compiler {#the-validator-compiler}
 
 Fastify doesn’t implement a JSON Schema interpreter itself. Still, it has integrated the **Ajv** (<https://www.npmjs.com/package/ajv>) module to accomplish the validation process. The Ajv integration into Fastify is implemented to keep it as fast as possible and support the encapsulation as well. You will always be able to change the default settings and provide a new JSON Schema interpreter to the application, but we will learn how to do it later, in the [Managing the validator compiler](#managing-the-validator-compiler) section.
 
@@ -217,7 +217,7 @@ As we saw, the compilation seems relatively easy, but you also need to know that
 
 Before further discussing the validator compiler and how to configure and change it, let’s continue on this “happy path” to get a complete picture of one of Fastify’s key aspects.
 
-### Validation execution
+### Validation execution {#validation-execution}
 
 Fastify applies the HTTP request part’s validation during the request lifecycle: after executing the `preValidation` hooks and before the `preHandler` hooks.
 
@@ -258,11 +258,11 @@ Now we have a complete overview of the entire validation process, from the start
 
 Great applications need great features. This is why we will now focus on the validator compiler customization.
 
-## Customizing the validator compiler
+## Customizing the validator compiler {#customizing-the-validator-compiler}
 
 Fastify exposes a lot of options to provide a flexible validation process and complete control of it. We are going to explore all the possible customizations one by one, so you will be a validator compiler guru by the end of this section! Let’s jump into this journey one step at a time!
 
-### Flow control
+### Flow control {#flow-control}
 
 In the previous section, we mentioned the `attachValidation` route option – it’s time to look at an example (although you probably already know how to use it, thanks to the previous chapters):
 
@@ -280,18 +280,18 @@ app.get('/attach-validation', {
 
 Adding the flag into the route option will prevent a validation error from being thrown. Instead, the validation execution process will be interrupted at the first error occurrence, and the process will continue as the validation has been successful. In this case, a `validationError` object will be attached to the `request` argument. The subsequent route’s entities in the request lifecycle have to deal with the error and act accordingly or the error will not be managed. As in the previous code example, the handler function is always executed.
 
-### Understanding the Ajv configuration
+### Understanding the Ajv configuration {#understanding-the-ajv-configuration}
 
 The Ajv configuration defines how the validation’s functions are built and how they will behave in some circumstances. The default settings are the following, and it is worth knowing about them:
 
-```js
+```json
 {
-  coerceTypes:'array',
-  useDefaults: true,
-  removeAdditional: true,
-  uriResolver: require('fast-uri'),
-  allErrors: false,
-  nullable: true
+    "coerceTypes": "array",
+    "useDefaults": true,
+    "removeAdditional": true,
+    "uriResolver": require("fast-uri"),
+    "allErrors": false,
+    "nullable": true
 }
 ```
 
@@ -304,7 +304,7 @@ Let’s get an understanding of them, and then we will provide an example to see
 -   A JSON object may have multiple validation errors, such as two fields that are not the correct data type. The `allErrors` flag configures the validation function to stop at the first error occurrence.
 -   The `nullable` flag lets you use the `nullable` keyword’s syntactic sugar in your JSON schemas.
 
-These options and more are well documented on the Ajv site at <https://ajv.js.org/options>. html. You can refer to them to find new options or to change the default ones. We will look at a couple of the most used configurations as a baseline in the [Configuring the default Ajv validator compiler](#configuring-the-default-ajv-validator-compiler) section.
+These options and more are well documented on the [Ajv site](https://ajv.js.org/options.html). You can refer to them to find new options or to change the default ones. We will look at a couple of the most used configurations as a baseline in the [Configuring the default Ajv validator compiler](#configuring-the-default-ajv-validator-compiler) section.
 
 It is important to note that these options let the validation function manipulate the original request’s input. This implies that the raw body is processed and modified.
 
@@ -341,7 +341,7 @@ const ajvConfigDemoSchema = {
 This schema introduces three new keywords:
 
 -   The `default` property lets you define a default value when the JSON input object does not contain the `useDefaultsDemo` property or its value is `null`.
--   The `additionalProperties` parameter is used to control the handling of extra properties. In the example, you see the `boolean false`, which evicts the additional data from the HTTP part. An object could also apply more complex filters. Please refer to the official specification: <https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties>.
+-   The `additionalProperties` parameter is used to control the handling of extra properties. In the example, you see the `boolean false`, which evicts the additional data from the HTTP part. An object could also apply more complex filters. Please refer to [the official specification](https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties).
 -   The `nullable` flag is not defined in the standard. It is syntactic sugar to avoid the standard type definition for `nullable` fields: `{ type: ["string", "null"] }`.
 
 Using this schema in a route handler will give us a clear understanding of the configured options:
@@ -392,7 +392,7 @@ The changes have been highlighted, and each property name describes the Ajv opti
 
 So far, we have a complete understanding of the default validator compiler’s configuration. This covers the most common use cases and gives you the possibility to use it out of the box without struggling with complex configuration or having to learn about the `Ajv` module. Unfortunately, it is crucial to control all Fastify’s components and configuration in order to manage a real-world application. In the following section, you will learn how to customize the validator compiler.
 
-## Managing the validator compiler
+## Managing the validator compiler {#managing-the-validator-compiler}
 
 Fastify offers you the possibility to customize the validator compiler in two different manners:
 
@@ -401,7 +401,7 @@ Fastify offers you the possibility to customize the validator compiler in two di
 
 These options give you total control over the validation process and the ability to react to every situation you may face, such as adopting a new validator compiler module or managing how the Ajv package processes the input data.
 
-### Configuring the default Ajv validator compiler
+### Configuring the default Ajv validator compiler {#configuring-the-default-ajv-validator-compiler}
 
 In the [Understanding the Ajv configuration](#understanding-the-ajv-configuration) section, we saw the default Ajv settings and a link to its documentation to explore them all. If you find some useful options you would like to apply, you can set them during the Fastify instance instantiation:
 
@@ -470,7 +470,7 @@ As you have seen, Fastify’s validator compiler is highly configurable and lets
 
 So far we have used the validation output as is, but if you are asking yourself whether it is customizable, of course it is! Let’s see how to do it.
 
-### The validation error
+### The validation error {#the-validation-error}
 
 The validator function is going to throw an error whenever an HTTP part doesn’t match the route’s schema. The route’s context error handler manages the error. Here is a quick example to show how a custom error handler could manage an input validation error in a different way:
 
@@ -548,7 +548,7 @@ The `setSchemaErrorFormatter` input function must be synchronous. It is going to
 
 So far, we have tweaked the default Fastify validator compiler, since it generates the validation function for the error output. There are quite a lot of settings, but they allow you to customize your server based on your choices, without dealing with the compilation complexity. We still have to explain how to change the validator compiler implementation, but we must learn how to reuse JSON schemas first.
 
-### Reusing JSON schemas
+### Reusing JSON schemas {#reusing-json-schemas}
 
 JSON schemas may seem huge and long to read and understand at first sight. In fact, in the [The JSON Schema specification](#the-json-schema-specification) section, we saw a ~20-line schema to validate a three-field JSON object.
 
@@ -642,11 +642,11 @@ Here is a brief explanation:
 3.  **Relative path to an external subschema**: The local fragment can be a relative path to the JSON Schema to apply. Note that the relative path uses the JSON field name `work` and not the `$id` value.
 4.  **Local reference**: You can reference the schema itself. When `$ref` does not have an absolute URI before the `#` char, the local fragment is resolved locally.
 
-This example gives you a complete tool belt and helps you to define your own schema’s references. This setup covers the most common use cases. In fact, the specification is comprehensive and covers many more use cases that could not adapt to our applications. You may refer to the official documentation example to deep dive into `$ref` and `$id` linking <https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-01#section-8.2.4>.
+This example gives you a complete tool belt and helps you to define your own schema’s references. This setup covers the most common use cases. In fact, the specification is comprehensive and covers many more use cases that could not adapt to our applications. You may refer to the official [documentation example](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-01#section-8.2.4) to deep dive into `$ref` and `$id` linking.
 
 We have learned how to share schemas across the application and use them in our routes’ configuration. But how can we read them? Let’s find out in the next section.
 
-#### Retrieving your schemas
+#### Retrieving your schemas {#retrieving-your-schemas}
 
 You must be aware that the schemas added through the `addSchema()` method are stored in a `bucket` component. Every plugin instance has one `bucket` instance to support the encapsulation. Let’s see this code:
 
@@ -686,7 +686,7 @@ const jsonIdSchemaPair = instance.getSchemas();
 
 Now we know about all the aspects of the default validator compiler, how can we configure and extend it? It is time to drop it in favor of a custom one!
 
-### Building a new validator compiler
+### Building a new validator compiler {#building-a-new-validator-compiler}
 
 Fastify’s validator compiler can be replaced totally. You may need to do this in the following situations:
 
@@ -790,7 +790,7 @@ Congratulations! You have explored the hardest and most complicated Fastify comp
 
 Now that you have learned about the Schema Controller Factory component and its configuration and customization, we can move on. Keep calm; it will be easier from now on.
 
-### Customizing the schema validator compiler
+### Customizing the schema validator compiler {#customizing-the-schema-validator-compiler}
 
 In the previous section, we explored the Schema Controller Factory, one of the two ways to substitute Fastify’s schema compiler. Looking at _Figure 5.4_ and the conditions to check whether Fastify must create a compiler, we can tackle the question _Does the root or the plugin instance have a compiler already?_
 
@@ -853,7 +853,7 @@ Now the validation process and all its pieces have no more secrets for you. You 
 
 It is time to meet the serializer compiler, but don’t worry, the concepts we explored in this extensive section will be the same in the next one.
 
-## Understanding the serialization process
+## Understanding the serialization process {#understanding-the-serialization-process}
 
 Serialization is the process of transforming complex objects or primitive data into a valid data type that can be transmitted to the client. A **valid data type** is a String, a Stream, or a Buffer.
 
@@ -889,7 +889,7 @@ When the response payload is not valid, it is processed by five main blocks that
 
 Thanks to the flowchart, it should be easier to navigate through the serialization process. For example, it is clear that a custom reply serializer has priority over the serialization function. But let’s look at the code to learn how to use these components to serialize a response payload.
 
-### The reply serializer
+### The reply serializer {#the-reply-serializer}
 
 This component helps you manage a response that is not JSON and needs to be serialized in a different format. It is a synchronous function that must return a valid data type (a String, or a Stream, or a Buffer). If something else is returned or thrown, a fatal error will be sent in response. The reply serializer’s `this` context is the reply object itself – it may be helpful to set additional headers.
 
@@ -919,15 +919,15 @@ That is all you must know about the reply serializer. This component is used to 
 
 Having closed this parenthesis, we can start to complete our serialization journey by discussing the serialization function produced by the serializer compiler.
 
-### The serializer compiler
+### The serializer compiler {#the-serializer-compiler}
 
 The serializer compiler builds a JavaScript function from a JSON Schema to serialize the response payload. It removes all the fields that are not declared in the schema, and it coerces the output fields’ type. These are the tasks that Fastify’s default serializer compiler does.
 
-The module that compiles the JSON Schemas is `fast-json-stringify` (<https://www.npmjs.com/package/fast-json-stringify>).
+The module that compiles the JSON Schemas is [`fast-json-stringify`](https://www.npmjs.com/package/fast-json-stringify).
 
 !!!note "The speed increment"
 
-    The serialization process through a compiled function reduces the time taken to serialize the response’s JSON object. The `fast-json-stringify` and Fastify modules have published a comprehensive benchmark that compares them to other frameworks too (<https://github.com/fastify/benchmarks/>).
+    The serialization process through a compiled function reduces the time taken to serialize the response’s JSON object. The `fast-json-stringify` and Fastify modules have published a comprehensive [benchmark](https://github.com/fastify/benchmarks/) that compares them to other frameworks too.
 
 But how can we use the JSON Schema to serialize the payload? Let’s see an example:
 
@@ -959,15 +959,15 @@ The code snippet shows a new option field on the schema route’s options object
 
 In this way, you can customize every response payload with a defined JSON Schema.
 
-As you can see, the `/filter` endpoint returns a `password` field, but thanks to the response schema, it will not be sent to the client! The schema object will use the same schemas within the `$ref` keyword as the validator compiler: they share the `bucket` schemas, as said in the [How to build a new validator compiler](#how-to-build-a-new-validator-compiler) section.
+As you can see, the `/filter` endpoint returns a `password` field, but thanks to the response schema, it will not be sent to the client! The schema object will use the same schemas within the `$ref` keyword as the validator compiler: they share the `bucket` schemas, as said in the [How to build a new validator compiler](#building-a-new-validator-compiler) section.
 
 !!!note "Knowing the default serializer compiler"
 
-The `fast-json-stringify` module has its own implementation, and it doesn’t support all the keywords provided by the Ajv validator. This is understandable because they have different functions. One great example you need to learn from is that, while the `maxLength` property of a string field is fundamental to validate the input, it is ignored by the default JSON serializer. Remember, the default JSON Schema serialization doesn’t validate the data; it only filters and coerces the types.
+    The `fast-json-stringify` module has its own implementation, and it doesn’t support all the keywords provided by the Ajv validator. This is understandable because they have different functions. One great example you need to learn from is that, while the `maxLength` property of a string field is fundamental to validate the input, it is ignored by the default JSON serializer. Remember, the default JSON Schema serialization doesn’t validate the data; it only filters and coerces the types.
 
 Now we know how to use Fastify’s default serializer compiler, but how is it possible to customize it? Let’s learn about it in the next section.
 
-### Managing the serializer compiler
+### Managing the serializer compiler {#managing-the-serializer-compiler}
 
 Just as you can customize the validator compiler, you can do the same with the serializer compiler. To complete the code snippet described in _Figure 5.5_, check out the following code:
 
@@ -1041,7 +1041,7 @@ We have explored the serializer compiler without annoying you by repeating the l
 
 You should be able to customize Fastify’s serializer and change the module that implements schema compilation by adopting the library that best fits your needs. As you have read, Fastify keeps its components consistent, adopting solid patterns that ease your learning curve and improve the framework itself.
 
-## Summary
+## Summary {#summary}
 
 This chapter has followed a long path inside Fastify’s internals to unveil the JSON schema’s power. Now you understand why defining a JSON Schema is a critical phase in your application setup. It can be a hard task, but data validation and a fast response are the two main reasons to do this.
 

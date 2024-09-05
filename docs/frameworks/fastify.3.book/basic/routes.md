@@ -1,90 +1,94 @@
-# Working with Routes
+---
+description: рассмотрим все возможности, которые предлагает Fastify для определения новых конечных точек и управления приложением
+---
 
-Applications would not exist without routes. Routes are the doors to those clients that need to consume your API. In this chapter, we will present more examples, focusing on how to become more proficient at managing routes and keeping track of all our endpoints. We will cover all the possibilities that Fastify offers to define new endpoints and manage the application without giving you a headache.
+# Работа с маршрутами
 
-It is worth mentioning that Fastify supports async/await handlers out of the box, and it is crucial to understand its implications. You will look at the difference between sync and async handlers, and you will learn how to avoid the major pitfalls. Furthermore, we will learn how to handle URL parameters, the HTTP request’s body input, and query strings too.
+Приложения не могли бы существовать без маршрутов. Маршруты - это двери к тем клиентам, которые должны использовать ваш API. В этой главе мы приведем больше примеров, сосредоточившись на том, как стать более опытным в управлении маршрутами и отслеживании всех наших конечных точек. Мы рассмотрим все возможности, которые предлагает Fastify для определения новых конечных точек и управления приложением, не доставляя вам головной боли.
 
-Finally, you will understand how the router works in Fastify, and you will be able to control the routing to your application’s endpoint as never before.
+Стоит отметить, что Fastify поддерживает обработчики async/await из коробки, и очень важно понимать их последствия. Вы рассмотрите разницу между обработчиками sync и async и узнаете, как избежать основных подводных камней. Кроме того, мы узнаем, как обрабатывать параметры URL, тело HTTP-запроса и строки запроса.
 
-In this chapter, we will cover the following topics:
+Наконец, вы поймете, как работает маршрутизатор в Fastify, и сможете контролировать маршрутизацию к конечной точке вашего приложения как никогда раньше.
 
--   Declaring API endpoints and managing errors
--   Routing to the endpoint
--   Reading the client’s input
--   Managing the route’s scope
--   Adding new behaviors to routes
+В этой главе мы рассмотрим следующие темы:
 
-## Technical requirements
+-   Объявление конечных точек API и управление ошибками
+-   Маршрутизация к конечной точке
+-   Чтение входных данных клиента
+-   Управление областью действия маршрута
+-   Добавление новых поведений в маршруты
 
-As mentioned in the previous chapters, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation
--   A text editor to try the example code
--   An HTTP client to test out code such as CURL or Postman
+Как уже упоминалось в предыдущих главах, вам понадобится следующее:
 
-All the snippets in this chapter are available on GitHub at <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%203>.
+-   Работающая установка Node.js 18
+-   Текстовый редактор для отработки кода примера
+-   HTTP-клиент для тестирования кода, например CURL или Postman.
 
-## Declaring API endpoints and managing the errors
+Все фрагменты в этой главе доступны на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%203).
 
-An endpoint is an interface that your server exposes to the outside, and every client with the coordinates of the route can call it to execute the application’s business logic.
+## Объявление конечных точек API и управление ошибками {#declaring-api-endpoints-and-managing-the-errors}
 
-Fastify lets you use the software architecture you like most. In fact, this framework doesn’t limit you from adopting **Representation State Transfer (REST)**, **GraphQL**, or simple **Application Programming Interfaces (APIs)**. The first two architectures standardize the following:
+Конечная точка - это интерфейс, который ваш сервер открывает для внешнего доступа, и каждый клиент с координатами маршрута может вызвать его для выполнения бизнес-логики приложения.
 
--   The application endpoints: The standard shows you how to expose your business logic by defining a set of routes
--   The server communication: This provides insights into how you should define the input/output
+Fastify позволяет использовать ту архитектуру программного обеспечения, которая вам больше всего нравится. Фактически, этот фреймворк не ограничивает вас в использовании **Representation State Transfer (REST)**, **GraphQL** или простых **Application Programming Interfaces (API)**. Первые две архитектуры стандартизируют следующее:
 
-In this chapter, we will create simple **API** endpoints with JSON input/output interfaces. This means that we have the freedom to define an internal standard for our application; this choice will let us focus on using the Fastify framework instead of following the standard architecture.
+-   Конечные точки приложения: Стандарт показывает, как раскрыть вашу бизнес-логику, определив набор маршрутов.
+-   Серверное взаимодействие: Это дает представление о том, как следует определять вход/выход.
 
-In any case, in [_Chapter 7_](../real-project/restful-api.md), we will learn how to build a **REST** application, and in [_Chapter 14_](../advanced/graphql.md), we will find out more about using **GraphQL** with Fastify.
+В этой главе мы создадим простые **API** конечные точки с интерфейсами ввода/вывода JSON. Это означает, что у нас есть свобода в определении внутреннего стандарта для нашего приложения; такой выбор позволит нам сосредоточиться на использовании фреймворка Fastify, а не следовать стандартной архитектуре.
 
-!!!note "Too many standards"
+В любом случае, в [Главе 7](../real-project/restful-api.md) мы узнаем, как построить **REST** приложение, а в [Главе 14](../advanced/graphql.md) мы узнаем больше об использовании **GraphQL** с Fastify.
 
-    Note that the **JSON:API** standard exists too: <https://jsonapi.org/>. Additionally, Fastify lets you adopt this architecture, but that topic will not be discussed in this book. Check out <https://backend.cafe/> to find more content about Fastify and this book!
+!!!note "Слишком много стандартов"
 
-In the following sections, we assume you already understand the anatomy of an HTTP request and the differences between its parts, such as a query parameter versus body input. A great resource to rehearse these concepts is the Mozilla site: <https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages>.
+    Обратите внимание, что существует также стандарт **JSON:API**: <https://jsonapi.org/>. Кроме того, Fastify позволяет использовать эту архитектуру, но эта тема не будет обсуждаться в данной книге. Загляните на <https://backend.cafe/>, чтобы найти больше информации о Fastify и этой книге!
 
-### Declaration variants
+В следующих разделах мы предполагаем, что вы уже понимаете анатомию HTTP-запроса и различия между его частями, такими как параметры запроса и тело запроса. Отличным ресурсом для повторения этих понятий является [сайт Mozilla](https://developer.mozilla.org/docs/Web/HTTP/Messages).
 
-In previous chapters, we learned how to create a Fastify server, so we will assume you can create a new project (or, if you have trouble doing so, you can read [_Chapter 1_](./what-is-fastify.md)).
+### Варианты деклараций {#declaration-variants}
 
-In the same chapter, we pointed out the two syntaxes you can use to define routes:
+В предыдущих главах мы узнали, как создать сервер Fastify, поэтому мы будем считать, что вы можете создать новый проект (или, если у вас возникли трудности, вы можете прочитать [Глава 1](./what-is-fastify.md)).
 
--   The generic declaration, using `app.route(routeOptions)`
--   The shorthand syntax: `app.<HTTP method>(url[, routeOptions], handler)`
+В той же главе мы указали на два синтаксиса, которые можно использовать для определения маршрутов:
 
-The second statement is more expressive and readable when you need to create a small set of endpoints, whereas the first one is extremely useful for adding automation and defining very similar routes. Both declarations expose the same parameters, but it is not only a matter of preference. Having to choose one over the other can negatively impact your code base at scale. In this chapter, we will learn how to avoid this pitfall and how to choose the best syntax based on your needs.
+-   Общее объявление, используя `app.route(routeOptions)`.
+-   Сокращенный синтаксис: `app.<HTTP method>(url[, routeOptions], handler)`.
 
-Before starting our coding, we will get a quick overview of the `routeOptions` object, which we will use in the next sections to develop our baseline knowledge, which you can refer to in your future projects.
+Второй вариант более выразителен и удобен для чтения, когда нужно создать небольшой набор конечных точек, тогда как первый крайне полезен для добавления автоматизации и определения очень похожих маршрутов. Оба объявления открывают одни и те же параметры, но это не только вопрос предпочтения. Необходимость выбора одного из них может негативно сказаться на масштабировании вашей кодовой базы. В этой главе мы узнаем, как избежать этого подводного камня и как выбрать лучший синтаксис в зависимости от ваших потребностей.
 
-### The route options
+Прежде чем приступить к программированию, мы получим краткий обзор объекта `routeOptions`, который мы будем использовать в следующих разделах для развития наших базовых знаний, к которым вы сможете обращаться в своих будущих проектах.
 
-Before learning how to code the application’s routes further, we must preview the `routeOptions` properties (note that some of them will be discussed in the following chapters).
+### Опции маршрута {#the-route-options}
 
-The options are listed as follows:
+Прежде чем приступить к дальнейшему изучению маршрутов приложения, мы должны ознакомиться со свойствами `routeOptions` (обратите внимание, что некоторые из них будут рассмотрены в следующих главах).
 
--   `method`: This is the HTTP method to expose.
--   `url`: This is the endpoint that listens for incoming requests.
--   `handler`: This is the route business logic. We met this property in previous chapters.
--   `logLevel`: This is a specific log level for a single route. We will find out how useful this property can be in [_Chapter 11_](../real-project/logging.md).
--   `logSerializer`: This lets you customize the logging output of a single route, in conjunction with the previous option.
--   `bodyLimit`: This limits the request payload to avoid possible misuse of your endpoints. It must be an integer that represents the maximum number of bytes accepted, overwriting the root instance settings.
--   `constraints`: This option improves the routing of the endpoint. We will learn more about how to use this option in the [Routing to the endpoint](#routing-to-the-endpoint) section.
--   `errorHandler`: This property accepts a special handler function to customize how to manage errors for a single route. The following section will show you this configuration.
--   `config`: This property lets you specialize the endpoint by adding new behaviors.
--   `prefixTrailingSlash`: This option manages some special usages during the route registration with plugins. We will talk about that in the [Routing to the endpoint](#routing-to-the-endpoint) section.
--   `exposeHeadRoute`: This Boolean adds or removes a `HEAD` route whenever you register a `GET` one. By default, it is `true`.
+Опции перечислены следующим образом:
 
-Then, there are many highly specialized options to manage the request validation: `schema`, `attachValidation`, `validatorCompiler`, `serializerCompiler`, and `schemaErrorFormatter`. All these settings will be covered in [_Chapter 5_](./validation-serialization.md).
+-   `method`: Это HTTP-метод, который нужно отобразить.
+-   `url`: Это конечная точка, которая будет принимать входящие запросы.
+-   `handler`: Это бизнес-логика маршрута. Мы уже встречались с этим свойством в предыдущих главах.
+-   `logLevel`: Это определенный уровень журнала для одного маршрута. Насколько полезным может быть это свойство, мы узнаем в [главе 11](../real-project/logging.md).
+-   `logSerializer`: Позволяет настроить вывод логов для одного маршрута, в сочетании с предыдущей опцией.
+-   `bodyLimit`: Ограничивает полезную нагрузку запроса, чтобы избежать возможного злоупотребления вашими конечными точками. Это должно быть целое число, представляющее собой максимальное количество принимаемых байт, которое перезаписывает настройки корневого экземпляра.
+-   `constraints`: Эта опция улучшает маршрутизацию конечной точки. Подробнее о том, как использовать эту опцию, мы узнаем в разделе [Маршрутизация к конечной точке](#routing-to-the-endpoint).
+-   `errorHandler`: Это свойство принимает специальную функцию-обработчик для настройки обработки ошибок для одного маршрута. В следующем разделе будет показана эта конфигурация.
+-   `config`: Это свойство позволяет специализировать конечную точку, добавляя новые поведения.
+-   `prefixTrailingSlash`: Эта опция управляет некоторыми специальными функциями при регистрации маршрута плагинами. Мы поговорим об этом в разделе [Маршрутизация к конечной точке](#routing-to-the-endpoint).
+-   `exposeHeadRoute`: Это булево значение добавляет или удаляет маршрут `HEAD` при регистрации маршрута `GET`. По умолчанию он имеет значение `true`.
 
-Finally, you must be aware that every route can have additional hooks that will only run for the route itself. You can just use the hooks names info and the `routeOptions` object to attach them. We will see an example at the end of this chapter. The hooks are the same as we listed in [_Chapter 1_](./what-is-fastify.md): `onRequest`, `preParsing`, `preValidation`, `preHandler`, `preSerialization`, `onSend`, and `onResponse`, and they will take action during the **request life cycle**.
+Далее, существует множество узкоспециализированных опций для управления проверкой запросов: `schema`, `attachValidation`, `validatorCompiler`, `serializerCompiler`, и `schemaErrorFormatter`. Все эти настройки будут рассмотрены в [главе 5](./validation-serialization.md).
 
-It is time to see these options in action, so let’s start defining some endpoints!
+Наконец, вы должны знать, что каждый маршрут может иметь дополнительные хуки, которые будут выполняться только для самого маршрута. Вы можете просто использовать имена хуков `info` и объект `routeOptions` для их подключения. Пример мы рассмотрим в конце этой главы. Хуки те же, что мы перечислили в [Глава 1](./what-is-fastify.md): `onRequest`, `preParsing`, `preValidation`, `preHandler`, `preSerialization`, `onSend` и `onResponse`, и они будут действовать во время **жизненного цикла запроса**.
 
-### Bulk routes loading
+Пришло время увидеть эти опции в действии, так что давайте начнем определять конечные точки!
 
-The generic declaration lets you take advantage of the route automation definition. This technique aims to divide the source code into small pieces, making them more manageable while the application grows.
+### Массовая загрузка маршрутов {#bulk-routes-loading}
 
-Let’s start by understanding the power of this feature:
+Общее объявление позволяет воспользоваться преимуществами определения автоматизации маршрутов. Эта техника направлена на разделение исходного кода на небольшие фрагменты, что делает их более управляемыми при росте приложения.
+
+Давайте начнем с понимания возможностей этой функции:
 
 ```js
 const routes = [
@@ -108,7 +112,7 @@ routes.forEach((routeOptions) => {
 });
 ```
 
-We have defined a routes array where each element is Fastify’s `routeOptions` object. By iterating the `routes` variable, we can add the routes programmatically. This will be useful if we split the array by context into `cat.cjs` and `dog.cjs`. Here, you can see the `cat.cjs` code example:
+Мы определили массив `routes`, каждый элемент которого является объектом Fastify `routeOptions`. Итерируя переменную `routes`, мы можем добавлять маршруты программно. Это будет полезно, если мы разделим массив по контексту на `cat.cjs` и `dog.cjs`. Здесь вы можете увидеть пример кода `cat.cjs`:
 
 ```js
 module.exports = [
@@ -122,7 +126,7 @@ module.exports = [
 ];
 ```
 
-By doing the same for the `/dog` endpoint configuration, the server setup can be changed to the following:
+Проделав то же самое с конфигурацией конечной точки `/dog`, можно изменить настройку сервера следующим образом:
 
 ```js
 const catRoutes = require('./cat.cjs');
@@ -134,17 +138,17 @@ function loadRoute(routeOptions) {
 }
 ```
 
-As you can see, the route loading seems more precise and straightforward. Moreover, this code organization gives us the ability to easily split the code and let each context grow at its own pace, reducing the risk of creating huge files that could be hard to read and maintain.
+Как видите, загрузка маршрутов выглядит более точной и понятной. Более того, такая организация кода дает нам возможность легко разделить код и позволить каждому контексту расти в своем темпе, снижая риск создания огромных файлов, которые будет трудно читать и поддерживать.
 
-We have seen how the generic `app.route()` method can set up an application with many routes, centralizing the loading within the server definition and moving the endpoint logic to a dedicated file to improve the project’s legibility.
+Мы видели, как с помощью общего метода `app.route()` можно настроить приложение с множеством маршрутов, централизовав загрузку в определении сервера и переместив логику конечных точек в специальный файл, чтобы улучшить читаемость проекта.
 
-Another way to improve the code base is by using `async`/`await` in the route handler, which Fastify supports out of the box. Let’s discuss this next.
+Еще один способ улучшить кодовую базу - использовать `async`/`await` в обработчике маршрута, который Fastify поддерживает из коробки. Давайте обсудим это далее.
 
-### Synchronous and asynchronous handlers
+### Синхронные и асинхронные обработчики {#synchronous-and-asynchronous-handlers}
 
-In [_Chapter 1_](./what-is-fastify.md), we saw an overview of the essential role of the route handler and how it manages the `Reply` component.
+В [главе 1](./what-is-fastify.md) мы рассмотрели основную роль обработчика маршрутов и то, как он управляет компонентом `Reply`.
 
-To recap briefly, there are two main syntaxes we can adopt. The sync syntax uses callbacks to manage asynchronous code and it must call `reply.send()` to fulfill the HTTP request:
+Кратко напомним, что существует два основных синтаксиса, которые мы можем использовать. Синтаксис sync использует обратные вызовы для управления асинхронным кодом, и он должен вызывать `reply.send()` для выполнения HTTP-запроса:
 
 ```js
 function syncHandler(request, reply) {
@@ -158,9 +162,9 @@ function syncHandler(request, reply) {
 }
 ```
 
-In this example, we are simulating two async calls to a readDb function. As you can imagine, adding more and more asynchronous I/O such as files read or database accesses could make the source quickly unreadable, with the danger of falling into callback hell (you can read more about this at http:// callbackhell.com/).
+В этом примере мы имитируем два асинхронных вызова функции readDb. Как вы можете себе представить, добавление все большего количества асинхронных операций ввода-вывода, таких как чтение файлов или обращение к базе данных, может сделать исходный текст быстро нечитаемым, с опасностью попасть в ад обратных вызовов (вы можете [прочитать подробнее](http://callbackhell.com/) об этом).
 
-You can rewrite the previous example, using the second syntax to define a route handler, with an async function:
+Вы можете переписать предыдущий пример, используя второй синтаксис для определения обработчика маршрута, с помощью асинхронной функции:
 
 ```js
 async function asyncHandler(request, reply) {
@@ -170,11 +174,11 @@ async function asyncHandler(request, reply) {
 }
 ```
 
-As you can see, regardless of how many async tasks your endpoint needs to run, the function body can be read sequentially, making it much more readable. This is not the only syntax an async handler supports, and there are other edge cases you could encounter.
+Как видите, независимо от того, сколько задач async нужно запустить в вашей конечной точке, тело функции можно читать последовательно, что делает его гораздо более удобным для чтения. Это не единственный синтаксис, поддерживаемый async-обработчиком, есть и другие крайние случаи, с которыми вы можете столкнуться.
 
-### Reply is a Promise
+### Ответ - это промис {#reply-is-a-promise}
 
-In an `async` function handler, it is highly discouraged to call `reply.send()` to send a response back to the client. Fastify knows that you could find yourself in this situation due to a legacy code update. If this happens, the solution is to return a `reply` object. Here is a quick real-(bad) world scenario:
+В обработчике функции `async` крайне не рекомендуется вызывать `reply.send()` для отправки ответа обратно клиенту. Fastify знает, что вы можете оказаться в такой ситуации из-за обновления устаревшего кода. В этом случае решением будет возврат объекта `reply`. Вот быстрый сценарий из реального (плохого) мира:
 
 ```js
 async function newEndpoint(request, reply) {
@@ -189,13 +193,13 @@ async function newEndpoint(request, reply) {
 }
 ```
 
-In this example endpoint, the if statement of `[1]` runs the `oldEndpoint` business logic that manages the `reply` object in a different way compared to the `else` case. In fact, the `oldEndpoint` handler was implemented in the callback style. So, how do we tell Fastify that the HTTP response has been delegated to another function? You just need to return the `reply` object of `[2]`! The `Reply` component is a `thenable` interface. This means that it implements the `.then()` interface in the same way as the `Promise` object! Returning it is like producing a promise that will be fulfilled only when the `.send()` method has been executed.
+В этом примере конечной точки оператор `if` в `[1]` запускает бизнес-логику `oldEndpoint`, которая управляет объектом `reply` по-другому, чем в случае `else`. Фактически, обработчик `oldEndpoint` был реализован в стиле обратного вызова. Итак, как же сообщить Fastify, что HTTP-ответ был передан другой функции? Нужно просто вернуть объект `reply` из `[2]`! Компонент `Reply` представляет собой интерфейс `thenable`. Это означает, что он реализует интерфейс `.then()` точно так же, как и объект `Promise`! Его возврат подобен созданию промиса, который будет выполнен только после выполнения метода `.send()`.
 
-The readability and flexibility of the async handlers are not the only advantages: what about errors? Errors can happen during the application runtime, and Fastify helps us deal with them with widely used defaults.
+Удобство чтения и гибкость асинхронных обработчиков - не единственные преимущества: как насчет ошибок? Ошибки могут возникать во время выполнения приложения, и Fastify помогает нам справиться с ними с помощью широко используемых умолчаний.
 
-### How to reply with errors
+### Как отвечать на ошибки {#how-to-reply-with-errors}
 
-Generally, in Fastify, an error can be **sent** when the handler function is sync or **thrown** when the handler is async. Let’s put this into practice:
+Как правило, в Fastify ошибка может быть **отправлена**, если функция обработчика синхронна, или **отброшена**, если обработчик асинхронен. Давайте проверим это на практике:
 
 ```js
 function syncHandler(request, reply) {
@@ -218,9 +222,9 @@ async function ayncHandlerCatched(request, reply) {
 }
 ```
 
-As you can see, at first sight, the differences are minimal: in `[1]`, the `send` method accepts a Node.js `Error` object with a custom message. The `[2]` example is quite similar, but we are throwing the error. The `[3]` example shows how you can manage your errors with a `try`/`catch` block and choose to reply with a `200` HTTP `success` in any case!
+Как видите, на первый взгляд, различия минимальны: в `[1]` метод `send` принимает объект Node.js `Error` с пользовательским сообщением. Пример `[2]` очень похож, но мы бросаем ошибку. Пример `[3]` показывает, как можно управлять ошибками с помощью блоков `try`/`catch` и выбирать ответ с HTTP `200` `success` в любом случае!
 
-Now, if we try to add the error management to the `syncHandler` example, as shown previously, the sync function becomes the following:
+Теперь, если мы попробуем добавить управление ошибками в пример `syncHandler`, как было показано ранее, функция синхронизации станет выглядеть следующим образом:
 
 ```js
 function syncHandler(request, reply) {
@@ -242,11 +246,11 @@ function syncHandler(request, reply) {
 }
 ```
 
-The `callback` style strives to be lengthy and hard to read. Instead, the `asyncHandler` function shown in the code block of the [Synchronous and asynchronous](#synchronous-and-asynchronous-handlers) section doesn’t need any updates. This is because the error thrown will be managed by Fastify, which will send the error response to the client.
+Стиль `callback` стремится быть длинным и трудночитаемым. Вместо этого функция `asyncHandler`, показанная в блоке кода раздела [«Синхронные и асинхронные»](#synchronous-and-asynchronous-handlers), не нуждается в каких-либо обновлениях. Это связано с тем, что выброшенной ошибкой будет управлять Fastify, который отправит ответ на ошибку клиенту.
 
-So far, we have seen how to reply to an HTTP request with a Node.js `Error` object. This action sends back a JSON payload with a 500 status code response if you didn’t set it using the `reply.code()` method that we saw in [_Chapter 1_](./what-is-fastify.md).
+До сих пор мы видели, как отвечать на HTTP-запрос с помощью объекта Node.js `Error`. Это действие отправляет обратно полезную нагрузку JSON с ответом с кодом состояния 500, если вы не установили его с помощью метода `reply.code()`, который мы рассматривали в [Глава 1](./what-is-fastify.md).
 
-The default JSON output is like the following:
+Вывод JSON по умолчанию выглядит следующим образом:
 
 ```json
 {
@@ -256,17 +260,17 @@ The default JSON output is like the following:
 }
 ```
 
-The `new Error('app error')` code creates the error object that produces the previous output message.
+Код `new Error('app error')` создает объект ошибки, который выдает предыдущее сообщение.
 
-Fastify has many ways to customize the error response, and usually, it depends on how much of a hurry you are in. The options are listed as follows:
+В Fastify есть множество способов настроить ответ на ошибку, и обычно это зависит от того, насколько вы торопитесь. Варианты перечислены ниже:
 
--   Adopt the default Fastify output format: This solution is ready to use and optimized to speed up the error payload serialization. It works great for rapid prototyping.
--   Customize the error handler: This feature gives you total control of the application errors.
--   Custom response management: This case includes a call to `reply.code(500).send(myJsonError)` providing a JSON output.
+-   Принять формат вывода Fastify по умолчанию: Это решение готово к использованию и оптимизировано для ускорения сериализации полезной нагрузки ошибки. Оно отлично подходит для быстрого прототипирования.
+-   Настроить обработчик ошибок: Эта функция дает вам полный контроль над ошибками приложения.
+-   Пользовательское управление ответами: Этот случай включает вызов `reply.code(500).send(myJsonError)`, обеспечивающий вывод JSON.
 
-Now we can better explore these options.
+Теперь мы можем лучше изучить эти возможности.
 
-Adopting the default Fastify error output is very simple because you need to **throw** or **send** an `Error` object. To tweak the body response, you can customize some `Error` object fields:
+Принять стандартный вывод ошибок Fastify очень просто, поскольку вам нужно **выбросить** или **отправить** объект `Error`. Чтобы настроить ответ тела, вы можете изменить некоторые поля объекта `Error`:
 
 ```js
 const err = new Error('app error') // [1]
@@ -274,13 +278,13 @@ err.code = ‹ERR-001› // [2]
 err.statusCode = 400 // [3]
 ```
 
-This example configuration maps the following:
+В этом примере конфигурации показано следующее:
 
-1.  The String message, which is provided in the `Error` constructor as the `message` field.
-2.  The optional `code` field to the same JSON output key.
-3.  The `statusCode` parameter, which will change the HTTP status code response and the `error` string. The output string is set by the default Node.js `http.STATUS_CODES` module.
+1.  Строковое сообщение, которое предоставляется в конструкторе `Error` в качестве поля `message`.
+2.  Необязательное поле `code` к тому же ключу вывода JSON.
+3.  Параметр `statusCode`, который изменит код статуса HTTP-ответа и строку `error`. Строка вывода задается модулем Node.js `http.STATUS_CODES` по умолчанию.
 
-The result of the previous example will produce the following output:
+В результате выполнения предыдущего примера будет получен следующий результат:
 
 ```json
 {
@@ -291,7 +295,7 @@ The result of the previous example will produce the following output:
 }
 ```
 
-This payload might not be informative for the client because it contains a single error. So, if we want to change the output to an array of errors when more than one error happens, such as form validation, or if you need to change the output format to adapt it to your API ecosystem, you must know the `ErrorHandler` component:
+Такая полезная нагрузка может быть неинформативной для клиента, поскольку содержит единственную ошибку. Поэтому, если мы хотим изменить вывод на массив ошибок, когда происходит более одной ошибки, например, при валидации формы, или если вам нужно изменить формат вывода, чтобы адаптировать его к вашей экосистеме API, вы должны знать компонент `ErrorHandler`:
 
 ```js
 app.setErrorHandler(function customErrorHandler(
@@ -304,15 +308,15 @@ app.setErrorHandler(function customErrorHandler(
 });
 ```
 
-The error handler is a function that is executed whenever an `Error` object or a JSON is **thrown** or _sent_; this means that the error handler is the same regardless of the implementation of the route. Earlier, we said that a JSON is **thrown**: trust me, and we will explain what that means later in this section.
+Обработчик ошибок - это функция, которая выполняется всякий раз, когда объект `Error` или JSON **выбрасывается** или _отправляется_; это означает, что обработчик ошибок один и тот же, независимо от реализации маршрута. Ранее мы сказали, что JSON является **выброшенным**: поверьте мне, и мы объясним, что это значит, позже в этом разделе.
 
-The error handler interface has three parameters:
+Интерфейс обработчика ошибок имеет три параметра:
 
--   The first one is the object that has been thrown or the `Error` object that has been sent.
--   The second is the `Request` component that originated the issue
--   The third is the `Reply` object to fulfill the HTTP request as a standard route handler
+-   Первый - это объект, который был выброшен, или объект `Error`, который был отправлен.
+-   Второй - компонент `Request`, в котором возникла проблема.
+-   Третий - объект `Reply` для выполнения HTTP-запроса в качестве стандартного обработчика маршрута.
 
-The error handler function might be an async function or a simple one. As for the route handler, you should return the response payload in case of an async function, and call `reply.send()` for the sync implementation. In this context, you can’t throw or send an `Error` instance object. This would create an infinite loop that Fastify manages. In this case, it will skip your custom error handler, and it will call the parent scope’s error handler or the default one if it is not set. Here is a quick example:
+Функция обработчика ошибок может быть асинхронной или простой. Что касается обработчика маршрута, то в случае асинхронной функции вы должны вернуть полезную нагрузку ответа, а в случае синхронной реализации - вызвать `reply.send()`. В этом контексте нельзя бросать или отправлять объект экземпляра `Error`. Это создаст бесконечный цикл, которым управляет Fastify. В этом случае он пропустит ваш собственный обработчик ошибок и вызовет обработчик ошибок родительского диапазона или обработчик по умолчанию, если он не установлен. Вот быстрый пример:
 
 ```js
 app.register(async function plugin(pluginInstance) {
@@ -349,13 +353,13 @@ app.register(async function plugin(pluginInstance) {
 });
 ```
 
-In the preceding code snippet, we have a `plugin` function that has a `childPlugin` context. Both these encapsulated contexts have one custom error handler function. If you try to request `GET /deep` `[1]`, an error will be thrown. It will be managed by the `second` error handler function that will decide whether to handle it or re-throw it `[2]`. When the failure is re-thrown `[3]`, the parent scope will intercept the error and handle it `[4]`. As you can see, you can implement a series of functions that will handle a subset of the application’s errors.
+В предыдущем фрагменте кода у нас есть функция `plugin`, которая имеет контекст `childPlugin`. Оба этих инкапсулированных контекста имеют по одной пользовательской функции-обработчику ошибок. Если вы попытаетесь запросить `GET /deep` `[1]`, будет выброшена ошибка. Она будет обработана `второй` функцией-обработчиком ошибок, которая решит, обработать ли ее или выбросить повторно `[2]`. Когда ошибка будет повторно выброшена `[3]`, родительская область видимости перехватит ошибку и обработает ее `[4]`. Как видите, вы можете реализовать ряд функций, которые будут обрабатывать подмножество ошибок приложения.
 
-It is crucial to keep in mind that you should take care of the response status code when you implement your error handler; otherwise, it will be **500 – Server Error** by default.
+Важно помнить, что при реализации обработчика ошибок необходимо позаботиться о коде статуса ответа, иначе по умолчанию он будет **500 - Server Error**.
 
-As we saw in the preceding example, the error handler can be assigned to the application instance and a plugin instance. This will set up the handler for all the routes in their context. This means that the error handler is fully encapsulated, as we learned in [_Chapter 2_](./plugin-system.md).
+Как мы видели в предыдущем примере, обработчик ошибок может быть назначен экземпляру приложения и экземпляру плагина. Это установит обработчик для всех маршрутов в их контексте. Это означает, что обработчик ошибок полностью инкапсулирован, как мы узнали в [главе 2](./plugin-system.md).
 
-Let’s see a quick example:
+Давайте посмотрим на быстрый пример:
 
 ```js
 async function errorTrigger(request, reply) {
@@ -375,21 +379,21 @@ app.register(async function plugin(pluginInstance) {
 app.get('/defaultError', errorTrigger); // [2]
 ```
 
-We have defined a bad route handle, `errorTrigger`, that will always throw an `Error`. Then, we registered two routes:
+Мы определили хэндл плохого маршрута, `errorTrigger`, который всегда будет выбрасывать `Error`. Затем мы зарегистрировали два маршрута:
 
--   The `GET /customError` `[1]` route is inside a plugin, so it is in a new Fastify context.
--   The root application instance registers the `GET /defaultError` `[2]` route instead.
+-   Маршрут `GET /customError` `[1]` находится внутри плагина, поэтому он находится в новом контексте Fastify.
+-   Корневой экземпляр приложения регистрирует вместо него маршрут `GET /defaultError` `[2]`.
 
-We set `pluginInstance.setErrorHandler`, so all the routes registered inside that plugin and its children’s contexts will use your custom error handler function during the plugin creation. Meanwhile, the app’s routes will use the default error handler because we didn’t customize it.
+Мы задаем `pluginInstance.setErrorHandler`, поэтому все маршруты, зарегистрированные в этом плагине и его дочерних контекстах, будут использовать вашу пользовательскую функцию обработчика ошибок во время создания плагина. При этом маршруты приложения будут использовать обработчик ошибок по умолчанию, поскольку мы его не настраивали.
 
-At this stage, making an HTTP request to those endpoints will give us two different outputs, as expected:
+На этом этапе, сделав HTTP-запрос к этим конечным точкам, мы получим два разных результата, как и ожидалось:
 
--   The `GET /customError` route triggers the error, and it is managed by the custom error handler, so the output will be `{"ok":false}`.
--   The `GET /defaultError` endpoint replies with the Fastify default JSON format that was shown at the beginning of this section.
+-   Маршрут `GET /customError` вызывает ошибку, и она управляется пользовательским обработчиком ошибок, поэтому на выходе будет `{"ok":false}`.
+-   Конечная точка `GET /defaultError` отвечает в формате JSON по умолчанию Fastify, который был показан в начале этого раздела.
 
-It is not over yet! Fastify implements an outstanding **granularity** for most of the features it supports. This means that you can set a custom error handler for every route!
+Это еще не конец! В Fastify реализована выдающаяся **гранулярность** для большинства поддерживаемых функций. Это означает, что вы можете установить собственный обработчик ошибок для каждого маршрута!
 
-Let’s add a new endpoint to the previous example:
+Давайте добавим новую конечную точку к предыдущему примеру:
 
 ```js
 app.get('/routeError', {
@@ -401,9 +405,9 @@ app.get('/routeError', {
 });
 ```
 
-First of all, during the endpoint definition, we must provide the `routeOptions` object to set the custom `errorHandler` property. The function parameter is the same as the `setErrorHandler` method. In this case, we switched to an async function: as already mentioned, this format is supported too.
+Прежде всего, при определении конечной точки мы должны предоставить объект `routeOptions` для установки пользовательского свойства `errorHandler`. Параметр функции такой же, как и у метода `setErrorHandler`. В данном случае мы перешли на асинхронную функцию: как уже говорилось, такой формат тоже поддерживается.
 
-Finally, the last option you might implement to return an error is calling `reply.send()`, like you would do when sending data back to the client:
+Наконец, последний вариант возврата ошибки - вызов `reply.send()`, как при отправке данных обратно клиенту:
 
 ```js
 app.get('/manualError', (request, reply) => {
@@ -454,7 +458,7 @@ Now you have a solid understanding of how to define your endpoints and how to im
 
 We are ready to take a break from route handling and move on to an advanced topic: **routing**.
 
-## Routing to the endpoint
+## Routing to the endpoint {#routing-to-the-endpoint}
 
 Routing is the phase where Fastify receives an HTTP request, and it must decide which handler function should fulfill that request. That’s it! It seems simple, but even this phase is optimized to be performant and to speed up your server.
 
@@ -493,7 +497,7 @@ The router has built the Radix-tree carrying the route handler and Fastify’s c
 
 We have seen how the router loads the URL and lookups for the handler to execute, but what happens if it doesn’t find the HTTP request URL?
 
-### The 404 handler
+### The 404 handler {#the-404-handler}
 
 Fastify provides a way to configure a 404 handler. It is like a typical route handler, and it exposes the same interfaces and async or sync logic:
 
@@ -576,11 +580,11 @@ The `Request` component knows whether the HTTP request is fulfilled by a route h
 
 So far, you have learned how to manage the response when an URL doesn’t match any of your application endpoints. But what happens if a client hits a 404 handler, due to a wrong trailing slash?
 
-### Router application tuning
+### Router application tuning {#router-application-tuning}
 
 Fastify is highly customizable in every component: the router is one of them. You are going to learn how to tweak the router settings, to make the router more flexible and deal with a client’s common trouble. It is important to understand these settings to anticipate common issues and to build a great set of APIs on the first try!
 
-#### The trailing slash
+#### The trailing slash {#the-trailing-slash}
 
 The trailing slash is the `/` character when it is the last character of the URL, query parameter excluded.
 
@@ -605,7 +609,7 @@ const app = fastify({
 
 The `ignoreTrailingSlash` setting forces the Fastify router to ignore the trailing slash for **all the application’s routes**. Because of this, you won’t be able to register the `/foo` and `/foo/` URLs, and you will receive a startup error. Doing so will consume your API, but you will not have to struggle with the 404 errors if the URL has been misprinted with an ending `/` character.
 
-#### Case-insensitive URLs
+#### Case-insensitive URLs {#case-insensitive-urls}
 
 Another common issue you could face is having to support both the `/fooBar` and `/foobar` URLs as a single endpoint (note the case of the `B` character). As per the trailing slash example, Fastify will manage these routes as two distinct items; in fact, you can register both routes with two different handler functions, unless you set the code in the following way:
 
@@ -645,7 +649,7 @@ Using the case-insensitive URL, matching the setup could look odd. In fact, it i
 
 Another situation you might face during a migration is having to support old routes that will be discarded in the future.
 
-#### Rewrite URL
+#### Rewrite URL {#rewrite-url}
 
 This feature adds the possibility of changing the HTTP’s requested URL before the routing takes place:
 
@@ -672,7 +676,7 @@ We have explored how to make Fastify’s router more flexible in order to suppor
 
 Now, we will learn how to configure the router to be even more granular.
 
-### Registering the same URLs
+### Registering the same URLs {#registering-the-same-urls}
 
 As we have seen previously, Fastify doesn’t register the same HTTP route path more than once. This is a limit, due to the Fastify router. The router searches the correct handler to execute by matching with the following rules:
 
@@ -725,21 +729,21 @@ By default, Fastify supports two constraints:
 To explain these options better, let’s see them in action:
 
 ```js
-app.get('/host', func0)
+app.get('/host', func0);
 app.get('/host', {
-  handler: func2,
-  constraints: {
-    host: /^bar.*/
-  }
-})
-app.get('/together, func0)
+    handler: func2,
+    constraints: {
+        host: /^bar.*/,
+    },
+});
+app.get('/together', func0);
 app.get('/together', {
-  handler: func1,
-  constraints: {
-    version: '1.0.1',
-    host: 'foo.fastify.dev'
-  }
-})
+    handler: func1,
+    constraints: {
+        version: '1.0.1',
+        host: 'foo.fastify.dev',
+    },
+});
 ```
 
 The `/host` handler only executes when a request has the `host` header that starts with `bar`, so the following command will reply with the `func2` response:
@@ -774,13 +778,13 @@ Note that, in this case, when a request has the `accept-version` header, the che
 
 !!!note "Multiple constraint match"
 
-Note that the constraints can face conflicts during the evaluation. If you define two routes with the same host regular expression, an HTTP request might match both of them. In this case, the last registered route will be executed by the router. It would be best if you avoided these cases by configuring your constraints carefully.
+    Note that the constraints can face conflicts during the evaluation. If you define two routes with the same host regular expression, an HTTP request might match both of them. In this case, the last registered route will be executed by the router. It would be best if you avoided these cases by configuring your constraints carefully.
 
 As mentioned already, you can have many more constraints to route the HTTP request to your handlers. In fact, you can add as many constraints as you need to your routes, but it will have a performance cost. The routing selects the routes that match the HTTP method and path and will then process the constraints for every incoming request. Fastify gives you the option to implement custom constraints based on your needs. Creating a new constraint is not the goal of this book, but you can refer to this module at <https://github.com/Eomm/header-constraint-strategy>, which is maintained by the co-author of this book. Your journey with Fastify is not restricted to this practical book!
 
 At this stage, we have understood how to add a route and how to drive the HTTP requests to it. Now we are ready to jump into input management.
 
-## Reading the client’s input
+## Reading the client’s input {#reading-the-clients-input}
 
 Every API must read the client’s input to behave. We already mentioned the four HTTP request input types, which are supported by Fastify:
 
@@ -791,7 +795,7 @@ Every API must read the client’s input to behave. We already mentioned the fou
 
 Let’s take a look at each in more detail.
 
-### The path parameters
+### The path parameters {#the-path-parameters}
 
 The path parameters are variable pieces of a URL that could identify a resource in our application server. We already covered this aspect in [_Chapter 1_](./what-is-fastify.md), so we will not repeat ourselves. Instead, it will be interesting to show you a new useful example that we haven’t yet covered; this example sets two (or more) path parameters:
 
@@ -818,7 +822,7 @@ Since all your application’s path parameters should not exceed a known length 
 
 If a client hits the parameter length limit, it will get a 404 Not Found response.
 
-### The query string
+### The query string {#the-query-string}
 
 The query string is an additional part of the URL string that the client can append after a question mark:
 
@@ -857,7 +861,7 @@ const app = fastify({
 
 This setup unlocks a comprehensive set of new syntaxes that you can use in query strings such as arrays, nested objects, and custom char separators.
 
-### The headers
+### The headers {#the-headers}
 
 The headers are a key-value map that can be read as a JSON object within the `request.headers` property. Note that, by default, Node.js will apply a lowercase format to every header’s key. So, if your client sends to your Fastify server the `CustomHeader: AbC` header, you must access it with the `request.headers.customheader` statement.
 
@@ -865,7 +869,7 @@ This logic follows the HTTP standard that stands for case-insensitive field name
 
 If you need to get the original headers sent by the client, you must access the `request.raw.rawHeaders` property. Consider that `request.raw` gives you access to the Node.js `http.IncomingMessage` object, so you are free to read data added to the Node.js core implementation, such as the raw headers.
 
-### The body
+### The body {#the-body}
 
 The request’s body can be read through the `request.body` property. Fastify handles two input content types:
 
@@ -901,7 +905,7 @@ The user input is not JSON and text only. We will discuss how to avoid body pars
 
 We have covered the route configuration and learned how to read the HTTP request input sources. Now we are ready to take a deeper look at the routes’ organization into plugins!
 
-## Managing the route’s scope
+## Managing the route’s scope {#managing-the-routes-scope}
 
 In Fastify, an endpoint has two central aspects that you will set when defining a new route:
 
@@ -910,7 +914,7 @@ In Fastify, an endpoint has two central aspects that you will set when defining 
 
 This metadata controls how the route behaves when the client calls it. Earlier in this chapter, we saw the first point, but now we must deepen the second aspect: the server instance context. The **route’s scope** is built on top of the server’s instance context where the entry point has been registered. Every route has its own route scope that is built during the startup phase, and it is like a settings container that tracks the handler’s configuration. Let’s see how it works.
 
-### The route server instance
+### The route server instance {#the-route-server-instance}
 
 When we talk about the **route’s scope**, we must consider the server instance where the route has been added. This information is important because it will define the following:
 
@@ -1020,7 +1024,7 @@ In our examples, we used hooks, but the concept would be the same for decorators
 
 The route’s context is valuable because a route can access a database connection or trigger an authentication hook only if it has been added to the right server instance. For this reason, knowing in which context a route is registered is very important. There is a set of debugging techniques you can use to understand where a route is registered, which we will examine later.
 
-### Printing the routes tree
+### Printing the routes tree {#printing-the-routes-tree}
 
 During the development process, especially when developing the first Fastify application, you might feel overwhelmed by having to understand the functions executed when a request reaches an endpoint. Don’t panic! This is expected at the beginning, and the feeling is temporary.
 
@@ -1188,7 +1192,7 @@ Now you can literally see your application’s routes! You can use these simple 
 
 Get ready for the next section, which will introduce more advanced topics, including how to start working with hooks and route configurations together.
 
-## Adding new behaviors to routes
+## Adding new behaviors to routes {#adding-new-behaviors-to-routes}
 
 At the beginning of this chapter, we learned how to use the `routeOptions` object to configure a route, but we did not talk about the `config` option!
 
@@ -1199,7 +1203,7 @@ This simple field gives us the power to do the following:
 
 How does it work in practice? Let’s find out!
 
-### Accessing the route’s configuration
+### Accessing the route’s configuration {#accessing-the-routes-configuration}
 
 With the `routerOption.config` parameter, you can specify a JSON that contains whatever you need. Then, it is possible to access it later within the `Request` component in the handlers or hooks’ function through the `context.config` field:
 
@@ -1238,7 +1242,7 @@ The `calculatePriority` hook adds a level of priority to the request object, bas
 
 By doing so, you could have generic components: handlers or hooks that act differently based on the route’s options.
 
-### AOP
+### AOP {#aop}
 
 The AOP paradigm focuses on isolating cross-cutting concerns from the business logic and improving the system’s modularity.
 
@@ -1285,7 +1289,7 @@ This example shows you the power of the `onRoute` hook in conjunction with the `
 
 We have just seen how powerful the route’s config property is and how to use it across the application.
 
-## Summary
+## Summary {#summary}
 
 This chapter has explained how routing works in Fastify, from route definition to request evaluation.
 
