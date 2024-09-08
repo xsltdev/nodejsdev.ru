@@ -1,65 +1,69 @@
-# Exploring Hooks
+---
+description: В этой главе мы узнаем, что отличает Fastify от большинства других веб-фреймворков. На самом деле, в отличие от ряда других фреймворков, в которых используется концепция промежуточного ПО, Fastify основан на хуках
+---
 
-In this chapter, we will learn what makes Fastify different from the majority of other web frameworks. In fact, contrary to several other frameworks that have the concept of middleware, Fastify is based on **hooks**. They all have different use cases, and mastering their usage is key to developing stable and production-ready server applications.
+# Изучение хуков
 
-Even if the topic is considered somehow complex, the goal of the subsequent sections is to give a good overview of how the Fastify framework “thinks” and build the right confidence in using these tools.
+В этой главе мы узнаем, что отличает Fastify от большинства других веб-фреймворков. На самом деле, в отличие от ряда других фреймворков, в которых используется концепция промежуточного ПО, Fastify основан на **хуках**. Все они имеют разные сценарии использования, и освоение их применения - ключ к разработке стабильных и готовых к производству серверных приложений.
 
-Before going into their details, though, we need to introduce another concept that makes everything even possible. Namely, we need to learn about the **lifecycle** of Fastify applications.
+Даже если эта тема покажется вам сложной, цель последующих разделов - дать хорошее представление о том, как «думает» фреймворк Fastify, и сформировать правильную уверенность в использовании этих инструментов.
 
-In this chapter, we will focus on these concepts:
+Однако прежде чем перейти к их детальному рассмотрению, нам необходимо ввести еще одну концепцию, которая делает все возможным. А именно, нам нужно узнать о **жизненном цикле** приложений Fastify.
 
--   What is a lifecycle?
--   Declaring hooks
--   Understanding the application lifecycle
--   Understanding the request and reply lifecycle
+В этой главе мы сосредоточимся на этих понятиях:
 
-## Technical requirements {#technical-requirements}
+-   Что такое жизненный цикл?
+-   Объявление хуков
+-   Понимание жизненного цикла приложения
+-   Понимание жизненного цикла запроса и ответа
 
-To follow this chapter, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A text editor, such as VS Code
--   A working Node.js v18 installation
--   Access to a shell such as Bash or CMD
--   The `curl` command-line application
+Чтобы изучить эту главу, вам понадобится следующее:
 
-All the code snippets for this chapter are available on GitHub at <https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%204>.
+-   Текстовый редактор, например VS Code
+-   Рабочая установка Node.js v18
+-   Доступ к оболочке, такой как Bash или CMD
+-   Приложение командной строки `curl`.
 
-## What is a lifecycle? {#what-is-a-lifecycle}
+Все фрагменты кода для этой главы доступны на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%204).
 
-When talking about a lifecycle in the context of a framework, we refer to the order in which the functions are executed. The tricky part is that application developers write only a subset of its code while the rest is developed and bundled by the framework developers.
+## Что такое жизненный цикл? {#what-is-a-lifecycle}
 
-During the application execution, the function calls bounce between internal and user-written code, and it might be hard to follow what is going on. So, it comes naturally at this point that having deep knowledge of this subject is crucial.
+Говоря о жизненном цикле в контексте фреймворка, мы имеем в виду порядок выполнения функций. Сложность заключается в том, что разработчики приложения пишут только часть его кода, а остальное разрабатывается и компонуется разработчиками фреймворка.
 
-The lifecycle depends on the architecture of the framework. Two well-known architectures are usually used to develop a web framework:
+Во время выполнения приложения вызовы функций перемещаются между внутренним и пользовательским кодом, и уследить за происходящим может быть непросто. Поэтому, естественно, в этот момент глубокие знания в этой области имеют решающее значение.
 
--   **Middleware-based architecture**: Thanks to its more manageable learning curve, this is the most known lifecycle architecture, but time has proved it to have some significant drawbacks. When working with this architecture, an application developer must care about the order of declaration of the middleware functions since it influences the order of execution at runtime. Of course, it can be hard to track the execution order in bigger and more complex applications across multiple modules and files. Moreover, writing reusable code might be more challenging because every moving part is more tidily coupled. As a final note, every middleware function will be executed at every cycle, whether needed or not.
--   **Hook-based architecture**: Fastify, unlike some other famous frameworks, implements a hook- based one. This kind of architecture was a precise design decision from day one since a hook system is more scalable and easier to maintain in the long run. As a nice bonus, since a hook only executes if needed, it usually leads to faster applications! However, it is worth mentioning that it is also harder to master. As we already briefly mentioned, we have different and specific components to deal with in a hook-based architecture.
+Жизненный цикл зависит от архитектуры фреймворка. Для разработки веб-фреймворка обычно используются две известные архитектуры:
 
-For the rest of this chapter, we will talk in detail about hook-based architecture.
+-   **Архитектура на основе промежуточного ПО**: Благодаря более удобной кривой обучения, это самая известная архитектура жизненного цикла, но время показало, что она имеет ряд существенных недостатков. При работе с этой архитектурой разработчик приложения должен следить за порядком объявления функций промежуточного ПО, поскольку это влияет на порядок их выполнения во время исполнения. Конечно, в больших и сложных приложениях, состоящих из множества модулей и файлов, отследить порядок выполнения может быть сложно. Кроме того, написание многократно используемого кода может оказаться более сложной задачей, поскольку все движущиеся части более аккуратно связаны между собой. В заключение отметим, что каждая функция промежуточного ПО будет выполняться в каждом цикле, независимо от того, нужна она или нет.
+-   **Архитектура на основе хуков**: Fastify, в отличие от некоторых других известных фреймворков, реализует архитектуру на основе хуков. Подобная архитектура была принята с самого начала, так как система на основе хуков более масштабируема и проще в обслуживании в долгосрочной перспективе. Приятным бонусом является то, что хук выполняется только в случае необходимости, что обычно приводит к ускорению работы приложений! Однако стоит отметить, что ее также сложнее освоить. Как мы уже вкратце упоминали, в архитектуре на основе хуков нам приходится иметь дело с различными и специфическими компонентами.
 
-When dealing with web frameworks, there are usually at least two main lifecycles:
+В оставшейся части этой главы мы подробно поговорим об архитектуре на основе хуков.
 
--   **The application lifecycle**: This lifecycle is in charge of the different phases of the application server execution. It mainly deals with the server boot sequence and shutdown. We can attach “global” functionalities that are shared between every route and plugin. Moreover, we can act at a specific moment of the lifecycle execution, adding a proper hook function. The most common actions we perform are after the server is started or before it shuts down.
--   **The request/reply lifecycle**: The request/response phase is the core of every client-server application. Almost the entirety of the execution time is spent inside this sole sequence. For this reason, this lifecycle usually has way more phases and therefore hooks we can add to it. The most common ones are content parsers, serializers, and authorization hooks.
+Когда речь идет о веб-фреймворках, обычно выделяют как минимум два основных жизненных цикла:
 
-Now that we understand more about the lifecycle types, we can spend the rest of the chapter learning how Fastify implements them.
+-   **Жизненный цикл приложения**: Этот жизненный цикл отвечает за различные фазы выполнения сервера приложений. В основном он занимается последовательностью загрузки и выключения сервера. Мы можем подключать «глобальные» функции, которые являются общими для каждого маршрута и плагина. Кроме того, мы можем действовать в определенный момент выполнения жизненного цикла, добавив соответствующую функцию хука. Чаще всего мы выполняем действия после запуска сервера или перед его выключением.
+-   **Жизненный цикл запроса/ответа**: Фаза запроса/ответа является ядром каждого клиент-серверного приложения. Почти все время выполнения проходит в этой единственной последовательности. По этой причине данный жизненный цикл обычно имеет гораздо больше фаз и, соответственно, хуков, которые мы можем добавить к нему. Самые распространенные из них - парсеры контента, сериализаторы и хуки авторизации.
 
-## Declaring hooks {#declaring-hooks}
+Теперь, когда мы больше знаем о типах жизненного цикла, мы можем потратить остаток главы на изучение того, как Fastify реализует их.
 
-In the previous section, we saw that a server-side application usually has two main lifecycles. So, being a hook-based web framework and following its philosophy of giving complete control to developers, Fastify emits a specific event every time it advances to the next phase. Furthermore, these phases follow a rigid and well-defined execution order. Knowing it enables us to add functionality at a specific point during the boot or the execution of our application.
+## Объявление хуков {#declaring-hooks}
 
-One essential and beneficial side effect of this approach is that, as developers, we don’t care about the declaration order of our hooks since the framework guarantees that they will be invoked at the right moment in time.
+В предыдущем разделе мы увидели, что серверное приложение обычно имеет два основных жизненных цикла. Так вот, будучи веб-фреймворком на основе хуков и следуя своей философии предоставления полного контроля разработчикам, Fastify выдает определенное событие каждый раз, когда переходит к следующей фазе. Более того, эти фазы следуют жесткому и четко определенному порядку выполнения. Знание этого позволяет нам добавлять функциональность в определенный момент во время загрузки или выполнения приложения.
 
-The mechanism described works because Fastify, under the hood, defines a “hook runner” that runs the callback functions declared for every known event. As developers, we need a method to attach our hooks to the Fastify instance. The `addHook` hook allows us to do precisely that, besides being an application or request/reply hook.
+Одним из важных и полезных побочных эффектов такого подхода является то, что нам, как разработчикам, не важен порядок объявления наших хуков, поскольку фреймворк гарантирует, что они будут вызваны в нужный момент времени.
 
-!!!note "Callback-based versus async hooks"
+Описанный механизм работает потому, что Fastify под капотом определяет «бегунок хуков», который запускает колбек-функции, объявленные для каждого известного события. Как разработчикам, нам нужен метод, чтобы прикрепить наши хуки к экземпляру Fastify. Хук `addHook` позволяет нам сделать именно это, помимо того, что он является хуком приложения или запроса/ответа.
 
-    In [_Chapter 2_](./plugin-system.md), we saw that we could declare plugins with two different styles: callback-based and async functions. The same applies here. Again, it is essential to choose one style and stick with it. Mixing them can lead to unexpected behavior. As already decided in this book, we will use only async functions. One last thing to remember is that some hooks are only synchronous. We will clarify this when speaking about them.
+!!!note "Хуки на основе обратного вызова против асинхронных хуков"
 
-As we can see in the following `add-hook.cjs` snippet method, it takes two arguments:
+    В [_главе 2_](./plugin-system.md) мы видели, что можно объявлять плагины в двух разных стилях: с колбек-функциями и с асинхронными функциями. То же самое применимо и здесь. Опять же, важно выбрать один стиль и придерживаться его. Их смешение может привести к неожиданному поведению. Как уже было решено в этой книге, мы будем использовать только async-функции. И последнее, что следует помнить: некоторые хуки работают только синхронно. Мы уточним это, когда будем говорить о них.
 
--   A name of the event we want to listen
--   The callback function:
+Как видно из следующего фрагмента метода `add-hook.cjs`, он принимает два аргумента:
+
+-   Имя события, которое мы хотим прослушать
+-   колбек-функция:
 
     ```js
     // ...
@@ -67,28 +71,28 @@ As we can see in the following `add-hook.cjs` snippet method, it takes two argum
     // ...
     ```
 
-Here, we omitted the callback’s signature and the return value since every hook has its own.
+Здесь мы опустили сигнатуру обратного вызова и возвращаемое значение, поскольку у каждого хука оно свое.
 
-We can call `addHook` on the same event multiple times to declare more than one hook. In the following sections, we will learn all the events emitted by Fastify and describe every callback function in depth.
+Мы можем вызвать `addHook` на одно и то же событие несколько раз, чтобы объявить более одного хука. В следующих разделах мы узнаем обо всех событиях, испускаемых Fastify, и подробно опишем каждую колбек-функцию.
 
-## Understanding the application lifecycle {#understanding-the-application-lifecycle}
+## Понимание жизненного цикла приложения {#understanding-the-application-lifecycle}
 
-The application lifecycle covers the boot process and the execution of our application server. In particular, we refer to loading the plugins, adding routes, making the HTTP server run, and eventually closing it. Fastify will emit four different events, allowing us to interact with the behavior of every phase:
+Жизненный цикл приложения охватывает процесс загрузки и выполнения нашего сервера приложений. В частности, мы имеем в виду загрузку плагинов, добавление маршрутов, запуск HTTP-сервера и, в конечном итоге, его закрытие. Fastify будет испускать четыре различных события, позволяя нам взаимодействовать с поведением каждой фазы:
 
 -   `onRoute`
 -   `onRegister`
 -   `onReady`
 -   `onClose`
 
-Now, for every event of the previous list, let’s check the respective callback signature and most common use cases.
+Теперь для каждого события из предыдущего списка проверим соответствующую сигнатуру обратного вызова и наиболее распространенные случаи использования.
 
-### The `onRoute` hook {#the-onroute-hook}
+### Хук `onRoute` {#the-onroute-hook}
 
-The `onRoute` hook event is triggered every time a route is added to the Fastify instance. This callback is a **synchronous function** that takes one argument, commonly called `routeOptions`. This argument is a mutable object reference to the route declaration object itself, and we can use it to modify route properties.
+Событие хука `onRoute` запускается каждый раз, когда к экземпляру Fastify добавляется маршрут. Этот колбек-функция представляет собой **синхронную функцию**, которая принимает один аргумент, обычно называемый `routeOptions`. Этот аргумент представляет собой изменяемую ссылку на объект объявления маршрута, и мы можем использовать его для изменения свойств маршрута.
 
-This hook is encapsulated and doesn’t return any value. Therefore, one of the most common use cases is adding route-level hooks or checking for the presence of a specific option value and acting accordingly.
+Этот хук инкапсулирован и не возвращает никакого значения. Поэтому одним из наиболее распространенных вариантов его использования является добавление хуков на уровне маршрута или проверка наличия определенного значения опции и соответствующие действия.
 
-We can see a trivial example in `on-route.cjs`, where we add a custom route-level `preHandler` function to the route properties:
+Тривиальный пример мы можем увидеть в файле `on-route.cjs`, где мы добавляем в свойства маршрута пользовательскую функцию `preHandler`:
 
 ```js
 const Fastify = require('fastify');
@@ -132,45 +136,45 @@ app.listen({ port: 3000 })
     });
 ```
 
-After setting up the Fastify instance, we add a new `onRoute` hook (`[1]`). The sole purpose of this hook is to add a route-level `preHandler` hook (`[2]`) to the route definition, even if there weren’t any previous hooks defined for this route (`[3]`).
+После настройки экземпляра Fastify мы добавляем новый хук `onRoute` (`[1]`). Единственная цель этого хука - добавить хук `preHandler` уровня маршрута (`[2]`) в определение маршрута, даже если ранее для этого маршрута не было определено никаких хуков (`[3]`).
 
-Here, we can learn two important outcomes that will help us when dealing with route-level hooks:
+Здесь мы можем узнать два важных результата, которые помогут нам при работе с хуками на уровне маршрута:
 
--   The `routeOptions` object is mutable, and we can change its properties. However, if we want to keep the previous values, we need to explicitly re-add them (`[2]`).
--   Route-level hooks are arrays of hook functions (we will see more about this later in the chapter).
+-   Объект `routeOptions` является мутабельным, и мы можем изменять его свойства. Однако если мы хотим сохранить прежние значения, нам нужно явно добавить их заново (`[2]`).
+-   Хуки на уровне маршрута представляют собой массивы хук-функций (подробнее об этом мы поговорим позже в главе).
 
-Now, we can check the output of the snippet by opening a new terminal and running the following command:
+Теперь мы можем проверить вывод фрагмента, открыв новый терминал и выполнив следующую команду:
 
 ```sh
 $ node on-route.cjs
 ```
 
-This command will start our server on port `3000`.
+Эта команда запустит наш сервер на порту `3000`.
 
-Now we can use curl in a different terminal window to request the server and check the result in the server console:
+Теперь мы можем использовать curl в другом окне терминала, чтобы запросить сервер и проверить результат в консоли сервера:
 
 ```sh
 $ curl localhost:3000/foo
 ```
 
-We can search for the message `"Hi from customPreHandler!"` in the logs to check whether our customHandler was executed:
+Мы можем найти сообщение `"Привет от customPreHandler!"` в логах, чтобы проверить, был ли выполнен наш customHandler:
 
 ```
 {"level":30,"time":1635765353312,"pid":20344,"hostname":"localhost","r
 eqId":"req-1","msg":"Hi from customPreHandler!"}
 ```
 
-This example only scratches the surfaces of the possible use cases. We can find the complete definition of the routeOptions properties in the official documentation (<https://www.fastify.io/docs/latest/Reference/Routes/#routes-options>).
+Этот пример лишь поверхностно описывает возможные варианты использования. Полное определение свойств routeOptions можно найти в официальной документации (<https://www.fastify.io/docs/latest/Reference/Routes/#routes-options>).
 
-### The `onRegister` hook {#the-onregister-hook}
+### Хук `onRegister` {#the-onregister-hook}
 
-The `onRegister` hook is similar to the previous one regarding how it works, but we can use it when dealing with plugins. In fact, for every registered plugin that creates a new encapsulation context, the `onRegister` hooks are executed before the registration.
+Хук `onRegister` похож на предыдущий по принципу работы, но мы можем использовать его при работе с плагинами. Фактически, для каждого зарегистрированного плагина, который создает новый контекст инкапсуляции, хук `onRegister` выполняется до регистрации.
 
-We can use this hook to discover when a new context is created and add or remove functionality; as we already learned, during the plugin’s registration and thanks to its robust encapsulation, Fastify creates a new instance with a child context. Note that this hook’s callback function won’t be called if the registered plugin is wrapped in `fastify-plugin`.
+Мы можем использовать этот хук для обнаружения момента создания нового контекста и добавления или удаления функциональности; как мы уже узнали, во время регистрации плагина и благодаря надежной инкапсуляции Fastify создает новый экземпляр с дочерним контекстом. Обратите внимание, что колбек-функция этого хука не будет вызвана, если зарегистрированный плагин обернут в `fastify-plugin`.
 
-The `onRegister` hook accepts a synchronous callback with two arguments. The first parameter is the newly created Fastify instance with its encapsulated context. The latter is the `options` object passed to the plugin during the registration.
+Хук `onRegister` принимает синхронный обратный вызов с двумя аргументами. Первый параметр - это только что созданный экземпляр Fastify с инкапсулированным контекстом. Второй - объект `options`, переданный плагину при регистрации.
 
-The following `on-register.cjs` snippet shows an easy yet non-trivial example that covers encapsulated, and non-encapsulated plugins use cases:
+Следующий фрагмент `on-register.cjs` показывает простой, но нетривиальный пример, который охватывает случаи использования инкапсулированных и неинкапсулированных плагинов:
 
 ```js
 const Fastify = require('fastify');
@@ -206,13 +210,13 @@ app.ready()
     });
 ```
 
-First, we decorate the top-level Fastify instance with a custom data object (`[1]`). Then we attach an `onRegister` hook that logs the `options` plugin and shallow-copy the `data` object (`[2]`). This will effectively create a new object that inherits the `foo` property, allowing us to have encapsulated the `data` object. At `[3]`, we register our first plugin that adds the `plugin1` property to the object. On the other hand, the second plugin is registered using `fastify-plugin` (`[4]`), and therefore Fastify will not trigger our `onRegister` hook. Here, we modify the data object again, adding the `plugin2` property to it.
+Сначала мы декорируем экземпляр Fastify верхнего уровня пользовательским объектом данных (`[1]`). Затем мы подключаем хук `onRegister`, который регистрирует плагин `options` и неглубоко копирует объект `data` (`[2]`). Это фактически создаст новый объект, наследующий свойство `foo`, что позволит нам инкапсулировать объект `data`. В `[3]` мы регистрируем наш первый плагин, который добавляет свойство `plugin1` к объекту. С другой стороны, второй плагин зарегистрирован с помощью `fastify-plugin` (`[4]`), и поэтому Fastify не сработает наш хук `onRegister`. Здесь мы снова модифицируем объект data, добавив в него свойство `plugin2`.
 
-!!!note "Shallow-copy versus deep copy"
+!!!note "Неглубокое копирование против глубокого копирования"
 
-    Since an object is just a reference to the allocated memory address in JavaScript, we can copy the objects in two different ways. By default, we “shallow-copy” them: if one source object’s property references another object, the copied property will point to the same memory address. We implicitly create a link between the old and new property. If we change it in one place, it is reflected in the other. On the other hand, deep-copying an object means that whenever a property references another object, we will create a new reference and, therefore, a memory allocation. Since deep copying is expensive, all methods and operators included in JavaScript make shallow copies.
+    Поскольку в JavaScript объект - это просто ссылка на выделенный адрес памяти, мы можем копировать объекты двумя разными способами. По умолчанию мы «неглубоко копируем» их: если свойство одного исходного объекта ссылается на другой объект, скопированное свойство будет указывать на тот же адрес памяти. Мы неявно создаем связь между старым и новым свойством. Если мы изменяем его в одном месте, это отражается и в другом. С другой стороны, глубокое копирование объекта означает, что всякий раз, когда свойство ссылается на другой объект, мы будем создавать новую ссылку и, следовательно, выделять память. Поскольку глубокое копирование требует больших затрат, все методы и операторы, входящие в состав JavaScript, создают неглубокие копии.
 
-Let’s execute this script in a terminal window and check the logs:
+Давайте выполним этот скрипт в окне терминала и проверим журналы:
 
 ```sh
 $ node on-register.cjs
@@ -228,19 +232,19 @@ $ node on-register.cjs
 "data":{"foo":"bar","plugin2":"hi2"}}
 ```
 
-We can see that adding a property in `plugin1` hasn’t any repercussions on the top-level data property. On the other hand, since `plugin2` is loaded using `fastify-plugin`, it has the same context as the main Fastify instance (`[5]`), and the `onRegister` hook isn’t even called.
+Мы видим, что добавление свойства в `plugin1` никак не отразилось на свойстве данных верхнего уровня. С другой стороны, поскольку `plugin2` загружается с помощью `fastify-plugin`, он имеет тот же контекст, что и основной экземпляр Fastify (`[5]`), и хук `onRegister` даже не вызывается.
 
-### The `onReady` hook {#the-onready-hook}
+### Хук `onReady` {#the-onready-hook}
 
-The `onReady` hook is triggered after `fastify.ready()` is invoked and before the server starts listening. If the call to ready is omitted, then `listen` will automatically call it, and these hooks will be executed anyway. Since we can define multiple `onReady` hooks, the server will be ready to accept incoming requests only after all of them are completed.
+Хук `onReady` срабатывает после вызова `fastify.ready()` и до того, как сервер начнет слушать. Если вызов ready опущен, то `listen` вызовет его автоматически, и эти хуки будут выполнены в любом случае. Поскольку мы можем определить несколько хуков `onReady`, сервер будет готов к приему входящих запросов только после того, как все они будут выполнены.
 
-Contrary to the other two hooks we already saw, this one is asynchronous. Therefore, it is crucial to define it as an async function or manually call the `done` callback to progress with the server boot and code execution. In addition to this, the `onReady` hooks are invoked with the `this` value bound to the Fastify instance.
+В отличие от двух других хуков, которые мы уже рассмотрели, этот является асинхронным. Поэтому очень важно определить его как асинхронную функцию или вручную вызвать колбек-функцию `done` для продолжения загрузки сервера и выполнения кода. Кроме того, хук `onReady` вызывается со значением `this`, привязанным к экземпляру Fastify.
 
-!!!note "A bound this context"
+!!!note "Связанный контекст"
 
-    When dealing with Fastify functionalities that have an explicitly bound `this` value, as in the case of the `onReady` hook, it is essential to use the old function syntax instead of the arrow function one. Using the latter will prevent binding, making it impossible to access the instance and custom data added to it.
+    При работе с функциями Fastify, которые имеют явно привязанное значение `this`, как в случае с хуком `onReady`, необходимо использовать старый синтаксис функции вместо синтаксиса стрелочной функции. Использование последней предотвратит привязку, что сделает невозможным доступ к экземпляру и добавленным к нему пользовательским данным.
 
-In the `on-ready.cjs` snippet, we show a straightforward example of the Fastify bound context:
+В фрагменте `on-ready.cjs` мы показываем прямой пример связанного контекста Fastify:
 
 ```js
 const Fastify = require('fastify');
@@ -260,9 +264,9 @@ app.ready()
     });
 ```
 
-At `[1]`, we decorate the primary instance with a dummy value. Then we add one `onReady` hook using the async function syntax. After that, we log the `data` value to show the bound this inside it (`[2]`).
+В пункте `[1]` мы декорируем первичный экземпляр фиктивным значением. Затем мы добавляем один хук `onReady`, используя синтаксис функции `async`. После этого мы записываем в лог значение `data`, чтобы показать связанное внутри него значение (`[2]`).
 
-Running this snippet will produce a short output:
+Запустив этот сниппет, мы получим короткий результат:
 
 ```
 {"level":30,"time":1636284966854,"pid":3660,"hostname":"localhost",
@@ -271,13 +275,13 @@ Running this snippet will produce a short output:
 "msg":"Application is ready."}
 ```
 
-We can check that `mydata` is logged before the application is ready and that, indeed, we have access to the Fastify instance via `this`.
+Мы можем проверить, что `mydata` регистрируется до того, как приложение будет готово, и что, действительно, у нас есть доступ к экземпляру Fastify через `this`.
 
-### The `onClose` hook {#the-onclose-hook}
+### Хук `onClose` {#the-onclose-hook}
 
-While the hooks we learned about in the last three sections are used during the boot process, on the other hand, `onClose` is triggered during the shutdown phase right after `fastify.close()` is called. Thus, it is handy when plugins need to do something right before stopping the server, such as cleaning database connections. This hook is asynchronous and accepts one argument, the Fastify instance. As usual, when dealing with async functionalities, there is also an optional `done` callback (the second argument) if the async function isn’t used.
+В то время как хуки, о которых мы узнали в предыдущих трех разделах, используются в процессе загрузки, `onClose` срабатывает на этапе выключения сразу после вызова `fastify.close()`. Таким образом, он удобен, когда плагинам нужно сделать что-то непосредственно перед остановкой сервера, например, очистить соединения с базой данных. Этот хук асинхронный и принимает один аргумент - экземпляр Fastify. Как обычно, при работе с асинхронными функциями, есть необязательный колбек-функция `done` (второй аргумент), если асинхронная функция не используется.
 
-In the `on-close.cjs` example, we choose to use the async function to log a message:
+В примере `on-close.cjs` мы решили использовать асинхронную функцию для записи сообщения в журнал:
 
 ```js
 const Fastify = require('fastify');
@@ -297,9 +301,9 @@ app.ready()
     });
 ```
 
-After adding a dummy `onClose` (`[1]`) hook, we explicitly call `app.close()` on `[2]` to trigger it.
+Добавив фиктивный хук `onClose` (`[1]`), мы явно вызываем `app.close()` на `[2]`, чтобы запустить его.
 
-After running the example, we can see that the last thing logged is indeed the hook line:
+После выполнения примера мы видим, что последнее, что записывается в журнал, действительно является строкой хука:
 
 ```
 {"level":30,"time":1636298033958,"pid":4257,"hostname":"localhost",
@@ -308,13 +312,13 @@ After running the example, we can see that the last thing logged is indeed the h
 "msg":"onClose hook triggered!"}
 ```
 
-With the `onClose` hook, we have finished our discussion about the application-level lifecycle. Now, we will move to the more numerous and, therefore, exciting request-reply hooks.
+С хуком `onClose` мы закончили разговор о жизненном цикле на уровне приложения. Теперь мы перейдем к более многочисленным и, следовательно, захватывающим хукам запроса-ответа.
 
-## Understanding the request and reply lifecycle {#understanding-the-request-and-reply-lifecycle}
+## Понимание жизненного цикла запроса и ответа {#understanding-the-request-and-reply-lifecycle}
 
-When executing a Fastify server application, the vast majority of the time is spent in the request-reply cycle. As developers, we define routes that the clients will call and produce a response based on the incoming conditions. In true Fastify philosophy, we have several events at our disposal to interact with this cycle. As usual, they will be triggered automatically by the framework only when needed. These hooks are fully encapsulated so that we can control their execution context with the `register` method.
+При выполнении серверного приложения Fastify подавляющее большинство времени проходит в цикле «запрос-ответ». Как разработчики, мы определяем маршруты, которые будут вызываться клиентами и выдавать ответ на основе входящих условий. В соответствии с философией Fastify, в нашем распоряжении есть несколько событий для взаимодействия с этим циклом. Как обычно, они будут автоматически запускаться фреймворком только при необходимости. Эти хуки полностью инкапсулированы, так что мы можем контролировать контекст их выполнения с помощью метода `register`.
 
-As we saw in the previous section, we had four application hooks. Here, we have nine request and reply hooks:
+Как мы видели в предыдущем разделе, у нас было четыре хука для приложений. Здесь у нас девять хуков для запросов и ответов:
 
 -   `onRequest`
 -   `preParsing`
@@ -326,27 +330,27 @@ As we saw in the previous section, we had four application hooks. Here, we have 
 -   `onError`
 -   `onTimeout`
 
-Since they are part of the request/reply cycle, the trigger order of these events is crucial. Therefore, the first seven elements of the list are written from the first to the last. Furthermore, `onError` and `onTimeout` can be triggered in no specific order at every step in the cycle since an error or a timeout can happen at any point.
+Поскольку они являются частью цикла запрос/ответ, порядок срабатывания этих событий имеет решающее значение. Поэтому первые семь элементов списка записываются от первого к последнему. Более того, события `onError` и `onTimeout` могут срабатывать без определенного порядка на каждом шаге цикла, поскольку ошибка или таймаут могут произойти в любой момент.
 
-Let’s take a look at the following image to understand the Fastify request/reply lifecycle better:
+Давайте посмотрим на следующее изображение, чтобы лучше понять жизненный цикл запроса/ответа Fastify:
 
-![Figure 4.1: The request and reply lifecycle](./hooks1.png)
+![Рисунок 4.1: Жизненный цикл запроса и ответа](./hooks1.png)
 
-<center>Figure 4.1: The request and reply lifecycle</center>
+<center>Рисунок 4.1: Жизненный цикл запроса и ответа</center>.
 
-For clarity, we divided the hooks into groups using bubbles. As we already said, there are three main groups.
+Для наглядности мы разделили хуки на группы с помощью пузырьков. Как мы уже говорили, существует три основные группы.
 
-Inside the dotted bubble, we can see the request phase. These callback hooks are called, in top-down order, following the arrow’s direction, before the user-defined handler for the current route.
+Внутри пунктирного пузыря мы видим фазу запроса. Эти хуки обратного вызова вызываются в порядке сверху вниз, следуя направлению стрелки, перед пользовательским обработчиком для текущего маршрута.
 
-The dashed bubble contains the reply phase, whose hooks are called after the user-defined route handler. Every hook, at every point, can throw an error or go into the timeout. If it happens, the request will finish in the solid bubble, leaving the normal flow.
+Пунктирный пузырь содержит фазу ответа, хуки которой вызываются после определенного пользователем обработчика маршрута. Каждый хук в любой момент может выдать ошибку или перейти в таймаут. Если это произойдет, запрос завершится в сплошном пузыре, оставив нормальный поток.
 
-We will learn more about request and reply hooks in the subsequent sections, starting from error handling.
+Мы узнаем больше о хуках запросов и ответов в последующих разделах, начиная с обработки ошибок.
 
-### Handling errors inside hooks {#handling-errors-inside-hooks}
+### Обработка ошибок внутри хуков {#handling-errors-inside-hooks}
 
-During the hook execution, an error can occur. Since hooks are just asynchronous callback functions automatically invoked by the framework, error handling follows the same rules for standard JavaScript functions. Again, the only main difference is the two styles defining them.
+Во время выполнения хука может произойти ошибка. Поскольку хуки - это просто асинхронные колбек-функции, автоматически вызываемые фреймворком, обработка ошибок происходит по тем же правилам, что и для стандартных функций JavaScript. Опять же, единственное основное различие заключается в двух стилях, определяющих их.
 
-If we choose the callback style (remember, in this book, we are only using the async function style), we have to pass the error manually to the done callback:
+Если мы выберем стиль колбек-функции (помните, что в этой книге мы используем только стиль асинхронной функции), то нам придется вручную передать ошибку в выполненную колбек-функцию:
 
 ```js
 fastify.addHook('onRequest', (request, reply, done) => {
@@ -354,7 +358,7 @@ fastify.addHook('onRequest', (request, reply, done) => {
 });
 ```
 
-On the other hand, when declaring an async function, it is enough to throw the error:
+С другой стороны, при объявлении async-функции достаточно бросить ошибку:
 
 ```js
 fastify.addHook('onResponse', async (request, reply) => {
@@ -362,15 +366,15 @@ fastify.addHook('onResponse', async (request, reply) => {
 });
 ```
 
-Since we have access to the reply object, we can also change the reply’s response code and reply to the client directly from the hook. If we choose not to reply in the case of an error or to reply with an error, then Fastify will call the `onError` hook.
+Поскольку у нас есть доступ к объекту ответа, мы также можем изменить код ответа и ответить клиенту прямо из хука. Если мы решили не отвечать в случае ошибки или ответить с ошибкой, то Fastify вызовет хук `onError`.
 
-Now that we understand how errors modify the request-reply flow, we can finally start analyzing every hook Fastify puts at our disposal.
+Теперь, когда мы понимаем, как ошибки изменяют поток запрос-ответ, мы можем наконец-то начать анализировать каждый хук, который Fastify предоставляет в наше распоряжение.
 
-### The `onRequest` hook {#the-onrequest-hook}
+### Хук `onRequest` {#the-onrequest-hook}
 
-As the name implies, the `onRequest` hook is triggered every time there is an incoming request. Since it is the first event on the execution list, the `body` request is always null because body parsing doesn’t happen yet. The hook function is asynchronous and accepts two parameters, the `Request` and `Reply` Fastify objects.
+Как следует из названия, хук `onRequest` срабатывает каждый раз, когда поступает входящий запрос. Поскольку это первое событие в списке выполнения, запрос `body` всегда равен нулю, так как разбор тела еще не произошел. Функция хука является асинхронной и принимает два параметра - объекты Fastify `Request` и `Reply`.
 
-Besides showing how `onRequest` works, the following `on-request.cjs` snippet also shows how the hook encapsulation works (as we already said, the encapsulation is valid for every other hook as well):
+Помимо демонстрации работы `onRequest`, следующий фрагмент `on-request.cjs` также показывает, как работает инкапсуляция хука (как мы уже говорили, инкапсуляция применима и к любому другому хуку):
 
 ```js
 const Fastify = require('fastify');
@@ -409,9 +413,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-The first thing we do is add a top-level `onRequest` hook (`[1]`). Then we register a plugin that defines another `onRequest` hook (`[2]`) and a GET `/child-level` route (`[3]`). Finally, we add another GET route on the `/top-level` path (`[4]`).
+Первое, что мы делаем, - добавляем хук верхнего уровня `onRequest` (`[1]`). Затем мы регистрируем плагин, определяющий другой хук `onRequest` (`[2]`) и маршрут GET `/child-level` (`[3]`). Наконец, мы добавляем еще один GET-маршрут по пути `/top-level` (`[4]`).
 
-Let’s run the script in the terminal and check the output:
+Запустим скрипт в терминале и проверим результат:
 
 ```sh
 $ node on-request.cjs
@@ -419,18 +423,18 @@ $ node on-request.cjs
 "localhost","msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-This time our server is running on port `3000`, and it is waiting for incoming connections.
+На этот раз наш сервер работает на порту `3000`, и он ждет входящих соединений.
 
-We can open another terminal and use `curl` to make our calls.
+Мы можем открыть другой терминал и использовать `curl` для осуществления наших вызовов.
 
-First of all, let’s get the `/child-level` route:
+Прежде всего, давайте получим маршрут `/child-level`:
 
 ```sh
 $ curl localhost:3000/child-level
 child-level
 ```
 
-We can see that `curl` was able to get the route response correctly. Switching the terminal window again to the one that is running the server, we can check the logs:
+Мы видим, что `curl` смог корректно получить ответ маршрута. Снова переключив окно терминала на то, в котором запущен сервер, мы можем проверить журналы:
 
 ```
 {"level":30,"time":1636444712019,"pid":30137,"hostname":"localhost",
@@ -446,16 +450,16 @@ We can see that `curl` was able to get the route response correctly. Switching t
 :16.760624945163727,"msg":"request completed"}
 ```
 
-We can spot immediately that both hooks were triggered during the request-response cycle. Moreover, we can also see the order of the invocations: first, `"Hi from the top-level onRequest hook"`, and then `"Hi from the child-level onRequest hook"`.
+Мы сразу видим, что оба хука были вызваны во время цикла «запрос-ответ». Более того, мы также видим порядок вызовов: сначала `«Привет от хука верхнего уровня onRequest`», а затем `«Привет от хука дочернего уровня onRequest`».
 
-To ensure that hook encapsulation is working as expected, let’s call the `/top-level` route. We can switch again to the terminal where `curl` ran and type the following command:
+Чтобы убедиться, что инкапсуляция хуков работает как надо, вызовем маршрут `/top-level`. Мы можем снова переключиться на терминал, где был запущен `curl`, и ввести следующую команду:
 
 ```sh
 $ curl localhost:3000/top-level
 top-level
 ```
 
-Now coming back to the server log output terminal, we can see the following:
+Теперь вернемся к терминалу вывода журнала сервера и увидим следующее:
 
 ```
 {"level":30,"time":1636444957207,"pid":30137,"hostname":"
@@ -470,13 +474,13 @@ hook."}
 1.8535420298576355,"msg":"request completed"}
 ```
 
-This time, the logs show that only the top-level hook was triggered. This is an expected behavior, and we can use it to add hooks scoped to specific plugins only.
+На этот раз в логах видно, что сработал только хук верхнего уровня. Это ожидаемое поведение, и мы можем использовать его для добавления хуков, предназначенных только для определенных плагинов.
 
-### The `preParsing` hook {#the-preparsing-hook}
+### Хук `preParsing` {#the-preparsing-hook}
 
-Declaring a `preParsing` hook allows us to transform the incoming request payload before it is parsed. This callback is asynchronous and accepts three parameters: `Request`, `Reply`, and the payload stream. Again, the `body` request is null since this hook is triggered before `preValidation`. Therefore, we must return a stream if we want to modify the incoming payload. Moreover, developers are also in charge of adding and updating the `receivedEncodedLength` property of the returned value.
+Объявление хука `preParsing` позволяет нам преобразовывать полезную нагрузку входящего запроса до того, как он будет разобран. Этот обратный вызов является асинхронным и принимает три параметра: `Request`, `Reply` и поток полезной нагрузки. Опять же, `body` запроса является нулевым, так как этот хук срабатывает до `preValidation`. Поэтому мы должны вернуть поток, если хотим изменить входящую полезную нагрузку. Более того, разработчики также отвечают за добавление и обновление свойства `receivedEncodedLength` возвращаемого значения.
 
-The `pre-parsing.cjs` example shows how to change the incoming payload working directly with streams:
+Пример `pre-parsing.cjs` показывает, как изменить входящую полезную нагрузку, работая непосредственно с потоками:
 
 ```js
 const Fastify = require('fastify');
@@ -513,9 +517,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-At `[1]`, we declare our `preParsing` hook that consumes the incoming `payload` stream and creates a `body` string. We then parse the body (`[2]`) and log the content to the console. At `[3]`, we create a new `Readable` stream, assign the correct `receivedEncodedLength` value, push new content into it, and return it. Finally, we declare a dummy route (`[4]`) to log the `body` object.
+В `[1]` мы объявляем наш хук `preParsing`, который потребляет входящий поток `payload` и создает строку `body`. Затем мы разбираем это тело (`[2]`) и выводим содержимое в консоль. В пункте `[3]` мы создаем новый поток `Readable`, присваиваем ему правильное значение `receivedEncodedLength`, заталкиваем в него новое содержимое и возвращаем его. Наконец, мы объявляем фиктивный маршрут (`[4]`) для регистрации объекта `body`.
 
-Running the script in a terminal will start our server on port `3000`:
+Запуск скрипта в терминале запустит наш сервер на порту `3000`:
 
 ```sh
 $ node pre-parsing.cjs
@@ -523,7 +527,7 @@ $ node pre-parsing.cjs
 "localhost","msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-Now in another terminal window, we can use `curl` to call the route and check the logs:
+Теперь в другом окне терминала мы можем использовать `curl` для вызова маршрута и проверки журналов:
 
 ```sh
 $ curl --header "Content-Type: application/json" \
@@ -532,7 +536,7 @@ $ curl --header "Content-Type: application/json" \
 done
 ```
 
-Returning to the server terminal, we can see this output:
+Вернувшись на серверный терминал, мы видим следующий вывод:
 
 ```
 {"level":30,"time":1636534552994,"pid":39232,"hostname":"localhost",
@@ -548,13 +552,13 @@ Returning to the server terminal, we can see this output:
 152557,"msg":"request completed"}
 ```
 
-Those logs show us how the payload changed after the `preParsing` call. Now, looking back at the `pre-parsing.cjs` snippet, the first call to the logger (`[2]`) logged the original body we sent from `curl`, while the second call (`[3]`) logged the `newPayload` content.
+Эти журналы показывают, как изменилась полезная нагрузка после вызова `preParsing`. Теперь, если вернуться к фрагменту `pre-parsing.cjs`, первый вызов логгера (`[2]`) регистрирует исходное тело, которое мы отправили из `curl`, а второй вызов (`[3]`) регистрирует содержимое `newPayload`.
 
-### The `preValidation` hook {#the-prevalidation-hook}
+### Хук `preValidation` {#the-prevalidation-hook}
 
-We can use the `preValidation` hook to change the incoming payload before it is validated. Since the parsing has already happened, we finally have access to the `body` request, which we can modify directly.
+Мы можем использовать хук `preValidation` для изменения входящей полезной нагрузки до того, как она будет проверена. Поскольку парсинг уже произошел, у нас наконец-то есть доступ к `body` запроса, который мы можем изменять напрямую.
 
-The hook receives two arguments, `request` and `reply`. In the `pre-validation.cjs` snippet, we can see that the callback is asynchronous and doesn’t return any value:
+Хук получает два аргумента, `request` и `reply`. В фрагменте `pre-validation.cjs` видно, что обратный вызов является асинхронным и не возвращает никакого значения:
 
 ```js
 const Fastify = require('fastify');
@@ -575,9 +579,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-The example adds a simple `preValidation` hook that modifies the parsed `body` object. Inside the hook, we use the spread operator to add a property to the body, and then we assign the new value to the `request.body` property again.
+В примере добавлен простой хук `preValidation`, который изменяет разобранный объект `body`. Внутри хука мы используем оператор spread для добавления свойства к телу, а затем снова присваиваем новое значение свойству `request.body`.
 
-As usual, we can start our server in a terminal window:
+Как обычно, мы можем запустить наш сервер в окне терминала:
 
 ```sh
 $ node pre-validation.cjs
@@ -585,7 +589,7 @@ $ node pre-validation.cjs
 "msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-Then, after opening a second terminal,, we can make the same call we did for the `preParsing` hook:
+Затем, открыв второй терминал, мы можем сделать тот же вызов, что и для хука `preParsing`:
 
 ```sh
 $ curl --header "Content-Type: application/json" \
@@ -593,7 +597,7 @@ $ curl --header "Content-Type: application/json" \
   --data '{"test":"payload"}' localhost:3000
 ```
 
-In the server output we can see that our payload is changed:
+В выводе сервера мы видим, что наша полезная нагрузка изменилась:
 
 ```
 "level":30,"time":1636538082315,"pid":39965,"hostname":"localhost","r
@@ -607,9 +611,9 @@ request"}
 422516,"msg":"request completed"}
 ```
 
-### The `preHandler` hook {#the-prehandler-hook}
+### Хук `preHandler` {#the-prehandler-hook}
 
-The `preHandlder` hook is an async function that receives the request and the reply as its arguments, and it is the last callback invoked before the route handler. Therefore, at this point of the execution, the `request.body` object is fully parsed and validated. However, as we can see in `pre-handler.cjs` example, we can still modify the body or query values using this hook to perform additional checks or request manipulation before executing the handler:
+Хук `preHandlder` - это async-функция, которая получает запрос и ответ в качестве аргументов и является последней колбек-функцией, вызываемой перед обработчиком маршрута. Поэтому на данном этапе выполнения объект `request.body` полностью разобран и проверен. Однако, как видно из примера `pre-handler.cjs`, мы все еще можем изменять значения тела или запроса с помощью этого хука, чтобы выполнить дополнительные проверки или манипуляции с запросом перед выполнением обработчика:
 
 ```js
 const Fastify = require('fastify');
@@ -632,22 +636,22 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-Usually, this is the most used hook by developers, but it shouldn’t be the case. More often than not, other hooks that come before `preHandler` are better suited for the vast majority of purposes. For example, frequently, the body doesn’t need to be fully parsed and validated before performing our actions on the incoming request. Instead, we should use `preHandler` only when accessing or manipulating validated body properties.
+Обычно этот хук наиболее часто используется разработчиками, но это не так. Чаще всего другие хуки, которые идут перед `preHandler`, лучше подходят для подавляющего большинства целей. Например, часто тело запроса не нуждается в полном разборе и проверке перед выполнением наших действий с входящим запросом. Вместо этого нам следует использовать `preHandler` только при обращении к проверенным свойствам тела или манипулировании ими.
 
-Since this last snippet doesn’t add anything new, we are omitting the output of running it. If needed, the same steps we used to run `pre-validation.cjs` can also be used here.
+Поскольку этот последний фрагмент не добавляет ничего нового, мы опустим результаты его выполнения. При необходимости, те же шаги, которые мы использовали для запуска `pre-validation.cjs`, могут быть использованы и здесь.
 
-### The `preSerialization` hook {#the-preserialization-hook}
+### Хук `preSerialization` {#the-preserialization-hook}
 
-The `preSerialization` hook is in the group of three hooks that are called after the route handler. The other two are `onSend` and `onResponse`, and we will cover them in the following sections.
+Хук `preSerialization` входит в группу из трех хуков, которые вызываются после обработчика маршрута. Два других - это `onSend` и `onResponse`, и мы рассмотрим их в следующих разделах.
 
-Let’s focus on the first one here. Since we are dealing with the response payload, `preSerialization` has a similar signature to the `preParsing` hook. It accepts a `request` object, a `reply` object, and a third payload parameter. We can use its return value to change or replace the response object before serializing and sending it to the clients.
+Здесь же сосредоточимся на первом. Поскольку мы имеем дело с полезной нагрузкой ответа, хук `preSerialization` имеет сигнатуру, схожую с сигнатурой хука `preParsing`. Он принимает объект `request`, объект `reply` и третий параметр полезной нагрузки. Мы можем использовать его возвращаемое значение для изменения или замены объекта ответа перед сериализацией и отправкой клиентам.
 
-There are two essential things to remember about this hook:
+Об этом хуке нужно помнить две важные вещи:
 
--   It is not called if the payload argument is `string`, `Buffer`, `stream`, or `null`
--   If we change the payload, it will be changed for every response, including errored ones
+-   Он не вызывается, если аргументом полезной нагрузки является `string`, `Buffer`, `stream` или `null`.
+-   Если мы изменим полезную нагрузку, она будет изменена для каждого ответа, включая ошибочные.
 
-The following `pre-serialization.cjs` example shows how we can add this hook to the Fastify instance:
+Следующий пример `pre-serialization.cjs` показывает, как мы можем добавить этот хук в экземпляр Fastify:
 
 ```js
 const Fastify = require('fastify');
@@ -667,9 +671,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-Inside the hook, we use the spread operator to copy the original payload and then add a new property. At this point, it is just a matter of returning this newly created object to modify the body before returning it to the client.
+Внутри хука мы используем оператор spread, чтобы скопировать исходную полезную нагрузку, а затем добавить новое свойство. На этом этапе остается только вернуть этот вновь созданный объект, чтобы изменить тело перед тем, как вернуть его клиенту.
 
-Let’s run the snippet from the terminal:
+Давайте запустим фрагмент в терминале:
 
 ```sh
 $ node pre-serialization.cjs
@@ -677,7 +681,7 @@ $ node pre-serialization.cjs
 "msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-Now, as usual, in a different terminal window, we can use `curl` to do our call to the server:
+Теперь, как обычно, в другом окне терминала мы можем использовать `curl` для выполнения нашего обращения к серверу:
 
 ```sh
 $ curl localhost:3000
