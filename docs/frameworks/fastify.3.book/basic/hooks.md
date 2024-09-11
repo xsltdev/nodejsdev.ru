@@ -688,11 +688,11 @@ $ curl localhost:3000
 {"foo":"bar","preSerialization":"added"}
 ```
 
-### The `onSend` hook {#the-onsend-hook}
+### Хук `onSend` {#the-onsend-hook}
 
-The `onSend` hook is the last hook invoked before replying to the client. Contrary to `preSerialization`, the `onSend` hook receives a payload that is already serialized. Moreover, it is always called, no matter the type of response payload. Even if it is harder to do, we can use this hook to change our response too, but this time we have to return one of `string`, `Buffer`, `stream`, or `null`. Finally, the signature is identical to `preSerialization`.
+Хук `onSend` - это последний хук, вызываемый перед ответом клиенту. В отличие от `preSerialization`, хук `onSend` получает полезную нагрузку, которая уже сериализована. Более того, он вызывается всегда, независимо от типа полезной нагрузки ответа. Даже если это сложнее сделать, мы можем использовать этот хук и для изменения нашего ответа, но на этот раз мы должны вернуть одно из `string`, `Buffer`, `stream` или `null`. Наконец, сигнатура идентична сигнатуре `preSerialization`.
 
-Let’s make an example in the `on-send.cjs` snippet with the most straightforward payload, a string:
+Давайте разберем пример в фрагменте `on-send.cjs` с самой простой полезной нагрузкой - строкой:
 
 ```js
 const Fastify = require('fastify');
@@ -710,13 +710,13 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-Since the payload is already serialized as a `string`, we can use the `replace` method to modify it before returning it to the client.
+Поскольку полезная нагрузка уже сериализована как `string`, мы можем использовать метод `replace` для ее модификации перед возвратом клиенту.
 
-We can use the same `curl` method we already know to check whether the returned payload has `foo` replaced with `onSend`.
+Мы можем использовать тот же метод `curl`, который мы уже знаем, чтобы проверить, заменено ли возвращаемое содержимое `foo` в `onSend`.
 
-### The `onResponse` hook {#the-onresponse-hook}
+### Хук `onResponse` {#the-onresponse-hook}
 
-The `onResponse` hook is the last hook of the request-reply lifecycle. This callback is called after the reply has already been sent to the client. Therefore, we can’t change the payload anymore. However, we can use it to perform additional logic, such as calling external services or collecting metrics. It takes two arguments, `request` and `reply`, and doesn’t return any value. We can see a concrete example in `on-response.cjs`:
+Хук `onResponse` является последним хуком в жизненном цикле запроса-ответа. Этот обратный вызов происходит после того, как ответ уже отправлен клиенту. Поэтому мы уже не можем изменить полезную нагрузку. Однако мы можем использовать его для выполнения дополнительной логики, например, вызова внешних сервисов или сбора метрик. Он принимает два аргумента, `request` и `reply`, и не возвращает никакого значения. Конкретный пример мы можем увидеть в файле `on-response.cjs`:
 
 ```js
 const Fastify = require('fastify');
@@ -733,9 +733,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-The example is, again, straightforward. We add a dummy `onResponse` hook that prints a line to the log output. Running it using the usual method will show the log.
+Пример, опять же, прост. Мы добавляем фиктивный хук `onResponse`, который печатает строку в лог. Запустив его обычным способом, мы увидим журнал.
 
-On the other hand, since inside the `on-response.cjs` snippet, we changed our code slightly and made the hook call `reply.send()`; we have a very different result:
+С другой стороны, поскольку внутри фрагмента `on-response.cjs` мы немного изменили код и заставили хук вызывать `reply.send()`, мы получили совсем другой результат:
 
 ```js
 app.addHook('onResponse', async (request, reply) => {
@@ -743,11 +743,11 @@ app.addHook('onResponse', async (request, reply) => {
 });
 ```
 
-Even if the client receives the response correctly, our server will throw the `"Reply was already sent."` error. The error doesn’t affect the request-response cycle, and it is only printed on the output. As usual, we can try this behavior by running the server and making a request using `curl`.
+Даже если клиент получит ответ правильно, наш сервер выбросит ошибку `"Reply was already sent."`. Ошибка не влияет на цикл запрос-ответ, и она только выводится на экран. Как обычно, мы можем попробовать это поведение, запустив сервер и сделав запрос с помощью `curl`.
 
-### The `onError` hook {#the-onerror-hook}
+### Хук `onError` {#the-onerror-hook}
 
-This hook is triggered only when the server sends an error as the payload to the client. It runs after `customErrorHandler` if provided or after the default one integrated into Fastify. Its primary use is to do additional logging or to modify the reply headers. We should keep the error intact and avoid calling `reply.send` directly. The latter will result in the same error we encountered trying to do the same inside the `onResponse` hook. The snippet shown in the `on-error.cjs` example makes it easier to understand:
+Этот хук срабатывает только тогда, когда сервер отправляет клиенту ошибку в качестве полезной нагрузки. Он запускается после `customErrorHandler`, если он предоставлен, или после стандартного, встроенного в Fastify. Его основное использование - это дополнительное логирование или изменение заголовков ответа. Мы должны сохранять ошибку нетронутой и избегать прямого вызова `reply.send`. Последнее приведет к той же ошибке, с которой мы столкнулись, пытаясь сделать то же самое внутри хука `onResponse`. Фрагмент, показанный в примере `on-error.cjs`, облегчает понимание:
 
 ```js
 const Fastify = require('fastify');
@@ -769,9 +769,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-First, we define an `onError` hook at `[1]` that logs the incoming error message. We don’t want to change the `error` object to return any value from this hook, as we already said. So then, we define two routes: `/foo` (`[2]`) returns an error while `/bar` (`[3]`) throws an error.
+Во-первых, мы определяем хук `onError` в `[1]`, который регистрирует входящее сообщение об ошибке. Мы не хотим изменять объект `error`, чтобы вернуть какое-либо значение из этого хука, как мы уже говорили. Итак, мы определяем два маршрута: `/foo` (`[2]`) возвращает ошибку, а `/bar` (`[3]`) выбрасывает ошибку.
 
-We can run the snippet in a terminal:
+Мы можем запустить сниппет в терминале:
 
 ```
 $ node on-error.cjs
@@ -779,7 +779,7 @@ $ node on-error.cjs
 "msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-Now, in a different terminal window, we can make two different calls to our server:
+Теперь в другом окне терминала мы можем сделать два разных вызова нашего сервера:
 
 ```
 $ curl localhost:3000/bar
@@ -788,11 +788,11 @@ $ curl localhost:3000/bar
 {"statusCode":500,"error":"Internal Server Error","message":"foo"}
 ```
 
-Checking the server log terminal will show us that, in both cases, the `onError` hook was triggered correctly.
+Проверка журнала сервера покажет нам, что в обоих случаях хук `onError` сработал правильно.
 
-### The `onTimeout` hook {#the-ontimeout-hook}
+### Хук `onTimeout` {#the-ontimeout-hook}
 
-This is the last hook we still need to discuss. It depends on the `connectionTimeout` option, whose default value is 0. Therefore, `onTimeout` will be called if we pass a custom `connectionTimeout` value to the Fastify factory. In `on-timeout.cjs`, we use this hook to monitor the requests that time out. Since it is only executed when the connection socket is hung up, we can’t send any data to the client:
+Это последний хук, который нам еще предстоит обсудить. Он зависит от опции `connectionTimeout`, значение которой по умолчанию равно 0. Поэтому `onTimeout` будет вызван, если мы передадим фабрике Fastify пользовательское значение `connectionTimeout`. В файле `on-timeout.cjs` мы используем этот хук для отслеживания запросов, которые завершаются по времени. Поскольку он выполняется только тогда, когда сокет соединения завис, мы не можем отправить клиенту никаких данных:
 
 ```js
 const Fastify = require('fastify');
@@ -815,9 +815,9 @@ app.listen({ port: 3000 }).catch((err) => {
 });
 ```
 
-At `[1]`, we pass the `connectionTimeout` option to the Fastify factory, setting its value to `1` second. Then we add an `onTimeout` hook that prints to logs every time a connection is closed (`[2]`). Finally, we add a route that waits for `5` seconds before responding to the client (`[3]`).
+В `[1]` мы передаем фабрике Fastify параметр `connectionTimeout`, устанавливая его значение в `1` секунду. Затем мы добавляем хук `onTimeout`, который печатает в журналы каждый раз, когда соединение закрывается (`[2]`). Наконец, добавим маршрут, который будет ждать `5` секунд, прежде чем ответить клиенту (`[3]`).
 
-Let’s run the snippet:
+Давайте запустим сниппет:
 
 ```sh
 $ node on-timeout.cjs
@@ -825,16 +825,16 @@ $ node on-timeout.cjs
 "msg":"Server listening at http://127.0.0.1:3000"}
 ```
 
-Now from a different terminal window, we can make our call:
+Теперь из другого окна терминала мы можем выполнить наш вызов:
 
 ```sh
 $ curl localhost:3000
 curl: (52) Empty reply from server
 ```
 
-The connection was closed by the server, and the client received an empty response.
+Соединение было закрыто сервером, и клиент получил пустой ответ.
 
-We can return to the application log terminal window and check the output to see that our `onTimeout` hook was called:
+Мы можем вернуться в терминальное окно журнала приложения и проверить вывод, чтобы увидеть, что наш хук `onTimeout` был вызван:
 
 ```
 {"level":30,"time":1636721844526,"pid":63298,"hostname":"localhost","
@@ -845,13 +845,13 @@ request"}
 localhost","reqId":"req-1","msg":"The connection is closed."}
 ```
 
-### Replying from a hook {#replying-from-a-hook}
+### Ответ из хука {#replying-from-a-hook}
 
-Besides throwing an error, there is another way of early exiting from the request phase execution flow at any point. Terminating the chain is just a matter of sending the reply from a hook: this will prevent everything that comes after the current hook from being executed. For example, this can be useful when implementing authentication and authorization logic.
+Кроме выброса ошибки, есть еще один способ досрочно выйти из потока выполнения фазы запроса в любой момент. Прервать цепочку можно, просто отправив ответ от хука: это предотвратит выполнение всего, что идет после текущего хука. Например, это может быть полезно при реализации логики аутентификации и авторизации.
 
-However, there are some quirks when dealing with asynchronous hooks. For example, after calling `reply.send` to respond from a hook, we need to return the `reply` object to signal that we are replying from the current hook.
+Однако при работе с асинхронными хуками есть некоторые нюансы. Например, после вызова `reply.send` для ответа из хука нам нужно вернуть объект `reply`, чтобы показать, что мы отвечаем из текущего хука.
 
-The `reply-from-hook.cjs` example will make everything clear:
+Пример `reply-from-hook.cjs` все разъяснит:
 
 ```js
 app.addHook('preParsing', async (request, reply) => {
@@ -864,11 +864,11 @@ app.addHook('preParsing', async (request, reply) => {
 });
 ```
 
-We check whether the current user is authorized to access the resource `[1]`. Then, when the user misses the correct permissions, we reply from the hook directly `[2]` and return the `reply` object to signal it `[3]`. We are sure that the hook chain will stop its execution here, and the user will receive the `'Unauthorized'` message.
+Мы проверяем, авторизован ли текущий пользователь на доступ к ресурсу `[1]`. Затем, когда пользователю не хватает нужных прав, мы отвечаем хуку напрямую `[2]` и возвращаем объект `reply`, сигнализируя об этом `[3]`. Мы уверены, что цепочка хуков на этом остановит свое выполнение, а пользователь получит сообщение `'Unauthorized'`.
 
-### Route-level hooks {#route-level-hooks}
+### Хуки уровня маршрута {#route-level-hooks}
 
-Until now, we declared our hooks at the application level. However, as we mentioned previously in this chapter, request/response hooks can also be declared on a route level. Thus, as we can see in `route-level-hooks.cjs`, we can use the route definition to add as many hooks as we like, allowing us to perform actions only for a specific route:
+До сих пор мы объявляли наши хуки на уровне приложения. Однако, как мы уже упоминали ранее в этой главе, хуки запросов/ответов могут быть объявлены и на уровне маршрута. Таким образом, как мы видим в файле `route-level-hooks.cjs`, мы можем использовать определение маршрута для добавления любого количества хуков, позволяющих нам выполнять действия только для определенного маршрута:
 
 ```js
 app.route({
@@ -890,12 +890,12 @@ app.route({
 });
 ```
 
-If we need to declare more than one hook for each category, we can define an array of hooks instead (`[1]`). As a final note, it is worth mentioning that these hooks are always executed as last in the chain.
+Если нам нужно объявить более одного хука для каждой категории, мы можем определить массив хуков (`[1]`). В качестве последнего замечания стоит отметить, что эти хуки всегда выполняются последними в цепочке.
 
-Route-level hooks conclude this section. It is undoubtedly a longer one, but it is packed with concepts that are the core of the Fastify framework.
+Хуки уровня маршрута завершают этот раздел. Он, несомненно, длиннее, но в нем собраны концепции, составляющие основу фреймворка Fastify.
 
-## Summary {#summary}
+## Резюме {#summary}
 
-In this chapter, we learned one of the Fastify concepts that make it different from most web frameworks. Even if it might be a new concept to many developers, mastering hooks will unleash the path to highly performant, maintainable, and reusable application components. In fact, contrary to middleware, when we define a hook, we are guaranteed that our code is executed only when it makes sense, boosting the application’s performance. Furthermore, having a well-defined order of execution can help with debugging and runtime checking.
+В этой главе мы познакомились с одной из концепций Fastify, которая отличает его от большинства веб-фреймворков. Даже если для многих разработчиков эта концепция может быть новой, освоение хуков откроет путь к высокопроизводительным, поддерживаемым и многократно используемым компонентам приложения. В отличие от промежуточного ПО, определяя хук, мы гарантируем, что наш код будет выполняться только тогда, когда это имеет смысл, что повышает производительность приложения. Кроме того, наличие четко определенного порядка выполнения может помочь при отладке и проверке во время выполнения.
 
-In the next chapter, we will learn how to make user inputs safe and speed up our server thanks to validation and serialization.
+В следующей главе мы узнаем, как сделать пользовательский ввод безопасным и ускорить работу нашего сервера благодаря валидации и сериализации.
