@@ -1,63 +1,67 @@
-# Exploring Validation and Serialization
+---
+description: В этой главе вы узнаете, как реализовать безопасные конечные точки с проверкой ввода и сделать их быстрее с помощью процесса сериализации
+---
 
-Fastify is secure and fast, but that doesn’t protect it from misuse. This chapter will teach you how to implement secure endpoints with input validation and make them faster with the serialization process.
+# Изучение валидации и сериализации
 
-This framework provides all the tools you need to take advantage of these two critical steps, which will support you while exposing straightforward API interfaces and enable your clients to consume them.
+Fastify безопасен и быстр, но это не защищает его от злоупотреблений. В этой главе вы узнаете, как реализовать безопасные конечные точки с проверкой ввода и сделать их быстрее с помощью процесса сериализации.
 
-You will learn how to use and configure Fastify’s components in order to control and adapt the default setup to your application logic.
+Этот фреймворк предоставляет все необходимые инструменты для использования этих двух критически важных шагов, которые поддержат вас при раскрытии простых интерфейсов API и позволят вашим клиентам использовать их.
 
-This is the learning path we will cover in this chapter:
+Вы узнаете, как использовать и настраивать компоненты Fastify, чтобы контролировать и адаптировать стандартную настройку к логике вашего приложения.
 
--   Understanding validation and serialization
--   Understanding the validation process
--   Customizing the validator compiler
--   Managing the validator compiler
--   Understanding the serialization process
+Именно этот путь обучения мы рассмотрим в этой главе:
 
-## Technical requirements {#technical-requirements}
+-   Понимание валидации и сериализации
+-   Понимание процесса валидации
+-   Настройка компилятора валидатора
+-   Управление компилятором валидатора
+-   Понимание процесса сериализации
 
-As mentioned in the previous chapters, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation
--   A text editor to try the example code
--   An HTTP client to test out code, such as CURL or Postman
+Как уже упоминалось в предыдущих главах, вам понадобится следующее:
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%205).
+-   Рабочая установка Node.js 18
+-   Текстовый редактор для работы с кодом примера
+-   HTTP-клиент для тестирования кода, например CURL или Postman.
 
-## Understanding validation and serialization {#understanding-validation-and-serialization}
+Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%205).
 
-Fastify has been built with a focus on the developer’s experience, and on reducing the developer effort needed to draft a new project. For this reason, Fastify has built-in features to reduce the following burdens:
+## Понимание валидации и сериализации {#understanding-validation-and-serialization}
 
--   Validating the user’s input
--   Filtering the server’s output
+Fastify был создан с акцентом на опыт разработчика и на сокращение усилий разработчика, необходимых для создания нового проекта. По этой причине в Fastify встроены функции, позволяющие снизить следующие нагрузки:
 
-The aim is to find solutions for and prevent the most common security attacks, such as code injection or sensitive data exposure. The answer is declaring the expected input and output data format for every route. Therefore, the validation and serialization processes have been introduced into the framework by design:
+-   Проверка правильности ввода данных пользователем
+-   Фильтрация вывода сервера.
 
-![Figure 5.1 – The Validation and Serialization phases](validation-serialization-1.png)
+Цель - найти решения и предотвратить наиболее распространенные атаки безопасности, такие как внедрение кода или раскрытие конфиденциальных данных. Ответ заключается в объявлении ожидаемого формата входных и выходных данных для каждого маршрута. Поэтому процессы валидации и сериализации были введены во фреймворк по проекту:
 
-<center>Figure 5.1 – The Validation and Serialization phases</center>
+![Рисунок 5.1 - Этапы валидации и сериализации](validation-serialization-1.png)
 
-This preceding diagram shows the request lifecycle steps’ macro architecture, which you read about in detail in [_Chapter 4_](./hooks.md).
+<center>Рисунок 5.1 - Этапы валидации и сериализации</center>
 
-The **Validation** phase happens when the **HTTP Request** comes into the server. It allows you to approve or deny access to the **Business Logic** step.
+Эта предыдущая диаграмма показывает макроархитектуру этапов жизненного цикла запроса, о которой вы подробно читали в [_главе 4_](./hooks.md).
 
-The **Serialization** step transforms high-level data produced by the business logic, such as JSON objects or errors, into low-level data (`strings` or `buffers`) to reply to the client’s request.
+Фаза **Валидация** происходит, когда **HTTP-запрос** поступает на сервер. Он позволяет одобрить или запретить доступ к шагу **Бизнес-логика**.
 
-The next question is: how do you define the information passing through the validation and the response data? Fortunately, the solution is the **JSON Schema** specification, which is embraced by both Fastify and the web community.
+Этап **Сериализация** преобразует высокоуровневые данные, созданные бизнес-логикой, такие как объекты JSON или ошибки, в низкоуровневые данные (`strings` или `buffers`) для ответа на запрос клиента.
 
-But what is JSON Schema? We are going to understand this important application’s concept, which focuses on security and speed. The following sections are more theoretical than practical: we need to know how the system works before seeing it in action, otherwise, we may miss important concepts.
+Следующий вопрос: как определить информацию, проходящую через валидацию, и данные ответа? К счастью, решением является спецификация **JSON Schema**, которая принята как Fastify, так и веб-сообществом.
 
-### The JSON Schema specification {#the-json-schema-specification}
+Но что такое JSON Schema? Мы собираемся разобраться в этой важной концепции приложения, которая фокусируется на безопасности и скорости. Следующие разделы скорее теоретические, чем практические: нам нужно знать, как работает система, прежде чем увидеть ее в действии, иначе мы можем упустить важные концепции.
 
-The JSON Schema standard describes the structure of JSON documents. Therefore, by using a JSON Schema interpreter, it is possible to verify whether a JSON object adapts to a defined structure and act accordingly.
+### Спецификация JSON Schema {#the-json-schema-specification}
 
-Writing a schema gives you the possibility to apply some automation to your Node.js application:
+Стандарт JSON Schema описывает структуру документов JSON. Поэтому, используя интерпретатор JSON Schema, можно проверить, соответствует ли объект JSON определенной структуре, и действовать соответствующим образом.
 
--   Validating JSON objects
--   Generating documentation
--   Filtering JSON object fields
+Написание схемы дает вам возможность применить некоторую автоматизацию к вашему Node.js-приложению:
 
-The standard is still in the draft phase, and it has reached version 2020-12. By default, Fastify v4 adopts an older version of the specification, **Draft-07**, which is broadly supported and used. For this reason, all the next JSON Schema examples follow this standard. Let’s see in practice what a JSON Schema looks like by trying to validate the following JSON object through a schema:
+-   Проверка JSON-объектов
+-   Генерация документации
+-   Фильтрация полей JSON-объектов
+
+Стандарт все еще находится в стадии черновика и достиг версии 2020-12. По умолчанию Fastify v4 принимает более старую версию спецификации, **Draft-07**, которая широко поддерживается и используется. По этой причине все последующие примеры JSON Schema будут следовать этому стандарту. Давайте посмотрим на практике, как выглядит JSON Schema, попробовав проверить следующий JSON-объект через схему:
 
 ```json
 {
@@ -67,7 +71,7 @@ The standard is still in the draft phase, and it has reached version 2020-12. By
 }
 ```
 
-The corresponding JSON Schema could assume the following structure:
+Соответствующая JSON-схема может иметь следующую структуру:
 
 ```json
 {
@@ -93,93 +97,93 @@ The corresponding JSON Schema could assume the following structure:
 }
 ```
 
-_This schema validates the initial JSON object._ As you can see, the schema is JSON that is readable even without knowing the standard format. Let’s try to understand it together.
+Как видите, схема представляет собой JSON, который можно читать даже без знания стандартного формата. Давайте попробуем разобраться в ней вместе.
 
-We expect a `type` object as input with some properties that we have named and configured as follows:
+В качестве входных данных мы ожидаем объект `type` с некоторыми свойствами, которые мы назвали и настроили следующим образом:
 
--   The required `identifier` field must be an integer
--   A mandatory `name` string that cannot be longer than 50 characters
--   An optional `hobbies` string array
+-   Обязательное поле `identifier` должно быть целым числом
+-   Обязательная строка `имя`, которая не может быть длиннее 50 символов
+-   Необязательный массив строк `hobbies`.
 
-In this case, a software interpreter’s output that checks if the input JSON is compliant with the schema would be successful. The same check would fail if the input object doesn’t contain one of the mandatory fields, or if one of the types doesn’t match the schema’s `type` field.
+В этом случае вывод программного интерпретатора, проверяющего, соответствует ли входной JSON схеме, будет успешным. Та же проверка будет неудачной, если входной объект не содержит одного из обязательных полей или если один из типов не соответствует полю `type` схемы.
 
-So far, we have talked about the JSON object’s validation, but we haven’t mentioned the serialization. These two aspects are different, and they share the JSON Schema specification only. The specification is written keeping the validation process in mind. The serialization is a nice “side effect,” introduced to improve security and performance; we will see how within this section.
+До сих пор мы говорили о проверке JSON-объекта, но не упоминали о сериализации. Эти два аспекта различны, и их разделяет только спецификация JSON Schema. Спецификация написана с учетом процесса валидации. Сериализация - это приятный «побочный эффект», введенный для повышения безопасности и производительности; мы увидим, как это сделать в этом разделе.
 
-The example schema we have just seen is a demo showing the basic schema syntax, which will become more intuitive. JSON Schema supports a large set of keywords to implement strict validation, such as default values, recursive objects, date and time input types, email format, and so on.
+Пример схемы, который мы только что рассмотрели, - это демонстрация базового синтаксиса схемы, который станет более интуитивным. JSON Schema поддерживает большой набор ключевых слов для реализации строгой проверки, таких как значения по умолчанию, рекурсивные объекты, типы ввода даты и времени, формат электронной почты и так далее.
 
-Providing a complete overview of the JSON Schema specification could take up the whole book. This is why you can deepen your knowledge of this aspect by checking [the official website](https://json-schema.org/). We will have looked at other keywords by the end of this chapter and new ones will be introduced and described gradually.
+Полный обзор спецификации JSON Schema мог бы занять целую книгу. Поэтому вы можете углубить свои знания по этому аспекту, заглянув на [официальный сайт](https://json-schema.org/). К концу этой главы мы рассмотрим и другие ключевые слова, а новые будут вводиться и описываться постепенно.
 
-As you may have noticed reading the previous schema example, some keywords have the dollar symbol prefix, `$`. This is special metadata defined in the draft standard. One of the most important and most used ones is the `$id` property. It identifies the JSON Schema univocally, and Fastify relies upon it to process the schema objects and reuse them across the application.
+Как вы могли заметить, читая предыдущий пример схемы, некоторые ключевые слова имеют префикс в виде символа доллара, `$`. Это специальные метаданные, определенные в проекте стандарта. Одним из наиболее важных и часто используемых является свойство `$id`. Оно однозначно идентифицирует JSON-схему, и Fastify полагается на него для обработки объектов схемы и их повторного использования в приложении.
 
-The `$schema` keyword in the example tells us the JSON document’s format, which is Draft-07. Whenever you see a JSON Schema in these pages, it is implicit that it follows that version due to Fastify’s default setup.
+Ключевое слово `$schema` в примере говорит нам о формате JSON-документа, который является Draft-07. Если вы видите схему JSON на этих страницах, то подразумевается, что она соответствует этой версии из-за настроек Fastify по умолчанию.
 
-Now we have an idea of what a schema is, but how does it integrate with Fastify’s logic? Let’s find out.
+Теперь мы имеем представление о том, что такое схема, но как она интегрируется с логикой Fastify? Давайте выясним.
 
-### Compiling a JSON Schema {#compiling-a-json-schema}
+### Составление схемы JSON {#compiling-a-json-schema}
 
-A JSON Schema is not enough to validate a JSON document. We need to transform the schema into a function that our software can execute. For this reason, it is necessary to use a **compiler** that does the work.
+Схемы JSON недостаточно для проверки JSON-документа. Нам нужно преобразовать схему в функцию, которую сможет выполнить наше программное обеспечение. По этой причине необходимо использовать **компилятор**, который выполнит эту работу.
 
-It is essential to understand that a JSON Schema compiler tries to implement the specification, adding valuable features to ease our daily job. This implies knowing which compiler your application uses to tweak the configuration and how to benefit from some extra features such as new non-standard keywords, type coercion, and additional input formats.
+Важно понимать, что компилятор JSON Schema пытается реализовать спецификацию, добавляя ценные функции для облегчения нашей повседневной работы. Это подразумевает знание того, какой компилятор использует ваше приложение, чтобы подправить конфигурацию и получить преимущества от некоторых дополнительных возможностей, таких как новые нестандартные ключевые слова, принудительное приведение типов и дополнительные форматы ввода.
 
-!!!note "Compiler implementation lock-in"
+!!!note "Блокировка реализации компилятора"
 
-    Generally, writing JSON Schema by using a new compiler’s keywords and features leads to lock-in. In this case, you will not be able to change the compiler, and you may find issues during integrations that rely on standard JSON schemas only, such as API document generation. This is fine if you consider the pros and cons that we will present in this chapter.
+    Как правило, написание JSON Schema с использованием ключевых слов и возможностей нового компилятора приводит к блокировке. В этом случае вы не сможете изменить компилятор, и у вас могут возникнуть проблемы при интеграции, которая опирается только на стандартные JSON-схемы, например при генерации документов API. Это нормально, если учесть все плюсы и минусы, которые мы представим в этой главе.
 
-The same logic has been carried out in the serialization process. The idea was quite simple: if it is possible to build a JavaScript function to validate a JSON object, it is possible to compile a new function that produces a string output. The string would be based only on the fields defined in the JSON schema’s source!
+Такая же логика была реализована и в процессе сериализации. Идея была довольно проста: если можно построить функцию JavaScript для проверки объекта JSON, то можно скомпилировать новую функцию, которая будет выдавать строку. Строка будет основана только на полях, определенных в источнике схемы JSON!
 
-By following this step, you can define only the data you want to enter your server and go out of the application! This improves the application’s security. In fact, the compiler’s implementation has a secure mechanism to block code injection, and you can configure it to reject bad input data, such as `strings` that are too long.
+Следуя этому шагу, вы можете определить только те данные, которые должны входить на ваш сервер и выходить из приложения! Это повышает безопасность приложения. На самом деле, реализация компилятора имеет надежный механизм блокировки инъекций кода, и вы можете настроить его на отбраковку плохих входных данных, таких как слишком длинные `strings`.
 
-We have now clarified the JSON Schema and explained how it can help improve an application within a compiler component. Let’s understand how Fastify has integrated this logic into the framework.
+Теперь мы прояснили суть JSON Schema и объяснили, как она может помочь улучшить приложение в компоненте компилятора. Давайте разберемся, как Fastify интегрировал эту логику во фреймворк.
 
-### Fastify’s compilers {#fastifys-compilers}
+### Компиляторы Fastify {#fastifys-compilers}
 
-Fastify has two compilers by default:
+По умолчанию Fastify имеет два компилятора:
 
--   **The Validator Compiler**: Compiles the JSON Schema to validate the request’s input
--   **The Serializer Compiler**: Compiles the response’s JSON Schema to serialize the application’s data
+-   **Компилятор валидатора**: Компилирует JSON-схему для проверки входных данных запроса
+-   **Компилятор сериализатора**: Компилирует JSON-схему ответа для сериализации данных приложения.
 
-These compilers are basically Node.js modules that take JSON Schema as input and give us back a function. Keep this in mind because it will be important later, in the [Building a new validator compiler](#building-a-new-validator-compiler) section.
+Эти компиляторы, по сути, являются модулями Node.js, которые принимают JSON-схему на вход и выдают нам функцию. Помните об этом, потому что это будет важно позже, в разделе [Создание нового компилятора валидатора](#building-a-new-validator-compiler).
 
-Fastify’s detailed workflow can be schematized as follows:
+Подробный рабочий процесс Fastify можно представить следующим образом:
 
-![Figure 5.2 – Fastify’s JSON Schema compilation workflow](validation-serialization-2.png)
+![Рисунок 5.2 - Рабочий процесс компиляции JSON-схемы в Fastify](validation-serialization-2.png)
 
-<center>Figure 5.2 – Fastify’s JSON Schema compilation workflow</center>
+<center>Рисунок 5.2 - Рабочий процесс компиляции JSON-схемы в Fastify</center>
 
-As you can see, there are two distinct processes:
+Как вы можете видеть, существует два различных процесса:
 
--   The **Route initialization**, where the schemas are compiled during the startup phase.
--   The request through the **Request Lifecycle**, which uses the compiled functions stored in the route’s context.
+-   Инициализация **маршрута**, где схемы компилируются на этапе запуска.
+-   Запрос через **Request Lifecycle**, который использует скомпилированные функции, хранящиеся в контексте маршрута.
 
-Now you should have a complete overview of Fastify’s generic components and the logic they implement. It’s time to see it all in action. Note that to ease understanding and avoid confusion, we will discuss validation and serialization separately.
+Теперь вы должны иметь полное представление об общих компонентах Fastify и реализуемой ими логике. Пришло время увидеть все это в действии. Обратите внимание, что для облегчения понимания и во избежание путаницы мы будем обсуждать валидацию и сериализацию отдельно.
 
-## Understanding the validation process {#understanding-the-validation-process}
+## Понимание процесса валидации {#understanding-the-validation-process}
 
-The validation process in Fastify follows the same logic to validate the incoming HTTP request parts. This business logic comprises two main steps, as we saw in _Figure 5.2_:
+Процесс валидации в Fastify следует одной и той же логике для проверки входящих частей HTTP-запроса. Эта бизнес-логика состоит из двух основных шагов, как мы видели на _рисунке 5.2_:
 
--   The schema compilation executed by the **Validator Compiler**
--   The validation execution
+-   Компиляция схемы, выполняемая **компилятором валидатора**.
+-   Выполнение валидации
 
-We will discuss these aspects one by one.
+Мы обсудим эти аспекты по очереди.
 
-### The validator compiler {#the-validator-compiler}
+### Компилятор валидатора {#the-validator-compiler}
 
-Fastify doesn’t implement a JSON Schema interpreter itself. Still, it has integrated the **Ajv** (<https://www.npmjs.com/package/ajv>) module to accomplish the validation process. The Ajv integration into Fastify is implemented to keep it as fast as possible and support the encapsulation as well. You will always be able to change the default settings and provide a new JSON Schema interpreter to the application, but we will learn how to do it later, in the [Managing the validator compiler](#managing-the-validator-compiler) section.
+Fastify не реализует интерпретатор JSON Schema самостоятельно. Тем не менее, он интегрировал модуль [Ajv](https://www.npmjs.com/package/ajv) для выполнения процесса валидации. Интеграция Ajv в Fastify реализована для того, чтобы сделать его как можно более быстрым и поддержать инкапсуляцию. Вы всегда сможете изменить настройки по умолчанию и предоставить приложению новый интерпретатор JSON Schema, но как это сделать, мы узнаем позже, в разделе [Управление компилятором валидатора](#managing-the-validator-compiler).
 
-!!!note "Ajv version"
+!!!note "Версия Ajv"
 
-    Fastify has included the Ajv module version 8. This is important to know when you need to search for new configurations or to ask for support from the Ajv community. Moreover, the Ajv version defines the supported JSON Schema versions. At the time of writing, the lastest Ajv module version is v8, which supports the 2020-12 specification.
+    Fastify включил модуль Ajv версии 8. Это важно знать, когда нужно искать новые конфигурации или обращаться за поддержкой к сообществу Ajv. Кроме того, версия Ajv определяет поддерживаемые версии JSON Schema. На момент написания статьи последней версией модуля Ajv является v8, которая поддерживает спецификацию 2020-12.
 
-The validator compiler component is a factory function that must compile the application’s route schemas. Every route may define one schema per HTTP part:
+Компонент компилятора валидатора представляет собой фабричную функцию, которая должна компилировать схемы маршрутов приложения. Каждый маршрут может определять одну схему для каждой части HTTP:
 
--   `params` for the path parameters
--   `body` for the payload
--   `querystring` (or the `query` alias field) for the URL’s query strings
--   `headers` for the request’s headers
+-   `params` для параметров пути
+-   `body` для полезной нагрузки
+-   `querystring` (или поле псевдонима `query`) для строк запроса URL
+-   `headers` для заголовков запроса.
 
-All these properties are optional, so you can choose freely which HTTP part has to be validated.
+Все эти свойства являются необязательными, поэтому вы можете свободно выбирать, какая часть HTTP должна быть проверена.
 
-The schemas must be provided during the route declaration:
+Схемы должны быть указаны во время объявления маршрута:
 
 ```js
 app.post(
@@ -198,9 +202,9 @@ app.post(
 );
 ```
 
-You are done! Now, whenever you start the application, the schemas will be compiled by the default validator compiler. The generated functions will be stored in the route’s context, so every HTTP request that hits the `/echo/:myinteger` endpoint will execute the validation process.
+Готово! Теперь при каждом запуске приложения схемы будут компилироваться компилятором валидатора по умолчанию. Сгенерированные функции будут храниться в контексте маршрута, поэтому каждый HTTP-запрос, который попадает на конечную точку `/echo/:myinteger`, будет выполнять процесс валидации.
 
-We can call our endpoint with the incorrect data to check our code, for example, `/echo/not-a-number`. This input will trigger a validation error, and we will get back a `400 Bad Request` response:
+Мы можем вызвать конечную точку с неверными данными, чтобы проверить наш код, например, `/echo/not-a-number`. Такой ввод вызовет ошибку валидации, и мы получим ответ `400 Bad Request`:
 
 ```json
 {
@@ -210,61 +214,61 @@ We can call our endpoint with the incorrect data to check our code, for example,
 }
 ```
 
-As we saw, the compilation seems relatively easy, but you also need to know that this feature is _fully encapsulated_. This architectural pattern, which we have discussed already, is designed as follows:
+Как мы видели, компиляция кажется относительно простой, но вы также должны знать, что эта функция _полностью инкапсулирована_. Этот архитектурный паттерн, который мы уже обсуждали, устроен следующим образом:
 
--   One validation compiler per different plugin context and they will not collide
--   You can add schemas with the same `$id` in different contexts and they may have different structures
+-   Один компилятор валидации для разных контекстов плагинов, и они не будут сталкиваться.
+-   Вы можете добавлять схемы с одним и тем же `$id` в разные контексты, и они могут иметь разную структуру.
 
-Before further discussing the validator compiler and how to configure and change it, let’s continue on this “happy path” to get a complete picture of one of Fastify’s key aspects.
+Прежде чем продолжить обсуждение компилятора валидатора и того, как его настраивать и изменять, давайте продолжим этот «счастливый путь», чтобы получить полное представление об одном из ключевых аспектов Fastify.
 
-### Validation execution {#validation-execution}
+### Выполнение валидации {#validation-execution}
 
-Fastify applies the HTTP request part’s validation during the request lifecycle: after executing the `preValidation` hooks and before the `preHandler` hooks.
+Fastify применяет валидацию части HTTP-запроса во время жизненного цикла запроса: после выполнения хуков `preValidation` и перед хуками `preHandler`.
 
-The purpose of this validation is to check the input format and to produce one of these actions:
+Цель этой проверки - проверить формат входных данных и выдать одно из этих действий:
 
--   **Pass**: Validates the HTTP request part successfully
--   **Deny**: Throws an error when an HTTP request part’s validation fails
--   **Append error**: When an HTTP request part’s validation fails and continues the process successfully – configuring the `attachValidation` route option
+-   **Pass**: Успешно проверяет часть HTTP-запроса.
+-   **Deny**: Выбрасывает ошибку, если валидация части HTTP-запроса не прошла.
+-   **Append error**: При неудачной проверке части HTTP-запроса и успешном продолжении процесса - настройка опции маршрута `attachValidation`.
 
-This process is not designed to verify data correctness – for that, you should rely on the `preHandler` hook.
+Этот процесс не предназначен для проверки корректности данных - для этого следует полагаться на хук `preHandler`.
 
-As you have seen in the preceding code example, the `schema` object has a defined structure, where every property maps an HTTP part: `params`, `body`, `querystring`, and `headers`. When you set a JSON Schema to `body`, the HTTP request payload must be JSON input by default. You can overwrite this behavior, and we will see how to do it in the next section.
+Как вы видели в предыдущем примере кода, объект `schema` имеет определенную структуру, где каждое свойство сопоставляет HTTP-часть: `params`, `body`, `querystring` и `headers`. Когда вы устанавливаете для JSON-схемы значение `body`, полезная нагрузка HTTP-запроса по умолчанию должна представлять собой JSON-ввод. Вы можете изменить это поведение, и мы рассмотрим, как это сделать в следующем разделе.
 
-In the previous chapters, all of our route examples did not have the `schema` route option. By doing so, _we skipped the validation_ phase of the request lifecycle.
+В предыдущих главах все наши примеры маршрутов не содержали опцию маршрута `schema`. Таким образом, _мы пропускали фазу проверки_ жизненного цикла запроса.
 
-!!!note "Validation execution order"
+!!!note "Порядок выполнения проверки"
 
-    The HTTP part list mentioned in [The validator compiler](#the-validator-compiler) section is ordered by execution. This means that if the `params` validation fails, the subsequent HTTP parts will not be processed.
+    Список HTTP-частей, упомянутый в разделе [Компилятор валидатора](#the-validator-compiler), упорядочен по выполнению. Это означает, что если валидация `params` не пройдет, последующие HTTP-части обрабатываться не будут.
 
-The validation process is quite straightforward. Let’s zoom in on this process’ logic, looking at the entire request lifecycle:
+Процесс валидации довольно прост. Давайте рассмотрим логику этого процесса более подробно, рассмотрев весь жизненный цикл запроса:
 
-![Figure 5.3 – The validation execution workflow](validation-serialization-3.png)
+![Рисунок 5.3 - Рабочий процесс выполнения валидации](validation-serialization-3.png)
 
-<center>Figure 5.3 – The validation execution workflow</center>
+<center>Рисунок 5.3 - Рабочий процесс выполнения валидации</center>
 
-Let’s understand the flow diagram step by step:
+Давайте разберемся в схеме пошагово:
 
--   The dotted arrow is an HTTP request that has started its lifecycle into the Fastify server and has reached the `preValidation` hooks step. All will work as expected, and we are ready to start the **Validation Execution**.
--   Every HTTP part is validated if a JSON Schema has been provided during the route’s declaration.
--   The validation passes and proceeds to the next step.
--   When the validation fails, a particular `Error` object is thrown, and it will be processed by the **error handler** configured in the server instance where the route has been registered. Note that the error is suppressed if the `attachValidation` route option is set. We will look at an example in the [Flow control](#flow-control) section.
--   If all the validations are successful, the lifecycle continues its flow to the `preHandler` hooks, and it will continue as discussed in the previous chapters.
--   The **Business Logic** dashed box represents the handler execution that has been omitted because the image is specifically focused on validating the execution flow.
+-   Пунктирная стрелка - это HTTP-запрос, который начал свой жизненный цикл на сервере Fastify и достиг шага хука `preValidation`. Все работает, как ожидалось, и мы готовы начать **выполнение валидации**.
+-   Каждая HTTP-часть проверяется, если во время объявления маршрута была предоставлена JSON-схема.
+-   Если проверка пройдена, мы переходим к следующему шагу.
+-   При неудачной проверке выбрасывается определенный объект `Error`, который будет обработан **обработчиком ошибок**, настроенным в экземпляре сервера, где был зарегистрирован маршрут. Обратите внимание, что ошибка подавляется, если установлена опция маршрута `attachValidation`. Мы рассмотрим пример в разделе [Управление потоком](#flow-control).
+-   Если все проверки прошли успешно, жизненный цикл продолжает свой путь к хукам `preHandler`, и дальше все будет происходить так, как обсуждалось в предыдущих главах.
+-   Пунктирная рамка **Бизнес-логика** представляет собой выполнение обработчика, которое было опущено, поскольку изображение специально сфокусировано на проверке потока выполнения.
 
-These steps happen when the schema option is set into the route definition, as in the previous code snippet in [The validator compiler](#the-validator-compiler) section.
+Эти шаги происходят, когда в определении маршрута устанавливается опция схемы, как в предыдущем фрагменте кода в разделе [Компилятор валидатора](#the-validator-compiler).
 
-Now we have a complete overview of the entire validation process, from the startup to the server’s runtime. The information provided covers the most common use cases for an application and, thanks to Fastify’s default settings, it is ready to use.
+Теперь у нас есть полный обзор всего процесса валидации, начиная с запуска и заканчивая временем работы сервера. Представленная информация охватывает наиболее распространенные случаи использования приложения и, благодаря настройкам Fastify по умолчанию, готова к использованию.
 
-Great applications need great features. This is why we will now focus on the validator compiler customization.
+Отличным приложениям нужны отличные функции. Поэтому сейчас мы сосредоточимся на настройке компилятора валидатора.
 
-## Customizing the validator compiler {#customizing-the-validator-compiler}
+## Настройка компилятора валидатора {#customizing-the-validator-compiler}
 
-Fastify exposes a lot of options to provide a flexible validation process and complete control of it. We are going to explore all the possible customizations one by one, so you will be a validator compiler guru by the end of this section! Let’s jump into this journey one step at a time!
+Fastify предоставляет множество опций для обеспечения гибкого процесса валидации и полного контроля над ним. Мы рассмотрим все возможные настройки по очереди, так что к концу этого раздела вы станете гуру компилятора валидатора! Давайте начнем это путешествие шаг за шагом!
 
-### Flow control {#flow-control}
+### Управление потоком {#flow-control}
 
-In the previous section, we mentioned the `attachValidation` route option – it’s time to look at an example (although you probably already know how to use it, thanks to the previous chapters):
+В предыдущем разделе мы упоминали опцию маршрута `attachValidation` - пришло время рассмотреть пример (хотя вы, вероятно, уже знаете, как ее использовать, благодаря предыдущим главам):
 
 ```js
 app.get('/attach-validation', {
@@ -278,11 +282,11 @@ app.get('/attach-validation', {
 });
 ```
 
-Adding the flag into the route option will prevent a validation error from being thrown. Instead, the validation execution process will be interrupted at the first error occurrence, and the process will continue as the validation has been successful. In this case, a `validationError` object will be attached to the `request` argument. The subsequent route’s entities in the request lifecycle have to deal with the error and act accordingly or the error will not be managed. As in the previous code example, the handler function is always executed.
+Добавление флага в параметр маршрута предотвратит возникновение ошибки проверки. Вместо этого процесс выполнения валидации будет прерван при первой же ошибке, и процесс будет продолжен, поскольку валидация прошла успешно. В этом случае к аргументу `request` будет присоединен объект `validationError`. Последующие объекты маршрута в жизненном цикле запроса должны справиться с ошибкой и действовать соответствующим образом, иначе ошибка не будет обработана. Как и в предыдущем примере кода, функция-обработчик выполняется всегда.
 
-### Understanding the Ajv configuration {#understanding-the-ajv-configuration}
+### Понимание конфигурации Ajv {#understanding-the-ajv-configuration}
 
-The Ajv configuration defines how the validation’s functions are built and how they will behave in some circumstances. The default settings are the following, and it is worth knowing about them:
+Конфигурация Ajv определяет, как строятся функции валидации и как они будут вести себя в тех или иных обстоятельствах. По умолчанию используются следующие настройки, и о них стоит знать:
 
 ```json
 {
@@ -295,24 +299,24 @@ The Ajv configuration defines how the validation’s functions are built and how
 }
 ```
 
-Let’s get an understanding of them, and then we will provide an example to see all these options in action:
+Давайте разберемся в них, а затем приведем пример, чтобы увидеть все эти опции в действии:
 
--   The `coerceTypes` flag tries to coerce the input data to the type defined in the schema. For example, if an input body property is the string `foo:"42"`, and if the field itself is defined as `type: integer`, the `request.body.foo` field will be coerced to Number. We will investigate the `array` value later in this section.
--   The `useDefaults` option will enable the use of the `default` JSON Schema keyword, letting you define an initial value if a property is missing or undefined.
--   The `removeAdditional` setting allows you to evict all the properties that are not listed in the JSON Schema from the HTTP part field.
--   `uriResolver` is a parameter introduced by the Fastify community. It speeds up the Ajv module processing even more.
--   A JSON object may have multiple validation errors, such as two fields that are not the correct data type. The `allErrors` flag configures the validation function to stop at the first error occurrence.
--   The `nullable` flag lets you use the `nullable` keyword’s syntactic sugar in your JSON schemas.
+-   Флаг `coerceTypes` пытается привести входные данные к типу, определенному в схеме. Например, если свойством входного тела является строка `foo: "42"`, а само поле определено как `type: integer`, то поле `request.body.foo` будет приведено к типу Number. Значение `array` мы рассмотрим позже в этом разделе.
+-   Опция `useDefaults` включает использование ключевого слова `default` JSON Schema, позволяя вам определить начальное значение, если свойство отсутствует или не определено.
+-   Параметр `removeAdditional` позволяет удалить из поля HTTP-части все свойства, не указанные в JSON Schema.
+-   `uriResolver` - параметр, введенный сообществом Fastify. Он еще больше ускоряет обработку Ajv-модуля.
+-   JSON-объект может содержать несколько ошибок валидации, например, два поля с неправильным типом данных. Флаг `allErrors` настраивает функцию валидации на остановку при первой ошибке.
+-   Флаг `nullable` позволяет использовать синтаксический сахар ключевого слова `nullable` в схемах JSON.
 
-These options and more are well documented on the [Ajv site](https://ajv.js.org/options.html). You can refer to them to find new options or to change the default ones. We will look at a couple of the most used configurations as a baseline in the [Configuring the default Ajv validator compiler](#configuring-the-default-ajv-validator-compiler) section.
+Эти и другие опции хорошо документированы на сайте [Ajv](https://ajv.js.org/options.html). Вы можете обратиться к ним, чтобы найти новые опции или изменить те, что используются по умолчанию. В разделе [Настройка компилятора валидатора Ajv по умолчанию](#configuring-the-default-ajv-validator-compiler) мы рассмотрим несколько наиболее используемых конфигураций в качестве базовых.
 
-It is important to note that these options let the validation function manipulate the original request’s input. This implies that the raw body is processed and modified.
+Важно отметить, что эти опции позволяют функции валидации манипулировать исходными данными запроса. Это означает, что исходное тело запроса будет обработано и изменено.
 
-!!!note "How is the preValidation hook born?"
+!!!note "Как создается хук предварительной проверки?"
 
-    The `preValidation` hook was first introduced in Fastify’s core due to the raw body manipulation that the validation functions were doing. This has been necessary in limited cases only, such as a signed body payload that requires an unmodified client’s input.
+    Хук `preValidation` был впервые введен в ядро Fastify из-за манипуляций с телом, которые выполняли функции валидации. Это было необходимо только в ограниченных случаях, например, для подписанных тел, которые требуют немодифицированного ввода клиента.
 
-To see it all in action, here is a JSON Schema:
+Чтобы увидеть все это в действии, вот JSON-схема:
 
 ```js
 const ajvConfigDemoSchema = {
@@ -338,13 +342,13 @@ const ajvConfigDemoSchema = {
 };
 ```
 
-This schema introduces three new keywords:
+Эта схема вводит три новых ключевых слова:
 
--   The `default` property lets you define a default value when the JSON input object does not contain the `useDefaultsDemo` property or its value is `null`.
--   The `additionalProperties` parameter is used to control the handling of extra properties. In the example, you see the `boolean false`, which evicts the additional data from the HTTP part. An object could also apply more complex filters. Please refer to [the official specification](https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties).
--   The `nullable` flag is not defined in the standard. It is syntactic sugar to avoid the standard type definition for `nullable` fields: `{ type: ["string", "null"] }`.
+-   Свойство `default` позволяет определить значение по умолчанию, когда объект ввода JSON не содержит свойства `useDefaultsDemo` или его значение равно `null`.
+-   Параметр `additionalProperties` используется для управления обработкой дополнительных свойств. В примере вы видите `boolean false`, который выводит дополнительные данные из HTTP-части. Объект также может применять более сложные фильтры. Обратитесь к [официальной спецификации](https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties).
+-   Флаг `nullable` не определен в стандарте. Это синтаксический сахар, позволяющий избежать стандартного определения типа для `nullable` полей: `{ type: ["string", "null"] }`.
 
-Using this schema in a route handler will give us a clear understanding of the configured options:
+Использование этой схемы в обработчике маршрута даст нам четкое понимание настраиваемых опций:
 
 ```js
 app.post('/config-in-action', {
@@ -357,7 +361,7 @@ app.post('/config-in-action', {
 });
 ```
 
-Calling the endpoint, defined with the following payload, should set a reply with the modified body after the validation function’s execution:
+Вызов конечной точки, определенной со следующей полезной нагрузкой, должен установить ответ с измененным телом после выполнения функции проверки:
 
 ```sh
 curl --location --request POST 'http://localhost:8080/config-in-
@@ -374,7 +378,7 @@ action' \
 }'
 ```
 
-We should get back this response as an output:
+На выходе мы должны получить такой ответ:
 
 ```json
 {
@@ -388,22 +392,22 @@ We should get back this response as an output:
 }
 ```
 
-The changes have been highlighted, and each property name describes the Ajv option that triggered the change.
+Изменения выделены, и каждое название свойства описывает опцию Ajv, которая вызвала изменение.
 
-So far, we have a complete understanding of the default validator compiler’s configuration. This covers the most common use cases and gives you the possibility to use it out of the box without struggling with complex configuration or having to learn about the `Ajv` module. Unfortunately, it is crucial to control all Fastify’s components and configuration in order to manage a real-world application. In the following section, you will learn how to customize the validator compiler.
+На данный момент мы имеем полное представление о конфигурации компилятора валидаторов по умолчанию. Это охватывает наиболее распространенные случаи использования и дает вам возможность использовать его из коробки, не мучаясь со сложной конфигурацией и не изучая модуль `Ajv`. К сожалению, для управления реальным приложением крайне важно контролировать все компоненты и конфигурацию Fastify. В следующем разделе вы узнаете, как настроить компилятор валидатора.
 
-## Managing the validator compiler {#managing-the-validator-compiler}
+## Управление компилятором валидатора {#managing-the-validator-compiler}
 
-Fastify offers you the possibility to customize the validator compiler in two different manners:
+Fastify предлагает вам возможность настроить компилятор валидатора двумя различными способами:
 
--   Configuring the default Ajv validator compiler
--   Implementing a brand-new validator compiler, such as a new JSON Schema compiler module
+-   Настройка стандартного компилятора валидатора Ajv
+-   Внедрение совершенно нового компилятора валидаторов, например, нового модуля компилятора JSON Schema.
 
-These options give you total control over the validation process and the ability to react to every situation you may face, such as adopting a new validator compiler module or managing how the Ajv package processes the input data.
+Эти возможности дают вам полный контроль над процессом валидации и возможность реагировать на любые ситуации, с которыми вы можете столкнуться, например, принять новый модуль компилятора валидатора или управлять тем, как пакет Ajv обрабатывает входные данные.
 
-### Configuring the default Ajv validator compiler {#configuring-the-default-ajv-validator-compiler}
+### Настройка компилятора валидатора Ajv по умолчанию {#configuring-the-default-ajv-validator-compiler}
 
-In the [Understanding the Ajv configuration](#understanding-the-ajv-configuration) section, we saw the default Ajv settings and a link to its documentation to explore them all. If you find some useful options you would like to apply, you can set them during the Fastify instance instantiation:
+В разделе [Понимание конфигурации Ajv](#understanding-the-ajv-configuration) мы рассмотрели настройки Ajv по умолчанию и ссылку на его документацию, чтобы изучить их все. Если вы найдете полезные опции, которые хотели бы применить, вы можете установить их во время инстанцирования экземпляра Fastify:
 
 ```js
 const app = fastify({
@@ -417,12 +421,12 @@ const app = fastify({
 });
 ```
 
-Fastify’s factory accepts an Ajv option parameter. The parameter has two main fields:
+Фабрика Fastify принимает параметр Ajv. Параметр имеет два основных поля:
 
--   `customOptions` lets you extend Ajv’s settings. Note that this JSON will be merged within the default settings.
--   The `plugins` array accepts the Ajv’s external plugins.
+-   `customOptions` позволяет расширить настройки Ajv. Обратите внимание, что этот JSON будет объединен с настройками по умолчанию.
+-   Массив `plugins` принимает внешние плагины Ajv.
 
-The new settings used in the example are the ones I prefer the most. The `coerceTypes` value solves the issue when you need to receive an array parameter via `querystring`:
+В примере используются новые настройки, которые мне больше всего нравятся. Значение `coerceTypes` решает проблему, когда вам нужно получить параметр массива через `querystring`:
 
 ```js
 app.get('/search', {
@@ -438,22 +442,22 @@ app.get('/search', {
 });
 ```
 
-Without the `coerceTypes: 'array'`, if your endpoint receives just one parameter, it won’t be coerced to an array within one element by default, thus leading to an error of type mismatch. Note that this option is already set as a default by Fastify.
+Без `coerceTypes: 'array'`, если ваша конечная точка получает только один параметр, он не будет принудительно приведен к массиву в пределах одного элемента по умолчанию, что приведет к ошибке несоответствия типов. Обратите внимание, что эта опция уже установлена Fastify по умолчанию.
 
-The `removeAdditional` option value makes it possible to avoid redefining `additional Properties: false` in all our schema objects. Note that it is crucial to list all the properties in the application’s schemas, or you will not be able to read the input in your handlers!
+Значение опции `removeAdditional` позволяет избежать переопределения `additional Properties: false` во всех наших объектах схемы. Обратите внимание, что очень важно перечислить все свойства в схемах приложения, иначе вы не сможете прочитать входные данные в своих обработчиках!
 
-!!!note "JSON Schema shorthand declaration"
+!!!note "Объявление короткой схемы JSON Schema"
 
-    In the previous example, the query’s schema didn’t have some of the mandatory JSON Schema fields: `type` and `properties`. Fastify will wrap the input JSON Schema in parent JSON Schema scaffolding if it does not recognize the two properties. This is how Fastify’s syntactic sugar works, to ease the route’s configuration.
+    В предыдущем примере в схеме запроса отсутствовали некоторые обязательные поля JSON Schema: `type` и `properties`. Fastify обернет входную JSON-схему в родительские JSON-схемы, если не распознает эти два свойства. Так работает синтаксический сахар Fastify, облегчающий настройку маршрута.
 
-After the `customOptions` Ajv configuration option field, it is possible to set the `plugins` property. It adds new features and keywords to the JSON Schema specification, improving your developer experience.
+После поля опций конфигурации Ajv `customOptions` можно установить свойство `plugins`. Оно добавляет новые возможности и ключевые слова в спецификацию JSON Schema, улучшая работу разработчика.
 
-The `plugins` option must be an array, where each element should be either of the following:
+Опция `plugins` должна представлять собой массив, каждый элемент которого должен быть одним из следующих:
 
--   The Ajv plugin’s function
--   A two-element array, where the first item is the Ajv plugin’s function and the second is the plugin’s options
+-   Функция плагина Ajv.
+-   Двухэлементный массив, где первый элемент - функция плагина Ajv, а второй - опции плагина.
 
-We can see how to use it in the following snippet. We are registering the same plugin multiple times for the sake of showing the syntaxes:
+Как это использовать, можно увидеть в следующем фрагменте. Мы регистрируем один и тот же плагин несколько раз для того, чтобы показать синтаксис:
 
 ```js
 plugins: [
@@ -466,13 +470,13 @@ plugins: [
 ];
 ```
 
-As you have seen, Fastify’s validator compiler is highly configurable and lets you find the best settings for your application. We have almost covered all the settings that Fastify exposes, in order to configure the default compiler.
+Как вы уже убедились, компилятор валидатора Fastify очень настраиваемый и позволяет подобрать оптимальные параметры для вашего приложения. Мы почти охватили все параметры, которые Fastify раскрывает, чтобы настроить компилятор по умолчанию.
 
-So far we have used the validation output as is, but if you are asking yourself whether it is customizable, of course it is! Let’s see how to do it.
+До сих пор мы использовали вывод валидации как есть, но если вы задаетесь вопросом, можно ли его настроить, то, конечно, можно! Давайте посмотрим, как это сделать.
 
-### The validation error {#the-validation-error}
+### Ошибка валидации {#the-validation-error}
 
-The validator function is going to throw an error whenever an HTTP part doesn’t match the route’s schema. The route’s context error handler manages the error. Here is a quick example to show how a custom error handler could manage an input validation error in a different way:
+Функция валидатора будет выбрасывать ошибку всякий раз, когда HTTP-часть не соответствует схеме маршрута. Обработчик ошибок контекста маршрута управляет ошибкой. Приведем небольшой пример, показывающий, как пользовательский обработчик ошибок может по-другому управлять ошибкой проверки ввода:
 
 ```js
 app.get('/custom-error-handler', {
@@ -495,26 +499,26 @@ app.setErrorHandler(function (error, request, reply) {
 });
 ```
 
-As you can see, when the validation fails, two parameters are appended to the Error object:
+Как видите, при неудачной проверке к объекту Error добавляются два параметра:
 
--   The `validationContext` property is the HTTP part’s string representation, responsible for generating the error
--   The `validation` field is the raw error object, returned by the validator compiler implementation
+-   Свойство `validationContext` - это строковое представление HTTP-части, отвечающее за генерацию ошибки
+-   Поле `validation` - это необработанный объект ошибки, возвращенный реализацией компилятора валидатора.
 
-The default Fastify error handler manages the Ajv error object and returns a clear error message.
+Обработчик ошибок Fastify по умолчанию управляет объектом ошибки Ajv и возвращает ясное сообщение об ошибке.
 
-!!!note "The validation error data type"
+!!!note "Тип данных ошибки проверки"
 
-    The default compiler produces an Ajv error array. Therefore, the `validation` property is generated by Ajv’s compiled function. Whenever we use the custom validator compiler with a new error format, the `validation` field mutates its data type accordingly.
+    Компилятор по умолчанию создает массив ошибок Ajv. Поэтому свойство `validation` генерируется скомпилированной функцией Ajv. Всякий раз, когда мы используем пользовательский компилятор валидатора с новым форматом ошибок, поле `validation` соответствующим образом изменяет свой тип данных.
 
-Customizing the error handler gives you the control to make the validation errors conform to your application’s error format output. We saw an example earlier, in the [The validator compiler](#the-validator-compiler) section.
+Настройка обработчика ошибок дает вам возможность сделать так, чтобы ошибки валидации соответствовали формату ошибок, выводимых вашим приложением. Пример мы рассмотрели ранее, в разделе [The validator compiler](#the-validator-compiler).
 
-If you just need to customize the error message instead, Fastify has an option even for that! The `schemaErrorFormatter` option accepts a function that must generate the `Error` object, which will be thrown during the validation process flow. This option can be set in the following ways:
+Если же вам нужно просто настроить сообщение об ошибке, то в Fastify есть опция и для этого! Опция `schemaErrorFormatter` принимает функцию, которая должна сгенерировать объект `Error`, который будет выброшен во время процесса валидации. Эта опция может быть задана следующими способами:
 
--   During the root server initialization
--   As the route’s option
--   Or on the plugin registration’s instance
+-   Во время инициализации корневого сервера
+-   В качестве опции маршрута
+-   Или на экземпляре регистрации плагина.
 
-Here is a complete overview of the three possibilities in the same order as in the preceding list:
+Ниже приведен полный обзор трех возможностей в том же порядке, что и в предыдущем списке:
 
 ```js
 const app = fastify({
@@ -544,22 +548,22 @@ app.register(function plugin(instance, opts, next) {
 });
 ```
 
-The `setSchemaErrorFormatter` input function must be synchronous. It is going to receive the raw `errors` object returned by the compiled validation function, plus the part of HTTP that is not valid.
+Входная функция `setSchemaErrorFormatter` должна быть синхронной. Она будет получать необработанный объект `errors`, возвращаемый скомпилированной функцией валидации, плюс часть HTTP, которая не является валидной.
 
-So far, we have tweaked the default Fastify validator compiler, since it generates the validation function for the error output. There are quite a lot of settings, but they allow you to customize your server based on your choices, without dealing with the compilation complexity. We still have to explain how to change the validator compiler implementation, but we must learn how to reuse JSON schemas first.
+До сих пор мы настраивали стандартный компилятор валидатора Fastify, поскольку он генерирует функцию валидации для вывода ошибок. Настроек довольно много, но они позволяют настроить ваш сервер по своему усмотрению, не сталкиваясь со сложностью компиляции. Нам еще предстоит объяснить, как изменить реализацию компилятора валидатора, но сначала мы должны научиться повторно использовать JSON-схемы.
 
-### Reusing JSON schemas {#reusing-json-schemas}
+### Повторное использование JSON-схем {#reusing-json-schemas}
 
-JSON schemas may seem huge and long to read and understand at first sight. In fact, in the [The JSON Schema specification](#the-json-schema-specification) section, we saw a ~20-line schema to validate a three-field JSON object.
+На первый взгляд схемы JSON могут показаться огромными и длинными для чтения и понимания. На самом деле, в разделе [The JSON Schema specification](#the-json-schema-specification) мы видели ~20-строчную схему для проверки трехпольного объекта JSON.
 
-The JSON Schema specification solves this issue by providing schema reusability through the `$ref` keyword. This property is used to reference a schema and must be a string URI. `$ref` may reference an external JSON Schema or a local one in the schema itself.
+Спецификация JSON Schema решает эту проблему, предоставляя возможность повторного использования схемы с помощью ключевого слова `$ref`. Это свойство используется для ссылки на схему и должно представлять собой строковый URI. `$ref` может ссылаться на внешнюю JSON-схему или на локальную схему в самой схеме.
 
-To reference an external schema, we must start with the following two actions:
+Чтобы сослаться на внешнюю схему, необходимо выполнить следующие два действия:
 
-1.  Set the `$id` property of the external schema and the `$ref` values to reference it.
-2.  Add the external schema to the Fastify context, calling the `app.addSchema(json Schema)` method.
+1.  Установить свойство `$id` внешней схемы и значения `$ref` для ссылки на нее.
+2.  Добавьте внешнюю схему в контекст Fastify, вызвав метод `app.addSchema(json Schema)`.
 
-To understand it better, we are going to use an example:
+Чтобы лучше понять это, мы рассмотрим пример:
 
 ```js
 app.addSchema({
@@ -591,13 +595,13 @@ app.addSchema({
 });
 ```
 
-The `addSchema` method accepts a valid JSON Schema as an argument, and it must have the `$id` value. Otherwise, the schema can’t be referenced. If the `$id` value is missing, an error is thrown. Adding a schema by following this example lets us reference it in the route configuration’s `schema` property.
+Метод `addSchema` принимает в качестве аргумента действительную JSON-схему, которая должна иметь значение `$id`. В противном случае ссылка на схему невозможна. Если значение `$id` отсутствует, будет выдана ошибка. Добавив схему, следуя этому примеру, мы сможем ссылаться на нее в свойстве `schema` конфигурации маршрута.
 
-!!!note "The schema’s `$id`"
+!!!note "Идентификатор схемы `$id`."
 
-    In the previous code block, the `$id` value is an absolute **Uniform Resource (URI)**. The JSON Schema specification defines that the root schema’s `$id` should be in this format. The URI set doesn’t need to be a real HTTP endpoint as in the example. It must be unique. Following the specification will help you adopt external tools to manipulate your application’s schemas, such as documentation generation. As an example, I like to use a URI in this format: `schema:myapplication:user:create`, which can be summarized as `schema:<application code>:<model>:<scope>`.
+    В предыдущем блоке кода значение `$id` является абсолютным **Uniform Resource (URI)**. Спецификация JSON Schema определяет, что `$id` корневой схемы должен быть в этом формате. Набор URI не обязательно должен быть реальной конечной точкой HTTP, как в примере. Он должен быть уникальным. Следование спецификации поможет вам использовать внешние инструменты для работы со схемами вашего приложения, например, для создания документации. В качестве примера я предпочитаю использовать URI в таком формате: `schema:myapplication:user:create`, что можно обобщить как `schema:<код приложения>:<модель>:<сфера>`.
 
-To reference the <http://myapp.com/user.json> schema, we must use the `$ref` keyword:
+Чтобы сослаться на [схему](http://myapp.com/user.json), мы должны использовать ключевое слово `$ref`:
 
 ```js
 app.post('/schema-ref', {
@@ -629,7 +633,7 @@ app.post('/schema-ref', {
 });
 ```
 
-We used four different URI reference formats. Generally, the `$ref` format has this syntax:
+Мы использовали четыре различных формата ссылок на URI. Как правило, формат `$ref` имеет следующий синтаксис:
 
 ```
 <absolute URI>#<local fragment>
