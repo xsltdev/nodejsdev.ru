@@ -639,20 +639,22 @@ app.post('/schema-ref', {
 <absolute URI>#<local fragment>
 ```
 
-Here is a brief explanation:
+Вот краткое объяснение:
 
-1.  **Reference to an external fragment**: The user’s property points to an external `$id`, defined in the `user.json` URI domain.
-2.  **Reference to an external subschema fragment**: `homeAdr` has replaced the absolute URI, from `user.json` to `address.json`. This happens because if `$id` doesn’t start with the `#` char, it is a relative path to the root URI. So, in the external schema, we have defined an `address.json` subschema.
-3.  **Relative path to an external subschema**: The local fragment can be a relative path to the JSON Schema to apply. Note that the relative path uses the JSON field name `work` and not the `$id` value.
-4.  **Local reference**: You can reference the schema itself. When `$ref` does not have an absolute URI before the `#` char, the local fragment is resolved locally.
+1.  **Ссылка на внешний фрагмент**: Свойство пользователя указывает на внешний `$id`, определенный в URI домена `user.json`.
+2.  **Ссылка на внешний фрагмент подсхемы**: `homeAdr` заменил абсолютный URI из `user.json` на `address.json`. Это происходит потому, что если `$id` не начинается с символа `#`, то это относительный путь к корневому URI. Таким образом, во внешней схеме мы определили подсхему `address.json`.
+3.  **Относительный путь к внешней подсхеме**: Локальный фрагмент может быть относительным путем к применяемой JSON-схеме. Обратите внимание, что в относительном пути используется имя JSON-поля `work`, а не значение `$id`.
+4.  **Локальная ссылка**: Вы можете ссылаться на саму схему. Если `$ref` не содержит абсолютного URI перед символом `#`, локальный фрагмент разрешается локально.
 
-This example gives you a complete tool belt and helps you to define your own schema’s references. This setup covers the most common use cases. In fact, the specification is comprehensive and covers many more use cases that could not adapt to our applications. You may refer to the official [documentation example](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-01#section-8.2.4) to deep dive into `$ref` and `$id` linking.
+Этот пример дает вам полный набор инструментов и помогает определить собственные ссылки на схему. Эта настройка охватывает наиболее распространенные случаи использования. На самом деле спецификация является исчерпывающей и охватывает гораздо больше случаев использования, которые не могут быть адаптированы к нашим приложениям. Вы можете обратиться к официальному [примеру документации](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-01#section-8.2.4), чтобы глубже погрузиться в связывание `$ref` и `$id`.
 
-We have learned how to share schemas across the application and use them in our routes’ configuration. But how can we read them? Let’s find out in the next section.
+Мы научились делиться схемами в приложении и использовать их в конфигурации наших маршрутов. Но как их читать? Давайте узнаем это в следующем разделе.
 
-#### Retrieving your schemas {#retrieving-your-schemas}
+Переведено с помощью DeepL.com (бесплатная версия)
 
-You must be aware that the schemas added through the `addSchema()` method are stored in a `bucket` component. Every plugin instance has one `bucket` instance to support the encapsulation. Let’s see this code:
+#### Извлечение ваших схем {#retrieving-your-schemas}
+
+Вы должны знать, что схемы, добавленные с помощью метода `addSchema()`, хранятся в компоненте `bucket`. Каждый экземпляр плагина имеет один экземпляр `bucket` для поддержки инкапсуляции. Давайте посмотрим на этот код:
 
 ```js
 app.register(async (instance, opts) => {
@@ -671,13 +673,13 @@ app.register(async (instance, opts) => {
 });
 ```
 
-Adding two schemas with the same `$id` is going to throw an error during the startup phase. The usual Fastify logic will apply as always: schemas added in the plugin’s parent scope are inherited in the child one. But, two schemas can have the same `$id` only in different encapsulated contexts.
+Добавление двух схем с одинаковым `$id` приведет к ошибке на этапе запуска. Обычная логика Fastify будет применяться как всегда: схемы, добавленные в родительской области видимости плагина, наследуются в дочерней. Но две схемы могут иметь одинаковый `$id` только в разных инкапсулированных контекстах.
 
-!!!note "Fastify loves optimizing"
+!!!note "Fastify любит оптимизировать"
 
-    As mentioned, every plugin context has a `bucket` component that contains all the context’s schemas. This is not totally true. The schema objects could be vast and repetitive. Therefore, Fastify optimizes the bucket logic to reduce the `bucket` instances to the minimum that is needed to isolate them in an encapsulated context. For example, adding all the shared application’s schemas in the root context leads to a single `bucket` instance.
+    Как уже говорилось, у каждого контекста плагина есть компонент `bucket`, который содержит все схемы контекста. Это не совсем верно. Объекты схем могут быть огромными и повторяющимися. Поэтому Fastify оптимизирует логику работы с ведрами, чтобы сократить количество экземпляров `ведер` до минимума, необходимого для их изоляции в инкапсулированном контексте. Например, добавление всех схем общего приложения в корневой контекст приводит к созданию одного экземпляра `bucket`.
 
-To read the application’s schemas from the `bucket` component, you can use these methods:
+Чтобы прочитать схемы приложения из компонента `bucket`, вы можете использовать эти методы:
 
 ```js
 const json = instance.getSchema(
@@ -686,47 +688,47 @@ const json = instance.getSchema(
 const jsonIdSchemaPair = instance.getSchemas();
 ```
 
-`getSchema(id)` needs a string argument within the `$id` to retrieve the corresponding schema. The `getSchemas()` method returns a JSON key-value pair where the key is the schema’s `$id` and the value is the JSON Schema itself.
+Для получения соответствующей схемы `getSchema(id)` необходим строковый аргумент `$id`. Метод `getSchemas()` возвращает пару ключ-значение JSON, где ключом является `$id` схемы, а значением - сама JSON-схема.
 
-Now we know about all the aspects of the default validator compiler, how can we configure and extend it? It is time to drop it in favor of a custom one!
+Теперь мы знаем обо всех аспектах стандартного компилятора валидаторов, но как же его настроить и расширить? Пришло время отказаться от него в пользу собственного!
 
-### Building a new validator compiler {#building-a-new-validator-compiler}
+### Создание нового компилятора валидаторов {#building-a-new-validator-compiler}
 
-Fastify’s validator compiler can be replaced totally. You may need to do this in the following situations:
+Компилятор валидатора Fastify может быть полностью заменен. Это может понадобиться в следующих случаях:
 
--   You need a unique validator compiler for each HTTP part. For example, you need a specific Ajv configuration for the body part and a different configuration for `querystring`.
--   You prefer to use a different JSON Schema compiler module, such as `@hapi/joi` or `yup`.
--   You want to build your compiler to optimize your application.
+-   Вам нужен уникальный компилятор валидатора для каждой части HTTP. Например, вам нужна определенная конфигурация Ajv для части body и другая конфигурация для `querystring`.
+-   Вы предпочитаете использовать другой модуль компилятора JSON Schema, например, `@hapi/joi` или `yup`.
+-   Вы хотите создать свой компилятор для оптимизации вашего приложения.
 
-It is important to keep in mind that rewriting this Fastify component requires knowing the validation flow, because not being able to find the schemas is one of the most common pitfalls.
+Важно помнить, что переписывание этого компонента Fastify требует знания потока валидации, потому что неспособность найти схемы - одна из самых распространенных ловушек.
 
-Fastify provides you with a couple of ways to substitute the compiler:
+Fastify предоставляет вам несколько способов заменить компилятор:
 
--   The root instance’s **Schema Controller Factory**
--   The root or plugin’s validator or serializer compiler component
+-   **Фабрика контроллеров схем** корневого экземпляра.
+-   Компонент компилятора валидатора или сериализатора корневого экземпляра или плагина.
 
-These two options interact with each other as shown in the following diagram:
+Эти два варианта взаимодействуют друг с другом, как показано на следующей диаграмме:
 
-![Figure 5.4 – The compiler’s customization process](validation-serialization-4.png)
+![Рисунок 5.4 - Процесс настройки компилятора](validation-serialization-4.png)
 
-<center>Figure 5.4 – The compiler’s customization process</center>
+<center>Рисунок 5.4 - Процесс настройки компилятора</center>
 
-During the startup, Fastify decides when it needs a validator compiler or serializer compiler, based on the following questions:
+Во время запуска Fastify решает, когда ему нужен компилятор валидатора или компилятор сериализатора, основываясь на следующих вопросах:
 
--   Does the root or the plugin instance need a compiler?
--   Does the root or the plugin instance have a compiler already?
--   Are the `bucket` schemas changed, compared to the parent instance?
+-   Нужен ли компилятор корневому или подключаемому экземпляру?
+-   Есть ли уже компилятор у корневого экземпляра или экземпляра плагина?
+-   Изменились ли схемы `bucket` по сравнению с родительским экземпляром?
 
-When all these conditions are met, Fastify asks the schema controller factory to build a new compiler. Note that the following logic applies to both the validator compiler and the serializer compiler. We are going to focus on the validator compiler, but the flow is the same for each of them. We will explore the serializer compiler in the [The serializer compiler](#the-serializer-compiler) section.
+Когда все эти условия выполняются, Fastify запрашивает фабрику контроллеров схем для создания нового компилятора. Обратите внимание, что следующая логика применима как к компилятору валидатора, так и к компилятору сериализатора. Мы сосредоточимся на компиляторе валидатора, но принцип работы одинаков для каждого из них. Компилятор сериализатора мы рассмотрим в разделе [Компилятор сериализатора](#the-serializer-compiler).
 
-The input to produce the compiler is as follows:
+Входные данные для создания компилятора следующие:
 
--   The compiler option. For the validation compiler, it corresponds to the application’s `ajv` option property.
--   The instance’s `bucket` schemas.
+-   Опция компилятора. Для компилятора валидации она соответствует свойству опции `ajv` приложения.
+-   Схемы `bucket` экземпляра.
 
-Within these arguments, the factory must produce a Fastify compiler.
+Внутри этих аргументов фабрика должна создать компилятор Fastify.
 
-The validator compiler is a function that, given the route’s schemas, must return a new function to validate the HTTP request’s parts – we know, it seems a bit tricky, but let’s look at a complete example to understand this idea:
+Компилятор валидатора - это функция, которая, учитывая схемы маршрута, должна вернуть новую функцию для проверки частей HTTP-запроса - мы знаем, это кажется немного сложным, но давайте посмотрим на пример, чтобы понять эту идею:
 
 ```js
 const app = fastify({
@@ -757,48 +759,48 @@ function myValidatorCompiler(routeData) {
 }
 ```
 
-The example shows all the schema controller’s entities, which are just simple functions that don’t really do anything. Still, they provide us with an excellent overview of how the single parts can work together, adding some `console.log` statements during your experiments.
+В примере показаны все сущности контроллера схемы, которые являются простыми функциями, которые на самом деле ничего не делают. Тем не менее, они дают нам отличный обзор того, как отдельные части могут работать вместе, добавляя некоторые `console.log` отчеты во время ваших экспериментов.
 
-!!!note "Disclaimer"
+!!!note "Отказ от ответственности"
 
-    Be patient and try to follow the code: we are going to explore a function that returns a function that returns another function! It is pretty easy to get lost when first reading it, but hang in there!
+    Наберитесь терпения и постарайтесь следовать коду: мы собираемся изучить функцию, которая возвращает функцию, которая возвращает другую функцию! При первом чтении довольно легко заблудиться, но держитесь!
 
-There is a new `schemaController` option `[1]`. This parameter lets us configure and take control of the compilers through the `compilersFactory` object. It accepts two parameters, `buildValidator` and `buildSerializer`.
+Появился новый параметр `schemaController` `[1]`. Этот параметр позволяет нам настраивать и брать под контроль компиляторы через объект `compilersFactory`. Он принимает два параметра, `buildValidator` и `buildSerializer`.
 
-We are going to focus on the former: providing a function `[2]` as input. The `myCompilerFactory` function can access all the instance’s schema via the `externalSchemas` argument and `ajvServerOption`. In this example, there is just one external schema, `'http://myapp.com/string.json'`, and the ajv server options are empty.
+Мы сосредоточимся на первом: предоставим на вход функцию `[2]`. Функция `myCompilerFactory` может получить доступ ко всем схемам экземпляра через аргумент `externalSchemas` и `ajvServerOption`. В данном примере имеется только одна внешняя схема, `'http://myapp.com/string.json'`, а опции сервера ajv пусты.
 
-!!!note "External schemas"
+!!!note "Внешние схемы"
 
-    The `externalSchemas` argument is provided by Fastify’s schemas bucket. It is populated by calling `instance.getSchemas()` internally. The word “external” refers to those schemas that are referenced by the routes’ schemas.
+    Аргумент `externalSchemas` предоставляется ведерком схем Fastify. Он заполняется при внутреннем вызове `instance.getSchemas()`. Слово «внешние» относится к тем схемам, на которые ссылаются схемы маршрутов.
 
-`myCompilerFactory` is executed whenever Fastify needs a new compiler, based on the checklist we saw at the beginning of this section. For example, the smallest memory footprint case is set by calling this function once: there is only one validator compiler for the whole application.
+`myCompilerFactory` выполняется всякий раз, когда Fastify требуется новый компилятор, основываясь на контрольном списке, который мы видели в начале этого раздела. Например, для случая наименьшего объема памяти достаточно вызвать эту функцию один раз: для всего приложения нужен только один компилятор валидаторов.
 
-!!!note "Fastify uses the same APIs exposed to the user"
+!!!note "Fastify использует те же API, что и пользователь."
 
-    It is important to mention that Fastify uses this API to implement the default schema controller. The default `myCompilerFactory` implementation creates the default Ajv instance, and it is isolated in an external module named `@fastify/ajv-compiler`. Thanks to this module, it is possible to run Fastify with a different Ajv version out of the box. Please give it a check!
+    Важно отметить, что Fastify использует этот API для реализации контроллера схемы по умолчанию. Реализация `myCompilerFactory` по умолчанию создает экземпляр Ajv по умолчанию, и он изолирован во внешнем модуле с именем `@fastify/ajv-compiler`. Благодаря этому модулю можно запустить Fastify с другой версией Ajv из коробки. Пожалуйста, проверьте его!
 
-The `myCompilerFactory` function returns the `myValidatorCompiler` function `[3]`. The latter function target is to “compile” the input schema and transform it into an executable JavaScript function. The `myValidatorCompiler` function is executed during the startup phase, once for every route’s JSON Schema. The `routeData` argument is an object within the route’s coordinates where the following applies:
+Функция `myCompilerFactory` возвращает функцию `myValidatorCompiler` `[3]`. Цель последней функции - «скомпилировать» входную схему и преобразовать ее в исполняемую функцию JavaScript. Функция `myValidatorCompiler` выполняется на этапе запуска, один раз для каждой JSON-схемы маршрута. Аргумент `routeData` - это объект в координатах маршрута, где применяется следующее:
 
--   `schema` is the object provided to the route’s schema option (sorry for the redundancy).
--   `method` is the route’s HTTP method string in uppercase.
--   `url` is the raw route’s URL string. For example, the path parameters such as `/hello/:name`.
--   `httpPart` tells us which HTTP request’s part should be validated. It can be one of the well- known `body`, `params`, `querystring`, or `headers` strings.
+-   `chema` - объект, указанный в опции schema маршрута (извините за избыточность).
+-   `method` - строка HTTP-метода маршрута в верхнем регистре.
+-   `url` - необработанная строка URL маршрута. Например, параметры пути, такие как `/hello/:name`.
+-   `httpPart` указывает нам, какая часть HTTP-запроса должна быть проверена. Это может быть одна из хорошо известных строк `body`, `params`, `querystring` или `headers`.
 
-The `myValidatorCompiler` `[3]` function returns... another function! It is the last one, I swear. The `validate` `[4]` function is what the compilation of the schema must produce. It is stored in the route’s context and executed for every HTTP request routed to that endpoint. We saw the schema of this process in _Figure 5.3_.
+Функция `myValidatorCompiler` `[3]` возвращает... еще одну функцию! Это последняя, клянусь. Функция `validate` `[4]` - это то, что должна выдать компиляция схемы. Она хранится в контексте маршрута и выполняется для каждого HTTP-запроса, направленного к этой конечной точке. Схему этого процесса мы видели на _Рисунке 5.3_.
 
-The `validate` function is the one that is run when the server is listening. The `schemaController` flow, we have just seen, is executed once during the startup, and it is the heaviest task Fastify must complete before accepting incoming requests. To put it in practice, Fastify’s default `schemaController` component uses the Ajv module to build these `validate` functions – no more, no less.
+Функция `validate` - это та, которая выполняется, когда сервер слушает. Поток `chemaController`, как мы только что видели, выполняется один раз во время запуска, и это самая тяжелая задача, которую Fastify должен выполнить перед приемом входящих запросов. На практике компонент Fastify `schemaController` по умолчанию использует модуль Ajv для создания этих функций `validate` - не больше, не меньше.
 
-In the example, we customized `schemaController` with a validation that always returns `true`. But we could implement our logic based on `httpPart`, such as using a primary validation function for `querystring` and `headers` and a more complex one for the `body` part. The most common use case is to apply different ajv settings for each HTTP part. You can find a complete example at <https://github.com/fastify/help/issues/128>.
+В примере мы настроили `schemaController` с валидацией, которая всегда возвращает `true`. Но мы можем реализовать нашу логику на основе `httpPart`, например, использовать первичную функцию валидации для `querystring` и `headers` и более сложную для части `body`. Наиболее распространенным вариантом использования является применение различных настроек ajv для каждой части HTTP. См. [полный пример](https://github.com/fastify/help/issues/128).
 
-Congratulations! You have explored the hardest and most complicated Fastify components. It could take a while before gaining full control over these functions, so don’t rush – take your time. Keep in mind that it is fine to not customize the schema controller and use the default one. This section’s takeaway is how the system works under the hood, but it’s still a valuable option to explore because then you will not have nasty surprises during your application development.
+Поздравляем! Вы изучили самые сложные компоненты Fastify. Чтобы получить полный контроль над этими функциями, может потребоваться некоторое время, поэтому не спешите - не торопитесь. Помните, что контроллер схемы можно не настраивать и использовать по умолчанию. В этом разделе мы рассмотрели, как система работает «под капотом», но это все равно ценный вариант для изучения, потому что тогда у вас не будет неприятных сюрпризов во время разработки приложения.
 
-Now that you have learned about the Schema Controller Factory component and its configuration and customization, we can move on. Keep calm; it will be easier from now on.
+Теперь, когда вы узнали о компоненте Schema Controller Factory, его настройке и кастомизации, мы можем двигаться дальше. Сохраняйте спокойствие, дальше будет проще.
 
-### Customizing the schema validator compiler {#customizing-the-schema-validator-compiler}
+### Настройка компилятора валидатора схем {#customizing-the-schema-validator-compiler}
 
-In the previous section, we explored the Schema Controller Factory, one of the two ways to substitute Fastify’s schema compiler. Looking at _Figure 5.4_ and the conditions to check whether Fastify must create a compiler, we can tackle the question _Does the root or the plugin instance have a compiler already?_
+В предыдущем разделе мы рассмотрели Schema Controller Factory, один из двух способов замены компилятора схем Fastify. Глядя на _Рисунок 5.4_ и условия проверки того, должен ли Fastify создавать компилятор, мы можем ответить на вопрос _Есть ли уже компилятор у корня или экземпляра плагина_?
 
-Customizing the schema validator is quite easy at this point:
+Настроить валидатор схемы на данном этапе довольно просто:
 
 ```js
 app.setValidatorCompiler(myValidatorCompiler); // [1]
@@ -814,16 +816,16 @@ app.register(async function plugin(instance, opts) {
 });
 ```
 
-The `myValidatorCompiler` variable is the same as in the previous section: it has the same interface and the same result is returned.
+Переменная `myValidatorCompiler` - это то же самое, что и в предыдущем разделе: она имеет тот же интерфейс и возвращает тот же результат.
 
-As you know, Fastify lets you customize the schema compiler in two different stages:
+Как вы знаете, Fastify позволяет настраивать компилятор схем в два этапа:
 
--   Customize the validator compiler for the root application instance `[1]` or plugin instance `[2]`
--   Customize the validator compiler for a single route through the route’s options `[3]`
+-   Настройка компилятора валидатора для корневого экземпляра приложения `[1]` или экземпляра плагина `[2]`.
+-   Настроить компилятор валидатора для отдельного маршрута через опции маршрута `[3]`.
 
-As we have just seen in the example, customizing the validator compiler forces Fastify to skip the Schema Controller Factory call. The function you provide is used instead of building it.
+Как мы только что видели в примере, настройка компилятора валидатора заставляет Fastify пропустить вызов Schema Controller Factory. Вместо создания фабрики используется предоставленная вами функция.
 
-This type of customization is easier to apply compared to the Schema Controller Factory, and it gives you the possibility to change even the tiniest pieces of your application. The typical function of this feature is to support two different compilers in the same Fastify application. This is really useful to migrate applications written using the `joi` module. The following code shows an example:
+Этот тип настройки проще в применении по сравнению с фабрикой контроллеров схем, и он дает вам возможность изменять даже самые мелкие части вашего приложения. Типичной функцией этой возможности является поддержка двух разных компиляторов в одном приложении Fastify. Это очень полезно для миграции приложений, написанных с использованием модуля `joi`. Пример приведен в следующем коде:
 
 ```js
 app.register(async function plugin(instance, opts) {
@@ -849,55 +851,55 @@ app.register(async function plugin(instance, opts) {
 });
 ```
 
-All the routes registered in the `plugin` rely on the `joiCompiler` returned function to validate the HTTP parts. Notice that the `schema` argument is actually a `Joi.object()` instance object. It has been provided during the route registration, and it is not a standard JSON Schema at all. Fastify doesn’t complain about this because you have provided a custom validator compiler, so it is okay if the provided compiler knows how to manage the input schema object.
+Все маршруты, зарегистрированные в `plugin`, полагаются на возвращаемую функцию `joiCompiler` для проверки HTTP-частей. Обратите внимание, что аргумент `schema` на самом деле является объектом экземпляра `Joi.object()`. Он был предоставлен во время регистрации маршрута, и это совсем не стандартная JSON-схема. Fastify не жалуется на это, потому что вы предоставили пользовательский компилятор валидатора, так что все в порядке, если предоставленный компилятор знает, как управлять объектом входной схемы.
 
-The routes registered out of the plugin context rely on Fastify’s default validator compiler! We must thank the encapsulation yet again!
+Маршруты, зарегистрированные вне контекста плагина, полагаются на компилятор валидаторов Fastify по умолчанию! Мы должны еще раз поблагодарить инкапсуляцию!
 
-Now the validation process and all its pieces have no more secrets for you. You have acquired a deep knowledge of how your routes’ input is validated before executing the handler.
+Теперь процесс валидации и все его части больше не имеют для вас секретов. Вы получили глубокие знания о том, как входные данные маршрутов проверяются перед выполнением обработчика.
 
-It is time to meet the serializer compiler, but don’t worry, the concepts we explored in this extensive section will be the same in the next one.
+Настало время познакомиться с компилятором сериализатора, но не волнуйтесь, концепции, которые мы изучили в этом обширном разделе, будут использоваться и в следующем.
 
-## Understanding the serialization process {#understanding-the-serialization-process}
+## Понимание процесса сериализации {#understanding-the-serialization-process}
 
-Serialization is the process of transforming complex objects or primitive data into a valid data type that can be transmitted to the client. A **valid data type** is a String, a Stream, or a Buffer.
+Сериализация - это процесс преобразования сложных объектов или примитивных данных в корректный тип данных, который можно передать клиенту. К **действительному типу данных** относятся строка, поток или буфер.
 
-In the [Understanding validation and serialization](#understanding-validation-and-serialization) section, we introduced the concept of Fastify’s serialization process, which uses JSON schemas to adapt a response payload to a defined format. This is the only task that this process carries out. It doesn’t apply any sort of validation of the output. This is often confusing because the JSON Schema is associated with the validation phase. Therefore, it would be more appropriate to compare it to filter processing rather than to a validation.
+В разделе [Понимание валидации и сериализации](#understanding-validation-and-serialization) мы представили концепцию процесса сериализации Fastify, который использует схемы JSON для адаптации полезной нагрузки ответа к определенному формату. Это единственная задача, которую выполняет данный процесс. Он не применяет никакой проверки выходных данных. Это часто вызывает путаницу, поскольку схема JSON ассоциируется с этапом проверки. Поэтому правильнее было бы сравнить его с обработкой фильтров, а не с валидацией.
 
-The actors in action are quite similar to what we saw in the [Building a new validator compiler](#building-a-new-validator-compiler) section, with some additions. In the following diagram, _Figure 5.5_, we are going to present these additions, extending the **Serialization** box we saw in _Figure 5.3_:
+Действующие акторы очень похожи на те, что мы видели в разделе [Создание нового компилятора валидаторов] (#building-a-new-validator-compiler), с некоторыми дополнениями. На следующей диаграмме, _Рисунок 5.5_, мы представим эти дополнения, расширив блок **Serialization**, который мы видели на _Рисунке 5.3_:
 
-![Figure 5.5 – The serialization workflow](validation-serialization-5.png)
+![Рисунок 5.5 - Рабочий процесс сериализации](validation-serialization-5.png)
 
-<center>Figure 5.5 – The serialization workflow</center>
+<center>Рисунок 5.5 - Рабочий процесс сериализации</center>
 
-_Figure 5.5_ shows the complete workflow Fastifty carries out to serialize the response payload you are sending, calling `reply.send()` or executing a `return` statement in an `async` handler.
+На _рисунке 5.5_ показан полный рабочий процесс, выполняемый Fastifty для сериализации полезной нагрузки ответа, который вы отправляете, вызывая `reply.send()` или выполняя оператор `return` в обработчике `async`.
 
-!!!note "Too many payloads"
+!!!note "Слишком много полезной нагрузки"
 
-    To improve this section’s clarity, we will name the endpoint’s output object a **response payload**. For reference, it is the one that you give as an argument to the `reply.send()` method. The **serialized payload** is the response payload transformed to a valid data type and ready to be transmitted to the client.
+    Чтобы сделать этот раздел более понятным, мы будем называть выходной объект конечной точки **ответной полезной нагрузкой**. Для справки, это тот объект, который вы передаете в качестве аргумента методу `reply.send()`. **сериализованная полезная нагрузка** - это полезная нагрузка ответа, преобразованная к правильному типу данных и готовая к передаче клиенту.
 
-The diagram might look a bit complex, but it condenses these Fastify rules:
+Диаграмма может показаться немного сложной, но она сжимает эти правила Fastify:
 
--   It is sending or returning an object that is not a String, a Buffer, or a Stream that triggers the serialization process
--   Returning or throwing an error object will trigger the error handler we saw in [Chapter 3](./routes.md)
--   Fastify applies a fallback to avoid starving requests due to a component’s misuse, such as throwing an error in an error handler
+-   Отправка или возврат объекта, который не является строкой, буфером или потоком, запускает процесс сериализации.
+-   Возврат или отбрасывание объекта с ошибкой запускает обработчик ошибок, который мы рассматривали в [главе 3](./routes.md)
+-   Fastify применяет обратную реакцию, чтобы избежать голодания запросов из-за неправильного использования компонента, например, выброса ошибки в обработчик ошибок
 
-Let’s start analyzing _Figure 5.5_ in detail. The first thing that stands out is that the serialization process is skipped when the response payload is a valid data type. This usually happens for web page rendering or for a file download.
+Давайте начнем детально анализировать _Рисунок 5.5_. Первое, что бросается в глаза, - это то, что процесс сериализации пропускается, когда полезная нагрузка ответа является допустимым типом данных. Обычно это происходит при рендеринге веб-страницы или при загрузке файла.
 
-When the response payload is not valid, it is processed by five main blocks that manage the payload:
+Когда полезная нагрузка ответа не является валидной, она обрабатывается пятью основными блоками, которые управляют полезной нагрузкой:
 
--   The `preSerialization` hooks manipulate the payload before the serialization. We saw this in action in [Chapter 4](./hooks.md).
--   The error handler must manage the error and reply to the HTTP request. As you can see, it is executed only once, but we read about it in [Chapter 3](./routes.md).
--   The **Reply Serializer** is a new simple component. It must convert the object to a valid data type.
--   The **Route’s Serialization Function** is produced by the serializer compiler.
--   The last one, the **Default Reply Serializer**, acts when there is no customization.
+-   Хуки `preSerialization` манипулируют полезной нагрузкой до сериализации. Мы видели это в действии в [Главе 4](./hooks.md).
+-   Обработчик ошибок должен обработать ошибку и ответить на HTTP-запрос. Как видите, он выполняется только один раз, но мы читали о нем в [Главе 3](./routes.md).
+-   Сериализатор **Reply Serializer** - это новый простой компонент. Он должен преобразовать объект в допустимый тип данных.
+-   Функция **Route's Serialization Function** создается компилятором сериализатора.
+-   Последний компонент, **Сериализатор ответов по умолчанию**, действует при отсутствии настройки.
 
-Thanks to the flowchart, it should be easier to navigate through the serialization process. For example, it is clear that a custom reply serializer has priority over the serialization function. But let’s look at the code to learn how to use these components to serialize a response payload.
+Благодаря блок-схеме вам будет легче ориентироваться в процессе сериализации. Например, понятно, что пользовательский сериализатор ответов имеет приоритет над функцией сериализации. Но давайте посмотрим на код, чтобы узнать, как использовать эти компоненты для сериализации полезной нагрузки ответа.
 
-### The reply serializer {#the-reply-serializer}
+### Сериализатор ответов {#the-reply-serializer}
 
-This component helps you manage a response that is not JSON and needs to be serialized in a different format. It is a synchronous function that must return a valid data type (a String, or a Stream, or a Buffer). If something else is returned or thrown, a fatal error will be sent in response. The reply serializer’s `this` context is the reply object itself – it may be helpful to set additional headers.
+Этот компонент помогает управлять ответом, который не является JSON и должен быть сериализован в другом формате. Это синхронная функция, которая должна возвращать корректный тип данных (строку, поток или буфер). Если возвращается или выбрасывается что-то другое, в ответ будет отправлена фатальная ошибка. Контекстом `this` сериализатора ответа является сам объект ответа - может быть полезно установить дополнительные заголовки.
 
-The usage is quite straightforward at this point of your path through the Fastify world:
+Использование довольно простое на данном этапе вашего пути в мире Fastify:
 
 ```js
 function mySerializer(payload, statusCode) {
@@ -915,25 +917,25 @@ app.get('/reply-serializer', function handler(
 });
 ```
 
-You can assign a custom serializer to the root or plugin server instance `[1]`. As always, in this case, all the routes registered in that context will run it.
+Вы можете назначить пользовательский сериализатор корневому или подключаемому экземпляру сервера `[1]`. Как обычно, в этом случае все маршруты, зарегистрированные в этом контексте, будут его выполнять.
 
-The other option is to run the custom serializer only when needed to call the `reply.serializer()` method and passing `serializer` as an argument `[2]`. Remember to set the content-type header in this case, or you may encounter Fastify’s unpredictable results.
+Другой вариант - запускать пользовательский сериализатор только при необходимости, вызывая метод `reply.serializer()` и передавая `serializer` в качестве аргумента `[2]`. В этом случае не забудьте установить заголовок content-type, иначе вы можете столкнуться с непредсказуемыми результатами работы Fastify.
 
-That is all you must know about the reply serializer. This component is used to reply with content types that are not JSON, such as XML, compression buffers, YML, and so on.
+Это все, что вы должны знать о сериализаторе ответов. Этот компонент используется для ответов с типами содержимого, которые не являются JSON, например XML, буферы сжатия, YML и так далее.
 
-Having closed this parenthesis, we can start to complete our serialization journey by discussing the serialization function produced by the serializer compiler.
+Закрыв эту скобку, мы можем начать завершать наше путешествие по сериализации, обсудив функцию сериализации, создаваемую компилятором сериализатора.
 
-### The serializer compiler {#the-serializer-compiler}
+### Компилятор сериализатора {#the-serializer-compiler}
 
-The serializer compiler builds a JavaScript function from a JSON Schema to serialize the response payload. It removes all the fields that are not declared in the schema, and it coerces the output fields’ type. These are the tasks that Fastify’s default serializer compiler does.
+Компилятор сериализатора создает JavaScript-функцию из JSON-схемы для сериализации полезной нагрузки ответа. Он удаляет все поля, которые не объявлены в схеме, и принудительно изменяет тип выводимых полей. Эти задачи выполняет стандартный компилятор сериализатора Fastify.
 
-The module that compiles the JSON Schemas is [`fast-json-stringify`](https://www.npmjs.com/package/fast-json-stringify).
+Модулем, который компилирует JSON-схемы, является [`fast-json-stringify`](https://www.npmjs.com/package/fast-json-stringify).
 
-!!!note "The speed increment"
+!!!note "Прирост скорости"
 
-    The serialization process through a compiled function reduces the time taken to serialize the response’s JSON object. The `fast-json-stringify` and Fastify modules have published a comprehensive [benchmark](https://github.com/fastify/benchmarks/) that compares them to other frameworks too.
+    Процесс сериализации через скомпилированную функцию сокращает время, затрачиваемое на сериализацию JSON-объекта ответа. Модули `fast-json-stringify` и Fastify опубликовали всеобъемлющий [benchmark](https://github.com/fastify/benchmarks/), который сравнивает их с другими фреймворками.
 
-But how can we use the JSON Schema to serialize the payload? Let’s see an example:
+Но как мы можем использовать схему JSON для сериализации полезной нагрузки? Давайте посмотрим на пример:
 
 ```js
 app.post('/filter', {
@@ -956,24 +958,24 @@ app.post('/filter', {
 });
 ```
 
-The code snippet shows a new option field on the schema route’s options object: the `response` property. It accepts a JSON object where each key must be the following:
+В этом фрагменте кода показано новое поле опции в объекте опций маршрута схемы: свойство `response`. Оно принимает объект JSON, в котором каждый ключ должен быть следующим:
 
--   An HTTP status code such as `200`, `404`, or `500`
--   An HTTP status code pattern looks like: `2xx`, meaning all the status codes from `200` to `299`
+-   Код статуса HTTP, такой как `200`, `404` или `500`.
+-   Шаблон кода состояния HTTP выглядит как: `2xx`, то есть все коды состояния от `200` до `299`.
 
-In this way, you can customize every response payload with a defined JSON Schema.
+Таким образом, вы можете настроить каждый ответ с помощью определенной JSON-схемы.
 
-As you can see, the `/filter` endpoint returns a `password` field, but thanks to the response schema, it will not be sent to the client! The schema object will use the same schemas within the `$ref` keyword as the validator compiler: they share the `bucket` schemas, as said in the [How to build a new validator compiler](#building-a-new-validator-compiler) section.
+Как вы можете видеть, конечная точка `/filter` возвращает поле `password`, но благодаря схеме ответа оно не будет отправлено клиенту! Объект схемы будет использовать те же схемы в ключевом слове `$ref`, что и компилятор валидатора: они совместно используют схемы `bucket`, как было сказано в разделе [Как собрать новый компилятор валидатора](#building-a-new-validator-compiler).
 
-!!!note "Knowing the default serializer compiler"
+!!!note "Знание компилятора сериализатора по умолчанию"
 
-    The `fast-json-stringify` module has its own implementation, and it doesn’t support all the keywords provided by the Ajv validator. This is understandable because they have different functions. One great example you need to learn from is that, while the `maxLength` property of a string field is fundamental to validate the input, it is ignored by the default JSON serializer. Remember, the default JSON Schema serialization doesn’t validate the data; it only filters and coerces the types.
+    Модуль `fast-json-stringify` имеет собственную реализацию, и он поддерживает не все ключевые слова, предоставляемые валидатором Ajv. Это вполне объяснимо, поскольку у них разные функции. Один из ярких примеров, на котором вам стоит поучиться: хотя свойство `maxLength` строкового поля является основополагающим для валидации ввода, оно игнорируется стандартным JSON-сериализатором. Помните, что стандартная сериализация JSON Schema не проверяет данные; она только фильтрует и принудительно изменяет типы.
 
-Now we know how to use Fastify’s default serializer compiler, but how is it possible to customize it? Let’s learn about it in the next section.
+Теперь мы знаем, как использовать стандартный компилятор сериализатора Fastify, но как его можно настроить? Давайте узнаем об этом в следующем разделе.
 
-### Managing the serializer compiler {#managing-the-serializer-compiler}
+### Управление компилятором сериализатора {#managing-the-serializer-compiler}
 
-Just as you can customize the validator compiler, you can do the same with the serializer compiler. To complete the code snippet described in _Figure 5.5_, check out the following code:
+Точно так же, как вы можете настроить компилятор валидатора, вы можете сделать то же самое с компилятором сериализатора. Для завершения фрагмента кода, описанного на _Рисунке 5.5_, посмотрите следующий код:
 
 ```js
 const app = fastify({
@@ -1008,16 +1010,16 @@ function mySerializerCompiler(routeData) {
 }
 ```
 
-The source code should look very familiar to you: the logic flow is the same as we discussed in the [How to build a new validator compiler](#how-to-build-a-new-validator-compiler) section, with minimal changes:
+Исходный код должен выглядеть очень знакомо: логический поток такой же, как мы обсуждали в разделе [Как собрать новый компилятор валидатора](#building-a-new-validator-compiler), с минимальными изменениями:
 
-1.  The `compilersFactory` option accepts the new `buildSerializer` property.
-2.  The `myFactory` function receives the `serializerOptsServerOption` input equal to the `serializerOpts` object (instead of the `ajv` one).
-3.  The `mySerializerCompiler` function receives `httpStatus` as route data `[3]`. The validator receives `httpPart`.
-4.  The compiler must return a synchronous function [4] that builds a string object.
+1.  Опция `compilersFactory` принимает новое свойство `buildSerializer`.
+2.  Функция `myFactory` получает на вход `serializerOptsServerOption`, равный объекту `serializerOpts` (вместо `ajv`).
+3.  Функция `mySerializerCompiler` получает `httpStatus` в качестве маршрутных данных `[3]`. Валидатор получает `httpPart`.
+4.  Компилятор должен вернуть синхронную функцию [4], которая строит строковый объект.
 
-The compiled function is then stored in the route’s context, and it will be executed when the serialization process requires it, as we saw in _Figure 5.5_.
+Скомпилированная функция хранится в контексте маршрута, и она будет выполнена, когда этого потребует процесс сериализации, как мы видели на _Рисунке 5.5_.
 
-Finally, like the validator compiler, you can set the serializer compiler in every context you need it:
+Наконец, как и компилятор валидатора, вы можете установить компилятор сериализатора в каждом контексте, в котором он вам нужен:
 
 ```js
 app.setSerializerCompiler(mySerializerCompiler); // [1]
@@ -1036,23 +1038,23 @@ app.register(async function plugin(instance, opts) {
 });
 ```
 
-The Fastify way to customize the compiler is consistent with the validator way:
+Способ настройки компилятора в Fastify соответствует способу настройки валидатора:
 
--   Customize the serializer compiler for the root application instance `[1]` or the plugin instance `[2]`
--   Customize the serializer compiler for a single route through the route’s options `[3]`
+-   Настройте компилятор сериализатора для экземпляра корневого приложения `[1]` или экземпляра плагина `[2]`.
+-   Настроить компилятор сериализатора для отдельного маршрута через опции маршрута `[3]`.
 
-We have explored the serializer compiler without annoying you by repeating the logic behind the schema controller.
+Мы изучили компилятор сериализатора, не раздражая вас повторением логики, лежащей в основе контроллера схемы.
 
-You should be able to customize Fastify’s serializer and change the module that implements schema compilation by adopting the library that best fits your needs. As you have read, Fastify keeps its components consistent, adopting solid patterns that ease your learning curve and improve the framework itself.
+Вы должны быть в состоянии настроить сериализатор Fastify и изменить модуль, реализующий компиляцию схемы, взяв библиотеку, которая лучше всего соответствует вашим потребностям. Как вы уже прочитали, Fastify сохраняет последовательность своих компонентов, используя надежные паттерны, которые облегчают процесс обучения и улучшают сам фреймворк.
 
-## Summary {#summary}
+## Резюме {#summary}
 
-This chapter has followed a long path inside Fastify’s internals to unveil the JSON schema’s power. Now you understand why defining a JSON Schema is a critical phase in your application setup. It can be a hard task, but data validation and a fast response are the two main reasons to do this.
+В этой главе мы проделали долгий путь внутри Fastify, чтобы раскрыть возможности схемы JSON. Теперь вы понимаете, почему определение схемы JSON является критически важным этапом в настройке вашего приложения. Это может быть непростой задачей, но проверка данных и быстрый отклик - две основные причины, по которым это необходимо сделать.
 
-We have looked at the JSON Schema specification’s basics and how to use it in our routes, adopting the default Fastify components. We did not step back to configure these components, and now you have seen the whole process, you can control them to reach your goals.
+Мы рассмотрели основы спецификации JSON Schema и то, как использовать ее в наших маршрутах, применяя компоненты Fastify по умолчанию. Мы не отходили от настройки этих компонентов, и теперь, когда вы видите весь процесс, вы можете управлять ими для достижения своих целей.
 
-It has not been easy. The concepts in this chapter are the most misused by developers that use Fastify. You did a great job, and I hope the diagrams have helped you follow the logic behind the validation and the serialization.
+Это было нелегко. Концепции, описанные в этой главе, чаще всего неправильно используются разработчиками, использующими Fastify. Вы проделали большую работу, и я надеюсь, что диаграммы помогли вам понять логику, лежащую в основе валидации и сериализации.
 
-This chapter is the last theoretical one: congratulations! In many chapter’s sections, we read concepts that were already discussed in the previous chapters. This is proof that the Fastify architecture is recursive in all its components.
+Эта глава - последняя теоретическая: поздравляю! Во многих разделах главы мы читаем концепции, которые уже обсуждались в предыдущих главах. Это доказательство того, что архитектура Fastify рекурсивна во всех своих компонентах.
 
-Now, things are getting serious: in the next chapter, we will start building a real application that we’ll use for the rest of the book to create a solid, reusable scaffolding project.
+Теперь все становится серьезнее: в следующей главе мы начнем строить реальное приложение, которое будем использовать на протяжении всей книги, чтобы создать надежный, многократно используемый проект-скаффолдинг.
