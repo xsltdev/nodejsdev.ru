@@ -1,46 +1,50 @@
-# Project Structure and Configuration Management
+---
+description: В этой главе мы создадим прочную структуру, которую вы сможете использовать в своих будущих проектах. Вы познакомитесь с пакетами сообщества, будете использовать их и при необходимости создавать собственные плагины
+---
 
-Starting from this chapter, we are going to create a real-world RESTful cloud-native application from the initial project structure. No more foo/bar examples and Fastify theory. We will put into action what we have learned in the previous chapters. This will lead us to understand how to build an application.
+# Структура проекта и управление конфигурацией
 
-This chapter will build a solid scaffolding structure that you may reuse for your future projects. You will be introduced to and use community packages and create your own plugins when needed.
+Начиная с этой главы, мы будем создавать реальное RESTful облачное нативное приложение, начиная с начальной структуры проекта. Больше никаких примеров foo/bar и теории Fastify. Мы будем применять на практике то, что узнали в предыдущих главах. Это приведет нас к пониманию того, как построить приложение.
 
-This is the learning path we will cover in this chapter:
+В этой главе мы создадим прочную структуру, которую вы сможете использовать в своих будущих проектах. Вы познакомитесь с пакетами сообщества, будете использовать их и при необходимости создавать собственные плагины.
 
--   Designing the application structure
--   Improving the application structure
--   Debugging your application
--   Sharing the application configuration across plugins
--   Using Fastify plugins
+Именно этот путь обучения мы рассмотрим в этой главе:
 
-## Technical requirements
+-   Проектирование структуры приложения
+-   Улучшение структуры приложения
+-   Отладка приложения
+-   Совместное использование конфигурации приложения плагинами
+-   Использование плагинов Fastify
 
-As mentioned in the earlier chapters, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation.
--   The [VS Code IDE](https://code.visualstudio.com/).
--   A working [Docker installation](https://docs.docker.com/get-docker/).
--   A [Git](https://git-scm.com/) repository is highly recommended but not mandatory.
--   A working command shell.
+Как уже упоминалось в предыдущих главах, вам понадобится следующее:
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%206).
+-   Работающая установка Node.js 18.
+-   [VS Code IDE](https://code.visualstudio.com/).
+-   Рабочая [установка Docker](https://docs.docker.com/get-docker/).
+-   Репозиторий [Git](https://git-scm.com/) - настоятельно рекомендуется, но не является обязательным.
+-   Рабочая командная оболочка.
 
-## Designing the application structure
+Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%206).
 
-In this chapter, we will design a backend application that will expose some RESTful APIs.
+## Проектирование структуры приложения {#designing-the-application-structure}
 
-The application structure enables you to write applications that are easy to implement, evolve, and maintain. A good system must be flexible to your needs and the application’s changes. Additionally, it should impose some implementation design to let you and your team avoid some major pitfalls, which could lead to an unstable and untestable application.
+В этой главе мы спроектируем внутреннее приложение, которое будет открывать некоторые RESTful API.
 
-This chapter will discuss the application’s features only marginally. In fact, a scaffolding project should not care about them, but it should apply them to any project. For this reason, we will create an application with some health check routes and a MongoDB connection ready to be used.
+Структура приложения позволяет писать приложения, которые легко внедрять, развивать и поддерживать. Хорошая система должна быть гибкой к вашим потребностям и изменениям в приложении. Кроме того, она должна предусматривать определенный дизайн реализации, чтобы позволить вам и вашей команде избежать основных «подводных камней», которые могут привести к нестабильному и не поддающемуся тестированию приложению.
 
-We will introduce a set of Fastify plugins that will help us structure our application and reduce the burden of writing some utilities from scratch, which have already been developed and tested on production by multiple projects.
+В этой главе функции приложения будут рассмотрены лишь вскользь. По сути, проект-скаффолдинг не должен заботиться о них, но он должен применять их к любому проекту. По этой причине мы создадим приложение с некоторыми маршрутами проверки работоспособности и готовым к использованию соединением с MongoDB.
 
-The critical takeaway here is to understand _why_ we will build the following structure in this manner. The structure we are going to see is not mandatory, and you might be critical of the proposed design. We think it is important to personalize the application to adapt it to your own needs and preferences.
+Мы представим набор плагинов Fastify, которые помогут нам структурировать наше приложение и уменьшить бремя написания с нуля некоторых утилит, которые уже были разработаны и протестированы на производстве множеством проектов.
 
-We are done with the talking. Let’s start to build our application!
+Важнейшим моментом здесь является понимание того, почему мы построим следующую структуру именно таким образом. Структура, которую мы рассмотрим, не является обязательной, и вы можете критически отнестись к предложенному дизайну. Мы считаем, что важно персонализировать приложение, чтобы адаптировать его к вашим собственным потребностям и предпочтениям.
 
-### Setting up the repository
+Мы закончили с разговорами. Давайте начнем создавать наше приложение!
 
-Before we start writing the code, we should define a baseline from where to start. Thankfully, building an empty Fastify application is quite easy due to an official utility built by the Fastify team. To use it, we need to open the command shell and type the following commands:
+### Настройка репозитория {#setting-up-the-repository}
+
+Прежде чем приступать к написанию кода, необходимо определить базовый уровень, с которого мы начнем. К счастью, создать пустое приложение Fastify довольно просто благодаря официальной утилите, созданной командой Fastify. Чтобы воспользоваться ею, нам нужно открыть командную оболочку и ввести следующие команды:
 
 ```sh
 mkdir fastify-app
@@ -48,64 +52,64 @@ cd ./fastify-app
 npm init fastify
 ```
 
-Running these commands creates a new `fastify-app` folder and executes the `npm init` command from within it.
+Выполнение этих команд создает новую папку `fastify-app` и запускает из нее команду `npm init`.
 
-!!!note "The init command"
+!!!note "Команда init"
 
-    When you run the `init` command, npm executes the `create-fastify` module, which you can find at this [GitHub repository](https://github.com/fastify/create-fastify). You can create the `create-my-app` authority to build an application scaffolding to speed up the project initialization.
+    Когда вы выполняете команду `init`, npm запускает модуль `create-fastify`, который вы можете найти в этом [репозитории GitHub](https://github.com/fastify/create-fastify). Вы можете создать полномочия `create-my-app` для создания подмостков приложения, чтобы ускорить инициализацию проекта.
 
-As a result, you will see the following files and directories:
+В результате вы увидите следующие файлы и каталоги:
 
--   `package.json`: This is the project entry point.
--   `app.js`: This is the main application file. It is the first file to be loaded.
--   `plugins/`: This folder stores custom plugins. It contains some sample files.
--   `routes/`: This folder stores the application’s endpoints. It includes a few example endpoints.
--   `test/`: This is the folder where we write our application’s test.
+-   `package.json`: Это точка входа в проект.
+-   `app.js`: Это основной файл приложения. Он загружается первым.
+-   `plugins/`: В этой папке хранятся пользовательские плагины. Она содержит несколько файлов примеров.
+-   `routes/`: В этой папке хранятся конечные точки приложения. Она содержит несколько примеров конечных точек.
+-   `test/`: Это папка, в которой мы пишем тесты нашего приложения.
 
-The starter application is ready to be installed by running `npm install`. After the installation, you may find these scripts that are already configured useful:
+Стартовое приложение готово к установке с помощью команды `npm install`. После установки вам могут пригодиться эти скрипты, которые уже настроены:
 
--   `npm test`: This script runs the test of the scaffolding application.
--   `npm start`: This script will start your application.
--   `npm run dev`: This script will start your application in _development mode_. The server automatically reloads your application at every file change.
+-   `npm test`: Этот скрипт запускает тест приложения-скаффолдинга.
+-   `npm start`: Этот скрипт запустит ваше приложение.
+-   `npm run dev`: Этот скрипт запустит ваше приложение в _режиме разработки_. Сервер автоматически перезагружает ваше приложение при каждом изменении файла.
 
-We have just built a basic Fastify application setup that we will customize to create our application. Reading the generated source code using the `init` command, you will find comments that help you orientate yourself, giving you some insight that we will see throughout this chapter.
+Мы только что создали базовую конфигурацию приложения Fastify, которую мы будем настраивать для создания нашего приложения. Читая сгенерированный исходный код с помощью команды `init`, вы найдете комментарии, которые помогут вам сориентироваться и дадут некоторые сведения, которые мы будем видеть на протяжении всей этой главы.
 
-!!!note "Application versioning"
+!!!note "Версионирование приложений"
 
-    To start building a real-world application, it is essential to set up a **version control system (VCS)**. This software lets us version our source code and manage changes. You should use **Git** software for this task as it is the standard de facto software in the tech industry. However, learning about Git is not the aim of this book. To find out how to install and use Git, check out the _Technical requirements_ section.
+    Чтобы начать создание реального приложения, необходимо установить **систему управления версией (VCS)**. Это программное обеспечение позволяет нам версионировать исходный код и управлять изменениями. Для решения этой задачи следует использовать программу **Git**, поскольку она является стандартным программным обеспечением де-факто в технологической индустрии. Однако изучение Git не является целью этой книги. Чтобы узнать, как установить и использовать Git, ознакомьтесь с разделом _Технические требования_.
 
-At this stage, all the commands we mentioned in this section should work on your PC. Take some time to try the development mode by editing the `routes/root.js` file, and adding a new `GET /hello` route while the server is up and running!
+На данном этапе все команды, о которых мы упоминали в этом разделе, должны работать на вашем компьютере. Потратьте немного времени, чтобы попробовать режим разработки, отредактировав файл `routes/root.js` и добавив новый маршрут `GET /hello`, пока сервер работает!
 
-### Understanding the application structure
+### Понимание структуры приложения {#understanding-the-application-structure}
 
-The application structure we have built so far has excellent out-of-the-box features. It is founded on some of the following pillars:
+Структура приложения, которую мы создали до сих пор, обладает отличными возможностями из коробки. Она основана на некоторых из следующих столпов:
 
--   It relies on the `fastify-cli` plugin to start the application and provide the developer mode
--   It takes advantage of the `@fastify/autoload` plugin to automatically load all the files contained in the `plugins/` and `routes/` folders
+-   Она опирается на плагин `fastify-cli` для запуска приложения и предоставления режима разработчика.
+-   Он использует преимущества плагина `@fastify/autoload` для автоматической загрузки всех файлов, содержащихся в папках `plugins/` и `routes/`.
 
-It is not mandatory to use these two plugins, but they offer many great features that we will need at some point during our application evolution. Using them now will help you gain confidence in those features and speed you up later.
+Использование этих двух плагинов не является обязательным, но они предлагают множество отличных возможностей, которые нам понадобятся в определенный момент в процессе развития нашего приложения. Их использование сейчас поможет вам обрести уверенность в этих функциях и ускорит работу в дальнейшем.
 
-#### The `fastify-cli` plugin
+**Плагин `fastify-cli`**
 
-The `fastify-cli` **command line interface (CLI)** helps us start our application. It is used on the `package.json` file. The `scripts` property uses the `fastify start` command with some options to create the `app.js` file. As you will notice, the `app.js` file exports a typical Fastify `async function (fastify, opts)` plugin interface. The file is loaded by the CLI as a usual `app.register()` call, as we saw in the [Adding a basic plugin instance](../basic/what-is-fastify.md#adding-a-basic-plugin-instance) section of Chapter 1. In this case, we are not instantiating the Fastify root server instance or calling the `listen` method. All these tasks are accomplished by `fastify-cli`, saving us from the code boilerplate.
+Плагин `fastify-cli` **интерфейс командной строки (CLI)** помогает нам запустить наше приложение. Он используется в файле `package.json`. Свойство `scripts` использует команду `fastify start`с некоторыми опциями для создания файла`app.js`. Как вы заметили, файл `app.js` экспортирует типичный интерфейс плагина Fastify `async function (fastify, opts)`. Файл загружается в CLI как обычный вызов `app.register()`, как мы видели в разделе [Добавление экземпляра базового плагина](../basic/what-is-fastify.md#adding-a-basic-plugin-instance) главы 1. В данном случае мы не инстанцируем экземпляр корневого сервера Fastify и не вызываем метод `listen`. Все эти задачи решает `fastify-cli`, избавляя нас от кодового шаблона.
 
-Moreover, the CLI improves the development process by implementing proper settings and options:
+Более того, CLI улучшает процесс разработки, реализуя соответствующие настройки и опции:
 
--   It adds _a graceful shutdown_, as we read about in the [Shutting down the application](../basic/what-is-fastify.md#shutting-down-the-application) section in Chapter 1.
--   It reads a root `.env` file by default. It is a `key=value` file that only contains string. It is used to describe the settings that will be read from the operating system environment setup. All these variables are mapped into the Node.js `process.env` object.
--   It starts listening on the `PORT` environment variable for all the hosts.
--   It accepts the `--debug` option to start the application in _debug mode_ to debug your code.
--   It exposes the `--options` flag to customize the Fastify server option since we are not instantiating it directly.
--   The `--watch` argument turns on server auto-reloading when a file in the project changes.
--   The `--pretty-logs` argument makes the output logs readable on the shell.
+-   Он добавляет _изящное завершение работы_, о котором мы читали в разделе [Завершение работы приложения](../basic/what-is-fastify.md#shutting-down-the-application) в главе 1.
+-   По умолчанию он считывает корневой файл `.env`. Это файл `ключ=значение`, содержащий только строку. Он используется для описания параметров, которые будут считываться из настроек окружения операционной системы. Все эти переменные отображаются в объект Node.js `process.env`.
+-   Он начинает прослушивать переменную окружения `PORT` для всех хостов.
+-   Он принимает опцию `--debug` для запуска приложения в режиме _debug_ для отладки вашего кода.
+-   Он раскрывает флаг `--options` для настройки параметров сервера Fastify, поскольку мы не инстанцируем его напрямую.
+-   Аргумент `--watch` включает автозагрузку сервера при изменении файла в проекте.
+-   Аргумент `--pretty-logs` делает журналы вывода читаемыми в оболочке.
 
-You can find the detailed documentation on the CLI in the [repository](https://github.com/fastify/fastify-cli#options).
+Подробную документацию по CLI вы можете найти в [репозитории](https://github.com/fastify/fastify-cli#options).
 
-We are going to customize our `fastify-cli` installation in the next section: [Improving the application structure](#improving-the-application-structure).
+Мы собираемся настроить нашу установку `fastify-cli` в следующем разделе: [Улучшение структуры приложения](#improving-the-application-structure).
 
-#### The `@fastify/autoload` plugin
+**Плагин `@fastify/autoload`**
 
-The autoload plugin automatically loads the plugins found in a directory and configures the routes to match the folders’ structure. In other words, if you create a new `routes/test/foo.js` file with the following content, a new `GET /test/` route will be declared:
+Плагин autoload автоматически загружает плагины, найденные в директории, и настраивает маршруты в соответствии со структурой папок. Другими словами, если вы создадите новый файл `routes/test/foo.js` со следующим содержимым, будет объявлен новый маршрут `GET /test/`:
 
 ```js
 module.exports = async function (fastify, opts) {
@@ -115,73 +119,74 @@ module.exports = async function (fastify, opts) {
 };
 ```
 
-This behavior follows a **convention over configuration** design paradigm. Its focus is reducing the implementation to provide the desired behavior by default.
+Это поведение следует парадигме проектирования **конвенция над конфигурацией**. Ее фокус заключается в сокращении реализации для обеспечения желаемого поведения по умолчанию.
 
-By using the `@fastify/autoload` plugin, you can see every file as an encapsulated context, where every folder composes the plugin’s `prefix`, as we saw in [Chapter 2](../basic/plugin-system.md).
+Используя плагин `@fastify/autoload`, вы можете рассматривать каждый файл как инкапсулированный контекст, где каждая папка составляет `prefix` плагина, как мы видели в [Глава 2](../basic/plugin-system.md).
 
-Given that we don’t need the entire code to be autoloaded, it is fine to require our plugins and routes to register the required parts as children, but we need to find a clear pattern for doing this.
+Учитывая, что нам не нужен весь код в автозагрузке, вполне можно потребовать от наших плагинов и маршрутов регистрировать необходимые части как дочерние, но для этого нужно найти четкий шаблон.
 
-The autoload plugin has some default behaviors and is based on a naming convention that could be confusing if you don’t study the documentation. We will not explore all the different options and combinations: there are a lot, and it would take a book to explain them! For this reason, we will customize the default application to make it more transparent and easy to maintain, using the most consolidated setup.
+Плагин автозагрузки имеет несколько вариантов поведения по умолчанию и основан на соглашении об именовании, которое может запутать, если вы не изучите документацию. Мы не будем рассматривать все различные варианты и комбинации: их очень много, и чтобы объяснить их, потребуется целая книга! По этой причине мы настроим приложение по умолчанию, чтобы сделать его более прозрачным и простым в обслуживании, используя наиболее консолидированную настройку.
 
-## Improving the application structure
+## Улучшение структуры приложения {#improving-the-application-structure}
 
-We are becoming confident with our basic application setup, but it is not yet ready. We can improve it to define our own rules and give a better developer experience. We will create a solid project scaffolding focusing on the big picture first. After that, we will complete the Fastify setup details.
+Мы становимся уверенными в нашей базовой структуре приложения, но она еще не готова. Мы можем улучшить ее, чтобы определить наши собственные правила и обеспечить лучший опыт разработчика. Сначала мы создадим прочный каркас проекта, сосредоточившись на общей картине. После этого мы завершим настройку Fastify.
 
-### Starting an optimal project
+### Начало оптимального проекта {#starting-an-optimal-project}
 
-A good project is not only fancy technology in action but it must also provide a good developer experience, reducing any burden. According to Fastify’s philosophy, we should set up our new code base keeping this aspect in mind. Therefore, we will provide a brief introduction to those aspects, as they are priceless and time-saving but often underrated.
+Хороший проект - это не только причудливая технология в действии, он также должен обеспечивать хороший опыт разработчика, снижая любую нагрузку. Согласно философии Fastify, мы должны создавать нашу новую кодовую базу, помня об этом аспекте. Поэтому мы кратко расскажем об этих аспектах, поскольку они бесценны и экономят время, но часто недооцениваются.
 
-#### The README file
+**Файл README**
 
-The first addition to our project is a `README.md` file. A typical readme file introduces newcomers to an existing project, answering a set of basic information questions as follows:
+Первое дополнение к нашему проекту - это файл `README.md`. Типичный файл readme знакомит новичков с существующим проектом, отвечая на ряд основных информационных вопросов, таких как:
 
--   What are the project’s requirements? Do you need a database or some other external resources?
--   How do you install the application? What package manager and Node.js version does it use?
--   How do you start the application? Where can missing data (such as environment variables) be found?
--   How do you develop the application? Are there some conventions that developers must follow?
--   How do you test the application? Does it require unit tests or end-to-end tests?
--   How do you deploy the application? What are the processes and the environment’s URLs?
--   What should a developer do if there is missing information?
+-   Каковы требования к проекту? Нужна ли вам база данных или другие внешние ресурсы?
+-   Как установить приложение? Какой менеджер пакетов и версию Node.js оно использует?
+-   Как запустить приложение? Где можно найти недостающие данные (например, переменные окружения)?
+-   Как разрабатывать приложение? Есть ли какие-то соглашения, которым должны следовать разработчики?
+-   Как вы тестируете приложение? Требуются ли модульные или сквозные тесты?
+-   Как вы развертываете приложение? Каковы процессы и URL-адреса окружения?
+-   Что делать разработчику, если не хватает информации?
 
-This set of questions may not have answers at the beginning of the project, but it is good to note the unanswered ones and to find answers to them in the future.
+На этот набор вопросов может не быть ответов в начале проекта, но полезно отметить те, на которые нет ответов, и найти их в будущем.
 
-!!!note "Positive vibes"
+!!!note "Позитивные вибрации"
 
-    The README file has many other positive effects on the team’s morale. A developer will feel productive after reading it. We suggest you read the following article if you want to know more about the importance of the README file. The [article](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html) is written by Tom Preston-Werner, co-founder of GitHub and many other open source projects.
+    Файл README оказывает множество других положительных эффектов на моральный дух команды. Прочитав его, разработчик почувствует себя продуктивным. Мы предлагаем вам прочитать следующую статью, если вы хотите узнать больше о важности файла README. Автор [статьи](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html) - Том Престон-Вернер, сооснователь GitHub и многих других проектов с открытым исходным кодом.
 
-The most important thing is to keep the README file up to date. Every reader should improve it by adding missing parts or removing old ones. If this descriptive file becomes too large, it will become practically unreadable. So consider creating a `docs/` folder to split it into more readable pieces.
+Самое главное - поддерживать файл README в актуальном состоянии. Каждый читатель должен улучшать его, добавляя недостающие части или удаляя старые. Если этот описательный файл станет слишком большим, он станет практически нечитабельным. Поэтому подумайте о создании папки `docs/`, чтобы разделить его на более удобные для чтения части.
 
-#### The code linter
+**Линтер кода**
 
-Another essential step you should consider is adopting a **linter**. A linter is a piece of software that analyzes the source code statically and warns you about possible issues or typos to save you hours of debugging and adding `console.log` statements.
+Еще одним важным шагом, который вы должны рассмотреть, является использование **линтера**. Линтер - это программа, которая статически анализирует исходный код и предупреждает вас о возможных проблемах или опечатках, чтобы вы не тратили часы на отладку и добавление сообщений `console.log`.
 
-If you don’t want to choose a linter and configure it, we suggest opting for `standard`. It is a zero- configuration linter, which can be installed by running `npm install standard --save-dev`, and is ready to be integrated into custom `package.json` scripts, as follows:
+Если вы не хотите выбирать линтер и настраивать его, мы предлагаем выбрать `standard`. Это линтер с нулевой конфигурацией, который можно установить, выполнив команду `npm install standard --save-dev`, и который готов к интеграции в пользовательские скрипты `package.json`, как показано ниже:
 
-```
-  "scripts": {
+```json
+"scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
-  // file continues
+    // file continues
+}
 ```
 
-In this way, we will be able to run `npm run lint` to check our source code and get feedback. If there is no output, it means that all is good! Running `npm run lint:fix` will fix the errors automatically when possible – it is helpful for formatting issues.
+Таким образом, мы сможем запустить `npm run lint`, чтобы проверить наш исходный код и получить обратную связь. Если результата не будет, значит, все в порядке! Запуск `npm run lint:fix` автоматически исправит ошибки, когда это возможно - это полезно для проблем с форматированием.
 
-Note that we can integrate the lint validation with a requirement for the project. We need to modify the `package.json` scripts like so:
+Обратите внимание, что мы можем интегрировать проверку lint в требования к проекту. Для этого нам нужно изменить скрипты `package.json` следующим образом:
 
 ```
-    "pretest": "npm run lint",
-    "test": "tap \"test/**/*.test.js\"",
+"pretest": "npm run lint",
+"test": "tap \"test/**/*.test.js\"",
 ```
 
-The `npm test` command will automatically execute the `pretest` and `posttest` scripts if present. You may find it helpful to read the npm `pre` and `post` documentation to run extra commands before and after a script execution: <https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts>.
+Команда `npm test` автоматически выполнит скрипты `pretest` и `posttest`, если они присутствуют. Вам может быть полезно [прочитать документацию по npm `pre` и `post`](https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts), чтобы выполнить дополнительные команды до и после выполнения скрипта.
 
-#### The container build
+**Сборка контейнера**
 
-The Fastify application we will build during this book can work on a **production server** or a **container engine**. The former can run our application using the canonical `npm start` command. The latter requires a **container** to run our application.
+Приложение Fastify, которое мы будем собирать в этой книге, может работать как на **производственном сервере**, так и на **контейнерном движке**. Первый может запустить наше приложение с помощью канонической команды `npm start`. Второй требует **контейнера** для запуска нашего приложения.
 
-We are not going to go into much depth about the container topic since it is out of the scope of this book. It is useful to enter this topic using a secure example, which you will see next. This configuration is ready to build Node.js production containers.
+Мы не будем углубляться в тему контейнеров, поскольку она выходит за рамки этой книги. Полезно вникнуть в эту тему на примере безопасного контейнера, который вы увидите далее. Эта конфигурация готова для создания производственных контейнеров Node.js.
 
-To build a Docker container that contains our software, we must create a `Dockerfile` document on the root directory. This file contains the instruction to build our container image in the most secure way possible:
+Чтобы собрать контейнер Docker, содержащий наше программное обеспечение, мы должны создать документ `Dockerfile` в корневом каталоге. Этот файл содержит инструкции по сборке образа нашего контейнера наиболее безопасным способом:
 
 ```dockerfile
 FROM node:18-alpine as builder
@@ -205,49 +210,49 @@ ENTRYPOINT ["dumb-init"]
 CMD ["npm", "start"]
 ```
 
-The previous script snippet defines how Docker should create the container. These steps are described as follows:
+В предыдущем фрагменте сценария определено, как Docker должен создать контейнер. Эти шаги описаны следующим образом:
 
-1.  `FROM`: This starts the multistage build of our application from a base image within Node.js and with npm installed.
-2.  `ENV`: This defines some useful environment variables that will always be set up in the container.
-3.  `COPY`: This copies the `package.json` files into a container’s folder.
-4.  `WORKDIR`: This sets the current working directory and where to run the subsequent commands from.
-5.  `RUN npm ci`: This installs the project dependencies using the `package-lock` file.
-6.  `COPY`: This copies the application source code into the container.
-7.  `RUN apk`: This installs the _dumb-init_ software into the container.
-8.  `USER`: This sets the container’s default user at runtime. This user is a least-privilege user to secure our production environment.
-9.  `EXPOSE`, `ENTRYPOINT`, and `CMD`: These define the container’s external interface and set the application start as the default command on container initialization.
+1.  `FROM`: Это запускает многоступенчатую сборку нашего приложения из базового образа в Node.js и с установленным npm.
+2.  `ENV`: Здесь задаются некоторые полезные переменные окружения, которые всегда будут установлены в контейнере.
+3.  `COPY`: Копирует файлы `package.json` в папку контейнера.
+4.  `WORKDIR`: Устанавливает текущий рабочий каталог, из которого будут выполняться последующие команды.
+5.  `RUN npm ci`: Устанавливает зависимости проекта с помощью файла `package-lock`.
+6.  `COPY`: Копирует исходный код приложения в контейнер.
+7.  `RUN apk`: Устанавливает программу _dumb-init_ в контейнер.
+8.  `USER`: Устанавливает пользователя контейнера по умолчанию во время выполнения. Это пользователь с наименьшими привилегиями для обеспечения безопасности нашей производственной среды.
+9.  `EXPOSE`, `ENTRYPOINT` и `CMD`: Они определяют внешний интерфейс контейнера и устанавливают запуск приложения в качестве команды по умолчанию при инициализации контейнера.
 
-This file is a secure and complete descriptor to build the application container, and it is the perfect baseline for our project. It will change over time as the logic to start up the application changes.
+Этот файл представляет собой безопасный и полный дескриптор для создания контейнера приложений и является идеальной базовой основой для нашего проекта. Со временем он будет меняться по мере изменения логики запуска приложения.
 
-We adopted a multistage build because you may need to provide some secrets to your application to install it successfully. A typical example is to rely on a private npm registry. These secrets must not be persisted into the application’s Docker image, else anyone who gets access to the Docker image will be able to leak the npm token and get access to your private npm registry. The multistage build, instead, consists of a two step build process:
+Мы выбрали многоступенчатую сборку, потому что для успешной установки приложения вам может потребоваться предоставить некоторые секреты. Типичный пример - использование частного реестра npm. Эти секреты не должны храниться в Docker-образе приложения, иначе любой, кто получит доступ к Docker-образу, сможет слить токен npm и получить доступ к вашему приватному реестру npm. Вместо этого многоступенчатая сборка состоит из двух этапов:
 
-1.  Create a `builder` image that has access to the private npm registry, and download the application’s dependencies.
-2.  Copy the dependencies from the `builder` image to the application one, and then throw away the `builder` image and its secrets.
+1.  Создание образа `builder`, имеющего доступ к приватному реестру npm, и загрузка зависимостей приложения.
+2.  Скопируйте зависимости из образа `builder` в образ приложения, а затем выбросьте образ `builder` и его секреты.
 
-Finally, to use this file you must run the `docker build -t my-app` command. and the build process will start. We will discuss this topic further in [Chapter 10](./deploy.md).
+Наконец, чтобы использовать этот файл, необходимо выполнить команду `docker build -t my-app`, после чего начнется процесс сборки. Более подробно мы рассмотрим эту тему в [Главе 10](./deploy.md).
 
-#### The test folder
+**Папка test**
 
-We must not forget about testing our application. As a reminder, we should create a `test/` folder containing all the application’s tests, which we will implement in [Chapter 9](./testing.md). However, we need to be comfortable with our application structure first. This is because the test implementation depends on the project implementation. Only after we have reached a stable solution will we be able to write our basic assertions, such as the following:
+Мы не должны забывать о тестировании нашего приложения. Напоминаем, что мы должны создать папку `test/`, содержащую все тесты приложения, которые мы реализуем в [Глава 9](./testing.md). Однако сначала нам нужно разобраться со структурой нашего приложения. Это связано с тем, что реализация тестов зависит от реализации проекта. Только после того, как мы достигнем стабильного решения, мы сможем написать наши основные утверждения, такие как следующее:
 
--   The application starts correctly
--   The configurations are loaded in the right order
+-   Приложение запускается правильно
+-   Конфигурации загружаются в правильном порядке
 
-The tests’ assertions must reply to these questions positively to prove that our configuration scaffolding works as expected.
+Утверждения тестов должны положительно отвечать на эти вопросы, чтобы доказать, что наш конфигурационный скаффолдинг работает так, как ожидалось.
 
-We have completed the basic project setup. It was not strictly about Fastify, but it concerned how to start a good project even before writing some code lines. We must not forget that every line of the code or documentation will become the future legacy code. For this reason, we should do our best to make it easy and secure to use.
+Мы завершили базовую настройку проекта. Речь шла не столько о Fastify, сколько о том, как начать хороший проект еще до написания нескольких строк кода. Мы не должны забывать, что каждая строчка кода или документации станет в будущем наследуемым кодом. Поэтому мы должны приложить все усилия, чтобы сделать его простым и безопасным в использовании.
 
-Now let’s see how to continue the code base structure to prepare us to write our first real-world application.
+Теперь давайте посмотрим, как продолжить структуру кодовой базы, чтобы подготовиться к написанию нашего первого реального приложения.
 
-### Managing project directories
+### Управление директориями проекта {#managing-project-directories}
 
-The application scaffolding currently has two main directories loaded in the same manner by the `@fastify/autoload` plugin. But these folders are not equal at all.
+В настоящее время в скаффолдинге приложения есть две основные папки, загружаемые одинаковым образом плагином `@fastify/autoload`. Но эти папки вовсе не равнозначны.
 
-We need more buckets to order the source code and to make it clear and readable. For example, we saw that the JSON schemas structures can become verbose, so we should move them from our routes implementation to keep us focused on the business logic.
+Нам нужно больше бакетов, чтобы упорядочить исходный код и сделать его понятным и читаемым. Например, мы видели, что структуры JSON-схем могут стать многословными, поэтому их следует убрать из реализации маршрутов, чтобы сосредоточиться на бизнес-логике.
 
-We are going to create new project folders to define the final project structure and declare what they should contain. Every directory will have its own `@fastify/autoload` configuration.
+Мы создадим новые папки проекта, чтобы определить окончательную структуру проекта и объявить, что они должны содержать. Каждая папка будет иметь свою собственную конфигурацию `@fastify/autoload`.
 
-The folders are presented in order of loading, and you must not forget that while writing:
+Папки представлены в порядке загрузки, и вы не должны забывать об этом при написании:
 
 ```js
 fastify.register(AutoLoad, {
@@ -258,18 +263,18 @@ fastify.register(AutoLoad, {
 });
 ```
 
-The code will load the plugins first and then the routes. If the process was reversed, it would lead to errors. For this reason, the following project folders are presented in order of loading.
+Код сначала загрузит плагины, а затем маршруты. Если бы процесс был обратным, это привело бы к ошибкам. По этой причине следующие папки проекта представлены в порядке загрузки.
 
-#### Loading the plugins
+**Загрузка плагинов**.
 
-The `plugins/` folder should contain plugins that are based on the `fastify-plugin` module. We encountered this module in [Chapter 2](../basic/plugin-system.md).
+Папка `plugins/` должна содержать плагины, основанные на модуле `fastify-plugin`. С этим модулем мы познакомились в [Главе 2](../basic/plugin-system.md).
 
-You should store all the application’s components in this directory, which need to be registered as the following:
+В этом каталоге следует хранить все компоненты приложения, которые необходимо зарегистрировать следующим образом:
 
--   As a root server instance’s plugin, such as a database connection.
--   As reusable plugin components. These files are not intended to be autoloaded, but they must be registered when required by routes. An example could be an authentication plugin.
+-   Как подключаемый компонент корневого экземпляра сервера, например подключение к базе данных.
+-   Как многократно используемые компоненты плагина. Эти файлы не предназначены для автозагрузки, но они должны быть зарегистрированы, когда это требуется маршрутами. Примером может быть плагин аутентификации.
 
-For this reason, a good approach is to edit the plugins folder’s autoload setup as follows:
+По этой причине хорошим подходом является редактирование настроек автозагрузки папки plugins следующим образом:
 
 ```js
 fastify.register(AutoLoad, {
@@ -280,21 +285,21 @@ fastify.register(AutoLoad, {
 });
 ```
 
-With this new setup, the `ignorePattern` property lets us ignore all those files that end with the `.no-load.js` filename. This option tells us at first sight what is being loaded and what is not, improving the project’s clarity. Note that the pattern does not consider the directory name.
+С этой новой установкой свойство `ignorePattern` позволяет нам игнорировать все те файлы, которые заканчиваются именем `.no-load.js`. Эта опция позволяет с первого взгляда понять, что загружается, а что нет, что улучшает наглядность проекта. Обратите внимание, что шаблон не учитывает имя директории.
 
-!!!note "Customize as per your preferences"
+!!!note "Настройте в соответствии с вашими предпочтениями"
 
-    If you don’t like the “no-load” pattern, you can invert the logic by setting the `ignorePattern: /^((?!load\.js).)*$/` property value, and load only those files with the `.load.js` suffix.
+    Если вам не нравится шаблон «no-load», вы можете изменить логику, установив значение свойства `ignorePattern: /^((?!load\.js).)*$/`, и загружать только файлы с суффиксом `.load.js`.
 
-The `indexPattern` property instead disables a `@fastify/autoload` plugin. By default, if a directory contains an `index.js` file, it will be _the only one loaded_, skipping all other files. This could be an undesired behavior that the `indexPattern` option prevents.
+Свойство `indexPattern` вместо этого отключает плагин `@fastify/autoload`. По умолчанию, если каталог содержит файл `index.js`, он будет загружен только один, пропуская все остальные файлы. Это может быть нежелательным поведением, которое предотвращает опция `indexPattern`.
 
-Finally, the options property lets us provide a configuration object as input for the plugins that are being loaded. Let’s take the `plugins/support.js` file as an example. It exports the `module.exports = fp(async function (fastify, opts)` interface. The autoload’s `options` parameter matches with the opts argument. In this way, it is possible to provide a configuration for all the plugins. We will go deeper into this aspect in the [Loading the configuration](#loading-the-configuration) section.
+Наконец, свойство options позволяет нам предоставить объект конфигурации в качестве входных данных для загружаемых плагинов. В качестве примера возьмем файл `plugins/support.js`. Он экспортирует интерфейс `module.exports = fp(async function (fastify, opts)`. Параметр `options` автозагрузки совпадает с аргументом opts. Таким образом, можно предоставить конфигурацию для всех плагинов. Более подробно мы рассмотрим этот аспект в разделе [Загрузка конфигурации](#loading-the-configuration).
 
-#### Loading the schemas
+**Загрузка схем**
 
-The JSON schemas are a crucial part of a secure project and need a proper stage on the application’s structure. Creating a `schemas/` folder to store all the JSON schemas is convenient while the application develops: you will find out soon that we will work with numerous schemas.
+JSON-схемы являются важной частью безопасного проекта и нуждаются в соответствующем этапе в структуре приложения. Создание папки `schemas/` для хранения всех JSON-схем удобно во время разработки приложения: вскоре вы узнаете, что мы будем работать с большим количеством схем.
 
-In the folder, we will add a `loader.js` file that has one task. It must add all the JSON schemas we will need for our application:
+В эту папку мы добавим файл `loader.js`, у которого будет одна задача. Он должен добавить все JSON-схемы, которые понадобятся для нашего приложения:
 
 ```js
 const fp = require('fastify-plugin');
@@ -304,13 +309,13 @@ module.exports = fp(function (fastify, opts, next) {
 });
 ```
 
-The code snippet is actually a plugin, but it may become bigger and bigger. Isolating it from the `plugins/` folder lets us avoid the chaotic, infinite scrolling when navigating the code base.
+Этот фрагмент кода на самом деле является плагином, но он может становиться все больше и больше. Выделение его из папки `plugins/` позволяет нам избежать хаотичной, бесконечной прокрутки при навигации по кодовой базе.
 
-There will be many schemas to work with because it is _highly recommended to define a schema for each HTTP part_ you need to validate or serialize. All the HTTP verbs require different validation types; for example, an id field should not be submitted as input on a POST route, but it is mandatory in a PUT route to update the associated resource. Trying to fit a general JSON schema object into multiple HTTP parts may lead to unexpected validation errors.
+Будет много схем для работы, потому что настоятельно рекомендуется определять схему для каждой части HTTP, которую нужно валидировать или сериализовать. Все HTTP-главы требуют различных типов валидации; например, поле id не должно вводиться в маршруте POST, но оно обязательно в маршруте PUT для обновления связанного ресурса. Попытка вписать общий объект схемы JSON в несколько частей HTTP может привести к неожиданным ошибкам валидации.
 
-There is automation to load the schemas into a directory. So we will need to list all the files in the current directory and run the `addSchema` method. We will see how to implement it in [Chapter 7](./restful-api.md).
+Существует автоматизация для загрузки схем в каталог. Поэтому нам нужно будет перечислить все файлы в текущей директории и запустить метод `addSchema`. Как это реализовать, мы увидим в [Главе 7](./restful-api.md).
 
-To load the `loader.js` file into our project, the `@fastify/autoload` plugin may seem like killing a fly with a sledgehammer, but it is a good method to use to split our schemas even more. Register the plugin in the `app.js` file, as follows:
+Для загрузки файла `loader.js` в наш проект используется плагин `@fastify/autoload`. Это может показаться убийством мухи кувалдой, но это хороший метод, который можно использовать для еще большего разделения наших схем. Зарегистрируйте плагин в файле `app.js`, как показано ниже:
 
 ```js
 fastify.register(AutoLoad, {
@@ -319,25 +324,25 @@ fastify.register(AutoLoad, {
 });
 ```
 
-In this way, the autoload plugin will exclusively load the `loader.js` files created in the directory tree. So we will be able to make the subfolders, such as the following:
+Таким образом, плагин автозагрузки будет загружать только файлы `loader.js`, созданные в дереве каталогов. Таким образом, мы сможем сделать вложенные папки, например, следующую:
 
--   `schemas/headers/loaders.js`
+-   `schemas/headers/loaders.js`.
 -   `schemas/params/loader.js`
--   `schemas/body/loader.js`
+-   `schemas/body/loader.js`.
 
-Similarly, we can make more subfolders for every HTTP method, and you will find the best tree structure that fits your application. We found that splitting the schemas by HTTP parts is the best way of ordering. This division speeds up our source navigation even more. We will be able to create some utilities dedicated to each HTTP part, such as some regular expressions for the headers and complex reusable objects for the body input.
+Точно так же мы можем сделать больше подпапок для каждого HTTP-метода, и вы найдете оптимальную древовидную структуру, подходящую для вашего приложения. Мы обнаружили, что разделение схем по частям HTTP - лучший способ упорядочивания. Такое разделение еще больше ускоряет навигацию по источникам. Мы сможем создать несколько утилит, предназначенных для каждой части HTTP, например, несколько регулярных выражений для заголовков и сложные многократно используемые объекты для ввода тела.
 
-#### Loading the routes
+**Загрузка маршрутов**
 
-The `routes/` folder contains the application’s endpoints. Still, all the files are loaded automatically, making it hard to split the code base into smaller pieces. At this point, a `utility.js` file will be loaded by `@fastify/autoload`. Moreover, defining an `index.js` file will prevent the loading of other files, as we saw previously in the [Loading the plugins](#loading-the-plugins) section.
+Папка `routes/` содержит конечные точки приложения. Все файлы загружаются автоматически, что затрудняет разбиение кодовой базы на более мелкие части. На данном этапе файл `utility.js` будет загружен командой `@fastify/autoload`. Более того, определение файла `index.js` будет препятствовать загрузке других файлов, как мы видели ранее в разделе «Загрузка плагинов».
 
-The best rules we suggest applying when it comes to the `routes/` folder are the following:
+Лучшие правила, которые мы предлагаем применять, когда речь идет о папке `routes/`, следующие:
 
--   Autoload only those files that end with `*routes.js`. Discard all the other files in the folder. The ignored files can be registered manually or used as utility code.
--   We must not use the `fastify-plugin` module in this folder. If we need it, we should stop and think about whether that code could be moved to the `plugins/` folder.
--   Turn on the **autohook** feature in `@fastify/autoload`.
+-   Загружайте в автозагрузку только те файлы, которые заканчиваются на `*routes.js`. Все остальные файлы в папке отбрасывайте. Игнорируемые файлы можно зарегистрировать вручную или использовать в качестве кода утилиты.
+-   Мы не должны использовать модуль `fastify-plugin` в этой папке. Если он нам понадобится, мы должны остановиться и подумать, можно ли перенести этот код в папку `plugins/`.
+-   Включите функцию **autohook** в `@fastify/autoload`.
 
-To apply these rules, we need to set up the autoload plugin, as shown in the next code example:
+Чтобы применить эти правила, нам нужно настроить плагин автозагрузки, как показано в следующем примере кода:
 
 ```js
 fastify.register(AutoLoad, {
@@ -351,9 +356,9 @@ fastify.register(AutoLoad, {
 });
 ```
 
-The code snippet introduces two new parameters. The `autoHooks` flag lets you register some hooks for every `routes.js` file. The `cascadeHooks` option also turns this feature on for the subdirectories.
+Этот фрагмент кода вводит два новых параметра. Флаг `autoHooks` позволяет зарегистрировать несколько хуков для каждого файла `routes.js`. Параметр `cascadeHooks` также включает эту функцию для подкаталогов.
 
-Let’s make an example within this structure, which we will further discuss in [Chapter 8](./auth.md). Given this folder tree, the `authHooks.js` file exports the standard Fastify plugin interface, but it must only configure life cycle hooks:
+Приведем пример этой структуры, которую мы рассмотрим далее в [Глава 8](./auth.md). Учитывая это дерево папок, файл `authHooks.js` экспортирует стандартный интерфейс плагина Fastify, но он должен настраивать только хуки жизненного цикла:
 
 ```
 routes/
@@ -365,42 +370,42 @@ routes/
     └── routes.js
 ```
 
-This example configures some `onRequest` hooks to check the client’s authorization. Now, would you expect `routes/games/routes.js` to be authenticated?
+В этом примере настроены некоторые хуки `onRequest` для проверки авторизации клиента. Итак, ожидаете ли вы, что `routes/games/routes.js` будет аутентифицирован?
 
-If your answer is yes, `cascadeHooks: true` is right for you. We think most of you naturally find that the hooks registered as `autoHooks` in the parent’s folder are added to the children.
+Если вы ответили «да», то вам подойдет `cascadeHooks: true`. Мы думаем, что большинство из вас естественным образом обнаружит, что хуки, зарегистрированные как `autoHooks` в родительской папке, добавляются в дочерние.
 
-If the answer is no, you can change the `cascadeHooks` option to `false` to avoid adding the hooks to the children folders. In this case, the hooks are only loaded for the `readRoutes.js` and `writeRoutes.js` files. You may need to duplicate the `authHooks.js` file for every folder you need the authentication for or register it as `plugins/` in the root context.
+Если ответ отрицательный, вы можете изменить опцию `cascadeHooks` на `false`, чтобы не добавлять хуки в дочерние папки. В этом случае хуки будут загружены только для файлов `readRoutes.js` и `writeRoutes.js`. Возможно, вам придется продублировать файл `authHooks.js` для каждой папки, для которой вам нужна аутентификация, или зарегистрировать его как `plugins/` в корневом контексте.
 
-All these rules should be listed in the `README.md` file to shout out how to develop a new set of routes. This will help your team to join the project without studying all of Fastify’s plugins in detail.
+Все эти правила должны быть перечислены в файле `README.md`, чтобы прокричать о том, как разрабатывать новый набор маршрутов. Это поможет вашей команде присоединиться к проекту без детального изучения всех плагинов Fastify.
 
-Now, we have a clear structure ready to welcome your business logic endpoints. Still, before moving forward, we need to face the last aspect of the repository structure: how to manage the configuration.
+Теперь у нас есть четкая структура, готовая принять конечные точки бизнес-логики. Тем не менее, прежде чем двигаться дальше, нам нужно разобраться с последним аспектом структуры репозитория: как управлять конфигурацией.
 
-### Loading the configuration
+### Загрузка конфигурации {#loading-the-configuration}
 
-The configuration is the first step that our application must execute to start correctly. In the [Understanding configuration types](../basic/what-is-fastify.md#understanding-configuration-types) section of Chapter 1, we discussed three types of configuration that our application needs:
+Конфигурация - это первый шаг, который должно выполнить наше приложение для корректного запуска. В разделе [Понимание типов конфигурации](../basic/what-is-fastify.md#understanding-configuration-types) главы 1 мы обсудили три типа конфигурации, которые необходимы нашему приложению:
 
--   **Server options**: This is the Fastify root instance setup
--   **Application configuration**: This is the extra setting that sets how your application works
--   **Plugin configuration**: This provides all the parameters to configure the plugins
+-   **Опции сервера**: Это настройка корневого экземпляра Fastify
+-   **Конфигурация приложения**: Это дополнительные настройки, которые определяют, как работает ваше приложение
+-   **Конфигурация плагина**: Здесь содержатся все параметры для настройки плагинов.
 
-These configurations have different sources: a server option is an object, the plugins’ configurations are complex objects, and the application configuration relies on the environment. For this reason, they need to be treated differently.
+Эти конфигурации имеют разные источники: опция сервера - это объект, конфигурации плагинов - сложные объекты, а конфигурация приложения зависит от окружения. По этой причине их нужно обрабатывать по-разному.
 
-#### Loading the server configuration
+**Загрузка конфигурации сервера**.
 
-The server instantiation is not under our control. The `fastify-cli` plugin does it for us, so we need to customize it to set the **server options**.
+Инстанцирование сервера не находится под нашим контролем. За нас это делает плагин `fastify-cli`, поэтому нам нужно настроить его, чтобы задать **опции сервера**.
 
-We must edit the `start` and dev scripts into our `package.json`:
+Мы должны отредактировать скрипты `start` и dev в нашем файле `package.json`:
 
 ```
-    "start": "fastify start -l info --options app.js",
-    "dev": "npm run start -- --watch --pretty-logs"
+"start": "fastify start -l info --options app.js",
+"dev": "npm run start -- --watch --pretty-logs"
 ```
 
-We have modified the `dev` script to execute the `start` one in order to reduce code duplication and avoid copy-and-paste errors. The double dash (`--`) lets us forward extra arguments to the previous command. So, it is like appending parameters to the `start` script.
+Мы модифицировали скрипт `dev` для выполнения скрипта `start`, чтобы уменьшить дублирование кода и избежать ошибок copy-and-paste. Двойное тире (`--`) позволяет нам передавать дополнительные аргументы предыдущей команде. Таким образом, это похоже на добавление параметров к скрипту `start`.
 
-Adding the `--option` flag in the `start` script equals adding it to both commands without replicating it.
+Добавление флага `--option` в скрипт `start` равносильно добавлению его в обе команды без дублирования.
 
-The `--option` flag uses the `app.js` options property. Let’s not forget to add the server options we would like to provide during the Fastify initialization and place them at the bottom of the file:
+Флаг `--option` использует свойство `app.js` options. Не забудем добавить опции сервера, которые мы хотим предоставить при инициализации Fastify, и поместить их в нижнюю часть файла:
 
 ```js
 module.exports.options = {
@@ -412,19 +417,19 @@ module.exports.options = {
 };
 ```
 
-In doing so, we are exporting the same JSON object we were providing to the Fastify factory. Restarting the server will load these settings. A sharp developer may notice that we did not configure the `logger` options, but we can see logs in our console. This happens because our customization is merged within the `fastify-cli` arguments, and the `-l info` option sets the log level to `info`.
+При этом мы экспортируем тот же объект JSON, который мы предоставляли фабрике Fastify. Перезапуск сервера загрузит эти настройки. Внимательный разработчик может заметить, что мы не настроили опции `logger`, но мы можем видеть логи в нашей консоли. Это происходит потому, что наши настройки объединены в аргументах `fastify-cli`, а опция `-l info` устанавливает уровень журнала на `info`.
 
-Centralizing all the configurations into one place is best practice, so remove the `-l` argument from the `package.json` script and add the usual `logger` configuration into the exported JSON.
+Централизация всех настроек в одном месте - лучшая практика, поэтому удалите аргумент `-l` из скрипта `package.json` и добавьте обычную конфигурацию `logger` в экспортируемый JSON.
 
-For the sake of centralization, we can move `app.js` `module.exports.options` into a new dedicated `configs/server-options.js` folder. The server option does not need any async loading, and it can read the `process.env` object to access all the `.env` file values loaded at startup by `fastify-cli`.
+В целях централизации мы можем переместить `app.js` `module.exports.options` в новую выделенную папку `configs/server-options.js`. Серверная опция не нуждается в асинхронной загрузке и может читать объект `process.env` для доступа ко всем значениям файла `.env`, загружаемым при запуске `fastify-cli`.
 
-#### Loading the application configuration
+**Загрузка конфигурации приложения**
 
-The application configuration is mandatory for every project. It tracks secrets, such as API keys, passwords, and connection URLs. In most cases, it is mixed across sources, such as filesystems, environment variables, or external **Secret Managers**, which store that information securely, providing additional control over the variables’ visibility.
+Конфигурация приложения обязательна для каждого проекта. В ней хранятся секреты, такие как ключи API, пароли и URL-адреса соединений. В большинстве случаев она смешивается в разных источниках, таких как файловая система, переменные окружения или внешние **менеджеры секретов**, которые хранят эту информацию в защищенном виде, обеспечивая дополнительный контроль над видимостью переменных.
 
-We will focus on one basic loading type: the environment variable. This is the most common type, and it enables us to use Secret Managers. To go deeper into understanding external Secret Managers, we suggest you read this [exhaustive article](https://www.nearform.com/blog/uncovering-secrets-in-fastify/). It explains how to load configuration from the most famous providers, such as AWS, Google Cloud Platform, and Hashicorp Vault.
+Мы сосредоточимся на одном основном типе загрузки: переменной окружения. Это самый распространенный тип, и он позволяет нам использовать Secret Managers. Чтобы углубиться в понимание внешних Secret Managers, мы предлагаем вам прочитать эту [исчерпывающую статью](https://www.nearform.com/blog/uncovering-secrets-in-fastify/). В ней рассказывается, как загрузить конфигурацию от самых известных провайдеров, таких как AWS, Google Cloud Platform и Hashicorp Vault.
 
-The environment configuration is tied to the system where the software is running. In our case, it could be our PC, a remote server, or a colleague’s PC. As previously mentioned, Node.js loads all the **operating system (OS)** environment variables by default into the `process.env` object. So, working on multiple projects could be inconvenient as it would change the OS configuration every time. Creating Replace with an `.env` text file in the project’s root folder is the solution to this annoying issue:
+Конфигурация среды привязана к системе, на которой работает программное обеспечение. В нашем случае это может быть наш компьютер, удаленный сервер или компьютер коллеги. Как уже говорилось ранее, Node.js по умолчанию загружает все переменные окружения **операционной системы (ОС)** в объект `process.env`. Поэтому работа над несколькими проектами может быть неудобной, так как каждый раз придется менять конфигурацию ОС. Создание Replace с текстовым файлом `.env` в корневой папке проекта является решением этой неприятной проблемы:
 
 ```
 NODE_ENV=development
@@ -432,7 +437,7 @@ PORT=3000
 MONGO_URL=mongodb://localhost:27017/test
 ```
 
-This file will be read at the startup, and it will be ready to access. Note that this file will overwrite the `process.env` property if it already exists. So you have to make sure that what is in your `.env` file is the application configuration’s source of truth. You can verify the correct loading of the `app.js` file by adding a simple log:
+Этот файл будет прочитан при запуске, и он будет готов к доступу. Обратите внимание, что этот файл перезапишет свойство `process.env`, если оно уже существует. Поэтому вы должны быть уверены, что то, что находится в вашем файле `.env`, является источником истины для конфигурации приложения. Вы можете проверить правильность загрузки файла `app.js`, добавив простой журнал:
 
 ```js
 module.exports = async function (fastify, opts) {
@@ -440,13 +445,13 @@ module.exports = async function (fastify, opts) {
   process.env.MONGO_URL)
 ```
 
-Since the `.env` file may contain sensitive data, you should never commit it to your repository. In its place, you should commit and share a `.env.sample` file. It lists all the keys that must be set as environment variables without any secret values.
+Поскольку файл `.env` может содержать конфиденциальные данные, вы никогда не должны фиксировать его в вашем репозитории. Вместо него следует зафиксировать и выложить в общий доступ файл `.env.sample`. В нем перечислены все ключи, которые должны быть установлены в качестве переменных окружения, без каких-либо секретных значений.
 
-Saving sensitive data in the repository is dangerous because whoever has access to it may access upper environments such as production. In this way, the security is moved from access to an environment, such as a server, to the Git repository setting. Moreover, if an environment variable needs to be updated, you should commit it and publish a new software version to deploy the change in other environments. This is not correct: the software must not be tied to the environment variable values. Remember to track all files that must be secrets to the `.gitignore` and `.dockerignore` files.
+Сохранение конфиденциальных данных в репозитории опасно тем, что тот, кто имеет к ним доступ, может получить доступ к верхним окружениям, таким как `production`. Таким образом, безопасность переносится с доступа к среде, например серверу, на настройки Git-репозитория. Более того, если необходимо обновить переменную окружения, следует зафиксировать ее и опубликовать новую версию ПО, чтобы развернуть изменения в других окружениях. Это неправильно: программное обеспечение не должно быть привязано к значениям переменных окружения. Не забывайте отслеживать все файлы, которые должны быть секретными, в файлах `.gitignore` и `.dockerignore`.
 
-We can improve the `.env.sample` file to make it as straightforward as possible. For this, we need the `@fastify/env` plugin, which throws an error whenever it doesn’t find an expected variable.
+Мы можем улучшить файл `.env.sample`, чтобы сделать его как можно более простым. Для этого нам понадобится плагин `@fastify/env`, который выбрасывает ошибку всякий раз, когда не находит ожидаемую переменную.
 
-First of all, we need a JSON schema that describes our `.env` file. So, we can create the `schemas/dotenv.json` file:
+Прежде всего, нам нужна JSON-схема, описывающая наш файл `.env`. Поэтому мы можем создать файл `schemas/dotenv.json`:
 
 ```json
 {
@@ -469,11 +474,11 @@ First of all, we need a JSON schema that describes our `.env` file. So, we can c
 }
 ```
 
-The JSON schema environment is quite linear. It defines a property for each variable we expect. We can set a default value and coerce the type as we did for the `PORT` property in the JSON schema. Another nice takeaway is the `$id` format. It has a **Uniform Resource Name (URN)** syntax. The specification discussed in [Chapter 5](../basic/validation-serialization.md) explains how it can be a **Uniform Resource Identifier (URI)**. A URI may be a URL that identifies a location or a URN when it identifies a resource name without specifying where to get it.
+Среда схемы JSON довольно линейна. Она определяет свойство для каждой переменной, которую мы ожидаем. Мы можем задать значение по умолчанию и принудительно указать тип, как мы это сделали для свойства `PORT` в схеме JSON. Еще один приятный момент - формат `$id`. Он имеет синтаксис **Uniform Resource Name (URN)**. Спецификация, рассмотренная в [главе 5](../basic/validation-serialization.md), объясняет, как он может быть **Uniform Resource Identifier (URI)**. URI может быть URL, определяющим местоположение, или URN, когда он определяет имя ресурса, не указывая, где его можно получить.
 
-Now, we must not forget to update the `schemas/loader.js` file by writing `fastify.addSchema(require('./dotenv.json'))` to load the schema.
+Теперь мы не должны забыть обновить файл `schemas/loader.js`, написав `fastify.addSchema(require('./dotenv.json'))` для загрузки схемы.
 
-To integrate the `@fastify/env` plugin, we are going to create our application’s first plugin, `plugins/config.js`:
+Чтобы интегрировать плагин `@fastify/env`, мы создадим первый плагин нашего приложения, `plugins/config.js`:
 
 ```js
 const fp = require('fastify-plugin');
@@ -490,28 +495,28 @@ module.exports = fp(
 );
 ```
 
-The plugin will be loaded by the autoload feature, so we need to run the server and try it out. Starting the server without the `MONGO_URL` property will stop the startup and inform you that the key is missing. Moreover, it will add a decorator to the Fastify instance, named the `confKey` value. So the `.env` keys will be available to read the `fastify.secrets` property, decoupling the code from the global `process.env` object.
+Плагин будет загружен функцией автозагрузки, поэтому нам нужно запустить сервер и опробовать его. Запуск сервера без свойства `MONGO_URL` остановит запуск и сообщит, что ключ отсутствует. Более того, он добавит декоратор к экземпляру Fastify, назвав значение `confKey`. Таким образом, ключи `.env` будут доступны для чтения свойства `fastify.secrets`, отделяя код от глобального объекта `process.env`.
 
-Before going further into the plugins’ configuration loading, we should pay attention to the name option we just set as input to the fp function. It will be the key to understanding the [Loading the plugins’ configurations](#loading-the-plugins-configurations) section.
+Прежде чем углубляться в загрузку конфигурации плагинов, стоит обратить внимание на опцию name, которую мы только что задали в качестве входного параметра для функции `fp`. Она станет ключом к пониманию раздела «Загрузка конфигураций плагинов».
 
-#### Loading the plugins’ configurations
+**Загрузка конфигураций плагинов**
 
-The plugin’s settings are dependent on the application’s configuration. It requires the application’s secrets to configure itself to work as expected, but how can we configure it?
+Настройки плагина зависят от конфигурации приложения. Он требует секретов приложения, чтобы настроить себя на работу так, как ожидается, но как мы можем настроить его?
 
-Before proceeding, you will need a MongoDB instance up and running in your development environment. We will use this database in future chapters. You can [download the community edition](https://www.mongodb.com/try/download/community) for free or use a temporary Docker container starting it with the following command:
+Прежде чем приступить к работе, вам понадобится экземпляр MongoDB, запущенный в вашей среде разработки. Мы будем использовать эту базу данных в последующих главах. Вы можете [скачать community edition](https://www.mongodb.com/try/download/community) бесплатно или использовать временный Docker-контейнер, запустив его с помощью следующей команды:
 
 ```sh
 docker run -d -p 27017:27017 –rm –name fastify-mongo mongo:5
 docker container stop fastify-mongo
 ```
 
-These Docker commands start and stop a container for development purposes. The data you store will be lost after the shutdown, making it suitable for our learning process.
+Эти команды Docker запускают и останавливают контейнер для целей разработки. Хранящиеся в нем данные будут потеряны после остановки, что делает его подходящим для нашего учебного процесса.
 
-!!!note "Track all commands"
+!!!note "Отслеживайте все команды"
 
-    It is best to store all the useful commands in the `package.json` scripts property to run the project correctly. In this way, whether you choose a Docker container or a local MongoDB installation, you will be able to run `npm run mongo:start` to get a running instance ready to use.
+    Лучше всего хранить все полезные команды в свойстве скриптов `package.json` для корректного запуска проекта. Таким образом, независимо от того, выберете ли вы Docker-контейнер или локальную установку MongoDB, вы сможете запустить `npm run mongo:start`, чтобы получить работающий экземпляр, готовый к использованию.
 
-After the MongoDB setup, let’s integrate the `@fastify/mongodb` plugin. It provides access to a MongoDB database to use on the application’s endpoints. You need to install it by running the `npm install @fastify/mongodb` command, then create a new `plugins/mongo-data-source.js` file:
+После настройки MongoDB давайте интегрируем плагин `@fastify/mongodb`. Он предоставляет доступ к базе данных MongoDB для использования в конечных точках приложения. Его нужно установить, выполнив команду `npm install @fastify/mongodb`, а затем создать новый файл `plugins/mongo-data-source.js`:
 
 ```js
 const fp = require('fastify-plugin');
@@ -529,21 +534,21 @@ module.exports = fp(
 );
 ```
 
-In the code snippet, the MongoDB configuration is contained in the plugin’s file itself, but it requires the application’s configuration to load correctly. This is enforced by the `dependencies` option. It is an `fp` function argument that lists all the plugins that have previously been loaded. As you can see, the `name` parameter we set in the previous [Loading the application configuration](#loading-the-application-configuration) section, gives us control over the plugins’ loading order.
+В приведенном фрагменте кода конфигурация MongoDB содержится в файле самого плагина, но для корректной загрузки ему требуется конфигурация приложения. Это обеспечивается опцией `dependencies`. Она представляет собой аргумент функции `fp`, в котором перечислены все плагины, которые были загружены ранее. Как видите, параметр `name`, который мы задали в предыдущем разделе «Загрузка конфигурации приложения», дает нам контроль над порядком загрузки плагинов.
 
-We are creating a solid and clear project structure that will help us in our daily job:
+Мы создаем прочную и четкую структуру проекта, которая поможет нам в повседневной работе:
 
--   It suggests to us where the code should be written
--   It enforces the use of the plugin system, improving our source code to rely on encapsulation instead of global variables and side effects
--   It enforces declaring the dependencies between plugins to avoid mistakes and control the load order
+-   Она подсказывает нам, где должен быть написан код.
+-   Она принуждает использовать систему плагинов, улучшая наш исходный код, чтобы он полагался на инкапсуляцию вместо глобальных переменных и побочных эффектов
+-   Он заставляет объявлять зависимости между плагинами, чтобы избежать ошибок и контролировать порядок загрузки.
 
-Can we take advantage of the Fastify architecture within this structure? If things go wrong, how can we handle mistakes? Let’s have a look at this next.
+Можем ли мы использовать преимущества архитектуры Fastify в рамках этой структуры? Если что-то пойдет не так, как мы сможем справиться с ошибками? Давайте посмотрим на это дальше.
 
-## Debugging your application
+## Отладка вашего приложения {#debugging-your-application}
 
-In a real-world application, errors may happen! So, how can we handle them within our structure? Yes, you guessed right, with a plugin!
+В реальном приложении могут возникать ошибки! Как же мы можем справиться с ними в нашей структуре? Да, вы правильно догадались, с помощью плагина!
 
-In production, the logs files are our debugger. So, first of all, it is important to write good and secure logs. Let’s create a new `plugins/error-handler.js` plugin file:
+В производстве файлы журналов являются нашим отладчиком. Поэтому, прежде всего, важно писать хорошие и безопасные журналы. Давайте создадим новый файл плагина `plugins/error-handler.js`:
 
 ```js
 const fp = require('fastify-plugin');
@@ -568,20 +573,20 @@ module.exports = fp(function (fastify, opts, next) {
 });
 ```
 
-The code snippet is a customization of the error handler we learned about in [Chapter 3](../basic/routes.md). Its priorities are to do the following:
+Этот фрагмент кода представляет собой настройку обработчика ошибок, о котором мы узнали в [главе 3](../basic/routes.md). Его приоритеты заключаются в следующем:
 
--   Log the error through the application’s logger
--   Hide sensible information when an unexpected error happens and provide helpful information to the caller and contact the support team effectively
+-   Зафиксировать ошибку в журнале приложения
+-   Скрыть полезную информацию при возникновении неожиданной ошибки и предоставить полезную информацию вызывающему пользователю, а также эффективно связаться со службой поддержки.
 
-These few lines of code accomplish a great deal, and they can be customized even more to adapt to your needs, such as adding message error internationalization.
+Эти несколько строк кода позволяют добиться многого, и их можно еще больше адаптировать под ваши нужды, например, добавить интернационализацию сообщений об ошибках.
 
-After the error handling baseline we just set, we can use an IDE debugger to spot and solve issues. To do so, we need to edit the application’s `package.json` script:
+После того как мы только что установили базовый уровень обработки ошибок, мы можем использовать отладчик IDE для обнаружения и решения проблем. Для этого нам нужно отредактировать скрипт `package.json` приложения:
 
 ```
 "dev": "npm run start -- --watch –pretty-logs –debug"
 ```
 
-This will start the Node.js process in debug mode. At the startup, we will read a message in the console that informs us how to attach a debugger:
+Это запустит процесс Node.js в режиме отладки. При запуске мы прочитаем сообщение в консоли, которое сообщит нам, как подключить отладчик:
 
 ```
 Debugger listening on ws://127.0.0.1:9320/da49367c-fee9-42ba-b5a2-
@@ -589,7 +594,7 @@ Debugger listening on ws://127.0.0.1:9320/da49367c-fee9-42ba-b5a2-
 For help, see: https://nodejs.org/en/docs/inspector
 ```
 
-Using VS Code as an IDE, we can create a `.vscode/launch.json` file, as follows:
+Используя VS Code в качестве IDE, мы можем создать файл `.vscode/launch.json`, как показано ниже:
 
 ```json
 {
@@ -605,19 +610,19 @@ Using VS Code as an IDE, we can create a `.vscode/launch.json` file, as follows:
 }
 ```
 
-Pressing ++f5++ will connect our debugger to the Node.js process, and we will be ready to set breakpoints and check what is happening in our application to fix it.
+Нажатие ++f5++ подключит наш отладчик к процессу Node.js, и мы будем готовы установить точки останова и проверить, что происходит в нашем приложении, чтобы исправить это.
 
-Now, you have seen how fast and smooth configuring Fastify is to accomplish demanding tasks!
+Теперь вы убедились, как быстро и легко можно настроить Fastify для выполнения сложных задач!
 
-You have improved your control over the code base, and we will now see a new technique to manage the application’s configuration. You will master the project scaffolding setup as these skills build up.
+Вы улучшили свой контроль над кодовой базой, и теперь мы увидим новую технику управления конфигурацией приложения. По мере развития этих навыков вы освоите настройку лесов проекта.
 
-## Sharing the application configuration across plugins
+## Совместное использование конфигурации приложения между плагинами {#sharing-the-application-configuration-across-plugins}
 
-The [Loading the plugins’ configurations](#loading-the-plugins-configurations) section discussed how a plugin could access the application configuration. In this case, the plugin accesses the `fastify.secret` plain object to access the environment variables.
+В разделе «Загрузка конфигураций плагинов» обсуждалось, как плагин может получить доступ к конфигурации приложения. В этом случае плагин обращается к обычному объекту `fastify.secret` для доступа к переменным окружения.
 
-The configuration may evolve and become more complex. But, if you just intended to centralize the whole plugin’s settings into a dedicated plugin, how could you do that?
+Конфигурация может развиваться и становиться более сложной. Но если бы вы просто хотели централизовать все настройки плагина в отдельном плагине, как бы вы могли это сделать?
 
-We can modify the `config.js` plugin and move it to the `configs/` directory. By doing this, we are not loading it automatically anymore. Then, we can integrate the `@fastify/mongodb` configuration:
+Мы можем модифицировать плагин `config.js` и переместить его в директорию `configs/`. Таким образом, мы больше не будем загружать его автоматически. Затем мы можем интегрировать конфигурацию `@fastify/mongodb`:
 
 ```js
 module.exports = fp(async function configLoader(
@@ -637,28 +642,28 @@ module.exports = fp(async function configLoader(
 });
 ```
 
-In the code snippet, you can see the following main changes:
+В фрагменте кода вы можете увидеть следующие основные изменения:
 
--   The plugin exposes the `async` interface.
--   The `@fastify/env` plugin’s register is awaited to execute the plugin. In this way, `fastify.secrets` will be immediately accessible.
--   A new decorator has been added to the Fastify instance.
--   The plugin no longer has the name parameter. Since we are going to load it manually, a name is not necessary. In any case, it is a good practice to leave it: we want to show you that we are breaking the bridges between the `mongo-data-source.js` and `config.js` files.
+-   Плагин экспонирует интерфейс `async`.
+-   Для выполнения плагина ожидается реестр плагина `@fastify/env`. Таким образом, `fastify.secrets` будет немедленно доступен.
+-   К экземпляру Fastify добавлен новый декоратор.
+-   У плагина больше нет параметра name. Поскольку мы собираемся загружать его вручную, имя не обязательно. В любом случае, это хорошая практика, чтобы оставить его: мы хотим показать вам, что мы ломаем мосты между файлами `mongo-data-source.js` и `config.js`.
 
-These changes are breaking our setup due to the following reasons:
+Эти изменения нарушают нашу настройку по следующим причинам:
 
--   The `config.js` file is not loaded
--   The `mongo-data-source.js` file relies on `fastify.secrets`
+-   Файл `config.js` не загружается
+-   Файл `mongo-data-source.js` полагается на `fastify.secrets`.
 
-To fix them, we need to edit `app.js`, as follows:
+Чтобы исправить это, нам нужно отредактировать `app.js`, как показано ниже:
 
 ```js
 await fastify.register(require('./configs/config'));
 fastify.log.info('Config loaded %o', fastify.config);
 ```
 
-These lines must be added after the autoload schemas configuration because we validate the environment variable through the `schema:dotenv` schema.
+Эти строки должны быть добавлены после конфигурации схем автозагрузки, потому что мы проверяем переменную окружения через схему `schema:dotenv`.
 
-After that, we can update the plugins’ autoload options as follows:
+После этого мы можем обновить параметры автозагрузки плагинов следующим образом:
 
 ```js
 fastify.register(AutoLoad, {
@@ -670,7 +675,7 @@ fastify.register(AutoLoad, {
 });
 ```
 
-Finally, we can fix the `mongo-data-source.js` file by removing a lot of code:
+Наконец, мы можем исправить файл `mongo-data-source.js`, удалив из него много кода:
 
 ```js
 module.exports = fp(async function (fastify, opts) {
@@ -678,49 +683,54 @@ module.exports = fp(async function (fastify, opts) {
 });
 ```
 
-As you can see, it has become much lighter. We have removed the dependencies parameter as well because we don’t want to access the `fastify.secret` decorator.
+Как видите, он стал намного легче. Мы также убрали параметр dependencies, потому что не хотим обращаться к декоратору `fastify.secret`.
 
-This change has a significant impact on the code logic. With this code restyle, the `mongo-data-source.js` file is decoupled from the rest of the application because all the settings are provided by the input `opts` argument. This object is provided by the `@fastify/autoload` plugin, mapping the `options` parameter.
+Это изменение существенно повлияло на логику кода. При таком рестайле кода файл `mongo-data-source.js` отделен от остальной части приложения, поскольку все настройки предоставляются входным аргументом `opts`. Этот объект предоставляется плагином `@fastify/autoload`, отображая параметр `options`.
 
-You now have a comprehensive and solid knowledge of the configuration and how to best manage it. You can use the previous code example to become confident in tweaking the plugins and playing within the autoload plugin. You will find that the source code in the book’s repository adopts the first solution we saw in the [Loading the plugins’ configurations](#loading-the-plugins-configurations) section.
+Теперь у вас есть полные и прочные знания о конфигурации и о том, как лучше всего ею управлять. Вы можете использовать предыдущий пример кода, чтобы уверенно настраивать плагины и играть внутри плагина автозагрузки. Вы увидите, что исходный код в репозитории книги использует первое решение, которое мы рассмотрели в разделе «Загрузка конфигураций плагинов».
 
-To complete the project scaffolding, we need to add a few more features that are key pieces to consider this basic structure solid and ready to use for our development process. We will learn about some new plugins that add these missing capabilities to our application.
+Чтобы завершить проект, нам нужно добавить еще несколько функций, которые являются ключевыми элементами для того, чтобы считать эту базовую структуру прочной и готовой к использованию в процессе разработки. Мы узнаем о некоторых новых плагинах, которые добавят эти недостающие возможности в наше приложение.
 
-## Using Fastify’s plugins
+## Использование плагинов Fastify {#using-fastifys-plugins}
 
-The project structure is almost complete. Fastify’s ecosystem helps us improve our scaffolding code base with a set of plugins you will want to know about. Let’s learn about them and add them to the `plugins/` folder.
+Структура проекта почти завершена. Экосистема Fastify помогает нам улучшить нашу кодовую базу строительных лесов с помощью набора плагинов, о которых вы захотите узнать. Давайте узнаем о них и добавим их в папку `plugins/`.
 
-### How to get a project overview
+### Как получить обзор проекта {#how-to-get-a-project-overview}
 
-Documenting a complete list of all the application’s endpoints is a tedious task, but someone in the team still has to do it. Luckily, Fastify has a solution for this: the `@fastify/swagger` plugin.
+Документирование полного списка всех конечных точек приложения - утомительная задача, но кто-то в команде все равно должен это делать. К счастью, у Fastify есть решение для этого: плагин `@fastify/swagger`.
 
-You can integrate it by creating a new `plugins/swagger.js` file:
+Вы можете интегрировать его, создав новый файл `plugins/swagger.js`:
 
 ```js
-module.exports = fp(async function (fastify, opts) {
-  fastify.register(require('@fastify/swagger'), {
-    routePrefix: '/docs',
-    exposeRoute: fastify.secrets.NODE_ENV !== ‹production›,
-    swagger: {
-      info: {
-        title: 'Fastify app',
-        description: 'Fastify Book examples',
-        version: require('../package.json').version
-      }
-    }
-  })
-}, { dependencies: ['application-config'] })
+module.exports = fp(
+    async function (fastify, opts) {
+        fastify.register(require('@fastify/swagger'), {
+            routePrefix: '/docs',
+            exposeRoute:
+                fastify.secrets.NODE_ENV !== 'production',
+            swagger: {
+                info: {
+                    title: 'Fastify app',
+                    description: 'Fastify Book examples',
+                    version: require('../package.json')
+                        .version,
+                },
+            },
+        });
+    },
+    { dependencies: ['application-config'] }
+);
 ```
 
-The previous code will register the plugin. It will automatically create the <http://localhost:3000/docs> web pages that will list all the application’s endpoints. Note that the documentation will be published only if the environment is not in production, for security reasons. The API interfaces should be shared only with those people that consume them.
+Предыдущий код зарегистрирует плагин. Он автоматически создаст веб-страницы `http://localhost:3000/docs`, на которых будут перечислены все конечные точки приложения. Обратите внимание, что документация будет опубликована только в том случае, если среда не находится в производстве, из соображений безопасности. Интерфейсы API должны быть доступны только тем людям, которые их используют.
 
-Note that **Swagger (OAS 2.0)** and the former **OpenAPI Specification (OAS 3.0)** define a standard to generate API documentation. You may find it interesting to learn more about it by visiting <https://swagger.io/specification/>.
+Обратите внимание, что **Swagger (OAS 2.0)** и бывшая **OpenAPI Specification (OAS 3.0)** определяют стандарт для создания документации API. Возможно, вам будет интересно [узнать больше](https://swagger.io/specification/) об этом.
 
-### How to be reachable
+### Как быть доступным {#how-to-be-reachable}
 
-One of the most common issues in implementing backend APIs is the **cross-origin resource sharing (CORS)** settings. You will hit this problem when a frontend tries to call your endpoints from a browser, and the request is rejected.
+Одной из самых распространенных проблем при реализации API бэкенда является **настройка кросс-оригинального обмена ресурсами (CORS)**. Вы столкнетесь с этой проблемой, когда фронтенд попытается вызвать ваши конечные точки из браузера, а запрос будет отклонен.
 
-To solve this issue, you can install the `@fastify/cors` plugin:
+Чтобы решить эту проблему, вы можете установить плагин `@fastify/cors`:
 
 ```js
 const fp = require('fastify-plugin');
@@ -731,12 +741,12 @@ module.exports = fp(async function (fastify, opts) {
 });
 ```
 
-Note that the example code is configured to let your APIs be reachable by any client. Explore this aspect further to set this plugin correctly for your future applications.
+Обратите внимание, что код примера настроен таким образом, чтобы ваши API были доступны любому клиенту. Изучите этот аспект подробнее, чтобы правильно настроить этот плагин для ваших будущих приложений.
 
-## Summary
+## Резюме {#summary}
 
-In this chapter, you have created a complete Fastify project scaffolding that will be the base structure for your following projects. You can now start a new Fastify application from scratch. You can also control all the configurations your code base needs, regardless of where they are stored.
+В этой главе вы создали полноценный проект Fastify, который станет базовой структурой для ваших следующих проектов. Теперь вы можете начать новое приложение Fastify с нуля. Вы также можете контролировать все конфигурации, необходимые вашей кодовой базе, независимо от того, где они хранятся.
 
-We have looked at some of the most used and useful Fastify plugins to enhance the project structure and ergonomics. You now know how to use and customize them and that there are infinite combinations.
+Мы рассмотрели некоторые из наиболее используемых и полезных плагинов Fastify для улучшения структуры и эргономики проекта. Теперь вы знаете, как их использовать и настраивать, и что их комбинации могут быть бесконечными.
 
-The solid and clean structure we have built so far will evolve throughout the course of the book. Before investing more time in the structure, we need to understand the application business logic. So, get ready for the next chapter, where we will discuss how to build a RESTful API.
+Прочная и чистая структура, которую мы создали на данный момент, будет развиваться на протяжении всей книги. Прежде чем уделять больше времени структуре, нам нужно понять бизнес-логику приложения. Итак, приготовьтесь к следующей главе, в которой мы обсудим, как построить RESTful API.
