@@ -1,70 +1,76 @@
-# Authentication, Authorization, and File Handling
+---
+description: В этой главе мы продолжим развивать наше приложение, в основном затрагивая две отдельные темы - аутентификацию пользователей и работу с файлами
+---
 
-In this chapter, we will continue evolving our application, mainly covering two distinct topics: user authentication and file handling. First, we will implement a reusable JWT authentication plugin that will allow us to manage users, authentication, and sessions. It will also act as an authorization layer, protecting our application’s endpoints from unauthorized access. We will also see how decorators can expose the authenticated user’s data inside the route handlers. Then, moving on to file handling, we will develop a dedicated plugin enabling users to import and export their to-do tasks in CSV format.
+# Аутентификация, авторизация и работа с файлами
 
-In this chapter, we will learn about the following:
+В этой главе мы продолжим развивать наше приложение, в основном затрагивая две отдельные темы: аутентификацию пользователей и работу с файлами.
 
--   Authentication and authorization flow
--   Building the authentication layer
--   Adding the authorization layer
--   Managing uploads and downloads
+Во-первых, мы реализуем многократно используемый плагин аутентификации JWT, который позволит нам управлять пользователями, аутентификацией и сессиями. Он также будет выступать в качестве уровня авторизации, защищая конечные точки нашего приложения от несанкционированного доступа. Мы также увидим, как декораторы могут раскрывать данные аутентифицированного пользователя внутри обработчиков маршрутов. Затем, перейдя к работе с файлами, мы разработаем специальный плагин, позволяющий пользователям импортировать и экспортировать свои задачи в формате CSV.
 
-## Technical requirements
+В этой главе мы узнаем о следующем:
 
-To follow along with this chapter, you will need these technical requirements mentioned in the previous chapters:
+-   Поток аутентификации и авторизации
+-   Создание уровня аутентификации
+-   Добавление уровня авторизации
+-   Управление загрузками и скачиваниями
 
--   A working [Node.js 18 installation](https://nodejs.org/)
+## Технические требования {#technical-requirements}
+
+Для изучения этой главы вам понадобятся технические требования, упомянутые в предыдущих главах:
+
+-   Рабочая [установка Node.js 18](https://nodejs.org/)
 -   [VS Code IDE](https://code.visualstudio.com/)
--   An active [Docker installation](https://docs.docker.com/get-docker/)
--   A [Git](https://git-scm.com/) repository is recommended but not mandatory
--   A terminal application
+-   активная [установка Docker](https://docs.docker.com/get-docker/)
+-   Репозиторий [Git](https://git-scm.com/) рекомендуется, но не является обязательным.
+-   Терминальное приложение
 
-Once more, the code of the project can be found on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%208).
+Еще раз напомним, что код проекта можно найти на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%208).
 
-Finally, it’s time to start our exploration. In the next section, we will take a deep dive into the authentication flow in Fastify, understanding all the pieces we need to implement a complete solution.
+Наконец, пришло время приступить к исследованию. В следующем разделе мы глубоко погрузимся в поток аутентификации в Fastify, понимая все части, необходимые для реализации полного решения.
 
-## Authentication and authorization flow
+## Поток аутентификации и авторизации {#authentication-and-authorization-flow}
 
-Authentication and authorization are usually challenging topics. Based on use cases, specific strategies may or may not be feasible. For this project, we will implement the authentication layer via **JSON Web Tokens**, commonly known as **JWTs**.
+Аутентификация и авторизация обычно являются сложными темами. В зависимости от случая использования конкретные стратегии могут быть или не быть осуществимыми. В этом проекте мы будем реализовывать уровень аутентификации с помощью **JSON Web Tokens**, широко известных как **JWTs**.
 
 !!!note "JWT"
 
-    This is a widely used standard for token-based authentication for web and mobile applications. It is an open standard that allows information to be transmitted securely between the client and the server. Every token has three parts. First, the header contains information about the type of token and the cryptographic algorithms used to sign and encrypt the token. Then, the payload includes any metadata about the user. Finally, the signature is used to verify the token’s authenticity and ensure it has not been tampered with.
+    Это широко используемый стандарт аутентификации на основе токенов для веб- и мобильных приложений. Это открытый стандарт, который позволяет безопасно передавать информацию между клиентом и сервером. Каждый токен состоит из трех частей. Во-первых, заголовок содержит информацию о типе токена и криптографических алгоритмах, используемых для его подписи и шифрования. Затем в полезной нагрузке содержатся метаданные о пользователе. Наконец, подпись используется для проверки подлинности токена и гарантии того, что он не был подделан.
 
-Before looking at the implementation in Fastify, let’s briefly explore how this **authentication** works. First, the API needs to expose an endpoint for the registration. This route will enable users to create new accounts on the service. After the account is created correctly, the user can perform authenticated operations against the server. We can break them down into seven steps:
+Прежде чем рассматривать реализацию в Fastify, давайте вкратце рассмотрим, как работает эта **аутентификация**. Во-первых, API должен предоставлять конечную точку для регистрации. Этот маршрут позволит пользователям создавать новые аккаунты на сервисе. После корректного создания учетной записи пользователь сможет выполнять аутентифицированные операции с сервером. Мы можем разбить их на семь шагов:
 
-1.  To initiate the authentication process, the user provides their username and password to the server via a specific endpoint.
-2.  The server verifies the credentials and, if valid, creates a JWT containing the user’s metadata using the shared secret.
-3.  The server returns the token to the client.
-4.  The client stores the JWT in a secure location. Inside the browser, it is usually local storage or a cookie.
-5.  On subsequent requests to the server, the client sends the JWT in the `Authorization` header of each HTTP request.
-6.  The server verifies the token by checking the signature, and if the signature is valid, it extracts the user’s metadata from the payload.
-7.  The server uses the user ID to look up the user in the database.
+1.  Чтобы инициировать процесс аутентификации, пользователь предоставляет серверу свое имя пользователя и пароль через определенную конечную точку.
+2.  Сервер проверяет учетные данные и, если они действительны, создает JWT, содержащий метаданные пользователя, используя общий секрет.
+3.  Сервер возвращает токен клиенту.
+4.  Клиент хранит JWT в безопасном месте. В браузере это обычно локальное хранилище или cookie.
+5.  При последующих запросах к серверу клиент отправляет JWT в заголовке `Authorization` каждого HTTP-запроса.
+6.  Сервер проверяет токен, проверяя подпись, и если подпись действительна, он извлекает метаданные пользователя из полезной нагрузки.
+7.  Сервер использует идентификатор пользователя для поиска пользователя в базе данных.
 
-From here on, the request is handled by the **authorization** layer. First, it must check whether the current user has the necessary permissions to perform the action or access the specified resource. Then, based on the result of the check operation, the server can answer with the resource or an HTTP `Unauthorized` error. They are many standardized ways of implementing authorization. In this book, we will implement our simple solution from scratch for exposition purposes.
+Далее запрос обрабатывается уровнем **авторизации**. Сначала он должен проверить, есть ли у текущего пользователя необходимые разрешения на выполнение действия или доступ к указанному ресурсу. Затем, основываясь на результате операции проверки, сервер может ответить ресурсом или ошибкой HTTP `Unauthorized`. Существует множество стандартизированных способов реализации авторизации. В этой книге мы реализуем наше простое решение с нуля для наглядности.
 
-!!!note "Authentication versus authorization"
+!!!note "Аутентификация и авторизация"
 
-    Even if these terms are often used together, they express two completely different concepts. Authentication describes _who_ is allowed to access the service. On the other hand, authorization defines _what_ actions can be performed by the user once authenticated.
+    Несмотря на то, что эти термины часто используются вместе, они выражают две совершенно разные концепции. Аутентификация описывает, _кому_ разрешен доступ к сервису. С другой стороны, авторизация определяет, _какие_ действия может выполнять пользователь после аутентификации.
 
-The authorization and authentication layers are crucial to building secure web applications. Controlling access to resources helps to prevent unauthorized access and protect sensitive data from potential attacks or breaches.
+Уровни авторизации и аутентификации имеют решающее значение для создания безопасных веб-приложений. Контроль доступа к ресурсам помогает предотвратить несанкционированный доступ и защитить конфиденциальные данные от возможных атак или утечек.
 
-In the next section, we will start from where we left the code in [Chapter 7](./restful-api.md), implementing a new application-level plugin for authentication.
+В следующем разделе мы начнем с того места, на котором остановились в [Главе 7](./restful-api.md), реализуя новый плагин для аутентификации на уровне приложения.
 
-## Building the authentication layer
+## Построение слоя аутентификации {#building-the-authentication-layer}
 
-Since we need to add new non-trivial functionality to our application, we need to implement mainly two pieces:
+Поскольку нам нужно добавить новую нетривиальную функциональность в наше приложение, нам нужно реализовать в основном две части:
 
--   An authentication plugin to generate tokens, check the incoming requests, and revoke old or not used tokens
--   A bunch of new routes to handle the registration, authentication, and life cycle of the tokens
+-   Плагин аутентификации для генерации токенов, проверки входящих запросов и отзыва старых или неиспользуемых токенов.
+-   Куча новых маршрутов для обработки регистрации, аутентификации и жизненного цикла токенов.
 
-Before jumping directly into the code, we need to add one last note. In this chapter’s code snippets, we will use a new data source called `userDataSource` (`[1]`). Since it exposes only `createUser` (`[3]`) and `readUser` (`[2]`) methods and the implementation is trivial, we will not show it in this book. However, the complete code is in the `./routes/auth/autohooks.js` file inside the GitHub repository.
+Прежде чем перейти непосредственно к коду, необходимо сделать последнее замечание. В фрагментах кода этой главы мы будем использовать новый источник данных под названием `userDataSource` (`[1]`). Поскольку он раскрывает только методы `createUser` (`[3]`) и `readUser` (`[2]`), а его реализация тривиальна, мы не будем показывать его в этой книге. Однако полный код находится в файле `./routes/auth/autohooks.js` в репозитории GitHub.
 
-Since we must implement both, we can add the authentication plugin first.
+Поскольку нам нужно реализовать оба варианта, мы можем сначала добавить плагин аутентификации.
 
-### Authentication plugin
+### Плагин аутентификации {#authentication-plugin}
 
-First, create the `./plugins/auth.js` file inside the project’s root folder. The `auth.js` code snippet shows the implementation of the plugin:
+Сначала создайте файл `./plugins/auth.js` в корневой папке проекта. Сниппет кода `auth.js` показывает реализацию плагина:
 
 ```js
 const fp = require('fastify-plugin');
@@ -124,24 +130,24 @@ module.exports = fp(
 );
 ```
 
-We create and export a Fastify plugin that provides authentication functionalities via decorators and the JWT library. But first, let’s take a look at the implementation details:
+Мы создаем и экспортируем плагин Fastify, который предоставляет функции аутентификации с помощью декораторов и библиотеки JWT. Но сначала давайте рассмотрим детали реализации:
 
--   We require the official `@fastify/jwt` package (`[1]`). It handles low-level primitives around the tokens and lets us focus only on the logic we need inside our application.
--   Generally speaking, keeping a trace of the invalidated tokens is always a good idea. `revokedTokens` creates a Map instance (`[2]`) to keep track of them. Later, we will use it to ban invalid tokens.
--   We register the `@fastify/jwt` plugin on the Fastify instance (`[3]`), passing the `JWT_SECRET` environment variable and `isTrusted` function that checks whether a token is trusted. In a subsequent section, we will add `JWT_SECRET` to our server’s configuration to ensure its presence after the boot.
--   We decorate the Fastify instance with the `authenticate` function to verify that the client’s token is valid before allowing access to protected routes. The `request.jwtVerify()` (`[5]`) method comes from `@fastify/jwt`. If errors are thrown during the verification, the function replies to the client with the error. Otherwise, the `request.user` property will be populated with the current user.
--   The `revokeToken` function is added to the Fastify instance (`[6]`). It adds a token to the map of invalid tokens. We use the `jti` property as the invalidation key.
--   The `generateToken` function creates a new token from user data (`[7]`). Then, we decorate a request with this function to access its context through `this` reference. The `fastify.jwt.sign` method is once more provided by the `@fastify/jwt` library.
+-   Нам требуется официальный пакет `@fastify/jwt` (`[1]`). Он обрабатывает низкоуровневые примитивы вокруг токенов и позволяет нам сосредоточиться только на логике, необходимой в нашем приложении.
+-   Вообще говоря, всегда полезно отслеживать недействительные токены. `revokedTokens` создает экземпляр Map (`[2]`), чтобы отслеживать их. Позже мы будем использовать его для запрета недействительных токенов.
+-   Мы регистрируем плагин `@fastify/jwt` на экземпляре Fastify (`[3]`), передавая переменную окружения `JWT_SECRET` и функцию `isTrusted`, которая проверяет, является ли токен доверенным. В следующем разделе мы добавим `JWT_SECRET` в конфигурацию нашего сервера, чтобы обеспечить ее наличие после загрузки.
+-   Мы декорируем экземпляр Fastify функцией `authenticate`, чтобы убедиться в том, что токен клиента действителен, прежде чем разрешить доступ к защищенным маршрутам. Метод `request.jwtVerify()` (`[5]`) берется из `@fastify/jwt`. Если при проверке возникают ошибки, функция отвечает клиенту с указанием ошибки. В противном случае свойство `request.user` будет заполнено текущим пользователем.
+-   Функция `revokeToken` добавляется к экземпляру Fastify (`[6]`). Она добавляет токен в карту недействительных токенов. В качестве ключа недействительности мы используем свойство `jti`.
+-   Функция `generateToken` создает новый токен из данных пользователя (`[7]`). Затем мы декорируем запрос этой функцией, чтобы получить доступ к его контексту через ссылку `this`. Метод `fastify.jwt.sign` снова предоставляется библиотекой `@fastify/jwt`.
 
-Thanks to the project setup from the previous chapters, this plugin will be automatically registered to the main Fastify instance inside `./apps.js` during the boot phase.
+Благодаря настройке проекта из предыдущих глав, этот плагин будет автоматически зарегистрирован в главном экземпляре Fastify внутри `./apps.js` на этапе загрузки.
 
-We can leave this file as is for now since we will start using the decorated methods inside our application in a dedicated section. Now, it is time to add the authentication layer routes, and we will do it in the following subsection.
+Пока мы можем оставить этот файл без изменений, поскольку мы начнем использовать декорируем методы внутри нашего приложения в специальном разделе. Теперь пришло время добавить маршруты уровня аутентификации, и мы сделаем это в следующем подразделе.
 
-### Authentication routes
+### Маршруты аутентификации {#authentication-routes}
 
-The time has come to implement a way for the users to interact with our authentication layer. The `./ routes/auth` folder structure mimics the `todos` module we explored in [Chapter 7](./restful-api.md). It contains `schemas`, `autohooks.js`, and `routes.js`. We will look only at `routes.js` in the book for brevity’s sake. The rest of the code is straightforward and can be found in the GitHub [repository](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%208).
+Пришло время реализовать способ взаимодействия пользователей с нашим уровнем аутентификации. Структура папки `./ routes/auth` имитирует модуль `todos`, который мы изучали в [Главе 7](./restful-api.md). Она содержит `chemas`, `autohooks.js` и `routes.js`. Для краткости мы рассмотрим в книге только `routes.js`. Остальной код прост и его можно найти в [репозитории](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%208) GitHub .
 
-Since the code of `./routes/auth/routes.js` is pretty long, we will split it into single snippets, one per route definition. But first, to get a general idea of the plugin, the following snippet contains the whole code while omitting the implementations:
+Поскольку код `./routes/auth/routes.js` довольно длинный, мы разобьем его на отдельные фрагменты, по одному на определение маршрута. Но сначала, чтобы получить общее представление о плагине, следующий фрагмент содержит весь код, опуская реализации:
 
 ```js
 const fp = require('fastify-plugin');
@@ -180,7 +186,7 @@ We start by requiring the `generate-hash.js` local module (`[1]`). We don’t wa
 
 This wraps up the general overview. Next, we can examine the `register` route.
 
-#### Register route
+#### Register route {#register-route}
 
 This route allows new users to register on our platform. Let’s explore the implementation by looking at the following snippet:
 
@@ -245,7 +251,7 @@ Let’s break down the execution of the preceding code snippet:
 
 The following section will examine how the users authenticate with our platform.
 
-#### Authenticate route
+#### Authenticate route {#authenticate-route}
 
 The next route on the list is the POST `/authenticate` route. It allows registered users to generate a new JWT token using their password. The following snippet shows the implementation:
 
@@ -306,7 +312,7 @@ Let’s break down the code execution:
 
 We will see the `refreshHandler` implementation in the following section, where we look at the `/refresh` route.
 
-#### Refresh route
+#### Refresh route {#refresh-route}
 
 Once authenticated, the `refresh` route allows our users to generate more tokens without providing their usernames and passwords. Since we already saw that we are using the same logic inside the `authenticate` route, we moved this route handler to a separate function. The following code block shows these details:
 
@@ -333,7 +339,7 @@ This route is the first one protected by the authentication layer. To enforce it
 
 The time has come to look at how we invalidate user tokens, and we will do precisely that in the next section.
 
-### Logout route
+### Logout route {#logout-route}
 
 Until now, we didn’t use the `revokedTokens` map and `revokeToken` request method we created in the _Authentication plugin_ section. However, the logout implementation relies on them. Let’s jump into the code:
 
@@ -351,7 +357,7 @@ Since we want only authenticated users to invalidate their tokens, the `/logout`
 
 This completes this section about the authentication routes. In the following one, we will implement our authorization layer.
 
-## Adding the authorization layer
+## Adding the authorization layer {#adding-the-authorization-layer}
 
 Now that we can have all authentication pieces in place, we can finally move on to implementing the authorization layer of our application. To adequately protect our endpoints, we need to do two main things to the `./routes/todos` module from [Chapter 7](./restful-api.md):
 
@@ -360,7 +366,7 @@ Now that we can have all authentication pieces in place, we can finally move on 
 
 Fortunately, we need only a one-liner change to implement the first point. On the other hand, the second point is more complex. We will examine both in the following subsections.
 
-### Adding the authentication layer
+### Adding the authentication layer {#adding-the-authentication-layer}
 
 Let’s start with the simpler task. As we already said, this is a fast addition to the [Chapter 7](./restful-api.md) code that we can see in the following snippet:
 
@@ -373,7 +379,7 @@ module.exports = async function todoRoutes(fastify, _opts) {
 
 To protect our to-do routes, we add the `onRequest` `fastify.authenticate` hook (`[1]`), which we previously used for authentication routes. This hook will check whether the incoming request has the authentication HTTP header, and after validating it, it will add the `user` information object to the request.
 
-### Updating the to-do data source
+### Updating the to-do data source {#updating-the-to-do-data-source}
 
 Since our application deals only with one type of entity, our authorization layer is straightforward to implement. The idea is to prevent users from accessing and modifying tasks that belong to other users. Until this point, we could see our application as a single-user application:
 
@@ -459,7 +465,7 @@ As we said, we omit the other methods for brevity, but they follow the same patt
 
 We just completed our authentication and authorization layers. The next section will show how to handle file uploads and downloads inside authentication-protected endpoints.
 
-## Managing uploads and downloads
+## Managing uploads and downloads {#managing-uploads-and-downloads}
 
 We need to add two more functionalities to our application, and we will do it by developing a dedicated Fastify plugin. The first will allow our users to upload CSV files to create to-do tasks in bulk. We will rely on two external dependencies to do it:
 
@@ -587,7 +593,7 @@ We call the `listTodos` method of the `request.todosDataSource` (`[1]`) object t
 
 With this last section, we significantly increased the capabilities of our application, allowing users to import and export their tasks efficiently.
 
-## Summary
+## Summary {#summary}
 
 In this chapter, we added an authentication layer to ensure that only registered users can perform actions on the to-do items. Moreover, thanks to the modest authorization layer, we ensured that users could only access tasks they created. Finally, we showed how simple upload and download capabilities are to implement using a real-world example of bulk imports and exports.
 

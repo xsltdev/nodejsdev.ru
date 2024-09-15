@@ -1,47 +1,51 @@
-# Building a RESTful API
+---
+description: Глава будет разделена на несколько основных разделов, начиная с определения маршрутов, затем подключения к источникам данных, реализации маршрутов, защиты конечных точек и применения принципа Не повторяйся (DRY) для повышения эффективности нашего кода
+---
 
-In this chapter, we will build upon the scaffolding structure we created in the previous chapter and dive into writing the essential parts of our application.
+# Создание RESTful API
 
-We will start by defining the routes of our application and then move on to connecting to data sources. We will also implement the necessary business logic and learn how to solve complex everyday tasks that we may encounter while developing a real-world Fastify application.
+В этой главе мы будем опираться на структуру лесов, созданную в предыдущей главе, и погрузимся в написание основных частей нашего приложения.
 
-The chapter will be divided into several main headings, starting with defining the routes, then connecting to data sources, implementing the routes, securing the endpoints, and applying the **Don’t Repeat Yourself (DRY)** principle to make our code more efficient.
+Мы начнем с определения маршрутов нашего приложения, а затем перейдем к подключению к источникам данных. Мы также реализуем необходимую бизнес-логику и научимся решать сложные повседневные задачи, с которыми мы можем столкнуться при разработке реального приложения Fastify.
 
-By the end of this chapter, we will have learned the following:
+Глава будет разделена на несколько основных разделов, начиная с определения маршрутов, затем подключения к источникам данных, реализации маршрутов, защиты конечных точек и применения принципа **Не повторяйся (DRY)** для повышения эффективности нашего кода.
 
--   How to declare and implement routes using Fastify plugins
--   How to add JSON schemas to secure the endpoints
--   How to load route schemas
--   How to use decorators to implement the DRY pattern
+К концу этой главы мы узнаем следующее:
 
-Technical requirements
+-   Как объявлять и реализовывать маршруты с помощью плагинов Fastify
+-   Как добавлять JSON-схемы для защиты конечных точек
+-   Как загружать схемы маршрутов
+-   Как использовать декораторы для реализации паттерна DRY
 
-To follow along with this chapter, you will need these exact technical requirements, mentioned in the previous chapters:
+## Технические требования {#technical-requirements}
 
--   A working [Node.js 18 installation](https://nodejs.org/)
--   A [VS Code IDE](https://code.visualstudio.com/)
--   An active [Docker installation](https://docs.docker.com/get-docker/)
--   A [Git](https://git-scm.com/) repository – recommended but not mandatory
--   A working command shell
+Чтобы следовать этой главе, вам понадобятся именно эти технические требования, упомянутые в предыдущих главах:
 
-All the code snippets for this chapter are available on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207).
+-   Работающая [установка Node.js 18](https://nodejs.org/)
+-   [VS Code IDE](https://code.visualstudio.com/)
+-   Активная [установка Docker](https://docs.docker.com/get-docker/)
+-   Репозиторий [Git](https://git-scm.com/) - рекомендуется, но не является обязательным.
+-   Рабочая командная оболочка
 
-So, let’s get started and build a robust and efficient application that we can use as a reference for future projects!
+Все фрагменты кода для этой главы доступны на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207).
 
-## Application outline
+Итак, давайте приступим к работе и создадим надежное и эффективное приложение, которое можно будет использовать в качестве эталона для будущих проектов!
 
-In this section, we will start building a RESTful to-do application. The application will allow users to perform **Create**, **Read**, **Update**, and **Delete (CRUD)** operations on their to-do list, using HTTP methods such as `GET`, `POST`, `PUT`, and `DELETE`. Besides those operations, we will implement one **custom action** to mark tasks as “done.”
+## Конспект приложения {#application-outline}
 
-!!!note "What is RESTful?"
+В этом разделе мы начнем создавать RESTful-приложение для работы с делами. Приложение позволит пользователям выполнять операции **Создание**, **Чтение**, **Обновление** и **Удаление (CRUD)** над своим списком дел, используя такие HTTP-методы, как `GET`, `POST`, `PUT` и `DELETE`. Помимо этих операций, мы реализуем одно **настраиваемое действие** для пометки задач как «выполненных».
 
-    **Representational State Transfer (RESTful)** is an architectural style to build web services that follow well-defined constraints and principles. It is an approach for creating scalable and flexible web APIs that different clients can consume. In RESTful architecture, resources are identified by **Uniform Resource Identifiers (URIs)**. The operations performed on those resources are based on predefined HTTP methods (`GET`, `POST`, `PUT`, `DELETE`, etc.). Every call to the API is stateless and contains all the information needed to perform the operation.
+!!!note "Что такое RESTful?"
 
-Fastify is an excellent choice to develop RESTful APIs, due to its speed, flexibility, scalability, and developer-friendliness. In addition, as we saw in previous chapters, its modular plugin architecture makes it easy to add or remove functionality as needed, and its low-level optimizations make it a robust choice for high-traffic applications. Finally, we will take advantage of this architecture to organize our code base in a scoped way, making every piece of it independent from the others.
+    **Передача состояния представления (RESTful)** - это архитектурный стиль для создания веб-сервисов, которые следуют четко определенным ограничениям и принципам. Это подход для создания масштабируемых и гибких веб-интерфейсов, которые могут использовать различные клиенты. В архитектуре RESTful ресурсы идентифицируются **Uniform Resource Identifiers (URI)**. Операции, выполняемые с этими ресурсами, основаны на предопределенных методах HTTP (`GET`, `POST`, `PUT`, `DELETE` и т.д.). Каждый вызов API не имеет статических данных и содержит всю информацию, необходимую для выполнения операции.
 
-### Defining routes
+Fastify - отличный выбор для разработки RESTful API, благодаря своей скорости, гибкости, масштабируемости и удобству для разработчиков. Кроме того, как мы видели в предыдущих главах, модульная архитектура плагинов позволяет легко добавлять и удалять функциональность по мере необходимости, а низкоуровневые оптимизации делают его надежным выбором для приложений с высоким трафиком. Наконец, мы воспользуемся преимуществами этой архитектуры, чтобы организовать нашу кодовую базу в масштабе, сделав каждый ее фрагмент независимым от других.
 
-Let’s start evolving the application from our basic project structure by adding a new plugin that defines our RESTful routes. However, we will not implement the logic of single routes right now, since we first need to look at the data source in the forthcoming [Data source and model](#data-source-and-model) section.
+### Определение маршрутов {#defining-routes}
 
-The following `routes/todos/routes.js` snippet defines the basic structure of our routes plugin:
+Давайте начнем развивать приложение с нашей базовой структуры проекта, добавив новый плагин, определяющий наши RESTful-маршруты. Однако сейчас мы не будем реализовывать логику отдельных маршрутов, поскольку сначала нам нужно рассмотреть источник данных в предстоящем разделе [Источник данных и модель](#data-source-and-model).
+
+Следующий фрагмент `routes/todos/routes.js` определяет базовую структуру нашего плагина маршрутов:
 
 ```js
 'use strict';
@@ -95,22 +99,22 @@ module.exports = async function todoRoutes(fastify, _opts) {
 };
 ```
 
-Our module exports (`[1]`) is a Fastify plugin called `todoRoutes`. Inside it, we have defined six routes, five for basic CRUD operations and one additional action to flag tasks as done. Let’s take a brief look at every one of them:
+Наш модуль exports (`[1]`) представляет собой плагин Fastify под названием `todoRoutes`. Внутри него мы определили шесть маршрутов, пять для основных CRUD-операций и одно дополнительное действие для пометки задач как выполненных. Давайте вкратце рассмотрим каждый из них:
 
--   `listTodo GET /`: Implements the **List** operation. It returns an array of to-do tasks and the total count of the elements (`[2]`).
--   `createTodo POST /`: Implements the **Create** operation. It creates the task from the body data of `request` and returns `id` of the created element (`[3]`).
--   `readTodo GET /:id`: Implements the **Read** operation. It returns the task that matches the `:id` parameter (`[4]`).
--   `updateTodo PUT /:id`: Implements the **Update** operation. It updates the to-do item that matches the `:id` parameter, using the body data of `request` (`[5]`).
--   `deleteTodo DELETE /:id`: Implements the `Delete` operation. It deletes the task matching the `:id` parameter (`[6]`).
--   `changeStatus POST /:id/:status`: Implements a **custom action**. It marks a task as “done” or “undone” (`[7]`).
+-   `listTodo GET /`: Реализует операцию **List**. Возвращает массив задач и общее количество элементов (`[2]`).
+-   `createTodo POST /`: Реализует операцию **Создать**. Она создает задачу из данных тела `request` и возвращает `id` созданного элемента (`[3]`).
+-   `readTodo GET /:id`: Реализует операцию **Чтение**. Возвращает задачу, соответствующую параметру `:id` (`[4]`).
+-   `updateTodo PUT /:id`: Выполняет операцию **Обновить**. Она обновляет элемент дел, соответствующий параметру `:id`, используя данные тела `request` (`[5]`).
+-   `deleteTodo DELETE /:id`: Реализует операцию `Delete`. Она удаляет задачу, соответствующую параметру `:id` (`[6]`).
+-   `changeStatus POST /:id/:status`: Выполняет **заказное действие**. Оно помечает задачу как «выполненную» или «не выполненную» (`[7]`).
 
-Note that we added a name to every handler function for clarity and as a best practice, since it helps to have better stack traces.
+Обратите внимание, что мы добавили имя к каждой функции-обработчику для ясности и в качестве лучшей практики, поскольку это помогает получить более качественные трассировки стека.
 
-Now, let’s look at how to use this plugin module inside our application.
+Теперь давайте посмотрим, как использовать этот модуль плагина в нашем приложении.
 
-### Register routes
+### Регистрация маршрутов {#register-routes}
 
-Solely declaring the routes plugin doesn’t add any value to our application. Therefore, we need to register it before using it. Thankfully, we already have everything from the previous chapter to auto- register these routes. The following excerpt from `apps.js` shows the vital part:
+Простое объявление плагина `routes` не добавляет никакой ценности нашему приложению. Поэтому перед использованием нам необходимо его зарегистрировать. К счастью, у нас уже есть все необходимое из предыдущей главы для автоматической регистрации маршрутов. Следующий отрывок из файла `apps.js` показывает важную часть:
 
 ```js
 // ...
@@ -126,15 +130,15 @@ fastify.register(AutoLoad, {
 // ...
 ```
 
-This code snippet uses a plugin called `@fastify/autoload` to automatically load routes and hooks from a specified directory.
+Этот фрагмент кода использует плагин под названием `@fastify/autoload` для автоматической загрузки маршрутов и хуков из указанной директории.
 
-We specified the `routes` folder (`[1]`) as the path where our routes are located, and then we defined the regular expression pattern (`[2]`) to identify the route files. Therefore, to make Fastify pick our previous `routes.js` file, we must save it in the `./routes/todos/routes.js` file.
+Мы указали папку `routes` (`[1]`) в качестве пути, где находятся наши маршруты, а затем определили шаблон регулярного выражения (`[2]`) для идентификации файлов маршрутов. Поэтому, чтобы Fastify выбрал наш предыдущий файл `routes.js`, мы должны сохранить его в файле `./routes/todos/routes.js`.
 
-You may be wondering why we added that `todos` subfolder to our path. `AutoLoad` has another neat behavior – it will automatically load all the subfolders of the specified path, using the folder name as the prefix path for the routes we define. Our handlers will be prefixed with the `todos` path when registered by the Fastify application. This feature helps us organize our code in subfolders without forcing us to define the prefix manually. Let’s make a couple of calls to our application routes to make some concrete examples.
+Вам может быть интересно, почему мы добавили эту подпапку `todos` в наш путь. У `AutoLoad` есть еще одно замечательное поведение - она автоматически загружает все подпапки указанного пути, используя имя папки в качестве префикса пути для маршрутов, которые мы определяем. Наши обработчики будут иметь префикс `todos` при регистрации в приложении Fastify. Эта возможность помогает нам организовать наш код в подпапках, не заставляя нас определять префикс вручную. Давайте сделаем пару вызовов маршрутов нашего приложения, чтобы привести несколько конкретных примеров.
 
-We need two terminals opened, the first to start the application and the second to make our calls using `curl`.
+Нам нужно открыть два терминала: первый - для запуска приложения, второй - для выполнения вызовов с помощью `curl`.
 
-In the first terminal, go to the project root and type npm to start, as shown here:
+В первом терминале перейдите в корень проекта и введите `npm start`, как показано здесь:
 
 ```
 $ npm start
@@ -142,7 +146,7 @@ $ npm start
 local", "msg": "Server listening at http://127.0.0.1:3000"}
 ```
 
-Now that the server is running, we can leave the first terminal open and go to the second one. We are ready to make the API calls:
+Теперь, когда сервер запущен, мы можем оставить первый терминал открытым и перейти ко второму. Мы готовы к выполнению вызовов API:
 
 ```
 $ curl http://127.0.0.1:3000/todos
@@ -151,13 +155,13 @@ $ curl http://127.0.0.1:3000/todos/1
 {}%
 ```
 
-In the preceding snippet, we can see we made two calls. In the first one, we successfully called the `listTodo` handler, while in the second call, we called `readTodo`.
+В предыдущем фрагменте видно, что мы сделали два вызова. В первом мы успешно вызвали обработчик `listTodo`, а во втором - `readTodo`.
 
-### Data source and model
+### Источник данных и модель {#data-source-and-model}
 
-Before implementing the handlers’ logic, we need to look at data persistence. Since we registered the MongoDB plugin inside the application in Chapter 6, [Project Structure and Configuration Management](./project-structure.md#project-structure-and-configuration-management), we already have everything in place to save our to-do items to a real database.
+Прежде чем реализовать логику обработчиков, нам нужно рассмотреть сохранение данных. Поскольку мы зарегистрировали плагин MongoDB внутри приложения в главе 6, [Структура проекта и управление конфигурацией](./project-structure.md#project-structure-and-configuration-management), у нас уже есть все необходимое для сохранения наших дел в реальной базе данных.
 
-Thanks to Fastify’s plugin system, we can use the database client inside our route plugin, since the instance we receive as the first argument is decorated with the mongo property. Furthermore, we can assign the `'todos'` collection to a local variable and use it inside the route handlers:
+Благодаря системе плагинов Fastify мы можем использовать клиент базы данных внутри нашего плагина маршрута, поскольку экземпляр, который мы получаем в качестве первого аргумента, декорируем свойством `mongo`. Кроме того, мы можем присвоить коллекцию `'todos'` локальной переменной и использовать ее в обработчиках маршрутов:
 
 ```js
 'use strict';
@@ -170,7 +174,7 @@ module.exports = async function todoAutoHooks(
 };
 ```
 
-We can now move on to defining our data model. Even if MongoDB is a schemaless database and we don’t need to define anything upfront, we will outline a simple interface for a to-do task. It is important to remember that we don’t need to add this code snippet to our application or database. We are showing it here just for clarity:
+Теперь мы можем перейти к определению нашей модели данных. Даже если MongoDB является бессхемной базой данных и нам не нужно ничего определять заранее, мы набросаем простой интерфейс для задачи, которую нужно выполнить. Важно помнить, что нам не нужно добавлять этот фрагмент кода в наше приложение или базу данных. Мы показываем его здесь просто для наглядности:
 
 ```js
 interface Todo
@@ -183,28 +187,28 @@ interface Todo
 }
 ```
 
-Let’s take a look at the properties we just defined:
+Давайте посмотрим на свойства, которые мы только что определили:
 
--   `_id` (`[1]`) and `id` (`[2]`) have the same value. We add the `id` property not to expose any information about our database. The `_id` property is defined and used mainly by MongoDB servers.
--   The `title` (`[3]`) property is user-editable and contains the to-do task.
--   The `done` (`[4]`) property saves the task status. A task is completed when the value is `true`. Otherwise, a task is still in progress.
--   `createdAt` (`[5]`) and `modifiedAt` (`[6]`) are automatically added by the application to track when the item was created and last modified.
+-   `_id` (`[1]`) и `id` (`[2]`) имеют одинаковое значение. Мы добавляем свойство `id`, чтобы не раскрывать никакой информации о нашей базе данных. Свойство `_id` определяется и используется в основном серверами MongoDB.
+-   Свойство `title` (`[3]`) является настраиваемым пользователем и содержит название задачи.
+-   Свойство `done` (`[4]`) сохраняет статус задачи. Задача завершена, если ее значение равно `true`. В противном случае задача все еще находится в процессе выполнения.
+-   Свойства `createdAt` (`[5]`) и `modifiedAt` (`[6]`) автоматически добавляются приложением для отслеживания времени создания и последнего изменения элемента.
 
-Now that we have defined everything we need from the data source perspective, we can finally move on to implement the logic of the route handlers in the next section.
+Теперь, когда мы определили все, что нам нужно с точки зрения источника данных, мы можем перейти к реализации логики обработчиков маршрутов в следующем разделе.
 
-## Implementing the routes
+## Реализация маршрутов {#implementing-the-routes}
 
-Until now, we implemented our handlers as dummy functions that don’t do anything at all. This section will teach us how to save, retrieve, modify, and delete actual to-do tasks using MongoDB as the data source. For every subsection, we will examine only one handler, knowing that it will replace the same handler we already defined in `./routes/todos/routes.js`.
+До сих пор мы реализовывали наши обработчики как фиктивные функции, которые вообще ничего не делают. В этом разделе мы научимся сохранять, извлекать, изменять и удалять реальные задачи, используя MongoDB в качестве источника данных. Для каждого подраздела мы рассмотрим только один обработчик, зная, что он заменит тот же самый обработчик, который мы уже определили в `./routes/todos/routes.js`.
 
-!!!note "Unique identifiers"
+!!!note "Уникальные идентификаторы"
 
-    This section contains several code snippets and commands to issue in the terminal. It is important to remember that the unique IDs we show here are different from the ones you will have when testing the routes. In fact, the IDs are generated when a task is created. Change the command snippets accordingly.
+    Этот раздел содержит несколько фрагментов кода и команд для выполнения в терминале. Важно помнить, что уникальные идентификаторы, которые мы здесь показываем, отличаются от тех, которые будут у вас при тестировании маршрутов. На самом деле, идентификаторы генерируются при создании задачи. Измените фрагменты команд соответствующим образом.
 
-We will start with `createTodo` since having items saved on the database will help us implement and test the other handlers.
+Мы начнем с `createTodo`, поскольку наличие элементов, сохраненных в базе данных, поможет нам реализовать и протестировать другие обработчики.
 
-### createTodo
+### createTodo {#createtodo}
 
-As the name implies, this function allows users to create new tasks and save them to the database. The following code snippet defines a route that handles a `POST` request when a user hits the `/todos/` path:
+Как следует из названия, эта функция позволяет пользователям создавать новые задачи и сохранять их в базе данных. Следующий фрагмент кода определяет маршрут, который обрабатывает `POST` запрос, когда пользователь переходит по пути `/todos/`:
 
 ```js
 fastify.route({
@@ -231,11 +235,11 @@ fastify.route({
 });
 ```
 
-When the route is invoked, the handler function (`[1]`) generates a new unique identifier (`[2]`) for the to-do item and sets the creation and modification dates (`[3]`) to the current time. The handler then constructs a new to-do object from the request body (`[4]`). The object is then inserted into the database using the `todos` collection we created at the beginning of the routes plugin (`[5]`). Finally, the function sends a response with a status code of `201` (`[6]`), indicating that the resource has been created and a body containing the ID of the newly created item.
+При вызове маршрута функция-обработчик (`[1]`) генерирует новый уникальный идентификатор (`[2]`) для элемента дел и устанавливает даты создания и модификации (`[3]`) на текущее время. Затем обработчик создает новый объект дел из тела запроса (`[4]`). Затем объект вставляется в базу данных с помощью коллекции `todos`, которую мы создали в начале работы над плагином маршрутов (`[5]`). Наконец, функция отправляет ответ с кодом состояния `201` (`[6]`), указывающим на то, что ресурс был создан, и телом, содержащим ID вновь созданного элемента.
 
-At last, we can test our new route. As usual, we can use two terminal windows and `curl` to make calls, passing the body.
+Наконец, мы можем протестировать наш новый маршрут. Как обычно, мы можем использовать два терминальных окна и `curl` для осуществления вызовов, передавая тело.
 
-In the first terminal, run the server:
+В первом терминале запустите сервер:
 
 ```sh
 $ npm start
@@ -243,7 +247,7 @@ $ npm start
 local", "msg": "Server listening at http://127.0.0.1:3000"}
 ```
 
-Now in the second, we can use curl to perform the request:
+Теперь во втором случае мы можем использовать `curl` для выполнения запроса:
 
 ```sh
 $ curl -X POST http://localhost:3000/todos -H "Content-Type:
@@ -251,15 +255,15 @@ application/json" -d '{"title": "my first task"}'
 {"id": "64172b029eb96017ce60493f"}%
 ```
 
-We can see that the application returned id of the newly created item. Congratulations! You implemented your first working route!
+Мы видим, что приложение вернуло `id` только что созданного элемента. Поздравляем! Вы реализовали свой первый рабочий маршрут!
 
-In the following subsection, we will read the tasks list from the database!
+В следующем подразделе мы будем читать список задач из базы данных!
 
-### listTodo
+### listTodo {#listtodo}
 
-Now that our first item is saved to the database, let’s implement the list route. It will allow us to list all the tasks with their total count.
+Теперь, когда наш первый элемент сохранен в базе данных, давайте реализуем маршрут со списком. Он позволит нам вывести список всех задач с их общим количеством.
 
-We can start directly with the excerpt from `routes/todos/routes.js`:
+Мы можем начать непосредственно с выдержки из `routes/todos/routes.js`:
 
 ```js
 fastify.route({
@@ -284,19 +288,19 @@ fastify.route({
 });
 ```
 
-Inside the `listTodo` function, the request object is used to extract query parameters (`[1]`), such as `skip`, `limit`, and `title`. The `title` parameter is used to create a regular expression filter to search for to-do items whose titles partially match the `title` parameter (`[2]`). If `title` is not provided, `filter` is an empty object, effectively returning all items.
+Внутри функции `listTodo` объект запроса используется для извлечения параметров запроса (`[1]`), таких как `skip`, `limit` и `title`. Параметр `title` используется для создания фильтра регулярных выражений для поиска элементов дел, названия которых частично совпадают с параметром `title` (`[2]`). Если параметр `title` не указан, то `filter` будет пустым объектом, возвращающим все пункты.
 
-The data variable is then populated with to-do items that match `filter`, by calling `todos.find()` and passing it as the parameter. In addition, the `limit` and `skip` query parameters are also passed to implement proper **pagination** (`[3]`). Since the MongoDB driver returns a cursor, we convert the result to an array using the `toArray()` method.
+Затем переменная data заполняется элементами дел, которые соответствуют `filter`, путем вызова `todos.find()` и передачи его в качестве параметра. Кроме того, передаются параметры запроса `limit` и `skip`, чтобы реализовать правильную **распаковку** (`[3]`). Поскольку драйвер MongoDB возвращает курсор, мы преобразуем результат в массив с помощью метода `toArray()`.
 
-!!!note "Pagination"
+!!!note "Пагинация"
 
-    Pagination is a technique used in database querying to limit the number of results returned by a query and retrieve only a specific subset of data at a time. When a query returns a large number of results, it can be difficult to display or process all of them at once. When working with lists of items, pagination allows users to access and process large amounts of data more manageably and efficiently. As a result, it improves the user experience and reduces the application and database load, leading to better performance and scalability.
+    Пагинация - это техника, используемая в запросах к базам данных для ограничения количества результатов, возвращаемых запросом, и получения только определенного подмножества данных за один раз. Когда запрос возвращает большое количество результатов, может быть сложно отобразить или обработать их все сразу. При работе со списками элементов пагинация позволяет пользователям получать доступ и обрабатывать большие объемы данных более удобно и эффективно. В результате улучшается пользовательское восприятие и снижается нагрузка на приложение и базу данных, что приводит к повышению производительности и масштабируемости.
 
-The `totalCount` variable is calculated by calling `todos.countDocuments()` with the same `filter` object, so the API client can implement the pagination correctly. Finally, the handler function returns an object containing the data array and the `totalCount` number (`[4]`).
+Переменная `totalCount` вычисляется путем вызова `todos.countDocuments()` с тем же объектом `filter`, чтобы клиент API мог правильно реализовать пагинацию. Наконец, функция-обработчик возвращает объект, содержащий массив данных и число `totalCount` (`[4]`).
 
-Again, we can now call the route using the two terminal instances and the `curl` binary, and we expect the response to have our first to-do item.
+Теперь мы снова можем вызвать маршрут, используя два экземпляра терминала и бинарник `curl`, и ожидаем, что в ответе будет наш первый пункт дел.
 
-In the first terminal, run the server:
+В первом терминале запустите сервер:
 
 ```sh
 $ npm start
@@ -304,7 +308,7 @@ $ npm start
 local", "msg": "Server listening at http://127.0.0.1:3000"}
 ```
 
-Now in the second, we can use `curl` to perform the request:
+Теперь во втором случае мы можем использовать `curl` для выполнения запроса:
 
 ```sh
 $ curl http://127.0.0.1:3000/todos
@@ -314,13 +318,13 @@ first task", "done":false, "id": "64172b029eb96017ce60493f",
 "2023-03-19T15:32:18.314Z"}], "totalCount":1}%
 ```
 
-We can see that everything is working as expected, and `"my first task"` is the only item returned inside the `data` array. Also, `totalCount` is correctly number `1`.
+Мы видим, что все работает, как и ожидалось, и `«моя первая задача»` является единственным элементом, возвращаемым в массиве `data`. Кроме того, `totalCount` правильно равно `1`.
 
-The next route we will implement allows us to query for one specific item.
+Следующий маршрут, который мы реализуем, позволяет нам запрашивать один конкретный элемент.
 
-### readTodo
+### readTodo {#readtodo}
 
-This RESTful route allows clients to retrieve a single to-do item from the database, based on its unique `id` identifier. The following excerpt illustrates the implementation of the handler function:
+Этот RESTful-маршрут позволяет клиентам получить из базы данных один элемент дел, основываясь на его уникальном идентификаторе `id`. Следующий фрагмент иллюстрирует реализацию функции-обработчика:
 
 ```js
 fastify.route({
@@ -345,11 +349,11 @@ fastify.route({
 });
 ```
 
-The `/:id` syntax in the `url` property (`[1]`) indicates that this route parameter will be replaced with a specific value when the client calls this route. In fact, the handler function first retrieves this `id` from the `request.params` object and creates a new `ObjectId` from it, using `this.mongo.ObjectId()` (`[2]`). It then uses the `findOne` method of the `todos` collection to retrieve the task with the matching `_id`. We exclude the `_id` field from the result, using the `projection` option, to not leak the database server we use (`[3]`). In fact, MongoDB is the only one that uses the `_id` field as the primary reference.
+Синтаксис `/:id` в свойстве `url` (`[1]`) указывает на то, что этот параметр маршрута будет заменен определенным значением, когда клиент вызовет этот маршрут. На самом деле, функция-обработчик сначала извлекает этот `id` из объекта `request.params` и создает из него новый `ObjectId`, используя `this.mongo.ObjectId()` (`[2]`). Затем он использует метод `findOne` коллекции `todos` для получения задачи с совпадающим `_id`. Мы исключаем поле `_id` из результата, используя опцию `projection`, чтобы не разглашать информацию об используемом нами сервере базы данных (`[3]`). На самом деле, MongoDB - единственный, кто использует поле `_id` в качестве первичной ссылки.
 
-If a matching to-do item is found, it is returned as the response (`[5]`). Otherwise, the handler sets the HTTP status code to `404` and returns an error object, with a message saying the task was not found (`[4]`).
+Если подходящий элемент дел найден, он возвращается в качестве ответа (`[5]`). В противном случае обработчик устанавливает код состояния HTTP на `404` и возвращает объект ошибки с сообщением о том, что задача не найдена (`[4]`).
 
-To test the route, we can use the usual process. From now on, we will omit the terminal that runs the server and only show the one we use to make our calls:
+Чтобы протестировать маршрут, мы можем использовать обычный процесс. В дальнейшем мы не будем указывать терминал, на котором запущен сервер, и покажем только тот, который мы используем для вызова:
 
 ```sh
 $ curl http://127.0.0.1:3000/todos/64172b029eb96017ce60493f
@@ -358,13 +362,13 @@ $ curl http://127.0.0.1:3000/todos/64172b029eb96017ce60493f
 "modifiedAt": "2023-03-19T15:32:18.314Z"}%
 ```
 
-Again, everything works as expected. We managed to pass the ID of the task we added to the database as the route parameter and received, as the response, the task titled `"my first task"`.
+И снова все работает, как и ожидалось. Нам удалось передать ID задачи, которую мы добавили в базу данных, в качестве параметра маршрута и получить в качестве ответа задачу с заголовком `«моя первая задача»`.
 
-So far, if a user makes a mistake in the title, there is no way to change it. This will be the next thing we will take care of.
+Пока что, если пользователь ошибется в названии, изменить его не получится. Об этом мы позаботимся в следующий раз.
 
-### updateTodo
+### updateTodo {#updatetodo}
 
-The following code snippet adds a route that handles `PUT` requests to update a task already saved in the database:
+Следующий фрагмент кода добавляет маршрут, который обрабатывает запросы `PUT` для обновления задачи, уже сохраненной в базе данных:
 
 ```js
 fastify.route({
@@ -394,13 +398,13 @@ fastify.route({
 });
 ```
 
-We again use the `:id` parameter to identify which item the user wants to modify (`[1]`).
+Мы снова используем параметр `:id`, чтобы определить, какой элемент пользователь хочет изменить (`[1]`).
 
-Inside the route handler, we use the MongoDB client `updateOne()` method to update the to-do item in the database. We are using the `request.params.id` property once more to create a filter object to match the task with the provided `_id` (`[2]`). Then, we use the `$set` operator to partially update the item with the new values from `request.body`. We also set the `modifiedAt` property to the current time (`[3]`).
+Внутри обработчика маршрута мы используем метод клиента MongoDB `updateOne()` для обновления элемента дел в базе данных. Мы снова используем свойство `request.params.id`, чтобы создать объект фильтрации для соответствия задаче с указанным `_id` (`[2]`). Затем мы используем оператор `$set` для частичного обновления элемента новыми значениями из `request.body`. Мы также устанавливаем свойство `modifiedAt` в текущее время (`[3]`).
 
-After the update is completed, it checks the `modifiedCount` property of the result to see whether the update was successful (`[4]`). If no documents were modified, it returns a `404` error. If the update is successful, it produces a `204` status code to indicate it was completed successfully without returning a body (`[5]`).
+После завершения обновления проверяется свойство `modifiedCount` результата, чтобы узнать, было ли обновление успешным (`[4]`). Если ни один документ не был изменен, возвращается ошибка `404`. Если обновление прошло успешно, то выдается код состояния `204`, указывающий на успешное завершение обновления без возврата тела (`[5]`).
 
-After running the server in the usual way, we can test the route we just implemented using the terminal and `curl`:
+Запустив сервер обычным способом, мы можем протестировать только что реализованный маршрут с помощью терминала и `curl`:
 
 ```sh
 $ curl -X PUT http://localhost:3000/todos/64172b029eb96017ce60493f
@@ -408,9 +412,9 @@ $ curl -X PUT http://localhost:3000/todos/64172b029eb96017ce60493f
 updated"}'
 ```
 
-This time, we pass the `-X` argument to `curl` to use the `PUT` HTTP method. Then, in the request body, we modify the title of our tasks and pass the task’s unique ID as the route parameter. One thing that might create confusion is that the server hasn’t returned a body, but looking at the return value of `updateTodo`, it shouldn’t come as a surprise.
+На этот раз мы передаем аргумент `-X` в `curl`, чтобы использовать HTTP-метод `PUT`. Затем в теле запроса мы изменяем название наших задач и передаем уникальный ID задачи в качестве параметра route. Одна вещь, которая может вызвать замешательство, - это то, что сервер не вернул тело запроса, но, глядя на возвращаемое значение `updateTodo`, это не должно быть сюрпризом.
 
-We can check whether the to-do item was updated correctly by calling the `readTodo` route:
+Мы можем проверить, правильно ли был обновлен элемент дел, вызвав маршрут `readTodo`:
 
 ```sh
 $ curl http://127.0.0.1:3000/todos/64172b029eb96017ce60493f
@@ -419,13 +423,13 @@ $ curl http://127.0.0.1:3000/todos/64172b029eb96017ce60493f
 "modifiedAt": "2023-03-19T17:41:09.520Z"}%
 ```
 
-In the response, we can immediately see the updated title and the `modifiedAt` date, which is now different from `createdAt`, signaling that the item was updated.
+В ответе мы сразу видим обновленный заголовок и дату `modifiedAt`, которая теперь отличается от `createdAt`, сигнализируя о том, что элемент был обновлен.
 
-Our application still lacks a delete functionality, so it is time to fix it. The following subsection will overcome this limitation.
+В нашем приложении по-прежнему отсутствует функция удаления, поэтому пришло время исправить это. Следующий подраздел поможет преодолеть это ограничение.
 
-### deleteTodo
+### deleteTodo {#deletetodo}
 
-Following the RESTful conventions, the next code snippet defines a Fastify route that allows a user to delete a task, passing its unique `:id` as a request parameter:
+Следуя соглашениям RESTful, следующий фрагмент кода определяет маршрут Fastify, который позволяет пользователю удалить задачу, передавая ее уникальный `:id` в качестве параметра запроса:
 
 ```js
 fastify.route({
@@ -447,13 +451,13 @@ fastify.route({
 });
 ```
 
-After declaring the `DELETE` HTTP method, we pass the `:id` parameter as the route path to allow us to identify which item to delete (`[1]`).
+Объявив HTTP-метод `DELETE`, мы передаем параметр `:id` в качестве пути маршрута, чтобы можно было определить, какой элемент нужно удалить (`[1]`).
 
-Inside the `deleteTodo` function, we create the filter from the `request.params.id` property (`[2]`), and we pass it to the `todos` collection `deleteOne` method to delete tasks with that unique ID. After that call returns, we check whether the item was actually deleted from the database. If no documents were removed, the handler returns a `404` error (`[3]`). On the other hand, if the deletion is successful, we return an empty body with a 204 status code to indicate that the operation has completed successfully (`[4]`).
+Внутри функции `deleteTodo` мы создаем фильтр из свойства `request.params.id` (`[2]`) и передаем его методу `deleteOne` коллекции `todos` для удаления задач с этим уникальным идентификатором. После возврата этого вызова мы проверяем, действительно ли элемент был удален из базы данных. Если ни один документ не был удален, обработчик возвращает ошибку `404` (`[3]`). С другой стороны, если удаление прошло успешно, мы возвращаем пустое тело с кодом состояния `204`, чтобы показать, что операция завершилась успешно (`[4]`).
 
-Testing the newly added route is simple, as always – we use the same terminal and `curl` setup we used for the previous routes.
+Тестирование вновь добавленного маршрута, как всегда, очень простое - мы используем тот же терминал и `curl`, что и для предыдущих маршрутов.
 
-After starting the server in one terminal, we run the subsequent command in the other:
+Запустив сервер в одном терминале, мы выполняем следующую команду в другом:
 
 ```sh
 $ curl -X DELETE http://localhost:3000/todos/64172b029eb96017ce60493f
@@ -461,13 +465,13 @@ $ curl http://127.0.0.1:3000/todos/64172b029eb96017ce60493f
 {"error": "Todo not found"}%
 ```
 
-Here, we make two different calls. The first one deletes the entity in the database and returns an empty response. The second, on the other hand, is to check whether the previous call deleted the resource. Since it returns a not found error, we are sure we deleted it.
+Здесь мы выполняем два разных вызова. Первый удаляет сущность в базе данных и возвращает пустой ответ. Второй, напротив, проверяет, удалил ли предыдущий вызов ресурс. Поскольку он возвращает ошибку not found, мы уверены, что удалили его.
 
-No to-do list application would be complete without a way to mark tasks as “done” or move them back to “progress,” and this is precisely the next thing we will add.
+Ни одно приложение для составления списка дел не будет полным без возможности отмечать задачи как «выполненные» или перемещать их обратно в «прогресс», и именно это мы и добавим.
 
-### changeStatus
+### changeStatus {#changestatus}
 
-This is our first route that doesn’t follow the CRUD principles. Instead, it is a custom logic that performs a specific operation on a single task. The following excerpt from `routes/todos/routes.js` shows a `POST` action that, upon invocation, marks a task as “done” or “not done,” depending on its state. It is the first route to use two distinct request parameters:
+Это наш первый маршрут, который не следует принципам CRUD. Вместо этого он представляет собой пользовательскую логику, выполняющую определенную операцию над одной задачей. Следующий отрывок из `routes/todos/routes.js` показывает действие `POST`, которое при вызове помечает задачу как «выполненную» или «не выполненную», в зависимости от ее состояния. Это первый маршрут, в котором используются два разных параметра запроса:
 
 ```js
 fastify.route({
@@ -498,11 +502,11 @@ fastify.route({
 });
 ```
 
-Our route expects two parameters in the URL – `:id`, the unique identifier of the to-do item, and `:status`, which indicates whether the current task should be marked as “done” or “not done” (`[1]`).
+Наш маршрут ожидает два параметра в URL - `:id`, уникальный идентификатор элемента дел, и `:status`, который указывает, должна ли текущая задача быть отмечена как «выполненная» или «не выполненная» (`[1]`).
 
-The handler function first checks the value of the `status` parameter to determine the new value of the `done` property (`[2]`). It then uses the `updateOne()` method to update the `done` and `modifiedAt` properties of the item in the database (`[3]`). If the update is successful, the handler function returns a `204 No Content` response (`[5]`). On the other hand, if the item is not found, the handler function returns a `404 Not Found` response with an error message (`[4]`).
+Функция-обработчик сначала проверяет значение параметра `status`, чтобы определить новое значение свойства `done` (`[2]`). Затем она использует метод `updateOne()` для обновления свойств `done` и `modifiedAt` элемента в базе данных (`[3]`). Если обновление прошло успешно, функция-обработчик возвращает ответ `204 No Content` (`[5]`). С другой стороны, если элемент не найден, функция-обработчик возвращает ответ `404 Not Found` с сообщением об ошибке (`[4]`).
 
-Before testing this route, we need at least one task in the database. If necessary, we can use the `createTodo` route to add it. Now, we can test the implementation using `curl`, as usual:
+Прежде чем тестировать этот маршрут, нам нужно, чтобы в базе данных была хотя бы одна задача. Если необходимо, мы можем использовать маршрут `createTodo` для ее добавления. Теперь мы можем протестировать реализацию с помощью `curl`, как обычно:
 
 ```sh
 $ curl -X POST http://localhost:3000/todos/641826ecd5e0cccc313cda86/
@@ -519,15 +523,15 @@ $ curl http://localhost:3000/todos/641826ecd5e0cccc313cda86
 "2023-03-20T09:56:06.995Z"}
 ```
 
-In the terminal output, we set the item’s `done` property to `true`, passing `done` as the `:status` parameter of the request. We then call the `GET` single-item route to check whether the operation effectively changes the status. Then, to revert the process and mark the task as not yet done, we call the `done` route again, passing `undone` as the status request parameter. Finally, we check that everything works as expected and call again the `readTodo` handler.
+В выводе терминала мы устанавливаем свойство `done` элемента в `true`, передавая `done` в качестве параметра `:status` запроса. Затем мы вызываем маршрут `GET` для одного элемента, чтобы проверить, эффективно ли операция изменяет статус. Затем, чтобы отменить процесс и пометить задачу как еще не выполненную, мы снова вызываем маршрут `done`, передавая `undone` в качестве параметра запроса статуса. Наконец, мы проверяем, что все работает так, как ожидалось, и снова вызываем обработчик `readTodo`.
 
-This last route completes our to-do list application’s basic functionalities. We are not done yet, though. In the next section, we will learn more about the security of our application and why our current implementation is insecure by design.
+Этот последний маршрут завершает базовую функциональность нашего приложения для работы со списком дел. Однако мы еще не закончили. В следующем разделе мы узнаем больше о безопасности нашего приложения и о том, почему наша текущая реализация небезопасна по замыслу.
 
-## Securing the endpoints
+## Защита конечных точек {#securing-the-endpoints}
 
-So far, every route we declared doesn’t perform any check on the input the user passes. This isn’t good, and we, as developers, should always validate and sanitize the input of the APIs we expose. In our case, all the `createTodo` and `updateTodo` handlers are affected by this security issue. In fact, we take the `request.body` and pass it straight to the database.
+До сих пор каждый объявленный нами маршрут не выполнял никакой проверки на вводимые пользователем данные. Это нехорошо, и мы, как разработчики, должны всегда проверять и обеззараживать входные данные API, которые мы предоставляем. В нашем случае все обработчики `createTodo` и `updateTodo` затронуты этой проблемой безопасности. Фактически, мы берем `request.body` и передаем его прямо в базу данных.
 
-First, to better understand the underlying issue, let’s give an example of how a user can inject undesired information into our database with our current implementation:
+Сначала, чтобы лучше понять суть проблемы, приведем пример того, как пользователь может внести нежелательную информацию в нашу базу данных с помощью нашей текущей реализации:
 
 ```sh
 $ curl -X POST http://localhost:3000/todos -H "Content-Type:
@@ -539,25 +543,25 @@ $ curl http://127.0.0.1:3000/todos/6418214ad5e0cccc313cda85
 "modifiedAt": "2023-03-20T09:03:06.324Z"}%
 ```
 
-In the preceding terminal snippet, we issued two `curl` commands. In the first one, when creating an item, instead of passing only `title`, we also pass the `foo` property. Looking at the output returned, we can see that the command returned the ID of the created entity. Now, we can check what is saved in the database by calling the `readTodo` route. Unfortunately, we can see in the output that we also saved `"foo": "bar"` in the database. As previously mentioned, this is a security issue, and we should never allow users to write directly to the database.
+В предыдущем фрагменте терминала мы выполнили две команды `curl`. В первой из них при создании элемента вместо того, чтобы передать только `title`, мы также передаем свойство `foo`. Посмотрев на возвращаемый результат, мы видим, что команда вернула ID созданной сущности. Теперь мы можем проверить, что сохранилось в базе данных, вызвав маршрут `readTodo`. К сожалению, в выводе мы видим, что мы также сохранили `"foo": "bar"` в базе данных. Как уже говорилось ранее, это проблема безопасности, и мы никогда не должны позволять пользователям писать напрямую в базу данных.
 
-There is another issue with the current implementation. We didn’t attach any response serialization schema to our routes. While less critical from a security perspective, they are crucial regarding the throughput of our application. Letting Fastify know in advance the shape of the values we return from our routes helps it to serialize the response body faster. Therefore, we should always add all schemas when declaring a route.
+Есть еще одна проблема с текущей реализацией. Мы не прикрепили к нашим маршрутам схему сериализации ответов. Хотя это не так важно с точки зрения безопасности, они имеют решающее значение для пропускной способности нашего приложения. Заранее сообщая Fastify форму значений, которые мы возвращаем из наших маршрутов, мы помогаем ему быстрее сериализовать тело ответа. Поэтому мы всегда должны добавлять все схемы при объявлении маршрута.
 
-In the upcoming sections, we will implement only one schema per type to make the exposition concise. You can find all schemas in the dedicated folder of the accompanying [repository](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207/routes/todos/schemas).
+В последующих разделах мы будем реализовывать только одну схему для каждого типа, чтобы сделать изложение более кратким. Все схемы можно найти в специальной папке сопутствующего [репозитория](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207/routes/todos/schemas).
 
-## Loading route schemas
+## Загрузка схем маршрутов {#loading-route-schemas}
 
-Before implementing the schemas, let’s add a dedicated folder to organize our code base better. We can do it inside the `./routes/todos/` path. Moreover, we want to load them automatically from the `schemas` folder. To be able to do that, we need the following:
+Перед реализацией схем давайте добавим выделенную папку, чтобы лучше организовать нашу кодовую базу. Мы можем сделать это внутри пути `./routes/todos/`. Более того, мы хотим автоматически загружать их из папки `schemas. Чтобы сделать это, нам нужно следующее:
 
--   A dedicated plugin inside the `schemas` folder
--   A definition of the schemas we wish to use
--   An autohooks plugin that will load everything automatically when the `todos` module is registered on the Fastify instance
+-   Специальный плагин в папке `schemas`.
+-   Определение схем, которые мы хотим использовать
+-   Плагин autohooks, который будет загружать все автоматически, когда модуль `todos` будет зарегистрирован на экземпляре Fastify.
 
-We will discuss these in detail in the following subsections.
+Мы подробно рассмотрим их в следующих подразделах.
 
-### Schemas loader
+### Загрузчик схем {#schemas-loader}
 
-Starting with the first item of the list we just discussed, we want to create a `./routes/todos/schemas/loader.js` file. We can check the content of the file in the following code snippet:
+Начиная с первого пункта списка, который мы только что обсудили, мы хотим создать файл `./routes/todos/schemas/loader.js`. Проверить содержимое файла можно в следующем фрагменте кода:
 
 ```js
 'use strict';
@@ -574,23 +578,23 @@ module.exports = fp(async function schemaLoaderPlugin(
 });
 ```
 
-Let’s break down this simple plugin:
+Давайте разберем этот простой плагин:
 
--   We defined a Fastify plugin named `schemaLoaderPlugin` that loads JSON schemas (`[1]`)
--   We called Fastify’s `addSchema` method several times, passing the path of each JSON file as an argument (`[2]`)
+-   Мы определили плагин Fastify с именем `schemaLoaderPlugin`, который загружает JSON-схемы (`[1]`)
+-   Мы вызвали метод Fastify `addSchema` несколько раз, передавая путь к каждому JSON-файлу в качестве аргумента (`[2]`)
 
-As we already know, every schema definition defines the structure and the validation rules of response bodies, parameters, and queries for different routes.
+Как мы уже знаем, каждое определение схемы определяет структуру и правила валидации тел ответов, параметров и запросов для различных маршрутов.
 
-Now, we can start implementing the first body validation schema.
+Теперь мы можем приступить к реализации первой схемы валидации тела ответа.
 
-#### Validating the createTodo request body
+**Валидация тела запроса `createTodo`**
 
-The application will use this schema during task creation. We want to achieve two things with this schema:
+Приложение будет использовать эту схему при создании задачи. С помощью этой схемы мы хотим добиться двух вещей:
 
-1.  Prevent users from adding unknown properties to the entity
-2.  Make the `title` property mandatory for every task
+1.  Предотвратить добавление пользователями неизвестных свойств к сущности
+2.  Сделать свойство `title` обязательным для каждой задачи.
 
-Let’s take a look at the code of `create-body.json`:
+Давайте посмотрим на код `create-body.json`:
 
 ```json
 {
@@ -606,18 +610,18 @@ Let’s take a look at the code of `create-body.json`:
 }
 ```
 
-The schema is of the `object` type and, even if short in length, adds many constraints to the allowed inputs:
+Схема относится к типу `object` и, даже будучи небольшой по объему, добавляет множество ограничений к допустимым входным данным:
 
--   `$id` is used to identify the schema uniquely across the whole application; it can be used to reference it in other parts of the code (`[1]`).
--   The `required` keyword specifies that the `title` property is required for this schema. Any object that does not contain it will not be considered valid against this schema (`[2]`).
--   The `additionalProperties` keyword is `false` (`[3]`), meaning that any properties not defined in the `"properties"` object will be considered invalid against this schema and discarded.
--   The only property allowed is `title` of the `string` type (`[4]`). The validator will try to convert `title` to a string during the body validation phase.
+-   `$id` используется для уникальной идентификации схемы во всем приложении; его можно использовать для ссылок на нее в других частях кода (`[1]`).
+-   Ключевое слово `required` указывает, что свойство `title` является обязательным для данной схемы. Любой объект, не содержащий его, не будет считаться корректным по отношению к данной схеме (`[2]`).
+-   Ключевое слово `additionalProperties` имеет значение `false` (`[3]`), означающее, что любые свойства, не определенные в объекте `properties`, будут считаться недействительными по отношению к данной схеме и отбрасываться.
+-   Единственным допустимым свойством является `title` типа `string` (`[4]`). Валидатор попытается преобразовать `title` в строку на этапе проверки тела.
 
-Inside [Using the schemas](#using-the-schemas) section, we will see how to attach this definition to the correct route. Now, we will move on and secure the request path parameters.
+В разделе [Использование схем](#using-the-schemas) мы увидим, как прикрепить это определение к правильному маршруту. Теперь мы перейдем к защите параметров пути запроса.
 
-#### Validating the changeStatus request parameters
+**Валидация параметров запроса `changeStatus`**
 
-This time, we want to validate the request path parameters instead of a request body. This will allow us to be sure that the call contains the correct parameters with the correct type. The following `status-params.json` shows the implementation:
+На этот раз мы хотим проверить параметры пути запроса вместо тела запроса. Это позволит нам быть уверенными в том, что вызов содержит правильные параметры с правильным типом. В следующем файле `status-params.json` показана реализация:
 
 ```json
 {
@@ -637,17 +641,17 @@ This time, we want to validate the request path parameters instead of a request 
 }
 ```
 
-Let’s take a look at how this schema works:
+Давайте посмотрим, как работает эта схема:
 
--   The \$id field defines another unique identifier for this schema (`[1]`).
--   In this case, we have two required parameters – `id` and `status` (`[2]`).
--   The id property must be a string (`[3]`), while `status` is a string whose value can be `"done"` or `"undone"` (`[4]`). No other properties are allowed.
+-   Поле `$id` определяет еще один уникальный идентификатор для этой схемы (`[1]`).
+-   В данном случае у нас есть два обязательных параметра - `id` и `status` (`[2]`).
+-   Свойство id должно быть строкой (`[3]`), а `status` - строкой, значение которой может быть `«выполнено»` или `«не выполнено»` (`[4]`). Никакие другие свойства не допускаются.
 
-Next, we will explore how to validate the query parameters of a request using `listTodos` as an example.
+Далее мы рассмотрим, как проверить параметры запроса на примере `listTodos`.
 
-#### Validating the listTodos request query
+**Валидация запроса `listTodos`**
 
-At this point, it should be clear that all schemas follow the same rules. A query schema is not an exception. However, in the `list-query.json` snippet, we will use schema reference for the first time:
+На данный момент должно быть понятно, что все схемы подчиняются одним и тем же правилам. Схема запроса не является исключением. Однако в фрагменте `list-query.json` мы впервые используем ссылку на схему:
 
 ```json
 {
@@ -668,22 +672,22 @@ At this point, it should be clear that all schemas follow the same rules. A quer
 }
 ```
 
-We can now break down the snippet:
+Теперь мы можем разобрать этот фрагмент на части:
 
--   As usual, the `$id` property gives the schema a unique identifier that can be referenced elsewhere in the code (`[1]`).
--   The `title` property is of the `string` type, and it is optional (`[2]`). It can be filtered by the partial `title` of the to-do item. If not passed, the filter will be created empty.
--   The `limit` property specifies the maximum number of items to return and is defined by referencing the `schema` `schema:limit` schema (`[3]`). The `skip` property is also defined by referencing `schema` `schema:skip` and is used for pagination purposes. These schemas are so general that they are shared throughout the project.
+-   Как обычно, свойство `$id` присваивает схеме уникальный идентификатор, на который можно ссылаться в других местах кода (`[1]`).
+-   Свойство `title` имеет тип `string` и является необязательным (`[2]`). Оно может быть отфильтровано по частичному `заголовку` элемента дел. Если свойство не передано, фильтр будет создан пустым.
+-   Свойство `limit` задает максимальное количество возвращаемых элементов и определяется ссылкой на схему `schema` `schema:limit` (`[3]`). Свойство `skip` также определяется ссылкой на схему `schema` `schema:skip` и используется для пагинации. Эти схемы настолько общие, что используются во всем проекте.
 
-Now, it is time to take a look at the last schema type – the response schema.
+Теперь пришло время взглянуть на последний тип схемы - схему ответа.
 
-#### Defining the createTodo response body
+**Определение тела ответа `createTodo`**
 
-Defining a response body of a route adds two main benefits:
+Определение тела ответа маршрута дает два основных преимущества:
 
--   It prevents us from leaking undesired information to clients
--   It increases the throughput of the application, thanks to the faster serialization
+-   Предотвращает утечку нежелательной информации к клиентам.
+-   Увеличивает пропускную способность приложения, благодаря более быстрой сериализации
 
-`create-response.json` illustrates the implementation:
+В файле `create-response.json` показана реализация:
 
 ```json
 {
@@ -699,16 +703,16 @@ Defining a response body of a route adds two main benefits:
 }
 ```
 
-Let’s examine the structure of this schema:
+Давайте рассмотрим структуру этой схемы:
 
--   Once again, `$id` is a unique identifier for this schema (`[1]`)
--   The response object has one `required` (`[2]`) property, named `id`, of the `string` type (`[3]`)
+-   И снова `$id` - уникальный идентификатор для этой схемы (`[1]`)
+-   Объект ответа имеет одно `required` (`[2]`) свойство `id` типа `string` (`[3]`)
 
-This response schema ends the current section about schema definitions. Now, it is time to learn how to use and register those schemas.
+Эта схема ответа завершает текущий раздел об определениях схем. Теперь пришло время узнать, как использовать и регистрировать эти схемы.
 
-### Adding the Autohooks plugin
+### Добавление плагина Autohooks {#adding-the-autohooks-plugin}
 
-Once again, we can leverage the extensibility and the plugin system Fastify gives to developers. We can start by recalling from [Chapter 6](./project-structure.md) that we already registered a `@fastify/autoload` instance on our application. The following excerpt from the `app.js` file shows the relevant parts:
+И снова мы можем воспользоваться расширяемостью и системой плагинов, которую Fastify предоставляет разработчикам. Для начала вспомним из [Главы 6](./project-structure.md), что мы уже зарегистрировали экземпляр `@fastify/autoload` в нашем приложении. Следующий отрывок из файла `app.js` показывает соответствующие части:
 
 ```js
 fastify.register(AutoLoad, {
@@ -722,17 +726,17 @@ fastify.register(AutoLoad, {
 });
 ```
 
-For the purpose of this section, there are three properties that we care about:
+Для целей данного раздела нам важны три свойства:
 
--   `autoHooksPattern` (`[1]`) is used to specify a regular expression pattern that matches the filenames of the hook files in the `routes` directory. These files will be automatically loaded and registered as hooks for the corresponding routes.
--   `autoHooks` (`[2]`) enables the automatic loading of those hook files.
--   `cascadeHooks` (`[3]`) ensures that the hooks are executed in the correct order.
+-   `autoHooksPattern` (`[1]`) используется для указания шаблона регулярного выражения, который соответствует именам файлов хуков в директории `routes`. Эти файлы будут автоматически загружены и зарегистрированы как хуки для соответствующих маршрутов.
+-   `autoHooks` (`[2]`) включает автоматическую загрузку этих файлов хуков.
+-   `cascadeHooks` (`[3]`) гарантирует, что хуки будут выполняться в правильном порядке.
 
-After this brief reminder, we can move on to implementing our autohook plugin.
+После этого краткого напоминания мы можем перейти к реализации нашего плагина `autohook`.
 
-### Implementing the Autohook plugin
+### Реализация плагина Autohook {#implementing-the-autohook-plugin}
 
-We learned from `autoHooksPattern` in the previous section that we can put our plugin inside a file named `autohooks.js` in the `./routes/todos` directory, and it will be automatically registered by `@fastify/autoload`. The following snippet contains the content of the plugin:
+Из `autoHooksPattern` в предыдущем разделе мы узнали, что наш плагин можно поместить в файл с именем `autohooks.js` в директории `./routes/todos`, и он будет автоматически зарегистрирован командой `@fastify/autoload`. Следующий фрагмент содержит содержимое плагина:
 
 ```js
 'use strict';
@@ -746,17 +750,17 @@ module.exports = fp(async function todoAutoHooks(
 });
 ```
 
-We start importing the schema loader plugin we defined in a previous section (`[1]`). Then, inside the plugin body, we register it (`[2]`). This one line is enough to make the loaded schemas available in the application. In fact, the plugin attaches them to the Fastify instances to make them easily accessible.
+Мы начинаем импортировать плагин загрузчика схем, который мы определили в предыдущем разделе (`[1]`). Затем, внутри тела плагина, мы регистрируем его (`[2]`). Одной этой строки достаточно, чтобы загруженные схемы стали доступны в приложении. Фактически, плагин прикрепляет их к экземплярам Fastify, чтобы сделать их легкодоступными.
 
-Finally, we can use these schemas inside our route definitions, which we will do in the next section.
+Наконец, мы можем использовать эти схемы в наших определениях маршрутов, что мы и сделаем в следующем разделе.
 
-### Using the schemas
+### Использование схем {#using-the-schemas}
 
-Now, we have everything in place to secure our routes and make the application’s throughput ludicrously fast.
+Теперь у нас есть все, чтобы защитить наши маршруты и сделать пропускную способность приложения невероятно быстрой.
 
-This section will only show you how to do it for one route handler. You will find the complete code in the book’s [repository](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207), and you are encouraged to experiment with other routes too.
+В этом разделе мы покажем, как это сделать только для одного обработчика маршрута. Полный код вы найдете в [репозитории](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%207) книги , и мы рекомендуем вам поэкспериментировать и с другими маршрутами.
 
-The following code snippet attaches the schemas to the route definition:
+Следующий фрагмент кода присоединяет схемы к определению маршрута:
 
 ```js
 fastify.route({
@@ -776,12 +780,12 @@ fastify.route({
 });
 ```
 
-We are adding a `schema` property to the route definition. It contains an object with two fields:
+Мы добавляем свойство `schema` в определение маршрута. Оно содержит объект с двумя полями:
 
--   The `body` property of the `schema` option specifies the JSON schema that the request body must validate against (`[1]`). Here, we use `fastify.getSchema('schema:todo:create:body')`, which retrieves the JSON schema for the request body from the schemas collection, using the ID we specified in the declaration.
--   The `response` property of the `schema` option specifies the JSON schema for the response to the client (`[2]`). It is set to an object with a single key, `201`, which specifies the JSON schema for a successful creation response, since it is the code we used inside the handler. Again, we use `fastify.getSchema('schema:todo:create:response')` to retrieve the JSON schema for the response from the schemas collection.
+-   Свойство `body` опции `schema` указывает схему JSON, по которой должно проверяться тело запроса (`[1]`). Здесь мы используем `fastify.getSchema('schema:todo:create:body')`, которая извлекает JSON-схему для тела запроса из коллекции схем, используя идентификатор, указанный нами в объявлении.
+-   Свойство `response` опции `chema` задает JSON-схему для ответа клиенту (`[2]`). Оно устанавливается в объект с единственным ключом `201`, который определяет JSON-схему для ответа на успешное создание, поскольку именно этот код мы использовали в обработчике. И снова мы используем `fastify.getSchema('schema:todo:create:response')`, чтобы получить JSON-схему для ответа из коллекции схем.
 
-If we now try to pass an unknown property, the schema validator will strip away from the body. Let’s experiment with it using the terminal and `curl`:
+Если теперь мы попытаемся передать неизвестное свойство, валидатор схемы отделит его от тела. Давайте поэкспериментируем с этим, используя терминал и `curl`:
 
 ```sh
 $ curl -X POST http://localhost:3000/todos -H "Content-Type:
@@ -793,15 +797,15 @@ lse,"createdAt":"2023-03-20T14:01:01.658Z","modifiedAt":"2023-03-
 20T14:01:01.658Z"}%
 ```
 
-We pass the `foo` property inside our body, and the API returns a successful response, with the unique `id` of the task saved in the database. The second call checks that the validator works as expected. The `foo` field isn’t present in the resource, and therefore, it means that our API is now secure.
+Мы передаем свойство `foo` в тело, и API возвращает успешный ответ с сохранением уникального `id` задачи в базе данных. Второй вызов проверяет, что валидатор работает так, как ожидалось. Поле `foo` не присутствует в ресурсе, а значит, наш API теперь безопасен.
 
-This almost completes our deep dive into RESTful API development with Fastify. However, there is one more important thing that can make our code base more maintainable, which we need to mention before moving on.
+На этом мы практически завершаем наше глубокое погружение в разработку RESTful API с помощью Fastify. Однако есть еще одна важная вещь, которая может сделать нашу кодовую базу более удобной, о которой мы должны упомянуть, прежде чем двигаться дальше.
 
-## Don’t repeat yourself
+## Не повторяйтесь {#dont-repeat-yourself}
 
-Defining the application logic inside routes is fine for simple applications such as the one in our example. In a real-world scenario, though, when we need to use our logic across an application in multiple routes, it would be nice to define that logic only once and reuse it in different places. So, once more, Fastify has us covered.
+Определение логики приложения внутри маршрутов подходит для простых приложений, таких как в нашем примере. Однако в реальном мире, когда нам нужно использовать нашу логику в приложении в нескольких маршрутах, было бы неплохо определить эту логику только один раз и повторно использовать ее в разных местах. И снова Fastify нас выручает.
 
-We can expand our `autohooks.cjs` plugin by adding what is commonly known as a data source. In the following snippet, we expand the previous plugin, adding the needed code, although, for the brevity of the exposition, we are showing only the function for the `createTodo` handler; you can find the whole implementation inside the book’s code repository:
+Мы можем расширить наш плагин `autohooks.cjs`, добавив то, что обычно называют источником данных. В следующем фрагменте мы расширяем предыдущий плагин, добавляя необходимый код, хотя для краткости изложения мы показываем только функцию для обработчика `createTodo`; полную реализацию вы можете найти в репозитории кода книги:
 
 ```js
 'use strict';
@@ -836,14 +840,14 @@ module.exports = fp(async function todoAutoHooks(
 });
 ```
 
-Let’s break down the implementation:
+Давайте разберем реализацию:
 
--   We wrap our plugin with `fastify-plugin` to expose the data source to other plugin scopes (`[1]`).
--   Since we will not access the MongoDB collection from the routes anymore, we moved its reference here (`[2]`).
--   We decorate the Fastify instance with the `mongoDataSource` object (`[3]`) which has several methods, including `createTodo`.
--   We moved the item creation logic that was inside the route handler here (`[4]`). The function returns `insertedId`, which we can use to populate the body to return to the clients.
+-   Мы обернули наш плагин с помощью `fastify-plugin`, чтобы открыть источник данных для других диапазонов плагина (`[1]`).
+-   Поскольку мы больше не будем обращаться к коллекции MongoDB из маршрутов, мы перенесли ссылку на нее сюда (`[2]`).
+-   Мы декорируем экземпляр Fastify объектом `mongoDataSource` (`[3]`), который имеет несколько методов, включая `createTodo`.
+-   Мы перенесли логику создания элемента, которая находилась в обработчике маршрута, сюда (`[4]`). Функция возвращает `insertedId`, который мы можем использовать для заполнения тела элемента, чтобы вернуть его клиентам.
 
-Now, we must update our `createTodo` route handler to take advantage of the newly added code. Let’s do it in the `routes/todos/routes.js` code excerpt:
+Теперь мы должны обновить наш обработчик маршрута `createTodo`, чтобы воспользоваться преимуществами нового кода. Давайте сделаем это в фрагменте кода `routes/todos/routes.js`:
 
 ```js
 fastify.route({
@@ -867,12 +871,12 @@ fastify.route({
 });
 ```
 
-Our handler body is a one-liner. Its new duty is to take `request.body` (`[1]`) and to pass it to the `createTodo` data source method. After that call returns, it takes the returned unique ID and forwards it to the client (`[2]`). Even in this simple example, it should be clear how powerful this feature is. We can use it to make our code reusable from every application part.
+Тело нашего обработчика - это однострочник. Его новая обязанность - принимать `request.body` (`[1]`) и передавать его в метод источника данных `createTodo`. После того как этот вызов вернется, он возьмет уникальный идентификатор и передаст его клиенту (`[2]`). Даже на этом простом примере должно быть понятно, насколько мощной является эта функция. С ее помощью мы можем сделать наш код многократно используемым во всех частях приложения.
 
-This final section covered everything we need to know to develop a simple yet complete application using Fastify.
+В этом заключительном разделе мы рассмотрели все, что нужно знать для разработки простого, но полноценного приложения с использованием Fastify.
 
-## Summary
+## Резюме {#summary}
 
-This chapter taught us step by step how to implement a RESTful API in Fastify. First, we used the powerful plugin system to encapsulate our route definitions. Then, we secured our routes and database accesses using schema definitions. Finally, we moved the application logic inside a dedicated plugin using decorators. This allowed us to follow the DRY pattern and make our application more maintainable.
+В этой главе мы шаг за шагом узнали, как реализовать RESTful API в Fastify. Сначала мы использовали мощную систему плагинов для инкапсуляции определений маршрутов. Затем мы защитили наши маршруты и доступ к базе данных с помощью определений схем. Наконец, мы перенесли логику приложения в специальный плагин, используя декораторы. Это позволило нам следовать паттерну DRY и сделать наше приложение более удобным для обслуживания.
 
-The following chapter will look at user management, sessions, and file uploads to extend the application’s capabilities even more.
+В следующей главе мы рассмотрим управление пользователями, сессии и загрузку файлов, чтобы еще больше расширить возможности приложения.
