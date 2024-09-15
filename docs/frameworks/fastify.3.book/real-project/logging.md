@@ -1,68 +1,72 @@
-# Meaningful Application Logging
+---
+description: В этой главе мы рассмотрим, как реализовать содержательные журналы приложения, чтобы помочь нам понять, что происходит в нашем программном обеспечении
+---
 
-A piece of software does not speak to us. Sometimes we would like our application to explain what is going on and why something is not working as expected. For this reason, it is essential to teach the application how to talk to us through logs.
+# Логирование приложений
 
-In this chapter, we will see how to implement meaningful application logs to help us understand what is going on in our software. It is vital to monitor that everything is working as expected, as well as to keep track of what has gone wrong.
+Программное обеспечение не разговаривает с нами. Иногда нам хочется, чтобы приложение объяснило, что происходит и почему что-то работает не так, как ожидалось. По этой причине очень важно научить приложение разговаривать с нами с помощью журналов.
 
-You will learn how to set up the perfect logging configuration without losing essential information. Moreover, you will discover how to avoid logging sensible data and print out only what you need.
+В этой главе мы рассмотрим, как реализовать содержательные журналы приложения, чтобы помочь нам понять, что происходит в нашем программном обеспечении. Очень важно следить за тем, чтобы все работало так, как ожидалось, а также отслеживать, что пошло не так.
 
-The learning path we will cover in this chapter is as follows:
+Вы узнаете, как настроить идеальную конфигурацию протоколирования без потери важной информации. Кроме того, вы узнаете, как избежать записи бессмысленных данных и распечатать только то, что вам нужно.
 
--   How to use Fastify’s logger
--   Enhancing the default logger
--   Collecting the logs
--   Managing distributed logs
+В этой главе мы рассмотрим следующие этапы обучения:
 
-Technical requirements
+-   Как использовать логгер Fastify
+-   Расширение стандартного логгера
+-   Сбор логов
+-   Управление распределенными журналами
 
-As in the previous chapters, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation
--   The [VS Code IDE](https://code.visualstudio.com/)
--   A public GitHub repository
--   A working command shell
+Как и в предыдущих главах, вам понадобится следующее:
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2011).
+-   Рабочая установка Node.js 18
+-   [VS Code IDE](https://code.visualstudio.com/)
+-   Публичный репозиторий GitHub
+-   Рабочая командная оболочка
 
-## How to use Fastify’s logger
+Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2011).
 
-Application logging is one of the pillars of application observability. It provides useful information to understand what the system is doing and narrow down where the bug arises. A good logging setup has the following qualities:
+## Как использовать логгер Fastify {#how-to-use-fastifys-logger}
 
--   **Consolidate**: This sends the logs to a designated output.
--   **Structure**: This provides a format to query and analyze over text messages.
--   **Context**: This adds metadata based on the execution environment.
--   **Security**: This applies filter and data reduction to hide sensitive information.
--   **Verbosity**: This sets the log severity based on the environment. Unfortunately, logging is not free, as it costs the system’s resources, so we can’t just log everything without impacting the application’s performance.
+Логирование приложений - один из столпов наблюдаемости приложений. Она предоставляет полезную информацию, позволяющую понять, что делает система, и определить, где возникает ошибка. Хорошая система протоколирования обладает следующими качествами:
 
-Generally, you can easily understand whether application logs are implemented correctly or not. But you should never underestimate the importance of logging.
+-   **Консолидировать**: Это отправляет журналы на определенный выход.
+-   **Структура**: Она обеспечивает формат для запросов и анализа текстовых сообщений.
+-   **Контекст**: Добавляет метаданные, основанные на среде выполнения.
+-   **Безопасность**: Применяет фильтры и сокращает объем данных, чтобы скрыть конфиденциальную информацию.
+-   **Verbosity**: Устанавливает степень серьезности журнала в зависимости от среды. К сожалению, ведение журналов не бесплатно, так как требует затрат ресурсов системы, поэтому мы не можем просто записывать в журнал все подряд, не влияя на производительность приложения.
 
-In fact, when you are having trouble in production caused by an unknown and mysterious error, and the error log prints out a vague message such as `undefined is not a function`, at that moment, it is already too late to act, and you can’t reproduce the error event because it’s gone.
+В целом, вы можете легко понять, правильно ли реализованы журналы приложений или нет. Но никогда не стоит недооценивать важность протоколирования.
 
-The logger is not just a life-saver when things are burning down. The log is an enabler in accomplishing the following:
+На самом деле, когда у вас возникают проблемы в производстве, вызванные неизвестной и загадочной ошибкой, а журнал ошибок выводит туманное сообщение типа `undefined не является функцией`, в этот момент уже слишком поздно действовать, и вы не можете воспроизвести событие ошибки, потому что оно исчезло.
 
--   **Auditing**: This tracks events to recreate the user’s navigation and API usage
--   **Metrics**: This traces the time spent per request or operation to identify possible bottlenecks
--   **Analysis**: This counts the endpoint metrics to plan code base refactoring and optimizations, such as choosing routes that slow down the system and need to be isolated
--   **Alerting**: This triggers a warning when specific events are recognized by monitoring the metrics
+Логгер - это не просто спаситель, когда все горит. Журнал - это помощник в выполнении следующих задач:
 
-Fastify helps you manage all kinds of situations because it has all the tools you need to build a production-ready application. As introduced in [Chapter 1](../basic/what-is-fastify.md), the Fastify framework includes the [`pino` logger module](https://getpino.io), which provides all you need to let your application speak to you. We need to understand some basic concepts before digging into the code, or we could get lost in the configuration maze.
+-   **Аудит**: Отслеживает события, чтобы воссоздать навигацию пользователя и использование API.
+-   **Метрики**: Отслеживается время, затраченное на один запрос или операцию, чтобы выявить возможные узкие места.
+-   **Анализ**: Подсчитывает метрики конечных точек, чтобы спланировать рефакторинг и оптимизацию кодовой базы, например, выбрать маршруты, которые замедляют работу системы и должны быть изолированы
+-   **Оповещение**: Это запускает предупреждение, когда определенные события распознаются с помощью мониторинга метрик.
 
-### How Pino logs the application’s messages
+Fastify поможет вам справиться с любыми ситуациями, потому что в нем есть все инструменты, необходимые для создания готового к производству приложения. Как уже говорилось в [Главе 1](../basic/what-is-fastify.md), фреймворк Fastify включает в себя модуль [`pino` logger module](https://getpino.io), который предоставляет все необходимое для того, чтобы ваше приложение говорило с вами. Прежде чем приступать к работе над кодом, нам необходимо понять некоторые базовые концепции, иначе мы можем заблудиться в дебрях конфигурации.
 
-Before starting, we need a brief introduction to Pino, the fastest logger in the Node.js ecosystem. By default, it prints out to the **stdout** and **stderr** streams. These streams print out the string message to our shell’s console to let us read the output on the screen. You can go into further detail by reading [this article](https://en.wikipedia.org/wiki/Standard_streams).
+### Как Pino регистрирует сообщения приложения {#how-pino-logs-the-applications-messages}
 
-To log something, we need to call one of the methods corresponding to a **log level**. Here is the list in ascending severity order:
+Прежде чем начать, нам нужно кратко рассказать о Pino, самом быстром логгере в экосистеме Node.js. По умолчанию он выводит данные в потоки **stdout** и **stderr**. Эти потоки выводят строковое сообщение в консоль нашей оболочки, чтобы мы могли прочитать вывод на экране. Более подробную информацию вы можете получить, прочитав [эту статью](https://en.wikipedia.org/wiki/Standard_streams).
 
--   `log.trace()`: This is used to print very low-severity messages
--   `log.debug()`: This is the level for low severity diagnostic messages
--   `log.info()`: This prints logs for informational text
--   `log.warn()`: This indicates problems or cases that should not have occurred
--   `log.error()`: This is used to trace failures
--   `log.fatal()`: This indicates a major error that could cause the server to crash
+Чтобы записать что-то в журнал, нам нужно вызвать один из методов, соответствующих **уровню журнала**. Вот список в порядке возрастания серьезности:
 
-You can configure the log to turn the log’s output on or off based on the log level. For example, by setting `warn` as the threshold, all the lower severity logs will not be shown.
+-   `log.trace()`: Используется для печати сообщений очень низкой степени серьезности
+-   `log.debug()`: Это уровень для диагностических сообщений низкой степени серьезности
+-   `log.info()`: Печатаются журналы с информационным текстом
+-   `log.warn()`: Указывает на проблемы или случаи, которые не должны были произойти
+-   `log.error()`: Используется для отслеживания сбоев
+-   `log.fatal()`: Указывает на серьезную ошибку, которая может привести к падению сервера.
 
-All the log functions share the same usage interface. To clarify, we can recap the interface into these forms:
+Вы можете настроить журнал так, чтобы включать или выключать вывод журнала в зависимости от уровня журнала. Например, если установить пороговое значение `warn`, все журналы более низкого уровня серьезности не будут отображаться.
+
+Все функции журнала имеют одинаковый интерфейс использования. Для наглядности мы можем перефразировать интерфейс в такие формы:
 
 ```js
 const pino = require('pino')
@@ -80,15 +84,15 @@ log.info({ hello: 'world' }, 'Cheers %s', 'me') // [4]
    "Cheers me"}
 ```
 
-The first syntax, `[1]`, logs a simple string message. It helps debug and trace. The second interface, `[2]`, shows us how Pino interpolates strings: when the first string argument is found, all the subsequent parameters will be used to fill its placeholder. In the `[2]` code example, we are using `%s` for the string placeholder: you can use `%d` for numbers and `%o` for JSON objects.
+Первый синтаксис, `[1]`, регистрирует простое строковое сообщение. Он помогает в отладке и трассировке. Второй интерфейс, `[2]`, показывает нам, как Pino интерполирует строки: когда найден первый строковый аргумент, все последующие параметры будут использованы для заполнения его заполнителя. В примере кода `[2]` мы используем `%s` для заполнителя строки: вы можете использовать `%d` для чисел и `%o` для объектов JSON.
 
-!!!note "String interpolation optimization"
+!!!note "Оптимизация интерполяции строк"
 
-    When you plan to hide the log level, you should prefer the `pino` string interpolation over template literals or string concatenation. To give you an example, writing ` log.debug(``Hello ${name}``) ` means that every time the statement is executed, the template’s literal is processed, even if the `DEBUG` log level is hidden. This is a waste of resources. Instead, the `log.debug('Hello $s', name)` statement does not execute the string interpolation if the corresponding log level does not need to be printed.
+    Если вы планируете скрыть уровень журнала, вам следует предпочесть строковую интерполяцию `pino`, а не литералы шаблона или конкатенацию строк. Для примера, если написать <code>log.debug(\`Hello ${name}\`)</code>, то при каждом выполнении оператора будет обрабатываться литерал шаблона, даже если уровень журнала `DEBUG` скрыт. Это пустая трата ресурсов. Вместо этого оператор `log.debug('Hello $s', name)` не выполняет интерполяцию строк, если соответствующий уровень журнала не нуждается в выводе.
 
-The third `[3]` log syntax shows that we can include a JSON object in the log output by setting a string message. This API can be used to log `Error` objects too. Finally, `[4]`, which we saw in the previous code snippet, sums up the JSON object log and the string interpolation.
+Третий синтаксис журнала `[3]` показывает, что мы можем включить объект JSON в вывод журнала, задав строковое сообщение. Этот API можно использовать и для логирования объектов `Error`. Наконец, `[4]`, который мы видели в предыдущем фрагменте кода, суммирует журнал JSON-объектов и строковую интерполяцию.
 
-As you have seen, the output is a [JSON logline string](https://jsonlines.org/) that adds additional information by default, such as the log time in milliseconds since the Unix timestamp, and the log level as an integer, and the system’s coordinates (which have been removed from the snippet output for compactness). You can customize every JSON field printed out by managing the options or implementing a **serializer**. The log serializer is a function that must return a JSONifiable object, such as a string or a JSON object. This feature lets us add or remove information from the logline, so let’s see an example:
+Как вы видели, на выходе получается [JSON-строка журнала](https://jsonlines.org/), в которую по умолчанию добавляется дополнительная информация, например, время журнала в миллисекундах с момента временной метки Unix, уровень журнала в виде целого числа, а также координаты системы (которые были удалены из вывода фрагмента для компактности). Вы можете настроить каждое выводимое поле JSON, управляя опциями или применяя **сериализатор**. Сериализатор журнала - это функция, которая должна возвращать JSON-объект, например строку или JSON-объект. Эта функция позволяет нам добавлять или удалять информацию из лога, поэтому давайте рассмотрим пример:
 
 ```js
 const pino = require('pino');
@@ -104,28 +108,28 @@ log.info({ user: userObj, action: 'login' });
 // {"level":30,"time":1644136926862,"user":{"id":42}, "action":"login"}
 ```
 
-In the previous code snippet, `userObj` contains the `imageBase64` property that must not be logged because it is not useful, and it is a huge `base64` string that can slow down the logging process. So, when we need to log an application’s account, we can define the convention so that the corresponding JSON must be assigned to a `user` property as shown. Since we have defined a `user` serializer when we declared the log instance, the `userSerializer` function will be executed, and its output will be used as output. We have centralized the logic to log a `user` object into a single operation by doing so. Now, we can log the user in the same way from the whole application.
+В предыдущем фрагменте кода `userObj` содержит свойство `imageBase64`, которое не должно регистрироваться, поскольку оно не является полезным и представляет собой огромную строку `base64`, которая может замедлить процесс регистрации. Поэтому, когда нам нужно зарегистрировать учетную запись приложения, мы можем определить соглашение, согласно которому соответствующий JSON должен быть присвоен свойству `user`, как показано на рисунке. Поскольку мы определили сериализатор `user` при объявлении экземпляра журнала, функция `userSerializer` будет выполнена, а ее вывод будет использован в качестве выходных данных. Таким образом мы централизовали логику регистрации объекта `user` в одной операции. Теперь мы можем регистрировать пользователя таким же образом из всего приложения.
 
-The JSON format output can’t be changed out of the box by design. This is a requirement of being the fastest logger in the Node.js panorama. To be flexible for each developer, the ecosystem of `pino` is supplied with a lot of **transporters**. These are plugins that let you do the following:
+Формат вывода JSON нельзя изменить из коробки. Это требование, чтобы быть самым быстрым логгером в панораме Node.js. Чтобы быть гибким для каждого разработчика, экосистема `pino` снабжена множеством **транспортеров**. Это плагины, которые позволяют вам делать следующее:
 
--   **Transform**: This transforms the log output into another string format different from the JSON one, such as [`syslog`](https://datatracker.ietf.org/doc/html/rfc5424)
--   **Transmitting**: This transmits the logs to an external system, such as **log management software**
+-   **Transform**: Преобразует вывод журнала в другой строковый формат, отличный от JSON, например [`syslog`](https://datatracker.ietf.org/doc/html/rfc5424)
+-   **Передача**: Передача журналов во внешнюю систему, например **программу управления журналами**.
 
-The JSON format is broadly supported and can be easily stored and processed by external analysis tools called log management software. This software allows you to collect the data, search and report, and store it for retention and analysis.
+Формат JSON широко поддерживается и может быть легко сохранен и обработан внешними инструментами анализа, называемыми программным обеспечением для управления журналами. Это программное обеспечение позволяет собирать данные, осуществлять поиск и создавать отчеты, а также хранить их для последующего хранения и анализа.
 
-The transport’s configuration depends on what you are going to do within the logs. For example, if you already have the log management software in place, you may need to adapt to its logs string format.
+Конфигурация транспорта зависит от того, что вы собираетесь делать в журналах. Например, если у вас уже есть программное обеспечение для управления журналами, вам может потребоваться адаптация к его формату строк журналов.
 
-!!!note "Using pino as a logger"
+!!!note "Использование pino в качестве регистратора"
 
-    Note that there are multiple ways to transmit the records to a third-party system that do not involve `pino`, such as a platform command, but this goes beyond the main topic of this book.
+    Обратите внимание, что существует множество способов передачи записей в стороннюю систему, не связанных с `pino`, например, команда платформы, но это выходит за рамки основной темы данной книги.
 
-Now that you have an overview of `pino`, we need to go into the logging configuration details exposed by Fastify. So, let’s jump in to appreciate all the aspects of customizing logging configuration.
+Теперь, когда у вас есть общее представление о `pino`, нам нужно перейти к деталям конфигурации протоколирования, открываемым Fastify. Итак, давайте перейдем к рассмотрению всех аспектов настройки конфигурации логирования.
 
-### Customizing logging configuration
+### Настройка конфигурации логирования {#customizing-logging-configuration}
 
-In [Chapter 3](../basic/routes.md), we saw how to set the log level and the pretty print configuration but there is much more than that to customizing the logger.
+В [Главе 3](../basic/routes.md) мы рассмотрели, как установить уровень журнала и конфигурацию красивой печати, но это гораздо больше, чем просто настройка журнала.
 
-The main log’s configuration must be provided to the Fastify instance during its initialization. There are three ways to do that, as depicted by the following code snippet:
+Конфигурация главного журнала должна быть предоставлена экземпляру Fastify во время его инициализации. Это можно сделать тремя способами, как показано в следующем фрагменте кода:
 
 ```js
 const app = fastify({ logger: true }); // [1]
@@ -137,23 +141,23 @@ const app = fastify({
 });
 ```
 
-The first option, `[1]`, is good when we need to try some code snippets and need a quick and dirty way to see the default Fastify’s log configuration.
+Первый вариант, `[1]`, хорош, когда нам нужно попробовать несколько фрагментов кода и быстро и грязно посмотреть стандартную конфигурацию журнала Fastify.
 
-The second interface, `[2]`, is the one we have used so far in the book, last mentioned in [Chapter 6](./project-structure.md). The `logger` server’s property accepts a JSON object corresponding to the `pino` options. We set those options by configuring the `fastify-cli -l info --pretty-logs` arguments. You can get the full options list by reading the [Pino documentation](https://getpino.io/#/docs/api?id=options-object).
+Второй интерфейс, `[2]`, - это тот, который мы использовали до сих пор в книге, последний раз он упоминался в [главе 6](./project-structure.md). Свойство `logger` сервера принимает JSON-объект, соответствующий опциям `pino`. Мы задаем эти опции, настраивая аргументы `fastify-cli -l info --pretty-logs`. Полный список опций можно получить, прочитав [документацию Pino](https://getpino.io/#/docs/api?id=options-object).
 
-The last input, `[3]`, allows you to provide a new logger module and not use `pino` by default instead. It enables you to provide a custom `pino` instance too. This is useful if you want to use a major new release without waiting for a new Fastify release.
+Последний вход, `[3]`, позволяет вам предоставить новый модуль логгера и не использовать `pino` по умолчанию. Он также позволяет вам предоставить собственный экземпляр `pino`. Это полезно, если вы хотите использовать новый крупный релиз, не дожидаясь нового релиза Fastify.
 
-!!!note "Don’t change the logger library"
+!!!note "Не изменяйте библиотеку логгера"
 
-    In this chapter, you will not learn how to change Fastify’s logger module. We hope you understand why you should not do it, otherwise, you will lose all the fine configurations the framework gives you. If you need to do it, you can read our reasoning on [Stack Overflow](https://stackoverflow.com/questions/55264854/how-can-i-use-custom-logger-in-fastify/55266062).
+    В этой главе вы не узнаете, как изменить модуль логгеров Fastify. Мы надеемся, что вы понимаете, почему этого делать не следует, иначе вы потеряете все тонкие настройки, которые дает фреймворк. Если вам нужно это сделать, вы можете прочитать наши рассуждения на [Stack Overflow](https://stackoverflow.com/questions/55264854/how-can-i-use-custom-logger-in-fastify/55266062).
 
-These options let us customize the log’s baseline settings. The possibilities are not over yet. You can do a lot more using Fastify! You can customize the log level and the serializers at the following levels:
+Эти опции позволяют нам настроить базовые параметры журнала. На этом возможности не заканчиваются. С помощью Fastify можно сделать гораздо больше! Вы можете настроить уровень журнала и сериализаторы на следующих уровнях:
 
--   Server instance level
--   Plugin level
--   Route level
+-   Уровень экземпляра сервера
+-   Уровень плагина
+-   Уровень маршрута
 
-Let’s see an example. First, we need a simple handler that prints a `hello` array:
+Давайте рассмотрим пример. Сначала нам нужен простой обработчик, который печатает массив `hello`:
 
 ```js
 async function helloHandler(request, reply) {
@@ -163,7 +167,7 @@ async function helloHandler(request, reply) {
 }
 ```
 
-Now we can reuse this handler to see the different behaviors in the three cases listed previously:
+Теперь мы можем повторно использовать этот обработчик, чтобы увидеть разное поведение в трех случаях, перечисленных ранее:
 
 ```js
 const app = fastify({
@@ -180,9 +184,9 @@ app.get('/root', helloHandler);
 app.inject('/root');
 ```
 
-The expected output is none because the `hello` log is at debug level, and we set an `error` threshold. The `serializeHello` function is not executed at all. This setting will be the default for every child context and route since it is assigned to Fastify’s server instance root.
+Ожидаемого вывода нет, поскольку журнал `hello` находится на уровне отладки, и мы установили порог `error`. Функция `serializeHello` вообще не выполняется. Эта настройка будет использоваться по умолчанию для всех дочерних контекстов и маршрутов, поскольку она назначается корню экземпляра сервера Fastify.
 
-As mentioned earlier in this section, we can overload the server’s default log configuration by using two additional plugin options managed by Fastify itself:
+Как упоминалось ранее в этом разделе, мы можем расширить стандартную конфигурацию журнала сервера, используя две дополнительные опции плагина, управляемые самим Fastify:
 
 ```js
 app.register(
@@ -201,14 +205,14 @@ app.register(
 app.inject('/plugin');
 ```
 
-The `logLevel` and `logSerializers` properties are handled by Fastify, and they will overwrite the default log’s setting for the `plugin` instance. This means that even the plugin’s child contexts and routes will inherit the new log configuration. In this case, the expected output is a string concatenated by a double colon:
+Свойства `logLevel` и `logSerializers` обрабатываются Fastify, и они будут перезаписывать настройки журнала по умолчанию для экземпляра `plugin`. Это означает, что даже дочерние контексты и маршруты плагина унаследуют новую конфигурацию журнала. В этом случае ожидаемым результатом будет строка, конкатенированная двойным двоеточием:
 
 ```
 {"level":20,"time":1644139826692,"pid":80527,"hostname":"MyPC","reqId"
 :"req-1","hello":"hello:world"}
 ```
 
-The route option object supports the same special `logLevel` and `logSerializers` properties:
+Объект опции маршрута поддерживает те же специальные свойства `logLevel` и `logSerializers`:
 
 ```js
 app.get('/route', {
@@ -223,44 +227,44 @@ app.get('/route', {
 app.inject('/route');
 ```
 
-In the route code example, the output expected is now a string concatenated by the plus symbol:
+В примере кода маршрута теперь ожидается вывод строки, конкатенированной с помощью символа плюс:
 
 ```
 {"level":20,"time":1644140376244,"pid":82198,"hostname":"MyPC
 ","reqId":"req-1","hello":"hello+world"}
 ```
 
-This fine granular log-level setup is a great feature. For example, you can set an `error` level to stable routes and `info` thresholds for brand new routes that require beta usage before considering them durable. This optimization reduces the beta endpoints’ impact on the system, which may suffer a low log level for every application’s route, causing a considerable increment on the logline counter.
+Такая тонкая настройка уровня журнала - отличная возможность. Например, вы можете установить уровень `error` для стабильных маршрутов и пороговое значение `info` для совершенно новых маршрутов, которые должны использоваться в бета-версии, прежде чем считать их долговечными. Такая оптимизация снижает влияние бета-конечных точек на систему, которая может страдать от низкого уровня журнала для каждого маршрута приложения, что приводит к значительному увеличению счетчика журналов.
 
-!!!note "Logs are not free"
+!!!note "Логи не бесплатны"
 
-    As we said previously, logs are not free: they cost the system’s resource utilization, but there is also an economic cost involved. Some log management systems apply pricing per logline or logline size. Fastify helps you control this project management aspect.
+    Как мы уже говорили, журналы не бесплатны: они требуют затрат на использование ресурсов системы, но есть и экономические издержки. Некоторые системы управления логлайнами устанавливают цену за логлайн или размер логлайна. Fastify поможет вам контролировать этот аспект управления проектом.
 
-Well done, you have now seen how to tweak your application’s logger to your needs. So far, we have built the basis to start from in order to customize Pino. In the next section, we will use all the options we have learned about in this chapter so far.
+Молодцы, теперь вы поняли, как настроить логгер вашего приложения под свои нужды. На данный момент мы создали основу, с которой можно начать настройку Pino. В следующем разделе мы будем использовать все возможности, о которых узнали в этой главе.
 
-## Enhancing the default logger configuration
+## Улучшение конфигурации логгера по умолчанию {#enhancing-the-default-logger-configuration}
 
-You know the options available in the logger, but what is a valuable configuration, and how can we integrate it into our application? First of all, we need to define which logs we expect for every request:
+Вы знаете, какие опции доступны в логгере, но что такое ценная конфигурация, и как мы можем интегрировать ее в наше приложение? Прежде всего, нам нужно определить, какие журналы мы ожидаем для каждого запроса:
 
-![Figure 11.1 – Request logs logic](logging-1.png)
+![Рисунок 11.1 - Логика журнала запросов](logging-1.png)
 
-<center>Figure 11.1 – Request logs logic</center>
+<center>Рисунок 11.1 - Логика журнала запросов</center>
 
-As shown in _Figure 11.1_, we expect these log lines for each request: one for the incoming request, optionally, how many handler’s log messages you implement, and finally, one for the response output. All these log lines will be connected to each other by the **reqId** (request-id) field. It is a unique identifier generated for each request whenever the server receives it. We already described the `reqId` property in Chapter 1 in the [The Request component](../basic/what-is-fastify.md#the-request-component) section.
+Как показано на _рисунке 11.1_, для каждого запроса мы ожидаем такие строки журнала: одна для входящего запроса, опционально, сколько сообщений журнала обработчика вы реализуете, и, наконец, одна для вывода ответа. Все эти строки журнала будут связаны друг с другом полем **reqId** (request-id). Это уникальный идентификатор, который генерируется для каждого запроса, когда сервер получает его. Мы уже описывали свойство `reqId` в главе 1 в разделе [The Request component](../basic/what-is-fastify.md#the-request-component).
 
-We can start implementing this by doing the following:
+Мы можем начать реализовывать это следующим образом:
 
--   Exploiting the default request and response log implemented by Fastify
--   Executing a custom log statement by using the `onRequest` and `onSend` hooks
+-   Использование стандартного журнала запросов и ответов, реализованного в Fastify
+-   Выполнение собственного лога с помощью хуков `onRequest` и `onSend`.
 
-The first option is more straightforward to implement, but it has less configurability since you can’t customize the message. Moreover, Fastify’s default request log runs before any other hooks, and you will not be able to read any additional information. The latter option is easy to set up and is open to advanced configurations.
+Первый вариант более прост в реализации, но он имеет меньше возможностей для настройки, поскольку вы не можете настроить сообщение. Кроме того, журнал запросов Fastify по умолчанию запускается раньше других хуков, и вы не сможете прочитать дополнительную информацию. Последний вариант прост в настройке и открыт для расширенных конфигураций.
 
-We will follow the custom implementation for our _Fastify to-do list_ application implemented till the previous [Chapter 10](./deploy.md) and follow the logic in _Figure 11.1_ by doing the following:
+Мы будем следовать пользовательской реализации для нашего приложения _Fastify to-do list_, реализованной в предыдущей [главе 10](./deploy.md), и следовать логике на _рисунке 11.1_, выполняя следующие действия:
 
-1.  Turning off the Fastify default request log. To do that, edit the `configs/server-options.js` file, by adding the `disableRequestLogging: true` property we saw in [Chapter 1](../basic/what-is-fastify.md).
-2.  Adding an `onRequest` and `onResponse` hook in the `plugins/error-handler.js` file.
+1.  Отключите стандартный журнал запросов Fastify. Для этого отредактируйте файл `configs/server-options.js`, добавив в него свойство `disableRequestLogging: true`, которое мы рассматривали в [главе 1](../basic/what-is-fastify.md).
+2.  Добавляем хук `onRequest` и `onResponse` в файл `plugins/error-handler.js`.
 
-The hook will look like the following:
+Хук будет выглядеть следующим образом:
 
 ```js
 fastify.addHook('onRequest', async (req) => {
@@ -271,9 +275,9 @@ fastify.addHook('onResponse', async (req, res) => {
 });
 ```
 
-Note that we have added the `req` object to the response log, as it is useful to add the request’s URL information. The rationale for adding these logging hooks in the error-handler file is the centralization of the HTTP request tracing. This file now contains all the minimal request-logging processes.
+Обратите внимание, что мы добавили объект `req` в журнал ответов, так как он полезен для добавления информации об URL запроса. Причиной добавления этих хуков в файл `error-handler` является централизация отслеживания HTTP-запросов. Теперь этот файл содержит все минимальные процессы логирования запросов.
 
-If we compare Fastify’s default output within our setup, we lose the `responseTime` property from the response’s log line. Now, we can fix this by adding the first custom log serializer. Let’s create a new `configs/logger-options.js` file. This document will contain Pino’s options as follows:
+Если сравнить стандартный вывод Fastify с нашей установкой, то мы потеряли свойство `responseTime` из строки журнала ответа. Теперь мы можем исправить это, добавив первый пользовательский сериализатор логов. Давайте создадим новый файл `configs/logger-options.js`. Этот документ будет содержать следующие опции Пино:
 
 ```js
 module.exports = {
@@ -289,9 +293,9 @@ module.exports = {
 };
 ```
 
-It is possible to add the HTTP request duration in the log output in order to define the `res` serializer. Note that it is necessary to set the `level` property first. In fact, setting the logger configuration has priority over the `fastify-cli` arguments, so adding a new `LOG_LEVEL` environment variable will be mandatory. We must also remember to register this new variable into the `schemas/dotenv.json` file.
+Можно добавить длительность HTTP-запроса в вывод журнала, чтобы определить сериализатор `res`. Обратите внимание, что сначала необходимо установить свойство `level`. На самом деле, настройка конфигурации логгера имеет приоритет над аргументами `fastify-cli`, поэтому добавление новой переменной окружения `LOG_LEVEL` будет обязательным. Мы также не должны забыть зарегистрировать эту новую переменную в файле `schemas/dotenv.json`.
 
-To load the new `logger-options.js` file into the `configs/server-options.js` file correctly, do the following:
+Чтобы правильно загрузить новый файл `logger-options.js` в файл `configs/server-options.js`, сделайте следующее:
 
 ```js
 const loggerOptions = require('./logger-options');
@@ -302,7 +306,7 @@ module.exports = {
 };
 ```
 
-Now, calling an endpoint will produce the two log lines that we can format to improve the readability. The `onRequest` hook will print the following:
+Теперь при вызове конечной точки будут выведены две строки журнала, которые мы можем отформатировать для улучшения читабельности. Хук `onRequest` выведет следующее:
 
 ```json
 {
@@ -322,7 +326,7 @@ Now, calling an endpoint will produce the two log lines that we can format to im
 }
 ```
 
-The `onResponse` hook prints the response information:
+Хук `onResponse` выводит информацию об ответе:
 
 ```json
 {
@@ -346,44 +350,46 @@ The `onResponse` hook prints the response information:
 }
 ```
 
-You can customize the tracing message’s properties by adding the data you need. As mentioned in the [How to use Fastify’s logger](#how-to-use-fastifys-logger) section, a good logline must have a Context.
+Вы можете настроить свойства сообщения трассировки, добавив нужные вам данные. Как уже упоминалось в разделе [Как использовать логгер Fastify](#how-to-use-fastifys-logger), хороший логлайн должен иметь Контекст.
 
-A request’s Context helps us answer the following common questions:
+Контекст запроса помогает нам ответить на следующие распространенные вопросы:
 
--   Which endpoint has produced the log?
--   Was the client logged in and who was the user?
--   What was the request’s data?
--   Where are all the log lines related to a specific request?
+-   Какая конечная точка выдала лог?
+-   Вошел ли клиент в систему и кто был его пользователем?
+-   Каковы были данные запроса?
+-   Где находятся все строки журнала, относящиеся к конкретному запросу?
 
-Now, we can implement the answers to all these questions by enhancing the log’s serializers. So let’s go back to the `configs/logger-options.js` file and create a new req serializer for the HTTP request object:
+Теперь мы можем получить ответы на все эти вопросы, улучшив сериализаторы журнала. Поэтому давайте вернемся к файлу `configs/logger-options.js` и создадим новый сериализатор req для объекта HTTP-запроса:
 
+```js
+serializers: {
+	req: function (request) {
+		const shouldLogBody = request.context.config.logBody === true
+		return {
+			method: request.method,
+			url: request.url,
+			routeUrl: request.routerPath,
+			version: request.headers?.['accept-version'],
+			user: request.user?.id,
+			headers: request.headers,
+			body: shouldLogBody ? request.body : undefined,
+			hostname: request.hostname,
+			remoteAddress: request.ip,
+			remotePort: request.socket?.remotePort
+		}
+	},
+	res: function (reply) {
+		// ...
+	},
+}
 ```
-  serializers: {
-    req: function (request) {
-      const shouldLogBody = request.context.config.logBody
-      === true
-      return {
-        method: request.method,
-        url: request.url,
-        routeUrl: request.routerPath,
-        version: request.headers?.['accept-version'],
-        user: request.user?.id,
-        headers: request.headers,
-        body: shouldLogBody ? request.body : undefined,
-        hostname: request.hostname,
-        remoteAddress: request.ip,
-        remotePort: request.socket?.remotePort
-      }
-    },
-    res: function (reply) { ...
-```
 
-The new `req` configuration emulates the default one and adds more helpful information:
+Новая конфигурация `req` эмулирует конфигурацию по умолчанию и добавляет больше полезной информации:
 
--   The `routeUrl` property seems redundant, but it prints the route’s URL. This is useful for those URLs that contain path parameters: in this case, the `url` log entry includes the input values set by the client. So, for example, you will get `url: '/foo/42'`, `routeUrl: '/foo/:id'`.
--   The `user` field shows who made the HTTP request and whether the client had a valid login. Since the login process happens at different moments, this property is expected only when the `reply` object is logged.
--   The `headers` occurrence outputs the request’s headers. Note that this is an example. It would be best to define what headers you need to log first and then print out only a limited set.
--   The `body` property logs the request’s payload. The first thing to note is that logging all the request’s body could be harmful due to the size of the body itself or due to sensible data content. It is possible to configure the routes that must log the payload by setting a custom field into the route’s options object:
+-   Свойство `routeUrl` кажется излишним, но оно печатает URL маршрута. Это полезно для тех URL, которые содержат параметры пути: в этом случае запись журнала `url` включает в себя входные значения, заданные клиентом. Так, например, вы получите `url: '/foo/42'`, `routeUrl: '/foo/:id'`.
+-   Поле `user` показывает, кто сделал HTTP-запрос и был ли у клиента правильный логин. Поскольку процесс авторизации происходит в разные моменты времени, это свойство ожидается только при регистрации объекта `reply`.
+-   Вхождение `headers` выводит заголовки запроса. Обратите внимание, что это пример. Лучше всего сначала определить, какие заголовки вам нужно регистрировать, а затем выводить только ограниченный набор.
+-   Свойство `body` выводит полезную нагрузку запроса. Первое, что следует отметить, это то, что запись всего тела запроса может быть вредной из-за размера самого тела или из-за разумного содержания данных. Можно настроить маршруты, которые должны регистрировать полезную нагрузку, задав пользовательское поле в объекте опций маршрута:
 
     ```js
     fastify.post('/', {
@@ -394,15 +400,15 @@ The new `req` configuration emulates the default one and adds more helpful infor
     });
     ```
 
-Another detail you need to pay attention to is the `|| undefined` condition to avoid falsy values in the logline. `pino` evicts all the `undefined` properties from the log record, but it prints the `null` ones.
+Еще одна деталь, на которую нужно обратить внимание, - условие `|| undefined`, чтобы избежать ложных значений в лог-листе. `pino` вытесняет из лога все `undefined` свойства, но печатает `null`.
 
-We have added more and more context to the request’s logline, which helps us to collect all the information we need to debug an error response or simply track the application’s routes usage.
+Мы добавляем все больше и больше контекста в лог запроса, что помогает нам собрать всю информацию, необходимую для отладки ответа на ошибку или просто отслеживания использования маршрутов приложения.
 
-Printing the context into the logs may expose sensitive information, such as passwords, access tokens, or personal data (email, mobile numbers, and so on). Log-sensitive data should not happen, but let’s see how you can hide this data in the next section.
+Вывод контекста в журнал может привести к раскрытию конфиденциальной информации, такой как пароли, маркеры доступа или личные данные (электронная почта, номера мобильных телефонов и так далее). Конфиденциальные данные не должны попадать в журналы, но давайте посмотрим, как можно скрыть эти данные в следующем разделе.
 
-### How to hide sensitive data
+### Как скрыть конфиденциальные данные {#how-to-hide-sensitive-data}
 
-In the previous section, we printed out a lot of information, but how can we protect this data? We mentioned that a good logline must provide security. Therefore, we must execute **data redaction**, which masks the strings before they are logged. `pino` supports this feature out of the box, so it is necessary to tweak the `configs/logger-options.js` file once more:
+В предыдущем разделе мы распечатали много информации, но как защитить эти данные? Мы упоминали, что хороший логлайн должен обеспечивать безопасность. Поэтому мы должны выполнить **редактирование данных**, которое маскирует строки перед их записью в журнал. `pino` поддерживает эту функцию из коробки, поэтому необходимо еще раз подправить файл `configs/logger-options.js`:
 
 ```js
 module.exports = {
@@ -421,9 +427,9 @@ module.exports = {
 };
 ```
 
-The `redact` option lets us customize which lookup paths should be masked within the `censor` string to use in place of the original value. We set three direct lookups in the code example. Let’s examine `req.body.password`: if the logger finds a `req` object within a `body` entity and a `password` property, it will apply the reduction.
+Опция `redact` позволяет настроить, какие пути поиска должны быть замаскированы в строке `censor` для использования вместо исходного значения. В примере мы задали три прямых поиска. Рассмотрим `req.body.password`: если логгер найдет объект `req` в сущности `body` и свойство `password`, он применит сокращение.
 
-The redact configuration option in action will hide the property’s value from the log as follows:
+Действующая опция конфигурации redact скроет значение свойства из журнала следующим образом:
 
 ```json
 {
@@ -450,11 +456,11 @@ The redact configuration option in action will hide the property’s value from 
 }
 ```
 
-The log redaction is a mandatory step to provide a secure system and avoid potential data leaks. You need to have a clear idea about which routes will log the user’s input. The `logBody` route option we have seen in the previous section helps you control it and act accordingly.
+Редактирование журналов - обязательный шаг для обеспечения безопасности системы и предотвращения возможных утечек данных. Вы должны четко представлять себе, какие маршруты будут регистрировать вводимые пользователем данные. Опция маршрута `logBody`, которую мы рассмотрели в предыдущем разделе, поможет вам контролировать ее и действовать соответствующим образом.
 
-Note that the redaction will not be executed if the `password` field is moved into a JSON wrapper object. It won’t work if the property changes its case to `Password` (capital letter). The redact supports wildcards such as `*.password`, but it also heavily impacts the logger’s performance and, consequently, the application itself. You can gather further information on this aspect by reading the [official documentation](https://github.com/pinojs/pino/blob/master/docs/redaction.md#path-syntax).
+Обратите внимание, что редактирование не будет выполнено, если поле `password` будет перемещено в объект-обертку JSON. Оно не сработает, если свойство изменит регистр на `Password` (заглавная буква). Редакт поддерживает подстановочные знаки, такие как `*.password`, но это также сильно влияет на производительность логгера и, как следствие, самого приложения. Более подробную информацию по этому аспекту вы можете получить, прочитав [официальную документацию](https://github.com/pinojs/pino/blob/master/docs/redaction.md#path-syntax).
 
-To be sure that a detailed configuration, like the one we’re discussing, is running properly, we can write a test that checks the correctness censorship configuration. We can create a `test/logger.test.js` file to cover this case. We are going to redirect the application’s log messages to a custom stream, where we will be able to process each log line. To do so, we must run `npm install split2` to ease the stream handling. Then, we can implement the following test:
+Чтобы убедиться, что подробная конфигурация, подобная той, которую мы обсуждаем, работает правильно, мы можем написать тест, который проверяет корректность цензуры в конфигурации. Для этого мы можем создать файл `test/logger.test.js`. Мы собираемся перенаправлять сообщения журнала приложения в пользовательский поток, где мы сможем обрабатывать каждую строку журнала. Для этого мы должны запустить `npm install split2`, чтобы облегчить работу с потоком. Затем мы можем реализовать следующий тест:
 
 ```js
 const split = require('split2');
@@ -477,7 +483,7 @@ t.test('logger must redact sensible data', async (t) => {
 });
 ```
 
-The code snippet is a scaffolding test that reads all the log lines that our application emits. We provide the `logger.stream` option to redirect the output of `pino` without modifying the `configs/logger-options.js` options, such as the reduct option. After the HTTP request injection, we can check the emitted logs. The assertions in `[1]` will look as follows:
+Этот фрагмент кода представляет собой тест-скаффолдинг, который читает все строки журнала, которые выводит наше приложение. Мы используем опцию `logger.stream` для перенаправления вывода `pino` без изменения опций `configs/logger-options.js`, таких как опция reduct. После инъекции HTTP-запроса мы можем проверить выданные логи. Утверждения в `[1]` будут выглядеть следующим образом:
 
 ```js
 if (line.msg === 'request completed') {
@@ -491,15 +497,15 @@ if (line.msg === 'request completed') {
 }
 ```
 
-Whether the test we just created passes or not depends on your `.env` file settings. This is caused by an error during the loading phase. If you try to think about the application’s files load sequence when you run the tests, you will get the following steps:
+Пройдет ли тест, который мы только что создали, или нет, зависит от настроек файла `.env`. Это вызвано ошибкой на этапе загрузки. Если при запуске тестов вы попытаетесь продумать последовательность загрузки файлов приложения, то получите следующие шаги:
 
-1.  The `.env` file is loaded by the `fastify-cli` plugin.
-2.  The `fastify-cli` plugin loads the `configs/server-options.js` file.
-3.  The `configs/logger-options.js` file is loaded to build the Fastify instance. It will use the current `process.env.LOG_LEVEL` environment variable.
-4.  Still, the `fastify-cli` plugin merges the loaded configuration with the third `buildApp` parameter, where we set the `stream` option.
-5.  The `@fastify/autoload` plugin will load all the applications, including the `plugins/config.js` file, which will read the test’s `configData` property that we saw in [Chapter 9](./testing.md).
+1.  Файл `.env` загружается плагином `fastify-cli`.
+2.  Плагин `fastify-cli` загружает файл `configs/server-options.js`.
+3.  Файл `configs/logger-options.js` загружается для создания экземпляра Fastify. При этом будет использоваться текущая переменная окружения `process.env.LOG_LEVEL`.
+4.  Плагин `fastify-cli` объединяет загруженную конфигурацию с третьим параметром `buildApp`, где мы задаем опцию `stream`.
+5.  Плагин `@fastify/autoload` загрузит все приложения, включая файл `plugins/config.js`, который будет читать свойство `configData` теста, которое мы видели в [Глава 9](./testing.md).
 
-How can we fix this situation? Luckily, `pino` supports the log level set at runtime. So we need to update the `plugins/config.js` file, adding this statement:
+Как мы можем исправить эту ситуацию? К счастью, `pino` поддерживает установку уровня журнала во время выполнения. Поэтому нам нужно обновить файл `plugins/config.js`, добавив в него следующее утверждение:
 
 ```js
 module.exports = fp(async function configLoader (fastify, opts) {
@@ -509,46 +515,46 @@ module.exports = fp(async function configLoader (fastify, opts) {
 })
 ```
 
-It is possible to update the log level at runtime, and it gives us the control to customize the log level from the tests without impacting the production scenario. Moreover, we have learned that we can change the log severity at runtime by changing the verbosity in the [How to use Fastify’s logger](#how-to-use-fastifys-logger) section! This enables you to adapt the log to situations, such as logging for a fixed amount of time in the `debug` mode and then back to `warn` automatically without restarting the server. The possibilities are truly endless.
+Можно обновлять уровень журнала во время выполнения, и это дает нам возможность настраивать уровень журнала в тестах, не влияя на производственный сценарий. Более того, мы узнали, что можем изменять серьезность журнала во время выполнения, изменяя verbosity в разделе [How to use Fastify's logger](#how-to-use-fastifys-logger)! Это позволяет адаптировать журнал к ситуации, например, вести журнал в течение фиксированного времени в режиме `debug`, а затем вернуться к `warn` автоматически без перезапуска сервера. Возможности поистине безграничны.
 
-Now you know the best setup to print out a useful context and provide security to every single logline. Now, let’s find out how to store them.
+Теперь вы знаете, как лучше всего выводить полезный контекст и обеспечивать безопасность каждого лога. Теперь давайте выясним, как их хранить.
 
-## Collecting the logs
+## Сбор логов #collecting-the-logs}
 
-Reading the logs can be done on your PC during development, but it is unrealistic to carry it out during production or even in a shared test environment. Reading the records is not scalable, but if you try to estimate the number of logs your application will write at the `info` level, you will get an idea.
+Чтение журналов можно выполнять на своем компьютере во время разработки, но это нереально делать во время производства или даже в общей тестовой среде. Чтение записей не масштабируется, но если вы попробуете оценить количество журналов, которые будет писать ваше приложение на уровне `info`, вы получите представление.
 
-Having 10 clients send 5 requests per second is equal to 100 lines per second per day. Therefore, the log file would be more than 8 million rows, just for a single application installation. If we scale the application to two nodes, we need to search in two different files, but if we followed this path, the log files would be useless because they would be inaccessible.
+Если 10 клиентов отправляют 5 запросов в секунду, то это равно 100 строкам в секунду в день. Таким образом, файл журнала будет содержать более 8 миллионов строк только для одной установки приложения. Если мы масштабируем приложение до двух узлов, нам нужно будет искать в двух разных файлах, но если бы мы пошли по этому пути, файлы журнала были бы бесполезны, потому что они были бы недоступны.
 
-As mentioned at the beginning of this chapter, a good log setup allows us to consolidate to a log management software destination, so let’s see how to design it.
+Как уже говорилось в начале этой главы, хорошая настройка журналов позволяет нам консолидировать их в программном обеспечении для управления журналами, поэтому давайте посмотрим, как это сделать.
 
-### How to consolidate the logs
+### Как консолидировать журналы {#how-to-consolidate-the-logs}
 
-Before considering where to consolidate the logs, we must focus on the actor who submits the logs to the destination. All the most famous log management software systems expose an HTTP endpoint to submit the records to, so the question is, should our application submit the log to an external system?
+Прежде чем рассматривать вопрос о том, где консолидировать журналы, мы должны сосредоточиться на субъекте, который отправляет журналы в пункт назначения. Все наиболее известные программные системы управления журналами предоставляют конечную точку HTTP для отправки записей, поэтому возникает вопрос: должно ли наше приложение отправлять журнал во внешнюю систему?
 
-The answer is _no_, and we will learn why starting with the following diagram:
+Ответ - _нет_, и мы узнаем, почему, начиная со следующей диаграммы:
 
-![Figure 11.2 – Node.js process submits the logs](logging-2.png)
+![Рисунок 11.2 - Процесс Node.js отправляет логи](logging-2.png)
 
-<center>Figure 11.2 – Node.js process submits the logs</center>
+<center>Рисунок 11.2 - Процесс Node.js отправляет логи</center>
 
-In the scenario in _Figure 11.2_, we can see a hypothetical production configuration where our application, packed into a Docker container, sends the log output directly to the log management software. `pino` transporters are capable of spinning up a new Node.js child process to reduce the application’s cost of logging to a minimum. Now that we know more about this excellent optimization, we would still like to pose the following questions:
+В сценарии на _Рисунке 11.2_ мы видим гипотетическую производственную конфигурацию, в которой наше приложение, упакованное в контейнер Docker, отправляет вывод лога непосредственно в программное обеспечение для управления логами. Транспортеры `pino` способны запускать новый дочерний процесс Node.js, чтобы свести затраты приложения на ведение логов к минимуму. Теперь, когда мы знаем больше об этой отличной оптимизации, мы все же хотели бы задать следующие вопросы:
 
--   What if the log management software is offline due to maintenance or a server issue?
--   Should the application start if it can’t connect to the external log destination?
--   Should logging impact the application performance?
--   Should the application be aware of the logs’ destination?
+-   Что делать, если программа управления логами не работает из-за технического обслуживания или проблем с сервером?
+-   Должно ли приложение запускаться, если оно не может подключиться к внешнему месту назначения лога?
+-   Влияет ли ведение логов на производительность приложения?
+-   Должно ли приложение знать о месте назначения логов?
 
-We think you will agree that the only possible answer to all these questions is _no_. Note that this scenario applies to all the system architectures because _Figure 11.2_ shows a Docker container that runs our application. Still, it could be a server that runs our Node.js application manually. For this reason, the right action to implement the log consolidation is a two-step process, as shown in the following corrected schema:
+Мы думаем, вы согласитесь, что единственный возможный ответ на все эти вопросы - _нет_. Обратите внимание, что этот сценарий применим ко всем архитектурам системы, потому что на _Рисунке 11.2_ показан контейнер Docker, в котором работает наше приложение. Однако это может быть и сервер, на котором вручную запускается наше приложение Node.js. По этой причине правильным действием для реализации консолидации логов является двухэтапный процесс, как показано в следующей исправленной схеме:
 
-![Figure 11.3 – External agent submits the logs](logging-3.png)
+![Рисунок 11.3 - Внешний агент отправляет лог](logging-3.png)
 
-<center>Figure 11.3 – External agent submits the logs</center>
+<center>Рисунок 11.3 - Внешний агент отправляет лог</center>
 
-In the architecture shown in _Figure 11.3_, you will notice that the application should log to the `stdout` and `stderr` output streams. By doing this, you don’t need to configure a `pino` transport, and the container’s host will use fewer resources. The container orchestrator will be responsible for reading and processing the messages. This task is carried out by a software **agent**, which is usually provided by the log management software. Within this schema, we decoupled the log application logic from the log’s destination, isolating the former by whatever issue the external store may face.
+В архитектуре, показанной на _Рисунке 11.3_, вы заметите, что приложение должно вести лог в выходные потоки `stdout` и `stderr`. Таким образом, вам не нужно будет настраивать транспорт `pino`, а хост контейнера будет использовать меньше ресурсов. За чтение и обработку сообщений будет отвечать контейнерный оркестрант. Эта задача выполняется программным **агентом**, который обычно предоставляется программным обеспечением для управления логами. В рамках этой схемы мы отделили прикладную логику лога от его назначения, изолировав первое от проблем, с которыми может столкнуться внешнее хранилище.
 
-Decoupling the log message producer from the message consumer is not 100% accurate: your application should generate a supported structure through the log management software, so you need to verify this with the carrier you choose.
+Отделение производителя сообщений лога от потребителя сообщений не является на 100% точным: ваше приложение должно генерировать поддерживаемую структуру через программное обеспечение для управления логами, поэтому вам необходимо проверить это у выбранного вами носителя.
 
-For example, some external log stores require a `@timestamp` field instead of Fastify’s default `time` property, but it can be easily configured by tweaking the `timestamp` option of `pino`. For completeness, here is an example of editing the `configs/logger-options.js` file:
+Например, некоторые внешние хранилища логов требуют наличия поля `@timestamp` вместо стандартного свойства Fastify `time`, но это можно легко настроить, изменив опцию `timestamp` в `pino`. Для полноты картины здесь приведен пример редактирования файла `configs/logger-options.js`:
 
 ```js
 module.exports = {
@@ -565,17 +571,17 @@ module.exports = {
 };
 ```
 
-The previous code example shows that it is possible to customize the output date format too, replacing the default epoch time with the number of milliseconds since January 1st, 1970 at 00:00 GMT.
+Предыдущий пример кода показывает, что можно настроить и формат выводимой даты, заменив время эпохи по умолчанию на количество миллисекунд, прошедших с 1 января 1970 года в 00:00 по Гринвичу.
 
-Nevertheless, you will need to configure a log retention policy. The logs may not be helpful after a reasonable amount of time, or you may need to archive the messages for a longer amount of time to accomplish some legal agreement. Good log management software helps you solve all these trivial tasks.
+Тем не менее, вам необходимо настроить политику хранения логов. Лог может оказаться бесполезным по истечении разумного периода времени, или вам может потребоваться архивировать сообщения на более длительный срок для выполнения какого-либо юридического соглашения. Хорошее программное обеспечение для управления логами поможет вам решить все эти тривиальные задачи.
 
-On the other hand, you may face the need to submit your application’s log directly to an external service. You might not have a container orchestrator at your disposal or want to log to the file. So, let’s see how to deal with this use case.
+С другой стороны, вы можете столкнуться с необходимостью отправки лога приложения напрямую во внешний сервис. Возможно, в вашем распоряжении нет контейнерного оркестратора или вы хотите вести лог в файл. Итак, давайте посмотрим, как решить эту проблему.
 
-### Consolidating logs by using Pino transports
+### Консолидация логов с помощью транспортов Pino {#consolidating-logs-by-using-pino-transports}
 
-Pino transports are the components designed to submit the logs to a destination, such as a filesystem or log management software. Every transport is a Node.js **worker thread**. A worker thread enables you to execute JavaScript in parallel and is more valuable when it performs CPU-intensive operations. By doing this, `pino` saves the main application from running trivial code to manage the logs.
+Транспорты Pino - это компоненты, предназначенные для отправки логов в пункт назначения, например, в файловую систему или программное обеспечение для управления логами. Каждый транспорт представляет собой Node.js **рабочий поток**. Рабочий поток позволяет выполнять JavaScript параллельно и более ценен при выполнении операций, требующих больших затрат процессора. Таким образом, `pino` избавляет основное приложение от необходимости запускать тривиальный код для управления логами.
 
-As usual, you can configure it by setting the `configs/logger-options.js` file. The first experiment is to log in to the filesystem, so let’s have a look at the following code:
+Как обычно, вы можете настроить его, задав файл `configs/logger-options.js`. Первым экспериментом будет лог в файловой системе, поэтому давайте посмотрим на следующий код:
 
 ```js
 module.exports = {
@@ -596,19 +602,19 @@ module.exports = {
 };
 ```
 
-While adding the `transport` configuration, we must set some parameters:
+При добавлении конфигурации `transport` мы должны задать некоторые параметры:
 
--   `target` is the transport to execute. You can define a path to run a custom transport implementation or a plugin named `pino-redis` or `pino-mongodb` to forward the logs to the corresponding databases.
--   The `options` object is a parameter provided to the transport implementation.
--   Optionally, a `level` property limits the logs that the transporter will receive and process.
+-   `target` - это транспорт, который будет выполняться. Вы можете указать путь для запуска пользовательской реализации транспорта или плагина с именем `pino-redis` или `pino-mongodb` для пересылки логов в соответствующие базы данных.
+-   Объект `options` - это параметр, передаваемый реализации транспорта.
+-   Опционально свойство `level` ограничивает количество логов, которые будет получать и обрабатывать транспортер.
 
-This simple setup will store all the `error` logs in a dedicated file.
+Эта простая настройка будет хранить все логи `error` в специальном файле.
 
-!!!note "Log rotation"
+!!!note "Ротация лога"
 
-    It is important to mention that `pino/file` does not take care of log rotation or filesystem exhaustion. For these kinds of tasks, you can rely on tools such as `logrotate` at <https://github.com/logrotate/logrotate>.
+    Важно отметить, что `pino/file` не заботится о ротации логов или исчерпании файловой системы. Для этих задач вы можете полагаться на такие инструменты, как `logrotate` по адресу `https://github.com/logrotate/logrotate`.
 
-As you will see by running the Fastify server, this setup will not print any logs to `stdout`, making the development process very hard. So we need to configure two means of transport for our use case. To do this, we need to edit the previous configuration a bit:
+Как вы увидите, запустив сервер Fastify, эта настройка не будет печатать никаких логов в `stdout`, что сильно затрудняет процесс разработки. Поэтому нам нужно настроить два вида транспорта для нашего случая. Для этого нам нужно немного изменить предыдущую конфигурацию:
 
 ```js
 module.exports = {
@@ -637,33 +643,33 @@ module.exports = {
 };
 ```
 
-We can list all the transports we need by adding a `targets` array property. In this case, first `target` is like the one configured earlier at the beginning of this section to store the messages into a file. The second one is still a `pino/file` target. The `pino/file` target is a built-in transport that writes the logs to a file descriptor. If the `destination` argument is a string, a file descriptor will be opened, as shown in the first target’s item. Instead, if the parameter is an integer, the transport will write to it. By default, every Unix process has three standard file descriptors:
+Мы можем перечислить все необходимые нам транспорты, добавив свойство массива `targets`. В данном случае первая `target` похожа на ту, что была настроена ранее в начале этого раздела для сохранения сообщений в файл. Вторая - это по-прежнему цель `pino/file`. Цель `pino/file` - это встроенный транспорт, который записывает лог в дескриптор файла. Если аргумент `destination` является строкой, то будет открыт файловый дескриптор, как показано в пункте первой цели. Если же параметр является целым числом, то транспорт будет записывать в него. По умолчанию каждый процесс Unix имеет три стандартных файловых дескриптора:
 
--   `0 stdin`: This is for the standard input
--   `1 stdout`: This is for the standard output
--   `2 stderr`: This is for the standard error
+-   `0 stdin`: Это для стандартного ввода
+-   `1 stdout`: Это стандартный вывод
+-   `2 stderr`: Это для стандартной ошибки
 
-If you would like to read more about this, you can start with this [article](https://en.wikipedia.org/wiki/File_descriptor).
+Если вы хотите прочитать об этом подробнее, вы можете начать с этой [статьи](https://ru.wikipedia.org/wiki/Файловый_дескриптор).
 
-When a transport configuration does not contain the `level` parameter, it will receive all the messages based on the primary logger instance’s severity setup.
+Если конфигурация транспорта не содержит параметра `level`, он будет получать все сообщения в соответствии с настройками серьезности основного экземпляра регистратора.
 
-For a complete transport list, you can rely on the official [documentation](https://github.com/pinojs/pino/blob/master/docs/ecosystem.md). You can find inspiration or integrations already developed by the `pino` maintainers to help you find a good log management software for use in your daily work.
+Полный список транспортов можно найти в официальной [документации](https://github.com/pinojs/pino/blob/master/docs/ecosystem.md). Вы можете найти вдохновение или интеграции, уже разработанные сопровождающими `pino`, чтобы помочь вам найти хорошее программное обеспечение для управления логами для использования в вашей повседневной работе.
 
-!!!note "Log conflicts"
+!!!note "Конфликты в логах"
 
-    By using the transports in your application, you may have issues running the `test/logger.test.js` file. Transports have priority over the `stream` parameter we set in the [How to hide sensitive data](#how-to-hide-sensitive-data) section, so the test stream will not receive the log lines. To fix this, you need to omit the `transports` options when you run the tests. You can do that by checking the `process.env` object.
+    При использовании транспортов в вашем приложении могут возникнуть проблемы с запуском файла `test/logger.test.js`. Транспорты имеют приоритет над параметром `stream`, который мы задали в разделе [Как скрыть конфиденциальные данные](#how-to-hide-sensitive-data), поэтому тестовый поток не будет получать строки лога. Чтобы исправить это, вам нужно опустить опции `transports` при запуске тестов. Это можно сделать, проверив объект `process.env`.
 
-This section has discussed log collecting challenges and how to deal with them by creating a solid system architecture or a single configuration of `pino`. You are now aware of these topics, which are often overlooked. Now that we have a single point of access to read the application’s logs, we need to know how to make them searchable.
+В этом разделе мы рассмотрели проблемы сбора логов и способы их решения путем создания надежной архитектуры системы или единой конфигурации `pino`. Теперь вы знаете об этих темах, которые часто упускаются из виду. Теперь, когда у нас есть единая точка доступа для чтения логов приложения, нам нужно знать, как сделать их доступными для поиска.
 
-## Managing distributed logs
+## Управление распределенными логами {#managing-distributed-logs}
 
-Fastify has simplified our job many times, and it always has an excellent way to complete complex tasks. This is the case for distributed logs. By distributed records, we mean the situation of a single client’s HTTP request that leads to multiple requests across our application or the whole system. In the previous [Enhancing the default logger configuration](#enhancing-the-default-logger-configuration) section, we learned how to add context to the Fastify logs, but how can we connect all those messages to a single HTTP request? And what about an external API call to another Fastify server? To do this, we must configure the `reqId` request-id properly.
+Fastify много раз облегчал нам работу, и всегда у него есть отличный способ выполнения сложных задач. Это относится и к распределенным логам. Под распределенными записями мы подразумеваем ситуацию, когда один HTTP-запрос клиента приводит к множеству запросов в нашем приложении или во всей системе. В предыдущем разделе [Улучшение стандартной конфигурации логгеров](#enhancing-the-default-logger-configuration) мы узнали, как добавить контекст в лог Fastify, но как связать все эти сообщения с одним HTTP-запросом? А как насчет внешнего API-вызова на другой сервер Fastify? Для этого мы должны правильно настроить идентификатор запроса `reqId`.
 
-The request-id is the identifier across your entire system to be able to trace all the logs generated by a single HTTP request. In Fastify, you can’t easily remove the request-id field from the output message, so whenever you use `request.log` or `reply.log`, you will get the `reqId` property.
+Идентификатор запроса - это идентификатор всей вашей системы, позволяющий отследить все логи, сгенерированные одним HTTP-запросом. В Fastify вы не можете легко удалить поле request-id из выходного сообщения, поэтому всякий раз, когда вы используете `request.log` или `reply.log`, вы будете получать свойство `reqId`.
 
-We can customize the request-id field name and value generation. As you have seen, the default format is `reqId: "req-${counter}"`, where the counter is an in-memory numeric sequence starting from 1 to ~2 billion.
+Мы можем настроить генерацию имени и значения поля request-id. Как вы видели, по умолчанию используется формат `reqId: "req-${counter}"`, где счетчик - это числовая последовательность в памяти, начинающаяся от 1 до ~2 миллиардов.
 
-To modify those two values, we need to update the `configs/server-options.js` file:
+Чтобы изменить эти два значения, нам нужно обновить файл `configs/server-options.js`:
 
 ```js
 module.exports = {
@@ -683,11 +689,11 @@ module.exports = {
 };
 ```
 
-These new log options are not included in the `logger` property because they are under Fastify’s domain. The `requestIdLogLabel` parameter changes the output field name in the logline.
+Эти новые параметры лога не включены в свойство `logger`, поскольку они относятся к домену Fastify. Параметр `requestIdLogLabel` изменяет имя поля вывода в лог-линии.
 
-The `requestIdHeader` field accepts a string that represents an HTTP request’s header name. This parameter will always be evaluated to set the incoming HTTP ID. You can disable it by setting the value to `false`. The `genReqId` function is the final fallback when a valid header is not found, or the header’s check has been disabled. The function’s implementation is up to you: we access another request’s header in the previous code example. We will generate a random **universally unique identifier (UUID)** string to assign to the incoming call if it is missing.
+Поле `requestIdHeader` принимает строку, представляющую имя заголовка HTTP-запроса. Этот параметр всегда будет оцениваться для установки входящего HTTP ID. Вы можете отключить его, установив значение `false`. Функция `genReqId` является последним запасным вариантом, когда корректный заголовок не найден, или проверка заголовка была отключена. Реализация функции зависит от вас: в предыдущем примере мы обращаемся к заголовку другого запроса. Мы сгенерируем случайную строку **универсально уникального идентификатора (UUID)**, чтобы присвоить ее входящему вызову, если он отсутствует.
 
-Finally, we must remember to prefer `request.log` or `reply.log` over the `fastify.log` object to get the request-id in the log’s output. Moreover, we need to propagate the request-id to any internal calls. For example if the service `POST/register`, created in [Chapter 8](./auth.md), notifies the billing microservice, we need to include the request id value in the correct header:
+Наконец, мы должны помнить, что следует предпочесть `request.log` или `reply.log` объекту `fastify.log`, чтобы получить `request-id` в выводе лога. Более того, нам необходимо передавать идентификатор запроса всем внутренним вызовам. Например, если сервис `POST/register`, созданный в [Глава 8](./auth.md), уведомляет микросервис биллинга, нам нужно включить значение `request-id` в правильный заголовок:
 
 ```js
 async function fastifyHandler(request, reply) {
@@ -701,18 +707,18 @@ async function fastifyHandler(request, reply) {
 }
 ```
 
-The code snippet shows you a possible example of how to propagate the request-id to keep all the client’s calls related to their originator request.
+В фрагменте кода показан возможный пример распространения `request-id` для сохранения всех обращений клиентов, связанных с запросом их создателя.
 
-By setting up Fastify’s request-id, you will be able to filter your logs by using the log management software that collects the application’s logs. An error log will easily show its entire flow into your system, allowing you to debug and dig deeper to solve the issues effectively.
+Настроив `request-id` в Fastify, вы сможете фильтровать свои логи с помощью программы управления логами, которая собирает их в приложении. Лог ошибок легко покажет весь их поток в вашей системе, что позволит вам отлаживать и копать глубже для эффективного решения проблем.
 
-The request-id log options were the last configuration we needed to discuss to complete our journey into the world of logs. You have acquired all the knowledge needed to set and customize all these properties to better fit your needs, and this brings us to the end of this chapter.
+Опции журнала `request-id` - это последняя конфигурация, которую мы должны были обсудить, чтобы завершить наше путешествие в мир логов. Вы получили все знания, необходимые для установки и настройки всех этих свойств в соответствии с вашими потребностями, и на этом мы завершаем эту главу.
 
-## Summary
+## Резюме {#summary}
 
-In this chapter, we have discussed the importance of logging and how to focus on improving this feature. We have explored many new Fastify options to enhance the readability of the application’s logs. You now have a complete overview of the pino module and know how to customize it based on your system’s architecture.
+В этой главе мы обсудили важность ведения логов и то, как сфокусироваться на улучшении этой функции. Мы изучили множество новых опций Fastify для улучшения читаемости логов приложения. Теперь вы имеете полное представление о модуле pino и знаете, как настроить его в зависимости от архитектуры вашей системы.
 
-We have successfully configured the log’s redaction to secure our log files and hide sensitive data, which is one of the hardest things to do, but we still made it easy, thanks to Fastify’s ready-to-use toolchain in production.
+Мы успешно настроили редактирование логов, чтобы защитить наши лог-файлы и скрыть конфиденциальные данные, что является одной из самых сложных задач, но мы все равно сделали это легко, благодаря готовой к использованию в производстве цепочке инструментов Fastify.
 
-You have read about some architectural patterns to collect the logs in a complex scenario and the aspects you need to consider when dealing with logs.
+Вы прочитали о некоторых архитектурных паттернах для сбора логов в сложных сценариях и об аспектах, которые необходимо учитывать при работе с логами.
 
-You are ready to proceed to [Chapter 12](../advanced/microservices.md), where you will learn how to split our application into smaller and independent pieces.
+Вы готовы перейти к [Главе 12](../advanced/microservices.md), где вы узнаете, как разделить наше приложение на более мелкие и независимые части.
