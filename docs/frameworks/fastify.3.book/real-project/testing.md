@@ -1,77 +1,81 @@
-# Application Testing
+---
+description: В этой главе вы узнаете, как использовать интегрированные методы и запускать тесты параллельно без необходимости крутить реальный HTTP-сервер
+---
 
-Proper testing is a primary, essential aspect that will make an application reliable for years to come. Fastify comes with several integrated tools specifically developed for making the testing experience as slick as possible. This means that writing an application test will not be frustrating and slow to run. Nevertheless, Fastify is test runner-agnostic; it perfectly integrates with the runner of your choice.
+# Тестирование приложений
 
-In this chapter, you will learn how to use integrated methods and run tests in parallel without having to spin an actual HTTP server.
+Правильное тестирование - это основной и важный аспект, который сделает приложение надежным на долгие годы. Fastify поставляется с несколькими интегрированными инструментами, специально разработанными для того, чтобы сделать процесс тестирования как можно более простым. Это означает, что написание тестов приложения не будет вызывать раздражения и замедлять работу. Тем не менее, Fastify не зависит от прогонщика тестов; он прекрасно интегрируется с выбранным вами прогонщиком.
 
-The learning path we will cover in this chapter is as follows:
+В этой главе вы узнаете, как использовать интегрированные методы и запускать тесты параллельно без необходимости крутить реальный HTTP-сервер.
 
--   Writing good tests
--   Testing the Fastify application
--   Dealing with complex tests
--   Speeding up the test suite
--   Where tests should run
+В этой главе мы рассмотрим следующий путь обучения:
 
-## Technical requirements
+-   Написание хороших тестов
+-   Тестирование приложения Fastify
+-   Работа со сложными тестами
+-   Ускорение работы тестового набора
+-   Где должны выполняться тесты
 
-To go through this chapter, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation
--   [The VSCode IDE](https://code.visualstudio.com/)
--   A Docker installation
--   A public GitHub repository
--   A working command shell
+Чтобы пройти эту главу, вам понадобится следующее:
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%209).
+-   Рабочая установка Node.js 18
+-   [IDE VSCode](https://code.visualstudio.com/)
+-   установка Docker
+-   Публичный репозиторий GitHub
+-   Рабочая командная оболочка
 
-## Writing good tests
+Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%209).
 
-Implementing tests for an application is an investment to free you up from the stress that a new project could give you. Thanks to these tests, you can be (pretty) sure of implementing new features or fixing bugs without breaking the existing software. Unfortunately, writing tests often gets sacrificed whenever a project is running out of time. This is also an activity that many consider to be boring and frustrating, due to the many blockers you may face by testing an HTTP server, such as the server port already in use. So, the tests are often written quickly and without the required attention.
+## Написание хороших тестов {#writing-good-tests}
 
-We can say that an application’s test suite is successful under the following conditions:
+Создание тестов для приложения - это инвестиция, которая избавит вас от стресса, который может вызвать новый проект. Благодаря этим тестам вы можете быть (довольно) уверены в реализации новых функций или исправлении ошибок, не ломая существующее программное обеспечение. К сожалению, написание тестов часто приносится в жертву, когда на проект не хватает времени. Кроме того, многие считают это занятие скучным и удручающим из-за множества препятствий, с которыми вы можете столкнуться при тестировании HTTP-сервера, например, уже используемого порта сервера. Поэтому тесты часто пишутся на скорую руку и без должного внимания.
 
--   It’s automated – you just need to click a button to get many hours’ worth of work done
--   It’s easy to maintain – adding a new test must be easy, and it should not take more time than developing the feature itself
--   Running the tests must not take a lot of time
--   Every developer can run the tests locally on their PC
+Можно сказать, что набор тестов приложения является успешным при следующих условиях:
 
-Fastify’s team knows this, and it has worked to give you the right tooling to support you on these focal tasks for a project’s success.
+-   Он автоматизирован - вам достаточно нажать одну кнопку, чтобы выполнить многочасовую работу.
+-   Его легко поддерживать - добавление нового теста должно быть простым и не занимать больше времени, чем разработка самой функции.
+-   Запуск тестов не должен занимать много времени.
+-   Каждый разработчик может запускать тесты локально на своем компьютере.
 
-We will explore the world of testing to learn how to write proper tests for the application we have developed so far, since [Chapter 6](./project-structure.md).
+Команда Fastify знает об этом и постаралась предоставить вам необходимые инструменты для поддержки в решении этих ключевых для успеха проекта задач.
 
-So, let’s jump into a quick introduction to testing.
+Мы познакомимся с миром тестирования, чтобы узнать, как написать правильные тесты для приложения, которое мы разработали к настоящему моменту, начиная с [главы 6](./project-structure.md).
 
-### What tests need to be written?
+Итак, давайте перейдем к краткому введению в тестирование.
 
-There are tons of books about tests and how to write them, and this chapter does not aim to replace those sources. This book offers you a practical approach based on our experience, covering the most common use cases you will face during your development.
+### Какие тесты нужно написать? {#what-tests-need-to-be-written}
 
-You will need to distinguish these main test categories:
+Существует масса книг о тестах и о том, как их писать, и эта глава не ставит своей целью заменить эти источники. Эта книга предлагает вам практический подход, основанный на нашем опыте и охватывающий наиболее распространенные случаи использования, с которыми вы столкнетесь в процессе разработки.
 
--   **Unit tests**: Check that a small piece of software works as expected. Unit tests are mainly used to verify utilities or plugins. For example, testing a utility that sanitizes the user’s input is a unit test.
--   **Integration tests**: These aim to ensure that all the pieces of your application work together. Usually, integration tests require an additional setup to run correctly because they rely on external services, such as a database or a third-party API. For example, making an HTTP request to test that a row has been inserted into a database is an integration test.
--   **Functional tests**: these tests track business requirements and real-world scenarios replicating the application usage. For example, a functional test checks whether the user can register and log in successfully to our system.
--   **Regression tests**: Every solved bug in your application must be traced with a test that fails before the fix is applied to the code. For example, every bug fix should accompany a regression test associated with whatever the implementation requires, such as a running database or unusual API usage by the client.
+Вам нужно будет различать следующие основные категории тестов:
 
-Regardless of the framework used, every application needs this minimal set of tests to provide valuable support to the project.
+-   **Unit-тесты**: Проверяют, что небольшой фрагмент программного обеспечения работает так, как ожидалось. Юнит-тесты в основном используются для проверки утилит или плагинов. Например, тестирование утилиты, которая дезинфицирует пользовательский ввод, является юнит-тестом.
+-   **Интеграционные тесты**: Они направлены на то, чтобы убедиться, что все части вашего приложения работают вместе. Обычно интеграционные тесты требуют дополнительной настройки для корректной работы, поскольку они полагаются на внешние сервисы, такие как база данных или API сторонних разработчиков. Например, выполнение HTTP-запроса для проверки того, что строка была вставлена в базу данных, является интеграционным тестом.
+-   **Функциональные тесты**: эти тесты отслеживают бизнес-требования и реальные сценарии, воспроизводящие использование приложения. Например, функциональный тест проверяет, может ли пользователь успешно зарегистрироваться и войти в нашу систему.
+-   **Регрессионные тесты**: Каждая исправленная ошибка в вашем приложении должна сопровождаться тестом, который не сработает до того, как исправление будет применено к коду. Например, каждое исправление должно сопровождаться регрессионным тестом, связанным с тем, что требует реализация, например, работающая база данных или необычное использование API клиентом.
 
-!!!note "The test pyramid"
+Независимо от используемого фреймворка, каждому приложению необходим этот минимальный набор тестов, чтобы обеспечить ценную поддержку проекта.
 
-    To deepen the tests, you should read these articles: <https://martinfowler.com/bliki/TestPyramid.html> and <https://martinfowler.com/articles/practical-test-pyramid.html>. These articles explain in detail how tests impact your application life cycle. The former analyzes that there is a monetary cost behind every test and the latter shows how to balance costs and tests writing because they are sensible aspects.
+!!!note "Пирамида тестирования"
 
-That being said, the most challenging thing to do when writing tests is to list all the use cases that need to be covered. The checklist I follow involves writing down a minimal test list and defining the priorities, as follows:
+    Для более глубокого изучения тестов вам следует прочитать эти статьи: <https://martinfowler.com/bliki/TestPyramid.html> и <https://martinfowler.com/articles/practical-test-pyramid.html>. В этих статьях подробно объясняется, как тесты влияют на жизненный цикл вашего приложения. Первая анализирует, что за каждым тестом стоит денежная стоимость, а вторая показывает, как сбалансировать стоимость и написание тестов, потому что это разумные аспекты.
 
-1.  Add basic tests to ensure the correct application loading.
-2.  Write at least one success case covering the _happy path_ for every endpoint. The happy path is the more straightforward case when no errors happen.
-3.  Write at least one failure case covering the _unhappy path_ for every endpoint. As you can imagine, the unhappy path covers the most common errors, such as a wrong password when a user tries to log in.
-4.  The business cases should support you in defining the most common scenarios, such as user registration and unsubscribing a workflow.
+С учетом сказанного, самое сложное при написании тестов - это составить список всех сценариев использования, которые необходимо охватить. Контрольный список, которому я следую, включает в себя составление минимального списка тестов и определение приоритетов, как показано ниже:
 
-Now we know _why_ we are going to write tests and _which_ tests we need, but we must also understand _how_ we can write them. Let’s find out in the next section.
+1.  Добавить базовые тесты, чтобы убедиться в правильной загрузке приложения.
+2.  Написать как минимум один успешный пример, охватывающий _счастливый путь_ для каждой конечной точки. Счастливый путь - это более простой случай, когда не происходит никаких ошибок.
+3.  Напишите хотя бы один пример отказа, описывающий _несчастливый путь_ для каждой конечной точки. Как вы можете себе представить, несчастливый путь охватывает наиболее распространенные ошибки, такие как неправильный пароль при попытке пользователя войти в систему.
+4.  Бизнес-кейсы должны помочь вам в определении наиболее распространенных сценариев, таких как регистрация пользователя и отписка от рабочего процесса.
 
-### How to write tests?
+Теперь мы знаем, зачем мы будем писать тесты и _какие_ тесты нам нужны, но мы также должны понимать, _как_ мы можем их писать. Давайте узнаем это в следующем разделе.
 
-Implementing a test case using “pure” Node.js is simple, and it helps us understand the basic concepts of testing.
+### Как писать тесты? {#how-to-write-tests}
 
-Let’s create an `example.js` file, where we test that a variable is equal to the number `42`:
+Реализация тестового случая с помощью «чистого» Node.js проста и помогает понять основные концепции тестирования.
+
+Давайте создадим файл `example.js`, в котором мы будем проверять, что переменная равна числу `42`:
 
 ```js
 const assert = require('assert');
@@ -79,26 +83,26 @@ const myVar = '42';
 assert.strictEqual(myVar, 42);
 ```
 
-Running this file by `node example.js` will produce an error output:
+Запуск этого файла с помощью `node example.js` приведет к выдаче ошибки:
 
 ```
 AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
 '42' !== 42
 ```
 
-Congratulations! You have written your first failing test!
+Поздравляем! Вы написали свой первый неудачный тест!
 
-This step is essential during the test implementation; _the tests must fail_ in the first place. When you have “red” tests, you define the input and the expected output. By doing so, you can start writing your code and verify that the implementation fits the desired result.
+Этот шаг очень важен при реализации тестов; _тесты должны быть неудачными_ в первую очередь. Когда у вас есть «красные» тесты, вы определяете входные данные и ожидаемый выход. Сделав это, вы можете начать писать код и проверять, соответствует ли реализация желаемому результату.
 
-!!!note "Test-driven development"
+!!!note "Разработка, основанная на тестировании"
 
-Writing failing tests is called the “red phase” in **Test-Driven Development (TDD)**. This is a methodology created by Kent Beck to write better and well-tested software applications. Even if you don’t know or don’t use this process, you can benefit from it by applying some simple rules, such as the one we have seen in this section.
+    Написание неудачных тестов называется «красной фазой» в **Test-Driven Development (TDD)**. Это методология, созданная Кентом Беком для написания более качественных и хорошо протестированных программных приложений. Даже если вы не знаете или не используете этот процесс, вы можете извлечь из него пользу, применяя некоторые простые правила, подобные тем, что мы рассмотрели в этом разделе.
 
-In our example, the `myVar` declaration corresponds to our implementation, and we spotted the first bug in the code – the `'42'` string is not equal to the number `42`! Fixing the code and rerunning the file will not produce any output; this means that the test is successful.
+В нашем примере объявление `myVar` соответствует нашей реализации, и мы заметили первую ошибку в коде - строка `'42'` не равна числу `42`! Исправив код и запустив файл заново, мы не получим никакого результата; это означает, что тест успешно завершен.
 
-The takeaway here is that our test files are made of a long list of **assertions** that define our expectations. When these assertions are successful, we can say that the tests are passing or are green.
+Отсюда следует, что наши тестовые файлы состоят из длинного списка **утверждений**, которые определяют наши ожидания. Когда эти утверждения успешны, мы можем сказать, что тесты пройдены или «зеленые».
 
-The other notion to know about testing is the **coverage**. This gives you insight into how much of your code is tested. Let’s see an example of updating our previous test file:
+Еще одно понятие, которое необходимо знать о тестировании, - это **покрытие**. Это позволяет понять, какая часть вашего кода тестируется. Давайте посмотрим на пример обновления нашего предыдущего тестового файла:
 
 ```js
 const assert = require('assert');
@@ -110,45 +114,45 @@ if (typeof myVar === 'string') {
 }
 ```
 
-The previous snippet is a simple code example to help you become confident with the concept of coverage; the if statement will always be `false`, as we expect.
+Предыдущий фрагмент - это простой пример кода, который поможет вам освоиться с концепцией покрытия; оператор if всегда будет `false`, как мы и ожидали.
 
-Now, we need to use an external tool to see the coverage in action. To be specific, we are going to use the `istanbul` coverage tool and its command-line interface called `nyc`:
+Теперь нам нужно использовать внешний инструмент, чтобы увидеть покрытие в действии. В частности, мы будем использовать инструмент покрытия `istanbul` и его интерфейс командной строки под названием `nyc`:
 
 ```sh
 npx nyc node example.js
 ```
 
-The preceding command downloads the `nyc` module, thanks to `npx`, and runs `node example.js`. As a result, we get a nice clear report:
+Предыдущая команда загружает модуль `nyc`, благодаря `npx`, и запускает `node example.js`. В результате мы получаем красивый четкий отчет:
 
-![Figure 9.1 – The coverage report](testing-1.png)
+![Рисунок 9.1 - Отчет о покрытии](testing-1.png)
 
-<center>Figure 9.1 – The coverage report</center>
+<center>Рисунок 9.1 - Отчет о покрытии</center>
 
-This report tells us a lot about our test execution:
+Этот отчет рассказывает нам много интересного о выполнении теста:
 
--   `% Stmts`: The percentage of the statement executed during the run.
--   `% Branch`: The percentage of tested paths the code can follow. A branch is created using conditional statements (`if`, the ternary operator, and `&&` and `||` operators), conditional loops (such as `while`, `for`, and `do-while`), `break` and `continue` statements, or a function’s default parameters.
--   `Uncovered Line #s`: The source code lines have not been executed.
+-   `% Stmts`: Процент выполнения утверждений во время выполнения.
+-   `% Branch`: Процент проверенных путей, по которым может следовать код. Ветвь создается с помощью условных операторов (`if`, тернарного оператора, операторов `&&` и `||`), условных циклов (таких как `while`, `for` и `do-while`), операторов `break` и `continue`, а также параметров функции по умолчанию.
+-   `Uncovered Line #s`: Строки исходного кода не были выполнены.
 
-To learn more about the output report, you can visit the <https://istanbul.js.org/> site.
+Узнать больше о выходном отчете вы можете [посетить сайт](https://istanbul.js.org/).
 
-!!!note "100% coverage does not mean bug-free"
+!!!note "100 % покрытие не означает отсутствие ошибок"
 
-    Reaching 100% code coverage can be a complex task and sometimes a waste of time. You don’t need to struggle to build up the coverage to consider your application tested. You should focus on the test cases that matter to your application; one more functional test is better than a not- so-useful test to reach 100% coverage.
+    Достижение 100-процентного покрытия кода может быть сложной задачей, а иногда и пустой тратой времени. Вам не нужно бороться за достижение такого покрытия, чтобы считать свое приложение протестированным. Вы должны сосредоточиться на тестовых случаях, которые важны для вашего приложения; один более функциональный тест лучше, чем не очень полезный тест для достижения 100-процентного покрытия.
 
-The coverage report is handy to analyze; you can spot dead code branches that need to be removed or use cases that you forgot to list and check. This way, the code base maintenance is simplified, and it is possible to monitor the report results, while the test suite becomes larger.
+Отчет о покрытии удобно анализировать; вы можете обнаружить мертвые ветви кода, которые нужно удалить, или случаи использования, которые вы забыли перечислить и проверить. Таким образом, упрощается ведение кодовой базы, и можно следить за результатами отчета, в то время как набор тестов становится все больше.
 
-Now you have learned the basic concepts about testing – assertions and coverage. All the Node.js testing frameworks provide these two capabilities. When you compare the packages to choose the best for you, it is highly suggested that you start evaluating the assertions that the framework implements and the coverage reports it generates.
+Теперь вы узнали основные понятия о тестировании - утверждения и покрытие. Все фреймворки для тестирования Node.js предоставляют эти две возможности. Когда вы будете сравнивать пакеты, чтобы выбрать лучший для себя, настоятельно рекомендуем вам начать оценивать утверждения, которые реализует фреймворк, и отчеты о покрытии, которые он генерирует.
 
-We are now ready to write our application’s tests in the next section.
+Теперь мы готовы к написанию тестов нашего приложения в следующем разделе.
 
-## Testing the Fastify application
+## Тестирование приложения Fastify {#testing-the-fastify-application}
 
-We are ready to implement the tests for our Fastify application. Before we start, we need to choose a framework that will help us write the code. Let’s complete this task first!
+Мы готовы реализовать тесты для нашего приложения Fastify. Прежде чем начать, нам нужно выбрать фреймворк, который поможет нам написать код. Давайте сначала выполним эту задачу!
 
-### Installing the test framework
+### Установка фреймворка для тестирования {#installing-the-test-framework}
 
-There are a lot of testing frameworks in the Node.js panorama. Some of them are highly opinionated, and others try to be agnostic. We are not going to discuss comparing the most famous modules. It is worth mentioning the ones most used by the community (in alphabetical order):
+В панораме Node.js существует множество фреймворков для тестирования. Некоторые из них имеют множество мнений, а другие стараются быть агностическими. Мы не будем обсуждать сравнение самых известных модулей. Стоит упомянуть наиболее используемые сообществом (в алфавитном порядке):
 
 -   [AVA](https://www.npmjs.com/package/ava)
 -   [Jest](https://www.npmjs.com/package/jest)
@@ -156,28 +160,28 @@ There are a lot of testing frameworks in the Node.js panorama. Some of them are 
 -   [node-tap](https://www.npmjs.com/package/tap)
 -   [Tape](https://www.npmjs.com/package/tape)
 
-The framework we will use is `node-tap` because it has all the key features out of the box without needing extra configuration, such as the following:
+Мы будем использовать фреймворк `node-tap`, потому что он обладает всеми ключевыми возможностями из коробки, не требуя дополнительной настройки, например, следующими:
 
--   An easy-to-use and solid implementation
--   Comprehensive assertions
--   Parallel test execution
--   An HTML coverage report format
+-   Простая в использовании и надежная реализация
+-   Всеобъемлющие утверждения
+-   Параллельное выполнение тестов
+-   HTML-формат отчета о покрытии
 
-It is simple to use, and the source code is easy to read, so it is perfect.
+Он прост в использовании, а исходный код легко читается, так что это идеальный вариант.
 
-!!!note "Choose wisely"
+!!!note "Выбирайте с умом"
 
-    You may be tempted to use the most downloaded testing framework from the previous list, such as Jest or Mocha. However, you must be aware that those frameworks were not designed to test server-side Node.js code. They heavily rely on implicit globals – an antipattern for testing predictable software output. This may impact your developer experience: <https://github.com/fastify/help/issues/555>.
+    У вас может возникнуть соблазн использовать самый скачиваемый фреймворк для тестирования из предыдущего списка, например Jest или Mocha. Однако вы должны знать, что эти фреймворки не были разработаны для тестирования серверного кода Node.js. Они в значительной степени полагаются на неявные глобалы - антипаттерн для тестирования предсказуемых результатов работы программного обеспечения. Это может повлиять на работу разработчика: <https://github.com/fastify/help/issues/555>.
 
-Nonetheless, `node-tap` is largely used by the Fastify team. This might seem piddling, but it’s worth remembering – sometimes, the plugins’ documentation doesn’t show a complete code example, but there are certainly some tests you can read to get more information and a full working example.
+Тем не менее, `node-tap` в значительной степени используется командой Fastify. Это может показаться мелочью, но стоит помнить - иногда в документации к плагинам нет полного примера кода, но обязательно есть несколько тестов, которые можно прочитать, чтобы получить больше информации и полноценный рабочий пример.
 
-We need to install the `node-tap` dependency by running `npm install tap@15 --save-dev`. Let’s see how to use its API.
+Нам нужно установить зависимость `node-tap`, выполнив команду `npm install tap@15 --save-dev`. Давайте посмотрим, как использовать его API.
 
-### Creating your `node-tap` cheatsheet test
+### Создание теста читов для `node-tap` {#creating-your-node-tap-cheatsheet-test}
 
-Before writing the application’s tests, we need to learn how to use `node-tap`. So, let’s create a comprehensive test file to become familiar with all the most used features.
+Прежде чем писать тесты приложения, нам нужно научиться использовать `node-tap`. Поэтому давайте создадим комплексный тестовый файл, чтобы ознакомиться со всеми наиболее используемыми функциями.
 
-Create a new `test/cheatsheet.test.js` file and write this code:
+Создайте новый файл `test/cheatsheet.test.js` и напишите этот код:
 
 ```js
 const t = require('tap');
@@ -188,25 +192,25 @@ t.test('a test description', (t) => {
 });
 ```
 
-The previous code shows a minimal test case that already teaches us a couple of good practices. After importing the module, we can start defining our test cases using the `t.test()` method. We must provide a test description and a test function that implements the logic to verify that our code is working.
+В предыдущем коде показан минимальный тестовый пример, который уже учит нас нескольким хорошим практикам. После импорта модуля мы можем начать определять наши тестовые случаи с помощью метода `t.test()`. Мы должны предоставить описание теста и тестовую функцию, которая реализует логику для проверки работоспособности нашего кода.
 
-The test function accepts one single argument. It is a `node-tap` object that provides you with the assertion methods to implement the test `logic.t.plan()` is a mandatory setup; you must declare how many assertions your test case will execute. If you don’t set it, the run will fail.
+Тестовая функция принимает один единственный аргумент. Это объект `node-tap`, который предоставляет вам методы утверждений для реализации теста `logic.t.plan()` - это обязательная настройка; вы должны объявить, сколько утверждений будет выполнено в вашем тестовом примере. Если вы не зададите этот параметр, тест будет провален.
 
-!!!note "Skip the test’s plan"
+!!!note "Пропустите план теста"
 
-    The `t.plan()` method is the best approach to ensure that all the assertions have been checked. It is instrumental when you are testing asynchronous code in callback style. Whenever you don’t know how many assertions your code will execute exactly, for your convenience you can use `t.end()` instead of setting `t.plan()` in the initial implementation phase.
+    Метод `t.plan()` - лучший способ убедиться, что все утверждения были проверены. Он незаменим, когда вы тестируете асинхронный код в стиле callback. Если вы не знаете, сколько именно утверждений выполнит ваш код, для удобства вы можете использовать `t.end()` вместо установки `t.plan()` на начальном этапе реализации.
 
-Running the script is as easy as running node `test/cheatsheet.test.js`. You will see some nice output that shows all the successful and failed steps. The code example should fail though. Try to fix it and rerun the file. Spoiler: `myVar` is not a number, as we learned in the previous [How to write tests](#how-to-write-tests) section.
+Запустить скрипт так же просто, как запустить node `test/cheatsheet.test.js`. Вы увидите красивый вывод, показывающий все успешные и неудачные шаги. Однако пример кода должен завершиться неудачей. Попробуйте исправить это и запустить файл заново. Спойлер: `myVar` - это не число, как мы узнали в предыдущем разделе [Как писать тесты](#how-to-write-tests).
 
-The smart reader should have spotted that the `t.equal()` assertion function follows a strict comparison. Almost all the `node-tap` assertion functions accept three parameters in the following order:
+Умный читатель должен был заметить, что функция утверждения `t.equal()` следует строгому сравнению. Почти все функции утверждения `node-tap` принимают три параметра в следующем порядке:
 
-1.  What value do you want to compare?
-2.  What value do you expect?
-3.  An optional string message or option object.
+1.  Какое значение вы хотите сравнить?
+2.  Какое значение вы ожидаете?
+3.  Необязательное строковое сообщение или объект опции.
 
-Let’s check the most used assertion functions by adding new test cases in our test file.
+Давайте проверим наиболее используемые функции утверждения, добавив новые тестовые случаи в наш тестовый файл.
 
-To check that a JSON object is like another, we can’t use `t.equal`, which is used to compare values. We must use the following method instead to compare every object’s field:
+Чтобы проверить, что объект JSON похож на другой, мы не можем использовать `t.equal`, который используется для сравнения значений. Вместо этого мы должны использовать следующий метод для сравнения полей каждого объекта:
 
 ```js
 const sameStructure = { hello: 'world' };
@@ -217,7 +221,7 @@ t.strictSame(
 );
 ```
 
-We want to check that a JSON object has some fields in some other cases. This is why we must use the `match` function:
+Мы хотим проверить, есть ли в JSON-объекте некоторые поля, в некоторых других случаях. Поэтому мы должны использовать функцию `match`:
 
 ```js
 const almostLike = {
@@ -231,7 +235,7 @@ t.match(
 );
 ```
 
-We have checked that the `almostLike` variable has at least the `hello` property field. The `t.match()` assertion is more powerful than the previous example. It processes every regular expression against all the JSON input’s enumerable fields. You can try it by setting a `RegExp` Node.js object:
+Мы проверили, что переменная `almostLike` имеет, по крайней мере, поле свойства `hello`. Утверждение `t.match()` более мощное, чем в предыдущем примере. Оно обрабатывает каждое регулярное выражение против всех перечисляемых полей входного JSON-файла. Вы можете попробовать его, задав объект `RegExp` Node.js:
 
 ```js
 t.match(
@@ -244,9 +248,9 @@ t.match(
 );
 ```
 
-In the past example, the `foo` input property must match the `/BAR/i` regular expression.
+В прошлом примере входное свойство `foo` должно соответствовать регулярному выражению `/BAR/i`.
 
-For the last assertion functions, we will see the boolean checks and the nested tests:
+В последних функциях утверждения мы увидим булевы проверки и вложенные тесты:
 
 ```js
 t.test('sub test', function testFunction(t) {
@@ -260,49 +264,60 @@ t.test('sub test', function testFunction(t) {
 });
 ```
 
-In this code snippet, you can read the `t.notOk()` and `subTapTest.ok()` functions that pass whether the value is falsy or truthy respectively. Moreover, the example shows a `t.test()` call inside another `t.test()`. This sub-test enables you to organize your use cases better and group them into logical steps. Note that a `t.test()` sub-test counts as an assertion when the plan counter is set up.
+В этом фрагменте кода вы можете прочитать функции `t.notOk()` и `subTapTest.ok()`, которые передают, является ли значение ложным или истинным соответственно. Более того, в примере показан вызов `t.test()` внутри другого `t.test()`. Этот подтест позволяет лучше организовать сценарии использования и сгруппировать их в логические шаги. Обратите внимание, что подтест `t.test()` считается утверждением, когда устанавливается счетчик планов.
 
-We must talk about one more thing before proceeding with the next section. So far, we have seen synchronous functions. What about `async` functions instead? `node-tap` makes it easy:
+Прежде чем перейти к следующему разделу, мы должны поговорить еще об одном моменте. До сих пор мы рассматривали синхронные функции. Как насчет `async` функций? С помощью `node-tap` это сделать легко:
 
 ```js
-const fs = require('fs').promises
-t.test('async test', async t => {
-  const fileContent = await fs.readFile('./package.json',
-    'utf8')
-  t.type(fileContent, 'string', 'the file content is a
-    string')
-  await t.test('check main file', async subTest => {
-    const json = JSON.parse(fileContent)
-    subTest.match(json, { version: '1.0.0' })
-    const appIndex = await fs.readFile(json.main, 'utf8')
-    subTest.match(appIndex, 'use strict', 'the main file is
-    correct')
-  })
-  t.pass('test completed')
-})
+const fs = require('fs').promises;
+t.test('async test', async (t) => {
+    const fileContent = await fs.readFile(
+        './package.json',
+        'utf8'
+    );
+    t.type(
+        fileContent,
+        'string',
+        'the file content is a string'
+    );
+    await t.test('check main file', async (subTest) => {
+        const json = JSON.parse(fileContent);
+        subTest.match(json, { version: '1.0.0' });
+        const appIndex = await fs.readFile(
+            json.main,
+            'utf8'
+        );
+        subTest.match(
+            appIndex,
+            'use strict',
+            'the main file is correct'
+        );
+    });
+    t.pass('test completed');
+});
 ```
 
-Looking at the code example, we have provided an `async` function as a parameter. We do not need to set `t.plan` or call the `t.end` function. By default, the test ends when `Promise` returned by the `async` operation is fulfilled successfully. If `Promise` is rejected, the test fails.
+Если посмотреть на пример кода, то в качестве параметра мы указали функцию `async`. Нам не нужно устанавливать `t.plan` или вызывать функцию `t.end`. По умолчанию тест заканчивается, когда промис, возвращенный операцией `async`, успешно выполнен. Если `Promise` отклоняется, тест завершается неудачей.
 
-Another note about the code is that the `t.test()` function returns `Promise` that can be awaited. This can be helpful to run some tests serially. We will delve more into this in the _Speeding up the test suite_ section.
+Еще одно замечание по поводу кода - функция `t.test()` возвращает `Promise`, который можно ожидать. Это может быть полезно для последовательного выполнения некоторых тестов. Подробнее об этом мы поговорим в разделе _Ускорение работы тестового набора_.
 
-You can rely on the new `t.pass()` assertion in order to be sure about the code execution order, because it serves as a milestone that our code must meet.
+Вы можете полагаться на новое утверждение `t.pass()`, чтобы быть уверенным в порядке выполнения кода, поскольку оно служит вехой, которой должен соответствовать наш код.
 
-We have learned how to use `node-tap` and write the assertions we will use to test the Fastify application. We did not cover all the assertions at our disposal. For further information, you can take a look at the official documentation: <https://node-tap.org/docs/api/asserts/>.
+Мы узнали, как использовать `node-tap` и писать утверждения, которые мы будем использовать для тестирования приложения Fastify. Мы рассмотрели не все утверждения, имеющиеся в нашем распоряжении. Для получения дополнительной информации вы можете заглянуть в [официальную документацию](https://node-tap.org/docs/api/asserts/).
 
-Now, let’s move on to the next section and practice what we have learned so far.
+Теперь перейдем к следующему разделу и применим на практике то, что мы узнали до сих пор.
 
-### How to write tests with Fastify?
+### Как писать тесты с помощью Fastify? {#how-to-write-tests-with-fastify}
 
-We are ready to write out the first application test! Writing good tests is a process and it requires starting from a basis to build a solid structure. We will iterate multiple times on the same file to improve the test suite repeatedly.
+Мы готовы написать первый тест приложения! Написание хороших тестов - это процесс, и он требует начинать с основы, чтобы построить прочную структуру. Мы будем многократно повторять один и тот же файл, чтобы многократно улучшить набор тестов.
 
-As mentioned in the [Starting an optimal project](./project-structure.md#starting-an-optimal-project) section of Chapter 6, we need to think about the tests we are going to write first. The most basic questions we could ask with our test are as follows:
+Как уже говорилось в разделе [Начало оптимального проекта](./project-structure.md#starting-an-optimal-project) главы 6, сначала нам нужно подумать о тестах, которые мы собираемся написать. Самые основные вопросы, которые мы можем задать нашему тесту, следующие:
 
--   Does the application start correctly?
--   Are the routes ready to listen to incoming HTTP requests?
--   Does the application manage the unhealthy system?
+-   Правильно ли запускается приложение?
+-   Готовы ли маршруты к приему входящих HTTP-запросов?
+-   Управляет ли приложение нездоровой системой?
 
-To answer these questions, we can write the `test/basic.test.js` file:
+Чтобы ответить на эти вопросы, мы можем написать файл `test/basic.test.js`:
 
 ```js
 const t = require('tap');
@@ -311,9 +326,9 @@ t.todo('the alive route is online', async (t) => {});
 t.todo('the application should not start', async (t) => {});
 ```
 
-We have listed the test cases we will write using the `t.todo()` method instead of the usual `t.test()`. The “todo” acts as a reminder to find those functions that need to be implemented.
+Мы перечислили тестовые случаи, которые будем писать, используя метод `t.todo()` вместо обычного `t.test()`. «Todo» служит напоминанием о необходимости найти те функции, которые должны быть реализованы.
 
-Let’s start with the first test. We need to load the application, but we are using the `fastify-cli` module to load our `app.js` file. Luckily, there is the `fastify-cli/helper` utility that helps us:
+Давайте начнем с первого теста. Нам нужно загрузить приложение, но мы используем модуль `fastify-cli` для загрузки нашего файла `app.js`. К счастью, есть утилита `fastify-cli/helper`, которая поможет нам:
 
 ```js
 const fcli = require('fastify-cli/helper');
@@ -334,19 +349,19 @@ t.test('the application should start', async (t) => {
 });
 ```
 
-First of all, we need to load the `fastify-cli/helper` utility. It works as the `fastify` command in the `package.json > scripts` tag. In fact, we need the `startArgs` constant that includes the same configuration we use to start the server. You can copy and paste it from the `start` script in `package.json`.
+Прежде всего, нам нужно загрузить утилиту `fastify-cli/helper`. Она работает как команда `fastify` в теге `package.json > scripts`. На самом деле, нам нужна константа `startArgs`, которая включает в себя ту же конфигурацию, которую мы используем для запуска сервера. Вы можете скопировать и вставить ее из скрипта `start` в `package.json`.
 
-The `fcli.build()` method is an asynchronous function that returns the Fastify instance. It is the same as running `fastify start <args>` from the shell. The key difference is that the server is not listening. We have already seen the difference between `fastify.ready()` and `fastify.listen()` in [Chapter 2](../basic/plugin-system.md).
+Метод `fcli.build()` - это асинхронная функция, которая возвращает экземпляр Fastify. Это то же самое, что выполнить команду `fastify start <args>` из оболочки. Ключевое отличие заключается в том, что сервер не прослушивается. Разницу между `fastify.ready()` и `fastify.listen()` мы уже рассматривали в [Глава 2](../basic/plugin-system.md).
 
-Note that the `build` function accepts an extra JSON parameter. The second option argument accepts a `configData` parameter, `opts`, received as input in the `app.js` file:
+Обратите внимание, что функция `build` принимает дополнительный параметр JSON. Второй аргумент option принимает параметр `configData`, `opts`, полученный в качестве входных данных в файле `app.js`:
 
 ```js
 module.exports = async function (fastify, opts) { ... }
 ```
 
-This technique is one of the best practices to inject all the possible configurations the application supports. We will test every possible combination without building odd algorithms to load files using pattern matching.
+Эта техника является одной из лучших для внедрения всех возможных конфигураций, поддерживаемых приложением. Мы протестируем все возможные комбинации без построения странных алгоритмов загрузки файлов с помощью сопоставления шаблонов.
 
-To complete the test setup, we need to edit the `plugins/config.js` file by adding the following line:
+Чтобы завершить настройку теста, нам нужно отредактировать файл `plugins/config.js`, добавив в него следующую строку:
 
 ```js
 await fastify.register(fastifyEnv, {
@@ -356,17 +371,17 @@ await fastify.register(fastifyEnv, {
 });
 ```
 
-By doing so, we can control the `@fastify/env` data source. By default, the plugin reads data from `process.env`. By adding the `data` parameter to the plugin, it will be preferred over `env`, so it is possible to run the tests controlling the environment variables.
+Таким образом, мы можем управлять источником данных `@fastify/env`. По умолчанию плагин считывает данные из `process.env`. Если добавить в плагин параметр `data`, он будет предпочтительнее, чем `env`, что позволит запускать тесты, управляя переменными окружения.
 
-After building the Fastify instance, we need to track that we want to close the server when the test ends. The `t.teardown()` method accepts a function executed when this condition is met. If we forget to add it, the test script will never end because the open connections to the database will keep the Node.js runtime up and running.
+После создания экземпляра Fastify нам нужно отследить, что мы хотим закрыть сервер по окончании теста. Метод `t.teardown()` принимает функцию, выполняемую при выполнении этого условия. Если мы забудем добавить ее, тестовый сценарий никогда не завершится, потому что открытые соединения с базой данных будут поддерживать работу среды выполнения Node.js.
 
-Looking at the last two lines of the test implementation, we run `await app.ready()` to load the application without starting the HTTP server. All the plugins and routes are loaded only if the load itself is completed successfully. This test helps us find system-wide errors, such as broken plugins and misconfiguration.
+Если посмотреть на последние две строки тестовой реализации, то мы запускаем `await app.ready()` для загрузки приложения без запуска HTTP-сервера. Все плагины и маршруты загружаются только в случае успешного завершения загрузки. Этот тест помогает нам найти общесистемные ошибки, такие как неработающие плагины или неправильная конфигурация.
 
-Before starting the tests, we must not forget to turn on MongoDB by running `npm run mongo:start`. Now, the `node test/basic.test.js` command leads to a successful test run.
+Перед началом тестов мы не должны забыть включить MongoDB, выполнив команду `npm run mongo:start`. Теперь команда `node test/basic.test.js` приводит к успешному запуску тестов.
 
-You have completed the first important step in a battle-tested Fastify application! Let’s now implement the other tests case, focusing on improving our code step by step.
+Вы завершили первый важный шаг на пути к проверенному в боях приложению Fastify! Теперь давайте выполним остальные тесты, сосредоточившись на пошаговом улучшении нашего кода.
 
-The second test case involves checking that the base route is up and running. The first challenge is to avoid repeating code to build the Fastify instance. It would be easy to copy and paste, but look at the following code:
+Второй тестовый пример включает в себя проверку работоспособности базового маршрута. Первая задача - избежать повторения кода для создания экземпляра Fastify. Это было бы просто - скопировать и вставить, но посмотрите на следующий код:
 
 ```js
 async function buildApp(t, env = envParam, serverOptions) {
@@ -390,45 +405,45 @@ t.test('the alive route is online', async (t) => {
 });
 ```
 
-We have defined a `buildApp` function that reduces the complexity of building the application. It requires the test object as input and an optional JSON object that simulates the environment variables. Moreover, it is possible to merge the `configs/server-options.js` file’s content with the `serverOptions` object, by providing a third parameter for the `fcli.build` function. It is really handy to be able to control every aspect of your Fastify server when running the tests.
+Мы определили функцию `buildApp`, которая снижает сложность сборки приложения. Она требует на вход тестовый объект и необязательный JSON-объект, имитирующий переменные окружения. Кроме того, можно объединить содержимое файла `configs/server-options.js` с объектом `serverOptions`, указав третий параметр для функции `fcli.build`. Это действительно удобно - иметь возможность контролировать каждый аспект вашего сервера Fastify при выполнении тестов.
 
-The new notable utility is `app.inject(options[, callback])`. This function is a Fastify instance method that starts the server with a ready status, and it creates a fake HTTP request on the Fastify server. This means that the application is fully loaded, but the HTTP server is not listening for incoming HTTP requests. Nonetheless, you can call your routes, injecting a fake HTTP request. The fake HTTP request simulates a real HTTP one, creating `http.IncomingMessage` and `http.ServerResponse` objects.
+Новая заметная утилита - `app.inject(options[, callback])`. Эта функция представляет собой метод экземпляра Fastify, который запускает сервер со статусом готовности и создает фальшивый HTTP-запрос на сервере Fastify. Это означает, что приложение полностью загружено, но HTTP-сервер не прослушивает входящие HTTP-запросы. Тем не менее, вы можете вызывать свои маршруты, внедряя фальшивый HTTP-запрос. Поддельный HTTP-запрос имитирует настоящий HTTP-запрос, создавая объекты `http.IncomingMessage` и `http.ServerResponse`.
 
-Having an application up and running without holding the host’s port has great advantages:
+Работа приложения без удержания порта хоста имеет большие преимущества:
 
--   The tests run faster
--   It is possible to run tests simultaneously
+-   Тесты выполняются быстрее
+-   Можно запускать тесты одновременно
 
-The `app.inject()` interface accepts a JSON argument to compose the HTTP request. The most used properties are as follows:
+Интерфейс `app.inject()` принимает аргумент JSON для составления HTTP-запроса. Наиболее используемые свойства следующие:
 
--   `method`: The request’s HTTP method.
--   `url` or `path`: The URL to call during the fake request.
--   `headers`: A key-string JSON that sets the request’s headers.
--   `payload` or `body`: This can be a string, buffer, stream, or JSON object. The latter will be stringified and the content-type header will be set as `application/json` by default.
--   `query`: A key-string JSON to set the request’s query string.
--   `cookies`: A key-string JSON to attach to the request cookies’ headers.
+-   `method`: HTTP-метод запроса.
+-   `url` или `path`: URL-адрес для вызова во время поддельного запроса.
+-   `headers`: JSON-строка с ключом, задающая заголовки запроса.
+-   `payload` или `body`: Это может быть строка, буфер, поток или объект JSON. Последний будет стробирован, а заголовок content-type по умолчанию будет установлен как `application/json`.
+-   `query`: JSON-строка с ключом для задания строки запроса.
+-   `cookies`: Строка-ключ JSON для присоединения к заголовкам cookies запроса.
 
-You can find a complete options list by reading the `light-my-request` documentation at <https://github.com/fastify/light-my-request#injectdispatchfunc-options-callback>.
+Полный список опций вы можете найти, прочитав документацию по `light-my-request` по адресу <https://github.com/fastify/light-my-request#injectdispatchfunc-options-callback>.
 
-The `inject` API returns `Promise` when a callback is missing – as the `app.ready()` does. `Promise` fulfills an enhanced `http.ServerResponse` object that you can read in a simplified way – for instance, we used `response.json()` to get a JSON in our code example. This works only if the application returns a JSON payload. Other than that, you can access these properties:
+API `inject` возвращает `Promise`, когда обратный вызов отсутствует - как это делает `app.ready()`. `Promise` выполняет расширенный объект `http.ServerResponse`, который вы можете прочитать упрощенным способом - например, мы использовали `response.json()` для получения JSON в нашем примере кода. Это работает только в том случае, если приложение возвращает полезную нагрузку в формате JSON. В остальных случаях вы можете получить доступ к этим свойствам:
 
--   `statusCode`: Returns the HTTP status code response number
--   `headers`: Returns a key-string JSON object that maps the response’s headers
--   `payload`: Returns the response’s payload as a UTF-8 string
--   `rawPayload`: Returns the response’s payload as a `Buffer` object
--   `cookies`: Returns a key-string JSON, mapping the response’s cookie headers
+-   `statusCode`: Возвращает номер ответа с кодом статуса HTTP
+-   `headers`: Возвращает JSON-объект с ключевой строкой, который отображает заголовки ответа
+-   `payload`: Возвращает полезную нагрузку ответа в виде строки UTF-8
+-   `rawPayload`: Возвращает полезную нагрузку ответа в виде объекта `Buffer`.
+-   `cookies`: Возвращает JSON-строку с ключом, отображающую заголовки cookie ответа.
 
-The `light-my-request` module makes the application testing friendly and easy, thanks to the listed option utilities reducing the code we must write and incrementing what we can assert. The previous code snippet that implements the route test can be summarized in these three steps:
+Модуль `light-my-request` делает тестирование приложения дружественным и простым, благодаря перечисленным опциональным утилитам, уменьшающим количество кода, который мы должны написать, и увеличивающим количество того, что мы можем утверждать. Предыдущий фрагмент кода, реализующий тест маршрута, можно свести к следующим трем шагам:
 
-1.  Building the application.
-2.  Making a fake HTTP call.
-3.  Checking the response output.
+1.  Создание приложения.
+2.  Создание поддельного HTTP-вызова.
+3.  Проверка вывода ответа.
 
-I hope you are as excited about it as I am! In a few code lines, we have been able to spin up the whole application and make HTTP calls to the Fastify server.
+Надеюсь, вы в восторге от этого, как и я! Всего за несколько строк кода мы смогли раскрутить все приложение и сделать HTTP-вызов на сервер Fastify.
 
-Last but not least, we must deal with error cases. Testing the application’s happy path could become boring at some point in the future. The real challenge is to verify how the software deals with errors, such as disconnection or wrong data input. We will complete our basic tests by adding some sub-tests to the `t.todo('the application should not start')` case.
+И последнее, но не менее важное: мы должны разобраться со случаями ошибок. Тестирование счастливого пути приложения может стать скучным в какой-то момент в будущем. Настоящая задача - проверить, как программа справляется с ошибками, такими как разрыв соединения или неправильный ввод данных. Мы завершим наши базовые тесты, добавив несколько подтестов к случаю `t.todo('приложение не должно запускаться')`.
 
-We will force a bad environment to check that the server does not start when the configuration is wrong, but we must also be sure that the error tells us the correct information. Let’s jump to the following code:
+Мы заставим плохое окружение проверить, что сервер не запускается при неправильной конфигурации, но мы также должны быть уверены, что ошибка сообщает нам правильную информацию. Давайте перейдем к следующему коду:
 
 ```js
 t.test(
@@ -456,9 +471,9 @@ t.test(
 );
 ```
 
-In this code snippet, we have added a sub-test that verifies that the `@fastify/env` plugin reacts correctly when the preconditions are not satisfied. The `t.fail()` method works as a trap; when executed, it stops the test and sets it as failed. By doing so, you are declaring that “this code must not execute.”
+В этом фрагменте кода мы добавили подтест, который проверяет, правильно ли реагирует плагин `@fastify/env` на невыполнение предварительных условий. Метод `t.fail()` работает как ловушка; при выполнении он останавливает тест и устанавливает его как неудачный. Тем самым вы заявляете, что «этот код не должен выполняться».
 
-Another useful test to add is an unreachable `mongodb` connection:
+Еще один полезный тест, который можно добавить, - недоступное соединение `mongodb`:
 
 ```js
 mainTest.test('when mongodb is unreachable', async (t) => {
@@ -475,17 +490,17 @@ mainTest.test('when mongodb is unreachable', async (t) => {
 });
 ```
 
-If you set the `MONGO_URL` incorrectly, the Fastify server will not be able to connect and not start as expected.
+Если вы неправильно зададите `MONGO_URL`, сервер Fastify не сможет подключиться и не запустится, как ожидалось.
 
-Well done! You have now written your first basic application tests. There is much more to consider in order to declare your application tested, but now you have a solid knowledge of the tools and methodology to add more and more checks.
+Отлично! Теперь вы написали свои первые базовые тесты приложения. Еще многое нужно учесть, чтобы объявить свое приложение протестированным, но теперь у вас есть прочные знания инструментов и методологии, чтобы добавлять все больше и больше проверок.
 
-In the next section, we will improve code reusability and the developer experience to write tests as smoothly as possible.
+В следующем разделе мы улучшим возможности повторного использования кода и опыт разработчика, чтобы писать тесты как можно более гладко.
 
-### How to improve the developer experience?
+### Как улучшить опыт разработчика? {#how-to-improve-the-developer-experience}
 
-Before writing all the test cases for the application’s endpoints, we must ask ourselves whether there are repetitive tasks we must automate. In fact, we need to remember to start the MongoDB container and stop it every time. For this reason, we can optimize this process by adding a simple script to run before our tests. We will use the `dockerode` module (<https://www.npmjs.com/package/dockerode>) for this purpose.
+Прежде чем писать все тестовые случаи для конечных точек приложения, мы должны спросить себя, есть ли повторяющиеся задачи, которые мы должны автоматизировать. В самом деле, нам нужно не забывать запускать контейнер MongoDB и останавливать его каждый раз. По этой причине мы можем оптимизировать этот процесс, добавив простой скрипт, который будет запускаться перед тестами. Для этого мы будем использовать модуль [`dockerode`](https://www.npmjs.com/package/dockerode).
 
-Let’s create a file named `test/helper-docker.js` and then map the `docker run` command into a configuration:
+Давайте создадим файл с именем `test/helper-docker.js`, а затем отобразим команду `docker run` в конфигурацию:
 
 ```js
 const Containers = {
@@ -508,15 +523,15 @@ const Containers = {
 };
 ```
 
-The previous code will be useful to control all the Docker images we may need in the future. The code snippet replicates the `docker run -d -p 27017:27017 --rm --name fastify-mongo mongo:5` command as a Node.js script that is easier to maintain and read.
+Предыдущий код будет полезен для управления всеми образами Docker, которые могут понадобиться нам в будущем. Этот фрагмент кода повторяет команду `docker run -d -p 27017:27017 --rm --name fastify-mongo mongo:5` в виде сценария Node.js, который легче поддерживать и читать.
 
-Now, the software should be able to do the following:
+Теперь программа должна уметь делать следующее:
 
--   Understand whether MongoDB is running
--   Start the MongoDB container
--   Stop the MongoDB container
+-   Понимать, запущена ли MongoDB
+-   Запустить контейнер MongoDB
+-   Остановить контейнер MongoDB
 
-At this point, we can define the interface exported by the `helper-docker.js` file:
+На этом этапе мы можем определить интерфейс, экспортируемый файлом `helper-docker.js`:
 
 ```js
 const Docker = require('dockerode');
@@ -538,7 +553,7 @@ module.exports = dockerConsole;
 module.exports.Containers = Containers;
 ```
 
-We can use the `dockerode` module to implement the utility function to know it. To get the running container, the script must read all the running containers and then look for the one we are interested in:
+Мы можем использовать модуль `dockerode` для реализации служебной функции, чтобы узнать это. Чтобы получить запущенный контейнер, скрипт должен прочитать все запущенные контейнеры, а затем найти интересующий нас:
 
 ```js
 async getRunningContainer(container) {
@@ -551,9 +566,9 @@ async getRunningContainer(container) {
 },
 ```
 
-The `container` argument will be `Containers.mongo`, defined in the code snippet at the beginning of this section.
+Аргументом `container` будет `Containers.mongo`, определенный в фрагменте кода в начале этого раздела.
 
-To implement the function that starts the container instead, we need to pass the same `Containers.mongo` object to `dockerode`:
+Чтобы реализовать функцию, запускающую контейнер вместо него, нам нужно передать тот же объект `Containers.mongo` в `dockerode`:
 
 ```js
 async startContainer(container) {
@@ -570,9 +585,9 @@ async startContainer(container) {
 },
 ```
 
-The `startContainer` function will start the MongoDB server locally if it is not already running – nice and easy!
+Функция `startContainer` запустит сервер MongoDB локально, если он еще не запущен - приятно и просто!
 
-Finally, the last `stopContainer` function utility to stop the container will look as follows:
+Наконец, последняя утилита функции `stopContainer` для остановки контейнера будет выглядеть следующим образом:
 
 ```js
 async stopContainer(container) {
@@ -588,7 +603,7 @@ async stopContainer(container) {
 },
 ```
 
-We have completed the `docker` utility, but we still need to use it in our tests. To do it, we need to update the `basic.test.js` source code by adding the following script:
+Мы завершили работу над утилитой `docker`, но нам все еще нужно использовать ее в наших тестах. Для этого нам нужно обновить исходный код `basic.test.js`, добавив следующий скрипт:
 
 ```js
 const dockerHelper = require('./helper-docker');
@@ -604,58 +619,60 @@ t.teardown(async () => {
 });
 ```
 
-You should be able to recognize three steps in the script:
+Вы должны уметь распознавать три этапа сценария:
 
-1.  Load the `helper-docker` script and initialize the variables.
-2.  Set the `t.before()` function that will start the MongoDB container. The `before` function will run once and before all the `t.test()` functions.
-3.  The `teardown` function will stop the container when all the tests are completed.
+1.  Загрузка сценария `helper-docker` и инициализация переменных.
+2.  Установите функцию `t.before()`, которая запустит контейнер MongoDB. Функция `before` будет выполняться один раз и перед всеми функциями `t.test()`.
+3.  Функция `teardown` остановит контейнер, когда все тесты будут завершены.
 
-Now, whenever you and your team need to run the tests, it will no longer be necessary to remember anything more than just executing `npm test`.
+Теперь, когда вам и вашей команде понадобится запустить тесты, больше не нужно будет помнить о чем-то большем, чем просто выполнить `npm test`.
 
-The application’s tests have not been completed yet, nor has the source code refactoring. This process is a continuous evolution and still requires some iteration before becoming stable. We have written just one single test file. The next challenge will be to write a new test file, without duplicating the source code. So, let’s complete our tests in the next section.
+Тестирование приложения еще не завершено, как и рефакторинг исходного кода. Этот процесс - непрерывная эволюция, и ему еще потребуется несколько итераций, прежде чем он станет стабильным. Мы написали только один единственный тестовый файл. Следующей задачей будет написание нового тестового файла, не дублируя исходный код. Итак, давайте завершим наши тесты в следующем разделе.
 
-## Dealing with complex tests
+## Работа со сложными тестами {#dealing-with-complex-tests}
 
-So far, we have seen simple test cases that did not require multiple API requests. So, let’s create the `test/login.test.js` file to verify the sign-up and first user login to our application. We will use what we have learned so far, keeping in mind that we don’t want to replicate code.
+До сих пор мы рассматривали простые тесты, которые не требовали многократных запросов к API. Итак, давайте создадим файл `test/login.test.js` для проверки регистрации и первого входа пользователя в наше приложение. Мы будем использовать то, чему научились до сих пор, помня о том, что не хотим повторять код.
 
-We need to build the Fastify instance to write new test cases, as we did in the `test/basic.test.js` file. To do so, we need to do the following:
+Нам нужно построить экземпляр Fastify, чтобы написать новые тестовые случаи, как мы это делали в файле `test/basic.test.js`. Для этого нам нужно сделать следующее:
 
-1.  Create a new utility file and call it `test/helper.js`.
-2.  In the `test/helper.js` file, move the `buildApp` function and its configuration variables, `startArgs` and `envParam`. This action requires some copying and pasting.
-3.  Update the `test/basic.test.js` file within the new import, `const { buildApp } = require('./helper')`.
+1.  Создайте новый файл утилиты и назовите его `test/helper.js`.
+2.  В файл `test/helper.js` переместите функцию `buildApp` и ее конфигурационные переменные `startArgs` и `envParam`. Это действие требует некоторого копирования и вставки.
+3.  Обновите файл `test/basic.test.js` в рамках нового импорта, `const { buildApp } = require('./helper')`.
 
-By doing so, we can reuse code to instantiate the Fastify application across all the test files we are going to create. We are now ready to write more complex tests.
+Таким образом, мы сможем повторно использовать код для инстанцирования приложения Fastify во всех тестовых файлах, которые мы собираемся создать. Теперь мы готовы к написанию более сложных тестов.
 
-### Reusing multiple requests
+### Повторное использование нескольких запросов {#reusing-multiple-requests}
 
-Every route has data requirements that can be satisfied by replicating a client’s workflow – for example, we need to create a user first to test user deletion. So, we can start writing test cases for the login process. The test suite should answer these questions:
+У каждого маршрута есть требования к данным, которые можно удовлетворить, повторив рабочий процесс клиента - например, нам нужно сначала создать пользователя, чтобы протестировать его удаление. Итак, мы можем приступить к написанию тестовых примеров для процесса входа в систему. Набор тестов должен ответить на следующие вопросы:
 
--   Does the authorization check block unauthorized users?
--   Do the register and login endpoints work as expected?
+-   Блокирует ли проверка авторизации неавторизованных пользователей?
+-   Работают ли конечные точки регистрации и входа в систему так, как ожидалось?
 
-The first check should verify that the protected routes are protected, so we can implement a bit more logic into the test’s source code:
+Первая проверка должна убедиться, что защищенные маршруты защищены, поэтому мы можем внедрить немного больше логики в исходный код теста:
 
 ```js
 t.test('cannot access protected routes', async (t) => {
-  const app = await buildApp(t)
-  const privateRoutes = [ '/me' ]
-  for (const url of privateRoutes) {
-    const response = await app.inject({ method: 'GET', url
-    })
-    t.equal(response.statusCode, 401)
-    t.same(response.json(), {
-      statusCode: 401,
-      error: 'Unauthorized',
-      message: 'No Authorization was found in
-      request.headers'
-    })
-  }
-})
+    const app = await buildApp(t);
+    const privateRoutes = ['/me'];
+    for (const url of privateRoutes) {
+        const response = await app.inject({
+            method: 'GET',
+            url,
+        });
+        t.equal(response.statusCode, 401);
+        t.same(response.json(), {
+            statusCode: 401,
+            error: 'Unauthorized',
+            message:
+                'No Authorization was found in request.headers',
+        });
+    }
+});
 ```
 
-We can iterate the `privateRoutes` array to check that the routes are secured. Here, I’m showing how to automate code without repeating yourself.
+Мы можем итерировать массив `privateRoutes`, чтобы проверить, защищены ли маршруты. Здесь я показываю, как можно автоматизировать код, не повторяясь.
 
-Before logging into the application, the user must register to the platform, so we should add a test for it. This is a simple task nowadays, but here is the code for completeness:
+Прежде чем войти в приложение, пользователь должен зарегистрироваться на платформе, поэтому мы должны добавить тест для этого. Сейчас это простая задача, но вот код для полноты картины:
 
 ```js
 t.test('register the user', async (t) => {
@@ -673,7 +690,7 @@ t.test('register the user', async (t) => {
 });
 ```
 
-Then, we need to test the login endpoint to verify that it works as expected. It must return a **JWT token** (as discussed in [Chapter 8](./auth.md)), and we can use it to access the `privateRoutes` endpoints. As you can imagine, the login test is straightforward, as follows:
+Затем нам нужно протестировать конечную точку входа, чтобы убедиться, что она работает так, как ожидалось. Она должна возвращать **JWT-токен** (как обсуждалось в [Глава 8](./auth.md)), и мы можем использовать его для доступа к конечным точкам `privateRoutes`. Как вы можете себе представить, тест на вход в систему прост и выглядит следующим образом:
 
 ```js
 t.test('successful login', async (t) => {
@@ -691,7 +708,7 @@ t.test('successful login', async (t) => {
 });
 ```
 
-The authentication test executes a `POST` call, providing the correct user’s data and verifying that the service returns a token string. You can apply a stricter validation to the output token as well. Now, we can use the generated token by adding a new sub-test after the `t.match()` assertion:
+Тест аутентификации выполняет вызов `POST`, предоставляя правильные данные пользователя и проверяя, что служба возвращает строку токена. Вы можете применить более строгую проверку и к выходному токену. Теперь мы можем использовать сгенерированный токен, добавив новый подтест после утверждения `t.match()`:
 
 ```js
 t.test('access protected route', async (t) => {
@@ -707,13 +724,13 @@ t.test('access protected route', async (t) => {
 });
 ```
 
-The `access protected route` test relies on the `login` object to authenticate the request and successfully access the endpoint. Note that the sub-test does not need to build the application; we can use the one created by the parent test case. It is possible to create complex workflows and simulate every scenario to cover the business cases.
+Тест `access protected route` полагается на объект `login` для аутентификации запроса и успешного доступа к конечной точке. Обратите внимание, что в подтесте не нужно создавать приложение; мы можем использовать то, которое было создано в родительском тестовом примере. Можно создать сложные рабочие процессы и смоделировать все сценарии, чтобы охватить бизнес-кейсы.
 
-### Mocking the data
+### Имитация данных {#mocking-the-data}
 
-To complete our test journey, we must talk about **mocks**. A mock is a fake implementation of a real application’s component that acts conditionally to simulate behaviors that would be hard to replicate. We will use a mock to test a failed registration while the service inserts data into a database.
+Чтобы завершить наше путешествие по тестам, мы должны поговорить о **мокингах**. Макет - это поддельная реализация реального компонента приложения, которая действует условно, чтобы имитировать поведение, которое трудно воспроизвести. Мы будем использовать макет для проверки неудачной регистрации, когда служба вставляет данные в базу данных.
 
-Many tools help you write mocks, but we will keep it at a low level to understand how they work. Let’s jump into the code:
+Многие инструменты помогут вам написать имитатор, но мы оставим это на низком уровне, чтобы понять, как он работает. Давайте перейдем к коду:
 
 ```js
 function cleanCache() {
@@ -741,51 +758,51 @@ t.test('register error', async (t) => {
 });
 ```
 
-Mocks rely on how Node.js loads the source code of an application. For this reason, we need to take over the default logic for our scope. Every time a `require('something')` statement runs, a global cache is fulfilled within the `module.exports` exported data, so if you run the `require` statement twice, the file is loaded just once. That being said, we need a function to clean this cache to inject our mock implementation. We need the `cleanCache` function that removes all the loaded code. This is not performant at all. You could filter the output based on your project path to optimize it.
+Моки полагаются на то, как Node.js загружает исходный код приложения. По этой причине нам нужно взять на себя логику по умолчанию для нашей области видимости. Каждый раз, когда выполняется оператор `require('something')`, в экспортируемых данных `module.exports` создается глобальный кэш, так что если вы запустите оператор `require` дважды, файл будет загружен только один раз. Учитывая это, нам нужна функция для очистки этого кэша, чтобы внедрить нашу имитационную реализацию. Нам нужна функция `cleanCache`, которая удаляет весь загруженный код. Это совсем не эффективно. Вы можете отфильтровать вывод на основе пути к вашему проекту, чтобы оптимизировать его.
 
-The test implementation does a few things before calling the `buildApp` function (as seen in the preceding code block):
+Тестовая реализация делает несколько вещей перед вызовом функции `buildApp` (как показано в предыдущем блоке кода):
 
-1.  `[1]` cleans the cache; we need to remove all the cached files that use the `path` file. It is unmanageable to know every file that uses it, so we will clean the whole cache as a demonstration.
-2.  At `[2]` we load the target file we are going to mock.
-3.  The `[3]` applies the mock to the cache. To do it, we need to know the `path` file interface. As you can understand, this is an invasive test that does not adapt to any refactor.
-4.  Finally the `[4]` block must remove the mock implementation when the test ends to let Node.js reload the original file. We can’t clean just the `path` cache because all the files that used the mock have been cached within the mock itself.
+1.  `[1]` очищает кэш; нам нужно удалить все кэшированные файлы, использующие файл `path`. Невозможно знать каждый файл, который его использует, поэтому мы очистим весь кэш в качестве демонстрации.
+2.  По адресу `[2]` загружаем целевой файл, над которым собираемся поиздеваться.
+3.  В `[3]` применяем имитацию к кэшу. Для этого нам необходимо знать интерфейс файла `path`. Как вы понимаете, это инвазивный тест, который не адаптируется ни к какому рефактору.
+4.  Наконец, блок `[4]` должен удалить реализацию mock по завершении теста, чтобы позволить Node.js перезагрузить оригинальный файл. Мы не можем очистить только кэш `path`, потому что все файлы, которые использовал mock, были кэшированы в самом mock.
 
-As you can see, the mock testing technique requires knowledge of the Node.js internals. The modules that help you mock your code work as the previous code snippet but provide a better user experience. Moreover, this test may change over time when the `path` file changes. You should evaluate whether you need to couple your tests within the code base.
+Как видите, техника тестирования с помощью макета требует знаний о внутреннем устройстве Node.js. Модули, которые помогают вам имитировать код, работают так же, как и предыдущий фрагмент кода, но обеспечивают лучший пользовательский опыт. Более того, этот тест может измениться со временем, когда изменится файл `path`. Вы должны оценить, нужно ли вам объединять тесты внутри кодовой базы.
 
-Sometimes, this technique is not an option. An example is a third-party module that you don’t need to test in your test suite, such as an external authorization library.
+Иногда этот метод не подходит. Примером может служить сторонний модуль, который не нужно тестировать в тестовом наборе, например, внешняя библиотека авторизации.
 
-Now you have added new tools to your test toolkit that you will use to evaluate more options during your test suite implementation. We have slowed down the test by clearing the cache in the previous section. Let’s find out how to speed up the tests in the next section.
+Теперь вы добавили в свой тестовый набор новые инструменты, которые вы будете использовать для оценки большего количества вариантов при реализации тестового набора. В предыдущем разделе мы замедлили тестирование, очистив кэш. Давайте узнаем, как ускорить тесты в следующем разделе.
 
-## Speeding up the test suite
+## Ускорение работы тестового набора {#speeding-up-the-test-suite}
 
-There are not many tests in the actual application, but they’re all pretty fast. While your project will grow, the tests will become more and more time-consuming and more annoying to run. It is not uncommon to have a test suite that runs in a span of 15 minutes, but that is too much time! Now, we are going to see how to speed up a test run to avoid a situation like this, by parallelizing the tests’ executions and evaluating the pitfall this technique carries.
+В реальном приложении не так много тестов, но все они довольно быстрые. Пока ваш проект будет расти, тесты будут занимать все больше времени и раздражать. Нередко набор тестов выполняется в течение 15 минут, но это слишком много времени! Сейчас мы посмотрим, как можно ускорить выполнение тестов, чтобы избежать подобной ситуации, распараллелив их выполнение и оценив, какие подводные камни таит в себе эта техника.
 
-### Running tests in parallel
+### Выполнение тестов параллельно {#running-tests-in-parallel}
 
-To improve our test run, we need to update the test script in `package.json`:
+Чтобы улучшить выполнение тестов, нам нужно обновить тестовый скрипт в файле `package.json`:
 
 ```json
 "test": "tap test/**/**.test.js",
 ```
 
-The `npm test` command will execute all the files in the `test/` folder that ends with the `test.js` suffix. The cool thing is that each file runs in parallel on a dedicated Node.js process! That being said, it hides some considerations you must be aware of when writing tests:
+Команда `npm test` выполнит все файлы в папке `test/`, которые заканчиваются суффиксом `test.js`. Самое интересное, что каждый файл выполняется параллельно на отдельном процессе Node.js! Тем не менее, это скрывает некоторые соображения, о которых вы должны знать при написании тестов:
 
--   `process.env` is different for every test file
--   There are no shared global variables across files (and tests)
--   The `require` module is performed at least once per Node.js process spawned
--   Executing `process.exit()` will stop one execution file
+-   `process.env` отличается для каждого тестового файла.
+-   Нет общих глобальных переменных для всех файлов (и тестов)
+-   Модуль `require` выполняется по крайней мере один раз для каждого порожденного процесса Node.js
+-   Выполнение `process.exit()` остановит один файл выполнения
 
-These are not limitations, but having these rules helps you to organize code in the best way possible, and to run tests the fastest. Moreover, you are forced to avoid global objects and functions that add [side effects](https://softwareengineering.stackexchange.com/questions/40297/what-is-a-side-effect). For this reason, the factory pattern we have adopted since the first chapter is a big win – every test case will build its own objects with its own configuration, without conflicting with other files.
+Это не ограничения, но наличие этих правил поможет вам организовать код наилучшим образом и быстрее всего выполнять тесты. Кроме того, вы вынуждены избегать глобальных объектов и функций, которые добавляют [побочные эффекты](https://softwareengineering.stackexchange.com/questions/40297/what-is-a-side-effect). По этой причине паттерн фабрики, который мы приняли с первой главы, является большим выигрышем - каждый тестовый пример будет создавать свои собственные объекты со своей конфигурацией, не конфликтуя с другими файлами.
 
-!!!note "The `--jobs` argument"
+!!!note "Аргумент `--jobs`"
 
-    The `tap` command interface accepts a `-j=<n> --job=<n>` parameter that sets how many test files can be run in parallel. By default, it is set as the system’s CPU core count. Setting it to `1` disables the parallelism.
+    Командный интерфейс `tap` принимает параметр `-j=<n> --job=<n>`, который задает, сколько тестовых файлов может быть запущено параллельно. По умолчанию это значение равно количеству ядер процессора системы. Установка значения `1` отключает параллельность.
 
-The `node-tap` framework has a comprehensive section about [running tests in parallel](https://node-tap.org/docs/api/parallel-tests/).
+Во фреймворке `node-tap` есть обширный раздел о [параллельном выполнении тестов](https://node-tap.org/docs/api/parallel-tests/).
 
-### How to manage shared resources?
+### Как управлять общими ресурсами? {#how-to-manage-shared-resources}
 
-Managing shared resources is a parallelism con. We need to implement the last refactor on our test suite to achieve this result. The shared resource I’m talking about is a database. Using the `helper-docker` utility in every test file is not an option. We would face errors due to the host’s port already in use or a Docker conflict, such as the following:
+Управление общими ресурсами - это афера с параллелизмом. Для достижения этого результата нам нужно реализовать последний рефактор в нашем тестовом наборе. Общий ресурс, о котором я говорю, - это база данных. Использовать утилиту `helper-docker` в каждом тестовом файле - не вариант. Мы столкнемся с ошибками, связанными с тем, что порт хоста уже используется, или с конфликтом Docker, как, например, в следующем случае:
 
 ```
 Conflict. The container name "/fastify-mongo" is already in use by
@@ -793,15 +810,15 @@ container "e24326". You have to remove (or rename) that container to
 be able to reuse that name
 ```
 
-There are some options to solve this issue:
+Есть несколько вариантов решения этой проблемы:
 
--   Customize the configuration of each test file. Running a database container for every file requires a lot of system resources, so you must evaluate this option carefully. It is the easiest way to fix the issue, but we would slow down the suite as a result.
--   Change the database. Right now, we are turning on an actual database, but there are many alternatives in the npm ecosystem, such as in-memory databases that emulated NoSQL databases or SQL ones. This is for sure a good option you must take into account.
--   Create the pre-test and the post-test scripts to spin up the shared resources before the tests’ execution. Note that every file needs its own dataset or database schema to border the assertions, or one test could erase all the data for other tests!
+-   Настроить конфигурацию каждого тестового файла. Запуск контейнера базы данных для каждого файла требует много системных ресурсов, поэтому вы должны тщательно оценить этот вариант. Это самый простой способ решить проблему, но в результате мы замедлим работу набора.
+-   Изменить базу данных. Сейчас мы используем настоящую базу данных, но в экосистеме npm есть много альтернатив, например, базы данных in-memory, эмулирующие базы данных NoSQL или SQL. Это, безусловно, хороший вариант, который вы должны принять во внимание.
+-   Создайте предтестовые и посттестовые скрипты для раскрутки общих ресурсов перед выполнением тестов. Обратите внимание, что для каждого файла нужен свой набор данных или схема базы данных для проверки утверждений, иначе один тест может стереть все данные для других тестов!
 
-These are the most common solutions to the shared resources problem. The first option does not work with limited resources. The second option does not work if you use a database that does not have an in-memory implementation. So, we will implement the third option because it teaches you one real scenario that works every time. Don’t be afraid. It is a matter of refactoring the source code a bit.
+Это наиболее распространенные решения проблемы общих ресурсов. Первый вариант не работает при ограниченных ресурсах. Второй вариант не работает, если вы используете базу данных, которая не имеет реализации in-memory. Поэтому мы будем использовать третий вариант, потому что он научит вас одному реальному сценарию, который работает всегда. Не бойтесь. Это вопрос небольшого рефакторинга исходного кода.
 
-Let’s create a new `test/run-before.js` file; cut and paste the `before/teardown` code from the `test/basic.test.js` file. The new file outcome will be as follows:
+Давайте создадим новый файл `test/run-before.js`; вырежем и вставим код `before/teardown` из файла `test/basic.test.js`. Новый файл будет выглядеть следующим образом:
 
 ```js
 const t = require('tap');
@@ -813,7 +830,7 @@ t.before(async function before() {
 });
 ```
 
-The `basic.test.js` file will be smaller and smaller at every refactor. It means we are doing great. Now, we need another file called `test/run-after.js`. It will be similar to the `run-before` one, but in place of `t.before()`, we must cut the `teardown` function:
+Файл `basic.test.js` будет становиться все меньше и меньше с каждым рефактором. Это значит, что у нас все отлично. Теперь нам нужен еще один файл под названием `test/run-after.js`. Он будет похож на `run-before`, но вместо `t.before()` мы должны вырезать функцию `teardown`:
 
 ```js
 t.teardown(async () => {
@@ -821,7 +838,7 @@ t.teardown(async () => {
 });
 ```
 
-We are almost done with our refactoring. Now, we must update the `basic.test.js` file by updating all the `buildApp` usages and setting the default database:
+Мы почти закончили рефакторинг. Теперь мы должны обновить файл `basic.test.js`, обновив все использования `buildApp` и установив базу данных по умолчанию:
 
 ```js
 const app = await buildApp(t, {
@@ -829,7 +846,7 @@ const app = await buildApp(t, {
 });
 ```
 
-Then, it is the `login.test.js` file’s turn to set up its own database instance:
+Затем наступает очередь файла `login.test.js` создать свой собственный экземпляр базы данных:
 
 ```js
 const app = await buildApp(t, {
@@ -837,36 +854,36 @@ const app = await buildApp(t, {
 });
 ```
 
-Finally, we need to use two new `node-tap` arguments by editing `package.json`:
+Наконец, нам нужно использовать два новых аргумента `node-tap`, отредактировав файл `package.json`:
 
 ```json
 "test": "tap --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
 "test:nostop": "tap --before=test/before.js test/**/**.test.js"
 ```
 
-The `--before` parameter will execute the input file before the whole test suite. The `--after` argument does the same but at the end of the test suite run. Note that the `test:nostop` addition is equal to the `test` script but does not stop and clean the database server at the end of the process. This script is really helpful when you are developing and you need to check the data on your database manually.
+Параметр `--before` выполнит входной файл до запуска всего набора тестов. Аргумент `--after` выполняет то же самое, но в конце выполнения тестового набора. Обратите внимание, что дополнение `test:nostop` равнозначно сценарию `test`, но не останавливает и не очищает сервер базы данных в конце процесса. Этот сценарий очень полезен, когда вы занимаетесь разработкой и вам нужно проверить данные в базе данных вручную.
 
-Do you find it difficult to manage shared resources? If yes, then thanks to the Fastify coding style pattern, you should become very comfortable with these refactors. We can only do so because there are no global objects, and we can instantiate as many Fastify instances as we need without caring about the host’s ports.
+Вам сложно управлять общими ресурсами? Если да, то благодаря паттерну стиля кодирования Fastify вы должны стать очень удобными в работе с этими рефакторами. Мы можем делать это только потому, что здесь нет глобальных объектов, и мы можем инстанцировать столько экземпляров Fastify, сколько нам нужно, не заботясь о портах хоста.
 
-Now, you have the initial knowledge to deal with parallelism complexity. It is not easy, but you can overcome the complexity with clear code and reusable functions.
+Теперь у вас есть начальные знания, чтобы справиться со сложностью параллелизма. Это нелегко, но вы можете преодолеть сложность с помощью понятного кода и многократно используемых функций.
 
-In the next section, we will provide some suggestions to push your code base to the stars.
+В следующем разделе мы дадим несколько предложений, чтобы продвинуть вашу кодовую базу к звездам.
 
-## Where tests should run
+## Где должны выполняться тесты {#where-tests-should-run}
 
-Up until now, we have executed our test manually on our PC. That is fine, and it is mandatory during the development phase. However, this is not enough because our installation could be edited, or we could have some uncommitted files.
+До сих пор мы выполняли наши тесты вручную на компьютере. Это хорошо, и это обязательно на этапе разработки. Однако этого недостаточно, потому что наша установка может быть отредактирована, или у нас могут быть нефиксированные файлы.
 
-To solve this issue, it is possible to add a **Continuous Integration (CI)** pipeline that runs remotely to manage our repository. The CI pipeline’s primary duties are as follows:
+Чтобы решить эту проблему, можно добавить конвейер **Continuous Integration (CI)**, который запускается удаленно для управления нашим репозиторием. Основные обязанности CI-конвейера заключаются в следующем:
 
--   Running the test suite to check the code in the remote Git repository
--   Building a code base to create artifacts if necessary
--   Releasing the artifacts by triggering a **Continuous Delivery (CD)** pipeline to deploy the software
+-   Запуск набора тестов для проверки кода в удаленном Git-репозитории
+-   Создание кодовой базы для создания артефактов, если это необходимо
+-   Выпуск артефактов путем запуска конвейера **Continuous Delivery (CD)** для развертывания программного обеспечения.
 
-The CI workflow will notify us about its status, and if it is in a red state, the application’s tests are failing with the last commit. Running the test remotely will prevent false-positive issues due to our local environment setup.
+Рабочий процесс CI будет уведомлять нас о своем статусе, и если он находится в красном состоянии, значит, тесты приложения не прошли последнюю фиксацию. Удаленный запуск тестов позволит избежать ложноположительных результатов из-за настроек нашего локального окружения.
 
-We will build a simple CI workflow by adopting GitHub Actions. This is a free service for public repositories, with a free limited quota for private ones. We will not go into detail and just take a quick look at how easy it is to start using a CI pipeline.
+Мы построим простой рабочий процесс CI, используя GitHub Actions. Это бесплатный сервис для публичных репозиториев, с бесплатной ограниченной квотой для частных. Мы не будем вдаваться в подробности и просто вкратце рассмотрим, как легко начать использовать CI-конвейер.
 
-To create a CI workflow, you need to create a new file named `.github/workflows/ci.yml`. The source must be as follows:
+Чтобы создать рабочий процесс CI, вам нужно создать новый файл с именем `.github/workflows/ci.yml`. Исходный текст должен быть следующим:
 
 ```yml
 name: CI
@@ -887,24 +904,24 @@ jobs:
               run: npm test
 ```
 
-As you can see, the script maps every step you should follow to run the project:
+Как видите, в скрипте прописаны все шаги, которые необходимо выполнить для запуска проекта:
 
-1.  Check out the source code.
-2.  Install the desired Node.js version.
-3.  Install the project.
-4.  Run the test script.
+1.  Проверьте исходный код.
+2.  Установите нужную версию Node.js.
+3.  Установите проект.
+4.  Запустите тестовый скрипт.
 
-This step-by-step process is crucial in a CI configuration. If you want to try other vendors, such as CircleCI, Bitbucket Pipelines, or Travis CI, you will need to change the configuration file’s syntax, but the logic will be unaltered.
+Этот пошаговый процесс является ключевым в конфигурации CI. Если вы захотите попробовать другие поставщики, например CircleCI, Bitbucket Pipelines или Travis CI, вам придется изменить синтаксис конфигурационного файла, но логика останется неизменной.
 
-Committing the previous code example will trigger the GitHub action automatically. You can see it by looking at the repository’s **Actions** tab, as shown in the following screenshot:
+Коммит предыдущего примера кода автоматически запустит действие GitHub. Вы можете увидеть это, заглянув на вкладку **Actions** репозитория, как показано на следующем снимке экрана:
 
-![Figure 9.2 – The CI executions](testing-2.png)
+![Рисунок 9.2 - Выполнение CI](testing-2.png)
 
-<center>Figure 9.2 – The CI executions</center>
+<center>Рисунок 9.2 - Выполнение CI</center>
 
-As you can see in _Figure 9.2_, the workflow will fail on the first try. We need to fix our test script. So, we must read the console’s output in order to understand what was not working properly.
+Как видно на _Рисунке 9.2_, рабочий процесс завершится неудачей с первой попытки. Нам нужно исправить наш тестовый сценарий. Поэтому мы должны прочитать вывод консоли, чтобы понять, что именно не работает должным образом.
 
-The observant among you would have noticed this error output at the end of the `npm test` command, even if the tests were successful:
+Самые наблюдательные из вас заметили бы эту ошибку в конце команды `npm test`, даже если тесты прошли успешно:
 
 ```
 ERROR: Coverage for lines (85.41%) does not meet global threshold
@@ -917,37 +934,37 @@ ERROR: Coverage for statements (85.41%) does not meet global threshold
 (100%)
 ```
 
-The error is due to a default `node-tap` configuration that requires 100% coverage. To reach this coverage level, we must add a new flag to the `package.json`’s test script:
+Ошибка связана с конфигурацией `node-tap` по умолчанию, которая требует 100-процентного покрытия. Чтобы достичь этого уровня покрытия, мы должны добавить новый флаг в тестовый скрипт `package.json`:
 
 ```json
 "test": "tap --before=test/run-before.js test/**/**.test.js --after=test/run-after.js --no-check-coverage",
 "test:coverage": "tap --coverage-report=html --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
 ```
 
-The `--no-check-coverage` argument solves the test failure due to its coverage below the 100% threshold.
+Аргумент `--no-check-coverage` решает проблему отказа теста из-за того, что его покрытие ниже порога в 100 %.
 
-The last addition to complete this journey into the `node-tap` framework and application tests is the `test:coverage` script, added in the previous code snippet. Running the script by executing the `npm run test:coverage` command should open your system’s browser at the end, showing a nice HTML report as follows:
+Последним дополнением, завершающим это путешествие по фреймворку `node-tap` и тестам приложений, является скрипт `test:coverage`, добавленный в предыдущем фрагменте кода. Запуск скрипта с помощью команды `npm run test:coverage` должен открыть браузер вашей системы, в конце которого будет показан красивый HTML-отчет, как показано ниже:
 
-![Figure 9.3 – A coverage HTML report](testing-3.png)
+![Рисунок 9.3 - Отчет HTML о покрытии](testing-3.png)
 
-<center>Figure 9.3 – A coverage HTML report</center>
+<center>Рисунок 9.3 - Отчет HTML о покрытии</center>
 
-If the browser doesn’t open automatically the web page, it is possible to open it manually by clicking on the `coverage/lcov-report/index.html` file, that has been generated in the project’s root path during the test execution.
+Если браузер не открывает веб-страницу автоматически, можно открыть ее вручную, щелкнув на файле `coverage/lcov-report/index.html`, который был сгенерирован в корневом пути проекта во время выполнения теста.
 
-_Figure 9.3_ shows how you can build a coverage report that you can navigate using your browser. By clicking on the blue highlighted links, you will see every repository’s file and how many times a single code line has been executed during the test execution:
+На рисунке 9.3\_ показано, как можно построить отчет о покрытии, по которому можно перемещаться с помощью браузера. Щелкнув на выделенных синим цветом ссылках, вы увидите каждый файл репозитория и то, сколько раз та или иная строка кода была выполнена во время выполнения теста:
 
-![Figure 9.4 – Source code coverage](testing-4.png)
+![Рисунок 9.4 - Покрытие исходного кода](testing-4.png)
 
-<center>Figure 9.4 – Source code coverage</center>
+<center>Рисунок 9.4 - Покрытие исходного кода</center>
 
-The coverage output helps you understand what is not tested in your application, allowing you to make appropriate decisions.
+Вывод покрытия поможет вам понять, что именно не тестируется в вашем приложении, что позволит вам принять соответствующие решения.
 
-## Summary
+## Резюме {#summary}
 
-This chapter is dense with information about new processes and tools. Now, you should be comfortable designing a test suite for a Node.js backend application. You should be able to evaluate a testing framework that fits your needs and boosts your productivity.
+Эта глава насыщена информацией о новых процессах и инструментах. Теперь вам должно быть удобно разрабатывать набор тестов для бэкенд-приложения Node.js. Вы должны быть в состоянии оценить фреймворк для тестирования, который соответствует вашим потребностям и повышает вашу производительность.
 
-You have learned how to use `node-tap`, from basic assertions to advanced parallel test execution. Moreover, you can test a Fastify application and take advantage of Fastify’s `inject` feature. You don’t have to worry about testing your API’s routes, whatever the level of complexity is.
+Вы научились использовать `node-tap`, начиная с базовых утверждений и заканчивая продвинутым параллельным выполнением тестов. Более того, вы сможете протестировать приложение Fastify и воспользоваться преимуществами функции Fastify `inject`. Вам не придется беспокоиться о тестировании маршрутов вашего API, независимо от уровня сложности.
 
-Finally, we have seen how to integrate a CI pipeline using GitHub Actions and its logic to keep our repository away from regressions and production issues.
+Наконец, мы увидели, как интегрировать CI-конвейер с помощью GitHub Actions и его логики, чтобы оградить наш репозиторий от регрессий и производственных проблем.
 
-Now, you are ready to proceed to the next step and build a secure and reliable application. We mentioned CD earlier in this chapter; it is now time to see it in action in [Chapter 10](./deploy.md).
+Теперь вы готовы перейти к следующему шагу и создать безопасное и надежное приложение. Ранее в этой главе мы уже упоминали о CD; теперь пришло время увидеть его в действии в [Глава 10](./deploy.md).
