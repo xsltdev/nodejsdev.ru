@@ -1,35 +1,39 @@
-# Deployment and Process Monitoring for a Healthy Application
+---
+description: В этой главе мы рассмотрим основы развертывания монолита с использованием Docker, MongoDB и Fly.io
+---
 
-We are building a new and shiny Fastify API and want to expose it on the internet to gather feedback before our official launch. When we look online, there are plenty of options... but what should we use? After that, we will then need to figure out how to monitor the health of our server (because we always monitor our applications, right?).
+# Развертывание и мониторинг процессов для здорового приложения
 
-In this chapter, we will unpack the basics of a monolith deployment, using Docker, MongoDB, and Fly.io. We will also review the key Node.js metrics, how to extract them from our application with Prometheus, and then how to easily consult them on Grafana.
+Мы создаем новый и блестящий Fastify API и хотим выложить его в интернет, чтобы собрать отзывы перед официальным запуском. Когда мы смотрим в интернете, то видим множество вариантов... но что же нам использовать? После этого нам нужно будет понять, как следить за состоянием нашего сервера (ведь мы всегда следим за своими приложениями, верно?).
 
-This is the learning path we will cover in this chapter:
+В этой главе мы рассмотрим основы развертывания монолита с использованием Docker, MongoDB и Fly.io. Мы также рассмотрим ключевые метрики Node.js, как извлечь их из нашего приложения с помощью Prometheus, а затем как легко просмотреть их в Grafana.
 
--   Testing our Docker image for deployment
--   Hosting our DB on MongoDB Atlas
--   Choosing a cloud provider
--   Deploying to Fly.io
--   Setting up continuous deployment
--   Collecting application process data
+Именно этот путь обучения мы рассмотрим в данной главе:
 
-## Technical requirements
+-   Тестирование нашего образа Docker для развертывания
+-   Размещение нашей БД на MongoDB Atlas
+-   Выбор облачного провайдера
+-   Развертывание на Fly.io
+-   Настройка непрерывного развертывания
+-   Сбор данных о процессах приложения
 
-As mentioned in the previous chapters, you will need the following:
+## Технические требования {#technical-requirements}
 
--   A working Node.js 18 installation
--   A text editor to try the example code
--   Docker
--   An HTTP client to test out code, such as cURL or Postman
--   A GitHub account
+Как уже упоминалось в предыдущих главах, вам понадобится следующее:
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2010).
+-   Работающая установка Node.js 18
+-   Текстовый редактор для работы с кодом примера
+-   докер
+-   HTTP-клиент для тестирования кода, например cURL или Postman
+-   Аккаунт на GitHub
 
-## Testing our Docker image with a local deployment
+Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2010).
 
-In [Chapter 6](./project-structure.md), we set up our application for usage with Docker. This is a critical step for our TODO List application. Now, it’s time to test the image with Docker Compose to verify that everything is working as expected.
+## Тестирование нашего образа Docker с локальным развертыванием {#testing-our-docker-image-with-a-local-deployment}
 
-Let’s recap our `DockerFile`, with a minor modification:
+В [Главе 6](./project-structure.md) мы настроили наше приложение для использования с Docker. Это очень важный шаг для нашего приложения TODO List. Теперь пришло время протестировать образ с помощью Docker Compose, чтобы убедиться, что все работает так, как ожидалось.
+
+Давайте повторим наш `DockerFile` с небольшими изменениями:
 
 ```dockerfile
 FROM node:18-alpine as builder
@@ -54,15 +58,15 @@ CMD ["./node_modules/.bin/fastify", "start", "-a", "0.0.0.0", "-l",
 "info", "--options", "app.js"]
 ```
 
-As you can see, we have modified `CMD` to directly call the `fastify` command with the following options:
+Как видите, мы изменили `CMD`, чтобы напрямую вызывать команду `fastify` со следующими параметрами:
 
--   `-a 0.0.0.0` is fundamental to allowing the container to listen to all addresses
--   `--options` makes sure we load the options from `app.js`
--   `-l info` configures the logging level
+-   `-a 0.0.0.0` - это важно для того, чтобы контейнер мог прослушивать все адреса.
+-   `--options` обеспечивает загрузку опций из `app.js`.
+-   `-l info` настраивает уровень протоколирования.
 
-Now, we can test this deployment using a local `docker-compose`, which is useful to verify that everything works well locally, as it is easier to debug than in the cloud. Specifically, we are going to connect our application to a MongoDB instance running within Docker as well.
+Теперь мы можем протестировать это развертывание с помощью локального `docker-compose`, что полезно для проверки того, что все работает хорошо локально, так как это проще для отладки, чем в облаке. В частности, мы собираемся подключить наше приложение к экземпляру MongoDB, запущенному также в Docker.
 
-Let’s save the following as `docker-compose-test.yml`:
+Сохраним следующий файл под именем `docker-compose-test.yml`:
 
 ```yml
 version: '3.7'
@@ -84,50 +88,50 @@ volumes:
     data:
 ```
 
-Let’s go line by line through the content of this file. First, we identify the version of the `docker-compose` file as different versions have different syntaxes. Second, we define two services: one is `mongo`, our database, and the other is `app`, which we build from the current folder. Note that in the `app` definition, we specify the environment variables our application needs:
+Давайте пройдемся построчно по содержимому этого файла. Во-первых, мы определяем версию файла `docker-compose`, так как разные версии имеют разный синтаксис. Во-вторых, мы определяем два сервиса: один из них - `mongo`, наша база данных, а другой - `app`, который мы собираем из текущей папки. Обратите внимание, что в определении `app` мы указываем переменные окружения, которые нужны нашему приложению:
 
--   `JWT_SECRET`, which should be changed to secure your application.
--   `MONGO_URL`, which identifies how we connect to our database. Note that we use `mongo` as a domain name – Docker will automatically resolve it to the host running our MongoDB!
+-   `JWT_SECRET`, которую следует изменить для обеспечения безопасности вашего приложения.
+-   `MONGO_URL`, которая определяет, как мы подключаемся к нашей базе данных. Обратите внимание, что мы используем `mongo` в качестве доменного имени - Docker автоматически преобразует его в хост, на котором работает наша MongoDB!
 
-Lastly, it’s important to cover the concept of ports in Docker. In the `docker-compose-test.yml` file, we specify `"3042:3000"`: we map the TCP port `3042` of the host to port `3000` of the container. Therefore, we can now head to <http://localhost:3042/> to see our application running.
+Наконец, важно рассказать о концепции портов в Docker. В файле `docker-compose-test.yml` мы указываем `"3042:3000"`: мы сопоставляем TCP-порт `3042` хоста с портом `3000` контейнера. Таким образом, теперь мы можем перейти по адресу `http://localhost:3042/` и увидеть, что наше приложение запущено.
 
-In this setup, persist the database in a data volume to avoid losing our data when the container is removed (such as when we update it).
+При такой настройке сохраняйте базу данных в томе данных, чтобы избежать потери данных при удалении контейнера (например, при его обновлении).
 
-Thanks to `docker-compose`, we can verify and test that our DockerFile works as expected. So, run the following:
+Благодаря `docker-compose` мы можем проверить и протестировать, что наш DockerFile работает так, как ожидалось. Итак, выполните следующее:
 
 ```sh
 docker-compose -f docker-compose-test.yml up
 ```
 
-Docker will download the base images, build our image, and then execute our application (if you do not have `package-lock.json` in your folder, run npm i to generate it, otherwise, `docker build` will give an error). We can now `curl http://localhost:3042/` to verify that everything is working as expected.
+Docker загрузит базовые образы, соберет наш образ, а затем выполнит наше приложение (если у вас в папке нет `package-lock.json`, запустите `npm i` для его создания, иначе `docker build` выдаст ошибку). Теперь мы можем `curl http://localhost:3042/`, чтобы убедиться, что все работает так, как ожидалось.
 
-!!!note "MongoDB cluster"
+!!!note "Кластер MongoDB"
 
-    The MongoDB [documentation](https://www.mongodb.com/basics/clusters/mongodb-cluster-setup) recommends using at least three MongoDB nodes because, in production, we want to have at least two replicas of the data to tolerate the failure of one node. In our “local” deployment, we are just using one – it’s unsafe, but it’s okay for our purpose.
+    В [документации MongoDB](https://www.mongodb.com/basics/clusters/mongodb-cluster-setup)  рекомендуется использовать не менее трех узлов MongoDB, поскольку в производстве мы хотим иметь не менее двух копий данных, чтобы выдержать отказ одного узла. В нашем «локальном» развертывании мы используем только одну - это небезопасно, но для наших целей вполне подходит.
 
-Now, we want to move our setup to the cloud. To do that, first, we are going to use MongoDB Atlas to create a three-node MongoDB cluster.
+Теперь мы хотим перенести нашу установку в облако. Для этого сначала мы воспользуемся MongoDB Atlas для создания кластера MongoDB из трех узлов.
 
-## Hosting our DB on MongoDB Atlas
+## Хостинг нашей БД на MongoDB Atlas {#hosting-our-db-on-mongodb-atlas}
 
-As we write this, the simplest way to provision a MongoDB cluster is to use MongoDB Atlas, which will allow 512 MB of storage for free. To employ this, please follow the MongoDB Atlas setup tutorial – while we include the screenshot for this process here, the process might vary.
+Как мы уже писали, самый простой способ создать кластер MongoDB - это использовать MongoDB Atlas, который предоставляет 512 МБ хранилища бесплатно. Чтобы воспользоваться этим способом, следуйте руководству по настройке MongoDB Atlas - хотя мы приводим здесь скриншот, процесс может отличаться.
 
-The first step is to sign up to [MongoDB Atlas](http://mongodb.com). After you have completed the signup and email verification process, you can select the tier in which you want your new database to be created. We will select the **Shared** option, which is the free tier. After we have selected our tier, we now choose where we want our MongoDB instance to be located. Choose a location that’s near to you!
+Первым шагом будет регистрация на [MongoDB Atlas](http://mongodb.com). После завершения процесса регистрации и проверки электронной почты вы можете выбрать уровень, на котором будет создана ваша новая база данных. Мы выберем вариант **Shared**, который является бесплатным. После выбора уровня мы выбираем, где будет расположен наш экземпляр MongoDB. Выбирайте то место, которое находится рядом с вами!
 
-Now, it’s time to add the security mechanism for our database. Make sure you are in the **Quickstart** tab below **SECURITY**, as shown in _Figure 10.1_. For this book, select the **Username and Password** authentication method.
+Теперь пришло время добавить механизм безопасности для нашей базы данных. Убедитесь, что вы находитесь на вкладке **Quickstart** под **SECURITY**, как показано на _Рисунке 10.1_. Для этой книги выберите метод аутентификации **Имя пользователя и пароль**.
 
-![Figure 10.1: How our database in MongoDB Atlas is configured](deploy-1.png)
+![Рисунок 10.1: Как настроена наша база данных в MongoDB Atlas](deploy-1.png)
 
-<center>Figure 10.1: How our database in MongoDB Atlas is configured</center>
+<center>Рисунок 10.1: Как настроена наша база данных в MongoDB Atlas</center>
 
-The most important configuration for this book is to enable connections from all IP addresses. This can be done in the **IP Address** field in the previous figure; enter `0.0.0.0/0`, which will identify all IP addresses. While this is highly insecure, a strong password is more than enough for simple applications.
+Самая важная настройка для этой книги - разрешить соединения со всех IP-адресов. Это можно сделать в поле **IP Address** на предыдущем рисунке; введите `0.0.0.0/0`, что позволит определить все IP-адреса. Хотя это очень небезопасно, надежного пароля более чем достаточно для простых приложений.
 
-!!!note "Other connection methods"
+!!!note "Другие способы подключения"
 
-    Please refer to the MongoDB Atlas documentation for configuring more [secure connection methods](https://www.mongodb.com/docs/atlas/security/config-db-auth/).
+    Обратитесь к документации MongoDB Atlas для настройки дополнительных [безопасных методов подключения](https://www.mongodb.com/docs/atlas/security/config-db-auth/).
 
-You’ll now need to copy a connection string to your MongoDB database. This must be under an option similar to **Connect to your database** (we say “similar to” as we cannot say the exact option because it would probably become out of date at the time of reading).
+Теперь вам нужно скопировать строку подключения к вашей базе данных MongoDB. Это должно быть сделано в опции, похожей на **Подключиться к вашей базе данных** (мы говорим «похожей», так как не можем назвать точную опцию, потому что она, вероятно, устарела к моменту прочтения).
 
-Now, we can run the connection string in our terminal:
+Теперь мы можем запустить строку подключения в нашем терминале:
 
 ```sh
 $ mongosh
@@ -148,14 +152,14 @@ You can opt-out by running the disableTelemetry() command.
 Atlas atlas-lk17c9-shard-0 [primary] myFirstDatabase>
 ```
 
-Everything worked as expected! We can now try to connect our application from our development machine to our new database in the cloud with the following:
+Все сработало, как и ожидалось! Теперь мы можем попробовать подключить наше приложение с нашей машины разработки к нашей новой базе данных в облаке следующим образом:
 
 ```
 MONGO_URL="mongodb+srv://USERNAME:PASSWORD@YOURDBDOMAIN/
 myFirstDatabase" JWT_SECRET=supsersecret npm start
 ```
 
-Alternatively, you can add the following and replace the value for `MONGO_URL` in `.env` file:
+В качестве альтернативы можно добавить следующее и заменить значение `MONGO_URL` в файле `.env`:
 
 ```
 MONGO_URL="mongodb+srv://USERNAME:PASSWORD@YOURDBDOMAIN/
@@ -163,43 +167,43 @@ myFirstDatabase"
 JWT_SECRET=supsersecret
 ```
 
-Then in terminal, run `npm start`.
+Затем в терминале выполните команду `npm start`.
 
-As we now have a cloud database, we can look to deploy our application to the cloud!
+Поскольку у нас теперь есть облачная база данных, мы можем приступить к развертыванию нашего приложения в облаке!
 
-## Choosing a cloud provider
+## Выбор облачного провайдера {#choosing-a-cloud-provider}
 
-Most people who start using a new technology wonder what cloud provider would provide the best experience to deploy their applications. In this book, we are not considering any solution that would be too much effort given the little space available.
+Большинство людей, начинающих использовать новую технологию, задаются вопросом, какой облачный провайдер обеспечит наилучшие условия для развертывания их приложений. В этой книге мы не рассматриваем решения, которые потребуют слишком много усилий, учитывая небольшое свободное пространство.
 
-Here is a list of providers that are worthwhile checking out:
+Вот список провайдеров, на которых стоит обратить внимание:
 
--   Heroku – it started supporting Node.js in 2011 and it’s by far one of the most mature and stable products.
--   Google Cloud Run – it’s based on [Knative](https://knative.dev/) and the Kubernetes stack.
--   AWS Lambda – it’s the original “serverless” runtime, enabling the executions of “functions” that can scale elastically. Every function only processes one request at a time: while this makes it easy to scale and operate, I/O heavy applications are at a disadvantage. AWS Lambda is based on [Firecracker](https://firecracker-microvm.github.io/).
--   Vercel – it’s the deployment platform for frontend teams, based upon AWS Lambda.
--   Fly.io – it’s based on Firecracker, and as such, it allows for an extremely fast restart of processes and the ability to “scale to zero.”
+-   Heroku - он начал поддерживать Node.js в 2011 году и на сегодняшний день является одним из самых зрелых и стабильных продуктов.
+-   Google Cloud Run - основан на [Knative](https://knative.dev/) и стеке Kubernetes.
+-   AWS Lambda - это оригинальная «бессерверная» среда исполнения, позволяющая выполнять «функции», которые могут эластично масштабироваться. Каждая функция обрабатывает только один запрос за раз: хотя это упрощает масштабирование и эксплуатацию, приложения с большим объемом ввода-вывода оказываются в невыгодном положении. AWS Lambda основана на [Firecracker](https://firecracker-microvm.github.io/).
+-   Vercel - платформа развертывания для фронтенд-команд, основанная на AWS Lambda.
+-   Fly.io - основана на Firecracker и, как таковая, обеспечивает чрезвычайно быстрый перезапуск процессов и возможность «масштабирования до нуля».
 
-You can find a list of other [serverless deployments](https://www.fastify.io/docs/latest/Guides/Serverless/).
+Вы можете найти список других [serverless deployments](https://www.fastify.io/docs/latest/Guides/Serverless/).
 
-Node.js and Fastify shine when used to serve multiple, parallel requests. This maximizes the idle moment in the event loop to process other requests. Therefore, the best choice is to use “full” servers that can be dynamically scaled based on the load.
+Node.js и Fastify выигрывают, когда используются для обслуживания множества параллельных запросов. Это позволяет максимально использовать время простоя в цикле событий для обработки других запросов. Поэтому лучше всего использовать «полные» серверы, которые можно динамически масштабировать в зависимости от нагрузки.
 
-!!!note "Deploying on AWS Lambda"
+!!!note "Развертывание на AWS Lambda"
 
-    If you would like to deploy to AWS Lambda, it’s [possible to use](https://github.com/fastify/aws-lambda-fastify). The advantage to native Lambda development is that you could develop your application as you normally would if it was deployed in a standard Node.js process.
+    Если вы хотите развернуть приложение на AWS Lambda, это [возможно использовать](https://github.com/fastify/aws-lambda-fastify). Преимущество нативной разработки в Lambda заключается в том, что вы можете разрабатывать свое приложение так же, как если бы оно было развернуто в стандартном процессе Node.js.
 
-For this book, we are going to cover Fly.io because it looks like the most innovative solution and provides easy automation for continuous deployment.
+В этой книге мы рассмотрим Fly.io, поскольку он выглядит наиболее инновационным решением и обеспечивает простую автоматизацию непрерывного развертывания.
 
-## Deploying to Fly.io
+## Развертывание на Fly.io {#deploying-to-flyio}
 
-Fly.io’s main interface is a command-line tool called `flyctl`, which we can install with the following:
+Основной интерфейс Fly.io - это инструмент командной строки под названием `flyctl`, который мы можем установить следующим образом:
 
--   `iwr https://fly.io/install.ps1 -useb | iex` on Windows PowerShell
--   `curl -L https://fly.io/install.sh | sh` on Linux and macOS
--   You can also use `brew install flyctl` on macOS too
+-   `iwr https://fly.io/install.ps1 -useb | iex` в Windows PowerShell.
+-   `curl -L https://fly.io/install.sh | sh` в Linux и macOS.
+-   Вы также можете использовать `brew install flyctl` на macOS.
 
-Signing up with Fly.io is easy: issue the `flyctl auth signup` command. We recommend connecting your GitHub account, as you will need it later.
+Зарегистрироваться на Fly.io очень просто: выполните команду `flyctl auth signup`. Мы рекомендуем подключить ваш аккаунт GitHub, так как он понадобится вам позже.
 
-We can now deploy to Fly.io by executing `flyctl launch` in our current working directory (make sure there are no `fly.toml` files) and answering the following questions:
+Теперь мы можем развернуть Fly.io, выполнив команду `flyctl launch` в текущей рабочей директории (убедитесь, что в ней нет файлов `fly.toml`) и ответив на следующие вопросы:
 
 ```sh
 $ flyctl launch
@@ -217,9 +221,9 @@ Deploying shy-fog-346
 ...
 ```
 
-The first questions that `flyctl` asks are about our application: what account to use, where to start it, and whether we want a PostgreSQL database. Then, it builds our container and deploys our application to Fly.io.
+Первые вопросы, которые задает `flyctl`, касаются нашего приложения: какой аккаунт использовать, где его запустить и нужна ли нам база данных PostgreSQL. Затем он создает наш контейнер и развертывает наше приложение на Fly.io.
 
-Then, the script goes ahead and tries to deploy our application until it fails:
+После этого скрипт пытается развернуть наше приложение до тех пор, пока не потерпит неудачу:
 
 ```sh
 ...
@@ -265,7 +269,7 @@ troubleshooting/
 Error abort
 ```
 
-As you can see in the error message, the server cannot find the `JWT_SECRET` and `MONGO_URL` environment variables. Let’s add them as Fly.io secrets:
+Как видно из сообщения об ошибке, сервер не может найти переменные окружения `JWT_SECRET` и `MONGO_URL`. Давайте добавим их в качестве секретов Fly.io:
 
 ```sh
 $ flyctl secrets set MONGO_URL="mongodb+srv://
@@ -290,35 +294,35 @@ version to auto revert to and deploying as v5
 troubleshooting/
 ```
 
-Oh no! It’s still failing. What happened? Let’s open the `fly.toml` file (the Fly.io configuration file): there is an `internal_port = 8080` line that instructs Fly.io to route any incoming requests to port `8080` of our container. However, our application is being launched at port `3000`! Let’s change the line to `internal_port = 3000` and issue `flyctl launch`.
+О нет! Он все еще не работает. Что случилось? Давайте откроем файл `fly.toml` (файл конфигурации Fly.io): там есть строка `internal_port = 8080`, которая предписывает Fly.io направлять все входящие запросы на порт `8080` нашего контейнера. Однако наше приложение запускается на порту `3000`! Давайте изменим строку на `internal_port = 3000` и запустим `flyctl launch`.
 
-Hurray! Our application is now deployed at <https://shy-fog-346.fly.dev/> (replace with your own URL).
+Ура! Наше приложение теперь развернуто по адресу `https://shy-fog-346.fly.dev/` (замените на свой URL).
 
-In this section, we configured Fly.io and set two application secrets on Fly.io.
+В этом разделе мы настроили Fly.io и установили два секрета приложения на Fly.io.
 
-## Setting up continuous deployment
+## Настройка непрерывного развертывания {#setting-up-continuous-deployment}
 
-We are setting up a continuous deployment system so that every commit pushed to the main branch of your GitHub repository is automatically deployed to Fly.io.
+Мы настраиваем систему непрерывного развертывания, чтобы каждый коммит, добавленный в основную ветку вашего репозитория на GitHub, автоматически разворачивался на Fly.io.
 
-!!!note "Automating your project with GitHub Actions"
+!!!note "Автоматизация проекта с помощью GitHub Actions"
 
-    We recommend automating your development process with the use of [GitHub Actions](https://docs.github.com/ru/actions). They can be used to automatically run your automated tests, deploy your project, and even synchronize your issues with your other management software.
+    Мы рекомендуем автоматизировать процесс разработки с помощью [GitHub Actions](https://docs.github.com/ru/actions). С их помощью можно автоматически запускать автоматизированные тесты, развертывать проект и даже синхронизировать проблемы с другими программами управления.
 
-First, let’s create a repository on GitHub, clone it locally, and push our code there! To upload our code to GitHub, we run `git clone`, `git add`, `git commit`, and `git push` in our terminal.
+Для начала давайте создадим репозиторий на GitHub, клонируем его локально и загрузим туда наш код! Чтобы загрузить наш код на GitHub, выполним в терминале команды `git clone`, `git add`, `git commit` и `git push`.
 
-!!!note "Using Git and GitHub"
+!!!note "Использование Git и GitHub"
 
-    If you are not familiar with Git and GitHub, we recommend you to follow the [GitImmersion tutorial](https://gitimmersion.com/), as well as <https://docs.github.com/en/get-started/quickstart/create-a-repo>, to create the repository on GitHub, clone it, and push our application.
+    Если вы не знакомы с Git и GitHub, мы рекомендуем вам следовать руководству [GitImmersion tutorial](https://gitimmersion.com/), а также <https://docs.github.com/en/get-started/quickstart/create-a-repo>, чтобы создать репозиторий на GitHub, клонировать его и развернуть наше приложение.
 
-To deploy to Fly.io automatically, we must install and configure the `flyctl` client. We will need to authenticate our GitHub Action to Fly.io and to do this, we need a Fly.io authorization token. This can be generated by running `fly auth token` in our terminal.
+Чтобы развертывание на Fly.io происходило автоматически, мы должны установить и настроить клиент `flyctl`. Нам нужно будет аутентифицировать наш GitHub Action на Fly.io, и для этого нам нужен токен авторизации Fly.io. Его можно сгенерировать, выполнив команду `fly auth token` в терминале.
 
-After that, copy that value and open our GitHub repository. Inside **Settings | Secrets | Actions**, open **New Repository Secret**. Then, set `FLY_API_TOKEN` as the name and our token as the value, and click on **Add secret**.
+После этого скопируйте это значение и откройте наш репозиторий GitHub. Внутри **Settings | Secrets | Actions** откройте **New Repository Secret**. Затем задайте `FLY_API_TOKEN` в качестве имени и наш токен в качестве значения, и нажмите на **Add secret**.
 
-![Figure 10.2: Adding the FLY_API_TOKEN as a GitHub Action secret](deploy-2.png)
+![Рисунок 10.2: Добавление FLY_API_TOKEN в качестве секрета действия GitHub](deploy-2.png)
 
-<center>Figure 10.2: Adding the FLY_API_TOKEN as a GitHub Action secret</center>
+<center>Рисунок 10.2: Добавление FLY_API_TOKEN в качестве секрета действия GitHub</center>
 
-After configuring our secret, it’s time to use GitHub Actions to automatically deploy our application. To do so, inside our working directory, create a `.github/workflows/fly.yml` file with the following content:
+После настройки нашего секрета пришло время использовать GitHub Actions для автоматического развертывания нашего приложения. Для этого в нашей рабочей директории создайте файл `.github/workflows/fly.yml` со следующим содержимым:
 
 ```yml
 name: Fly Deploy
@@ -338,51 +342,51 @@ jobs:
             - run: flyctl deploy –remote-only
 ```
 
-This GitHub Action uses the `setup-flyctl` action to configure the Fly.io client and then uses `flyctl` to deploy our code. To perform the deployment, it needs `FLY_API_TOKEN` as an environment variable, which we set in the `env` section of the action definition (taking the value from the secret we have previously configured in the repository settings).
+Этот GitHub Action использует действие `setup-flyctl` для настройки клиента Fly.io, а затем использует `flyctl` для развертывания нашего кода. Чтобы выполнить развертывание, ему нужна переменная окружения `FLY_API_TOKEN`, которую мы задаем в секции `env` определения действия (взяв значение из секрета, который мы ранее настроили в настройках репозитория).
 
-We then add this file to the Git repository, commit it, and push it. As a result, the action should run and deploy our application:
+Затем мы добавляем этот файл в Git-репозиторий, фиксируем его и отправляем на выполнение. В результате действие должно запуститься и развернуть наше приложение:
 
-![Figure 10.3: A successful deployment to Fly.io using a GitHub Action](deploy-3.png)
+![Рисунок 10.3: Успешное развертывание на Fly.io с помощью GitHub Action](deploy-3.png)
 
-<center>Figure 10.3: A successful deployment to Fly.io using a GitHub Action</center>
+<center>Рисунок 10.3: Успешное развертывание на Fly.io с помощью GitHub Action</center>
 
-Next, we want to configure the monitoring of our deployed application to keep it in check!
+Далее мы хотим настроить мониторинг нашего развернутого приложения, чтобы держать его под контролем!
 
-## Collecting application process data
+## Сбор данных о процессах приложения {#collecting-application-process-data}
 
-!!!note "Excerpt from the talk “My Node.js process is on fire”"
+!!!note "Отрывок из выступления «Мой процесс Node.js горит»"
 
-    _“At 10am on Black Friday, your phone rings: the new JS application you deployed came under too much load, and the site has gone down! Your employer is losing sales opportunities... your employer is losing money! But you don’t lose your cool. You log in to your cloud provider and tweak your autoscaling settings. Now the deployment can handle the load spike but with four times the number of servers, which is four times the cost. The next day, you try to analyze what happened and begin to optimize your application to prepare for future load spikes.”_
+    В 10 утра в «черную пятницу» у вас звонит телефон: новое JS-приложение, которое вы развернули, подверглось слишком большой нагрузке, и сайт упал! Ваш работодатель теряет возможности для продаж... Ваш работодатель теряет деньги! Но вы не теряете самообладания. Вы заходите в облако провайдера и изменяете настройки автомасштабирования. Теперь развертывание может справиться со скачком нагрузки, но с использованием в четыре раза большего количества серверов, что в четыре раза дороже. На следующий день вы пытаетесь проанализировать, что произошло, и начинаете оптимизировать свое приложение, чтобы подготовиться к будущим скачкам нагрузки».
 
-    The [full talk](https://www.youtube.com/watch?v=G9Vkpe55Gu8) was delivered by Matteo Collina at JSConf Asia 2018.
+    Этот [полный доклад](https://www.youtube.com/watch?v=G9Vkpe55Gu8) был сделан Маттео Коллиной на JSConf Asia 2018.
 
-The main reason we want to collect metrics of our running Node.js process is to be able to diagnose and debug problems hours, days, or even weeks after they happened. The flow of diagnosing a production issue is described in the following figure:
+Основная причина, по которой мы хотим собирать метрики нашего работающего процесса Node.js, - это возможность диагностировать и отлаживать проблемы спустя часы, дни или даже недели после их возникновения. Поток диагностики производственных проблем описан на следующем рисунке:
 
-![Figure 10.4: The path to solving a production issue](deploy-4.png)
+![Рисунок 10.4: Путь к решению производственной проблемы](deploy-4.png)
 
-<center>Figure 10.4: The path to solving a production issue</center>
+<center>Рисунок 10.4: Путь к решению производственной проблемы</center>
 
-We need to collect data to know what happened, so we can reproduce the problem in a non-live environment – otherwise, we will not be able to understand whether we fixed the problem! After that, we use more fine-grained tools to reproduce locally and develop a fix. What tools are we going to use? We will cover them in [Chapter 13](../advanced/performance.md).
+Нам нужно собрать данные, чтобы понять, что произошло, и воспроизвести проблему в неживой среде - иначе мы не сможем понять, устранили ли мы проблему! После этого мы используем более тонкие инструменты для локального воспроизведения и разработки исправления. Какие инструменты мы будем использовать? Мы рассмотрим их в [главе 13](../advanced/performance.md).
 
-### Collecting the application process data with Prometheus
+### Сбор данных о процессе приложения с помощью Prometheus {#collecting-the-application-process-data-with-prometheus}
 
-Prometheus is the go-to open source solution for collecting and storing time series data, and it’s usually used to implement monitoring systems in applications. It’s great to have statistics on how your system is performing, even under failure conditions. Prometheus also has an alert manager component that we can use to receive updates in case of outages.
+Prometheus - это лучшее решение с открытым исходным кодом для сбора и хранения данных временных рядов, которое обычно используется для реализации систем мониторинга в приложениях. Очень удобно иметь статистику работы системы, даже в условиях сбоя. В Prometheus также есть компонент менеджера оповещений, который мы можем использовать для получения обновлений в случае сбоев.
 
-Prometheus architecture is divided into different components: at its core, there is the Prometheus server, which pulls metrics from each target at precise intervals (multiple times per minute). For short- lived jobs, there is the Pushgateway, which allows Prometheus to retrieve those metrics. Visualization clients – such as Grafana – query Prometheus using PromQL.
+Архитектура Prometheus разделена на различные компоненты: в ее основе лежит сервер Prometheus, который получает метрики от каждой цели через точные интервалы времени (несколько раз в минуту). Для короткоживущих заданий существует Pushgateway, который позволяет Prometheus получать эти метрики. Клиенты визуализации - такие как Grafana - запрашивают Prometheus с помощью PromQL.
 
-![Figure 10.5: Prometheus architecture](deploy-5.png)
+![Рисунок 10.5: Архитектура Prometheus](deploy-5.png)
 
-<center>Figure 10.5: Prometheus architecture</center>
+<center>Рисунок 10.5: Архитектура Prometheus</center>
 
-This book is not about Prometheus and all its features; however, we will cover how to configure our Fastify application to provide data to be scraped by Prometheus. We will also cover Fly.io native support for Prometheus and native data collection capabilities.
+Эта книга не посвящена Prometheus и всем его возможностям; однако мы расскажем о том, как настроить наше приложение Fastify на предоставление данных для сбора Prometheus. Мы также расскажем о встроенной поддержке Fly.io для Prometheus и о возможностях сбора данных.
 
 !!!note "Prometheus"
 
-    Please refer to the Prometheus documentation for more information about [Prometheus](https://prometheus.io/docs/introduction/overview/).
+    За дополнительной информацией о [Prometheus](https://prometheus.io/docs/introduction/overview/) обращайтесь к документации Prometheus.
 
-The main Node.js library that produces the metrics in the right format to be pulled by Prometheus is [`prom-client`](https://www.npmjs.com/package/prom-client). [`fastify- metrics`](https://www.npmjs.com/package/fastify-metrics) uses it and integrates it with Fastify.
+Основной библиотекой Node.js, которая создает метрики в нужном формате для извлечения Prometheus, является [`prom-client`](https://www.npmjs.com/package/prom-client). [`fastify- metrics`](https://www.npmjs.com/package/fastify-metrics) использует ее и интегрирует с Fastify.
 
-Prometheus and Fly.io recommend that we expose the metrics on a different TCP port than our main service port, which is usually `9001`. Therefore, we want to collect the metrics for our main process and spin up a separate Fastify server to serve those metrics to the scraper. Therefore, we create a `plugins/metrics.js` file with the following content:
+Prometheus и Fly.io рекомендуют выставлять метрики на TCP-порт, отличный от порта нашего основного сервиса, который обычно равен `9001`. Поэтому мы хотим собирать метрики для нашего основного процесса и запустить отдельный сервер Fastify для передачи этих метрик скребку. Поэтому мы создаем файл `plugins/metrics.js` со следующим содержимым:
 
 ```js
 'use strict';
@@ -418,7 +422,7 @@ module.exports = fp(
 );
 ```
 
-Then, we need to configure Fly.io to pull our custom metrics into its monitoring solution. Thus, we add the following to `fly.toml`:
+Затем нам нужно настроить Fly.io на получение наших пользовательских метрик в своем решении для мониторинга. Таким образом, мы добавляем следующее в `fly.toml`:
 
 ```toml
 [metrics]
@@ -426,7 +430,7 @@ Then, we need to configure Fly.io to pull our custom metrics into its monitoring
   path = "/metrics"
 ```
 
-Next, we run our usual trio of commands in our terminal: `git add .`, `git commit`, and `git push`. After the GitHub Action deploys our code, we can then test this by using the following:
+Далее мы запускаем в терминале нашу обычную тройку команд: `git add .`, `git commit` и `git push`. После того как GitHub Action развернет наш код, мы можем протестировать его, используя следующее:
 
 ```sh
 $ curl https://api.fly.io/prometheus/personal/api/v1/query_
@@ -441,78 +445,78 @@ fog-346"}[5m])) by (status)' \
 [1659088703,"0"],[1659088733,"0"]]}]}}
 ```
 
-The `curl` command verifies that Fly.io is now monitoring our application – specifically, it checks the number of active handles (sockets, etc.) in Node.js. The command uses a bearer token authorization scheme (i.e., the `Authorization` header), so we will need to use the Fly.io authorization token we generated before. In case you did not copy the authorization token, you can retrieve it with `fly auth token`. When running this code, you should remember to also update the app name with yours.
+Команда `curl` проверяет, что Fly.io теперь следит за нашим приложением - в частности, она проверяет количество активных хендлов (сокетов и т. д.) в Node.js. Команда использует схему авторизации с использованием токена на предъявителя (т.е. заголовок `Authorization`), поэтому нам понадобится токен авторизации Fly.io, который мы сгенерировали ранее. Если вы не скопировали токен авторизации, вы можете получить его с помощью команды `fly auth token`. При выполнении этого кода не забудьте также обновить название приложения на свое.
 
-Grafana will use this endpoint to fetch the data for its visualizations.
+Grafana будет использовать эту конечную точку для получения данных для своих визуализаций.
 
-### Exploring the metrics with Grafana
+### Исследование метрик с помощью Grafana {#exploring-the-metrics-with-grafana}
 
-In this book, we will use Grafana Cloud, the hosted version of the Grafana open source project. To get started, head to <https://grafana.com/> and sign up for a new, free account. You will eventually land on the following screen:
+В этой книге мы будем использовать Grafana Cloud, хостинговую версию проекта Grafana с открытым исходным кодом. Чтобы начать работу, перейдите по адресу <https://grafana.com/> и зарегистрируйте новый бесплатный аккаунт. В итоге вы окажетесь на следующем экране:
 
-![Figure 10.6: Grafana Cloud first screen](deploy-6.png)
+![Рисунок 10.6: Первый экран Grafana Cloud](deploy-6.png)
 
-<center>Figure 10.6: Grafana Cloud first screen</center>
+<center>Рисунок 10.6: Первый экран Grafana Cloud</center>
 
-Click on **Connect data** (or in the menu, click on **Connections**), and then search for `Prometheus`:
+Нажмите на **Подключить данные** (или в меню нажмите на **Подключения**), а затем выполните поиск `Prometheus`:
 
-![Figure 10.7: Grafana Cloud integrations and connections](deploy-7.png)
+![Рисунок 10.7: Интеграции и подключения в облаке Grafana](deploy-7.png)
 
-<center>Figure 10.7: Grafana Cloud integrations and connections</center>
+<center>Рисунок 10.7: Интеграции и подключения в облаке Grafana</center>
 
-Next, click on **Prometheus data source**, then **Create a Prometheus data source**:
+Далее нажмите на **Источник данных Prometheus**, затем **Создать источник данных Prometheus**:
 
-![Figure 10.8: Creating a Prometheus integration in Grafana Cloud](deploy-8.png)
+![Рисунок 10.8: Создание интеграции Prometheus в Grafana Cloud](deploy-8.png)
 
-<center>Figure 10.8: Creating a Prometheus integration in Grafana Cloud</center>
+<center>Рисунок 10.8: Создание интеграции Prometheus в Grafana Cloud</center>
 
-Now, we can configure our Prometheus data source. We follow a similar approach to the `curl` command in the previous section: we must authorize Grafana to fetch data from Fly.io. To do so, we set the `Authorization` header with the `Bearer TOKEN` value, where `TOKEN` is the output of `fly auth token`. The next figure shows the final configuration.
+Теперь мы можем настроить наш источник данных Prometheus. Мы используем подход, аналогичный команде `curl` в предыдущем разделе: мы должны авторизовать Grafana для получения данных с Fly.io. Для этого мы задаем в заголовке `Authorization` значение `Bearer TOKEN`, где `TOKEN` - это вывод `fly auth token`. На следующем рисунке показана окончательная конфигурация.
 
-![Figure 10.9: The settings of the Prometheus integration in Grafana Cloud](deploy-9.png)
+![Рисунок 10.9: Настройки интеграции Prometheus в Grafana Cloud](deploy-9.png)
 
-<center>Figure 10.9: The settings of the Prometheus integration in Grafana Cloud</center>
+<center>Рисунок 10.9: Настройки интеграции Prometheus в Grafana Cloud</center>
 
-!!!note "Grafana and Fly.io"
+!!!note "Grafana и Fly.io"
 
-    You can find more information about [how Fly.io can integrate with Grafana](https://fly.io/docs/reference/metrics/#grafana).
+    Вы можете найти дополнительную информацию о [том, как Fly.io может интегрироваться с Grafana] (https://fly.io/docs/reference/metrics/#grafana).
 
-Now, click **Save & test**, then **Explore**. In the next screen, select `fly_instance_memory_mem_total` as a metric, apply `app = shy-fog-346` as a label (use your own app name), and click on **Run query**. The final setup will look like this:
+Теперь нажмите **Save & test**, затем **Explore**. В следующем окне выберите `fly_instance_memory_mem_total` в качестве метрики, примените `app = shy-fog-346` в качестве метки (используйте собственное имя приложения) и нажмите **Run query**. Окончательная настройка будет выглядеть следующим образом:
 
-![Figure 10.10: Exploring the metrics provided by Fly.io in Grafana Cloud](deploy-10.png)
+![Рисунок 10.10: Изучение метрик, предоставляемых Fly.io, в Grafana Cloud](deploy-10.png)
 
-<center>Figure 10.10: Exploring the metrics provided by Fly.io in Grafana Cloud</center>
+<center>Рисунок 10.10: Изучение метрик, предоставляемых Fly.io, в Grafana Cloud</center>
 
-Here, we can see Fly.io monitoring the memory of our application.
+Здесь мы видим, как Fly.io следит за памятью нашего приложения.
 
-The `fastify-metrics` module provides a few interesting metrics regarding Fastify:
+Модуль `fastify-metrics` предоставляет несколько интересных метрик, касающихся Fastify:
 
--   `http_request_duration_seconds_count` – the total number of HTTP requests in the interval
--   `http_request_summary_seconds` – the request duration divided by percentiles
+-   `http_request_duration_seconds_count` - общее количество HTTP-запросов в интервале
+-   `http_request_summary_seconds` - длительность запроса, разделенная на проценты
 
-`Prom-client` provides metrics regarding the Node.js instance. You can refer to <https://github.com/siimon/prom-client/tree/721829cc593bb7da28ae009985caeeacb4b59e05/lib/metrics> for the full list of available metrics, but I recommend you to plot the following:
+`Prom-client` предоставляет метрики для экземпляра Node.js. Вы можете обратиться к <https://github.com/siimon/prom-client/tree/721829cc593bb7da28ae009985caeeacb4b59e05/lib/metrics> за полным списком доступных метрик, но я рекомендую вам построить график следующих:
 
--   `nodejs_event_loop_lag_p99_seconds` – to monitor whether we are saturating our event loop and need to further optimize our application
--   `nodejs_heap_space_used_bytes` – to monitor how much memory our application uses and spot memory issues early
+-   `nodejs_event_loop_lag_p99_seconds` - для отслеживания того, насыщается ли наш цикл событий и нужно ли дальше оптимизировать наше приложение
+-   `nodejs_heap_space_used_bytes` - чтобы отслеживать, сколько памяти использует наше приложение, и выявлять проблемы с памятью на ранней стадии.
 
-As a different example, we can plot the maximum latency across all routes for each instance of our application:
+В качестве другого примера мы можем построить график максимальной задержки по всем маршрутам для каждого экземпляра нашего приложения:
 
-![Figure 10.11: Plotting the latency of our server at various quantiles in Grafana Cloud](deploy-11.png)
+![Рисунок 10.11: График задержки нашего сервера при различных квантилях в Grafana Cloud](deploy-11.png)
 
-<center>Figure 10.11: Plotting the latency of our server at various quantiles in Grafana Cloud</center>
+<center>Рисунок 10.11: График задержки нашего сервера при различных квантилях в Grafana Cloud</center>
 
-The preceding diagram shows the latency of all routes of our server at different quantiles. We are interested in the 0.95 or 0.99 quantiles because they consider most requests while excluding the outliers. This is useful to understand how our application is performing for most users.
+На предыдущей диаграмме показана задержка всех маршрутов нашего сервера при различных квантилях. Нас интересуют квантили 0,95 и 0,99, поскольку они учитывают большинство запросов, исключая при этом провалы. Это полезно для того, чтобы понять, как работает наше приложение для большинства пользователей.
 
-!!!note "Quantiles or percentiles"
+!!!note "Квантиль или перцентиль"
 
-    _“In statistics and probability, quantiles are cut points dividing the range of a probability distribution into continuous intervals with equal probabilities, or dividing the observations in a sample in the same way. There is one fewer quantile than the number of groups created. Common quantiles have special names, such as quartiles (four groups), deciles (ten groups), and percentiles (100 groups). The groups created are termed halves, thirds, quarters, etc., though sometimes the terms for the quantile are used for the groups created, rather than for the cut points.”_ – <https:// en.wikipedia.org/wiki/Quantile>
+    В статистике и теории вероятностей квантили - это точки среза, делящие диапазон распределения вероятностей на непрерывные интервалы с равными вероятностями, или делящие наблюдения в выборке таким же образом. Количество квантилей на один меньше, чем количество созданных групп. Общие квантили имеют специальные названия, например, квартили (четыре группы), децили (десять групп) и перцентили (100 групп). Созданные группы называются половинами, третями, четвертями и т. д., хотя иногда термины для квантилей используются для созданных групп, а не для точек отсечения."_ - <https:// en.wikipedia.org/wiki/Quantile>.
 
-We have learned how to integrate Fly.io with Grafana Cloud, and now we have a powerful monitoring site that we can configure to our liking. As an exercise, we recommend exploring all the metrics available in Grafana and creating a full dashboard!
+Мы узнали, как интегрировать Fly.io с Grafana Cloud, и теперь у нас есть мощный сайт мониторинга, который мы можем настроить по своему вкусу. В качестве упражнения мы рекомендуем изучить все метрики, доступные в Grafana, и создать полноценный дашборд!
 
 !!!note "Grafana"
 
-    To learn more about Grafana, check out Learn Grafana 7.0, by Eric Salituro.
+    Чтобы узнать больше о Grafana, прочитайте статью Learn Grafana 7.0, написанную Эриком Салитуро.
 
-## Summary
+## Резюме {#summary}
 
-In this chapter, we have deployed our Fastify application to Fly.io with the database hosted in MongoDB Atlas. Then, we added monitoring with the Prometheus instance hosted by Fly.io. Finally, we connected Prometheus with Grafana Cloud.
+В этой главе мы развернули наше приложение Fastify на Fly.io с базой данных, размещенной в MongoDB Atlas. Затем мы добавили мониторинг с помощью экземпляра Prometheus, размещенного на Fly.io. Наконец, мы подключили Prometheus к Grafana Cloud.
 
-In the next chapter, we will cover how to set up logging in our Fastify application to produce readable, inspectable, and useful logs.
+В следующей главе мы расскажем о том, как настроить ведение журналов в приложении Fastify для получения читаемых, проверяемых и полезных журналов.
