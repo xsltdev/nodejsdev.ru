@@ -182,13 +182,13 @@ module.exports = fp(
 );
 ```
 
-We start by requiring the `generate-hash.js` local module (`[1]`). We don’t want to save users’ passwords in plain text, so we use this module to generate a hash and a salt to store in the database. Again, you can find the implementation in the GitHub repository. Next, since we want to expose the five routes declared in the body of the plugin directly on the root path, we set the `prefixOverride` property to an empty string and exported it (`[2]`). Since we are inside the `./routes/auth` subfolder, `@fastify/autoload` would instead mount the routes to the `/auth/` path. Furthermore, since inside our route declarations, we rely on methods decorated in `authentication-plugin`, we add it to the `dependencies` array (`[3]`). Finally, we want to override the default behavior of `fastify-plugin` to isolate this plugin’s code, and therefore, we pass `true` to the `encapsulate` options.
+Начнем с того, что нам потребуется локальный модуль `generate-hash.js` (`[1]`). Мы не хотим хранить пароли пользователей в виде обычного текста, поэтому используем этот модуль для генерации хэша и соли для хранения в базе данных. Опять же, вы можете найти реализацию в репозитории GitHub. Далее, поскольку мы хотим отобразить пять маршрутов, объявленных в теле плагина, непосредственно на корневой путь, мы установили свойство `prefixOverride` в пустую строку и экспортировали его (`[2]`). Поскольку мы находимся внутри подпапки `./routes/auth`, `@fastify/autoload` вместо этого смонтировал бы маршруты по пути `/auth/`. Кроме того, поскольку внутри наших объявлений маршрутов мы полагаемся на методы, которые декорируем в `authentication-plugin`, мы добавляем его в массив `dependencies` (`[3]`). Наконец, мы хотим переопределить поведение по умолчанию `fastify-plugin`, чтобы изолировать код этого плагина, и поэтому мы передаем `true` в опции `encapsulate`.
 
-This wraps up the general overview. Next, we can examine the `register` route.
+На этом общий обзор закончен. Далее мы рассмотрим маршрут `register`.
 
-#### Register route {#register-route}
+#### Маршрут «Регистрация» {#register-route}
 
-This route allows new users to register on our platform. Let’s explore the implementation by looking at the following snippet:
+Этот маршрут позволяет новым пользователям регистрироваться на нашей платформе. Давайте изучим его реализацию, рассмотрев следующий фрагмент:
 
 ```js
 fastify.post('/register', {
@@ -241,19 +241,19 @@ fastify.post('/register', {
 });
 ```
 
-Let’s break down the execution of the preceding code snippet:
+Давайте разберем выполнение предыдущего фрагмента кода:
 
--   First, `fastify.post` is used to declare a new route for the HTTP POST method with the `/register` path (`[1.1]`).
--   We specify the request body schema using `fastify.getSchema` (`[1.2]`). We will not see this schema implementation in the book, but it can be found in the GitHub repository as usual.
--   Moving to the handler function details, we use `request.body.username` to check whether the user is already registered to the application (`[1.3]`). If so, we throw a `409` HTTP error (`[1.4]`). Otherwise, `request.body.password` is passed to the `generateHash` function to create a hash and a salt from it (`[1.5]`).
--   Then, we use these variables and `request.body.username` to insert the new user in the DB (`[1.6]`).
--   If no errors are thrown during this creation process, the handler replies with a `201` HTTP code and a `{ registered: true }` body (`[1.7]`). On the other hand, if there are errors, the reply contains a `500` HTTP code and a `{ registered: false }` body (`[1.8]`).
+-   Во-первых, `fastify.post` используется для объявления нового маршрута для метода HTTP POST с путем `/register` (`[1.1]`).
+-   Мы указываем схему тела запроса с помощью `fastify.getSchema` (`[1.2]`). В книге мы не увидим реализацию этой схемы, но ее, как обычно, можно найти в репозитории GitHub.
+-   Переходя к деталям функции-обработчика, мы используем `request.body.username` для проверки того, зарегистрирован ли уже пользователь в приложении (`[1.3]`). Если да, то мы выбрасываем `409` HTTP-ошибку (`[1.4]`). В противном случае `request.body.password` передается функции `generateHash` для создания из него хэша и соли (`[1.5]`).
+-   Затем мы используем эти переменные и `request.body.username` для вставки нового пользователя в БД (`[1.6]`).
+-   Если в процессе создания не возникло ошибок, обработчик отвечает HTTP-кодом `201` и телом `{ registered: true }` (`[1.7]`). С другой стороны, если ошибки есть, то ответ содержит `500` HTTP-код и `{ registered: false }` тело (`[1.8]`).
 
-The following section will examine how the users authenticate with our platform.
+В следующем разделе мы рассмотрим, как пользователи проходят аутентификацию на нашей платформе.
 
-#### Authenticate route {#authenticate-route}
+#### Маршрут аутентификации {#authenticate-route}
 
-The next route on the list is the POST `/authenticate` route. It allows registered users to generate a new JWT token using their password. The following snippet shows the implementation:
+Следующий маршрут в списке - это маршрут POST `/authenticate`. Он позволяет зарегистрированным пользователям сгенерировать новый JWT-токен, используя свой пароль. В следующем фрагменте показана реализация:
 
 ```js
 fastify.post('/authenticate', {
@@ -300,21 +300,21 @@ fastify.post('/authenticate', {
 });
 ```
 
-Let’s break down the code execution:
+Давайте разберем выполнение кода:
 
--   Once more, we use the auth schemas we declared in the dedicated folder (`[2.1]`) to secure and speed the route’s body and response payloads.
--   Then, inside the handler function, we read the user’s data from the database using the `request.body.username` property (`[2.2]`).
--   If no user is found in the system, we return `401` instead of `404`, with the **Wrong credentials provided** message, to prevent attackers from discovering which users are registered (`[2.3]`).
--   We are now able to use the `user.salt` property we got from the database to generate a new hash (`[2.4]`). The generated `hash` is then compared with the hash stored in the data source during the user registration.
--   If they do not match, the function throws the same `401` error using the `throw` statement (`[2.5]`).
--   On the other hand, if the check is successful, the now authenticated user is attached to the request object for further processing (`[2.6]`).
--   Finally, the handler invokes the `refreshHandler` function, passing `request` and `reply` as arguments (`[2.7]`).
+-   Мы снова используем схемы аутентификации, которые мы объявили в специальной папке (`[2.1]`), для защиты и ускорения полезной нагрузки тела маршрута и ответа.
+-   Затем, внутри функции-обработчика, мы считываем данные пользователя из базы данных, используя свойство `request.body.username` (`[2.2]`).
+-   Если пользователь не найден в системе, мы возвращаем `401` вместо `404` с сообщением **Wrong credentials provided**, чтобы злоумышленники не смогли узнать, какие пользователи зарегистрированы (`[2.3]`).
+-   Теперь мы можем использовать свойство `user.salt`, полученное из базы данных, для генерации нового хэша (`[2.4]`). Затем сгенерированный `хэш` сравнивается с хэшем, сохраненным в источнике данных при регистрации пользователя.
+-   Если они не совпадают, функция выбрасывает ту же самую ошибку `401`, используя оператор `throw` (`[2.5]`).
+-   С другой стороны, если проверка прошла успешно, то теперь аутентифицированный пользователь присоединяется к объекту запроса для дальнейшей обработки (`[2.6]`).
+-   Наконец, обработчик вызывает функцию `refreshHandler`, передавая в качестве аргументов `request` и `reply` (`[2.7]`).
 
-We will see the `refreshHandler` implementation in the following section, where we look at the `/refresh` route.
+Реализацию `refreshHandler` мы увидим в следующем разделе, где мы рассмотрим маршрут `/refresh`.
 
-#### Refresh route {#refresh-route}
+#### Маршрут Refresh {#refresh-route}
 
-Once authenticated, the `refresh` route allows our users to generate more tokens without providing their usernames and passwords. Since we already saw that we are using the same logic inside the `authenticate` route, we moved this route handler to a separate function. The following code block shows these details:
+После аутентификации маршрут `refresh` позволяет нашим пользователям генерировать больше токенов, не предоставляя свои имена и пароли. Поскольку мы уже видели, что используем ту же логику внутри маршрута `authenticate`, мы перенесли обработчик этого маршрута в отдельную функцию. В следующем блоке кода показаны эти детали:
 
 ```js
 fastify.post('/refresh', {
@@ -335,13 +335,13 @@ async function refreshHandler(request, reply) {
 }
 ```
 
-This route is the first one protected by the authentication layer. To enforce it, we use `fastify. authenticate` `onRequest` hook, which we created in the _Authentication plugin_ section (`[3.1]`). The route handler function is `refreshHandler` (`[3.2]`), which generates a new JWT token and returns it as the response. Finally, the handler calls the `generateToken` method decorated onto the request object by the authentication plugin (`[3.3]`) and then returns its value to the client. The route is authenticated because we generate the new token from the request called by already authorized users.
+Этот маршрут - первый, защищенный слоем аутентификации. Для ее обеспечения мы используем хук `fastify. authenticate` `onRequest`, который мы создали в разделе _Плагин аутентификации_ (`[3.1]`). Функция обработчика маршрута - `refreshHandler` (`[3.2]`), которая генерирует новый JWT-токен и возвращает его в качестве ответа. Наконец, обработчик вызывает метод `generateToken`, который декорируем в объекте запроса плагином аутентификации (`[3.3]`), а затем возвращает его значение клиенту. Маршрут аутентифицирован, поскольку мы генерируем новый токен из запроса, вызванного уже авторизованными пользователями.
 
-The time has come to look at how we invalidate user tokens, and we will do precisely that in the next section.
+Пришло время рассмотреть, как мы аннулируем пользовательские токены, и мы сделаем это в следующем разделе.
 
-### Logout route {#logout-route}
+### Маршрут выхода из системы {#logout-route}
 
-Until now, we didn’t use the `revokedTokens` map and `revokeToken` request method we created in the _Authentication plugin_ section. However, the logout implementation relies on them. Let’s jump into the code:
+До сих пор мы не использовали карту `revokedTokens` и метод запроса `revokeToken`, которые мы создали в разделе _Плагин аутентификации_. Однако реализация выхода из системы опирается на них. Давайте перейдем к коду:
 
 ```js
 fastify.post('/logout', {
@@ -353,22 +353,22 @@ fastify.post('/logout', {
 });
 ```
 
-Since we want only authenticated users to invalidate their tokens, the `/logout` route is once more protected by the authentication hook (`[4.1]`). Assuming the request authentication succeeds, the handler function revokes the current token calling the `request.revokenToken` method (`[4.2]`), which is attached to the request object by the authentication plugin we developed previously. This call adds the token to the `revokedTokens` map used internally by the `@fastify/jwt` plugin to determine invalid entries. The token revocation process ensures that the token cannot be used again for authentication, even if an attacker manages to obtain it. Finally, the handler sends an empty `204` response to the client, indicating a successful logout (`[4.3]`).
+Поскольку мы хотим, чтобы только аутентифицированные пользователи аннулировали свои токены, маршрут `/logout` снова защищен хуком аутентификации (`[4.1]`). Если аутентификация запроса прошла успешно, функция-обработчик отзывает текущий токен, вызывая метод `request.revokenToken` (`[4.2]`), который прикреплен к объекту запроса плагином аутентификации, разработанным нами ранее. Этот вызов добавляет токен в карту `revokedTokens`, используемую внутренним плагином `@fastify/jwt` для определения недействительных записей. Процесс отзыва токена гарантирует, что токен не сможет быть использован для аутентификации, даже если злоумышленнику удастся его получить. Наконец, обработчик отправляет клиенту пустой ответ `204`, указывающий на успешный выход из системы (`[4.3]`).
 
-This completes this section about the authentication routes. In the following one, we will implement our authorization layer.
+На этом раздел о маршрутах аутентификации завершен. В следующем разделе мы реализуем уровень авторизации.
 
-## Adding the authorization layer {#adding-the-authorization-layer}
+## Добавление уровня авторизации {#adding-the-authorization-layer}
 
-Now that we can have all authentication pieces in place, we can finally move on to implementing the authorization layer of our application. To adequately protect our endpoints, we need to do two main things to the `./routes/todos` module from [Chapter 7](./restful-api.md):
+Теперь, когда у нас есть все элементы аутентификации, мы можем перейти к реализации уровня авторизации нашего приложения. Чтобы адекватно защитить наши конечные точки, нам нужно сделать две основные вещи с модулем `./routes/todos` из [Главы 7](./restful-api.md):
 
--   Add the authentication layer to `./routes/todos/routes.js`
--   Update the to-do data source inside `./routes/todos/autohook.js`
+-   Добавить уровень аутентификации в `./routes/todos/routes.js`.
+-   Обновите источник данных о делах внутри `./routes/todos/autohook.js`.
 
-Fortunately, we need only a one-liner change to implement the first point. On the other hand, the second point is more complex. We will examine both in the following subsections.
+К счастью, для реализации первого пункта нам потребуется всего одно изменение. С другой стороны, второй пункт сложнее. Мы рассмотрим их в следующих подразделах.
 
-### Adding the authentication layer {#adding-the-authentication-layer}
+### Добавление слоя аутентификации {#adding-the-authentication-layer}
 
-Let’s start with the simpler task. As we already said, this is a fast addition to the [Chapter 7](./restful-api.md) code that we can see in the following snippet:
+Начнем с более простой задачи. Как мы уже говорили, это быстрое дополнение к коду [Глава 7](./restful-api.md), которое мы можем увидеть в следующем фрагменте:
 
 ```js
 module.exports = async function todoRoutes(fastify, _opts) {
@@ -377,16 +377,16 @@ module.exports = async function todoRoutes(fastify, _opts) {
 };
 ```
 
-To protect our to-do routes, we add the `onRequest` `fastify.authenticate` hook (`[1]`), which we previously used for authentication routes. This hook will check whether the incoming request has the authentication HTTP header, and after validating it, it will add the `user` information object to the request.
+Чтобы защитить наши маршруты дел, мы добавляем хук `onRequest` `fastify.authenticate` (`[1]`), который мы ранее использовали для маршрутов аутентификации. Этот хук будет проверять, есть ли в входящем запросе HTTP-заголовок аутентификации, и после его проверки добавит в запрос информационный объект `user`.
 
-### Updating the to-do data source {#updating-the-to-do-data-source}
+### Обновление источника данных о делах {#updating-the-to-do-data-source}
 
-Since our application deals only with one type of entity, our authorization layer is straightforward to implement. The idea is to prevent users from accessing and modifying tasks that belong to other users. Until this point, we could see our application as a single-user application:
+Поскольку наше приложение работает только с одним типом сущностей, уровень авторизации реализовать просто. Идея заключается в том, чтобы запретить пользователям получать доступ к задачам, принадлежащим другим пользователям, и изменять их. До этого момента мы могли рассматривать наше приложение как однопользовательское:
 
--   Every task we created doesn’t have any reference to the user that created it
--   Every `Read`, `Update`, and `Delete` operation can be executed on every item by every user
+-   Каждая созданная нами задача не имеет никакой ссылки на пользователя, который ее создал.
+-   Каждая операция `Read`, `Update` и `Delete` может быть выполнена над каждым элементом любым пользователем.
 
-As we already said, the correct place to fix these issues is the `mongoDataSource` decorator we implemented in [Chapter 7](./restful-api.md). Since we now have two data sources, one for the users and the other for the to-do items, we will rename `mongoDataSource` to `todosDataSource` to reflect its duties better. Because we need to change all methods to add a proper authorization layer, the code snippet would get too long. Instead of showing its entirety here, the following snippet shows changes only for `listTodos` and `createTodos`. All changes can be found in the `./routes/todos/autohooks.js` file inside the GitHub repository of this chapter:
+Как мы уже говорили, правильным местом для решения этих проблем является декоратор `mongoDataSource`, который мы реализовали в [Глава 7](./restful-api.md). Поскольку у нас теперь два источника данных, один для пользователей, а другой для пунктов дел, мы переименуем `mongoDataSource` в `todosDataSource`, чтобы лучше отразить его обязанности. Поскольку нам нужно изменить все методы, чтобы добавить надлежащий уровень авторизации, фрагмент кода получился бы слишком длинным. Вместо того чтобы показать его полностью, в следующем фрагменте показаны изменения только для `listTodos` и `createTodos`. Все изменения можно найти в файле `./routes/todos/autohooks.js` в репозитории GitHub этой главы:
 
 ```js
 // ... omitted for brevity
@@ -451,30 +451,30 @@ module.exports = fp(async function todoAutoHooks(
 });
 ```
 
-Instead of decorating the Fastify instance as we did initially in [Chapter 7](./restful-api.md), we are now moving the logic inside the `request` object. This change allows easy access to the `user` object that our authentication layer attaches to the request. Later, we will use this data across all `todosDataSource` methods.
+Вместо того чтобы декорировать экземпляр Fastify, как мы это делали в [Глава 7](./restful-api.md), теперь мы переносим логику в объект `request`. Это изменение позволяет легко получить доступ к объекту `user`, который наш уровень аутентификации прикрепляет к запросу. Позже мы будем использовать эти данные во всех методах `todosDataSource`.
 
-Let’s take a closer look at the code:
+Давайте рассмотрим код подробнее:
 
--   First, we decorate the request with `todosDataSource`, setting its value to null (`[1]`). We do this to trigger a speed optimization: making the application aware of the existence of the `todosDataSource` property at the beginning of the request life cycle will make its creation faster.
--   Then, we add the `onRequest` hook (`[2]`), which will be called after `fastify.authentication` has already added the user data.
--   Inside the hook, a new object containing the data source implementations is assigned to the `todosDataSource` property on the request (`[3]`).
--   Next, `listTodos` now uses `request.user.id` as a filter field (`[4]`) to return only the data that belongs to the current user.
--   To make this filter work, we must add the `userId` property to the newly created tasks (`[5]`).
+-   Сначала мы декорируем запрос с помощью `todosDataSource`, устанавливая его значение в null (`[1]`). Это делается для оптимизации скорости: если приложение узнает о существовании свойства `todosDataSource` в начале жизненного цикла запроса, то его создание будет происходить быстрее.
+-   Затем мы добавляем хук `onRequest` (`[2]`), который будет вызван после того, как `fastify.authentication` уже добавит пользовательские данные.
+-   Внутри хука новый объект, содержащий реализации источников данных, присваивается свойству `todosDataSource` в запросе (`[3]`).
+-   Далее, `listTodos` теперь использует `request.user.id` в качестве поля фильтра (`[4]`), чтобы вернуть только те данные, которые принадлежат текущему пользователю.
+-   Чтобы этот фильтр работал, мы должны добавить свойство `userId` во вновь созданные задачи (`[5]`).
 
-As we said, we omit the other methods for brevity, but they follow the same pattern using `userId` as a filter. Again, the complete code is present in the GitHub repository.
+Как мы уже говорили, для краткости мы опускаем остальные методы, но они следуют той же схеме, используя `userId` в качестве фильтра. Опять же, полный код присутствует в репозитории GitHub.
 
-We just completed our authentication and authorization layers. The next section will show how to handle file uploads and downloads inside authentication-protected endpoints.
+Мы только что завершили работу над слоями аутентификации и авторизации. В следующем разделе мы покажем, как обрабатывать загрузку и скачивание файлов внутри конечных точек, защищенных аутентификацией.
 
-## Managing uploads and downloads {#managing-uploads-and-downloads}
+## Управление загрузками и скачиваниями {#managing-uploads-and-downloads}
 
-We need to add two more functionalities to our application, and we will do it by developing a dedicated Fastify plugin. The first will allow our users to upload CSV files to create to-do tasks in bulk. We will rely on two external dependencies to do it:
+Нам нужно добавить еще две функции в наше приложение, и мы сделаем это, разработав специальный плагин Fastify. Первый позволит нашим пользователям загружать CSV-файлы для массового создания задач. Для этого мы будем опираться на две внешние зависимости:
 
--   `@fastify/multipart` for file uploads
--   `csv-parse` for CSV parsing
+-   `@fastify/multipart` для загрузки файлов
+-   `csv-parse` для парсинга CSV.
 
-The second plugin will expose an endpoint to download items as a CSV file. Again, we need the external `csv-stringify` library to serialize objects and create the document.
+Второй плагин будет предоставлять конечную точку для загрузки элементов в виде CSV-файла. И снова нам понадобится внешняя библиотека `csv-stringify` для сериализации объектов и создания документа.
 
-While we will split the code into two snippets in the book, the complete code can be found in `./routes/todos/files/routes.js`. Let’s explore the following snippet, which contains the file upload and items bulk creation logic:
+Хотя в книге мы разделим код на два фрагмента, полный код можно найти в файле `./routes/todos/files/routes.js`. Давайте рассмотрим следующий фрагмент, который содержит логику загрузки файлов и массового создания элементов:
 
 ```js
 const fastifyMultipart = require('@fastify/multipart');
@@ -528,18 +528,18 @@ fastify.route({
 // ... omitted for brevity
 ```
 
-Let’s go through the code execution:
+Давайте пройдемся по выполнению кода:
 
--   First, we register the `@fastify/multipart` plugin to the Fastify instance (`[1]`).
--   To be able to access the content of the uploaded file directly from `request.body`, we pass the `attachFieldsToBody` and `sharedSchemaId` options (`[2]`).
--   Next, we specify the `onFile` option property (`[3]`) to handle incoming streams. This function will be called for every file in the incoming request.
--   Then, we use the `csvParse` library to transform the file into a stream of lines (`[4]`).
--   A `for await` loop iterates over each parsed line (`[5]`) and transforms the data from each line, adding it to the `lines` array, and we assign the array to `part.value` (`[6]`).
--   Finally, thanks to the options we passed to `@fastify/multipart`, we can access the `lines` array directly from `request.body.todoListFile` and use it as the argument for the `createTodos` method (`[7]`).
+-   Сначала мы регистрируем плагин `@fastify/multipart` в экземпляре Fastify (`[1]`).
+-   Чтобы получить доступ к содержимому загружаемого файла непосредственно из `request.body`, мы передаем опции `attachFieldsToBody` и `sharedSchemaId` (`[2]`).
+-   Далее мы указываем свойство опции `onFile` (`[3]`) для обработки входящих потоков. Эта функция будет вызываться для каждого файла во входящем запросе.
+-   Затем мы используем библиотеку `csvParse` для преобразования файла в поток строк (`[4]`).
+-   Цикл `for await` перебирает каждую разобранную строку (`[5]`) и преобразует данные из каждой строки, добавляя их в массив `lines`, после чего мы присваиваем массиву значение `part.value` (`[6]`).
+-   Наконец, благодаря опциям, которые мы передали в `@fastify/multipart`, мы можем получить доступ к массиву `lines` непосредственно из `request.body.todoListFile` и использовать его в качестве аргумента для метода `createTodos` (`[7]`).
 
-Once more, we are omitting the `createTodos` implementation, which can be found in the GitHub repository.
+И снова мы опускаем реализацию `createTodos`, которую можно найти в репозитории GitHub.
 
-We can now move on to the endpoint for tasks exporting. The following snippet shows the implementation:
+Теперь мы можем перейти к конечной точке для экспорта задач. В следующем фрагменте показана реализация:
 
 ```js
 fastify.route({
@@ -589,12 +589,12 @@ fastify.route({
 });
 ```
 
-We call the `listTodos` method of the `request.todosDataSource` (`[1]`) object to retrieve the list of to-do tasks that match the optional `title` parameter. If no title is passed, then the method will return all items. Moreover, thanks to our authentication layer, we know they will be automatically filtered based on the current user. The `asStream` option is set to `true` to handle cases where the data could be massive (`[2]`). The `Content-Disposition` header is set to specify that the response is an attachment with a filename of `todo-list.csv` (`[3]`). Finally, the cursor stream is piped to the `csvStringify` function to convert the data to a CSV file, which is then returned as the response body (`[4]`).
+Мы вызываем метод `listTodos` объекта `request.todosDataSource` (`[1]`), чтобы получить список дел, которые соответствуют необязательному параметру `title`. Если заголовок не передан, то метод вернет все элементы. Более того, благодаря нашему уровню аутентификации, мы знаем, что они будут автоматически отфильтрованы на основе текущего пользователя. Параметр `asStream` имеет значение `true` для обработки случаев, когда данные могут быть массивными (`[2]`). В заголовке `Content-Disposition` указывается, что ответ является вложением с именем файла `todo-list.csv` (`[3]`). Наконец, поток курсора передается в функцию `csvStringify` для преобразования данных в CSV-файл, который затем возвращается в качестве тела ответа (`[4]`).
 
-With this last section, we significantly increased the capabilities of our application, allowing users to import and export their tasks efficiently.
+С помощью этого последнего раздела мы значительно расширили возможности нашего приложения, позволив пользователям эффективно импортировать и экспортировать свои задачи.
 
-## Summary {#summary}
+## Резюме {#summary}
 
-In this chapter, we added an authentication layer to ensure that only registered users can perform actions on the to-do items. Moreover, thanks to the modest authorization layer, we ensured that users could only access tasks they created. Finally, we showed how simple upload and download capabilities are to implement using a real-world example of bulk imports and exports.
+В этой главе мы добавили уровень аутентификации, чтобы гарантировать, что только зарегистрированные пользователи могут выполнять действия над пунктами дел. Более того, благодаря скромному уровню авторизации мы убедились, что пользователи могут получить доступ только к созданным ими задачам. Наконец, мы показали, насколько просто реализовать возможности загрузки и выгрузки на примере массового импорта и экспорта.
 
-In the next chapter, we will learn how to make our application reliable in production. We will use the tools that Fastify integrates to test our endpoints thoroughly. We want to prevent introducing any disruptions for our users because of lousy code pushed to production.
+В следующей главе мы узнаем, как сделать наше приложение надежным в производстве. Мы будем использовать инструменты, интегрированные в Fastify, чтобы тщательно протестировать наши конечные точки. Мы хотим избежать сбоев в работе наших пользователей из-за некачественного кода, запущенного в производство.
