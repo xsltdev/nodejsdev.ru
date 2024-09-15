@@ -1,0 +1,9 @@
+title: Создание реального проекта
+nav:
+    - index.md
+    - project-structure.md
+    - restful-api.md
+    - auth.md
+    - testing.md
+    - deploy.md
+    - logging.md
