@@ -1,37 +1,41 @@
+---
+description: В этой главе мы рассмотрим, как встроенная в Fastify поддержка TypeScript может помочь нам писать более надежные и поддерживаемые приложения
+---
+
 # Type-Safe Fastify
 
-Welcome to the final chapter of this book! This chapter will explore how Fastify’s built-in TypeScript support can help us write more robust and maintainable applications.
+<big>Добро пожаловать в заключительную главу этой книги! В этой главе мы рассмотрим, как встроенная в Fastify **поддержка TypeScript** может помочь нам писать более надежные и поддерживаемые приложения.</big>
 
-Type safety is a crucial aspect of modern software development. It allows developers to catch errors and bugs early in the development process, reducing the time and cost of debugging and testing. By using TypeScript with Fastify, you can benefit from compile-time type safety and avoid unexpected runtime errors, leading to more stable and reliable applications.
+Безопасность типов - важнейший аспект современной разработки программного обеспечения. Она позволяет разработчикам выявлять ошибки и недочеты на ранних этапах процесса разработки, сокращая время и затраты на отладку и тестирование. Используя TypeScript с Fastify, вы можете воспользоваться преимуществами безопасности типов во время компиляции и избежать непредвиденных ошибок во время выполнения, что приведет к созданию более стабильных и надежных приложений.
 
-Using TypeScript with Fastify can also improve the developer experience by providing better code completion, type inference, and documentation. In addition, Fastify has first-class support for TypeScript, providing everything needed to build robust and scalable applications, including interfaces and generics.
+Использование TypeScript с Fastify также улучшает работу разработчиков, обеспечивая лучшее завершение кода, вывод типов и документирование. Кроме того, Fastify обладает первоклассной поддержкой TypeScript, предоставляя все необходимое для создания надежных и масштабируемых приложений, включая интерфейсы и дженерики.
 
-Moreover, using TypeScript can make deployments safer by catching potential errors and bugs before they go live. It provides an extra layer of protection to our code, giving us more confidence when deploying.
+Более того, использование TypeScript делает развертывание более безопасным, поскольку позволяет отлавливать потенциальные ошибки и баги еще до запуска. Это обеспечивает дополнительный уровень защиты нашего кода, что дает нам больше уверенности при развертывании.
 
-By the end of the chapter, we will have learned how to do the following:
+К концу главы мы научимся делать следующее:
 
--   Create a simple Fastify project in TypeScript
--   Add support for automatic type inference with so-called type-providers
--   Auto-generate a documentation site for our APIs
+-   Создать простой проект Fastify на TypeScript
+-   Добавлять поддержку автоматического вывода типов с помощью так называемых провайдеров типов
+-   Автоматически генерировать сайт документации для наших API
 
-## Technical requirements
+!!!info "Технические требования"
 
-To follow along with this chapter, you will need the following:
+    Чтобы следовать этой главе, вам понадобится следующее:
 
--   A working [Node.js 18 installation](https://nodejs.org/)
--   The [VS Code IDE](https://code.visualstudio.com/)
--   A [Git repository](https://git-scm.com/) is recommended but not mandatory
--   A terminal application
+    -   Рабочая [установка Node.js 18](https://nodejs.org/)
+    -   [VS Code IDE](https://code.visualstudio.com/)
+    -   [Git-репозиторий](https://git-scm.com/) - рекомендуется, но не обязательно.
+    -   Терминальное приложение
 
-The code for the project can be found on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2015).
+    :material-source-repository: Код проекта можно найти на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2015).
 
-In the next section, we’ll dive into the details of setting up the Fastify project in TypeScript, adding all of the dependencies we need to make it work.
+    В следующем разделе мы подробно рассмотрим настройку проекта Fastify на TypeScript, добавив все зависимости, необходимые для его работы.
 
-## Creating the project
+## Создание проекта {#creating-the-project}
 
-Creating a new Fastify project with TypeScript support is straightforward but requires adding some extra dependencies. In this section, we’ll look at the process of manually setting up a new Fastify project with TypeScript and installing the necessary dependencies.
+Создание нового проекта Fastify с поддержкой TypeScript несложно, но требует добавления некоторых дополнительных зависимостей. В этом разделе мы рассмотрим процесс ручной настройки нового проекта Fastify с TypeScript и установки необходимых зависимостей.
 
-Let’s start with the `package.json` file, a configuration file for a Node.js project. It includes information about the dependencies, the entry point, and scripts. The following is just a partial snippet since we will evolve it through the sections of this chapter:
+Начнем с файла `package.json`, конфигурационного файла для проекта Node.js. Он содержит информацию о зависимостях, точке входа и скриптах. Ниже приведен лишь частичный фрагмент, поскольку мы будем развивать его в ходе изучения разделов этой главы:
 
 ```json
 {
@@ -56,28 +60,28 @@ Let’s start with the `package.json` file, a configuration file for a Node.js p
 }
 ```
 
-The `package.json` file listed in the preceding code block includes the base dependencies required for the project and two scripts that will improve the development experience. As we already mentioned, to add TypeScript support, we need to add some additional development dependencies to the project besides Fastify.
+Файл `package.json`, указанный в предыдущем блоке кода, включает в себя базовые зависимости, необходимые для проекта, и два скрипта, которые улучшат опыт разработки. Как мы уже говорили, чтобы добавить поддержку TypeScript, нам нужно добавить в проект несколько дополнительных зависимостей для разработки, помимо Fastify.
 
-Here is a breakdown of the development dependencies:
+Вот разбивка зависимостей для разработки:
 
--   The `main` field (`[1]`) specifies the application’s entry point when it is run with the `node .` command from the project’s root.
--   `@types/node` (`[2]`) is a development dependency that provides TypeScript type definitions for the Node.js API. We need it to use the global variables shipped in the Node.js runtime.
--   `fastify-tsconfig` (`[3]`) provides a preconfigured TypeScript configuration for use with the Fastify framework. We can extend our configuration from it and have handy defaults already configured out of the box.
--   `tsx` (`[4]`) adds a TypeScript runtime tool to watch and rerun the server on file changes. It is built upon Node.js and has a zero-configuration policy.
--   Finally, the `typescript` (`[5]`) development dependency adds the TypeScript compiler to check type definitions and compile the project to JavaScript. We will add a `tsconfig.json` file to the project’s root to make it work properly.
+-   Поле `main` (`[1]`) определяет точку входа приложения, когда оно запускается командой `node .` из корня проекта.
+-   `@types/node` (`[2]`) - это зависимость разработки, которая предоставляет определения типов TypeScript для API Node.js. Она нужна нам для использования глобальных переменных, поставляемых в среде выполнения Node.js.
+-   `fastify-tsconfig` (`[3]`) предоставляет предварительно настроенную конфигурацию TypeScript для использования с фреймворком Fastify. Мы можем расширить нашу конфигурацию из нее и иметь удобные настройки по умолчанию уже из коробки.
+-   `tsx` (`[4]`) добавляет инструмент выполнения TypeScript для наблюдения и повторного запуска сервера при изменении файлов. Он построен на базе Node.js и имеет политику нулевой конфигурации.
+-   Наконец, зависимость разработки `typescript` (`[5]`) добавляет компилятор TypeScript для проверки определений типов и компиляции проекта в JavaScript. Мы добавим файл `tsconfig.json` в корень проекта, чтобы он работал правильно.
 
-Moving to the `scripts` section of `package.json`, we have the following:
+Перейдя в секцию `scripts` файла `package.json`, мы получим следующее:
 
--   `build` (`[6]`) is a script that deletes the existing `dist` folder and invokes the TypeScript compiler (`tsc`).
--   The `dev` (`[7]`) script starts the `tsx` command-line tool to rerun the application as changes are made to the project files. Running the TypeScript files directly is handy during development because it enables faster development cycles.
+-   `build` (`[6]`) - это скрипт, который удаляет существующую папку `dist` и вызывает компилятор TypeScript (`tsc`).
+-   Сценарий `dev` (`[7]`) запускает инструмент командной строки `tsx` для повторного запуска приложения при внесении изменений в файлы проекта. Запуск файлов TypeScript напрямую удобен во время разработки, поскольку позволяет ускорить цикл разработки.
 
-We are ready to create the `tsconfig.json` file in the project’s root folder. This configuration file will make our Node.js project a TypeScript project.
+Мы готовы создать файл `tsconfig.json` в корневой папке проекта. Этот файл конфигурации превратит наш Node.js-проект в TypeScript-проект.
 
-### Adding the tsconfig.json file
+### Добавление файла `tsconfig.json` {#adding-the-tsconfigjson-file}
 
-The `tsconfig.json` file is the configuration file for the TypeScript compiler, and it provides a way to specify options and settings that control how the code is compiled into JavaScript. For this reason, as we saw in the previous section, the Fastify team maintains the `fastify-tsconfig` npm package with the recommended configuration for Fastify plugins and applications written in TypeScript.
+Файл `tsconfig.json` является конфигурационным файлом для компилятора TypeScript, и он предоставляет возможность указать опции и настройки, которые управляют тем, как код компилируется в JavaScript. По этой причине, как мы видели в предыдущем разделе, команда Fastify поддерживает пакет `fastify-tsconfig` npm с рекомендуемой конфигурацией для плагинов и приложений Fastify, написанных на TypeScript.
 
-In the `tsconfig.json` code snippet, we can see how to use it:
+В фрагменте кода `tsconfig.json` мы можем увидеть, как его использовать:
 
 ```json
 {
@@ -94,23 +98,23 @@ In the `tsconfig.json` code snippet, we can see how to use it:
 }
 ```
 
-Let’s analyze the configuration:
+Давайте проанализируем конфигурацию:
 
--   First, we use the `extends` property (`[1]`) to extend from `fastify-tsconfig`. This package provides a recommended configuration for Fastify web applications built with TypeScript.
--   `compilerOptions` (`[2]`) configures the TypeScript compiler to put the compiled JavaScript files in the `dist` directory. For this reason, previously, we configured the application’s entry point to `dist/server.js` using the main field of `package.json`.
--   Since we are developing an application, our code will be run and not consumed as a library. Therefore, we set the `declaration` option to `false` (`[3]`) since we don’t need the compiler to generate type definition files (`*.d.ts`).
--   On the other hand, we want the compiler to generate source map files (`*.map`) that map the compiled JavaScript code back to the original TypeScript source code (`[4]`). This is useful for understanding runtime errors and debugging since it allows us to set breakpoints and step through the original TypeScript code.
--   Finally, when compiling the source code, we want to include all files with the `.ts` extension inside the `src` folder and its subfolders (`[5]`).
+-   Во-первых, мы используем свойство `extends` (`[1]`) для расширения из `fastify-tsconfig`. Этот пакет предоставляет рекомендуемую конфигурацию для веб-приложений Fastify, построенных на TypeScript.
+-   `compilerOptions` (`[2]`) настраивает компилятор TypeScript на размещение скомпилированных JavaScript-файлов в директории `dist`. По этой причине ранее мы настроили точку входа приложения на `dist/server.js`, используя поле main в файле `package.json`.
+-   Поскольку мы разрабатываем приложение, наш код будет выполняться, а не потребляться как библиотека. Поэтому мы устанавливаем опцию `declaration` в `false` (`[3]`), поскольку нам не нужно, чтобы компилятор генерировал файлы определения типов (`*.d.ts`).
+-   С другой стороны, мы хотим, чтобы компилятор генерировал файлы карт исходного кода (`*.map`), которые сопоставляют скомпилированный JavaScript-код с исходным кодом TypeScript (`[4]`). Это полезно для понимания ошибок во время выполнения и отладки, поскольку позволяет нам устанавливать точки останова и переходить к исходному коду TypeScript.
+-   Наконец, при компиляции исходного кода мы хотим включить все файлы с расширением `.ts` в папку `src` и ее подпапки (`[5]`).
 
-Using a `tsconfig.json` file, developers can ensure that all team members use the same configuration options, providing a standardized way to configure the TypeScript compiler across different machines.
+Используя файл `tsconfig.json`, разработчики могут гарантировать, что все члены команды используют одни и те же параметры конфигурации, обеспечивая стандартизированный способ настройки компилятора TypeScript на разных машинах.
 
-!!!note "TypeScript compiler options"
+!!!note "Параметры компилятора TypeScript"
 
-    TypeScript offers a wide range of compiler options that can be specified in the `tsconfig.json` file to control the behavior of the TypeScript compiler. These options include things such as target output version, module resolution strategy, source map generation, and code generation. The Fastify team provides an opinionated configuration that is good for most projects. You can find more information about all options in the official [TypeScript documentation](https://www.typescriptlang.org/tsconfig).
+    TypeScript предлагает широкий спектр опций компилятора, которые можно указать в файле `tsconfig.json` для управления поведением компилятора TypeScript. Эти опции включают в себя такие параметры, как версия целевого вывода, стратегия разрешения модулей, генерация карты исходников и генерация кода. Команда Fastify предлагает конфигурацию, которая подходит для большинства проектов. Более подробную информацию обо всех опциях можно найти в официальной [TypeScript documentation](https://www.typescriptlang.org/tsconfig).
 
-### Adding the application’s entry point
+### Добавление точки входа приложения {#adding-the-applications-entry-point}
 
-First, we need to write the entry point for our application. The usual Fastify server with the autoload plugin will load our routes and do the job. The code is straightforward, and we can look at it in the following snippet:
+Сначала нам нужно написать точку входа для нашего приложения. Обычный сервер Fastify с плагином автозагрузки загрузит наши маршруты и выполнит эту работу. Код прост, и мы можем посмотреть на него в следующем фрагменте:
 
 ```js
 import { join } from 'node:path';
@@ -129,23 +133,23 @@ fastify
     });
 ```
 
-Before jumping into the code, remember to run `npm i` inside the project root.
+Прежде чем перейти к коду, не забудьте запустить `npm i` в корне проекта.
 
-Now, let’s analyze the preceding snippet:
+Теперь давайте проанализируем предыдущий фрагмент:
 
--   This code creates a Fastify server with logging enabled (`[1]`). Since we are inside a TypeScript file, the type system is enabled. For example, if we hover over the `fastify` variable in the VS Code editor, we can see that it has the `FastifyInstance` type. Moreover, thanks to the first-class support for the TypeScript language by Fastify, everything is fully typed out of the box.
--   Next, it registers a plugin using `AutoLoad` to load routes dynamically from the `routes` directory. The `register` method returns a `Promise` object, but we’re not interested in its return value. By using `void`, we are explicitly indicating that we don’t want to capture or use the return value of the `Promise` object, and we’re just running the method for its side effects (`[2]`).
--   Then, it starts the server on port `3000` and listens for incoming requests. If an error occurs while booting the server, it logs the error and exits the process with an error code (`[3]`).
+-   Этот код создает сервер Fastify с включенным логом (`[1]`). Поскольку мы находимся внутри файла TypeScript, система типов включена. Например, если мы наведем курсор на переменную `fastify` в редакторе VS Code, то увидим, что она имеет тип `FastifyInstance`. Более того, благодаря первоклассной поддержке языка TypeScript в Fastify, все полностью типизировано из коробки.
+-   Далее регистрируется плагин, использующий `AutoLoad` для динамической загрузки маршрутов из каталога `routes`. Метод `register` возвращает объект `Promise`, но нас не интересует его возвращаемое значение. Используя `void`, мы явно указываем, что не хотим перехватывать или использовать возвращаемое значение объекта `Promise`, и запускаем метод только для получения побочных эффектов (`[2]`).
+-   Затем запускается сервер на порту `3000` и прослушивается на предмет входящих запросов. Если при загрузке сервера возникает ошибка, он записывает ее в лог и завершает процесс с кодом ошибки (`[3]`).
 
-Now that we’ve defined our entry point, we can take care of the `root` plugin.
+Теперь, когда мы определили точку входа, мы можем позаботиться о плагине `root`.
 
-## Using Fastify type-providers
+## Использование провайдеров типов Fastify {#using-fastify-type-providers}
 
-A Fastify type-provider is a TypeScript-only package that simplifies the definition of JSON schemas by providing type annotations and generics. Using it will allow Fastify to infer type information directly from schema definitions. Type-providers enable developers to define API endpoints’ expected input and output data easily, automatically check the type correctness at compile time, and validate the data at runtime.
+Провайдер типов Fastify - это пакет только для TypeScript, который упрощает определение JSON-схем, предоставляя аннотации типов и дженерики. Его использование позволяет Fastify выводить информацию о типах непосредственно из определений схем. Провайдеры типов позволяют разработчикам легко определять ожидаемые входные и выходные данные конечных точек API, автоматически проверять корректность типов во время компиляции и подтверждать данные во время выполнения.
 
-Fastify supports several type-providers, such as `json-schema-to-ts` and `TypeBox`. In TypeScript projects, using a type-provider can help reduce the boilerplate code required for input validation and reduce the likelihood of bugs due to invalid data types. This can ultimately make your code more robust, maintainable, and scalable.
+Fastify поддерживает несколько провайдеров типов, таких как `json-schema-to-ts` и `TypeBox`. В проектах на TypeScript использование провайдера типов позволяет сократить объем кода, необходимого для проверки ввода, и снизить вероятность возникновения ошибок, связанных с некорректными типами данных. В конечном итоге это сделает ваш код более надежным, поддерживаемым и масштабируемым.
 
-For the sake of brevity, in the following example, we will focus only on the `TypeBox` type-provider. However, since which type-provider you use is based on personal preference, we encourage you to try other type-providers to find the best fit:
+Для краткости в следующем примере мы рассмотрим только провайдер типов `TypeBox`. Однако, поскольку выбор провайдера типов зависит от ваших личных предпочтений, мы рекомендуем вам попробовать другие провайдеры типов, чтобы найти наиболее подходящий:
 
 ```js
 import {
@@ -203,41 +207,41 @@ const plugin: FastifyPluginAsyncTypebox = async function (
 export default plugin;
 ```
 
-The code snippet shows a Fastify plugin that uses `@fastify/type-provider-typebox` to define and validate the shape of the request and response objects of the routes.
+Сниппет кода показывает плагин Fastify, который использует `@fastify/type-provider-typebox` для определения и проверки формы объектов запроса и ответа маршрутов.
 
-Here is a breakdown of what the code does:
+Ниже приводится описание того, что делает этот код:
 
--   First, we import `FastifyPluginAsyncTypebox` and `Type` from the `@fastify/type-provider-typebox` module (`[1]`). `FastifyPluginAsyncTypebox` is a type alias for `FastifyPluginAsync` that injects the support for `@sinclair/typebox` schema definitions.
--   The plugin is defined as an `async` function that takes two arguments: `fastify` and `_opts`. Thanks to the explicit `FastifyPluginAsyncTypebox` type annotation (`[2]`), this `fastify` instance will automatically infer the types of the route schemas.
--   The `fastify.get()` method defines a `GET` route at the root URL (`/`). We use the previously imported `Type` object to create a `querystring` object that defines a name property of the `string` type containing `"world"` as its default value (`[3]`). Moreover, we use it again to set the response as an object with a single `hello` property of the `string` type (`[4]`). Both types will automatically have the TypeScript types inferred inside the route handler.
--   Hovering over the `name` variable (`[5]`) in VS Code will show a `string` type. This behavior happens thanks to the type-provider.
--   The route handler returns an object with a single `hello` property set to the value of the `name` property extracted from the `querystring` object (`[6]`). The return type of the function is also inferred thanks to `TypeBox`. As an exercise, we can try changing the returning object to `{ hello: 2 }`, and the TypeScript compiler will complain since we’ve assigned a number instead of a string.
--   The `fastify.post()` method is called to define a POST route at the root URL (`/`). The route schema includes a body object that defines an optional name property of the `string` type (`[7]`). Thanks to this declaration, the `request.body` object in the route handler is again fully typed (`[8]`). This time, we declared the `request.body.name` property as optional. We need to check whether it is `undefined` before using it in the return object and, otherwise, set it to the `world` string (`[9]`). As we saw for the other route handler, returning a value incompatible with the schema declaration will throw a compilation error.
+-   Во-первых, мы импортируем `FastifyPluginAsyncTypebox` и `Type` из модуля `@fastify/type-provider-typebox` (`[1]`). `FastifyPluginAsyncTypebox` - это псевдоним типа для `FastifyPluginAsync`, который внедряет поддержку определений схем `@sinclair/typebox`.
+-   Плагин определяется как `async` функция, принимающая два аргумента: `fastify` и `_opts`. Благодаря явной аннотации типа `FastifyPluginAsyncTypebox` (`[2]`), этот экземпляр `fastify` будет автоматически определять типы схем маршрутов.
+-   Метод `fastify.get()` определяет маршрут `GET` по корневому URL (`/`). Мы используем импортированный ранее объект `Type` для создания объекта `querystring`, определяющего свойство name типа `string`, содержащее `«world»` в качестве значения по умолчанию (`[3]`). Кроме того, мы снова используем его, чтобы задать ответ в виде объекта с единственным свойством `hello` типа `string` (`[4]`). Для обоих типов автоматически будут определены типы TypeScript внутри обработчика маршрута.
+-   При наведении курсора на переменную `name` (`[5]`) в VS Code будет показан тип `string`. Такое поведение происходит благодаря провайдеру типов.
+-   Обработчик маршрута возвращает объект с единственным свойством `hello`, установленным на значение свойства `name`, извлеченного из объекта `querystring` (`[6]`). Тип возвращаемой функции также определяется благодаря `TypeBox`. В качестве упражнения мы можем попробовать изменить возвращаемый объект на `{ hello: 2 }`, и компилятор TypeScript выдаст ошибку, поскольку мы присвоили число вместо строки.
+-   Метод `fastify.post()` вызывается для определения POST-маршрута по корневому URL (`/`). Схема маршрута включает объект body, который определяет необязательное свойство name типа `string` (`[7]`). Благодаря этому объявлению объект `request.body` в обработчике маршрута снова является полностью типизированным (`[8]`). На этот раз мы объявили свойство `request.body.name` необязательным. Прежде чем использовать его в возвращаемом объекте, нам нужно проверить, не является ли оно `undefined`, и в противном случае установить его в строку `world` (`[9]`). Как мы видели для другого обработчика маршрутов, возврат значения, несовместимого с объявлением схемы, приведет к ошибке компиляции.
 
-Here, we wrap up this section. Thanks to type-providers, we can quickly achieve type safety across the code base by following these pointers without needing explicit type declarations:
+На этом мы завершаем этот раздел. Благодаря провайдерам типов мы можем быстро достичь безопасности типов во всей кодовой базе, следуя этим указателям и не прибегая к явному объявлению типов:
 
--   At runtime, the JSON schema will sanitize the inputs and serialize the outputs, making our APIs more reliable, secure, and faster.
--   At compile time, our code base is fully type-checked. In addition, every variable from the schema declarations has inferred types, enabling us to find more errors before deploying the application.
+-   Во время выполнения схема JSON будет дезинфицировать входные данные и сериализовать выходные, делая наши API более надежными, безопасными и быстрыми.
+-   Во время компиляции наша кодовая база полностью проверяется на типы. Кроме того, каждая переменная из объявлений схемы имеет выведенные типы, что позволяет нам найти больше ошибок до развертывания приложения.
 
-In the upcoming section, we will see how we can automatically generate a documentation website compliant with the Swagger/OpenAPI specification.
+В следующем разделе мы рассмотрим, как можно автоматически сгенерировать сайт документации, соответствующий спецификации Swagger/OpenAPI.
 
-## Generating the API documentation
+## Генерация документации API {#generating-the-api-documentation}
 
-The OpenAPI specification is a widely adopted and open standard for documenting RESTful APIs. It provides a format for describing the structure and operations of an API in a machine-readable format, allowing developers to understand and interact with the API quickly.
+Спецификация OpenAPI - это широко распространенный и открытый стандарт для документирования RESTful API. Она предоставляет формат для описания структуры и операций API в машиночитаемом формате, что позволяет разработчикам быстро понять API и взаимодействовать с ним.
 
-The specification defines a set of JSON or YAML files that describe an API’s endpoints, parameters, responses, and other details. This information can be used to generate API documentation, client libraries, and other tools that make it easier to work with the API.
+Спецификация определяет набор файлов JSON или YAML, которые описывают конечные точки API, параметры, ответы и другие детали. Эта информация может быть использована для создания документации по API, клиентских библиотек и других инструментов, облегчающих работу с API.
 
-!!!note "Swagger and OpenAPI specifications"
+!!!note "Спецификации Swagger и OpenAPI"
 
-    Swagger and OpenAPI are two related specifications, with OpenAPI being the newer version of Swagger. Swagger was originally an open source project, but later, the specification was acquired by SmartBear and renamed to OpenAPI. Today, the OpenAPI initiative, a consortium of industry leaders, maintains the specification. Swagger is also known as OpenAPI v2, while only OpenAPI generally refers to v3.
+    Swagger и OpenAPI - это две родственные спецификации, причем OpenAPI является более новой версией Swagger. Изначально Swagger был проектом с открытым исходным кодом, но позже спецификация была приобретена компанией SmartBear и переименована в OpenAPI. Сегодня спецификация поддерживается инициативой OpenAPI, консорциумом лидеров индустрии. Swagger также известен как OpenAPI v2, в то время как под OpenAPI обычно подразумевается только v3.
 
-Fastify encourages developers to define JSON schemas for every route they register. It would be great if there were an automatic way to convert those definitions to the Swagger specification. And, of course, there is. But first, we must add two new dependencies to our project and use them inside the application’s entry point. Now, let’s install the `@fastify/swagger` and `@fastify/swagger-ui` Fastify plugins via the terminal application. To do it, in the project root, type the following command:
+Fastify поощряет разработчиков определять схемы JSON для каждого маршрута, который они регистрируют. Было бы здорово, если бы существовал автоматический способ преобразования этих определений в спецификацию Swagger. И, конечно же, он есть. Но сначала мы должны добавить две новые зависимости в наш проект и использовать их в точке входа приложения. Итак, давайте установим плагины `@fastify/swagger` и `@fastify/swagger-ui` Fastify через терминальное приложение. Для этого в корне проекта введите следующую команду:
 
 ```sh
-$  npm install @fastify/swagger @fastify/swagger-ui
+$> npm install @fastify/swagger @fastify/swagger-ui
 ```
 
-Now, we can register the two newly added packages with the Fastify instance inside the `src/server.ts` file. Both packages support the Swagger and OpenAPI v3 specifications. We can choose which one to generate, passing the specific option. The following snippet configures the plugin to generate the Swagger (OpenAPI v2) specification and documentation site:
+Теперь мы можем зарегистрировать два новых пакета в экземпляре Fastify в файле `src/server.ts`. Оба пакета поддерживают спецификации Swagger и OpenAPI v3. Мы можем выбрать, какой из них генерировать, передав определенную опцию. Следующий фрагмент настраивает плагин на генерацию спецификации Swagger (OpenAPI v2) и сайта документации:
 
 ```js
 import { join } from 'node:path';
@@ -272,17 +276,17 @@ void fastify.register(SwaggerUI, {
 // ... omitted for brevity
 ```
 
-This snippet configures the `swagger` and `swagger-ui` plugins to generate the specification definitions and the documentation site. Here is a breakdown of the code:
+Этот фрагмент настраивает плагины `swagger` и `swagger-ui` для генерации определений спецификации и сайта документации. Вот разбивка кода:
 
--   The `@fastify/swagger` plugin is registered. We are passing the `swagger` property to generate the specifications for OpenAPI v2 (`[1]`).
--   We define general information about our API inside the `swagger` object, such as its title, description, and version, passing them to the `info` property (`[2]`). `swagger-ui` will use this to generate a website with more details.
--   We define the `consumes` and `produces` arrays (`[3]`) to indicate the expected request and response content types. This information is crucial for the API users, and it helps when it comes to testing the endpoints.
--   We define the `tags` array to group API endpoints by topic or functionality. In this case, only one tag named `Hello World` exists (`[4]`). In the following `src/routes/root.ts` snippet, we will see how to group the routes we have already defined.
--   Finally, we register the `@fastify/swagger-ui` plugin by calling `fastify.register(SwaggerUI, {...})`. The generated documentation can then be accessed using a web browser by navigating to the URL path specified in `routePrefix` (`[5]`) (in this case, `/documentation`).
+-   Плагин `@fastify/swagger` зарегистрирован. Мы передаем свойство `swagger` для генерации спецификаций для OpenAPI v2 (`[1]`).
+-   Мы определяем общую информацию о нашем API внутри объекта `swagger`, такую как его название, описание и версия, передавая их в свойство `info` (`[2]`). `swagger-ui` будет использовать это для создания сайта с более подробной информацией.
+-   Мы определяем массивы `consumes` и `produces` (`[3]`), чтобы указать ожидаемые типы содержимого запроса и ответа. Эта информация важна для пользователей API, и она поможет при тестировании конечных точек.
+-   Мы определяем массив `tags` для группировки конечных точек API по тематике или функциональности. В данном случае существует только один тег с именем `Hello World` (`[4]`). В следующем фрагменте `src/routes/root.ts` мы увидим, как группировать уже определенные маршруты.
+-   Наконец, мы регистрируем плагин `@fastify/swagger-ui`, вызывая `fastify.register(SwaggerUI, {...})`. Сгенерированная документация может быть доступна через веб-браузер по URL, указанному в `routePrefix` (`[5]`) (в данном случае `/documentation`).
 
-Next, we will modify the original route definitions to improve the auto-generated documentation. We want to do it to have better route grouping in the interface and more precise descriptions.
+Далее мы изменим исходные определения маршрутов, чтобы улучшить автогенерируемую документацию. Мы хотим сделать это для лучшей группировки маршрутов в интерфейсе и более точных описаний.
 
-In the following snippet, we will omit the parts that are not relevant, but you can find the complete code in the `src/routes/root.ts` file inside the GitHub repository:
+В следующем фрагменте мы опустим те части, которые не относятся к делу, но полный код вы можете найти в файле `src/routes/root.ts` в репозитории GitHub:
 
 ```js
 import {
@@ -328,17 +332,17 @@ const plugin: FastifyPluginAsyncTypebox = async function (
 };
 ```
 
-Even though we have shown the code additions for both routes, we will break down only the first one because the second one is structured the same:
+Несмотря на то, что мы показали дополнения к коду для обоих маршрутов, мы разберем только первый, потому что структура второго такая же:
 
--   The `tags` property (`[1]`) specifies that the route belongs to the `Hello World` tag we defined while registering the `@fastify/swagger` plugin. This property provides a way to group related routes together in the Swagger/OpenAPI documentation.
--   The `description` field briefly describes what the route does (`[2]`). It will be displayed at the top of the Swagger documentation.
--   `summary` summarizes what the route does (`[3]`). It will be displayed near the route definition in the documentation.
--   To provide a better understanding of the parameters accepted by an endpoint, we can add a dedicated description (`[4]`). It will be displayed in the Swagger documentation in the parameter details.
+-   Свойство `tags` (`[1]`) указывает, что маршрут относится к тегу `Hello World`, который мы определили при регистрации плагина `@fastify/swagger`. Это свойство позволяет группировать связанные маршруты вместе в документации Swagger/OpenAPI.
+-   Поле `description` кратко описывает, что делает маршрут (`[2]`). Оно будет отображаться в верхней части документации Swagger.
+-   В поле `ummary` кратко описывается, что делает маршрут (`[3]`). Оно будет отображаться рядом с определением маршрута в документации.
+-   Чтобы лучше понять параметры, принимаемые конечной точкой, мы можем добавить специальное описание (`[4]`). Оно будет отображаться в документации Swagger в деталях параметров.
 
-To test everything we added in this section, we can run our server in development mode (`npm run dev`) and use the browser to go to <http://localhost:3000/documentation>. We will be presented with a nice-looking website that we can navigate to learn more about the application we developed. Moreover, the page also integrates a client we can use to make actual calls to our API.
+Чтобы проверить все, что мы добавили в этом разделе, мы можем запустить наш сервер в режиме разработки (`npm run dev`) и с помощью браузера перейти по адресу `http://localhost:3000/documentation`. Перед нами откроется симпатичный веб-сайт, по которому можно перейти, чтобы узнать больше о разработанном нами приложении. Более того, на странице также интегрирован клиент, который мы можем использовать для осуществления реальных вызовов нашего API.
 
-## Summary
+!!!success "Резюме"
 
-In this chapter, we learned why type safety is crucial in modern software development and how using TypeScript with Fastify can help catch errors and bugs early in development. The chapter also covered how using TypeScript with Fastify can improve the developer experience by providing better code completion, type inference, and the ability to auto-generate the documentation site for our APIs.
+    В этой главе мы узнали, почему безопасность типов имеет решающее значение в современной разработке программного обеспечения и как использование TypeScript с Fastify может помочь выявить ошибки и недочеты на ранних этапах разработки. В главе также рассказывалось о том, как использование TypeScript с Fastify может улучшить работу разработчиков, обеспечив лучшее завершение кода, вывод типов и возможность автоматической генерации сайта документации для наших API.
 
-Congratulations on reaching the final chapter of this book! Throughout this journey, we have learned about the Fastify web framework and how it can help us build high-performance web applications.
+    Поздравляем вас с тем, что вы добрались до заключительной главы этой книги! На протяжении всего этого путешествия мы узнали о веб-фреймворке Fastify и о том, как он может помочь нам создавать высокопроизводительные веб-приложения.

@@ -1,123 +1,129 @@
-# Performance Assessment and Improvement
+---
+description: Вы узнаете, как добавить библиотеку инструментов в приложение Fastify, чтобы проанализировать реакцию сервера на большой объем трафика
+---
 
-We all know that Fastify is fast – but is your code fast enough for Fastify? Learn how to measure your application’s performance to improve your business value and the quality of your code. By analyzing the metrics, you will avoid introducing speed regressions and identify bottlenecks or memory leaks that could crash your system. You will learn how to add an instrumentation library to a Fastify application to analyze how the server reacts to a high volume of traffic. We will get an overview to understand and act accordingly depending on your measurements to maintain your server’s performance and its healthy status.
+# Оценка и улучшение производительности
 
-This is the learning path we will take in this chapter:
+<big>Мы все знаем, что Fastify работает быстро, но достаточно ли быстр ваш код для Fastify? Узнайте, как измерить **производительность вашего приложения**, чтобы повысить его ценность для бизнеса и качество кода.</big>
 
--   Why measure performance?
--   How to measure an application’s performance
--   How to analyze the data
--   How to optimize the application
+Анализируя метрики, вы сможете избежать регрессии скорости и выявить узкие места или утечки памяти, которые могут привести к краху вашей системы. Вы узнаете, как добавить библиотеку инструментов в приложение Fastify, чтобы проанализировать реакцию сервера на большой объем трафика. Мы получим общее представление о том, как понимать и действовать в зависимости от результатов измерений для поддержания производительности сервера и его здорового состояния.
 
-Technical requirements
+Именно этот путь обучения мы пройдем в этой главе:
 
-As mentioned in earlier chapters, you will need the following:
+-   Зачем измерять производительность?
+-   Как измерить производительность приложения
+-   Как анализировать данные
+-   Как оптимизировать приложение
 
--   A working Node.js 18 installation
--   The [VS Code IDE](https://code.visualstudio.com/)
--   A working command shell
+!!!info "Технические требования"
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2013).
+    Как уже упоминалось в предыдущих главах, вам понадобится следующее:
 
-## Why measure performance?
+    -   Рабочая установка Node.js 18
+    -   [VS Code IDE](https://code.visualstudio.com/)
+    -   Рабочая командная оболочка
 
-It sounds nice to go out for dinner and impress our guests by telling them that our APIs serve 10,000 requests per second, but nobody cares about numbers that do not bring any value.
+    :material-source-repository: Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2013).
 
-An application’s performance impacts a company’s business in many ways, which are often underestimated because you can’t see a performance issue at first sight as you can with a bug. In fact, performance is responsible for the following:
+## Зачем измерять производительность? {#why-measure-performance}
 
--   A slow API, which may result in customers abandoning your website, as documented by this research: <https://www.shopify.com/enterprise/site-performance-page-speed-ecommerce>
--   A server in an idle state during high-load traffic, which is a waste of resources that impacts your infrastructure bill
--   Unoptimized API code, which may waste resources that affect your infrastructure bill
+Приятно, конечно, пойти на ужин и впечатлить гостей, рассказав им, что наши API обслуживают 10 000 запросов в секунду, но никого не волнуют цифры, которые не приносят никакой пользы.
 
-Therefore, to save money and open new business opportunities, it is crucial to measure the application’s performance, but how can we do so? Let’s start unraveling this process.
+Производительность приложения влияет на бизнес компании во многих отношениях, которые часто недооцениваются, потому что проблему производительности нельзя заметить с первого взгляда, как это бывает с ошибками. На самом деле производительность отвечает за следующее:
 
-To improve an application’s performance, you need to define where to start and choose which direction to follow. The **Optimization Cycle** supports you during this discovery process and focuses on the resolution:
+-   Медленный API, что может привести к уходу клиентов с вашего сайта, как показано [в этом исследовании](https://www.shopify.com/enterprise/site-performance-page-speed-ecommerce).
+-   Сервер в состоянии простоя во время высокой нагрузки, что является пустой тратой ресурсов, которая влияет на счет вашей инфраструктуры
+-   Неоптимизированный код API, который может тратить ресурсы, влияющие на ваши расходы на инфраструктуру.
 
-![Figure 13.1 – The Optimization Cycle](performance-1.png)
+Поэтому, чтобы сэкономить деньги и открыть новые возможности для бизнеса, очень важно измерять производительность приложения, но как это сделать? Давайте разберемся в этом процессе.
 
-<center>Figure 13.1 – The Optimization Cycle</center>
+Чтобы повысить производительность приложения, необходимо определить, с чего начать, и выбрать, в каком направлении двигаться. Цикл **Оптимизация** поможет вам в этом процессе и сосредоточится на решении:
 
-Each step is a key to improving performance:
+![Рисунок 13.1 - Цикл оптимизации](performance-1.png)
 
-1.  **Measure**: We must define a baseline to start from by selecting certain **Key Performance Indicators (KPIs)** that can be measured and evaluated further.
-2.  **Analyze**: We need to understand and explore the KPIs collected in the previous step to define how to improve them and find any bottlenecks. When the KPI satisfies our expectations, we can just monitor the performance without taking any other action.
-3.  **Optimize**: We apply the required actions identified in the previous step. We may make changes to our code base or even to the application’s architecture. In the end, we will start again at the first step to evaluate the results.
+<center>Рисунок 13.1 - Цикл оптимизации</center>
 
-By following this cycle, you will be able to assess the application’s performance and keep it under control in order to avoid regression. Note that this workflow adapts to every area of a company’s work, from sales to information technology.
+Каждый шаг - это ключ к улучшению производительности:
 
-We have seen the overall picture of this methodology, but what happens when it’s in action? We are going to discover it in the next section.
+1.  **Измерение**: Мы должны определить базовый уровень, от которого следует отталкиваться, выбрав определенные **ключевые показатели эффективности (KPI)**, которые можно измерять и оценивать в дальнейшем.
+2.  **Анализировать**: Нам нужно понять и изучить KPI, собранные на предыдущем этапе, чтобы определить, как их улучшить, и найти узкие места. Если KPI удовлетворяют нашим ожиданиям, мы можем просто наблюдать за их выполнением, не предпринимая никаких других действий.
+3.  **Оптимизация**: Мы применяем необходимые действия, определенные на предыдущем этапе. Мы можем внести изменения в нашу кодовую базу или даже в архитектуру приложения. В конце концов, мы снова начнем с первого шага, чтобы оценить результаты.
 
-## How to measure an application’s performance?
+Следуя этому циклу, вы сможете оценить производительность приложения и держать ее под контролем, чтобы избежать регрессии. Обратите внимание, что этот рабочий процесс адаптируется к любой сфере деятельности компании, от продаж до информационных технологий.
 
-By following the Optimization Cycle, the first step to improving something in every work field is that we need to set a baseline. The starting point will be different for each company’s department. For instance, the sales team will measure the sales or the revenue over time to set its improvement goals.
+Мы увидели общую картину этой методологии, но что происходит, когда она действует? Об этом мы узнаем в следующем разделе.
 
-So, we need to define what is worth measuring by defining our application’s metrics boundaries. It’s clear that our first challenge is choosing what to measure. The most common metrics are the following:
+## Как измерить производительность приложения? {#how-to-measure-an-applications-performance}
 
--   HTTP response times and request rates
--   Error ratings
--   Process metrics such as CPU, memory, and Garbage Collector usage
+Следуя циклу оптимизации, первым шагом к улучшению чего-либо в любой сфере деятельности является установление базовой линии. Точка отсчета будет разной для каждого отдела компании. Например, отдел продаж будет измерять объем продаж или выручку с течением времени, чтобы установить цели по улучшению.
 
-Each bullet point is a KPI. Every KPI requires a different approach and a different analysis. Despite their differences, these measurements are strongly connected since inadequate resource management will impact the response latency, and a high error rating may increase memory usage.
+Итак, нам нужно определить, что стоит измерять, определив границы метрик нашего приложения. Понятно, что наша первая задача - выбрать, что измерять. Наиболее распространенными метриками являются следующие:
 
-Measuring an application’s KPIs is a mandatory step in implementing application **Observability**, which is the capability to understand the system’s state by checking its output.
+-   Время отклика HTTP и количество запросов
+-   рейтинг ошибок
+-   метрики процессов, такие как использование процессора, памяти и сборщика мусора.
 
-!!!note "Application Observability"
+Каждый пункт - это KPI. Каждый KPI требует своего подхода и анализа. Несмотря на различия, эти показатели тесно связаны между собой, поскольку неадекватное управление ресурсами влияет на задержку ответа, а высокий рейтинг ошибок может увеличить использование памяти.
 
-    The following section’s concepts apply to a whole system or a single Node.js application. This chapter discusses Application Observability and aims at improving a project itself, as system monitoring is not in the scope of this book. Nevertheless, what you will learn will be valuable and reusable for building better systems.
+Измерение KPI приложения - обязательный шаг в реализации **Обсервативности** приложения, то есть возможности понять состояние системы, проверив ее выходные данные.
 
-The pillars of Observability are as follows:
+!!!note "Наблюдаемость приложений"
 
--   **Logs**: You can learn about an application’s status and progress by reading and analyzing the output. We discussed this in [Chapter 11](../real-project/logging.md).
--   **Metrics**: These are numeric value representations that an application can collect. These are more reliable, ready to be processed, and easier to store. Compared to logs, they have an indefinite retention policy. You collected them in [Chapter 10](../real-project/deploy.md).
--   **Tracing**: This represents a piece of detailed information from the request life cycle over the system. We will see an example in the next section, [Measuring the HTTP response time](#measuring-the-http-response-time) by instrumenting the Fastify application.
+    Концепции следующего раздела применимы как к целой системе, так и к отдельному приложению Node.js. В этой главе обсуждается Application Observability и ставится задача улучшить сам проект, поскольку мониторинг системы не входит в сферу применения этой книги. Тем не менее, то, что вы узнаете, будет ценно и пригодно для повторного использования при создании более совершенных систем.
 
-All these pillars share a common backbone of logic. We can consider all of them raw logs in different formats and properties that share the same life cycle logic as we saw in the [How to consolidate the logs](../real-project/logging.md#how-to-consolidate-the-logs) section of Chapter 11.
+Основу наблюдаемости составляют:
 
-The pillar list is ordered from the least detailed to the most fine-grained information. I think an example is worth more than 10,000 words, so let’s assume we have to assess the `POST /todo` endpoint that we have been building since [Chapter 7](../real-project/restful-api.md).
+-   **Логи**: Вы можете узнать о состоянии и ходе выполнения приложения, читая и анализируя его выходные данные. Мы обсуждали это в [Главе 11](../real-project/logging.md).
+-   **Метрики**: Это числовые представления значений, которые может собирать приложение. Они более надежны, готовы к обработке и легче хранятся. По сравнению с логами, они имеют неограниченный срок хранения. Вы собрали их в [главе 10](../real-project/deploy.md).
+-   **Трассировка**: Представляет собой часть подробной информации из жизненного цикла запроса в системе. В следующем разделе мы рассмотрим пример [Измерение времени ответа HTTP](#measuring-the-http-response-time) с помощью инструментария приложения Fastify.
 
-In this case, the logs would tell us when the request started and when it ended by adding debugging information.
+Все эти компоненты имеют общий логический костяк. Мы можем считать их сырыми логами разных форматов и свойств, которые имеют одну и ту же логику жизненного цикла, как мы видели в разделе [How to consolidate the logs](../real-project/logging.md#how-to-consolidate-the-logs) главы 11.
 
-A metric tells us what the KPI value at a specific time was. For example, it answers the question, how many todos were created per user today? This information is easy to process if you want to know the average number of _todos_ created and other statistics.
+Список столпов упорядочен от наименее подробной до наиболее тонкой информации. Я считаю, что пример стоит больше, чем 10 000 слов, поэтому предположим, что нам нужно оценить конечную точку `POST /todo`, которую мы создавали начиная с [главы 7](../real-project/restful-api.md).
 
-The tracing data would show us that a request spent 10 milliseconds fetching the data from the database, 20 milliseconds inserting the new data, and 30 additional milliseconds sending a notification.
+В этом случае в логах будет указано, когда начался запрос и когда он закончился, добавлена отладочная информация.
 
-To understand this example and appreciate the differences better, let us focus on how to measure the HTTP response time in the next section.
+Метрика говорит нам о значении KPI в определенный момент времени. Например, она отвечает на вопрос, сколько тодо было создано на одного пользователя сегодня? Эту информацию легко обрабатывать, если вы хотите узнать среднее количество созданных _тодо_ и другую статистику.
 
-### Measuring the HTTP response time
+Данные трассировки покажут нам, что запрос потратил 10 миллисекунд на получение данных из базы данных, 20 миллисекунд на вставку новых данных и еще 30 миллисекунд на отправку уведомления.
 
-The KPI of response time is a simple parameter that even non-technical people can easily understand, and it is commonly used to describe an API’s health status. It reports the total amount of time the application spent handling an HTTP request and replying to the client.
+Чтобы лучше понять этот пример и оценить различия, давайте сосредоточимся на том, как измерять время ответа HTTP в следующем разделе.
 
-The response time provides us with a precise measure in milliseconds to monitor the overtime for each endpoint. By noticing any variation in this value, we can evaluate whether a new feature impacts the route’s health positively or negatively. We can then act accordingly, as we will see in the [How to analyze the data](#how-to-analyze-the-data) section.
+### Измерение времени ответа HTTP {#measuring-the-http-response-time}
 
-!!!note "Network latencies"
+KPI времени отклика - это простой параметр, который легко понять даже нетехническим специалистам, и он обычно используется для описания состояния работоспособности API. Он показывает общее количество времени, которое приложение потратило на обработку HTTP-запроса и ответ клиенту.
 
-    The API response time can sometimes be misleading because it does not include additional network latencies that are introduced if your server is in a different region from the client. Discussing complex architectural scenarios is not within the scope of this book. If you want to go deeper into this aspect, you can start by reading this [article](https://www.datadoghq.com/knowledge-center/infrastructure-monitoring/).
+Время отклика дает нам точный показатель в миллисекундах, позволяющий следить за временем работы каждой конечной точки. Заметив любое изменение в этом значении, мы можем оценить, положительно или отрицательно новая функция влияет на работоспособность маршрута. Затем мы можем действовать соответствующим образом, как мы увидим в разделе [Как анализировать данные](#how-to-analyze-the-data).
 
-We are already measuring the overall request time by logging the `responseTime` field, as explained in [Chapter 11](../real-project//logging.md). This information can be read directly from the production environment and can be checked constantly. Moreover, it helps us set which APIs have priority over others, as they need more attention. This aspect is beneficial considering that we can’t focus on hundreds of endpoints at the same time, so this information will help us prioritize certain APIs.
+!!!note "Сетевые задержки"
 
-The response time is not detailed information because it is the sum of all the steps performed by our endpoint to reply to the client’s request. For example, if our API makes a database query and an external HTTP call to a third-party API, which of these two operations costs more time?
+    Время отклика API иногда может вводить в заблуждение, поскольку оно не включает дополнительные сетевые задержки, возникающие, если ваш сервер находится в другом регионе по отношению к клиенту. Обсуждение сложных архитектурных сценариев не входит в задачи этой книги. Если вы хотите углубиться в этот аспект, вы можете начать с прочтения этой [статьи](https://www.datadoghq.com/knowledge-center/infrastructure-monitoring/).
 
-Since we are arranging the data to analyze it in the next Optimization Cycle step, we must collect more information by **tracing** the application; otherwise, the analysis task will be more complex and optimization may not be successful.
+Мы уже измеряем общее время запроса, записывая в лог поле `responseTime`, как объясняется в [Главе 11](../real-project//logging.md). Эту информацию можно считывать непосредственно из производственной среды и постоянно проверять. Более того, это помогает нам определить, какие API имеют приоритет над другими, поскольку они требуют большего внимания. Этот аспект полезен, учитывая, что мы не можем сосредоточиться на сотнях конечных точек одновременно, поэтому эта информация поможет нам определить приоритетность определенных API.
 
-!!!note "Tracing sampling"
+Время отклика не является подробной информацией, поскольку это сумма всех действий, выполняемых нашей конечной точкой для ответа на запрос клиента. Например, если наш API выполняет запрос к базе данных и внешний HTTP-вызов к стороннему API, какая из этих двух операций займет больше времени?
 
-    While logs have a resource cost, tracing is even more expensive because it produces huge data volumes. For this reason, when dealing with tracing, it is mandatory to set the sampling configuration. You will see an example in this section.
+Поскольку мы организуем данные для их анализа на следующем этапе цикла оптимизации, мы должны собрать больше информации, **отслеживая** приложение; в противном случае задача анализа будет сложнее, и оптимизация может оказаться неудачной.
 
-Now that we know what we want to measure, we can start to upgrade our Fastify application.
+!!!note "Отслеживание выборки"
 
-### Instrumenting the Fastify application
+    Если логи требуют больших затрат ресурсов, то трассировка обходится еще дороже, поскольку создает огромные объемы данных. По этой причине при работе с трассировкой обязательно нужно задавать конфигурацию выборки. В этом разделе вы увидите пример.
 
-To trace any Fastify application, it is wise to adopt the **OpenTelemetry** specification published at <https://opentelemetry.io/> and promoted by the Linux Foundation. This provides a set of shared mechanisms for generating, collecting, and exporting telemetry data, such as metrics and tracing information. Even though logs are currently not supported by this tool, we are safe because we have already set the application’s logs in [Chapter 11](../real-project/logging.md).
+Теперь, когда мы знаем, что мы хотим измерять, мы можем начать модернизацию нашего приложения Fastify.
 
-By adopting the OpenTelemetry specification, you will be able to include modules that implement this standard, and your application will export metrics and tracing data in a well-known format. By choosing this approach, you decouple your telemetry data from the **Application Performance Monitoring (APM)** tool. The APM software is a must-have for analyzing your tracing data. It provides a straightforward way to see the telemetry data and put it into graphs and clear visualizations. Otherwise, it would be impossible to understand the raw tracing data and the connections within it.
+### Инструментирование приложения Fastify {#instrumenting-the-fastify-application}
 
-It is now time to write some code! To recap what we are going to do, here are the steps:
+Чтобы отследить любое приложение Fastify, целесообразно принять [спецификацию **OpenTelemetry**](https://opentelemetry.io/), продвигаемую Linux Foundation. Она предоставляет набор общих механизмов для генерации, сбора и экспорта телеметрических данных, таких как метрики и информация о трассировке. Несмотря на то, что в настоящее время лог не поддерживается этим инструментом, мы в безопасности, поскольку уже настроили лог приложения в [Глава 11](../real-project/logging.md).
 
-1.  Integrate the OpenTelemetry modules into your Fastify to-do list application.
-2.  Visualize the telemetry data by using Zipkin, an open source tracing system. It is less powerful than a commercial APM, but it is a free solution for every developer starting this journey.
-3.  Improve the tracing and metric information.
+Приняв спецификацию OpenTelemetry, вы сможете включить модули, реализующие этот стандарт, и ваше приложение будет экспортировать метрики и данные трассировки в хорошо известном формате. Выбирая этот подход, вы отделяете данные телеметрии от **инструмента мониторинга производительности приложений (APM)**. Программное обеспечение APM является обязательным инструментом для анализа данных трассировки. Оно обеспечивает простой способ просмотра данных телеметрии и их отображения в виде графиков и четких визуализаций. Иначе было бы невозможно понять необработанные данные трассировки и связи внутри них.
 
-Before we start, it is mandatory to install all the OpenTelemetry packages we need, so you need to run the following installation command:
+Настало время написать код! Вкратце о том, что мы собираемся делать, можно описать следующие шаги:
+
+1.  Интегрируйте модули OpenTelemetry в ваше приложение для составления списка дел Fastify.
+2.  Визуализируйте данные телеметрии с помощью Zipkin, системы трассировки с открытым исходным кодом. Она менее мощная, чем коммерческий APM, но это бесплатное решение для каждого разработчика, начинающего этот путь.
+3.  Улучшение трассировки и метрической информации.
+
+Прежде чем мы начнем, необходимо установить все необходимые пакеты OpenTelemetry, поэтому вам нужно выполнить следующую команду установки:
 
 ```sh
 npm install @opentelemetry/api@1.3.0 @opentelemetry/exporter-
@@ -129,9 +135,9 @@ node@0.34.0 @opentelemetry/sdk-trace-node@1.8.0 @opentelemetry/
 semantic-conventions@1.8.0
 ```
 
-These are a lot of modules, but we are going to use them all in the upcoming script. We need to create a new `configs/tracing.js` file that will contain all the tracing logic.
+Модулей много, но мы собираемся использовать их все в предстоящем сценарии. Нам нужно создать новый файл `configs/tracing.js`, который будет содержать всю логику трассировки.
 
-The script will be split into three logic blocks. The first one is dedicated to imports:
+Скрипт будет разбит на три логических блока. Первый посвящен импорту:
 
 ```js
 const packageJson = require('../package.json');
@@ -172,13 +178,13 @@ const {
 } = require('@opentelemetry/exporter-zipkin');
 ```
 
-The `require` statements are mainly the modules, `[1]`, which provide the OpenTracing APIs to set up the system. The requirements, `[2]`, are the `Instrumentation` classes, which will help us trace some packages for use, saving us time and providing a great starting point. We are going to see the output in a while. Finally, the `Exporter` component, `[3]`, is responsible for submitting the tracing data to any system.
+Утверждения `require` - это в основном модули, `[1]`, которые предоставляют API OpenTracing для настройки системы. Требования, `[2]`, - это классы `Instrumentation`, которые помогут нам отследить некоторые пакеты для использования, экономя наше время и обеспечивая отличную отправную точку. Через некоторое время мы увидим результат. Наконец, компонент `Exporter`, `[3]`, отвечает за отправку данных трассировки в любую систему.
 
-!!!note "How to use your own APM"
+!!!note "Как использовать собственный APM"
 
-    As previously explained, we are going to use Zipkin to visualize the tracing data. If you would like to use a commercial APM such as DataDog or Instana, you would have to replace the Zipkin exporter in the `tracing.js` file. For a complete list of exporters, you can rely on the official [OpenTelemetry documentation](https://opentelemetry.io/registry/?language=js&component=exporter) or your APM vendor.
+    Как уже объяснялось ранее, для визуализации данных трассировки мы будем использовать Zipkin. Если вы хотите использовать коммерческий APM, такой как DataDog или Instana, вам придется заменить экспортер Zipkin в файле `tracing.js`. Полный список экспортеров вы можете найти в официальной документации [OpenTelemetry documentation](https://opentelemetry.io/registry/?language=js&component=exporter) или у вашего поставщика APM.
 
-The second code block logic is the OpenTelemetry configuration:
+Второй логический блок кода - это конфигурация OpenTelemetry:
 
 ```js
 const sdk = new NodeTracerProvider({
@@ -205,11 +211,11 @@ registerInstrumentations({
 });
 ```
 
-The configuration has the `resource` parameter to configure some basic metadata that will be displayed for every trace. The `instrumentations` array injects the code into our application’s core module, such as Node.js’s http package or the `fastify` installation to monitor our application.
+В конфигурации есть параметр `resource` для настройки основных метаданных, которые будут отображаться для каждой трассировки. Массив `instrumentations` вставляет код в основной модуль нашего приложения, такой как http-пакет Node.js или установка `fastify` для мониторинга нашего приложения.
 
-Generally, these classes perform **monkey patching** – this technique modifies the internal Node.js cache and acts as a man-in-the-middle. Although some versions of Node.js provide experimental `async_hook` and `trace_events` modules, monkey patching is still broadly used by tracing packages. The `sampler` option is a controller to filter out certain tracing events to reduce the amount of stored data. The example configuration is a pass-all filter that you need to customize after becoming more confident using this tool.
+Как правило, эти классы выполняют **monkey patching** - эта техника модифицирует внутренний кэш Node.js и действует как «человек посередине». Хотя некоторые версии Node.js предоставляют экспериментальные модули `async_hook` и `trace_events`, monkey patching по-прежнему широко используется пакетами трассировки. Опция `sampler` - это контроллер для фильтрации определенных событий трассировки, чтобы уменьшить объем хранимых данных. Пример конфигурации представляет собой фильтр pass-all, который вам нужно будет настроить после того, как вы станете более уверенно использовать этот инструмент.
 
-The last code block to complete the `tracing.js` file is for the usage of the `sdk` variable:
+Последний блок кода, завершающий файл `tracing.js`, предназначен для использования переменной `sdk`:
 
 ```js
 const exporter = new ZipkinExporter({
@@ -220,25 +226,25 @@ sdk.register({});
 console.log('OpenTelemetry SDK started');
 ```
 
-At first, `exporter` will transmit or expose the data to any external system. Note that if `exporter` submits the data, it will implement Push logic. Instead, if `exporter` exposes an HTTP route (which the external system must call to get the data), it will implement Pull logic.
+Сначала `exporter` будет передавать или выставлять данные любой внешней системе. Обратите внимание, что если `exporter` передает данные, то он реализует логику Push. Если же `exporter` раскрывает HTTP-маршрут (который внешняя система должна вызвать, чтобы получить данные), то он реализует логику Pull.
 
-The `register` function applies monkey patching to our application’s modules to start getting all the traces. Its architecture, the OpenTelemetry script, must be run before our application loads, so we need to edit `package.json`’s start script by adding a new argument:
+Функция `register` применяет обезьяньи патчи к модулям нашего приложения, чтобы начать получать все трассировки. Ее архитектура, скрипт OpenTelemetry, должна быть запущена до загрузки нашего приложения, поэтому нам нужно отредактировать стартовый скрипт `package.json`, добавив новый аргумент:
 
 ```
 "start": "fastify start --require ./configs/tracing.js -l info --options app.js",
 ```
 
-By doing so, the OpenTelemetry script will run before the Fastify application. For this reason, the `@fastify/env` plugin will not start right away and it may be necessary for us to load the `.env` file into our `tracing.js` file.
+Таким образом, скрипт OpenTelemetry будет запущен раньше приложения Fastify. По этой причине плагин `@fastify/env` запустится не сразу, и нам может потребоваться загрузить файл `.env` в наш файл `tracing.js`.
 
-!!!note "Node.js standard arguments"
+!!!note "Стандартные аргументы Node.js"
 
-    The Fastify CLI emulates the Node.js CLI’s `--require` argument. For this reason, if you are not using the Fastify CLI, you can use the same option to integrate OpenTelemetry within your application. More detail can be found on the [official documentation](https://nodejs.org/api/cli.html#-r---require-module).
+    Fastify CLI эмулирует аргумент `--require` в Node.js CLI. По этой причине, если вы не используете Fastify CLI, вы можете использовать ту же опцию для интеграции OpenTelemetry в ваше приложение. Более подробную информацию можно найти в [официальной документации](https://nodejsdev.ru/api/cli/#-r-require-module).
 
-At this stage, we can still run our application as usual with `npm start`, but without storing any tracing data because `exporter` is not configured yet. Let’s see how to do that.
+На данном этапе мы все еще можем запускать наше приложение как обычно с помощью `npm start`, но без сохранения данных трассировки, поскольку `exporter` еще не настроен. Давайте посмотрим, как это сделать.
 
-### Visualizing the tracing data
+### Визуализация данных трассировки {#visualizing-the-tracing-data}
 
-We are quite ready to start the tracing, but we need a Zipkin instance on our system. We can use `docker` for this task. Add these new utility commands to `package.json`:
+Мы вполне готовы начать трассировку, но нам нужен экземпляр Zipkin в нашей системе. Мы можем использовать `docker` для этой задачи. Добавьте эти новые команды утилиты в `package.json`:
 
 ```
     "zipkin:start": "docker run --rm --name fastify-zipkin -d -p
@@ -246,51 +252,51 @@ We are quite ready to start the tracing, but we need a Zipkin instance on our sy
     "zipkin:stop": "docker container stop fastify-zipkin",
 ```
 
-After that, run `npm run zipkin:start` in your shell and you should be able to reach the <http://localhost:9411/zipkin> URL from your browser.
+После этого выполните команду `npm run zipkin:start` в вашей оболочке, и вы сможете обратиться к URL `http://localhost:9411/zipkin` через браузер.
 
-After running the `npm run mongo:start && npm start` command, the application is ready to call the `GET /todos` endpoint, and by pressing Zipkin’s **RUN QUERY** button, you should see this output:
+После выполнения команды `npm run mongo:start && npm start` приложение готово к вызову конечной точки `GET /todos`, и, нажав кнопку **RUN QUERY** в Zipkin, вы увидите следующий результат:
 
-![Figure 13.2 – The Zipkin home page](performance-2.png)
+![Рисунок 13.2 - Домашняя страница Zipkin](performance-2.png)
 
-<center>Figure 13.2 – The Zipkin home page</center>
+<center>Рисунок 13.2 - Домашняя страница Zipkin</center>
 
-From Zipkin’s home page, we have an overview of all the trace logs we are capturing from our application. Now, if you press the **SHOW** button for the `get /todos` endpoint, you will be able to see the details:
+На главной странице Zipkin мы видим обзор всех логов, которые мы перехватываем из нашего приложения. Теперь, если вы нажмете кнопку **SHOW** для конечной точки `GET /todos`, вы сможете увидеть подробности:
 
-![Figure 13.3 – The request detail page](performance-3.png)
+![Рисунок 13.3 - Страница детализации запроса](performance-3.png)
 
-<center>Figure 13.3 – The request detail page</center>
+<center>Рисунок 13.3 - Страница детализации запроса</center>
 
-From the detail page, you have a complete overview of the hooks that have been executed, and you can evaluate the timing of every step of your handler.
+На странице подробностей вы получите полный обзор выполненных хуков и сможете оценить время выполнения каждого шага вашего обработчика.
 
-!!!note "The importance of named functions"
+!!!note "Важность именованных функций"
 
-In _Figure 13.3_, you can see an anonymous middleware function: a hook within an arrow function. Remember that when it’s not strictly necessary, you can adopt a named function to read the functions’ names in your APM software, and this will make debugging much smoother. We can also see `onrequestloghook` in _Figure 13.3_, which we defined in [Chapter 11](../real-project/logging.md).
+    На _Рисунке 13.3_ вы видите анонимную промежуточную функцию: хук внутри стрелочной функции. Помните, что когда в этом нет острой необходимости, вы можете принять именованную функцию для чтения имен функций в вашем APM-программе, и это сделает отладку намного более гладкой. На _Рисунке 13.3_ мы также можем видеть `onrequestloghook`, который мы определили в [Главе 11](../real-project/logging.md).
 
-Now, we can use the Zipkin UI as a starting point to search for endpoints that require a follow-up analysis and may need to be optimized. Many commercial APM tools offer features that monitor and send you an alert directly, without the need to dig into raw data. In this section, you have covered the core concepts that will support you in choosing a solution that fits your needs. By adopting the OpenTelemetry specification, your application will be vendor-agnostic.
+Теперь мы можем использовать пользовательский интерфейс Zipkin в качестве отправной точки для поиска конечных точек, которые требуют последующего анализа и могут быть оптимизированы. Многие коммерческие APM-инструменты предлагают функции мониторинга и отправки оповещений напрямую, без необходимости копаться в исходных данных. В этом разделе мы рассмотрели основные понятия, которые помогут вам выбрать решение, соответствующее вашим потребностям. Приняв спецификацию OpenTelemetry, ваше приложение не будет зависеть от производителя.
 
-Congratulations – now, we can measure every route’s execution detail. We can proceed to the next phase in the Optimization Cycle: the analysis.
+Поздравляем - теперь мы можем измерить детали выполнения каждого маршрута. Мы можем перейти к следующей фазе цикла оптимизации: анализу.
 
-## How to analyze the data
+## Как анализировать данные {#how-to-analyze-the-data}
 
-Following the Optimization Cycle, we must analyze the measurement result to understand the following:
+После завершения цикла оптимизации мы должны проанализировать результаты измерений, чтобы понять следующее:
 
--   Can the application performance be improved?
--   Where should we focus first?
--   How can we improve it?
--   Where is the bottleneck?
+-   Можно ли улучшить производительность приложения?
+-   На чем следует сосредоточиться в первую очередь?
+-   Как мы можем ее улучшить?
+-   Где находится узкое место?
 
-For example, if we analyze _Figure 13.3_, the handler spends most of its time on the MongoDB `find` operation. This means that we should focus on that part, trying to check whether the following applies:
+Например, если мы проанализируем _Рисунок 13.3_, обработчик тратит большую часть времени на операцию `find` в MongoDB. Это означает, что мы должны сосредоточиться на этой части, пытаясь проверить, применимо ли следующее:
 
--   We have set the connection pool correctly
--   We have created a dedicated index
+-   правильно ли мы установили пул соединений
+-   Мы создали выделенный индекс.
 
-Based on whether this is the case or not, you can define some boundaries that can be further optimized in the next Optimization Cycle step.
+На основании того, так это или нет, можно определить некоторые границы, которые могут быть оптимизированы на следующем этапе цикла оптимизации.
 
-Of course, when monitoring all the application’s routes, we will need many filters to select all the routes that require our attention, such as slow endpoints or APIs with a high error rate.
+Конечно, при мониторинге всех маршрутов приложения нам понадобится множество фильтров, чтобы выбрать все маршруты, требующие нашего внимания, например медленные конечные точки или API с высоким уровнем ошибок.
 
-Note that, at times, the data cannot be as detailed as in this example. Let’s assume that the measurement says that one specific endpoint performs terribly. In this case, we must analyze the target handler in detail.
+Обратите внимание, что иногда данные не могут быть такими подробными, как в этом примере. Допустим, измерения показывают, что одна конкретная конечная точка работает ужасно. В этом случае мы должны детально проанализировать целевой обработчик.
 
-To analyze it in detail, certain tools can help us with this difficult task. Let’s start by defining our local baseline using [autocannon](https://www.npmjs.com/package/autocannon). This module is a benchmarking tool to stress test an endpoint. Let’s see the output by running the commands:
+Чтобы детально проанализировать его, нам помогут определенные инструменты. Начнем с определения локальной базовой линии с помощью [autocannon](https://www.npmjs.com/package/autocannon). Этот модуль представляет собой инструмент бенчмаркинга для стресс-тестирования конечной точки. Давайте посмотрим на результат, выполнив команды:
 
 ```sh
 npm install autocannon@7 -g
@@ -298,19 +304,19 @@ npm pkg set scripts.performance:assessment="autocannon -d 20 -c 100"
 npm run performance:assessment -- http://localhost:3000/todos
 ```
 
-This performance assessment will run 100 connections within 20 seconds and will produce an excellent report as follows:
+Эта оценка производительности запустит 100 соединений в течение 20 секунд и выдаст отличный отчет следующим образом:
 
-![Figure 13.4 – An autocannon report](./performance-4.png)
+![Рисунок 13.4 - Отчет по автопушке](./performance-4.png)
 
-<center>Figure 13.4 – An autocannon report</center>
+<center>Рисунок 13.4 - Отчет по автопушке</center>
 
-At this point, we have a baseline: the `GET /todos` endpoint in _our working machine_ manages approximately 4,500 requests per second on average and has a 20-millisecond latency. Of course, there is no absolute value to aim for; it depends entirely on the API’s business logic and its consumers. As a general rule, we can say the following:
+На данный момент у нас есть базовый показатель: конечная точка `GET /todos` на _нашей рабочей машине_ в среднем обрабатывает около 4500 запросов в секунду и имеет задержку в 20 миллисекунд. Конечно, абсолютного значения, к которому следует стремиться, не существует; оно полностью зависит от бизнес-логики API и его потребителей. В качестве общего правила можно сказать следующее:
 
--   Up to approximately 150 milliseconds of latency, the API is responsive
--   Up to 300 milliseconds, the API is acceptable
--   If it is 1,000 milliseconds or above, the API may impact your business negatively
+-   Приблизительно до 150 миллисекунд задержки API является отзывчивым
+-   До 300 миллисекунд API является приемлемым.
+-   Если задержка составляет 1 000 миллисекунд и выше, API может негативно повлиять на ваш бизнес.
 
-Now, we can search for more details by installing a new tool: [Clinic.js](https://clinicjs.org/). The following commands are run to install the module and store some new `package.json` scripts:
+Теперь мы можем поискать более подробную информацию, установив новый инструмент: [Clinic.js](https://clinicjs.org/). Следующие команды выполняются для установки модуля и сохранения некоторых новых скриптов `package.json`:
 
 ```sh
 npm install clinic@12 -D
@@ -319,13 +325,13 @@ npm pkg set scripts.clinic:doctor="clinic doctor --on-port 'autocannon
 npm run clinic:doctor
 ```
 
-The `clinic:doctor` command will do the following:
+Команда `clinic:doctor` выполнит следующие действия:
 
-1.  Start the application.
-2.  Run the `autocannon` test.
-3.  Build and open an excellent HTML report automatically when you stop the application manually.
+1.  Запустит приложение.
+2.  Запустите тест `autocannon`.
+3.  Построение и открытие отличного HTML-отчета автоматически при остановке приложения вручную.
 
-You may have noticed the `node index.js` usage in the `clinic:doctor` script. Unfortunately, Clinic.js does not support any command other than node. For this reason, it is mandatory to create a new `index.js` file on the project’s root directory, as follows:
+Возможно, вы заметили использование `node index.js` в скрипте `clinic:doctor`. К сожалению, Clinic.js не поддерживает никаких команд, кроме node. По этой причине необходимо создать новый файл `index.js` в корневом каталоге проекта, как показано ниже:
 
 ```js
 const { listen } = require('fastify-cli/helper');
@@ -333,39 +339,41 @@ const argv = ['-l', 'info', '--options', 'app.js'];
 listen(argv);
 ```
 
-The previous script skips the `tracing.js` initialization because the focus of this analysis phase is on a single endpoint or aspect of an application and the tracing instrumentation could make our deep analysis harder, as it adds noise to the output shown in _Figure 13.5_.
+В предыдущем сценарии инициализация `tracing.js` пропущена, поскольку в центре внимания этого этапа анализа находится одна конечная точка или аспект приложения, а инструментарий трассировки может затруднить наш глубокий анализ, поскольку он добавляет шум в результаты, показанные на _рисунке 13.5_.
 
-Upon the completion of the `clinic:doctor` command, you should see something similar to this graph in your browser:
+По завершении команды `clinic:doctor` в вашем браузере должно появиться нечто похожее на этот график:
 
-![Figure 13.5 – Output of the Clinic.js report](performance-5.png)
+![Рисунок 13.5 - Вывод отчета Clinic.js](performance-5.png)
 
-<center>Figure 13.5 – Output of the Clinic.js report</center>
+<center>Рисунок 13.5 - Вывод отчета Clinic.js</center>
 
-As you can see, Clinic.js is very detailed and provides us with an overview of the entire performance. It is so smart that it even suggests to us where to focus our attention and why:
+Как видите, Clinic.js очень подробен и предоставляет нам обзор всей работы. Он настолько умен, что даже подсказывает нам, на чем и почему следует сосредоточить внимание:
 
-![Figure 13.6 – Clinic.js suggestions](performance-6.png)
+![Рисунок 13.6 - Предложения Clinic.js](performance-6.png)
 
-By reading the Clinic.js output, we can get an overview of our application while `autocannon` stress tests it. We can go deeper into each graph from this big picture with Clinic.js commands in the next sections.
+<center>Рисунок 13.6 - Предложения Clinic.js</center>
 
-### Creating a flame graph
+Читая вывод Clinic.js, мы можем получить общее представление о нашем приложении, пока `autocannon` проводит его стресс-тестирование. Мы можем углубиться в каждый график из этой общей картины с помощью команд Clinic.js в следующих разделах.
 
-When the CPU and the event loop usage are too high, there can be issues with our code base or the external modules installed in our application. In this case, we will need to make a **flame graph**, which shows us the functions’ execution time as percentages. By abstracting the time, it makes it easier to find a bottleneck.
+### Создание графика пламени {#creating-a-flame-graph}
 
-As an example, we can run this command:
+Когда использование процессора и цикла событий слишком велико, могут возникнуть проблемы с нашей кодовой базой или внешними модулями, установленными в нашем приложении. В этом случае нам нужно построить **пламенный график**, который показывает время выполнения функций в процентах. Абстрагируясь от времени, легче найти узкое место.
+
+В качестве примера мы можем выполнить следующую команду:
 
 ```
 clinic flame --on-port 'autocannon -d 20 -c 100 http://localhost:3000/todos' -- node index.js
 ```
 
-When it has run, you will see something like the following:
+После его запуска вы увидите что-то вроде следующего:
 
-![Figure 13.7 – A flame graph](performance-7.png)
+![Рисунок 13.7 - График пламени](performance-7.png)
 
-<center>Figure 13.7 – A flame graph</center>
+<center>Рисунок 13.7 - График пламени</center>
 
-The graph in the preceding figure shows a healthy application. The x-axis represents the entire execution time, every stacked bar is the function call stack, and the length of a bar represents the time spent by the CPU on each function. This means that the wider the bar, the more the function slows down our application, so we should aim for thick bars.
+На графике, приведенном на предыдущем рисунке, показано работающее приложение. Ось x представляет собой все время выполнения, каждый столбик - стек вызовов функций, а длина столбика - время, затраченное процессором на каждую функцию. Это означает, что чем шире полоса, тем больше функция замедляет работу нашего приложения, поэтому мы должны стремиться к толстым полосам.
 
-As an experiment, we can modify the `GET /todos` handler to slow the handler function and look at a bad flame graph as a comparison, so let’s add this code line to the `routes/routes.js` file:
+В качестве эксперимента мы можем модифицировать обработчик `GET /todos`, чтобы замедлить работу функции-обработчика и посмотреть на график плохого пламени в качестве сравнения, поэтому давайте добавим эту строку кода в файл `routes/routes.js`:
 
 ```js
 fastify.get('/todos', {
@@ -379,45 +387,45 @@ fastify.get('/todos', {
 });
 ```
 
-After this code change, we can rerun the `clinic flame` command and wait for the report:
+После этого изменения кода мы можем повторно запустить команду `clinic flame` и ждать отчета:
 
-![Figure 13.8 – An unhealthy flame graph](performance-8.png)
+![Рисунок 13.8 - Нездоровый график пламени](performance-8.png)
 
-<center>Figure 13.8 – An unhealthy flame graph</center>
+<center>Рисунок 13.8 - Нездоровый график пламени</center>
 
-As you can see in _Figure 13.8_, a significant horizontal bar occupies about 27% of the CPU’s time! This would be a function that needs to be optimized. By reading the function’s call stack, we would find the issue’s source immediately – the `routes/routes.js` file – and fix the code.
+Как видно на _Рисунке 13.8_, значительная горизонтальная полоса занимает около 27 % времени процессора! Это функция, которую необходимо оптимизировать. Прочитав стек вызовов функции, мы сразу же найдем источник проблемы - файл `routes/routes.js` - и исправим код.
 
-A flame graph is a powerful tool for finding issues related to our code base and solving high CPU usage and high event loop delay.
+Граф пламени - это мощный инструмент для поиска проблем, связанных с нашей кодовой базой, и решения проблем с высоким использованием процессора и высокой задержкой цикла событий.
 
-We are not done with the Clinic.js commands yet – let’s dive into the next section to discover the next one.
+Мы еще не закончили с командами Clinic.js - давайте погрузимся в следующий раздел, чтобы узнать следующее.
 
-### How to check memory issues
+### Как проверить проблемы с памятью {#how-to-check-memory-issues}
 
-The `clinic doctor` report in _Figure 13.5_ shows the memory usage over time. It helps us understand whether our application has a **memory leak** that could lead to memory exhaustion or a crash of the process. A memory leak happens when the program allocates the system’s memory by defining variables or closures and, after its usage, the Node.js garbage collector cannot release this allocated memory. Usually, this situation happens when the code does not release the instantiated objects.
+Отчет `clinic doctor` на _Рисунке 13.5_ показывает использование памяти с течением времени. Он помогает понять, есть ли в нашем приложении **утечка памяти**, которая может привести к исчерпанию памяти или краху процесса. Утечка памяти происходит, когда программа выделяет память системы, определяя переменные или закрытия, а после ее использования сборщик мусора Node.js не может освободить выделенную память. Обычно такая ситуация возникает, когда код не освобождает инстанцированные объекты.
 
-In _Figure 13.5_, we can see positive memory behavior, as its trend is stable because the mean value does not grow over time, as you can see in _Figure 13.10_. The drops you see in the same figure are triggered by Node.js’s garbage collector, which frees up the unused object’s memory. In the same image, in the upper-right graph, we can see three lines:
+На _Рисунке 13.5_ мы видим положительное поведение памяти, так как ее тенденция стабильна, потому что среднее значение не растет со временем, как вы можете видеть на _Рисунке 13.10_. Падения, которые вы видите на этом же рисунке, вызваны работой сборщика мусора Node.js, который освобождает память неиспользуемых объектов. На том же рисунке в правом верхнем углу графика мы видим три линии:
 
--   **Resident Set Size (RSS)**: The total RAM allocated for the process execution. This includes the source code, the Node.js core objects, and the call stack.
--   **Total heap allocated**: The memory allocated that we can use to instantiate the application’s resources.
--   **Heap used**: The total size of the heap space actually in use, which contains all the application’s objects, strings, and closures.
+-   **Resident Set Size (RSS)**: Общий объем оперативной памяти, выделенный для выполнения процесса. Сюда входит исходный код, объекты ядра Node.js и стек вызовов.
+-   **Общая выделенная куча**: Выделенная память, которую мы можем использовать для инстанцирования ресурсов приложения.
+-   **Используемая куча**: Общий размер реально используемого пространства кучи, которое содержит все объекты, строки и закрытия приложения.
 
-I will not bother you with how Node.js and the V8 engine underneath work, but you may find it interesting to go into this topic deeper by reading this [article](https://deepu.tech/memory-management-in-v8/).
+Я не буду утомлять вас тем, как работает Node.js и движок V8 под ним, но, возможно, вам будет интересно углубиться в эту тему, прочитав эту [статью](https://deepu.tech/memory-management-in-v8/).
 
-Clinic.js gives us another tool to check the application’s memory usage. Try to run the `heap` command:
+Clinic.js дает нам еще один инструмент для проверки использования памяти приложением. Попробуйте выполнить команду `heap`:
 
 ```
 clinic heap --on-port 'autocannon -d 20 -c 100 http://localhost:3000/todos' -- node index.js
 ```
 
-As usual, we get back a nice report to read as follows:
+Как обычно, в ответ мы получаем прекрасный отчет следующего содержания:
 
-![Figure 13.9 – A heap graph](performance-9.png)
+![Рисунок 13.9 - Граф кучи](performance-9.png)
 
-<center>Figure 13.9 – A heap graph</center>
+<center>Рисунок 13.9 - Граф кучи</center>
 
-The application’s memory usage in _Figure 13.9_ can be read as a flame graph, as discussed in the [Creating a flame graph](#creating-a-flame-graph) section. The x-axis represents the total amount of our application execution, and the bigger the function’s bar is, the more memory is allocated to it. In this case, we must also check the biggest bar to reduce memory usage.
+Использование памяти приложением на _Рисунке 13.9_ можно представить в виде пламенного графика, о чем говорилось в разделе [Создание пламенного графика](#creating-a-flame-graph). Ось x представляет собой общий объем выполнения нашего приложения, и чем больше столбик функции, тем больше памяти ей выделено. В этом случае мы также должны проверить самый большой столбик, чтобы сократить использование памяти.
 
-For example, let’s try and add a memory leak into the `GET /todos` route:
+Например, давайте попробуем добавить утечку памяти в маршрут `GET /todos`:
 
 ```js
 const simpleCache = new Map();
@@ -437,47 +445,47 @@ fastify.get('/todos', {
 });
 ```
 
-In the previous, wrong code example, we wanted to add a cache layer to reduce the number of queries we were executing. Unfortunately, we created the `cacheKey` with a typo. For this reason, the `simpleCache.has()` check will always be false, and the `simpleCache` object will continue to add new keys. Moreover, we did not implement a cache clearing method, so the `simpleCache` object will continue to grow. By running the `clinic` command first, we will get a clear memory leak graph:
+В предыдущем, ошибочном примере кода мы хотели добавить слой кэша, чтобы уменьшить количество выполняемых запросов. К сожалению, мы создали `cacheKey` с опечаткой. По этой причине проверка `simpleCache.has()` всегда будет ложной, а объект `simpleCache` будет продолжать добавлять новые ключи. Более того, мы не реализовали метод очистки кэша, поэтому объект `simpleCache` будет продолжать расти. Выполнив сначала команду `clinic`, мы получим четкий график утечки памяти:
 
-![Figure 13.10 – Memory leak overview](performance-10.png)
+![Рисунок 13.10 - Обзор утечек памяти](performance-10.png)
 
-<center>Figure 13.10 – Memory leak overview</center>
+<center>Рисунок 13.10 - Обзор утечек памяти</center>
 
-However, if we run the `clinic heap` command instead, we will get more precise detail about the issue we have introduced:
+Однако если вместо этого мы выполним команду `clinic heap`, то получим более точные сведения о возникшей проблеме:
 
-![Figure 13.11 – Memory leak details](performance-11.png)
+![Рисунок 13.11 - Подробности утечки памяти](performance-11.png)
 
-<center>Figure 13.11 – Memory leak details</center>
+<center>Рисунок 13.11 - Подробности утечки памяти</center>
 
-Looking at the heap graph, we can see three big horizontal bars caused by our incorrect implementation of caching. The heap command is crucial to solving memory issues, as its capability points us in the right direction. Clinic.js provides us with a fantastic tool, but the surprises are not over yet. Let’s see another useful tool.
+Взглянув на график кучи, мы видим три большие горизонтальные полосы, вызванные нашей неправильной реализацией кэширования. Команда heap имеет решающее значение для решения проблем с памятью, поскольку ее возможности указывают нам правильное направление. Clinic.js предоставляет нам фантастический инструмент, но сюрпризы еще не закончились. Давайте посмотрим еще один полезный инструмент.
 
-### How to identify I/O resources
+### Как определить ресурсы ввода-вывода {#how-to-identify-io-resources}
 
-_Figure 13.5_ shows us an **Active Handles** graph, which counts the file descriptors opened as files and sockets. It warns us to keep our I/O resources under control. In fact, we did an `autocannon` test and set 100 concurrent connections, so why is that graph showing us 200 active handlers?
+На рисунке 13.5\_ показан график **Active Handles**, который подсчитывает файловые дескрипторы, открытые как файлы и сокеты. Он предупреждает нас о необходимости держать под контролем ресурсы ввода-вывода. На самом деле, мы провели тест `autocannon` и установили 100 одновременных соединений, так почему же этот график показывает нам 200 активных обработчиков?
 
-To figure this out, we need to use the `clinic bubble` command:
+Чтобы выяснить это, нам нужно воспользоваться командой `clinic bubble`:
 
 ```
 clinic bubble --on-port 'autocannon -d 20 -c 100 http://localhost:3000/todos' -- node index.js
 ```
 
-The bubble report is a new kind of report that is different from the previous graphs we built. Here is the output:
+Отчет «Пузырь» - это новый вид отчета, который отличается от предыдущих построенных нами графиков. Вот вывод:
 
-![Figure 13.12 – A bubble report](performance-12.png)
+![Рисунок 13.12 - Отчет в виде пузырька](performance-12.png)
 
-<center>Figure 13.12 – A bubble report</center>
+<center>Рисунок 13.12 - Отчет в виде пузырька</center>
 
-Each bubble represents I/O time, so the bigger the bubble, the more time you have to spend on it. This graph looks quite good actually. There is no obvious bigger bubble to analyze but if you look closer, you will see that the green bubbles are both related to MongoDB, and one of them is the biggest one.
+Каждый пузырек представляет собой время ввода/вывода, поэтому чем больше пузырек, тем больше времени вам придется на него потратить. На самом деле этот график выглядит довольно хорошо. Нет очевидного большего пузыря для анализа, но если вы присмотритесь, то увидите, что зеленые пузыри оба связаны с MongoDB, и один из них - самый большой.
 
-!!!note "Troubleshooting"
+!!!note "Устранение неполадок"
 
-You will need to turn off Fastify’s logger to generate the bubble graphs. Clinic.js does not support Node.js worker threads, and the pino logger module uses those features. This incompatibility would generate an unreadable graph. Moreover, you may encounter the `Analysing dataError: premature close` error during report generation. This is a known problem based on the operating system and Node.js version, as [described here](https://github.com/clinicjs/node-clinic-bubbleprof/issues/399). As a solution, you can manually apply the quick fix.
+    Чтобы сгенерировать графики пузырьков, вам нужно будет отключить логгер Fastify. Clinic.js не поддерживает рабочие потоки Node.js, а модуль логгера pino использует эти возможности. Такая несовместимость приведет к появлению нечитаемых графиков. Кроме того, при генерации отчета вы можете столкнуться с ошибкой `Analysing dataError: premature close`. Это известная проблема, зависящая от операционной системы и версии Node.js, как [описано здесь](https://github.com/clinicjs/node-clinic-bubbleprof/issues/399). В качестве решения можно вручную применить быстрое исправление.
 
-By clicking on the bubble, we can explore the graph and spot that the `"makeConnection@mongodb"` async operation is the slowest. Here, we don’t have a clear solution as we did with the previous heap and flame graphs, but we need to think about the hints that this bubble graph is giving us.
+Нажав на пузырек, мы можем изучить график и заметить, что асинхронная операция `"makeConnection@mongodb"` выполняется медленнее всего. Здесь у нас нет четкого решения, как в случае с предыдущими графиками кучи и пламени, но нам нужно подумать о подсказках, которые дает нам этот пузырьковый график.
 
-Looking closer at the MongoDB configuration, we did not set any options but read the default client’s values from the [official website](https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/#connection-options).
+Если присмотреться к конфигурации MongoDB, то мы не устанавливали никаких опций, а прочитали значения клиента по умолчанию с [официального сайта](https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/#connection-options).
 
-We can see that the `maxPoolSize` option is 100 by default. That explains everything! Clinic.js shows us the 100 sockets opened by autocannon, and the 100 connections open to MongoDB! This is a clear misconfiguration, as we want to limit the connections open to third-party systems. We can fix the `plugins/mongo-data-source.js` file with the following options:
+Мы видим, что опция `maxPoolSize` по умолчанию равна 100. Это все объясняет! Clinic.js показывает нам 100 сокетов, открытых autocannon, и 100 соединений, открытых к MongoDB! Это явная ошибка в конфигурации, поскольку мы хотим ограничить количество соединений, открытых для сторонних систем. Мы можем исправить файл `plugins/mongo-data-source.js` с помощью следующих опций:
 
 ```js
 fastify.register(fastifyMongo, {
@@ -488,52 +496,52 @@ fastify.register(fastifyMongo, {
 });
 ```
 
-Now, if we rerun the `bubble` command, we can see that a big bubble has disappeared:
+Теперь, если мы повторно выполним команду `bubble`, мы увидим, что большой пузырь исчез:
 
-![Figure 13.13 – The MongoDB connection issue solved](performance-13.png)
+![Рисунок 13.13 - Проблема с подключением к MongoDB решена](performance-13.png)
 
-<center>Figure 13.13 – The MongoDB connection issue solved</center>
+<center>Рисунок 13.13 - Проблема с подключением к MongoDB решена</center>
 
-The new bubble graph looks even better than the one in _Figure 13.12_, and by checking a new doctor run, we can say that the **Active Handles** counter is as expected and is under control:
+Новый пузырьковый график выглядит даже лучше, чем на _Рисунок 13.12_, и, проверив новый прогон доктора, мы можем сказать, что счетчик **Active Handles** соответствует ожиданиям и находится под контролем:
 
-![Figure 13.14 – Active handlers after the MongoDB max pool configuration](performance-14.png)
+![Рисунок 13.14 - Активные обработчики после настройки максимального пула MongoDB](performance-14.png)
 
-<center>Figure 13.14 – Active handlers after the MongoDB max pool configuration</center>
+<center>Рисунок 13.14 - Активные обработчики после настройки максимального пула MongoDB</center>
 
-The preceding figure shows us the 100 connections and the maximum of 20 connections to MongoDB. This optimization will protect our database from potential attacks that aim to saturate the system’s network and reuse the connection from the pool, saving time.
+На предыдущем рисунке показано 100 соединений и максимум 20 соединений с MongoDB. Такая оптимизация защитит нашу базу данных от потенциальных атак, цель которых - насытить сеть системы и повторно использовать соединение из пула, экономя время.
 
-The `bubble` command is the last secret that Clinic.js unveiled to us. From now on, I hope you will have a new point of view on your application configuration and all of its moving parts.
+Команда `bubble` - это последний секрет, который раскрыл нам Clinic.js. Надеюсь, с этого момента у вас появится новая точка зрения на конфигурацию вашего приложения и все его движущиеся части.
 
-In the next section, we are going to explore the last step of the Optimization Cycle.
+В следующем разделе мы рассмотрим последний шаг цикла оптимизации.
 
-## How to optimize the application
+## Как оптимизировать приложение {#how-to-optimize-the-application}
 
-To optimize the application, we must start from the output of the analysis phase of the Optimization Cycle workflow. The actions that we could take are very different:
+Чтобы оптимизировать приложение, мы должны начать с результатов фазы анализа рабочего процесса цикла оптимизации. Действия, которые мы можем предпринять, очень разнообразны:
 
--   **No action**: The data analysis suggests that optimization is not possible or is not worth the effort to improve performance
--   **Code base optimization**: The data tells us that there are bad algorithms or bad business logic implementation in our code base, and we can rewrite it to speed up the server
--   **Architectural action**: The data identifies a system bottleneck, such as a legacy database
--   **Configuration setup**: The analysis suggests that tweaking the configuration could improve the performance
+-   **Не предпринимать никаких действий**: Анализ данных показывает, что оптимизация невозможна или не стоит усилий по улучшению производительности.
+-   **Оптимизация кодовой базы**: Данные говорят нам, что в нашей кодовой базе есть плохие алгоритмы или плохая реализация бизнес-логики, и мы можем переписать ее, чтобы ускорить работу сервера
+-   **Архитектурные действия**: Данные указывают на узкое место в системе, например на устаревшую базу данных.
+-   **Настройка конфигурации**: Анализ показывает, что изменение конфигурации может повысить производительность.
 
-The **No action** step is continually revised based on data that we will continue to measure and analyze over time.
+Шаг **Не действовать** постоянно пересматривается на основе данных, которые мы будем продолжать измерять и анализировать с течением времени.
 
-For every action type, there is different knowledge to acquire. Working within a fantastic and heterogeneous team helps cover all these aspects, which are not always related to a developer’s daily job. In the [How to analyze the data](#how-to-analyze-the-data) section, we already saw an example for each use case:
+Для каждого типа действий необходимо получить свои знания. Работа в фантастической и разнородной команде помогает охватить все эти аспекты, которые не всегда связаны с повседневной работой разработчика. В разделе [Как анализировать данные](#how-to-analyze-the-data) мы уже видели пример для каждого случая использования:
 
--   **Code base optimization**: This is solved using a flame graph
--   **Architectural action**: This has been covered by introducing a cache to reduce the number of database queries
--   **Configuration setup**: The bubble graph helps us find the proper configuration to apply to MongoDB
+-   **Оптимизация кодовой базы**: Решается с помощью пламенного графа
+-   **Архитектурные действия**: Это решается внедрением кэша для уменьшения количества запросов к базе данных
+-   **Настройка конфигурации**: Пузырьковый граф помогает нам найти правильную конфигурацию для MongoDB.
 
-For this reason, we will focus on code base optimization by mentioning all the best practices and the common issues I have found in my experience of many, many hours spent analyzing metrics data. The following sections collect a series of suggestions and insights you need to know.
+По этой причине мы сосредоточимся на оптимизации кодовой базы, упомянув все лучшие практики и общие проблемы, которые я обнаружил в своем опыте многих и многих часов, проведенных за анализом данных метрик. В следующих разделах собраны предложения и идеи, которые вам необходимо знать.
 
-### Node.js internals that you need to know
+### Внутренние компоненты Node.js, которые вам нужно знать {#nodejs-internals-that-you-need-to-know}
 
-The JavaScript object model is based on the internal concepts of `Shape` constructs. Every object has at least one `Shape` construct that maps the object’s properties to the memory offset where the value is stored. Objects can share the same `Shape`, leading to better performance by reducing memory usage and memory access.
+Объектная модель JavaScript основана на внутренних концепциях конструкций `Shape`. Каждый объект имеет как минимум одну конструкцию `Shape`, которая сопоставляет свойства объекта со смещением памяти, где хранится значение. Объекты могут совместно использовать одну и ту же `Shape`, что приводит к повышению производительности за счет сокращения использования памяти и доступа к ней.
 
-Problems occur when an object seems to have a single `Shape`, but multiple `Shape` constructs are created due to some trivial coding error. Therefore, every time you mutate `Shape` by adding or removing properties, you impact the overall performance of the application.
+Проблемы возникают, когда объект вроде бы имеет одну `Shape`, но из-за банальной ошибки в кодировании создается несколько конструкций `Shape`. Таким образом, каждый раз, когда вы мутируете `Shape`, добавляя или удаляя свойства, вы влияете на общую производительность приложения.
 
-Therefore, if the analysis has found some memory issues, such as frequent garbage collection, you should check how objects are built and processed in the application.
+Поэтому, если в ходе анализа были обнаружены проблемы с памятью, например частая сборка мусора, следует проверить, как строятся и обрабатываются объекты в приложении.
 
-As a general rule, you should declare all the object’s properties during the declaration. The following is unoptimized code:
+Как правило, все свойства объекта следует объявлять во время объявления. Ниже приведен неоптимизированный код:
 
 ```js
 const object = {};
@@ -545,13 +553,13 @@ if (something()) {
 }
 ```
 
-To optimize the previous code snippet, it is enough to write: `const object = { value: undefined, key: undefined }`. Similarly, if you want to remove a property, you can set it to `undefined` instead.
+Чтобы оптимизировать предыдущий фрагмент кода, достаточно написать: `const object = { value: undefined, key: undefined }`. Аналогично, если вы хотите удалить свойство, вы можете установить для него значение `undefined`.
 
-To strengthen these Node.js core concepts, you may want to refer to this great video – <https://mathiasbynens.be/notes/shapes-ics> – made by Mathias Bynens, who is a Google developer and TC39 member.
+Чтобы укрепить эти базовые понятия Node.js, вы можете обратиться к этому замечательному видео - <https://mathiasbynens.be/notes/shapes-ics> - снятому Матиасом Байненсом, разработчиком Google и членом TC39.
 
-### The safety of parallel running
+### Безопасность параллельной работы {#the-safety-of-parallel-running}
 
-Sometimes, it is easier to think of a sequence of steps that our software will take, but this is not the case. A typical example is the following one:
+Иногда проще представить себе последовательность шагов, которые будет выполнять наше программное обеспечение, но это не так. Типичным примером является следующий:
 
 ```js
 const user = await database.readUser(10);
@@ -559,7 +567,7 @@ const userTasks = await database.readUserTask(user);
 const userNeeds = await database.readUserNeeds(user);
 ```
 
-This can be optimized by using the `Promise.all` method:
+Это можно оптимизировать с помощью метода `Promise.all`:
 
 ```js
 const [userTasks, userNeeds] = await Promise.all([
@@ -568,34 +576,34 @@ const [userTasks, userNeeds] = await Promise.all([
 ]);
 ```
 
-If you have an array of users, you could do the same, but you must evaluate the array length. So, if your array has more than 100 items, you cannot create 1,000 promises, because this may cause you to hit a memory limit error, especially if the endpoint is called multiple times concurrently. Therefore, you can split your array into smaller ones and process them one group at a time. For this task, the [`p-map` module](https://www.npmjs.com/package/p-map) works great.
+Если у вас есть массив пользователей, вы можете сделать то же самое, но при этом вы должны оценить длину массива. Так, если ваш массив содержит более 100 элементов, вы не можете создать 1 000 промисов, поскольку это может привести к ошибке ограничения памяти, особенно если конечная точка вызывается несколько раз одновременно. Поэтому можно разбить массив на более мелкие и обрабатывать их по одной группе за раз. Для этой задачи отлично подходит модуль [`p-map`](https://www.npmjs.com/package/p-map).
 
-### Connection management takeaways
+### Управление соединениями {#connection-management-takeaways}
 
-When we work with an external system, we must consider that establishing a connection is heavy. For this reason, we must always be aware of how many connections our application has to third-party software and configure it accordingly. My checklist looks like this:
+Когда мы работаем с внешней системой, мы должны учитывать, что установление соединения - это тяжелый процесс. По этой причине мы всегда должны знать, сколько соединений у нашего приложения со сторонними программами, и настраивать его соответствующим образом. Мой контрольный список выглядит следующим образом:
 
--   Does the external system Node.js module support a connection pool?
--   How many concurrent users should every application instance serve?
--   What are the external system connection limits?
--   Is it possible to configure the connection name?
--   How is the application server’s network configured?
+-   Поддерживает ли модуль Node.js внешней системы пул соединений?
+-   Сколько одновременных пользователей должен обслуживать каждый экземпляр приложения?
+-   Каковы лимиты подключений к внешней системе?
+-   Можно ли настроить имя соединения?
+-   Как настроена сеть сервера приложений?
 
-These simple questions helped me lots of times defining the best network settings, mainly databases.
+Эти простые вопросы много раз помогали мне определить оптимальные настройки сети, в основном баз данных.
 
-!!!note "Beware of premature optimization"
+!!!note "Остерегайтесь преждевременной оптимизации"
 
-    You may fall into the premature optimization trap now that you know about code optimization. This trap makes your work harder and more stressful if you try to write optimized software. Therefore, before writing code that runs parallel or caches a lot of data, it is important to start simply by writing a straightforward handler function that just works.
+    Теперь, когда вы знаете об оптимизации кода, вы можете попасть в ловушку преждевременной оптимизации. Эта ловушка делает вашу работу сложнее и напряженнее, если вы пытаетесь написать оптимизированное программное обеспечение. Поэтому, прежде чем писать код, который работает параллельно или кэширует большое количество данных, важно начать с написания простой функции-обработчика, которая просто работает.
 
-Now, you are aware of all the aspects to think of when you need to optimize your application’s performance.
+Теперь вы знаете обо всех аспектах, о которых следует подумать, когда нужно оптимизировать производительность приложения.
 
-## Summary
+## Резюме {#summary}
 
-In this dense chapter, we touched on many concepts that will help us measure, analyze, and optimize an application’s performance. This Optimization Cycle is a practical workflow to follow step by step for this challenging task, which may lead to excellent business achievements, such as improving sales or overall customer satisfaction.
+В этой плотной главе мы затронули множество концепций, которые помогут нам измерить, проанализировать и оптимизировать производительность приложения. Этот цикл оптимизации представляет собой практический рабочий процесс, которому нужно следовать шаг за шагом для решения этой сложной задачи, что может привести к отличным достижениям в бизнесе, таким как повышение продаж или общей удовлетворенности клиентов.
 
-Now, you can evaluate a tracing module. By knowing how it works under the hood, you can integrate it into any application to start the measurement process. You also know which third-party software you will need to process and visualize the data, such as an APM. Moreover, you are now able to dig deeper into any performance issue, by analyzing it in detail, supported by some open source tools. Last but not least, once you have found a problem, you can plan an optimization to solve the issue and boost your application’s endpoints iteratively.
+Теперь вы можете оценить модуль трассировки. Зная, как он работает, вы можете интегрировать его в любое приложение, чтобы начать процесс измерения. Вы также знаете, какое стороннее программное обеспечение вам понадобится для обработки и визуализации данных, например APM. Более того, теперь вы можете глубже изучить любую проблему производительности, детально проанализировав ее, при поддержке некоторых инструментов с открытым исходным кодом. И последнее, но не менее важное: обнаружив проблему, вы можете спланировать оптимизацию для ее решения и итеративно повысить производительность конечных точек вашего приложения.
 
-You have completed this journey toward building a performant and maintainable Fastify application! It is time for you to push some code into production!
+Вы завершили этот путь к созданию производительного и поддерживаемого приложения Fastify! Пришло время запустить код в производство!
 
-Up next is the last part of this book, which will discuss some advanced topics. The first one will be GraphQL. In the next chapter, you will learn about GQL and how to run it on top of your Fastify application.
+Далее следует последняя часть этой книги, в которой будут рассмотрены некоторые продвинутые темы. Первой из них будет GraphQL. В следующей главе вы узнаете о GQL и о том, как запустить его поверх вашего приложения Fastify.
 
-Happy coding with Fastify!
+Счастливого кодинга с Fastify!
