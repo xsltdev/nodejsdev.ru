@@ -10,7 +10,7 @@ description: В этой главе мы начнем с того, что сде
 
 Решением проблемы роста может стать разделение команды на две части. Это плохая идея, потому что если две команды будут одновременно работать над одной и той же кодовой базой, они будут наступать друг другу на пятки. К сожалению, это вряд ли произойдет, поскольку спрос на цифровые решения растет с каждым годом. Что же делать?
 
-В первую очередь необходимо разделить монолит на несколько модулей, чтобы свести к минимуму вероятность конфликта между разными командами. Затем мы можем разделить его на микросервисы, чтобы команды могли сами отвечать за их развертывание. Микросервисы будут эффективны только в том случае, если мы сможем организовать архитектуру программного обеспечения с учетом границ команд.
+<big>В первую очередь необходимо разделить монолит на несколько модулей, чтобы свести к минимуму вероятность конфликта между разными командами. Затем мы можем разделить его на **микросервисы**, чтобы команды могли сами отвечать за их развертывание. Микросервисы будут эффективны только в том случае, если мы сможем организовать архитектуру программного обеспечения с учетом границ команд.</big>
 
 В этой главе мы начнем с того, что сделаем наш монолит более модульным, а затем изучим, как добавить новые маршруты без увеличения сложности проекта. После этого мы разделим монолит и будем использовать API-шлюз для маршрутизации соответствующих вызовов.
 
@@ -22,26 +22,26 @@ description: В этой главе мы начнем с того, что сде
 -   Разделение монолита
 -   Выставление нашего микросервиса через API-шлюз Реализация распределенного лога
 
-## Technical requirements {#technical-requirements}
+!!!info "Технические требования"
 
-As mentioned in the previous chapters, you will need the following:
+    Как уже говорилось в предыдущих главах, вам понадобится следующее:
 
--   A working Node.js 18 installation
--   A text editor to try the example code
--   Docker
--   An HTTP client to test out code, such as CURL or Postman
--   A GitHub account
+    - Рабочая установка Node.js 18
+    - Текстовый редактор, чтобы попробовать код примера
+    - докер
+    - HTTP-клиент для тестирования кода, например CURL или Postman
+    - аккаунт на GitHub
 
-All the snippets in this chapter are on [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2012).
+    :material-source-repository: Все фрагменты в этой главе находятся на [GitHub](https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main/Chapter%2012).
 
-## Implementing API versioning {#implementing-api-versioning}
+## Реализация версионности API {#implementing-api-versioning}
 
-Fastify provides two mechanisms for supporting multiple versions of the same APIs:
+Fastify предоставляет два механизма для поддержки нескольких версий одного и того же API:
 
--   [Version constraints](https://www.fastify.io/docs/latest/Reference/Routes/#constraints) are based on the Accept-Version HTTP header
--   [URL prefixes](https://www.fastify.io/docs/latest/Reference/Routes/#route-prefixing) are simpler and my go-to choice
+-   [Ограничения версии](https://www.fastify.io/docs/latest/Reference/Routes/#constraints) основаны на HTTP-заголовке Accept-Version.
+-   [Префиксы URL](https://www.fastify.io/docs/latest/Reference/Routes/#route-prefixing) - более простой и наиболее подходящий для меня вариант.
 
-In this section, we will cover how to apply both techniques, starting with the following base server:
+В этом разделе мы рассмотрим, как применить обе техники, начиная со следующего базового сервера:
 
 ```js
 // server.js
@@ -52,11 +52,11 @@ fastify.get('/posts', async (request, reply) => {
 fastify.listen({ port: 3000 });
 ```
 
-### Version constraints {#version-constraints}
+### Ограничения версий {#version-constraints}
 
-The Fastify constraint system allows us to expose multiple routes on the same URL by discriminating by HTTP header. It’s an advanced methodology that changes how the user must call our API: we must specify an `Accept-Version` header containing a semantic versioning pattern.
+Система ограничений Fastify позволяет нам открывать несколько маршрутов на одном и том же URL, различая их по HTTP-заголовку. Это продвинутая методология, которая изменяет то, как пользователь должен вызывать наш API: мы должны указать заголовок `Accept-Version`, содержащий семантический шаблон версионности.
 
-For our routes to be version-aware, we must add a `constraints: { version: '2.0.0' }` option to our route definitions, like so:
+Чтобы наши маршруты учитывали версии, мы должны добавить `constraints: { version: '2.0.0' }` в определения наших маршрутов, например, так:
 
 ```js
 const fastify = require('fastify')();
@@ -83,21 +83,21 @@ fastify.get(
 app.listen({ port: 3000 });
 ```
 
-We can invoke our v1.0.0 API with the following:
+Мы можем вызвать наш API версии 1.0.0 следующим образом:
 
 ```sh
 $ curl -H 'Accept-Version: 1.x' http://127.0.0.1:3000/posts
 [{"id":1,"title":"Hello World"}]
 ```
 
-We can invoke our v2.0.0 API with the following:
+Мы можем вызвать наш API версии 2.0.0 следующим образом:
 
 ```sh
 $ curl -H 'Accept-Version: 2.x' http://127.0.0.1:3000/posts
 {"posts":[{"id":1,"title":"Hello World"}]}
 ```
 
-Invoking the API without the `Accept-Version` header will result in a 404 error, which you can verify like so:
+Вызов API без заголовка `Accept-Version` приведет к ошибке 404, которую вы можете проверить следующим образом:
 
 ```sh
 $ curl http://127.0.0.1:3000/posts
@@ -105,13 +105,13 @@ $ curl http://127.0.0.1:3000/posts
 Found","statusCode":404}
 ```
 
-As you can see, if the request does not have the `Accept-Version` header, a 404 error will be returned. Given that most users are not familiar with `Accept-Version`, we recommend using prefixes instead.
+Как видите, если запрос не содержит заголовка `Accept-Version`, будет возвращена ошибка 404. Учитывая, что большинство пользователей не знакомы с `Accept-Version`, мы рекомендуем использовать вместо него префиксы.
 
-### URL prefixes {#url-prefixes}
+### Префиксы URL {#url-prefixes}
 
-URL prefixes are simple to implement via encapsulation (see [Chapter 2](../basic/plugin-system.md)). As you might recall, we can add a `prefix` option when registering a plugin, and Fastify encapsulation logic will guarantee that all routes defined within the plugins will have the given prefix. We can leverage prefixes to structure our code logically so that different parts of our applications are encapsulated.
+Префиксы URL очень просто реализовать с помощью инкапсуляции (см. [Глава 2](../basic/plugin-system.md)). Как вы помните, мы можем добавить опцию `prefix` при регистрации плагина, и логика инкапсуляции Fastify будет гарантировать, что все маршруты, определенные в плагинах, будут иметь заданный префикс. Мы можем использовать префиксы для логического структурирования нашего кода, чтобы различные части наших приложений были инкапсулированы.
 
-Let’s consider the following example in which each file is separated by a code comment:
+Рассмотрим следующий пример, в котором каждый файл отделен комментарием к коду:
 
 ```js
 // server.js
@@ -152,14 +152,14 @@ module.exports = async function (app, opts) {
 };
 ```
 
-In the previous code, we have created an application composed of four files:
+В предыдущем коде мы создали приложение, состоящее из четырех файлов:
 
-1.  `server.js` starts our application.
-2.  `services/posts.js` creates a decorator read to all the `posts` objects from our database; note the use of the `fastify-plugin` utility to break the encapsulation.
-3.  `routes/v1/posts.js` implements the v1 API.
-4.  `routes/v2/posts.js` implements the v2 API.
+1.  `server.js` запускает наше приложение.
+2.  `services/posts.js` создает декоратор, который читает все объекты `posts` из нашей базы данных; обратите внимание на использование утилиты `fastify-plugin` для нарушения инкапсуляции.
+3.  `routes/v1/posts.js` реализует API v1.
+4.  `routes/v2/posts.js` реализует API v2.
 
-There is nothing special about the prefixed routes; we can call them normally using CURL or Postman:
+В маршрутах с префиксом нет ничего особенного; мы можем вызывать их обычным способом, используя CURL или Postman:
 
 ```
 $ curl http://127.0.0.1:3000/v1/posts
@@ -168,17 +168,17 @@ $ curl http://127.0.0.1:3000/v2/posts
 {"posts":[{"id":1,"title":"Hello World"}]}
 ```
 
-!!!note "Shared business logic or code"
+!!!note "Общая бизнес-логика или код"
 
-    Some routes will depend upon certain code, usually the business logic implementation or the database access. While a naïve implementation would have included this logic next to the route definitions, we moved them to a `services` folder. These will still be Fastify plugins and will use inversion-of-control mechanisms via decorators.
+    Некоторые маршруты будут зависеть от определенного кода, обычно от реализации бизнес-логики или доступа к базе данных. Хотя наивная реализация включала бы эту логику рядом с определениями маршрутов, мы перенесли их в папку `services. Они по-прежнему будут плагинами Fastify и будут использовать механизмы инверсии контроля через декораторы.
 
-This approach needs to scale better as we add more complexity to our application, as we need to modify `server.js` for every single new file we add. Moreover, we duplicate the information about the prefix in two places: the `server.js` file and within the filesystem structure. The solution is to implement filesystem-based routing.
+Этот подход должен лучше масштабироваться по мере увеличения сложности нашего приложения, так как нам нужно изменять `server.js` для каждого нового файла, который мы добавляем. Более того, мы дублируем информацию о префиксе в двух местах: в файле `server.js` и в структуре файловой системы. Решение заключается в реализации маршрутизации на основе файловой системы.
 
-### Filesystem-based routing prefixes {#filesystem-based-routing-prefixes}
+### Префиксы маршрутизации на основе файловой системы {#filesystem-based-routing-prefixes}
 
-In order to avoid registering and requiring all the files manually, we have developed [`@fastify/autoload`](https://github.com/fastify/fastify-autoload). This plugin will automatically load the plugins from the filesystem and apply a prefix based on the current folder name.
+Чтобы не регистрировать и не требовать все файлы вручную, мы разработали [`@fastify/autoload`](https://github.com/fastify/fastify-autoload). Этот плагин будет автоматически загружать плагины из файловой системы и применять префикс, основанный на имени текущей папки.
 
-In the following example, we will load two directories, `services` and `routes`:
+В следующем примере мы загрузим две директории, `services` и `routes`:
 
 ```js
 const fastify = require('fastify')();
@@ -191,49 +191,49 @@ fastify.register(require('@fastify/autoload'), {
 fastify.listen({ port: 3000 });
 ```
 
-This new `server.js` will load all Fastify plugins in the `services` and `routes` folders, mapping our routes like so:
+Этот новый `server.js` загрузит все плагины Fastify в папки `services` и `routes`, отображая наши маршруты следующим образом:
 
--   `routes/v1/posts.js` will automatically have the `v1/` prefix
--   `routes/v2/posts.js` will automatically have the `v2/` prefix
+-   `routes/v1/posts.js` будет автоматически иметь префикс `v1/`
+-   `routes/v2/posts.js` будет автоматически иметь префикс `v2/`.
 
-Structuring our code using the filesystem and services allows us to create logical blocks that can be easily refactored. In the next section, will see how we can extract a microservice from our monolith.
+Структурирование кода с помощью файловой системы и сервисов позволяет нам создавать логические блоки, которые можно легко рефакторить. В следующем разделе мы рассмотрим, как выделить микросервис из нашего монолита.
 
-## Splitting the monolith {#splitting-the-monolith}
+## Разделение монолита {#splitting-the-monolith}
 
-In the previous section, we discovered how to structure our application using Fastify plugins, separating our code into services and routes. Now, we are moving our application to the next step: we are going to split it into multiple microservices.
+В предыдущем разделе мы узнали, как структурировать наше приложение с помощью плагинов Fastify, разделяя наш код на сервисы и маршруты. Теперь мы переходим к следующему шагу: мы собираемся разделить наше приложение на несколько микросервисов.
 
-Our sample application has three core files: our routes for v1 and v2, plus one external service to load our posts. Given the similarity between v1 and v2 and our service, we will merge the service with v2, building the “old” v1 on top of it.
+В нашем примере приложения есть три основных файла: маршруты для v1 и v2, а также один внешний сервис для загрузки постов. Учитывая сходство между v1 и v2 и нашим сервисом, мы объединим сервис с v2, построив поверх него «старый» v1.
 
-We are going to split the monolith across the boundaries of these three components: we will create a “v2” microservice, a “v1” microservice, and a “gateway” to coordinate them.
+Мы собираемся разделить монолит по границам этих трех компонентов: создадим микросервис «v2», микросервис «v1» и «шлюз» для их координации.
 
-### Creating our v2 service {#creating-our-v2-service}
+### Создание нашего v2-сервиса {#creating-our-v2-service}
 
-Usually, the simplest way to extract a microservice is to copy the code of the monolith and remove the parts that are not required. Therefore, we first structure our v2 service based on the monolith, reusing the `routes/` and `services/` folders. Then, we remove the `routes/v1/` folder and move the content of `v2` inside `routes/`. Lastly, we change the port it’s listening to `3002`.
+Обычно самый простой способ извлечь микросервис - это скопировать код монолита и удалить ненужные части. Поэтому сначала мы структурируем наш v2-сервис на основе монолита, повторно используя папки `routes/` и `services/`. Затем мы удаляем папку `routes/v1/` и перемещаем содержимое `v2` внутрь `routes/`. Наконец, мы изменим порт, который прослушивает сервер, на `3002`.
 
-We can now start the server and validate that our <http://127.0.0.1:3002/posts> URL works as expected:
+Теперь мы можем запустить сервер и проверить, что наш URL `http://127.0.0.1:3002/posts` работает так, как ожидалось:
 
 ```sh
 $ curl http://127.0.0.1:3002/posts
 {"posts":[{"id":1,"title":"Hello World"}]}
 ```
 
-It’s now time to develop our v1 microservice.
+Настало время разработать наш микросервис v1.
 
-### Building the v1 service on top of v2 {#building-the-v1-service-on-top-of-v2}
+### Построение сервиса v1 поверх v2 {#building-the-v1-service-on-top-of-v2}
 
-We can build the v1 service using the APIs exposed from v2. Similarly to our v2 service, we can structure our v1 service based on the monolith, using the `routes/` and `services/` folders. Then, we remove the `routes/v1/` folder and move the content of `v1` inside `routes/`. Now, it’s time to change our `services/posts.js` implementation to invoke our v2 service.
+Мы можем построить сервис v1, используя API, открытые в v2. Аналогично нашему сервису v2, мы можем структурировать наш сервис v1 на основе монолита, используя папки `routes/` и `services/`. Затем мы удалим папку `routes/v1/` и переместим содержимое `v1` внутрь `routes/`. Теперь пришло время изменить реализацию `services/posts.js, чтобы вызвать наш сервис v2.
 
-Our plugin uses [undici](https://undici.nodejs.org), a new HTTP client from Node.js.
+Наш плагин использует [undici](https://undici.nodejs.org), новый HTTP-клиент от Node.js.
 
-!!!note "The story behind undici (from Matteo)"
+!!!note "История создания undici (от Маттео)"
 
-    undici was born in 2016. At the time, I was consulting with a few organizations that were suffering from severe bottlenecks in performing HTTP calls in Node.js. They were considering switching the runtime to improve their throughput. I took up the challenge and created a proof- of-concept for a new HTTP client for Node.js. I was stunned by the results.
+    Компания undici родилась в 2016 году. В то время я консультировал несколько организаций, которые страдали от серьезных узких мест при выполнении HTTP-вызовов в Node.js. Они рассматривали возможность смены времени выполнения, чтобы повысить пропускную способность. Я принял вызов и создал proof of-concept для нового HTTP-клиента для Node.js. Результаты меня ошеломили.
 
-    How is undici fast? First, it carries out deliberate connection pooling via the use of Keep-Alive. Second, it minimizes the amount of event loop microticks needed to send a request. Finally, it does not have to conform to the same interfaces as a server.
+    Как undici работает быстро? Во-первых, он осуществляет преднамеренный пул соединений с помощью Keep-Alive. Во-вторых, он минимизирует количество микроциклов цикла событий, необходимых для отправки запроса. И наконец, ему не нужно соответствовать тем же интерфейсам, что и серверу.
 
-    And why is it called “undici”? You could read HTTP/1.1 as 11 and undici means 11 in Italian (but more importantly, I was watching Stranger Things at the time).
+    А почему он называется «недирективным»? Вы можете прочитать HTTP/1.1 как 11, а undici означает 11 на итальянском (но важнее то, что я в это время смотрел Stranger Things).
 
-We create a new `undici.Pool` object to manage the connection pool to our service. Then, we decorate our application with a new object that matches the interface needed by the other routes in our service:
+Мы создаем новый объект `undici.Pool` для управления пулом соединений с нашим сервисом. Затем мы декорируем наше приложение новым объектом, который соответствует интерфейсу, необходимому для других маршрутов нашего сервиса:
 
 ```js
 const fp = require('fastify-plugin');
@@ -257,25 +257,25 @@ module.exports = fp(async function (app, opts) {
 });
 ```
 
-The `onClose` hook is used to shut down the connection pool: this allows us to make sure we have shut down all our connections before closing our server, allowing a graceful shutdown.
+Хук `onClose` используется для отключения пула соединений: это позволяет нам убедиться, что мы отключили все наши соединения перед закрытием сервера, что обеспечивает изящное завершение работы.
 
-After creating our v2 and v1 microservices, we will now expose them via an API gateway.
+После создания наших микросервисов v2 и v1 мы теперь будем экспонировать их через API-шлюз.
 
-## Exposing our microservice via an API gateway {#exposing-our-microservice-via-an-api-gateway}
+## Экспонирование нашего микросервиса через API-шлюз {#exposing-our-microservice-via-an-api-gateway}
 
-We have split our monolith into two microservices. However, we would still need to expose them under a single origin (in web terminology, the origin of a page is the combination of the hostname/IP and the port). How can we do that? We will cover an Nginx-based strategy as well as a Fastify-based one.
+Мы разделили наш монолит на два микросервиса. Однако нам все равно нужно выставить их под единым origin (в веб-терминологии origin страницы - это комбинация имени хоста/IP и порта). Как мы можем это сделать? Мы рассмотрим стратегию на основе Nginx, а также стратегию на основе Fastify.
 
-### docker-compose to emulate a production environment {#docker-compose-to-emulate-a-production-environment}
+### docker-compose для эмуляции производственной среды {#docker-compose-to-emulate-a-production-environment}
 
-To demonstrate our deployment scenario, we will be using a `docker-compose` setup. Following the same setup as in [Chapter 10](../real-project/deploy.md), let’s create a Dockerfile for each service (v1 and v2). The only relevant change is replacing the `CMD` statement at the end of the file, like so:
+Чтобы продемонстрировать наш сценарий развертывания, мы будем использовать установку `docker-compose`. Следуя той же схеме, что и в [Глава 10](../real-project/deploy.md), создадим Dockerfile для каждого сервиса (v1 и v2). Единственным существенным изменением будет замена оператора `CMD` в конце файла, как показано ниже:
 
 ```
 CMD ["node", "server.js"]
 ```
 
-We’ll also need to create the relevant `package.json` file for each microservice.
+Нам также нужно будет создать соответствующий файл `package.json` для каждого микросервиса.
 
-Once everything is set up, we should be able to build and run both v1 and v2 that we just created. To run them, we set up a `docker-compose-two-services.yml` file like the following:
+Когда все будет готово, мы сможем собрать и запустить только что созданные v1 и v2. Чтобы запустить их, мы создадим файл `docker-compose-two-services.yml`, как показано ниже:
 
 ```yml
 version: '3.7'
@@ -292,16 +292,16 @@ services:
             - '3002:3002'
 ```
 
-After that, we can build and bring our microservices network up with a single command:
+После этого мы можем создать и запустить нашу сеть микросервисов с помощью одной команды:
 
 ```sh
 $ docker-compose -f docker-compose-two-services.yml up
 ...
 ```
 
-This `docker-compose` file exposes `app-v1` on port `3001` and `app-v2` on port `3002`. Note that we must set `V2_URL` as the environment variable of `app-v1` to tell our application where `app-v2` is located.
+Этот файл `docker-compose` открывает `app-v1` на порту `3001` и `app-v2` на порту `3002`. Обратите внимание, что мы должны установить `V2_URL` в качестве переменной окружения `app-v1`, чтобы указать нашему приложению, где находится `app-v2`.
 
-Then, in another terminal, we can verify that everything is working as expected:
+Затем, в другом терминале, мы можем проверить, что все работает так, как ожидалось:
 
 ```sh
 $ curl localhost:3001/posts
@@ -310,13 +310,13 @@ $ curl localhost:3002/posts
 {"posts":[{"id":1,"title":"Hello World"}]}
 ```
 
-After dockerizing the two services, we can create our gateway.
+После докеризации двух сервисов мы можем создать наш шлюз.
 
-### Nginx as an API gateway {#nginx-as-an-api-gateway}
+### Nginx как шлюз API {#nginx-as-an-api-gateway}
 
-Nginx is the most popular web server in the world. It’s incredibly fast and reliable and leveraged by all organizations, independent of size.
+Nginx - самый популярный веб-сервер в мире. Он невероятно быстр и надежен и используется всеми организациями, независимо от их размера.
 
-We can configure Nginx as a reverse proxy for the `/v1` and `/v2` prefixes to our microservices, like so:
+Мы можем настроить Nginx как обратный прокси для префиксов `/v1` и `/v2` для наших микросервисов, например, так:
 
 ```nginx
 events {
@@ -490,8 +490,8 @@ app.decorate('posts', {
 
 Как мы видели в этом разделе, API-шлюз, построенный поверх Fastify, позволяет легко настраивать обработку запросов. Если в случае с распределенным логом мы добавили только один заголовок, то эта техника также позволяет переписать ответы или добавить централизованную логику аутентификации и авторизации.
 
-## Резюме
+!!!success "Резюме"
 
-В этой главе мы обсудили проблемы, связанные с развертыванием монолита, и различные техники для их решения: ограничения и префиксация URL. Последнее является основой для окончательного решения: разделения монолита на несколько микросервисов. Затем мы показали, как применять распределенный лог в мире микросервисов, обеспечивая уникальную идентификацию запросов в разных микросервисах.
+    В этой главе мы обсудили проблемы, связанные с развертыванием монолита, и различные техники для их решения: ограничения и префиксация URL. Последнее является основой для окончательного решения: разделения монолита на несколько микросервисов. Затем мы показали, как применять распределенный лог в мире микросервисов, обеспечивая уникальную идентификацию запросов в разных микросервисах.
 
-Вы готовы перейти к [главе 13](./performance.md), в которой вы узнаете, как оптимизировать ваше приложение Fastify.
+    Вы готовы перейти к [главе 13](./performance.md), в которой вы узнаете, как оптимизировать ваше приложение Fastify.
