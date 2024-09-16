@@ -59,3 +59,7 @@ hide:
     [:octicons-arrow-right-24: Type-Safe Fastify](./advanced/type-safe.md)
 
 </div>
+
+!!!danger "Перевод"
+
+    Перевод этого учебника сделан благодаря [подписчикам на Бусти](https://boosty.to/bndby).
