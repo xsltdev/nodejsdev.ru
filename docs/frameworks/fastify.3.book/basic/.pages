@@ -2,7 +2,7 @@ title: Основы
 nav:
     - index.md
     - what-is-fastify.md
-    - Плагины: plugin-system.md
+    - Плагины и загрузка: plugin-system.md
     - Маршрутизация: routes.md
     - Хуки: hooks.md
     - Валидация и сериализация: validation-serialization.md
