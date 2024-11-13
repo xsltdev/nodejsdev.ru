@@ -5,6 +5,7 @@ nav:
     - metanit
     - freecodecamp.md
     - Статьи:
+        - common-causes-of-memory-leaks-in-javascript.md
         - nodejs-test-runner.md
         - env.md
         - rest-api-design
