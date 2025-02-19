@@ -2,5 +2,6 @@
 	"svn.ignoreMissingSvnWarning": true,
 	"editor.formatOnSave": true,
 	"editor.tabCompletion": "on",
-	"diffEditor.codeLens": true
+	"diffEditor.codeLens": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
