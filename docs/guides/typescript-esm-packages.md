@@ -7,8 +7,8 @@ description: За последние два года поддержка ESM в T
 За последние два года поддержка ESM в TypeScript, Node.js и браузерах сильно продвинулась. В этом посте я рассказываю о своей современной настройке, которая относительно проста - по сравнению с тем, что нам приходилось делать в прошлом:
 
 -   Он предназначен для пакетов, которые могут позволить себе игнорировать обратную совместимость. Эта настройка хорошо работает у меня уже некоторое время - начиная с TypeScript 4.7 (2022-05-24).
-    -   Помогает то, что Node.js теперь поддерживает [«require(esm)»](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require) - требование библиотек ESM из модулей CommonJS.
--   Я использую только `tsc`, но упоминаю, как поддерживать другие инструменты через `tsconfig.json` в разделе [«Компиляция TypeScript с инструментами, отличными от `tsc`»](https://2ality.com/2025/02/typescript-esm-packages.html#compiling-without-tsc).
+    -   Помогает то, что Node.js теперь поддерживает ["require(esm)"](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require) - требование библиотек ESM из модулей CommonJS.
+-   Я использую только `tsc`, но упоминаю, как поддерживать другие инструменты через `tsconfig.json` в разделе ["Компиляция TypeScript с инструментами, отличными от `tsc`"](https://2ality.com/2025/02/typescript-esm-packages.html#compiling-without-tsc).
 
 Приветствуется обратная связь: Что вы делаете по-другому? Что можно улучшить?
 
@@ -36,8 +36,8 @@ my-package/
 Комментарии:
 
 -   Обычно рекомендуется включать `README.md` и `LICENSE`.
--   `package.json` описывает пакет и описывается [позже](#packagejson).
--   `tsconfig.json` настраивает TypeScript и описывается [позже](#tsconfigjson).
+-   `package.json` описывает пакет и описывается [ниже](#packagejson).
+-   `tsconfig.json` настраивает TypeScript и описывается [ниже](#tsconfigjson).
 -   `docs/api/` предназначен для документации по API, созданной с помощью TypeDoc. Как это сделать, описано [далее](#typedoc).
 -   `src/` - для исходного кода TypeScript.
 -   `test/` - для интеграционных тестов - тестов, которые охватывают несколько модулей. Подробнее о модульных тестах будет рассказано позже.
@@ -73,14 +73,14 @@ src/
 
 #### Совет для тестов: самостоятельно ссылайтесь на пакет.
 
-Если у пакета npm есть `«exports»`, он может _самостоятельно_ ссылаться на них через имя своего пакета:
+Если у пакета npm есть `"exports"`, он может _самостоятельно_ ссылаться на них через имя своего пакета:
 
 ```js
 // util_test.js
 import { helperFunc } from 'my-package/util.js';
 ```
 
-В документации Node.js есть [«Дополнительная информация»](https://nodejs.org/api/packages.html#self-referencing-a-package-using-its-name) о самоссылках и примечание: «Самостоятельная ссылка доступна, только если `package.json` имеет `«exports»`, и позволит импортировать только то, что разрешает `«exports»` (в `package.json`).»
+В документации Node.js есть ["Дополнительная информация"](https://nodejs.org/api/packages.html#self-referencing-a-package-using-its-name) о самоссылках и примечание: "Самостоятельная ссылка доступна, только если `package.json` имеет `"exports"`, и позволит импортировать только то, что разрешает `"exports"` (в `package.json`)."
 
 Преимущества самоссылки:
 
@@ -91,7 +91,7 @@ import { helperFunc } from 'my-package/util.js';
 
 В этом разделе мы рассмотрим основные моменты работы с `tsconfig.json`. Связанные материалы:
 
--   Я описал наиболее важные опции `tsconfig.json` в своем блоге [«A checklist for your tsconfig.json»](https://2ality.com/2025/01/tsconfig-json.html).
+-   Я описал наиболее важные опции `tsconfig.json` в своем блоге ["A checklist for your tsconfig.json"](https://2ality.com/2025/01/tsconfig-json.html).
     -   В его конце есть [summary](https://2ality.com/2025/01/tsconfig-json.html#summary) с рекомендуемыми файлами `tsconfig.json` для нескольких случаев использования.
 -   Вы также можете взглянуть на [`tsconfig.json`](https://github.com/rauschma/helpers/blob/main/tsconfig.json) из `@rauschma/helpers`.
 
@@ -101,7 +101,7 @@ import { helperFunc } from 'my-package/util.js';
 {
     "include": ["src/**/*", "test/**/*"],
     "compilerOptions": {
-        // Specify explicitly (don’t derive from source file paths):
+        // Укажите явно (не используйте пути к исходным файлам):
         "rootDir": ".",
         "outDir": "dist"
         // ···
@@ -158,30 +158,30 @@ dist/src/
 ```json
 "compilerOptions": {
   //----- Helps with emitting .js -----
-  // Enforces keyword `type` for type imports etc.
+  // Применяет ключевое слово `type` для импорта типов и т.д.
   "verbatimModuleSyntax": true, // implies "isolatedModules"
-  // Forbids non-JavaScript language constructs such as
-  // JSX, enums, constructor parameter properties and namespaces.
-  // Important for type stripping.
+  // Запрещает использование конструкций языка, не относящихся к JavaScript, таких как
+  // JSX, перечисления, свойства параметров конструктора и пространства имен.
+  // Важно для отсечения типов.
   "erasableSyntaxOnly": true, // TS 5.8+
 
   //----- Helps with emitting .d.ts -----
-  // - Forbids inferred return types of exported functions etc.
-  // - Only allowed if `declaration` or `composite` are true
+  // - Запрещает предполагаемые типы возврата экспортируемых функций и т.д.
+  // - Разрешено, только если `declaration` или `composite` равны true
   "isolatedDeclarations": true,
 
-  //----- tsc doesn’t emit any files, only type-checks -----
+  //----- tsc не создает никаких файлов, только проверяет типы -----
   "noEmit": true,
 }
 ```
 
-Подробнее об этих настройках см. в блоге [«Контрольный список для вашего `tsconfig.json`»](https://2ality.com/2025/01/tsconfig-json.html#compiling-without-tsc).
+Подробнее об этих настройках см. в блоге ["Контрольный список для вашего `tsconfig.json`"](https://2ality.com/2025/01/tsconfig-json.html#compiling-without-tsc).
 
 ## `package.json` {#packagejson}
 
 Некоторые настройки в `package.json` также влияют на TypeScript. Мы рассмотрим их далее. Похожие материалы:
 
--   Глава [«Пакеты: единицы JavaScript для распространения программного обеспечения»](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html) книги «Shell scripting with Node.js» содержит исчерпывающий обзор пакетов npm.
+-   Глава ["Пакеты: единицы JavaScript для распространения программного обеспечения"](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html) книги "Shell scripting with Node.js" содержит исчерпывающий обзор пакетов npm.
 -   Вы также можете взглянуть на [`package.json`](https://github.com/rauschma/helpers/blob/main/package.json) из `@rauschma/helpers`.
 
 ### Использование `.js` для модулей ESM
@@ -242,7 +242,7 @@ dist/src/
 
 Прежде чем мы перейдем к деталям, необходимо рассмотреть два вопроса:
 
--   Будет ли наш пакет импортироваться только через «пустой» импорт или он будет поддерживать импорт по подпути?
+-   Будет ли наш пакет импортироваться только через "пустой" импорт или он будет поддерживать импорт по подпути?
 
     ```js
     import { someFunc } from 'my-package'; // bare import
@@ -254,7 +254,7 @@ dist/src/
 Советы по ответу на последний вопрос:
 
 -   Стиль без расширений имеет давние традиции. Это не сильно изменилось с появлением ESM, хотя он и требует расширений имен файлов для локального импорта.
--   Недостатки стиля без расширений (цитата из [документации Node.js](https://nodejs.org/api/packages.html#extensions-in-subpaths)): «Поскольку карты импорта теперь являются стандартом для разрешения пакетов в браузерах и других средах выполнения JavaScript, использование стиля без расширений может привести к раздутым определениям карт импорта. Явные расширения файлов позволяют избежать этой проблемы, позволяя карте импорта использовать отображение папки пакетов для отображения нескольких подпутей, где это возможно, вместо отдельной записи карты для экспорта подпути пакета. Это также отражает требование использования полного пути спецификатора в относительных и абсолютных спецификаторах импорта.»
+-   Недостатки стиля без расширений (цитата из [документации Node.js](https://nodejs.org/api/packages.html#extensions-in-subpaths)): "Поскольку карты импорта теперь являются стандартом для разрешения пакетов в браузерах и других средах выполнения JavaScript, использование стиля без расширений может привести к раздутым определениям карт импорта. Явные расширения файлов позволяют избежать этой проблемы, позволяя карте импорта использовать отображение папки пакетов для отображения нескольких подпутей, где это возможно, вместо отдельной записи карты для экспорта подпути пакета. Это также отражает требование использования полного пути спецификатора в относительных и абсолютных спецификаторах импорта."
 
 Именно так я сейчас и решаю:
 
@@ -284,7 +284,7 @@ dist/src/
 -   Если модулей немного, то несколько однофайловых записей будут более понятны, чем одна запись в поддереве.
 -   По умолчанию файлы `.d.ts` должны располагаться рядом с файлами `.js`. Но это можно изменить с помощью [условия импорта типов](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-7.html#packagejson-exports-imports-and-self-referencing).
 
-Дополнительные сведения по этой теме см. в разделе [«Экспорт пакетов: управление тем, что видят другие пакеты» в «Изучении JavaScript»](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html#package-exports-controlling-what-other-packages-see).
+Дополнительные сведения по этой теме см. в разделе ["Экспорт пакетов: управление тем, что видят другие пакеты" в "Изучении JavaScript"](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html#package-exports-controlling-what-other-packages-see).
 
 ### Импорт пакетов
 
@@ -340,12 +340,12 @@ console.log(pkg.version);
 -   `test`, `testall`:
     -   `--enable-source-maps` включает поддержку карт исходников в Node.js и, следовательно, точные номера строк в трассировках стека.
     -   Прогонщик тестов [Mocha](https://mochajs.org/) поддерживает несколько стилей тестирования. Я предпочитаю `--ui qunit` ([example](https://github.com/rauschma/helpers/blob/main/src/string/string_test.ts)).
--   `publishd`: Мы публикуем пакет npm с помощью `npm publish`. `npm run publishd` вызывает «сухую» версию этой команды, которая не вносит никаких изменений, но предоставляет полезную обратную связь - например, показывает, какие файлы войдут в пакет.
+-   `publishd`: Мы публикуем пакет npm с помощью `npm publish`. `npm run publishd` вызывает "сухую" версию этой команды, которая не вносит никаких изменений, но предоставляет полезную обратную связь - например, показывает, какие файлы войдут в пакет.
 -   `prepublishOnly`: Перед тем как `npm publish` загрузит файлы в реестр npm, он вызывает этот скрипт. Собирая пакет перед публикацией, мы гарантируем, что в него не будут загружены устаревшие файлы.
 
 Зачем нужны именованные разделители? Они облегчают чтение вывода `npm run`.
 
-Если пакет содержит скрипты `«bin»`, то полезен следующий скрипт пакета (вызывается из `build`, после `tsc`):
+Если пакет содержит скрипты `"bin"`, то полезен следующий скрипт пакета (вызывается из `build`, после `tsc`):
 
 ```json
 "chmod": "shx chmod u+x ./dist/src/markcheck.js",
@@ -405,10 +405,10 @@ console.log(pkg.version);
 
 Общая линтинг пакетов:
 
--   [publint](https://publint.dev/): «Линтует пакеты npm для обеспечения максимальной совместимости в различных средах, таких как Vite, Webpack, Rollup, Node.js и т. д.».
--   [npm-package-json-lint](https://npmpackagejsonlint.org/): «Настраиваемый линтер для файлов `package.json`»
--   [installed-check](https://github.com/voxpelli/node-installed-check): «Проверяет соответствие установленных модулей требованиям [диапазон версий Node.js [`движков`](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#engines)], указанным в `package.json``.»
--   [Knip](https://knip.dev/): «Находит и исправляет неиспользуемые файлы, зависимости и экспорт».
+-   [publint](https://publint.dev/): "Линтует пакеты npm для обеспечения максимальной совместимости в различных средах, таких как Vite, Webpack, Rollup, Node.js и т. д.".
+-   [npm-package-json-lint](https://npmpackagejsonlint.org/): "Настраиваемый линтер для файлов `package.json`"
+-   [installed-check](https://github.com/voxpelli/node-installed-check): "Проверяет соответствие установленных модулей требованиям [диапазон версий Node.js [`движков`](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#engines)], указанным в `package.json``."
+-   [Knip](https://knip.dev/): "Находит и исправляет неиспользуемые файлы, зависимости и экспорт".
 
 Линтование модулей:
 
@@ -416,24 +416,24 @@ console.log(pkg.version);
 
 Линтинг типов TypeScript:
 
--   [arethetypeswrong](https://github.com/arethetypeswrong/arethetypeswrong.github.io): «Этот проект пытается проанализировать содержимое пакетов npm на предмет проблем с их TypeScript-типами, в частности, проблем с разрешением модулей, связанных с ESM.»
+-   [arethetypeswrong](https://github.com/arethetypeswrong/arethetypeswrong.github.io): "Этот проект пытается проанализировать содержимое пакетов npm на предмет проблем с их TypeScript-типами, в частности, проблем с разрешением модулей, связанных с ESM."
 
 ### Инструменты, связанные с CommonJS
 
-Эти инструменты постепенно теряют свою актуальность, поскольку все больше пакетов используют ESM, а требование ESM из CommonJS («require(esm)») теперь достаточно хорошо работает в Node.js:
+Эти инструменты постепенно теряют свою актуальность, поскольку все больше пакетов используют ESM, а требование ESM из CommonJS ("require(esm)") теперь достаточно хорошо работает в Node.js:
 
 -   [tshy - TypeScript HYbridizer](https://github.com/isaacs/tshy): Компилирует TypeScript в гибридные пакеты ESM/CommonJS.
 -   [ESM-CJS Interop Test](https://andrewbranch.github.io/interop-test/): Немного устаревший, но полезный список вещей, которые могут пойти не так при импорте модуля CommonJS из ESM.
 
 ## Дальнейшее чтение
 
--   Модули JavaScript (ESM): Глава [«Модули»](https://exploringjs.com/js/book/ch_modules.html) в «Exploring JavaScript».
--   пакеты npm: Глава [«Пакеты: подразделения JavaScript для распространения программного обеспечения»](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html) в «Shell scripting with Node.js»
--   `tsconfig.json`: Заметка в блоге [«Контрольный список для вашего `tsconfig.json`»](https://2ality.com/2025/01/tsconfig-json.html)
+-   Модули JavaScript (ESM): Глава ["Модули"](https://exploringjs.com/js/book/ch_modules.html) в "Exploring JavaScript".
+-   пакеты npm: Глава ["Пакеты: подразделения JavaScript для распространения программного обеспечения"](https://exploringjs.com/nodejs-shell-scripting/ch_packages.html) в "Shell scripting with Node.js"
+-   `tsconfig.json`: Заметка в блоге ["Контрольный список для вашего `tsconfig.json`"](https://2ality.com/2025/01/tsconfig-json.html)
 
 Также полезно:
 
--   Глава [«Модули: пакеты»](https://nodejs.org/api/packages.html) документации по Node.js.
--   Раздел [«`package.json „exports“`»](https://www.typescriptlang.org/docs/handbook/modules/reference.html#packagejson-exports) руководства по TypeScript
+-   Глава ["Модули: пакеты"](https://nodejs.org/api/packages.html) документации по Node.js.
+-   Раздел ["`package.json „exports“`"](https://www.typescriptlang.org/docs/handbook/modules/reference.html#packagejson-exports) руководства по TypeScript
 
 <small>:material-information-outline: Источник &mdash; <https://2ality.com/2025/02/typescript-esm-packages.html></small>
