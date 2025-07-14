@@ -78,6 +78,4 @@ NODE_OPTIONS="--no-warnings --inspect=127.0.0.1:9229"
 
 Попробуйте использовать Node.js версии 20.6.0! В 20-й версии появились новые возможности, такие как [стабильная программа запуска тестов](https://www.sonarsource.com/blog/node-js-test-runner/), [имитация таймеров](https://nodejs.org/en/blog/release/v20.4.0), поддержка файлов `.env`, а также множество других обновлений, исправлений и улучшений. [Версия 20 станет активной LTS-версией Node.js](https://github.com/nodejs/Release#release-schedule) в октябре, поэтому сейчас самое время протестировать эти новые возможности и начать рассматривать возможность обновления своих приложений, чтобы воспользоваться ими.
 
-## Источник
-
--   [NODE.JS INCLUDES BUILT-IN SUPPORT FOR .ENV FILES](https://philna.sh/blog/2023/09/05/nodejs-supports-dotenv/)
+<small>:material-information-outline: Источник &mdash; <https://philna.sh/blog/2023/09/05/nodejs-supports-dotenv/></small>

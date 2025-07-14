@@ -659,8 +659,4 @@ beforeAll(() => {
 
 В отличие от E2E, у вас есть возможность моделировать сценарии внутри процесса, которые требуют доработки и подражания. Компонентные тесты позволяют включать многие производственные движущиеся части на ранних этапах работы. Мне нравится называть это "производственно-ориентированной разработкой".
 
-## Ссылки
-
--   [Testing the dark scenarios of your Node.js application](https://practica.dev/blog/testing-the-dark-scenarios-of-your-nodejs-application/),
-
-    Yoni Goldberg, Raz Luvaton
+<small>:material-information-outline: Источник &mdash; <https://practica.dev/blog/testing-the-dark-scenarios-of-your-nodejs-application/></small>

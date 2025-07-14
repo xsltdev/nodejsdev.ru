@@ -99,6 +99,4 @@ res.writeHead(statusCode, { 'Content-Type': mimeType });
 file.stream.pipe(res);
 ```
 
-## Ссылки
-
--   [Node.js server without a framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Node_server_without_framework)
+<small>:material-information-outline: Источник &mdash; <https://developer.mozilla.org/en-US/docs/Learn/Server-side/Node_server_without_framework></small>

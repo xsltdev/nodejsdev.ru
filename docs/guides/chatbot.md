@@ -898,6 +898,4 @@ input:focus {
 
 Прочитав это руководство, вы теперь можете изучить такие функциональные возможности ИИ, как работа с изображениями и взаимодействие со звуком. Не пожалейте времени на изучение [документации](https://platform.openai.com/docs/introduction) и посмотрите, как вы можете расширить то, что мы здесь рассмотрели.
 
-## Ссылки
-
--   [How to Build an AI-Powered ChatBot with OpenAI, ChatGPT, Node.js, and React](https://www.freecodecamp.org/news/how-to-build-a-chatbot-with-openai-chatgpt-nodejs-and-react/)
+<small>:material-information-outline: Источник &mdash; <https://www.freecodecamp.org/news/how-to-build-a-chatbot-with-openai-chatgpt-nodejs-and-react/></small>
