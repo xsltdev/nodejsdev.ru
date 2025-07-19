@@ -44,6 +44,8 @@ hide:
 
     [:octicons-arrow-right-24: Express.js](./frameworks/express.4/index.md) <small>4.x</small>
 
+    [:octicons-arrow-right-24: RabbitMQ](./frameworks/rabbitmq.4/index.md) <small>4.x</small>
+
 </div>
 
 ## Статьи

@@ -1,0 +1,9 @@
+title: RabbitMQ
+nav:
+    - index.md
+    - hello-world.md
+    - work-queues.md
+    - publish-subscribe.md
+    - routing.md
+    - topics.md
+    - rpc.md

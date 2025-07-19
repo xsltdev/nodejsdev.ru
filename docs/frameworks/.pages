@@ -3,3 +3,4 @@ nav:
     - index.md
     - fastify.3.book
     - express.4
+    - rabbitmq.4
