@@ -1,4 +1,4 @@
-# Удаленный вызов процедур (RPC)
+# RPC
 
 !!!info "Информация"
 
@@ -107,7 +107,7 @@ function fibonacci(n) {
 
 Мы объявляем нашу функцию Фибоначчи. Она принимает только действительные положительные целые числа в качестве входных данных. (Не ожидайте, что она будет работать с большими числами, и, вероятно, это самая медленная рекурсивная реализация из возможных).
 
-Код для нашего RPC-сервера [rpc_server.js](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_server.js) выглядит следующим образом:
+Код для нашего RPC-сервера [`rpc_server.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_server.js) выглядит следующим образом:
 
 ```js
 #!/usr/bin/env node
@@ -165,7 +165,7 @@ function fibonacci(n) {
 -   Возможно, мы захотим запустить более одного серверного процесса. Чтобы равномерно распределить нагрузку между несколькими серверами, нам нужно установить настройку `prefetch` на канале.
 -   Мы используем `Channel.consume` для потребления сообщений из очереди. Затем мы входим в функцию обратного вызова, где выполняем работу и отправляем ответ обратно.
 
-Код для нашего RPC-клиента [rpc_client.js](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_client.js):
+Код для нашего RPC-клиента [`rpc_client.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_client.js):
 
 ```javascript
 #!/usr/bin/env node
@@ -248,7 +248,7 @@ function generateUuid() {
 }
 ```
 
-Сейчас самое время взглянуть на полный пример исходного кода для [rpc_client.js](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_client.js) и [rpc_server.js](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_server.js).
+Сейчас самое время взглянуть на полный пример исходного кода для [`rpc_client.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_client.js) и [`rpc_server.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/rpc_server.js).
 
 Наш RPC-сервис готов. Можно запускать сервер:
 

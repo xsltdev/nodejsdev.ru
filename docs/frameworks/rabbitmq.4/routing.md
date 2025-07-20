@@ -36,7 +36,7 @@ channel.bindQueue(queue_name, exchange_name, 'black');
 
 Значение связующего ключа зависит от типа обменника. Обменники `fanout`, которые мы использовали ранее, просто игнорировали его значение.
 
-## Прямой обменник
+## Обменник direct
 
 Наша система регистрации из предыдущего урока транслирует все сообщения всем потребителям. Мы хотим расширить ее, чтобы можно было фильтровать сообщения по их серьезности. Например, мы можем захотеть, чтобы скрипт, который записывает сообщения журнала на диск, получал только критические ошибки и не тратил место на диске на предупреждения или информационные сообщения журнала.
 
@@ -298,7 +298,7 @@ amqp.connect('amqp://localhost', function (
 # => [x] Sent 'error':'Run. Run. Or it will explode.'
 ```
 
-(Полный исходный код для [(emit_log_direct.js source)](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/emit_log_direct.js) и [(receive_logs_direct.js source)](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/receive_logs_direct.js))
+(Полный исходный код для [`emit_log_direct.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/emit_log_direct.js) и [`receive_logs_direct.js`](https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/javascript-nodejs/src/receive_logs_direct.js))
 
 Перейдите к [уроку 5](./topics.md), чтобы узнать, как прослушивать сообщения на основе шаблона.
 
