@@ -1,1107 +1,2543 @@
 ---
-title: Performance hooks
-description: API для измерения производительности
+title: Измерение производительности (perf_hooks)
+description: Performance API, PerformanceObserver, мониторинг Event Loop и специфичные для Node.js метрики
 ---
 
 # API измерения производительности
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/perf_hooks.html)
+<!--introduced_in=v8.5.0-->
 
-!!!success "Стабильность: 2 – Стабильная"
+> Стабильность: 2 — Стабильная
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+<!-- source_link=lib/perf_hooks.js -->
 
-Этот модуль предоставляет реализацию подмножества W3C [Web Performance APIs](https://w3c.github.io/perf-timing-primer/), а также дополнительные API для специфических для Node.js измерений производительности.
+Модуль реализует подмножество спецификации W3C
+[Web Performance APIs][] и дополнительные API для
+измерений производительности, специфичных для Node.js.
 
-Node.js поддерживает следующие [Web Performance APIs](https://w3c.github.io/perf-timing-primer/):
+В Node.js поддерживаются следующие [Web Performance APIs][]:
 
--   [High Resolution Time](https://www.w3.org/TR/hr-time-2)
--   [Временная шкала производительности](https://w3c.github.io/performance-timeline/)
--   [Время пользователя](https://www.w3.org/TR/user-timing/)
--   [Временная шкала ресурсов](https://www.w3.org/TR/resource-timing-2/)
+* [High Resolution Time][]
+* [Performance Timeline][]
+* [User Timing][]
+* [Resource Timing][]
 
-<!-- конец списка -->
+=== "MJS"
 
-```js
-const {
-    PerformanceObserver,
-    performance,
-} = require('node:perf_hooks');
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((items) => {
+      console.log(items.getEntries()[0].duration);
+      performance.clearMarks();
+    });
+    obs.observe({ type: 'measure' });
+    performance.measure('Start to Now');
+    
+    performance.mark('A');
+    doSomeLongRunningProcess(() => {
+      performance.measure('A to Now', 'A');
+    
+      performance.mark('B');
+      performance.measure('A to B', 'A', 'B');
+    });
+    ```
 
-const obs = new PerformanceObserver((items) => {
-    console.log(items.getEntries()[0].duration);
-    performance.clearMarks();
-});
-obs.observe({ type: 'measure' });
-performance.measure('Start to Now');
+=== "CJS"
 
-performance.mark('A');
-doSomeLongRunningProcess(() => {
-    performance.measure('A to Now', 'A');
+    ```js
+    const { PerformanceObserver, performance } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((items) => {
+      console.log(items.getEntries()[0].duration);
+    });
+    obs.observe({ type: 'measure' });
+    performance.measure('Start to Now');
+    
+    performance.mark('A');
+    (async function doSomeLongRunningProcess() {
+      await new Promise((r) => setTimeout(r, 5000));
+      performance.measure('A to Now', 'A');
+    
+      performance.mark('B');
+      performance.measure('A to B', 'A', 'B');
+    })();
+    ```
 
-    performance.mark('B');
-    performance.measure('A to B', 'A', 'B');
-});
-```
+## `perf_hooks.performance`
 
-## `perf_hooks.performance`.
+<!-- YAML
+added: v8.5.0
+-->
 
-Объект, который можно использовать для сбора показателей производительности текущего экземпляра Node.js. Он аналогичен [`window.performance`](https://developer.mozilla.org/en-US/docs/Web/API/Window/performance) в браузерах.
+Объект, с помощью которого можно собирать метрики производительности текущего
+экземпляра Node.js. По смыслу похож на [`window.performance`][] в браузерах.
 
 ### `performance.clearMarks([name])`
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-Если `name` не указано, удаляет все объекты `PerformanceMark` с временной шкалы производительности. Если `имя` указано, удаляется только именованная метка.
+Добавлено в: v8.5.0
 
-### `performance.clearMeasures([name])`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если `name` не указано, удаляет все объекты `PerformanceMeasure` из временной шкалы производительности. Если `имя` указано, удаляется только названная мера.
+Если `name` не указано, удаляет все объекты `PerformanceMark` из временной шкалы
+производительности (Performance Timeline). Если `name` указано, удаляется только
+соответствующая метка.
+
+### `performance.clearMeasures([name])`
+
+<!-- YAML
+added: v16.7.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
+
+Добавлено в: v16.7.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Если `name` не указано, удаляет все объекты `PerformanceMeasure` из временной шкалы
+производительности. Если `name` указано, удаляется только соответствующая мера.
 
 ### `performance.clearResourceTimings([name])`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-Если `name` не указано, удаляет все объекты `PerformanceResourceTiming` из временной шкалы ресурсов. Если `имя` указано, удаляется только именованный ресурс.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Если `name` не указано, удаляет все объекты `PerformanceResourceTiming` из шкалы
+ресурсов (Resource Timeline). Если `name` указано, удаляется только соответствующий ресурс.
 
 ### `performance.eventLoopUtilization([utilization1[, utilization2]])`
 
--   `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()`.
--   `utilization2` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова `eventLoopUtilization()` перед `utilization1`.
--   Возвращает [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `active` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `использование` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+ - v14.10.0
+ - v12.19.0
+changes:
+  - version:
+      - v25.2.0
+      - v24.12.0
+    pr-url: https://github.com/nodejs/node/pull/60370
+    description: Added `perf_hooks.eventLoopUtilization` alias.
+-->
 
-Метод `eventLoopUtilization()` возвращает объект, содержащий суммарную продолжительность времени, в течение которого цикл событий был как холост, так и активен, в виде таймера с высоким разрешением в миллисекундах. Значение `utilization` - это вычисленная утилита цикла событий (ELU).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.2.0, v24.12.0 | Добавлен псевдоним perf_hooks.eventLoopUtilization. |
 
-Если загрузка еще не завершилась в основном потоке, свойства имеют значение `0`. ELU немедленно доступно на [Worker threads](worker_threads.md#worker-threads), поскольку бутстрап происходит внутри цикла событий.
+* `utilization1` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
+  `eventLoopUtilization()`.
+* `utilization2` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
+  `eventLoopUtilization()` до момента `utilization1`.
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `idle` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `active` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `utilization` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Оба параметра `utilization1` и `utilization2` являются необязательными.
+Псевдоним [`perf_hooks.eventLoopUtilization()`][].
 
-Если передан параметр `utilization1`, то вычисляется и возвращается дельта между временем `active` и `idle` текущего вызова, а также соответствующее значение `utilization` (аналогично [`process.hrtime()`](process.md#processhrtimetime)).
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
 
-Если переданы значения `utilization1` и `utilization2`, то вычисляется дельта между двумя аргументами. Это удобная опция, поскольку, в отличие от [`process.hrtime()`](process.md#processhrtimetime), вычисление ELU сложнее, чем простое вычитание.
+### `performance.getEntries()`
 
-ELU аналогичен утилизации процессора, за исключением того, что он измеряет только статистику циклов событий, а не использование процессора. Он представляет собой процент времени, которое цикл событий провел вне провайдера событий цикла (например, `epoll_wait`). Никакое другое время простоя ЦП не учитывается. Ниже приведен пример того, как в основном простаивающий процесс будет иметь высокий ELU.
+<!-- YAML
+added: v16.7.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-```js
-'use strict';
-const {
-    eventLoopUtilization,
-} = require('node:perf_hooks').performance;
-const { spawnSync } = require('node:child_process');
+Добавлено в: v16.7.0
 
-setImmediate(() => {
-    const elu = eventLoopUtilization();
-    spawnSync('sleep', ['5']);
-    console.log(eventLoopUtilization(elu).utilization);
-});
-```
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
-Хотя CPU в основном простаивает во время выполнения этого сценария, значение `utilization` равно `1`. Это происходит потому, что вызов [`child_process.spawnSync()`](child_process.md#child_processspawnsyncommand-args-options) блокирует выполнение цикла событий.
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
 
-Передача пользовательского объекта вместо результата предыдущего вызова `eventLoopUtilization()` приведет к неопределенному поведению. Возвращаемые значения не гарантированно отражают правильное состояние цикла событий.
-
-### `performance.getEntries()`.
-
--   Возвращает: {PerformanceEntry\[\]}
-
-Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`. Если вас интересуют только записи производительности определенных типов или с определенными именами, смотрите `performance.getEntriesByType()` и `performance.getEntriesByName()`.
+Возвращает список объектов `PerformanceEntry` в хронологическом порядке
+относительно `performanceEntry.startTime`. Если нужны только записи определённых
+типов или с определёнными именами, см. `performance.getEntriesByType()` и
+`performance.getEntriesByName()`.
 
 ### `performance.getEntriesByName(name[, type])`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {PerformanceEntry\[\]}
+<!-- YAML
+added: v16.7.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чье `performanceEntry.name` равно `name`, и, опционально, чей `performanceEntry.entryType` равен `type`.
+Добавлено в: v16.7.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
+
+Возвращает список объектов `PerformanceEntry` в хронологическом порядке
+относительно `performanceEntry.startTime`, у которых `performanceEntry.name` равен
+`name`, а при необходимости и `performanceEntry.entryType` равен `type`.
 
 ### `performance.getEntriesByType(type)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {PerformanceEntry\[\]}
+<!-- YAML
+added: v16.7.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чей `performanceEntry.entryType` равен `type`.
+Добавлено в: v16.7.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
+
+Возвращает список объектов `PerformanceEntry` в хронологическом порядке
+относительно `performanceEntry.startTime`, у которых `performanceEntry.entryType`
+равен `type`.
 
 ### `performance.mark(name[, options])`
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные детали для включения в метку.
-    -   `startTime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательная метка времени, которая будет использоваться в качестве времени метки. **По умолчанию**: `performance.now()`.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver. The name argument is no longer optional.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to the User Timing Level 3 specification.
+-->
 
-Создает новую запись `PerformanceMark` на временной шкале исполнения. `PerformanceMark` - это подкласс `PerformanceEntry`, чей `performanceEntry.entryType` всегда `'mark'`, а `performanceEntry.duration` всегда `0`. Метки исполнения используются для обозначения определенных значимых моментов на временной шкале исполнения.
+Добавлено в: v8.5.0
 
-Созданная запись `PerformanceMark` помещается в глобальную временную шкалу производительности и может быть запрошена с помощью `performance.getEntries`, `performance.getEntriesByName` и `performance.getEntriesByType`. Когда наблюдение выполнено, записи должны быть удалены из глобальной временной шкалы производительности вручную с помощью `performance.clearMarks`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. Аргумент имени больше не является необязательным. |
+    | v16.0.0 | Обновлено для соответствия спецификации User Timing Level 3. |
 
-### `performance.markResourceTiming(timingInfo, requestedUrl, initiatorType, global, cacheMode)`.
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `detail` {any} Дополнительные необязательные сведения для метки.
+  * `startTime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательная метка времени для момента метки.
+    **По умолчанию**: `performance.now()`.
 
--   `timingInfo` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Fetch Timing Info](https://fetch.spec.whatwg.org/#fetch-timing-info)
--   `requestedUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) url ресурса
--   `initiatorType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя инициатора, например: 'fetch'.
--   `global` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `cacheMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Режим кэширования должен быть пустой строкой ('') или 'local'.
+Создаёт новую запись `PerformanceMark` на временной шкале производительности.
+`PerformanceMark` — подкласс `PerformanceEntry`, у которого
+`performanceEntry.entryType` всегда `'mark'`, а
+`performanceEntry.duration` всегда `0`. Метки используются, чтобы отмечать
+важные моменты на временной шкале.
 
-_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
+Созданная запись `PerformanceMark` попадает в глобальную временную шкалу и
+запрашивается через `performance.getEntries`,
+`performance.getEntriesByName` и `performance.getEntriesByType`. После
+наблюдения записи следует вручную очистить из глобальной шкалы вызовом
+`performance.clearMarks`.
 
-Создает новую запись `PerformanceResourceTiming` на временной шкале ресурсов. `PerformanceResourceTiming` является подклассом `PerformanceEntry`, чей `performanceEntry.entryType` всегда `'resource'`. Ресурсы производительности используются для отметки моментов на временной шкале ресурсов.
+### `performance.markResourceTiming(timingInfo, requestedUrl, initiatorType, global, cacheMode, bodyInfo, responseStatus[, deliveryType])`
 
-Созданная запись `PerformanceMark` помещается в глобальную временную шкалу ресурсов и может быть запрошена с помощью `performance.getEntries`, `performance.getEntriesByName` и `performance.getEntriesByType`. Когда наблюдение выполнено, записи должны быть удалены из глобальной временной шкалы производительности вручную с помощью `performance.clearResourceTimings`.
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v22.2.0
+    pr-url: https://github.com/nodejs/node/pull/51589
+    description: Added bodyInfo, responseStatus, and deliveryType arguments.
+-->
 
-### `performance.measure(name[, startMarkOrOptions[, endMark]])`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.2.0 | Добавлены аргументы bodyInfo, responseStatus и DeliveryType. |
 
--   `имя` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `startMarkOrOptions` {string|Object} Необязательно.
-    -   `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительная необязательная информация для включения в меру.
-    -   `duration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность между начальным и конечным временем.
-    -   `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Временная метка, которая будет использоваться в качестве времени окончания, или строка, идентифицирующая ранее записанную метку.
-    -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Временная метка, которая будет использоваться в качестве времени начала, или строка, идентифицирующая ранее записанную метку.
--   `endMark` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Должен быть опущен, если `startMarkOrOptions` является [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object).
+* `timingInfo` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Fetch Timing Info][]
+* `requestedUrl` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL ресурса
+* `initiatorType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя инициатора, например `'fetch'`
+* `global` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `cacheMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Режим кэша: пустая строка (`''`) или `'local'`
+* `bodyInfo` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Fetch Response Body Info][]
+* `responseStatus` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код статуса ответа
+* `deliveryType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип доставки. **По умолчанию:** `''`.
 
-Создает новую запись `PerformanceMeasure` на временной шкале исполнения. `PerformanceMeasure` - это подкласс `PerformanceEntry`, чей `performanceEntry.entryType` всегда `'measure'`, и чья `performanceEntry.duration` измеряет количество миллисекунд, прошедших с `startMark` и `endMark`.
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
 
-Аргумент `startMark` может определять любую _существующую_ `PerformanceMark` на временной шкале производительности, или _может_ определять любое из свойств временной метки, предоставляемых классом `PerformanceNodeTiming`. Если именованная `startMark` не существует, будет выдана ошибка.
+Создаёт новую запись `PerformanceResourceTiming` на шкале ресурсов.
+`PerformanceResourceTiming` — подкласс `PerformanceEntry`, у которого
+`performanceEntry.entryType` всегда `'resource'`. Такие записи отмечают
+моменты на шкале ресурсов.
 
-Необязательный аргумент `endMark` должен идентифицировать любую _существующую_ `PerformanceMark` на временной шкале производительности или любое из свойств временной метки, предоставляемых классом `PerformanceNodeTiming`. Если параметр не передан, `endMark` будет `performance.now()`, в противном случае, если именованная `endMark` не существует, будет выдана ошибка.
+Созданная запись попадает в глобальную шкалу ресурсов и запрашивается через
+`performance.getEntries`, `performance.getEntriesByName` и
+`performance.getEntriesByType`. После наблюдения записи следует вручную очистить
+глобальную шкалу вызовом `performance.clearResourceTimings`.
 
-Созданная запись `PerformanceMeasure` помещается в глобальную временную шкалу производительности и может быть запрошена с помощью `performance.getEntries`, `performance.getEntriesByName` и `performance.getEntriesByType`. Когда наблюдение выполнено, записи должны быть удалены из глобальной временной шкалы производительности вручную с помощью `performance.clearMeasures`.
+### `performance.measure(name[, startMarkOrOptions[, endMark]])`
+
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to the User Timing Level 3 specification.
+  - version:
+      - v13.13.0
+      - v12.16.3
+    pr-url: https://github.com/nodejs/node/pull/32651
+    description: Make `startMark` and `endMark` parameters optional.
+-->
+
+Добавлено в: v8.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+    | v16.0.0 | Обновлено для соответствия спецификации User Timing Level 3. |
+    | v13.13.0, v12.16.3 | Сделайте параметры startMark и endMark необязательными. |
+
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `startMarkOrOptions` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно.
+  * `detail` {any} Дополнительные необязательные сведения для измерения.
+  * `duration` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длительность между началом и концом.
+  * `end` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка времени конца или строка с именем ранее записанной метки.
+  * `start` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка времени начала или строка с именем ранее записанной метки.
+* `endMark` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Не указывается, если `startMarkOrOptions` —
+  [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object).
+
+Создаёт новую запись `PerformanceMeasure` на временной шкале производительности.
+`PerformanceMeasure` — подкласс `PerformanceEntry`, у которого
+`performanceEntry.entryType` всегда `'measure'`, а
+`performanceEntry.duration` — число миллисекунд между `startMark` и `endMark`.
+
+Аргумент `startMark` может ссылаться на любую _существующую_ `PerformanceMark` на
+шкале или на свойства меток времени класса `PerformanceNodeTiming`. Если метки с
+указанным именем нет, выбрасывается ошибка.
+
+Необязательный аргумент `endMark` должен ссылаться на существующую `PerformanceMark`
+или на свойства меток времени `PerformanceNodeTiming`. Если параметр не передан,
+`endMark` берётся как `performance.now()`; если указанное имя не существует —
+ошибка.
+
+Созданная запись попадает в глобальную временную шкалу и запрашивается через
+`performance.getEntries`, `performance.getEntriesByName` и
+`performance.getEntriesByType`. После наблюдения записи следует вручную очистить
+шкалу вызовом `performance.clearMeasures`.
 
 ### `performance.nodeTiming`
 
--   {PerformanceNodeTiming}
+<!-- YAML
+added: v8.5.0
+-->
 
-_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
+* Type: [<PerformanceNodeTiming>](perf_hooks.md)
 
-Экземпляр класса `PerformanceNodeTiming`, который предоставляет метрики производительности для определенных этапов работы Node.js.
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
 
-### `performance.now()`.
+Экземпляр класса `PerformanceNodeTiming` с метриками производительности для
+отдельных этапов работы Node.js.
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+### `performance.now()`
 
-Возвращает текущую миллисекундную временную метку высокого разрешения, где 0 означает начало текущего процесса `node`.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-### `performance.setResourceTimingBufferSize(maxSize)`.
+Добавлено в: v8.5.0
 
-Устанавливает размер глобального буфера синхронизации ресурсов производительности для указанного количества объектов записи производительности типа "ресурс".
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
-По умолчанию максимальный размер буфера установлен на 250.
+* Returns: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Возвращает текущую метку времени в миллисекундах с высоким разрешением; 0
+соответствует началу текущего процесса `node`.
+
+### `performance.setResourceTimingBufferSize(maxSize)`
+
+<!-- YAML
+added: v18.8.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
+
+Добавлено в: v18.8.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
+
+Задаёт размер глобального буфера записей ресурсов (число объектов записей
+типа `"resource"`).
+
+По умолчанию максимальный размер буфера — 250.
 
 ### `performance.timeOrigin`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-[`timeOrigin`](https://w3c.github.io/hr-time/#dom-performance-timeorigin) указывает миллисекундную метку времени высокого разрешения, с которой начался текущий процесс `node`, измеряемую в Unix-времени.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+[`timeOrigin`][] — метка времени в миллисекундах с высоким разрешением момента
+запуска текущего процесса `node` в Unix-времени.
 
 ### `performance.timerify(fn[, options])`
 
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `histogram` {RecordableHistogram} Объект гистограммы, созданный с помощью `perf_hooks.createHistogram()`, который будет записывать длительность выполнения в наносекундах.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version:
+      - v25.2.0
+      - v24.12.0
+    pr-url: https://github.com/nodejs/node/pull/60370
+    description: Added `perf_hooks.timerify` alias.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37475
+    description: Added the histogram option.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Re-implemented to use pure-JavaScript and the ability
+                 to time async functions.
+-->
 
-_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
+Добавлено в: v8.5.0
 
-Обертывает функцию внутри новой функции, которая измеряет время работы обернутой функции. Чтобы получить доступ к деталям времени, на тип события `функция` должен быть подписан `PerformanceObserver`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.2.0, v24.12.0 | Добавлен псевдоним perf_hooks.timerify. |
+    | v16.0.0 | Добавлена ​​опция гистограммы. |
+    | v16.0.0 | Повторно реализован для использования чистого JavaScript и возможности синхронизировать асинхронные функции. |
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `histogram` [<RecordableHistogram>](perf_hooks.md) Гистограмма, созданная через
+    `perf_hooks.createHistogram()`; записывает длительности выполнения в наносекундах.
 
-function someFunction() {
-    console.log('hello world');
-}
+Псевдоним [`perf_hooks.timerify()`][].
 
-const wrapped = performance.timerify(someFunction);
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
 
-const obs = new PerformanceObserver((list) => {
-    console.log(list.getEntries()[0].duration);
+### `performance.toJSON()`
 
-    performance.clearMarks();
-    performance.clearMeasures();
-    obs.disconnect();
-});
-obs.observe({ entryTypes: ['function'] });
+<!-- YAML
+added: v16.1.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the `performance` object as
+                 the receiver.
+-->
 
-// Будет создана запись временной шкалы производительности
-wrapped();
-```
+Добавлено в: v16.1.0
 
-Если обернутая функция возвращает обещание, к обещанию будет присоединен обработчик finally, и продолжительность будет сообщена, когда обработчик finally будет вызван.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
-### `performance.toJSON()`.
-
-Объект, который является JSON-представлением объекта `performance`. Он аналогичен [`window.performance.toJSON`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/toJSON) в браузерах.
+Объект — JSON-представление `performance`. По смыслу похож на
+[`window.performance.toJSON`][] в браузерах.
 
 #### Event: `'resourcetimingbufferfull'`
 
-Событие `'resourcetimingbufferfull'` происходит, когда глобальный буфер синхронизации ресурсов производительности заполнен. Отрегулируйте размер буфера синхронизации ресурсов с помощью `performance.setResourceTimingBufferSize()` или очистите буфер с помощью `performance.clearResourceTimings()` в слушателе события, чтобы позволить добавить больше записей в буфер временной шкалы производительности.
+<!-- YAML
+added: v18.8.0
+-->
 
-## Класс: `PerformanceEntry`.
+Событие `'resourcetimingbufferfull'` возникает, когда глобальный буфер записей
+ресурсов заполнен. Измените размер буфера через
+`performance.setResourceTimingBufferSize()` или очистите его через
+`performance.clearResourceTimings()` в обработчике, чтобы можно было добавить
+новые записи на временную шкалу.
 
-Конструктор этого класса не доступен пользователям напрямую.
+## Класс: `PerformanceEntry`
+
+<!-- YAML
+added: v8.5.0
+-->
+
+Конструктор этого класса пользователям напрямую недоступен.
 
 ### `performanceEntry.duration`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceEntry` object as the receiver.
+-->
 
-Общее количество миллисекунд, прошедших для этой записи. Это значение будет иметь смысл не для всех типов Performance Entry.
+Добавлено в: v8.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Общее число миллисекунд для этой записи. Для не всех типов записей значение
+осмысленно.
 
 ### `performanceEntry.entryType`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceEntry` object as the receiver.
+-->
 
-Тип записи выступления. Он может быть одним из:
+Добавлено в: v8.5.0
 
--   `'node'` (только для Node.js)
--   `'mark'` (доступно в Интернете)
--   `'measure'` (доступно в Интернете)
--   `'gc'` (только для Node.js)
--   `'function'` (только для Node.js)
--   `'http2'` (только для Node.js)
--   `'http'` (только Node.js)
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
+
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Тип записи производительности. Возможные значения:
+
+* `'dns'` (только Node.js)
+* `'function'` (только Node.js)
+* `'gc'` (только Node.js)
+* `'http2'` (только Node.js)
+* `'http'` (только Node.js)
+* `'mark'` (доступно в вебе)
+* `'measure'` (доступно в вебе)
+* `'net'` (только Node.js)
+* `'node'` (только Node.js)
+* `'resource'` (доступно в вебе)
 
 ### `performanceEntry.name`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceEntry` object as the receiver.
+-->
+
+Добавлено в: v8.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
+
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя записи производительности.
 
 ### `performanceEntry.startTime`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceEntry` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, отмечающая время начала записи Performance Entry.
+Добавлено в: v8.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент начала записи
+Performance Entry.
 
 ## Класс: `PerformanceMark`
 
--   Расширяет: {PerformanceEntry}
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+-->
 
-Раскрывает метки, созданные с помощью метода `Performance.mark()`.
+* Extends: [<PerformanceEntry>](perf_hooks.md#class-performanceentry)
+
+Представляет метки, созданные методом `Performance.mark()`.
 
 ### `performanceMark.detail`
 
--   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+<!-- YAML
+added: v16.0.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceMark` object as the receiver.
+-->
 
-Дополнительная деталь, указанная при создании методом `Performance.mark()`.
+Добавлено в: v16.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMark в качестве получателя. |
+
+* Type: {any}
+
+Дополнительные сведения, заданные при создании через `Performance.mark()`.
 
 ## Класс: `PerformanceMeasure`
 
--   Расширяет: {PerformanceEntry}
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+-->
 
-Раскрывает меры, созданные с помощью метода `Performance.measure()`.
+* Extends: [<PerformanceEntry>](perf_hooks.md#class-performanceentry)
 
-Конструктор этого класса не доступен пользователям напрямую.
+Представляет измерения, созданные методом `Performance.measure()`.
+
+Конструктор этого класса пользователям напрямую недоступен.
 
 ### `performanceMeasure.detail`
 
--   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+<!-- YAML
+added: v16.0.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceMeasure` object as the receiver.
+-->
 
-Дополнительная деталь, указанная при создании методом `Performance.measure()`.
+Добавлено в: v16.0.0
 
-## Класс: `PerformanceNodeEntry`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMeasure в качестве получателя. |
 
--   Расширяет: {PerformanceEntry}
+* Type: {any}
 
-_Этот класс является расширением Node.js. Он недоступен в веб-браузерах._
+Дополнительные сведения, заданные при создании через `Performance.measure()`.
 
-Предоставляет подробные данные о времени работы Node.js.
+## Класс: `PerformanceNodeEntry`
 
-Конструктор этого класса не доступен пользователям напрямую.
+<!-- YAML
+added: v19.0.0
+-->
+
+* Extends: [<PerformanceEntry>](perf_hooks.md#class-performanceentry)
+
+_Этот класс — расширение Node.js. В веб-браузерах недоступен._
+
+Подробные данные о тайминге Node.js.
+
+Конструктор этого класса пользователям напрямую недоступен.
 
 ### `performanceNodeEntry.detail`
 
--   [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+<!-- YAML
+added: v16.0.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceNodeEntry` object as the receiver.
+-->
 
-Дополнительная информация, специфичная для `entryType`.
+Добавлено в: v16.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceNodeEntry в качестве получателя. |
+
+* Type: {any}
+
+Дополнительные сведения, зависящие от `entryType`.
 
 ### `performanceNodeEntry.flags`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Runtime deprecated. Now moved to the detail property
+                 when entryType is 'gc'.
+-->
 
-    Используйте `performanceNodeEntry.detail` вместо этого.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство Detail, если тип записи равен «gc». |
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+> Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
-Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.flags` содержит дополнительную информацию об операции сборки мусора. Значение может быть одним из:
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE`
+Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.flags`
+содержит дополнительные сведения об операции сборки мусора.
+Возможные значения:
 
-### `performanceNodeEntry.kind`.
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+### `performanceNodeEntry.kind`
 
-    Используйте `performanceNodeEntry.detail` вместо этого.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Runtime deprecated. Now moved to the detail property
+                 when entryType is 'gc'.
+-->
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+Добавлено в: v8.5.0
 
-Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.kind` идентифицирует тип операции сборки мусора, которая произошла. Значение может быть одним из:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство Detail, если тип записи равен «gc». |
 
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR`.
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL`
--   `perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB`
+> Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
-### Детали сборки мусора ('gc')
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Когда `performanceEntry.type` равен `'gc'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с двумя свойствами:
+Когда `performanceEntry.entryType` равен `'gc'`, свойство `performance.kind`
+задаёт тип операции сборки мусора.
+Возможные значения:
 
--   `kind` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB`
--   `флаги` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY`
-    -   `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL`
+* `perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB`
 
-### Детали HTTP ('http')
+### Сборка мусора ('gc'): подробности
 
-Если `performanceEntry.type` равен `'http'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
+Когда `performanceEntry.type` равен `'gc'`, свойство
+`performanceNodeEntry.detail` будет [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с двумя полями:
 
-Если `performanceEntry.name` равно `HttpClient`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `method`, `url`, `headers`, а свойство `res` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `statusCode`, `statusMessage`, `headers`.
+* `kind` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_MAJOR`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_MINOR`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_INCREMENTAL`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_WEAKCB`
+* `flags` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из:
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_NO`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_CONSTRUCT_RETAINED`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_FORCED`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SYNCHRONOUS_PHANTOM_PROCESSING`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_AVAILABLE_GARBAGE`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_ALL_EXTERNAL_MEMORY`
+  * `perf_hooks.constants.NODE_PERFORMANCE_GC_FLAGS_SCHEDULE_IDLE`
 
-Если `performanceEntry.name` равно `HttpRequest`, то `detail` будет содержать следующие свойства: `req`, `res`. Причем свойство `req` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `method`, `url`, `headers`, а свойство `res` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим `statusCode`, `statusMessage`, `headers`.
+### HTTP ('http'): подробности
 
-Это может привести к дополнительным затратам памяти и должно использоваться только в диагностических целях, а не включаться в production по умолчанию.
+Когда `performanceEntry.type` равен `'http'`, свойство
+`performanceNodeEntry.detail` — это [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с дополнительной информацией.
 
-### Подробности HTTP/2 ('http2')
+Если `performanceEntry.name` равен `HttpClient`, в `detail` будут поля `req`, `res`:
+`req` — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с `method`, `url`, `headers`; `res` — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с
+`statusCode`, `statusMessage`, `headers`.
 
-Если `performanceEntry.type` равен `'http2'`, свойство `performanceNodeEntry.detail` будет представлять собой [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащий дополнительную информацию о производительности.
+Если `performanceEntry.name` равен `HttpRequest`, структура такая же: `req`, `res` с теми же полями.
 
-Если `performanceEntry.name` равно `Http2Stream`, то `detail` будет содержать следующие свойства:
+Это может увеличить расход памяти; используйте только для диагностики, не оставляйте
+включённым в production по умолчанию.
 
--   `bytesRead` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байтов кадра `DATA`, полученных для данного `Http2Stream`.
--   `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт кадра `DATA`, отправленных для этого `Http2Stream`.
--   `id` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор связанного `Http2Stream`.
--   `timeToFirstByte` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого `DATA` кадра.
--   `timeToFirstByteSent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и отправкой первого кадра `DATA`.
--   `timeToFirstHeader` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших между `PerformanceEntry` `startTime` и получением первого заголовка.
+### HTTP/2 ('http2'): подробности
 
-Если `performanceEntry.name` равно `Http2Session`, то `detail` будет содержать следующие свойства:
+Когда `performanceEntry.type` равен `'http2'`, `performanceNodeEntry.detail` —
+[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с дополнительными сведениями о производительности.
 
--   `bytesRead` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт, полученных для данного `Http2Session`.
--   `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество отправленных байт для этой `Http2Session`.
--   `framesReceived` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество кадров HTTP/2, полученных `Http2Session`.
--   `framesSent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество кадров HTTP/2, отправленных `Http2Session`.
--   `maxConcurrentStreams` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество потоков, одновременно открытых во время жизни `Http2Session`.
--   `pingRTT` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество миллисекунд, прошедших с момента передачи кадра `PING` и получения его подтверждения. Присутствует, только если кадр `PING` был отправлен на `Http2Session`.
--   `streamAverageDuration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Средняя продолжительность (в миллисекундах) для всех экземпляров `Http2Stream`.
--   `streamCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество экземпляров `Http2Stream`, обработанных `Http2Session`.
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Либо `сервер`, либо `клиент` для идентификации типа `Http2Session``.
+Если `performanceEntry.name` равен `Http2Stream`, в `detail` будут поля:
 
-### Детали таймерификации ('функция')
+* `bytesRead` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт кадров `DATA`, полученных для этого `Http2Stream`.
+* `bytesWritten` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт кадров `DATA`, отправленных для этого `Http2Stream`.
+* `id` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор связанного `Http2Stream`
+* `timeToFirstByte` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды между `PerformanceEntry.startTime` и приёмом первого кадра `DATA`.
+* `timeToFirstByteSent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды между `PerformanceEntry.startTime` и отправкой первого кадра `DATA`.
+* `timeToFirstHeader` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды между `PerformanceEntry.startTime` и приёмом первого заголовка.
 
-Когда `performanceEntry.type` равен `'function'`, свойство `performanceNodeEntry.detail` будет представлять собой [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array), перечисляющий входные аргументы для функции с таймером.
+Если `performanceEntry.name` равен `Http2Session`, в `detail` будут поля:
 
-### Net ('net') Details
+* `bytesRead` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт, полученных для этого `Http2Session`.
+* `bytesWritten` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт, отправленных для этого `Http2Session`.
+* `framesReceived` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число кадров HTTP/2, принятых `Http2Session`.
+* `framesSent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число кадров HTTP/2, отправленных `Http2Session`.
+* `maxConcurrentStreams` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум одновременно открытых потоков за время жизни `Http2Session`.
+* `pingRTT` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды от отправки кадра `PING` до подтверждения; есть только если `PING` отправлялся на `Http2Session`.
+* `streamAverageDuration` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Средняя длительность (мс) по всем `Http2Stream`.
+* `streamCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число обработанных `Http2Stream` в `Http2Session`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'server'` или `'client'` — тип `Http2Session`.
 
-Если `performanceEntry.type` равен `'net'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
+### Timerify ('function'): подробности
 
-Если `performanceEntry.name` равно `connect`, то `detail` будет содержать следующие свойства: `host`, `port`.
+Когда `performanceEntry.type` равен `'function'`, `performanceNodeEntry.detail`
+— это [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) с аргументами измеряемой функции.
 
-### Детали DNS ('dns')
+### Сеть ('net'): подробности
 
-Когда `performanceEntry.type` равен `'dns'`, свойство `performanceNodeEntry.detail` будет [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object), содержащим дополнительную информацию.
+Когда `performanceEntry.type` равен `'net'`, `performanceNodeEntry.detail` —
+[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с дополнительной информацией.
 
-Если `performanceEntry.name` равно `lookup`, то `detail` будет содержать следующие свойства: `hostname`, `family`, `hints`, `verbatim`, `addresses`.
+Если `performanceEntry.name` равен `connect`, в `detail` будут `host`, `port`.
 
-Если `performanceEntry.name` равно `lookupService`, `detail` будет содержать следующие свойства: `host`, `port`, `hostname`, `service`.
+### DNS ('dns'): подробности
 
-Если `performanceEntry.name` равно `queryxxx` или `getHostByAddr`, `detail` будет содержать следующие свойства: `host`, `ttl`, `result`. Значение `result` совпадает с результатом `queryxxx` или `getHostByAddr`.
+Когда `performanceEntry.type` равен `'dns'`, `performanceNodeEntry.detail` —
+[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с дополнительной информацией.
 
-## Класс: `PerformanceNodeTiming`.
+Если `performanceEntry.name` равен `lookup`, в `detail` будут `hostname`, `family`, `hints`, `verbatim`, `addresses`.
 
--   Расширяет: {PerformanceEntry}
+Если `performanceEntry.name` равен `lookupService`, в `detail` будут `host`, `port`, `hostname`, `service`.
 
-_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах._
+Если `performanceEntry.name` равен `queryxxx` или `getHostByAddr`, в `detail` будут `host`, `ttl`, `result`; значение `result` совпадает с результатом `queryxxx` или `getHostByAddr`.
 
-Предоставляет сведения о тайминге для самого Node.js. Конструктор этого класса не доступен для пользователей.
+## Класс: `PerformanceNodeTiming`
+
+<!-- YAML
+added: v8.5.0
+-->
+
+* Extends: [<PerformanceEntry>](perf_hooks.md#class-performanceentry)
+
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
+
+Сведения о тайминге самого Node.js. Конструктор класса пользователям недоступен.
 
 ### `performanceNodeTiming.bootstrapComplete`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная метка времени высокого разрешения, когда процесс Node.js завершил начальную загрузку. Если бутстраппинг еще не завершен, свойство имеет значение -1.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент завершения
+начальной загрузки процесса Node.js. Если загрузка ещё не завершена, значение −1.
 
 ### `performanceNodeTiming.environment`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная временная метка высокого разрешения, в которой была инициализирована среда Node.js.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент инициализации среды Node.js.
 
 ### `performanceNodeTiming.idleTime`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v14.10.0
+  - v12.19.0
+-->
 
-Миллисекундная временная метка высокого разрешения количества времени, в течение которого цикл событий простаивал в провайдере событий цикла событий (например, `epoll_wait`). При этом не учитывается использование процессора. Если цикл событий еще не запущен (например, в первом тике основного скрипта), свойство имеет значение 0.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — время простоя цикла событий
+в провайдере событий (например `epoll_wait`). Загрузка CPU не учитывается. Если
+цикл событий ещё не запущен (например, в первом тике основного скрипта), значение 0.
 
 ### `performanceNodeTiming.loopExit`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная временная метка высокого разрешения, в которой цикл событий Node.js завершился. Если цикл событий еще не завершился, свойство имеет значение -1. Оно может иметь значение не -1 только в обработчике события [`'exit'`](process.md#event-exit).
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент выхода из цикла
+событий Node.js. Если цикл ещё не завершён, значение −1. Значение, отличное от −1,
+возможно только в обработчике события [`'exit'`][].
 
 ### `performanceNodeTiming.loopStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная метка времени высокого разрешения, с которой начался цикл событий Node.js. Если цикл событий еще не начался (например, в первом тике основного скрипта), свойство имеет значение -1.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент запуска цикла событий
+Node.js. Если цикл ещё не начался (например, в первом тике основного скрипта), значение −1.
 
 ### `performanceNodeTiming.nodeStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная временная метка высокого разрешения, в которой был инициализирован процесс Node.js.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент инициализации процесса Node.js.
+
+### `performanceNodeTiming.uvMetricsInfo`
+
+<!-- YAML
+added:
+  - v22.8.0
+  - v20.18.0
+-->
+
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `loopCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число итераций цикла событий.
+  * `events` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число событий, обработанных обработчиком.
+  * `eventsWaiting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число событий, ожидавших обработки при вызове провайдера.
+
+Обёртка над функцией `uv_metrics_info`; возвращает текущие метрики цикла событий.
+
+Рекомендуется читать это свойство внутри функции, запланированной через `setImmediate`,
+чтобы не собирать метрики до завершения всех операций, запланированных в текущей итерации цикла.
+
+=== "CJS"
+
+    ```js
+    const { performance } = require('node:perf_hooks');
+    
+    setImmediate(() => {
+      console.log(performance.nodeTiming.uvMetricsInfo);
+    });
+    ```
+
+=== "MJS"
+
+    ```js
+    import { performance } from 'node:perf_hooks';
+    
+    setImmediate(() => {
+      console.log(performance.nodeTiming.uvMetricsInfo);
+    });
+    ```
 
 ### `performanceNodeTiming.v8Start`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v8.5.0
+-->
 
-Миллисекундная временная метка высокого разрешения, в которую была инициализирована платформа V8.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-## Класс: `PerformanceResourceTiming`.
+Метка времени в миллисекундах с высоким разрешением — момент инициализации платформы V8.
 
--   Расширяет: {PerformanceEntry}
+## Класс: `PerformanceResourceTiming`
 
-Предоставляет подробные данные о сетевом времени загрузки ресурсов приложения.
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+-->
 
-Конструктор этого класса не доступен пользователям напрямую.
+* Extends: [<PerformanceEntry>](perf_hooks.md#class-performanceentry)
+
+Подробные сетевые метрики времени загрузки ресурсов приложения.
+
+Конструктор этого класса пользователям напрямую недоступен.
 
 ### `performanceResourceTiming.workerStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная метка времени высокого разрешения непосредственно перед отправкой запроса `fetch`. Если ресурс не перехвачен рабочим, свойство всегда будет возвращать 0.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — момент непосредственно перед
+отправкой запроса `fetch`. Если ресурс не перехвачен worker, свойство всегда 0.
 
 ### `performanceResourceTiming.redirectStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, которая представляет время начала выборки, инициирующей перенаправление.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — начало выборки, инициировавшей редирект.
 
 ### `performanceResourceTiming.redirectEnd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, которая будет создана сразу после получения последнего байта ответа последнего редиректа.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — сразу после получения последнего байта ответа последнего редиректа.
 
 ### `performanceResourceTiming.fetchStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Временная метка высокого разрешения в миллисекундах непосредственно перед тем, как Node.js начнет выборку ресурса.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — непосредственно перед началом выборки ресурса в Node.js.
 
 ### `performanceResourceTiming.domainLookupStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Временная метка высокого разрешения в миллисекундах непосредственно перед тем, как Node.js начнет поиск доменного имени для ресурса.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — непосредственно перед началом DNS-запроса для ресурса.
 
 ### `performanceResourceTiming.domainLookupEnd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время сразу после того, как Node.js завершил поиск доменного имени для ресурса.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — сразу после завершения DNS-поиска для ресурса.
 
 ### `performanceResourceTiming.connectStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js начнет устанавливать соединение с сервером для получения ресурса.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — непосредственно перед установлением соединения с сервером для получения ресурса.
 
 ### `performanceResourceTiming.connectEnd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время сразу после того, как Node.js завершает установление соединения с сервером для получения ресурса.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — сразу после установления соединения с сервером для получения ресурса.
 
 ### `performanceResourceTiming.secureConnectionStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js начнет процесс рукопожатия для защиты текущего соединения.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — непосредственно перед началом рукопожатия для защиты текущего соединения.
 
 ### `performanceResourceTiming.requestStart`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время непосредственно перед тем, как Node.js получит первый байт ответа от сервера.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — непосредственно перед получением первого байта ответа от сервера.
 
 ### `performanceResourceTiming.responseEnd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Миллисекундная временная метка высокого разрешения, представляющая время сразу после получения Node.js последнего байта ресурса или непосредственно перед закрытием транспортного соединения, в зависимости от того, что наступит раньше.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метка времени в миллисекундах с высоким разрешением — сразу после получения последнего байта ресурса или непосредственно перед закрытием транспортного соединения, в зависимости от того, что наступит раньше.
 
 ### `performanceResourceTiming.transferSize`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Число, представляющее размер (в октетах) полученного ресурса. Размер включает поля заголовка ответа плюс тело полезной нагрузки ответа.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Число — размер (в октетах) полученного ресурса: поля заголовка ответа плюс тело полезной нагрузки.
 
 ### `performanceResourceTiming.encodedBodySize`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Число, представляющее размер (в октетах), полученный при выборке (HTTP или кэш), тела полезной нагрузки, до удаления любых примененных кодировок содержимого.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
+
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Число — размер (в октетах) тела полезной нагрузки, полученного при выборке (HTTP или кэш), до снятия кодирований содержимого.
 
 ### `performanceResourceTiming.decodedBodySize`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This property getter must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
 
-Число, представляющее размер (в октетах), полученный при выборке (HTTP или кэш), тела сообщения после удаления любых примененных кодировок содержимого.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
-### `performanceResourceTiming.toJSON()`.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Возвращает `объект`, который является JSON-представлением объекта `PerformanceResourceTiming
+Число — размер (в октетах) тела сообщения, полученного при выборке (HTTP или кэш), после снятия кодирований содержимого.
+
+### `performanceResourceTiming.toJSON()`
+
+<!-- YAML
+added:
+  - v18.2.0
+  - v16.17.0
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44483
+    description: This method must be called with the
+                 `PerformanceResourceTiming` object as the receiver.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Этот метод необходимо вызывать с объектом PerformanceResourceTiming в качестве получателя. |
+
+Возвращает объект — JSON-представление `PerformanceResourceTiming`.
 
 ## Класс: `PerformanceObserver`
 
+<!-- YAML
+added: v8.5.0
+-->
+
 ### `PerformanceObserver.supportedEntryTypes`
 
--   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v16.0.0
+-->
 
-Получить поддерживаемые типы.
+* Type: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-### `новый PerformanceObserver(callback)`.
+Возвращает поддерживаемые типы.
 
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `список` {PerformanceObserverEntryList}
-    -   `обсервер` {PerformanceObserver}
+### `new PerformanceObserver(callback)`
 
-Объекты `PerformanceObserver` предоставляют уведомления о добавлении новых экземпляров `PerformanceEntry` на временную шкалу производительности.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+Добавлено в: v8.5.0
 
-const obs = new PerformanceObserver((list, observer) => {
-    console.log(list.getEntries());
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-    performance.clearMarks();
-    performance.clearMeasures();
-    observer.disconnect();
-});
-obs.observe({ entryTypes: ['mark'], buffered: true });
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `list` [<PerformanceObserverEntryList>](perf_hooks.md#class-performanceobserverentrylist)
+  * `observer` [<PerformanceObserver>](perf_hooks.md#class-performanceobserver)
 
-performance.mark('test');
-```
+Объекты `PerformanceObserver` уведомляют о появлении новых экземпляров `PerformanceEntry` на временной шкале производительности.
 
-Поскольку экземпляры `PerformanceObserver` создают свои собственные дополнительные накладные расходы на производительность, экземпляры не следует оставлять подписанными на уведомления на неопределенный срок. Пользователи должны отключать наблюдателей, как только в них отпадает необходимость.
+=== "MJS"
 
-Обратный вызов `callback` вызывается, когда `PerformanceObserver` получает уведомление о новых экземплярах `PerformanceEntry`. Обратный вызов получает экземпляр `PerformanceObserverEntryList` и ссылку на `PerformanceObserver`.
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      console.log(list.getEntries());
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['mark'], buffered: true });
+    
+    performance.mark('test');
+    ```
 
-### `performanceObserver.disconnect()`.
+=== "CJS"
+
+    ```js
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      console.log(list.getEntries());
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['mark'], buffered: true });
+    
+    performance.mark('test');
+    ```
+
+Так как экземпляры `PerformanceObserver` добавляют собственные накладные расходы, их не следует оставлять подписанными бесконечно. Отключайте наблюдателей, как только они не нужны.
+
+Колбэк вызывается, когда `PerformanceObserver` получает уведомление о новых экземплярах `PerformanceEntry`. В колбэк передаются экземпляр `PerformanceObserverEntryList` и ссылка на `PerformanceObserver`.
+
+### `performanceObserver.disconnect()`
+
+<!-- YAML
+added: v8.5.0
+-->
 
 Отключает экземпляр `PerformanceObserver` от всех уведомлений.
 
 ### `performanceObserver.observe(options)`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один тип {PerformanceEntry}. Не должно быть задано, если `entryTypes` уже указан.
-    -   `entryTypes` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк, идентифицирующих типы экземпляров {PerformanceEntry}, которые интересуют наблюдателя. Если он не указан, будет выдана ошибка.
-    -   `buffered` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если true, обратный вызов наблюдателя вызывается со списком глобальных буферизованных записей `PerformanceEntry`. Если false, только `PerformanceEntry`, созданные после временной точки, передаются обратному вызову наблюдателя. **По умолчанию:** `false`.
+<!-- YAML
+added: v8.5.0
+changes:
+  - version: v16.7.0
+    pr-url: https://github.com/nodejs/node/pull/39297
+    description: Updated to conform to Performance Timeline Level 2. The
+                 buffered option has been added back.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37136
+    description: Updated to conform to User Timing Level 3. The
+                 buffered option has been removed.
+-->
 
-Подписывает экземпляр {PerformanceObserver} на уведомления о новых экземплярах {PerformanceEntry}, идентифицированных либо по `options.entryTypes`, либо по `options.type`:
+Добавлено в: v8.5.0
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.7.0 | Обновлено для соответствия уровню 2 временной шкалы производительности. Опция буферизации была добавлена ​​обратно. |
+    | v16.0.0 | Обновлено для соответствия уровню пользовательского времени 3. Опция буферизации удалена. |
 
-const obs = new PerformanceObserver((list, observer) => {
-    // Вызывается один раз асинхронно. `list` содержит три элемента.
-});
-obs.observe({ type: 'mark' });
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один тип [PerformanceEntry](perf_hooks.md#class-performanceentry). Не указывайте, если уже задан `entryTypes`.
+  * `entryTypes` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк с типами [PerformanceEntry](perf_hooks.md#class-performanceentry), которые интересуют наблюдателя. Если не указан — ошибка.
+  * `buffered` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если true, колбэк вызывается со списком глобальных буферизованных записей `PerformanceEntry`. Если false — только записи, созданные после момента времени. **По умолчанию:** `false`.
 
-for (let n = 0; n < 3; n++) performance.mark(`test${n}`);
-```
+Подписывает [PerformanceObserver](perf_hooks.md#class-performanceobserver) на уведомления о новых [PerformanceEntry](perf_hooks.md#class-performanceentry), выбранных через `options.entryTypes` или `options.type`:
 
-## Класс: `PerformanceObserverEntryList`.
+=== "MJS"
 
-Класс `PerformanceObserverEntryList` используется для предоставления доступа к экземплярам `PerformanceEntry`, переданным `PerformanceObserver`. Конструктор этого класса не доступен для пользователей.
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      // Called once asynchronously. `list` contains three items.
+    });
+    obs.observe({ type: 'mark' });
+    
+    for (let n = 0; n < 3; n++)
+      performance.mark(`test${n}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      // Called once asynchronously. `list` contains three items.
+    });
+    obs.observe({ type: 'mark' });
+    
+    for (let n = 0; n < 3; n++)
+      performance.mark(`test${n}`);
+    ```
+
+### `performanceObserver.takeRecords()`
+
+<!-- YAML
+added: v16.0.0
+-->
+
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry) Текущий список записей в наблюдателе; после вызова список очищается.
+
+## Класс: `PerformanceObserverEntryList`
+
+<!-- YAML
+added: v8.5.0
+-->
+
+Класс `PerformanceObserverEntryList` даёт доступ к экземплярам `PerformanceEntry`, переданным в `PerformanceObserver`. Конструктор класса пользователям недоступен.
 
 ### `performanceObserverEntryList.getEntries()`
 
--   Возвращает: {PerformanceEntry\[\]}
+<!-- YAML
+added: v8.5.0
+-->
+
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`.
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+=== "MJS"
 
-const obs = new PerformanceObserver(
-    (perfObserverList, observer) => {
-        console.log(perfObserverList.getEntries());
-        /**
-         * [
-         * PerformanceEntry {
-         * name: 'test',
-         * entryType: 'mark',
-         * startTime: 81.465639,
-         * продолжительность: 0
-         * },
-         * PerformanceEntry {
-         * name: 'meow',
-         * entryType: 'mark',
-         * startTime: 81.860064,
-         * duration: 0
-         * }
-         * ]
-         */
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntries());
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 81.465639,
+       *     duration: 0,
+       *     detail: null
+       *   },
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 81.860064,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ type: 'mark' });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
 
-        performance.clearMarks();
-        performance.clearMeasures();
-        observer.disconnect();
-    }
-);
-obs.observe({ type: 'mark' });
+=== "CJS"
 
-performance.mark('test');
-performance.mark('meow');
-```
+    ```js
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntries());
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 81.465639,
+       *     duration: 0,
+       *     detail: null
+       *   },
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 81.860064,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ type: 'mark' });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
 
 ### `performanceObserverEntryList.getEntriesByName(name[, type])`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {PerformanceEntry\[\]}
+<!-- YAML
+added: v8.5.0
+-->
 
-Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чье `performanceEntry.name` равно `name`, и, опционально, чей `performanceEntry.entryType` равен `type`.
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, у которых `performanceEntry.name` равен `name`, а при необходимости и `performanceEntry.entryType` равен `type`.
 
-const obs = new PerformanceObserver(
-    (perfObserverList, observer) => {
-        console.log(
-            perfObserverList.getEntriesByName('meow')
-        );
-        /**
-         * [
-         * PerformanceEntry {
-         * name: 'meow',
-         * entryType: 'mark',
-         * startTime: 98.545991,
-         * продолжительность: 0
-         * }
-         * ]
-         */
-        console.log(
-            perfObserverList.getEntriesByName('nope')
-        ); // []
+=== "MJS"
 
-        console.log(
-            perfObserverList.getEntriesByName(
-                'test',
-                'mark'
-            )
-        );
-        /**
-         * [
-         * PerformanceEntry {
-         * name: 'test',
-         * entryType: 'mark',
-         * startTime: 63.518931,
-         * продолжительность: 0
-         * }
-         * ]
-         */
-        console.log(
-            perfObserverList.getEntriesByName(
-                'test',
-                'measure'
-            )
-        ); // []
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntriesByName('meow'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 98.545991,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      console.log(perfObserverList.getEntriesByName('nope')); // []
+    
+      console.log(perfObserverList.getEntriesByName('test', 'mark'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 63.518931,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      console.log(perfObserverList.getEntriesByName('test', 'measure')); // []
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['mark', 'measure'] });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
 
-        performance.clearMarks();
-        performance.clearMeasures();
-        observer.disconnect();
-    }
-);
-obs.observe({ entryTypes: ['mark', 'measure'] });
+=== "CJS"
 
-performance.mark('test');
-performance.mark('meow');
-```
+    ```js
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntriesByName('meow'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 98.545991,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      console.log(perfObserverList.getEntriesByName('nope')); // []
+    
+      console.log(perfObserverList.getEntriesByName('test', 'mark'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 63.518931,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      console.log(perfObserverList.getEntriesByName('test', 'measure')); // []
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['mark', 'measure'] });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
 
 ### `performanceObserverEntryList.getEntriesByType(type)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {PerformanceEntry\[\]}
+<!-- YAML
+added: v8.5.0
+-->
 
-Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, чей `performanceEntry.entryType` равен `type`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<PerformanceEntry[]>](perf_hooks.md#class-performanceentry)
 
-```js
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+Возвращает список объектов `PerformanceEntry` в хронологическом порядке относительно `performanceEntry.startTime`, у которых `performanceEntry.entryType` равен `type`.
 
-const obs = new PerformanceObserver(
-    (perfObserverList, observer) => {
-        console.log(
-            perfObserverList.getEntriesByType('mark')
-        );
-        /**
-         * [
-         * PerformanceEntry {
-         * name: 'test',
-         * entryType: 'mark',
-         * startTime: 55.897834,
-         * duration: 0
-         * },
-         * PerformanceEntry {
-         * name: 'meow',
-         * entryType: 'mark',
-         * startTime: 56.350146,
-         * duration: 0
-         * }
-         * ]
-         */
-        performance.clearMarks();
-        performance.clearMeasures();
-        observer.disconnect();
-    }
-);
-obs.observe({ type: 'mark' });
+=== "MJS"
 
-performance.mark('test');
-performance.mark('meow');
-```
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntriesByType('mark'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 55.897834,
+       *     duration: 0,
+       *     detail: null
+       *   },
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 56.350146,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ type: 'mark' });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const obs = new PerformanceObserver((perfObserverList, observer) => {
+      console.log(perfObserverList.getEntriesByType('mark'));
+      /**
+       * [
+       *   PerformanceEntry {
+       *     name: 'test',
+       *     entryType: 'mark',
+       *     startTime: 55.897834,
+       *     duration: 0,
+       *     detail: null
+       *   },
+       *   PerformanceEntry {
+       *     name: 'meow',
+       *     entryType: 'mark',
+       *     startTime: 56.350146,
+       *     duration: 0,
+       *     detail: null
+       *   }
+       * ]
+       */
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ type: 'mark' });
+    
+    performance.mark('test');
+    performance.mark('meow');
+    ```
 
 ## `perf_hooks.createHistogram([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `lowest` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Наименьшее различимое значение. Должно быть целое значение больше 0. **По умолчанию:** `1`.
-    -   `highest` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Наибольшее регистрируемое значение. Должно быть целочисленным значением, которое равно или больше чем в два раза `lowest`. **По умолчанию:** `число.MAX_SAFE_INTEGER`.
-    -   `фигуры` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество цифр точности. Должно быть числом от `1` до `5`. **По умолчанию:** `3`.
--   Returns {RecordableHistogram}
+<!-- YAML
+added:
+  - v15.9.0
+  - v14.18.0
+-->
 
-Возвращает {RecordableHistogram}.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `lowest` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Минимальное различимое значение; целое число > 0. **По умолчанию:** `1`.
+  * `highest` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Максимальная записываемая величина; целое ≥ 2×`lowest`. **По умолчанию:** `Number.MAX_SAFE_INTEGER`.
+  * `figures` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число значащих цифр; от `1` до `5`. **По умолчанию:** `3`.
+* Returns: [<RecordableHistogram>](perf_hooks.md)
+
+Возвращает [RecordableHistogram](perf_hooks.md).
+
+## `perf_hooks.eventLoopUtilization([utilization1[, utilization2]])`
+
+<!-- YAML
+added:
+  - v25.2.0
+  - v24.12.0
+-->
+
+* `utilization1` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
+  `eventLoopUtilization()`.
+* `utilization2` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
+  `eventLoopUtilization()` до момента `utilization1`.
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `idle` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `active` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `utilization` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Функция `eventLoopUtilization()` возвращает объект с суммарной длительностью времени, когда цикл событий был и простаивал, и активен, в виде таймера с высоким разрешением в миллисекундах. Поле `utilization` — рассчитанная утилизация цикла событий (ELU).
+
+Если на главном потоке загрузка ещё не завершена, свойства равны `0`. ELU сразу доступен в [Worker threads][], так как загрузка происходит внутри цикла событий.
+
+Оба параметра `utilization1` и `utilization2` необязательны.
+
+Если передан `utilization1`, вычисляется и возвращается дельта между текущими `active` и `idle` и соответствующее `utilization` (аналогично [`process.hrtime()`][]).
+
+Если переданы оба — `utilization1` и `utilization2`, дельта считается между ними. Это удобно, потому что для ELU недостаточно простого вычитания, в отличие от [`process.hrtime()`][].
+
+ELU похожа на загрузку CPU, но измеряет только статистику цикла событий, а не CPU. Это доля времени, которую цикл провёл вне провайдера событий (например `epoll_wait`). Иное время простоя CPU не учитывается. Ниже — пример: в основном простаивающий процесс может иметь высокий ELU.
+
+=== "MJS"
+
+    ```js
+    import { eventLoopUtilization } from 'node:perf_hooks';
+    import { spawnSync } from 'node:child_process';
+    
+    setImmediate(() => {
+      const elu = eventLoopUtilization();
+      spawnSync('sleep', ['5']);
+      console.log(eventLoopUtilization(elu).utilization);
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    'use strict';
+    const { eventLoopUtilization } = require('node:perf_hooks');
+    const { spawnSync } = require('node:child_process');
+    
+    setImmediate(() => {
+      const elu = eventLoopUtilization();
+      spawnSync('sleep', ['5']);
+      console.log(eventLoopUtilization(elu).utilization);
+    });
+    ```
+
+Хотя при выполнении этого сценария CPU в основном простаивает, `utilization` равен `1`, потому что [`child_process.spawnSync()`][] блокирует цикл событий.
+
+Передача произвольного объекта вместо результата предыдущего вызова `eventLoopUtilization()` даёт неопределённое поведение; возвращаемые значения не гарантируют корректное состояние цикла событий.
 
 ## `perf_hooks.monitorEventLoopDelay([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `resolution` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Частота дискретизации в миллисекундах. Должно быть больше нуля. **По умолчанию:** `10`.
--   Возвращает: {IntervalHistogram}
+<!-- YAML
+added: v11.10.0
+-->
 
-\_Это свойство является расширением Node.js. Оно недоступно в веб-браузерах.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `resolution` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Период выборки в миллисекундах; должен быть > 0. **По умолчанию:** `10`.
+* Returns: [<IntervalHistogram>](perf_hooks.md)
 
-Создает объект `IntervalHistogram`, который сэмплирует и сообщает о задержке цикла события во времени. Задержки будут сообщаться в наносекундах.
+_This property is an extension by Node.js. It is not available in Web browsers._
 
-Использование таймера для определения приблизительной задержки цикла событий работает потому, что выполнение таймеров привязано к жизненному циклу цикла событий libuv. То есть, задержка в цикле вызовет задержку в выполнении таймера, и именно эти задержки и призван обнаружить данный API.
+Создаёт объект `IntervalHistogram`, который снимает и сообщает задержку цикла событий во времени; задержки в наносекундах.
 
-```js
-const {
-    monitorEventLoopDelay,
-} = require('node:perf_hooks');
-const h = monitorEventLoopDelay({ разрешение: 20 });
-h.enable();
-// Сделайте что-нибудь.
-h.disable();
-console.log(h.min);
-console.log(h.max);
-console.log(h.mean);
-console.log(h.stddev);
-console.log(h.percentiles);
-console.log(h.percentile(50));
-console.log(h.percentile(99));
-```
+Таймер подходит для оценки задержки цикла, потому что выполнение таймеров привязано к жизненному циклу цикла событий libuv: задержка в цикле задерживает таймер — именно это и предназначено измерять этому API.
 
-## Класс: `Гистограмма`
+=== "MJS"
+
+    ```js
+    import { monitorEventLoopDelay } from 'node:perf_hooks';
+    
+    const h = monitorEventLoopDelay({ resolution: 20 });
+    h.enable();
+    // Do something.
+    h.disable();
+    console.log(h.min);
+    console.log(h.max);
+    console.log(h.mean);
+    console.log(h.stddev);
+    console.log(h.percentiles);
+    console.log(h.percentile(50));
+    console.log(h.percentile(99));
+    ```
+
+=== "CJS"
+
+    ```js
+    const { monitorEventLoopDelay } = require('node:perf_hooks');
+    const h = monitorEventLoopDelay({ resolution: 20 });
+    h.enable();
+    // Do something.
+    h.disable();
+    console.log(h.min);
+    console.log(h.max);
+    console.log(h.mean);
+    console.log(h.stddev);
+    console.log(h.percentiles);
+    console.log(h.percentile(50));
+    console.log(h.percentile(99));
+    ```
+
+## `perf_hooks.timerify(fn[, options])`
+
+<!-- YAML
+added:
+  - v25.2.0
+  - v24.12.0
+-->
+
+* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `histogram` [<RecordableHistogram>](perf_hooks.md) Гистограмма, созданная через `perf_hooks.createHistogram()`; записывает длительности выполнения в наносекундах.
+
+_Это свойство — расширение Node.js. В веб-браузерах недоступно._
+
+Оборачивает функцию в новую, измеряющую время выполнения обёрнутой функции. Чтобы получить детали времени, нужно подписать `PerformanceObserver` на тип события `'function'`.
+
+=== "MJS"
+
+    ```js
+    import { timerify, performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    function someFunction() {
+      console.log('hello world');
+    }
+    
+    const wrapped = timerify(someFunction);
+    
+    const obs = new PerformanceObserver((list) => {
+      console.log(list.getEntries()[0].duration);
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      obs.disconnect();
+    });
+    obs.observe({ entryTypes: ['function'] });
+    
+    // A performance timeline entry will be created
+    wrapped();
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      timerify,
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    function someFunction() {
+      console.log('hello world');
+    }
+    
+    const wrapped = timerify(someFunction);
+    
+    const obs = new PerformanceObserver((list) => {
+      console.log(list.getEntries()[0].duration);
+    
+      performance.clearMarks();
+      performance.clearMeasures();
+      obs.disconnect();
+    });
+    obs.observe({ entryTypes: ['function'] });
+    
+    // A performance timeline entry will be created
+    wrapped();
+    ```
+
+Если обёрнутая функция возвращает промис, к нему добавляется обработчик `finally`; длительность сообщается после его вызова.
+
+## Класс: `Histogram`
+
+<!-- YAML
+added: v11.10.0
+-->
 
 ### `histogram.count`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Количество образцов, записанных гистограммой.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Число образцов, записанных в гистограмму.
 
 ### `histogram.countBigInt`
 
--   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Количество образцов, записанных гистограммой.
+* Type: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+Число образцов, записанных в гистограмму.
 
 ### `histogram.exceeds`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Количество раз, когда задержка цикла событий превысила максимальный порог задержки цикла событий в 1 час.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Сколько раз задержка цикла событий превысила порог максимальной задержки 1 час.
 
 ### `histogram.exceedsBigInt`
 
--   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Количество раз, когда задержка цикла событий превысила максимальный порог задержки цикла событий в 1 час.
+* Type: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+Сколько раз задержка цикла событий превысила порог максимальной задержки 1 час.
 
 ### `histogram.max`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Максимальная задержка цикла записи события.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Максимальная зафиксированная задержка цикла событий.
 
 ### `histogram.maxBigInt`
 
--   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Максимальная задержка цикла записанных событий.
+* Type: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+Максимальная зафиксированная задержка цикла событий.
 
 ### `histogram.mean`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Среднее значение записанных задержек циклов событий.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Среднее зафиксированных задержек цикла событий.
 
 ### `histogram.min`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Минимальная зарегистрированная задержка цикла событий.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Минимальная зафиксированная задержка цикла событий.
 
 ### `histogram.minBigInt`
 
--   [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Минимальная зарегистрированная задержка цикла событий.
+* Type: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+Минимальная зафиксированная задержка цикла событий.
 
 ### `histogram.percentile(percentile)`
 
--   `percentile` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение перцентиля в диапазоне (0, 100\].
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Возвращает значение в заданном процентиле.
+* `percentile` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Перцентиль в диапазоне (0, 100].
+* Returns: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-### `histogram.percentileBigInt(percentile)`.
+Возвращает значение для заданного перцентиля.
 
--   `percentile` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение перцентиля в диапазоне (0, 100\).
--   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+### `histogram.percentileBigInt(percentile)`
 
-Возвращает значение в заданном процентиле.
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
+
+* `percentile` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Перцентиль в диапазоне (0, 100].
+* Returns: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+Возвращает значение для заданного перцентиля.
 
 ### `histogram.percentiles`
 
--   {Map}
+<!-- YAML
+added: v11.10.0
+-->
 
-Возвращает объект `Map`, детализирующий накопленное перцентильное распределение.
+* Type: [<Map>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+
+Возвращает объект `Map` с накопленным распределением по перцентилям.
 
 ### `histogram.percentilesBigInt`
 
--   {Map}
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Возвращает объект `Map`, детализирующий накопленное перцентильное распределение.
+* Type: [<Map>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 
-### `histogram.reset()`.
+Возвращает объект `Map` с накопленным распределением по перцентилям.
 
-Сбрасывает собранные данные гистограммы.
+### `histogram.reset()`
+
+<!-- YAML
+added: v11.10.0
+-->
+
+Сбрасывает накопленные данные гистограммы.
 
 ### `histogram.stddev`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.10.0
+-->
 
-Стандартное отклонение записанных задержек циклов событий.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-## Класс: `IntervalHistogram расширяет Histogram`.
+Стандартное отклонение зафиксированных задержек цикла событий.
 
-Гистограмма, которая периодически обновляется на заданном интервале.
+## Класс: `IntervalHistogram extends Histogram`
 
-### `histogram.disable()`.
+`Histogram`, периодически обновляемый с заданным интервалом.
 
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+### `histogram.disable()`
 
-Отключает таймер интервала обновления. Возвращает `true`, если таймер был остановлен, `false`, если он уже был остановлен.
+<!-- YAML
+added: v11.10.0
+-->
 
-### `histogram.enable()`.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+Отключает таймер обновления. Возвращает `true`, если таймер остановлен, `false`, если уже был остановлен.
 
-Включает таймер интервала обновления. Возвращает `true`, если таймер был запущен, `false`, если он уже был запущен.
+### `histogram.enable()`
 
-### Клонирование `IntervalHistogram`.
+<!-- YAML
+added: v11.10.0
+-->
 
-Экземпляры {IntervalHistogram} могут быть клонированы через {MessagePort}. На принимающей стороне гистограмма клонируется как обычный объект {Histogram}, который не реализует методы `enable()` и `disable()`.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-## Класс: `RecordableHistogram расширяет Histogram`.
+Включает таймер обновления. Возвращает `true`, если таймер запущен, `false`, если уже был запущен.
+
+### `histogram[Symbol.dispose]()`
+
+<!-- YAML
+added: v24.2.0
+-->
+
+Отключает таймер обновления при освобождении гистограммы.
+
+```js
+const { monitorEventLoopDelay } = require('node:perf_hooks');
+{
+  using hist = monitorEventLoopDelay({ resolution: 20 });
+  hist.enable();
+  // The histogram will be disabled when the block is exited.
+}
+```
+
+### Клонирование `IntervalHistogram`
+
+Экземпляры [IntervalHistogram](perf_hooks.md) можно клонировать через [MessagePort](worker_threads.md#class-messageport). На приёмной стороне гистограмма клонируется как обычный [Histogram](perf_hooks.md) без методов `enable()` и `disable()`.
+
+## Класс: `RecordableHistogram extends Histogram`
+
+<!-- YAML
+added:
+  - v15.9.0
+  - v14.18.0
+-->
 
 ### `histogram.add(other)`
 
--   `other` {RecordableHistogram}
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-Добавляет значения из `other` к этой гистограмме.
+* `other` [<RecordableHistogram>](perf_hooks.md)
+
+Добавляет значения из `other` в эту гистограмму.
 
 ### `histogram.record(val)`
 
--   `val` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Величина для записи в гистограмму.
+<!-- YAML
+added:
+  - v15.9.0
+  - v14.18.0
+-->
+
+* `val` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Величина для записи в гистограмму.
 
 ### `histogram.recordDelta()`
 
-Вычисляет количество времени (в наносекундах), прошедшее с момента предыдущего вызова `recordDelta()` и записывает это количество в гистограмму.
+<!-- YAML
+added:
+  - v15.9.0
+  - v14.18.0
+-->
+
+Вычисляет время (в наносекундах) с предыдущего вызова `recordDelta()` и записывает его в гистограмму.
 
 ## Примеры
 
 ### Измерение длительности асинхронных операций
 
-Следующий пример использует API [Async Hooks](async_hooks.md) и Performance для измерения фактической продолжительности операции Timeout (включая время, необходимое для выполнения обратного вызова).
+В примере используются [Async Hooks][] и Performance API, чтобы измерить фактическую длительность операции `Timeout` (включая время выполнения колбэка).
 
-```js
-'use strict';
-const async_hooks = require('node:async_hooks');
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
+=== "MJS"
 
-const set = new Set();
-const hook = async_hooks.createHook({
-    init(id, type) {
+    ```js
+    import { createHook } from 'node:async_hooks';
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    const set = new Set();
+    const hook = createHook({
+      init(id, type) {
         if (type === 'Timeout') {
-            performance.mark(`Timeout-${id}-Init`);
-            set.add(id);
+          performance.mark(`Timeout-${id}-Init`);
+          set.add(id);
         }
-    },
-    destroy(id) {
+      },
+      destroy(id) {
         if (set.has(id)) {
-            set.delete(id);
-            performance.mark(`Timeout-${id}-Destroy`);
-            performance.measure(
-                `Timeout-${id}`,
-                `Timeout-${id}-Init`,
-                `Timeout-${id}-Destroy`
-            );
+          set.delete(id);
+          performance.mark(`Timeout-${id}-Destroy`);
+          performance.measure(`Timeout-${id}`,
+                              `Timeout-${id}-Init`,
+                              `Timeout-${id}-Destroy`);
         }
-    },
-});
-hook.enable();
-
-const obs = new PerformanceObserver((list, observer) => {
-    console.log(list.getEntries()[0]);
-    performance.clearMarks();
-    performance.clearMeasures();
-    observer.disconnect();
-});
-obs.observe({ entryTypes: ['measure'], buffered: true });
-
-setTimeout(() => {}, 1000);
-```
-
-### Измерение длительности загрузки зависимостей
-
-Следующий пример измеряет продолжительность операций `require()` для загрузки зависимостей:
-
-```js
-'use strict';
-const {
-    performance,
-    PerformanceObserver,
-} = require('node:perf_hooks');
-const mod = require('node:module');
-
-// Обезьяний патч для функции require
-mod.Module.prototype.require = performance.timerify(
-    mod.Module.prototype.require
-);
-require = performance.timerify(require);
-
-// Активируем наблюдатель
-const obs = new PerformanceObserver((list) => {
-    const entries = list.getEntries();
-    entries.forEach((entry) => {
-        console.log(
-            `require('${entry[0]}')`,
-            entry.duration
-        );
+      },
     });
-    performance.clearMarks();
-    performance.clearMeasures();
-    obs.disconnect();
-});
-obs.observe({ entryTypes: ['function'], buffered: true });
+    hook.enable();
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      console.log(list.getEntries()[0]);
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['measure'], buffered: true });
+    
+    setTimeout(() => {}, 1000);
+    ```
 
-require('some-module');
-```
+=== "CJS"
 
-### Измерение времени, затрачиваемого на один HTTP-раундтрип.
+    ```js
+    'use strict';
+    const async_hooks = require('node:async_hooks');
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    
+    const set = new Set();
+    const hook = async_hooks.createHook({
+      init(id, type) {
+        if (type === 'Timeout') {
+          performance.mark(`Timeout-${id}-Init`);
+          set.add(id);
+        }
+      },
+      destroy(id) {
+        if (set.has(id)) {
+          set.delete(id);
+          performance.mark(`Timeout-${id}-Destroy`);
+          performance.measure(`Timeout-${id}`,
+                              `Timeout-${id}-Init`,
+                              `Timeout-${id}-Destroy`);
+        }
+      },
+    });
+    hook.enable();
+    
+    const obs = new PerformanceObserver((list, observer) => {
+      console.log(list.getEntries()[0]);
+      performance.clearMarks();
+      performance.clearMeasures();
+      observer.disconnect();
+    });
+    obs.observe({ entryTypes: ['measure'] });
+    
+    setTimeout(() => {}, 1000);
+    ```
 
-Следующий пример используется для отслеживания времени, затраченного HTTP клиентом (`OutgoingMessage`) и HTTP запросом (`IncomingMessage`). Для HTTP клиента это означает промежуток времени между отправкой запроса и получением ответа, а для HTTP запроса - промежуток времени между получением запроса и отправкой ответа:
+### Сколько времени уходит на загрузку зависимостей
 
-```js
-'use strict';
-const { PerformanceObserver } = require('node:perf_hooks');
-const http = require('node:http');
+Пример измеряет длительность операций `require()` при загрузке зависимостей:
 
-const obs = new PerformanceObserver((items) => {
-    items.getEntries().forEach((item) => {
+<!-- eslint-disable no-global-assign -->
+
+=== "MJS"
+
+    ```js
+    import { performance, PerformanceObserver } from 'node:perf_hooks';
+    
+    // Activate the observer
+    const obs = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach((entry) => {
+        console.log(`import('${entry[0]}')`, entry.duration);
+      });
+      performance.clearMarks();
+      performance.clearMeasures();
+      obs.disconnect();
+    });
+    obs.observe({ entryTypes: ['function'], buffered: true });
+    
+    const timedImport = performance.timerify(async (module) => {
+      return await import(module);
+    });
+    
+    await timedImport('some-module');
+    ```
+
+<!-- eslint-disable no-global-assign -->
+
+=== "CJS"
+
+    ```js
+    'use strict';
+    const {
+      performance,
+      PerformanceObserver,
+    } = require('node:perf_hooks');
+    const mod = require('node:module');
+    
+    // Monkey patch the require function
+    mod.Module.prototype.require =
+      performance.timerify(mod.Module.prototype.require);
+    require = performance.timerify(require);
+    
+    // Activate the observer
+    const obs = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach((entry) => {
+        console.log(`require('${entry[0]}')`, entry.duration);
+      });
+      performance.clearMarks();
+      performance.clearMeasures();
+      obs.disconnect();
+    });
+    obs.observe({ entryTypes: ['function'] });
+    
+    require('some-module');
+    ```
+
+### Длительность одного HTTP round-trip
+
+Пример показывает время для HTTP-клиента (`OutgoingMessage`) и HTTP-запроса
+(`IncomingMessage`): для клиента — интервал от начала запроса до получения ответа;
+для запроса — от получения запроса до отправки ответа:
+
+=== "MJS"
+
+    ```js
+    import { PerformanceObserver } from 'node:perf_hooks';
+    import { createServer, get } from 'node:http';
+    
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
         console.log(item);
+      });
     });
-});
+    
+    obs.observe({ entryTypes: ['http'] });
+    
+    const PORT = 8080;
+    
+    createServer((req, res) => {
+      res.end('ok');
+    }).listen(PORT, () => {
+      get(`http://127.0.0.1:${PORT}`);
+    });
+    ```
 
-obs.observe({ entryTypes: ['http'] });
+=== "CJS"
 
-const PORT = 8080;
-
-http.createServer((req, res) => {
-    res.end('ok');
-}).listen(PORT, () => {
-    http.get(`http://127.0.0.1:${PORT}`);
-});
-```
-
-### Измерение времени, которое занимает `net.connect` (только для TCP) при успешном соединении
-
-```js
-'use strict';
-const { PerformanceObserver } = require('node:perf_hooks');
-const net = require('node:net');
-const obs = new PerformanceObserver((items) => {
-    items.getEntries().forEach((item) => {
+    ```js
+    'use strict';
+    const { PerformanceObserver } = require('node:perf_hooks');
+    const http = require('node:http');
+    
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
         console.log(item);
+      });
     });
-});
-obs.observe({ entryTypes: ['net'] });
-const PORT = 8080;
-net.createServer((socket) => {
-    socket.destroy();
-}).listen(PORT, () => {
-    net.connect(PORT);
-});
-```
+    
+    obs.observe({ entryTypes: ['http'] });
+    
+    const PORT = 8080;
+    
+    http.createServer((req, res) => {
+      res.end('ok');
+    }).listen(PORT, () => {
+      http.get(`http://127.0.0.1:${PORT}`);
+    });
+    ```
 
-### Измерение времени, которое занимает DNS при успешном выполнении запроса
+### Measuring how long the `net.connect` (only for TCP) takes when the connection is successful
 
-```js
-'use strict';
-const { PerformanceObserver } = require('node:perf_hooks');
-const dns = require('node:dns');
-const obs = new PerformanceObserver((items) => {
-    items.getEntries().forEach((item) => {
+=== "MJS"
+
+    ```js
+    import { PerformanceObserver } from 'node:perf_hooks';
+    import { connect, createServer } from 'node:net';
+    
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
         console.log(item);
+      });
     });
-});
-obs.observe({ entryTypes: ['dns'] });
-dns.lookup('localhost', () => {});
-dns.promises.resolve('localhost');
-```
+    obs.observe({ entryTypes: ['net'] });
+    const PORT = 8080;
+    createServer((socket) => {
+      socket.destroy();
+    }).listen(PORT, () => {
+      connect(PORT);
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    'use strict';
+    const { PerformanceObserver } = require('node:perf_hooks');
+    const net = require('node:net');
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
+        console.log(item);
+      });
+    });
+    obs.observe({ entryTypes: ['net'] });
+    const PORT = 8080;
+    net.createServer((socket) => {
+      socket.destroy();
+    }).listen(PORT, () => {
+      net.connect(PORT);
+    });
+    ```
+
+### Measuring how long the DNS takes when the request is successful
+
+=== "MJS"
+
+    ```js
+    import { PerformanceObserver } from 'node:perf_hooks';
+    import { lookup, promises } from 'node:dns';
+    
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
+        console.log(item);
+      });
+    });
+    obs.observe({ entryTypes: ['dns'] });
+    lookup('localhost', () => {});
+    promises.resolve('localhost');
+    ```
+
+=== "CJS"
+
+    ```js
+    'use strict';
+    const { PerformanceObserver } = require('node:perf_hooks');
+    const dns = require('node:dns');
+    const obs = new PerformanceObserver((items) => {
+      items.getEntries().forEach((item) => {
+        console.log(item);
+      });
+    });
+    obs.observe({ entryTypes: ['dns'] });
+    dns.lookup('localhost', () => {});
+    dns.promises.resolve('localhost');
+    ```
+
+[Async Hooks]: async_hooks.md
+[Fetch Response Body Info]: https://fetch.spec.whatwg.org/#response-body-info
+[Fetch Timing Info]: https://fetch.spec.whatwg.org/#fetch-timing-info
+[High Resolution Time]: https://www.w3.org/TR/hr-time-2
+[Performance Timeline]: https://w3c.github.io/performance-timeline/
+[Resource Timing]: https://www.w3.org/TR/resource-timing-2/
+[User Timing]: https://www.w3.org/TR/user-timing/
+[Web Performance APIs]: https://w3c.github.io/perf-timing-primer/
+[Worker threads]: worker_threads.md#worker-threads
+[`'exit'`]: process.md#event-exit
+[`child_process.spawnSync()`]: child_process.md#child_processspawnsynccommand-args-options
+[`perf_hooks.eventLoopUtilization()`]: #perf_hookseventlooputilizationutilization1-utilization2
+[`perf_hooks.timerify()`]: #perf_hookstimerifyfn-options
+[`process.hrtime()`]: process.md#processhrtimetime
+[`timeOrigin`]: https://w3c.github.io/hr-time/#dom-performance-timeorigin
+[`window.performance.toJSON`]: https://developer.mozilla.org/en-US/docs/Web/API/Performance/toJSON
+[`window.performance`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/performance

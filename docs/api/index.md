@@ -1,68 +1,84 @@
 ---
-description: Цель написания этой документации состоит в том, чтобы всесторонне объяснить Node.js API как с общепринятой, так и с концептуальной точки зрения
+title: API Node.js
+description: Справочник по API Node.js с обзором встроенных модулей и ключевых возможностей платформы
 ---
 
 # API Node.js
 
-Цель написания этой документации состоит в том, чтобы всесторонне объяснить Node.js API как с общепринятой, так и с концептуальной точки зрения. Каждый раздел описывает встроенный модуль или высокоуровневый концепт.
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/index.html)
 
-В некоторых случаях типы переменных, параметры методов и параметры, относящиеся к обработке событий, детально описаны по ссылкам под заголовком темы.
+<!--introduced_in=v0.10.0-->
 
-## Индекс стабильности
+* [Об этой документации](documentation.md)
+* [Использование и пример](synopsis.md)
 
-В этой документации вы можете увидеть показатели стабильности раздела. Node.js API до сих пор изменяется и обрастает новыми улучшениями, по этой причине некоторые части этой документации являются менее стабильными, чем другие. Основополагающие принципы АПИ вряд ли подвергнутся изменениям. Другие могут быть новыми или экспериментальными, или же вовсе небезопасными и находящимися в процессе редизайна.
+<hr class="line"/>
 
-Индексы стабильности представлены следующими:
+* [Тестирование утверждений](assert.md)
+* [Отслеживание асинхронного контекста](async_context.md)
+* [Асинхронные хуки](async_hooks.md)
+* [Buffer](buffer.md)
+* [Дополнения C++](addons.md)
+* [Дополнения C/C++ с Node-API](n-api.md)
+* [API встраивания C++](embedding.md)
+* [Дочерние процессы](child_process.md)
+* [Cluster](cluster.md)
+* [Параметры командной строки](cli.md)
+* [Console](console.md)
+* [Crypto](crypto.md)
+* [Отладчик](debugger.md)
+* [Устаревшие API](deprecations.md)
+* [Diagnostics Channel](diagnostics_channel.md)
+* [DNS](dns.md)
+* [Domain](domain.md)
+* [Переменные окружения](environment_variables.md)
+* [Ошибки](errors.md)
+* [Events](events.md)
+* [Файловая система](fs.md)
+* [Глобальные объекты](globals.md)
+* [HTTP](http.md)
+* [HTTP/2](http2.md)
+* [HTTPS](https.md)
+* [Inspector](inspector.md)
+* [Интернационализация](intl.md)
+* [Модули: модули CommonJS](modules.md)
+* [Модули: ECMAScript-модули](esm.md)
+* [Модули: API `node:module`](module.md)
+* [Модули: пакеты](packages.md)
+* [Модули: TypeScript](typescript.md)
+* [Net](net.md)
+* [API итерируемых потоков](stream_iter.md)
+* [OS](os.md)
+* [Path](path.md)
+* [Хуки производительности](perf_hooks.md)
+* [Разрешения](permissions.md)
+* [Process](process.md)
+* [Punycode](punycode.md)
+* [Строки запросов](querystring.md)
+* [Readline](readline.md)
+* [REPL](repl.md)
+* [Отчёт](report.md)
+* [Однофайловые исполняемые приложения](single-executable-applications.md)
+* [SQLite](sqlite.md)
+* [Stream](stream.md)
+* [String decoder](string_decoder.md)
+* [Средство запуска тестов](test.md)
+* [Таймеры](timers.md)
+* [TLS/SSL](tls.md)
+* [События трассировки](tracing.md)
+* [TTY](tty.md)
+* [UDP/datagram](dgram.md)
+* [URL](url.md)
+* [Утилиты](util.md)
+* [V8](v8.md)
+* [VM](vm.md)
+* [WASI](wasi.md)
+* [Web Crypto API](webcrypto.md)
+* [Web Streams API](webstreams.md)
+* [Worker threads](worker_threads.md)
+* [Zlib](zlib.md)
+* [Итерируемое сжатие Zlib](zlib_iter.md)
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<hr class="line"/>
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
-
-!!!warning "Стабильность: 1 – Экспериментальная"
-
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
-
-!!!success "Стабильность: 2 – Стабильная"
-
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
-
-!!!note "Стабильность: 3 – Закрыто"
-
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
-
-## Краткий обзор
-
-```
-node [options] [v8 options] [script.js | -e "script"] [arguments]
-```
-
-Пример веб-сервера, написанного на Node.js, который отвечает “Hello World”:
-
-```js
-const http = require('http');
-
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World\n');
-});
-
-server.listen(port, hostname, () => {
-    console.log(
-        `Сервер запущен на http://${hostname}:${port}/`
-    );
-});
-```
-
-Чтобы запустить сервер, поместите код в файл под названием `example.js` и запустите с помощью `node`.
-
-```
-$ node example.js  (Знак $ - является директорией в которой расположен файл example.js)
-```
-
-Сервер запущен на `http://${hostname}:${port}/`
-
-Все примеры из документации могут быть запущены аналогичным способом.
+* [Репозиторий кода и трекер задач](https://github.com/nodejs/node)

@@ -1,79 +1,87 @@
 ---
-title: Cluster
+title: Кластер
 description: Кластеры процессов Node.js можно использовать для запуска нескольких экземпляров Node.js, которые могут распределять рабочую нагрузку между своими потоками приложений
 ---
 
 # Кластер
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/cluster.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/cluster.html)
+
+<!--introduced_in=v0.10.0-->
+
+<!-- source_link=lib/cluster.js -->
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Кластеры процессов Node.js можно использовать для запуска нескольких экземпляров Node.js, которые могут распределять рабочую нагрузку между своими потоками приложений. Если изоляция процессов не требуется, используйте вместо этого модуль [`worker_threads`](worker_threads.md), который позволяет запускать несколько потоков приложений в рамках одного экземпляра Node.js.
+Кластеры процессов Node.js можно использовать для запуска нескольких экземпляров Node.js, которые могут распределять рабочую нагрузку между своими потоками приложений. Если изоляция процессов не требуется, используйте вместо этого модуль [`worker_threads`][], который позволяет запускать несколько потоков приложений в рамках одного экземпляра Node.js.
 
 Модуль кластера позволяет легко создавать дочерние процессы, которые совместно используют серверные порты.
 
-```mjs
-import cluster from 'node:cluster';
-import http from 'node:http';
-import { availableParallelism } from 'node:os';
-import process from 'node:process';
+=== "MJS"
 
-const numCPUs = availableParallelism();
+    ```js
+    import cluster from 'node:cluster';
+    import http from 'node:http';
+    import { availableParallelism } from 'node:os';
+    import process from 'node:process';
 
-if (cluster.isPrimary) {
-    console.log(`Primary ${process.pid} is running`);
+    const numCPUs = availableParallelism();
 
-    // Форк рабочих.
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
+    if (cluster.isPrimary) {
+        console.log(`Primary ${process.pid} is running`);
+
+        // Форк рабочих.
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+
+        cluster.on('exit', (worker, code, signal) => {
+            console.log(`рабочий ${worker.process.pid} умер`);
+        });
+    } else {
+        // Рабочие могут совместно использовать любое TCP-соединение.
+        // В данном случае это HTTP-сервер
+        http.createServer((req, res) => {
+            res.writeHead(200);
+            res.end('hello world\n');
+        }).listen(8000);
+
+        console.log(`Worker ${process.pid} started`);
     }
+    ```
 
-    cluster.on('exit', (worker, code, signal) => {
-        console.log(`рабочий ${worker.process.pid} умер`);
-    });
-} else {
-    // Рабочие могут совместно использовать любое TCP-соединение.
-    // В данном случае это HTTP-сервер
-    http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end('hello world\n');
-    }).listen(8000);
+=== "CJS"
 
-    console.log(`Worker ${process.pid} started`);
-}
-```
+    ```js
+    const cluster = require('node:cluster');
+    const http = require('node:http');
+    const numCPUs = require('node:os').availableParallelism();
+    const process = require('node:process');
 
-```cjs
-const cluster = require('node:cluster');
-const http = require('node:http');
-const numCPUs = require('node:os').availableParallelism();
-const process = require('node:process');
+    if (cluster.isPrimary) {
+        console.log(`Primary ${process.pid} is running`);
 
-if (cluster.isPrimary) {
-    console.log(`Primary ${process.pid} is running`);
+        // Форк рабочих.
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
 
-    // Форк рабочих.
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
+        cluster.on('exit', (worker, code, signal) => {
+            console.log(`рабочий ${worker.process.pid} умер`);
+        });
+    } else {
+        // Рабочие могут совместно использовать любое TCP-соединение.
+        // В данном случае это HTTP-сервер
+        http.createServer((req, res) => {
+            res.writeHead(200);
+            res.end('hello world\n');
+        }).listen(8000);
+
+        console.log(`Worker ${process.pid} started`);
     }
-
-    cluster.on('exit', (worker, code, signal) => {
-        console.log(`рабочий ${worker.process.pid} умер`);
-    });
-} else {
-    // Рабочие могут совместно использовать любое TCP-соединение.
-    // В данном случае это HTTP-сервер
-    http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end('hello world\n');
-    }).listen(8000);
-
-    console.log(`Worker ${process.pid} started`);
-}
-```
+    ```
 
 Запущенный Node.js теперь будет делить порт 8000 между рабочими:
 
@@ -92,27 +100,27 @@ Worker 5644 started
 
 ## Как это работает
 
-Рабочие процессы порождаются с помощью метода [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options), чтобы они могли общаться с родителем по IPC и передавать хэндлы сервера туда и обратно.
+Рабочие процессы создаются через [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options), чтобы они могли обмениваться с родителем по IPC и передавать друг другу дескрипторы сервера.
 
-Кластерный модуль поддерживает два метода распределения входящих соединений.
+Модуль кластера поддерживает два способа распределения входящих соединений.
 
-Первый (и тот, который используется по умолчанию на всех платформах, кроме Windows) - это метод round-robin, когда основной процесс прослушивает порт, принимает новые соединения и распределяет их между рабочими процессами по кругу, с некоторыми встроенными умными функциями, чтобы избежать перегрузки рабочего процесса.
+Первый (по умолчанию на всех платформах, кроме Windows) — round-robin: основной процесс слушает порт, принимает новые соединения и по очереди отдаёт их рабочим, с дополнительной логикой, чтобы не перегружать отдельный рабочий процесс.
 
-Второй подход заключается в том, что основной процесс создает сокет для прослушивания и отправляет его заинтересованным рабочим. Затем рабочие принимают входящие соединения напрямую.
+Второй вариант: основной процесс создаёт сокет для прослушивания и передаёт его нужным рабочим; рабочие принимают входящие соединения сами.
 
-Теоретически, второй подход должен обеспечивать наилучшую производительность. На практике, однако, распределение имеет тенденцию быть очень несбалансированным из-за капризов планировщика операционной системы. Наблюдались нагрузки, когда более 70% всех соединений оказывались только в двух процессах из восьми.
+Теоретически второй способ может дать лучшую производительность. На практике распределение часто оказывается сильно неравномерным из‑за особенностей планировщика ОС: встречались сценарии, когда более 70 % соединений приходилось лишь на два процесса из восьми.
 
-Поскольку `server.listen()` передает большую часть работы основному процессу, есть три случая, когда поведение обычного процесса Node.js и рабочего кластера различается:
+Так как `server.listen()` перенаправляет основную работу в основной процесс, есть три случая, когда поведение обычного процесса Node.js и рабочего в кластере различаются:
 
-1.  `server.listen({fd: 7})` Поскольку сообщение передается первичному процессу, дескриптор файла 7 **в родительском** будет прослушан, а хэндл передан рабочему, вместо того, чтобы прослушать представление рабочего о том, на что ссылается дескриптор файла с номером 7.
-2.  Если `server.listen(handle)` явно прослушивать хэндлы, то рабочий будет использовать предоставленный хэндл, а не обращаться к первичному процессу.
-3.  `server.listen(0)` Обычно это заставляет серверы прослушивать случайный порт. Однако в кластере каждый рабочий будет получать один и тот же "случайный" порт каждый раз, когда он выполняет команду `listen(0)`. По сути, порт является случайным в первый раз, но предсказуемым в последующие. Чтобы прослушивать уникальный порт, сгенерируйте номер порта на основе ID рабочего кластера.
+1. `server.listen({fd: 7})` — сообщение уходит в основной процесс, поэтому дескриптор файла 7 **в родителе** будет прослушан, а дескриптор передастся рабочему, вместо того чтобы рабочий слушал свой дескриптор с номером 7.
+2. Если `server.listen(handle)` вызывают с явным дескриптором, рабочий использует переданный дескриптор и не обращается к основному процессу.
+3. `server.listen(0)` — обычно сервер получает случайный порт. В кластере каждый рабочий при каждом `listen(0)` получает один и тот же «случайный» порт: в первый раз он случаен, дальше — предсказуем. Чтобы слушать уникальный порт, задайте номер порта, например с учётом идентификатора рабочего в кластере.
 
-Node.js не предоставляет логику маршрутизации. Поэтому важно разработать приложение таким образом, чтобы оно не слишком полагалось на объекты данных в памяти для таких вещей, как сессии и вход в систему.
+Node.js не реализует прикладную маршрутизацию. Поэтому важно проектировать приложение так, чтобы оно не опиралось на данные только в памяти процесса для сессий, входа и т. п.
 
-Поскольку рабочие являются отдельными процессами, они могут быть убиты или перерождены в зависимости от потребностей программы, не затрагивая других рабочих. Пока живы рабочие, сервер будет продолжать принимать соединения. Если ни один рабочий не жив, существующие соединения будут сброшены, а новые соединения будут отклонены. Однако Node.js не управляет количеством рабочих автоматически. Приложение обязано управлять пулом рабочих в соответствии со своими потребностями.
+Рабочие — отдельные процессы: их можно завершать и перезапускать по необходимости, не затрагивая остальных. Пока есть живые рабочие, сервер принимает соединения. Если рабочих не осталось, существующие соединения сбрасываются, новые отклоняются. Node.js сам число рабочих не подбирает — это ответственность приложения.
 
-Хотя основным вариантом использования модуля `node:cluster` является работа в сети, его можно использовать и для других случаев, требующих рабочих процессов.
+Основное применение модуля `node:cluster` — сеть, но его можно использовать и в других сценариях, где нужны отдельные рабочие процессы.
 
 <!-- 0001.part.md -->
 
@@ -120,7 +128,7 @@ Node.js не предоставляет логику маршрутизации.
 
 -   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
-Объект `Worker` содержит всю публичную информацию и метод о работнике. В первичной системе он может быть получен с помощью `cluster.workers`. В рабочем он может быть получен с помощью `cluster.worker`.
+Объект `Worker` содержит всю публичную информацию и методы о рабочем процессе. В основном процессе его можно получить через `cluster.workers`. В рабочем — через `cluster.worker`.
 
 <!-- 0002.part.md -->
 
@@ -136,7 +144,7 @@ cluster.fork().on('disconnect', () => {
 
 <!-- 0003.part.md -->
 
-### Событие: `error`.
+### Событие: `error`
 
 Это событие аналогично событию, предоставляемому [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options).
 
@@ -151,47 +159,51 @@ cluster.fork().on('disconnect', () => {
 
 Аналогично событию `cluster.on('exit')`, но специфично для данного рабочего.
 
-```mjs
-import cluster from 'node:cluster';
+=== "MJS"
 
-if (cluster.isPrimary) {
-    const worker = cluster.fork();
-    worker.on('exit', (code, signal) => {
-        if (signal) {
-            console.log(
-                `worker was killed by signal: ${signal}`
-            );
-        } else if (code !== 0) {
-            console.log(
-                `рабочий завершился с кодом ошибки: ${code}`
-            );
-        } else {
-            console.log('worker success!');
-        }
-    });
-}
-```
+    ```js
+    import cluster from 'node:cluster';
 
-```cjs
-const cluster = require('node:cluster');
+    if (cluster.isPrimary) {
+        const worker = cluster.fork();
+        worker.on('exit', (code, signal) => {
+            if (signal) {
+                console.log(
+                    `worker was killed by signal: ${signal}`
+                );
+            } else if (code !== 0) {
+                console.log(
+                    `рабочий завершился с кодом ошибки: ${code}`
+                );
+            } else {
+                console.log('worker success!');
+            }
+        });
+    }
+    ```
 
-if (cluster.isPrimary) {
-    const worker = cluster.fork();
-    worker.on('exit', (code, signal) => {
-        if (signal) {
-            console.log(
-                `worker was killed by signal: ${signal}`
-            );
-        } else if (code !== 0) {
-            console.log(
-                `рабочий завершился с кодом ошибки: ${code}`
-            );
-        } else {
-            console.log('worker success!');
-        }
-    });
-}
-```
+=== "CJS"
+
+    ```js
+    const cluster = require('node:cluster');
+
+    if (cluster.isPrimary) {
+        const worker = cluster.fork();
+        worker.on('exit', (code, signal) => {
+            if (signal) {
+                console.log(
+                    `worker was killed by signal: ${signal}`
+                );
+            } else if (code !== 0) {
+                console.log(
+                    `рабочий завершился с кодом ошибки: ${code}`
+                );
+            } else {
+                console.log('worker success!');
+            }
+        });
+    }
+    ```
 
 <!-- 0005.part.md -->
 
@@ -201,17 +213,21 @@ if (cluster.isPrimary) {
 
 Аналогично событию `cluster.on('listening')`, но специфично для этого рабочего.
 
-```mjs
-cluster.fork().on('listening', (address) => {
-    // Worker is listening
-});
-```
+=== "MJS"
 
-```cjs
-cluster.fork().on('listening', (address) => {
-    // Worker is listening
-});
-```
+    ```js
+    cluster.fork().on('listening', (address) => {
+        // Рабочий слушает
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    cluster.fork().on('listening', (address) => {
+        // Рабочий слушает
+    });
+    ```
 
 Это не эмитируется в воркере.
 
@@ -220,7 +236,7 @@ cluster.fork().on('listening', (address) => {
 ### Событие: `message`
 
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `handle` {undefined|Object}
+-   `handle` undefined | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Аналогично событию `'message'` из `cluster`, но специфично для этого рабочего.
 
@@ -230,86 +246,90 @@ cluster.fork().on('listening', (address) => {
 
 Вот пример использования системы сообщений. Он ведет подсчет в основном процессе количества HTTP-запросов, полученных рабочими:
 
-```mjs
-import cluster from 'node:cluster';
-import http from 'node:http';
-import { availableParallelism } from 'node:os';
-import process from 'node:process';
+=== "MJS"
 
-if (cluster.isPrimary) {
-    // Отслеживаем http-запросы
-    let numReqs = 0;
-    setInterval(() => {
-        console.log(`numReqs = ${numReqs}`);
-    }, 1000);
+    ```js
+    import cluster from 'node:cluster';
+    import http from 'node:http';
+    import { availableParallelism } from 'node:os';
+    import process from 'node:process';
 
-    // Подсчет запросов
-    function messageHandler(msg) {
-        if (msg.cmd && msg.cmd === 'notifyRequest') {
-            numReqs += 1;
+    if (cluster.isPrimary) {
+        // Отслеживаем http-запросы
+        let numReqs = 0;
+        setInterval(() => {
+            console.log(`numReqs = ${numReqs}`);
+        }, 1000);
+
+        // Подсчет запросов
+        function messageHandler(msg) {
+            if (msg.cmd && msg.cmd === 'notifyRequest') {
+                numReqs += 1;
+            }
         }
-    }
 
-    // Запускаем рабочих и слушаем сообщения, содержащие notifyRequest
-    const numCPUs = availableParallelism();
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
-    }
-
-    for (const id in cluster.workers) {
-        cluster.workers[id].on('message', messageHandler);
-    }
-} else {
-    // У рабочих процессов есть http-сервер.
-    http.Server((req, res) => {
-        res.writeHead(200);
-        res.end('hello world\n');
-
-        // Уведомляем первичный процесс о запросе
-        process.send({ cmd: 'notifyRequest' });
-    }).listen(8000);
-}
-```
-
-```cjs
-const cluster = require('node:cluster');
-const http = require('node:http');
-const process = require('node:process');
-
-if (cluster.isPrimary) {
-    // Отслеживаем http-запросы
-    let numReqs = 0;
-    setInterval(() => {
-        console.log(`numReqs = ${numReqs}`);
-    }, 1000);
-
-    // Подсчет запросов
-    function messageHandler(msg) {
-        if (msg.cmd && msg.cmd === 'notifyRequest') {
-            numReqs += 1;
+        // Запускаем рабочих и слушаем сообщения, содержащие notifyRequest
+        const numCPUs = availableParallelism();
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
         }
-    }
 
-    // Запускаем рабочих и слушаем сообщения, содержащие notifyRequest
-    const numCPUs = require('node:os').availableParallelism();
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
-    }
+        for (const id in cluster.workers) {
+            cluster.workers[id].on('message', messageHandler);
+        }
+    } else {
+        // У рабочих процессов есть http-сервер.
+        http.Server((req, res) => {
+            res.writeHead(200);
+            res.end('hello world\n');
 
-    for (const id in cluster.workers) {
-        cluster.workers[id].on('message', messageHandler);
+            // Уведомляем первичный процесс о запросе
+            process.send({ cmd: 'notifyRequest' });
+        }).listen(8000);
     }
-} else {
-    // У рабочих процессов есть http-сервер.
-    http.Server((req, res) => {
-        res.writeHead(200);
-        res.end('hello world\n');
+    ```
 
-        // Уведомляем первичный процесс о запросе
-        process.send({ cmd: 'notifyRequest' });
-    }).listen(8000);
-}
-```
+=== "CJS"
+
+    ```js
+    const cluster = require('node:cluster');
+    const http = require('node:http');
+    const process = require('node:process');
+
+    if (cluster.isPrimary) {
+        // Отслеживаем http-запросы
+        let numReqs = 0;
+        setInterval(() => {
+            console.log(`numReqs = ${numReqs}`);
+        }, 1000);
+
+        // Подсчет запросов
+        function messageHandler(msg) {
+            if (msg.cmd && msg.cmd === 'notifyRequest') {
+                numReqs += 1;
+            }
+        }
+
+        // Запускаем рабочих и слушаем сообщения, содержащие notifyRequest
+        const numCPUs = require('node:os').availableParallelism();
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+
+        for (const id in cluster.workers) {
+            cluster.workers[id].on('message', messageHandler);
+        }
+    } else {
+        // У рабочих процессов есть http-сервер.
+        http.Server((req, res) => {
+            res.writeHead(200);
+            res.end('hello world\n');
+
+            // Уведомляем первичный процесс о запросе
+            process.send({ cmd: 'notifyRequest' });
+        }).listen(8000);
+    }
+    ```
 
 <!-- 0007.part.md -->
 
@@ -329,7 +349,7 @@ cluster.fork().on('online', () => {
 
 ### `worker.disconnect()`
 
--   Возвращает: {cluster.Worker} Ссылка на `worker`.
+-   Возвращает: [<cluster.Worker>](cluster.md) Ссылка на `worker`.
 
 В рабочем эта функция закроет все серверы, дождется события `'close'` на этих серверах, а затем отключит IPC-канал.
 
@@ -364,14 +384,14 @@ if (cluster.isPrimary) {
 } else if (cluster.isWorker) {
     const net = require('node:net');
     const server = net.createServer((socket) => {
-        // Connections never end
+        // Соединения не заканчиваются
     });
 
     server.listen(8000);
 
     process.on('message', (msg) => {
         if (msg === 'shutdown') {
-            // Initiate graceful close of any connections to server
+            // Инициировать корректное закрытие соединений с сервером
         }
     });
 }
@@ -396,7 +416,7 @@ cluster.on('exit', (worker, code, signal) => {
     }
 });
 
-// убить работника
+// завершить рабочий процесс
 worker.kill();
 ```
 
@@ -422,69 +442,73 @@ worker.kill();
 
 Эта функция возвращает `true`, если процесс рабочего завершился (либо из-за выхода, либо из-за получения сигнала). В противном случае она возвращает `false`.
 
-```mjs
-import cluster from 'node:cluster';
-import http from 'node:http';
-import { availableParallelism } from 'node:os';
-import process from 'node:process';
+=== "MJS"
 
-const numCPUs = availableParallelism();
+    ```js
+    import cluster from 'node:cluster';
+    import http from 'node:http';
+    import { availableParallelism } from 'node:os';
+    import process from 'node:process';
 
-if (cluster.isPrimary) {
-    console.log(`Primary ${process.pid} is running`);
+    const numCPUs = availableParallelism();
 
-    // Форк рабочих.
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
+    if (cluster.isPrimary) {
+        console.log(`Primary ${process.pid} is running`);
+
+        // Форк рабочих.
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+
+        cluster.on('fork', (worker) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+
+        cluster.on('exit', (worker, code, signal) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+    } else {
+        // Рабочие могут использовать любое TCP-соединение. В данном случае это HTTP-сервер.
+        http.createServer((req, res) => {
+            res.writeHead(200);
+            res.end(`Текущий процесс\n ${process.pid}`);
+            process.kill(process.pid);
+        }).listen(8000);
     }
+    ```
 
-    cluster.on('fork', (worker) => {
-        console.log('worker is dead:', worker.isDead());
-    });
+=== "CJS"
 
-    cluster.on('exit', (worker, code, signal) => {
-        console.log('worker is dead:', worker.isDead());
-    });
-} else {
-    // Рабочие могут использовать любое TCP-соединение. В данном случае это HTTP-сервер.
-    http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end(`Текущий процесс\n ${process.pid}`);
-        process.kill(process.pid);
-    }).listen(8000);
-}
-```
+    ```js
+    const cluster = require('node:cluster');
+    const http = require('node:http');
+    const numCPUs = require('node:os').availableParallelism();
+    const process = require('node:process');
 
-```cjs
-const cluster = require('node:cluster');
-const http = require('node:http');
-const numCPUs = require('node:os').availableParallelism();
-const process = require('node:process');
+    if (cluster.isPrimary) {
+        console.log(`Primary ${process.pid} is running`);
 
-if (cluster.isPrimary) {
-    console.log(`Primary ${process.pid} is running`);
+        // Форк рабочих.
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
 
-    // Форк рабочих.
-    for (let i = 0; i < numCPUs; i++) {
-        cluster.fork();
+        cluster.on('fork', (worker) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+
+        cluster.on('exit', (worker, code, signal) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+    } else {
+        // Рабочие могут использовать любое TCP-соединение. В данном случае это HTTP-сервер.
+        http.createServer((req, res) => {
+            res.writeHead(200);
+            res.end(`Текущий процесс\n ${process.pid}`);
+            process.kill(process.pid);
+        }).listen(8000);
     }
-
-    cluster.on('fork', (worker) => {
-        console.log('worker is dead:', worker.isDead());
-    });
-
-    cluster.on('exit', (worker, code, signal) => {
-        console.log('worker is dead:', worker.isDead());
-    });
-} else {
-    // Рабочие могут использовать любое TCP-соединение. В данном случае это HTTP-сервер.
-    http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end(`Текущий процесс\n ${process.pid}`);
-        process.kill(process.pid);
-    }).listen(8000);
-}
-```
+    ```
 
 <!-- 0013.part.md -->
 
@@ -544,9 +568,9 @@ if (cluster.isPrimary) {
 
 <!-- 0016.part.md -->
 
-## Событие: `разъединение`
+## Событие: `'disconnect'`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 
 Выдается после отключения IPC-канала рабочего. Это может произойти, когда рабочий изящно завершает работу, его убивают или отключают вручную (например, с помощью `worker.disconnect()`).
 
@@ -560,9 +584,9 @@ cluster.on('disconnect', (worker) => {
 
 <!-- 0017.part.md -->
 
-## Событие: `выход`
+## Событие: `'exit'`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 -   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если он вышел нормально.
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
 
@@ -587,7 +611,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 ## Событие: `fork`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 
 При форке нового рабочего модуль кластера будет выдавать событие `'fork'`. Это событие можно использовать для регистрации активности рабочего и создания пользовательского таймаута.
 
@@ -613,7 +637,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 ## Событие: `listening`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 -   `адрес` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 После вызова функции `listen()` от рабочего, когда событие `'listening'` испускается на сервере, событие `'listening'` также будет испущено на `cluster` в первичном.
@@ -623,25 +647,25 @@ cluster.on('exit', (worker, code, signal) => {
 ```js
 cluster.on('listening', (worker, address) => {
     console.log(
-        `Рабочий теперь подключен к ${адрес.адрес}:${адрес.порт}`
+        `Рабочий теперь слушает ${address.address}:${address.port}`
     );
 });
 ```
 
-Тип `addressType` является одним из:
+Тип `addressType` — один из:
 
 -   `4` (TCPv4)
 -   `6` (TCPv6)
--   `-1` (Unix domain socket)
--   ` 'udp4`` или  `'udp6`` (UDPv4 или UDPv6)
+-   `-1` (сокет Unix domain)
+-   `'udp4'` или `'udp6'` (UDPv4 или UDPv6)
 
 <!-- 0020.part.md -->
 
 ## Событие: `message`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 -   `сообщение` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `handle` {undefined|Object}
+-   `handle` undefined | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Выдается, когда основной кластер получает сообщение от любого рабочего.
 
@@ -651,9 +675,9 @@ cluster.on('listening', (worker, address) => {
 
 ## Событие: `online`
 
--   `worker` {cluster.Worker}
+-   `worker` [<cluster.Worker>](cluster.md)
 
-После форкинга нового рабочего, рабочий должен ответить сообщением online. Когда основной получает сообщение online, он испускает это событие. Разница между `'fork'` и `'online'` заключается в том, что fork испускается, когда первичный вилкует рабочего, а `'online'` испускается, когда рабочий запущен.
+После `fork()` нового рабочего тот должен прислать сигнал готовности. Когда основной процесс получает это сообщение, испускается событие `'online'`. Событие `'fork'` возникает, когда основной вызывает `fork()`, а `'online'` — когда рабочий процесс действительно запущен и готов.
 
 ```js
 cluster.on('online', (worker) => {
@@ -694,7 +718,7 @@ cluster.on('online', (worker) => {
 ## `cluster.fork([env])`
 
 -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары ключ/значение для добавления в окружение рабочего процесса.
--   Возвращает: {cluster.Worker}
+-   Возвращает: [<cluster.Worker>](cluster.md)
 
 Порождает новый рабочий процесс.
 
@@ -741,12 +765,12 @@ cluster.on('online', (worker) => {
     -   `exec` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к рабочему файлу. **По умолчанию:** `process.argv[1]`.
     -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковые аргументы, передаваемые рабочему. **По умолчанию:** `process.argv.slice(2)`.
     -   `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текущий рабочий каталог рабочего процесса. **По умолчанию:** `undefined` (наследуется от родительского процесса).
-    -   `serialization` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Укажите вид сериализации, используемой для отправки сообщений между процессами. Возможные значения: `'json'' и `'advanced''. Подробнее см. в [Advanced serialization for `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
+    -   `serialization` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Вид сериализации сообщений между процессами. Допустимые значения: `'json'` и `'advanced'`. Подробнее — [Advanced serialization for `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
     -   `silent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Посылать ли вывод на родительский stdio. **По умолчанию:** `false`.
     -   `stdio` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Настраивает stdio вилочных процессов. Поскольку для работы кластерного модуля используется IPC, эта конфигурация должна содержать запись `'ipc'`. Когда эта опция указана, она отменяет `silent`.
     -   `uid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает идентификатор пользователя процесса. (См. setuid(2).)
     -   `gid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает групповую идентификацию процесса. (См. setgid(2).)
-    -   `inspectPort` {number|Function} Задает инспекторский порт рабочего. Это может быть число или функция, которая не принимает аргументов и возвращает число. По умолчанию каждый рабочий получает свой собственный порт, увеличивающийся от `process.debugPort` первичного.
+    -   `inspectPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Задает инспекторский порт рабочего. Это может быть число или функция, которая не принимает аргументов и возвращает число. По умолчанию каждый рабочий получает свой собственный порт, увеличивающийся от `process.debugPort` первичного.
     -   `windowsHide` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Скрыть консольное окно вилочных процессов, которое обычно создается в системах Windows. **По умолчанию:** `false`.
 
 После вызова [`.setupPrimary()`](#clustersetupprimarysettings) (или [`.fork()`](#clusterforkenv)) этот объект настроек будет содержать настройки, включая значения по умолчанию.
@@ -773,37 +797,41 @@ cluster.on('online', (worker) => {
 
 Приведенные выше значения по умолчанию относятся только к первому вызову; значения по умолчанию для последующих вызовов - это текущие значения на момент вызова `cluster.setupPrimary()`.
 
-```mjs
-import cluster from 'node:cluster';
+=== "MJS"
 
-cluster.setupPrimary({
-    exec: 'worker.js',
-    args: ['--use', 'https'],
-    silent: true,
-});
-cluster.fork(); // https worker
-cluster.setupPrimary({
-    exec: 'worker.js',
-    args: ['--use', 'http'],
-});
-cluster.fork(); // http worker
-```
+    ```js
+    import cluster from 'node:cluster';
 
-```cjs
-const cluster = require('node:cluster');
+    cluster.setupPrimary({
+        exec: 'worker.js',
+        args: ['--use', 'https'],
+        silent: true,
+    });
+    cluster.fork(); // https worker
+    cluster.setupPrimary({
+        exec: 'worker.js',
+        args: ['--use', 'http'],
+    });
+    cluster.fork(); // http worker
+    ```
 
-cluster.setupPrimary({
-    exec: 'worker.js',
-    args: ['--use', 'https'],
-    silent: true,
-});
-cluster.fork(); // https worker
-cluster.setupPrimary({
-    exec: 'worker.js',
-    args: ['--use', 'http'],
-});
-cluster.fork(); // http worker
-```
+=== "CJS"
+
+    ```js
+    const cluster = require('node:cluster');
+
+    cluster.setupPrimary({
+        exec: 'worker.js',
+        args: ['--use', 'https'],
+        silent: true,
+    });
+    cluster.fork(); // https worker
+    cluster.setupPrimary({
+        exec: 'worker.js',
+        args: ['--use', 'http'],
+    });
+    cluster.fork(); // http worker
+    ```
 
 Это может быть вызвано только из основного процесса.
 
@@ -815,29 +843,33 @@ cluster.fork(); // http worker
 
 Ссылка на текущий объект worker. Недоступно в основном процессе.
 
-```mjs
-import cluster from 'node:cluster';
+=== "MJS"
 
-if (cluster.isPrimary) {
-    console.log('Я первичный');
-    cluster.fork();
-    cluster.fork();
-} else if (cluster.isWorker) {
-    console.log(`Я рабочий #${cluster.worker.id}`);
-}
-```
+    ```js
+    import cluster from 'node:cluster';
 
-```cjs
-const cluster = require('node:cluster');
+    if (cluster.isPrimary) {
+        console.log('I am primary');
+        cluster.fork();
+        cluster.fork();
+    } else if (cluster.isWorker) {
+        console.log(`I am worker #${cluster.worker.id}`);
+    }
+    ```
 
-if (cluster.isPrimary) {
-    console.log('Я первичный');
-    cluster.fork();
-    cluster.fork();
-} else if (cluster.isWorker) {
-    console.log(`Я рабочий #${cluster.worker.id}`);
-}
-```
+=== "CJS"
+
+    ```js
+    const cluster = require('node:cluster');
+
+    if (cluster.isPrimary) {
+        console.log('I am primary');
+        cluster.fork();
+        cluster.fork();
+    } else if (cluster.isWorker) {
+        console.log(`I am worker #${cluster.worker.id}`);
+    }
+    ```
 
 <!-- 0033.part.md -->
 
@@ -849,21 +881,44 @@ if (cluster.isPrimary) {
 
 Рабочий удаляется из `cluster.workers` после того, как он отключился _и_ вышел. Порядок между этими двумя событиями не может быть определен заранее. Однако гарантируется, что удаление из списка `cluster.workers` произойдет до того, как произойдет последнее событие `'disconnect'` или `'exit'`.
 
-```mjs
-import cluster from 'node:cluster';
+=== "MJS"
 
-for (const worker of Object.values(cluster.workers)) {
-    worker.send('большое объявление всем работникам');
-}
-```
+    ```js
+    import cluster from 'node:cluster';
 
-```cjs
-const cluster = require('node:cluster');
+    for (const worker of Object.values(cluster.workers)) {
+        worker.send('big announcement to all workers');
+    }
+    ```
 
-for (const worker of Object.values(cluster.workers)) {
-    worker.send('большое объявление всем работникам');
-}
-```
+=== "CJS"
+
+    ```js
+    const cluster = require('node:cluster');
+
+    for (const worker of Object.values(cluster.workers)) {
+        worker.send('big announcement to all workers');
+    }
+    ```
 
 <!-- 0034.part.md -->
+
+[Advanced serialization for `child_process`]: child_process.md#advanced-serialization
+[Child Process module]: child_process.md#child_processforkmodulepath-args-options
+[`.fork()`]: #clusterforkenv
+[`.setupPrimary()`]: #clustersetupprimarysettings
+[`ChildProcess.send()`]: child_process.md#subprocesssendmessage-sendhandle-options-callback
+[`child_process.fork()`]: child_process.md#child_processforkmodulepath-args-options
+[`child_process.spawn()`]: child_process.md#child_processspawncommand-args-options
+[`child_process` event: `'exit'`]: child_process.md#event-exit
+[`child_process` event: `'message'`]: child_process.md#event-message
+[`cluster.isPrimary`]: #clusterisprimary
+[`cluster.settings`]: #clustersettings
+[`disconnect()`]: child_process.md#subprocessdisconnect
+[`kill()`]: process.md#processkillpid-signal
+[`process` event: `'message'`]: process.md#event-message
+[`server.close()`]: net.md#event-close
+[`stdio`]: child_process.md#optionsstdio
+[`worker.exitedAfterDisconnect`]: #workerexitedafterdisconnect
+[`worker_threads`]: worker_threads.md
 

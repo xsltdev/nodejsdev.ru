@@ -1,505 +1,604 @@
 ---
-title: Process
-description: Объект process предоставляет информацию о текущем процессе Node.js и контроль над ним
+title: Процесс
+description: Объект process предоставляет информацию о текущем процессе Node.js и управление им
 ---
 
 # Процесс
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/process.html)
+<!-- introduced_in=v0.10.0 -->
 
-Объект `process` предоставляет информацию о текущем процессе Node.js и контроль над ним.
+<!-- type=global -->
 
-```mjs
-import process from 'node:process';
-```
+<!-- source_link=lib/process.js -->
 
-```cjs
-const process = require('node:process');
-```
+Объект `process` предоставляет сведения о текущем процессе Node.js и средства
+управления им.
 
-<!-- 0000.part.md -->
+=== "MJS"
 
-## Обработка событий
+    ```js
+    import process from 'node:process';
+    ```
 
-Объект `process` является экземпляром [`EventEmitter`](events.md#class-eventemitter).
+=== "CJS"
 
-<!-- 0001.part.md -->
+    ```js
+    const process = require('node:process');
+    ```
+
+## События `process`
+
+Объект `process` является экземпляром [`EventEmitter`][].
 
 ### Событие: `'beforeExit'`
 
-Событие `'beforeExit'` генерируется, когда Node.js опустошает свой цикл событий и не имеет дополнительной работы для планирования. Обычно процесс Node.js завершается, когда нет запланированной работы, но слушатель, зарегистрированный на событии `'beforeExit'`, может выполнять асинхронные вызовы и тем самым заставлять процесс Node.js продолжать работу.
+<!-- YAML
+added: v0.11.12
+-->
 
-Функция обратного вызова слушателя вызывается со значением [`process.exitCode`](#processexitcode_1), переданным в качестве единственного аргумента.
+Событие `'beforeExit'` испускается, когда Node.js опустошает цикл событий и ему
+нечего больше планировать. Обычно процесс Node.js завершается, когда нет
+запланированной работы, но слушатель, зарегистрированный на `'beforeExit'`,
+может выполнять асинхронные вызовы и тем самым заставлять процесс Node.js
+продолжать работу.
 
-Событие `'beforeExit'` не _выдается_ для условий, вызывающих явное завершение, таких как вызов [`process.exit()`](#processexitcode) или не пойманные исключения.
+Функция обратного вызова слушателя вызывается со значением
+[`process.exitCode`][], переданным единственным аргументом.
 
-Событие `'beforeExit'` не должно _не_ использоваться в качестве альтернативы событию `'exit'`, если только не предполагается запланировать дополнительную работу.
+Событие `'beforeExit'` _не_ испускается при условиях, ведущих к явному
+завершению, например при вызове [`process.exit()`][] или при необработанных
+исключениях.
 
-```mjs
-import process from 'node:process';
+Событие `'beforeExit'` _не_ следует использовать вместо `'exit'`,
+если только целью не является запланировать дополнительную работу.
 
-process.on('beforeExit', (code) => {
-    console.log(
-        'Обработка события beforeExit с кодом: ',
-        code
-    );
-});
+=== "MJS"
 
-process.on('exit', (code) => {
-    console.log('Обработать событие exit с кодом: ', code);
-});
+    ```js
+    import process from 'node:process';
+    
+    process.on('beforeExit', (code) => {
+      console.log('Process beforeExit event with code: ', code);
+    });
+    
+    process.on('exit', (code) => {
+      console.log('Process exit event with code: ', code);
+    });
+    
+    console.log('This message is displayed first.');
+    
+    // Prints:
+    // This message is displayed first.
+    // Process beforeExit event with code: 0
+    // Process exit event with code: 0
+    ```
 
-console.log('Это сообщение выводится первым.');
+=== "CJS"
 
-// Выводит:
-// Это сообщение выводится первым.
-// Обработка события beforeExit с кодом: 0
-// Обработать событие exit с кодом: 0
-```
+    ```js
+    const process = require('node:process');
+    
+    process.on('beforeExit', (code) => {
+      console.log('Process beforeExit event with code: ', code);
+    });
+    
+    process.on('exit', (code) => {
+      console.log('Process exit event with code: ', code);
+    });
+    
+    console.log('This message is displayed first.');
+    
+    // Prints:
+    // This message is displayed first.
+    // Process beforeExit event with code: 0
+    // Process exit event with code: 0
+    ```
 
-```cjs
-const process = require('node:process');
+### Событие: `'disconnect'`
 
-process.on('beforeExit', (code) => {
-    console.log(
-        'Обработка события beforeExit с кодом: ',
-        code
-    );
-});
+<!-- YAML
+added: v0.7.7
+-->
 
-process.on('exit', (code) => {
-    console.log('Обработать событие exit с кодом: ', code);
-});
+Если процесс Node.js запущен с IPC-каналом (см. документацию [Child Process][]
+и [Cluster][]), событие `'disconnect'` испускается при закрытии IPC-канала.
 
-console.log('Это сообщение выводится первым.');
+### Событие: `'exit'`
 
-// Выводит:
-// Это сообщение выводится первым.
-// Обработка события beforeExit с кодом: 0
-// Обработать событие exit с кодом: 0
-```
+<!-- YAML
+added: v0.1.7
+-->
 
-<!-- 0002.part.md -->
+* `code` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-### Событие: `disconnect`
+Событие `'exit'` испускается, когда процесс Node.js собирается завершиться по
+одной из причин:
 
-Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), событие `'disconnect'` будет испущено, когда IPC-канал будет закрыт.
+* явно вызван метод `process.exit()`;
+* у цикла событий Node.js больше нет дополнительной работы.
 
-<!-- 0003.part.md -->
+На этом этапе нельзя предотвратить выход из цикла событий: после того как все
+слушатели `'exit'` отработают, процесс Node.js завершится.
 
-### Событие: `exit`
+Функция обратного вызова слушателя вызывается с кодом выхода, заданным либо
+свойством [`process.exitCode`][], либо аргументом `exitCode`, переданным в
+[`process.exit()`][].
 
--   `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+=== "MJS"
 
-Событие `'exit'` генерируется, когда процесс Node.js собирается завершиться в результате либо:
+    ```js
+    import process from 'node:process';
+    
+    process.on('exit', (code) => {
+      console.log(`About to exit with code: ${code}`);
+    });
+    ```
 
--   Явного вызова метода `process.exit()`;
--   Цикл событий Node.js больше не должен выполнять никакой дополнительной работы.
+=== "CJS"
 
-На данный момент нет способа предотвратить выход из цикла событий, и как только все слушатели `'exit'` завершат работу, процесс Node.js завершится.
+    ```js
+    const process = require('node:process');
+    
+    process.on('exit', (code) => {
+      console.log(`About to exit with code: ${code}`);
+    });
+    ```
 
-Функция обратного вызова слушателя вызывается с кодом выхода, указанным либо свойством [`process.exitCode`](#processexitcode_1), либо аргументом `exitCode`, переданным методу [`process.exit()`](#processexitcode).
+Функции-слушатели **должны** выполнять только **синхронные** операции. Процесс
+Node.js завершится сразу после вызова слушателей `'exit'`, и вся оставшаяся в
+очереди цикла событий работа будет отброшена. В следующем примере таймер
+никогда не сработает:
 
-```mjs
-import process from 'node:process';
+=== "MJS"
 
-process.on('exit', (code) => {
-    console.log(`About to exit with code: ${code}`);
-});
-```
-
-```cjs
-const process = require('node:process');
-
-process.on('exit', (code) => {
-    console.log(`About to exit with code: ${code}`);
-});
-```
-
-Функции слушателя **должны** выполнять только **синхронные** операции. Процесс Node.js завершится сразу после вызова слушателя события `'exit'`, в результате чего любая дополнительная работа, все еще находящаяся в очереди в цикле событий, будет прекращена. В следующем примере, например, таймаут никогда не произойдет:
-
-```mjs
-import process from 'node:process';
-
-process.on('exit', (code) => {
-    setTimeout(() => {
+    ```js
+    import process from 'node:process';
+    
+    process.on('exit', (code) => {
+      setTimeout(() => {
         console.log('This will not run');
-    }, 0);
-});
-```
+      }, 0);
+    });
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-process.on('exit', (code) => {
-    setTimeout(() => {
+    ```js
+    const process = require('node:process');
+    
+    process.on('exit', (code) => {
+      setTimeout(() => {
         console.log('This will not run');
-    }, 0);
-});
-```
+      }, 0);
+    });
+    ```
 
-<!-- 0004.part.md -->
+### Событие: `'message'`
 
-### Событие: `message`
+<!-- YAML
+added: v0.5.10
+-->
 
--   `message` { Object | boolean | number | string | null } разобранный объект JSON или сериализуемое примитивное значение.
--   `sendHandle` {net.Server|net.Socket} объект [`net.Server`](net.md#class-netserver) или [`net.Socket`](net.md#class-netsocket), или undefined.
+* `message` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null разобранный объект JSON
+  или сериализуемое примитивное значение.
+* `sendHandle` [<net.Server>](net.md#class-netserver) | [<net.Socket>](net.md#class-netsocket) объект [`net.Server`][] или [`net.Socket`][]
+  либо `undefined`.
 
-Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), событие `'message'` испускается всякий раз, когда сообщение, отправленное родительским процессом с помощью [`childprocess.send()`](child_process.md#subprocesssendmessage-sendhandle-options-callback), получено дочерним процессом.
+Если процесс Node.js запущен с IPC-каналом (см. документацию [Child Process][]
+и [Cluster][]), событие `'message'` испускается всякий раз, когда дочерним
+процессом получено сообщение, отправленное родителем через [`childprocess.send()`][].
 
-Сообщение проходит через сериализацию и разбор. Полученное сообщение может отличаться от первоначально отправленного.
+Сообщение проходит сериализацию и разбор. Итоговое сообщение может не совпадать
+с исходно отправленным.
 
-Если при порождении процесса опция `сериализации` была установлена на `продвинутую`, аргумент `сообщение` может содержать данные, которые JSON не может представить. Более подробную информацию смотрите в [Advanced serialization for `child_process`](child_process.md#advanced-serialization).
+Если при порождении процесса для опции `serialization` было задано значение
+`advanced`, аргумент `message` может содержать данные, которые JSON представить
+не может.
+Подробнее см. [Advanced serialization for `child_process`][].
 
-<!-- 0005.part.md -->
+### Событие: `'rejectionHandled'`
 
-### Событие: `multipleResolves`
+<!-- YAML
+added: v1.4.1
+-->
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+* `promise` [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Promise, отказ которого обработан с задержкой.
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+Событие `'rejectionHandled'` испускается всякий раз, когда `Promise` был
+отклонён и к нему позже, чем через один оборот цикла событий Node.js, подключён
+обработчик ошибок (например через [`promise.catch()`][]).
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип разрешения. Один из `'resolve'` или `'reject'`.
--   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание, которое было разрешено или отвергнуто более одного раза.
--   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым обещание было разрешено или отвергнуто после первоначального разрешения.
+Объект `Promise` ранее мог попасть в событие `'unhandledRejection'`, но в ходе
+обработки получил обработчик отказа.
 
-Событие `'multipleResolves'` испускается всякий раз, когда `обещание` было либо:
+У цепочки `Promise` нет «верхнего уровня», на котором отказы можно было бы
+всегда обработать синхронно. Отказ `Promise` может быть обработан позже — иногда
+значительно позже оборота цикла событий, на котором испускается
+`'unhandledRejection'`.
 
--   Разрешено более одного раза.
--   Отклонено более одного раза.
--   Отклонено после разрешения.
--   Решено после отклонения.
+Иначе говоря: в синхронном коде список необработанных исключений только растёт,
+а для Promise список необработанных отказов может и расти, и сокращаться.
 
-Это полезно для отслеживания потенциальных ошибок в приложении при использовании конструктора `Promise`, так как множественные разрешения молча проглатываются. Однако возникновение этого события не обязательно указывает на ошибку. Например, [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) может вызвать событие `'multipleResolves'`.
+В синхронном коде событие `'uncaughtException'` испускается, когда список
+необработанных исключений увеличивается.
 
-Из-за ненадежности этого события в случаях, подобных приведенному выше примеру [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race), оно было устаревшим.
+В асинхронном коде `'unhandledRejection'` испускается при росте списка
+необработанных отказов, а `'rejectionHandled'` — при его уменьшении.
 
-```mjs
-import process from 'node:process';
+=== "MJS"
 
-process.on('multipleResolves', (type, promise, reason) => {
-    console.error(type, promise, reason);
-    setImmediate(() => process.exit(1));
-});
+    ```js
+    import process from 'node:process';
+    
+    const unhandledRejections = new Map();
+    process.on('unhandledRejection', (reason, promise) => {
+      unhandledRejections.set(promise, reason);
+    });
+    process.on('rejectionHandled', (promise) => {
+      unhandledRejections.delete(promise);
+    });
+    ```
 
-async function main() {
-    try {
-        return await new Promise((resolve, reject) => {
-            resolve('Первый вызов');
-            resolve('Проглоченное разрешение');
-            reject(new Error('Swallowed reject'));
-        });
-    } catch {
-        throw new Error('Не удалось');
-    }
-}
+=== "CJS"
 
-main().then(console.log);
-// resolve: Promise { 'Первый вызов'} 'Проглоченное разрешение'
-// reject: Promise { 'Первый вызов' } Ошибка: Swallowed reject
-// at Promise (*)
-// at new Promise (<анонимно>)
-// at main (*)
-// Первый вызов
-```
+    ```js
+    const process = require('node:process');
+    
+    const unhandledRejections = new Map();
+    process.on('unhandledRejection', (reason, promise) => {
+      unhandledRejections.set(promise, reason);
+    });
+    process.on('rejectionHandled', (promise) => {
+      unhandledRejections.delete(promise);
+    });
+    ```
 
-```cjs
-const process = require('node:process');
+В этом примере `Map` `unhandledRejections` со временем растёт и сужается,
+отражая отказы, которые сначала были без обработчика, а затем получили его.
+Такие ошибки можно записывать в журнал периодически (удобно для долгоживущих
+приложений) или при выходе процесса (удобнее для сценариев).
 
-process.on('multipleResolves', (type, promise, reason) => {
-    console.error(type, promise, reason);
-    setImmediate(() => process.exit(1));
-});
+### Событие: `'workerMessage'`
 
-async function main() {
-    try {
-        return await new Promise((resolve, reject) => {
-            resolve('Первый вызов');
-            resolve('Проглоченное разрешение');
-            reject(new Error('Swallowed reject'));
-        });
-    } catch {
-        throw new Error('Не удалось');
-    }
-}
+<!-- YAML
+added:
+- v22.5.0
+- v20.19.0
+-->
 
-main().then(console.log);
-// resolve: Promise { 'Первый вызов'} 'Проглоченное разрешение'
-// reject: Promise { 'Первый вызов' } Ошибка: Swallowed reject
-// at Promise (*)
-// at new Promise (<анонимно>)
-// at main (*)
-// Первый вызов
-```
+* `value` {any} значение, переданное через [`postMessageToThread()`][].
+* `source` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) идентификатор потока worker, отправившего сообщение, или `0` для основного потока.
 
-<!-- 0006.part.md -->
-
-### Событие: `rejectionHandled`
-
--   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Обещание, обработанное с опозданием.
-
-Событие `'rejectionHandled'` испускается всякий раз, когда `Promise` было отклонено и к нему был присоединен обработчик ошибок (например, с помощью [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)) позже, чем один оборот цикла событий Node.js.
-
-Объект `Promise` ранее был бы выпущен в событии `'unhandledRejection'`, но в процессе обработки получил обработчик отказа.
-
-Для цепочки `Promise` не существует понятия верхнего уровня, на котором всегда можно обработать отказ. Будучи по своей природе асинхронным, отказ `Promise` может быть обработан в будущий момент времени, возможно, гораздо позже, чем время цикла событий, необходимое для появления события `'unhandledRejection'`.
-
-По-другому это можно выразить так: в отличие от синхронного кода, где существует постоянно растущий список необработанных исключений, в Promises список необработанных отказов может расти и уменьшаться.
-
-В синхронном коде событие `uncaughtException` испускается, когда список необработанных исключений растет.
-
-В асинхронном коде событие `'unhandledRejection'` генерируется, когда список необработанных отказов растет, а событие `'rejectionHandled'` генерируется, когда список необработанных отказов уменьшается.
-
-```mjs
-import process from 'node:process';
-
-const unhandledRejections = new Map();
-process.on('unhandledRejection', (reason, promise) => {
-    unhandledRejections.set(promise, reason);
-});
-process.on('rejectionHandled', (promise) => {
-    unhandledRejections.delete(promise);
-});
-```
-
-```cjs
-const process = require('node:process');
-
-const unhandledRejections = new Map();
-process.on('unhandledRejection', (reason, promise) => {
-    unhandledRejections.set(promise, reason);
-});
-process.on('rejectionHandled', (promise) => {
-    unhandledRejections.delete(promise);
-});
-```
-
-В этом примере карта `unhandledRejections` `Map` будет расти и уменьшаться с течением времени, отражая отказы, которые начались без обработки, а затем стали обработанными. Можно записывать такие ошибки в журнал ошибок, либо периодически (что, вероятно, лучше для долго работающего приложения), либо по завершении процесса (что, вероятно, наиболее удобно для скриптов).
-
-<!-- 0007.part.md -->
+Событие `'workerMessage'` испускается для любого входящего сообщения, отправленного
+другой стороной через [`postMessageToThread()`][].
 
 ### Событие: `'uncaughtException'`
 
--   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Непойманное исключение.
--   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает, происходит ли исключение из необработанного отказа или из синхронной ошибки. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в командной строке.
+<!-- YAML
+added: v0.1.18
+changes:
+  - version:
+     - v12.0.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/26599
+    description: Added the `origin` argument.
+-->
 
-Событие `'uncaughtException'` генерируется, когда не пойманное исключение JavaScript прорывается обратно в цикл событий. По умолчанию Node.js обрабатывает такие исключения, печатая трассировку стека в `stderr` и завершая работу с кодом 1, переопределяя любой ранее установленный [`process.exitCode`](#processexitcode_1). Добавление обработчика для события `'uncaughtException'` отменяет это поведение по умолчанию. В качестве альтернативы измените [`process.exitCode`](#processexitcode_1) в обработчике события `'uncaughtException'`, что приведет к завершению процесса с указанным кодом выхода. В противном случае, при наличии такого обработчика процесс завершится с кодом 0.
+Добавлено в: v0.1.18
 
-```mjs
-import process from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v12.0.0, v10.17.0 | Добавлен аргумент origin. |
 
-process.on('uncaughtException', (err, origin) => {
-    fs.writeSync(
+* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) необработанное исключение.
+* `origin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) указывает, происходит ли исключение из необработанного
+  отказа Promise или из синхронной ошибки. Может быть `'uncaughtException'` или
+  `'unhandledRejection'`. Последнее используется, когда исключение возникает в
+  асинхронном контексте на основе `Promise` (или отклонён `Promise`) и
+  флаг [`--unhandled-rejections`][] установлен в `strict` или `throw` (это
+  значение по умолчанию), а отказ не обработан, либо когда отказ происходит на
+  этапе статической загрузки ES-модуля точки входа командной строки.
+
+Событие `'uncaughtException'` испускается, когда необработанное исключение
+JavaScript доходит до цикла событий. По умолчанию Node.js выводит трассировку
+стека в `stderr` и завершает процесс с кодом 1, переопределяя ранее заданный
+[`process.exitCode`][].
+Обработчик `'uncaughtException'` отменяет это поведение по умолчанию. Также
+можно изменить [`process.exitCode`][] в обработчике `'uncaughtException'`, чтобы
+процесс завершился с указанным кодом. Иначе при наличии такого обработчика
+процесс завершится с кодом 0.
+
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    import fs from 'node:fs';
+    
+    process.on('uncaughtException', (err, origin) => {
+      fs.writeSync(
         process.stderr.fd,
-        `Пойманное исключение: ${err}\n` +
-            `Происхождение исключения: ${origin}`
-    );
-});
+        `Caught exception: ${err}\n` +
+        `Exception origin: ${origin}\n`,
+      );
+    });
+    
+    setTimeout(() => {
+      console.log('This will still run.');
+    }, 500);
+    
+    // Intentionally cause an exception, but don't catch it.
+    nonexistentFunc();
+    console.log('This will not run.');
+    ```
 
-setTimeout(() => {
-    console.log('Это все еще будет выполняться.');
-}, 500);
+=== "CJS"
 
-// Намеренно вызываем исключение, но не ловим его.
-nonexistentFunc();
-console.log('This will not run.');
-```
-
-```cjs
-const process = require('node:process');
-
-process.on('uncaughtException', (err, origin) => {
-    fs.writeSync(
+    ```js
+    const process = require('node:process');
+    const fs = require('node:fs');
+    
+    process.on('uncaughtException', (err, origin) => {
+      fs.writeSync(
         process.stderr.fd,
-        `Пойманное исключение: ${err}\n` +
-            `Происхождение исключения: ${origin}`
-    );
-});
+        `Caught exception: ${err}\n` +
+        `Exception origin: ${origin}\n`,
+      );
+    });
+    
+    setTimeout(() => {
+      console.log('This will still run.');
+    }, 500);
+    
+    // Intentionally cause an exception, but don't catch it.
+    nonexistentFunc();
+    console.log('This will not run.');
+    ```
 
-setTimeout(() => {
-    console.log('Это все еще будет выполняться.');
-}, 500);
+Наблюдать за событиями `'uncaughtException'`, не переопределяя завершение
+процесса по умолчанию, можно, установив слушатель `'uncaughtExceptionMonitor'`.
 
-// Намеренно вызываем исключение, но не ловим его.
-nonexistentFunc();
-console.log('This will not run.');
-```
+#### Предупреждение: корректное использование `'uncaughtException'`
 
-Можно отслеживать события `'uncaughtException'` без переопределения поведения по умолчанию для завершения процесса, установив слушателя `'uncaughtExceptionMonitor'`.
+`'uncaughtException'` — грубый механизм обработки исключений, который следует
+применять только в крайнем случае. Событие _не_ должно использоваться как аналог
+`On Error Resume Next`. Необработанное исключение по сути означает, что
+приложение в неопределённом состоянии. Попытка продолжить выполнение кода без
+корректного восстановления после исключения может привести к новым непредсказуемым
+сбоям.
 
-<!-- 0008.part.md -->
+Исключения, выброшенные из обработчика события, не перехватываются: процесс
+завершится с ненулевым кодом и будет выведена трассировка. Так сделано, чтобы
+избежать бесконечной рекурсии.
 
-#### Предупреждение: Правильное использование `'uncaughtException'`
+Попытка «нормально» продолжить работу после необработанного исключения сродни
+выдёргиванию шнура питания при обновлении компьютера: девять раз из десяти ничего
+не случится, но в десятый возможна порча состояния.
 
-`'uncaughtException'` - это грубый механизм обработки исключений, предназначенный для использования только в крайнем случае. Это событие _не должно_ использоваться как эквивалент `On Error Resume Next`. Не обработанные исключения по своей сути означают, что приложение находится в неопределенном состоянии. Попытка возобновить работу приложения без надлежащего восстановления после исключения может вызвать дополнительные непредвиденные и непредсказуемые проблемы.
+Правильное применение `'uncaughtException'` — выполнить синхронную очистку
+выделенных ресурсов (например дескрипторов файлов, handle и т.п.) перед
+остановкой процесса. **Возобновлять обычную работу после `'uncaughtException'`
+небезопасно.**
 
-Исключения, брошенные из обработчика событий, не будут перехвачены. Вместо этого процесс завершится с ненулевым кодом завершения и будет напечатан след стека. Это делается для того, чтобы избежать бесконечной рекурсии.
-
-Попытка возобновить нормальную работу после не пойманного исключения может быть похожа на выдергивание шнура питания при обновлении компьютера. В девяти случаях из десяти ничего не происходит. Но на десятый раз система становится поврежденной.
-
-Правильное использование `uncaughtException` заключается в синхронной очистке выделенных ресурсов (например, дескрипторов файлов, дескрипторов и т. д.) перед завершением процесса. **Возобновлять нормальную работу после `uncaughtException`** небезопасно.
-
-Для более надежного перезапуска сбойного приложения, независимо от того, выдается ли `'uncaughtException'` или нет, следует использовать внешний монитор в отдельном процессе для обнаружения сбоев приложения и восстановления или перезапуска по мере необходимости.
-
-<!-- 0009.part.md -->
+Чтобы надёжнее перезапускать упавшее приложение — с `'uncaughtException'` или
+без — используйте внешний монитор в отдельном процессе, который отслеживает сбои
+и восстанавливает или перезапускает приложение.
 
 ### Событие: `'uncaughtExceptionMonitor'`
 
--   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Непойманное исключение.
--   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает, происходит ли исключение из необработанного отказа или из синхронных ошибок. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в точке входа командной строки.
+<!-- YAML
+added:
+ - v13.7.0
+ - v12.17.0
+-->
 
-Событие `uncaughtExceptionMonitor` испускается до того, как испускается событие `uncaughtException` или вызывается хук, установленный через `process.setUncaughtExceptionCaptureCallback()`.
+* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) необработанное исключение.
+* `origin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) см. описание у события `'uncaughtException'`.
 
-Установка слушателя `'uncaughtExceptionMonitor'` не меняет поведения после возникновения события `'uncaughtException'`. Процесс все равно завершится, если не установлен слушатель `'uncaughtException'`.
+Событие `'uncaughtExceptionMonitor'` испускается перед событием
+`'uncaughtException'` либо перед вызовом хука, установленного через
+[`process.setUncaughtExceptionCaptureCallback()`][].
 
-```mjs
-import process from 'node:process';
+Установка слушателя `'uncaughtExceptionMonitor'` не меняет поведение после
+испускания `'uncaughtException'`: процесс по-прежнему аварийно завершится, если
+нет слушателя `'uncaughtException'`.
 
-process.on('uncaughtExceptionMonitor', (err, origin) => {
-    MyMonitoringTool.logSync(err, origin);
-});
+=== "MJS"
 
-// Намеренно вызываем исключение, но не ловим его.
-nonexistentFunc();
-// По-прежнему вызывает крах Node.js
-```
+    ```js
+    import process from 'node:process';
+    
+    process.on('uncaughtExceptionMonitor', (err, origin) => {
+      MyMonitoringTool.logSync(err, origin);
+    });
+    
+    // Intentionally cause an exception, but don't catch it.
+    nonexistentFunc();
+    // Still crashes Node.js
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-process.on('uncaughtExceptionMonitor', (err, origin) => {
-    MyMonitoringTool.logSync(err, origin);
-});
-
-// Намеренно вызываем исключение, но не ловим его.
-nonexistentFunc();
-// По-прежнему вызывает крах Node.js
-```
-
-<!-- 0010.part.md -->
+    ```js
+    const process = require('node:process');
+    
+    process.on('uncaughtExceptionMonitor', (err, origin) => {
+      MyMonitoringTool.logSync(err, origin);
+    });
+    
+    // Intentionally cause an exception, but don't catch it.
+    nonexistentFunc();
+    // Still crashes Node.js
+    ```
 
 ### Событие: `'unhandledRejection'`
 
--   `reason` {Error|any} Объект, с которым обещание было отклонено (обычно это объект [`Error`](errors.md#class-error)).
--   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Отклоненное обещание.
+<!-- YAML
+added: v1.4.1
+changes:
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/8217
+    description: Not handling `Promise` rejections is deprecated.
+  - version: v6.6.0
+    pr-url: https://github.com/nodejs/node/pull/8223
+    description: Unhandled `Promise` rejections will now emit
+                 a process warning.
+-->
 
-Событие `'unhandledRejection'` возникает всякий раз, когда отвергается `Promise` и в течение одного оборота цикла событий к обещанию не присоединяется обработчик ошибки. При программировании с Promises исключения инкапсулируются как "отклоненные обещания". Отклонения могут быть пойманы и обработаны с помощью [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) и распространяются через цепочку `Promise`. Событие `'unhandledRejection'` полезно для обнаружения и отслеживания отклоненных обещаний, чьи отклонения еще не были обработаны.
+Добавлено в: v1.4.1
 
-```mjs
-import process from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.0.0 | Отказ от обработки отклонений Promise устарел. |
+    | v6.6.0 | Необработанные отклонения `Promise` теперь будут выдавать предупреждение процесса. |
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.log(
-        'Unhandled Rejection at:',
-        promise,
-        'reason:',
-        reason
-    );
-    // Здесь можно настроить логирование, выброс ошибки или другую логику, специфичную для приложения.
-});
+* `reason` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | any значение, с которым Promise был отклонён
+  (обычно объект [`Error`][]).
+* `promise` [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) отклонённый Promise.
 
-somePromise.then((res) => {
-    return reportToUser(JSON.pasre(res)); // Обратите внимание на опечатку (`pasre`)
-}); // Нет `.catch()` или `.then()`
-```
+Событие `'unhandledRejection'` испускается всякий раз, когда `Promise` отклонён
+и к нему не подключён обработчик ошибок в течение одного оборота цикла событий.
+При программировании с Promise исключения представляются как «отклонённые
+Promise». Отказы можно перехватывать через [`promise.catch()`][] и передавать по
+цепочке `Promise`. Событие `'unhandledRejection'` полезно для обнаружения и учёта
+Promise, для которых отказ ещё не обработан.
 
-```cjs
-const process = require('node:process');
+=== "MJS"
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.log(
-        'Unhandled Rejection at:',
-        promise,
-        'reason:',
-        reason
-    );
-    // Здесь можно настроить логирование, выброс ошибки или другую логику, специфичную для приложения.
-});
+    ```js
+    import process from 'node:process';
+    
+    process.on('unhandledRejection', (reason, promise) => {
+      console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+      // Application specific logging, throwing an error, or other logic here
+    });
+    
+    somePromise.then((res) => {
+      return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
+    }); // No `.catch()` or `.then()`
+    ```
 
-somePromise.then((res) => {
-    return reportToUser(JSON.pasre(res)); // Обратите внимание на опечатку (`pasre`)
-}); // Нет `.catch()` или `.then()`
-```
+=== "CJS"
 
-Следующие действия также вызовут событие `unhandledRejection`:
+    ```js
+    const process = require('node:process');
+    
+    process.on('unhandledRejection', (reason, promise) => {
+      console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+      // Application specific logging, throwing an error, or other logic here
+    });
+    
+    somePromise.then((res) => {
+      return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
+    }); // No `.catch()` or `.then()`
+    ```
 
-```mjs
-import process from 'node:process';
+Следующий код также приведёт к испусканию `'unhandledRejection'`:
 
-function SomeResource() {
-    // Изначально устанавливаем статус loaded в обещание rejected
-    this.loaded = Promise.reject(
-        new Error('Ресурс еще не загружен!')
-    );
-}
+=== "MJS"
 
-const resource = new SomeResource();
-// Никаких .catch или .then на resource.loaded, по крайней мере, в течение очереди
-```
+    ```js
+    import process from 'node:process';
+    
+    function SomeResource() {
+      // Initially set the loaded status to a rejected promise
+      this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
+    }
+    
+    const resource = new SomeResource();
+    // no .catch or .then on resource.loaded for at least a turn
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-function SomeResource() {
-    // Изначально устанавливаем статус loaded на отвергнутое обещание
-    this.loaded = Promise.reject(
-        new Error('Ресурс еще не загружен!')
-    );
-}
+    ```js
+    const process = require('node:process');
+    
+    function SomeResource() {
+      // Initially set the loaded status to a rejected promise
+      this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
+    }
+    
+    const resource = new SomeResource();
+    // no .catch or .then on resource.loaded for at least a turn
+    ```
 
-const resource = new SomeResource();
-// Никаких .catch или .then на resource.loaded, по крайней мере, в течение очереди
-```
+В этом примере отказ можно трактовать как ошибку разработчика, как и в других
+случаях `'unhandledRejection'`. Чтобы обработать сбой, к `resource.loaded` можно
+добавить «пустой» обработчик
+[`.catch(() => { })`][`promise.catch()`], который предотвратит испускание
+`'unhandledRejection'`.
 
-В этом примере можно отследить отказ как ошибку разработчика, как это обычно происходит с другими событиями `необработанного отказа`. Для решения подобных проблем к `resource.loaded` может быть присоединен нерабочий обработчик [`.catch(() => { })`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch), который предотвратит возникновение события `unhandledRejection`.
+Если событие `'unhandledRejection'` испущено, но не обработано, оно будет
+поднято как необработанное исключение. Прочие особенности `'unhandledRejection'`
+настраиваются флагом [`--unhandled-rejections`][].
 
-<!-- 0011.part.md -->
+### Событие: `'warning'`
 
-### Событие: `warning`
+<!-- YAML
+added: v6.0.0
+-->
 
--   `warning` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ключевыми свойствами предупреждения являются:
-    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя предупреждения. **По умолчанию:** `'Warning'`.
-    -   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Описание предупреждения, предоставляемое системой.
-    -   `stack` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Трассировка стека до того места в коде, где было выдано предупреждение.
+* `warning` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) основные поля предупреждения:
+  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя предупреждения. **По умолчанию:** `'Warning'`.
+  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) описание предупреждения, сформированное системой.
+  * `stack` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) трассировка стека до места выдачи предупреждения.
 
-Событие `'warning'` выдается всякий раз, когда Node.js выдает предупреждение процесса.
+Событие `'warning'` испускается всякий раз, когда Node.js выдаёт предупреждение
+процесса.
 
-Предупреждение процесса похоже на ошибку в том смысле, что оно описывает исключительные условия, на которые обращается внимание пользователя. Однако предупреждения не являются частью обычного потока обработки ошибок Node.js и JavaScript. Node.js может выдавать предупреждения всякий раз, когда обнаруживает плохую практику кодирования, которая может привести к неоптимальной производительности приложения, ошибкам или уязвимостям безопасности.
+Предупреждение процесса похоже на ошибку: оно описывает исключительную ситуацию,
+на которую нужно обратить внимание. Однако предупреждения не входят в обычный
+поток обработки ошибок Node.js и JavaScript.
+Node.js может выдавать предупреждения при обнаружении сомнительных практик
+программирования, которые могут снижать производительность, приводить к ошибкам
+или проблемам безопасности.
 
-```mjs
-import process from 'node:process';
+=== "MJS"
 
-process.on('warning', (warning) => {
-    console.warn(warning.name); // Вывод имени предупреждения
-    console.warn(warning.message); // Выводим сообщение о предупреждении
-    console.warn(warning.stack); // Вывести трассировку стека
-});
-```
+    ```js
+    import process from 'node:process';
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);    // Print the warning name
+      console.warn(warning.message); // Print the warning message
+      console.warn(warning.stack);   // Print the stack trace
+    });
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-process.on('warning', (warning) => {
-    console.warn(warning.name); // Выводим имя предупреждения
-    console.warn(warning.message); // Вывод сообщения о предупреждении
-    console.warn(warning.stack); // Вывести трассировку стека
-});
-```
+    ```js
+    const process = require('node:process');
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);    // Print the warning name
+      console.warn(warning.message); // Print the warning message
+      console.warn(warning.stack);   // Print the stack trace
+    });
+    ```
 
-По умолчанию Node.js будет печатать предупреждения процесса в `stderr`. Опция командной строки `--no-warnings` может быть использована для подавления вывода на консоль по умолчанию, но событие `'warning'` все равно будет выдаваться объектом `process`.
+По умолчанию Node.js выводит предупреждения процесса в `stderr`. Опция командной
+строки `--no-warnings` подавляет стандартный вывод в консоль, но объект `process`
+по-прежнему испускает `'warning'`. Сейчас нельзя отключить отдельные типы
+предупреждений, кроме предупреждений об устаревании. Для подавления deprecation
+см. флаг [`--no-deprecation`][].
 
-Следующий пример иллюстрирует предупреждение, которое выводится в `stderr`, когда к событию было добавлено слишком много слушателей:
+Следующий пример показывает предупреждение в `stderr`, когда к событию добавлено
+слишком много слушателей:
 
 ```console
 $ node
 > events.defaultMaxListeners = 1;
 > process.on('foo', () => {});
 > process.on('foo', () => {});
-> (node:38638) MaxListenersExceededWarning: Возможная утечка памяти EventEmitter
-обнаружена. Добавлено 2 слушателя foo. Используйте emitter.setMaxListeners() для увеличения лимита
+> (node:38638) MaxListenersExceededWarning: Possible EventEmitter memory leak
+detected. 2 foo listeners added. Use emitter.setMaxListeners() to increase limit
 ```
 
-В противоположность этому, следующий пример отключает вывод предупреждения по умолчанию и добавляет пользовательский обработчик к событию `предупреждение`:
+Ниже по умолчанию вывод предупреждений отключён, а обработчик `'warning'`
+задан вручную:
 
 ```console
 $ node --no-warnings
@@ -507,232 +606,370 @@ $ node --no-warnings
 > events.defaultMaxListeners = 1;
 > process.on('foo', () => {});
 > process.on('foo', () => {});
-> Не делайте этого!
+> Do not do that!
 ```
 
-Опция командной строки `--trace-warnings` может быть использована для того, чтобы вывод предупреждений в консоли по умолчанию включал полную трассировку стека предупреждения.
+Опция `--trace-warnings` добавляет к стандартному выводу предупреждений полную
+трассировку стека.
 
-Запуск Node.js с использованием флага командной строки `--throw-deprecation` приведет к тому, что пользовательские предупреждения о депривации будут отбрасываться как исключения.
+Запуск Node.js с флагом `--throw-deprecation` превращает пользовательские
+предупреждения об устаревании в исключения.
 
-Использование флага командной строки `--trace-deprecation` приведет к тому, что пользовательское предупреждение будет выведено в `stderr` вместе с трассировкой стека.
+Флаг `--trace-deprecation` выводит пользовательское предупреждение об устаревании
+в `stderr` вместе со стеком.
 
-Использование флага командной строки `--no-deprecation` подавит все сообщения о пользовательском обесценивании.
+Флаг `--no-deprecation` подавляет все сообщения о пользовательском устаревании.
 
-Флаги командной строки `*-deprecation` влияют только на предупреждения, использующие имя `'DeprecationWarning'`.
+Флаги `*-deprecation` действуют только на предупреждения с именем
+`'DeprecationWarning'`.
 
-<!-- 0012.part.md -->
+#### Выдача собственных предупреждений
 
-### Событие: `worker`
-
--   `worker` {Worker} Созданный {Worker}.
-
-Событие `'worker'` испускается после создания нового потока {Worker}.
-
-<!-- 0013.part.md -->
-
-#### Выдача пользовательских предупреждений
-
-См. метод [`process.emitWarning()`](#processemitwarningwarning-type-code-ctor) для выдачи пользовательских или специфических для приложения предупреждений.
-
-<!-- 0014.part.md -->
+См. метод [`process.emitWarning()`][process_emit_warning] для выдачи
+пользовательских или прикладных предупреждений.
 
 #### Имена предупреждений Node.js
 
-Не существует строгих правил для типов предупреждений (определяемых свойством `name`), выдаваемых Node.js. Новые типы предупреждений могут быть добавлены в любое время. Несколько наиболее распространенных типов предупреждений включают:
+Строгих правил для типов предупреждений (поле `name`) в Node.js нет; новые типы
+могут появляться в любой момент. Часто встречаются, в частности:
 
--   `'DeprecationWarning'` - Указывает на использование устаревшего API Node.js или функции. Такие предупреждения должны включать свойство `'code'`, идентифицирующее deprecation code.
--   `'ExperimentalWarning'` - Указывает на использование экспериментального API или функции Node.js. Такие возможности следует использовать с осторожностью, так как они могут измениться в любое время и не подчиняются тем же строгим правилам семантической версификации и долгосрочной поддержки, что и поддерживаемые возможности.
--   `MaxListenersExceededWarning` - Указывает, что слишком много слушателей для данного события было зарегистрировано либо на `EventEmitter`, либо на `EventTarget`. Это часто является признаком утечки памяти.
--   `'TimeoutOverflowWarning'` - Указывает на то, что функции `setTimeout()` или `setInterval()` было предоставлено числовое значение, которое не укладывается в 32-битное знаковое целое число.
--   `'UnsupportedWarning'` - Указывает на использование неподдерживаемой опции или функции, которая будет проигнорирована, а не расценена как ошибка. Примером может служить использование сообщения о статусе ответа HTTP при использовании API совместимости HTTP/2.
+* `'DeprecationWarning'` — используется устаревший API или возможность Node.js.
+  Такие предупреждения должны содержать свойство `'code'` с
+  [кодом устаревания][deprecation code].
+* `'ExperimentalWarning'` — используется экспериментальный API или возможность.
+  С ними нужно быть осторожным: они могут меняться и не подчиняются тем же
+  правилам semver и LTS, что стабильные возможности.
+* `'MaxListenersExceededWarning'` — слишком много слушателей для одного события
+  на `EventEmitter` или `EventTarget`. Часто признак утечки памяти.
+* `'TimeoutOverflowWarning'` — числовое значение не помещается в 32-битное
+  знаковое целое, переданное в `setTimeout()` или `setInterval()`.
+* `'TimeoutNegativeWarning'` — в `setTimeout()` или `setInterval()` передано
+  отрицательное число.
+* `'TimeoutNaNWarning'` — в `setTimeout()` или `setInterval()` передано не число.
+* `'UnsupportedWarning'` — используется неподдерживаемая опция или возможность,
+  она игнорируется, а не считается ошибкой. Пример — строка статуса ответа HTTP
+  при совместимом API HTTP/2.
 
-<!-- 0015.part.md -->
+### Событие: `'worker'`
 
-### Сигнальные события
+<!-- YAML
+added:
+  - v16.2.0
+  - v14.18.0
+-->
 
-Сигнальные события будут возникать, когда процесс Node.js получает сигнал. Пожалуйста, обратитесь к signal(7) для получения списка стандартных имен сигналов POSIX, таких как `'SIGINT'`, `'SIGHUP'` и т.д.
+* `worker` [<Worker>](worker_threads.md#class-worker) созданный [Worker](worker_threads.md#class-worker).
 
-Сигналы недоступны для потоков [`Worker`](worker_threads.md#class-worker).
+Событие `'worker'` испускается после создания нового потока [Worker](worker_threads.md#class-worker).
 
-Обработчик сигнала будет получать имя сигнала (`'SIGINT'`, `'SIGTERM'` и т.д.) в качестве первого аргумента.
+### События сигналов
 
-Имя каждого события будет общим именем сигнала в верхнем регистре (например, `'SIGINT'` для сигналов `SIGINT`).
+<!--type=event-->
 
-```mjs
-import process from 'node:process';
+<!--name=SIGINT, SIGHUP, etc.-->
 
-// Начинаем чтение из stdin, чтобы процесс не завершился.
-process.stdin.resume();
+События сигналов испускаются, когда процесс Node.js получает сигнал. Список
+стандартных имён POSIX см. в signal(7), например `'SIGINT'`, `'SIGHUP'` и т.д.
 
-process.on('SIGINT', () => {
-    console.log(
-        'Received SIGINT. Press Control-D to exit.'
-    );
-});
+Сигналы недоступны в потоках [`Worker`][].
 
-// Использование одной функции для обработки нескольких сигналов
-function handle(signal) {
-    console.log(`Received ${signal}`);
-}
+Обработчик получает имя сигнала (`'SIGINT'`, `'SIGTERM'` и т.д.) первым
+аргументом.
 
-process.on('SIGINT', handle);
-process.on('SIGTERM', handle);
-```
+Имя каждого события совпадает с обычным именем сигнала в верхнем регистре
+(например `'SIGINT'` для сигнала `SIGINT`).
 
-```cjs
-const process = require('node:process');
+=== "MJS"
 
-// Начинаем чтение из stdin, чтобы процесс не завершился.
-process.stdin.resume();
+    ```js
+    import process from 'node:process';
+    
+    // Begin reading from stdin so the process does not exit.
+    process.stdin.resume();
+    
+    process.on('SIGINT', () => {
+      console.log('Received SIGINT. Press Control-D to exit.');
+    });
+    
+    // Using a single function to handle multiple signals
+    function handle(signal) {
+      console.log(`Received ${signal}`);
+    }
+    
+    process.on('SIGINT', handle);
+    process.on('SIGTERM', handle);
+    ```
 
-process.on('SIGINT', () => {
-    console.log(
-        'Received SIGINT. Press Control-D to exit.'
-    );
-});
+=== "CJS"
 
-// Использование одной функции для обработки нескольких сигналов
-function handle(signal) {
-    console.log(`Received ${signal}`);
-}
+    ```js
+    const process = require('node:process');
+    
+    // Begin reading from stdin so the process does not exit.
+    process.stdin.resume();
+    
+    process.on('SIGINT', () => {
+      console.log('Received SIGINT. Press Control-D to exit.');
+    });
+    
+    // Using a single function to handle multiple signals
+    function handle(signal) {
+      console.log(`Received ${signal}`);
+    }
+    
+    process.on('SIGINT', handle);
+    process.on('SIGTERM', handle);
+    ```
 
-process.on('SIGINT', handle);
-process.on('SIGTERM', handle);
-```
+* `'SIGUSR1'` зарезервирован в Node.js для запуска [отладчика][]. Слушатель
+  установить можно, но это может мешать отладчику.
+* `'SIGTERM'` и `'SIGINT'` на платформах, кроме Windows, имеют обработчики по
+  умолчанию: сбрасывают режим терминала перед выходом с кодом `128 + номер
+  сигнала`. Если для одного из этих сигналов установлен слушатель, поведение по
+  умолчанию снимается (Node.js больше не завершится сам).
+* `'SIGPIPE'` по умолчанию игнорируется. Для него можно установить слушателя.
+* `'SIGHUP'` на Windows генерируется при закрытии окна консоли, на других
+  платформах — в похожих ситуациях; см. signal(7). Слушатель можно установить,
+  однако примерно через 10 секунд Windows всё равно принудительно завершит
+  Node.js. На не-Windows по умолчанию `SIGHUP` завершает Node.js, но после
+  установки слушателя поведение по умолчанию снимается.
+* `'SIGTERM'` на Windows не поддерживается, на него можно подписаться.
+* `'SIGINT'` с терминала поддерживается на всех платформах, обычно
+  <kbd>Ctrl</kbd>+<kbd>C</kbd> (может быть перенастроено). Не генерируется при
+  включённом [сыром режиме терминала][terminal raw mode], если используется
+  <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+* `'SIGBREAK'` на Windows приходит при <kbd>Ctrl</kbd>+<kbd>Break</kbd>. На
+  не-Windows на него можно подписаться, но сгенерировать или отправить его
+  нельзя.
+* `'SIGWINCH'` приходит при изменении размера консоли. На Windows — только при
+  записи в консоль при движении курсора или при читаемом TTY в raw mode.
+* Для `'SIGKILL'` нельзя установить слушателя: процесс Node.js всегда будет
+  завершён безусловно.
+* Для `'SIGSTOP'` нельзя установить слушателя.
+* `'SIGBUS'`, `'SIGFPE'`, `'SIGSEGV'` и `'SIGILL'`, если не подняты искусственно
+  через kill(2), оставляют процесс в состоянии, когда вызывать JS-слушателей
+  небезопасно; возможен отказ процесса отвечать.
+* Сигнал `0` можно отправить для проверки существования процесса: если процесс
+  есть, эффекта нет; если нет — будет ошибка.
 
--   `'SIGUSR1'` зарезервирован Node.js для запуска [отладчика](debugger.md). Можно установить слушателя, но это может помешать работе отладчика.
--   `'SIGTERM'` и `'SIGINT'` имеют обработчики по умолчанию на платформах, отличных от Windows, которые сбрасывают режим терминала перед выходом с кодом `128 + номер сигнала`. Если у одного из этих сигналов установлен слушатель, его поведение по умолчанию будет удалено (Node.js больше не будет выходить).
--   Сигнал `'SIGPIPE'` игнорируется по умолчанию. У него может быть установлен слушатель.
--   `'SIGHUP'` генерируется в Windows при закрытии окна консоли, а также на других платформах при различных аналогичных условиях. См. signal(7). Может быть установлен слушатель, однако Node.js будет безусловно завершен Windows примерно через 10 секунд. On non-Windows platforms, the default behavior of `SIGHUP` is to terminate Node.js, but once a listener has been installed its default behavior will be removed.
--   `'SIGTERM'` is not supported on Windows, it can be listened on.
--   `'SIGINT'` from the terminal is supported on all platforms, and can usually be generated with <kbd>Ctrl</kbd>+<kbd>C</kbd> (though this may be configurable). It is not generated when [terminal raw mode](tty.md#readstreamsetrawmodemode) is enabled and <kbd>Ctrl</kbd>+<kbd>C</kbd> is used.
--   `'SIGBREAK'` is delivered on Windows when <kbd>Ctrl</kbd>+<kbd>Break</kbd> is pressed. On non-Windows platforms, it can be listened on, but there is no way to send or generate it.
--   `'SIGWINCH'` is delivered when the console has been resized. On Windows, this will only happen on write to the console when the cursor is being moved, or when a readable tty is used in raw mode
+В Windows нет сигналов POSIX, но Node.js частично эмулирует поведение через
+[`process.kill()`][] и [`subprocess.kill()`][]:
 
-<!-- 0016.part.md -->
+* Отправка `SIGINT`, `SIGTERM` и `SIGKILL` приводит к безусловному завершению
+  целевого процесса; дочерний процесс затем сообщит о завершении по сигналу.
+* Отправка сигнала `0` — переносимый способ проверить, существует ли процесс.
 
 ## `process.abort()`
 
-Метод `process.abort()` заставляет процесс Node.js немедленно завершить работу и сгенерировать файл ядра.
+<!-- YAML
+added: v0.7.0
+-->
 
-Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
+Метод `process.abort()` немедленно завершает процесс Node.js и может сформировать
+core dump.
 
-<!-- 0017.part.md -->
+В потоках [`Worker`][] недоступен.
+
+## `process.addUncaughtExceptionCaptureCallback(fn)`
+
+<!-- YAML
+added: v25.9.0
+-->
+
+> Стабильность: 1 — экспериментально
+
+* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Функция `process.addUncaughtExceptionCaptureCallback()` добавляет callback,
+который вызывается при необработанном исключении; первым аргументом передаётся
+само исключение.
+
+В отличие от [`process.setUncaughtExceptionCaptureCallback()`][], можно
+зарегистрировать несколько callback’ов, и они не конфликтуют с модулем
+[`domain`][]. Вызов идёт в обратном порядке регистрации (сначала последний). Если
+callback возвращает `true`, последующие callback’и и стандартная обработка
+необработанного исключения пропускаются.
+
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    process.addUncaughtExceptionCaptureCallback((err) => {
+      console.error('Caught exception:', err.message);
+      return true; // Indicates exception was handled
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const process = require('node:process');
+    
+    process.addUncaughtExceptionCaptureCallback((err) => {
+      console.error('Caught exception:', err.message);
+      return true; // Indicates exception was handled
+    });
+    ```
 
 ## `process.allowedNodeEnvironmentFlags`
 
--   {Set}
+<!-- YAML
+added: v10.10.0
+-->
 
-Свойство `process.allowedNodeEnvironmentFlags` - это специальный, доступный только для чтения `Set` флагов, допустимых в переменной окружения [`NODE_OPTIONS`](cli.md#node_optionsoptions).
+* Тип: [<Set>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
 
-`process.allowedNodeEnvironmentFlags` расширяет `Set`, но переопределяет `Set.prototype.has`, чтобы распознать несколько различных возможных представлений флагов. `process.allowedNodeEnvironmentFlags.has()` будет возвращать `true` в следующих случаях:
+Свойство `process.allowedNodeEnvironmentFlags` — это специальный
+доступный только для чтения `Set` флагов, допустимых в переменной окружения
+[`NODE_OPTIONS`][].
 
--   Флаги могут опускать ведущие одинарные (`-`) или двойные (`--`) тире; например, `inspect-brk` для `--inspect-brk`, или `r` для `-r`.
--   Флаги, передаваемые в V8 (как указано в `--v8-options`), могут заменять одно или несколько _не ведущих_ тире на подчеркивание, или наоборот; например, `--perf_basic_prof`, `--perf-basic-prof`, `--perf_basic-prof` и т.д.
--   Флаги могут содержать один или несколько символов равенства (`=`); все символы после и включая первый символ равенства будут игнорироваться; например, `--stack-trace-limit=100`.
--   Флаги _должны_ быть допустимыми в пределах [`NODE_OPTIONS`](cli.md#node_optionsoptions).
+`process.allowedNodeEnvironmentFlags` расширяет `Set`, но переопределяет
+`Set.prototype.has`, чтобы распознавать несколько различных возможных
+представлений флагов. `process.allowedNodeEnvironmentFlags.has()` вернёт
+`true` в следующих случаях:
 
-При итерации по `process.allowedNodeEnvironmentFlags`, флаги будут появляться только _один раз_; каждый из них будет начинаться с одного или нескольких тире. Флаги, передаваемые в V8, будут содержать символы подчеркивания вместо не ведущих тире:
+* Флаги могут опускать ведущие одинарные (`-`) или двойные (`--`) тире; например,
+  `inspect-brk` вместо `--inspect-brk`, или `r` вместо `-r`.
+* Флаги, передаваемые в V8 (как в `--v8-options`), могут заменять одно или несколько
+  _не ведущих_ тире на подчёркивание или наоборот;
+  например, `--perf_basic_prof`, `--perf-basic-prof`, `--perf_basic-prof`
+  и т. д.
+* Флаги могут содержать один или несколько символов равенства (`=`); все
+  символы начиная с первого `=` игнорируются;
+  например, `--stack-trace-limit=100`.
+* Флаги _должны_ быть допустимы в [`NODE_OPTIONS`][].
 
-```mjs
-import { allowedNodeEnvironmentFlags } from 'node:process';
+При переборе `process.allowedNodeEnvironmentFlags` каждый флаг встречается
+только _один раз_; каждый начинается с одного или нескольких тире. Флаги,
+передаваемые в V8, содержат подчёркивания вместо не ведущих тире:
 
-allowedNodeEnvironmentFlags.forEach((flag) => {
-    // -r
-    // --inspect-brk
-    // --abort_on_uncaught_exception
-    // ...
-});
-```
+=== "MJS"
 
-```cjs
-const {
-    allowedNodeEnvironmentFlags,
-} = require('node:process');
+    ```js
+    import { allowedNodeEnvironmentFlags } from 'node:process';
+    
+    allowedNodeEnvironmentFlags.forEach((flag) => {
+      // -r
+      // --inspect-brk
+      // --abort_on_uncaught_exception
+      // ...
+    });
+    ```
 
-allowedNodeEnvironmentFlags.forEach((flag) => {
-    // -r
-    // --inspect-brk
-    // --abort_on_uncaught_exception
-    // ...
-});
-```
+=== "CJS"
 
-Методы `add()`, `clear()`, и `delete()` из `process.allowedNodeEnvironmentFlags` ничего не делают, и будут молча провалены.
+    ```js
+    const { allowedNodeEnvironmentFlags } = require('node:process');
+    
+    allowedNodeEnvironmentFlags.forEach((flag) => {
+      // -r
+      // --inspect-brk
+      // --abort_on_uncaught_exception
+      // ...
+    });
+    ```
 
-Если Node.js был скомпилирован _без_ поддержки [`NODE_OPTIONS`](cli.md#node_optionsoptions) (показано в [`process.config`](#processconfig)), `process.allowedNodeEnvironmentFlags` будет содержать то, что _было_ разрешено.
+Методы `add()`, `clear()` и `delete()` у
+`process.allowedNodeEnvironmentFlags` ничего не делают и завершаются
+без эффекта (молча).
 
-<!-- 0018.part.md -->
+Если Node.js собран _без_ поддержки [`NODE_OPTIONS`][] (см.
+[`process.config`][]), `process.allowedNodeEnvironmentFlags` будет
+содержать то, что _могло бы_ быть допустимо.
 
 ## `process.arch`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.5.0
+-->
 
-Архитектура процессора операционной системы, для которой был скомпилирован двоичный файл Node.js. Возможные значения: `'arm'`, `'arm64'`, `'ia32'`, `'mips'`, `'mipsel'`, `'ppc'`, `'ppc64'`, `'s390'`, `'s390x'`, и `'x64'`.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```mjs
-import { arch } from 'node:process';
+Архитектура ЦП ОС, под которую скомпилирован двоичный файл Node.js.
+Возможные значения: `'arm'`, `'arm64'`, `'ia32'`, `'loong64'`, `'mips'`,
+`'mipsel'`, `'ppc64'`, `'riscv64'`, `'s390'`, `'s390x'` и `'x64'`.
 
-console.log(`Эта архитектура процессора - ${arch}`);
-```
+=== "MJS"
 
-```cjs
-const { arch } = require('node:process');
+    ```js
+    import { arch } from 'node:process';
+    
+    console.log(`This processor architecture is ${arch}`);
+    ```
 
-console.log(`Эта архитектура процессора ${arch}`);
-```
+=== "CJS"
 
-<!-- 0019.part.md -->
+    ```js
+    const { arch } = require('node:process');
+    
+    console.log(`This processor architecture is ${arch}`);
+    ```
 
 ## `process.argv`
 
--   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.27
+-->
 
-Свойство `process.argv` возвращает массив, содержащий аргументы командной строки, переданные при запуске процесса Node.js. Первым элементом будет [`process.execPath`](#processexecpath). Смотрите `process.argv0`, если необходим доступ к исходному значению `argv[0]`. Вторым элементом будет путь к выполняемому файлу JavaScript. Остальные элементы будут любыми дополнительными аргументами командной строки.
+* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Например, если взять следующий сценарий для `process-args.js`:
+Свойство `process.argv` возвращает массив аргументов командной строки,
+переданных при запуске процесса Node.js. Первым элементом будет
+[`process.execPath`][]. См. `process.argv0`, если нужен доступ к исходному
+значению `argv[0]`. Если задана [точка входа программы][program entry point], вторым элементом
+будет абсолютный путь к ней. Остальные элементы — дополнительные аргументы командной строки.
 
-```mjs
-import { argv } from 'node:process';
+Например, для следующего сценария `process-args.js`:
 
-// вывести process.argv
-argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`);
-});
+=== "MJS"
+
+    ```js
+    import { argv } from 'node:process';
+    
+    // print process.argv
+    argv.forEach((val, index) => {
+      console.log(`${index}: ${val}`);
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const { argv } = require('node:process');
+    
+    // print process.argv
+    argv.forEach((val, index) => {
+      console.log(`${index}: ${val}`);
+    });
+    ```
+
+Запуск процесса Node.js:
+
+```bash
+node process-args.js one two=three four
 ```
 
-```cjs
-const { argv } = require('node:process');
-
-// выводим process.argv
-argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`);
-});
-```
-
-Запуск процесса Node.js как:
-
-```console
-$ node process-args.js one two=three four
-```
-
-Сгенерирует вывод:
+даст вывод:
 
 ```text
 0: /usr/local/bin/node
 1: /Users/mjr/work/node/process-args.js
-2: один
-3: два=три
-4: четыре
+2: one
+3: two=three
+4: four
 ```
-
-<!-- 0020.part.md -->
 
 ## `process.argv0`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v6.4.0
+-->
 
-Свойство `process.argv0` хранит только для чтения копию исходного значения `argv[0]`, переданного при запуске Node.js.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Свойство `process.argv0` хранит доступную только для чтения копию исходного значения
+`argv[0]`, переданного при запуске Node.js.
 
 ```console
 $ bash -c 'exec -a customArgv0 ./node'
@@ -742,73 +979,152 @@ $ bash -c 'exec -a customArgv0 ./node'
 'customArgv0'
 ```
 
-<!-- 0021.part.md -->
+## `process.availableMemory()`
+
+<!-- YAML
+added:
+  - v22.0.0
+  - v20.13.0
+changes:
+  - version:
+    - v24.0.0
+    - v22.16.0
+    pr-url: https://github.com/nodejs/node/pull/57765
+    description: Change stability index for this feature from Experimental to Stable.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
+
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Возвращает объём свободной памяти, ещё доступной процессу (в байтах).
+
+Подробнее см. [`uv_get_available_memory`][uv_get_available_memory].
 
 ## `process.channel`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v7.1.0
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30165
+    description: The object no longer accidentally exposes native C++ bindings.
+-->
 
-Если процесс Node.js был порожден с IPC-каналом (см. документацию [Child Process](child_process.md)), свойство `process.channel` является ссылкой на IPC-канал. Если IPC-канала не существует, это свойство `не определено`.
+Добавлено в: v7.1.0
 
-<!-- 0022.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Объект больше не случайно предоставляет собственные привязки C++. |
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Если процесс Node.js запущен с IPC-каналом (см. документацию [Child Process][]),
+свойство `process.channel` — ссылка на этот IPC-канал. Если IPC-канала нет,
+свойство равно `undefined`.
 
 ### `process.channel.ref()`
 
-Этот метод заставляет IPC-канал сохранить цикл событий запущенного процесса, если `.unref()` был вызван ранее.
+<!-- YAML
+added: v7.1.0
+-->
 
-Обычно это управляется через количество слушателей `'disconnect'` и `'message'` на объекте `process`. Однако этот метод можно использовать для явного запроса определенного поведения.
+Этот метод заставляет IPC-канал удерживать цикл событий процесса,
+если ранее был вызван `.unref()`.
 
-<!-- 0023.part.md -->
+Обычно это регулируется числом слушателей `'disconnect'` и `'message'` на
+объекте `process`. Этот метод можно использовать для явного задания
+поведения.
 
 ### `process.channel.unref()`
 
-Этот метод заставляет IPC-канал не поддерживать цикл событий процесса и позволяет ему завершиться, даже если канал открыт.
+<!-- YAML
+added: v7.1.0
+-->
 
-Обычно это управляется через количество слушателей `'disconnect'` и `'message'` на объекте `process`. Однако этот метод может быть использован для явного запроса определенного поведения.
+Этот метод заставляет IPC-канал не удерживать цикл событий процесса
+и позволяет ему завершиться, даже если канал ещё открыт.
 
-<!-- 0024.part.md -->
+Обычно это регулируется числом слушателей `'disconnect'` и `'message'` на
+объекте `process`. Этот метод можно использовать для явного задания
+поведения.
 
 ## `process.chdir(directory)`
 
--   `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.17
+-->
 
-Метод `process.chdir()` изменяет текущий рабочий каталог процесса Node.js или выбрасывает исключение, если это не удается (например, если указанный `каталог` не существует).
+* `directory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```mjs
-import { chdir, cwd } from 'node:process';
+Метод `process.chdir()` меняет текущий рабочий каталог процесса Node.js
+или выбрасывает исключение, если это не удаётся (например, если указанный
+`directory` не существует).
 
-console.log(`Запуск каталога: ${cwd()}`);
-try {
-    chdir('/tmp');
-    console.log(`Новый каталог: ${cwd()}`);
-} catch (err) {
-    console.error(`chdir: ${err}`);
-}
-```
+=== "MJS"
 
-```cjs
-const { chdir, cwd } = require('node:process');
+    ```js
+    import { chdir, cwd } from 'node:process';
+    
+    console.log(`Starting directory: ${cwd()}`);
+    try {
+      chdir('/tmp');
+      console.log(`New directory: ${cwd()}`);
+    } catch (err) {
+      console.error(`chdir: ${err}`);
+    }
+    ```
 
-console.log(`Запуск каталога: ${cwd()}`);
-try {
-    chdir('/tmp');
-    console.log(`Новая директория: ${cwd()}`);
-} catch (err) {
-    console.error(`chdir: ${err}`);
-}
-```
+=== "CJS"
 
-Эта возможность недоступна в потоках [`Worker`](worker_threads.md#class-worker).
+    ```js
+    const { chdir, cwd } = require('node:process');
+    
+    console.log(`Starting directory: ${cwd()}`);
+    try {
+      chdir('/tmp');
+      console.log(`New directory: ${cwd()}`);
+    } catch (err) {
+      console.error(`chdir: ${err}`);
+    }
+    ```
 
-<!-- 0025.part.md -->
+В потоках [`Worker`][] недоступно.
 
 ## `process.config`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v0.7.7
+changes:
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/43627
+    description: The `process.config` object is now frozen.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/36902
+    description: Modifying process.config has been deprecated.
+-->
 
-Свойство `process.config` возвращает замороженный `Object`, содержащий JavaScript-представление опций configure, используемых для компиляции текущего исполняемого файла Node.js. Это то же самое, что и файл `config.gypi`, который был создан при выполнении скрипта `./configure`.
+Добавлено в: v0.7.7
 
-Пример возможного вывода выглядит следующим образом:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Объект `process.config` теперь заморожен. |
+    | v16.0.0 | Изменение процесса.config устарело. |
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Свойство `process.config` возвращает замороженный `Object` с JavaScript-представлением
+опций `configure`, использованных при сборке текущего исполняемого файла Node.js.
+Это соответствует файлу `config.gypi`, который получился при запуске `./configure`.
+
+Пример возможного вывода:
+
+<!-- eslint-skip -->
 
 ```js
 {
@@ -830,407 +1146,545 @@ try {
      node_shared_zlib: 'false',
      node_use_openssl: 'true',
      node_shared_openssl: 'false',
-     strict_aliasing: 'true',
      target_arch: 'x64',
      v8_use_snapshot: 1
    }
 }
 ```
 
-<!-- 0026.part.md -->
-
 ## `process.connected`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.7.2
+-->
 
-Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), свойство `process.connected` будет возвращать `true` до тех пор, пока IPC-канал подключен, и вернет `false` после вызова `process.disconnect()`.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Как только `process.connected` становится `false`, отправка сообщений по IPC-каналу с помощью `process.send()` становится невозможной.
+Если процесс Node.js запущен с IPC-каналом (см. документацию [Child Process][]
+и [Cluster][]), свойство `process.connected` возвращает `true`, пока IPC-канал
+подключён, и `false` после вызова `process.disconnect()`.
 
-<!-- 0027.part.md -->
+Когда `process.connected` становится `false`, отправка сообщений по IPC через
+`process.send()` невозможна.
 
 ## `process.constrainedMemory()`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+  - v19.6.0
+  - v18.15.0
+changes:
+  - version:
+    - v24.0.0
+    - v22.16.0
+    pr-url: https://github.com/nodejs/node/pull/57765
+    description: Change stability index for this feature from Experimental to Stable.
+  - version:
+    - v22.0.0
+    - v20.13.0
+    pr-url: https://github.com/nodejs/node/pull/52039
+    description: Aligned return value with `uv_get_constrained_memory`.
+-->
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
+    | v22.0.0, v20.13.0 | Возвращаемое значение согласовано с uv_get_constrained_memory. |
 
--   {number|undefined}
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Получает объем памяти, доступный процессу (в байтах), основанный на ограничениях, наложенных ОС. Если такого ограничения нет, или оно неизвестно, возвращается `undefined`.
+Возвращает объём памяти, доступный процессу (в байтах), с учётом ограничений ОС.
+Если такого ограничения нет или оно неизвестно, возвращается `0`.
 
-Дополнительную информацию см. в [`uv_get_constrained_memory`](https://docs.libuv.org/en/v1.x/misc.html#c.uv_get_constrained_memory).
-
-<!-- 0028.part.md -->
+Подробнее см. [`uv_get_constrained_memory`][uv_get_constrained_memory].
 
 ## `process.cpuUsage([previousValue])`
 
--   `previousValue` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Предыдущее возвращаемое значение после вызова `process.cpuUsage()`.
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `user` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `система` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v6.1.0
+-->
 
-Метод `process.cpuUsage()` возвращает пользовательское и системное использование процессорного времени текущего процесса в объекте со свойствами `user` и `ystem`, значения которых являются микросекундами (миллионными долями секунды). Эти значения измеряют время, проведенное в пользовательском и системном коде соответственно, и могут оказаться больше, чем реально прошедшее время, если несколько ядер процессора выполняют работу для данного процесса.
+* `previousValue` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) предыдущее значение, возвращённое вызовом
+  `process.cpuUsage()`
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `user` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `system` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Результат предыдущего вызова `process.cpuUsage()` может быть передан в качестве аргумента функции, чтобы получить разницу в показаниях.
+Метод `process.cpuUsage()` возвращает пользовательское и системное время CPU
+текущего процесса в объекте со свойствами `user` и `system`; значения —
+микросекунды (миллионные доли секунды). Они отражают время в пользовательском и
+системном коде и могут превысить реальное прошедшее время, если несколько ядер
+обрабатывают работу этого процесса.
 
-```mjs
-import { cpuUsage } from 'node:process';
+Результат предыдущего вызова `process.cpuUsage()` можно передать аргументом,
+чтобы получить разницу показаний.
 
-const startUsage = cpuUsage();
-// { user: 38579, system: 6986 }
+=== "MJS"
 
-// раскручиваем процессор на 500 миллисекунд
-const now = Date.now();
-while (Date.now() - now < 500);
+    ```js
+    import { cpuUsage } from 'node:process';
+    
+    const startUsage = cpuUsage();
+    // { user: 38579, system: 6986 }
+    
+    // spin the CPU for 500 milliseconds
+    const now = Date.now();
+    while (Date.now() - now < 500);
+    
+    console.log(cpuUsage(startUsage));
+    // { user: 514883, system: 11226 }
+    ```
 
-console.log(cpuUsage(startUsage));
-// { user: 514883, system: 11226 }
-```
+=== "CJS"
 
-```cjs
-const { cpuUsage } = require('node:process');
-
-const startUsage = cpuUsage();
-// { user: 38579, system: 6986 }
-
-// раскручиваем процессор на 500 миллисекунд
-const now = Date.now();
-while (Date.now() - now < 500);
-
-console.log(cpuUsage(startUsage));
-// { user: 514883, system: 11226 }
-```
-
-<!-- 0029.part.md -->
+    ```js
+    const { cpuUsage } = require('node:process');
+    
+    const startUsage = cpuUsage();
+    // { user: 38579, system: 6986 }
+    
+    // spin the CPU for 500 milliseconds
+    const now = Date.now();
+    while (Date.now() - now < 500);
+    
+    console.log(cpuUsage(startUsage));
+    // { user: 514883, system: 11226 }
+    ```
 
 ## `process.cwd()`
 
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.8
+-->
+
+* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `process.cwd()` возвращает текущий рабочий каталог процесса Node.js.
 
-```mjs
-import { cwd } from 'node:process';
+=== "MJS"
 
-console.log(`Current directory: ${cwd()}`);
-```
+    ```js
+    import { cwd } from 'node:process';
+    
+    console.log(`Current directory: ${cwd()}`);
+    ```
 
-```cjs
-const { cwd } = require('node:process');
+=== "CJS"
 
-console.log(`Current directory: ${cwd()}`);
-```
-
-<!-- 0030.part.md -->
+    ```js
+    const { cwd } = require('node:process');
+    
+    console.log(`Current directory: ${cwd()}`);
+    ```
 
 ## `process.debugPort`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.7.2
+-->
 
-Порт, используемый отладчиком Node.js, когда он включен.
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import process from 'node:process';
+Порт, который использует отладчик Node.js, когда он включён.
 
-process.debugPort = 5858;
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    process.debugPort = 5858;
+    ```
 
-process.debugPort = 5858;
-```
+=== "CJS"
 
-<!-- 0031.part.md -->
+    ```js
+    const process = require('node:process');
+    
+    process.debugPort = 5858;
+    ```
 
 ## `process.disconnect()`
 
-Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), метод `process.disconnect()` закроет IPC-канал для родительского процесса, позволяя дочернему процессу изящно завершить работу, когда не останется других соединений, поддерживающих его жизнь.
+<!-- YAML
+added: v0.7.2
+-->
 
-Эффект от вызова `process.disconnect()` такой же, как от вызова [`ChildProcess.disconnect()`](child_process.md#subprocessdisconnect) из родительского процесса.
+Если процесс Node.js запущен с IPC-каналом (см. документацию [Child Process][]
+и [Cluster][]), метод `process.disconnect()` закрывает IPC-канал к родительскому
+процессу, позволяя дочернему завершиться корректно, когда больше нет соединений,
+удерживающих его.
 
-Если процесс Node.js не был порожден с IPC-каналом, `process.disconnect()` будет `не определен`.
+Эффект такой же, как у вызова [`ChildProcess.disconnect()`][] из родительского процесса.
 
-<!-- 0032.part.md -->
+Если процесс Node.js не был запущен с IPC-каналом,
+`process.disconnect()` будет `undefined`.
 
 ## `process.dlopen(module, filename[, flags])`
 
--   `модуль` {объект}
--   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `флаги` {os.constants.dlopen} **По умолчанию:** `os.constants.dlopen.RTLD_LAZY`.
+<!-- YAML
+added: v0.1.16
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/12794
+    description: Added support for the `flags` argument.
+-->
 
-Метод `process.dlopen()` позволяет динамически загружать общие объекты. Он в основном используется `require()` для загрузки C++ аддонов, и не должен использоваться напрямую, за исключением особых случаев. Другими словами, [`require()`](globals.md#require) следует предпочесть `process.dlopen()`, если нет особых причин, таких как пользовательские флаги dlopen или загрузка из модулей ES.
+Добавлено в: v0.1.16
 
-Аргумент `flags` - это целое число, позволяющее указать поведение dlopen. Подробности см. в документации [`os.constants.dlopen`](os.md#dlopen-constants).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v9.0.0 | Добавлена ​​поддержка аргумента flags. |
 
-Важным требованием при вызове `process.dlopen()` является передача экземпляра `модуля`. Функции, экспортируемые C++ Addon, доступны через `module.exports`.
+* `module` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `flags` [<os.constants.dlopen>](os.md#dlopen-constants) **По умолчанию:** `os.constants.dlopen.RTLD_LAZY`
 
-В примере ниже показано, как загрузить C++ аддон с именем `local.node`, который экспортирует функцию `foo`. Все символы загружаются до возврата вызова, передавая константу `RTLD_NOW`. В этом примере предполагается, что константа доступна.
+Метод `process.dlopen()` динамически загружает разделяемые объекты. В основном
+он используется `require()` для загрузки C++-аддонов; напрямую вызывать его
+не следует, кроме особых случаев. Иначе говоря, предпочтительнее [`require()`][],
+если нет причин вроде особых флагов dlopen или загрузки из ES-модулей.
 
-```mjs
-import { dlopen } from 'node:process';
-import { constants } из 'node:os';
-import { fileURLToPath } from 'node:url';
+Аргумент `flags` — целое число, задающее поведение dlopen. Подробности см. в
+[`os.constants.dlopen`][].
 
+При вызове `process.dlopen()` нужно передать экземпляр `module`. Экспортируемые
+C++-аддоном функции затем доступны через `module.exports`.
 
-const module = { exports: {} };
-dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)),
-       constants.dlopen.RTLD_NOW);
-module.exports.foo();
-```
+Ниже показана загрузка C++-аддона `local.node`, экспортирующего функцию `foo`.
+Все символы загружаются до возврата из вызова за счёт константы `RTLD_NOW`.
+В примере предполагается, что константа доступна.
 
-```cjs
-const { dlopen } = require('node:process');
-const { constants } = require('node:os');
-const { join } = require('node:path');
+=== "MJS"
 
-const module = { exports: {} };
-dlopen(
-    module,
-    join(__dirname, 'local.node'),
-    constants.dlopen.RTLD_NOW
-);
-module.exports.foo();
-```
+    ```js
+    import { dlopen } from 'node:process';
+    import { constants } from 'node:os';
+    import { fileURLToPath } from 'node:url';
+    
+    const module = { exports: {} };
+    dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)),
+           constants.dlopen.RTLD_NOW);
+    module.exports.foo();
+    ```
 
-<!-- 0033.part.md -->
+=== "CJS"
+
+    ```js
+    const { dlopen } = require('node:process');
+    const { constants } = require('node:os');
+    const { join } = require('node:path');
+    
+    const module = { exports: {} };
+    dlopen(module, join(__dirname, 'local.node'), constants.dlopen.RTLD_NOW);
+    module.exports.foo();
+    ```
 
 ## `process.emitWarning(warning[, options])`
 
--   `warning` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Предупреждение, которое нужно выдать.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
-    -   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор для выдаваемого экземпляра предупреждения.
-    -   `ctor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
-    -   `detail` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Дополнительный текст для включения в ошибку.
+<!-- YAML
+added: v8.0.0
+-->
 
-Метод `process.emitWarning()` может быть использован для выдачи пользовательских или специфических для приложения предупреждений процесса. Их можно прослушать, добавив обработчик к событию [`'warning'`](#event-warning).
+* `warning` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) предупреждение для выдачи
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) если `warning` — строка, `type` задаёт имя _типа_
+    предупреждения. **По умолчанию:** `'Warning'`.
+  * `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) уникальный идентификатор экземпляра предупреждения
+  * `ctor` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) если `warning` — строка, `ctor` — необязательная функция,
+    ограничивающая глубину стека. **По умолчанию:**
+    `process.emitWarning`.
+  * `detail` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) дополнительный текст к ошибке
 
-```mjs
-import { emitWarning } from 'node:process';
+Метод `process.emitWarning()` выдаёт пользовательские или прикладные
+предупреждения процесса. На них можно подписаться обработчиком события
+[`'warning'`][process_warning].
 
-// Выдаем предупреждение с кодом и дополнительной информацией.
-emitWarning('Что-то случилось!', {
-    код: 'MY_WARNING',
-    detail: 'Это некоторая дополнительная информация',
-});
-// Выдает:
-// (node:56338) [MY_WARNING] Warning: Что-то случилось!
-// Это некоторая дополнительная информация
-```
+=== "MJS"
 
-```cjs
-const { emitWarning } = require('node:process');
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    // Emit a warning with a code and additional detail.
+    emitWarning('Something happened!', {
+      code: 'MY_WARNING',
+      detail: 'This is some additional information',
+    });
+    // Emits:
+    // (node:56338) [MY_WARNING] Warning: Something happened!
+    // This is some additional information
+    ```
 
-// Выдаем предупреждение с кодом и дополнительной информацией.
-emitWarning('Что-то случилось!', {
-    код: 'MY_WARNING',
-    detail: 'Это некоторая дополнительная информация',
-});
-// Выдает:
-// (node:56338) [MY_WARNING] Warning: Что-то случилось!
-// Это некоторая дополнительная информация
-```
+=== "CJS"
 
-В этом примере объект `Error` генерируется внутри `process.emitWarning()` и передается обработчику [`'warning'`](#event-warning).
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    // Emit a warning with a code and additional detail.
+    emitWarning('Something happened!', {
+      code: 'MY_WARNING',
+      detail: 'This is some additional information',
+    });
+    // Emits:
+    // (node:56338) [MY_WARNING] Warning: Something happened!
+    // This is some additional information
+    ```
 
-```mjs
-import process from 'node:process';
+В этом примере объект `Error` создаётся внутри
+`process.emitWarning()` и передаётся обработчику
+[`'warning'`][process_warning].
 
-process.on('warning', (warning) => {
-    console.warn(warning.name); // 'Предупреждение'
-    console.warn(warning.message); // 'Что-то случилось!'
-    console.warn(warning.code); // 'MY_WARNING'
-    console.warn(warning.stack); // Трассировка стека
-    console.warn(warning.detail); // 'Это некоторая дополнительная информация'
-});
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);    // 'Warning'
+      console.warn(warning.message); // 'Something happened!'
+      console.warn(warning.code);    // 'MY_WARNING'
+      console.warn(warning.stack);   // Stack trace
+      console.warn(warning.detail);  // 'This is some additional information'
+    });
+    ```
 
-process.on('warning', (warning) => {
-    console.warn(warning.name); // 'Предупреждение'
-    console.warn(warning.message); // 'Что-то случилось!'
-    console.warn(warning.code); // 'MY_WARNING'
-    console.warn(warning.stack); // Трассировка стека
-    console.warn(warning.detail); // 'Это некоторая дополнительная информация'
-});
-```
+=== "CJS"
 
-Если `warning` передается как объект `Error`, аргумент `options` игнорируется.
+    ```js
+    const process = require('node:process');
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);    // 'Warning'
+      console.warn(warning.message); // 'Something happened!'
+      console.warn(warning.code);    // 'MY_WARNING'
+      console.warn(warning.stack);   // Stack trace
+      console.warn(warning.detail);  // 'This is some additional information'
+    });
+    ```
 
-<!-- 0034.part.md -->
+Если `warning` передан как объект `Error`, аргумент `options` игнорируется.
 
-## `process.emitWarning(warning[, type[, code]][, ctor])`.
+## `process.emitWarning(warning[, type[, code]][, ctor])`
 
--   `warning` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Предупреждение, которое нужно выдать.
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Когда `warning` является `String`, `type` является именем, которое следует использовать для _типа_ выдаваемого предупреждения. **По умолчанию:** `'Warning'`.
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор для выдаваемого экземпляра предупреждения.
--   `ctor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Когда `warning` является `String`, `ctor` является необязательной функцией, используемой для ограничения генерируемой трассировки стека. **По умолчанию:** `process.emitWarning`.
+<!-- YAML
+added: v6.0.0
+-->
 
-Метод `process.emitWarning()` может быть использован для выдачи пользовательских или специфических для приложения предупреждений процесса. Их можно прослушать, добавив обработчик к событию [`'warning'`](#event-warning).
+* `warning` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) предупреждение для выдачи
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) если `warning` — строка, `type` задаёт имя _типа_
+  предупреждения. **По умолчанию:** `'Warning'`.
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) уникальный идентификатор экземпляра предупреждения
+* `ctor` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) если `warning` — строка, `ctor` — необязательная функция,
+  ограничивающая глубину стека. **По умолчанию:**
+  `process.emitWarning`.
 
-```mjs
-import { emitWarning } from 'node:process';
+Метод `process.emitWarning()` выдаёт пользовательские или прикладные
+предупреждения процесса. На них можно подписаться обработчиком события
+[`'warning'`][process_warning].
 
-// Выдаем предупреждение, используя строку.
-emitWarning('Что-то случилось!');
-// Выдает: (node: 56338) Предупреждение: Что-то случилось!
-```
+=== "MJS"
 
-```cjs
-const { emitWarning } = require('node:process');
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    // Emit a warning using a string.
+    emitWarning('Something happened!');
+    // Emits: (node: 56338) Warning: Something happened!
+    ```
 
-// Выдаем предупреждение, используя строку.
-emitWarning('Что-то случилось!');
-// Выдает: (node: 56338) Предупреждение: Что-то случилось!
-```
+=== "CJS"
 
-```mjs
-import { emitWarning } from 'node:process';
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    // Emit a warning using a string.
+    emitWarning('Something happened!');
+    // Emits: (node: 56338) Warning: Something happened!
+    ```
 
-// Выдаем предупреждение, используя строку и тип.
-emitWarning('Something Happened!', 'CustomWarning');
-// Выдает: (node:56338) CustomWarning: Something Happened!
-```
+=== "MJS"
 
-```cjs
-const { emitWarning } = require('node:process');
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    // Emit a warning using a string and a type.
+    emitWarning('Something Happened!', 'CustomWarning');
+    // Emits: (node:56338) CustomWarning: Something Happened!
+    ```
 
-// Выдаем предупреждение, используя строку и тип.
-emitWarning('Something Happened!', 'CustomWarning');
-// Выдается: (node:56338) CustomWarning: Something Happened!
-```
+=== "CJS"
 
-```mjs
-import { emitWarning } from 'node:process';
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    // Emit a warning using a string and a type.
+    emitWarning('Something Happened!', 'CustomWarning');
+    // Emits: (node:56338) CustomWarning: Something Happened!
+    ```
 
-emitWarning(
-    'Что-то случилось!',
-    'CustomWarning',
-    'WARN001'
-);
-// Выдает: (node:56338) [WARN001] CustomWarning: Что-то случилось!
-```
+=== "MJS"
 
-```cjs
-const { emitWarning } = require('node:process');
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    emitWarning('Something happened!', 'CustomWarning', 'WARN001');
+    // Emits: (node:56338) [WARN001] CustomWarning: Something happened!
+    ```
 
-process.emitWarning(
-    'Что-то случилось!',
-    'CustomWarning',
-    'WARN001'
-);
-// Выдает: (node:56338) [WARN001] CustomWarning: Что-то случилось!
-```
+=== "CJS"
 
-В каждом из предыдущих примеров объект `Error` генерируется внутри `process.emitWarning()` и передается обработчику [`'warning'`](#event-warning).
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
+    // Emits: (node:56338) [WARN001] CustomWarning: Something happened!
+    ```
 
-```mjs
-import process from 'node:process';
+Во всех предыдущих примерах объект `Error` создаётся внутри
+`process.emitWarning()` и передаётся обработчику [`'warning'`][process_warning].
 
-process.on('warning', (warning) => {
-    console.warn(warning.name);
-    console.warn(warning.message);
-    console.warn(warning.code);
-    console.warn(warning.stack);
-});
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);
+      console.warn(warning.message);
+      console.warn(warning.code);
+      console.warn(warning.stack);
+    });
+    ```
 
-process.on('warning', (warning) => {
-    console.warn(warning.name);
-    console.warn(warning.message);
-    console.warn(warning.code);
-    console.warn(warning.stack);
-});
-```
+=== "CJS"
 
-Если `warning` передан как объект `Error`, он будет передан обработчику события `'warning'` без изменений (а необязательные аргументы `type`, `code` и `ctor` будут проигнорированы):
+    ```js
+    const process = require('node:process');
+    
+    process.on('warning', (warning) => {
+      console.warn(warning.name);
+      console.warn(warning.message);
+      console.warn(warning.code);
+      console.warn(warning.stack);
+    });
+    ```
 
-```mjs
-import { emitWarning } from 'node:process';
+Если `warning` передан как `Error`, он попадает в обработчик `'warning'`
+без изменений (а необязательные аргументы `type`, `code` и `ctor` игнорируются):
 
-// Emit a warning using an Error object.
-const myWarning = new Error('Something happened!');
-// Use the Error name property to specify the type name
-myWarning.name = 'CustomWarning';
-myWarning.code = 'WARN001';
+=== "MJS"
 
-emitWarning(myWarning);
-// Emits: (node:56338) [WARN001] CustomWarning: Something happened!
-```
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    // Emit a warning using an Error object.
+    const myWarning = new Error('Something happened!');
+    // Use the Error name property to specify the type name
+    myWarning.name = 'CustomWarning';
+    myWarning.code = 'WARN001';
+    
+    emitWarning(myWarning);
+    // Emits: (node:56338) [WARN001] CustomWarning: Something happened!
+    ```
 
-```cjs
-const { emitWarning } = require('node:process');
+=== "CJS"
 
-// Emit a warning using an Error object.
-const myWarning = new Error('Something happened!');
-// Use the Error name property to specify the type name
-myWarning.name = 'CustomWarning';
-myWarning.code = 'WARN001';
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    // Emit a warning using an Error object.
+    const myWarning = new Error('Something happened!');
+    // Use the Error name property to specify the type name
+    myWarning.name = 'CustomWarning';
+    myWarning.code = 'WARN001';
+    
+    emitWarning(myWarning);
+    // Emits: (node:56338) [WARN001] CustomWarning: Something happened!
+    ```
 
-emitWarning(myWarning);
-// Emits: (node:56338) [WARN001] CustomWarning: Something happened!
-```
+Выбрасывается `TypeError`, если `warning` не строка и не объект `Error`.
 
-Если `warning` не является строкой или объектом `Error`, возникает `TypeError`.
+Хотя предупреждения процесса используют объекты `Error`, механизм предупреждений
+**не** заменяет обычную обработку ошибок.
 
-Хотя предупреждения процесса используют объекты `Error`, механизм предупреждений процесса **не является \*\*** заменой обычных механизмов обработки ошибок.
+Если тип предупреждения `type` равен `'DeprecationWarning'`, действует
+дополнительная логика:
 
-Следующая дополнительная обработка выполняется, если `тип` предупреждения - `'DeprecationWarning'`:
+* при флаге `--throw-deprecation` предупреждение об устаревании выбрасывается как исключение, а не как событие;
+* при флаге `--no-deprecation` оно подавляется;
+* при флаге `--trace-deprecation` оно выводится в `stderr` вместе с полным стеком.
 
--   Если используется флаг командной строки `--throw-deprecation`, предупреждение об износе выбрасывается как исключение, а не как событие.
--   Если используется флаг командной строки `--no-deprecation`, предупреждение о депривации подавляется.
--   Если используется флаг командной строки `--trace-deprecation`, предупреждение об ошибке выводится в `stderr` вместе с полной трассировкой стека.
+### Избежание дублирования предупреждений
 
-### Избегание дублирования предупреждений
+Рекомендуется выдавать предупреждение не более одного раза за процесс: оберните
+`emitWarning()` проверкой булева флага.
 
-В качестве лучшей практики, предупреждения должны выдаваться только один раз для каждого процесса. Для этого поместите `emitWarning()` за булевым значением.
+=== "MJS"
 
-```mjs
-import { emitWarning } from 'node:process';
-
-function emitMyWarning() {
-    if (!emitMyWarning.warned) {
+    ```js
+    import { emitWarning } from 'node:process';
+    
+    function emitMyWarning() {
+      if (!emitMyWarning.warned) {
         emitMyWarning.warned = true;
-        emitWarning('Предупреждать только один раз!');
+        emitWarning('Only warn once!');
+      }
     }
-}
-emitMyWarning();
-// Выдает: (узел: 56339) Предупреждение: Предупреждение только один раз!
-emitMyWarning();
-// Ничего не выдает
-```
+    emitMyWarning();
+    // Emits: (node: 56339) Warning: Only warn once!
+    emitMyWarning();
+    // Emits nothing
+    ```
 
-```cjs
-const { emitWarning } = require('node:process');
+=== "CJS"
 
-function emitMyWarning() {
-    if (!emitMyWarning.warned) {
+    ```js
+    const { emitWarning } = require('node:process');
+    
+    function emitMyWarning() {
+      if (!emitMyWarning.warned) {
         emitMyWarning.warned = true;
-        emitWarning('Предупреждение только один раз!');
+        emitWarning('Only warn once!');
+      }
     }
-}
-emitMyWarning();
-// Выдает: (узел: 56339) Предупреждение: Предупреждение только один раз!
-emitMyWarning();
-// Ничего не выдает
-```
-
-<!-- 0036.part.md -->
+    emitMyWarning();
+    // Emits: (node: 56339) Warning: Only warn once!
+    emitMyWarning();
+    // Emits nothing
+    ```
 
 ## `process.env`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v0.1.27
+changes:
+  - version: v11.14.0
+    pr-url: https://github.com/nodejs/node/pull/26544
+    description: Worker threads will now use a copy of the parent thread's
+                 `process.env` by default, configurable through the `env`
+                 option of the `Worker` constructor.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18990
+    description: Implicit conversion of variable value to string is deprecated.
+-->
 
-Свойство `process.env` возвращает объект, содержащий пользовательское окружение. См. environ(7).
+Добавлено в: v0.1.27
 
-Пример этого объекта выглядит следующим образом:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v11.14.0 | Рабочие потоки теперь по умолчанию будут использовать копию файла `process.env` родительского потока, который можно настроить с помощью опции `env` конструктора `Worker`. |
+    | v10.0.0 | Неявное преобразование значения переменной в строку устарело. |
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Свойство `process.env` возвращает объект с пользовательским окружением.
+См. environ(7).
+
+Пример такого объекта:
+
+<!-- eslint-skip -->
 
 ```js
 {
@@ -1247,1033 +1701,1859 @@ emitMyWarning();
 }
 ```
 
-Можно изменять этот объект, но такие изменения не будут отражены за пределами процесса Node.js или (если только они не запрошены явно) в других потоках [`Worker`](worker_threads.md#class-worker). Другими словами, следующий пример не будет работать:
+Объект можно менять, но изменения не видны за пределами процесса Node.js и
+(если явно не запрошено иное) другим потокам [`Worker`][].
+Другими словами, так не сработает:
 
-```console
-$ node -e 'process.env.foo = "bar"' && echo $foo
+```bash
+node -e 'process.env.foo = "bar"' && echo $foo
 ```
 
-В то время как следующий пример будет работать:
+а так сработает:
 
-```mjs
-import { env } from 'node:process';
+=== "MJS"
 
-env.foo = 'bar';
-console.log(env.foo);
-```
+    ```js
+    import { env } from 'node:process';
+    
+    env.foo = 'bar';
+    console.log(env.foo);
+    ```
 
-```cjs
-const { env } = require('node:process');
+=== "CJS"
 
-env.foo = 'bar';
-console.log(env.foo);
-```
+    ```js
+    const { env } = require('node:process');
+    
+    env.foo = 'bar';
+    console.log(env.foo);
+    ```
 
-Присвоение свойства `process.env` неявно преобразует значение в строку. **Это поведение устарело.** Будущие версии Node.js могут выдать ошибку, если значение не является строкой, числом или булевой функцией.
+Присвоение свойства в `process.env` неявно приводит значение к строке.
+**Такое поведение устарело.** В будущих версиях Node.js может выбрасываться
+ошибка, если значение не строка, число или логическое.
 
-```mjs
-import { env } from 'node:process';
+=== "MJS"
 
-env.test = null;
-console.log(env.test);
-// => 'null'
-env.test = undefined;
-console.log(env.test);
-// => 'undefined'
-```
+    ```js
+    import { env } from 'node:process';
+    
+    env.test = null;
+    console.log(env.test);
+    // => 'null'
+    env.test = undefined;
+    console.log(env.test);
+    // => 'undefined'
+    ```
 
-```cjs
-const { env } = require('node:process');
+=== "CJS"
 
-env.test = null;
-console.log(env.test);
-// => 'null'
-env.test = undefined;
-console.log(env.test);
-// => 'undefined'
-```
+    ```js
+    const { env } = require('node:process');
+    
+    env.test = null;
+    console.log(env.test);
+    // => 'null'
+    env.test = undefined;
+    console.log(env.test);
+    // => 'undefined'
+    ```
 
-Используйте `delete` для удаления свойства из `process.env`.
+Чтобы удалить свойство из `process.env`, используйте `delete`.
 
-```mjs
-import { env } from 'node:process';
+=== "MJS"
 
-env.TEST = 1;
-delete env.TEST;
-console.log(env.TEST);
-// => undefined
-```
+    ```js
+    import { env } from 'node:process';
+    
+    env.TEST = 1;
+    delete env.TEST;
+    console.log(env.TEST);
+    // => undefined
+    ```
 
-```cjs
-const { env } = require('node:process');
+=== "CJS"
 
-env.TEST = 1;
-delete env.TEST;
-console.log(env.TEST);
-// => undefined
-```
+    ```js
+    const { env } = require('node:process');
+    
+    env.TEST = 1;
+    delete env.TEST;
+    console.log(env.TEST);
+    // => undefined
+    ```
 
-В операционных системах Windows переменные окружения не чувствительны к регистру.
+В Windows переменные окружения нечувствительны к регистру.
 
-```mjs
-import { env } from 'node:process';
+=== "MJS"
 
-env.TEST = 1;
-console.log(env.test);
-// => 1
-```
+    ```js
+    import { env } from 'node:process';
+    
+    env.TEST = 1;
+    console.log(env.test);
+    // => 1
+    ```
 
-```cjs
-const { env } = require('node:process');
+=== "CJS"
 
-env.TEST = 1;
-console.log(env.test);
-// => 1
-```
+    ```js
+    const { env } = require('node:process');
+    
+    env.TEST = 1;
+    console.log(env.test);
+    // => 1
+    ```
 
-Если это явно не указано при создании экземпляра [`Worker`](worker_threads.md#class-worker), каждый поток [`Worker`](worker_threads.md#class-worker) имеет свою собственную копию `process.env`, основанную на `process.env` его родительского потока, или на том, что было указано в качестве опции `env` в конструкторе [`Worker`](worker_threads.md#class-worker). Изменения в `process.env` не будут видны в потоках [`Worker`](worker_threads.md#class-worker), и только главный поток может вносить изменения, видимые операционной системе или встроенным дополнениям.
-
-<!-- 0037.part.md -->
+Если при создании [`Worker`][] не указано иное, у каждого потока [`Worker`][]
+своя копия `process.env` на основе родительского `process.env` или значения
+опции `env` конструктора [`Worker`][]. Изменения `process.env` не видны между
+потоками [`Worker`][]; только главный поток может менять окружение так, чтобы
+это было видно ОС или нативным аддонам. В Windows копия `process.env` в
+[`Worker`][] ведёт себя с учётом регистра иначе, чем в главном потоке.
 
 ## `process.execArgv`
 
--   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.7.7
+-->
 
-Свойство `process.execArgv` возвращает набор специфических для Node.js опций командной строки, переданных при запуске процесса Node.js. Эти опции не появляются в массиве, возвращаемом свойством [`process.argv`](#processargv), и не включают исполняемый файл Node.js, имя скрипта или любые опции, следующие за именем скрипта. Эти опции полезны для порождения дочерних процессов с той же средой выполнения, что и родительский.
+* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
+Свойство `process.execArgv` возвращает набор специфичных для Node.js опций
+командной строки, переданных при запуске процесса. Они не попадают в массив
+[`process.argv`][] и не включают исполняемый файл Node.js, имя сценария и опции
+после имени сценария. Эти опции удобны, чтобы порождать дочерние процессы с тем же
+окружением выполнения, что у родителя.
+
+```bash
+node --icu-data-dir=./foo --require ./bar.js script.js --version
 ```
-$ node --harmony script.js --version
+
+В результате `process.execArgv`:
+
+```json
+["--icu-data-dir=./foo", "--require", "./bar.js"]
 ```
 
-Результат в `process.execArgv`:
+And `process.argv`:
+
+<!-- eslint-disable @stylistic/js/semi -->
 
 ```js
-['--harmony'];
+['/usr/local/bin/node', 'script.js', '--version']
 ```
 
-И `process.argv`:
-
-```js
-['/usr/local/bin/node', 'script.js', '--version'];
-```
-
-Обратитесь к конструктору [`Worker`](worker_threads.md#new-workerfilename-options) для детального поведения рабочих потоков с этим свойством.
-
-<!-- 0038.part.md -->
+Подробное поведение потоков worker с этим свойством см. в [`Worker` constructor][].
 
 ## `process.execPath`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.100
+-->
 
-Свойство `process.execPath` возвращает абсолютное имя пути исполняемого файла, который запустил процесс Node.js. Символьные ссылки, если таковые имеются, разрешаются.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Свойство `process.execPath` возвращает абсолютный путь к исполняемому файлу,
+запустившему процесс Node.js. Символические ссылки, если есть, разрешаются.
+
+<!-- eslint-disable @stylistic/js/semi -->
 
 ```js
-'/usr/local/bin/node';
-
+'/usr/local/bin/node'
 ```
 
-<!-- 0039.part.md -->
+## `process.execve(file[, args[, env]])`
+
+<!-- YAML
+added:
+  - v23.11.0
+  - v22.15.0
+-->
+
+> Стабильность: 1 — экспериментально
+
+* `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя или путь исполняемого файла
+* `args` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) список строковых аргументов. Ни один не может содержать нулевой байт (`\u0000`).
+* `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) пары ключ–значение окружения.
+  Ни ключ, ни значение не могут содержать нулевой байт (`\u0000`).
+  **По умолчанию:** `process.env`.
+
+Заменяет текущий процесс новым.
+
+Это делается через POSIX-функцию `execve`, поэтому память и прочие ресурсы
+текущего процесса не сохраняются, кроме стандартного ввода, стандартного вывода
+и стандартного потока ошибок.
+
+Остальные ресурсы система освобождает при смене процесса без событий `exit`/`close`
+и без обработчиков очистки.
+
+Функция не возвращает управление, если не произошла ошибка.
+
+Недоступна в Windows и на IBM i.
 
 ## `process.exit([code])`
 
--   `code` {integer|string|null|undefined} Код завершения. Для типа string допускаются только целые строки (например, '1'). **По умолчанию:** `0`.
+<!-- YAML
+added: v0.1.13
+changes:
+  - version: v20.0.0
+    pr-url: https://github.com/nodejs/node/pull/43716
+    description: Only accepts a code of type number, or of type string if it
+                 represents an integer.
+-->
 
-Метод `process.exit()` указывает Node.js завершить процесс синхронно со статусом завершения `code`. Если `code` опущен, exit использует либо код "успеха" `0`, либо значение `process.exitCode`, если оно было установлено. Node.js не завершится, пока не будут вызваны все слушатели события [`'exit'`](#event-exit).
+Добавлено в: v0.1.13
 
-Для выхода с кодом "неудача":
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.0.0 | Принимает код типа номера или строки типа, только если он представляет целое число. |
 
-```mjs
-import { exit } from 'node:process';
+* `code` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined код выхода. Для строки допускаются только
+  целочисленные строки (например `'1'`). **По умолчанию:** `0`.
 
-exit(1);
-```
+Метод `process.exit()` завершает процесс синхронно со статусом `code`. Если
+`code` не указан, используется код успеха `0` или значение `process.exitCode`, если
+оно задано. Node.js не завершится, пока не отработают все слушатели [`'exit'`][].
 
-```cjs
-const { exit } = require('node:process');
+Выход с кодом «ошибки»:
 
-exit(1);
-```
+=== "MJS"
 
-Оболочка, которая выполнила Node.js, должна увидеть код выхода как `1`.
-
-Вызов `process.exit()` заставит процесс завершиться как можно быстрее, даже если в процессе еще остались асинхронные операции, которые еще не завершились полностью, включая операции ввода-вывода в `process.stdout` и `process.stderr`.
-
-В большинстве ситуаций нет необходимости явно вызывать `process.exit()`. Процесс Node.js завершится сам по себе, _если в цикле событий не будет дополнительной работы_. Свойство `process.exitCode` может быть установлено, чтобы указать процессу, какой код выхода использовать при изящном завершении процесса.
-
-Например, следующий пример иллюстрирует _неправильное_ использование метода `process.exit()`, которое может привести к усечению и потере данных, выводимых на stdout:
-
-```mjs
-import { exit } from 'node:process';
-
-// Это пример того, что *не* нужно делать:
-if (someConditionNotMet()) {
-    printUsageToStdout();
+    ```js
+    import { exit } from 'node:process';
+    
     exit(1);
-}
-```
+    ```
 
-```cjs
-const { exit } = require('node:process');
+=== "CJS"
 
-// Это пример того, что *не* нужно делать:
-if (someConditionNotMet()) {
-    printUsageToStdout();
+    ```js
+    const { exit } = require('node:process');
+    
     exit(1);
-}
-```
+    ```
 
-Проблема заключается в том, что запись в `process.stdout` в Node.js иногда _асинхронна_ и может происходить в течение нескольких тактов цикла событий Node.js. Вызов `process.exit()`, однако, заставляет процесс завершить работу _до_ того, как эти дополнительные записи в `stdout` могут быть выполнены.
+Оболочка, запустившая Node.js, должна получить код выхода `1`.
 
-Вместо прямого вызова `process.exit()`, код _должен_ установить `process.exitCode` и позволить процессу завершиться естественным образом, избегая планирования дополнительной работы для цикла событий:
+Вызов `process.exit()` заставляет процесс завершиться как можно скорее, даже если
+ещё есть незавершённые асинхронные операции, в том числе ввод-вывод в
+`process.stdout` и `process.stderr`.
 
-```mjs
-import process from 'node:process';
+Чаще всего `process.exit()` вызывать не нужно: процесс Node.js завершится сам,
+если в цикле событий _нет дополнительной работы_. Свойство `process.exitCode`
+задаёт код при корректном завершении.
 
-// Как правильно установить код выхода и при этом позволить
-// процессу выйти изящно.
-if (someConditionNotMet()) {
-    printUsageToStdout();
-    process.exitCode = 1;
-}
-```
+Ниже пример _неправильного_ использования `process.exit()`, из-за которого вывод
+в stdout может обрезаться и потеряться:
 
-```cjs
-const process = require('node:process');
+=== "MJS"
 
-// Как правильно установить код выхода и при этом позволить
-// процессу выйти изящно.
-if (someConditionNotMet()) {
-    printUsageToStdout();
-    process.exitCode = 1;
-}
-```
+    ```js
+    import { exit } from 'node:process';
+    
+    // This is an example of what *not* to do:
+    if (someConditionNotMet()) {
+      printUsageToStdout();
+      exit(1);
+    }
+    ```
 
-Если необходимо завершить процесс Node.js из-за ошибки, то выброс _не пойманной_ ошибки и разрешение процессу завершиться соответствующим образом безопаснее, чем вызов `process.exit()`.
+=== "CJS"
 
-В потоках [`Worker`](worker_threads.md#class-worker) эта функция останавливает текущий поток, а не текущий процесс.
+    ```js
+    const { exit } = require('node:process');
+    
+    // This is an example of what *not* to do:
+    if (someConditionNotMet()) {
+      printUsageToStdout();
+      exit(1);
+    }
+    ```
 
-<!-- 0040.part.md -->
+Проблема в том, что запись в `process.stdout` в Node.js иногда _асинхронна_ и
+может растягиваться на несколько тиков цикла событий. `process.exit()` же
+завершает процесс _до_ того, как эти записи успеют выполниться.
+
+Вместо прямого `process.exit()` код _должен_ задать `process.exitCode` и дать
+процессу завершиться естественно, не планируя новой работы в цикле событий:
+
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    // How to properly set the exit code while letting
+    // the process exit gracefully.
+    if (someConditionNotMet()) {
+      printUsageToStdout();
+      process.exitCode = 1;
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const process = require('node:process');
+    
+    // How to properly set the exit code while letting
+    // the process exit gracefully.
+    if (someConditionNotMet()) {
+      printUsageToStdout();
+      process.exitCode = 1;
+    }
+    ```
+
+Если нужно завершить процесс из-за ошибки, безопаснее выбросить _необработанную_
+ошибку и дать процессу завершиться, чем вызывать `process.exit()`.
+
+В потоках [`Worker`][] эта функция останавливает текущий поток, а не процесс.
 
 ## `process.exitCode`
 
--   {integer|string|null|undefined} Код выхода. Для строкового типа допускаются только целые строки (например, '1'). **По умолчанию:** `undefined`.
+<!-- YAML
+added: v0.11.8
+changes:
+  - version: v20.0.0
+    pr-url: https://github.com/nodejs/node/pull/43716
+    description: Only accepts a code of type number, or of type string if it
+                 represents an integer.
+-->
 
-Число, которое будет кодом завершения процесса, когда процесс либо завершается изящно, либо завершается через [`process.exit()`](#processexitcode) без указания кода.
+Добавлено в: v0.11.8
 
-Указание кода в [`process.exit(code)`](#processexitcode) отменяет любую предыдущую установку `process.exitCode`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.0.0 | Принимает код типа номера или строки типа, только если он представляет целое число. |
 
-<!-- 0041.part.md -->
+* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined код выхода. Для строки допускаются только
+  целочисленные строки (например `'1'`). **По умолчанию:** `undefined`.
+
+Число, которое станет кодом выхода при корректном завершении или при вызове
+[`process.exit()`][] без явного кода.
+
+Значение `process.exitCode` можно задать присваиванием или аргументом
+[`process.exit()`][]:
+
+```console
+$ node -e 'process.exitCode = 9'; echo $?
+9
+$ node -e 'process.exit(42)'; echo $?
+42
+$ node -e 'process.exitCode = 9; process.exit(42)'; echo $?
+42
+```
+
+Node.js может задать значение неявно при неустранимых ошибках (например при
+незавершённом top-level `await`). Явно заданный код выхода всегда имеет приоритет
+над неявным:
+
+```console
+$ node --input-type=module -e 'await new Promise(() => {})'; echo $?
+13
+$ node --input-type=module -e 'process.exitCode = 9; await new Promise(() => {})'; echo $?
+9
+```
+
+## `process.features.cached_builtins`
+
+<!-- YAML
+added: v12.0.0
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если текущая сборка Node.js кэширует встроенные модули.
+
+## `process.features.debug`
+
+<!-- YAML
+added: v0.5.5
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если текущая сборка Node.js — отладочная.
+
+## `process.features.inspector`
+
+<!-- YAML
+added: v11.10.0
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если текущая сборка Node.js включает инспектор.
+
+## `process.features.ipv6`
+
+<!-- YAML
+added: v0.5.3
+deprecated:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Стабильность: 0 — устарело. Свойство всегда `true`, проверки по нему избыточны.
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js поддерживает IPv6.
+
+Во всех сборках Node.js есть поддержка IPv6, поэтому значение всегда `true`.
+
+## `process.features.require_module`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+ - v20.19.0
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js поддерживает
+[загрузку ECMAScript-модулей через `require()`][].
+
+## `process.features.tls`
+
+<!-- YAML
+added: v0.5.3
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js включает поддержку TLS.
+
+## `process.features.tls_alpn`
+
+<!-- YAML
+added: v4.8.0
+deprecated:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Стабильность: 0 — устарело. Используйте `process.features.tls`.
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js поддерживает ALPN в TLS.
+
+Начиная с Node.js 11.0.0 зависимости OpenSSL дают безусловную поддержку ALPN,
+поэтому значение совпадает с `process.features.tls`.
+
+## `process.features.tls_ocsp`
+
+<!-- YAML
+added: v0.11.13
+deprecated:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Стабильность: 0 — устарело. Используйте `process.features.tls`.
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js поддерживает OCSP в TLS.
+
+Начиная с Node.js 11.0.0 зависимости OpenSSL дают безусловную поддержку OCSP,
+поэтому значение совпадает с `process.features.tls`.
+
+## `process.features.tls_sni`
+
+<!-- YAML
+added: v0.5.3
+deprecated:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Стабильность: 0 — устарело. Используйте `process.features.tls`.
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js поддерживает SNI в TLS.
+
+Начиная с Node.js 11.0.0 зависимости OpenSSL дают безусловную поддержку SNI,
+поэтому значение совпадает с `process.features.tls`.
+
+## `process.features.typescript`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/61803
+    description: Removed `transform` value.
+  - version:
+      - v25.2.0
+      - v24.12.0
+    pr-url: https://github.com/nodejs/node/pull/60600
+    description: Type stripping is now stable.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Удалено значение «transform». |
+    | v25.2.0, v24.12.0 | Удаление типов теперь стабильно. |
+
+> Стабильность: 1.2 — кандидат в релиз
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+По умолчанию значение `"strip"`, и `false`, если Node.js запущен с `--no-strip-types`.
+
+## `process.features.uv`
+
+<!-- YAML
+added: v0.5.3
+deprecated:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Стабильность: 0 — устарело. Свойство всегда `true`, проверки по нему избыточны.
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Логическое значение: `true`, если сборка Node.js включает поддержку libuv.
+
+Node.js без libuv не собирается, поэтому значение всегда `true`.
+
+## `process.finalization.register(ref, callback)`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Стабильность: 1.1 — активная разработка
+
+* `ref` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ссылка на отслеживаемый ресурс
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова при финализации ресурса
+  * `ref` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ссылка на отслеживаемый ресурс
+  * `event` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) событие, вызвавшее финализацию. По умолчанию `'exit'`.
+
+Функция регистрирует обратный вызов при событии `exit` процесса, если объект `ref`
+не был собран сборщиком мусора. Если `ref` собран до события `exit`, запись удаляется
+из реестра финализации, и при выходе процесса callback не вызывается.
+
+В callback можно освободить ресурсы, выделенные под `ref`. Учтите: к функции
+`callback` применяются те же ограничения, что и к событию `beforeExit`, — в особых
+случаях callback может не вызваться.
+
+Идея функции — помочь освободить ресурсы при начале завершения процесса и при этом
+дать объекту быть собранным, если он больше не используется.
+
+Например, можно зарегистрировать объект с буфером: нужно гарантировать освобождение
+буфера при выходе процесса; если объект собран раньше, буфер отдельно освобождать
+не нужно — запись просто убирается из реестра финализации.
+
+=== "CJS"
+
+    ```js
+    const { finalization } = require('node:process');
+    
+    // Please make sure that the function passed to finalization.register()
+    // does not create a closure around unnecessary objects.
+    function onFinalize(obj, event) {
+      // You can do whatever you want with the object
+      obj.dispose();
+    }
+    
+    function setup() {
+      // This object can be safely garbage collected,
+      // and the resulting shutdown function will not be called.
+      // There are no leaks.
+      const myDisposableObject = {
+        dispose() {
+          // Free your resources synchronously
+        },
+      };
+    
+      finalization.register(myDisposableObject, onFinalize);
+    }
+    
+    setup();
+    ```
+
+=== "MJS"
+
+    ```js
+    import { finalization } from 'node:process';
+    
+    // Please make sure that the function passed to finalization.register()
+    // does not create a closure around unnecessary objects.
+    function onFinalize(obj, event) {
+      // You can do whatever you want with the object
+      obj.dispose();
+    }
+    
+    function setup() {
+      // This object can be safely garbage collected,
+      // and the resulting shutdown function will not be called.
+      // There are no leaks.
+      const myDisposableObject = {
+        dispose() {
+          // Free your resources synchronously
+        },
+      };
+    
+      finalization.register(myDisposableObject, onFinalize);
+    }
+    
+    setup();
+    ```
+
+Приведённый код опирается на такие условия:
+
+* не используются стрелочные функции;
+* обычные функции лучше держать в глобальном контексте (корне).
+
+Обычная функция _может_ захватывать контекст, где живёт `obj`, и мешать сборке `obj`.
+
+Стрелочная функция сохраняет внешний контекст. Например:
+
+```js
+class Test {
+  constructor() {
+    finalization.register(this, (ref) => ref.dispose());
+
+    // Even something like this is highly discouraged
+    // finalization.register(this, () => this.dispose());
+  }
+  dispose() {}
+}
+```
+
+Маловероятно (но не невозможно), что этот объект соберут; если нет — `dispose`
+вызовут при `process.exit`.
+
+Не полагайтесь на этот механизм для критичных ресурсов: callback не гарантирован
+во всех ситуациях.
+
+## `process.finalization.registerBeforeExit(ref, callback)`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Стабильность: 1.1 — активная разработка
+
+* `ref` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ссылка на отслеживаемый ресурс
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова при финализации ресурса
+  * `ref` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ссылка на отслеживаемый ресурс
+  * `event` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) событие, вызвавшее финализацию. По умолчанию `'beforeExit'`.
+
+Ведёт себя как `register`, но callback вызывается при событии `beforeExit`, если
+объект `ref` не был собран сборщиком мусора.
+
+К `callback` применяются те же ограничения, что и к `beforeExit`; в особых случаях
+он может не вызваться.
+
+## `process.finalization.unregister(ref)`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Стабильность: 1.1 — активная разработка
+
+* `ref` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ссылка на ранее зарегистрированный ресурс
+
+Удаляет регистрацию объекта из реестра финализации, чтобы callback больше не вызывался.
+
+=== "CJS"
+
+    ```js
+    const { finalization } = require('node:process');
+    
+    // Please make sure that the function passed to finalization.register()
+    // does not create a closure around unnecessary objects.
+    function onFinalize(obj, event) {
+      // You can do whatever you want with the object
+      obj.dispose();
+    }
+    
+    function setup() {
+      // This object can be safely garbage collected,
+      // and the resulting shutdown function will not be called.
+      // There are no leaks.
+      const myDisposableObject = {
+        dispose() {
+          // Free your resources synchronously
+        },
+      };
+    
+      finalization.register(myDisposableObject, onFinalize);
+    
+      // Do something
+    
+      myDisposableObject.dispose();
+      finalization.unregister(myDisposableObject);
+    }
+    
+    setup();
+    ```
+
+=== "MJS"
+
+    ```js
+    import { finalization } from 'node:process';
+    
+    // Please make sure that the function passed to finalization.register()
+    // does not create a closure around unnecessary objects.
+    function onFinalize(obj, event) {
+      // You can do whatever you want with the object
+      obj.dispose();
+    }
+    
+    function setup() {
+      // This object can be safely garbage collected,
+      // and the resulting shutdown function will not be called.
+      // There are no leaks.
+      const myDisposableObject = {
+        dispose() {
+          // Free your resources synchronously
+        },
+      };
+    
+      // Please make sure that the function passed to finalization.register()
+      // does not create a closure around unnecessary objects.
+      function onFinalize(obj, event) {
+        // You can do whatever you want with the object
+        obj.dispose();
+      }
+    
+      finalization.register(myDisposableObject, onFinalize);
+    
+      // Do something
+    
+      myDisposableObject.dispose();
+      finalization.unregister(myDisposableObject);
+    }
+    
+    setup();
+    ```
 
 ## `process.getActiveResourcesInfo()`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+  - v17.3.0
+  - v16.14.0
+changes:
+  - version:
+    - v24.0.0
+    - v22.16.0
+    pr-url: https://github.com/nodejs/node/pull/57765
+    description: Change stability index for this feature from Experimental to Stable.
+-->
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
 
--   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Метод `process.getActiveResourcesInfo()` возвращает массив строк, содержащих типы активных ресурсов, которые в настоящее время поддерживают цикл событий.
+Метод `process.getActiveResourcesInfo()` возвращает массив строк с типами активных
+ресурсов, которые сейчас удерживают цикл событий.
 
-```mjs
-import { getActiveResourcesInfo } from 'node:process';
-import { setTimeout } from 'node:timers';
+=== "MJS"
 
-console.log('Before:', getActiveResourcesInfo());
-setTimeout(() => {}, 1000);
-console.log('After:', getActiveResourcesInfo());
-// Печатает:
-// Before: [ 'CloseReq', 'TTYWrap', 'TTYWrap', 'TTYWrap' ]
-// После: [ 'CloseReq', 'TTYWrap', 'TTYWrap', 'TTYWrap', 'TTYWrap', 'Timeout' ]
-```
+    ```js
+    import { getActiveResourcesInfo } from 'node:process';
+    import { setTimeout } from 'node:timers';
+    
+    console.log('Before:', getActiveResourcesInfo());
+    setTimeout(() => {}, 1000);
+    console.log('After:', getActiveResourcesInfo());
+    // Вывод:
+    //   Before: [ 'CloseReq', 'TTYWrap', 'TTYWrap', 'TTYWrap' ]
+    //   After: [ 'CloseReq', 'TTYWrap', 'TTYWrap', 'TTYWrap', 'Timeout' ]
+    ```
 
-```cjs
-const { getActiveResourcesInfo } = require('node:process');
-const { setTimeout } = require('node:timers');
+=== "CJS"
 
-console.log('Before:', getActiveResourcesInfo());
-setTimeout(() => {}, 1000);
-console.log('After:', getActiveResourcesInfo());
-// Печатает:
-// Before: [ 'TTYWrap', 'TTYWrap', 'TTYWrap' ]
-// После: [ 'TTYWrap', 'TTYWrap', 'TTYWrap', 'Timeout' ].
-```
+    ```js
+    const { getActiveResourcesInfo } = require('node:process');
+    const { setTimeout } = require('node:timers');
+    
+    console.log('Before:', getActiveResourcesInfo());
+    setTimeout(() => {}, 1000);
+    console.log('After:', getActiveResourcesInfo());
+    // Вывод:
+    //   Before: [ 'TTYWrap', 'TTYWrap', 'TTYWrap' ]
+    //   After: [ 'TTYWrap', 'TTYWrap', 'TTYWrap', 'Timeout' ]
+    ```
 
-<!-- 0042.part.md -->
+## `process.getBuiltinModule(id)`
+
+<!-- YAML
+added:
+- v22.3.0
+- v20.16.0
+-->
+
+* `id` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) идентификатор запрашиваемого встроенного модуля
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined
+
+`process.getBuiltinModule(id)` позволяет загружать встроенные модули через
+глобально доступную функцию. ES-модули, которые должны работать и вне Node.js,
+могут условно подключать встроенный модуль Node.js при запуске в Node.js, не ловя
+ошибку разрешения `import` вне Node.js и не переходя на динамический `import()`,
+который делает модуль асинхронным или API — асинхронным.
+
+=== "MJS"
+
+    ```js
+    if (globalThis.process?.getBuiltinModule) {
+      // Run in Node.js, use the Node.js fs module.
+      const fs = globalThis.process.getBuiltinModule('fs');
+      // If `require()` is needed to load user-modules, use createRequire()
+      const module = globalThis.process.getBuiltinModule('module');
+      const require = module.createRequire(import.meta.url);
+      const foo = require('foo');
+    }
+    ```
+
+Если `id` задаёт встроенный модуль, доступный в текущем процессе Node.js,
+`process.getBuiltinModule(id)` возвращает соответствующий встроенный модуль.
+Если такого встроенного модуля нет, возвращается `undefined`.
+
+`process.getBuiltinModule(id)` принимает идентификаторы, которые распознаёт
+[`module.isBuiltin(id)`][]. Некоторые модули нужно загружать с префиксом `node:`,
+см. [встроенные модули с обязательным префиксом `node:`][built-in modules with mandatory `node:` prefix].
+Ссылки, возвращаемые `process.getBuiltinModule(id)`, всегда указывают на встроенный
+модуль для `id`, даже если пользователь меняет [`require.cache`][] так, что
+`require(id)` возвращает другое.
 
 ## `process.getegid()`
 
-Метод `process.getegid()` возвращает числовую эффективную групповую идентификацию процесса Node.js. (См. getegid(2).)
+<!-- YAML
+added: v2.0.0
+-->
 
-```mjs
-import process from 'node:process';
+Метод `process.getegid()` возвращает числовой эффективный идентификатор группы
+процесса Node.js. См. getegid(2).
 
-if (process.getegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-}
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    if (process.getegid) {
+      console.log(`Current gid: ${process.getegid()}`);
+    }
+    ```
 
-if (process.getegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-}
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android).
+    ```js
+    const process = require('node:process');
+    
+    if (process.getegid) {
+      console.log(`Current gid: ${process.getegid()}`);
+    }
+    ```
 
-<!-- 0043.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
 
 ## `process.geteuid()`
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v2.0.0
+-->
 
-Метод `process.geteuid()` возвращает числовой эффективный идентификатор пользователя процесса. (См. geteuid(2).)
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-```mjs
-import process from 'node:process';
+Метод `process.geteuid()` возвращает числовой эффективный идентификатор пользователя
+процесса. См. geteuid(2).
 
-if (process.geteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-}
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    if (process.geteuid) {
+      console.log(`Current uid: ${process.geteuid()}`);
+    }
+    ```
 
-if (process.geteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-}
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android).
+    ```js
+    const process = require('node:process');
+    
+    if (process.geteuid) {
+      console.log(`Current uid: ${process.geteuid()}`);
+    }
+    ```
 
-<!-- 0044.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
 
 ## `process.getgid()`
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v0.1.31
+-->
 
-Метод `process.getgid()` возвращает числовой групповой идентификатор процесса. (См. getgid(2).)
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-```mjs
-import process from 'node:process';
+Метод `process.getgid()` возвращает числовой идентификатор группы процесса.
+См. getgid(2).
 
-if (process.getgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-}
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    if (process.getgid) {
+      console.log(`Current gid: ${process.getgid()}`);
+    }
+    ```
 
-if (process.getgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-}
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android).
+    ```js
+    const process = require('node:process');
+    
+    if (process.getgid) {
+      console.log(`Current gid: ${process.getgid()}`);
+    }
+    ```
 
-<!-- 0045.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
 
 ## `process.getgroups()`
 
--   Возвращает: [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.9.4
+-->
 
-Метод `process.getgroups()` возвращает массив с идентификаторами дополнительных групп. POSIX не уточняет, включен ли идентификатор эффективной группы, но Node.js гарантирует, что он всегда включен.
+* Возвращает: [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import process from 'node:process';
+Метод `process.getgroups()` возвращает массив дополнительных идентификаторов групп.
+В POSIX не уточняется, входит ли эффективный GID, но Node.js всегда включает его.
 
-if (process.getgroups) {
-    console.log(process.getgroups()); // [ 16, 21, 297 ]
-}
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    if (process.getgroups) {
+      console.log(process.getgroups()); // [ 16, 21, 297 ]
+    }
+    ```
 
-if (process.getgroups) {
-    console.log(process.getgroups()); // [ 16, 21, 297 ]
-}
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android).
+    ```js
+    const process = require('node:process');
+    
+    if (process.getgroups) {
+      console.log(process.getgroups()); // [ 16, 21, 297 ]
+    }
+    ```
 
-<!-- 0046.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
 
 ## `process.getuid()`
 
--   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.1.28
+-->
 
-Метод `process.getuid()` возвращает числовой идентификатор пользователя процесса. (См. getuid(2).)
+* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import process from 'node:process';
+Метод `process.getuid()` возвращает числовой идентификатор пользователя процесса.
+См. getuid(2).
 
-if (process.getuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-}
-```
+=== "MJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    import process from 'node:process';
+    
+    if (process.getuid) {
+      console.log(`Current uid: ${process.getuid()}`);
+    }
+    ```
 
-if (process.getuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-}
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android).
+    ```js
+    const process = require('node:process');
+    
+    if (process.getuid) {
+      console.log(`Current uid: ${process.getuid()}`);
+    }
+    ```
 
-<!-- 0047.part.md -->
+Недоступно в Windows.
 
 ## `process.hasUncaughtExceptionCaptureCallback()`
 
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v9.3.0
+-->
 
-Указывает, был ли установлен обратный вызов с помощью [`process.setUncaughtExceptionCaptureCallback()`](#processsetuncaughaughtexceptioncapturecallbackfn).
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0048.part.md -->
+Показывает, задан ли callback через
+[`process.setUncaughtExceptionCaptureCallback()`][].
 
 ## `process.hrtime([time])`
 
-!!!note "Стабильность: 3 – Закрыто"
+<!-- YAML
+added: v0.7.6
+-->
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+> Стабильность: 3 — устаревшее. Используйте [`process.hrtime.bigint()`][].
 
-    Вместо этого используйте [`process.hrtime.bigint()`](#processhrtimebigint).
+* `time` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) результат предыдущего вызова `process.hrtime()`
+* Возвращает: [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
--   `time` {integer\[\]} Результат предыдущего вызова `process.hrtime()`.
--   Возвращает: {integer\[\]}
+Устаревший вариант [`process.hrtime.bigint()`][] до появления `bigint` в JavaScript.
 
-Это унаследованная версия [`process.hrtime.bigint()`](#processhrtimebigint) до появления `bigint` в JavaScript.
+Метод `process.hrtime()` возвращает текущее высокоточное монотонное время как
+кортеж `[seconds, nanoseconds]` в массиве, где `nanoseconds` — остаток, не
+выражаемый целыми секундами.
 
-Метод `process.hrtime()` возвращает текущее реальное время высокого разрешения в виде кортежа `[секунды, наносекунды]`, где `наносекунды` - это оставшаяся часть реального времени, которая не может быть представлена с точностью до секунды.
+`time` — необязательный параметр: результат предыдущего `process.hrtime()` для
+разницы с текущим моментом. Если передан не кортеж-массив, выбрасывается `TypeError`.
+Произвольный массив вместо результата предыдущего вызова ведёт к неопределённому поведению.
 
-`time` - необязательный параметр, который должен быть результатом предыдущего вызова `process.hrtime()` для дифференциации с текущим временем. Если переданный параметр не является кортежем `Array`, будет выдана ошибка `TypeError`. Передача пользовательского массива вместо результата предыдущего вызова `process.hrtime()` приведет к неопределенному поведению.
+Время отсчитывается от произвольной точки в прошлом, не связано с календарём и не
+зависит от сдвига часов. Обычно используется для замеров интервалов:
 
-Эти времена относятся к произвольному времени в прошлом, не связаны со временем суток и поэтому не подвержены дрейфу часов. Основное применение - измерение производительности между интервалами:
+=== "MJS"
 
-```mjs
-import { hrtime } from 'node:process';
+    ```js
+    import { hrtime } from 'node:process';
+    
+    const NS_PER_SEC = 1e9;
+    const time = hrtime();
+    // [ 1800216, 25 ]
+    
+    setTimeout(() => {
+      const diff = hrtime(time);
+      // [ 1, 552 ]
+    
+      console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
+      // Benchmark took 1000000552 nanoseconds
+    }, 1000);
+    ```
 
-const NS_PER_SEC = 1e9;
-const time = hrtime();
-// [ 1800216, 25 ]
+=== "CJS"
 
-setTimeout(() => {
-    const diff = hrtime(time);
-    // [ 1, 552 ]
-
-    console.log(
-        `Benchmark took ${
-            diff[0] * NS_PER_SEC + diff[1]
-        } nanoseconds`
-    );
-    // Бенчмарк занял 1000000552 наносекунды
-}, 1000);
-```
-
-```cjs
-const { hrtime } = require('node:process');
-
-const NS_PER_SEC = 1e9;
-const time = hrtime();
-// [ 1800216, 25 ]
-
-setTimeout(() => {
-    const diff = hrtime(time);
-    // [ 1, 552 ]
-
-    console.log(
-        `Benchmark took ${
-            diff[0] * NS_PER_SEC + diff[1]
-        } nanoseconds`
-    );
-    // Бенчмарк занял 1000000552 наносекунды
-}, 1000);
-```
-
-<!-- 0049.part.md -->
+    ```js
+    const { hrtime } = require('node:process');
+    
+    const NS_PER_SEC = 1e9;
+    const time = hrtime();
+    // [ 1800216, 25 ]
+    
+    setTimeout(() => {
+      const diff = hrtime(time);
+      // [ 1, 552 ]
+    
+      console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
+      // Benchmark took 1000000552 nanoseconds
+    }, 1000);
+    ```
 
 ## `process.hrtime.bigint()`
 
--   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+<!-- YAML
+added: v10.7.0
+-->
 
-`bigint` версия метода [`process.hrtime()`](#processhrtimetime), возвращающая текущее реальное время высокого разрешения в наносекундах в виде `bigint`.
+* Возвращает: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-В отличие от метода [`process.hrtime()`](#processhrtimetime), он не поддерживает дополнительный аргумент `time`, поскольку разница может быть вычислена непосредственно вычитанием двух `bigint`.
+Вариант [`process.hrtime()`][] на `bigint`: текущее высокоточное время в наносекундах.
 
-```mjs
-import { hrtime } from 'node:process';
+В отличие от [`process.hrtime()`][], дополнительного аргумента `time` нет —
+разницу считают вычитанием двух `bigint`.
 
-const start = hrtime.bigint();
-// 191051479007711n
+=== "MJS"
 
-setTimeout(() => {
-    const end = hrtime.bigint();
-    // 191052633396993n
+    ```js
+    import { hrtime } from 'node:process';
+    
+    const start = hrtime.bigint();
+    // 191051479007711n
+    
+    setTimeout(() => {
+      const end = hrtime.bigint();
+      // 191052633396993n
+    
+      console.log(`Benchmark took ${end - start} nanoseconds`);
+      // Benchmark took 1154389282 nanoseconds
+    }, 1000);
+    ```
 
-    console.log(
-        `Benchmark took ${end - start} nanoseconds`
-    );
-    // Бенчмарк занял 1154389282 наносекунды
-}, 1000);
-```
+=== "CJS"
 
-```cjs
-const { hrtime } = require('node:process');
-
-const start = hrtime.bigint();
-// 191051479007711n
-
-setTimeout(() => {
-    const end = hrtime.bigint();
-    // 191052633396993n
-
-    console.log(
-        `Benchmark took ${end - start} nanoseconds`
-    );
-    // Бенчмарк занял 1154389282 наносекунды
-}, 1000);
-```
-
-<!-- 0050.part.md -->
+    ```js
+    const { hrtime } = require('node:process');
+    
+    const start = hrtime.bigint();
+    // 191051479007711n
+    
+    setTimeout(() => {
+      const end = hrtime.bigint();
+      // 191052633396993n
+    
+      console.log(`Benchmark took ${end - start} nanoseconds`);
+      // Benchmark took 1154389282 nanoseconds
+    }, 1000);
+    ```
 
 ## `process.initgroups(user, extraGroup)`
 
--   `user` {string|number} Имя пользователя или числовой идентификатор.
--   `extraGroup` {string|number} Имя группы или числовой идентификатор.
+<!-- YAML
+added: v0.9.4
+-->
 
-Метод `process.initgroups()` читает файл `/etc/group` и инициализирует список доступа групп, используя все группы, членом которых является пользователь. Это привилегированная операция, которая требует, чтобы процесс Node.js имел либо доступ `root`, либо возможность `CAP_SETGID`.
+* `user` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя пользователя или числовой идентификатор
+* `extraGroup` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя группы или числовой идентификатор
 
-Будьте осторожны при сбросе привилегий:
+Метод `process.initgroups()` читает `/etc/group` и инициализирует список групп
+доступа, включая все группы, в которых состоит пользователь. Это привилегированная
+операция: процесс Node.js должен работать от `root` или с возможностью `CAP_SETGID`.
 
-```mjs
-import {
-    getgroups,
-    initgroups,
-    setgid,
-} from 'node:process';
+Будьте осторожны при снижении привилегий:
 
-console.log(getgroups()); // [ 0 ]
-initgroups('nodeuser', 1000); // переключаем пользователя
-console.log(getgroups()); // [ 27, 30, 46, 1000, 0 ]
-setgid(1000); // сбрасываем gid корня
-console.log(getgroups()); // [ 27, 30, 46, 1000 ]
-```
+=== "MJS"
 
-```cjs
-const {
-    getgroups,
-    initgroups,
-    setgid,
-} = require('node:process');
+    ```js
+    import { getgroups, initgroups, setgid } from 'node:process';
+    
+    console.log(getgroups());         // [ 0 ]
+    initgroups('nodeuser', 1000);     // switch user
+    console.log(getgroups());         // [ 27, 30, 46, 1000, 0 ]
+    setgid(1000);                     // drop root gid
+    console.log(getgroups());         // [ 27, 30, 46, 1000 ]
+    ```
 
-console.log(getgroups()); // [ 0 ]
-initgroups('nodeuser', 1000); // переключаем пользователя
-console.log(getgroups()); // [ 27, 30, 46, 1000, 0 ]
-setgid(1000); // сбрасываем gid корня
-console.log(getgroups()); // [ 27, 30, 46, 1000 ]
-```
+=== "CJS"
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
+    ```js
+    const { getgroups, initgroups, setgid } = require('node:process');
+    
+    console.log(getgroups());         // [ 0 ]
+    initgroups('nodeuser', 1000);     // switch user
+    console.log(getgroups());         // [ 27, 30, 46, 1000, 0 ]
+    setgid(1000);                     // drop root gid
+    console.log(getgroups());         // [ 27, 30, 46, 1000 ]
+    ```
 
-<!-- 0051.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.kill(pid[, signal])`
 
--   `pid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса
--   `signal` {строка|число} Сигнал для отправки, либо в виде строки, либо в виде числа. **По умолчанию:** `'SIGTERM'`.
+<!-- YAML
+added: v0.0.6
+-->
 
-Метод `process.kill()` посылает `signal` процессу, идентифицированному `pid`.
+* `pid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) идентификатор процесса
+* `signal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) сигнал строкой или числом.
+  **По умолчанию:** `'SIGTERM'`.
 
-Имена сигналов - это строки, такие как `'SIGINT'` или `'SIGHUP'`. Более подробную информацию смотрите в [Signal Events](#signal-events) и kill(2).
+Метод `process.kill()` отправляет сигнал `signal` процессу `pid`.
 
-Этот метод выдаст ошибку, если целевой `pid` не существует. В качестве особого случая, сигнал `0` может быть использован для проверки существования процесса. Платформы Windows выдадут ошибку, если `pid` используется для уничтожения группы процессов.
+Имена сигналов — строки вроде `'SIGINT'` или `'SIGHUP'`. См. [Signal Events][]
+и kill(2).
 
-Хотя эта функция называется `process.kill()`, на самом деле это просто отправитель сигнала, как и системный вызов `kill`. Посылаемый сигнал может делать что-то еще, кроме уничтожения целевого процесса.
+Метод выбрасывает ошибку, если целевой `pid` не существует. Особый случай: сигнал
+`0` можно использовать для проверки существования процесса. В Windows будет
+ошибка, если `pid` используется для завершения группы процессов.
 
-```mjs
-import process, { kill } from 'node:process';
+Несмотря на имя `process.kill()`, это по сути отправка сигнала, как в системном
+вызове `kill`; эффект может быть не только в завершении процесса.
 
-process.on('SIGHUP', () => {
-    console.log('Получен сигнал SIGHUP.');
-});
+=== "MJS"
 
-setTimeout(() => {
-    console.log('Exiting.');
-    process.exit(0);
-}, 100);
+    ```js
+    import process, { kill } from 'node:process';
+    
+    process.on('SIGHUP', () => {
+      console.log('Got SIGHUP signal.');
+    });
+    
+    setTimeout(() => {
+      console.log('Exiting.');
+      process.exit(0);
+    }, 100);
+    
+    kill(process.pid, 'SIGHUP');
+    ```
 
-kill(process.pid, 'SIGHUP');
-```
+=== "CJS"
 
-```cjs
-const process = require('node:process');
+    ```js
+    const process = require('node:process');
+    
+    process.on('SIGHUP', () => {
+      console.log('Got SIGHUP signal.');
+    });
+    
+    setTimeout(() => {
+      console.log('Exiting.');
+      process.exit(0);
+    }, 100);
+    
+    process.kill(process.pid, 'SIGHUP');
+    ```
 
-process.on('SIGHUP', () => {
-    console.log('Получен сигнал SIGHUP.');
-});
+При получении `SIGUSR1` процессом Node.js запускается отладчик. См. [Signal Events][].
 
-setTimeout(() => {
-    console.log('Exiting.');
-    process.exit(0);
-}, 100);
+## `process.loadEnvFile(path)`
 
-process.kill(process.pid, 'SIGHUP');
-```
+<!-- YAML
+added:
+  - v21.7.0
+  - v20.12.0
+changes:
+  - version:
+     - v24.10.0
+     - v22.21.0
+    pr-url: https://github.com/nodejs/node/pull/59925
+    description: This API is no longer experimental.
+-->
 
-Когда `SIGUSR1` получен процессом Node.js, Node.js запустит отладчик. Смотрите [Сигнальные события](#signal-events).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.10.0, v22.21.0 | Этот API больше не является экспериментальным. |
 
-<!-- 0052.part.md -->
+* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) | [<Buffer>](buffer.md#buffer) | undefined. **По умолчанию:** `'./.env'`
+
+Загружает файл `.env` в `process.env`. Использование `NODE_OPTIONS`
+в `.env` на Node.js не действует.
+
+=== "CJS"
+
+    ```js
+    const { loadEnvFile } = require('node:process');
+    loadEnvFile();
+    ```
+
+=== "MJS"
+
+    ```js
+    import { loadEnvFile } from 'node:process';
+    loadEnvFile();
+    ```
 
 ## `process.mainModule`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<!-- YAML
+added: v0.1.17
+deprecated: v14.0.0
+-->
 
-    Используйте [`require.main`](modules.md#accessing-the-main-module) вместо этого.
+> Стабильность: 0 — устарело. Используйте [`require.main`][].
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Свойство `process.mainModule` предоставляет альтернативный способ получения [`require.main`](modules.md#accessing-the-main-module). Разница заключается в том, что если главный модуль меняется во время выполнения, [`require.main`](modules.md#accessing-the-main-module) может по-прежнему ссылаться на исходный главный модуль в модулях, которые были необходимы до изменения. В целом, можно считать, что эти две ссылки относятся к одному и тому же модулю.
+Свойство `process.mainModule` — другой способ получить [`require.main`][].
+Если главный модуль меняется во время выполнения, [`require.main`][] в модулях,
+подключённых до смены, может по-прежнему указывать на старый главный модуль.
+Обычно можно считать, что оба указывают на один и тот же модуль.
 
-Как и в случае с [`require.main`](modules.md#accessing-the-main-module), `process.mainModule` будет `undefined`, если нет скрипта входа.
-
-<!-- 0053.part.md -->
+Как и [`require.main`][], `process.mainModule` будет `undefined`, если нет
+точки входа.
 
 ## `process.memoryUsage()`
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `rss` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `heapTotal` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `heapUsed` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `external` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `arrayBuffers` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.1.16
+changes:
+  - version:
+     - v13.9.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/31550
+    description: Added `arrayBuffers` to the returned object.
+  - version: v7.2.0
+    pr-url: https://github.com/nodejs/node/pull/9587
+    description: Added `external` to the returned object.
+-->
 
-Возвращает объект, описывающий использование памяти процессом Node.js, измеренное в байтах.
+Добавлено в: v0.1.16
 
-```mjs
-import { memoryUsage } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.9.0, v12.17.0 | К возвращаемому объекту добавлен ArrayBuffers. |
+    | v7.2.0 | К возвращаемому объекту добавлен `external`. |
 
-console.log(memoryUsage());
-// Печатает:
-// {
-// rss: 4935680,
-// heapTotal: 1826816,
-// heapUsed: 650472,
-// external: 49879,
-// arrayBuffers: 9386
-// }
-```
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `rss` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `heapTotal` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `heapUsed` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `external` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `arrayBuffers` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```cjs
-const { memoryUsage } = require('node:process');
+Возвращает объект с описанием использования памяти процессом Node.js в байтах.
 
-console.log(memoryUsage());
-// Печатает:
-// {
-// rss: 4935680,
-// heapTotal: 1826816,
-// heapUsed: 650472,
-// external: 49879,
-// arrayBuffers: 9386
-// }
-```
+=== "MJS"
 
--   `heapTotal` и `heapUsed` относятся к использованию памяти V8.
--   `external` относится к использованию памяти объектов C++, связанных с объектами JavaScript, управляемыми V8.
--   `rss`, Resident Set Size, - это объем пространства, занимаемый в основном устройстве памяти (которое является подмножеством всей выделенной памяти) для процесса, включая все объекты и код C++ и JavaScript.
--   `arrayBuffers` относится к памяти, выделенной для `ArrayBuffer` и `SharedArrayBuffer`, включая все Node.js [`Buffer`](buffer.md)s. Это также включено в значение `external`. Когда Node.js используется как встроенная библиотека, это значение может быть `0`, потому что выделения для `ArrayBuffer` в этом случае могут не отслеживаться.
+    ```js
+    import { memoryUsage } from 'node:process';
+    
+    console.log(memoryUsage());
+    // Prints:
+    // {
+    //  rss: 4935680,
+    //  heapTotal: 1826816,
+    //  heapUsed: 650472,
+    //  external: 49879,
+    //  arrayBuffers: 9386
+    // }
+    ```
 
-При использовании потоков [`Worker`](worker_threads.md#class-worker), `rss` будет значением, действительным для всего процесса, в то время как остальные поля будут относиться только к текущему потоку.
+=== "CJS"
 
-Метод `process.memoryUsage()` выполняет итерации по каждой странице для сбора информации об использовании памяти, что может быть медленным в зависимости от распределения памяти программы.
+    ```js
+    const { memoryUsage } = require('node:process');
+    
+    console.log(memoryUsage());
+    // Prints:
+    // {
+    //  rss: 4935680,
+    //  heapTotal: 1826816,
+    //  heapUsed: 650472,
+    //  external: 49879,
+    //  arrayBuffers: 9386
+    // }
+    ```
 
-<!-- 0054.part.md -->
+* `heapTotal` и `heapUsed` — память V8.
+* `external` — память C++-объектов, привязанных к JS-объектам под управлением V8.
+* `rss` (resident set size) — объём в основной памяти (подмножество всей выделенной)
+  для процесса, включая C++ и JavaScript объекты и код.
+* `arrayBuffers` — память под `ArrayBuffer` и `SharedArrayBuffer`, включая все
+  [`Buffer`][] Node.js. Учитывается также в `external`. Во встраиваемой библиотеке
+  значение может быть `0`, если выделения под `ArrayBuffer` не отслеживаются.
+
+В потоках [`Worker`][] `rss` относится ко всему процессу, остальные поля — к текущему потоку.
+
+Метод `process.memoryUsage()` обходит страницы памяти; на больших объёмах это может быть медленно.
+
+### Замечание о process.memoryUsage
+
+На Linux и системах с glibc приложение может наблюдать рост `rss` при стабильном
+`heapTotal` из-за фрагментации в `malloc` glibc. См. [nodejs/node#21973][] про
+альтернативную реализацию `malloc` и влияние на производительность.
 
 ## `process.memoryUsage.rss()`
 
--   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v15.6.0
+  - v14.18.0
+-->
 
-Метод `process.memoryUsage.rss()` возвращает целое число, представляющее размер резидентного набора (RSS) в байтах.
+* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Resident Set Size - это объем пространства, занимаемый в основной памяти (которая является подмножеством всей выделенной памяти) для процесса, включая все объекты и код C++ и JavaScript.
+Метод `process.memoryUsage.rss()` возвращает целое число — RSS в байтах.
 
-Это то же значение, что и свойство `rss`, предоставляемое `process.memoryUsage()`, но `process.memoryUsage.rss()` быстрее.
+RSS — объём в основной памяти (подмножество всей выделенной) для процесса,
+включая C++ и JavaScript объекты и код.
 
-```mjs
-import { memoryUsage } from 'node:process';
+То же значение, что поле `rss` у `process.memoryUsage()`, но быстрее.
 
-console.log(memoryUsage.rss());
-// 35655680
-```
+=== "MJS"
 
-```cjs
-const { rss } = require('node:process');
+    ```js
+    import { memoryUsage } from 'node:process';
+    
+    console.log(memoryUsage.rss());
+    // 35655680
+    ```
 
-console.log(memoryUsage.rss());
-// 35655680
-```
+=== "CJS"
 
-<!-- 0055.part.md -->
+    ```js
+    const { memoryUsage } = require('node:process');
+    
+    console.log(memoryUsage.rss());
+    // 35655680
+    ```
 
 ## `process.nextTick(callback[, ...args])`
 
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `...args` {любые} Дополнительные аргументы для передачи при вызове `callback`.
+<!-- YAML
+added: v0.1.26
+changes:
+  - version:
+    - v22.7.0
+    - v20.18.0
+    pr-url: https://github.com/nodejs/node/pull/51280
+    description: Changed stability to Legacy.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v1.8.1
+    pr-url: https://github.com/nodejs/node/pull/1077
+    description: Additional arguments after `callback` are now supported.
+-->
 
-Функция `process.nextTick()` добавляет `callback` в "очередь следующего тика". Эта очередь полностью опустошается после завершения текущей операции на стеке JavaScript и перед тем, как цикл событий будет продолжен. Можно создать бесконечный цикл, если рекурсивно вызывать `process.nextTick()`. Дополнительную информацию см. в руководстве [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#process-nexttick).
+Добавлено в: v0.1.26
 
-```mjs
-import { nextTick } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.7.0, v20.18.0 | Изменена стабильность на Legacy. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v1.8.1 | Теперь поддерживаются дополнительные аргументы после обратного вызова. |
 
-console.log('start');
-nextTick(() => {
-    console.log('nextTick callback');
-});
-console.log('scheduled');
-// Выходные данные:
-// старт
-// запланированный
-// обратный вызов nextTick
-```
+> Стабильность: 3 — устаревшее. Используйте [`queueMicrotask()`][].
 
-```cjs
-const { nextTick } = require('node:process');
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `...args` {any} дополнительные аргументы для вызова `callback`
 
-console.log('start');
-nextTick(() => {
-    console.log('nextTick callback');
-});
-console.log('scheduled');
-// Выходные данные:
-// старт
-// запланированный
-// обратный вызов nextTick
-```
+`process.nextTick()` помещает `callback` в очередь «next tick». Она полностью
+выполняется после завершения текущей операции на стеке JavaScript и до продолжения
+цикла событий. Рекурсивный `process.nextTick()` может зациклить процесс.
+См. руководство [Event Loop][].
 
-Это важно при разработке API, чтобы дать пользователям возможность назначать обработчики событий _после_ создания объекта, но до того, как произойдет ввод/вывод:
+=== "MJS"
 
-```mjs
-import { nextTick } from 'node:process';
-
-function MyThing(options) {
-    this.setupOptions(options);
-
+    ```js
+    import { nextTick } from 'node:process';
+    
+    console.log('start');
     nextTick(() => {
-        this.startDoingStuff();
+      console.log('nextTick callback');
     });
-}
+    console.log('scheduled');
+    // Output:
+    // start
+    // scheduled
+    // nextTick callback
+    ```
 
-const thing = new MyThing();
-thing.getReadyForStuff();
+=== "CJS"
 
-// thing.startDoingStuff() вызывается сейчас, а не раньше.
-```
-
-```cjs
-const { nextTick } = require('node:process');
-
-function MyThing(options) {
-    this.setupOptions(options);
-
+    ```js
+    const { nextTick } = require('node:process');
+    
+    console.log('start');
     nextTick(() => {
-        this.startDoingStuff();
+      console.log('nextTick callback');
     });
-}
+    console.log('scheduled');
+    // Output:
+    // start
+    // scheduled
+    // nextTick callback
+    ```
 
-const thing = new MyThing();
-thing.getReadyForStuff();
+Это важно при проектировании API: пользователь может назначить обработчики
+_после_ создания объекта, но _до_ любого ввода-вывода:
 
-// thing.startDoingStuff() вызывается сейчас, а не раньше.
-```
+=== "MJS"
 
-Очень важно, чтобы API были либо на 100% синхронными, либо на 100% асинхронными. Рассмотрим этот пример:
+    ```js
+    import { nextTick } from 'node:process';
+    
+    function MyThing(options) {
+      this.setupOptions(options);
+    
+      nextTick(() => {
+        this.startDoingStuff();
+      });
+    }
+    
+    const thing = new MyThing();
+    thing.getReadyForStuff();
+    
+    // thing.startDoingStuff() gets called now, not before.
+    ```
+
+=== "CJS"
+
+    ```js
+    const { nextTick } = require('node:process');
+    
+    function MyThing(options) {
+      this.setupOptions(options);
+    
+      nextTick(() => {
+        this.startDoingStuff();
+      });
+    }
+    
+    const thing = new MyThing();
+    thing.getReadyForStuff();
+    
+    // thing.startDoingStuff() gets called now, not before.
+    ```
+
+API лучше делать либо полностью синхронными, либо полностью асинхронными. Пример:
 
 ```js
-// ВНИМАНИЕ!  НЕ ИСПОЛЬЗОВАТЬ!  ОПАСНО!
+// WARNING!  DO NOT USE!  BAD UNSAFE HAZARD!
 function maybeSync(arg, cb) {
-    if (arg) {
-        cb();
-        return;
-    }
+  if (arg) {
+    cb();
+    return;
+  }
 
-    fs.stat('file', cb);
+  fs.stat('file', cb);
 }
 ```
 
-Этот API опасен, поскольку в следующем случае:
+Такой API опасен, потому что здесь:
 
 ```js
 const maybeTrue = Math.random() > 0.5;
 
 maybeSync(maybeTrue, () => {
-    foo();
+  foo();
 });
 
 bar();
 ```
 
-Неясно, что будет вызвано первым - `foo()` или `bar()`.
+неочевидно, что выполнится раньше — `foo()` или `bar()`.
 
-Следующий подход намного лучше:
+Надёжнее так:
 
-```mjs
-import { nextTick } from 'node:process';
+=== "MJS"
 
-function definitelyAsync(arg, cb) {
-    if (arg) {
+    ```js
+    import { nextTick } from 'node:process';
+    
+    function definitelyAsync(arg, cb) {
+      if (arg) {
         nextTick(cb);
         return;
+      }
+    
+      fs.stat('file', cb);
     }
+    ```
 
-    fs.stat('file', cb);
-}
-```
+=== "CJS"
 
-```cjs
-const { nextTick } = require('node:process');
-
-function definitelyAsync(arg, cb) {
-    if (arg) {
+    ```js
+    const { nextTick } = require('node:process');
+    
+    function definitelyAsync(arg, cb) {
+      if (arg) {
         nextTick(cb);
         return;
+      }
+    
+      fs.stat('file', cb);
     }
+    ```
 
-    fs.stat('file', cb);
-}
-```
+### Когда использовать `queueMicrotask()` и когда `process.nextTick()`
 
-<!-- 0056.part.md -->
+[`queueMicrotask()`][] — альтернатива `process.nextTick()`: вместо очереди
+«next tick» откладывает выполнение через ту же микрозадачную очередь, что и
+обработчики `then`/`catch`/`finally` у промисов.
 
-### Когда использовать `queueMicrotask()` против `process.nextTick()`
+В Node.js после каждого опустошения очереди «next tick» сразу опустошается и
+очередь микрозадач.
 
-API [`queueMicrotask()`](globals.md#queuemicrotaskcallback) - это альтернатива `process.nextTick()`, которая также откладывает выполнение функции, используя ту же очередь микрозадач, которая используется для выполнения обработчиков then, catch и finally разрешенных обещаний. В Node.js каждый раз, когда "очередь следующего тика" опустошается, очередь микрозадач опустошается сразу после этого.
+В CJS-модулях колбэки `process.nextTick()` всегда выполняются раньше колбэков
+`queueMicrotask()`. В ESM загрузка модулей уже идёт в микрозадачной очереди, поэтому
+там колбэки `queueMicrotask()` выполняются раньше `process.nextTick()`, пока Node.js
+обрабатывает микрозадачи.
 
-```mjs
-import { nextTick } from 'node:process';
+=== "MJS"
 
-Promise.resolve().then(() => console.log(2));
-queueMicrotask(() => console.log(3));
-nextTick(() => console.log(1));
-// Выход:
-// 1
-// 2
-// 3
-```
+    ```js
+    import { nextTick } from 'node:process';
+    
+    Promise.resolve().then(() => console.log('resolve'));
+    queueMicrotask(() => console.log('microtask'));
+    nextTick(() => console.log('nextTick'));
+    // Output:
+    // resolve
+    // microtask
+    // nextTick
+    ```
 
-```cjs
-const { nextTick } = require('node:process');
+=== "CJS"
 
-Promise.resolve().then(() => console.log(2));
-queueMicrotask(() => console.log(3));
-nextTick(() => console.log(1));
-// Выход:
-// 1
-// 2
-// 3
-```
+    ```js
+    const { nextTick } = require('node:process');
+    
+    Promise.resolve().then(() => console.log('resolve'));
+    queueMicrotask(() => console.log('microtask'));
+    nextTick(() => console.log('nextTick'));
+    // Output:
+    // nextTick
+    // resolve
+    // microtask
+    ```
 
-Для _большинства_ пользовательских сценариев API `queueMicrotask()` предоставляет переносимый и надежный механизм отсрочки выполнения, который работает в различных средах платформы JavaScript, и ему следует отдать предпочтение перед `process.nextTick()`. В простых сценариях `queueMicrotask()` может стать полноценной заменой `process.nextTick()`.
+В _большинстве_ прикладных сценариев `queueMicrotask()` — переносимый и предсказуемый
+способ отложить выполнение в разных средах JavaScript; его стоит предпочитать
+`process.nextTick()`. В простых случаях `queueMicrotask()` можно подставить вместо
+`process.nextTick()`.
 
 ```js
 console.log('start');
 queueMicrotask(() => {
-    console.log('обратный вызов микрозадачи');
+  console.log('microtask callback');
 });
 console.log('scheduled');
-// Вывод:
-// запуск
-// запланированный
-// обратный вызов микрозадачи
+// Output:
+// start
+// scheduled
+// microtask callback
 ```
 
-Одно заслуживающее внимания различие между двумя API заключается в том, что `process.nextTick()` позволяет указать дополнительные значения, которые будут переданы в качестве аргументов отложенной функции при ее вызове. Для достижения того же результата с помощью `queueMicrotask()` необходимо использовать либо закрытие, либо связанную функцию:
+Важное отличие: `process.nextTick()` принимает дополнительные аргументы для отложенной
+функции. С `queueMicrotask()` для этого нужны замыкание или привязка (`bind`):
 
 ```js
 function deferred(a, b) {
-    console.log('microtask', a + b);
+  console.log('microtask', a + b);
 }
 
 console.log('start');
 queueMicrotask(deferred.bind(undefined, 1, 2));
 console.log('scheduled');
-// Выходные данные:
+// Output:
 // start
-// запланированный
-// микрозадача 3
+// scheduled
+// microtask 3
 ```
 
-Существуют незначительные различия в том, как обрабатываются ошибки, возникающие внутри очереди следующего тика и очереди микрозадач. Ошибки, возникающие внутри очереди обратного вызова микрозадачи, должны обрабатываться внутри очереди обратного вызова, когда это возможно. Если это невозможно, то для перехвата и обработки ошибок можно использовать обработчик событий `process.on('uncaughtException')`.
+Ошибки из очередей next tick и микрозадач обрабатываются немного по-разному.
+Исключения в колбэке микрозадачи лучше ловить внутри него; иначе можно использовать
+`process.on('uncaughtException')`.
 
-В случае сомнений, если не требуются специфические возможности `process.nextTick()`, используйте `queueMicrotask()`.
-
-<!-- 0057.part.md -->
+Если нет нужды в особенностях `process.nextTick()`, используйте `queueMicrotask()`.
 
 ## `process.noDeprecation`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.8.0
+-->
 
-Свойство `process.noDeprecation` указывает, установлен ли флаг `--no-deprecation` для текущего процесса Node.js. Более подробную информацию о поведении этого флага смотрите в документации к событию [`'warning'`'](#event-warning) и методу [`emitWarning()`](#processemitwarningwarning-type-code-ctor).
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0058.part.md -->
+Свойство `process.noDeprecation` показывает, задан ли флаг `--no-deprecation` у
+текущего процесса Node.js. Поведение см. в описании события [`'warning'`][process_warning]
+и метода [`emitWarning()`][process_emit_warning].
 
 ## `process.permission`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v20.0.0
+-->
 
-Этот API доступен через флаг [`--experimental-permission`](cli.md#--experimental-permission).
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-`process.permission` - это объект, методы которого используются для управления разрешениями для текущего процесса. Дополнительная документация доступна в [Permission Model](permissions.md#permission-model).
+API доступен с флагом [`--permission`][].
 
-<!-- 0059.part.md -->
+`process.permission` — объект с методами управления правами текущего процесса.
+Подробнее — [модель разрешений][Permission Model].
 
-### `process.permission.deny(scope[, reference])`.
+### `process.permission.has(scope[, reference])`
 
--   `scopes` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `reference` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v20.0.0
+-->
 
-Запрет разрешений во время выполнения.
+* `scope` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `reference` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Доступными областями являются:
+Проверяет, может ли процесс обращаться к указанной области (`scope`) и ссылке
+(`reference`). Если ссылка не задана, подразумевается глобальная область: например,
+`process.permission.has('fs.read')` проверяет, есть ли у процесса _все_ права на чтение ФС.
 
--   `fs` - Вся файловая система
--   `fs.read` - Операции чтения файловой системы
--   `fs.write` - операции записи в файловой системе
+Смысл `reference` зависит от `scope`: для файловой системы это файлы и каталоги.
 
-Ссылка имеет значение, основанное на предоставленной области видимости. Например, ссылка, когда область видимости - Файловая система, означает файлы и папки.
+Доступные области:
 
-```js
-// Запретить операции READ к файлу ./README.md
-process.permission.deny('fs.read', ['./README.md']);
-// Запретить ВСЕ операции записи
-process.permission.deny('fs.write');
-```
-
-<!-- 0060.part.md -->
-
-### `process.permission.has(scope[, reference])`.
-
--   `scopes` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `reference` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-
-Проверяет, может ли процесс получить доступ к заданной области видимости и ссылке. Если ссылка не указана, предполагается глобальная область видимости, например, `process.permission.has('fs.read')` проверит, имеет ли процесс ВСЕ разрешения на чтение файловой системы.
-
-Ссылка имеет значение, основанное на предоставленной области видимости. Например, ссылка в области видимости File System означает файлы и папки.
-
-Доступными областями являются:
-
--   `fs` - Вся файловая система
--   `fs.read` - операции чтения файловой системы
--   `fs.write` - операции записи в файловой системе
-
-<!-- конец списка -->
+* `fs` — вся файловая система
+* `fs.read` — чтение ФС
+* `fs.write` — запись ФС
+* `child` — порождение дочерних процессов
+* `worker` — порождение потоков Worker
 
 ```js
-// Проверьте, есть ли у процесса разрешение на чтение файла README
+// Check if the process has permission to read the README file
 process.permission.has('fs.read', './README.md');
-// Проверьте, есть ли у процесса разрешение на чтение операций
+// Check if the process has read permission operations
 process.permission.has('fs.read');
 ```
 
-<!-- 0061.part.md -->
-
 ## `process.pid`
 
--   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.1.15
+-->
+
+* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `process.pid` возвращает PID процесса.
 
-```mjs
-import { pid } from 'node:process';
+=== "MJS"
 
-console.log(`Этот процесс имеет pid ${pid}`);
-```
+    ```js
+    import { pid } from 'node:process';
+    
+    console.log(`This process is pid ${pid}`);
+    ```
 
-```cjs
-const { pid } = require('node:process');
+=== "CJS"
 
-console.log(`Этот процесс - pid ${pid}`);
-```
-
-<!-- 0062.part.md -->
+    ```js
+    const { pid } = require('node:process');
+    
+    console.log(`This process is pid ${pid}`);
+    ```
 
 ## `process.platform`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.16
+-->
 
-Свойство `process.platform` возвращает строку, идентифицирующую платформу операционной системы, для которой был скомпилирован бинарный файл Node.js.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-В настоящее время возможными значениями являются:
+Свойство `process.platform` возвращает строку с идентификатором платформы ОС,
+под которую собран двоичный файл Node.js.
 
--   `aix`
--   `darwin`
--   `freebsd`
--   `linux`
--   `openbsd`
--   `Sunos`
--   `win32`
+Сейчас возможны значения:
 
-<!-- конец списка -->
+* `'aix'`
+* `'darwin'`
+* `'freebsd'`
+* `'linux'`
+* `'openbsd'`
+* `'sunos'`
+* `'win32'`
 
-```mjs
-import { platform } from 'node:process';
+=== "MJS"
 
-console.log(`Эта платформа ${платформа}`);
-```
+    ```js
+    import { platform } from 'node:process';
+    
+    console.log(`This platform is ${platform}`);
+    ```
 
-```cjs
-const { platform } = require('node:process');
+=== "CJS"
 
-console.log(`Эта платформа - ${платформа}`);
-```
+    ```js
+    const { platform } = require('node:process');
+    
+    console.log(`This platform is ${platform}`);
+    ```
 
-Значение `'android'` также может быть возвращено, если Node.js построен на операционной системе Android. Однако поддержка Android в Node.js [является экспериментальной](https://github.com/nodejs/node/blob/HEAD/BUILDING.md#androidandroid-based-devices-eg-firefox-os).
-
-<!-- 0063.part.md -->
+Может возвращаться и `'android'`, если Node.js собран под Android. Поддержка
+Android в Node.js [экспериментальна][Android building].
 
 ## `process.ppid`
 
--   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added:
+  - v9.2.0
+  - v8.10.0
+  - v6.13.0
+-->
 
-Свойство `process.ppid` возвращает PID родителя текущего процесса.
+* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import { ppid } from 'node:process';
+Свойство `process.ppid` возвращает PID родительского процесса.
 
-console.log(`Родительский процесс имеет pid ${ppid}`);
-```
+=== "MJS"
 
-```cjs
-const { ppid } = require('node:process');
+    ```js
+    import { ppid } from 'node:process';
+    
+    console.log(`The parent process is pid ${ppid}`);
+    ```
 
-console.log(`Родительский процесс - pid ${ppid}`);
-```
+=== "CJS"
 
-<!-- 0064.part.md -->
+    ```js
+    const { ppid } = require('node:process');
+    
+    console.log(`The parent process is pid ${ppid}`);
+    ```
+
+## `process.ref(maybeRefable)`
+
+<!-- YAML
+added:
+  - v23.6.0
+  - v22.14.0
+-->
+
+> Стабильность: 1 — экспериментально
+
+* `maybeRefable` {any} объект, который может поддерживать «ref»
+
+Объект «refable», если реализует протокол Node.js «Refable»: методы
+`Symbol.for('nodejs.ref')` и `Symbol.for('nodejs.unref')`. Объекты с ref удерживают
+цикл событий Node.js, с unref — нет. Раньше это делали методами `ref()`/`unref()` на
+объектах; этот подход уступает протоколу «Refable», чтобы поддерживать типы Web
+Platform API, где нельзя добавить `ref()`/`unref()`, но нужно такое поведение.
 
 ## `process.release`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v3.0.0
+changes:
+  - version: v4.2.0
+    pr-url: https://github.com/nodejs/node/pull/3212
+    description: The `lts` property is now supported.
+-->
 
-Свойство `process.release` возвращает `Object`, содержащий метаданные, относящиеся к текущему релизу, включая URL-адреса исходного tarball и tarball только с заголовками.
+Добавлено в: v3.0.0
 
-`process.release` содержит следующие свойства:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v4.2.0 | Свойство `lts` теперь поддерживается. |
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение, которое всегда будет `'node''.
--   `sourceUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий исходный код текущего релиза.
--   `headersUrl`[`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL, указывающий на файл _`.tar.gz`_, содержащий только заголовочные файлы исходного кода текущего выпуска. Этот файл значительно меньше полного исходного файла и может быть использован для компиляции нативных дополнений Node.js.
--   `libUrl` {string|undefined} абсолютный URL, указывающий на файл _`node.lib`_, соответствующий архитектуре и версии текущего выпуска. Этот файл используется для компиляции встроенных дополнений Node.js. _Это свойство присутствует только в Windows-сборках Node.js и будет отсутствовать на всех остальных платформах._
--   `lts` {string|undefined} строковая метка, идентифицирующая метку [LTS](https://github.com/nodejs/Release) для этого выпуска. Это свойство существует только для релизов LTS и является `неопределенным` для всех других типов релизов, включая релизы _Current_. Допустимые значения включают кодовые имена релизов LTS (включая те, которые больше не поддерживаются).
-    -   `'Fermium'` для линейки 14.x LTS, начиная с 14.15.0.
-    -   `Галлий` для линейки 16.x LTS, начиная с 16.13.0.
-    -   `Водород` для линейки 18.x LTS, начиная с 18.12.0. Другие кодовые названия релизов LTS смотрите в [Node.js Changelog Archive](https://github.com/nodejs/node/blob/HEAD/doc/changelogs/CHANGELOG_ARCHIVE.md).
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-<!-- конец списка -->
+Свойство `process.release` возвращает `Object` с метаданными текущего релиза,
+включая URL архива исходников и архива только заголовков.
+
+У `process.release` такие поля:
+
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) всегда `'node'`.
+* `sourceUrl` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL к файлу _`.tar.gz`_ с исходным кодом релиза.
+* `headersUrl`[<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) абсолютный URL к _`.tar.gz`_ только с заголовками; файл
+  намного меньше полного исходника и подходит для сборки нативных аддонов Node.js.
+* `libUrl` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined абсолютный URL к файлу _`node.lib`_, соответствующему
+  архитектуре и версии релиза; нужен для сборки нативных аддонов. _Только в сборках
+  Node.js для Windows; на других платформах отсутствует._
+* `lts` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined метка [LTS][] для релиза. Есть только у LTS-выпусков, для
+  остальных (включая _Current_) — `undefined`. Допустимы кодовые имена LTS
+  (в том числе уже не поддерживаемые).
+  * `'Fermium'` — линия 14.x LTS с 14.15.0.
+  * `'Gallium'` — линия 16.x LTS с 16.13.0.
+  * `'Hydrogen'` — линия 18.x LTS с 18.12.0.
+    Остальные имена см. в [Node.js Changelog Archive](https://github.com/nodejs/node/blob/HEAD/doc/changelogs/CHANGELOG_ARCHIVE.md)
+
+<!-- eslint-skip -->
 
 ```js
 {
@@ -2285,641 +3565,919 @@ console.log(`Родительский процесс - pid ${ppid}`);
 }
 ```
 
-В пользовательских сборках из нерелизных версий дерева исходников может присутствовать только свойство `name`. Не следует полагаться на существование дополнительных свойств.
-
-<!-- 0065.part.md -->
+В неофициальных сборках из дерева исходников может быть только свойство `name`;
+наличие остальных полей не гарантируется.
 
 ## `process.report`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-`process.report` - это объект, методы которого используются для создания диагностических отчетов для текущего процесса. Дополнительная документация доступна в документации [report documentation](report.md).
+Добавлено в: v11.8.0
 
-<!-- 0066.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+`process.report` — объект с методами генерации диагностических отчётов для текущего
+процесса. Подробнее — [документация по отчётам][report documentation].
 
 ### `process.report.compact`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added:
+ - v13.12.0
+ - v12.17.0
+-->
 
-Записывать отчеты в компактном формате, однострочном JSON, более удобном для систем обработки журналов, чем многострочный формат по умолчанию, предназначенный для человеческого потребления.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-```mjs
-import { report } from 'node:process';
+Писать отчёты в компактном однострочном JSON — удобнее для систем обработки логов,
+чем многострочный формат по умолчанию.
 
+=== "MJS"
 
-console.log(``Отчеты компактны? ${report.compact}`);
-```
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Reports are compact? ${report.compact}`);
+    ```
 
-```cjs
-const { report } = require('node:process');
+=== "CJS"
 
-console.log(`Отчеты компактны? ${report.compact}`);
-```
-
-<!-- 0067.part.md -->
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Reports are compact? ${report.compact}`);
+    ```
 
 ### `process.report.directory`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Каталог, в который записывается отчет. Значение по умолчанию - пустая строка, указывающая, что отчеты записываются в текущий рабочий каталог процесса Node.js.
+Добавлено в: v11.12.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-console.log(`Каталог отчета - ${report.directory}`);
-```
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```cjs
-const { report } = require('node:process');
+Каталог, куда пишется отчёт. По умолчанию пустая строка — тогда файлы попадают в
+текущий рабочий каталог процесса Node.js.
 
-console.log(`Report directory is ${report.directory}`);
-```
+=== "MJS"
 
-<!-- 0068.part.md -->
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report directory is ${report.directory}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report directory is ${report.directory}`);
+    ```
 
 ### `process.report.filename`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Имя файла, в который записывается отчет. Если установлено значение пустой строки, имя выходного файла будет состоять из метки времени, PID и номера последовательности. Значение по умолчанию - пустая строка.
+Добавлено в: v11.12.0
 
-Если значение `process.report.filename` установлено в `'stdout'` или `'stderr'`, отчет будет записан в stdout или stderr процесса соответственно.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-```mjs
-import { report } from 'node:process';
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-console.log(`Имя файла отчета - ${report.filename}`);
-```
+Имя файла отчёта. Пустая строка (значение по умолчанию) — имя собирается из
+метки времени, PID и порядкового номера.
 
-```cjs
-const { report } = require('node:process');
+Если `process.report.filename` равен `'stdout'` или `'stderr'`, отчёт пишется в
+stdout или stderr процесса.
 
-console.log(`Report filename is ${report.filename}`);
-```
+=== "MJS"
 
-<!-- 0069.part.md -->
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report filename is ${report.filename}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report filename is ${report.filename}`);
+    ```
 
 ### `process.report.getReport([err])`
 
--   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Пользовательская ошибка, используемая для отчета о стеке JavaScript.
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Возвращает представление JavaScript-объекта диагностического отчета для запущенного процесса. Трассировка стека JavaScript в отчете берется из `err`, если присутствует.
+Добавлено в: v11.8.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-const data = report.getReport();
-console.log(data.header.nodejsVersion);
+* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) пользовательская ошибка для стека JavaScript в отчёте
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-// Аналогично process.report.writeReport()
-import fs from 'node:fs';
-fs.writeFileSync(
-    'my-report.log',
-    util.inspect(data),
-    'utf8'
-);
-```
+Возвращает объект JavaScript с диагностическим отчётом о работающем процессе.
+Стек JavaScript берётся из `err`, если передан.
 
-```cjs
-const { report } = require('node:process');
+=== "MJS"
 
-const data = report.getReport();
-console.log(data.header.nodejsVersion);
+    ```js
+    import { report } from 'node:process';
+    import util from 'node:util';
+    
+    const data = report.getReport();
+    console.log(data.header.nodejsVersion);
+    
+    // Similar to process.report.writeReport()
+    import fs from 'node:fs';
+    fs.writeFileSync('my-report.log', util.inspect(data), 'utf8');
+    ```
 
-// Аналогично process.report.writeReport()
-const fs = require('node:fs');
-fs.writeFileSync(
-    'my-report.log',
-    util.inspect(data),
-    'utf8'
-);
-```
+=== "CJS"
 
-Дополнительная документация доступна в [документации по отчету](report.md).
+    ```js
+    const { report } = require('node:process');
+    const util = require('node:util');
+    
+    const data = report.getReport();
+    console.log(data.header.nodejsVersion);
+    
+    // Similar to process.report.writeReport()
+    const fs = require('node:fs');
+    fs.writeFileSync('my-report.log', util.inspect(data), 'utf8');
+    ```
 
-<!-- 0070.part.md -->
+Дополнительно см. [документацию по отчётам][report documentation].
 
 ### `process.report.reportOnFatalError`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v15.0.0
+     - v14.17.0
+    pr-url: https://github.com/nodejs/node/pull/35654
+    description: This API is no longer experimental.
+-->
 
-Если `true`, генерируется диагностический отчет о фатальных ошибках, таких как ошибки выхода из памяти или неудачные утверждения C++.
+Добавлено в: v11.12.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0, v14.17.0 | Этот API больше не является экспериментальным. |
 
-console.log(
-    `Отчет о фатальной ошибке: ${report.reportOnFatalError}`
-);
-```
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-```cjs
-const { report } = require('node:process');
+Если `true`, диагностический отчёт создаётся при фатальных ошибках (например нехватка
+памяти или сбой C++-утверждения).
 
+=== "MJS"
 
-console.log(``Отчет о фатальной ошибке: ${report.reportOnFatalError}`);
-```
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report on fatal error: ${report.reportOnFatalError}`);
+    ```
 
-<!-- 0071.part.md -->
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report on fatal error: ${report.reportOnFatalError}`);
+    ```
 
 ### `process.report.reportOnSignal`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Если `true`, диагностический отчет генерируется, когда процесс получает сигнал, указанный `process.report.signal`.
+Добавлено в: v11.12.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-console.log(`Отчет по сигналу: ${report.reportOnSignal}`);
-```
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-```cjs
-const { report } = require('node:process');
+Если `true`, отчёт создаётся при получении процессом сигнала из `process.report.signal`.
 
-console.log(`Report on signal: ${report.reportOnSignal}`);
-```
+=== "MJS"
 
-<!-- 0072.part.md -->
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report on signal: ${report.reportOnSignal}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report on signal: ${report.reportOnSignal}`);
+    ```
 
 ### `process.report.reportOnUncaughtException`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Если `true`, диагностический отчет генерируется при не пойманном исключении.
+Добавлено в: v11.12.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-console.log(
-    `Report on exception: ${report.reportOnUncaughtException}`
-);
-```
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-```cjs
-const { report } = require('node:process');
+Если `true`, отчёт создаётся при необработанном исключении.
 
-console.log(
-    `Report on exception: ${report.reportOnUncaughtException}`
-);
-```
+=== "MJS"
 
-<!-- 0073.part.md -->
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report on exception: ${report.reportOnUncaughtException}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report on exception: ${report.reportOnUncaughtException}`);
+    ```
+
+### `process.report.excludeEnv`
+
+<!-- YAML
+added:
+  - v23.3.0
+  - v22.13.0
+-->
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Если `true`, отчёт формируется без переменных окружения.
 
 ### `process.report.signal`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v11.12.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Сигнал, используемый для запуска создания диагностического отчета. По умолчанию `'SIGUSR2'`.
+Добавлено в: v11.12.0
 
-```mjs
-import { report } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-console.log(`Сигнал отчета: ${report.signal}`);
-```
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```cjs
-const { report } = require('node:process');
+Сигнал для создания диагностического отчёта. По умолчанию `'SIGUSR2'`.
 
-console.log(`Сигнал отчета: ${report.signal}`);
-```
+=== "MJS"
 
-<!-- 0074.part.md -->
+    ```js
+    import { report } from 'node:process';
+    
+    console.log(`Report signal: ${report.signal}`);
+    ```
 
-### `process.report.writeReport([filename][, err])`.
+=== "CJS"
 
--   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла, в который записывается отчет. Это должен быть относительный путь, который будет добавлен к директории, указанной в `process.report.directory`, или к текущей рабочей директории процесса Node.js, если она не указана.
+    ```js
+    const { report } = require('node:process');
+    
+    console.log(`Report signal: ${report.signal}`);
+    ```
 
--   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Пользовательская ошибка, используемая для отчета о стеке JavaScript.
+### `process.report.writeReport([filename][, err])`
 
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Возвращает имя файла сгенерированного отчета.
+<!-- YAML
+added: v11.8.0
+changes:
+  - version:
+     - v13.12.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/32242
+    description: This API is no longer experimental.
+-->
 
-Записывает диагностический отчет в файл. Если `filename` не указано, имя файла по умолчанию включает дату, время, PID и порядковый номер. Трассировка стека JavaScript в отчете берется из `err`, если присутствует.
+Добавлено в: v11.8.0
 
-Если значение `filename` имеет значение `'stdout'` или `'stderr'`, отчет записывается в stdout или stderr процесса соответственно.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
-```mjs
-import { report } from 'node:process';
+* `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя файла отчёта. Относительный путь дополняется к каталогу из
+  `process.report.directory` или к текущему рабочему каталогу Node.js, если каталог
+  не задан.
 
-report.writeReport();
-```
+* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) пользовательская ошибка для стека JavaScript в отчёте.
 
-```cjs
-const { report } = require('node:process');
+* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя сгенерированного файла отчёта.
 
-report.writeReport();
-```
+Записывает диагностический отчёт в файл. Если `filename` не указан, имя по умолчанию
+включает дату, время, PID и порядковый номер. Стек JavaScript берётся из `err`, если
+передан.
 
-Дополнительная документация доступна в документации [report documentation](report.md).
+Если `filename` равен `'stdout'` или `'stderr'`, отчёт пишется в stdout или stderr.
 
-<!-- 0075.part.md -->
+=== "MJS"
+
+    ```js
+    import { report } from 'node:process';
+    
+    report.writeReport();
+    ```
+
+=== "CJS"
+
+    ```js
+    const { report } = require('node:process');
+    
+    report.writeReport();
+    ```
+
+Дополнительно см. [документацию по отчётам][report documentation].
 
 ## `process.resourceUsage()`
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) использование ресурсов для текущего процесса. Все эти значения берутся из вызова `uv_getrusage`, который возвращает [`uv_rusage_t` struct](https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t).
-    -   `userCPUTime` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_utime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().user`](#processcpuusagepreviousvalue).
-    -   `systemCPUTime` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображает `ru_stime`, вычисляемое в микросекундах. Это то же значение, что и [`process.cpuUsage().system`](#processcpuusagepreviousvalue).
-    -   `maxRSS` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_maxrss`, который является максимальным размером используемого резидентного набора в килобайтах.
-    -   `sharedMemorySize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_ixrss`, но не поддерживается ни одной платформой.
-    -   `unsharedDataSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_idrss`, но не поддерживается ни одной платформой.
-    -   `unsharedStackSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_isrss`, но не поддерживается ни одной платформой.
-    -   `minorPageFault` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_minflt`, что является количеством мелких ошибок страниц для процесса, см. подробнее [эта статья](https://en.wikipedia.org/wiki/Page_fault#Minor).
-    -   `majorPageFault` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_majflt`, которое является числом основных ошибок страниц для процесса, смотрите [эту статью подробнее](https://en.wikipedia.org/wiki/Page_fault#Major). Это поле не поддерживается в Windows.
-    -   `swappedOut` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nswap`, но не поддерживается ни одной платформой.
-    -   `fsRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_inblock`, что является количеством раз, когда файловая система должна была выполнить ввод.
-    -   `fsWrite` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) обозначает `ru_oublock`, т.е. количество раз, когда файловая система должна была выполнить вывод.
-    -   `ipcSent` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgsnd`, но не поддерживается ни одной платформой.
-    -   `ipcReceived` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgrcv`, но не поддерживается ни одной платформой.
-    -   `signalsCount` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_nsignals`, но не поддерживается ни одной платформой.
-    -   `voluntaryContextSwitches` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображается на `ru_nvcsw` и представляет собой количество случаев, когда переключение контекста процессора произошло из-за того, что процесс добровольно отдал процессор до завершения своего временного среза (обычно для ожидания доступности ресурса). Это поле не поддерживается в Windows.
-    -   `involuntaryContextSwitches` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) отображает `ru_nivcsw`, которое представляет собой количество раз, когда переключение контекста процессора произошло из-за того, что процесс с более высоким приоритетом стал выполнимым или из-за того, что текущий процесс превысил свой временной срез. Это поле не поддерживается в Windows.
+<!-- YAML
+added: v12.6.0
+-->
 
-<!-- конец списка -->
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) использование ресурсов текущим процессом. Значения из
+  вызова `uv_getrusage`, возвращающего структуру [`uv_rusage_t`][uv_rusage_t].
+  * `userCPUTime` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_utime` в микросекундах; совпадает с
+    [`process.cpuUsage().user`][process.cpuUsage].
+  * `systemCPUTime` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_stime` в микросекундах; совпадает с
+    [`process.cpuUsage().system`][process.cpuUsage].
+  * `maxRSS` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_maxrss` — максимальный RSS в кибибайтах (1024 байта).
+  * `sharedMemorySize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_ixrss`; ни на одной платформе не поддерживается.
+  * `unsharedDataSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_idrss`; ни на одной платформе не поддерживается.
+  * `unsharedStackSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_isrss`; ни на одной платформе не поддерживается.
+  * `minorPageFault` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_minflt` — число лёгких page fault; см.
+    [статью][wikipedia_minor_fault].
+  * `majorPageFault` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_majflt` — число тяжёлых page fault; см.
+    [статью][wikipedia_major_fault]. В Windows не поддерживается.
+  * `swappedOut` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nswap`; ни на одной платформе не поддерживается.
+  * `fsRead` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_inblock` — сколько раз ФС выполняла ввод.
+  * `fsWrite` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_oublock` — сколько раз ФС выполняла вывод.
+  * `ipcSent` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgsnd`; ни на одной платформе не поддерживается.
+  * `ipcReceived` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_msgrcv`; ни на одной платформе не поддерживается.
+  * `signalsCount` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nsignals`; ни на одной платформе не поддерживается.
+  * `voluntaryContextSwitches` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nvcsw` — сколько раз процесс
+    добровольно отдал процессор до истечения кванта (часто в ожидании ресурса). В Windows не поддерживается.
+  * `involuntaryContextSwitches` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) соответствует `ru_nivcsw` — переключения из-за
+    более приоритетного процесса или превышения кванта. В Windows не поддерживается.
 
-```mjs
-import { resourceUsage } from 'node:process';
+=== "MJS"
 
-console.log(resourceUsage());
-/*
-  Will output:
-  {
-    userCPUTime: 82872,
-    systemCPUTime: 4143,
-    maxRSS: 33164,
-    sharedMemorySize: 0,
-    unsharedDataSize: 0,
-    unsharedStackSize: 0,
-    minorPageFault: 2469,
-    majorPageFault: 0,
-    swappedOut: 0,
-    fsRead: 0,
-    fsWrite: 8,
-    ipcSent: 0,
-    ipcReceived: 0,
-    signalsCount: 0,
-    voluntaryContextSwitches: 79,
-    involuntaryContextSwitches: 1
-  }
-*/
-```
+    ```js
+    import { resourceUsage } from 'node:process';
+    
+    console.log(resourceUsage());
+    /*
+      Пример вывода:
+      {
+        userCPUTime: 82872,
+        systemCPUTime: 4143,
+        maxRSS: 33164,
+        sharedMemorySize: 0,
+        unsharedDataSize: 0,
+        unsharedStackSize: 0,
+        minorPageFault: 2469,
+        majorPageFault: 0,
+        swappedOut: 0,
+        fsRead: 0,
+        fsWrite: 8,
+        ipcSent: 0,
+        ipcReceived: 0,
+        signalsCount: 0,
+        voluntaryContextSwitches: 79,
+        involuntaryContextSwitches: 1
+      }
+    */
+    ```
 
-```cjs
-const { resourceUsage } = require('node:process');
+=== "CJS"
 
-console.log(resourceUsage());
-/*
-  Will output:
-  {
-    userCPUTime: 82872,
-    systemCPUTime: 4143,
-    maxRSS: 33164,
-    sharedMemorySize: 0,
-    unsharedDataSize: 0,
-    unsharedStackSize: 0,
-    minorPageFault: 2469,
-    majorPageFault: 0,
-    swappedOut: 0,
-    fsRead: 0,
-    fsWrite: 8,
-    ipcSent: 0,
-    ipcReceived: 0,
-    signalsCount: 0,
-    voluntaryContextSwitches: 79,
-    involuntaryContextSwitches: 1
-  }
-*/
-```
-
-<!-- 0076.part.md -->
+    ```js
+    const { resourceUsage } = require('node:process');
+    
+    console.log(resourceUsage());
+    /*
+      Пример вывода:
+      {
+        userCPUTime: 82872,
+        systemCPUTime: 4143,
+        maxRSS: 33164,
+        sharedMemorySize: 0,
+        unsharedDataSize: 0,
+        unsharedStackSize: 0,
+        minorPageFault: 2469,
+        majorPageFault: 0,
+        swappedOut: 0,
+        fsRead: 0,
+        fsWrite: 8,
+        ipcSent: 0,
+        ipcReceived: 0,
+        signalsCount: 0,
+        voluntaryContextSwitches: 79,
+        involuntaryContextSwitches: 1
+      }
+    */
+    ```
 
 ## `process.send(message[, sendHandle[, options]][, callback])`
 
--   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `sendHandle` {net.Server|net.Socket}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) используется для параметризации отправки определенных типов дескрипторов.`options` поддерживает следующие свойства:
-    -   `keepOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Значение, которое может использоваться при передаче экземпляров `net.Socket`. Если `true`, сокет остается открытым в процессе отправки. **По умолчанию:** `false`.
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+<!-- YAML
+added: v0.5.9
+-->
 
-Если Node.js порожден с IPC-каналом, метод `process.send()` может быть использован для отправки сообщений родительскому процессу. Сообщения будут получены как событие [`'message'`](child_process.md#event-message) на объекте [`ChildProcess`](child_process.md#class-childprocess) родительского процесса.
+* `message` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `sendHandle` [<net.Server>](net.md#class-netserver) | [<net.Socket>](net.md#class-netsocket)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) параметры отправки отдельных типов дескрипторов. У `options` поля:
+  * `keepOpen` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) при передаче экземпляров `net.Socket`: если `true`, сокет в
+    отправляющем процессе остаётся открытым.
+    **По умолчанию:** `false`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Если Node.js не был порожден с IPC каналом, `process.send` будет `undefined`.
+Если Node.js запущен с IPC-каналом, `process.send()` отправляет сообщения родителю;
+родитель получает их как событие [`'message'`][] на [`ChildProcess`][].
 
-Сообщение проходит сериализацию и синтаксический анализ. Полученное сообщение может отличаться от первоначально отправленного.
+Без IPC-канала `process.send` будет `undefined`.
 
-<!-- 0077.part.md -->
+Сообщение сериализуется и разбирается; итог может отличаться от исходного.
 
 ## `process.setegid(id)`
 
--   `id` {string|number} Имя группы или идентификатор.
+<!-- YAML
+added: v2.0.0
+-->
 
-Метод `process.setegid()` устанавливает эффективный групповой идентификатор процесса. (См. setegid(2).) Значение `id` может быть передано как числовой идентификатор или строка имени группы. Если указано имя группы, этот метод блокируется на время разрешения связанного с ним числового идентификатора.
+* `id` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя или ID группы
 
-```mjs
-import process from 'node:process';
+Метод `process.setegid()` задаёт эффективный GID процесса. См. setegid(2). `id`
+может быть числом или строкой с именем группы; при строке метод блокируется на
+разрешении числового ID.
 
-if (process.getegid && process.setegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-    try {
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    if (process.getegid && process.setegid) {
+      console.log(`Current gid: ${process.getegid()}`);
+      try {
         process.setegid(501);
-        console.log(`Новый gid: ${process.getegid()}`);
-    } catch (err) {
+        console.log(`New gid: ${process.getegid()}`);
+      } catch (err) {
         console.error(`Failed to set gid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-if (process.getegid && process.setegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-    try {
+    ```js
+    const process = require('node:process');
+    
+    if (process.getegid && process.setegid) {
+      console.log(`Current gid: ${process.getegid()}`);
+      try {
         process.setegid(501);
-        console.log(`Новый gid: ${process.getegid()}`);
-    } catch (err) {
+        console.log(`New gid: ${process.getegid()}`);
+      } catch (err) {
         console.error(`Failed to set gid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
-
-<!-- 0078.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.seteuid(id)`
 
--   `id` {string|number} Имя пользователя или идентификатор.
+<!-- YAML
+added: v2.0.0
+-->
 
-Метод `process.seteuid()` устанавливает эффективную идентификацию пользователя процесса. (См. seteuid(2).) Значение `id` может быть передано как числовой идентификатор или строка имени пользователя. Если указано имя пользователя, метод блокируется на время разрешения связанного с ним числового идентификатора.
+* `id` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя или ID пользователя
 
-```mjs
-import process from 'node:process';
+Метод `process.seteuid()` задаёт эффективный UID процесса. См. seteuid(2). `id`
+может быть числом или именем пользователя; при имени метод блокируется на
+разрешении числового ID.
 
-if (process.geteuid && process.seteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-    try {
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    if (process.geteuid && process.seteuid) {
+      console.log(`Current uid: ${process.geteuid()}`);
+      try {
         process.seteuid(501);
-        console.log(`Новый uid: ${process.geteuid()}`);
-    } catch (err) {
+        console.log(`New uid: ${process.geteuid()}`);
+      } catch (err) {
         console.error(`Failed to set uid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-if (process.geteuid && process.seteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-    try {
+    ```js
+    const process = require('node:process');
+    
+    if (process.geteuid && process.seteuid) {
+      console.log(`Current uid: ${process.geteuid()}`);
+      try {
         process.seteuid(501);
-        console.log(`Новый uid: ${process.geteuid()}`);
-    } catch (err) {
+        console.log(`New uid: ${process.geteuid()}`);
+      } catch (err) {
         console.error(`Failed to set uid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
-
-<!-- 0079.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.setgid(id)`
 
--   `id` {string|number} Имя или идентификатор группы
+<!-- YAML
+added: v0.1.31
+-->
 
-Метод `process.setgid()` устанавливает групповой идентификатор процесса. (См. setgid(2).) Значение `id` может быть передано как числовой идентификатор или строка имени группы. Если указано имя группы, этот метод блокируется на время разрешения связанного с ним числового идентификатора.
+* `id` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) имя или ID группы
 
-```mjs
-import process from 'node:process';
+Метод `process.setgid()` задаёт GID процесса. См. setgid(2). `id` — число или
+имя группы; при имени метод блокируется на разрешении числового ID.
 
-if (process.getgid && process.setgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-    try {
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    if (process.getgid && process.setgid) {
+      console.log(`Current gid: ${process.getgid()}`);
+      try {
         process.setgid(501);
-        console.log(`Новый gid: ${process.getgid()}`);
-    } catch (err) {
+        console.log(`New gid: ${process.getgid()}`);
+      } catch (err) {
         console.error(`Failed to set gid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-if (process.getgid && process.setgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-    try {
+    ```js
+    const process = require('node:process');
+    
+    if (process.getgid && process.setgid) {
+      console.log(`Current gid: ${process.getgid()}`);
+      try {
         process.setgid(501);
-        console.log(`Новый gid: ${process.getgid()}`);
-    } catch (err) {
+        console.log(`New gid: ${process.getgid()}`);
+      } catch (err) {
         console.error(`Failed to set gid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
-
-<!-- 0080.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.setgroups(groups)`
 
--   `groups` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.9.4
+-->
 
-Метод `process.setgroups()` устанавливает идентификаторы дополнительных групп для процесса Node.js. Это привилегированная операция, которая требует, чтобы процесс Node.js имел права `root` или `CAP_SETGID`.
+* `groups` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Массив `groups` может содержать числовые идентификаторы групп, имена групп или и то, и другое.
+Метод `process.setgroups()` задаёт дополнительные GID процесса Node.js. Это
+привилегированная операция: нужны `root` или возможность `CAP_SETGID`.
 
-```mjs
-import process from 'node:process';
+Массив `groups` может содержать числовые ID групп, имена или их смесь.
 
-if (process.getgroups && process.setgroups) {
-    try {
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    if (process.getgroups && process.setgroups) {
+      try {
         process.setgroups([501]);
-        console.log(process.getgroups()); // новые группы
-    } catch (err) {
+        console.log(process.getgroups()); // new groups
+      } catch (err) {
         console.error(`Failed to set groups: ${err}`);
+      }
     }
-}
-```
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-if (process.getgroups && process.setgroups) {
-    try {
+    ```js
+    const process = require('node:process');
+    
+    if (process.getgroups && process.setgroups) {
+      try {
         process.setgroups([501]);
-        console.log(process.getgroups()); // новые группы
-    } catch (err) {
+        console.log(process.getgroups()); // new groups
+      } catch (err) {
         console.error(`Failed to set groups: ${err}`);
+      }
     }
-}
-```
+    ```
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
-
-<!-- 0081.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.setuid(id)`
 
--   `id` {целое число | строка}
+<!-- YAML
+added: v0.1.28
+-->
 
-Метод `process.setuid(id)` устанавливает идентификатор пользователя процесса. (См. setuid(2).) Значение `id` может быть передано как числовой идентификатор или как строка имени пользователя. Если указано имя пользователя, метод блокируется на время разрешения связанного с ним числового идентификатора.
+* `id` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```mjs
-import process from 'node:process';
+Метод `process.setuid(id)` задаёт UID процесса. См. setuid(2). `id` — число или
+имя пользователя; при имени метод блокируется на разрешении числового ID.
 
-if (process.getuid && process.setuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-    try {
+=== "MJS"
+
+    ```js
+    import process from 'node:process';
+    
+    if (process.getuid && process.setuid) {
+      console.log(`Current uid: ${process.getuid()}`);
+      try {
         process.setuid(501);
-        console.log(`Новый uid: ${process.getuid()}`);
-    } catch (err) {
+        console.log(`New uid: ${process.getuid()}`);
+      } catch (err) {
         console.error(`Failed to set uid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-```cjs
-const process = require('node:process');
+=== "CJS"
 
-if (process.getuid && process.setuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-    try {
+    ```js
+    const process = require('node:process');
+    
+    if (process.getuid && process.setuid) {
+      console.log(`Current uid: ${process.getuid()}`);
+      try {
         process.setuid(501);
-        console.log(`Новый uid: ${process.getuid()}`);
-    } catch (err) {
+        console.log(`New uid: ${process.getuid()}`);
+      } catch (err) {
         console.error(`Failed to set uid: ${err}`);
+      }
     }
-}
-```
+    ```
 
-Эта функция доступна только на POSIX платформах (т.е. не Windows или Android). Эта функция недоступна в потоках [`Worker`](worker_threads.md#class-worker).
-
-<!-- 0082.part.md -->
+Доступно только на POSIX (не в Windows и не в Android).
+В потоках [`Worker`][] недоступно.
 
 ## `process.setSourceMapsEnabled(val)`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+  - v16.6.0
+  - v14.18.0
+-->
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+> Стабильность: 1 — экспериментально. Используйте [`module.setSourceMapsSupport()`][].
 
--   `val` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `val` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Эта функция включает или выключает поддержку [Source Map v3](https://sourcemaps.info/spec.html) для трассировки стека.
+Включает или выключает поддержку [Source Map][] для трассировок стека.
 
-Она предоставляет те же возможности, что и запуск процесса Node.js с опциями командной строки `--enable-source-maps`.
+Эквивалентно запуску Node.js с опцией `--enable-source-maps`.
 
-Будут разобраны и загружены только карты источников в JavaScript файлах, которые загружаются после включения source maps.
+Разбираются и загружаются только source map в JS-файлах, подключённых после включения.
 
-<!-- 0083.part.md -->
+По сути вызывает `module.setSourceMapsSupport()` с опцией
+`{ nodeModules: true, generatedCode: true }`.
 
 ## `process.setUncaughtExceptionCaptureCallback(fn)`
 
--   `fn` {Function|null}
+<!-- YAML
+added: v9.3.0
+changes:
+  - version: v25.9.0
+    pr-url: https://github.com/nodejs/node/pull/61227
+    description: Use `process.addUncaughtExceptionCaptureCallback()` to
+      register multiple callbacks.
+-->
 
-Функция `process.setUncaughtExceptionCaptureCallback()` устанавливает функцию, которая будет вызываться при возникновении не пойманного исключения и будет принимать в качестве первого аргумента само значение исключения.
+Добавлено в: v9.3.0
 
-Если такая функция установлена, то событие [`'uncaughtException'`](#event-uncaughtexception) не будет испущено. Если функция `--abort-on-uncaught-exception` была передана из командной строки или задана через [`v8.setFlagsFromString()`](v8.md#v8setflagsfromstringflags), процесс не прервется. Действия, настроенные на выполнение при исключениях, таких как генерация отчетов, также будут затронуты.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.9.0 | Используйте `process.addUncaughtExceptionCaptureCallback()` для регистрации нескольких обратных вызовов. |
 
-Для отмены функции перехвата можно использовать `process.setUncaughtExceptionCaptureCallback(null)`. Вызов этого метода с аргументом не `null`, когда установлена другая функция захвата, приведет к ошибке.
+* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | null
 
-Использование этой функции исключает использование устаревшего встроенного модуля [`domain`](domain.md).
+Функция `process.setUncaughtExceptionCaptureCallback()` задаёт функцию, вызываемую
+при необработанном исключении; первым аргументом передаётся само исключение.
 
-<!-- 0084.part.md -->
+Если такая функция задана, событие [`'uncaughtException'`][] не испускается. Если
+передан `--abort-on-uncaught-exception` или он задан через [`v8.setFlagsFromString()`][],
+процесс не аварийно завершается. Затронуты и действия при исключениях (например генерация отчётов).
+
+Чтобы сбросить перехват, вызовите `process.setUncaughtExceptionCaptureCallback(null)`.
+Вызов с ненулевым аргументом при уже установленной функции перехвата выбрасывает ошибку.
+
+Несколько совместимых callback’ов регистрируйте через
+[`process.addUncaughtExceptionCaptureCallback()`][].
+
+## `process.sourceMapsEnabled`
+
+<!-- YAML
+added:
+  - v20.7.0
+  - v18.19.0
+-->
+
+> Стабильность: 1 — экспериментально. Используйте [`module.getSourceMapsSupport()`][].
+
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Свойство `process.sourceMapsEnabled` показывает, включена ли поддержка
+[Source Map][] для трассировок стека.
 
 ## `process.stderr`
 
--   [`<Stream>`](stream.md#stream)
+* Тип: [<Stream>](stream.md#stream)
 
-Свойство `process.stderr` возвращает поток, подключенный к `stderr` (fd `2`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `2` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
+Свойство `process.stderr` возвращает поток, связанный с `stderr` (fd `2`). Это
+[`net.Socket`][] ([Duplex][]), если fd `2` не файл; иначе — [Writable][].
 
-`process.stderr` отличается от других потоков Node.js важным образом. Дополнительную информацию смотрите в [заметке о процессах ввода/вывода](#a-note-on-process-io).
-
-<!-- 0085.part.md -->
+`process.stderr` ведёт себя иначе, чем обычные потоки Node.js. См. [замечание о вводе-выводе процесса][note on process I/O].
 
 ### `process.stderr.fd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Это свойство относится к значению базового дескриптора файла `process.stderr`. Значение фиксировано на `2`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
-
-<!-- 0086.part.md -->
+Нижележащий дескриптор файла `process.stderr`; всегда `2`. В потоках [`Worker`][] поля нет.
 
 ## `process.stdin`
 
--   [`<Stream>`](stream.md#stream)
+* Тип: [<Stream>](stream.md#stream)
 
-Свойство `process.stdin` возвращает поток, подключенный к `stdin` (fd `0`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `0` не ссылается на файл, в этом случае это [Readable](stream.md#readable-streams) поток.
+Свойство `process.stdin` возвращает поток, связанный с `stdin` (fd `0`). Это
+[`net.Socket`][] ([Duplex][]), если fd `0` не файл; иначе — [Readable][].
 
-О том, как читать из `stdin`, смотрите [`readable.read()`](stream.md#readablereadsize).
+Чтение из `stdin` см. в [`readable.read()`][].
 
-Как поток [Duplex](stream.md#duplex-and-transform-streams), `process.stdin` может также использоваться в "старом" режиме, который совместим со скриптами, написанными для Node.js до версии 0.10. Для получения дополнительной информации смотрите [Совместимость потоков](stream.md#compatibility-with-older-nodejs-versions).
+Как [Duplex][], `process.stdin` можно использовать в «старом» режиме, совместимом со скриптами до Node.js v0.10.
+Подробнее — [совместимость потоков][Stream compatibility].
 
-В режиме "старых" потоков поток `stdin` по умолчанию приостановлен, поэтому для чтения из него необходимо вызвать `process.stdin.resume()`. Заметим также, что вызов `process.stdin.resume()` сам по себе переключит поток в "старый" режим.
-
-<!-- 0087.part.md -->
+В «старом» режиме `stdin` по умолчанию на паузе — для чтения вызовите `process.stdin.resume()`.
+Сам вызов `resume()` переключает поток в «старый» режим.
 
 ### `process.stdin.fd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Это свойство относится к значению базового дескриптора файла `process.stdin`. Значение фиксировано на `0`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
-
-<!-- 0088.part.md -->
+Нижележащий дескриптор файла `process.stdin`; всегда `0`. В потоках [`Worker`][] поля нет.
 
 ## `process.stdout`
 
--   [`<Stream>`](stream.md#stream)
+* Тип: [<Stream>](stream.md#stream)
 
-Свойство `process.stdout` возвращает поток, подключенный к `stdout` (fd `1`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `1` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
+Свойство `process.stdout` возвращает поток, связанный с `stdout` (fd `1`). Это
+[`net.Socket`][] ([Duplex][]), если fd `1` не файл; иначе — [Writable][].
 
-Например, чтобы скопировать `process.stdin` в `process.stdout`:
+Например, копирование `process.stdin` в `process.stdout`:
 
-```mjs
-import { stdin, stdout } from 'node:process';
+=== "MJS"
 
-stdin.pipe(stdout);
-```
+    ```js
+    import { stdin, stdout } from 'node:process';
+    
+    stdin.pipe(stdout);
+    ```
 
-```cjs
-const { stdin, stdout } = require('node:process');
+=== "CJS"
 
-stdin.pipe(stdout);
-```
+    ```js
+    const { stdin, stdout } = require('node:process');
+    
+    stdin.pipe(stdout);
+    ```
 
-`process.stdout` отличается от других потоков Node.js важным образом. Более подробную информацию смотрите в [заметке о процессах ввода/вывода](#a-note-on-process-io).
-
-<!-- 0089.part.md -->
+`process.stdout` ведёт себя иначе, чем обычные потоки Node.js. См. [замечание о вводе-выводе процесса][note on process I/O].
 
 ### `process.stdout.fd`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Это свойство относится к значению базового дескриптора файла `process.stdout`. Значение фиксировано и равно `1`. В потоках [`Worker`](worker_threads.md#class-worker) это поле не существует.
+Нижележащий дескриптор файла `process.stdout`; всегда `1`. В потоках [`Worker`][] поля нет.
 
-<!-- 0090.part.md -->
+### Замечание о вводе-выводе процесса
 
-### Замечание о вводе-выводе процессов
+`process.stdout` и `process.stderr` отличаются от других потоков Node.js:
 
-`process.stdout` и `process.stderr` отличаются от других потоков Node.js важным образом:
+1. Ими пользуются [`console.log()`][] и [`console.error()`][].
+2. Запись может быть синхронной в зависимости от назначения потока и ОС (Windows/POSIX):
+   * файлы: _синхронно_ в Windows и POSIX;
+   * TTY: _асинхронно_ в Windows, _синхронно_ в POSIX;
+   * каналы и сокеты: _синхронно_ в Windows, _асинхронно_ в POSIX.
 
-1.  Они используются внутри [`console.log()`](console.md#consolelogdata-args) и [`console.error()`](console.md#consoleerrordata-args), соответственно.
-2.  Запись может быть синхронной в зависимости от того, к чему подключен поток и является ли система Windows или POSIX:
-    -   Файлы: _синхронные_ в Windows и POSIX.
-    -   TTY (терминалы): _асинхронный_ в Windows, _синхронный_ в POSIX.
-    -   Трубы (и сокеты): _синхронный_ в Windows, _асинхронный_ в POSIX
+Так исторически сложилось: смена поведения сломала бы совместимость, плюс на это рассчитывают пользователи.
 
-Такое поведение отчасти объясняется историческими причинами, поскольку его изменение привело бы к обратной несовместимости, но некоторые пользователи ожидают именно такого поведения.
+Синхронная запись снижает риск перемешивания вывода `console.log()`/`console.error()` или его потери при
+`process.exit()` до завершения асинхронной записи. См. [`process.exit()`][].
 
-Синхронная запись позволяет избежать таких проблем, как неожиданное чередование вывода, записываемого с помощью `console.log()` или `console.error()`, или его полное отсутствие, если `process.exit()` вызывается до завершения асинхронной записи. Дополнительную информацию смотрите в [`process.exit()`](#processexitcode).
+_**Предупреждение**_: синхронная запись блокирует цикл событий до конца записи. В файл это часто мгновенно, но при высокой нагрузке, нечитаемом конце канала или медленном терминале/ФС цикл может блокироваться надолго. Для интерактивного терминала это реже проблема; для продакшен-логов в stdout/stderr учитывайте это.
 
-**_Предупреждение_**: Синхронная запись блокирует цикл событий до тех пор, пока запись не завершится. Это может быть почти мгновенным в случае вывода в файл, но при высокой нагрузке на систему, при использовании труб, которые не читаются на принимающей стороне, или при медленных терминалах или файловых системах, цикл событий может блокироваться достаточно часто и достаточно долго, чтобы оказать серьезное негативное влияние на производительность. Это может не представлять проблемы при записи в интерактивный терминальный сеанс, но будьте особенно внимательны при ведении производственного журнала в выходные потоки процесса.
-
-Чтобы проверить, подключен ли поток к контексту [TTY](tty.md#tty), проверьте свойство `isTTY`.
+Подключение к [TTY][] проверяют по свойству `isTTY`.
 
 Например:
 
@@ -2934,17 +4492,22 @@ $ node -p "Boolean(process.stdout.isTTY)" | cat
 false
 ```
 
-Дополнительную информацию см. в документации [TTY](tty.md#tty).
-
-<!-- 0091.part.md -->
+Подробнее см. документацию [TTY][].
 
 ## `process.throwDeprecation`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.9.12
+-->
 
-Начальное значение `process.throwDeprecation` указывает, установлен ли флаг `--throw-deprecation` для текущего процесса Node.js. Значение `process.throwDeprecation` является изменяемым, поэтому то, приводят ли предупреждения о депривации к ошибкам, может быть изменено во время выполнения. Дополнительную информацию см. в документации к событию [`'warning'``](#event-warning) и методу [`emitWarning()``](#processemitwarningwarning-type-code-ctor).
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-```
+Начальное значение `process.throwDeprecation` показывает, задан ли флаг
+`--throw-deprecation`. Свойство можно менять: в рантайме можно переключать,
+превращаются ли предупреждения об устаревании в ошибки. См. [`'warning'`][process_warning]
+и [`emitWarning()`][process_emit_warning].
+
+```console
 $ node --throw-deprecation -p "process.throwDeprecation"
 true
 $ node -p "process.throwDeprecation"
@@ -2956,169 +4519,379 @@ undefined
 > process.throwDeprecation = true;
 true
 > process.emitWarning('test', 'DeprecationWarning');
-Выброшено:
+Thrown:
 [DeprecationWarning: test] { name: 'DeprecationWarning' }
 ```
 
-<!-- 0092.part.md -->
+## `process.threadCpuUsage([previousValue])`
+
+<!-- YAML
+added:
+ - v23.9.0
+ - v22.19.0
+-->
+
+* `previousValue` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) результат предыдущего вызова `process.threadCpuUsage()`
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `user` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `system` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Метод `process.threadCpuUsage()` возвращает пользовательское и системное время CPU
+текущего worker-потока в объекте `user`/`system` (микросекунды).
+
+Результат предыдущего вызова можно передать аргументом для разницы показаний.
 
 ## `process.title`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.104
+-->
 
-Свойство `process.title` возвращает текущий заголовок процесса (т.е. возвращает текущее значение `ps`). Присвоение нового значения `process.title` изменяет текущее значение `ps`.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Когда присваивается новое значение, различные платформы накладывают различные ограничения на максимальную длину заголовка. Обычно такие ограничения довольно ограничены. Например, в Linux и macOS `process.title` ограничен размером двоичного имени плюс длина аргументов командной строки, поскольку установка `process.title` перезаписывает память `argv` процесса. Node.js v0.8 позволял создавать более длинные строки заголовков процессов, также перезаписывая память `environ`, но это было потенциально небезопасно и запутанно в некоторых (довольно неясных) случаях.
+Свойство `process.title` задаёт/возвращает заголовок процесса (как в `ps`).
+Присвоение меняет заголовок для `ps`.
 
-Присвоение значения `process.title` могло не привести к точной метке в приложениях менеджера процессов, таких как macOS Activity Monitor или Windows Services Manager.
+Ограничения длины различаются по платформам и обычно жёсткие. На Linux и macOS длина
+связана с именем бинарника и аргументами командной строки, потому что `process.title`
+перезаписывает память `argv`. В Node.js 0.8 можно было длиннее за счёт перезаписи
+`environ`, но это было небезопасно и запутывало в редких случаях.
 
-<!-- 0093.part.md -->
+В диспетчерах вроде Activity Monitor или Windows Services Manager подпись может не совпадать.
 
 ## `process.traceDeprecation`
 
--   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.8.0
+-->
 
-Свойство `process.traceDeprecation` указывает, установлен ли флаг `--trace-deprecation` для текущего процесса Node.js. Более подробную информацию о поведении этого флага смотрите в документации к событию [`'warning'`'](#event-warning) и методу [`emitWarning()`](#processemitwarningwarning-type-code-ctor).
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0094.part.md -->
+Свойство `process.traceDeprecation` показывает, задан ли флаг `--trace-deprecation`.
+См. [`'warning'`][process_warning] и [`emitWarning()`][process_emit_warning].
+
+## `process.traceProcessWarnings`
+
+<!-- YAML
+added: v6.10.0
+-->
+
+* [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Свойство `process.traceProcessWarnings` отражает флаг `--trace-warnings` и позволяет
+включать или выключать трассировки стека для предупреждений в рантайме.
+
+```js
+// Enable trace warnings
+process.traceProcessWarnings = true;
+
+// Emit a warning with a stack trace
+process.emitWarning('Warning with stack trace');
+
+// Disable trace warnings
+process.traceProcessWarnings = false;
+```
 
 ## `process.umask()`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<!-- YAML
+added: v0.1.19
+changes:
+  - version:
+    - v14.0.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/32499
+    description: Calling `process.umask()` with no arguments is deprecated.
+-->
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+Добавлено в: v0.1.19
 
-    Вызов `process.umask()` без аргумента приводит к тому, что umask всего процесса записывается дважды. Это создает условия гонки между потоками и является потенциальной уязвимостью безопасности. Не существует безопасного, кроссплатформенного альтернативного API.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0, v12.19.0 | Вызов `process.umask()` без аргументов устарел. |
 
-`process.umask()` возвращает маску создания файлового режима процесса Node.js. Дочерние процессы наследуют маску от родительского процесса.
+> Стабильность: 0 — устарело. Вызов `process.umask()` без аргумента дважды записывает
+> umask процесса, что даёт гонку между потоками и риск для безопасности. Безопасной
+> кроссплатформенной замены нет.
 
-<!-- 0095.part.md -->
+`process.umask()` возвращает маску создания файлов процесса Node.js. Дочерние процессы
+наследуют маску от родителя.
 
 ## `process.umask(mask)`
 
--   `mask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.1.19
+-->
 
-`process.umask(mask)` устанавливает маску создания файлового режима процесса Node.js. Дочерние процессы наследуют маску от родительского процесса. Возвращает предыдущую маску.
+* `mask` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import { umask } from 'node:process';
+`process.umask(mask)` задаёт маску создания файлов. Дочерние процессы наследуют маску.
+Возвращает предыдущую маску.
 
-const newmask = 0o022;
-const oldmask = umask(newmask);
-console.log(
-    `Changed umask from ${oldmask.toString(
-        8
-    )} to ${newmask.toString(8)}`
-);
-```
+=== "MJS"
 
-```cjs
-const { umask } = require('node:process');
+    ```js
+    import { umask } from 'node:process';
+    
+    const newmask = 0o022;
+    const oldmask = umask(newmask);
+    console.log(
+      `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`,
+    );
+    ```
 
-const newmask = 0o022;
-const oldmask = umask(newmask);
-console.log(
-    `Changed umask from ${oldmask.toString(
-        8
-    )} to ${newmask.toString(8)}`
-);
-```
+=== "CJS"
 
-В потоках [`Worker`](worker_threads.md#class-worker), `process.umask(mask)` вызовет исключение.
+    ```js
+    const { umask } = require('node:process');
+    
+    const newmask = 0o022;
+    const oldmask = umask(newmask);
+    console.log(
+      `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`,
+    );
+    ```
 
-<!-- 0096.part.md -->
+В потоках [`Worker`][] `process.umask(mask)` выбрасывает исключение.
+
+## `process.unref(maybeRefable)`
+
+<!-- YAML
+added:
+  - v23.6.0
+  - v22.14.0
+-->
+
+> Стабильность: 1 — экспериментально
+
+* `maybeRefable` {any} объект, для которого возможен «unref»
+
+Объект «unrefable», если реализует протокол Node.js «Refable»: методы
+`Symbol.for('nodejs.ref')` и `Symbol.for('nodejs.unref')`. Объекты с ref удерживают
+цикл событий Node.js, с unref — нет. Раньше это делали методами `ref()`/`unref()` на
+объектах; этот подход уступает протоколу «Refable», чтобы поддерживать типы Web
+Platform API, где нельзя добавить `ref()`/`unref()`, но нужно такое поведение.
 
 ## `process.uptime()`
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v0.5.0
+-->
 
-Метод `process.uptime()` возвращает количество секунд, в течение которых работает текущий процесс Node.js.
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Возвращаемое значение включает доли секунды. Используйте `Math.floor()` для получения целых секунд.
+Метод `process.uptime()` возвращает число секунд работы текущего процесса Node.js.
 
-<!-- 0097.part.md -->
+В значении есть дробная часть; для целых секунд используйте `Math.floor()`.
 
 ## `process.version`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.3
+-->
+
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.version` содержит строку версии Node.js.
 
-```mjs
-import { version } from 'node:process';
+=== "MJS"
 
-console.log(`Version: ${version}`);
-// Версия: v14.8.0
-```
+    ```js
+    import { version } from 'node:process';
+    
+    console.log(`Version: ${version}`);
+    // Version: v14.8.0
+    ```
 
-```cjs
-const { version } = require('node:process');
+=== "CJS"
 
-console.log(`Version: ${version}`);
-// Версия: v14.8.0
-```
+    ```js
+    const { version } = require('node:process');
+    
+    console.log(`Version: ${version}`);
+    // Version: v14.8.0
+    ```
 
-Чтобы получить строку версии без префикса _v_, используйте `process.versions.node`.
-
-<!-- 0098.part.md -->
+Строку без префикса _v_ берите из `process.versions.node`.
 
 ## `process.versions`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v0.2.0
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15785
+    description: The `v8` property now includes a Node.js specific suffix.
+  - version: v4.2.0
+    pr-url: https://github.com/nodejs/node/pull/3102
+    description: The `icu` property is now supported.
+-->
 
-Свойство `process.versions` возвращает объект, содержащий строки версий Node.js и его зависимостей. `process.versions.modules` указывает текущую версию ABI, которая увеличивается всякий раз, когда изменяется C++ API. Node.js откажется загружать модули, которые были скомпилированы с другой версией ABI модуля.
+Добавлено в: v0.2.0
 
-```mjs
-import { versions } from 'node:process';
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v9.0.0 | Свойство v8 теперь включает специальный суффикс Node.js. |
+    | v4.2.0 | Свойство `icu` теперь поддерживается. |
 
-console.log(versions);
-```
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-```cjs
-const { versions } = require('node:process');
+Свойство `process.versions` возвращает объект с версиями Node.js и зависимостей.
+`process.versions.modules` — текущая версия ABI модулей; она повышается при изменении C++ API.
+Node.js не загрузит модуль, собранный под другую ABI.
 
-console.log(versions);
-```
+=== "MJS"
 
-Будет сгенерирован объект, похожий на:
+    ```js
+    import { versions } from 'node:process';
+    
+    console.log(versions);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { versions } = require('node:process');
+    
+    console.log(versions);
+    ```
+
+Типичный вид объекта:
 
 ```console
-{ node: '11.13.0',
-  v8: '7.0.276.38-node.18',
-  uv: '1.27.0',
-  zlib: '1.2.11',
-  brotli: '1.0.7',
-  ares: '1.15.0',
-  модули: '67',
-  nghttp2: '1.34.0',
-  napi: '4',
-  llhttp: '1.1.1',
-  openssl: '1.1.1b',
-  cldr: '34.0',
-  icu: '63.1',
-  tz: '2018e',
-  юникод: '11.0' }
+{ node: '26.0.0-pre',
+  acorn: '8.15.0',
+  ada: '3.4.1',
+  amaro: '1.1.5',
+  ares: '1.34.6',
+  brotli: '1.2.0',
+  merve: '1.0.0',
+  cldr: '48.0',
+  icu: '78.2',
+  llhttp: '9.3.0',
+  modules: '144',
+  napi: '10',
+  nbytes: '0.1.1',
+  ncrypto: '0.0.1',
+  nghttp2: '1.68.0',
+  nghttp3: '',
+  ngtcp2: '',
+  openssl: '3.5.4',
+  simdjson: '4.2.4',
+  simdutf: '7.3.3',
+  sqlite: '3.51.2',
+  tz: '2025c',
+  undici: '7.18.2',
+  unicode: '17.0',
+  uv: '1.51.0',
+  uvwasi: '0.0.23',
+  v8: '14.3.127.18-node.10',
+  zlib: '1.3.1-e00f703',
+  zstd: '1.5.7' }
 ```
-
-<!-- 0099.part.md -->
 
 ## Коды выхода
 
-Node.js обычно завершает работу с кодом состояния `0`, когда больше не ожидается никаких асинхронных операций. В других случаях используются следующие коды состояния:
+Обычно Node.js завершается с кодом `0`, когда не осталось асинхронных операций.
+В остальных случаях используются такие коды:
 
--   `1` **Uncaught Fatal Exception**: Произошло не пойманное исключение, и оно не было обработано доменом или обработчиком события [`'uncaughtException'`](#event-uncaughtexception).
--   `2`: Не используется (зарезервировано Bash для встроенного неправильного использования)
--   `3` **Внутренняя ошибка разбора JavaScript**: Внутренний исходный код JavaScript в процессе загрузки Node.js вызвал ошибку разбора. Это случается крайне редко, и обычно может произойти только во время разработки самого Node.js.
--   `4` **Внутренняя ошибка оценки JavaScript**: Внутренний исходный код JavaScript в процессе загрузки Node.js не смог вернуть значение функции при оценке. Это случается крайне редко и, как правило, только во время разработки самого Node.js.
--   `5` **Фатальная ошибка**: В V8 произошла фатальная неустранимая ошибка. Обычно сообщение выводится на stderr с префиксом `FATAL ERROR`.
--   `6` **Неработающий внутренний обработчик исключений**: Имело место непойманное исключение, но внутренняя функция обработчика фатального исключения каким-то образом была установлена на не-функцию и не могла быть вызвана.
--   `7` **Сбой при запуске обработчика внутренних исключений**: Произошло не пойманное исключение, а внутренняя функция обработчика фатальных исключений сама выдала ошибку при попытке его обработать. Это может произойти, например, если обработчик [`'uncaughtException'`](#event-uncaughtexception) или `domain.on('error')` выбрасывает ошибку.
--   `8`: Не используется. В предыдущих версиях Node.js код выхода 8 иногда указывал на не пойманное исключение.
--   `9` **Неправильный аргумент**: Либо была указана неизвестная опция, либо опция, требующая значения, была предоставлена без значения.
--   `10` **Внутренний сбой выполнения JavaScript**: Внутренний исходный код JavaScript в процессе начальной загрузки Node.js выдал ошибку при вызове функции начальной загрузки. Это случается крайне редко и, как правило, только во время разработки самого Node.js.
--   `12` **Неправильный отладочный аргумент**: Были установлены опции `--inspect` и/или `--inspect-brk`, но выбранный номер порта был неверным или недоступным.
--   `13` **Незавершенное ожидание верхнего уровня**: `await` использовался вне функции в коде верхнего уровня, но переданное `Promise` так и не разрешилось.
--   `14` **Сбой моментального снимка**: Node.js был запущен для создания стартового снапшота V8, но не смог его создать, поскольку не были выполнены определенные требования к состоянию приложения.
--   `>128` **Сигнальные выходы**: Если Node.js получает фатальный сигнал, такой как `SIGKILL` или `SIGHUP`, то его код выхода будет равен `128` плюс значение кода сигнала. Это стандартная практика POSIX, поскольку коды выхода определены как 7-битные целые числа, а сигнальные выходы устанавливают старший бит, а затем содержат значение кода сигнала. Например, сигнал `SIGABRT` имеет значение `6`, поэтому ожидаемый код выхода будет `128` + `6`, или `134`.
+* `1` **Необработанное фатальное исключение**: было исключение, не обработанное
+  domain или обработчиком [`'uncaughtException'`][].
+* `2`: не используется (зарезервировано в Bash для ошибок встроенных команд)
+* `3` **Внутренняя ошибка разбора JavaScript**: при загрузке Node.js внутренний JS-код
+  дал ошибку парсинга. Крайне редко, обычно только при разработке самого Node.js.
+* `4` **Внутренняя ошибка вычисления JavaScript**: внутренний JS при загрузке не вернул
+  функцию при вычислении. Крайне редко, обычно только при разработке Node.js.
+* `5` **Фатальная ошибка**: неустранимая ошибка в V8. Обычно в stderr сообщение с префиксом `FATAL ERROR`.
+* `6` **Внутренний обработчик исключений не функция**: необработанное исключение, но
+  внутренний обработчик фатальных исключений не является функцией и не может быть вызван.
+* `7` **Сбой внутреннего обработчика исключений**: необработанное исключение, и сам внутренний
+  обработчик при попытке обработки выбросил ошибку (например обработчик [`'uncaughtException'`][]
+  или `domain.on('error')`).
+* `8`: не используется. В старых версиях Node.js код 8 иногда означал необработанное исключение.
+* `9` **Неверный аргумент**: неизвестная опция или опция, требующая значения, без значения.
+* `10` **Внутренняя ошибка выполнения JavaScript**: внутренний JS при загрузке выбросил ошибку
+  при вызове функции загрузки. Крайне редко, обычно только при разработке Node.js.
+* `12` **Неверный аргумент отладки**: заданы `--inspect` и/или `--inspect-brk`, но порт неверен или недоступен.
+* `13` **Незавершённый top-level await**: `await` на верхнем уровне, но переданный `Promise` так и не завершился.
+* `14` **Сбой снимка**: Node.js запускали для сборки V8 startup snapshot, но условия состояния приложения не выполнены.
+* `>128` **Выход по сигналу**: при фатальном сигнале (`SIGKILL`, `SIGHUP` и т. п.) код выхода равен `128` плюс номер сигнала.
+  Так принято в POSIX: коды выхода — 7 бит, при завершении по сигналу задаётся старший бит и номер сигнала.
+  Например, у `SIGABRT` код `6`, ожидаемый код выхода `128` + `6` = `134`.
 
-<!-- 0100.part.md -->
+[Advanced serialization for `child_process`]: child_process.md#advanced-serialization
+[Android building]: https://github.com/nodejs/node/blob/HEAD/BUILDING.md#android
+[Child Process]: child_process.md
+[Cluster]: cluster.md
+[Duplex]: stream.md#duplex-and-transform-streams
+[Event Loop]: https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick#understanding-processnexttick
+[LTS]: https://github.com/nodejs/Release
+[Permission Model]: permissions.md#permission-model
+[Readable]: stream.md#readable-streams
+[Signal Events]: #signal-events
+[Source Map]: https://tc39.es/ecma426/
+[Stream compatibility]: stream.md#compatibility-with-older-nodejs-versions
+[TTY]: tty.md#tty
+[Writable]: stream.md#writable-streams
+[`'exit'`]: #event-exit
+[`'message'`]: child_process.md#event-message
+[`'uncaughtException'`]: #event-uncaughtexception
+[`--no-deprecation`]: cli.md#--no-deprecation
+[`--permission`]: cli.md#--permission
+[`--unhandled-rejections`]: cli.md#--unhandled-rejectionsmode
+[`Buffer`]: buffer.md
+[`ChildProcess.disconnect()`]: child_process.md#subprocessdisconnect
+[`ChildProcess.send()`]: child_process.md#subprocesssendmessage-sendhandle-options-callback
+[`ChildProcess`]: child_process.md#class-childprocess
+[`Error`]: errors.md#class-error
+[`EventEmitter`]: events.md#class-eventemitter
+[`NODE_OPTIONS`]: cli.md#node_optionsoptions
+[`Worker`]: worker_threads.md#class-worker
+[`Worker` constructor]: worker_threads.md#new-workerfilename-options
+[`console.error()`]: console.md#consoleerrordata-args
+[`console.log()`]: console.md#consolelogdata-args
+[`domain`]: domain.md
+[`module.getSourceMapsSupport()`]: module.md#modulegetsourcemapssupport
+[`module.isBuiltin(id)`]: module.md#moduleisbuiltinmodulename
+[`module.setSourceMapsSupport()`]: module.md#modulesetsourcemapssupportenabled-options
+[`net.Server`]: net.md#class-netserver
+[`net.Socket`]: net.md#class-netsocket
+[`os.constants.dlopen`]: os.md#dlopen-constants
+[`postMessageToThread()`]: worker_threads.md#worker_threadspostmessagetothreadthreadid-value-transferlist-timeout
+[`process.addUncaughtExceptionCaptureCallback()`]: #processadduncaughtexceptioncapturecallbackfn
+[`process.argv`]: #processargv
+[`process.config`]: #processconfig
+[`process.execPath`]: #processexecpath
+[`process.exit()`]: #processexitcode
+[`process.exitCode`]: #processexitcode_1
+[`process.hrtime()`]: #processhrtimetime
+[`process.hrtime.bigint()`]: #processhrtimebigint
+[`process.kill()`]: #processkillpid-signal
+[`process.setUncaughtExceptionCaptureCallback()`]: #processsetuncaughtexceptioncapturecallbackfn
+[`promise.catch()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
+[`queueMicrotask()`]: globals.md#queuemicrotaskcallback
+[`readable.read()`]: stream.md#readablereadsize
+[`require()`]: globals.md#require
+[`require.cache`]: modules.md#requirecache
+[`require.main`]: modules.md#accessing-the-main-module
+[`subprocess.kill()`]: child_process.md#subprocesskillsignal
+[`v8.setFlagsFromString()`]: v8.md#v8setflagsfromstringflags
+[built-in modules with mandatory `node:` prefix]: modules.md#built-in-modules-with-mandatory-node-prefix
+[debugger]: debugger.md
+[deprecation code]: deprecations.md
+[loading ECMAScript modules using `require()`]: modules.md#loading-ecmascript-modules-using-require
+[nodejs/node#21973]: https://github.com/nodejs/node/issues/21973
+[note on process I/O]: #a-note-on-process-io
+[process.cpuUsage]: #processcpuusagepreviousvalue
+[process_emit_warning]: #processemitwarningwarning-type-code-ctor
+[process_warning]: #event-warning
+[program entry point]: https://nodejs.org/api/cli.html#program-entry-point
+[report documentation]: report.md
+[terminal raw mode]: tty.md#readstreamsetrawmodemode
+[uv_get_available_memory]: https://docs.libuv.org/en/v1.x/misc.html#c.uv_get_available_memory
+[uv_get_constrained_memory]: https://docs.libuv.org/en/v1.x/misc.html#c.uv_get_constrained_memory
+[uv_rusage_t]: https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t
+[wikipedia_major_fault]: https://en.wikipedia.org/wiki/Page_fault#Major
+[wikipedia_minor_fault]: https://en.wikipedia.org/wiki/Page_fault#Minor

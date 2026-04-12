@@ -1,69 +1,139 @@
 ---
-title: String decoder
-description: Модуль string_decoder предоставляет API для декодирования объектов Buffer в строки с сохранением закодированных многобайтовых символов UTF-8 и UTF-16
+title: Декодер строк
+description: Модуль node:string_decoder предоставляет API для декодирования объектов Buffer в строки с сохранением многобайтовых символов UTF-8 и UTF-16
 ---
 
 # Декодер строк
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/string_decoder.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/string_decoder.html)
+
+<!--introduced_in=v0.10.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Модуль **`node:string_decoder`** предоставляет API для декодирования объектов `Buffer` в строки с сохранением закодированных многобайтовых символов UTF-8 и UTF-16. Доступ к нему можно получить, используя:
+<!-- source_link=lib/string_decoder.js -->
 
-```js
-const { StringDecoder } = require('node:string_decoder');
-```
+Модуль `node:string_decoder` предоставляет API для декодирования объектов `Buffer` в строки таким образом, что сохраняются закодированные многобайтовые символы UTF-8 и UTF-16. К нему можно обратиться так:
+
+=== "MJS"
+
+    ```js
+    import { StringDecoder } from 'node:string_decoder';
+    ```
+
+=== "CJS"
+
+    ```js
+    const { StringDecoder } = require('node:string_decoder');
+    ```
 
 В следующем примере показано базовое использование класса `StringDecoder`.
 
-```js
-const { StringDecoder } = require('node:string_decoder');
-const decoder = new StringDecoder('utf8');
+=== "MJS"
 
-const cent = Buffer.from([0xc2, 0xa2]);
-console.log(decoder.write(cent));
+    ```js
+    import { StringDecoder } from 'node:string_decoder';
+    import { Buffer } from 'node:buffer';
+    const decoder = new StringDecoder('utf8');
+    
+    const cent = Buffer.from([0xC2, 0xA2]);
+    console.log(decoder.write(cent)); // Выводит: ¢
+    
+    const euro = Buffer.from([0xE2, 0x82, 0xAC]);
+    console.log(decoder.write(euro)); // Выводит: €
+    ```
 
-const euro = Buffer.from([0xe2, 0x82, 0xac]);
-console.log(decoder.write(euro));
-```
+=== "CJS"
 
-Когда экземпляр `Buffer` записывается в экземпляр `StringDecoder`, используется внутренний буфер, чтобы убедиться, что декодированная строка не содержит неполных многобайтовых символов. Они хранятся в буфере до следующего вызова `stringDecoder.write()` или до вызова `stringDecoder.end()`.
+    ```js
+    const { StringDecoder } = require('node:string_decoder');
+    const decoder = new StringDecoder('utf8');
+    
+    const cent = Buffer.from([0xC2, 0xA2]);
+    console.log(decoder.write(cent)); // Выводит: ¢
+    
+    const euro = Buffer.from([0xE2, 0x82, 0xAC]);
+    console.log(decoder.write(euro)); // Выводит: €
+    ```
 
-В следующем примере три байта символа европейского евро (`€`) в кодировке UTF-8 записываются за три отдельные операции:
+Когда экземпляр `Buffer` записывается в экземпляр `StringDecoder`, используется внутренний буфер, чтобы декодированная строка не содержала неполных многобайтовых символов. Они удерживаются в буфере до следующего вызова `stringDecoder.write()` или до вызова `stringDecoder.end()`.
 
-```js
-const { StringDecoder } = require('node:string_decoder');
-const decoder = new StringDecoder('utf8');
+В следующем примере три байта в кодировке UTF-8 для символа евро (`€`) записываются тремя отдельными операциями:
 
+=== "MJS"
 
-decoder.write(Buffer.from([0xE2]));
-decoder.write(Buffer.from([0x82]));
-console.log(decoder.end(Buffer.from([0xAC]))));
-```
+    ```js
+    import { StringDecoder } from 'node:string_decoder';
+    import { Buffer } from 'node:buffer';
+    const decoder = new StringDecoder('utf8');
+    
+    decoder.write(Buffer.from([0xE2]));
+    decoder.write(Buffer.from([0x82]));
+    console.log(decoder.end(Buffer.from([0xAC]))); // Выводит: €
+    ```
+
+=== "CJS"
+
+    ```js
+    const { StringDecoder } = require('node:string_decoder');
+    const decoder = new StringDecoder('utf8');
+    
+    decoder.write(Buffer.from([0xE2]));
+    decoder.write(Buffer.from([0x82]));
+    console.log(decoder.end(Buffer.from([0xAC]))); // Выводит: €
+    ```
 
 ## Класс: `StringDecoder`
 
 ### `new StringDecoder([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Символьная [кодировка](buffer.md#buffers-and-character-encodings), которую будет использовать `StringDecoder`. **По умолчанию:** `'utf8'`.
+<!-- YAML
+added: v0.1.99
+-->
 
-Создает новый экземпляр `StringDecoder`.
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Символьная [кодировка][encoding], которую будет использовать `StringDecoder`.
+  **По умолчанию:** `'utf8'`.
+
+Создаёт новый экземпляр `StringDecoder`.
 
 ### `stringDecoder.end([buffer])`
 
--   `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.9.3
+-->
 
-Возвращает все оставшиеся входные данные, хранящиеся во внутреннем буфере, в виде строки. Байты, представляющие неполные символы UTF-8 и UTF-16, будут заменены символами-заместителями, соответствующими кодировке.
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Байты для декодирования.
+* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если указан аргумент `buffer`, то перед возвратом оставшегося ввода выполняется последний вызов `stringDecoder.write()`. После вызова `end()` объект `stringDecoder` может быть повторно использован для нового ввода.
+Возвращает весь оставшийся ввод, накопленный во внутреннем буфере, в виде строки. Байты, соответствующие неполным символам UTF-8 и UTF-16, будут заменены подстановочными символами, подходящими для данной кодировки.
+
+Если передан аргумент `buffer`, перед возвратом оставшегося ввода выполняется ещё один вызов `stringDecoder.write()`.
+После вызова `end()` объект `stringDecoder` можно снова использовать для нового ввода.
 
 ### `stringDecoder.write(buffer)`
 
--   `buffer` {Buffer|TypedArray|DataView} `Буфер`, или `TypedArray`, или `DataView`, содержащий байты для декодирования.
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.99
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/9618
+    description: Each invalid character is now replaced by a single replacement
+                 character instead of one for each individual byte.
+-->
 
-Возвращает декодированную строку, гарантируя, что любые неполные многобайтовые символы в конце `Buffer`, или `TypedArray`, или `DataView` будут исключены из возвращаемой строки и сохранены во внутреннем буфере для следующего вызова `stringDecoder.write()` или `stringDecoder.end()`.
+Добавлено в: v0.1.99
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v8.0.0 | Каждый недопустимый символ теперь заменяется одним символом замены вместо одного для каждого отдельного байта. |
+
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Байты для декодирования.
+* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Возвращает декодированную строку; в конце `Buffer`, `TypedArray` или `DataView` любые неполные многобайтовые символы не попадают в возвращаемую строку и сохраняются во внутреннем буфере для следующего вызова
+`stringDecoder.write()` или `stringDecoder.end()`.
+
+[encoding]: buffer.md#buffers-and-character-encodings

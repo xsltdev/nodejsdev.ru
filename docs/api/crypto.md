@@ -1,307 +1,656 @@
 ---
-title: Crypto
-description: Модуль crypto предоставляет криптографическую функциональность, которая включает набор оберток для функций хэша, HMAC, шифра, расшифровки, подписи и проверки OpenSSL
+title: Криптография
+description: Модуль node:crypto — хэши, HMAC, шифрование, подпись и проверка на базе OpenSSL
 ---
 
 # Криптография
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/async_context.html)
+<!--introduced_in=v0.3.6-->
 
-!!!success "Стабильность: 2 – Стабильная"
+> Стабильность: 2 — Стабильная
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+<!-- source_link=lib/crypto.js -->
 
-Модуль `node:crypto` предоставляет криптографическую функциональность, которая включает набор оберток для функций хэша, HMAC, шифра, расшифровки, подписи и проверки OpenSSL.
+Модуль `node:crypto` предоставляет криптографические возможности, включая обёртки
+над функциями OpenSSL для хэшей, HMAC, шифрования и расшифрования, подписи и проверки.
 
-```mjs
-const { createHmac } = await import('node:crypto');
+=== "MJS"
 
-const secret = 'abcdefg';
-const hash = createHmac('sha256', secret)
-    .update('I love cupcakes')
-    .digest('hex');
-console.log(hash);
-// Печать:
-// c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
-```
+    ```js
+    const { createHmac } = await import('node:crypto');
 
-```cjs
-const { createHmac } = require('node:crypto');
+    const secret = 'abcdefg';
+    const hash = createHmac('sha256', secret)
+                   .update('I love cupcakes')
+                   .digest('hex');
+    console.log(hash);
+    // Prints:
+    //   c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
+    ```
 
-const secret = 'abcdefg';
-const hash = createHmac('sha256', secret)
-    .update('I love cupcakes')
-    .digest('hex');
-console.log(hash);
-// Печать:
-// c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
-```
+=== "CJS"
 
-<!-- 0000.part.md -->
+    ```js
+    const { createHmac } = require('node:crypto');
 
-## Определение отсутствия поддержки криптографии
+    const secret = 'abcdefg';
+    const hash = createHmac('sha256', secret)
+                   .update('I love cupcakes')
+                   .digest('hex');
+    console.log(hash);
+    // Prints:
+    //   c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
+    ```
 
-Возможно, что Node.js будет собран без поддержки модуля `node:crypto`. В таких случаях попытка `импорта` из `crypto` или вызов `require('node:crypto')` приведет к ошибке.
+## Когда поддержка crypto недоступна
 
-При использовании CommonJS возникшую ошибку можно перехватить с помощью `try/catch`:
+Node.js может быть собран без модуля `node:crypto`.
+Тогда `import` из `crypto` или вызов `require('node:crypto')` приведут к ошибке.
 
-```cjs
-let crypto;
-try {
-    crypto = require('node:crypto');
-} catch (err) {
-    console.error('поддержка крипто отключена!');
-}
-```
+В CommonJS ошибку можно перехватить через try/catch:
 
-При использовании лексического ключевого слова ESM `import` ошибка может быть поймана только в том случае, если обработчик `process.on('uncaughtException')` зарегистрирован _до_ любой попытки загрузить модуль (например, с помощью модуля предварительной загрузки).
+<!-- eslint-disable no-global-assign -->
 
-При использовании ESM, если есть вероятность, что код может быть запущен на сборке Node.js, в которой не включена поддержка криптографии, используйте функцию [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) вместо лексического ключевого слова `import`:
+=== "CJS"
 
-```mjs
-let crypto;
-try {
-    crypto = await import('node:crypto');
-} catch (err) {
-    console.error('поддержка крипто отключена!');
-}
-```
+    ```js
+    let crypto;
+    try {
+      crypto = require('node:crypto');
+    } catch (err) {
+      console.error('crypto support is disabled!');
+    }
+    ```
 
-<!-- 0001.part.md -->
+<!-- eslint-enable no-global-assign -->
 
-## Класс: `Certificate`
+При лексическом `import` в ESM ошибку можно перехватить только если обработчик
+`process.on('uncaughtException')` зарегистрирован _до_ любой попытки загрузить модуль
+(например через preload).
 
-SPKAC - это механизм запроса подписи сертификата, первоначально реализованный компанией Netscape и формально указанный как часть элемента [HTML5 `keygen`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/keygen).
+Если код может выполняться в сборке Node.js без crypto, вместо лексического `import`
+используйте динамический [`import()`][]:
 
-`<keygen>` устарел с [HTML 5.2](https://www.w3.org/TR/html52/changes.html#features-removed), и новые проекты больше не должны использовать этот элемент.
+=== "MJS"
 
-Модуль `node:crypto` предоставляет класс `Certificate` для работы с данными SPKAC. Наиболее распространенным использованием является обработка вывода, генерируемого элементом HTML5 `<keygen>`. Node.js использует [OpenSSL's SPKAC implementation](https://www.openssl.org/docs/man1.1.0/apps/openssl-spkac.html) внутренне.
+    ```js
+    let crypto;
+    try {
+      crypto = await import('node:crypto');
+    } catch (err) {
+      console.error('crypto support is disabled!');
+    }
+    ```
 
-<!-- 0002.part.md -->
+## Типы асимметричных ключей
 
-### Статический метод: `Certificate.exportChallenge(spkac[, encoding])`
+В таблице — типы асимметричных ключей, которые распознаёт API [`KeyObject`][], и поддерживаемые форматы импорта/экспорта.
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Компонент вызова структуры данных `spkac`, который включает открытый ключ и вызов.
+| Тип ключа                          | Описание           | OID                     | `'pem'` | `'der'` | `'jwk'` | `'raw-public'` | `'raw-private'` | `'raw-seed'` |
+| ---------------------------------- | ------------------ | ----------------------- | ------- | ------- | ------- | -------------- | --------------- | ------------ |
+| `'dh'`                             | Diffie-Hellman     | 1.2.840.113549.1.3.1    | ✔       | ✔       |         |                |                 |              |
+| `'dsa'`                            | DSA                | 1.2.840.10040.4.1       | ✔       | ✔       |         |                |                 |              |
+| `'ec'`                             | Elliptic curve     | 1.2.840.10045.2.1       | ✔       | ✔       | ✔       | ✔              | ✔               |              |
+| `'ed25519'`                        | Ed25519            | 1.3.101.112             | ✔       | ✔       | ✔       | ✔              | ✔               |              |
+| `'ed448'`                          | Ed448              | 1.3.101.113             | ✔       | ✔       | ✔       | ✔              | ✔               |              |
+| `'ml-dsa-44'`[^openssl35]          | ML-DSA-44          | 2.16.840.1.101.3.4.3.17 | ✔       | ✔       | ✔       | ✔              |                 | ✔            |
+| `'ml-dsa-65'`[^openssl35]          | ML-DSA-65          | 2.16.840.1.101.3.4.3.18 | ✔       | ✔       | ✔       | ✔              |                 | ✔            |
+| `'ml-dsa-87'`[^openssl35]          | ML-DSA-87          | 2.16.840.1.101.3.4.3.19 | ✔       | ✔       | ✔       | ✔              |                 | ✔            |
+| `'ml-kem-512'`[^openssl35]         | ML-KEM-512         | 2.16.840.1.101.3.4.4.1  | ✔       | ✔       |         | ✔              |                 | ✔            |
+| `'ml-kem-768'`[^openssl35]         | ML-KEM-768         | 2.16.840.1.101.3.4.4.2  | ✔       | ✔       |         | ✔              |                 | ✔            |
+| `'ml-kem-1024'`[^openssl35]        | ML-KEM-1024        | 2.16.840.1.101.3.4.4.3  | ✔       | ✔       |         | ✔              |                 | ✔            |
+| `'rsa-pss'`                        | RSA PSS            | 1.2.840.113549.1.1.10   | ✔       | ✔       |         |                |                 |              |
+| `'rsa'`                            | RSA                | 1.2.840.113549.1.1.1    | ✔       | ✔       | ✔       |                |                 |              |
+| `'slh-dsa-sha2-128f'`[^openssl35]  | SLH-DSA-SHA2-128f  | 2.16.840.1.101.3.4.3.21 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-sha2-128s'`[^openssl35]  | SLH-DSA-SHA2-128s  | 2.16.840.1.101.3.4.3.20 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-sha2-192f'`[^openssl35]  | SLH-DSA-SHA2-192f  | 2.16.840.1.101.3.4.3.23 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-sha2-192s'`[^openssl35]  | SLH-DSA-SHA2-192s  | 2.16.840.1.101.3.4.3.22 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-sha2-256f'`[^openssl35]  | SLH-DSA-SHA2-256f  | 2.16.840.1.101.3.4.3.25 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-sha2-256s'`[^openssl35]  | SLH-DSA-SHA2-256s  | 2.16.840.1.101.3.4.3.24 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-128f'`[^openssl35] | SLH-DSA-SHAKE-128f | 2.16.840.1.101.3.4.3.27 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-128s'`[^openssl35] | SLH-DSA-SHAKE-128s | 2.16.840.1.101.3.4.3.26 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-192f'`[^openssl35] | SLH-DSA-SHAKE-192f | 2.16.840.1.101.3.4.3.29 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-192s'`[^openssl35] | SLH-DSA-SHAKE-192s | 2.16.840.1.101.3.4.3.28 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-256f'`[^openssl35] | SLH-DSA-SHAKE-256f | 2.16.840.1.101.3.4.3.31 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'slh-dsa-shake-256s'`[^openssl35] | SLH-DSA-SHAKE-256s | 2.16.840.1.101.3.4.3.30 | ✔       | ✔       |         | ✔              | ✔               |              |
+| `'x25519'`                         | X25519             | 1.3.101.110             | ✔       | ✔       | ✔       | ✔              | ✔               |              |
+| `'x448'`                           | X448               | 1.3.101.111             | ✔       | ✔       | ✔       | ✔              | ✔               |              |
 
-<!-- конец списка -->
+### Форматы ключей
 
-```mjs
-const { Certificate } = await import('node:crypto');
-const spkac = getSpkacSomehow();
-const challenge = Certificate.exportChallenge(spkac);
-console.log(challenge.toString('utf8'));
-// Выводит: вызов в виде строки UTF8
-```
+Асимметричные ключи можно представить в нескольких форматах. **Рекомендуется один раз импортировать материал ключа в [`KeyObject`][] и переиспользовать его**
+для всех дальнейших операций — так не повторяется разбор и достигается лучшая производительность.
 
-```cjs
-const { Certificate } = require('node:crypto');
-const spkac = getSpkacSomehow();
-const challenge = Certificate.exportChallenge(spkac);
-console.log(challenge.toString('utf8'));
-// Выводит: вызов в виде строки UTF8
-```
+Если [`KeyObject`][] неудобен (например ключ приходит в сообщении протокола и используется один раз), большинство криптографических функций принимают строку PEM или объект с форматом и материалом ключа. Полный набор опций — в [`crypto.createPublicKey()`][],
+[`crypto.createPrivateKey()`][] и [`keyObject.export()`][].
 
-<!-- 0003.part.md -->
+#### KeyObject
 
-### Статический метод: `Certificate.exportPublicKey(spkac[, encoding])`
+[`KeyObject`][] — представление разобранного ключа в памяти. Создаётся через [`crypto.createPublicKey()`][], [`crypto.createPrivateKey()`][],
+[`crypto.createSecretKey()`][] или функции генерации, например [`crypto.generateKeyPair()`][]. Первая криптографическая операция с данным [`KeyObject`][] может быть медленнее последующих: OpenSSL лениво инициализирует внутренние кэши при первом использовании.
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Компонент открытого ключа структуры данных `spkac`, который включает в себя открытый ключ и вызов.
+#### PEM и DER
 
-<!-- конец списка -->
+PEM и DER — традиционные кодировки асимметричных ключей на базе структур ASN.1.
 
-```mjs
-const { Certificate } = await import('node:crypto');
-const spkac = getSpkacSomehow();
-const publicKey = Certificate.exportPublicKey(spkac);
-console.log(publicKey);
-// Печатает: открытый ключ в виде <Буфера ...>
-```
+* **PEM** — текстовая кодировка: DER в Base64 между строками заголовка и подвала (например `-----BEGIN PUBLIC KEY-----`). Строки PEM можно передавать напрямую во многие операции.
+* **DER** — двоичная кодировка тех же структур ASN.1. Для входа DER нужно явно указать `type` (обычно `'spki'` или `'pkcs8'`).
 
-```cjs
-const { Certificate } = require('node:crypto');
-const spkac = getSpkacSomehow();
-const publicKey = Certificate.exportPublicKey(spkac);
-console.log(publicKey);
-// Печатает: открытый ключ в виде <Буфера ...>
-```
+#### JSON Web Key (JWK)
 
-<!-- 0004.part.md -->
+JSON Web Key (JWK) — представление ключа в JSON по [RFC 7517][]. Компоненты кодируются в Base64url внутри объекта. Для RSA JWK снижает накладные расходы разбора ASN.1 и часто даёт самый быстрый импорт из сериализованных форматов.
 
-### Статический метод: `Certificate.verifySpkac(spkac[, encoding])`
+#### «Сырые» форматы ключей
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если данная структура данных `spkac` корректна, `false` в противном случае.
+> Стабильность: 1.1 — Активная разработка
 
-<!-- конец списка -->
+Форматы `'raw-public'`, `'raw-private'` и `'raw-seed'` позволяют импортировать и экспортировать сырой материал ключа без обёртки.
+Подробности — [`keyObject.export()`][], [`crypto.createPublicKey()`][], [`crypto.createPrivateKey()`][].
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { Certificate } = await import('node:crypto');
+`'raw-public'` обычно самый быстрый способ импорта открытого ключа.
+`'raw-private'` и `'raw-seed'` не всегда быстрее других форматов: в них только скаляр/seed закрытого ключа — для использования часто нужно вычислить открытую часть (умножение на кривой, развёртывание seed), что дорого. В других форматах уже есть обе части ключа.
 
-const spkac = getSpkacSomehow();
-console.log(Certificate.verifySpkac(Buffer.from(spkac)));
-// Выводит: true или false
-```
+### Выбор формата ключа
 
-```cjs
-const { Buffer } = require('node:buffer');
-const { Certificate } = require('node:crypto');
+**По возможности используйте [`KeyObject`][]** — создайте из любого доступного формата и переиспользуйте. Ниже — про выбор формата сериализации при импорте в [`KeyObject`][] или при передаче материала inline, когда [`KeyObject`][] не подходит.
 
-const spkac = getSpkacSomehow();
-console.log(Certificate.verifySpkac(Buffer.from(spkac)));
-// Выводит: true или false
-```
+#### Импорт ключей
 
-<!-- 0005.part.md -->
+Если [`KeyObject`][] создаётся для многократного использования, стоимость импорта платится один раз, и более быстрый формат снижает задержку старта.
+
+Импорт состоит из **разбора обёртки** и **вычислений по ключу** (восстановление полного ключа: открытый ключ из закрытого скаляра, развёртывание seed и т. д.). Что доминирует, зависит от типа ключа. Например:
+
+* Открытые ключи — `'raw-public'` обычно быстрее всех сериализованных форматов: нет разбора ASN.1 и Base64.
+* Закрытые EC — `'raw-private'` быстрее PEM/DER (меньше ASN.1). На больших кривых (P-384, P-521) вычисление открытой точки дорого, выигрыш меньше.
+* RSA — `'jwk'` часто самый быстрый сериализованный формат: компоненты как целые в Base64url без ASN.1.
+
+#### Материал ключа inline в операциях
+
+Если [`KeyObject`][] нельзя переиспользовать (ключ пришёл как сырые байты в сообщении и используется один раз), функции обычно принимают PEM или объект с форматом и материалом. Полная стоимость — импорт плюс сама криптооперация.
+
+Если доминирует тяжёлая операция (подпись RSA, ECDH на P-384/P-521), формат сериализации почти не влияет на пропускную способность — выбирайте удобный. Для лёгких операций (Ed25519) импорт заметнее, и быстрые `'raw-public'` / `'raw-private'` дают выигрыш.
+
+Даже при нескольких использованиях одного материала лучше импортировать в [`KeyObject`][], чем снова передавать сырой или PEM.
+
+### Примеры
+
+Переиспользование [`KeyObject`][] для подписи и проверки:
+
+=== "MJS"
+
+    ```js
+    import { promisify } from 'node:util';
+    const { generateKeyPair, sign, verify } = await import('node:crypto');
+
+    const { publicKey, privateKey } = await promisify(generateKeyPair)('ed25519');
+
+    // KeyObject хранит разобранный ключ в памяти и переиспользуется
+    // без повторного разбора.
+    const data = new TextEncoder().encode('message to sign');
+    const signature = sign(null, data, privateKey);
+    verify(null, data, publicKey, signature);
+    ```
+
+Пример: импорт ключей разных форматов в [`KeyObject`][]:
+
+=== "MJS"
+
+    ```js
+    import { promisify } from 'node:util';
+    const {
+      createPrivateKey, createPublicKey, generateKeyPair,
+    } = await import('node:crypto');
+
+    const generated = await promisify(generateKeyPair)('ed25519');
+
+    // PEM
+    const privatePem = generated.privateKey.export({ format: 'pem', type: 'pkcs8' });
+    const publicPem = generated.publicKey.export({ format: 'pem', type: 'spki' });
+    createPrivateKey(privatePem);
+    createPublicKey(publicPem);
+
+    // DER — нужен явный type
+    const privateDer = generated.privateKey.export({ format: 'der', type: 'pkcs8' });
+    const publicDer = generated.publicKey.export({ format: 'der', type: 'spki' });
+    createPrivateKey({ key: privateDer, format: 'der', type: 'pkcs8' });
+    createPublicKey({ key: publicDer, format: 'der', type: 'spki' });
+
+    // JWK
+    const privateJwk = generated.privateKey.export({ format: 'jwk' });
+    const publicJwk = generated.publicKey.export({ format: 'jwk' });
+    createPrivateKey({ key: privateJwk, format: 'jwk' });
+    createPublicKey({ key: publicJwk, format: 'jwk' });
+
+    // Raw
+    const rawPriv = generated.privateKey.export({ format: 'raw-private' });
+    const rawPub = generated.publicKey.export({ format: 'raw-public' });
+    createPrivateKey({ key: rawPriv, format: 'raw-private', asymmetricKeyType: 'ed25519' });
+    createPublicKey({ key: rawPub, format: 'raw-public', asymmetricKeyType: 'ed25519' });
+    ```
+
+Пример: передача материала ключа напрямую в [`crypto.sign()`][] и
+[`crypto.verify()`][] без предварительного [`KeyObject`][]:
+
+=== "MJS"
+
+    ```js
+    import { promisify } from 'node:util';
+    const { generateKeyPair, sign, verify } = await import('node:crypto');
+
+    const generated = await promisify(generateKeyPair)('ed25519');
+
+    const data = new TextEncoder().encode('message to sign');
+
+    // PEM strings
+    const privatePem = generated.privateKey.export({ format: 'pem', type: 'pkcs8' });
+    const publicPem = generated.publicKey.export({ format: 'pem', type: 'spki' });
+    const sig1 = sign(null, data, privatePem);
+    verify(null, data, publicPem, sig1);
+
+    // JWK objects
+    const privateJwk = generated.privateKey.export({ format: 'jwk' });
+    const publicJwk = generated.publicKey.export({ format: 'jwk' });
+    const sig2 = sign(null, data, { key: privateJwk, format: 'jwk' });
+    verify(null, data, { key: publicJwk, format: 'jwk' }, sig2);
+
+    // Raw key bytes
+    const rawPriv = generated.privateKey.export({ format: 'raw-private' });
+    const rawPub = generated.publicKey.export({ format: 'raw-public' });
+    const sig3 = sign(null, data, {
+      key: rawPriv, format: 'raw-private', asymmetricKeyType: 'ed25519',
+    });
+    verify(null, data, {
+      key: rawPub, format: 'raw-public', asymmetricKeyType: 'ed25519',
+    }, sig3);
+    ```
+
+Пример: для ключей EC при импорте сырых ключей нужна опция `namedCurve`:
+
+=== "MJS"
+
+    ```js
+    import { promisify } from 'node:util';
+    const {
+      createPrivateKey, createPublicKey, generateKeyPair, sign, verify,
+    } = await import('node:crypto');
+
+    const generated = await promisify(generateKeyPair)('ec', {
+      namedCurve: 'P-256',
+    });
+
+    // Export the raw EC public key (uncompressed by default).
+    const rawPublicKey = generated.publicKey.export({ format: 'raw-public' });
+
+    // The following is equivalent.
+    const rawPublicKeyUncompressed = generated.publicKey.export({
+      format: 'raw-public',
+      type: 'uncompressed',
+    });
+
+    // Export compressed point format.
+    const rawPublicKeyCompressed = generated.publicKey.export({
+      format: 'raw-public',
+      type: 'compressed',
+    });
+
+    // Export the raw EC private key.
+    const rawPrivateKey = generated.privateKey.export({ format: 'raw-private' });
+
+    // Import the raw EC keys.
+    // Both compressed and uncompressed point formats are accepted.
+    const publicKey = createPublicKey({
+      key: rawPublicKey,
+      format: 'raw-public',
+      asymmetricKeyType: 'ec',
+      namedCurve: 'P-256',
+    });
+    const privateKey = createPrivateKey({
+      key: rawPrivateKey,
+      format: 'raw-private',
+      asymmetricKeyType: 'ec',
+      namedCurve: 'P-256',
+    });
+
+    const data = new TextEncoder().encode('message to sign');
+    const signature = sign('sha256', data, privateKey);
+    verify('sha256', data, publicKey, signature);
+    ```
+
+Пример: экспорт и импорт сырых seed:
+
+=== "MJS"
+
+    ```js
+    import { promisify } from 'node:util';
+    const {
+      createPrivateKey, decapsulate, encapsulate, generateKeyPair,
+    } = await import('node:crypto');
+
+    const generated = await promisify(generateKeyPair)('ml-kem-768');
+
+    // Export the raw seed (64 bytes for ML-KEM).
+    const seed = generated.privateKey.export({ format: 'raw-seed' });
+
+    // Import the raw seed.
+    const privateKey = createPrivateKey({
+      key: seed,
+      format: 'raw-seed',
+      asymmetricKeyType: 'ml-kem-768',
+    });
+
+    const { ciphertext } = encapsulate(generated.publicKey);
+    decapsulate(privateKey, ciphertext);
+    ```
+
+## Class: `Certificate`
+
+<!-- YAML
+added: v0.11.8
+-->
+
+SPKAC — механизм запроса на подпись сертификата, изначально в Netscape и формально
+вошедший в элемент HTML5 `keygen`.
+
+`<keygen>` устарел с [HTML 5.2][]; в новых проектах элемент не используют.
+
+Модуль `node:crypto` предоставляет класс `Certificate` для работы с данными SPKAC.
+Чаще всего это вывод элемента `<keygen>`. Внутри Node.js использует [реализацию SPKAC в OpenSSL][OpenSSL's SPKAC implementation].
+
+### Static method: `Certificate.exportChallenge(spkac[, encoding])`
+
+<!-- YAML
+added: v9.0.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The spkac argument can be an ArrayBuffer. Limited the size of
+                 the spkac argument to a maximum of 2**31 - 1 bytes.
+-->
+
+Добавлено в: v9.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Аргументом spkac может быть ArrayBuffer. Ограничен размер аргумента spkac максимум до 2**31–1 байта. |
+
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка][encoding] строки `spkac`
+* Возвращает: [<Buffer>](buffer.md#buffer) компонент challenge структуры `spkac` (открытый ключ и challenge)
+
+=== "MJS"
+
+    ```js
+    const { Certificate } = await import('node:crypto');
+    const spkac = getSpkacSomehow();
+    const challenge = Certificate.exportChallenge(spkac);
+    console.log(challenge.toString('utf8'));
+    // Prints: the challenge as a UTF8 string
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Certificate } = require('node:crypto');
+    const spkac = getSpkacSomehow();
+    const challenge = Certificate.exportChallenge(spkac);
+    console.log(challenge.toString('utf8'));
+    // Prints: the challenge as a UTF8 string
+    ```
+
+### Static method: `Certificate.exportPublicKey(spkac[, encoding])`
+
+<!-- YAML
+added: v9.0.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The spkac argument can be an ArrayBuffer. Limited the size of
+                 the spkac argument to a maximum of 2**31 - 1 bytes.
+-->
+
+Добавлено в: v9.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Аргументом spkac может быть ArrayBuffer. Ограничен размер аргумента spkac максимум до 2**31–1 байта. |
+
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка][encoding] строки `spkac`
+* Возвращает: [<Buffer>](buffer.md#buffer) компонент открытого ключа структуры `spkac` (открытый ключ и challenge)
+
+=== "MJS"
+
+    ```js
+    const { Certificate } = await import('node:crypto');
+    const spkac = getSpkacSomehow();
+    const publicKey = Certificate.exportPublicKey(spkac);
+    console.log(publicKey);
+    // Prints: the public key as <Buffer ...>
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Certificate } = require('node:crypto');
+    const spkac = getSpkacSomehow();
+    const publicKey = Certificate.exportPublicKey(spkac);
+    console.log(publicKey);
+    // Prints: the public key as <Buffer ...>
+    ```
+
+### Static method: `Certificate.verifySpkac(spkac[, encoding])`
+
+<!-- YAML
+added: v9.0.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The spkac argument can be an ArrayBuffer. Added encoding.
+                 Limited the size of the spkac argument to a maximum of
+                 2**31 - 1 bytes.
+-->
+
+Добавлено в: v9.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Аргументом spkac может быть ArrayBuffer. Добавлена ​​кодировка. Ограничен размер аргумента spkac максимум до 2**31–1 байта. |
+
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка][encoding] строки `spkac`
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если структура `spkac` допустима, иначе `false`
+
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { Certificate } = await import('node:crypto');
+
+    const spkac = getSpkacSomehow();
+    console.log(Certificate.verifySpkac(Buffer.from(spkac)));
+    // Prints: true or false
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Buffer } = require('node:buffer');
+    const { Certificate } = require('node:crypto');
+
+    const spkac = getSpkacSomehow();
+    console.log(Certificate.verifySpkac(Buffer.from(spkac)));
+    // Prints: true or false
+    ```
 
 ### Legacy API
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+> Stability: 0 - Deprecated
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
-
-В качестве унаследованного интерфейса можно создавать новые экземпляры класса `crypto.Certificate`, как показано в примерах ниже.
-
-<!-- 0006.part.md -->
+As a legacy interface, it is possible to create new instances of
+the `crypto.Certificate` class as illustrated in the examples below.
 
 #### `new crypto.Certificate()`
 
-Экземпляры класса `Certificate` могут быть созданы с помощью ключевого слова `new` или путем вызова функции `crypto.Certificate()`:
+Instances of the `Certificate` class can be created using the `new` keyword
+or by calling `crypto.Certificate()` as a function:
 
-```mjs
-const { Certificate } = await import('node:crypto');
+=== "MJS"
 
-const cert1 = new Certificate();
-const cert2 = Certificate();
-```
+    ```js
+    const { Certificate } = await import('node:crypto');
 
-```cjs
-const { Certificate } = require('node:crypto');
+    const cert1 = new Certificate();
+    const cert2 = Certificate();
+    ```
 
-const cert1 = new Certificate();
-const cert2 = Certificate();
-```
+=== "CJS"
 
-<!-- 0007.part.md -->
+    ```js
+    const { Certificate } = require('node:crypto');
+
+    const cert1 = new Certificate();
+    const cert2 = Certificate();
+    ```
 
 #### `certificate.exportChallenge(spkac[, encoding])`
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Компонент вызова структуры данных `spkac`, который включает открытый ключ и вызов.
+<!-- YAML
+added: v0.11.8
+-->
 
-<!-- конец списка -->
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `spkac` string.
+* Returns: [<Buffer>](buffer.md#buffer) The challenge component of the `spkac` data structure, which
+  includes a public key and a challenge.
 
-```mjs
-const { Certificate } = await import('node:crypto');
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-const challenge = cert.exportChallenge(spkac);
-console.log(challenge.toString('utf8'));
-// Выводит: вызов в виде строки UTF8
-```
+=== "MJS"
 
-```cjs
-const { Certificate } = require('node:crypto');
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-const challenge = cert.exportChallenge(spkac);
-console.log(challenge.toString('utf8'));
-// Выводит: вызов в виде строки UTF8
-```
+    ```js
+    const { Certificate } = await import('node:crypto');
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    const challenge = cert.exportChallenge(spkac);
+    console.log(challenge.toString('utf8'));
+    // Prints: the challenge as a UTF8 string
+    ```
 
-<!-- 0008.part.md -->
+=== "CJS"
+
+    ```js
+    const { Certificate } = require('node:crypto');
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    const challenge = cert.exportChallenge(spkac);
+    console.log(challenge.toString('utf8'));
+    // Prints: the challenge as a UTF8 string
+    ```
 
 #### `certificate.exportPublicKey(spkac[, encoding])`
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Компонент открытого ключа структуры данных `spkac`, который включает в себя открытый ключ и вызов.
+<!-- YAML
+added: v0.11.8
+-->
 
-<!-- конец списка -->
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `spkac` string.
+* Returns: [<Buffer>](buffer.md#buffer) The public key component of the `spkac` data structure,
+  which includes a public key and a challenge.
 
-```mjs
-const { Certificate } = await import('node:crypto');
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-const publicKey = cert.exportPublicKey(spkac);
-console.log(publicKey);
-// Печатает: открытый ключ в виде <Буфера ...>
-```
+=== "MJS"
 
-```cjs
-const { Certificate } = require('node:crypto');
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-const publicKey = cert.exportPublicKey(spkac);
-console.log(publicKey);
-// Печатает: открытый ключ в виде <Буфера ...>
-```
+    ```js
+    const { Certificate } = await import('node:crypto');
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    const publicKey = cert.exportPublicKey(spkac);
+    console.log(publicKey);
+    // Prints: the public key as <Buffer ...>
+    ```
 
-<!-- 0009.part.md -->
+=== "CJS"
+
+    ```js
+    const { Certificate } = require('node:crypto');
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    const publicKey = cert.exportPublicKey(spkac);
+    console.log(publicKey);
+    // Prints: the public key as <Buffer ...>
+    ```
 
 #### `certificate.verifySpkac(spkac[, encoding])`
 
--   `spkac` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `spkac`.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если данная структура данных `spkac` корректна, `false` в противном случае.
+<!-- YAML
+added: v0.11.8
+-->
 
-<!-- конец списка -->
+* `spkac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `spkac` string.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the given `spkac` data structure is valid,
+  `false` otherwise.
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { Certificate } = await import('node:crypto');
+=== "MJS"
 
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-console.log(cert.verifySpkac(Buffer.from(spkac)));
-// Выводит: true или false
-```
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { Certificate } = await import('node:crypto');
 
-```cjs
-const { Buffer } = require('node:buffer');
-const { Certificate } = require('node:crypto');
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    console.log(cert.verifySpkac(Buffer.from(spkac)));
+    // Prints: true or false
+    ```
 
-const cert = Certificate();
-const spkac = getSpkacSomehow();
-console.log(cert.verifySpkac(Buffer.from(spkac)));
-// Выводит: true или false
-```
+=== "CJS"
 
-<!-- 0010.part.md -->
+    ```js
+    const { Buffer } = require('node:buffer');
+    const { Certificate } = require('node:crypto');
 
-## Класс: `Cipher`
+    const cert = Certificate();
+    const spkac = getSpkacSomehow();
+    console.log(cert.verifySpkac(Buffer.from(spkac)));
+    // Prints: true or false
+    ```
 
--   Расширяет: {stream.Transform}
+## Class: `Cipheriv`
 
-Экземпляры класса `Cipher` используются для шифрования данных. Класс может быть использован одним из двух способов:
+<!-- YAML
+added: v0.1.94
+-->
 
--   Как [поток](stream.md), который является одновременно читаемым и записываемым, где простые незашифрованные данные записываются для получения зашифрованных данных на читаемой стороне, или
--   используя методы [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding) и [`cipher.final()`](#cipherfinaloutputencoding) для создания зашифрованных данных.
+* Extends: [<stream.Transform>](stream.md#class-streamtransform)
 
-Методы [`crypto.createCipher()`](#cryptocreatecipheralgorithm-password-options) или [`crypto.createCipheriv()`](#cryptocreatecipherivalgorithm-key-iv-options) используются для создания экземпляров `Cipher`. Объекты `Cipher` не должны создаваться напрямую с помощью ключевого слова `new`.
+Экземпляры `Cipheriv` используются для шифрования данных. Два варианта использования:
 
-Пример: Использование объектов `Cipher` в качестве потоков:
+* как [поток][stream] `Transform`: в пишущую сторону подаётся открытый текст, со стороны чтения — шифротекст;
+* через [`cipher.update()`][] и [`cipher.final()`][].
 
-```mjs
-const { scrypt, randomFill, createCipheriv } = await import(
-    'node:crypto'
-);
+[`crypto.createCipheriv()`][] создаёт экземпляры `Cipheriv`; конструктор `new` не используют.
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+Пример: `Cipheriv` как поток:
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+=== "MJS"
+
+    ```js
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = await import('node:crypto');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         // Once we have the key and iv, we can create and use the cipher...
@@ -310,31 +659,33 @@ scrypt(password, 'salt', 24, (err, key) => {
         let encrypted = '';
         cipher.setEncoding('hex');
 
-        cipher.on('data', (chunk) => (encrypted += chunk));
+        cipher.on('data', (chunk) => encrypted += chunk);
         cipher.on('end', () => console.log(encrypted));
 
         cipher.write('some clear text data');
         cipher.end();
+      });
     });
-});
-```
+    ```
 
-```cjs
-const {
-    scrypt,
-    randomFill,
-    createCipheriv,
-} = require('node:crypto');
+=== "CJS"
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+    ```js
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = require('node:crypto');
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         // Once we have the key and iv, we can create and use the cipher...
@@ -343,38 +694,44 @@ scrypt(password, 'salt', 24, (err, key) => {
         let encrypted = '';
         cipher.setEncoding('hex');
 
-        cipher.on('data', (chunk) => (encrypted += chunk));
+        cipher.on('data', (chunk) => encrypted += chunk);
         cipher.on('end', () => console.log(encrypted));
 
         cipher.write('some clear text data');
         cipher.end();
+      });
     });
-});
-```
+    ```
 
-Пример: Использование `Cipher` и конвейерных потоков:
+Пример: `Cipheriv` и `pipeline`:
 
-```mjs
-import {
-    createReadStream,
-    createWriteStream,
-} from 'node:fs';
+=== "MJS"
 
-import { pipeline } from 'node:stream';
+    ```js
+    import {
+      createReadStream,
+      createWriteStream,
+    } from 'node:fs';
 
-const { scrypt, randomFill, createCipheriv } = await import(
-    'node:crypto'
-);
+    import {
+      pipeline,
+    } from 'node:stream';
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = await import('node:crypto');
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         const cipher = createCipheriv(algorithm, key, iv);
@@ -383,35 +740,39 @@ scrypt(password, 'salt', 24, (err, key) => {
         const output = createWriteStream('test.enc');
 
         pipeline(input, cipher, output, (err) => {
-            if (err) throw err;
+          if (err) throw err;
         });
+      });
     });
-});
-```
+    ```
 
-```cjs
-const {
-    createReadStream,
-    createWriteStream,
-} = require('node:fs');
+=== "CJS"
 
-const { pipeline } = require('node:stream');
+    ```js
+    const {
+      createReadStream,
+      createWriteStream,
+    } = require('node:fs');
 
-const {
-    scrypt,
-    randomFill,
-    createCipheriv,
-} = require('node:crypto');
+    const {
+      pipeline,
+    } = require('node:stream');
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = require('node:crypto');
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         const cipher = createCipheriv(algorithm, key, iv);
@@ -420,4708 +781,6834 @@ scrypt(password, 'salt', 24, (err, key) => {
         const output = createWriteStream('test.enc');
 
         pipeline(input, cipher, output, (err) => {
-            if (err) throw err;
+          if (err) throw err;
         });
+      });
     });
-});
-```
+    ```
 
-Пример: Использование методов [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding) и [`cipher.final()`](#cipherfinaloutputencoding):
+Пример: методы [`cipher.update()`][] и [`cipher.final()`][]:
 
-```mjs
-const { scrypt, randomFill, createCipheriv } = await import(
-    'node:crypto'
-);
+=== "MJS"
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+    ```js
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = await import('node:crypto');
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         const cipher = createCipheriv(algorithm, key, iv);
 
-        let encrypted = cipher.update(
-            'some clear text data',
-            'utf8',
-            'hex'
-        );
+        let encrypted = cipher.update('some clear text data', 'utf8', 'hex');
         encrypted += cipher.final('hex');
         console.log(encrypted);
+      });
     });
-});
-```
+    ```
 
-```cjs
-const {
-    scrypt,
-    randomFill,
-    createCipheriv,
-} = require('node:crypto');
+=== "CJS"
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
+    ```js
+    const {
+      scrypt,
+      randomFill,
+      createCipheriv,
+    } = require('node:crypto');
 
-// First, we'll generate the key. The key length is dependent on the algorithm.
-// In this case for aes192, it is 24 bytes (192 bits).
-scrypt(password, 'salt', 24, (err, key) => {
-    if (err) throw err;
-    // Then, we'll generate a random initialization vector
-    randomFill(new Uint8Array(16), (err, iv) => {
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+
+    // First, we'll generate the key. The key length is dependent on the algorithm.
+    // In this case for aes192, it is 24 bytes (192 bits).
+    scrypt(password, 'salt', 24, (err, key) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      randomFill(new Uint8Array(16), (err, iv) => {
         if (err) throw err;
 
         const cipher = createCipheriv(algorithm, key, iv);
 
-        let encrypted = cipher.update(
-            'some clear text data',
-            'utf8',
-            'hex'
-        );
+        let encrypted = cipher.update('some clear text data', 'utf8', 'hex');
         encrypted += cipher.final('hex');
         console.log(encrypted);
+      });
     });
-});
-```
-
-<!-- 0011.part.md -->
+    ```
 
 ### `cipher.final([outputEncoding])`
 
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка} Любое оставшееся зашифрованное содержимое. Если указано `outputEncoding`, возвращается строка. Если `outputEncoding` не указан, возвращается [`Buffer`](buffer.md).
+<!-- YAML
+added: v0.1.94
+-->
 
-После вызова метода `cipher.final()` объект `Cipher` больше не может быть использован для шифрования данных. Попытки вызвать `cipher.final()` более одного раза приведут к возникновению ошибки.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Any remaining enciphered contents.
+  If `outputEncoding` is specified, a string is
+  returned. If an `outputEncoding` is not provided, a [`Buffer`][] is returned.
 
-<!-- 0012.part.md -->
+Once the `cipher.final()` method has been called, the `Cipheriv` object can no
+longer be used to encrypt data. Attempts to call `cipher.final()` more than
+once will result in an error being thrown.
 
 ### `cipher.getAuthTag()`
 
--   Возвращает: [`<Buffer>`](buffer.md#buffer) При использовании аутентифицированного режима шифрования (в настоящее время поддерживаются `GCM`, `CCM`, `OCB` и `chacha20-poly1305`) метод `cipher.getAuthTag()` возвращает [`Buffer`](buffer.md), содержащий _тег аутентификации_, который был вычислен из заданных данных.
+<!-- YAML
+added: v1.0.0
+-->
 
-Метод `cipher.getAuthTag()` следует вызывать только после завершения шифрования с помощью метода [`cipher.final()`](#cipherfinaloutputencoding).
+* Возвращает: [<Buffer>](buffer.md#buffer) В режимах с аутентификацией (`GCM`, `CCM`,
+  `OCB`, `chacha20-poly1305`) метод `cipher.getAuthTag()` возвращает
+  [`Buffer`][] с _тегом аутентификации_, вычисленным по данным.
 
-Если параметр `authTagLength` был установлен при создании экземпляра `cipher`, эта функция вернет именно `authTagLength` байт.
+`cipher.getAuthTag()` вызывают только после завершения шифрования через [`cipher.final()`][].
 
-<!-- 0013.part.md -->
+Если при создании `cipher` была задана опция `authTagLength`, вернётся ровно столько байт.
 
 ### `cipher.setAAD(buffer[, options])`
 
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
-    -   `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, которую следует использовать, когда `buffer` является строкой.
--   Возвращает: {Cipher} для цепочки методов.
+<!-- YAML
+added: v1.0.0
+-->
 
-При использовании аутентифицированного режима шифрования (в настоящее время поддерживаются `GCM`, `CCM`, `OCB` и `chacha20-poly1305`) метод `cipher.setAAD()` устанавливает значение, используемое для входного параметра _дополнительные аутентифицированные данные_ (AAD).
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+  * `plaintextLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] строки `buffer`.
+* Возвращает: [<Cipheriv>](crypto.md#class-cipheriv) Тот же экземпляр `Cipheriv` (цепочка вызовов).
 
-Параметр `plaintextLength` является необязательным для `GCM` и `OCB`. При использовании `CCM`, опция `plaintextLength` должна быть указана, и ее значение должно соответствовать длине открытого текста в байтах. Смотрите [Режим CCM](#ccm-mode).
+В режимах с аутентификацией (`GCM`, `CCM`, `OCB`, `chacha20-poly1305`) метод `cipher.setAAD()`
+задаёт _дополнительные аутентифицированные данные_ (AAD).
 
-Метод `cipher.setAAD()` должен быть вызван до [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding).
+Для `GCM` и `OCB` опция `plaintextLength` необязательна. Для `CCM` её нужно указать,
+и значение должно совпадать с длиной открытого текста в байтах. См. [режим CCM][CCM mode].
 
-<!-- 0014.part.md -->
+`cipher.setAAD()` вызывают до [`cipher.update()`][].
 
 ### `cipher.setAutoPadding([autoPadding])`
 
--   `autoPadding` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`.
--   Возвращает: {Cipher} для цепочки методов.
+<!-- YAML
+added: v0.7.1
+-->
 
-При использовании алгоритмов блочного шифрования класс `Cipher` будет автоматически добавлять к входным данным прокладки соответствующего размера блока. Чтобы отключить добавление по умолчанию, вызовите `cipher.setAutoPadding(false)`.
+* `autoPadding` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`
+* Возвращает: [<Cipheriv>](crypto.md#class-cipheriv) Тот же экземпляр `Cipheriv`.
 
-Когда `autoPadding` имеет значение `false`, длина всех входных данных должна быть кратна размеру блока шифра, иначе [`cipher.final()`](#cipherfinaloutputencoding) выдаст ошибку. Отключение автоматической подшивки полезно при нестандартной подшивке, например, при использовании `0x0` вместо PKCS-подшивки.
+Для блочных шифров `Cipheriv` по умолчанию добавляет padding до размера блока.
+Отключить: `cipher.setAutoPadding(false)`.
 
-Метод `cipher.setAutoPadding()` должен быть вызван до [`cipher.final()`](#cipherfinaloutputencoding).
+При `autoPadding === false` длина всех входных данных должна быть кратна размеру блока,
+иначе [`cipher.final()`][] выбросит ошибку. Отключение padding нужно для нестандартного
+заполнения (например `0x0` вместо PKCS).
 
-<!-- 0015.part.md -->
+`cipher.setAutoPadding()` вызывают до [`cipher.final()`][].
 
 ### `cipher.update(data[, inputEncoding][, outputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) данных.
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет шифр с `data`. Если указан аргумент `inputEncoding`, то аргумент `data` является строкой, использующей указанную кодировку. Если аргумент `inputEncoding` не указан, `data` должна быть [`Buffer`](buffer.md), `TypedArray` или `DataView`. Если `data` является [`Buffer`](buffer.md), `TypedArray`, или `DataView`, то `inputEncoding` игнорируется.
+Добавлено в: v0.1.94
 
-Параметр `outputEncoding` определяет формат вывода зашифрованных данных. Если `outputEncoding` указан, то возвращается строка, использующая указанную кодировку. Если `outputEncoding` не указан, возвращается [`Buffer`](buffer.md).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-Метод `cipher.update()` может быть вызван несколько раз с новыми данными, пока не будет вызван [`cipher.final()`](#cipherfinaloutputencoding). Вызов `cipher.update()` после [`cipher.final()`](#cipherfinaloutputencoding) приведет к возникновению ошибки.
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] данных.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] результата.
+* Возвращает: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0016.part.md -->
+Обновляет шифр данными `data`. Если задан `inputEncoding`, `data` — строка в этой кодировке.
+Если `inputEncoding` нет, `data` должен быть [`Buffer`][], `TypedArray` или `DataView`;
+для бинарных типов `inputEncoding` игнорируется.
 
-## Класс: `Decipher`
+`outputEncoding` задаёт формат шифротекста на выходе: при указании возвращается строка,
+иначе — [`Buffer`][].
 
--   Расширяет: {stream.Transform}
+`cipher.update()` можно вызывать несколько раз до [`cipher.final()`][]; после
+[`cipher.final()`][] вызов `cipher.update()` приведёт к ошибке.
 
-Экземпляры класса `Decipher` используются для расшифровки данных. Класс может быть использован одним из двух способов:
+## Class: `Decipheriv`
 
--   Как [поток](stream.md), который является одновременно читаемым и записываемым, где простые зашифрованные данные записываются для получения незашифрованных данных на читаемой стороне, или
--   используя методы [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) и [`decipher.final()`](#decipherfinaloutputencoding) для получения незашифрованных данных.
+<!-- YAML
+added: v0.1.94
+-->
 
-Методы [`crypto.createDecipher()`](#cryptocreatedecipheralgorithm-password-options) или [`crypto.createDecipheriv()`](#cryptocreatedecipherivalgorithm-key-iv-options) используются для создания экземпляров `Decipher`. Объекты `Decipher` не должны создаваться напрямую с помощью ключевого слова `new`.
+* Extends: [<stream.Transform>](stream.md#class-streamtransform)
 
-Пример: Использование объектов `Decipher` в качестве потоков:
+Экземпляры `Decipheriv` расшифровывают данные. Два варианта:
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { scryptSync, createDecipheriv } = await import(
-    'node:crypto'
-);
+* как [поток][stream] `Transform`: на запись подаётся шифротекст, со стороны чтения — открытый текст;
+* через [`decipher.update()`][] и [`decipher.final()`][].
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Key length is dependent on the algorithm. In this case for aes192, it is
-// 24 bytes (192 bits).
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
+[`crypto.createDecipheriv()`][] создаёт `Decipheriv`; `new` не используют.
 
-const decipher = createDecipheriv(algorithm, key, iv);
+Пример: `Decipheriv` как поток:
 
-let decrypted = '';
-decipher.on('readable', () => {
-    let chunk;
-    while (null !== (chunk = decipher.read())) {
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = await import('node:crypto');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Key length is dependent on the algorithm. In this case for aes192, it is
+    // 24 bytes (192 bits).
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+    const decipher = createDecipheriv(algorithm, key, iv);
+
+    let decrypted = '';
+    decipher.on('readable', () => {
+      let chunk;
+      while (null !== (chunk = decipher.read())) {
         decrypted += chunk.toString('utf8');
-    }
-});
-decipher.on('end', () => {
+      }
+    });
+    decipher.on('end', () => {
+      console.log(decrypted);
+      // Prints: some clear text data
+    });
+
+    // Encrypted with same algorithm, key and iv.
+    const encrypted =
+      'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
+    decipher.write(encrypted, 'hex');
+    decipher.end();
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Key length is dependent on the algorithm. In this case for aes192, it is
+    // 24 bytes (192 bits).
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+    const decipher = createDecipheriv(algorithm, key, iv);
+
+    let decrypted = '';
+    decipher.on('readable', () => {
+      let chunk;
+      while (null !== (chunk = decipher.read())) {
+        decrypted += chunk.toString('utf8');
+      }
+    });
+    decipher.on('end', () => {
+      console.log(decrypted);
+      // Prints: some clear text data
+    });
+
+    // Encrypted with same algorithm, key and iv.
+    const encrypted =
+      'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
+    decipher.write(encrypted, 'hex');
+    decipher.end();
+    ```
+
+Пример: `Decipheriv` и `pipeline`:
+
+=== "MJS"
+
+    ```js
+    import {
+      createReadStream,
+      createWriteStream,
+    } from 'node:fs';
+    import { Buffer } from 'node:buffer';
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = await import('node:crypto');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+    const decipher = createDecipheriv(algorithm, key, iv);
+
+    const input = createReadStream('test.enc');
+    const output = createWriteStream('test.js');
+
+    input.pipe(decipher).pipe(output);
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      createReadStream,
+      createWriteStream,
+    } = require('node:fs');
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+    const decipher = createDecipheriv(algorithm, key, iv);
+
+    const input = createReadStream('test.enc');
+    const output = createWriteStream('test.js');
+
+    input.pipe(decipher).pipe(output);
+    ```
+
+Пример: [`decipher.update()`][] и [`decipher.final()`][]:
+
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = await import('node:crypto');
+
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+    const decipher = createDecipheriv(algorithm, key, iv);
+
+    // Encrypted using same algorithm, key and iv.
+    const encrypted =
+      'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
     console.log(decrypted);
     // Prints: some clear text data
-});
+    ```
 
-// Encrypted with same algorithm, key and iv.
-const encrypted =
-    'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
-decipher.write(encrypted, 'hex');
-decipher.end();
-```
+=== "CJS"
 
-```cjs
-const {
-    scryptSync,
-    createDecipheriv,
-} = require('node:crypto');
-const { Buffer } = require('node:buffer');
+    ```js
+    const {
+      scryptSync,
+      createDecipheriv,
+    } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
 
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Key length is dependent on the algorithm. In this case for aes192, it is
-// 24 bytes (192 bits).
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
+    const algorithm = 'aes-192-cbc';
+    const password = 'Password used to generate key';
+    // Use the async `crypto.scrypt()` instead.
+    const key = scryptSync(password, 'salt', 24);
+    // The IV is usually passed along with the ciphertext.
+    const iv = Buffer.alloc(16, 0); // Initialization vector.
 
-const decipher = createDecipheriv(algorithm, key, iv);
+    const decipher = createDecipheriv(algorithm, key, iv);
 
-let decrypted = '';
-decipher.on('readable', () => {
-    let chunk;
-    while (null !== (chunk = decipher.read())) {
-        decrypted += chunk.toString('utf8');
-    }
-});
-decipher.on('end', () => {
+    // Encrypted using same algorithm, key and iv.
+    const encrypted =
+      'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
     console.log(decrypted);
     // Prints: some clear text data
-});
-
-// Encrypted with same algorithm, key and iv.
-const encrypted =
-    'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
-decipher.write(encrypted, 'hex');
-decipher.end();
-```
-
-Пример: Использование `Decipher` и конвейерных потоков:
-
-```mjs
-import {
-    createReadStream,
-    createWriteStream,
-} from 'node:fs';
-import { Buffer } from 'node:buffer';
-const { scryptSync, createDecipheriv } = await import(
-    'node:crypto'
-);
-
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
-
-const decipher = createDecipheriv(algorithm, key, iv);
-
-const input = createReadStream('test.enc');
-const output = createWriteStream('test.js');
-
-input.pipe(decipher).pipe(output);
-```
-
-```cjs
-const {
-    createReadStream,
-    createWriteStream,
-} = require('node:fs');
-const {
-    scryptSync,
-    createDecipheriv,
-} = require('node:crypto');
-const { Buffer } = require('node:buffer');
-
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
-
-const decipher = createDecipheriv(algorithm, key, iv);
-
-const input = createReadStream('test.enc');
-const output = createWriteStream('test.js');
-
-input.pipe(decipher).pipe(output);
-```
-
-Пример: Использование методов [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) и [`decipher.final()`](#decipherfinaloutputencoding):
-
-```mjs
-import { Buffer } from 'node:buffer';
-const { scryptSync, createDecipheriv } = await import(
-    'node:crypto'
-);
-
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
-
-const decipher = createDecipheriv(algorithm, key, iv);
-
-// Encrypted using same algorithm, key and iv.
-const encrypted =
-    'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
-let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-decrypted += decipher.final('utf8');
-console.log(decrypted);
-// Prints: some clear text data
-```
-
-```cjs
-const {
-    scryptSync,
-    createDecipheriv,
-} = require('node:crypto');
-const { Buffer } = require('node:buffer');
-
-const algorithm = 'aes-192-cbc';
-const password = 'Password used to generate key';
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, 'salt', 24);
-// The IV is usually passed along with the ciphertext.
-const iv = Buffer.alloc(16, 0); // Initialization vector.
-
-const decipher = createDecipheriv(algorithm, key, iv);
-
-// Encrypted using same algorithm, key and iv.
-const encrypted =
-    'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
-let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-decrypted += decipher.final('utf8');
-console.log(decrypted);
-// Prints: some clear text data
-```
-
-<!-- 0017.part.md -->
+    ```
 
 ### `decipher.final([outputEncoding])`
 
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка} Любое оставшееся расшифрованное содержимое. Если указано `outputEncoding`, возвращается строка. Если `outputEncoding` не указан, возвращается [`Buffer`](buffer.md).
+<!-- YAML
+added: v0.1.94
+-->
 
-После вызова метода `decipher.final()` объект `Decipher` больше не может быть использован для расшифровки данных. Попытки вызвать `decipher.final()` более одного раза приведут к возникновению ошибки.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] результата.
+* Возвращает: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Оставшийся расшифрованный материал.
+  При указанном `outputEncoding` возвращается строка, иначе — [`Buffer`][].
 
-<!-- 0018.part.md -->
+После вызова `decipher.final()` объект `Decipheriv` больше нельзя использовать для расшифровки.
+Повторный вызов `decipher.final()` вызывает ошибку.
 
 ### `decipher.setAAD(buffer[, options])`
 
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
-    -   `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, которую следует использовать, когда `buffer` является строкой.
--   Возвращает: {Decipher} для цепочки методов.
+<!-- YAML
+added: v1.0.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The buffer argument can be a string or ArrayBuffer and is
+                limited to no more than 2 ** 31 - 1 bytes.
+  - version: v7.2.0
+    pr-url: https://github.com/nodejs/node/pull/9398
+    description: This method now returns a reference to `decipher`.
+-->
 
-При использовании аутентифицированного режима шифрования (в настоящее время поддерживаются `GCM`, `CCM`, `OCB` и `chacha20-poly1305`) метод `decipher.setAAD()` устанавливает значение, используемое для входного параметра _дополнительные аутентифицированные данные_ (AAD).
+Добавлено в: v1.0.0
 
-Аргумент `options` является необязательным для `GCM`. При использовании `CCM` должен быть указан параметр `plaintextLength`, значение которого должно соответствовать длине шифротекста в байтах. Смотрите [Режим CCM](#ccm-mode).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Аргумент буфера может быть строкой или ArrayBuffer и ограничен не более чем 2 ** 31 — 1 байтами. |
+    | v7.2.0 | Этот метод теперь возвращает ссылку на `decipher`. |
 
-Метод `decipher.setAAD()` должен быть вызван до [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding).
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+  * `plaintextLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки `buffer`.
+* Возвращает: [<Decipheriv>](crypto.md#class-decipheriv) Тот же `Decipheriv` (цепочка вызовов).
 
-При передаче строки в качестве `буфера`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
+В режимах с аутентификацией (`GCM`, `CCM`, `OCB`, `chacha20-poly1305`) метод `decipher.setAAD()`
+задаёт _дополнительные аутентифицированные данные_ (AAD).
 
-<!-- 0019.part.md -->
+Для `GCM` аргумент `options` необязателен. Для `CCM` нужно указать `plaintextLength`,
+совпадающий с длиной шифротекста в байтах. См. [режим CCM][CCM mode].
+
+`decipher.setAAD()` вызывают до [`decipher.update()`][].
+
+При передаче строки в `buffer` учитывайте
+[оговорки по строкам во входах крипто-API][caveats when using strings as inputs to cryptographic APIs].
 
 ### `decipher.setAuthTag(buffer[, encoding])`
 
--   `буфер` {string|Buffer|ArrayBuffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, которую следует использовать, когда `buffer` является строкой.
--   Возвращает: {Decipher} для цепочки методов.
+<!-- YAML
+added: v1.0.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/61084
+    description: Using GCM tag lengths other than 128 bits without specifying
+                 the `authTagLength` option when creating `decipher` is not
+                 allowed anymore.
+  - version:
+    - v22.0.0
+    - v20.13.0
+    pr-url: https://github.com/nodejs/node/pull/52345
+    description: Using GCM tag lengths other than 128 bits without specifying
+                 the `authTagLength` option when creating `decipher` is
+                 deprecated.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The buffer argument can be a string or ArrayBuffer and is
+                limited to no more than 2 ** 31 - 1 bytes.
+  - version: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/17825
+    description: This method now throws if the GCM tag length is invalid.
+  - version: v7.2.0
+    pr-url: https://github.com/nodejs/node/pull/9398
+    description: This method now returns a reference to `decipher`.
+-->
 
-При использовании аутентифицированного режима шифрования (в настоящее время поддерживаются `GCM`, `CCM`, `OCB` и `chacha20-poly1305`), метод `decipher.setAuthTag()` используется для передачи полученного _тега аутентификации_. Если тег не передан, или если текст шифра был подделан, произойдет ошибка [`decipher.final()`](#decipherfinaloutputencoding), указывающая на то, что текст шифра должен быть отброшен из-за неудачной аутентификации. Если длина тега недопустима согласно [NIST SP 800-38D](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf) или не соответствует значению опции `authTagLength`, `decipher.setAuthTag()` выдаст ошибку.
+Добавлено в: v1.0.0
 
-Метод `decipher.setAuthTag()` должен быть вызван до [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) для режима `CCM` или до [`decipher.final()`](#decipherfinaloutputencoding) для режимов `GCM` и `OCB` и `chacha20-poly1305`. `decipher.setAuthTag()` может быть вызван только один раз.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Использование тегов GCM длиной, отличной от 128 бит, без указания опции authTagLength при создании decipher больше не допускается. |
+    | v22.0.0, v20.13.0 | Использование тегов GCM длиной, отличной от 128 бит, без указания опции authTagLength при создании decipher устарело. |
+    | v15.0.0 | Аргумент буфера может быть строкой или ArrayBuffer и ограничен не более чем 2 ** 31 — 1 байтами. |
+    | v11.0.0 | Этот метод теперь выдает ошибку, если длина тега GCM недействительна. |
+    | v7.2.0 | Этот метод теперь возвращает ссылку на `decipher`. |
 
-При передаче строки в качестве тега аутентификации, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки `buffer`.
+* Возвращает: [<Decipheriv>](crypto.md#class-decipheriv) Тот же `Decipheriv`.
 
-<!-- 0020.part.md -->
+В режимах с аутентификацией (`GCM`, `CCM`, `OCB`, `chacha20-poly1305`) `decipher.setAuthTag()` передаёт
+полученный _тег аутентификации_. Без тега или при изменении шифротекста [`decipher.final()`][]
+выбросит ошибку — данные нужно отбросить. Неверная длина тега по [NIST SP 800-38D][] или
+несовпадение с `authTagLength` также даёт ошибку.
+
+`decipher.setAuthTag()` для `CCM` вызывают до [`decipher.update()`][], для `GCM`, `OCB` и
+`chacha20-poly1305` — до [`decipher.final()`][].
+`decipher.setAuthTag()` можно вызвать только один раз.
+
+Для строки-тега см.
+[оговорки по строкам во входах крипто-API][caveats when using strings as inputs to cryptographic APIs].
 
 ### `decipher.setAutoPadding([autoPadding])`
 
--   `autoPadding` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`.
--   Возвращает: {Decipher} для цепочки методов.
+<!-- YAML
+added: v0.7.1
+-->
 
-Если данные были зашифрованы без стандартной блочной прокладки, вызов `decipher.setAutoPadding(false)` отключит автоматическую прокладку, чтобы предотвратить [`decipher.final()`](#decipherfinaloutputencoding) от проверки наличия и удаления прокладки.
+* `autoPadding` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`
+* Возвращает: [<Decipheriv>](crypto.md#class-decipheriv) Тот же `Decipheriv`.
 
-Отключение автоматической подстановки будет работать только в том случае, если длина входных данных кратна размеру блока шифра.
+Если шифрование было без стандартного блочного padding, `decipher.setAutoPadding(false)` отключает
+автоматическое снятие padding, чтобы [`decipher.final()`][] не проверял и не удалял его.
 
-Метод `decipher.setAutoPadding()` должен быть вызван до [`decipher.final()`](#decipherfinaloutputencoding).
+Без padding длина входных данных должна быть кратна размеру блока шифра.
 
-<!-- 0021.part.md -->
+`decipher.setAutoPadding()` вызывают до [`decipher.final()`][].
 
 ### `decipher.update(data[, inputEncoding][, outputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `data`.
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет расшифровку с `data`. Если указан аргумент `inputEncoding`, то аргумент `data` является строкой, использующей указанную кодировку. Если аргумент `inputEncoding` не указан, `data` должна быть [`Buffer`](buffer.md). Если `data` является [`Buffer`](buffer.md), то `inputEncoding` игнорируется.
+Добавлено в: v0.1.94
 
-Параметр `outputEncoding` определяет формат вывода зашифрованных данных. Если `outputEncoding` указан, то возвращается строка, использующая указанную кодировку. Если `outputEncoding` не указан, возвращается [`Buffer`](buffer.md).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-Метод `decipher.update()` может быть вызван несколько раз с новыми данными, пока не будет вызван [`decipher.final()`](#decipherfinaloutputencoding). Вызов `decipher.update()` после [`decipher.final()`](#decipherfinaloutputencoding) приведет к возникновению ошибки.
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] строки `data`.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] результата.
+* Возвращает: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0022.part.md -->
+Обновляет расшифровщик данными `data`. Если задан `inputEncoding`, `data` — строка в этой кодировке.
+Если `inputEncoding` нет, `data` должен быть [`Buffer`][]; для `Buffer` `inputEncoding` игнорируется.
 
-## Класс: `DiffieHellman`
+`outputEncoding` задаёт формат выхода: строка или [`Buffer`][].
 
-Класс `DiffieHellman` - это утилита для создания обменов ключами Диффи-Хеллмана.
+`decipher.update()` можно вызывать несколько раз до [`decipher.final()`][]; после
+[`decipher.final()`][] — ошибка.
 
-Экземпляры класса `DiffieHellman` могут быть созданы с помощью функции [`crypto.createDiffieHellman()`](#cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding).
+Даже при аутентифицирующем шифре на этом шаге подлинность открытого текста может быть не подтверждена;
+для AEAD проверка обычно завершается при вызове [`decipher.final()`][].
 
-```mjs
-import assert from 'node:assert';
+## Class: `DiffieHellman`
 
-const { createDiffieHellman } = await import('node:crypto');
+<!-- YAML
+added: v0.5.0
+-->
 
-// Генерируем ключи Алисы...
-const alice = createDiffieHellman(2048);
-const aliceKey = alice.generateKeys();
+Класс `DiffieHellman` — обмен ключами Диффи–Хеллмана.
 
-// Генерируем ключи Боба...
-const bob = createDiffieHellman(
-    alice.getPrime(),
-    alice.getGenerator()
-);
-const bobKey = bob.generateKeys();
+Экземпляры создаются через [`crypto.createDiffieHellman()`][].
 
-// Обмен и генерация секрета...
-const aliceSecret = alice.computeSecret(bobKey);
-const bobSecret = bob.computeSecret(aliceKey);
+=== "MJS"
 
-// OK
-assert.strictEqual(
-    aliceSecret.toString('hex'),
-    bobSecret.toString('hex')
-);
-```
+    ```js
+    import assert from 'node:assert';
 
-```cjs
-const assert = require('node:assert');
+    const {
+      createDiffieHellman,
+    } = await import('node:crypto');
 
-const { createDiffieHellman } = require('node:crypto');
+    // Generate Alice's keys...
+    const alice = createDiffieHellman(2048);
+    const aliceKey = alice.generateKeys();
 
-// Генерируем ключи Алисы...
-const alice = createDiffieHellman(2048);
-const aliceKey = alice.generateKeys();
+    // Generate Bob's keys...
+    const bob = createDiffieHellman(alice.getPrime(), alice.getGenerator());
+    const bobKey = bob.generateKeys();
 
-// Генерируем ключи Боба...
-const bob = createDiffieHellman(
-    alice.getPrime(),
-    alice.getGenerator()
-);
-const bobKey = bob.generateKeys();
+    // Exchange and generate the secret...
+    const aliceSecret = alice.computeSecret(bobKey);
+    const bobSecret = bob.computeSecret(aliceKey);
 
-// Обмен и генерация секрета...
-const aliceSecret = alice.computeSecret(bobKey);
-const bobSecret = bob.computeSecret(aliceKey);
+    // OK
+    assert.strictEqual(aliceSecret.toString('hex'), bobSecret.toString('hex'));
+    ```
 
-// OK
-assert.strictEqual(
-    aliceSecret.toString('hex'),
-    bobSecret.toString('hex')
-);
-```
+=== "CJS"
 
-<!-- 0023.part.md -->
+    ```js
+    const assert = require('node:assert');
+
+    const {
+      createDiffieHellman,
+    } = require('node:crypto');
+
+    // Generate Alice's keys...
+    const alice = createDiffieHellman(2048);
+    const aliceKey = alice.generateKeys();
+
+    // Generate Bob's keys...
+    const bob = createDiffieHellman(alice.getPrime(), alice.getGenerator());
+    const bobKey = bob.generateKeys();
+
+    // Exchange and generate the secret...
+    const aliceSecret = alice.computeSecret(bobKey);
+    const bobSecret = bob.computeSecret(aliceKey);
+
+    // OK
+    assert.strictEqual(aliceSecret.toString('hex'), bobSecret.toString('hex'));
+    ```
 
 ### `diffieHellman.computeSecret(otherPublicKey[, inputEncoding][, outputEncoding])`
 
--   `otherPublicKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `otherPublicKey`.
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.5.0
+-->
 
-Вычисляет общий секрет, используя `otherPublicKey` в качестве открытого ключа другой стороны, и возвращает вычисленный общий секрет. Предоставленный ключ интерпретируется с использованием указанного `inputEncoding`, а секрет кодируется с использованием указанного `outputEncoding`. Если `inputEncoding` не указан, ожидается, что `otherPublicKey` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+* `otherPublicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of an `otherPublicKey` string.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если `outputEncoding` указан, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+Computes the shared secret using `otherPublicKey` as the other
+party's public key and returns the computed shared secret. The supplied
+key is interpreted using the specified `inputEncoding`, and secret is
+encoded using specified `outputEncoding`.
+If the `inputEncoding` is not
+provided, `otherPublicKey` is expected to be a [`Buffer`][],
+`TypedArray`, or `DataView`.
 
-<!-- 0024.part.md -->
+If `outputEncoding` is given a string is returned; otherwise, a
+[`Buffer`][] is returned.
 
 ### `diffieHellman.generateKeys([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {буфер | строка}.
+<!-- YAML
+added: v0.5.0
+-->
 
-Генерирует значения закрытого и открытого ключей Диффи-Хеллмана и возвращает открытый ключ в указанной `кодировке`. Этот ключ должен быть передан другой стороне. Если указано `encoding`, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0025.part.md -->
+Generates private and public Diffie-Hellman key values unless they have been
+generated or computed already, and returns
+the public key in the specified `encoding`. This key should be
+transferred to the other party.
+If `encoding` is provided a string is returned; otherwise a
+[`Buffer`][] is returned.
+
+This function is a thin wrapper around [`DH_generate_key()`][]. In particular,
+once a private key has been generated or set, calling this function only updates
+the public key but does not generate a new private key.
 
 ### `diffieHellman.getGenerator([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}
+<!-- YAML
+added: v0.5.0
+-->
 
-Возвращает генератор Диффи-Хеллмана в указанном `кодировании`. Если указано `encoding`, возвращается строка; в противном случае возвращается [`буфер`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0026.part.md -->
+Returns the Diffie-Hellman generator in the specified `encoding`.
+If `encoding` is provided a string is
+returned; otherwise a [`Buffer`][] is returned.
 
 ### `diffieHellman.getPrime([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}
+<!-- YAML
+added: v0.5.0
+-->
 
-Возвращает прайм Диффи-Хеллмана в указанном `кодировании`. Если `кодировка` указана, возвращается строка; в противном случае возвращается [`буфер`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0027.part.md -->
+Returns the Diffie-Hellman prime in the specified `encoding`.
+If `encoding` is provided a string is
+returned; otherwise a [`Buffer`][] is returned.
 
 ### `diffieHellman.getPrivateKey([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}
+<!-- YAML
+added: v0.5.0
+-->
 
-Возвращает закрытый ключ Диффи-Хеллмана в указанной `кодировке`. Если `encoding` указан, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0028.part.md -->
+Returns the Diffie-Hellman private key in the specified `encoding`.
+If `encoding` is provided a
+string is returned; otherwise a [`Buffer`][] is returned.
 
 ### `diffieHellman.getPublicKey([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}
+<!-- YAML
+added: v0.5.0
+-->
 
-Возвращает открытый ключ Диффи-Хеллмана в указанной `кодировке`. Если `encoding` указан, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0029.part.md -->
+Returns the Diffie-Hellman public key in the specified `encoding`.
+If `encoding` is provided a
+string is returned; otherwise a [`Buffer`][] is returned.
 
 ### `diffieHellman.setPrivateKey(privateKey[, encoding])`
 
--   `privateKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `privateKey`.
+<!-- YAML
+added: v0.5.0
+-->
 
-Устанавливает закрытый ключ Диффи-Хеллмана. Если указан аргумент `encoding`, ожидается, что `privateKey` будет строкой. Если аргумент `encoding` не указан, ожидается, что `privateKey` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+* `privateKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `privateKey` string.
 
-<!-- 0030.part.md -->
+Sets the Diffie-Hellman private key. If the `encoding` argument is provided,
+`privateKey` is expected
+to be a string. If no `encoding` is provided, `privateKey` is expected
+to be a [`Buffer`][], `TypedArray`, or `DataView`.
+
+This function does not automatically compute the associated public key. Either
+[`diffieHellman.setPublicKey()`][] or [`diffieHellman.generateKeys()`][] can be
+used to manually provide the public key or to automatically derive it.
 
 ### `diffieHellman.setPublicKey(publicKey[, encoding])`
 
--   `publicKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `publicKey`.
+<!-- YAML
+added: v0.5.0
+-->
 
-Устанавливает открытый ключ Диффи-Хеллмана. Если указан аргумент `encoding`, ожидается, что `publicKey` будет строкой. Если аргумент `encoding` не указан, ожидается, что `publicKey` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+* `publicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `publicKey` string.
 
-<!-- 0031.part.md -->
+Sets the Diffie-Hellman public key. If the `encoding` argument is provided,
+`publicKey` is expected
+to be a string. If no `encoding` is provided, `publicKey` is expected
+to be a [`Buffer`][], `TypedArray`, or `DataView`.
 
 ### `diffieHellman.verifyError`
 
-Битовое поле, содержащее любые предупреждения и/или ошибки, возникшие в результате проверки, выполненной во время инициализации объекта `DiffieHellman`.
+<!-- YAML
+added: v0.11.12
+-->
 
-Для этого свойства действительны следующие значения (как определено в модуле `node:constants`):
+A bit field containing any warnings and/or errors resulting from a check
+performed during initialization of the `DiffieHellman` object.
 
--   `DH_CHECK_P_NOT_SAFE_PRIME`.
--   `DH_CHECK_P_NOT_PRIME`
--   `DH_UNABLE_TO_CHECK_GENERATOR`
--   `DH_NOT_SUITABLE_GENERATOR`
+The following values are valid for this property (as defined in `node:constants` module):
 
-<!-- 0032.part.md -->
+* `DH_CHECK_P_NOT_SAFE_PRIME`
+* `DH_CHECK_P_NOT_PRIME`
+* `DH_UNABLE_TO_CHECK_GENERATOR`
+* `DH_NOT_SUITABLE_GENERATOR`
 
-## Класс: `DiffieHellmanGroup`
+## Class: `DiffieHellmanGroup`
 
-Класс `DiffieHellmanGroup` принимает в качестве аргумента известную modp-группу. Он работает так же, как и `DiffieHellman`, за исключением того, что он не позволяет изменять свои ключи после создания. Другими словами, он не реализует методы `setPublicKey()` и `setPrivateKey()`.
+<!-- YAML
+added: v0.7.5
+-->
 
-```mjs
-const { createDiffieHellmanGroup } = await import(
-    'node:crypto'
-);
-const dh = createDiffieHellmanGroup('modp16');
-```
+The `DiffieHellmanGroup` class takes a well-known modp group as its argument.
+It works the same as `DiffieHellman`, except that it does not allow changing
+its keys after creation. In other words, it does not implement `setPublicKey()`
+or `setPrivateKey()` methods.
 
-```cjs
-const { createDiffieHellmanGroup } = require('node:crypto');
-const dh = createDiffieHellmanGroup('modp16');
-```
+=== "MJS"
 
-Поддерживаются следующие группы:
+    ```js
+    const { createDiffieHellmanGroup } = await import('node:crypto');
+    const dh = createDiffieHellmanGroup('modp16');
+    ```
 
--   `'modp14'` (2048 бит, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Раздел 3)
--   `'modp15'` (3072 бита, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Раздел 4)
--   `'modp16'` (4096 бит, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Раздел 5)
--   `'modp17'` (6144 бит, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Раздел 6)
--   `'modp18'` (8192 бита, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Раздел 7)
+=== "CJS"
 
-Следующие группы все еще поддерживаются, но устарели (см. [Caveats](#support-for-weak-or-compromised-algorithms)):
+    ```js
+    const { createDiffieHellmanGroup } = require('node:crypto');
+    const dh = createDiffieHellmanGroup('modp16');
+    ```
 
--   `'modp1'` (768 bits, [RFC 2409](https://www.rfc-editor.org/rfc/rfc2409.txt) Section 6.1) <span class="deprecated-inline"></span>
--   `'modp2'` (1024 bits, [RFC 2409](https://www.rfc-editor.org/rfc/rfc2409.txt) Section 6.2) <span class="deprecated-inline"></span>
--   `'modp5'` (1536 bits, [RFC 3526](https://www.rfc-editor.org/rfc/rfc3526.txt) Section 2) <span class="deprecated-inline"></span>
+The following groups are supported:
 
-Эти устаревшие группы могут быть удалены в будущих версиях Node.js.
+* `'modp14'` (2048 bits, [RFC 3526][] Section 3)
+* `'modp15'` (3072 bits, [RFC 3526][] Section 4)
+* `'modp16'` (4096 bits, [RFC 3526][] Section 5)
+* `'modp17'` (6144 bits, [RFC 3526][] Section 6)
+* `'modp18'` (8192 bits, [RFC 3526][] Section 7)
 
-<!-- 0033.part.md -->
+The following groups are still supported but deprecated (see [Caveats][]):
 
-## Класс: `ECDH`
+* `'modp1'` (768 bits, [RFC 2409][] Section 6.1) <span class="deprecated-inline"></span>
+* `'modp2'` (1024 bits, [RFC 2409][] Section 6.2) <span class="deprecated-inline"></span>
+* `'modp5'` (1536 bits, [RFC 3526][] Section 2) <span class="deprecated-inline"></span>
 
-Класс `ECDH` - это утилита для создания обменов ключами Elliptic Curve Diffie-Hellman (ECDH).
+These deprecated groups might be removed in future versions of Node.js.
 
-Экземпляры класса `ECDH` могут быть созданы с помощью функции [`crypto.createECDH()`](#cryptocreateecdhcurvename).
+## Class: `ECDH`
 
-```mjs
-import assert from 'node:assert';
+<!-- YAML
+added: v0.11.14
+-->
 
-const { createECDH } = await import('node:crypto');
+The `ECDH` class is a utility for creating Elliptic Curve Diffie-Hellman (ECDH)
+key exchanges.
 
-// Генерируем ключи Алисы...
-const alice = createECDH('secp521r1');
-const aliceKey = alice.generateKeys();
+Instances of the `ECDH` class can be created using the
+[`crypto.createECDH()`][] function.
 
-// Генерируем ключи Боба...
-const bob = createECDH('secp521r1');
-const bobKey = bob.generateKeys();
+=== "MJS"
 
-// Обмен и генерация секрета...
-const aliceSecret = alice.computeSecret(bobKey);
-const bobSecret = bob.computeSecret(aliceKey);
+    ```js
+    import assert from 'node:assert';
 
-assert.strictEqual(
-    aliceSecret.toString('hex'),
-    bobSecret.toString('hex')
-);
-// OK
-```
+    const {
+      createECDH,
+    } = await import('node:crypto');
 
-```cjs
-const assert = require('node:assert');
+    // Generate Alice's keys...
+    const alice = createECDH('secp521r1');
+    const aliceKey = alice.generateKeys();
 
-const { createECDH } = require('node:crypto');
+    // Generate Bob's keys...
+    const bob = createECDH('secp521r1');
+    const bobKey = bob.generateKeys();
 
-// Генерируем ключи Алисы...
-const alice = createECDH('secp521r1');
-const aliceKey = alice.generateKeys();
+    // Exchange and generate the secret...
+    const aliceSecret = alice.computeSecret(bobKey);
+    const bobSecret = bob.computeSecret(aliceKey);
 
-// Генерируем ключи Боба...
-const bob = createECDH('secp521r1');
-const bobKey = bob.generateKeys();
+    assert.strictEqual(aliceSecret.toString('hex'), bobSecret.toString('hex'));
+    // OK
+    ```
 
-// Обмен и генерация секрета...
-const aliceSecret = alice.computeSecret(bobKey);
-const bobSecret = bob.computeSecret(aliceKey);
+=== "CJS"
 
-assert.strictEqual(
-    aliceSecret.toString('hex'),
-    bobSecret.toString('hex')
-);
-// OK
-```
+    ```js
+    const assert = require('node:assert');
 
-<!-- 0034.part.md -->
+    const {
+      createECDH,
+    } = require('node:crypto');
 
-### Статический метод: `ECDH.convertKey(key, curve[, inputEncoding[, outputEncoding[, format]]])`
+    // Generate Alice's keys...
+    const alice = createECDH('secp521r1');
+    const aliceKey = alice.generateKeys();
 
--   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `curve` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `key`.
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   `формат` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `uncompressed`.
--   Возвращает: {Буфер | строка}
+    // Generate Bob's keys...
+    const bob = createECDH('secp521r1');
+    const bobKey = bob.generateKeys();
 
-Преобразует открытый ключ EC Диффи-Хеллмана, указанный `key` и `curve` в формат, указанный `format`. Аргумент `format` задает кодировку точки и может быть `сжатым`, `несжатым` или `гибридным`. Предоставленный ключ интерпретируется с использованием указанного `inputEncoding`, а возвращаемый ключ кодируется с использованием указанного `outputEncoding`.
+    // Exchange and generate the secret...
+    const aliceSecret = alice.computeSecret(bobKey);
+    const bobSecret = bob.computeSecret(aliceKey);
 
-Используйте [`crypto.getCurves()`](#cryptogetcurves) для получения списка доступных имен кривых. В последних выпусках OpenSSL, `openssl ecparam -list_curves` также отобразит имя и описание каждой доступной эллиптической кривой.
+    assert.strictEqual(aliceSecret.toString('hex'), bobSecret.toString('hex'));
+    // OK
+    ```
 
-Если `format` не указан, точка будет возвращена в формате `uncompressed`.
+### Static method: `ECDH.convertKey(key, curve[, inputEncoding[, outputEncoding[, format]]])`
 
-Если `inputEncoding` не указан, ожидается, что `key` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+<!-- YAML
+added: v10.0.0
+-->
 
-Пример (распаковка ключа):
+* `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `curve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `key` string.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **Default:** `'uncompressed'`
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-```mjs
-const { createECDH, ECDH } = await import('node:crypto');
+Converts the EC Diffie-Hellman public key specified by `key` and `curve` to the
+format specified by `format`. The `format` argument specifies point encoding
+and can be `'compressed'`, `'uncompressed'` or `'hybrid'`. The supplied key is
+interpreted using the specified `inputEncoding`, and the returned key is encoded
+using the specified `outputEncoding`.
 
-const ecdh = createECDH('secp256k1');
-ecdh.generateKeys();
+Use [`crypto.getCurves()`][] to obtain a list of available curve names.
+On recent OpenSSL releases, `openssl ecparam -list_curves` will also display
+the name and description of each available elliptic curve.
 
-const compressedKey = ecdh.getPublicKey(
-    'hex',
-    'compressed'
-);
+If `format` is not specified the point will be returned in `'uncompressed'`
+format.
 
-const uncompressedKey = ECDH.convertKey(
-    compressedKey,
-    'secp256k1',
-    'hex',
-    'hex',
-    'uncompressed'
-);
+If the `inputEncoding` is not provided, `key` is expected to be a [`Buffer`][],
+`TypedArray`, or `DataView`.
 
-// Преобразованный ключ и несжатый открытый ключ должны быть одинаковыми
-console.log(uncompressedKey === ecdh.getPublicKey('hex'));
-```
+Example (uncompressing a key):
 
-```cjs
-const { createECDH, ECDH } = require('node:crypto');
+=== "MJS"
 
-const ecdh = createECDH('secp256k1');
-ecdh.generateKeys();
+    ```js
+    const {
+      createECDH,
+      ECDH,
+    } = await import('node:crypto');
 
-const compressedKey = ecdh.getPublicKey(
-    'hex',
-    'compressed'
-);
+    const ecdh = createECDH('secp256k1');
+    ecdh.generateKeys();
 
-const uncompressedKey = ECDH.convertKey(
-    compressedKey,
-    'secp256k1',
-    'hex',
-    'hex',
-    'uncompressed'
-);
+    const compressedKey = ecdh.getPublicKey('hex', 'compressed');
 
-// Преобразованный ключ и несжатый открытый ключ должны быть одинаковыми
-console.log(uncompressedKey === ecdh.getPublicKey('hex'));
-```
+    const uncompressedKey = ECDH.convertKey(compressedKey,
+                                            'secp256k1',
+                                            'hex',
+                                            'hex',
+                                            'uncompressed');
 
-<!-- 0035.part.md -->
+    // The converted key and the uncompressed public key should be the same
+    console.log(uncompressedKey === ecdh.getPublicKey('hex'));
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      createECDH,
+      ECDH,
+    } = require('node:crypto');
+
+    const ecdh = createECDH('secp256k1');
+    ecdh.generateKeys();
+
+    const compressedKey = ecdh.getPublicKey('hex', 'compressed');
+
+    const uncompressedKey = ECDH.convertKey(compressedKey,
+                                            'secp256k1',
+                                            'hex',
+                                            'hex',
+                                            'uncompressed');
+
+    // The converted key and the uncompressed public key should be the same
+    console.log(uncompressedKey === ecdh.getPublicKey('hex'));
+    ```
 
 ### `ecdh.computeSecret(otherPublicKey[, inputEncoding][, outputEncoding])`
 
--   `otherPublicKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `otherPublicKey`.
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.11.14
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/16849
+    description: Changed error format to better support invalid public key
+                 error.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Вычисляет общий секрет, используя `otherPublicKey` в качестве открытого ключа другой стороны, и возвращает вычисленный общий секрет. Предоставленный ключ интерпретируется с использованием указанного `inputEncoding`, а возвращаемый секрет кодируется с использованием указанного `outputEncoding`. Если `inputEncoding` не указан, ожидается, что `otherPublicKey` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+Добавлено в: v0.11.14
 
-Если задано `outputEncoding`, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.0.0 | Изменен формат ошибок для лучшей поддержки ошибок недопустимого открытого ключа. |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-`ecdh.computeSecret` будет выдавать ошибку `ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY`, если `otherPublicKey` лежит за пределами эллиптической кривой. Поскольку `otherPublicKey` обычно передается от удаленного пользователя по незащищенной сети, не забудьте обработать это исключение соответствующим образом.
+* `otherPublicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `otherPublicKey` string.
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0036.part.md -->
+Computes the shared secret using `otherPublicKey` as the other
+party's public key and returns the computed shared secret. The supplied
+key is interpreted using specified `inputEncoding`, and the returned secret
+is encoded using the specified `outputEncoding`.
+If the `inputEncoding` is not
+provided, `otherPublicKey` is expected to be a [`Buffer`][], `TypedArray`, or
+`DataView`.
+
+If `outputEncoding` is given a string will be returned; otherwise a
+[`Buffer`][] is returned.
+
+`ecdh.computeSecret` will throw an
+`ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY` error when `otherPublicKey`
+lies outside of the elliptic curve. Since `otherPublicKey` is
+usually supplied from a remote user over an insecure network,
+be sure to handle this exception accordingly.
 
 ### `ecdh.generateKeys([encoding[, format]])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   `формат` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `uncompressed`.
--   Возвращает: {Буфер | строка}
+<!-- YAML
+added: v0.11.14
+-->
 
-Генерирует значения закрытого и открытого ключей EC Diffie-Hellman и возвращает открытый ключ в указанном `формате` и `кодировке`. Этот ключ должен быть передан другой стороне.
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **Default:** `'uncompressed'`
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Аргумент `формат` задает кодировку точки и может быть `сжатым` или `несжатым`. Если `format` не указан, точка будет возвращена в формате `'uncompressed'`.
+Generates private and public EC Diffie-Hellman key values, and returns
+the public key in the specified `format` and `encoding`. This key should be
+transferred to the other party.
 
-Если указано `encoding`, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+The `format` argument specifies point encoding and can be `'compressed'` or
+`'uncompressed'`. If `format` is not specified, the point will be returned in
+`'uncompressed'` format.
 
-<!-- 0037.part.md -->
+If `encoding` is provided a string is returned; otherwise a [`Buffer`][]
+is returned.
 
 ### `ecdh.getPrivateKey([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка} EC Diffie-Hellman в указанном `кодировании`.
+<!-- YAML
+added: v0.11.14
+-->
 
-Если указано `encoding`, возвращается строка; в противном случае возвращается [`буфер`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The EC Diffie-Hellman in the specified `encoding`.
 
-<!-- 0038.part.md -->
+If `encoding` is specified, a string is returned; otherwise a [`Buffer`][] is
+returned.
 
 ### `ecdh.getPublicKey([encoding][, format])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   `формат` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `uncompressed`.
--   Возвращает: {Буфер | строка} Открытый ключ EC Diffie-Hellman в указанном `кодировании` и `формате`.
+<!-- YAML
+added: v0.11.14
+-->
 
-Аргумент `формат` определяет кодировку точки и может быть `сжатым` или `несжатым`. Если `формат` не указан, точка будет возвращена в формате `без сжатия`.
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **Default:** `'uncompressed'`
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The EC Diffie-Hellman public key in the specified
+  `encoding` and `format`.
 
-Если указано `encoding`, возвращается строка, в противном случае возвращается [`Buffer`](buffer.md).
+The `format` argument specifies point encoding and can be `'compressed'` or
+`'uncompressed'`. If `format` is not specified the point will be returned in
+`'uncompressed'` format.
 
-<!-- 0039.part.md -->
+If `encoding` is specified, a string is returned; otherwise a [`Buffer`][] is
+returned.
 
 ### `ecdh.setPrivateKey(privateKey[, encoding])`
 
--   `privateKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `privateKey`.
+<!-- YAML
+added: v0.11.14
+-->
 
-Устанавливает закрытый ключ EC Diffie-Hellman. Если указано `encoding`, ожидается, что `privateKey` будет строкой, в противном случае `privateKey` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+* `privateKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `privateKey` string.
 
-Если `privateKey` не действителен для кривой, указанной при создании объекта `ECDH`, будет выдана ошибка. При установке закрытого ключа, связанная с ним открытая точка (ключ) также генерируется и устанавливается в объекте `ECDH`.
+Sets the EC Diffie-Hellman private key.
+If `encoding` is provided, `privateKey` is expected
+to be a string; otherwise `privateKey` is expected to be a [`Buffer`][],
+`TypedArray`, or `DataView`.
 
-<!-- 0040.part.md -->
+If `privateKey` is not valid for the curve specified when the `ECDH` object was
+created, an error is thrown. Upon setting the private key, the associated
+public point (key) is also generated and set in the `ECDH` object.
 
 ### `ecdh.setPublicKey(publicKey[, encoding])`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<!-- YAML
+added: v0.11.14
+deprecated: v5.2.0
+-->
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+> Stability: 0 - Deprecated
 
--   `publicKey` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `publicKey`.
+* `publicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `publicKey` string.
 
-Устанавливает открытый ключ EC Diffie-Hellman. Если указано `encoding`, то ожидается, что `publicKey` будет строкой; в противном случае ожидается [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+Sets the EC Diffie-Hellman public key.
+If `encoding` is provided `publicKey` is expected to
+be a string; otherwise a [`Buffer`][], `TypedArray`, or `DataView` is expected.
 
-Обычно нет причин вызывать этот метод, поскольку `ECDH` требует только закрытый ключ и открытый ключ другой стороны для вычисления общего секрета. Обычно вызывается либо [`ecdh.generateKeys()`](#ecdhgeneratekeysencoding-format), либо [`ecdh.setPrivateKey()`](#ecdhsetprivatekeyprivatekey-encoding). Метод [`ecdh.setPrivateKey()`](#ecdhsetprivatekeyprivatekey-encoding) пытается сгенерировать публичную точку/ключ, связанный с устанавливаемым закрытым ключом.
+There is not normally a reason to call this method because `ECDH`
+only requires a private key and the other party's public key to compute the
+shared secret. Typically either [`ecdh.generateKeys()`][] or
+[`ecdh.setPrivateKey()`][] will be called. The [`ecdh.setPrivateKey()`][] method
+attempts to generate the public point/key associated with the private key being
+set.
 
-Пример (получение общего секрета):
+Example (obtaining a shared secret):
 
-```mjs
-const { createECDH, createHash } = await import(
-    'node:crypto'
-);
+=== "MJS"
 
-const alice = createECDH('secp256k1');
-const bob = createECDH('secp256k1');
+    ```js
+    const {
+      createECDH,
+      createHash,
+    } = await import('node:crypto');
 
-// Это короткий способ указать один из предыдущих закрытых ключей Алисы.
-// ключей. Было бы неразумно использовать такой предсказуемый закрытый ключ в реальном // приложении.
-// приложении.
-alice.setPrivateKey(
-    createHash('sha256').update('alice', 'utf8').digest()
-);
+    const alice = createECDH('secp256k1');
+    const bob = createECDH('secp256k1');
 
-// Боб использует новую сгенерированную криптографически сильную
-// псевдослучайную пару ключей
-bob.generateKeys();
+    // This is a shortcut way of specifying one of Alice's previous private
+    // keys. It would be unwise to use such a predictable private key in a real
+    // application.
+    alice.setPrivateKey(
+      createHash('sha256').update('alice', 'utf8').digest(),
+    );
 
-const aliceSecret = alice.computeSecret(
-    bob.getPublicKey(),
-    null,
-    'hex'
-);
-const bobSecret = bob.computeSecret(
-    alice.getPublicKey(),
-    null,
-    'hex'
-);
+    // Bob uses a newly generated cryptographically strong
+    // pseudorandom key pair
+    bob.generateKeys();
 
-// aliceSecret и bobSecret должны быть одним и тем же значением общего секрета
-console.log(aliceSecret === bobSecret);
-```
+    const aliceSecret = alice.computeSecret(bob.getPublicKey(), null, 'hex');
+    const bobSecret = bob.computeSecret(alice.getPublicKey(), null, 'hex');
 
-```cjs
-const { createECDH, createHash } = require('node:crypto');
+    // aliceSecret and bobSecret should be the same shared secret value
+    console.log(aliceSecret === bobSecret);
+    ```
 
-const alice = createECDH('secp256k1');
-const bob = createECDH('secp256k1');
+=== "CJS"
 
-// Это короткий способ указать один из предыдущих закрытых ключей Алисы.
-// ключей. Было бы неразумно использовать такой предсказуемый закрытый ключ в реальном // приложении.
-// приложении.
-alice.setPrivateKey(
-    createHash('sha256').update('alice', 'utf8').digest()
-);
+    ```js
+    const {
+      createECDH,
+      createHash,
+    } = require('node:crypto');
 
-// Боб использует новую сгенерированную криптографически сильную
-// псевдослучайную пару ключей
-bob.generateKeys();
+    const alice = createECDH('secp256k1');
+    const bob = createECDH('secp256k1');
 
-const aliceSecret = alice.computeSecret(
-    bob.getPublicKey(),
-    null,
-    'hex'
-);
-const bobSecret = bob.computeSecret(
-    alice.getPublicKey(),
-    null,
-    'hex'
-);
+    // This is a shortcut way of specifying one of Alice's previous private
+    // keys. It would be unwise to use such a predictable private key in a real
+    // application.
+    alice.setPrivateKey(
+      createHash('sha256').update('alice', 'utf8').digest(),
+    );
 
-// aliceSecret и bobSecret должны быть одним и тем же значением общего секрета
-console.log(aliceSecret === bobSecret);
-```
+    // Bob uses a newly generated cryptographically strong
+    // pseudorandom key pair
+    bob.generateKeys();
 
-<!-- 0041.part.md -->
+    const aliceSecret = alice.computeSecret(bob.getPublicKey(), null, 'hex');
+    const bobSecret = bob.computeSecret(alice.getPublicKey(), null, 'hex');
 
-## Класс: `Hash`
+    // aliceSecret and bobSecret should be the same shared secret value
+    console.log(aliceSecret === bobSecret);
+    ```
 
--   Расширяет: {stream.Transform}
+## Class: `Hash`
 
-Класс `Hash` - это утилита для создания хэш-дайджестов данных. Он может быть использован одним из двух способов:
+<!-- YAML
+added: v0.1.92
+-->
 
--   В качестве [stream](stream.md), доступного как для чтения, так и для записи, где данные записываются для получения вычисленного хэш-дайджеста на стороне, доступной для чтения, или
--   используя методы [`hash.update()`](#hashupdatedata-inputencoding) и [`hash.digest()`](#hashdigestencoding) для создания вычисленного хэша.
+* Extends: [<stream.Transform>](stream.md#class-streamtransform)
 
-Метод [`crypto.createHash()`](#cryptocreatehashalgorithm-options) используется для создания экземпляров `Hash`. Объекты `Hash` не должны создаваться напрямую с помощью ключевого слова `new`.
+The `Hash` class is a utility for creating hash digests of data. It can be
+used in one of two ways:
 
-Пример: Использование объектов `Hash` в качестве потоков:
+* As a [stream][] that is both readable and writable, where data is written
+  to produce a computed hash digest on the readable side, or
+* Using the [`hash.update()`][] and [`hash.digest()`][] methods to produce the
+  computed hash.
 
-```mjs
-const { createHash } = await import('node:crypto');
+The [`crypto.createHash()`][] method is used to create `Hash` instances. `Hash`
+objects are not to be created directly using the `new` keyword.
 
-const hash = createHash('sha256');
+Пример: объект `Hash` как поток:
 
-hash.on('readable', () => {
-    // Только один элемент будет произведен потоком
-    // хэш-поток.
-    const data = hash.read();
-    if (data) {
+=== "MJS"
+
+    ```js
+    const {
+      createHash,
+    } = await import('node:crypto');
+
+    const hash = createHash('sha256');
+
+    hash.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = hash.read();
+      if (data) {
         console.log(data.toString('hex'));
-        // Печатает:
-        // 6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
-    }
-});
+        // Prints:
+        //   6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
+      }
+    });
 
-hash.write('некоторые данные в хэш');
-hash.end();
-```
+    hash.write('some data to hash');
+    hash.end();
+    ```
 
-```cjs
-const { createHash } = require('node:crypto');
+=== "CJS"
 
-const hash = createHash('sha256');
+    ```js
+    const {
+      createHash,
+    } = require('node:crypto');
 
-hash.on('readable', () => {
-    // Только один элемент будет произведен потоком
-    // хэш-поток.
-    const data = hash.read();
-    if (data) {
+    const hash = createHash('sha256');
+
+    hash.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = hash.read();
+      if (data) {
         console.log(data.toString('hex'));
-        // Печатает:
-        // 6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
-    }
-});
+        // Prints:
+        //   6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
+      }
+    });
 
-hash.write('некоторые данные в хэш');
-hash.end();
-```
+    hash.write('some data to hash');
+    hash.end();
+    ```
 
-Пример: Использование `Hash` и конвейерных потоков:
+Пример: `Hash` и `pipeline`:
 
-```mjs
-import { createReadStream } from 'node:fs';
-import { stdout } from 'node:process';
-const { createHash } = await import('node:crypto');
+=== "MJS"
 
-const hash = createHash('sha256');
+    ```js
+    import { createReadStream } from 'node:fs';
+    import { stdout } from 'node:process';
+    const { createHash } = await import('node:crypto');
 
-const input = createReadStream('test.js');
-input.pipe(hash).setEncoding('hex').pipe(stdout);
-```
+    const hash = createHash('sha256');
 
-```cjs
-const { createReadStream } = require('node:fs');
-const { createHash } = require('node:crypto');
-const { stdout } = require('node:process');
+    const input = createReadStream('test.js');
+    input.pipe(hash).setEncoding('hex').pipe(stdout);
+    ```
 
-const hash = createHash('sha256');
+=== "CJS"
 
-const input = createReadStream('test.js');
-input.pipe(hash).setEncoding('hex').pipe(stdout);
-```
+    ```js
+    const { createReadStream } = require('node:fs');
+    const { createHash } = require('node:crypto');
+    const { stdout } = require('node:process');
 
-Пример: Использование методов [`hash.update()`](#hashupdatedata-inputencoding) и [`hash.digest()`](#hashdigestencoding):
+    const hash = createHash('sha256');
 
-```mjs
-const { createHash } = await import('node:crypto');
+    const input = createReadStream('test.js');
+    input.pipe(hash).setEncoding('hex').pipe(stdout);
+    ```
 
-const hash = createHash('sha256');
+Пример: [`hash.update()`][] и [`hash.digest()`][]:
 
-hash.update('некоторые данные для хэширования');
-console.log(hash.digest('hex'));
-// Печатает:
-// 6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
-```
+=== "MJS"
 
-```cjs
-const { createHash } = require('node:crypto');
+    ```js
+    const {
+      createHash,
+    } = await import('node:crypto');
 
-const hash = createHash('sha256');
+    const hash = createHash('sha256');
 
-hash.update('некоторые данные для хэширования');
-console.log(hash.digest('hex'));
-// Печатает:
-// 6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
-```
+    hash.update('some data to hash');
+    console.log(hash.digest('hex'));
+    // Prints:
+    //   6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
+    ```
 
-<!-- 0042.part.md -->
+=== "CJS"
+
+    ```js
+    const {
+      createHash,
+    } = require('node:crypto');
+
+    const hash = createHash('sha256');
+
+    hash.update('some data to hash');
+    console.log(hash.digest('hex'));
+    // Prints:
+    //   6a2da20943931e9834fc12cfe5bb47bbd9ae43489a30726962b576f4e3993e50
+    ```
 
 ### `hash.copy([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Возвращает: {Hash}
+<!-- YAML
+added: v13.1.0
+-->
 
-Создает новый объект `Hash`, который содержит глубокую копию внутреннего состояния текущего объекта `Hash`.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+* Returns: [<Hash>](crypto.md)
 
-Необязательный аргумент `options` управляет поведением потока. Для хэш-функций XOF, таких как `'shake256'`, опция `outputLength` может быть использована для указания желаемой длины вывода в байтах.
+Creates a new `Hash` object that contains a deep copy of the internal state
+of the current `Hash` object.
 
-При попытке скопировать объект `Hash` после вызова его метода [`hash.digest()`](#hashdigestencoding) возникает ошибка.
+The optional `options` argument controls stream behavior. For XOF hash
+functions such as `'shake256'`, the `outputLength` option can be used to
+specify the desired output length in bytes.
 
-```mjs
-// Вычисление скользящего хэша.
-const { createHash } = await import('node:crypto');
+An error is thrown when an attempt is made to copy the `Hash` object after
+its [`hash.digest()`][] method has been called.
 
-const hash = createHash('sha256');
+=== "MJS"
 
-hash.update('1');
-console.log(hash.copy().digest('hex'));
+    ```js
+    // Calculate a rolling hash.
+    const {
+      createHash,
+    } = await import('node:crypto');
 
-hash.update('two');
-console.log(hash.copy().digest('hex'));
+    const hash = createHash('sha256');
 
-hash.update('three');
-console.log(hash.copy().digest('hex'));
+    hash.update('one');
+    console.log(hash.copy().digest('hex'));
 
-// И т.д.
-```
+    hash.update('two');
+    console.log(hash.copy().digest('hex'));
 
-```cjs
-// Вычисление скользящего хэша.
-const { createHash } = require('node:crypto');
+    hash.update('three');
+    console.log(hash.copy().digest('hex'));
 
-const hash = createHash('sha256');
+    // Etc.
+    ```
 
-hash.update('1');
-console.log(hash.copy().digest('hex'));
+=== "CJS"
 
-hash.update('two');
-console.log(hash.copy().digest('hex'));
+    ```js
+    // Calculate a rolling hash.
+    const {
+      createHash,
+    } = require('node:crypto');
 
-hash.update('three');
-console.log(hash.copy().digest('hex'));
+    const hash = createHash('sha256');
 
-// И т.д.
-```
+    hash.update('one');
+    console.log(hash.copy().digest('hex'));
 
-<!-- 0043.part.md -->
+    hash.update('two');
+    console.log(hash.copy().digest('hex'));
+
+    hash.update('three');
+    console.log(hash.copy().digest('hex'));
+
+    // Etc.
+    ```
 
 ### `hash.digest([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.1.92
+-->
 
-Вычисляет дайджест всех данных, переданных для хеширования (с помощью метода [`hash.update()`](#hashupdatedata-inputencoding)). Если указано `encoding`, то возвращается строка; в противном случае возвращается [`Buffer`](buffer.md).
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Объект `Hash` не может быть использован повторно после вызова метода `hash.digest()`. Многократные вызовы приведут к возникновению ошибки.
+Calculates the digest of all of the data passed to be hashed (using the
+[`hash.update()`][] method).
+If `encoding` is provided a string will be returned; otherwise
+a [`Buffer`][] is returned.
 
-<!-- 0044.part.md -->
+The `Hash` object can not be used again after `hash.digest()` method has been
+called. Multiple calls will cause an error to be thrown.
 
 ### `hash.update(data[, inputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `data`.
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет содержимое хэша с заданными `data`, кодировка которых указана в `inputEncoding`. Если `encoding` не указан, а `данные` являются строкой, то применяется кодировка `'utf8'`. Если `data` является [`Buffer`](buffer.md), `TypedArray` или `DataView`, то `inputEncoding` игнорируется.
+Добавлено в: v0.1.92
 
-Эта функция может вызываться много раз с новыми данными по мере их передачи.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-<!-- 0045.part.md -->
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `data` string.
 
-## Класс: `Hmac`
+Updates the hash content with the given `data`, the encoding of which
+is given in `inputEncoding`.
+If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][], `TypedArray`, or
+`DataView`, then `inputEncoding` is ignored.
 
--   Расширяет: {stream.Transform}
+This can be called many times with new data as it is streamed.
 
-Класс `Hmac` - это утилита для создания криптографических HMAC-дайджестов. Он может быть использован одним из двух способов:
+## Class: `Hmac`
 
--   В виде [stream](stream.md), доступного как для чтения, так и для записи, где данные записываются для получения вычисленного HMAC-дайджеста на стороне, доступной для чтения, или
--   используя методы [`hmac.update()`](#hmacupdatedata-inputencoding) и [`hmac.digest()`](#hmacdigestencoding) для создания вычисленного HMAC-дайджеста.
+<!-- YAML
+added: v0.1.94
+-->
 
-Метод [`crypto.createHmac()`](#cryptocreatehmacalgorithm-key-options) используется для создания экземпляров `Hmac`. Объекты `Hmac` не должны создаваться напрямую с помощью ключевого слова `new`.
+* Extends: [<stream.Transform>](stream.md#class-streamtransform)
 
-Пример: Использование объектов `Hmac` в качестве потоков:
+The `Hmac` class is a utility for creating cryptographic HMAC digests. It can
+be used in one of two ways:
 
-```mjs
-const { createHmac } = await import('node:crypto');
+* As a [stream][] that is both readable and writable, where data is written
+  to produce a computed HMAC digest on the readable side, or
+* Using the [`hmac.update()`][] and [`hmac.digest()`][] methods to produce the
+  computed HMAC digest.
 
-const hmac = createHmac('sha256', 'секрет');
+The [`crypto.createHmac()`][] method is used to create `Hmac` instances. `Hmac`
+objects are not to be created directly using the `new` keyword.
 
-hmac.on('readable', () => {
-    // Только один элемент будет получен с помощью
-    // хэш-поток.
-    const data = hmac.read();
-    if (data) {
+Пример: объект `Hmac` как поток:
+
+=== "MJS"
+
+    ```js
+    const {
+      createHmac,
+    } = await import('node:crypto');
+
+    const hmac = createHmac('sha256', 'a secret');
+
+    hmac.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = hmac.read();
+      if (data) {
         console.log(data.toString('hex'));
-        // Печатает:
-        // 7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
-    }
-});
+        // Prints:
+        //   7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
+      }
+    });
 
-hmac.write('некоторые данные для хэширования');
-hmac.end();
-```
+    hmac.write('some data to hash');
+    hmac.end();
+    ```
 
-```cjs
-const { createHmac } = require('node:crypto');
+=== "CJS"
 
-const hmac = createHmac('sha256', 'секрет');
+    ```js
+    const {
+      createHmac,
+    } = require('node:crypto');
 
-hmac.on('readable', () => {
-    // Только один элемент будет получен с помощью
-    // хэш-поток.
-    const data = hmac.read();
-    if (data) {
+    const hmac = createHmac('sha256', 'a secret');
+
+    hmac.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = hmac.read();
+      if (data) {
         console.log(data.toString('hex'));
-        // Печатает:
-        // 7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
-    }
-});
+        // Prints:
+        //   7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
+      }
+    });
 
-hmac.write('некоторые данные для хэширования');
-hmac.end();
-```
+    hmac.write('some data to hash');
+    hmac.end();
+    ```
 
-Пример: Использование `Hmac` и конвейерных потоков:
+Пример: `Hmac` и `pipeline`:
 
-```mjs
-import { createReadStream } from 'node:fs';
-import { stdout } from 'node:process';
-const { createHmac } = await import('node:crypto');
+=== "MJS"
 
-const hmac = createHmac('sha256', 'секрет');
+    ```js
+    import { createReadStream } from 'node:fs';
+    import { stdout } from 'node:process';
+    const {
+      createHmac,
+    } = await import('node:crypto');
 
-const input = createReadStream('test.js');
-input.pipe(hmac).pipe(stdout);
-```
+    const hmac = createHmac('sha256', 'a secret');
 
-```cjs
-const { createReadStream } = require('node:fs');
-const { createHmac } = require('node:crypto');
-const { stdout } = require('node:process');
+    const input = createReadStream('test.js');
+    input.pipe(hmac).pipe(stdout);
+    ```
 
-const hmac = createHmac('sha256', 'секрет');
+=== "CJS"
 
-const input = createReadStream('test.js');
-input.pipe(hmac).pipe(stdout);
-```
+    ```js
+    const {
+      createReadStream,
+    } = require('node:fs');
+    const {
+      createHmac,
+    } = require('node:crypto');
+    const { stdout } = require('node:process');
 
-Пример: Использование методов [`hmac.update()`](#hmacupdatedata-inputencoding) и [`hmac.digest()`](#hmacdigestencoding):
+    const hmac = createHmac('sha256', 'a secret');
 
-```mjs
-const { createHmac } = await import('node:crypto');
+    const input = createReadStream('test.js');
+    input.pipe(hmac).pipe(stdout);
+    ```
 
-const hmac = createHmac('sha256', 'секрет');
+Пример: [`hmac.update()`][] и [`hmac.digest()`][]:
 
-hmac.update('некоторые данные для хэширования');
-console.log(hmac.digest('hex'));
-// Печатает:
-// 7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
-```
+=== "MJS"
 
-```cjs
-const { createHmac } = require('node:crypto');
+    ```js
+    const {
+      createHmac,
+    } = await import('node:crypto');
 
-const hmac = createHmac('sha256', 'секрет');
+    const hmac = createHmac('sha256', 'a secret');
 
-hmac.update('некоторые данные для хэширования');
-console.log(hmac.digest('hex'));
-// Печатает:
-// 7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
-```
+    hmac.update('some data to hash');
+    console.log(hmac.digest('hex'));
+    // Prints:
+    //   7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
+    ```
 
-<!-- 0046.part.md -->
+=== "CJS"
+
+    ```js
+    const {
+      createHmac,
+    } = require('node:crypto');
+
+    const hmac = createHmac('sha256', 'a secret');
+
+    hmac.update('some data to hash');
+    console.log(hmac.digest('hex'));
+    // Prints:
+    //   7fd04df92f636fd450bc841c9418e5825c17f33ad9c87c518115a45971f7f77e
+    ```
 
 ### `hmac.digest([encoding])`
 
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.1.94
+-->
 
-Вычисляет HMAC-дайджест всех данных, переданных с помощью [`hmac.update()`](#hmacupdatedata-inputencoding). Если указано `encoding`, возвращается строка; в противном случае возвращается [`Buffer`](buffer.md);
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Объект `Hmac` не может быть использован повторно после вызова `hmac.digest()`. Многократные вызовы `hmac.digest()` приведут к возникновению ошибки.
+Calculates the HMAC digest of all of the data passed using [`hmac.update()`][].
+If `encoding` is
+provided a string is returned; otherwise a [`Buffer`][] is returned;
 
-<!-- 0047.part.md -->
+The `Hmac` object can not be used again after `hmac.digest()` has been
+called. Multiple calls to `hmac.digest()` will result in an error being thrown.
 
 ### `hmac.update(data[, inputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `data`.
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет содержимое `Hmac` с заданными `data`, кодировка которых указана в `inputEncoding`. Если `encoding` не указан, а `данные` являются строкой, то применяется кодировка `'utf8'`. Если `data` является [`Buffer`](buffer.md), `TypedArray` или `DataView`, то `inputEncoding` игнорируется.
+Добавлено в: v0.1.94
 
-Эта функция может вызываться много раз с новыми данными по мере их передачи.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-<!-- 0048.part.md -->
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `data` string.
 
-## Класс: `KeyObject`
+Updates the `Hmac` content with the given `data`, the encoding of which
+is given in `inputEncoding`.
+If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][], `TypedArray`, or
+`DataView`, then `inputEncoding` is ignored.
 
-Node.js использует класс `KeyObject` для представления симметричного или асимметричного ключа, и каждый вид ключа открывает различные функции. Методы [`crypto.createSecretKey()`](#cryptocreatesecretkey-encoding), [`crypto.createPublicKey()`](#cryptocreatepublickeykey) и [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey) используются для создания экземпляров `KeyObject`. Объекты `KeyObject` не должны создаваться непосредственно с помощью ключевого слова `new`.
+This can be called many times with new data as it is streamed.
 
-Большинство приложений должны рассмотреть возможность использования нового API `KeyObject` вместо передачи ключей в виде строк или `буфера` из-за улучшенных функций безопасности.
+## Class: `KeyObject`
 
-Экземпляры `KeyObject` могут быть переданы другим потокам через [`postMessage()`](worker_threads.md#portpostmessagevalue-transferlist). Получатель получает клонированный `KeyObject`, и `KeyObject` не нужно указывать в аргументе `transferList`.
+<!-- YAML
+added: v11.6.0
+changes:
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA keys.
+  - version:
+    - v14.5.0
+    - v12.19.0
+    pr-url: https://github.com/nodejs/node/pull/33360
+    description: Instances of this class can now be passed to worker threads
+                 using `postMessage`.
+  - version: v11.13.0
+    pr-url: https://github.com/nodejs/node/pull/26438
+    description: This class is now exported.
+-->
 
-<!-- 0049.part.md -->
+Добавлено в: v11.6.0
 
-### Статический метод: `KeyObject.from(key)`
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.6.0 | Добавьте поддержку ключей ML-DSA. |
+    | v14.5.0, v12.19.0 | Экземпляры этого класса теперь можно передавать в рабочие потоки с помощью postMessage. |
+    | v11.13.0 | Этот класс теперь экспортирован. |
 
--   `key` {CryptoKey}
--   Возвращает: {KeyObject}
+Node.js uses a `KeyObject` class to represent a symmetric or asymmetric key,
+and each kind of key exposes different functions. The
+[`crypto.createSecretKey()`][], [`crypto.createPublicKey()`][] and
+[`crypto.createPrivateKey()`][] methods are used to create `KeyObject`
+instances. `KeyObject` objects are not to be created directly using the `new`
+keyword.
 
-Пример: Преобразование экземпляра `CryptoKey` в `KeyObject`:
+Most applications should consider using the new `KeyObject` API instead of
+passing keys as strings or `Buffer`s due to improved security features.
 
-```mjs
-const { KeyObject } = await import('node:crypto');
-const { subtle } = globalThis.crypto;
+`KeyObject` instances can be passed to other threads via [`postMessage()`][].
+The receiver obtains a cloned `KeyObject`, and the `KeyObject` does not need to
+be listed in the `transferList` argument.
 
-const key = await subtle.generateKey(
-    {
-        name: 'HMAC',
-        hash: 'SHA-256',
-        length: 256,
-    },
-    true,
-    ['sign', 'verify']
-);
+### Static method: `KeyObject.from(key)`
 
-const keyObject = KeyObject.from(key);
-console.log(keyObject.symmetricKeySize);
-// Печатается: 32 (размер симметричного ключа в байтах)
-```
+<!-- YAML
+added: v15.0.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a non-extractable CryptoKey as `key` is deprecated.
+-->
 
-```cjs
-const { KeyObject } = require('node:crypto');
-const { subtle } = globalThis.crypto;
+Добавлено в: v15.0.0
 
-(async function () {
-    const key = await subtle.generateKey(
-        {
-            name: 'HMAC',
-            hash: 'SHA-256',
-            length: 256,
-        },
-        true,
-        ['sign', 'verify']
-    );
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача неизвлекаемого CryptoKey в качестве «ключа» устарела. |
+
+* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
+* Returns: [<KeyObject>](#class-keyobject)
+
+Returns the underlying [KeyObject](#class-keyobject) of a [CryptoKey](webcrypto.md#class-cryptokey). The returned [KeyObject](#class-keyobject)
+does not retain any of the restrictions imposed by the Web Crypto API on the
+original [CryptoKey](webcrypto.md#class-cryptokey), such as the allowed key usages, the algorithm or hash
+algorithm bindings, and the extractability flag. In particular, the underlying
+key material of the returned [KeyObject](#class-keyobject) can always be exported.
+
+=== "MJS"
+
+    ```js
+    const { KeyObject } = await import('node:crypto');
+    const { subtle } = globalThis.crypto;
+
+    const key = await subtle.generateKey({
+      name: 'HMAC',
+      hash: 'SHA-256',
+      length: 256,
+    }, true, ['sign', 'verify']);
 
     const keyObject = KeyObject.from(key);
     console.log(keyObject.symmetricKeySize);
-    // Печатается: 32 (размер симметричного ключа в байтах)
-})();
-```
+    // Prints: 32 (symmetric key size in bytes)
+    ```
 
-<!-- 0050.part.md -->
+=== "CJS"
+
+    ```js
+    const { KeyObject } = require('node:crypto');
+    const { subtle } = globalThis.crypto;
+
+    (async function() {
+      const key = await subtle.generateKey({
+        name: 'HMAC',
+        hash: 'SHA-256',
+        length: 256,
+      }, true, ['sign', 'verify']);
+
+      const keyObject = KeyObject.from(key);
+      console.log(keyObject.symmetricKeySize);
+      // Prints: 32 (symmetric key size in bytes)
+    })();
+    ```
 
 ### `keyObject.asymmetricKeyDetails`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `modulusLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер ключа в битах (RSA, DSA).
-    -   `publicExponent`: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Публичная экспонента (RSA).
-    -   `hashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения (RSA-PSS).
-    -   `mgf1HashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения, используемого MGF1 (RSA-PSS).
-    -   `saltLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальная длина соли в байтах (RSA-PSS).
-    -   `divisorLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер `q` в битах (DSA).
-    -   `namedCurve`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кривой (EC).
+<!-- YAML
+added: v15.7.0
+changes:
+  - version: v16.9.0
+    pr-url: https://github.com/nodejs/node/pull/39851
+    description: Expose `RSASSA-PSS-params` sequence parameters
+                 for RSA-PSS keys.
+-->
 
-Это свойство существует только для асимметричных ключей. В зависимости от типа ключа, этот объект содержит информацию о ключе. Никакая информация, полученная через это свойство, не может быть использована для уникальной идентификации ключа или для нарушения безопасности ключа.
+Добавлено в: v15.7.0
 
-Для ключей RSA-PSS, если материал ключа содержит последовательность `RSASSA-PSS-params`, будут установлены свойства `hashAlgorithm`, `mgf1HashAlgorithm` и `saltLength`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.9.0 | Предоставьте параметры последовательности `RSASSA-PSS-params` для ключей RSA-PSS. |
 
-Другие детали ключа могут быть раскрыты через этот API с помощью дополнительных атрибутов.
+* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `modulusLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Key size in bits (RSA, DSA).
+  * `publicExponent` [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Public exponent (RSA).
+  * `hashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest (RSA-PSS).
+  * `mgf1HashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest used by
+    MGF1 (RSA-PSS).
+  * `saltLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Minimal salt length in bytes (RSA-PSS).
+  * `divisorLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Size of `q` in bits (DSA).
+  * `namedCurve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the curve (EC).
 
-<!-- 0051.part.md -->
+This property exists only on asymmetric keys. Depending on the type of the key,
+this object contains information about the key. None of the information obtained
+through this property can be used to uniquely identify a key or to compromise
+the security of the key.
+
+For RSA-PSS keys, if the key material contains a `RSASSA-PSS-params` sequence,
+the `hashAlgorithm`, `mgf1HashAlgorithm`, and `saltLength` properties will be
+set.
+
+Other key details might be exposed via this API using additional attributes.
 
 ### `keyObject.asymmetricKeyType`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v11.6.0
+changes:
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59537
+    description: Add support for SLH-DSA keys.
+  - version: v24.7.0
+    pr-url: https://github.com/nodejs/node/pull/59461
+    description: Add support for ML-KEM keys.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA keys.
+  - version:
+     - v13.9.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/31178
+    description: Added support for `'dh'`.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26960
+    description: Added support for `'rsa-pss'`.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26786
+    description: This property now returns `undefined` for KeyObject
+                 instances of unrecognized type instead of aborting.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26774
+    description: Added support for `'x25519'` and `'x448'`.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26319
+    description: Added support for `'ed25519'` and `'ed448'`.
+-->
 
-Для асимметричных ключей это свойство представляет тип ключа. Поддерживаются следующие типы ключей:
+Добавлено в: v11.6.0
 
--   `rsa` (OID 1.2.840.113549.1.1.1)
--   `rsa-pss` (OID 1.2.840.113549.1.1.10)
--   `dsa` (OID 1.2.840.10040.4.1)
--   `ec` (OID 1.2.840.10045.2.1)
--   `x25519` (OID 1.3.101.110)
--   `x448` (OID 1.3.101.111)
--   `ed25519` (OID 1.3.101.112)
--   `ed448` (OID 1.3.101.113)
--   `dh` (OID 1.2.840.113549.1.3.1)
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.8.0 | Добавить поддержку ключей SLH-DSA. |
+    | v24.7.0 | Добавить поддержку ключей ML-KEM. |
+    | v24.6.0 | Добавьте поддержку ключей ML-DSA. |
+    | v13.9.0, v12.17.0 | Добавлена ​​поддержка dh. |
+    | v12.0.0 | Добавлена ​​поддержка rsa-pss. |
+    | v12.0.0 | Это свойство теперь возвращает undefined для экземпляров KeyObject нераспознанного типа вместо прерывания. |
+    | v12.0.0 | Добавлена ​​поддержка x25519 и x448. |
+    | v12.0.0 | Добавлена ​​поддержка ed25519 и ed448. |
 
-Это свойство `не определено` для нераспознанных типов `KeyObject` и симметричных ключей.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0052.part.md -->
+For asymmetric keys, this property represents the type of the key. See the
+supported [asymmetric key types][].
 
-### `keyObject.export([options])`
-
--   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   Возвращает: {строка | буфер | объект}.
-
-Для симметричных ключей можно использовать следующие параметры кодировки:
-
--   `формат`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `буфер` (по умолчанию) или `jwk`.
-
-Для открытых ключей можно использовать следующие параметры кодировки:
-
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть одно из `'pkcs1'` (только RSA) или `'spki'`.
--   `формат`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть `'pem'`, `'der'` или `'jwk'`.
-
-Для закрытых ключей можно использовать следующие параметры кодировки:
-
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть одно из `'pkcs1'` (только RSA), `'pkcs8'` или `'sec1'` (только EC).
--   `формат`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должен быть `'pem'`, `'der'` или `'jwk'`.
--   `шифр`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Если указано, закрытый ключ будет зашифрован с помощью заданных `шифра` и `пасфразы` с использованием PKCS\#5 v2.0 шифрования на основе пароля.
--   `passphrase`: {строка | буфер} Парольная фраза, используемая для шифрования, см. `шифр`.
-
-Тип результата зависит от выбранного формата кодирования, при PEM результатом будет строка, при DER - буфер, содержащий данные, закодированные как DER, при [JWK](https://tools.ietf.org/html/rfc7517) - объект.
-
-Если выбран формат кодирования [JWK](https://tools.ietf.org/html/rfc7517), все остальные варианты кодирования игнорируются.
-
-Ключи типов PKCS\#1, SEC1 и PKCS\#8 могут быть зашифрованы с помощью комбинации опций `шифр` и `формат`. PKCS\#8 `type` можно использовать с любым `format` для шифрования любого алгоритма ключа (RSA, EC или DH), указав `cipher`. PKCS\#1 и SEC1 могут быть зашифрованы путем указания `шифра` только при использовании `формата PEM`. Для максимальной совместимости используйте PKCS\#8 для зашифрованных закрытых ключей. Поскольку PKCS\#8 определяет свой собственный механизм шифрования, шифрование на уровне PEM не поддерживается при шифровании ключа PKCS\#8. См. [RFC 5208](https://www.rfc-editor.org/rfc/rfc5208.txt) для шифрования PKCS\#8 и [RFC 1421](https://www.rfc-editor.org/rfc/rfc1421.txt) для шифрования PKCS\#1 и SEC1.
-
-<!-- 0053.part.md -->
+This property is `undefined` for unrecognized `KeyObject` types and symmetric
+keys.
 
 ### `keyObject.equals(otherKeyObject)`
 
--   `otherKeyObject`: {KeyObject} Объект `KeyObject`, с которым сравнивается `keyObject`.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added:
+  - v17.7.0
+  - v16.15.0
+-->
 
-Возвращает `true` или `false` в зависимости от того, имеют ли ключи абсолютно одинаковый тип, значение и параметры. Этот метод не является [постоянным временем](https://en.wikipedia.org/wiki/Timing_attack).
+* `otherKeyObject` [<KeyObject>](#class-keyobject) A `KeyObject` with which to
+  compare `keyObject`.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0054.part.md -->
+Returns `true` or `false` depending on whether the keys have exactly the same
+type, value, and parameters. This method is not
+[constant time](https://en.wikipedia.org/wiki/Timing_attack).
+
+### `keyObject.export([options])`
+
+<!-- YAML
+added: v11.6.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62240
+    description: Added support for `'raw-public'`, `'raw-private'`,
+                 and `'raw-seed'` formats.
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62178
+    description: ML-KEM and ML-DSA private key `'pkcs8'` export now
+                 uses seed-only format by default when a seed is
+                 available.
+  - version: v15.9.0
+    pr-url: https://github.com/nodejs/node/pull/37081
+    description: Added support for `'jwk'` format.
+-->
+
+Добавлено в: v11.6.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Добавлена ​​поддержка форматов «raw-public», «raw-private» и «raw-seed». |
+    | REPLACEME | Экспорт закрытого ключа ML-KEM и ML-DSA `'pkcs8'` теперь по умолчанию использует формат только начального значения, если начальное число доступно. |
+    | v15.9.0 | Добавлена ​​поддержка формата jwk. |
+
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+For symmetric keys, the following encoding options can be used:
+
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'buffer'` (default) or `'jwk'`.
+
+For public keys, the following encoding options can be used:
+
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pem'`, `'der'`, `'jwk'`, or `'raw-public'`.
+  See [asymmetric key types][] for format support.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) When `format` is `'pem'` or `'der'`, must be `'pkcs1'`
+  (RSA only) or `'spki'`. For EC keys with `'raw-public'` format, may be
+  `'uncompressed'` (default) or `'compressed'`. Ignored when `format` is
+  `'jwk'`.
+
+For private keys, the following encoding options can be used:
+
+* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pem'`, `'der'`, `'jwk'`, `'raw-private'`,
+  or `'raw-seed'`. See [asymmetric key types][] for format support.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) When `format` is `'pem'` or `'der'`, must be `'pkcs1'`
+  (RSA only), `'pkcs8'`, or `'sec1'` (EC only). Ignored when `format` is
+  `'jwk'`, `'raw-private'`, or `'raw-seed'`.
+* `cipher` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If specified, the private key will be encrypted with
+  the given `cipher` and `passphrase` using PKCS#5 v2.0 password based
+  encryption. Ignored when `format` is `'jwk'`, `'raw-private'`, or
+  `'raw-seed'`.
+* `passphrase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) The passphrase to use for encryption.
+  Required when `cipher` is specified.
+
+The result type depends on the selected encoding format, when PEM the
+result is a string, when DER it will be a buffer containing the data
+encoded as DER, when [JWK][] it will be an object. Raw formats return a
+[Buffer](buffer.md#buffer) containing the raw key material.
+
+Private keys can be encrypted by specifying a `cipher` and `passphrase`.
+The PKCS#8 `type` supports encryption with both PEM and DER `format` for any
+key algorithm. PKCS#1 and SEC1 can only be encrypted when the PEM `format` is
+used. For maximum compatibility, use PKCS#8 for encrypted private keys. Since
+PKCS#8 defines its own encryption mechanism, PEM-level encryption is not
+supported when encrypting a PKCS#8 key. See [RFC 5208][] for PKCS#8 encryption
+and [RFC 1421][] for PKCS#1 and SEC1 encryption.
 
 ### `keyObject.symmetricKeySize`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v11.6.0
+-->
 
-Для секретных ключей это свойство представляет размер ключа в байтах. Для асимметричных ключей это свойство `не определено`.
+* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0055.part.md -->
+For secret keys, this property represents the size of the key in bytes. This
+property is `undefined` for asymmetric keys.
+
+### `keyObject.toCryptoKey(algorithm, extractable, keyUsages)`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+<!--lint disable maximum-line-length remark-lint-->
+
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaHashedImportParams>](webcrypto.md) | [<EcKeyImportParams>](webcrypto.md) | [<HmacImportParams>](webcrypto.md)
+
+<!--lint enable maximum-line-length remark-lint-->
+
+* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [Key usages][].
+* Returns: [<CryptoKey>](webcrypto.md#class-cryptokey)
+
+Converts a `KeyObject` instance to a `CryptoKey`.
 
 ### `keyObject.type`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v11.6.0
+-->
 
-В зависимости от типа данного `KeyObject`, это свойство является либо `'secret'` для секретных (симметричных) ключей, либо `'public'` для открытых (асимметричных) ключей, либо `'private'` для закрытых (асимметричных) ключей.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0056.part.md -->
+Depending on the type of this `KeyObject`, this property is either
+`'secret'` for secret (symmetric) keys, `'public'` for public (asymmetric) keys
+or `'private'` for private (asymmetric) keys.
 
-## Класс: `Sign`
+## Class: `Sign`
 
--   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
+<!-- YAML
+added: v0.1.92
+-->
 
-Класс `Sign` - это утилита для генерации подписей. Он может быть использован одним из двух способов:
+* Extends: [<stream.Writable>](stream.md#streamwritable)
 
--   Как записываемый [stream](stream.md), в который записываются данные, подлежащие подписи, а метод [`sign.sign()`](#signsignprivatekey-outputencoding) используется для генерации и возврата подписи, или
--   Использование методов [`sign.update()`](#signupdatedata-inputencoding) и [`sign.sign()`](#signsignprivatekey-outputencoding) для создания подписи.
+The `Sign` class is a utility for generating signatures. It can be used in one
+of two ways:
 
-Метод [`crypto.createSign()`](#cryptocreatesignalgorithm-options) используется для создания экземпляров `Sign`. Аргументом является строковое имя используемой хэш-функции. Объекты `Sign` не должны создаваться напрямую с помощью ключевого слова `new`.
+* As a writable [stream][], where data to be signed is written and the
+  [`sign.sign()`][] method is used to generate and return the signature, or
+* Using the [`sign.update()`][] and [`sign.sign()`][] methods to produce the
+  signature.
 
-Пример: Использование объектов `Sign` и [`Verify`](#class-verify) в качестве потоков:
+The [`crypto.createSign()`][] method is used to create `Sign` instances. The
+argument is the string name of the hash function to use. `Sign` objects are not
+to be created directly using the `new` keyword.
 
-```mjs
-const {
-    generateKeyPairSync,
-    createSign,
-    createVerify,
-} = await import('node:crypto');
+Пример: объекты `Sign` и [`Verify`][] как потоки:
 
-const { privateKey, publicKey } = generateKeyPairSync(
-    'ec',
-    {
-        namedCurve: 'sect239k1',
-    }
-);
+=== "MJS"
 
-const sign = createSign('SHA256');
-sign.write('некоторые данные для подписи');
-sign.end();
-const signature = sign.sign(privateKey, 'hex');
+    ```js
+    const {
+      generateKeyPairSync,
+      createSign,
+      createVerify,
+    } = await import('node:crypto');
 
-const verify = createVerify('SHA256');
-verify.write('некоторые данные для подписи');
-verify.end();
-console.log(verify.verify(publicKey, signature, 'hex'));
-// Выводит: true
-```
+    const { privateKey, publicKey } = generateKeyPairSync('ec', {
+      namedCurve: 'sect239k1',
+    });
 
-```cjs
-const {
-    generateKeyPairSync,
-    createSign,
-    createVerify,
-} = require('node:crypto');
+    const sign = createSign('SHA256');
+    sign.write('some data to sign');
+    sign.end();
+    const signature = sign.sign(privateKey, 'hex');
 
-const { privateKey, publicKey } = generateKeyPairSync(
-    'ec',
-    {
-        namedCurve: 'sect239k1',
-    }
-);
+    const verify = createVerify('SHA256');
+    verify.write('some data to sign');
+    verify.end();
+    console.log(verify.verify(publicKey, signature, 'hex'));
+    // Prints: true
+    ```
 
-const sign = createSign('SHA256');
-sign.write('некоторые данные для подписи');
-sign.end();
-const signature = sign.sign(privateKey, 'hex');
+=== "CJS"
 
-const verify = createVerify('SHA256');
-verify.write('некоторые данные для подписи');
-verify.end();
-console.log(verify.verify(publicKey, signature, 'hex'));
-// Выводит: true
-```
+    ```js
+    const {
+      generateKeyPairSync,
+      createSign,
+      createVerify,
+    } = require('node:crypto');
 
-Пример: Использование методов [`sign.update()`](#signupdatedata-inputencoding) и [`verify.update()`](#verifyupdatedata-inputencoding):
+    const { privateKey, publicKey } = generateKeyPairSync('ec', {
+      namedCurve: 'sect239k1',
+    });
 
-```mjs
-const {
-    generateKeyPairSync,
-    createSign,
-    createVerify,
-} = await import('node:crypto');
+    const sign = createSign('SHA256');
+    sign.write('some data to sign');
+    sign.end();
+    const signature = sign.sign(privateKey, 'hex');
 
-const { privateKey, publicKey } = generateKeyPairSync(
-    'rsa',
-    {
-        modulusLength: 2048,
-    }
-);
+    const verify = createVerify('SHA256');
+    verify.write('some data to sign');
+    verify.end();
+    console.log(verify.verify(publicKey, signature, 'hex'));
+    // Prints: true
+    ```
 
-const sign = createSign('SHA256');
-sign.update('некоторые данные для подписи');
-sign.end();
-const signature = sign.sign(privateKey);
+Пример: [`sign.update()`][] и [`verify.update()`][]:
 
-const verify = createVerify('SHA256');
-verify.update('некоторые данные для подписи');
-verify.end();
-console.log(verify.verify(publicKey, signature));
-// Выводит: true
-```
+=== "MJS"
 
-```cjs
-const {
-    generateKeyPairSync,
-    createSign,
-    createVerify,
-} = require('node:crypto');
+    ```js
+    const {
+      generateKeyPairSync,
+      createSign,
+      createVerify,
+    } = await import('node:crypto');
 
-const { privateKey, publicKey } = generateKeyPairSync(
-    'rsa',
-    {
-        modulusLength: 2048,
-    }
-);
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+      modulusLength: 2048,
+    });
 
-const sign = createSign('SHA256');
-sign.update('некоторые данные для подписи');
-sign.end();
-const signature = sign.sign(privateKey);
+    const sign = createSign('SHA256');
+    sign.update('some data to sign');
+    sign.end();
+    const signature = sign.sign(privateKey);
 
-const verify = createVerify('SHA256');
-verify.update('некоторые данные для подписи');
-verify.end();
-console.log(verify.verify(publicKey, signature));
-// Выводит: true
-```
+    const verify = createVerify('SHA256');
+    verify.update('some data to sign');
+    verify.end();
+    console.log(verify.verify(publicKey, signature));
+    // Prints: true
+    ```
 
-<!-- 0057.part.md -->
+=== "CJS"
+
+    ```js
+    const {
+      generateKeyPairSync,
+      createSign,
+      createVerify,
+    } = require('node:crypto');
+
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+      modulusLength: 2048,
+    });
+
+    const sign = createSign('SHA256');
+    sign.update('some data to sign');
+    sign.end();
+    const signature = sign.sign(privateKey);
+
+    const verify = createVerify('SHA256');
+    verify.update('some data to sign');
+    verify.end();
+    console.log(verify.verify(publicKey, signature));
+    // Prints: true
+    ```
 
 ### `sign.sign(privateKey[, outputEncoding])`
 
--   `privateKey` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    -   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) возвращаемого значения.
--   Возвращает: {Буфер | строка}.
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The privateKey can also be an ArrayBuffer and CryptoKey.
+  - version:
+     - v13.2.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/29292
+    description: This function now supports IEEE-P1363 DSA and ECDSA signatures.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26960
+    description: This function now supports RSA-PSS keys.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: This function now supports key objects.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11705
+    description: Support for RSASSA-PSS and additional options was added.
+-->
 
-Вычисляет подпись на всех переданных данных, используя либо [`sign.update()`](#signupdatedata-inputencoding), либо [`sign.write()`](stream.md#writablewritechunk-encoding-callback).
+Добавлено в: v0.1.92
 
-Если `privateKey` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `privateKey` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey). Если это объект, могут быть переданы следующие дополнительные свойства:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | PrivateKey также может быть ArrayBuffer и CryptoKey. |
+    | v13.2.0, v12.16.0 | Эта функция теперь поддерживает подписи IEEE-P1363 DSA и ECDSA. |
+    | v12.0.0 | Эта функция теперь поддерживает ключи RSA-PSS. |
+    | v11.6.0 | Эта функция теперь поддерживает ключевые объекты. |
+    | v8.0.0 | Добавлена ​​поддержка RSASSA-PSS и дополнительных опций. |
 
--   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Для DSA и ECDSA этот параметр определяет формат генерируемой подписи. Он может быть одним из следующих:
+<!--lint disable maximum-line-length remark-lint-->
 
-    -   `der` (по умолчанию): DER-кодирование ASN.1 структуры подписи в кодировке `(r, s)`.
-    -   `'ieee-p1363'`: Формат подписи `r || s`, предложенный в IEEE-P1363.
+* `privateKey` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the return value.
+* Returns: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное значение прокладки для RSA, одно из следующих:
+<!--lint enable maximum-line-length remark-lint-->
 
-    -   `crypto.constants.RSA_PKCS1_PADDING` (по умолчанию)
-    -   `crypto.constants.RSA_PKCS1_PSS_PADDING`
+Calculates the signature on all the data passed through using either
+[`sign.update()`][] or [`sign.write()`][stream-writable-write].
 
-    `RSA_PKCS1_PSS_PADDING` будет использовать MGF1 с той же хэш-функцией, которая используется для подписи сообщения, как указано в разделе 3.1 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt), если только хэш-функция MGF1 не была указана как часть ключа в соответствии с разделом 3.3 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
+If `privateKey` is not a [`KeyObject`][], this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`][]. If it is an
+object, the following additional properties can be passed:
 
--   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина соли для случая, когда padding равен `RSA_PKCS1_PSS_PADDING`. Специальное значение `crypto.constants.RSA_PSS_SALTLEN_DIGEST` устанавливает длину соли в размер дайджеста, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (по умолчанию) - в максимально допустимое значение.
+* `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
+  format of the generated signature. It can be one of the following:
+  * `'der'` (default): DER-encoded ASN.1 signature structure encoding `(r, s)`.
+  * `'ieee-p1363'`: Signature format `r || s` as proposed in IEEE-P1363.
+* `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional padding value for RSA, one of the following:
 
-Если указано `outputEncoding`, возвращается строка; в противном случае возвращается [`буфер`](buffer.md).
+  * `crypto.constants.RSA_PKCS1_PADDING` (default)
+  * `crypto.constants.RSA_PKCS1_PSS_PADDING`
 
-Объект `Sign` не может быть повторно использован после вызова метода `sign.sign()`. Многократные вызовы метода `sign.sign()` приведут к возникновению ошибки.
+  `RSA_PKCS1_PSS_PADDING` will use MGF1 with the same hash function
+  used to sign the message as specified in section 3.1 of [RFC 4055][], unless
+  an MGF1 hash function has been specified as part of the key in compliance with
+  section 3.3 of [RFC 4055][].
+* `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Salt length for when padding is
+  `RSA_PKCS1_PSS_PADDING`. The special value
+  `crypto.constants.RSA_PSS_SALTLEN_DIGEST` sets the salt length to the digest
+  size, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (default) sets it to the
+  maximum permissible value.
 
-<!-- 0058.part.md -->
+If `outputEncoding` is provided a string is returned; otherwise a [`Buffer`][]
+is returned.
+
+The `Sign` object can not be again used after `sign.sign()` method has been
+called. Multiple calls to `sign.sign()` will result in an error being thrown.
 
 ### `sign.update(data[, inputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `data`.
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет содержимое `Sign` с заданными `data`, кодировка которых указана в `inputEncoding`. Если `encoding` не указан, и `данные` являются строкой, то применяется кодировка `'utf8'`. Если `data` является [`Buffer`](buffer.md), `TypedArray` или `DataView`, то `inputEncoding` игнорируется.
+Добавлено в: v0.1.92
 
-Эта функция может вызываться много раз с новыми данными по мере их передачи.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-<!-- 0059.part.md -->
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `data` string.
 
-## Класс: `Verify`
+Updates the `Sign` content with the given `data`, the encoding of which
+is given in `inputEncoding`.
+If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][], `TypedArray`, or
+`DataView`, then `inputEncoding` is ignored.
 
--   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
+This can be called many times with new data as it is streamed.
 
-Класс `Verify` - это утилита для проверки подписей. Он может быть использован одним из двух способов:
+## Class: `Verify`
 
--   Как записываемый [stream](stream.md), где записанные данные используются для проверки на соответствие предоставленной подписи, или
--   Используя методы [`verify.update()`](#verifyupdatedata-inputencoding) и [`verify.verify()`](#verifyverifyobject-signature-signatureencoding) для проверки подписи.
+<!-- YAML
+added: v0.1.92
+-->
 
-Метод [`crypto.createVerify()`](#cryptocreateverifyalgorithm-options) используется для создания экземпляров `Verify`. Объекты `Verify` не должны создаваться напрямую с помощью ключевого слова `new`.
+* Extends: [<stream.Writable>](stream.md#streamwritable)
 
-Примеры смотрите в [`Sign`](#class-sign).
+The `Verify` class is a utility for verifying signatures. It can be used in one
+of two ways:
 
-<!-- 0060.part.md -->
+* As a writable [stream][] where written data is used to validate against the
+  supplied signature, or
+* Using the [`verify.update()`][] and [`verify.verify()`][] methods to verify
+  the signature.
+
+The [`crypto.createVerify()`][] method is used to create `Verify` instances.
+`Verify` objects are not to be created directly using the `new` keyword.
+
+See [`Sign`][] for examples.
 
 ### `verify.update(data[, inputEncoding])`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `inputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `data`.
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default `inputEncoding` changed from `binary` to `utf8`.
+-->
 
-Обновляет содержимое `Verify` с заданными `data`, кодировка которых указана в `inputEncoding`. Если `inputEncoding` не указан, а `данные` являются строкой, применяется кодировка `'utf8'`. Если `data` является [`Buffer`](buffer.md), `TypedArray` или `DataView`, то `inputEncoding` игнорируется.
+Добавлено в: v0.1.92
 
-Эта функция может вызываться много раз с новыми данными по мере их передачи.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.0.0 | Значение по умолчанию `inputEncoding` изменено с `binary` на `utf8`. |
 
-<!-- 0061.part.md -->
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `inputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `data` string.
 
-### `verify.verify(object, signature[, signatureEncoding])`
+Updates the `Verify` content with the given `data`, the encoding of which
+is given in `inputEncoding`.
+If `inputEncoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][], `TypedArray`, or
+`DataView`, then `inputEncoding` is ignored.
 
--   `object` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    -   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-    -   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `signature` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `signatureEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `signature`.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` или `false` в зависимости от достоверности подписи для данных и открытого ключа.
+This can be called many times with new data as it is streamed.
 
-Проверяет предоставленные данные с помощью заданных `объекта` и `подписи`.
+### `verify.verify(key, signature[, signatureEncoding])`
 
-Если `object` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `object` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, то могут быть переданы следующие дополнительные свойства:
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The key can also be an ArrayBuffer and CryptoKey.
+  - version:
+     - v13.2.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/29292
+    description: This function now supports IEEE-P1363 DSA and ECDSA signatures.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26960
+    description: This function now supports RSA-PSS keys.
+  - version: v11.7.0
+    pr-url: https://github.com/nodejs/node/pull/25217
+    description: The key can now be a private key.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11705
+    description: Support for RSASSA-PSS and additional options was added.
+-->
 
--   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Для DSA и ECDSA этот параметр определяет формат подписи. Он может быть одним из следующих:
+Добавлено в: v0.1.92
 
-    -   `'der` (по умолчанию): DER-кодирование ASN.1 структуры подписи в кодировке `(r, s)`.
-    -   `'ieee-p1363'`: Формат подписи `r || s`, предложенный в IEEE-P1363.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Ключ также может быть ArrayBuffer и CryptoKey. |
+    | v13.2.0, v12.16.0 | Эта функция теперь поддерживает подписи IEEE-P1363 DSA и ECDSA. |
+    | v12.0.0 | Эта функция теперь поддерживает ключи RSA-PSS. |
+    | v11.7.0 | Ключ теперь может быть закрытым ключом. |
+    | v8.0.0 | Добавлена ​​поддержка RSASSA-PSS и дополнительных опций. |
 
--   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное значение прокладки для RSA, одно из следующих:
+<!--lint disable maximum-line-length remark-lint-->
 
-    -   `crypto.constants.RSA_PKCS1_PADDING` (по умолчанию)
-    -   `crypto.constants.RSA_PKCS1_PSS_PADDING`
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `signature` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `signatureEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `signature` string.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` or `false` depending on the validity of the
+  signature for the data and public key.
 
-    `RSA_PKCS1_PSS_PADDING` будет использовать MGF1 с той же хэш-функцией, которая используется для проверки сообщения, как указано в разделе 3.1 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt), если только хэш-функция MGF1 не была указана как часть ключа в соответствии с разделом 3.3 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
+<!--lint enable maximum-line-length remark-lint-->
 
--   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина соли для случая, когда padding равен `RSA_PKCS1_PSS_PADDING`. Специальное значение `crypto.constants.RSA_PSS_SALTLEN_DIGEST` устанавливает длину соли в соответствии с размером дайджеста, `crypto.constants.RSA_PSS_SALTLEN_AUTO` (по умолчанию) заставляет ее определяться автоматически.
+Verifies the provided data using the given `key` and `signature`.
 
-Аргумент `signature` - это ранее вычисленная подпись для данных в кодировке `signatureEncoding`. Если указано `signatureEncoding`, то ожидается, что `signature` будет строкой, в противном случае `signature` будет [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+If `key` is not a [`KeyObject`][], this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`][]. If it is an
+object, the following additional properties can be passed:
 
-Объект `verify` не может быть использован повторно после вызова `verify.verify()`. Многократные вызовы `verify.verify()` приведут к возникновению ошибки.
+* `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
+  format of the signature. It can be one of the following:
+  * `'der'` (default): DER-encoded ASN.1 signature structure encoding `(r, s)`.
+  * `'ieee-p1363'`: Signature format `r || s` as proposed in IEEE-P1363.
+* `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional padding value for RSA, one of the following:
 
-Поскольку открытые ключи могут быть производными от закрытых ключей, вместо открытого ключа можно передать закрытый ключ.
+  * `crypto.constants.RSA_PKCS1_PADDING` (default)
+  * `crypto.constants.RSA_PKCS1_PSS_PADDING`
 
-<!-- 0062.part.md -->
+  `RSA_PKCS1_PSS_PADDING` will use MGF1 with the same hash function
+  used to verify the message as specified in section 3.1 of [RFC 4055][], unless
+  an MGF1 hash function has been specified as part of the key in compliance with
+  section 3.3 of [RFC 4055][].
+* `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Salt length for when padding is
+  `RSA_PKCS1_PSS_PADDING`. The special value
+  `crypto.constants.RSA_PSS_SALTLEN_DIGEST` sets the salt length to the digest
+  size, `crypto.constants.RSA_PSS_SALTLEN_AUTO` (default) causes it to be
+  determined automatically.
 
-## Класс: `X509Certificate`
+The `signature` argument is the previously calculated signature for the data, in
+the `signatureEncoding`.
+If a `signatureEncoding` is specified, the `signature` is expected to be a
+string; otherwise `signature` is expected to be a [`Buffer`][],
+`TypedArray`, or `DataView`.
 
-Инкапсулирует сертификат X509 и предоставляет доступ к его информации только для чтения.
+The `verify` object can not be used again after `verify.verify()` has been
+called. Multiple calls to `verify.verify()` will result in an error being
+thrown.
 
-```mjs
-const { X509Certificate } = await import('node:crypto');
+Because public keys can be derived from private keys, a private key may
+be passed instead of a public key.
 
-const x509 = new X509Certificate(
-    '{... pem encoded cert ...}'
-);
+## Class: `X509Certificate`
 
-console.log(x509.subject);
-```
+<!-- YAML
+added: v15.6.0
+-->
 
-```cjs
-const { X509Certificate } = require('node:crypto');
+Encapsulates an X509 certificate and provides read-only access to
+its information.
 
-const x509 = new X509Certificate(
-    '{... pem encoded cert ...}'
-);
+=== "MJS"
 
-console.log(x509.subject);
-```
+    ```js
+    const { X509Certificate } = await import('node:crypto');
 
-<!-- 0063.part.md -->
+    const x509 = new X509Certificate('{... pem encoded cert ...}');
+
+    console.log(x509.subject);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { X509Certificate } = require('node:crypto');
+
+    const x509 = new X509Certificate('{... pem encoded cert ...}');
+
+    console.log(x509.subject);
+    ```
 
 ### `new X509Certificate(buffer)`
 
--   `buffer` {string|TypedArray|Buffer|DataView} Сертификат X509 в кодировке PEM или DER.
+<!-- YAML
+added: v15.6.0
+-->
 
-<!-- 0064.part.md -->
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A PEM or DER encoded
+  X509 Certificate.
 
 ### `x509.ca`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Будет `true`, если это сертификат центра сертификации (ЦС).
+<!-- YAML
+added: v15.6.0
+-->
 
-<!-- 0065.part.md -->
+* Type: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Will be `true` if this is a Certificate Authority (CA)
+  certificate.
 
 ### `x509.checkEmail(email[, options])`
 
--   `email` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `subject` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `по умолчанию`, `всегда`, или `никогда`. **По умолчанию:** `'по умолчанию'\*.
--   Возвращает: {string|undefined} Возвращает `email`, если сертификат соответствует, `undefined`, если не соответствует.
+<!-- YAML
+added: v15.6.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41600
+    description: The subject option now defaults to `'default'`.
+  - version:
+      - v17.5.0
+      - v16.14.1
+    pr-url: https://github.com/nodejs/node/pull/41599
+    description: The `wildcards`, `partialWildcards`, `multiLabelWildcards`, and
+                 `singleLabelSubdomains` options have been removed since they
+                 had no effect.
+  - version:
+    - v17.5.0
+    - v16.15.0
+    pr-url: https://github.com/nodejs/node/pull/41569
+    description: The subject option can now be set to `'default'`.
+-->
 
-Проверяет, соответствует ли сертификат заданному адресу электронной почты.
+Добавлено в: v15.6.0
 
-Если параметр `'subject'` неопределен или установлен в `'default'`, тема сертификата рассматривается только в том случае, если альтернативное расширение имени subject либо не существует, либо не содержит никаких адресов электронной почты.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | Опция темы теперь по умолчанию установлена ​​на `'default'`. |
+    | v17.5.0, v16.14.1 | Параметры «wildcards», «partialWildcards», «multiLabelWildcards» и «singleLabelSubdomains» были удалены, поскольку они не имели никакого эффекта. |
+    | v17.5.0, v16.15.0 | Для параметра темы теперь можно установить значение «по умолчанию». |
 
-Если опция `'subject'` установлена в `'always'` и если альтернативное расширение имени subject либо не существует, либо не содержит подходящего адреса электронной почты, то рассматривается тема сертификата.
+* `email` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `subject` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'default'`, `'always'`, or `'never'`.
+    **Default:** `'default'`.
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Returns `email` if the certificate matches,
+  `undefined` if it does not.
 
-Если опция `'subject'` установлена в `'never'`, тема сертификата никогда не рассматривается, даже если сертификат не содержит альтернативных имен темы.
+Checks whether the certificate matches the given email address.
 
-<!-- 0066.part.md -->
+If the `'subject'` option is undefined or set to `'default'`, the certificate
+subject is only considered if the subject alternative name extension either does
+not exist or does not contain any email addresses.
+
+If the `'subject'` option is set to `'always'` and if the subject alternative
+name extension either does not exist or does not contain a matching email
+address, the certificate subject is considered.
+
+If the `'subject'` option is set to `'never'`, the certificate subject is never
+considered, even if the certificate contains no subject alternative names.
 
 ### `x509.checkHost(name[, options])`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `subject` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `по умолчанию`, `всегда`, или `никогда`. **По умолчанию:** `'по умолчанию'\*.
-    -   `wildcards` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`.
-    -   `partialWildcards` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`.
-    -   `multiLabelWildcards` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
-    -   `singleLabelSubdomains` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
--   Возвращает: {string|undefined} Возвращает имя субъекта, соответствующее `name`, или `undefined`, если ни одно имя субъекта не соответствует `name`.
+<!-- YAML
+added: v15.6.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41600
+    description: The subject option now defaults to `'default'`.
+  - version:
+    - v17.5.0
+    - v16.15.0
+    pr-url: https://github.com/nodejs/node/pull/41569
+    description: The subject option can now be set to `'default'`.
+-->
 
-Проверяет, соответствует ли сертификат заданному имени хоста.
+Добавлено в: v15.6.0
 
-Если сертификат соответствует заданному имени хоста, возвращается соответствующее имя субъекта. Возвращаемое имя может быть точным (например, `foo.example.com`) или содержать подстановочные знаки (например, `*.example.com`). Поскольку сравнение имен хостов не чувствительно к регистру, возвращаемое имя субъекта может отличаться от заданного `name` по капитализации.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | Опция темы теперь по умолчанию установлена ​​на `'default'`. |
+    | v17.5.0, v16.15.0 | Для параметра темы теперь можно установить значение «по умолчанию». |
 
-Если опция `'subject'` не определена или установлена в `'default'`, субъект сертификата рассматривается только в том случае, если расширение альтернативного имени субъекта либо не существует, либо не содержит никаких имен DNS. Такое поведение соответствует [RFC 2818](https://www.rfc-editor.org/rfc/rfc2818.txt) ("HTTP Over TLS").
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `subject` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'default'`, `'always'`, or `'never'`.
+    **Default:** `'default'`.
+  * `wildcards` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `true`.
+  * `partialWildcards` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `true`.
+  * `multiLabelWildcards` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`.
+  * `singleLabelSubdomains` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`.
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Returns a subject name that matches `name`,
+  or `undefined` if no subject name matches `name`.
 
-Если опция `'subject'` установлена в `'always'` и если расширение альтернативного имени субъекта либо не существует, либо не содержит подходящего DNS-имени, рассматривается субъект сертификата.
+Checks whether the certificate matches the given host name.
 
-Если опция `'subject'` установлена в `'never'`, субъект сертификата никогда не рассматривается, даже если сертификат не содержит альтернативных имен субъекта.
+If the certificate matches the given host name, the matching subject name is
+returned. The returned name might be an exact match (e.g., `foo.example.com`)
+or it might contain wildcards (e.g., `*.example.com`). Because host name
+comparisons are case-insensitive, the returned subject name might also differ
+from the given `name` in capitalization.
 
-<!-- 0067.part.md -->
+If the `'subject'` option is undefined or set to `'default'`, the certificate
+subject is only considered if the subject alternative name extension either does
+not exist or does not contain any DNS names. This behavior is consistent with
+[RFC 2818][] ("HTTP Over TLS").
+
+If the `'subject'` option is set to `'always'` and if the subject alternative
+name extension either does not exist or does not contain a matching DNS name,
+the certificate subject is considered.
+
+If the `'subject'` option is set to `'never'`, the certificate subject is never
+considered, even if the certificate contains no subject alternative names.
 
 ### `x509.checkIP(ip)`
 
--   `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {string|undefined} Возвращает `ip`, если сертификат соответствует, `undefined`, если не соответствует.
+<!-- YAML
+added: v15.6.0
+changes:
+  - version:
+      - v17.5.0
+      - v16.14.1
+    pr-url: https://github.com/nodejs/node/pull/41571
+    description: The `options` argument has been removed since it had no effect.
+-->
 
-Проверяет соответствие сертификата заданному IP-адресу (IPv4 или IPv6).
+Добавлено в: v15.6.0
 
-Учитываются только [RFC 5280](https://www.rfc-editor.org/rfc/rfc5280.txt) `iPAddress` предметные альтернативные имена, которые должны точно совпадать с заданным `ip` адресом. Другие альтернативные имена субъектов, а также поле subject сертификата игнорируются.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.5.0, v16.14.1 | Аргумент `options` был удален, поскольку он не имел никакого эффекта. |
 
-<!-- 0068.part.md -->
+* `ip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Returns `ip` if the certificate matches,
+  `undefined` if it does not.
+
+Checks whether the certificate matches the given IP address (IPv4 or IPv6).
+
+Only [RFC 5280][] `iPAddress` subject alternative names are considered, and they
+must match the given `ip` address exactly. Other subject alternative names as
+well as the subject field of the certificate are ignored.
 
 ### `x509.checkIssued(otherCert)`
 
--   `otherCert` {X509Certificate}
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Проверяет, был ли этот сертификат выпущен данным `otherCert`.
+* `otherCert` [<X509Certificate>](crypto.md)
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0069.part.md -->
+Checks whether this certificate was potentially issued by the given `otherCert`
+by comparing the certificate metadata.
+
+This is useful for pruning a list of possible issuer certificates which have been
+selected using a more rudimentary filtering routine, i.e. just based on subject
+and issuer names.
+
+Finally, to verify that this certificate's signature was produced by a private key
+corresponding to `otherCert`'s public key use [`x509.verify(publicKey)`][]
+with `otherCert`'s public key represented as a [`KeyObject`][]
+like so
+
+```js
+if (!x509.verify(otherCert.publicKey)) {
+  throw new Error('otherCert did not issue x509');
+}
+```
 
 ### `x509.checkPrivateKey(privateKey)`
 
--   `privateKey` {KeyObject} Закрытый ключ.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+<!-- YAML
+added: v15.6.0
+-->
 
-Проверяет, соответствует ли открытый ключ данного сертификата заданному закрытому ключу.
+* `privateKey` [<KeyObject>](#class-keyobject) A private key.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0070.part.md -->
+Checks whether the public key for this certificate is consistent with
+the given private key.
 
 ### `x509.fingerprint`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Отпечаток SHA-1 этого сертификата.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Поскольку SHA-1 является криптографически неполноценным и поскольку безопасность SHA-1 значительно хуже, чем у алгоритмов, которые обычно используются для подписания сертификатов, подумайте об использовании [`x509.fingerprint256`](#x509fingerprint256) вместо этого.
+The SHA-1 fingerprint of this certificate.
 
-<!-- 0071.part.md -->
+Because SHA-1 is cryptographically broken and because the security of SHA-1 is
+significantly worse than that of algorithms that are commonly used to sign
+certificates, consider using [`x509.fingerprint256`][] instead.
 
 ### `x509.fingerprint256`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Отпечаток SHA-256 этого сертификата.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0072.part.md -->
+The SHA-256 fingerprint of this certificate.
 
 ### `x509.fingerprint512`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added:
+  - v17.2.0
+  - v16.14.0
+-->
 
-Отпечаток SHA-512 этого сертификата.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Поскольку вычисление отпечатка SHA-256 обычно происходит быстрее, а его размер в два раза меньше, чем у отпечатка SHA-512, [`x509.fingerprint256`](#x509fingerprint256) может быть лучшим выбором. Хотя SHA-512, предположительно, обеспечивает более высокий уровень безопасности в целом, безопасность SHA-256 соответствует безопасности большинства алгоритмов, которые обычно используются для подписания сертификатов.
+The SHA-512 fingerprint of this certificate.
 
-<!-- 0073.part.md -->
+Because computing the SHA-256 fingerprint is usually faster and because it is
+only half the size of the SHA-512 fingerprint, [`x509.fingerprint256`][] may be
+a better choice. While SHA-512 presumably provides a higher level of security in
+general, the security of SHA-256 matches that of most algorithms that are
+commonly used to sign certificates.
 
 ### `x509.infoAccess`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+changes:
+  - version:
+      - v17.3.1
+      - v16.13.2
+    pr-url: https://github.com/nodejs-private/node-private/pull/300
+    description: Parts of this string may be encoded as JSON string literals
+                 in response to CVE-2021-44532.
+-->
 
-Текстовое представление расширения доступа к информации об авторитете сертификата.
+Добавлено в: v15.6.0
 
-Это список описаний доступа, разделенных переводом строки. Каждая строка начинается с метода доступа и вида места доступа, затем следует двоеточие и значение, связанное с местом доступа.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.3.1, v16.13.2 | Части этой строки могут быть закодированы как строковые литералы JSON в ответ на CVE-2021-44532. |
 
-После префикса, обозначающего метод доступа и вид места доступа, оставшаяся часть каждой строки может быть заключена в кавычки, чтобы указать, что значение является литералом строки JSON. Для обратной совместимости Node.js использует строковые литералы JSON в этом свойстве только при необходимости, чтобы избежать двусмысленности. Код сторонних разработчиков должен быть готов к обработке обоих возможных форматов ввода.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0074.part.md -->
+A textual representation of the certificate's authority information access
+extension.
+
+This is a line feed separated list of access descriptions. Each line begins with
+the access method and the kind of the access location, followed by a colon and
+the value associated with the access location.
+
+After the prefix denoting the access method and the kind of the access location,
+the remainder of each line might be enclosed in quotes to indicate that the
+value is a JSON string literal. For backward compatibility, Node.js only uses
+JSON string literals within this property when necessary to avoid ambiguity.
+Third-party code should be prepared to handle both possible entry formats.
 
 ### `x509.issuer`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Идентификатор эмитента, включенный в данный сертификат.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0075.part.md -->
+The issuer identification included in this certificate.
 
 ### `x509.issuerCertificate`
 
--   Тип: {X509Certificate}
+<!-- YAML
+added: v15.9.0
+-->
 
-Сертификат эмитента или `undefined`, если сертификат эмитента недоступен.
+* Type: [<X509Certificate>](crypto.md)
 
-<!-- 0076.part.md -->
+The issuer certificate or `undefined` if the issuer certificate is not
+available.
 
 ### `x509.keyUsage`
 
--   Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Массив с подробным описанием использования ключей для этого сертификата.
+* Type: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0077.part.md -->
+An array detailing the key extended usages for this certificate.
 
 ### `x509.publicKey`
 
--   Тип: {KeyObject}
+<!-- YAML
+added: v15.6.0
+-->
 
-Открытый ключ {KeyObject} для этого сертификата.
+* Type: [<KeyObject>](#class-keyobject)
 
-<!-- 0078.part.md -->
+The public key [KeyObject](#class-keyobject) for this certificate.
 
 ### `x509.raw`
 
--   Тип: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v15.6.0
+-->
 
-Буфер, содержащий DER-кодировку данного сертификата.
+* Type: [<Buffer>](buffer.md#buffer)
 
-<!-- 0079.part.md -->
+A `Buffer` containing the DER encoding of this certificate.
 
 ### `x509.serialNumber`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Серийный номер данного сертификата.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Серийные номера присваиваются центрами сертификации и не являются уникальной идентификацией сертификатов. Вместо этого используйте [`x509.fingerprint256`](#x509fingerprint256) в качестве уникального идентификатора.
+The serial number of this certificate.
 
-<!-- 0080.part.md -->
+Serial numbers are assigned by certificate authorities and do not uniquely
+identify certificates. Consider using [`x509.fingerprint256`][] as a unique
+identifier instead.
 
 ### `x509.subject`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Полный субъект этого сертификата.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0081.part.md -->
+The complete subject of this certificate.
 
 ### `x509.subjectAltName`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+changes:
+  - version:
+      - v17.3.1
+      - v16.13.2
+    pr-url: https://github.com/nodejs-private/node-private/pull/300
+    description: Parts of this string may be encoded as JSON string literals
+                 in response to CVE-2021-44532.
+-->
 
-Альтернативное имя субъекта, указанное для этого сертификата.
+Добавлено в: v15.6.0
 
-Это список альтернативных имен субъектов, разделенных запятыми. Каждая запись начинается со строки, определяющей вид альтернативного имени субъекта, за которой следует двоеточие и значение, связанное с этой записью.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.3.1, v16.13.2 | Части этой строки могут быть закодированы как строковые литералы JSON в ответ на CVE-2021-44532. |
 
-Ранние версии Node.js ошибочно полагали, что безопасно разделять это свойство на двухсимвольную последовательность `', '` (см. [CVE-2021-44532](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44532)). Однако как вредоносные, так и легитимные сертификаты могут содержать альтернативные имена субъектов, включающие эту последовательность при представлении в виде строки.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-После префикса, обозначающего тип записи, оставшаяся часть каждой записи может быть заключена в кавычки, чтобы указать, что значение является строковым литералом JSON. Для обратной совместимости Node.js использует строковые литералы JSON в этом свойстве только при необходимости, чтобы избежать двусмысленности. Код сторонних разработчиков должен быть готов к обработке обоих возможных форматов ввода.
+The subject alternative name specified for this certificate.
 
-<!-- 0082.part.md -->
+This is a comma-separated list of subject alternative names. Each entry begins
+with a string identifying the kind of the subject alternative name followed by
+a colon and the value associated with the entry.
+
+Earlier versions of Node.js incorrectly assumed that it is safe to split this
+property at the two-character sequence `', '` (see [CVE-2021-44532][]). However,
+both malicious and legitimate certificates can contain subject alternative names
+that include this sequence when represented as a string.
+
+After the prefix denoting the type of the entry, the remainder of each entry
+might be enclosed in quotes to indicate that the value is a JSON string literal.
+For backward compatibility, Node.js only uses JSON string literals within this
+property when necessary to avoid ambiguity. Third-party code should be prepared
+to handle both possible entry formats.
 
 ### `x509.toJSON()`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Не существует стандартной кодировки JSON для сертификатов X509. Метод `toJSON()` возвращает строку, содержащую сертификат в кодировке PEM.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0083.part.md -->
+There is no standard JSON encoding for X509 certificates. The
+`toJSON()` method returns a string containing the PEM encoded
+certificate.
 
 ### `x509.toLegacyObject()`
 
--   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added: v15.6.0
+-->
 
-Возвращает информацию об этом сертификате, используя кодировку legacy [certificate object](tls.md#certificate-object).
+* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-<!-- 0084.part.md -->
+Returns information about this certificate using the legacy
+[certificate object][] encoding.
 
 ### `x509.toString()`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Возвращает сертификат в PEM-кодировке.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0085.part.md -->
+Returns the PEM-encoded certificate.
 
 ### `x509.validFrom`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Дата/время, с которой данный сертификат считается действительным.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0086.part.md -->
+The date/time from which this certificate is valid.
+
+### `x509.validFromDate`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+* Type: [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The date/time from which this certificate is valid, encapsulated in a `Date` object.
 
 ### `x509.validTo`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Дата/время, до которого этот сертификат считается действительным.
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0087.part.md -->
+The date/time until which this certificate is valid.
+
+### `x509.validToDate`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+* Type: [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The date/time until which this certificate is valid, encapsulated in a `Date` object.
+
+### `x509.signatureAlgorithm`
+
+<!-- YAML
+added: v24.9.0
+-->
+
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
+
+The algorithm used to sign the certificate or `undefined` if the signature algorithm is unknown by OpenSSL.
+
+### `x509.signatureAlgorithmOid`
+
+<!-- YAML
+added: v24.9.0
+-->
+
+* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+The OID of the algorithm used to sign the certificate.
 
 ### `x509.verify(publicKey)`
 
--   `publicKey` {KeyObject} Открытый ключ.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v15.6.0
+-->
 
-Проверяет, что данный сертификат был подписан данным открытым ключом. Не выполняет никаких других проверок сертификата.
+* `publicKey` [<KeyObject>](#class-keyobject) A public key.
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0088.part.md -->
+Verifies that this certificate was signed by the given public key.
+Does not perform any other validation checks on the certificate.
 
-## Методы и свойства модуля `node:crypto`
+## `node:crypto` module methods and properties
 
-<!-- 0089.part.md -->
+### `crypto.argon2(algorithm, parameters, callback)`
 
-### `crypto.constants`
+<!-- YAML
+added: v24.7.0
+-->
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+> Stability: 1.2 - Release candidate
 
-Объект, содержащий часто используемые константы для операций, связанных с криптографией и безопасностью. Конкретные константы, определенные в настоящее время, описаны в [Crypto constants](#crypto-constants).
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Variant of Argon2, one of `"argon2d"`, `"argon2i"` or `"argon2id"`.
+* `parameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) REQUIRED, this is the password for password
+    hashing applications of Argon2.
+  * `nonce` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) REQUIRED, must be at
+    least 8 bytes long. This is the salt for password hashing applications of Argon2.
+  * `parallelism` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, degree of parallelism determines how many computational chains (lanes)
+    can be run. Must be greater than 1 and less than `2**24-1`.
+  * `tagLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, the length of the key to generate. Must be greater than 4 and
+    less than `2**32-1`.
+  * `memory` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, memory cost in 1KiB blocks. Must be greater than
+    `8 * parallelism` and less than `2**32-1`. The actual number of blocks is rounded
+    down to the nearest multiple of `4 * parallelism`.
+  * `passes` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, number of passes (iterations). Must be greater than 1 and less
+    than `2**32-1`.
+  * `secret` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | undefined OPTIONAL, Random additional input,
+    similar to the salt, that should **NOT** be stored with the derived key. This is known as pepper in
+    password hashing applications. If used, must have a length not greater than `2**32-1` bytes.
+  * `associatedData` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | undefined OPTIONAL, Additional data to
+    be added to the hash, functionally equivalent to salt or secret, but meant for
+    non-random data. If used, must have a length not greater than `2**32-1` bytes.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `derivedKey` [<Buffer>](buffer.md#buffer)
 
-<!-- 0090.part.md -->
+Provides an asynchronous [Argon2][] implementation. Argon2 is a password-based
+key derivation function that is designed to be expensive computationally and
+memory-wise in order to make brute-force attacks unrewarding.
 
-### `crypto.DEFAULT_ENCODING`
+The `nonce` should be as unique as possible. It is recommended that a nonce is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+When passing strings for `message`, `nonce`, `secret` or `associatedData`, please
+consider [caveats when using strings as inputs to cryptographic APIs][].
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+The `callback` function is called with two arguments: `err` and `derivedKey`.
+`err` is an exception object when key derivation fails, otherwise `err` is
+`null`. `derivedKey` is passed to the callback as a [`Buffer`][].
 
-Кодировка по умолчанию для функций, которые могут принимать либо строки, либо [buffers](buffer.md). Значение по умолчанию - `buffer`, что заставляет методы по умолчанию использовать объекты [`Buffer'](buffer.md).
+An exception is thrown when any of the input arguments specify invalid values
+or types.
 
-Механизм `crypto.DEFAULT_ENCODING` предусмотрен для обратной совместимости с устаревшими программами, которые ожидают, что `'latin1'` будет кодировкой по умолчанию.
+=== "MJS"
 
-Новые приложения должны ожидать, что по умолчанию будет использоваться кодировка `'buffer'`.
+    ```js
+    const { argon2, randomBytes } = await import('node:crypto');
 
-Это свойство устарело.
+    const parameters = {
+      message: 'password',
+      nonce: randomBytes(16),
+      parallelism: 4,
+      tagLength: 64,
+      memory: 65536,
+      passes: 3,
+    };
 
-<!-- 0091.part.md -->
+    argon2('argon2id', parameters, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // 'af91dad...9520f15'
+    });
+    ```
 
-### `crypto.fips`
+=== "CJS"
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+    ```js
+    const { argon2, randomBytes } = require('node:crypto');
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+    const parameters = {
+      message: 'password',
+      nonce: randomBytes(16),
+      parallelism: 4,
+      tagLength: 64,
+      memory: 65536,
+      passes: 3,
+    };
 
-Свойство для проверки и контроля того, используется ли в настоящее время FIPS-совместимый криптопровайдер. Установка значения true требует FIPS-сборки Node.js.
+    argon2('argon2id', parameters, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // 'af91dad...9520f15'
+    });
+    ```
 
-Это свойство устарело. Вместо него используйте `crypto.setFips()` и `crypto.getFips()`.
+### `crypto.argon2Sync(algorithm, parameters)`
 
-<!-- 0092.part.md -->
+<!-- YAML
+added: v24.7.0
+-->
+
+> Stability: 1.2 - Release candidate
+
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Variant of Argon2, one of `"argon2d"`, `"argon2i"` or `"argon2id"`.
+* `parameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) REQUIRED, this is the password for password
+    hashing applications of Argon2.
+  * `nonce` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) REQUIRED, must be at
+    least 8 bytes long. This is the salt for password hashing applications of Argon2.
+  * `parallelism` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, degree of parallelism determines how many computational chains (lanes)
+    can be run. Must be greater than 1 and less than `2**24-1`.
+  * `tagLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, the length of the key to generate. Must be greater than 4 and
+    less than `2**32-1`.
+  * `memory` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, memory cost in 1KiB blocks. Must be greater than
+    `8 * parallelism` and less than `2**32-1`. The actual number of blocks is rounded
+    down to the nearest multiple of `4 * parallelism`.
+  * `passes` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) REQUIRED, number of passes (iterations). Must be greater than 1 and less
+    than `2**32-1`.
+  * `secret` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | undefined OPTIONAL, Random additional input,
+    similar to the salt, that should **NOT** be stored with the derived key. This is known as pepper in
+    password hashing applications. If used, must have a length not greater than `2**32-1` bytes.
+  * `associatedData` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | undefined OPTIONAL, Additional data to
+    be added to the hash, functionally equivalent to salt or secret, but meant for
+    non-random data. If used, must have a length not greater than `2**32-1` bytes.
+* Returns: [<Buffer>](buffer.md#buffer)
+
+Provides a synchronous [Argon2][] implementation. Argon2 is a password-based
+key derivation function that is designed to be expensive computationally and
+memory-wise in order to make brute-force attacks unrewarding.
+
+The `nonce` should be as unique as possible. It is recommended that a nonce is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
+
+When passing strings for `message`, `nonce`, `secret` or `associatedData`, please
+consider [caveats when using strings as inputs to cryptographic APIs][].
+
+An exception is thrown when key derivation fails, otherwise the derived key is
+returned as a [`Buffer`][].
+
+An exception is thrown when any of the input arguments specify invalid values
+or types.
+
+=== "MJS"
+
+    ```js
+    const { argon2Sync, randomBytes } = await import('node:crypto');
+
+    const parameters = {
+      message: 'password',
+      nonce: randomBytes(16),
+      parallelism: 4,
+      tagLength: 64,
+      memory: 65536,
+      passes: 3,
+    };
+
+    const derivedKey = argon2Sync('argon2id', parameters);
+    console.log(derivedKey.toString('hex'));  // 'af91dad...9520f15'
+    ```
+
+=== "CJS"
+
+    ```js
+    const { argon2Sync, randomBytes } = require('node:crypto');
+
+    const parameters = {
+      message: 'password',
+      nonce: randomBytes(16),
+      parallelism: 4,
+      tagLength: 64,
+      memory: 65536,
+      passes: 3,
+    };
+
+    const derivedKey = argon2Sync('argon2id', parameters);
+    console.log(derivedKey.toString('hex'));  // 'af91dad...9520f15'
+    ```
 
 ### `crypto.checkPrime(candidate[, options], callback)`
 
--   `candidate` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint} A possible prime encoded as a sequence of big endian octets of arbitrary length.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `checks` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of Miller-Rabin probabilistic primality iterations to perform. When the value is `0` (zero), a number of checks is used that yields a false positive rate of at most 2<sup>-64</sup> for random input. Care must be used when selecting a number of checks. Refer to the OpenSSL documentation for the [`BN_is_prime_ex`](https://www.openssl.org/docs/man1.1.1/man3/BN_is_prime_ex.html) function `nchecks` options for more details. **Default:** `0`
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Set to an [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object if an error occurred during check.
-    -   `result` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the candidate is a prime with an error probability less than `0.25 ** options.checks`.
+<!-- YAML
+added: v15.8.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
+
+Добавлено в: v15.8.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+
+* `candidate` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  A possible prime encoded as a sequence of big endian octets of arbitrary
+  length.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `checks` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of Miller-Rabin probabilistic primality
+    iterations to perform. When the value is `0` (zero), a number of checks
+    is used that yields a false positive rate of at most 2<sup>-64</sup> for
+    random input. Care must be used when selecting a number of checks. Refer
+    to the OpenSSL documentation for the [`BN_is_prime_ex`][] function `nchecks`
+    options for more details. **Default:** `0`
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Set to an [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object if an error occurred during check.
+  * `result` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the candidate is a prime with an error
+    probability less than `0.25 ** options.checks`.
 
 Checks the primality of the `candidate`.
 
-<!-- 0093.part.md -->
-
 ### `crypto.checkPrimeSync(candidate[, options])`
 
--   `candidate` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint} Возможный прайм, закодированный как последовательность октетов big endian произвольной длины.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `checks` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of Miller-Rabin probabilistic primality iterations to perform. Если значение равно `0` (ноль), используется такое количество проверок, которое дает коэффициент ложных срабатываний не более 2<sup>-64</sup> для случайного ввода. При выборе количества проверок следует проявлять осторожность. Более подробную информацию см. в документации OpenSSL для опций функции `nchecks` [`BN_is_prime_ex`](https://www.openssl.org/docs/man1.1.1/man3/BN_is_prime_ex.html). **По умолчанию:** `0`.
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если кандидат является простым с вероятностью ошибки меньше чем `0.25 ** options.checks`.
+<!-- YAML
+added: v15.8.0
+-->
 
-Проверяет первичность `candidate`.
+* `candidate` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  A possible prime encoded as a sequence of big endian octets of arbitrary
+  length.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `checks` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of Miller-Rabin probabilistic primality
+    iterations to perform. When the value is `0` (zero), a number of checks
+    is used that yields a false positive rate of at most 2<sup>-64</sup> for
+    random input. Care must be used when selecting a number of checks. Refer
+    to the OpenSSL documentation for the [`BN_is_prime_ex`][] function `nchecks`
+    options for more details. **Default:** `0`
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the candidate is a prime with an error
+  probability less than `0.25 ** options.checks`.
 
-<!-- 0094.part.md -->
+Checks the primality of the `candidate`.
 
-### `crypto.createCipher(algorithm, password[, options])`
+### `crypto.constants`
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+<!-- YAML
+added: v6.3.0
+-->
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-    Используйте [`crypto.createCipheriv()`](#cryptocreatecipherivalgorithm-key-iv-options) вместо этого.
-
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `пароль` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Возвращает: {Cipher}
-
-Создает и возвращает объект `Cipher`, использующий заданные `алгоритм` и `пароль`.
-
-Аргумент `options` управляет поведением потока и является необязательным, за исключением случаев, когда используется шифр в режиме CCM или OCB (например, `'aes-128-ccm'`). В этом случае опция `authTagLength` является обязательной и определяет длину тега аутентификации в байтах, см. [CCM mode](#ccm-mode). В режиме GCM опция `authTagLength` не обязательна, но может использоваться для установки длины тега аутентификации, который будет возвращен функцией `getAuthTag()` и по умолчанию составляет 16 байт. Для `chacha20-poly1305` опция `authTagLength` по умолчанию равна 16 байтам.
-
-Алгоритм `algorithm` зависит от OpenSSL, примеры: `'aes192'` и т.д. В последних выпусках OpenSSL, `openssl list -cipher-algorithms` покажет доступные алгоритмы шифрования.
-
-Пароль `password` используется для получения ключа шифрования и вектора инициализации (IV). The value must be either a `'latin1'` encoded string, a [`Buffer`](buffer.md), a `TypedArray`, or a `DataView`.
-
-**Эта функция семантически небезопасна для всех поддерживаемых шифров и фатально ошибочна для шифров в режиме счетчика (таких как CTR, GCM или CCM).**
-
-Реализация `crypto.createCipher()` создает ключи с помощью функции OpenSSL [`EVP_BytesToKey`](https://www.openssl.org/docs/man1.1.0/crypto/EVP_BytesToKey.html) с алгоритмом дайджеста MD5, одной итерацией и без соли. Отсутствие соли позволяет проводить атаки по словарю, поскольку один и тот же пароль всегда создает один и тот же ключ. Малое количество итераций и некриптографически защищенный алгоритм хэширования позволяют проверять пароли очень быстро.
-
-В соответствии с рекомендацией OpenSSL использовать более современный алгоритм вместо [`EVP_BytesToKey`](https://www.openssl.org/docs/man1.1.0/crypto/EVP_BytesToKey.html), разработчикам рекомендуется самостоятельно определять ключ и IV с помощью [`crypto.scrypt()`](#cryptoscryptpassword-salt-keylen-options-callback) и использовать [`crypto.createCipheriv()`](#cryptocreatecipherivalgorithm-key-iv-options) для создания объекта `Cipher`. Пользователи не должны использовать шифры с режимом счетчика (например, CTR, GCM или CCM) в `crypto.createCipher()`. При их использовании выдается предупреждение, чтобы избежать риска повторного использования IV, приводящего к уязвимостям. Для случая, когда IV повторно используется в GCM, смотрите [Nonce-Disrespecting Adversaries](https://github.com/nonce-disrespect/nonce-disrespect) для подробностей.
-
-<!-- 0095.part.md -->
+An object containing commonly used constants for crypto and security related
+operations. The specific constants currently defined are described in
+[Crypto constants][].
 
 ### `crypto.createCipheriv(algorithm, key, iv[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `iv` {string|ArrayBuffer|Buffer|TypedArray|DataView|null}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Возвращает: {Cipher}
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a CryptoKey as `key` is deprecated.
+  - version:
+    - v17.9.0
+    - v16.17.0
+    pr-url: https://github.com/nodejs/node/pull/42427
+    description: The `authTagLength` option is now optional when using the
+                 `chacha20-poly1305` cipher and defaults to 16 bytes.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The password and iv arguments can be an ArrayBuffer and are
+                 each limited to a maximum of 2 ** 31 - 1 bytes.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: The `key` argument can now be a `KeyObject`.
+  - version:
+     - v11.2.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/24081
+    description: The cipher `chacha20-poly1305` (the IETF variant of
+                 ChaCha20-Poly1305) is now supported.
+  - version: v10.10.0
+    pr-url: https://github.com/nodejs/node/pull/21447
+    description: Ciphers in OCB mode are now supported.
+  - version: v10.2.0
+    pr-url: https://github.com/nodejs/node/pull/20235
+    description: The `authTagLength` option can now be used to produce shorter
+                 authentication tags in GCM mode and defaults to 16 bytes.
+  - version: v9.9.0
+    pr-url: https://github.com/nodejs/node/pull/18644
+    description: The `iv` parameter may now be `null` for ciphers which do not
+                 need an initialization vector.
+-->
 
-Создает и возвращает объект `Cipher` с заданным `алгоритмом`, `ключом` и вектором инициализации (`iv`).
+Добавлено в: v0.1.94
 
-Аргумент `options` управляет поведением потока и является необязательным, за исключением случаев, когда используется шифр в режиме CCM или OCB (например, `'aes-128-ccm'`). В этом случае опция `authTagLength` является обязательной и определяет длину тега аутентификации в байтах, см. [CCM mode](#ccm-mode). В режиме GCM опция `authTagLength` не обязательна, но может использоваться для установки длины тега аутентификации, который будет возвращен функцией `getAuthTag()` и по умолчанию составляет 16 байт. Для `chacha20-poly1305` опция `authTagLength` по умолчанию равна 16 байтам.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача CryptoKey в качестве «ключа» устарела. |
+    | v17.9.0, v16.17.0 | Параметр authTagLength теперь является необязательным при использовании шифра chacha20-poly1305 и по умолчанию равен 16 байтам. |
+    | v15.0.0 | Аргументы пароля и iv могут быть ArrayBuffer, и каждый из них ограничен максимум 2 ** 31 - 1 байтами. |
+    | v11.6.0 | Аргумент `key` теперь может быть `KeyObject`. |
+    | v11.2.0, v10.17.0 | Теперь поддерживается шифр chacha20-poly1305 (вариант IETF ChaCha20-Poly1305). |
+    | v10.10.0 | Теперь поддерживаются шифры в режиме OCB. |
+    | v10.2.0 | Опцию `authTagLength` теперь можно использовать для создания более коротких тегов аутентификации в режиме GCM; по умолчанию она равна 16 байтам. |
+    | v9.9.0 | Параметр iv теперь может иметь значение null для шифров, которым не нужен вектор инициализации. |
 
-Алгоритм `algorithm` зависит от OpenSSL, примеры: `'aes192'` и т. д. В последних выпусках OpenSSL опция `openssl list -cipher-algorithms` покажет доступные алгоритмы шифрования.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `iv` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | null
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+* Returns: [<Cipheriv>](crypto.md#class-cipheriv)
 
-Ключ `key` - это необработанный ключ, используемый `алгоритмом`, а `iv` - это [вектор инициализации](https://en.wikipedia.org/wiki/Initialization_vector). Оба аргумента должны быть строками в кодировке `'utf8`, [Buffers](buffer.md), `TypedArray` или `DataView`. Ключ может быть [`KeyObject`](#class-keyobject) типа `secret`. Если шифру не требуется вектор инициализации, `iv` может быть `null`.
+Creates and returns a `Cipheriv` object, with the given `algorithm`, `key` and
+initialization vector (`iv`).
 
-При передаче строк для `key` или `iv`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
+The `options` argument controls stream behavior and is optional except when a
+cipher in CCM or OCB mode (e.g. `'aes-128-ccm'`) is used. In that case, the
+`authTagLength` option is required and specifies the length of the
+authentication tag in bytes, see [CCM mode][]. In GCM mode, the `authTagLength`
+option is not required but can be used to set the length of the authentication
+tag that will be returned by `getAuthTag()` and defaults to 16 bytes.
+For `chacha20-poly1305`, the `authTagLength` option defaults to 16 bytes.
 
-Векторы инициализации должны быть непредсказуемыми и уникальными; в идеале они должны быть криптографически случайными. Они не обязательно должны быть секретными: IV обычно просто добавляются к шифротекстовым сообщениям в незашифрованном виде. Может показаться противоречивым, что что-то должно быть непредсказуемым и уникальным, но не должно быть секретным; помните, что атакующий не должен иметь возможности заранее предсказать, каким будет данный IV.
+The `algorithm` is dependent on OpenSSL, examples are `'aes192'`, etc. On
+recent OpenSSL releases, `openssl list -cipher-algorithms` will
+display the available cipher algorithms.
 
-<!-- 0096.part.md -->
+The `key` is the raw key used by the `algorithm` and `iv` is an
+[initialization vector][]. Both arguments must be `'utf8'` encoded strings,
+[Buffers][`Buffer`], `TypedArray`, or `DataView`s. The `key` may optionally be
+a [`KeyObject`][] of type `secret`. If the cipher does not need
+an initialization vector, `iv` may be `null`.
 
-### `crypto.createDecipher(algorithm, password[, options])`
+When passing strings for `key` or `iv`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
-
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
-
-    Вместо этого используйте [`crypto.createDecipheriv()`](#cryptocreatedecipherivalgorithm-key-iv-options).
-
--   `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `password` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Returns: {Decipher}
-
-Создает и возвращает объект `Decipher`, использующий заданный `алгоритм` и `пароль` (ключ).
-
-Аргумент `options` управляет поведением потока и является необязательным, за исключением случаев, когда используется шифр в режиме CCM или OCB (например, `'aes-128-ccm'`). В этом случае опция `authTagLength` является обязательной и определяет длину тега аутентификации в байтах, см. [CCM mode](#ccm-mode). Для `chacha20-poly1305` опция `authTagLength` по умолчанию равна 16 байтам.
-
-Эта функция семантически небезопасна для всех поддерживаемых шифров и фатально небезопасна для шифров в режиме счетчика (таких как CTR, GCM или CCM).
-
-Реализация `crypto.createDecipher()` извлекает ключи с помощью функции OpenSSL [`EVP_BytesToKey`](https://www.openssl.org/docs/man1.1.0/crypto/EVP_BytesToKey.html) с алгоритмом дайджеста MD5, одной итерацией и без соли. Отсутствие соли позволяет проводить атаки по словарю, так как один и тот же пароль всегда создает один и тот же ключ. Малое количество итераций и некриптографически безопасный алгоритм хэширования позволяют проверять пароли очень быстро.
-
-В соответствии с рекомендацией OpenSSL использовать более современный алгоритм вместо [`EVP_BytesToKey`](https://www.openssl.org/docs/man1.1.0/crypto/EVP_BytesToKey.html), разработчикам рекомендуется самостоятельно определять ключ и IV с помощью [`crypto.scrypt()`](#cryptoscryptpassword-salt-keylen-options-callback) и использовать [`crypto.createDecipheriv()`](#cryptocreatedecipherivalgorithm-key-iv-options) для создания объекта `Decipher`.
-
-<!-- 0097.part.md -->
+Initialization vectors should be unpredictable and unique; ideally, they will be
+cryptographically random. They do not have to be secret: IVs are typically just
+added to ciphertext messages unencrypted. It may sound contradictory that
+something has to be unpredictable and unique, but does not have to be secret;
+remember that an attacker must not be able to predict ahead of time what a
+given IV will be.
 
 ### `crypto.createDecipheriv(algorithm, key, iv[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `iv` {string|ArrayBuffer|Buffer|TypedArray|DataView|null}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Возвращает: {Decipher}
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a CryptoKey as `key` is deprecated.
+  - version:
+    - v17.9.0
+    - v16.17.0
+    pr-url: https://github.com/nodejs/node/pull/42427
+    description: The `authTagLength` option is now optional when using the
+                 `chacha20-poly1305` cipher and defaults to 16 bytes.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: The `key` argument can now be a `KeyObject`.
+  - version:
+     - v11.2.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/24081
+    description: The cipher `chacha20-poly1305` (the IETF variant of
+                 ChaCha20-Poly1305) is now supported.
+  - version: v10.10.0
+    pr-url: https://github.com/nodejs/node/pull/21447
+    description: Ciphers in OCB mode are now supported.
+  - version: v10.2.0
+    pr-url: https://github.com/nodejs/node/pull/20039
+    description: The `authTagLength` option can now be used to restrict accepted
+                 GCM authentication tag lengths.
+  - version: v9.9.0
+    pr-url: https://github.com/nodejs/node/pull/18644
+    description: The `iv` parameter may now be `null` for ciphers which do not
+                 need an initialization vector.
+-->
 
-Создает и возвращает объект `Decipher`, который использует заданный `алгоритм`, `ключ` и вектор инициализации (`iv`).
+Добавлено в: v0.1.94
 
-Аргумент `options` управляет поведением потока и является необязательным, за исключением случаев, когда используется шифр в режиме CCM или OCB (например, `'aes-128-ccm'`). В этом случае опция `authTagLength` является обязательной и определяет длину тега аутентификации в байтах, см. [CCM mode](#ccm-mode). В режиме GCM опция `authTagLength` не требуется, но может быть использована для ограничения принимаемых тегов аутентификации тегами указанной длины. Для `chacha20-poly1305` опция `authTagLength` по умолчанию равна 16 байтам.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача CryptoKey в качестве «ключа» устарела. |
+    | v17.9.0, v16.17.0 | Параметр authTagLength теперь является необязательным при использовании шифра chacha20-poly1305 и по умолчанию равен 16 байтам. |
+    | v11.6.0 | Аргумент `key` теперь может быть `KeyObject`. |
+    | v11.2.0, v10.17.0 | Теперь поддерживается шифр chacha20-poly1305 (вариант IETF ChaCha20-Poly1305). |
+    | v10.10.0 | Теперь поддерживаются шифры в режиме OCB. |
+    | v10.2.0 | Опцию `authTagLength` теперь можно использовать для ограничения длины принимаемых тегов аутентификации GCM. |
+    | v9.9.0 | Параметр iv теперь может иметь значение null для шифров, которым не нужен вектор инициализации. |
 
-Алгоритм `algorithm` зависит от OpenSSL, примеры: `aes192` и т. д. В последних выпусках OpenSSL опция `openssl list -cipher-algorithms` покажет доступные алгоритмы шифрования.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `iv` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | null
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+* Returns: [<Decipheriv>](crypto.md#class-decipheriv)
 
-Ключ `key` - это необработанный ключ, используемый `алгоритмом`, а `iv` - это [вектор инициализации](https://en.wikipedia.org/wiki/Initialization_vector). Оба аргумента должны быть строками в кодировке `'utf8`, [Buffers](buffer.md), `TypedArray` или `DataView`. Ключ может быть [`KeyObject`](#class-keyobject) типа `secret`. Если шифру не требуется вектор инициализации, `iv` может быть `null`.
+Creates and returns a `Decipheriv` object that uses the given `algorithm`, `key`
+and initialization vector (`iv`).
 
-При передаче строк для `key` или `iv`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
+The `options` argument controls stream behavior and is optional except when a
+cipher in CCM or OCB mode (e.g. `'aes-128-ccm'`) is used. In that case, the
+`authTagLength` option is required and specifies the length of the
+authentication tag in bytes, see [CCM mode][].
+For AES-GCM and `chacha20-poly1305`, the `authTagLength` option defaults to 16
+bytes and must be set to a different value if a different length is used.
 
-Векторы инициализации должны быть непредсказуемыми и уникальными; в идеале они должны быть криптографически случайными. Они не обязательно должны быть секретными: IV обычно просто добавляются к шифротекстовым сообщениям в незашифрованном виде. Может показаться противоречивым, что что-то должно быть непредсказуемым и уникальным, но не должно быть секретным; помните, что атакующий не должен иметь возможности заранее предсказать, каким будет данный IV.
+The `algorithm` is dependent on OpenSSL, examples are `'aes192'`, etc. On
+recent OpenSSL releases, `openssl list -cipher-algorithms` will
+display the available cipher algorithms.
 
-<!-- 0098.part.md -->
+The `key` is the raw key used by the `algorithm` and `iv` is an
+[initialization vector][]. Both arguments must be `'utf8'` encoded strings,
+[Buffers][`Buffer`], `TypedArray`, or `DataView`s. The `key` may optionally be
+a [`KeyObject`][] of type `secret`. If the cipher does not need
+an initialization vector, `iv` may be `null`.
+
+When passing strings for `key` or `iv`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
+
+Initialization vectors should be unpredictable and unique; ideally, they will be
+cryptographically random. They do not have to be secret: IVs are typically just
+added to ciphertext messages unencrypted. It may sound contradictory that
+something has to be unpredictable and unique, but does not have to be secret;
+remember that an attacker must not be able to predict ahead of time what a given
+IV will be.
 
 ### `crypto.createDiffieHellman(prime[, primeEncoding][, generator][, generatorEncoding])`
 
--   `prime` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `primeEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `prime`.
--   `generator` {number|string|ArrayBuffer|Buffer|TypedArray|DataView} **По умолчанию:** `2`.
--   `generatorEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка](buffer.md#buffers-and-character-encodings) строки `генератора`.
--   Возвращает: {DiffieHellman}
+<!-- YAML
+added: v0.11.12
+changes:
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12223
+    description: The `prime` argument can be any `TypedArray` or `DataView` now.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11983
+    description: The `prime` argument can be a `Uint8Array` now.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default for the encoding parameters changed
+                 from `binary` to `utf8`.
+-->
 
-Создает объект обмена ключами `DiffieHellman`, используя предоставленный `prime` и необязательный определенный `генератор`.
+Добавлено в: v0.11.12
 
-Аргумент `generator` может быть числом, строкой или [`Buffer`](buffer.md). Если `generator` не указан, используется значение `2`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v8.0.0 | Аргументом Prime теперь может быть любой TypedArray или DataView. |
+    | v8.0.0 | Аргумент `prime` теперь может быть `Uint8Array`. |
+    | v6.0.0 | Значение по умолчанию для параметров кодирования изменено с «двоичного» на «utf8». |
 
-Если указано `primeEncoding`, ожидается, что `prime` будет строкой, в противном случае ожидается [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+* `prime` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `primeEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `prime` string.
+* `generator` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+  **Default:** `2`
+* `generatorEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][] of the `generator` string.
+* Returns: [<DiffieHellman>](crypto.md)
 
-Если указано `generatorEncoding`, ожидается, что `generator` будет строкой; в противном случае ожидается число, [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+Creates a `DiffieHellman` key exchange object using the supplied `prime` and an
+optional specific `generator`.
 
-<!-- 0099.part.md -->
+The `generator` argument can be a number, string, or [`Buffer`][]. If
+`generator` is not specified, the value `2` is used.
+
+If `primeEncoding` is specified, `prime` is expected to be a string; otherwise
+a [`Buffer`][], `TypedArray`, or `DataView` is expected.
+
+If `generatorEncoding` is specified, `generator` is expected to be a string;
+otherwise a number, [`Buffer`][], `TypedArray`, or `DataView` is expected.
 
 ### `crypto.createDiffieHellman(primeLength[, generator])`
 
--   `primeLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `генератор` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2`
--   Возвращает: {DiffieHellman}
+<!-- YAML
+added: v0.5.0
+-->
 
-Создает объект обмена ключами `DiffieHellman` и генерирует прайм из битов `primeLength`, используя необязательный конкретный числовой `generator`. Если `generator` не указан, используется значение `2`.
+* `primeLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `generator` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `2`
+* Returns: [<DiffieHellman>](crypto.md)
 
-<!-- 0100.part.md -->
+Creates a `DiffieHellman` key exchange object and generates a prime of
+`primeLength` bits using an optional specific numeric `generator`.
+If `generator` is not specified, the value `2` is used.
 
 ### `crypto.createDiffieHellmanGroup(name)`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {DiffieHellmanGroup}
+<!-- YAML
+added: v0.9.3
+-->
 
-Псевдоним для [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname)
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<DiffieHellmanGroup>](#class-diffiehellmangroup)
 
-<!-- 0101.part.md -->
+An alias for [`crypto.getDiffieHellman()`][]
 
 ### `crypto.createECDH(curveName)`
 
--   `curveName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {ECDH}
+<!-- YAML
+added: v0.11.14
+-->
 
-Создает объект обмена ключами Elliptic Curve Diffie-Hellman (`ECDH`), используя предопределенную кривую, заданную строкой `curveName`. Используйте [`crypto.getCurves()`](#cryptogetcurves) для получения списка доступных имен кривых. В последних выпусках OpenSSL, `openssl ecparam -list_curves` также отобразит имя и описание каждой доступной эллиптической кривой.
+* `curveName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<ECDH>](crypto.md)
 
-<!-- 0102.part.md -->
+Creates an Elliptic Curve Diffie-Hellman (`ECDH`) key exchange object using a
+predefined curve specified by the `curveName` string. Use
+[`crypto.getCurves()`][] to obtain a list of available curve names. On recent
+OpenSSL releases, `openssl ecparam -list_curves` will also display the name
+and description of each available elliptic curve.
 
 ### `crypto.createHash(algorithm[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
--   Возвращает: {Hash}
+<!-- YAML
+added: v0.1.92
+changes:
+  - version: v12.8.0
+    pr-url: https://github.com/nodejs/node/pull/28805
+    description: The `outputLength` option was added for XOF hash functions.
+-->
 
-Создает и возвращает объект `Hash`, который может быть использован для генерации хэш-дайджестов с помощью заданного `алгоритма`. Необязательный аргумент `options` управляет поведением потока. Для хэш-функций XOF, таких как `'shake256'`, опция `outputLength` может быть использована для указания желаемой длины выходного потока в байтах.
+Добавлено в: v0.1.92
 
-Параметр `algorithm` зависит от доступных алгоритмов, поддерживаемых версией OpenSSL на данной платформе. Примерами являются `sha256`, `sha512` и т. д. В последних выпусках OpenSSL команда `openssl list -digest-algorithms` отобразит доступные алгоритмы дайджеста.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v12.8.0 | Опция «outputLength» была добавлена ​​для хэш-функций XOF. |
 
-Пример: генерация суммы sha256 для файла
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+* Returns: [<Hash>](crypto.md)
 
-```mjs
-import { createReadStream } from 'node:fs';
-import { argv } from 'node:process';
-const { createHash } = await import('node:crypto');
+Creates and returns a `Hash` object that can be used to generate hash digests
+using the given `algorithm`. Optional `options` argument controls stream
+behavior. For XOF hash functions such as `'shake256'`, the `outputLength` option
+can be used to specify the desired output length in bytes.
 
-const filename = argv[2];
+The `algorithm` is dependent on the available algorithms supported by the
+version of OpenSSL on the platform. Examples are `'sha256'`, `'sha512'`, etc.
+On recent releases of OpenSSL, `openssl list -digest-algorithms` will
+display the available digest algorithms.
 
-const hash = createHash('sha256');
+Example: generating the sha256 sum of a file
 
-const input = createReadStream(filename);
-input.on('readable', () => {
-    // Only one element is going to be produced by the
-    // hash stream.
-    const data = input.read();
-    if (data) hash.update(data);
-    else {
+=== "MJS"
+
+    ```js
+    import {
+      createReadStream,
+    } from 'node:fs';
+    import { argv } from 'node:process';
+    const {
+      createHash,
+    } = await import('node:crypto');
+
+    const filename = argv[2];
+
+    const hash = createHash('sha256');
+
+    const input = createReadStream(filename);
+    input.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = input.read();
+      if (data)
+        hash.update(data);
+      else {
         console.log(`${hash.digest('hex')} ${filename}`);
-    }
-});
-```
+      }
+    });
+    ```
 
-```cjs
-const { createReadStream } = require('node:fs');
-const { createHash } = require('node:crypto');
-const { argv } = require('node:process');
+=== "CJS"
 
-const filename = argv[2];
+    ```js
+    const {
+      createReadStream,
+    } = require('node:fs');
+    const {
+      createHash,
+    } = require('node:crypto');
+    const { argv } = require('node:process');
 
-const hash = createHash('sha256');
+    const filename = argv[2];
 
-const input = createReadStream(filename);
-input.on('readable', () => {
-    // Only one element is going to be produced by the
-    // hash stream.
-    const data = input.read();
-    if (data) hash.update(data);
-    else {
+    const hash = createHash('sha256');
+
+    const input = createReadStream(filename);
+    input.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = input.read();
+      if (data)
+        hash.update(data);
+      else {
         console.log(`${hash.digest('hex')} ${filename}`);
-    }
-});
-```
-
-<!-- 0103.part.md -->
+      }
+    });
+    ```
 
 ### `crypto.createHmac(algorithm, key[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `ключ` является строкой.
--   Возвращает: {Hmac}
+<!-- YAML
+added: v0.1.94
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a CryptoKey as `key` is deprecated.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The key can also be an ArrayBuffer or CryptoKey. The
+                 encoding option was added. The key cannot contain
+                 more than 2 ** 32 - 1 bytes.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: The `key` argument can now be a `KeyObject`.
+-->
 
-Создает и возвращает объект `Hmac`, который использует заданный `алгоритм` и `ключ`. Необязательный аргумент `options` управляет поведением потока.
+Добавлено в: v0.1.94
 
-Алгоритм зависит от доступных алгоритмов, поддерживаемых версией OpenSSL на данной платформе. Примеры: `'sha256'`, `'sha512'` и т. д. В последних версиях OpenSSL, `openssl list -digest-algorithms` отобразит доступные алгоритмы дайджеста.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача CryptoKey в качестве «ключа» устарела. |
+    | v15.0.0 | Ключ также может быть ArrayBuffer или CryptoKey. Добавлена ​​опция кодирования. Ключ не может содержать более 2**32 – 1 байт. |
+    | v11.6.0 | Аргумент `key` теперь может быть `KeyObject`. |
 
-Ключ - это ключ HMAC, используемый для генерации криптографического хэша HMAC. Если это [`KeyObject`](#class-keyobject), его тип должен быть `secret`.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][]
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `key` is a string.
+* Returns: [<Hmac>](crypto.md)
 
-Пример: генерация sha256 HMAC файла
+Creates and returns an `Hmac` object that uses the given `algorithm` and `key`.
+Optional `options` argument controls stream behavior.
 
-```mjs
-import { createReadStream } from 'node:fs';
-import { argv } from 'node:process';
-const { createHmac } = await import('node:crypto');
+The `algorithm` is dependent on the available algorithms supported by the
+version of OpenSSL on the platform. Examples are `'sha256'`, `'sha512'`, etc.
+On recent releases of OpenSSL, `openssl list -digest-algorithms` will
+display the available digest algorithms.
 
-const filename = argv[2];
+The `key` is the HMAC key used to generate the cryptographic HMAC hash. If it is
+a [`KeyObject`][], its type must be `secret`. If it is a string, please consider
+[caveats when using strings as inputs to cryptographic APIs][]. If it was
+obtained from a cryptographically secure source of entropy, such as
+[`crypto.randomBytes()`][] or [`crypto.generateKey()`][], its length should not
+exceed the block size of `algorithm` (e.g., 512 bits for SHA-256).
 
-const hmac = createHmac('sha256', 'a secret');
+Example: generating the sha256 HMAC of a file
 
-const input = createReadStream(filename);
-input.on('readable', () => {
-    // Only one element is going to be produced by the
-    // hash stream.
-    const data = input.read();
-    if (data) hmac.update(data);
-    else {
+=== "MJS"
+
+    ```js
+    import {
+      createReadStream,
+    } from 'node:fs';
+    import { argv } from 'node:process';
+    const {
+      createHmac,
+    } = await import('node:crypto');
+
+    const filename = argv[2];
+
+    const hmac = createHmac('sha256', 'a secret');
+
+    const input = createReadStream(filename);
+    input.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = input.read();
+      if (data)
+        hmac.update(data);
+      else {
         console.log(`${hmac.digest('hex')} ${filename}`);
-    }
-});
-```
+      }
+    });
+    ```
 
-```cjs
-const { createReadStream } = require('node:fs');
-const { createHmac } = require('node:crypto');
-const { argv } = require('node:process');
+=== "CJS"
 
-const filename = argv[2];
+    ```js
+    const {
+      createReadStream,
+    } = require('node:fs');
+    const {
+      createHmac,
+    } = require('node:crypto');
+    const { argv } = require('node:process');
 
-const hmac = createHmac('sha256', 'a secret');
+    const filename = argv[2];
 
-const input = createReadStream(filename);
-input.on('readable', () => {
-    // Only one element is going to be produced by the
-    // hash stream.
-    const data = input.read();
-    if (data) hmac.update(data);
-    else {
+    const hmac = createHmac('sha256', 'a secret');
+
+    const input = createReadStream(filename);
+    input.on('readable', () => {
+      // Only one element is going to be produced by the
+      // hash stream.
+      const data = input.read();
+      if (data)
+        hmac.update(data);
+      else {
         console.log(`${hmac.digest('hex')} ${filename}`);
-    }
-});
-```
-
-<!-- 0104.part.md -->
+      }
+    });
+    ```
 
 ### `crypto.createPrivateKey(key)`
 
--   `key` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView}
-    -   `key`: {string|ArrayBuffer|Buffer|TypedArray|DataView|Object} Материал ключа, либо в формате PEM, DER, либо JWK.
-    -   `формат`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должен быть `pem`, `der` или `jwk`. **По умолчанию:** `'pem'`.
-    -   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `'pkcs1'`, `'pkcs8'` или `'sec1'`. Этот параметр требуется, только если `формат` - `'der'` и игнорируется в противном случае.
-    -   `passphrase`: {строка | буфер}. Парольная фраза, которую следует использовать для расшифровки.
-    -   `encoding`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `ключ` является строкой.
--   Возвращает: {KeyObject}
+<!-- YAML
+added: v11.6.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a CryptoKey as `key` is deprecated.
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62240
+    description: Added support for `'raw-private'` and `'raw-seed'`
+                 formats.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA keys.
+  - version: v15.12.0
+    pr-url: https://github.com/nodejs/node/pull/37254
+    description: The key can also be a JWK object.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The key can also be an ArrayBuffer. The encoding option was
+                 added. The key cannot contain more than 2 ** 32 - 1 bytes.
+-->
 
-Создает и возвращает новый объект ключа, содержащий закрытый ключ. Если `key` является строкой или `Buffer`, `format` принимается равным `'pem'`; в противном случае `key` должен быть объектом со свойствами, описанными выше.
+Добавлено в: v11.6.0
 
-Если закрытый ключ зашифрован, необходимо указать `пассфразу`. Длина парольной фразы ограничена 1024 байтами.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача CryptoKey в качестве «ключа» устарела. |
+    | REPLACEME | Добавлена ​​поддержка форматов «raw-private» и «raw-seed». |
+    | v24.6.0 | Добавьте поддержку ключей ML-DSA. |
+    | v15.12.0 | Ключ также может быть объектом JWK. |
+    | v15.0.0 | Ключ также может быть ArrayBuffer. Добавлена ​​опция кодирования. Ключ не может содержать более 2**32 – 1 байт. |
 
-<!-- 0105.part.md -->
+<!--lint disable maximum-line-length remark-lint-->
+
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The key
+    material, either in PEM, DER, JWK, or raw format.
+  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pem'`, `'der'`, `'jwk'`, `'raw-private'`,
+    or `'raw-seed'`. **Default:** `'pem'`.
+  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pkcs1'`, `'pkcs8'` or `'sec1'`. This option is
+    required only if the `format` is `'der'` and ignored otherwise.
+  * `passphrase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) The passphrase to use for decryption.
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `key` is a string.
+  * `asymmetricKeyType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Required when `format` is `'raw-private'`
+    or `'raw-seed'` and ignored otherwise.
+    Must be a [supported key type][asymmetric key types].
+  * `namedCurve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the curve to use. Required when
+    `asymmetricKeyType` is `'ec'` and ignored otherwise.
+* Returns: [<KeyObject>](#class-keyobject)
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Creates and returns a new key object containing a private key. If `key` is a
+string or `Buffer`, `format` is assumed to be `'pem'`; otherwise, `key`
+must be an object with the properties described above.
+
+If the private key is encrypted, a `passphrase` must be specified. The length
+of the passphrase is limited to 1024 bytes.
 
 ### `crypto.createPublicKey(key)`
 
--   `key` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView}
-    -   `key`: {string|ArrayBuffer|Buffer|TypedArray|DataView|Object} Материал ключа, либо в формате PEM, DER, либо JWK.
-    -   `формат`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должен быть `'pem`, `'der` или `'jwk`. **По умолчанию:** `'pem'`.
-    -   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `'pkcs1'` или `'spki'`. Этот параметр требуется только если `формат` - `'der'` и игнорируется в противном случае.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `ключ` является строкой.
--   Возвращает: {KeyObject}
+<!-- YAML
+added: v11.6.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62453
+    description: Passing a CryptoKey as `key` is deprecated.
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62240
+    description: Added support for `'raw-public'` format.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA keys.
+  - version: v15.12.0
+    pr-url: https://github.com/nodejs/node/pull/37254
+    description: The key can also be a JWK object.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The key can also be an ArrayBuffer. The encoding option was
+                 added. The key cannot contain more than 2 ** 32 - 1 bytes.
+  - version: v11.13.0
+    pr-url: https://github.com/nodejs/node/pull/26278
+    description: The `key` argument can now be a `KeyObject` with type
+                 `private`.
+  - version: v11.7.0
+    pr-url: https://github.com/nodejs/node/pull/25217
+    description: The `key` argument can now be a private key.
+-->
 
-Создает и возвращает новый объект ключа, содержащий открытый ключ. Если `key` - строка или `Buffer`, `формат` принимается равным `'pem'`; если `key` - `KeyObject` с типом `'private'`, открытый ключ будет получен из данного закрытого ключа; в противном случае `key` должен быть объектом со свойствами, описанными выше.
+Добавлено в: v11.6.0
 
-Если формат `pem`, то `ключ` может также быть сертификатом X.509.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Передача CryptoKey в качестве «ключа» устарела. |
+    | REPLACEME | Добавлена ​​поддержка формата raw-public. |
+    | v24.6.0 | Добавьте поддержку ключей ML-DSA. |
+    | v15.12.0 | Ключ также может быть объектом JWK. |
+    | v15.0.0 | Ключ также может быть ArrayBuffer. Добавлена ​​опция кодирования. Ключ не может содержать более 2**32 – 1 байт. |
+    | v11.13.0 | Аргумент `key` теперь может быть `KeyObject` с типом `private`. |
+    | v11.7.0 | Аргумент `key` теперь может быть закрытым ключом. |
 
-Поскольку открытые ключи могут быть получены из закрытых ключей, вместо открытого ключа может быть передан закрытый ключ. В этом случае эта функция ведет себя так же, как если бы была вызвана [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey), за исключением того, что тип возвращаемого `KeyObject` будет `'public'` и что закрытый ключ не может быть извлечен из возвращаемого `KeyObject`. Аналогично, если передан `KeyObject` с типом `'private'`, будет возвращен новый `KeyObject` с типом `'public'` и невозможно будет извлечь закрытый ключ из возвращенного объекта.
+<!--lint disable maximum-line-length remark-lint-->
 
-<!-- 0106.part.md -->
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The key
+    material, either in PEM, DER, JWK, or raw format.
+  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pem'`, `'der'`, `'jwk'`, or `'raw-public'`.
+    **Default:** `'pem'`.
+  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'pkcs1'` or `'spki'`. This option is
+    required only if the `format` is `'der'` and ignored otherwise.
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `key` is a string.
+  * `asymmetricKeyType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Required when `format` is `'raw-public'`
+    and ignored otherwise.
+    Must be a [supported key type][asymmetric key types].
+  * `namedCurve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the curve to use. Required when
+    `asymmetricKeyType` is `'ec'` and ignored otherwise.
+* Returns: [<KeyObject>](#class-keyobject)
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Creates and returns a new key object containing a public key. If `key` is a
+string or `Buffer`, `format` is assumed to be `'pem'`; if `key` is a `KeyObject`
+with type `'private'`, the public key is derived from the given private key;
+otherwise, `key` must be an object with the properties described above.
+
+If the format is `'pem'`, the `'key'` may also be an X.509 certificate.
+
+Because public keys can be derived from private keys, a private key may be
+passed instead of a public key. In that case, this function behaves as if
+[`crypto.createPrivateKey()`][] had been called, except that the type of the
+returned `KeyObject` will be `'public'` and that the private key cannot be
+extracted from the returned `KeyObject`. Similarly, if a `KeyObject` with type
+`'private'` is given, a new `KeyObject` with type `'public'` will be returned
+and it will be impossible to extract the private key from the returned object.
 
 ### `crypto.createSecretKey(key[, encoding])`
 
--   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, когда `ключ` является строкой.
--   Возвращает: {KeyObject}
+<!-- YAML
+added: v11.6.0
+changes:
+  - version:
+    - v18.8.0
+    - v16.18.0
+    pr-url: https://github.com/nodejs/node/pull/44201
+    description: The key can now be zero-length.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The key can also be an ArrayBuffer or string. The encoding
+                 argument was added. The key cannot contain more than
+                 2 ** 32 - 1 bytes.
+-->
 
-Создает и возвращает новый объект key, содержащий секретный ключ для симметричного шифрования или `Hmac`.
+Добавлено в: v11.6.0
 
-<!-- 0107.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.8.0, v16.18.0 | Ключ теперь может иметь нулевую длину. |
+    | v15.0.0 | Ключ также может быть ArrayBuffer или строкой. Был добавлен аргумент кодирования. Ключ не может содержать более 2**32 – 1 байт. |
+
+* `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding when `key` is a string.
+* Returns: [<KeyObject>](#class-keyobject)
+
+Creates and returns a new key object containing a secret key for symmetric
+encryption or `Hmac`.
 
 ### `crypto.createSign(algorithm[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options](stream.md#new-streamwritableoptions)
--   Возвращает: {Sign}
+<!-- YAML
+added: v0.1.92
+-->
 
-Создает и возвращает объект `Sign`, использующий заданный `алгоритм`. Используйте [`crypto.getHashes()`](#cryptogethashes) для получения имен доступных алгоритмов дайджеста. Необязательный аргумент `options` управляет поведением `stream.Writable`.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options][]
+* Returns: [<Sign>](#class-sign)
 
-В некоторых случаях экземпляр `Sign` может быть создан с использованием имени алгоритма подписи, например `'RSA-SHA256'`, вместо алгоритма дайджеста. В этом случае будет использоваться соответствующий алгоритм подписи. Это работает не для всех алгоритмов подписи, например, `'ecdsa-with-SHA256'`, поэтому лучше всегда использовать имена алгоритмов дайджеста.
+Creates and returns a `Sign` object that uses the given `algorithm`. Use
+[`crypto.getHashes()`][] to obtain the names of the available digest algorithms.
+Optional `options` argument controls the `stream.Writable` behavior.
 
-<!-- 0108.part.md -->
+In some cases, a `Sign` instance can be created using the name of a signature
+algorithm, such as `'RSA-SHA256'`, instead of a digest algorithm. This will use
+the corresponding digest algorithm. This does not work for all signature
+algorithms, such as `'ecdsa-with-SHA256'`, so it is best to always use digest
+algorithm names.
 
 ### `crypto.createVerify(algorithm[, options])`
 
--   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options](stream.md#new-streamwritableoptions)
--   Возвращает: {Verify}
+<!-- YAML
+added: v0.1.92
+-->
 
-Создает и возвращает объект `Verify`, использующий заданный алгоритм. Используйте [`crypto.getHashes()`](#cryptogethashes) для получения массива имен доступных алгоритмов подписания. Необязательный аргумент `options` управляет поведением `stream.Writable`.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options][]
+* Returns: [<Verify>](#class-verify)
 
-В некоторых случаях экземпляр `Verify` может быть создан с использованием имени алгоритма подписи, например `'RSA-SHA256'`, вместо алгоритма дайджеста. В этом случае будет использоваться соответствующий алгоритм. Это работает не для всех алгоритмов подписи, например, `'ecdsa-with-SHA256'`, поэтому лучше всегда использовать имена алгоритмов дайджеста.
+Creates and returns a `Verify` object that uses the given algorithm.
+Use [`crypto.getHashes()`][] to obtain an array of names of the available
+signing algorithms. Optional `options` argument controls the
+`stream.Writable` behavior.
 
-<!-- 0109.part.md -->
+In some cases, a `Verify` instance can be created using the name of a signature
+algorithm, such as `'RSA-SHA256'`, instead of a digest algorithm. This will use
+the corresponding digest algorithm. This does not work for all signature
+algorithms, such as `'ecdsa-with-SHA256'`, so it is best to always use digest
+algorithm names.
 
-### `crypto.diffieHellman(options)`
+### `crypto.decapsulate(key, ciphertext[, callback])`
 
--   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `privateKey`: {KeyObject}
-    -   `publicKey`: {KeyObject}
--   Возвращает: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v24.7.0
+-->
 
-Вычисляет секрет Диффи-Хеллмана на основе `privateKey` и `publicKey`. Оба ключа должны иметь одинаковый `asymmetricKeyType`, который должен быть одним из `'dh'` (для Diffie-Hellman), `'ec'` (для ECDH), `'x448'` или `'x25519'` (для ECDH-ES).
+> Stability: 1.2 - Release candidate
 
-<!-- 0110.part.md -->
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) Private Key
+* `ciphertext` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `sharedKey` [<Buffer>](buffer.md#buffer)
+* Returns: [<Buffer>](buffer.md#buffer) if the `callback` function is not provided.
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Key decapsulation using a KEM algorithm with a private key.
+
+Supported key types and their KEM algorithms are:
+
+* `'rsa'`[^openssl30] RSA Secret Value Encapsulation
+* `'ec'`[^openssl32] DHKEM(P-256, HKDF-SHA256), DHKEM(P-384, HKDF-SHA256), DHKEM(P-521, HKDF-SHA256)
+* `'x25519'`[^openssl32] DHKEM(X25519, HKDF-SHA256)
+* `'x448'`[^openssl32] DHKEM(X448, HKDF-SHA512)
+* `'ml-kem-512'`[^openssl35] ML-KEM
+* `'ml-kem-768'`[^openssl35] ML-KEM
+* `'ml-kem-1024'`[^openssl35] ML-KEM
+
+If `key` is not a [`KeyObject`][], this function behaves as if `key` had been
+passed to [`crypto.createPrivateKey()`][].
+
+If the `callback` function is provided this function uses libuv's threadpool.
+
+### `crypto.diffieHellman(options[, callback])`
+
+<!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62527
+    description: Accept key data in addition to KeyObject instances.
+  - version: v23.11.0
+    pr-url: https://github.com/nodejs/node/pull/57274
+    description: Optional callback argument added.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Принимайте ключевые данные в дополнение к экземплярам KeyObject. |
+    | v23.11.0 | Добавлен необязательный аргумент обратного вызова. |
+
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `privateKey` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject)
+  * `publicKey` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject)
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `secret` [<Buffer>](buffer.md#buffer)
+* Returns: [<Buffer>](buffer.md#buffer) if the `callback` function is not provided.
+
+Computes the Diffie-Hellman shared secret based on a `privateKey` and a `publicKey`.
+Both keys must represent the same asymmetric key type and must support either the DH or
+ECDH operation.
+
+If `options.privateKey` is not a [`KeyObject`][], this function behaves as if
+`options.privateKey` had been passed to [`crypto.createPrivateKey()`][].
+
+If `options.publicKey` is not a [`KeyObject`][], this function behaves as if
+`options.publicKey` had been passed to [`crypto.createPublicKey()`][].
+
+If the `callback` function is provided this function uses libuv's threadpool.
+
+### `crypto.encapsulate(key[, callback])`
+
+<!-- YAML
+added: v24.7.0
+-->
+
+> Stability: 1.2 - Release candidate
+
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) Public Key
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `result` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `sharedKey` [<Buffer>](buffer.md#buffer)
+    * `ciphertext` [<Buffer>](buffer.md#buffer)
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) if the `callback` function is not provided.
+  * `sharedKey` [<Buffer>](buffer.md#buffer)
+  * `ciphertext` [<Buffer>](buffer.md#buffer)
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Key encapsulation using a KEM algorithm with a public key.
+
+Supported key types and their KEM algorithms are:
+
+* `'rsa'`[^openssl30] RSA Secret Value Encapsulation
+* `'ec'`[^openssl32] DHKEM(P-256, HKDF-SHA256), DHKEM(P-384, HKDF-SHA256), DHKEM(P-521, HKDF-SHA256)
+* `'x25519'`[^openssl32] DHKEM(X25519, HKDF-SHA256)
+* `'x448'`[^openssl32] DHKEM(X448, HKDF-SHA512)
+* `'ml-kem-512'`[^openssl35] ML-KEM
+* `'ml-kem-768'`[^openssl35] ML-KEM
+* `'ml-kem-1024'`[^openssl35] ML-KEM
+
+If `key` is not a [`KeyObject`][], this function behaves as if `key` had been
+passed to [`crypto.createPublicKey()`][].
+
+If the `callback` function is provided this function uses libuv's threadpool.
+
+### `crypto.fips`
+
+<!-- YAML
+added: v6.0.0
+deprecated: v10.0.0
+-->
+
+> Stability: 0 - Deprecated
+
+Property for checking and controlling whether a FIPS compliant crypto provider
+is currently in use. Setting to true requires a FIPS build of Node.js.
+
+This property is deprecated. Please use `crypto.setFips()` and
+`crypto.getFips()` instead.
 
 ### `crypto.generateKey(type, options, callback)`
 
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Предполагаемое использование сгенерированного секретного ключа. В настоящее время принимаются значения `'hmac'` и `'aes'`.
-    -   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-        -   `length`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина бита генерируемого ключа. Это должно быть значение больше 0.
-            -   Если `type` имеет значение `'hmac'`, минимальная длина равна 8, а максимальная - 2<sup>31</sup>-1. Если значение не кратно 8, сгенерированный ключ будет усечен до `Math.floor(length / 8)`.
-            -   Если `type` - `'aes`, длина должна быть одной из `128`, `192` или `256`.
-    -   `callback`: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-        -   `err`: [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-        -   `key`: {KeyObject}
+<!-- YAML
+added: v15.0.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
 
-Асинхронно генерирует новый случайный секретный ключ заданной `длины`. Тип `type` определяет, какие проверки будут выполняться для `длины`.
+Добавлено в: v15.0.0
 
-```mjs
-const { generateKey } = await import('node:crypto');
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-generateKey('hmac', { length: 64 }, (err, key) => {
-    if (err) throw err;
-    console.log(key.export().toString('hex')); // 46e..........620
-});
-```
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The intended use of the generated secret key. Currently
+  accepted values are `'hmac'` and `'aes'`.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `length` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The bit length of the key to generate. This must be a
+    value greater than 0.
+    * If `type` is `'hmac'`, the minimum is 8, and the maximum length is
+      2<sup>31</sup>-1. If the value is not a multiple of 8, the generated
+      key will be truncated to `Math.floor(length / 8)`.
+    * If `type` is `'aes'`, the length must be one of `128`, `192`, or `256`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `key` [<KeyObject>](#class-keyobject)
 
-```cjs
-const { generateKey } = require('node:crypto');
+Asynchronously generates a new random secret key of the given `length`. The
+`type` will determine which validations will be performed on the `length`.
 
-generateKey('hmac', { length: 64 }, (err, key) => {
-    if (err) throw err;
-    console.log(key.export().toString('hex')); // 46e..........620
-});
-```
+=== "MJS"
 
-<!-- 0111.part.md -->
+    ```js
+    const {
+      generateKey,
+    } = await import('node:crypto');
 
-### `crypto.generateKeyPair(type, options, callback)`.
+    generateKey('hmac', { length: 512 }, (err, key) => {
+      if (err) throw err;
+      console.log(key.export().toString('hex'));  // 46e..........620
+    });
+    ```
 
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `rsa`, `rsa-pss`, `dsa`, `ec`, `ed25519`, `ed448`, `x25519`, `x448` или `dh`.
--   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `modulusLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер ключа в битах (RSA, DSA).
-    -   `publicExponent`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Публичная экспонента (RSA). **По умолчанию:** `0x10001`.
-    -   `hashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения (RSA-PSS).
-    -   `mgf1HashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения, используемого MGF1 (RSA-PSS).
-    -   `saltLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальная длина соли в байтах (RSA-PSS).
-    -   `divisorLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер `q` в битах (DSA).
-    -   `namedCurve`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кривой, которую следует использовать (EC).
-    -   `prime`: [`<Buffer>`](buffer.md#buffer) Параметр prime (DH).
-    -   `primeLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина прайма в битах (DH).
-    -   `generator`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Пользовательский генератор (DH). **По умолчанию:** `2`.
-    -   `groupName`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя группы Диффи-Хеллмана (DH). См. [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname).
-    -   `paramEncoding`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `именованным` или `явным` (EC). **По умолчанию:** `'named'`.
-    -   `publicKeyEncoding`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`keyObject.export()`](#keyobjectexportoptions).
-    -   `privateKeyEncoding`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`keyObject.export()`](#keyobjectexportoptions).
--   `callback`: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err`: [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `publicKey`: {string | Buffer | KeyObject}
-    -   `privateKey`: {string | Buffer | KeyObject}.
+=== "CJS"
 
-Генерирует новую пару асимметричных ключей заданного `типа`. В настоящее время поддерживаются RSA, RSA-PSS, DSA, EC, Ed25519, Ed448, X25519, X448 и DH.
+    ```js
+    const {
+      generateKey,
+    } = require('node:crypto');
 
-Если было указано `publicKeyEncoding` или `privateKeyEncoding`, эта функция ведет себя так, как если бы для ее результата был вызван [`keyObject.export()`](#keyobjectexportoptions). В противном случае соответствующая часть ключа возвращается как [`KeyObject`](#class-keyobject).
+    generateKey('hmac', { length: 512 }, (err, key) => {
+      if (err) throw err;
+      console.log(key.export().toString('hex'));  // 46e..........620
+    });
+    ```
 
-Рекомендуется кодировать открытые ключи как `'spki'` и закрытые ключи как `'pkcs8'` с шифрованием для длительного хранения:
+The size of a generated HMAC key should not exceed the block size of the
+underlying hash function. See [`crypto.createHmac()`][] for more information.
 
-```mjs
-const { generateKeyPair } = await import('node:crypto');
+### `crypto.generateKeyPair(type, options, callback)`
 
-generateKeyPair(
-    'rsa',
-    {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-            type: 'spki',
-            format: 'pem',
-        },
-        privateKeyEncoding: {
-            type: 'pkcs8',
-            format: 'pem',
-            cipher: 'aes-256-cbc',
-            passphrase: 'top secret',
-        },
-    },
-    (err, publicKey, privateKey) => {
-        // Handle errors and use the generated key pair.
-    }
-);
-```
+<!-- YAML
+added: v10.12.0
+changes:
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59537
+    description: Add support for SLH-DSA key pairs.
+  - version: v24.7.0
+    pr-url: https://github.com/nodejs/node/pull/59461
+    description: Add support for ML-KEM key pairs.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA key pairs.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v16.10.0
+    pr-url: https://github.com/nodejs/node/pull/39927
+    description: Add ability to define `RSASSA-PSS-params` sequence parameters
+                 for RSA-PSS keys pairs.
+  - version:
+     - v13.9.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/31178
+    description: Add support for Diffie-Hellman.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26960
+    description: Add support for RSA-PSS key pairs.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26774
+    description: Add ability to generate X25519 and X448 key pairs.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26554
+    description: Add ability to generate Ed25519 and Ed448 key pairs.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: The `generateKeyPair` and `generateKeyPairSync` functions now
+                 produce key objects if no encoding was specified.
+-->
 
-```cjs
-const { generateKeyPair } = require('node:crypto');
+Добавлено в: v10.12.0
 
-generateKeyPair(
-    'rsa',
-    {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-            type: 'spki',
-            format: 'pem',
-        },
-        privateKeyEncoding: {
-            type: 'pkcs8',
-            format: 'pem',
-            cipher: 'aes-256-cbc',
-            passphrase: 'top secret',
-        },
-    },
-    (err, publicKey, privateKey) => {
-        // Handle errors and use the generated key pair.
-    }
-);
-```
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.8.0 | Добавьте поддержку пар ключей SLH-DSA. |
+    | v24.7.0 | Добавьте поддержку пар ключей ML-KEM. |
+    | v24.6.0 | Добавьте поддержку пар ключей ML-DSA. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.10.0 | Добавлена ​​возможность определять параметры последовательности `RSASSA-PSS-params` для пар ключей RSA-PSS. |
+    | v13.9.0, v12.17.0 | Добавьте поддержку Диффи-Хеллмана. |
+    | v12.0.0 | Добавьте поддержку пар ключей RSA-PSS. |
+    | v12.0.0 | Добавьте возможность генерировать пары ключей X25519 и X448. |
+    | v12.0.0 | Добавьте возможность генерировать пары ключей Ed25519 и Ed448. |
+    | v11.6.0 | Функции `generateKeyPair` и `generateKeyPairSync` теперь создают ключевые объекты, если не была указана кодировка. |
 
-По завершении будет вызван `callback` с `err`, установленным в `undefined` и `publicKey` / `privateKey`, представляющими сгенерированную пару ключей.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The asymmetric key type to generate. See the
+  supported [asymmetric key types][].
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `modulusLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Key size in bits (RSA, DSA).
+  * `publicExponent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Public exponent (RSA). **Default:** `0x10001`.
+  * `hashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest (RSA-PSS).
+  * `mgf1HashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest used by
+    MGF1 (RSA-PSS).
+  * `saltLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Minimal salt length in bytes (RSA-PSS).
+  * `divisorLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Size of `q` in bits (DSA).
+  * `namedCurve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the curve to use (EC).
+  * `prime` [<Buffer>](buffer.md#buffer) The prime parameter (DH).
+  * `primeLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Prime length in bits (DH).
+  * `generator` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Custom generator (DH). **Default:** `2`.
+  * `groupName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Diffie-Hellman group name (DH). See
+    [`crypto.getDiffieHellman()`][].
+  * `paramEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'named'` or `'explicit'` (EC).
+    **Default:** `'named'`.
+  * `publicKeyEncoding` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][].
+  * `privateKeyEncoding` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][].
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `publicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<KeyObject>](#class-keyobject)
+  * `privateKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<KeyObject>](#class-keyobject)
 
-Если этот метод вызывается как его [`util.promisify()`](util.md#utilpromisifyoriginal) версия, он возвращает `Promise` для `Object` со свойствами `publicKey` и `privateKey`.
+Generates a new asymmetric key pair of the given `type`. See the
+supported [asymmetric key types][].
 
-<!-- 0112.part.md -->
+If a `publicKeyEncoding` or `privateKeyEncoding` was specified, this function
+behaves as if [`keyObject.export()`][] had been called on its result. Otherwise,
+the respective part of the key is returned as a [`KeyObject`][].
+
+It is recommended to encode public keys as `'spki'` and private keys as
+`'pkcs8'` with encryption for long-term storage:
+
+=== "MJS"
+
+    ```js
+    const {
+      generateKeyPair,
+    } = await import('node:crypto');
+
+    generateKeyPair('rsa', {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: 'top secret',
+      },
+    }, (err, publicKey, privateKey) => {
+      // Handle errors and use the generated key pair.
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      generateKeyPair,
+    } = require('node:crypto');
+
+    generateKeyPair('rsa', {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: 'top secret',
+      },
+    }, (err, publicKey, privateKey) => {
+      // Handle errors and use the generated key pair.
+    });
+    ```
+
+On completion, `callback` will be called with `err` set to `undefined` and
+`publicKey` / `privateKey` representing the generated key pair.
+
+If this method is invoked as its [`util.promisify()`][]ed version, it returns
+a `Promise` for an `Object` with `publicKey` and `privateKey` properties.
 
 ### `crypto.generateKeyPairSync(type, options)`
 
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `'rsa`, `'rsa-pss`, `'dsa`, `'ec`, `'ed25519`, `'ed448`, `'x25519`, `'x448` или `'dh`.
--   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `modulusLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер ключа в битах (RSA, DSA).
-    -   `publicExponent`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Публичная экспонента (RSA). **По умолчанию:** `0x10001`.
-    -   `hashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения (RSA-PSS).
-    -   `mgf1HashAlgorithm`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя дайджеста сообщения, используемого MGF1 (RSA-PSS).
-    -   `saltLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальная длина соли в байтах (RSA-PSS).
-    -   `divisorLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер `q` в битах (DSA).
-    -   `namedCurve`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кривой, которую следует использовать (EC).
-    -   `prime`: [`<Buffer>`](buffer.md#buffer) Параметр prime (DH).
-    -   `primeLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина прайма в битах (DH).
-    -   `generator`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Пользовательский генератор (DH). **По умолчанию:** `2`.
-    -   `groupName`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя группы Диффи-Хеллмана (DH). См. [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname).
-    -   `paramEncoding`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Должно быть `именованным` или `явным` (EC). **По умолчанию:** `'named'`.
-    -   `publicKeyEncoding`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`keyObject.export()`](#keyobjectexportoptions).
-    -   `privateKeyEncoding`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См. [`keyObject.export()`](#keyobjectexportoptions).
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `publicKey`: {string | Buffer | KeyObject}
-    -   `privateKey`: {string | Buffer | KeyObject}.
+<!-- YAML
+added: v10.12.0
+changes:
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59537
+    description: Add support for SLH-DSA key pairs.
+  - version: v24.7.0
+    pr-url: https://github.com/nodejs/node/pull/59461
+    description: Add support for ML-KEM key pairs.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA key pairs.
+  - version: v16.10.0
+    pr-url: https://github.com/nodejs/node/pull/39927
+    description: Add ability to define `RSASSA-PSS-params` sequence parameters
+                 for RSA-PSS keys pairs.
+  - version:
+     - v13.9.0
+     - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/31178
+    description: Add support for Diffie-Hellman.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26960
+    description: Add support for RSA-PSS key pairs.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26774
+    description: Add ability to generate X25519 and X448 key pairs.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26554
+    description: Add ability to generate Ed25519 and Ed448 key pairs.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: The `generateKeyPair` and `generateKeyPairSync` functions now
+                 produce key objects if no encoding was specified.
+-->
 
-Генерирует новую пару асимметричных ключей заданного `типа`. В настоящее время поддерживаются RSA, RSA-PSS, DSA, EC, Ed25519, Ed448, X25519, X448 и DH.
+Добавлено в: v10.12.0
 
-Если было указано `publicKeyEncoding` или `privateKeyEncoding`, эта функция ведет себя так, как если бы для ее результата был вызван [`keyObject.export()`](#keyobjectexportoptions). В противном случае соответствующая часть ключа возвращается как [`KeyObject`](#class-keyobject).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.8.0 | Добавьте поддержку пар ключей SLH-DSA. |
+    | v24.7.0 | Добавьте поддержку пар ключей ML-KEM. |
+    | v24.6.0 | Добавьте поддержку пар ключей ML-DSA. |
+    | v16.10.0 | Добавлена ​​возможность определять параметры последовательности `RSASSA-PSS-params` для пар ключей RSA-PSS. |
+    | v13.9.0, v12.17.0 | Добавьте поддержку Диффи-Хеллмана. |
+    | v12.0.0 | Добавьте поддержку пар ключей RSA-PSS. |
+    | v12.0.0 | Добавьте возможность генерировать пары ключей X25519 и X448. |
+    | v12.0.0 | Добавьте возможность генерировать пары ключей Ed25519 и Ed448. |
+    | v11.6.0 | Функции `generateKeyPair` и `generateKeyPairSync` теперь создают ключевые объекты, если не была указана кодировка. |
 
-При кодировании открытых ключей рекомендуется использовать `'spki'`. При кодировании закрытых ключей рекомендуется использовать `'pkcs8'` с сильной парольной фразой и хранить парольную фразу в тайне.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The asymmetric key type to generate. See the
+  supported [asymmetric key types][].
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `modulusLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Key size in bits (RSA, DSA).
+  * `publicExponent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Public exponent (RSA). **Default:** `0x10001`.
+  * `hashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest (RSA-PSS).
+  * `mgf1HashAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the message digest used by
+    MGF1 (RSA-PSS).
+  * `saltLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Minimal salt length in bytes (RSA-PSS).
+  * `divisorLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Size of `q` in bits (DSA).
+  * `namedCurve` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the curve to use (EC).
+  * `prime` [<Buffer>](buffer.md#buffer) The prime parameter (DH).
+  * `primeLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Prime length in bits (DH).
+  * `generator` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Custom generator (DH). **Default:** `2`.
+  * `groupName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Diffie-Hellman group name (DH). See
+    [`crypto.getDiffieHellman()`][].
+  * `paramEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'named'` or `'explicit'` (EC).
+    **Default:** `'named'`.
+  * `publicKeyEncoding` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][].
+  * `privateKeyEncoding` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][].
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `publicKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<KeyObject>](#class-keyobject)
+  * `privateKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<KeyObject>](#class-keyobject)
 
-```mjs
-const { generateKeyPairSync } = await import('node:crypto');
+Generates a new asymmetric key pair of the given `type`. See the
+supported [asymmetric key types][].
 
-const { publicKey, privateKey } = generateKeyPairSync(
-    'rsa',
-    {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-            type: 'spki',
-            format: 'pem',
-        },
-        privateKeyEncoding: {
-            type: 'pkcs8',
-            format: 'pem',
-            cipher: 'aes-256-cbc',
-            passphrase: 'top secret',
-        },
-    }
-);
-```
+If a `publicKeyEncoding` or `privateKeyEncoding` was specified, this function
+behaves as if [`keyObject.export()`][] had been called on its result. Otherwise,
+the respective part of the key is returned as a [`KeyObject`][].
 
-```cjs
-const { generateKeyPairSync } = require('node:crypto');
+When encoding public keys, it is recommended to use `'spki'`. When encoding
+private keys, it is recommended to use `'pkcs8'` with a strong passphrase,
+and to keep the passphrase confidential.
 
-const { publicKey, privateKey } = generateKeyPairSync(
-    'rsa',
-    {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-            type: 'spki',
-            format: 'pem',
-        },
-        privateKeyEncoding: {
-            type: 'pkcs8',
-            format: 'pem',
-            cipher: 'aes-256-cbc',
-            passphrase: 'top secret',
-        },
-    }
-);
-```
+=== "MJS"
 
-Возвращаемое значение `{ publicKey, privateKey }` представляет собой сгенерированную пару ключей. Если выбрана кодировка PEM, то соответствующий ключ будет строкой, в противном случае это будет буфер, содержащий данные, закодированные в формате DER.
+    ```js
+    const {
+      generateKeyPairSync,
+    } = await import('node:crypto');
 
-<!-- 0113.part.md -->
+    const {
+      publicKey,
+      privateKey,
+    } = generateKeyPairSync('rsa', {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: 'top secret',
+      },
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      generateKeyPairSync,
+    } = require('node:crypto');
+
+    const {
+      publicKey,
+      privateKey,
+    } = generateKeyPairSync('rsa', {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: 'top secret',
+      },
+    });
+    ```
+
+The return value `{ publicKey, privateKey }` represents the generated key pair.
+When PEM encoding was selected, the respective key will be a string, otherwise
+it will be a buffer containing the data encoded as DER.
 
 ### `crypto.generateKeySync(type, options)`
 
--   `type`: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Предполагаемое использование сгенерированного секретного ключа. В настоящее время принимаются значения `'hmac'` и `'aes'`.
-    -   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-        -   `length`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина бита генерируемого ключа.
-            -   Если `type` - `'hmac'`, минимальная длина равна 8, а максимальная - 2<sup>31</sup>-1. Если значение не кратно 8, сгенерированный ключ будет усечен до `Math.floor(length / 8)`.
-            -   Если `type` - `aes`, длина должна быть одной из `128`, `192` или `256`.
-    -   Возвращает: {KeyObject}
+<!-- YAML
+added: v15.0.0
+-->
 
-Синхронно генерирует новый случайный секретный ключ заданной `длины`. Тип `type` определяет, какие проверки будут выполняться для `длины`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The intended use of the generated secret key. Currently
+  accepted values are `'hmac'` and `'aes'`.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `length` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The bit length of the key to generate.
+    * If `type` is `'hmac'`, the minimum is 8, and the maximum length is
+      2<sup>31</sup>-1. If the value is not a multiple of 8, the generated
+      key will be truncated to `Math.floor(length / 8)`.
+    * If `type` is `'aes'`, the length must be one of `128`, `192`, or `256`.
+* Returns: [<KeyObject>](#class-keyobject)
 
-```mjs
-const { generateKeySync } = await import('node:crypto');
+Synchronously generates a new random secret key of the given `length`. The
+`type` will determine which validations will be performed on the `length`.
 
-const key = generateKeySync('hmac', { length: 64 });
-console.log(key.export().toString('hex')); // e89..........41e
-```
+=== "MJS"
 
-```cjs
-const { generateKeySync } = require('node:crypto');
+    ```js
+    const {
+      generateKeySync,
+    } = await import('node:crypto');
 
-const key = generateKeySync('hmac', { length: 64 });
-console.log(key.export().toString('hex')); // e89..........41e
-```
+    const key = generateKeySync('hmac', { length: 512 });
+    console.log(key.export().toString('hex'));  // e89..........41e
+    ```
 
-<!-- 0114.part.md -->
+=== "CJS"
 
-### `crypto.generatePrime(size[, options[, callback]])`
+    ```js
+    const {
+      generateKeySync,
+    } = require('node:crypto');
 
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер (в битах) простого числа для генерации.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `add` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint}
-    -   `rem` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint}
-    -   `safe` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сгенерированный прайм возвращается в виде `bigint`.
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `prime` {ArrayBuffer|bigint}
+    const key = generateKeySync('hmac', { length: 512 });
+    console.log(key.export().toString('hex'));  // e89..........41e
+    ```
 
-Генерирует псевдослучайное простое число размером `size` бит.
+The size of a generated HMAC key should not exceed the block size of the
+underlying hash function. See [`crypto.createHmac()`][] for more information.
 
-Если `options.safe` равно `true`, то прайм будет безопасным праймом - то есть `(прайм - 1) / 2` также будет праймом.
+### `crypto.generatePrime(size[, options], callback)`
 
-Параметры `options.add` и `options.rem` могут быть использованы для обеспечения дополнительных требований, например, для Диффи-Хеллмана:
+<!-- YAML
+added: v15.8.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
 
--   Если `options.add` и `options.rem` оба заданы, то прайм будет удовлетворять условию, что `prime % add = rem`.
--   Если установлено только `options.add` и `options.safe` не `true`, то прайм будет удовлетворять условию, что `prime % add = 1`.
--   Если задано только `options.add` и `options.safe` имеет значение `true`, то вместо этого прайм будет удовлетворять условию, что `prime % add = 3`. Это необходимо, поскольку `prime % add = 1` для `options.add > 2` противоречит условию, навязанному `options.safe`.
--   `options.rem` игнорируется, если `options.add` не указан.
+Добавлено в: v15.8.0
 
-И `options.add`, и `options.rem` должны быть закодированы как big-endian последовательности, если они заданы как `ArrayBuffer`, `SharedArrayBuffer`, `TypedArray`, `Buffer` или `DataView`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-По умолчанию прайм кодируется как big-endian последовательность октетов в [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Если опция `bigint` имеет значение `true`, то предоставляется [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
+* `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The size (in bits) of the prime to generate.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `add` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  * `rem` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  * `safe` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`.
+  * `bigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, the generated prime is returned
+    as a `bigint`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `prime` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-<!-- 0115.part.md -->
+Generates a pseudorandom prime of `size` bits.
+
+If `options.safe` is `true`, the prime will be a safe prime -- that is,
+`(prime - 1) / 2` will also be a prime.
+
+The `options.add` and `options.rem` parameters can be used to enforce additional
+requirements, e.g., for Diffie-Hellman:
+
+* If `options.add` and `options.rem` are both set, the prime will satisfy the
+  condition that `prime % add = rem`.
+* If only `options.add` is set and `options.safe` is not `true`, the prime will
+  satisfy the condition that `prime % add = 1`.
+* If only `options.add` is set and `options.safe` is set to `true`, the prime
+  will instead satisfy the condition that `prime % add = 3`. This is necessary
+  because `prime % add = 1` for `options.add > 2` would contradict the condition
+  enforced by `options.safe`.
+* `options.rem` is ignored if `options.add` is not given.
+
+Both `options.add` and `options.rem` must be encoded as big-endian sequences
+if given as an `ArrayBuffer`, `SharedArrayBuffer`, `TypedArray`, `Buffer`, or
+`DataView`.
+
+By default, the prime is encoded as a big-endian sequence of octets
+in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). If the `bigint` option is `true`, then a [bigint](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+is provided.
+
+The `size` of the prime will have a direct impact on how long it takes to
+generate the prime. The larger the size, the longer it will take. Because
+we use OpenSSL's `BN_generate_prime_ex` function, which provides only
+minimal control over our ability to interrupt the generation process,
+it is not recommended to generate overly large primes, as doing so may make
+the process unresponsive.
 
 ### `crypto.generatePrimeSync(size[, options])`
 
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер (в битах) генерируемого прайма.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `add` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint}
-    -   `rem` {ArrayBuffer|SharedArrayBuffer|TypedArray|Buffer|DataView|bigint}
-    -   `safe` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сгенерированный прайм возвращается в виде `bigint`.
--   Возвращает: {ArrayBuffer|bigint}
+<!-- YAML
+added: v15.8.0
+-->
 
-Генерирует псевдослучайное простое число размером `size` бит.
+* `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The size (in bits) of the prime to generate.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `add` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  * `rem` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<Buffer>](buffer.md#buffer) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+  * `safe` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`.
+  * `bigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, the generated prime is returned
+    as a `bigint`.
+* Returns: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Если `options.safe` равно `true`, то прайм будет безопасным праймом - то есть, `(прайм - 1) / 2` также будет праймом.
+Generates a pseudorandom prime of `size` bits.
 
-Параметры `options.add` и `options.rem` могут быть использованы для обеспечения дополнительных требований, например, для Диффи-Хеллмана:
+If `options.safe` is `true`, the prime will be a safe prime -- that is,
+`(prime - 1) / 2` will also be a prime.
 
--   Если `options.add` и `options.rem` оба заданы, то прайм будет удовлетворять условию, что `prime % add = rem`.
--   Если установлено только `options.add` и `options.safe` не `true`, то прайм будет удовлетворять условию, что `prime % add = 1`.
--   Если задано только `options.add` и `options.safe` имеет значение `true`, то вместо этого прайм будет удовлетворять условию, что `prime % add = 3`. Это необходимо, поскольку `prime % add = 1` для `options.add > 2` противоречит условию, навязанному `options.safe`.
--   `options.rem` игнорируется, если `options.add` не указан.
+The `options.add` and `options.rem` parameters can be used to enforce additional
+requirements, e.g., for Diffie-Hellman:
 
-И `options.add`, и `options.rem` должны быть закодированы как big-endian последовательности, если они заданы как `ArrayBuffer`, `SharedArrayBuffer`, `TypedArray`, `Buffer` или `DataView`.
+* If `options.add` and `options.rem` are both set, the prime will satisfy the
+  condition that `prime % add = rem`.
+* If only `options.add` is set and `options.safe` is not `true`, the prime will
+  satisfy the condition that `prime % add = 1`.
+* If only `options.add` is set and `options.safe` is set to `true`, the prime
+  will instead satisfy the condition that `prime % add = 3`. This is necessary
+  because `prime % add = 1` for `options.add > 2` would contradict the condition
+  enforced by `options.safe`.
+* `options.rem` is ignored if `options.add` is not given.
 
-По умолчанию прайм кодируется как big-endian последовательность октетов в [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Если опция `bigint` имеет значение `true`, то предоставляется [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
+Both `options.add` and `options.rem` must be encoded as big-endian sequences
+if given as an `ArrayBuffer`, `SharedArrayBuffer`, `TypedArray`, `Buffer`, or
+`DataView`.
 
-<!-- 0116.part.md -->
+By default, the prime is encoded as a big-endian sequence of octets
+in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). If the `bigint` option is `true`, then a [bigint](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+is provided.
+
+The `size` of the prime will have a direct impact on how long it takes to
+generate the prime. The larger the size, the longer it will take. Because
+we use OpenSSL's `BN_generate_prime_ex` function, which provides only
+minimal control over our ability to interrupt the generation process,
+it is not recommended to generate overly large primes, as doing so may make
+the process unresponsive.
 
 ### `crypto.getCipherInfo(nameOrNid[, options])`
 
--   `nameOrNid`: {string|number} Имя или nid шифра для запроса.
--   `options`: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `keyLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина тестового ключа.
-    -   `ivLength`: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тестовая длина IV.
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя шифра
-    -   `nid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) nid шифра
-    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер блока шифра в байтах. Это свойство опускается, если `mode` имеет значение `'stream'`.
-    -   `ivLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемая или стандартная длина вектора инициализации в байтах. Это свойство опускается, если шифр не использует вектор инициализации.
-    -   `keyLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемая длина ключа или длина ключа по умолчанию в байтах.
-    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Режим шифра. Один из `'cbc'`, `'ccm'`, `'cfb'`, `'ctr'`, `'ecb'`, `'gcm'`, `'ocb'`, `'ofb'`, `'stream'`, `'wrap'`, `'xts'`.
+<!-- YAML
+added: v15.0.0
+-->
 
-Возвращает информацию о заданном шифре.
+* `nameOrNid` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The name or nid of the cipher to query.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `keyLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A test key length.
+  * `ivLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A test IV length.
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the cipher
+  * `nid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nid of the cipher
+  * `blockSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The block size of the cipher in bytes. This property
+    is omitted when `mode` is `'stream'`.
+  * `ivLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The expected or default initialization vector length in
+    bytes. This property is omitted if the cipher does not use an initialization
+    vector.
+  * `keyLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The expected or default key length in bytes.
+  * `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The cipher mode. One of `'cbc'`, `'ccm'`, `'cfb'`, `'ctr'`,
+    `'ecb'`, `'gcm'`, `'ocb'`, `'ofb'`, `'stream'`, `'wrap'`, `'xts'`.
 
-Некоторые шифры принимают ключи переменной длины и векторы инициализации. По умолчанию метод `crypto.getCipherInfo()` возвращает значения по умолчанию для этих шифров. Чтобы проверить, приемлема ли заданная длина ключа или длина iv для данного шифра, используйте опции `keyLength` и `ivLength`. Если заданные значения неприемлемы, будет возвращено значение `undefined`.
+Returns information about a given cipher.
 
-<!-- 0117.part.md -->
+Some ciphers accept variable length keys and initialization vectors. By default,
+the `crypto.getCipherInfo()` method will return the default values for these
+ciphers. To test if a given key length or iv length is acceptable for given
+cipher, use the `keyLength` and `ivLength` options. If the given values are
+unacceptable, `undefined` will be returned.
 
 ### `crypto.getCiphers()`
 
--   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив с именами поддерживаемых алгоритмов шифрования.
+<!-- YAML
+added: v0.9.3
+-->
 
-<!-- конец списка -->
+* Returns: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An array with the names of the supported cipher
+  algorithms.
 
-```mjs
-const { getCiphers } = await import('node:crypto');
+=== "MJS"
 
-console.log(getCiphers()); // ['aes-128-cbc', 'aes-128-ccm', ...]
-```
+    ```js
+    const {
+      getCiphers,
+    } = await import('node:crypto');
 
-```cjs
-const { getCiphers } = require('node:crypto');
+    console.log(getCiphers()); // ['aes-128-cbc', 'aes-128-ccm', ...]
+    ```
 
-console.log(getCiphers()); // ['aes-128-cbc', 'aes-128-ccm', ...]
-```
+=== "CJS"
 
-<!-- 0118.part.md -->
+    ```js
+    const {
+      getCiphers,
+    } = require('node:crypto');
+
+    console.log(getCiphers()); // ['aes-128-cbc', 'aes-128-ccm', ...]
+    ```
 
 ### `crypto.getCurves()`
 
--   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив с именами поддерживаемых эллиптических кривых.
+<!-- YAML
+added: v2.3.0
+-->
 
-<!-- конец списка -->
+* Returns: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An array with the names of the supported elliptic curves.
 
-```mjs
-const { getCurves } = await import('node:crypto');
+=== "MJS"
 
-console.log(getCurves()); // ['Oakley-EC2N-3', 'Oakley-EC2N-4', ...]
-```
+    ```js
+    const {
+      getCurves,
+    } = await import('node:crypto');
 
-```cjs
-const { getCurves } = require('node:crypto');
+    console.log(getCurves()); // ['Oakley-EC2N-3', 'Oakley-EC2N-4', ...]
+    ```
 
-console.log(getCurves()); // ['Oakley-EC2N-3', 'Oakley-EC2N-4', ...]
-```
+=== "CJS"
 
-<!-- 0119.part.md -->
+    ```js
+    const {
+      getCurves,
+    } = require('node:crypto');
+
+    console.log(getCurves()); // ['Oakley-EC2N-3', 'Oakley-EC2N-4', ...]
+    ```
 
 ### `crypto.getDiffieHellman(groupName)`
 
--   `groupName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: {DiffieHellmanGroup}
+<!-- YAML
+added: v0.7.5
+-->
 
-Создает предопределенный объект обмена ключами `DiffieHellmanGroup`. Поддерживаемые группы перечислены в документации по [`DiffieHellmanGroup`](#class-diffiehellmangroup).
+* `groupName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<DiffieHellmanGroup>](#class-diffiehellmangroup)
 
-Возвращаемый объект имитирует интерфейс объектов, создаваемых [`crypto.createDiffieHellman()`](#cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding), но не позволяет изменять ключи (например, с помощью [`diffieHellman.setPublicKey()`](#diffiehellmansetpublickeypublickey-encoding)). Преимущество использования этого метода в том, что сторонам не нужно предварительно генерировать групповой модуль и обмениваться им, что экономит процессорное и коммуникационное время.
+Creates a predefined `DiffieHellmanGroup` key exchange object. The
+supported groups are listed in the documentation for [`DiffieHellmanGroup`][].
 
-Пример (получение общего секрета):
+The returned object mimics the interface of objects created by
+[`crypto.createDiffieHellman()`][], but will not allow changing
+the keys (with [`diffieHellman.setPublicKey()`][], for example). The
+advantage of using this method is that the parties do not have to
+generate nor exchange a group modulus beforehand, saving both processor
+and communication time.
 
-```mjs
-const { getDiffieHellman } = await import('node:crypto');
-const alice = getDiffieHellman('modp14');
-const bob = getDiffieHellman('modp14');
+Example (obtaining a shared secret):
 
-alice.generateKeys();
-bob.generateKeys();
+=== "MJS"
 
-const aliceSecret = alice.computeSecret(
-    bob.getPublicKey(),
-    null,
-    'hex'
-);
-const bobSecret = bob.computeSecret(
-    alice.getPublicKey(),
-    null,
-    'hex'
-);
+    ```js
+    const {
+      getDiffieHellman,
+    } = await import('node:crypto');
+    const alice = getDiffieHellman('modp14');
+    const bob = getDiffieHellman('modp14');
 
-/* aliceSecret и bobSecret должны быть одинаковыми */
-console.log(aliceSecret === bobSecret);
-```
+    alice.generateKeys();
+    bob.generateKeys();
 
-```cjs
-const { getDiffieHellman } = require('node:crypto');
+    const aliceSecret = alice.computeSecret(bob.getPublicKey(), null, 'hex');
+    const bobSecret = bob.computeSecret(alice.getPublicKey(), null, 'hex');
 
-const alice = getDiffieHellman('modp14');
-const bob = getDiffieHellman('modp14');
+    /* aliceSecret and bobSecret should be the same */
+    console.log(aliceSecret === bobSecret);
+    ```
 
-alice.generateKeys();
-bob.generateKeys();
+=== "CJS"
 
-const aliceSecret = alice.computeSecret(
-    bob.getPublicKey(),
-    null,
-    'hex'
-);
-const bobSecret = bob.computeSecret(
-    alice.getPublicKey(),
-    null,
-    'hex'
-);
+    ```js
+    const {
+      getDiffieHellman,
+    } = require('node:crypto');
 
-/* aliceSecret и bobSecret должны быть одинаковыми */
-console.log(aliceSecret === bobSecret);
-```
+    const alice = getDiffieHellman('modp14');
+    const bob = getDiffieHellman('modp14');
 
-<!-- 0120.part.md -->
+    alice.generateKeys();
+    bob.generateKeys();
+
+    const aliceSecret = alice.computeSecret(bob.getPublicKey(), null, 'hex');
+    const bobSecret = bob.computeSecret(alice.getPublicKey(), null, 'hex');
+
+    /* aliceSecret and bobSecret should be the same */
+    console.log(aliceSecret === bobSecret);
+    ```
 
 ### `crypto.getFips()`
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `1`, если и только если в настоящее время используется FIPS-совместимый криптопровайдер, `0` в противном случае. В будущем выпуске semver-major тип возврата этого API может быть изменен на [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+<!-- YAML
+added: v10.0.0
+-->
 
-<!-- 0121.part.md -->
+* Returns: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `1` if and only if a FIPS compliant crypto provider is
+  currently in use, `0` otherwise. A future semver-major release may change
+  the return type of this API to a [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 ### `crypto.getHashes()`
 
--   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив имен поддерживаемых алгоритмов хэширования, например, `'RSA-SHA256'`. Хеш-алгоритмы также называют алгоритмами "дайджеста".
+<!-- YAML
+added: v0.9.3
+-->
 
-<!-- конец списка -->
+* Returns: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An array of the names of the supported hash algorithms,
+  such as `'RSA-SHA256'`. Hash algorithms are also called "digest" algorithms.
 
-```mjs
-const { getHashes } = await import('node:crypto');
+=== "MJS"
 
-console.log(getHashes()); // ['DSA', 'DSA-SHA', 'DSA-SHA1', ...]
-```
+    ```js
+    const {
+      getHashes,
+    } = await import('node:crypto');
 
-```cjs
-const { getHashes } = require('node:crypto');
+    console.log(getHashes()); // ['DSA', 'DSA-SHA', 'DSA-SHA1', ...]
+    ```
 
-console.log(getHashes()); // ['DSA', 'DSA-SHA', 'DSA-SHA1', ...]
-```
+=== "CJS"
 
-<!-- 0122.part.md -->
+    ```js
+    const {
+      getHashes,
+    } = require('node:crypto');
+
+    console.log(getHashes()); // ['DSA', 'DSA-SHA', 'DSA-SHA1', ...]
+    ```
 
 ### `crypto.getRandomValues(typedArray)`
 
--   `typedArray` {Buffer|TypedArray|DataView|ArrayBuffer}
--   Возвращает: {Buffer|TypedArray|DataView|ArrayBuffer} Возвращает `typedArray`.
+<!-- YAML
+added: v17.4.0
+-->
 
-Удобный псевдоним для [`crypto.webcrypto.getRandomValues()`](webcrypto.md#cryptogetrandomvaluestypedarray). Эта реализация не соответствует спецификации Web Crypto, для написания веб-совместимого кода используйте [`crypto.webcrypto.getRandomValues()`](webcrypto.md#cryptogetrandomvaluestypedarray).
+* `typedArray` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* Returns: [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) Returns `typedArray`.
 
-<!-- 0123.part.md -->
+A convenient alias for [`crypto.webcrypto.getRandomValues()`][]. This
+implementation is not compliant with the Web Crypto spec, to write
+web-compatible code use [`crypto.webcrypto.getRandomValues()`][] instead.
+
+### `crypto.hash(algorithm, data[, options])`
+
+<!-- YAML
+added:
+ - v21.7.0
+ - v20.12.0
+changes:
+  - version:
+     - v25.5.0
+     - v24.13.1
+    pr-url: https://github.com/nodejs/node/pull/60994
+    description: This API is no longer experimental.
+  - version: v24.4.0
+    pr-url: https://github.com/nodejs/node/pull/58121
+    description: The `outputLength` option was added for XOF hash functions.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.5.0, v24.13.1 | Этот API больше не является экспериментальным. |
+    | v24.4.0 | Опция «outputLength» была добавлена ​​для хэш-функций XOF. |
+
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
+* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) When `data` is a
+  string, it will be encoded as UTF-8 before being hashed. If a different
+  input encoding is desired for a string input, user could encode the string
+  into a `TypedArray` using either `TextEncoder` or `Buffer.from()` and passing
+  the encoded `TypedArray` into this API instead.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `outputEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Encoding][encoding] used to encode the
+    returned digest. **Default:** `'hex'`.
+  * `outputLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) For XOF hash functions such as 'shake256',
+    the outputLength option can be used to specify the desired output length in bytes.
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
+
+A utility for creating one-shot hash digests of data. It can be faster than
+the object-based `crypto.createHash()` when hashing a smaller amount of data
+(<= 5MB) that's readily available. If the data can be big or if it is streamed,
+it's still recommended to use `crypto.createHash()` instead.
+
+The `algorithm` is dependent on the available algorithms supported by the
+version of OpenSSL on the platform. Examples are `'sha256'`, `'sha512'`, etc.
+On recent releases of OpenSSL, `openssl list -digest-algorithms` will
+display the available digest algorithms.
+
+If `options` is a string, then it specifies the `outputEncoding`.
+
+Example:
+
+=== "CJS"
+
+    ```js
+    const crypto = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    // Hashing a string and return the result as a hex-encoded string.
+    const string = 'Node.js';
+    // 10b3493287f831e81a438811a1ffba01f8cec4b7
+    console.log(crypto.hash('sha1', string));
+
+    // Encode a base64-encoded string into a Buffer, hash it and return
+    // the result as a buffer.
+    const base64 = 'Tm9kZS5qcw==';
+    // <Buffer 10 b3 49 32 87 f8 31 e8 1a 43 88 11 a1 ff ba 01 f8 ce c4 b7>
+    console.log(crypto.hash('sha1', Buffer.from(base64, 'base64'), 'buffer'));
+    ```
+
+=== "MJS"
+
+    ```js
+    import crypto from 'node:crypto';
+    import { Buffer } from 'node:buffer';
+
+    // Hashing a string and return the result as a hex-encoded string.
+    const string = 'Node.js';
+    // 10b3493287f831e81a438811a1ffba01f8cec4b7
+    console.log(crypto.hash('sha1', string));
+
+    // Encode a base64-encoded string into a Buffer, hash it and return
+    // the result as a buffer.
+    const base64 = 'Tm9kZS5qcw==';
+    // <Buffer 10 b3 49 32 87 f8 31 e8 1a 43 88 11 a1 ff ba 01 f8 ce c4 b7>
+    console.log(crypto.hash('sha1', Buffer.from(base64, 'base64'), 'buffer'));
+    ```
 
 ### `crypto.hkdf(digest, ikm, salt, info, keylen, callback)`
 
--   `digest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемый алгоритм дайджеста.
--   `ikm` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject} Входной ключевой материал. Должен быть указан, но может иметь нулевую длину.
--   `salt` {string|ArrayBuffer|Buffer|TypedArray|DataView} Значение соли. Должно быть указано, но может иметь нулевую длину.
--   `info` {string|ArrayBuffer|Buffer|TypedArray|DataView} Дополнительное информационное значение. Должно быть указано, но может иметь нулевую длину и не может быть больше 1024 байт.
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина генерируемого ключа. Должна быть больше 0. Максимально допустимое значение равно `255`, умноженное на количество байт, выдаваемых выбранной функцией дайджеста (например, `sha512` генерирует 64-байтовые хэши, что делает максимальный выход HKDF 16320 байт).
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `derivedKey` [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+<!-- YAML
+added: v15.0.0
+changes:
+  - version:
+    - v18.8.0
+    - v16.18.0
+    pr-url: https://github.com/nodejs/node/pull/44201
+    description: The input keying material can now be zero-length.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
 
-HKDF - это простая функция выведения ключей, определенная в RFC 5869. Заданные `ikm`, `salt` и `info` используются вместе с `digest` для получения ключа длиной `keylen` байт.
+Добавлено в: v15.0.0
 
-Поставленная функция `callback` вызывается с двумя аргументами: `err` и `derivedKey`. Если при выведении ключа произошла ошибка, будет установлено значение `err`, в противном случае `err` будет равно `null`. Успешно сгенерированный `derivedKey` будет передан в обратный вызов как [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Если какой-либо из входных аргументов содержит недопустимые значения или типы, будет выдана ошибка.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.8.0, v16.18.0 | Входной ключевой материал теперь может иметь нулевую длину. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { hkdf } = await import('node:crypto');
+* `digest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The digest algorithm to use.
+* `ikm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) The input
+  keying material. Must be provided but can be zero-length.
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The salt value. Must
+  be provided but can be zero-length.
+* `info` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Additional info value.
+  Must be provided but can be zero-length, and cannot be more than 1024 bytes.
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The length of the key to generate. Must be greater than 0.
+  The maximum allowable value is `255` times the number of bytes produced by
+  the selected digest function (e.g. `sha512` generates 64-byte hashes, making
+  the maximum HKDF output 16320 bytes).
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `derivedKey` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
-hkdf(
-    'sha512',
-    'key',
-    'salt',
-    'info',
-    64,
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(
-            Buffer.from(derivedKey).toString('hex')
-        ); // '24156e2...5391653'
-    }
-);
-```
+HKDF is a simple key derivation function defined in RFC 5869. The given `ikm`,
+`salt` and `info` are used with the `digest` to derive a key of `keylen` bytes.
 
-```cjs
-const { hkdf } = require('node:crypto');
-const { Buffer } = require('node:buffer');
+The supplied `callback` function is called with two arguments: `err` and
+`derivedKey`. If an errors occurs while deriving the key, `err` will be set;
+otherwise `err` will be `null`. The successfully generated `derivedKey` will
+be passed to the callback as an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). An error will be thrown if any
+of the input arguments specify invalid values or types.
 
-hkdf(
-    'sha512',
-    'key',
-    'salt',
-    'info',
-    64,
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(
-            Buffer.from(derivedKey).toString('hex')
-        ); // '24156e2...5391653'
-    }
-);
-```
+=== "MJS"
 
-<!-- 0124.part.md -->
+    ```js
+    import { Buffer } from 'node:buffer';
+    const {
+      hkdf,
+    } = await import('node:crypto');
+
+    hkdf('sha512', 'key', 'salt', 'info', 64, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(Buffer.from(derivedKey).toString('hex'));  // '24156e2...5391653'
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      hkdf,
+    } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    hkdf('sha512', 'key', 'salt', 'info', 64, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(Buffer.from(derivedKey).toString('hex'));  // '24156e2...5391653'
+    });
+    ```
 
 ### `crypto.hkdfSync(digest, ikm, salt, info, keylen)`
 
--   `digest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемый алгоритм дайджеста.
--   `ikm` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject} Входной ключевой материал. Должен быть указан, но может иметь нулевую длину.
--   `salt` {string|ArrayBuffer|Buffer|TypedArray|DataView} Значение соли. Должно быть указано, но может иметь нулевую длину.
--   `info` {string|ArrayBuffer|Buffer|TypedArray|DataView} Дополнительное информационное значение. Должно быть указано, но может иметь нулевую длину и не может быть больше 1024 байт.
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина генерируемого ключа. Должна быть больше 0. Максимально допустимое значение равно `255`, умноженное на количество байт, генерируемых выбранной функцией дайджеста (например, `sha512` генерирует 64-байтовые хэши, что делает максимальный выход HKDF 16320 байт).
--   Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+<!-- YAML
+added: v15.0.0
+changes:
+  - version:
+    - v18.8.0
+    - v16.18.0
+    pr-url: https://github.com/nodejs/node/pull/44201
+    description: The input keying material can now be zero-length.
+-->
 
-Предоставляет синхронную функцию выведения ключей HKDF, как определено в RFC 5869. Заданные `ikm`, `salt` и `info` используются вместе с `digest` для получения ключа длиной `keylen` байт.
+Добавлено в: v15.0.0
 
-Успешно сгенерированный `derivedKey` будет возвращен в виде [`<ArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.8.0, v16.18.0 | Входной ключевой материал теперь может иметь нулевую длину. |
 
-Если в качестве входных аргументов указаны недопустимые значения или типы, или если производный ключ не может быть сгенерирован, будет выдана ошибка.
+* `digest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The digest algorithm to use.
+* `ikm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) The input
+  keying material. Must be provided but can be zero-length.
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The salt value. Must
+  be provided but can be zero-length.
+* `info` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Additional info value.
+  Must be provided but can be zero-length, and cannot be more than 1024 bytes.
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The length of the key to generate. Must be greater than 0.
+  The maximum allowable value is `255` times the number of bytes produced by
+  the selected digest function (e.g. `sha512` generates 64-byte hashes, making
+  the maximum HKDF output 16320 bytes).
+* Returns: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { hkdfSync } = await import('node:crypto');
+Provides a synchronous HKDF key derivation function as defined in RFC 5869. The
+given `ikm`, `salt` and `info` are used with the `digest` to derive a key of
+`keylen` bytes.
 
-const derivedKey = hkdfSync(
-    'sha512',
-    'key',
-    'salt',
-    'info',
-    64
-);
-console.log(Buffer.from(derivedKey).toString('hex')); // '24156e2...5391653'
-```
+The successfully generated `derivedKey` will be returned as an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-```cjs
-const { hkdfSync } = require('node:crypto');
-const { Buffer } = require('node:buffer');
+An error will be thrown if any of the input arguments specify invalid values or
+types, or if the derived key cannot be generated.
 
-const derivedKey = hkdfSync(
-    'sha512',
-    'key',
-    'salt',
-    'info',
-    64
-);
-console.log(Buffer.from(derivedKey).toString('hex')); // '24156e2...5391653'
-```
+=== "MJS"
 
-<!-- 0125.part.md -->
+    ```js
+    import { Buffer } from 'node:buffer';
+    const {
+      hkdfSync,
+    } = await import('node:crypto');
+
+    const derivedKey = hkdfSync('sha512', 'key', 'salt', 'info', 64);
+    console.log(Buffer.from(derivedKey).toString('hex'));  // '24156e2...5391653'
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      hkdfSync,
+    } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const derivedKey = hkdfSync('sha512', 'key', 'salt', 'info', 64);
+    console.log(Buffer.from(derivedKey).toString('hex'));  // '24156e2...5391653'
+    ```
 
 ### `crypto.pbkdf2(password, salt, iterations, keylen, digest, callback)`
 
--   `password` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `соль` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `iterations` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `digest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` {ошибка}
-    -   `derivedKey` [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v0.5.5
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The password and salt arguments can also be ArrayBuffer
+                 instances.
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30578
+    description: The `iterations` parameter is now restricted to positive
+                 values. Earlier releases treated other values as one.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/11305
+    description: The `digest` parameter is always required now.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4047
+    description: Calling this function without passing the `digest` parameter
+                 is deprecated now and will emit a warning.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default encoding for `password` if it is a string changed
+                 from `binary` to `utf8`.
+-->
 
-Обеспечивает асинхронную реализацию Password-Based Key Derivation Function 2 (PBKDF2). Выбранный алгоритм дайджеста HMAC, указанный в `digest`, применяется для получения ключа требуемой длины байта (`keylen`) из `password`, `alt` и `iterations`.
+Добавлено в: v0.5.5
 
-Поставленная функция `callback` вызывается с двумя аргументами: `err` и `derivedKey`. Если при создании ключа произошла ошибка, то `err` будет установлен; в противном случае `err` будет равен `null`. По умолчанию успешно сгенерированный `derivedKey` будет передан обратному вызову как [`Buffer`](buffer.md). Если в любом из входных аргументов указаны недопустимые значения или типы, будет выдана ошибка.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v15.0.0 | Аргументы пароля и соли также могут быть экземплярами ArrayBuffer. |
+    | v14.0.0 | Параметр `iterations` теперь ограничен положительными значениями. В более ранних версиях другие значения рассматривались как одно. |
+    | v8.0.0 | Параметр `digest` теперь требуется всегда. |
+    | v6.0.0 | Вызов этой функции без передачи параметра `digest` теперь устарел и выдаст предупреждение. |
+    | v6.0.0 | Кодировка по умолчанию для пароля, если это строка, изменена с двоичной на utf8. |
 
-Аргумент `iterations` должен быть числом, установленным как можно выше. Чем больше число итераций, тем надежнее будет производный ключ, но на выполнение потребуется больше времени.
+* `password` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `iterations` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `digest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `derivedKey` [<Buffer>](buffer.md#buffer)
 
-Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
+Provides an asynchronous Password-Based Key Derivation Function 2 (PBKDF2)
+implementation. A selected HMAC digest algorithm specified by `digest` is
+applied to derive a key of the requested byte length (`keylen`) from the
+`password`, `salt` and `iterations`.
 
-При передаче строк для `password` или `salt`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входных данных для криптографических API](#using-strings-as-inputs-to-cryptographic-apis).
+The supplied `callback` function is called with two arguments: `err` and
+`derivedKey`. If an error occurs while deriving the key, `err` will be set;
+otherwise `err` will be `null`. By default, the successfully generated
+`derivedKey` will be passed to the callback as a [`Buffer`][]. An error will be
+thrown if any of the input arguments specify invalid values or types.
 
-```mjs
-const { pbkdf2 } = await import('node:crypto');
+The `iterations` argument must be a number set as high as possible. The
+higher the number of iterations, the more secure the derived key will be,
+but will take a longer amount of time to complete.
 
-pbkdf2(
-    'secret',
-    'salt',
-    100000,
-    64,
-    'sha512',
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey.toString('hex')); // '3745e48...08d59ae'
-    }
-);
-```
+The `salt` should be as unique as possible. It is recommended that a salt is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
 
-```cjs
-const { pbkdf2 } = require('node:crypto');
+When passing strings for `password` or `salt`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
 
-pbkdf2(
-    'secret',
-    'salt',
-    100000,
-    64,
-    'sha512',
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey.toString('hex')); // '3745e48...08d59ae'
-    }
-);
-```
+=== "MJS"
 
-Свойство `crypto.DEFAULT_ENCODING` можно использовать для изменения способа передачи `derivedKey` в обратный вызов. Однако это свойство было устаревшим, и его использования следует избегать.
+    ```js
+    const {
+      pbkdf2,
+    } = await import('node:crypto');
 
-```mjs
-import crypto from 'node:crypto';
-crypto.DEFAULT_ENCODING = 'hex';
-crypto.pbkdf2(
-    'secret',
-    'salt',
-    100000,
-    512,
-    'sha512',
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey); // '3745e48...aa39b34'
-    }
-);
-```
+    pbkdf2('secret', 'salt', 100000, 64, 'sha512', (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+    });
+    ```
 
-```cjs
-const crypto = require('node:crypto');
-crypto.DEFAULT_ENCODING = 'hex';
-crypto.pbkdf2(
-    'secret',
-    'salt',
-    100000,
-    512,
-    'sha512',
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey); // '3745e48...aa39b34'
-    }
-);
-```
+=== "CJS"
 
-Массив поддерживаемых дайджест-функций можно получить с помощью [`crypto.getHashes()`](#cryptogethashes).
+    ```js
+    const {
+      pbkdf2,
+    } = require('node:crypto');
 
-Этот API использует пул потоков libuv, что может иметь неожиданные и негативные последствия для производительности некоторых приложений; смотрите документацию [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) для получения дополнительной информации.
+    pbkdf2('secret', 'salt', 100000, 64, 'sha512', (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+    });
+    ```
 
-<!-- 0126.part.md -->
+An array of supported digest functions can be retrieved using
+[`crypto.getHashes()`][].
+
+This API uses libuv's threadpool, which can have surprising and
+negative performance implications for some applications; see the
+[`UV_THREADPOOL_SIZE`][] documentation for more information.
 
 ### `crypto.pbkdf2Sync(password, salt, iterations, keylen, digest)`
 
--   `пароль` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `соль` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `iterations` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `digest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v0.9.3
+changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30578
+    description: The `iterations` parameter is now restricted to positive
+                 values. Earlier releases treated other values as one.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4047
+    description: Calling this function without passing the `digest` parameter
+                 is deprecated now and will emit a warning.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/5522
+    description: The default encoding for `password` if it is a string changed
+                 from `binary` to `utf8`.
+-->
 
-Предоставляет синхронную реализацию Password-Based Key Derivation Function 2 (PBKDF2). Выбранный алгоритм дайджеста HMAC, указанный в `digest`, применяется для получения ключа запрашиваемой длины байта (`keylen`) из `password`, `alt` и `iterations`.
+Добавлено в: v0.9.3
 
-Если произойдет ошибка, будет выдано сообщение `Error`, в противном случае полученный ключ будет возвращен в виде [`буфера`](buffer.md).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Параметр `iterations` теперь ограничен положительными значениями. В более ранних версиях другие значения рассматривались как одно. |
+    | v6.0.0 | Вызов этой функции без передачи параметра `digest` теперь устарел и выдаст предупреждение. |
+    | v6.0.0 | Кодировка по умолчанию для пароля, если это строка, изменена с двоичной на utf8. |
 
-Аргумент `iterations` должен быть числом, установленным как можно выше. Чем больше число итераций, тем надежнее будет полученный ключ, но на это потребуется больше времени.
+* `password` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `iterations` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `digest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Returns: [<Buffer>](buffer.md#buffer)
 
-Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
+Provides a synchronous Password-Based Key Derivation Function 2 (PBKDF2)
+implementation. A selected HMAC digest algorithm specified by `digest` is
+applied to derive a key of the requested byte length (`keylen`) from the
+`password`, `salt` and `iterations`.
 
-При передаче строк для `password` или `salt`, пожалуйста, учитывайте [предостережения при использовании строк в качестве входных данных для криптографических API](#using-strings-as-inputs-to-cryptographic-apis).
+If an error occurs an `Error` will be thrown, otherwise the derived key will be
+returned as a [`Buffer`][].
 
-```mjs
-const { pbkdf2Sync } = await import('node:crypto');
+The `iterations` argument must be a number set as high as possible. The
+higher the number of iterations, the more secure the derived key will be,
+but will take a longer amount of time to complete.
 
-const key = pbkdf2Sync(
-    'secret',
-    'salt',
-    100000,
-    64,
-    'sha512'
-);
-console.log(key.toString('hex')); // '3745e48...08d59ae'
-```
+The `salt` should be as unique as possible. It is recommended that a salt is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
 
-```cjs
-const { pbkdf2Sync } = require('node:crypto');
+When passing strings for `password` or `salt`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
 
-const key = pbkdf2Sync(
-    'secret',
-    'salt',
-    100000,
-    64,
-    'sha512'
-);
-console.log(key.toString('hex')); // '3745e48...08d59ae'
-```
+=== "MJS"
 
-Свойство `crypto.DEFAULT_ENCODING` можно использовать для изменения способа возврата `derivedKey`. Однако это свойство устарело, и его использования следует избегать.
+    ```js
+    const {
+      pbkdf2Sync,
+    } = await import('node:crypto');
 
-```mjs
-import crypto from 'node:crypto';
-crypto.DEFAULT_ENCODING = 'hex';
-const key = crypto.pbkdf2Sync(
-    'secret',
-    'salt',
-    100000,
-    512,
-    'sha512'
-);
-console.log(key); // '3745e48...aa39b34'
-```
+    const key = pbkdf2Sync('secret', 'salt', 100000, 64, 'sha512');
+    console.log(key.toString('hex'));  // '3745e48...08d59ae'
+    ```
 
-```cjs
-const crypto = require('node:crypto');
-crypto.DEFAULT_ENCODING = 'hex';
-const key = crypto.pbkdf2Sync(
-    'secret',
-    'salt',
-    100000,
-    512,
-    'sha512'
-);
-console.log(key); // '3745e48...aa39b34'
-```
+=== "CJS"
 
-Массив поддерживаемых функций дайджеста можно получить с помощью [`crypto.getHashes()`](#cryptogethashes).
+    ```js
+    const {
+      pbkdf2Sync,
+    } = require('node:crypto');
 
-<!-- 0127.part.md -->
+    const key = pbkdf2Sync('secret', 'salt', 100000, 64, 'sha512');
+    console.log(key.toString('hex'));  // '3745e48...08d59ae'
+    ```
+
+An array of supported digest functions can be retrieved using
+[`crypto.getHashes()`][].
 
 ### `crypto.privateDecrypt(privateKey, buffer)`
 
--   `privateKey` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хэш-функция, используемая для OAEP padding и MGF1. **По умолчанию:** `'sha1'`.
-    -   `oaepLabel` {string|ArrayBuffer|Buffer|TypedArray|DataView} Метка, которую следует использовать для OAEP-подкладки. Если не указано, метка не используется.
-    -   `padding` {crypto.constants} Необязательное значение набивки, определенное в `crypto.constants`, которое может быть: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING` или `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `буфер` с расшифрованным содержимым.
+<!-- YAML
+added: v0.11.14
+changes:
+  - version:
+      - v21.6.2
+      - v20.11.1
+      - v18.19.1
+    pr-url: https://github.com/nodejs-private/node-private/pull/515
+    description: The `RSA_PKCS1_PADDING` padding was disabled unless the
+                 OpenSSL build supports implicit rejection.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: Added string, ArrayBuffer, and CryptoKey as allowable key
+                 types. The oaepLabel can be an ArrayBuffer. The buffer can
+                 be a string or ArrayBuffer. All types that accept buffers
+                 are limited to a maximum of 2 ** 31 - 1 bytes.
+  - version: v12.11.0
+    pr-url: https://github.com/nodejs/node/pull/29489
+    description: The `oaepLabel` option was added.
+  - version: v12.9.0
+    pr-url: https://github.com/nodejs/node/pull/28335
+    description: The `oaepHash` option was added.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: This function now supports key objects.
+-->
 
-Расшифровывает `buffer` с помощью `privateKey`. `Буфер` был ранее зашифрован с помощью соответствующего открытого ключа, например, с помощью [`crypto.publicEncrypt()`](#cryptopublicencryptkey-buffer).
+Добавлено в: v0.11.14
 
-Если `privateKey` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `privateKey` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey). Если это объект, может быть передано свойство `padding`. В противном случае эта функция использует `RSA_PKCS1_OAEP_PADDING`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.6.2, v20.11.1, v18.19.1 | Заполнение `RSA_PKCS1_PADDING` было отключено, если сборка OpenSSL не поддерживает неявное отклонение. |
+    | v15.0.0 | Добавлены строки, ArrayBuffer и CryptoKey в качестве допустимых типов ключей. oaepLabel может быть ArrayBuffer. Буфер может быть строкой или ArrayBuffer. Все типы, которые принимают буферы, ограничены максимум 2**31 — 1 байтами. |
+    | v12.11.0 | Добавлена ​​опция oaepLabel. |
+    | v12.9.0 | Добавлена ​​опция oaepHash. |
+    | v11.6.0 | Эта функция теперь поддерживает ключевые объекты. |
 
-<!-- 0128.part.md -->
+<!--lint disable maximum-line-length remark-lint-->
+
+* `privateKey` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `oaepHash` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The hash function to use for OAEP padding and MGF1.
+    **Default:** `'sha1'`
+  * `oaepLabel` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The label to
+    use for OAEP padding. If not specified, no label is used.
+  * `padding` {crypto.constants} An optional padding value defined in
+    `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING`,
+    `crypto.constants.RSA_PKCS1_PADDING`, or
+    `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Returns: [<Buffer>](buffer.md#buffer) A new `Buffer` with the decrypted content.
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Decrypts `buffer` with `privateKey`. `buffer` was previously encrypted using
+the corresponding public key, for example using [`crypto.publicEncrypt()`][].
+
+If `privateKey` is not a [`KeyObject`][], this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`][]. If it is an
+object, the `padding` property can be passed. Otherwise, this function uses
+`RSA_PKCS1_OAEP_PADDING`.
+
+Using `crypto.constants.RSA_PKCS1_PADDING` in [`crypto.privateDecrypt()`][]
+requires OpenSSL to support implicit rejection (`rsa_pkcs1_implicit_rejection`).
+If the version of OpenSSL used by Node.js does not support this feature,
+attempting to use `RSA_PKCS1_PADDING` will fail.
 
 ### `crypto.privateEncrypt(privateKey, buffer)`
 
--   `privateKey` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey} Закрытый ключ в кодировке PEM.
-    -   `passphrase` {string|ArrayBuffer|Buffer|TypedArray|DataView} Необязательная ключевая фраза для закрытого ключа.
-    -   `padding` {crypto.constants} Необязательное значение прокладки, определенное в `crypto.constants`, которое может быть: `crypto.constants.RSA_NO_PADDING` или `crypto.constants.RSA_PKCS1_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `буфер`, `ключ` или `пассфраза` являются строками.
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `буфер` с зашифрованным содержимым.
+<!-- YAML
+added: v1.1.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: Added string, ArrayBuffer, and CryptoKey as allowable key
+                 types. The passphrase can be an ArrayBuffer. The buffer can
+                 be a string or ArrayBuffer. All types that accept buffers
+                 are limited to a maximum of 2 ** 31 - 1 bytes.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: This function now supports key objects.
+-->
 
-Шифрует `buffer` с помощью `privateKey`. Возвращенные данные можно расшифровать с помощью соответствующего открытого ключа, например, используя [`crypto.publicDecrypt()`](#cryptopublicdecryptkey-buffer).
+Добавлено в: v1.1.0
 
-Если `privateKey` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `privateKey` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey). Если это объект, может быть передано свойство `padding`. В противном случае эта функция использует `RSA_PKCS1_PADDING`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Добавлены строки, ArrayBuffer и CryptoKey в качестве допустимых типов ключей. Парольной фразой может быть ArrayBuffer. Буфер может быть строкой или ArrayBuffer. Все типы, которые принимают буферы, ограничены максимум 2**31 — 1 байтами. |
+    | v11.6.0 | Эта функция теперь поддерживает ключевые объекты. |
 
-<!-- 0129.part.md -->
+<!--lint disable maximum-line-length remark-lint-->
+
+* `privateKey` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+    A PEM encoded private key.
+  * `passphrase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional
+    passphrase for the private key.
+  * `padding` {crypto.constants} An optional padding value defined in
+    `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING` or
+    `crypto.constants.RSA_PKCS1_PADDING`.
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`,
+    or `passphrase` are strings.
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Returns: [<Buffer>](buffer.md#buffer) A new `Buffer` with the encrypted content.
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Encrypts `buffer` with `privateKey`. The returned data can be decrypted using
+the corresponding public key, for example using [`crypto.publicDecrypt()`][].
+
+If `privateKey` is not a [`KeyObject`][], this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`][]. If it is an
+object, the `padding` property can be passed. Otherwise, this function uses
+`RSA_PKCS1_PADDING`.
 
 ### `crypto.publicDecrypt(key, buffer)`
 
--   `ключ` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `passphrase` {string|ArrayBuffer|Buffer|TypedArray|DataView} Необязательная ключевая фраза для закрытого ключа.
-    -   `padding` {crypto.constants} Необязательное значение прокладки, определенное в `crypto.constants`, которое может быть: `crypto.constants.RSA_NO_PADDING` или `crypto.constants.RSA_PKCS1_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `буфер`, `ключ` или `пассфраза` являются строками.
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `буфер` с расшифрованным содержимым.
+<!-- YAML
+added: v1.1.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: Added string, ArrayBuffer, and CryptoKey as allowable key
+                 types. The passphrase can be an ArrayBuffer. The buffer can
+                 be a string or ArrayBuffer. All types that accept buffers
+                 are limited to a maximum of 2 ** 31 - 1 bytes.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: This function now supports key objects.
+-->
 
-Расшифровывает `buffer` с помощью `key`.`buffer` был ранее зашифрован с помощью соответствующего закрытого ключа, например, с помощью [`crypto.privateEncrypt()`](#cryptoprivateencryptprivatekey-buffer).
+Добавлено в: v1.1.0
 
-Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, может быть передано свойство `padding`. В противном случае эта функция использует `RSA_PKCS1_PADDING`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Добавлены строки, ArrayBuffer и CryptoKey в качестве допустимых типов ключей. Парольной фразой может быть ArrayBuffer. Буфер может быть строкой или ArrayBuffer. Все типы, которые принимают буферы, ограничены максимум 2**31 — 1 байтами. |
+    | v11.6.0 | Эта функция теперь поддерживает ключевые объекты. |
 
-Поскольку открытые ключи RSA могут быть получены из закрытых ключей, вместо открытого ключа может быть передан закрытый ключ.
+<!--lint disable maximum-line-length remark-lint-->
 
-<!-- 0130.part.md -->
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `passphrase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional
+    passphrase for the private key.
+  * `padding` {crypto.constants} An optional padding value defined in
+    `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING` or
+    `crypto.constants.RSA_PKCS1_PADDING`.
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`,
+    or `passphrase` are strings.
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Returns: [<Buffer>](buffer.md#buffer) A new `Buffer` with the decrypted content.
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Decrypts `buffer` with `key`.`buffer` was previously encrypted using
+the corresponding private key, for example using [`crypto.privateEncrypt()`][].
+
+If `key` is not a [`KeyObject`][], this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`][]. If it is an
+object, the `padding` property can be passed. Otherwise, this function uses
+`RSA_PKCS1_PADDING`.
+
+Because RSA public keys can be derived from private keys, a private key may
+be passed instead of a public key.
 
 ### `crypto.publicEncrypt(key, buffer)`
 
--   `key` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
-    -   `ключ` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey} Открытый или закрытый ключ в кодировке PEM, {KeyObject} или {CryptoKey}.
-    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хэш-функция, используемая для OAEP padding и MGF1. **По умолчанию:** `'sha1'`.
-    -   `oaepLabel` {string|ArrayBuffer|Buffer|TypedArray|DataView} Метка, которую следует использовать для OAEP-подкладки. Если не указано, метка не используется.
-    -   `passphrase` {string|ArrayBuffer|Buffer|TypedArray|DataView} Необязательная ключевая фраза для закрытого ключа.
-    -   `padding` {crypto.constants} Необязательное значение прокладки, определенное в `crypto.constants`, которое может быть: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING` или `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `буфер`, `ключ`, `oaepLabel` или `passphrase` являются строками.
--   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `буфер` с зашифрованным содержимым.
+<!-- YAML
+added: v0.11.14
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: Added string, ArrayBuffer, and CryptoKey as allowable key
+                 types. The oaepLabel and passphrase can be ArrayBuffers. The
+                 buffer can be a string or ArrayBuffer. All types that accept
+                 buffers are limited to a maximum of 2 ** 31 - 1 bytes.
+  - version: v12.11.0
+    pr-url: https://github.com/nodejs/node/pull/29489
+    description: The `oaepLabel` option was added.
+  - version: v12.9.0
+    pr-url: https://github.com/nodejs/node/pull/28335
+    description: The `oaepHash` option was added.
+  - version: v11.6.0
+    pr-url: https://github.com/nodejs/node/pull/24234
+    description: This function now supports key objects.
+-->
 
-Шифрует содержимое `buffer` с помощью `key` и возвращает новый [`Buffer`](buffer.md) с зашифрованным содержимым. Возвращенные данные можно расшифровать с помощью соответствующего закрытого ключа, например, используя [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer).
+Добавлено в: v0.11.14
 
-Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, может быть передано свойство `padding`. В противном случае эта функция использует `RSA_PKCS1_OAEP_PADDING`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Добавлены строки, ArrayBuffer и CryptoKey в качестве допустимых типов ключей. oaepLabel и парольная фраза могут быть ArrayBuffers. Буфер может быть строкой или ArrayBuffer. Все типы, которые принимают буферы, ограничены максимум 2**31 — 1 байтами. |
+    | v12.11.0 | Добавлена ​​опция oaepLabel. |
+    | v12.9.0 | Добавлена ​​опция oaepHash. |
+    | v11.6.0 | Эта функция теперь поддерживает ключевые объекты. |
 
-Поскольку открытые ключи RSA могут быть получены из закрытых ключей, вместо открытого ключа может быть передан закрытый ключ.
+<!--lint disable maximum-line-length remark-lint-->
 
-<!-- 0131.part.md -->
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+    A PEM encoded public or private key, [KeyObject](#class-keyobject), or [CryptoKey](webcrypto.md#class-cryptokey).
+  * `oaepHash` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The hash function to use for OAEP padding and MGF1.
+    **Default:** `'sha1'`
+  * `oaepLabel` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The label to
+    use for OAEP padding. If not specified, no label is used.
+  * `passphrase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional
+    passphrase for the private key.
+  * `padding` {crypto.constants} An optional padding value defined in
+    `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING`,
+    `crypto.constants.RSA_PKCS1_PADDING`, or
+    `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
+  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`,
+    `oaepLabel`, or `passphrase` are strings.
+* `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Returns: [<Buffer>](buffer.md#buffer) A new `Buffer` with the encrypted content.
+
+<!--lint enable maximum-line-length remark-lint-->
+
+Encrypts the content of `buffer` with `key` and returns a new
+[`Buffer`][] with encrypted content. The returned data can be decrypted using
+the corresponding private key, for example using [`crypto.privateDecrypt()`][].
+
+If `key` is not a [`KeyObject`][], this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`][]. If it is an
+object, the `padding` property can be passed. Otherwise, this function uses
+`RSA_PKCS1_OAEP_PADDING`.
+
+Because RSA public keys can be derived from private keys, a private key may
+be passed instead of a public key.
 
 ### `crypto.randomBytes(size[, callback])`
 
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт для генерации. `size` не должно быть больше, чем `2**31 - 1`.
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `buf` [`<Buffer>`](buffer.md#buffer)
--   Возвращает: [`<Buffer>`](buffer.md#buffer), если функция `callback` не предоставлена.
+<!-- YAML
+added: v0.5.8
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/16454
+    description: Passing `null` as the `callback` argument now throws
+                 `ERR_INVALID_CALLBACK`.
+-->
 
-Генерирует криптографически сильные псевдослучайные данные. Аргумент `size` представляет собой число, указывающее количество байт для генерации.
+Добавлено в: v0.5.8
 
-Если указана функция `callback`, байты генерируются асинхронно, а функция `callback` вызывается с двумя аргументами: `err` и `buf`. Если произошла ошибка, то `err` будет объектом `Error`, в противном случае - `null`. Аргумент `buf` представляет собой [`буфер`](buffer.md), содержащий сгенерированные байты.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v9.0.0 | При передаче null в качестве аргумента обратного вызова теперь выдается ERR_INVALID_CALLBACK. |
 
-```mjs
-// Асинхронный
-const { randomBytes } = await import('node:crypto');
+* `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to generate.  The `size` must
+  not be larger than `2**31 - 1`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `buf` [<Buffer>](buffer.md#buffer)
+* Returns: [<Buffer>](buffer.md#buffer) if the `callback` function is not provided.
 
-randomBytes(256, (err, buf) => {
-    if (err) throw err;
+Generates cryptographically strong pseudorandom data. The `size` argument
+is a number indicating the number of bytes to generate.
+
+If a `callback` function is provided, the bytes are generated asynchronously
+and the `callback` function is invoked with two arguments: `err` and `buf`.
+If an error occurs, `err` will be an `Error` object; otherwise it is `null`. The
+`buf` argument is a [`Buffer`][] containing the generated bytes.
+
+=== "MJS"
+
+    ```js
+    // Asynchronous
+    const {
+      randomBytes,
+    } = await import('node:crypto');
+
+    randomBytes(256, (err, buf) => {
+      if (err) throw err;
+      console.log(`${buf.length} bytes of random data: ${buf.toString('hex')}`);
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    // Asynchronous
+    const {
+      randomBytes,
+    } = require('node:crypto');
+
+    randomBytes(256, (err, buf) => {
+      if (err) throw err;
+      console.log(`${buf.length} bytes of random data: ${buf.toString('hex')}`);
+    });
+    ```
+
+If the `callback` function is not provided, the random bytes are generated
+synchronously and returned as a [`Buffer`][]. An error will be thrown if
+there is a problem generating the bytes.
+
+=== "MJS"
+
+    ```js
+    // Synchronous
+    const {
+      randomBytes,
+    } = await import('node:crypto');
+
+    const buf = randomBytes(256);
     console.log(
-        `${
-            buf.length
-        } байт случайных данных: ${buf.toString('hex')}`
-    );
-});
-```
+      `${buf.length} bytes of random data: ${buf.toString('hex')}`);
+    ```
 
-```cjs
-// Асинхронный
-const { randomBytes } = require('node:crypto');
+=== "CJS"
 
-randomBytes(256, (err, buf) => {
-    if (err) throw err;
+    ```js
+    // Synchronous
+    const {
+      randomBytes,
+    } = require('node:crypto');
+
+    const buf = randomBytes(256);
     console.log(
-        `${
-            buf.length
-        } байт случайных данных: ${buf.toString('hex')}`
-    );
-});
-```
+      `${buf.length} bytes of random data: ${buf.toString('hex')}`);
+    ```
 
-Если функция `callback` не указана, случайные байты генерируются синхронно и возвращаются в виде [`буфера`](buffer.md). При возникновении проблем с генерацией байтов будет выдана ошибка.
+The `crypto.randomBytes()` method will not complete until there is
+sufficient entropy available.
+This should normally never take longer than a few milliseconds. The only time
+when generating the random bytes may conceivably block for a longer period of
+time is right after boot, when the whole system is still low on entropy.
 
-```mjs
-// Синхронный
-const {
-  randomBytes,
-} = await import('node:crypto');
+This API uses libuv's threadpool, which can have surprising and
+negative performance implications for some applications; see the
+[`UV_THREADPOOL_SIZE`][] documentation for more information.
 
-
-const buf = randomBytes(256);
-console.log(
-  ``${buf.length} байт случайных данных: ${buf.toString('hex')}``);
-```
-
-```cjs
-// Синхронный
-const {
-  randomBytes,
-} = require('node:crypto');
-
-
-const buf = randomBytes(256);
-console.log(
-  ``${buf.length} байт случайных данных: ${buf.toString('hex')}``);
-```
-
-Метод `crypto.randomBytes()` не завершится, пока не будет получено достаточное количество энтропии. Обычно это не должно занимать более нескольких миллисекунд. Единственное время, когда генерация случайных байтов может блокироваться на более длительный период времени, это сразу после загрузки, когда вся система еще не имеет достаточного количества энтропии.
-
-Этот API использует пул потоков libuv, что может иметь неожиданные и негативные последствия для производительности некоторых приложений; смотрите документацию [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) для получения дополнительной информации.
-
-Асинхронная версия `crypto.randomBytes()` выполняется за один запрос к пулу потоков. Чтобы минимизировать изменение длины задачи пула потоков, разделяйте большие запросы `randomBytes`, когда это делается в рамках выполнения запроса клиента.
-
-<!-- 0132.part.md -->
-
-### `crypto.randomFillSync(buffer[, offset][, size])`
-
--   `buffer` {ArrayBuffer|Buffer|TypedArray|DataView} Должен быть предоставлен. Размер предоставляемого `буфера` не должен быть больше, чем `2**31 - 1`.
--   `offset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. `size` не должен быть больше, чем `2**31 - 1`.
--   Возвращает: {ArrayBuffer|Buffer|TypedArray|DataView} Объект, переданный в качестве аргумента `buffer`.
-
-Синхронная версия [`crypto.randomFill()`](#cryptorandomfillbuffer-offset-size-callback).
-
-```mjs
-import { Buffer } from 'node:buffer';
-const { randomFillSync } = await import('node:crypto');
-
-const buf = Buffer.alloc(10);
-console.log(randomFillSync(buf).toString('hex'));
-
-randomFillSync(buf, 5);
-console.log(buf.toString('hex'));
-
-// Вышеприведенное эквивалентно следующему:
-randomFillSync(buf, 5, 5);
-console.log(buf.toString('hex'));
-```
-
-```cjs
-const { randomFillSync } = require('node:crypto');
-const { Buffer } = require('node:buffer');
-
-const buf = Buffer.alloc(10);
-console.log(randomFillSync(buf).toString('hex'));
-
-randomFillSync(buf, 5);
-console.log(buf.toString('hex'));
-
-// Вышеприведенное эквивалентно следующему:
-randomFillSync(buf, 5, 5);
-console.log(buf.toString('hex'));
-```
-
-В качестве `буфера` может быть передан любой экземпляр `ArrayBuffer`, `TypedArray` или `DataView`.
-
-```mjs
-import { Buffer } from 'node:buffer';
-const { randomFillSync } = await import('node:crypto');
-
-const a = new Uint32Array(10);
-console.log(
-    Buffer.from(
-        randomFillSync(a).buffer,
-        a.byteOffset,
-        a.byteLength
-    ).toString('hex')
-);
-
-const b = new DataView(new ArrayBuffer(10));
-console.log(
-    Buffer.from(
-        randomFillSync(b).buffer,
-        b.byteOffset,
-        b.byteLength
-    ).toString('hex')
-);
-
-const c = new ArrayBuffer(10);
-console.log(Buffer.from(randomFillSync(c)).toString('hex'));
-```
-
-```cjs
-const { randomFillSync } = require('node:crypto');
-const { Buffer } = require('node:buffer');
-
-const a = new Uint32Array(10);
-console.log(
-    Buffer.from(
-        randomFillSync(a).buffer,
-        a.byteOffset,
-        a.byteLength
-    ).toString('hex')
-);
-
-const b = new DataView(new ArrayBuffer(10));
-console.log(
-    Buffer.from(
-        randomFillSync(b).buffer,
-        b.byteOffset,
-        b.byteLength
-    ).toString('hex')
-);
-
-const c = new ArrayBuffer(10);
-console.log(Buffer.from(randomFillSync(c)).toString('hex'));
-```
-
-<!-- 0133.part.md -->
+The asynchronous version of `crypto.randomBytes()` is carried out in a single
+threadpool request. To minimize threadpool task length variation, partition
+large `randomBytes` requests when doing so as part of fulfilling a client
+request.
 
 ### `crypto.randomFill(buffer[, offset][, size], callback)`
 
--   `buffer` {ArrayBuffer|Buffer|TypedArray|DataView} Должен быть предоставлен. Размер предоставляемого `буфера` не должен быть больше, чем `2**31 - 1`.
--   `offset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. `size` не должно быть больше, чем `2**31 - 1`.
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, buf) {}`.
+<!-- YAML
+added:
+  - v7.10.0
+  - v6.13.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15231
+    description: The `buffer` argument may be any `TypedArray` or `DataView`.
+-->
 
-Эта функция аналогична [`crypto.randomBytes()`](#cryptorandombytessize-callback), но требует, чтобы первым аргументом был [`буфер`](buffer.md), который будет заполнен. Она также требует, чтобы был передан обратный вызов.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v9.0.0 | Аргументом `buffer` может быть любой `TypedArray` или `DataView`. |
 
-Если функция `callback` не передана, будет выдана ошибка.
+* `buffer` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Must be supplied. The
+  size of the provided `buffer` must not be larger than `2**31 - 1`.
+* `offset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `0`
+* `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `buffer.length - offset`. The `size` must
+  not be larger than `2**31 - 1`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, buf) {}`.
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { randomFill } = await import('node:crypto');
+This function is similar to [`crypto.randomBytes()`][] but requires the first
+argument to be a [`Buffer`][] that will be filled. It also
+requires that a callback is passed in.
 
-const buf = Buffer.alloc(10);
-randomFill(buf, (err, buf) => {
-    if (err) throw err;
+If the `callback` function is not provided, an error will be thrown.
+
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { randomFill } = await import('node:crypto');
+
+    const buf = Buffer.alloc(10);
+    randomFill(buf, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+
+    randomFill(buf, 5, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+
+    // The above is equivalent to the following:
+    randomFill(buf, 5, 5, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const { randomFill } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.alloc(10);
+    randomFill(buf, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+
+    randomFill(buf, 5, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+
+    // The above is equivalent to the following:
+    randomFill(buf, 5, 5, (err, buf) => {
+      if (err) throw err;
+      console.log(buf.toString('hex'));
+    });
+    ```
+
+Any `ArrayBuffer`, `TypedArray`, or `DataView` instance may be passed as
+`buffer`.
+
+While this includes instances of `Float32Array` and `Float64Array`, this
+function should not be used to generate random floating-point numbers. The
+result may contain `+Infinity`, `-Infinity`, and `NaN`, and even if the array
+contains finite numbers only, they are not drawn from a uniform random
+distribution and have no meaningful lower or upper bounds.
+
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { randomFill } = await import('node:crypto');
+
+    const a = new Uint32Array(10);
+    randomFill(a, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf.buffer, buf.byteOffset, buf.byteLength)
+        .toString('hex'));
+    });
+
+    const b = new DataView(new ArrayBuffer(10));
+    randomFill(b, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf.buffer, buf.byteOffset, buf.byteLength)
+        .toString('hex'));
+    });
+
+    const c = new ArrayBuffer(10);
+    randomFill(c, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf).toString('hex'));
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const { randomFill } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const a = new Uint32Array(10);
+    randomFill(a, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf.buffer, buf.byteOffset, buf.byteLength)
+        .toString('hex'));
+    });
+
+    const b = new DataView(new ArrayBuffer(10));
+    randomFill(b, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf.buffer, buf.byteOffset, buf.byteLength)
+        .toString('hex'));
+    });
+
+    const c = new ArrayBuffer(10);
+    randomFill(c, (err, buf) => {
+      if (err) throw err;
+      console.log(Buffer.from(buf).toString('hex'));
+    });
+    ```
+
+This API uses libuv's threadpool, which can have surprising and
+negative performance implications for some applications; see the
+[`UV_THREADPOOL_SIZE`][] documentation for more information.
+
+The asynchronous version of `crypto.randomFill()` is carried out in a single
+threadpool request. To minimize threadpool task length variation, partition
+large `randomFill` requests when doing so as part of fulfilling a client
+request.
+
+### `crypto.randomFillSync(buffer[, offset][, size])`
+
+<!-- YAML
+added:
+  - v7.10.0
+  - v6.13.0
+changes:
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15231
+    description: The `buffer` argument may be any `TypedArray` or `DataView`.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v9.0.0 | Аргументом `buffer` может быть любой `TypedArray` или `DataView`. |
+
+* `buffer` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Must be supplied. The
+  size of the provided `buffer` must not be larger than `2**31 - 1`.
+* `offset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `0`
+* `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `buffer.length - offset`. The `size` must
+  not be larger than `2**31 - 1`.
+* Returns: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The object passed as
+  `buffer` argument.
+
+Synchronous version of [`crypto.randomFill()`][].
+
+=== "MJS"
+
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { randomFillSync } = await import('node:crypto');
+
+    const buf = Buffer.alloc(10);
+    console.log(randomFillSync(buf).toString('hex'));
+
+    randomFillSync(buf, 5);
     console.log(buf.toString('hex'));
-});
 
-randomFill(buf, 5, (err, buf) => {
-    if (err) throw err;
+    // The above is equivalent to the following:
+    randomFillSync(buf, 5, 5);
     console.log(buf.toString('hex'));
-});
+    ```
 
-// Вышеприведенное эквивалентно следующему:
-randomFill(buf, 5, 5, (err, buf) => {
-    if (err) throw err;
+=== "CJS"
+
+    ```js
+    const { randomFillSync } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
+
+    const buf = Buffer.alloc(10);
+    console.log(randomFillSync(buf).toString('hex'));
+
+    randomFillSync(buf, 5);
     console.log(buf.toString('hex'));
-});
-```
 
-```cjs
-const { randomFill } = require('node:crypto');
-const { Buffer } = require('node:buffer');
-
-const buf = Buffer.alloc(10);
-randomFill(buf, (err, buf) => {
-    if (err) throw err;
+    // The above is equivalent to the following:
+    randomFillSync(buf, 5, 5);
     console.log(buf.toString('hex'));
-});
+    ```
 
-randomFill(buf, 5, (err, buf) => {
-    if (err) throw err;
-    console.log(buf.toString('hex'));
-});
+Any `ArrayBuffer`, `TypedArray` or `DataView` instance may be passed as
+`buffer`.
 
-// Вышеприведенное эквивалентно следующему:
-randomFill(buf, 5, 5, (err, buf) => {
-    if (err) throw err;
-    console.log(buf.toString('hex'));
-});
-```
+=== "MJS"
 
-Любой экземпляр `ArrayBuffer`, `TypedArray` или `DataView` может быть передан в качестве `buffer`.
+    ```js
+    import { Buffer } from 'node:buffer';
+    const { randomFillSync } = await import('node:crypto');
 
-Хотя сюда входят экземпляры `Float32Array` и `Float64Array`, эта функция не должна использоваться для генерации случайных чисел с плавающей точкой. Результат может содержать `+Infinity`, `-Infinity` и `NaN`, и даже если массив содержит только конечные числа, они не взяты из равномерного случайного распределения и не имеют значимых нижних или верхних границ.
+    const a = new Uint32Array(10);
+    console.log(Buffer.from(randomFillSync(a).buffer,
+                            a.byteOffset, a.byteLength).toString('hex'));
 
-```mjs
-import { Buffer } from 'node:buffer';
-const { randomFill } = await import('node:crypto');
+    const b = new DataView(new ArrayBuffer(10));
+    console.log(Buffer.from(randomFillSync(b).buffer,
+                            b.byteOffset, b.byteLength).toString('hex'));
 
-const a = new Uint32Array(10);
-randomFill(a, (err, buf) => {
-    if (err) throw err;
-    console.log(
-        Buffer.from(
-            buf.buffer,
-            buf.byteOffset,
-            buf.byteLength
-        ).toString('hex')
-    );
-});
+    const c = new ArrayBuffer(10);
+    console.log(Buffer.from(randomFillSync(c)).toString('hex'));
+    ```
 
-const b = new DataView(new ArrayBuffer(10));
-randomFill(b, (err, buf) => {
-    if (err) throw err;
-    console.log(
-        Buffer.from(
-            buf.buffer,
-            buf.byteOffset,
-            buf.byteLength
-        ).toString('hex')
-    );
-});
+=== "CJS"
 
-const c = new ArrayBuffer(10);
-randomFill(c, (err, buf) => {
-    if (err) throw err;
-    console.log(Buffer.from(buf).toString('hex'));
-});
-```
+    ```js
+    const { randomFillSync } = require('node:crypto');
+    const { Buffer } = require('node:buffer');
 
-```cjs
-const { randomFill } = require('node:crypto');
-const { Buffer } = require('node:buffer');
+    const a = new Uint32Array(10);
+    console.log(Buffer.from(randomFillSync(a).buffer,
+                            a.byteOffset, a.byteLength).toString('hex'));
 
-const a = new Uint32Array(10);
-randomFill(a, (err, buf) => {
-    if (err) throw err;
-    console.log(
-        Buffer.from(
-            buf.buffer,
-            buf.byteOffset,
-            buf.byteLength
-        ).toString('hex')
-    );
-});
+    const b = new DataView(new ArrayBuffer(10));
+    console.log(Buffer.from(randomFillSync(b).buffer,
+                            b.byteOffset, b.byteLength).toString('hex'));
 
-const b = new DataView(new ArrayBuffer(10));
-randomFill(b, (err, buf) => {
-    if (err) throw err;
-    console.log(
-        Buffer.from(
-            buf.buffer,
-            buf.byteOffset,
-            buf.byteLength
-        ).toString('hex')
-    );
-});
-
-const c = new ArrayBuffer(10);
-randomFill(c, (err, buf) => {
-    if (err) throw err;
-    console.log(Buffer.from(buf).toString('hex'));
-});
-```
-
-Этот API использует пул потоков libuv, что может иметь неожиданные и негативные последствия для производительности некоторых приложений; смотрите документацию [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) для получения дополнительной информации.
-
-Асинхронная версия `crypto.randomFill()` выполняется за один запрос к пулу потоков. Чтобы минимизировать изменение длины задачи пула потоков, разделяйте большие запросы `randomFill`, если они выполняются в рамках выполнения запроса клиента.
-
-<!-- 0134.part.md -->
+    const c = new ArrayBuffer(10);
+    console.log(Buffer.from(randomFillSync(c)).toString('hex'));
+    ```
 
 ### `crypto.randomInt([min, ]max[, callback])`
 
--   `min` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начало произвольного диапазона (включительно). **По умолчанию:** `0`.
-    -   `max` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Конец случайного диапазона (включительно).
-    -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, n) {}`.
+<!-- YAML
+added:
+  - v14.10.0
+  - v12.19.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+-->
 
-Возвращает случайное целое число `n`, такое, что `min <= n < max`. Эта реализация позволяет избежать [modulo bias](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Modulo_bias).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-Диапазон (`max - min`) должен быть меньше 2<sup>48</sup>. `min` и `max` должны быть [безопасными целыми числами](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger).
+* `min` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Start of random range (inclusive). **Default:** `0`.
+* `max` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) End of random range (exclusive).
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, n) {}`.
 
-Если функция `callback` не предоставлена, случайное целое генерируется синхронно.
+Return a random integer `n` such that `min <= n < max`.  This
+implementation avoids [modulo bias][].
 
-```mjs
-// Asynchronous
-const { randomInt } = await import('node:crypto');
+The range (`max - min`) must be less than 2<sup>48</sup>. `min` and `max` must
+be [safe integers][].
 
-randomInt(3, (err, n) => {
-    if (err) throw err;
-    console.log(
-        `Random number chosen from (0, 1, 2): ${n}`
-    );
-});
-```
+If the `callback` function is not provided, the random integer is
+generated synchronously.
 
-```cjs
-// Asynchronous
-const { randomInt } = require('node:crypto');
+=== "MJS"
 
-randomInt(3, (err, n) => {
-    if (err) throw err;
-    console.log(
-        `Случайное число, выбранное из (0, 1, 2): ${n}`
-    );
-});
-```
+    ```js
+    // Asynchronous
+    const {
+      randomInt,
+    } = await import('node:crypto');
 
-```mjs
-// Синхронный
-const { randomInt } = await import('node:crypto');
+    randomInt(3, (err, n) => {
+      if (err) throw err;
+      console.log(`Random number chosen from (0, 1, 2): ${n}`);
+    });
+    ```
 
-const n = randomInt(3);
-console.log(
-    `Случайное число, выбранное из (0, 1, 2): ${n}`
-);
-```
+=== "CJS"
 
-```cjs
-// Синхронный
-const { randomInt } = require('node:crypto');
+    ```js
+    // Asynchronous
+    const {
+      randomInt,
+    } = require('node:crypto');
 
-const n = randomInt(3);
-console.log(
-    `Случайное число, выбранное из (0, 1, 2): ${n}`
-);
-```
+    randomInt(3, (err, n) => {
+      if (err) throw err;
+      console.log(`Random number chosen from (0, 1, 2): ${n}`);
+    });
+    ```
 
-```mjs
-// С аргументом `min`
-const { randomInt } = await import('node:crypto');
+=== "MJS"
 
-const n = randomInt(1, 7);
-console.log(`Кубики брошены: ${n}`);
-```
+    ```js
+    // Synchronous
+    const {
+      randomInt,
+    } = await import('node:crypto');
 
-```cjs
-// С аргументом `min`
-const { randomInt } = require('node:crypto');
+    const n = randomInt(3);
+    console.log(`Random number chosen from (0, 1, 2): ${n}`);
+    ```
 
-const n = randomInt(1, 7);
-console.log(`Кубики брошены: ${n}`);
-```
+=== "CJS"
 
-<!-- 0135.part.md -->
+    ```js
+    // Synchronous
+    const {
+      randomInt,
+    } = require('node:crypto');
+
+    const n = randomInt(3);
+    console.log(`Random number chosen from (0, 1, 2): ${n}`);
+    ```
+
+=== "MJS"
+
+    ```js
+    // With `min` argument
+    const {
+      randomInt,
+    } = await import('node:crypto');
+
+    const n = randomInt(1, 7);
+    console.log(`The dice rolled: ${n}`);
+    ```
+
+=== "CJS"
+
+    ```js
+    // With `min` argument
+    const {
+      randomInt,
+    } = require('node:crypto');
+
+    const n = randomInt(1, 7);
+    console.log(`The dice rolled: ${n}`);
+    ```
 
 ### `crypto.randomUUID([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `disableEntropyCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию, для повышения производительности, Node.js генерирует и кэширует достаточно случайных данных для генерации до 128 случайных UUID. Чтобы генерировать UUID без использования кэша, установите `disableEntropyCache` в `true`. **По умолчанию:** `false`.
--   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added:
+  - v15.6.0
+  - v14.17.0
+-->
 
-Генерирует случайный [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) UUID версии 4. UUID генерируется с помощью криптографического генератора псевдослучайных чисел.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `disableEntropyCache` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) By default, to improve performance,
+    Node.js generates and caches enough
+    random data to generate up to 128 random UUIDs. To generate a UUID
+    without using the cache, set `disableEntropyCache` to `true`.
+    **Default:** `false`.
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0136.part.md -->
+Generates a random [RFC 4122][] version 4 UUID. The UUID is generated using a
+cryptographic pseudorandom number generator.
+
+### `crypto.randomUUIDv7([options])`
+
+<!-- YAML
+added: REPLACEME
+-->
+
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `disableEntropyCache` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) By default, to improve performance,
+    Node.js generates and caches enough
+    random data to generate up to 128 random UUIDs. To generate a UUID
+    without using the cache, set `disableEntropyCache` to `true`.
+    **Default:** `false`.
+* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+
+Generates a random [RFC 9562][] version 7 UUID. The UUID contains a millisecond
+precision Unix timestamp in the most significant 48 bits, followed by
+cryptographically secure random bits for the remaining fields, making it
+suitable for use as a database key with time-based sorting. The embedded
+timestamp relies on a non-monotonic clock and is not guaranteed to be strictly
+increasing.
 
 ### `crypto.scrypt(password, salt, keylen[, options], callback)`
 
--   `пароль` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `соль` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр стоимости процессора/памяти. Должен быть на целых два больше единицы. **По умолчанию:** `16384`.
-    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр размера блока. **По умолчанию:** `8`.
-    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр распараллеливания. **По умолчанию:** `1`.
-    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `cost`. Может быть указан только один из них.
-    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `blockSize`. Может быть указано только одно из обоих.
-    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `распараллеливания`. Может быть указано только одно из обоих значений.
-    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Верхняя граница памяти. Ошибкой будет, если (приблизительно) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `derivedKey` [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v10.5.0
+changes:
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The password and salt arguments can also be ArrayBuffer
+                 instances.
+  - version:
+     - v12.8.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/28799
+    description: The `maxmem` value can now be any safe integer.
+  - version: v10.9.0
+    pr-url: https://github.com/nodejs/node/pull/21525
+    description: The `cost`, `blockSize` and `parallelization` option names
+                 have been added.
+-->
 
-Предоставляет асинхронную реализацию [scrypt](https://en.wikipedia.org/wiki/Scrypt). Scrypt - это функция получения ключа на основе пароля, которая спроектирована так, чтобы быть дорогой в вычислительном плане и по памяти, чтобы сделать атаки "грубой силы" невыгодными.
+Добавлено в: v10.5.0
 
-Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v15.0.0 | Аргументы пароля и соли также могут быть экземплярами ArrayBuffer. |
+    | v12.8.0, v10.17.0 | Значение `maxmem` теперь может быть любым безопасным целым числом. |
+    | v10.9.0 | Были добавлены имена опций Cost, BlockSize и Parallelization. |
 
-При передаче строк для `password` или `salt` следует учитывать [предостережения при использовании строк в качестве входных данных для криптографических API](#using-strings-as-inputs-to-cryptographic-apis).
+* `password` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `cost` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) CPU/memory cost parameter. Must be a power of two greater
+    than one. **Default:** `16384`.
+  * `blockSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Block size parameter. **Default:** `8`.
+  * `parallelization` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Parallelization parameter. **Default:** `1`.
+  * `N` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `cost`. Only one of both may be specified.
+  * `r` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `blockSize`. Only one of both may be specified.
+  * `p` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `parallelization`. Only one of both may be specified.
+  * `maxmem` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Memory upper bound. It is an error when (approximately)
+    `128 * N * r > maxmem`. **Default:** `32 * 1024 * 1024`.
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `derivedKey` [<Buffer>](buffer.md#buffer)
 
-Функция `callback` вызывается с двумя аргументами: `err` и `derivedKey`. `err` - это объект исключения, если выведение ключа не удалось, в противном случае `err` - это `null`. `derivedKey` передается обратному вызову как [`Buffer`](buffer.md).
+Provides an asynchronous [scrypt][] implementation. Scrypt is a password-based
+key derivation function that is designed to be expensive computationally and
+memory-wise in order to make brute-force attacks unrewarding.
 
-Исключение возникает, если любой из входных аргументов содержит недопустимые значения или типы.
+The `salt` should be as unique as possible. It is recommended that a salt is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
 
-```mjs
-const { scrypt } = await import('node:crypto');
+When passing strings for `password` or `salt`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
 
-// Использование заводских значений по умолчанию.
-scrypt('password', 'salt', 64, (err, derivedKey) => {
-    if (err) throw err;
-    console.log(derivedKey.toString('hex')); // '3745e48...08d59ae'
-});
-// Использование пользовательского параметра N. Должен быть степенью двойки.
-scrypt(
-    'password',
-    'salt',
-    64,
-    { N: 1024 },
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey.toString('hex')); // '3745e48...aa39b34'
-    }
-);
-```
+The `callback` function is called with two arguments: `err` and `derivedKey`.
+`err` is an exception object when key derivation fails, otherwise `err` is
+`null`. `derivedKey` is passed to the callback as a [`Buffer`][].
 
-```cjs
-const { scrypt } = require('node:crypto');
+An exception is thrown when any of the input arguments specify invalid values
+or types.
 
-// Использование заводских настроек по умолчанию.
-scrypt('password', 'salt', 64, (err, derivedKey) => {
-    if (err) throw err;
-    console.log(derivedKey.toString('hex')); // '3745e48...08d59ae'
-});
-// Использование пользовательского параметра N. Должен быть степенью двойки.
-scrypt(
-    'password',
-    'salt',
-    64,
-    { N: 1024 },
-    (err, derivedKey) => {
-        if (err) throw err;
-        console.log(derivedKey.toString('hex')); // '3745e48...aa39b34'
-    }
-);
-```
+=== "MJS"
 
-<!-- 0137.part.md -->
+    ```js
+    const {
+      scrypt,
+    } = await import('node:crypto');
+
+    // Using the factory defaults.
+    scrypt('password', 'salt', 64, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+    });
+    // Using a custom N parameter. Must be a power of two.
+    scrypt('password', 'salt', 64, { N: 1024 }, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...aa39b34'
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const {
+      scrypt,
+    } = require('node:crypto');
+
+    // Using the factory defaults.
+    scrypt('password', 'salt', 64, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+    });
+    // Using a custom N parameter. Must be a power of two.
+    scrypt('password', 'salt', 64, { N: 1024 }, (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));  // '3745e48...aa39b34'
+    });
+    ```
 
 ### `crypto.scryptSync(password, salt, keylen[, options])`
 
--   `пароль` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `соль` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр стоимости процессора/памяти. Должен быть на целых два больше единицы. **По умолчанию:** `16384`.
-    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр размера блока. **По умолчанию:** `8`.
-    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр распараллеливания. **По умолчанию:** `1`.
-    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `cost`. Может быть указан только один из них.
-    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `blockSize`. Может быть указано только одно из обоих.
-    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `распараллеливания`. Может быть указано только одно из обоих значений.
-    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Верхняя граница памяти. Ошибкой будет, если (приблизительно) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
--   Возвращает: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v10.5.0
+changes:
+  - version:
+     - v12.8.0
+     - v10.17.0
+    pr-url: https://github.com/nodejs/node/pull/28799
+    description: The `maxmem` value can now be any safe integer.
+  - version: v10.9.0
+    pr-url: https://github.com/nodejs/node/pull/21525
+    description: The `cost`, `blockSize` and `parallelization` option names
+                 have been added.
+-->
 
-Предоставляет синхронную реализацию [scrypt](https://en.wikipedia.org/wiki/Scrypt). Scrypt - это функция получения ключа на основе пароля, которая спроектирована так, чтобы быть дорогой в вычислительном плане и по памяти, чтобы сделать атаки "грубой силы" невыгодными.
+Добавлено в: v10.5.0
 
-Соль" должна быть настолько уникальной, насколько это возможно. Рекомендуется, чтобы соль была случайной и имела длину не менее 16 байт. Подробности см. в [NIST SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v12.8.0, v10.17.0 | Значение `maxmem` теперь может быть любым безопасным целым числом. |
+    | v10.9.0 | Были добавлены имена опций Cost, BlockSize и Parallelization. |
 
-При передаче строк для `password` или `salt` следует учитывать [предостережения при использовании строк в качестве входов в криптографические API](#using-strings-as-inputs-to-cryptographic-apis).
+* `password` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `salt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `keylen` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `cost` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) CPU/memory cost parameter. Must be a power of two greater
+    than one. **Default:** `16384`.
+  * `blockSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Block size parameter. **Default:** `8`.
+  * `parallelization` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Parallelization parameter. **Default:** `1`.
+  * `N` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `cost`. Only one of both may be specified.
+  * `r` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `blockSize`. Only one of both may be specified.
+  * `p` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `parallelization`. Only one of both may be specified.
+  * `maxmem` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Memory upper bound. It is an error when (approximately)
+    `128 * N * r > maxmem`. **Default:** `32 * 1024 * 1024`.
+* Returns: [<Buffer>](buffer.md#buffer)
 
-При неудачном выводе ключа возникает исключение, в противном случае полученный ключ возвращается как [`буфер`](buffer.md).
+Provides a synchronous [scrypt][] implementation. Scrypt is a password-based
+key derivation function that is designed to be expensive computationally and
+memory-wise in order to make brute-force attacks unrewarding.
 
-Исключение возникает, если в любом из входных аргументов указаны недопустимые значения или типы.
+The `salt` should be as unique as possible. It is recommended that a salt is
+random and at least 16 bytes long. See [NIST SP 800-132][] for details.
 
-```mjs
-const { scryptSync } = await import('node:crypto');
-// Использование заводских значений по умолчанию.
+When passing strings for `password` or `salt`, please consider
+[caveats when using strings as inputs to cryptographic APIs][].
 
-const key1 = scryptSync('password', 'salt', 64);
-console.log(key1.toString('hex')); // '3745e48...08d59ae'
-// Использование пользовательского параметра N. Должен быть степенью двойки.
-const key2 = scryptSync('password', 'salt', 64, {
-    N: 1024,
-});
-console.log(key2.toString('hex')); // '3745e48...aa39b34'
-```
+An exception is thrown when key derivation fails, otherwise the derived key is
+returned as a [`Buffer`][].
 
-```cjs
-const { scryptSync } = require('node:crypto');
-// Использование заводских настроек по умолчанию.
+An exception is thrown when any of the input arguments specify invalid values
+or types.
 
-const key1 = scryptSync('password', 'salt', 64);
-console.log(key1.toString('hex')); // '3745e48...08d59ae'
-// Использование пользовательского параметра N. Должен быть степенью двойки.
-const key2 = scryptSync('password', 'salt', 64, {
-    N: 1024,
-});
-console.log(key2.toString('hex')); // '3745e48...aa39b34'
-```
+=== "MJS"
 
-<!-- 0138.part.md -->
+    ```js
+    const {
+      scryptSync,
+    } = await import('node:crypto');
+    // Using the factory defaults.
 
-### `crypto.secureHeapUsed()`.
+    const key1 = scryptSync('password', 'salt', 64);
+    console.log(key1.toString('hex'));  // '3745e48...08d59ae'
+    // Using a custom N parameter. Must be a power of two.
+    const key2 = scryptSync('password', 'salt', 64, { N: 1024 });
+    console.log(key2.toString('hex'));  // '3745e48...aa39b34'
+    ```
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `total` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий размер выделенной безопасной кучи, указанный с помощью флага командной строки `--secure-heap=n`.
-    -   `min` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальное выделение из безопасной кучи, как указано с помощью флага командной строки `--secure-heap-min`.
-    -   `used` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество байт, выделенных в данный момент из безопасной кучи.
-    -   `utilization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Рассчитанное отношение `использованных` к `общему количеству` выделенных байт.
+=== "CJS"
 
-<!-- 0139.part.md -->
+    ```js
+    const {
+      scryptSync,
+    } = require('node:crypto');
+    // Using the factory defaults.
+
+    const key1 = scryptSync('password', 'salt', 64);
+    console.log(key1.toString('hex'));  // '3745e48...08d59ae'
+    // Using a custom N parameter. Must be a power of two.
+    const key2 = scryptSync('password', 'salt', 64, { N: 1024 });
+    console.log(key2.toString('hex'));  // '3745e48...aa39b34'
+    ```
+
+### `crypto.secureHeapUsed()`
+
+<!-- YAML
+added: v15.6.0
+-->
+
+* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `total` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total allocated secure heap size as specified
+    using the `--secure-heap=n` command-line flag.
+  * `min` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The minimum allocation from the secure heap as
+    specified using the `--secure-heap-min` command-line flag.
+  * `used` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of bytes currently allocated from
+    the secure heap.
+  * `utilization` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The calculated ratio of `used` to `total`
+    allocated bytes.
 
 ### `crypto.setEngine(engine[, flags])`
 
--   `двигатель` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `flags` {crypto.constants} **По умолчанию:** `crypto.constants.ENGINE_METHOD_ALL`.
+<!-- YAML
+added: v0.11.11
+changes:
+  - version:
+    - v22.4.0
+    - v20.16.0
+    pr-url: https://github.com/nodejs/node/pull/53329
+    description: Custom engine support in OpenSSL 3 is deprecated.
+-->
 
-Загружает и устанавливает `engine` для некоторых или всех функций OpenSSL (выбранных флагами).
+Добавлено в: v0.11.11
 
-`engine` может быть либо идентификатором, либо путем к общей библиотеке движка.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.4.0, v20.16.0 | Поддержка специального механизма в OpenSSL 3 устарела. |
 
-Необязательный аргумент `flags` по умолчанию использует `ENGINE_METHOD_ALL`. `flags` - это битовое поле, принимающее один из следующих флагов (определенных в `crypto.constants`) или их смесь:
+* `engine` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `flags` {crypto.constants} **Default:** `crypto.constants.ENGINE_METHOD_ALL`
 
--   `crypto.constants.ENGINE_METHOD_RSA`
--   `crypto.constants.ENGINE_METHOD_DSA`
--   `crypto.constants.ENGINE_METHOD_DH`
--   `crypto.constants.ENGINE_METHOD_RAND`
--   `crypto.constants.ENGINE_METHOD_EC`
--   `crypto.constants.ENGINE_METHOD_CIPHERS`
--   `crypto.constants.ENGINE_METHOD_DIGESTS`
--   `crypto.constants.ENGINE_METHOD_PKEY_METHS`
--   `crypto.constants.ENGINE_METHOD_PKEY_ASN1_METHS`
--   `crypto.constants.ENGINE_METHOD_ALL`
--   `crypto.constants.ENGINE_METHOD_NONE`
+Load and set the `engine` for some or all OpenSSL functions (selected by flags).
+Support for custom engines in OpenSSL is deprecated from OpenSSL 3.
 
-<!-- 0140.part.md -->
+`engine` could be either an id or a path to the engine's shared library.
+
+The optional `flags` argument uses `ENGINE_METHOD_ALL` by default. The `flags`
+is a bit field taking one of or a mix of the following flags (defined in
+`crypto.constants`):
+
+* `crypto.constants.ENGINE_METHOD_RSA`
+* `crypto.constants.ENGINE_METHOD_DSA`
+* `crypto.constants.ENGINE_METHOD_DH`
+* `crypto.constants.ENGINE_METHOD_RAND`
+* `crypto.constants.ENGINE_METHOD_EC`
+* `crypto.constants.ENGINE_METHOD_CIPHERS`
+* `crypto.constants.ENGINE_METHOD_DIGESTS`
+* `crypto.constants.ENGINE_METHOD_PKEY_METHS`
+* `crypto.constants.ENGINE_METHOD_PKEY_ASN1_METHS`
+* `crypto.constants.ENGINE_METHOD_ALL`
+* `crypto.constants.ENGINE_METHOD_NONE`
 
 ### `crypto.setFips(bool)`
 
--   `bool` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для включения режима FIPS.
+<!-- YAML
+added: v10.0.0
+-->
 
-Включает FIPS-совместимый криптопровайдер в сборке Node.js с поддержкой FIPS. Выбрасывает ошибку, если режим FIPS недоступен.
+* `bool` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to enable FIPS mode.
 
-<!-- 0141.part.md -->
+Enables the FIPS compliant crypto provider in a FIPS-enabled Node.js build.
+Throws an error if FIPS mode is not available.
 
 ### `crypto.sign(algorithm, data, key[, callback])`
 
--   `алгоритм` {string | null | undefined}
--   `данные` {ArrayBuffer|Buffer|TypedArray|DataView}
--   `key` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `signature` [`<Buffer>`](buffer.md#buffer)
--   Возвращает: [`<Buffer>`](buffer.md#buffer), если функция `callback` не предоставлена.
+<!-- YAML
+added: v12.0.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62474
+    description: Add support for Ed25519 context parameter.
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59570
+    description: Add support for ML-DSA, Ed448, and SLH-DSA context parameter.
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59537
+    description: Add support for SLH-DSA signing.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA signing.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v15.12.0
+    pr-url: https://github.com/nodejs/node/pull/37500
+    description: Optional callback argument added.
+  - version:
+     - v13.2.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/29292
+    description: This function now supports IEEE-P1363 DSA and ECDSA signatures.
+-->
 
-Вычисляет и возвращает подпись для `data`, используя заданный закрытый ключ и алгоритм. Если `algorithm` равен `null` или `undefined`, то алгоритм зависит от типа ключа (особенно Ed25519 и Ed448).
+Добавлено в: v12.0.0
 
-Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `key` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey). Если это объект, могут быть переданы следующие дополнительные свойства:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Добавить поддержку параметра контекста Ed25519. |
+    | v24.8.0 | Добавьте поддержку параметров контекста ML-DSA, Ed448 и SLH-DSA. |
+    | v24.8.0 | Добавьте поддержку подписи SLH-DSA. |
+    | v24.6.0 | Добавьте поддержку подписи ML-DSA. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v15.12.0 | Добавлен необязательный аргумент обратного вызова. |
+    | v13.2.0, v12.16.0 | Эта функция теперь поддерживает подписи IEEE-P1363 DSA и ECDSA. |
 
--   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Для DSA и ECDSA этот параметр определяет формат генерируемой подписи. Он может быть одним из следующих:
+<!--lint disable maximum-line-length remark-lint-->
 
-    -   `'der` (по умолчанию): DER-кодирование ASN.1 структуры подписи в кодировке `(r, s)`.
-    -   `'ieee-p1363'`: Формат подписи `r || s`, предложенный в IEEE-P1363.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined
+* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `signature` [<Buffer>](buffer.md#buffer)
+* Returns: [<Buffer>](buffer.md#buffer) if the `callback` function is not provided.
 
--   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное значение прокладки для RSA, одно из следующих:
+<!--lint enable maximum-line-length remark-lint-->
 
-    -   `crypto.constants.RSA_PKCS1_PADDING` (по умолчанию)
-    -   `crypto.constants.RSA_PKCS1_PSS_PADDING`
+Calculates and returns the signature for `data` using the given private key and
+algorithm. If `algorithm` is `null` or `undefined`, then the algorithm is
+dependent upon the key type.
 
-    `RSA_PKCS1_PSS_PADDING` будет использовать MGF1 с той же хэш-функцией, которая используется для подписи сообщения, как указано в разделе 3.1 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
+`algorithm` is required to be `null` or `undefined` for Ed25519, Ed448, and
+ML-DSA.
 
--   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина соли для случая, когда используется `RSA_PKCS1_PSS_PADDING`. Специальное значение `crypto.constants.RSA_PSS_SALTLEN_DIGEST` устанавливает длину соли в размер дайджеста, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (по умолчанию) - в максимально допустимое значение.
+If `key` is not a [`KeyObject`][], this function behaves as if `key` had been
+passed to [`crypto.createPrivateKey()`][]. If it is an object, the following
+additional properties can be passed:
 
-Если указана функция `callback`, эта функция использует пул потоков libuv.
+* `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
+  format of the generated signature. It can be one of the following:
+  * `'der'` (default): DER-encoded ASN.1 signature structure encoding `(r, s)`.
+  * `'ieee-p1363'`: Signature format `r || s` as proposed in IEEE-P1363.
+* `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional padding value for RSA, one of the following:
 
-<!-- 0142.part.md -->
+  * `crypto.constants.RSA_PKCS1_PADDING` (default)
+  * `crypto.constants.RSA_PKCS1_PSS_PADDING`
+
+  `RSA_PKCS1_PSS_PADDING` will use MGF1 with the same hash function
+  used to sign the message as specified in section 3.1 of [RFC 4055][].
+* `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Salt length for when padding is
+  `RSA_PKCS1_PSS_PADDING`. The special value
+  `crypto.constants.RSA_PSS_SALTLEN_DIGEST` sets the salt length to the digest
+  size, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (default) sets it to the
+  maximum permissible value.
+* `context` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) For Ed25519[^openssl32]
+  (using Ed25519ctx from [RFC 8032][]), Ed448, ML-DSA, and SLH-DSA,
+  this option specifies the optional context to differentiate signatures
+  generated for different purposes with the same key.
+
+If the `callback` function is provided this function uses libuv's threadpool.
 
 ### `crypto.subtle`
 
--   Тип: {SubtleCrypto}
+<!-- YAML
+added: v17.4.0
+-->
 
-Удобный псевдоним для [`crypto.webcrypto.subtle`](webcrypto.md#class-subtlecrypto).
+* Type: [<SubtleCrypto>](webcrypto.md)
 
-<!-- 0143.part.md -->
+A convenient alias for [`crypto.webcrypto.subtle`][].
 
 ### `crypto.timingSafeEqual(a, b)`
 
--   `a` {ArrayBuffer|Buffer|TypedArray|DataView}
--   `b` {ArrayBuffer|Buffer|TypedArray|DataView}
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v6.6.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The a and b arguments can also be ArrayBuffer.
+-->
 
-Эта функция сравнивает базовые байты, представляющие заданные экземпляры `ArrayBuffer`, `TypedArray` или `DataView`, используя алгоритм постоянного времени.
+Добавлено в: v6.6.0
 
-Эта функция не передает информацию о времени, которая позволила бы злоумышленнику угадать одно из значений. Она подходит для сравнения дайджестов HMAC или секретных значений, таких как аутентификационные cookies или [capability urls](https://www.w3.org/TR/capability-urls/).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Аргументы a и b также могут быть ArrayBuffer. |
 
-`a` и `b` должны быть `Buffer`, `TypedArray` или `DataView`, и они должны иметь одинаковую длину байта. Если `a` и `b` имеют разную длину байта, будет выдана ошибка.
+* `a` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `b` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Если хотя бы один из `a` и `b` является `TypedArray` с более чем одним байтом на запись, например `Uint16Array`, результат будет вычислен с использованием порядка байтов платформы.
+This function compares the underlying bytes that represent the given
+`ArrayBuffer`, `TypedArray`, or `DataView` instances using a constant-time
+algorithm.
 
-Когда оба входа являются `Float32Array` или `Float64Array`, эта функция может вернуть неожиданные результаты из-за кодировки IEEE 754 для чисел с плавающей точкой. В частности, ни `x === y`, ни `Object.is(x, y)` не означают, что байтовые представления двух чисел с плавающей точкой `x` и `y` равны.
+This function does not leak timing information that
+would allow an attacker to guess one of the values. This is suitable for
+comparing HMAC digests or secret values like authentication cookies or
+[capability urls](https://www.w3.org/TR/capability-urls/).
 
-Использование `crypto.timingSafeEqual` не гарантирует, что _окружающий_ код безопасен по времени. Следует позаботиться о том, чтобы окружающий код не создавал уязвимостей во времени.
+`a` and `b` must both be `Buffer`s, `TypedArray`s, or `DataView`s, and they
+must have the same byte length. An error is thrown if `a` and `b` have
+different byte lengths.
 
-<!-- 0144.part.md -->
+If at least one of `a` and `b` is a `TypedArray` with more than one byte per
+entry, such as `Uint16Array`, the result will be computed using the platform
+byte order.
+
+<strong class="critical">When both of the inputs are `Float32Array`s or
+`Float64Array`s, this function might return unexpected results due to IEEE 754
+encoding of floating-point numbers. In particular, neither `x === y` nor
+`Object.is(x, y)` implies that the byte representations of two floating-point
+numbers `x` and `y` are equal.</strong>
+
+Use of `crypto.timingSafeEqual` does not guarantee that the _surrounding_ code
+is timing-safe. Care should be taken to ensure that the surrounding code does
+not introduce timing vulnerabilities.
 
 ### `crypto.verify(algorithm, data, key, signature[, callback])`
 
--   `алгоритм` {string|null|undefined}
--   `данные` {ArrayBuffer| Buffer|TypedArray|DataView}
--   `ключ` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `signature` {ArrayBuffer|Buffer|TypedArray|DataView}
--   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `result` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` или `false` в зависимости от достоверности подписи для данных и открытого ключа, если функция `callback` не предоставлена.
+<!-- YAML
+added: v12.0.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/62474
+    description: Add support for Ed25519 context parameter.
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59570
+    description: Add support for ML-DSA, Ed448, and SLH-DSA context parameter.
+  - version: v24.8.0
+    pr-url: https://github.com/nodejs/node/pull/59537
+    description: Add support for SLH-DSA signature verification.
+  - version: v24.6.0
+    pr-url: https://github.com/nodejs/node/pull/59259
+    description: Add support for ML-DSA signature verification.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41678
+    description: Passing an invalid callback to the `callback` argument
+                 now throws `ERR_INVALID_ARG_TYPE` instead of
+                 `ERR_INVALID_CALLBACK`.
+  - version: v15.12.0
+    pr-url: https://github.com/nodejs/node/pull/37500
+    description: Optional callback argument added.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35093
+    description: The data, key, and signature arguments can also be ArrayBuffer.
+  - version:
+     - v13.2.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/29292
+    description: This function now supports IEEE-P1363 DSA and ECDSA signatures.
+-->
 
-Проверяет заданную подпись для `данных`, используя заданный ключ и алгоритм. Если `algorithm` равен `null` или `undefined`, то алгоритм зависит от типа ключа (особенно Ed25519 и Ed448).
+Добавлено в: v12.0.0
 
-Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведет себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, могут быть переданы следующие дополнительные свойства:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Добавить поддержку параметра контекста Ed25519. |
+    | v24.8.0 | Добавьте поддержку параметров контекста ML-DSA, Ed448 и SLH-DSA. |
+    | v24.8.0 | Добавьте поддержку проверки подписи SLH-DSA. |
+    | v24.6.0 | Добавьте поддержку проверки подписи ML-DSA. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v15.12.0 | Добавлен необязательный аргумент обратного вызова. |
+    | v15.0.0 | Аргументы данных, ключа и подписи также могут быть ArrayBuffer. |
+    | v13.2.0, v12.16.0 | Эта функция теперь поддерживает подписи IEEE-P1363 DSA и ECDSA. |
 
--   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Для DSA и ECDSA этот параметр определяет формат подписи. Он может быть одним из следующих:
+<!--lint disable maximum-line-length remark-lint-->
 
-    -   `'der` (по умолчанию): DER-кодирование ASN.1 структуры подписи в кодировке `(r, s)`.
-    -   `'ieee-p1363'`: Формат подписи `r || s`, предложенный в IEEE-P1363.
+* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined
+* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `key` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<KeyObject>](#class-keyobject) | [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `signature` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `result` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` or `false` depending on the validity of the
+  signature for the data and public key if the `callback` function is not
+  provided.
 
--   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное значение прокладки для RSA, одно из следующих:
+<!--lint enable maximum-line-length remark-lint-->
 
-    -   `crypto.constants.RSA_PKCS1_PADDING` (по умолчанию)
-    -   `crypto.constants.RSA_PKCS1_PSS_PADDING`
+Verifies the given signature for `data` using the given key and algorithm. If
+`algorithm` is `null` or `undefined`, then the algorithm is dependent upon the
+key type.
 
-    `RSA_PKCS1_PSS_PADDING` будет использовать MGF1 с той же хэш-функцией, которая используется для подписи сообщения, как указано в разделе 3.1 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
+`algorithm` is required to be `null` or `undefined` for Ed25519, Ed448, and
+ML-DSA.
 
--   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина соли для случая, когда используется `RSA_PKCS1_PSS_PADDING`. Специальное значение `crypto.constants.RSA_PSS_SALTLEN_DIGEST` устанавливает длину соли в размер дайджеста, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (по умолчанию) - в максимально допустимое значение.
+If `key` is not a [`KeyObject`][], this function behaves as if `key` had been
+passed to [`crypto.createPublicKey()`][]. If it is an object, the following
+additional properties can be passed:
 
-Аргумент `signature` - это ранее вычисленная подпись для `данных`.
+* `dsaEncoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
+  format of the signature. It can be one of the following:
+  * `'der'` (default): DER-encoded ASN.1 signature structure encoding `(r, s)`.
+  * `'ieee-p1363'`: Signature format `r || s` as proposed in IEEE-P1363.
+* `padding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional padding value for RSA, one of the following:
 
-Поскольку открытые ключи могут быть получены из закрытых ключей, для `key` может быть передан как закрытый, так и открытый ключ.
+  * `crypto.constants.RSA_PKCS1_PADDING` (default)
+  * `crypto.constants.RSA_PKCS1_PSS_PADDING`
 
-Если указана функция `callback`, эта функция использует пул потоков libuv.
+  `RSA_PKCS1_PSS_PADDING` will use MGF1 with the same hash function
+  used to sign the message as specified in section 3.1 of [RFC 4055][].
+* `saltLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Salt length for when padding is
+  `RSA_PKCS1_PSS_PADDING`. The special value
+  `crypto.constants.RSA_PSS_SALTLEN_DIGEST` sets the salt length to the digest
+  size, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (default) sets it to the
+  maximum permissible value.
+* `context` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) For Ed25519[^openssl32]
+  (using Ed25519ctx from [RFC 8032][]), Ed448, ML-DSA, and SLH-DSA,
+  this option specifies the optional context to differentiate signatures
+  generated for different purposes with the same key.
 
-<!-- 0145.part.md -->
+The `signature` argument is the previously calculated signature for the `data`.
+
+Because public keys can be derived from private keys, a private key or a public
+key may be passed for `key`.
+
+If the `callback` function is provided this function uses libuv's threadpool.
 
 ### `crypto.webcrypto`
 
-Тип: {Crypto} Реализация стандарта Web Crypto API.
+<!-- YAML
+added: v15.0.0
+-->
 
-Подробности см. в документации [Web Crypto API](webcrypto.md).
+Type: [<Crypto>](crypto.md) An implementation of the Web Crypto API standard.
 
-<!-- 0146.part.md -->
+See the [Web Crypto API documentation][] for details.
 
-## Примечания
+## Notes
 
-<!-- 0147.part.md -->
+### Using strings as inputs to cryptographic APIs
 
-### Использование строк в качестве входов в криптографические API
+For historical reasons, many cryptographic APIs provided by Node.js accept
+strings as inputs where the underlying cryptographic algorithm works on byte
+sequences. These instances include plaintexts, ciphertexts, symmetric keys,
+initialization vectors, passphrases, salts, authentication tags,
+and additional authenticated data.
 
-По историческим причинам многие криптографические API, предоставляемые Node.js, принимают строки в качестве входных данных, где основной криптографический алгоритм работает с последовательностями байтов. К таким экземплярам относятся открытые тексты, шифротексты, симметричные ключи, векторы инициализации, парольные фразы, соли, метки аутентификации и дополнительные аутентифицированные данные.
+When passing strings to cryptographic APIs, consider the following factors.
 
-При передаче строк в криптографические API следует учитывать следующие факторы.
+* Not all byte sequences are valid UTF-8 strings. Therefore, when a byte
+  sequence of length `n` is derived from a string, its entropy is generally
+  lower than the entropy of a random or pseudorandom `n` byte sequence.
+  For example, no UTF-8 string will result in the byte sequence `c0 af`. Secret
+  keys should almost exclusively be random or pseudorandom byte sequences.
+* Similarly, when converting random or pseudorandom byte sequences to UTF-8
+  strings, subsequences that do not represent valid code points may be replaced
+  by the Unicode replacement character (`U+FFFD`). The byte representation of
+  the resulting Unicode string may, therefore, not be equal to the byte sequence
+  that the string was created from.
 
--   Не все последовательности байтов являются допустимыми строками UTF-8. Поэтому, когда из строки получается последовательность байтов длиной `n`, ее энтропия обычно ниже, чем энтропия случайной или псевдослучайной последовательности байтов длиной `n`. Например, из строки UTF-8 не получится последовательность байтов `c0 af`. Секретные ключи должны быть почти исключительно случайными или псевдослучайными последовательностями байтов.
+  ```js
+  const original = [0xc0, 0xaf];
+  const bytesAsString = Buffer.from(original).toString('utf8');
+  const stringAsBytes = Buffer.from(bytesAsString, 'utf8');
+  console.log(stringAsBytes);
+  // Prints '<Buffer ef bf bd ef bf bd>'.
+  ```
 
--   Аналогично, при преобразовании случайных или псевдослучайных последовательностей байтов в строки UTF-8, последовательности, не представляющие допустимые кодовые точки, могут быть заменены символом замены Unicode (`U+FFFD`). Поэтому байтовое представление результирующей строки Unicode может быть не равно последовательности байтов, из которой она была создана.
+  The outputs of ciphers, hash functions, signature algorithms, and key
+  derivation functions are pseudorandom byte sequences and should not be
+  used as Unicode strings.
+* When strings are obtained from user input, some Unicode characters can be
+  represented in multiple equivalent ways that result in different byte
+  sequences. For example, when passing a user passphrase to a key derivation
+  function, such as PBKDF2 or scrypt, the result of the key derivation function
+  depends on whether the string uses composed or decomposed characters. Node.js
+  does not normalize character representations. Developers should consider using
+  [`String.prototype.normalize()`][] on user inputs before passing them to
+  cryptographic APIs.
+
+### Legacy streams API (prior to Node.js 0.10)
+
+The Crypto module was added to Node.js before there was the concept of a
+unified Stream API, and before there were [`Buffer`][] objects for handling
+binary data. As such, many `crypto` classes have methods not
+typically found on other Node.js classes that implement the [streams][stream]
+API (e.g. `update()`, `final()`, or `digest()`). Also, many methods accepted
+and returned `'latin1'` encoded strings by default rather than `Buffer`s. This
+default was changed in Node.js 0.9.3 to use [`Buffer`][] objects by default
+instead.
+
+### Support for weak or compromised algorithms
+
+The `node:crypto` module still supports some algorithms which are already
+compromised and are not recommended for use. The API also allows
+the use of ciphers and hashes with a small key size that are too weak for safe
+use.
+
+Users should take full responsibility for selecting the crypto
+algorithm and key size according to their security requirements.
+
+Based on the recommendations of [NIST SP 800-131A][]:
+
+* MD5 and SHA-1 are no longer acceptable where collision resistance is
+  required such as digital signatures.
+* The key used with RSA, DSA, and DH algorithms is recommended to have
+  at least 2048 bits and that of the curve of ECDSA and ECDH at least
+  224 bits, to be safe to use for several years.
+* The DH groups of `modp1`, `modp2` and `modp5` have a key size
+  smaller than 2048 bits and are not recommended.
+
+See the reference for other recommendations and details.
+
+Some algorithms that have known weaknesses and are of little relevance in
+practice are only available through the [legacy provider][], which is not
+enabled by default.
+
+### CCM mode
+
+CCM is one of the supported [AEAD algorithms][]. Applications which use this
+mode must adhere to certain restrictions when using the cipher API:
+
+* The authentication tag length must be specified during cipher creation by
+  setting the `authTagLength` option and must be one of 4, 6, 8, 10, 12, 14 or
+  16 bytes.
+* The length of the initialization vector (nonce) `N` must be between 7 and 13
+  bytes (`7 ≤ N ≤ 13`).
+* The length of the plaintext is limited to `2 ** (8 * (15 - N))` bytes.
+* When decrypting, the authentication tag must be set via `setAuthTag()` before
+  calling `update()`.
+  Otherwise, decryption will fail and `final()` will throw an error in
+  compliance with section 2.6 of [RFC 3610][].
+* Using stream methods such as `write(data)`, `end(data)` or `pipe()` in CCM
+  mode might fail as CCM cannot handle more than one chunk of data per instance.
+* When passing additional authenticated data (AAD), the length of the actual
+  message in bytes must be passed to `setAAD()` via the `plaintextLength`
+  option.
+  Many crypto libraries include the authentication tag in the ciphertext,
+  which means that they produce ciphertexts of the length
+  `plaintextLength + authTagLength`. Node.js does not include the authentication
+  tag, so the ciphertext length is always `plaintextLength`.
+  This is not necessary if no AAD is used.
+* As CCM processes the whole message at once, `update()` must be called exactly
+  once.
+* Even though calling `update()` is sufficient to encrypt/decrypt the message,
+  applications _must_ call `final()` to compute or verify the
+  authentication tag.
+
+=== "MJS"
 
     ```js
-    const original = [0xc0, 0xaf];
-    const bytesAsString = Buffer.from(original).toString(
-        'utf8'
-    );
-    const stringAsBytes = Buffer.from(
-        bytesAsString,
-        'utf8'
-    );
-    console.log(stringAsBytes);
-    // Печатает '<Буфер ef bf bd ef bf bd>'.
+    import { Buffer } from 'node:buffer';
+    const {
+      createCipheriv,
+      createDecipheriv,
+      randomBytes,
+    } = await import('node:crypto');
+
+    const key = 'keykeykeykeykeykeykeykey';
+    const nonce = randomBytes(12);
+
+    const aad = Buffer.from('0123456789', 'hex');
+
+    const cipher = createCipheriv('aes-192-ccm', key, nonce, {
+      authTagLength: 16,
+    });
+    const plaintext = 'Hello world';
+    cipher.setAAD(aad, {
+      plaintextLength: Buffer.byteLength(plaintext),
+    });
+    const ciphertext = cipher.update(plaintext, 'utf8');
+    cipher.final();
+    const tag = cipher.getAuthTag();
+
+    // Now transmit { ciphertext, nonce, tag }.
+
+    const decipher = createDecipheriv('aes-192-ccm', key, nonce, {
+      authTagLength: 16,
+    });
+    decipher.setAuthTag(tag);
+    decipher.setAAD(aad, {
+      plaintextLength: ciphertext.length,
+    });
+    const receivedPlaintext = decipher.update(ciphertext, null, 'utf8');
+
+    try {
+      decipher.final();
+    } catch (err) {
+      throw new Error('Authentication failed!', { cause: err });
+    }
+
+    console.log(receivedPlaintext);
     ```
 
-    Выходы шифров, хэш-функций, алгоритмов подписи и функций получения ключей представляют собой псевдослучайные последовательности байтов и не должны использоваться как строки Unicode.
+=== "CJS"
 
--   Когда строки получаются из пользовательского ввода, некоторые символы Unicode могут быть представлены несколькими эквивалентными способами, которые приводят к различным последовательностям байтов. Например, при передаче парольной фразы пользователя функции выведения ключа, такой как PBKDF2 или scrypt, результат функции выведения ключа зависит от того, используются ли в строке составные или разложенные символы. Node.js не нормализует представления символов. Разработчикам следует рассмотреть возможность использования [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize) для пользовательского ввода перед передачей его в криптографические API.
+    ```js
+    const { Buffer } = require('node:buffer');
+    const {
+      createCipheriv,
+      createDecipheriv,
+      randomBytes,
+    } = require('node:crypto');
 
-<!-- 0148.part.md -->
+    const key = 'keykeykeykeykeykeykeykey';
+    const nonce = randomBytes(12);
 
-### Старый API потоков (до Node.js 0.10)
+    const aad = Buffer.from('0123456789', 'hex');
 
-Модуль Crypto был добавлен в Node.js до появления концепции унифицированного Stream API, и до появления объектов [`Buffer`](buffer.md) для работы с двоичными данными. Поэтому многие классы, определяющие `crypto`, имеют методы, которые обычно не встречаются в других классах Node.js, реализующих API [streams](stream.md) (например, `update()`, `final()` или `digest()`). Кроме того, многие методы по умолчанию принимали и возвращали строки в кодировке `'latin1'`, а не `буфер`. Это значение было изменено после Node.js v0.8 на использование объектов [`Buffer`](buffer.md) по умолчанию.
-
-<!-- 0149.part.md -->
-
-### Поддержка слабых или скомпрометированных алгоритмов
-
-Модуль `node:crypto` по-прежнему поддерживает некоторые алгоритмы, которые уже скомпрометированы и в настоящее время не рекомендуются для использования. API также позволяет использовать шифры и хэши с небольшим размером ключа, которые слишком слабы для безопасного использования.
-
-Пользователи должны взять на себя полную ответственность за выбор криптоалгоритма и размера ключа в соответствии со своими требованиями к безопасности.
-
-В соответствии с рекомендациями [NIST SP 800-131A](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf):
-
--   MD5 и SHA-1 больше не приемлемы там, где требуется устойчивость к коллизиям, например, в цифровых подписях.
--   Ключ, используемый в алгоритмах RSA, DSA и DH, рекомендуется иметь не менее 2048 бит, а ключ кривой ECDSA и ECDH - не менее 224 бит, чтобы его можно было безопасно использовать в течение нескольких лет.
--   Группы DH `modp1`, `modp2` и `modp5` имеют размер ключа меньше 2048 бит и не рекомендуются.
-
-Другие рекомендации и подробности см. в справочнике.
-
-Некоторые алгоритмы, имеющие известные недостатки и малоприменимые на практике, доступны только через [legacy provider](cli.md#--openssl-legacy-provider), который не включен по умолчанию.
-
-<!-- 0150.part.md -->
-
-### Режим CCM
-
-CCM является одним из поддерживаемых [AEAD алгоритмов](https://en.wikipedia.org/wiki/Authenticated_encryption). Приложения, использующие этот режим, должны придерживаться определенных ограничений при использовании API шифра:
-
--   Длина тега аутентификации должна быть указана при создании шифра путем установки опции `authTagLength` и должна быть одной из 4, 6, 8, 10, 12, 14 или 16 байт.
--   Длина вектора инициализации (nonce) `N` должна быть от 7 до 13 байт (`7 ≤ N ≤ 13`).
--   Длина открытого текста ограничена `2 ** (8 * (15 - N))` байтами.
--   При расшифровке тег аутентификации должен быть установлен с помощью `setAuthTag()` перед вызовом `update()`. В противном случае расшифровка будет неудачной, и `final()` выдаст ошибку в соответствии с разделом 2.6 [RFC 3610](https://www.rfc-editor.org/rfc/rfc3610.txt).
--   Использование потоковых методов, таких как `write(data)`, `end(data)` или `pipe()` в режиме CCM может быть неудачным, так как CCM не может обрабатывать более одного куска данных на экземпляр.
--   При передаче дополнительных аутентифицированных данных (AAD), длина фактического сообщения в байтах должна быть передана в `setAAD()` через опцию `plaintextLength`. Многие криптобиблиотеки включают тег аутентификации в шифротекст, что означает, что они создают шифротексты длиной `plaintextLength + authTagLength`. Node.js не включает тег аутентификации, поэтому длина шифротекста всегда равна `plaintextLength`. Это не требуется, если не используется AAD.
--   Поскольку CCM обрабатывает все сообщение сразу, `update()` должна быть вызвана ровно один раз.
--   Даже если вызова `update()` достаточно для шифрования/дешифрования сообщения, приложения _должны_ вызывать `final()` для вычисления или проверки метки аутентификации.
-
-<!-- конец списка -->
-
-```mjs
-import { Buffer } from 'node:buffer';
-const {
-    createCipheriv,
-    createDecipheriv,
-    randomBytes,
-} = await import('node:crypto');
-
-const key = 'keykeykeykeykeykeykeykey';
-const nonce = randomBytes(12);
-
-const aad = Buffer.from('0123456789', 'hex');
-
-const cipher = createCipheriv('aes-192-ccm', key, nonce, {
-    authTagLength: 16,
-});
-const plaintext = 'Hello world';
-cipher.setAAD(aad, {
-    plaintextLength: Buffer.byteLength(plaintext),
-});
-const ciphertext = cipher.update(plaintext, 'utf8');
-cipher.final();
-const tag = cipher.getAuthTag();
-
-// Now transmit { ciphertext, nonce, tag }.
-
-const decipher = createDecipheriv(
-    'aes-192-ccm',
-    key,
-    nonce,
-    {
-        authTagLength: 16,
-    }
-);
-decipher.setAuthTag(tag);
-decipher.setAAD(aad, {
-    plaintextLength: ciphertext.length,
-});
-const receivedPlaintext = decipher.update(
-    ciphertext,
-    null,
-    'utf8'
-);
-
-try {
-    decipher.final();
-} catch (err) {
-    throw new Error('Authentication failed!', {
-        cause: err,
+    const cipher = createCipheriv('aes-192-ccm', key, nonce, {
+      authTagLength: 16,
     });
-}
+    const plaintext = 'Hello world';
+    cipher.setAAD(aad, {
+      plaintextLength: Buffer.byteLength(plaintext),
+    });
+    const ciphertext = cipher.update(plaintext, 'utf8');
+    cipher.final();
+    const tag = cipher.getAuthTag();
 
-console.log(receivedPlaintext);
+    // Now transmit { ciphertext, nonce, tag }.
+
+    const decipher = createDecipheriv('aes-192-ccm', key, nonce, {
+      authTagLength: 16,
+    });
+    decipher.setAuthTag(tag);
+    decipher.setAAD(aad, {
+      plaintextLength: ciphertext.length,
+    });
+    const receivedPlaintext = decipher.update(ciphertext, null, 'utf8');
+
+    try {
+      decipher.final();
+    } catch (err) {
+      throw new Error('Authentication failed!', { cause: err });
+    }
+
+    console.log(receivedPlaintext);
+    ```
+
+### FIPS mode
+
+When using OpenSSL 3, Node.js supports FIPS 140-2 when used with an appropriate
+OpenSSL 3 provider, such as the [FIPS provider from OpenSSL 3][] which can be
+installed by following the instructions in [OpenSSL's FIPS README file][].
+
+For FIPS support in Node.js you will need:
+
+* A correctly installed OpenSSL 3 FIPS provider.
+* An OpenSSL 3 [FIPS module configuration file][].
+* An OpenSSL 3 configuration file that references the FIPS module
+  configuration file.
+
+Node.js will need to be configured with an OpenSSL configuration file that
+points to the FIPS provider. An example configuration file looks like this:
+
+```text
+nodejs_conf = nodejs_init
+
+.include /<absolute path>/fipsmodule.cnf
+
+[nodejs_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+# The fips section name should match the section name inside the
+# included fipsmodule.cnf.
+fips = fips_sect
+
+[default_sect]
+activate = 1
 ```
 
-```cjs
-const { Buffer } = require('node:buffer');
-const {
-    createCipheriv,
-    createDecipheriv,
-    randomBytes,
-} = require('node:crypto');
+where `fipsmodule.cnf` is the FIPS module configuration file generated from the
+FIPS provider installation step:
 
-const key = 'keykeykeykeykeykeykeykey';
-const nonce = randomBytes(12);
-
-const aad = Buffer.from('0123456789', 'hex');
-
-const cipher = createCipheriv('aes-192-ccm', key, nonce, {
-    authTagLength: 16,
-});
-const plaintext = 'Hello world';
-cipher.setAAD(aad, {
-    plaintextLength: Buffer.byteLength(plaintext),
-});
-const ciphertext = cipher.update(plaintext, 'utf8');
-cipher.final();
-const tag = cipher.getAuthTag();
-
-// Now transmit { ciphertext, nonce, tag }.
-
-const decipher = createDecipheriv(
-    'aes-192-ccm',
-    key,
-    nonce,
-    {
-        authTagLength: 16,
-    }
-);
-decipher.setAuthTag(tag);
-decipher.setAAD(aad, {
-    plaintextLength: ciphertext.length,
-});
-const receivedPlaintext = decipher.update(
-    ciphertext,
-    null,
-    'utf8'
-);
-
-try {
-    decipher.final();
-} catch (err) {
-    throw new Error('Authentication failed!', {
-        cause: err,
-    });
-}
-
-console.log(receivedPlaintext);
+```bash
+openssl fipsinstall
 ```
 
-## Константы криптографии
+Set the `OPENSSL_CONF` environment variable to point to
+your configuration file and `OPENSSL_MODULES` to the location of the FIPS
+provider dynamic library. e.g.
 
-Следующие константы, экспортируемые `crypto.constants`, применяются к различным вариантам использования модулей `node:crypto`, `node:tls` и `node:https` и в целом специфичны для OpenSSL.
+```bash
+export OPENSSL_CONF=/<path to configuration file>/nodejs.cnf
+export OPENSSL_MODULES=/<path to openssl lib>/ossl-modules
+```
 
-<!-- 0152.part.md -->
+FIPS mode can then be enabled in Node.js either by:
+
+* Starting Node.js with `--enable-fips` or `--force-fips` command line flags.
+* Programmatically calling `crypto.setFips(true)`.
+
+Optionally FIPS mode can be enabled in Node.js via the OpenSSL configuration
+file. e.g.
+
+```text
+nodejs_conf = nodejs_init
+
+.include /<absolute path>/fipsmodule.cnf
+
+[nodejs_init]
+providers = provider_sect
+alg_section = algorithm_sect
+
+[provider_sect]
+default = default_sect
+# The fips section name should match the section name inside the
+# included fipsmodule.cnf.
+fips = fips_sect
+
+[default_sect]
+activate = 1
+
+[algorithm_sect]
+default_properties = fips=yes
+```
+
+## Crypto constants
+
+The following constants exported by `crypto.constants` apply to various uses of
+the `node:crypto`, `node:tls`, and `node:https` modules and are generally
+specific to OpenSSL.
 
 ### OpenSSL options
 
-See the [list of SSL OP Flags](https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options) for details.
+See the [list of SSL OP Flags][] for details.
 
 <table>
-
-<tr>
-
-<th>
-
-Constant
-
-</th>
-
-<th>
-
-Description
-
-</th>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_ALL</code>
-
-</td>
-
-<td>
-
-Applies multiple bug workarounds within OpenSSL. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a> for detail.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_ALLOW_NO_DHE_KEX</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to allow a non-\[EC\]DHE-based key exchange mode for TLS v1.3
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION</code>
-
-</td>
-
-<td>
-
-Allows legacy insecure renegotiation between OpenSSL and unpatched clients or servers. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_CIPHER_SERVER_PREFERENCE</code>
-
-</td>
-
-<td>
-
-Attempts to use the server’s preferences instead of the client’s when selecting a cipher. Behavior depends on protocol version. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_CISCO_ANYCONNECT</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to use Cisco’s “speshul” version of DTLS_BAD_VER.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_COOKIE_EXCHANGE</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn on cookie exchange.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_CRYPTOPRO_TLSEXT_BUG</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to add server-hello extension from an early version of the cryptopro draft.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable a SSL 3.0/TLS 1.0 vulnerability workaround added in OpenSSL 0.9.6d.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_LEGACY_SERVER_CONNECT</code>
-
-</td>
-
-<td>
-
-Allows initial connection to servers that do not support RI.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_COMPRESSION</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable support for SSL/TLS compression.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_ENCRYPT_THEN_MAC</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable encrypt-then-MAC.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_QUERY_MTU</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_RENEGOTIATION</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable renegotiation.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to always start a new session when performing renegotiation.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_SSLv2</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off SSL v2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_SSLv3</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off SSL v3
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_TICKET</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable use of RFC4507bis tickets.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_TLSv1</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off TLS v1
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_TLSv1_1</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off TLS v1.1
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_TLSv1_2</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off TLS v1.2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_NO_TLSv1_3</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to turn off TLS v1.3
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_PRIORITIZE_CHACHA</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL server to prioritize ChaCha20-Poly1305 when the client does. This option has no effect if <code>SSL_OP_CIPHER_SERVER_PREFERENCE</code> is not enabled.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>SSL_OP_TLS_ROLLBACK_BUG</code>
-
-</td>
-
-<td>
-
-Instructs OpenSSL to disable version rollback attack detection.
-
-</td>
-
-</tr>
-
+  <tr>
+    <th>Constant</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_ALL</code></td>
+    <td>Applies multiple bug workarounds within OpenSSL. See
+    <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>
+    for detail.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_ALLOW_NO_DHE_KEX</code></td>
+    <td>Instructs OpenSSL to allow a non-[EC]DHE-based key exchange mode
+    for TLS v1.3</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION</code></td>
+    <td>Allows legacy insecure renegotiation between OpenSSL and unpatched
+    clients or servers. See
+    <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_CIPHER_SERVER_PREFERENCE</code></td>
+    <td>Attempts to use the server's preferences instead of the client's when
+    selecting a cipher. Behavior depends on protocol version. See
+    <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_CISCO_ANYCONNECT</code></td>
+    <td>Instructs OpenSSL to use Cisco's version identifier of DTLS_BAD_VER.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_COOKIE_EXCHANGE</code></td>
+    <td>Instructs OpenSSL to turn on cookie exchange.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_CRYPTOPRO_TLSEXT_BUG</code></td>
+    <td>Instructs OpenSSL to add server-hello extension from an early version
+    of the cryptopro draft.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS</code></td>
+    <td>Instructs OpenSSL to disable a SSL 3.0/TLS 1.0 vulnerability
+    workaround added in OpenSSL 0.9.6d.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_LEGACY_SERVER_CONNECT</code></td>
+    <td>Allows initial connection to servers that do not support RI.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_COMPRESSION</code></td>
+    <td>Instructs OpenSSL to disable support for SSL/TLS compression.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_ENCRYPT_THEN_MAC</code></td>
+    <td>Instructs OpenSSL to disable encrypt-then-MAC.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_QUERY_MTU</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_RENEGOTIATION</code></td>
+    <td>Instructs OpenSSL to disable renegotiation.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION</code></td>
+    <td>Instructs OpenSSL to always start a new session when performing
+    renegotiation.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_SSLv2</code></td>
+    <td>Instructs OpenSSL to turn off SSL v2</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_SSLv3</code></td>
+    <td>Instructs OpenSSL to turn off SSL v3</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_TICKET</code></td>
+    <td>Instructs OpenSSL to disable use of RFC4507bis tickets.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_TLSv1</code></td>
+    <td>Instructs OpenSSL to turn off TLS v1</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_TLSv1_1</code></td>
+    <td>Instructs OpenSSL to turn off TLS v1.1</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_TLSv1_2</code></td>
+    <td>Instructs OpenSSL to turn off TLS v1.2</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_NO_TLSv1_3</code></td>
+    <td>Instructs OpenSSL to turn off TLS v1.3</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_PRIORITIZE_CHACHA</code></td>
+    <td>Instructs OpenSSL server to prioritize ChaCha20-Poly1305
+    when the client does.
+    This option has no effect if
+    <code>SSL_OP_CIPHER_SERVER_PREFERENCE</code>
+    is not enabled.</td>
+  </tr>
+  <tr>
+    <td><code>SSL_OP_TLS_ROLLBACK_BUG</code></td>
+    <td>Instructs OpenSSL to disable version rollback attack detection.</td>
+  </tr>
 </table>
-
-<!-- 0153.part.md -->
 
 ### OpenSSL engine constants
 
 <table>
-
-<tr>
-
-<th>
-
-Constant
-
-</th>
-
-<th>
-
-Description
-
-</th>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_RSA</code>
-
-</td>
-
-<td>
-
-Limit engine usage to RSA
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_DSA</code>
-
-</td>
-
-<td>
-
-Limit engine usage to DSA
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_DH</code>
-
-</td>
-
-<td>
-
-Limit engine usage to DH
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_RAND</code>
-
-</td>
-
-<td>
-
-Limit engine usage to RAND
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_EC</code>
-
-</td>
-
-<td>
-
-Limit engine usage to EC
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_CIPHERS</code>
-
-</td>
-
-<td>
-
-Limit engine usage to CIPHERS
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_DIGESTS</code>
-
-</td>
-
-<td>
-
-Limit engine usage to DIGESTS
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_PKEY_METHS</code>
-
-</td>
-
-<td>
-
-Limit engine usage to PKEY_METHDS
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_PKEY_ASN1_METHS</code>
-
-</td>
-
-<td>
-
-Limit engine usage to PKEY_ASN1_METHS
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_ALL</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>ENGINE_METHOD_NONE</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
+  <tr>
+    <th>Constant</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_RSA</code></td>
+    <td>Limit engine usage to RSA</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_DSA</code></td>
+    <td>Limit engine usage to DSA</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_DH</code></td>
+    <td>Limit engine usage to DH</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_RAND</code></td>
+    <td>Limit engine usage to RAND</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_EC</code></td>
+    <td>Limit engine usage to EC</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_CIPHERS</code></td>
+    <td>Limit engine usage to CIPHERS</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_DIGESTS</code></td>
+    <td>Limit engine usage to DIGESTS</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_PKEY_METHS</code></td>
+    <td>Limit engine usage to PKEY_METHS</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_PKEY_ASN1_METHS</code></td>
+    <td>Limit engine usage to PKEY_ASN1_METHS</td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_ALL</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>ENGINE_METHOD_NONE</code></td>
+    <td></td>
+  </tr>
 </table>
-
-<!-- 0154.part.md -->
 
 ### Other OpenSSL constants
 
 <table>
-
-<tr>
-
-<th>
-
-Constant
-
-</th>
-
-<th>
-
-Description
-
-</th>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>DH_CHECK_P_NOT_SAFE_PRIME</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>DH_CHECK_P_NOT_PRIME</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>DH_UNABLE_TO_CHECK_GENERATOR</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>DH_NOT_SUITABLE_GENERATOR</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PKCS1_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_SSLV23_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_NO_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PKCS1_OAEP_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_X931_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PKCS1_PSS_PADDING</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PSS_SALTLEN_DIGEST</code>
-
-</td>
-
-<td>
-
-Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the digest size when signing or verifying.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PSS_SALTLEN_MAX_SIGN</code>
-
-</td>
-
-<td>
-
-Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the maximum permissible value when signing data.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>RSA_PSS_SALTLEN_AUTO</code>
-
-</td>
-
-<td>
-
-Causes the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to be determined automatically when verifying a signature.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>POINT_CONVERSION_COMPRESSED</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>POINT_CONVERSION_UNCOMPRESSED</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>POINT_CONVERSION_HYBRID</code>
-
-</td>
-
-<td>
-
-</td>
-
-</tr>
-
+  <tr>
+    <th>Constant</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>DH_CHECK_P_NOT_SAFE_PRIME</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>DH_CHECK_P_NOT_PRIME</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>DH_UNABLE_TO_CHECK_GENERATOR</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>DH_NOT_SUITABLE_GENERATOR</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_PKCS1_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_SSLV23_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_NO_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_PKCS1_OAEP_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_X931_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_PKCS1_PSS_PADDING</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>RSA_PSS_SALTLEN_DIGEST</code></td>
+    <td>Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the
+        digest size when signing or verifying.</td>
+  </tr>
+  <tr>
+    <td><code>RSA_PSS_SALTLEN_MAX_SIGN</code></td>
+    <td>Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the
+        maximum permissible value when signing data.</td>
+  </tr>
+  <tr>
+    <td><code>RSA_PSS_SALTLEN_AUTO</code></td>
+    <td>Causes the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to be
+        determined automatically when verifying a signature.</td>
+  </tr>
+  <tr>
+    <td><code>POINT_CONVERSION_COMPRESSED</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>POINT_CONVERSION_UNCOMPRESSED</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>POINT_CONVERSION_HYBRID</code></td>
+    <td></td>
+  </tr>
 </table>
-
-<!-- 0155.part.md -->
 
 ### Node.js crypto constants
 
 <table>
-
-<tr>
-
-<th>
-
-Constant
-
-</th>
-
-<th>
-
-Description
-
-</th>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>defaultCoreCipherList</code>
-
-</td>
-
-<td>
-
-Specifies the built-in default cipher list used by Node.js.
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<code>defaultCipherList</code>
-
-</td>
-
-<td>
-
-Specifies the active default cipher list used by the current Node.js process.
-
-</td>
-
-</tr>
-
+  <tr>
+    <th>Constant</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>defaultCoreCipherList</code></td>
+    <td>Specifies the built-in default cipher list used by Node.js.</td>
+  </tr>
+  <tr>
+    <td><code>defaultCipherList</code></td>
+    <td>Specifies the active default cipher list used by the current Node.js
+    process.</td>
+  </tr>
 </table>
 
-<!-- 0156.part.md -->
+[^openssl30]: Requires OpenSSL >= 3.0
+
+[^openssl32]: Requires OpenSSL >= 3.2
+
+[^openssl35]: Requires OpenSSL >= 3.5
+
+[AEAD algorithms]: https://en.wikipedia.org/wiki/Authenticated_encryption
+[CCM mode]: #ccm-mode
+[CVE-2021-44532]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44532
+[Caveats]: #support-for-weak-or-compromised-algorithms
+[Crypto constants]: #crypto-constants
+[FIPS module configuration file]: https://www.openssl.org/docs/man3.0/man5/fips_config.html
+[FIPS provider from OpenSSL 3]: https://www.openssl.org/docs/man3.0/man7/crypto.html#FIPS-provider
+[HTML 5.2]: https://www.w3.org/TR/html52/changes.html#features-removed
+[JWK]: https://tools.ietf.org/html/rfc7517
+[Key usages]: webcrypto.md#cryptokeyusages
+[NIST SP 800-131A]: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
+[NIST SP 800-132]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
+[NIST SP 800-38D]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf
+[OpenSSL's FIPS README file]: https://github.com/openssl/openssl/blob/openssl-3.0/README-FIPS.md
+[OpenSSL's SPKAC implementation]: https://www.openssl.org/docs/man3.0/man1/openssl-spkac.html
+[RFC 1421]: https://www.rfc-editor.org/rfc/rfc1421.txt
+[RFC 2409]: https://www.rfc-editor.org/rfc/rfc2409.txt
+[RFC 2818]: https://www.rfc-editor.org/rfc/rfc2818.txt
+[RFC 3526]: https://www.rfc-editor.org/rfc/rfc3526.txt
+[RFC 3610]: https://www.rfc-editor.org/rfc/rfc3610.txt
+[RFC 4055]: https://www.rfc-editor.org/rfc/rfc4055.txt
+[RFC 4122]: https://www.rfc-editor.org/rfc/rfc4122.txt
+[RFC 5208]: https://www.rfc-editor.org/rfc/rfc5208.txt
+[RFC 5280]: https://www.rfc-editor.org/rfc/rfc5280.txt
+[RFC 7517]: https://www.rfc-editor.org/rfc/rfc7517.txt
+[RFC 8032]: https://www.rfc-editor.org/rfc/rfc8032.txt
+[RFC 9562]: https://www.rfc-editor.org/rfc/rfc9562.txt
+[Web Crypto API documentation]: webcrypto.md
+[`BN_is_prime_ex`]: https://www.openssl.org/docs/man1.1.1/man3/BN_is_prime_ex.html
+[`Buffer`]: buffer.md
+[`DH_generate_key()`]: https://www.openssl.org/docs/man3.0/man3/DH_generate_key.html
+[`DiffieHellmanGroup`]: #class-diffiehellmangroup
+[`KeyObject`]: #class-keyobject
+[`Sign`]: #class-sign
+[`String.prototype.normalize()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+[`UV_THREADPOOL_SIZE`]: cli.md#uv_threadpool_sizesize
+[`Verify`]: #class-verify
+[`cipher.final()`]: #cipherfinaloutputencoding
+[`cipher.update()`]: #cipherupdatedata-inputencoding-outputencoding
+[`crypto.createCipheriv()`]: #cryptocreatecipherivalgorithm-key-iv-options
+[`crypto.createDecipheriv()`]: #cryptocreatedecipherivalgorithm-key-iv-options
+[`crypto.createDiffieHellman()`]: #cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding
+[`crypto.createECDH()`]: #cryptocreateecdhcurvename
+[`crypto.createHash()`]: #cryptocreatehashalgorithm-options
+[`crypto.createHmac()`]: #cryptocreatehmacalgorithm-key-options
+[`crypto.createPrivateKey()`]: #cryptocreateprivatekeykey
+[`crypto.createPublicKey()`]: #cryptocreatepublickeykey
+[`crypto.createSecretKey()`]: #cryptocreatesecretkeykey-encoding
+[`crypto.createSign()`]: #cryptocreatesignalgorithm-options
+[`crypto.createVerify()`]: #cryptocreateverifyalgorithm-options
+[`crypto.generateKey()`]: #cryptogeneratekeytype-options-callback
+[`crypto.generateKeyPair()`]: #cryptogeneratekeypairtype-options-callback
+[`crypto.getCurves()`]: #cryptogetcurves
+[`crypto.getDiffieHellman()`]: #cryptogetdiffiehellmangroupname
+[`crypto.getHashes()`]: #cryptogethashes
+[`crypto.privateDecrypt()`]: #cryptoprivatedecryptprivatekey-buffer
+[`crypto.privateEncrypt()`]: #cryptoprivateencryptprivatekey-buffer
+[`crypto.publicDecrypt()`]: #cryptopublicdecryptkey-buffer
+[`crypto.publicEncrypt()`]: #cryptopublicencryptkey-buffer
+[`crypto.randomBytes()`]: #cryptorandombytessize-callback
+[`crypto.randomFill()`]: #cryptorandomfillbuffer-offset-size-callback
+[`crypto.sign()`]: #cryptosignalgorithm-data-key-callback
+[`crypto.verify()`]: #cryptoverifyalgorithm-data-key-signature-callback
+[`crypto.webcrypto.getRandomValues()`]: webcrypto.md#cryptogetrandomvaluestypedarray
+[`crypto.webcrypto.subtle`]: webcrypto.md#class-subtlecrypto
+[`decipher.final()`]: #decipherfinaloutputencoding
+[`decipher.update()`]: #decipherupdatedata-inputencoding-outputencoding
+[`diffieHellman.generateKeys()`]: #diffiehellmangeneratekeysencoding
+[`diffieHellman.setPublicKey()`]: #diffiehellmansetpublickeypublickey-encoding
+[`ecdh.generateKeys()`]: #ecdhgeneratekeysencoding-format
+[`ecdh.setPrivateKey()`]: #ecdhsetprivatekeyprivatekey-encoding
+[`hash.digest()`]: #hashdigestencoding
+[`hash.update()`]: #hashupdatedata-inputencoding
+[`hmac.digest()`]: #hmacdigestencoding
+[`hmac.update()`]: #hmacupdatedata-inputencoding
+[`import()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
+[`keyObject.export()`]: #keyobjectexportoptions
+[`postMessage()`]: worker_threads.md#portpostmessagevalue-transferlist
+[`sign.sign()`]: #signsignprivatekey-outputencoding
+[`sign.update()`]: #signupdatedata-inputencoding
+[`stream.Writable` options]: stream.md#new-streamwritableoptions
+[`stream.transform` options]: stream.md#new-streamtransformoptions
+[`util.promisify()`]: util.md#utilpromisifyoriginal
+[`verify.update()`]: #verifyupdatedata-inputencoding
+[`verify.verify()`]: #verifyverifykey-signature-signatureencoding
+[`x509.fingerprint256`]: #x509fingerprint256
+[`x509.verify(publicKey)`]: #x509verifypublickey
+[argon2]: https://www.rfc-editor.org/rfc/rfc9106.html
+[asymmetric key types]: #asymmetric-key-types
+[caveats when using strings as inputs to cryptographic APIs]: #using-strings-as-inputs-to-cryptographic-apis
+[certificate object]: tls.md#certificate-object
+[encoding]: buffer.md#buffers-and-character-encodings
+[initialization vector]: https://en.wikipedia.org/wiki/Initialization_vector
+[legacy provider]: cli.md#--openssl-legacy-provider
+[list of SSL OP Flags]: https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options
+[modulo bias]: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Modulo_bias
+[safe integers]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger
+[scrypt]: https://en.wikipedia.org/wiki/Scrypt
+[stream]: stream.md
+[stream-writable-write]: stream.md#writablewritechunk-encoding-callback

@@ -1,122 +1,149 @@
 ---
-description: Модуль readline предоставляет интерфейс для чтения данных из потока Readable (например, process.stdin) по одной строке за раз
+title: Readline (построчный ввод)
+description: Модуль node:readline предоставляет интерфейс для чтения данных из потока Readable (например, process.stdin) по одной строке за раз
 ---
 
 # Readline
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/readline.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/readline.html)
+
+<!--introduced_in=v0.10.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Модуль **`node:readline`** предоставляет интерфейс для чтения данных из потока [Readable](stream.md#readable-streams) (например, [`process.stdin`](process.md#processstdin)) по одной строке за раз.
+<!-- source_link=lib/readline.js -->
+
+Модуль `node:readline` предоставляет интерфейс для чтения данных из потока
+[Readable][] (например, [process.stdin][]) по одной строке за раз.
 
 Чтобы использовать API на основе обещаний:
 
-<!-- 0001.part.md -->
 
-```mjs
-import * as readline from 'node:readline/promises';
-```
+=== "MJS"
 
-<!-- 0002.part.md -->
+    ```js
+    import * as readline from 'node:readline/promises';
+    ```
 
-<!-- 0003.part.md -->
 
-```cjs
-const readline = require('node:readline/promises');
-```
 
-<!-- 0004.part.md -->
+=== "CJS"
+
+    ```js
+    const readline = require('node:readline/promises');
+    ```
+
 
 Чтобы использовать API обратного вызова и синхронизации:
 
-<!-- 0005.part.md -->
 
-```mjs
-import * as readline from 'node:readline';
-```
+=== "MJS"
 
-<!-- 0006.part.md -->
+    ```js
+    import * as readline from 'node:readline';
+    ```
 
-<!-- 0007.part.md -->
 
-```cjs
-const readline = require('node:readline');
-```
 
-<!-- 0008.part.md -->
+=== "CJS"
+
+    ```js
+    const readline = require('node:readline');
+    ```
+
 
 Следующий простой пример иллюстрирует базовое использование модуля `node:readline`.
 
-<!-- 0009.part.md -->
 
-```mjs
-import * as readline from 'node:readline/promises';
-import {
-    stdin as input,
-    stdout as output,
-} from 'node:process';
+=== "MJS"
 
-const rl = readline.createInterface({ input, output });
-
-const answer = await rl.question(
-    'What do you think of Node.js? '
-);
-
-console.log(
-    `Thank you for your valuable feedback: ${answer}`
-);
-
-rl.close();
-```
-
-<!-- 0010.part.md -->
-
-<!-- 0011.part.md -->
-
-```cjs
-const readline = require('node:readline');
-const {
-    stdin: input,
-    stdout: output,
-} = require('node:process');
-
-const rl = readline.createInterface({ input, output });
-
-rl.question('What do you think of Node.js? ', (answer) => {
-    // TODO: Log the answer in a database
+    ```js
+    import * as readline from 'node:readline/promises';
+    import {
+        stdin as input,
+        stdout as output,
+    } from 'node:process';
+    
+    const rl = readline.createInterface({ input, output });
+    
+    const answer = await rl.question(
+        'What do you think of Node.js? '
+    );
+    
     console.log(
         `Thank you for your valuable feedback: ${answer}`
     );
-
+    
     rl.close();
-});
-```
+    ```
 
-<!-- 0012.part.md -->
+
+
+=== "CJS"
+
+    ```js
+    const readline = require('node:readline');
+    const {
+        stdin: input,
+        stdout: output,
+    } = require('node:process');
+    
+    const rl = readline.createInterface({ input, output });
+    
+    rl.question('What do you think of Node.js? ', (answer) => {
+        // TODO: Log the answer in a database
+        console.log(
+            `Thank you for your valuable feedback: ${answer}`
+        );
+    
+        rl.close();
+    });
+    ```
+
 
 После вызова этого кода приложение Node.js не завершится, пока не будет закрыт `readline.Interface`, поскольку интерфейс ожидает получения данных в потоке `input`.
 
-## Class: `InterfaceConstructor`
+<a id='readline_class_interface'></a>
 
--   Extends: [`<EventEmitter>`](events.md#eventemitter)
+## Класс: `InterfaceConstructor`
 
-Экземпляры класса `InterfaceConstructor` создаются с помощью метода `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
+<!-- YAML
+added: v0.1.104
+-->
 
-### Событие: `close`
+* Наследует: [<EventEmitter>](events.md#class-eventemitter)
 
-Событие `close` возникает, когда происходит одно из следующих событий:
+Экземпляры класса `InterfaceConstructor` создаются методами `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable][] и одним `output` [Writable][].
+Поток `output` используется для вывода приглашений к вводу; данные поступают и читаются из потока `input`.
 
--   Вызывается метод `rl.close()` и экземпляр `InterfaceConstructor` теряет контроль над потоками `input` и `output`;
--   Поток `input` получает событие `'end'`;
--   Поток `вход` получает Ctrl+D для сигнализации окончания передачи (EOT);
--   Поток `input` получает Ctrl+C для сигнала `SIGINT` и на экземпляре `InterfaceConstructor` не зарегистрирован слушатель события `'SIGINT'`.
+### Событие: `'close'`
 
-Функция слушателя вызывается без передачи каких-либо аргументов.
+<!-- YAML
+added: v0.1.98
+-->
 
-Экземпляр `InterfaceConstructor` завершается, как только произойдет событие `'close'`.
+Событие `'close'` испускается в одном из случаев:
+
+* вызван `rl.close()` и экземпляр `InterfaceConstructor` отпустил потоки `input` и `output`;
+* поток `input` получил событие `'end'`;
+* на потоке `input` нажаты <kbd>Ctrl</kbd>+<kbd>D</kbd> (EOT);
+* на потоке `input` нажаты <kbd>Ctrl</kbd>+<kbd>C</kbd> (`SIGINT`), и на экземпляре `InterfaceConstructor` нет обработчика `'SIGINT'`.
+
+Обработчик вызывается без аргументов.
+
+После события `'close'` экземпляр `InterfaceConstructor` считается завершённым.
+
+### Событие: `'error'`
+
+<!-- YAML
+added: v16.0.0
+-->
+
+Событие `'error'` испускается при ошибке на потоке `input`, связанном с интерфейсом `node:readline` `Interface`.
+
+Обработчику передаётся один аргумент — объект `Error`.
 
 ### Событие: `'line'`
 
@@ -126,7 +153,6 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 Функция слушателя вызывается со строкой, содержащей единственную строку полученного ввода.
 
-<!-- 0013.part.md -->
 
 ```js
 rl.on('line', (input) => {
@@ -134,7 +160,6 @@ rl.on('line', (input) => {
 });
 ```
 
-<!-- 0014.part.md -->
 
 ### Событие: `history`
 
@@ -144,7 +169,6 @@ rl.on('line', (input) => {
 
 Основная цель - позволить слушателю сохранять историю. Слушатель также может изменять объект истории. Это может быть полезно для предотвращения добавления в историю определенных строк, например, пароля.
 
-<!-- 0015.part.md -->
 
 ```js
 rl.on('history', (history) => {
@@ -152,7 +176,6 @@ rl.on('history', (history) => {
 });
 ```
 
-<!-- 0016.part.md -->
 
 ### Событие: `pause`
 
@@ -163,7 +186,6 @@ rl.on('history', (history) => {
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
-<!-- 0017.part.md -->
 
 ```js
 rl.on('pause', () => {
@@ -171,7 +193,6 @@ rl.on('pause', () => {
 });
 ```
 
-<!-- 0018.part.md -->
 
 ### Событие: `resume`
 
@@ -179,7 +200,6 @@ rl.on('pause', () => {
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
-<!-- 0019.part.md -->
 
 ```js
 rl.on('resume', () => {
@@ -187,7 +207,6 @@ rl.on('resume', () => {
 });
 ```
 
-<!-- 0020.part.md -->
 
 ### Событие: `'SIGCONT'`
 
@@ -197,7 +216,6 @@ rl.on('resume', () => {
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
-<!-- 0021.part.md -->
 
 ```js
 rl.on('SIGCONT', () => {
@@ -206,7 +224,6 @@ rl.on('SIGCONT', () => {
 });
 ```
 
-<!-- 0022.part.md -->
 
 Событие `SIGCONT` _не_ поддерживается в Windows.
 
@@ -216,7 +233,6 @@ rl.on('SIGCONT', () => {
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
-<!-- 0023.part.md -->
 
 ```js
 rl.on('SIGINT', () => {
@@ -229,7 +245,6 @@ rl.on('SIGINT', () => {
 });
 ```
 
-<!-- 0024.part.md -->
 
 ### Событие: `SIGTSTP`
 
@@ -241,7 +256,6 @@ rl.on('SIGINT', () => {
 
 Функция слушателя вызывается без передачи каких-либо аргументов.
 
-<!-- 0025.part.md -->
 
 ```js
 rl.on('SIGTSTP', () => {
@@ -251,7 +265,6 @@ rl.on('SIGTSTP', () => {
 });
 ```
 
-<!-- 0026.part.md -->
 
 Событие `'SIGTSTP'` _не_ поддерживается в Windows.
 
@@ -297,10 +310,10 @@ rl.on('SIGTSTP', () => {
 
 -   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `key` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `ctrl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Ctrl</kbd> key.
-    -   `meta` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Meta</kbd> key.
-    -   `shift` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` to indicate the <kbd>Shift</kbd> key.
-    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the a key.
+    -   `ctrl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` — нажата клавиша <kbd>Ctrl</kbd>.
+    -   `meta` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` — нажата клавиша <kbd>Meta</kbd>.
+    -   `shift` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` — нажата клавиша <kbd>Shift</kbd>.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя клавиши.
 
 Метод `rl.write()` записывает на `выход` либо `данные`, либо последовательность ключей, идентифицированную `key`. Аргумент `key` поддерживается только если `output` является текстовым терминалом [TTY](tty.md). Список комбинаций клавиш см. в [TTY keybindings](#tty-keybindings).
 
@@ -310,7 +323,6 @@ rl.on('SIGTSTP', () => {
 
 Если `InterfaceConstructor` был создан с `output`, установленным в `null` или `undefined`, то `data` и `key` не записываются.
 
-<!-- 0027.part.md -->
 
 ```js
 rl.write('Delete this!');
@@ -318,7 +330,6 @@ rl.write('Delete this!');
 rl.write(null, { ctrl: true, name: 'u' });
 ```
 
-<!-- 0028.part.md -->
 
 Метод `rl.write()` запишет данные на `вход` интерфейса `readline` _как если бы они были предоставлены пользователем_.
 
@@ -334,7 +345,6 @@ rl.write(null, { ctrl: true, name: 'u' });
 
 Производительность не соответствует традиционному API событий `'line'`. Используйте `'line'` вместо него для приложений, чувствительных к производительности.
 
-<!-- 0029.part.md -->
 
 ```js
 async function processLineByLine() {
@@ -349,7 +359,6 @@ async function processLineByLine() {
 }
 ```
 
-<!-- 0030.part.md -->
 
 После вызова `readline.createInterface()` начнет потреблять входной поток. Наличие асинхронных операций между созданием интерфейса и асинхронной итерацией может привести к пропуску строк.
 
@@ -367,7 +376,6 @@ async function processLineByLine() {
 
 Один из возможных вариантов использования может быть следующим:
 
-<!-- 0031.part.md -->
 
 ```js
 const values = ['lorem ipsum', 'dolor sit amet'];
@@ -385,11 +393,10 @@ process.stdin.on('keypress', (c, k) => {
 });
 ```
 
-<!-- 0032.part.md -->
 
 ### `rl.cursor`
 
--   {number|undefined}
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
 Позиция курсора относительно `rl.line`.
 
@@ -411,7 +418,7 @@ process.stdin.on('keypress', (c, k) => {
 
 ### Класс: `readlinePromises.Interface`
 
--   Расширяет: {readline.InterfaceConstructor}
+-   Расширяет: [readline.InterfaceConstructor](readline.md#interfaceconstructor)
 
 Экземпляры класса `readlinePromises.Interface` создаются с помощью метода `readlinePromises.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
@@ -432,40 +439,40 @@ process.stdin.on('keypress', (c, k) => {
 
 Пример использования:
 
-<!-- 0033.part.md -->
 
-```mjs
-const answer = await rl.question(
-    'What is your favorite food? '
-);
-console.log(`Oh, so your favorite food is ${answer}`);
-```
+=== "MJS"
 
-<!-- 0034.part.md -->
+    ```js
+    const answer = await rl.question(
+        'What is your favorite food? '
+    );
+    console.log(`Oh, so your favorite food is ${answer}`);
+    ```
+
 
 Использование сигнала `AbortSignal` для отмены вопроса.
 
-<!-- 0035.part.md -->
 
-```mjs
-const signal = AbortSignal.timeout(10_000);
+=== "MJS"
 
-signal.addEventListener(
-    'abort',
-    () => {
-        console.log('The food question timed out');
-    },
-    { once: true }
-);
+    ```js
+    const signal = AbortSignal.timeout(10_000);
+    
+    signal.addEventListener(
+        'abort',
+        () => {
+            console.log('The food question timed out');
+        },
+        { once: true }
+    );
+    
+    const answer = await rl.question(
+        'What is your favorite food? ',
+        { signal }
+    );
+    console.log(`Oh, so your favorite food is ${answer}`);
+    ```
 
-const answer = await rl.question(
-    'What is your favorite food? ',
-    { signal }
-);
-console.log(`Oh, so your favorite food is ${answer}`);
-```
-
-<!-- 0036.part.md -->
 
 ### Класс: `readlinePromises.Readline`.
 
@@ -529,15 +536,14 @@ console.log(`Oh, so your favorite food is ${answer}`);
     -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
     -   `historySize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл, только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории вообще не инициализируется. **По умолчанию:** `30`.
     -   `removeHistoryDuplicates` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, когда новая строка ввода, добавленная в список истории, дублирует более старую строку, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'> '`.
     -   `crlfDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
     -   `escapeCodeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность, в течение которой `readlinePromises` будет ожидать символа (при чтении неоднозначной последовательности клавиш в миллисекундах, которая может как сформировать полную последовательность клавиш, используя прочитанный на данный момент ввод, так и принять дополнительный ввод для завершения более длинной последовательности клавиш). **По умолчанию:** `500`.
     -   `tabSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
--   Возвращает: {readlinePromises.Interface}
+-   Возвращает: [<readlinePromises.Interface>](readline.md)
 
 Метод `readlinePromises.createInterface()` создает новый экземпляр `readlinePromises.Interface`.
 
-<!-- 0038.part.md -->
 
 ```js
 const readlinePromises = require('node:readline/promises');
@@ -547,11 +553,9 @@ const rl = readlinePromises.createInterface({
 });
 ```
 
-<!-- 0039.part.md -->
 
 После создания экземпляра `readlinePromises.Interface`, наиболее распространенным случаем является прослушивание события `'line'`:
 
-<!-- 0040.part.md -->
 
 ```js
 rl.on('line', (line) => {
@@ -559,7 +563,6 @@ rl.on('line', (line) => {
 });
 ```
 
-<!-- 0041.part.md -->
 
 Если `terminal` является `true` для данного экземпляра, то поток `output` получит наилучшую совместимость, если он определит свойство `output.columns` и испустит событие `'resize'` на `output`, если или когда колонки когда-либо изменятся ([`process.stdout`](process.md#processstdout) делает это автоматически, если это TTY).
 
@@ -572,7 +575,6 @@ rl.on('line', (line) => {
 
 Например: `[[substr1, substr2, ...], originalsubstring]`.
 
-<!-- 0042.part.md -->
 
 ```js
 function completer(line) {
@@ -587,11 +589,9 @@ function completer(line) {
 }
 ```
 
-<!-- 0043.part.md -->
 
 Функция `completer` может также возвращать [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или быть асинхронной:
 
-<!-- 0044.part.md -->
 
 ```js
 async function completer(linePartial) {
@@ -600,13 +600,12 @@ async function completer(linePartial) {
 }
 ```
 
-<!-- 0045.part.md -->
 
 ## API обратного вызова
 
 ### Класс: `readline.Interface`
 
--   Расширяет: {readline.InterfaceConstructor}
+-   Расширяет: [readline.InterfaceConstructor](readline.md#interfaceconstructor)
 
 Экземпляры класса `readline.Interface` создаются с помощью метода `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
@@ -629,7 +628,6 @@ async function completer(linePartial) {
 
 Пример использования:
 
-<!-- 0046.part.md -->
 
 ```js
 rl.question('What is your favorite food? ', (answer) => {
@@ -637,11 +635,9 @@ rl.question('What is your favorite food? ', (answer) => {
 });
 ```
 
-<!-- 0047.part.md -->
 
 Использование `AbortController` для отмены вопроса.
 
-<!-- 0048.part.md -->
 
 ```js
 const ac = new AbortController();
@@ -668,7 +664,6 @@ signal.addEventListener(
 setTimeout(() => ac.abort(), 10000);
 ```
 
-<!-- 0049.part.md -->
 
 ### `readline.clearLine(stream, dir[, callback])`
 
@@ -700,16 +695,15 @@ setTimeout(() => ac.abort(), 10000);
     -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
     -   `historySize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное количество сохраняемых строк истории. Чтобы отключить историю, установите это значение в `0`. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `30`.
     -   `removeHistoryDuplicates` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, когда новая входная строка, добавленная в список истории, дублирует более старую, это удаляет более старую строку из списка. **По умолчанию:** `false`.
-    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'>``.
+    -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используемая строка подсказки. **По умолчанию:** `'> '`.
     -   `crlfDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задержка между `\r` и `\n` превышает `crlfDelay` миллисекунд, то и `\r` и `\n` будут рассматриваться как отдельный ввод конца строки. `crlfDelay` будет приведен к числу не менее `100`. Оно может быть установлено в `бесконечность`, в этом случае `\r`, за которым следует `\n`, всегда будет считаться одной новой строкой (что может быть разумно для [чтения файлов](#example-read-file-stream-line-by-line) с `\r\n` разделителем строк). **По умолчанию:** `100`.
-    -   `escapeCodeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность `readline` будет
+    -   `escapeCodeTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Продолжительность (в миллисекундах), в течение которой `readline` ждёт символ при чтении неоднозначной последовательности клавиш. **По умолчанию:** `500`.
     -   `tabSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество пробелов, которым равна табуляция (минимум 1). **По умолчанию:** `8`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет закрыть интерфейс с помощью сигнала AbortSignal. Прерывание сигнала приведет к внутреннему вызову `close` на интерфейсе.
--   Возвращает: {readline.Interface}
+-   Возвращает: [<readline.Interface>](readline.md)
 
 Метод `readline.createInterface()` создает новый экземпляр `readline.Interface`.
 
-<!-- 0051.part.md -->
 
 ```js
 const readline = require('node:readline');
@@ -719,11 +713,9 @@ const rl = readline.createInterface({
 });
 ```
 
-<!-- 0052.part.md -->
 
 После создания экземпляра `readline.Interface`, наиболее распространенным случаем является прослушивание события `'line'`:
 
-<!-- 0053.part.md -->
 
 ```js
 rl.on('line', (line) => {
@@ -731,7 +723,6 @@ rl.on('line', (line) => {
 });
 ```
 
-<!-- 0054.part.md -->
 
 Если `terminal` для данного экземпляра имеет значение `true`, то поток `output` получит наилучшую совместимость, если он определит свойство `output.columns` и выдаст событие `'resize'` на `output`, если или когда колонки когда-либо изменятся ([`process.stdout`](process.md#processstdout) делает это автоматически, если это TTY).
 
@@ -746,7 +737,6 @@ rl.on('line', (line) => {
 
 Например: `[[substr1, substr2, ...], originalsubstring]`.
 
-<!-- 0055.part.md -->
 
 ```js
 function completer(line) {
@@ -761,11 +751,9 @@ function completer(line) {
 }
 ```
 
-<!-- 0056.part.md -->
 
 Функция `completer` может быть вызвана асинхронно, если она принимает два аргумента:
 
-<!-- 0057.part.md -->
 
 ```js
 function completer(linePartial, callback) {
@@ -773,7 +761,6 @@ function completer(linePartial, callback) {
 }
 ```
 
-<!-- 0058.part.md -->
 
 ### `readline.cursorTo(stream, x[, y][, callback])`.
 
@@ -798,7 +785,7 @@ function completer(linePartial, callback) {
 ## `readline.emitKeypressEvents(stream[, interface])`.
 
 -   `поток` [`<stream.Readable>`](stream.md#streamreadable)
--   `интерфейс` {readline.InterfaceConstructor}
+-   `интерфейс` [<readline.InterfaceConstructor>](readline.md#interfaceconstructor)
 
 Метод `readline.emitKeypressEvents()` заставляет данный поток [Readable](stream.md#readable-streams) начать испускать события `'keypress'`, соответствующие полученным входным данным.
 
@@ -808,20 +795,17 @@ function completer(linePartial, callback) {
 
 Это автоматически вызывается любым экземпляром readline на его `входе`, если `входом` является терминал. Закрытие экземпляра `readline` не прекращает испускание `input` событий `'keypress'`.
 
-<!-- 0059.part.md -->
 
 ```js
 readline.emitKeypressEvents(process.stdin);
 if (process.stdin.isTTY) process.stdin.setRawMode(true);
 ```
 
-<!-- 0060.part.md -->
 
 ## Пример: Маленький интерфейс командной строки
 
 Следующий пример иллюстрирует использование класса `readline.Interface` для реализации небольшого интерфейса командной строки:
 
-<!-- 0061.part.md -->
 
 ```js
 const readline = require('node:readline');
@@ -851,13 +835,11 @@ rl.on('line', (line) => {
 });
 ```
 
-<!-- 0062.part.md -->
 
 ## Пример: Чтение потока файлов построчно
 
 Обычный случай использования `readline` - это потребление входного файла по одной строке за раз. Самый простой способ сделать это - использовать API [`fs.ReadStream`](fs.md#class-fsreadstream), а также цикл `for await...of`:
 
-<!-- 0063.part.md -->
 
 ```js
 const fs = require('node:fs');
@@ -882,11 +864,9 @@ async function processLineByLine() {
 processLineByLine();
 ```
 
-<!-- 0064.part.md -->
 
 В качестве альтернативы можно использовать событие [`'line'`](#event-line):
 
-<!-- 0065.part.md -->
 
 ```js
 const fs = require('node:fs');
@@ -902,11 +882,9 @@ rl.on('line', (line) => {
 });
 ```
 
-<!-- 0066.part.md -->
 
 В настоящее время цикл `for await...of` может быть немного медленнее. Если поток `async` / `await` и скорость важны одновременно, можно применить смешанный подход:
 
-<!-- 0067.part.md -->
 
 ```js
 const { once } = require('node:events');
@@ -933,9 +911,8 @@ const { createInterface } = require('node:readline');
 })();
 ```
 
-<!-- 0068.part.md -->
 
-## TTY keybindings
+## Привязки клавиш TTY
 
 <table>
 
@@ -943,19 +920,19 @@ const { createInterface } = require('node:readline');
 
 <th>
 
-Keybindings
+Сочетание
 
 </th>
 
 <th>
 
-Description
+Действие
 
 </th>
 
 <th>
 
-Notes
+Примечания
 
 </th>
 
@@ -971,13 +948,13 @@ Notes
 
 <td>
 
-Delete line left
+Удалить строку слева
 
 </td>
 
 <td>
 
-Doesn’t work on Linux, Mac and Windows
+Не работает на Linux, macOS и Windows
 
 </td>
 
@@ -993,13 +970,13 @@ Doesn’t work on Linux, Mac and Windows
 
 <td>
 
-Delete line right
+Удалить строку справа
 
 </td>
 
 <td>
 
-Doesn’t work on Mac
+Не работает на macOS
 
 </td>
 
@@ -1015,7 +992,7 @@ Doesn’t work on Mac
 
 <td>
 
-Emit <code>SIGINT</code> or close the readline instance
+Сгенерировать <code>SIGINT</code> или закрыть экземпляр readline
 
 </td>
 
@@ -1035,7 +1012,7 @@ Emit <code>SIGINT</code> or close the readline instance
 
 <td>
 
-Delete left
+Удалить символ слева
 
 </td>
 
@@ -1055,13 +1032,13 @@ Delete left
 
 <td>
 
-Delete right or close the readline instance in case the current line is empty / EOF
+Удалить справа или закрыть readline, если строка пуста / EOF
 
 </td>
 
 <td>
 
-Doesn’t work on Windows
+Не работает на Windows
 
 </td>
 
@@ -1077,7 +1054,7 @@ Doesn’t work on Windows
 
 <td>
 
-Delete from the current position to the line start
+Удалить от курсора до начала строки
 
 </td>
 
@@ -1097,7 +1074,7 @@ Delete from the current position to the line start
 
 <td>
 
-Delete from the current position to the end of line
+Удалить от курсора до конца строки
 
 </td>
 
@@ -1117,13 +1094,13 @@ Delete from the current position to the end of line
 
 <td>
 
-Yank (Recall) the previously deleted text
+Вставить ранее удалённый текст (yank)
 
 </td>
 
 <td>
 
-Only works with text deleted by <kbd>Ctrl</kbd>+<kbd>U</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd>
+Работает только с текстом, удалённым через <kbd>Ctrl</kbd>+<kbd>U</kbd> или <kbd>Ctrl</kbd>+<kbd>K</kbd>
 
 </td>
 
@@ -1139,13 +1116,13 @@ Only works with text deleted by <kbd>Ctrl</kbd>+<kbd>U</kbd> or <kbd>Ctrl</kbd>+
 
 <td>
 
-Cycle among previously deleted lines
+Переключение между ранее удалёнными строками
 
 </td>
 
 <td>
 
-Only available when the last keystroke is <kbd>Ctrl</kbd>+<kbd>Y</kbd>
+Доступно, если последнее нажатие — <kbd>Ctrl</kbd>+<kbd>Y</kbd>
 
 </td>
 
@@ -1161,7 +1138,7 @@ Only available when the last keystroke is <kbd>Ctrl</kbd>+<kbd>Y</kbd>
 
 <td>
 
-Go to start of line
+В начало строки
 
 </td>
 
@@ -1181,7 +1158,7 @@ Go to start of line
 
 <td>
 
-Go to end of line
+В конец строки
 
 </td>
 
@@ -1201,7 +1178,7 @@ Go to end of line
 
 <td>
 
-Back one character
+На символ назад
 
 </td>
 
@@ -1221,7 +1198,7 @@ Back one character
 
 <td>
 
-Forward one character
+На символ вперёд
 
 </td>
 
@@ -1241,7 +1218,7 @@ Forward one character
 
 <td>
 
-Clear screen
+Очистить экран
 
 </td>
 
@@ -1261,7 +1238,7 @@ Clear screen
 
 <td>
 
-Next history item
+Следующий элемент истории
 
 </td>
 
@@ -1281,7 +1258,7 @@ Next history item
 
 <td>
 
-Previous history item
+Предыдущий элемент истории
 
 </td>
 
@@ -1301,13 +1278,13 @@ Previous history item
 
 <td>
 
-Undo previous change
+Отменить последнее изменение
 
 </td>
 
 <td>
 
-Any keystroke that emits key code <code>0x1F</code> will do this action. In many terminals, for example <code>xterm</code>, this is bound to <kbd>Ctrl</kbd>+<kbd>-</kbd>.
+Любое нажатие с кодом клавиши <code>0x1F</code> выполняет это действие. Во многих терминалах, например <code>xterm</code>, это привязано к <kbd>Ctrl</kbd>+<kbd>-</kbd>.
 
 </td>
 
@@ -1323,13 +1300,13 @@ Any keystroke that emits key code <code>0x1F</code> will do this action. In many
 
 <td>
 
-Redo previous change
+Повторить отменённое изменение
 
 </td>
 
 <td>
 
-Many terminals don’t have a default redo keystroke. We choose key code <code>0x1E</code> to perform redo. In <code>xterm</code>, it is bound to <kbd>Ctrl</kbd>+<kbd>6</kbd> by default.
+Во многих терминалах нет стандартной клавиши повтора. Для redo используется код <code>0x1E</code>. В <code>xterm</code> по умолчанию это <kbd>Ctrl</kbd>+<kbd>6</kbd>.
 
 </td>
 
@@ -1345,13 +1322,13 @@ Many terminals don’t have a default redo keystroke. We choose key code <code>0
 
 <td>
 
-Moves running process into background. Type <code>fg</code> and press <kbd>Enter</kbd> to return.
+Переводит процесс в фон. Введите <code>fg</code> и нажмите <kbd>Enter</kbd>, чтобы вернуть.
 
 </td>
 
 <td>
 
-Doesn’t work on Windows
+Не работает на Windows
 
 </td>
 
@@ -1367,13 +1344,13 @@ Doesn’t work on Windows
 
 <td>
 
-Delete backward to a word boundary
+Удалить назад до границы слова
 
 </td>
 
 <td>
 
-<kbd>Ctrl</kbd>+<kbd>Backspace</kbd> Doesn’t work on Linux, Mac and Windows
+<kbd>Ctrl</kbd>+<kbd>Backspace</kbd> не работает на Linux, macOS и Windows
 
 </td>
 
@@ -1389,13 +1366,13 @@ Delete backward to a word boundary
 
 <td>
 
-Delete forward to a word boundary
+Удалить вперёд до границы слова
 
 </td>
 
 <td>
 
-Doesn’t work on Mac
+Не работает на macOS
 
 </td>
 
@@ -1411,13 +1388,13 @@ Doesn’t work on Mac
 
 <td>
 
-Word left
+Слово влево
 
 </td>
 
 <td>
 
-<kbd>Ctrl</kbd>+<kbd>Left arrow</kbd> Doesn’t work on Mac
+<kbd>Ctrl</kbd>+<kbd>←</kbd> не работает на macOS
 
 </td>
 
@@ -1433,13 +1410,13 @@ Word left
 
 <td>
 
-Word right
+Слово вправо
 
 </td>
 
 <td>
 
-<kbd>Ctrl</kbd>+<kbd>Right arrow</kbd> Doesn’t work on Mac
+<kbd>Ctrl</kbd>+<kbd>→</kbd> не работает на macOS
 
 </td>
 
@@ -1455,13 +1432,13 @@ Word right
 
 <td>
 
-Delete word right
+Удалить слово справа
 
 </td>
 
 <td>
 
-<kbd>Meta</kbd>+<kbd>Delete</kbd> Doesn’t work on windows
+<kbd>Meta</kbd>+<kbd>Delete</kbd> не работает на Windows
 
 </td>
 
@@ -1477,13 +1454,13 @@ Delete word right
 
 <td>
 
-Delete word left
+Удалить слово слева
 
 </td>
 
 <td>
 
-Doesn’t work on Mac
+Не работает на macOS
 
 </td>
 
@@ -1491,4 +1468,7 @@ Doesn’t work on Mac
 
 </table>
 
-<!-- 0070.part.md -->
+[Readable]: stream.md#readable-streams
+[Writable]: stream.md#writable-streams
+[process.stdin]: process.md#processstdin
+

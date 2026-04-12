@@ -1,72 +1,77 @@
 ---
-description: API WASI предоставляет реализацию спецификации WebAssembly System Interface
+title: WebAssembly System Interface (WASI)
+description: Модуль node:wasi реализует WASI для запуска WebAssembly с доступом к ОС; статус экспериментальный, без гарантий песочницы файловой системы
 ---
 
-# WASI
+# WebAssembly System Interface (WASI)
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/wasi.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/wasi.html)
+
+<!--introduced_in=v12.16.0-->
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-API WASI предоставляет реализацию спецификации [WebAssembly System Interface](https://wasi.dev/). WASI предоставляет изолированным приложениям WebAssembly доступ к базовой операционной системе через набор POSIX-подобных функций.
+<strong class="critical">Модуль `node:wasi` в настоящее время не обеспечивает те же свойства безопасности файловой системы, что некоторые среды выполнения WASI. Полноценная безопасная изоляция файловой системы может быть или не быть реализована в будущем. Пока не полагайтесь на неё для запуска недоверенного кода.</strong>
 
-```mjs
-import { readFile } from 'node:fs/promises';
-import { WASI } from 'wasi';
-import { argv, env } from 'node:process';
+<!-- source_link=lib/wasi.js -->
 
-const wasi = new WASI({
-    version: 'preview1',
-    args: argv,
-    env,
-    preopens: {
-        '/sandbox': '/some/real/path/that/wasm/can/access',
-    },
-});
+API WASI реализует спецификацию [WebAssembly System Interface][]. WASI даёт приложениям WebAssembly доступ к базовой операционной системе через набор функций в духе POSIX.
 
-const wasm = await WebAssembly.compile(
-    await readFile(new URL('./demo.wasm', import.meta.url))
-);
-const instance = await WebAssembly.instantiate(
-    wasm,
-    wasi.getImportObject()
-);
+=== "MJS"
 
-wasi.start(instance);
-```
-
-```cjs
-'use strict';
-const { readFile } = require('node:fs/promises');
-const { WASI } = require('wasi');
-const { argv, env } = require('node:process');
-const { join } = require('node:path');
-
-const wasi = new WASI({
-    version: 'preview1',
-    args: argv,
-    env,
-    preopens: {
-        '/sandbox': '/some/real/path/that/wasm/can/access',
-    },
-});
-
-(async () => {
+    ```js
+    import { readFile } from 'node:fs/promises';
+    import { WASI } from 'node:wasi';
+    import { argv, env } from 'node:process';
+    
+    const wasi = new WASI({
+      version: 'preview1',
+      args: argv,
+      env,
+      preopens: {
+        '/local': '/some/real/path/that/wasm/can/access',
+      },
+    });
+    
     const wasm = await WebAssembly.compile(
-        await readFile(join(__dirname, 'demo.wasm'))
+      await readFile(new URL('./demo.wasm', import.meta.url)),
     );
-    const instance = await WebAssembly.instantiate(
-        wasm,
-        wasi.getImportObject()
-    );
-
+    const instance = await WebAssembly.instantiate(wasm, wasi.getImportObject());
+    
     wasi.start(instance);
-})();
-```
+    ```
 
-Чтобы выполнить описанный выше пример, создайте новый файл WebAssembly в текстовом формате с именем `demo.wat`:
+=== "CJS"
+
+    ```js
+    'use strict';
+    const { readFile } = require('node:fs/promises');
+    const { WASI } = require('node:wasi');
+    const { argv, env } = require('node:process');
+    const { join } = require('node:path');
+    
+    const wasi = new WASI({
+      version: 'preview1',
+      args: argv,
+      env,
+      preopens: {
+        '/local': '/some/real/path/that/wasm/can/access',
+      },
+    });
+    
+    (async () => {
+      const wasm = await WebAssembly.compile(
+        await readFile(join(__dirname, 'demo.wasm')),
+      );
+      const instance = await WebAssembly.instantiate(wasm, wasi.getImportObject());
+    
+      wasi.start(instance);
+    })();
+    ```
+
+Чтобы запустить пример выше, создайте текстовый файл WebAssembly с именем `demo.wat`:
 
 ```text
 (module
@@ -98,69 +103,162 @@ const wasi = new WASI({
 )
 ```
 
-Используйте [wabt](https://github.com/WebAssembly/wabt) для компиляции `.wat` в `.wasm`.
+Скомпилируйте `.wat` в `.wasm` с помощью [wabt](https://github.com/WebAssembly/wabt):
 
-```console
-$ wat2wasm demo.wat
+```bash
+wat2wasm demo.wat
 ```
 
-Для запуска этого примера необходим аргумент CLI `--experimental-wasi-unstable-preview1`.
+## Безопасность
+
+<!-- YAML
+added:
+  - v21.2.0
+  - v20.11.0
+changes:
+  - version:
+    - v21.2.0
+    - v20.11.0
+    pr-url: https://github.com/nodejs/node/pull/50396
+    description: Clarify WASI security properties.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.2.0, v20.11.0 | Уточните свойства безопасности WASI. |
+
+WASI использует модель на основе возможностей (capabilities): приложениям предоставляются собственные настраиваемые возможности `env`, `preopens`, `stdin`, `stdout`, `stderr` и `exit`.
+
+**Текущая модель угроз Node.js не обеспечивает безопасную изоляцию в том виде, как это делают некоторые среды WASI.**
+
+Хотя механизмы возможностей поддерживаются, в Node.js они не составляют полноценную модель безопасности. Например, изоляцию файловой системы можно обойти различными приёмами. Проект изучает, можно ли добавить такие гарантии в будущем.
 
 ## Класс: `WASI`
 
-Класс `WASI` предоставляет API системных вызовов WASI и дополнительные удобные методы для работы с приложениями на базе WASI. Каждый экземпляр `WASI` представляет собой отдельную среду "песочницы". В целях безопасности каждый экземпляр `WASI` должен иметь свои аргументы командной строки, переменные среды и структуру каталога песочницы, настроенные явным образом.
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
 
-### `новый WASI([опции])`
+Класс `WASI` предоставляет API системных вызовов WASI и вспомогательные методы для работы с приложениями на базе WASI. Каждый экземпляр `WASI` представляет отдельное окружение.
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `args` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет воспринимать как аргументы командной строки. Первый аргумент - это виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
-    -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, подобный `process.env`, который приложение WebAssembly будет воспринимать как свое окружение. **По умолчанию:** `{}`.
-    -   `preopens` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Этот объект представляет структуру каталогов "песочницы" приложения WebAssembly. Строковые ключи `preopens` рассматриваются как каталоги внутри песочницы. Соответствующие значения в `preopens` - это реальные пути к этим директориям на хост-машине.
-    -   `returnOnExit` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию приложения WASI завершают процесс Node.js с помощью функции `__wasi_proc_exit()`. Установка этой опции в `true` заставляет `wasi.start()` возвращать код выхода, а не завершать процесс. **По умолчанию:** `false`.
-    -   `stdin` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартного ввода в приложении WebAssembly. **По умолчанию:** `0`.
-    -   `stdout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартного вывода в приложении WebAssembly. **По умолчанию:** `1`.
-    -   `stderr` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый в качестве стандартной ошибки в приложении WebAssembly. **По умолчанию:** `2`.
-    -   `version` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Запрашиваемая версия WASI. В настоящее время поддерживаются только версии `unstable` и `preview1`. **По умолчанию:** `preview1`.
+### `new WASI([options])`
+
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+changes:
+ - version: v20.1.0
+   pr-url: https://github.com/nodejs/node/pull/47390
+   description: default value of returnOnExit changed to true.
+ - version: v20.0.0
+   pr-url: https://github.com/nodejs/node/pull/47391
+   description: The version option is now required and has no default value.
+ - version: v19.8.0
+   pr-url: https://github.com/nodejs/node/pull/46469
+   description: version field added to options.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0 | значение по умолчанию returnOnExit изменено на true. |
+    | v20.0.0 | Параметр версии теперь является обязательным и не имеет значения по умолчанию. |
+    | v19.8.0 | Поле версии добавлено в опции. |
+
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `args` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет видеть как аргументы командной строки. Первый аргумент — виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
+  * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, аналогичный `process.env`, который приложение WebAssembly будет видеть как своё окружение. **По умолчанию:** `{}`.
+  * `preopens` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Локальная структура каталогов приложения WebAssembly. Строковые ключи `preopens` трактуются как каталоги в виртуальной файловой системе. Соответствующие значения — реальные пути к этим каталогам на хосте.
+  * `returnOnExit` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию, когда приложения WASI вызывают `__wasi_proc_exit()`, метод `wasi.start()` возвращает управление с указанным кодом выхода вместо завершения процесса. Значение `false` приводит к завершению процесса Node.js с указанным кодом выхода. **По умолчанию:** `true`.
+  * `stdin` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный ввод в приложении WebAssembly. **По умолчанию:** `0`.
+  * `stdout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный вывод в приложении WebAssembly. **По умолчанию:** `1`.
+  * `stderr` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный поток ошибок в приложении WebAssembly. **По умолчанию:** `2`.
+  * `version` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Запрашиваемая версия WASI. Сейчас поддерживаются только `unstable` и `preview1`. Параметр **обязателен**.
 
 ### `wasi.getImportObject()`
 
-Возвращает объект импорта, который может быть передан в `WebAssembly.instantiate()`, если не требуется никаких других импортов WASM, кроме тех, которые предоставляются WASI.
+<!-- YAML
+added: v19.8.0
+-->
 
-Если в конструктор была передана версия `unstable`, он вернет:
+Возвращает объект импорта, который можно передать в `WebAssembly.instantiate()`, если кроме WASI другие импорты WASM не нужны.
+
+Если в конструктор передана версия `unstable`, будет возвращено:
 
 ```json
-{ "wasi_unstable": wasi.wasiImport }
+{ wasi_unstable: wasi.wasiImport }
 ```
 
-Если в конструктор была передана версия `preview1` или версия не была указана, он вернет:
+Если передана версия `preview1` или версия не указана (в актуальном API версия обязательна — см. выше), будет возвращено:
 
 ```json
-{ "wasi_snapshot_preview1": wasi.wasiImport }
+{ wasi_snapshot_preview1: wasi.wasiImport }
 ```
 
 ### `wasi.start(instance)`
 
--   `instance` {WebAssembly.Instance}
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
 
-Попытка начать выполнение `instance` как команды WASI, вызвав ее экспорт `_start()`. Если `instance` не содержит экспорта `_start()`, или если `instance` содержит экспорт `_initialize()`, то возникает исключение.
+* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
 
-`start()` требует, чтобы `instance` экспортировала [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory) с именем `memory`. Если `instance` не экспортирует `memory`, то возникает исключение.
+Пытается начать выполнение `instance` как команды WASI, вызывая экспорт `_start()`. Если в `instance` нет экспорта `_start()` или есть экспорт `_initialize()`, выбрасывается исключение.
 
-Если `start()` вызывается более одного раза, возникает исключение.
+`start()` требует, чтобы `instance` экспортировал [`WebAssembly.Memory`][] с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
+
+Повторный вызов `start()` приводит к исключению.
 
 ### `wasi.initialize(instance)`
 
--   `instance` {WebAssembly.Instance}
+<!-- YAML
+added:
+ - v14.6.0
+ - v12.19.0
+-->
 
-Попытка инициализировать `instance` как реактор WASI, вызывая его экспорт `_initialize()`, если он присутствует. Если `instance` содержит экспорт `_start()`, то будет выброшено исключение.
+* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
 
-`initialize()` требует, чтобы `instance` экспортировал [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory) с именем `memory`. Если `instance` не экспортирует `memory`, то возникает исключение.
+Пытается инициализировать `instance` как реактор WASI, вызывая экспорт `_initialize()`, если он есть. Если в `instance` есть экспорт `_start()`, выбрасывается исключение.
 
-Если `initialize()` вызывается более одного раза, возникает исключение.
+`initialize()` требует экспорта [`WebAssembly.Memory`][] с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
+
+Повторный вызов `initialize()` приводит к исключению.
+
+### `wasi.finalizeBindings(instance[, options])`
+
+<!-- YAML
+added: v24.4.0
+-->
+
+* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `memory` [<WebAssembly.Memory>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory) **По умолчанию:** `instance.exports.memory`.
+
+Настраивает привязки хоста WASI к `instance` без вызова `initialize()` или `start()`. Полезно, когда модуль WASI создаётся в дочерних потоках с разделяемой памятью.
+
+`finalizeBindings()` требует либо экспорта [`WebAssembly.Memory`][] с именем `memory`, либо явного указания объекта [`WebAssembly.Memory`][] в `options.memory`. При невалидной памяти выбрасывается исключение.
+
+`start()` и `initialize()` внутри вызывают `finalizeBindings()`. Повторный вызов `finalizeBindings()` приводит к исключению.
 
 ### `wasi.wasiImport`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+<!-- YAML
+added:
+ - v13.3.0
+ - v12.16.0
+-->
 
-`wasiImport` - это объект, реализующий API системных вызовов WASI. Этот объект должен быть передан как импорт `wasi_snapshot_preview1` во время инстанцирования [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance).
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+`wasiImport` — объект, реализующий API системных вызовов WASI. Его следует передавать как импорт `wasi_snapshot_preview1` при создании [`WebAssembly.Instance`][].
+
+[WebAssembly System Interface]: https://wasi.dev/
+[`WebAssembly.Instance`]: https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Instance
+[`WebAssembly.Memory`]: https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Memory

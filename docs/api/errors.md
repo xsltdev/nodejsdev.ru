@@ -1,228 +1,255 @@
 ---
-title: Errors
-description: Приложения, работающие в Node.js, обычно сталкиваются с четырьмя категориями ошибок
+title: Ошибки
+description: Классы и коды ошибок Node.js, распространение и перехват исключений, системные и пользовательские ошибки
 ---
 
 # Ошибки
 
-Приложения, работающие на Node.js, обычно сталкиваются с четырьмя категориями ошибок:
+<!--introduced_in=v4.0.0-->
 
--   Стандартные ошибки JavaScript, такие как {EvalError}, {SyntaxError}, {RangeError}, {ReferenceError}, {TypeError} и {URIError}.
--   Системные ошибки, вызванные ограничениями базовой операционной системы, например, попытка открыть несуществующий файл или попытка отправить данные через закрытый сокет.
--   Пользовательские ошибки, вызванные кодом приложения.
--   `AssertionError` - это специальный класс ошибок, которые могут быть вызваны, когда Node.js обнаруживает исключительное нарушение логики, которое никогда не должно происходить. Обычно их вызывает модуль `node:assert`.
+<!--type=misc-->
 
-Все JavaScript и системные ошибки, вызываемые Node.js, наследуются от или являются экземплярами стандартного класса JavaScript [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) и гарантированно предоставляют _по крайней мере_ свойства, доступные для этого класса.
+Приложения в Node.js обычно сталкиваются со следующими категориями ошибок:
 
-<!-- 0000.part.md -->
+* стандартные ошибки JavaScript, такие как [EvalError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/EvalError), [SyntaxError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError), [RangeError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RangeError),
+  [ReferenceError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError), [TypeError](errors.md#class-typeerror) и [URIError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/URIError);
+* стандартные `DOMException`;
+* системные ошибки из‑за ограничений операционной системы, например попытка открыть
+  несуществующий файл или отправить данные через закрытый сокет;
+* `AssertionError` — особый класс ошибок, когда Node.js обнаруживает нарушение логики,
+  которого не должно происходить; обычно их вызывает модуль `node:assert`;
+* пользовательские ошибки, задаваемые кодом приложения.
+
+Все ошибки JavaScript и системные ошибки, порождённые Node.js, наследуют или являются
+экземплярами стандартного класса JavaScript [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) и гарантированно предоставляют
+_как минимум_ свойства, доступные у этого класса.
+
+Свойство [`error.message`][] у ошибок Node.js может меняться в любых версиях. Для
+идентификации ошибки используйте [`error.code`][]. Для `DOMException` тип определяйте
+по [`domException.name`][].
 
 ## Распространение и перехват ошибок
 
-Node.js поддерживает несколько механизмов для распространения и обработки ошибок, возникающих во время работы приложения. То, как эти ошибки сообщаются и обрабатываются, полностью зависит от типа `Error` и стиля вызываемого API.
+<!--type=misc-->
 
-Все ошибки JavaScript обрабатываются как исключения, которые _немедленно_ генерируют и выбрасывают ошибку, используя стандартный механизм JavaScript `throw`. Они обрабатываются с помощью конструкции [`try...catch`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch), предоставляемой языком JavaScript.
+Node.js поддерживает несколько способов распространения и обработки ошибок во время
+работы приложения. То, как ошибки сообщаются и обрабатываются, полностью зависит от
+типа `Error` и стиля вызываемого API.
+
+Ошибки JavaScript обрабатываются как исключения: они _немедленно_ создаются и
+выбрасываются стандартным механизмом `throw`. Их перехватывают конструкцией
+[`try…catch`][try-catch], которую предоставляет язык JavaScript.
 
 ```js
-// Выброс с ошибкой ReferenceError, потому что z не определен.
+// Throws with a ReferenceError because z is not defined.
 try {
-    const m = 1;
-    const n = m + z;
+  const m = 1;
+  const n = m + z;
 } catch (err) {
-    // Обрабатываем ошибку здесь.
+  // Handle the error here.
 }
 ```
 
-Любое использование механизма JavaScript `throw` вызовет исключение, которое _должно_ быть обработано с помощью `try...catch`, иначе процесс Node.js немедленно завершится.
+Любое использование механизма `throw` в JavaScript порождает исключение, которое
+_обязано_ быть обработано, иначе процесс Node.js завершится немедленно.
 
-За редким исключением, _синхронные_ API (любой блокирующий метод, который не принимает функцию `callback`, например, [`fs.readFileSync`](fs.md#fsreadfilesyncpath-options)), будут использовать `throw` для сообщения об ошибках.
+За редким исключением _синхронные_ API (любой блокирующий метод, который не возвращает
+[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) и не принимает функцию `callback`, например [`fs.readFileSync`][]),
+сообщают об ошибках через `throw`.
 
-Ошибки, возникающие в _асинхронных API_, могут сообщаться различными способами:
+Ошибки в _асинхронных_ API могут сообщаться по-разному:
 
--   Большинство асинхронных методов, которые принимают функцию `callback`, принимают объект `Error`, передаваемый в качестве первого аргумента этой функции. Если первый аргумент не является `null` и представляет собой экземпляр `Error`, то произошла ошибка, которую следует обработать.
+* Некоторые асинхронные методы возвращают [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise); учитывайте, что промис может
+  быть отклонён. См. флаг [`--unhandled-rejections`][], чтобы понять, как процесс
+  реагирует на необработанное отклонение промиса.
 
-    ```js
-    const fs = require('node:fs');
-    fs.readFile(
-        'файл, который не существует',
-        (err, data) => {
-            if (err) {
-                console.error(
-                    'Произошла ошибка при чтении файла!',
-                    err
-                );
-                return;
-            }
-            // Иначе обрабатываем данные
-        }
-    );
-    ```
+  <!-- eslint-disable no-useless-return -->
 
--   Когда асинхронный метод вызывается на объекте, который является [`EventEmitter`](events.md#class-eventemitter), ошибки могут быть направлены в событие `'error'` этого объекта.
+  ```js
+  const fs = require('node:fs/promises');
 
-    ```js
-    const net = require('node:net');
-    const connection = net.connect('localhost');
+  (async () => {
+    let data;
+    try {
+      data = await fs.readFile('a file that does not exist');
+    } catch (err) {
+      console.error('There was an error reading the file!', err);
+      return;
+    }
+    // Otherwise handle the data
+  })();
+  ```
 
-    // Добавление обработчика события 'error' к потоку:
-    connection.on('error', (err) => {
-        // Если соединение сбрасывается сервером, или если не удается
-        // соединиться вообще, или при любой ошибке, с которой столкнулось
-        // соединением, ошибка будет отправлена сюда.
-        console.error(err);
-    });
+* У большинства асинхронных методов с функцией `callback` первым аргументом
+  передаётся объект `Error`. Если первый аргумент не `null` и является экземпляром
+  `Error`, произошла ошибка, которую нужно обработать.
 
-    connection.pipe(process.stdout);
-    ```
+  <!-- eslint-disable no-useless-return -->
 
--   Несколько типично асинхронных методов в API Node.js все еще могут использовать механизм `throw` для создания исключений, которые должны обрабатываться с помощью `try...catch`. Полного списка таких методов нет; пожалуйста, обратитесь к документации каждого метода для определения требуемого механизма обработки ошибок.
+  ```js
+  const fs = require('node:fs');
+  fs.readFile('a file that does not exist', (err, data) => {
+    if (err) {
+      console.error('There was an error reading the file!', err);
+      return;
+    }
+    // Otherwise handle the data
+  });
+  ```
 
-Использование механизма событий `error` наиболее характерно для API [stream-based](stream.md) и [event emitter-based](events.md#class-eventemitter), которые сами по себе представляют серию асинхронных операций во времени (в отличие от одной операции, которая может пройти или не пройти).
+* Если асинхронный метод вызывается у объекта [`EventEmitter`][], ошибки могут
+  направляться в событие `'error'` этого объекта.
+
+  ```js
+  const net = require('node:net');
+  const connection = net.connect('localhost');
+
+  // Adding an 'error' event handler to a stream:
+  connection.on('error', (err) => {
+    // If the connection is reset by the server, or if it can't
+    // connect at all, or on any sort of error encountered by
+    // the connection, the error will be sent here.
+    console.error(err);
+  });
+
+  connection.pipe(process.stdout);
+  ```
+
+* Несколько методов API Node.js, которые обычно асинхронны, всё же могут
+  использовать `throw` для исключений, которые нужно перехватывать через `try…catch`.
+  Полного списка таких методов нет; смотрите документацию каждого метода для выбора
+  подходящего способа обработки ошибок.
+
+Механизм события `'error'` чаще всего используется в [потоковых][stream-based]
+и [событийных][event emitter-based] API, которые представляют серию асинхронных
+операций во времени (в отличие от одной операции, которая может завершиться успехом
+или неудачей).
+
+Для _всех_ объектов [`EventEmitter`][], если обработчик `'error'` не задан,
+ошибка будет выброшена: процесс Node.js сообщит о необработанном исключении и
+завершится, если только не зарегистрирован обработчик события [`'uncaughtException'`][]
+или не используется устаревший модуль [`node:domain`][domains].
 
 ```js
 const EventEmitter = require('node:events');
 const ee = new EventEmitter();
 
 setImmediate(() => {
-    // This will crash the process because no 'error' event
-    // handler has been added.
-    ee.emit('error', new Error('This will crash'));
+  // This will crash the process because no 'error' event
+  // handler has been added.
+  ee.emit('error', new Error('This will crash'));
 });
 ```
 
-Ошибки, сгенерированные таким образом, _не могут_ быть перехвачены с помощью `try...catch`, поскольку они возникают _после_ того, как вызывающий код уже завершился.
+Ошибки, возникающие таким образом, _нельзя_ перехватить через `try…catch`, потому что
+они выбрасываются _после_ того, как вызывающий код уже завершился.
 
-Разработчики должны обратиться к документации для каждого метода, чтобы определить, как именно распространяются ошибки, вызванные этими методами.
-
-### Обратные вызовы по ошибке
-
-Большинство асинхронных методов, представленных в API ядра Node.js, следуют идиоматическому шаблону, называемому _первым обратным вызовом при ошибке_. В этом шаблоне функция обратного вызова передается методу в качестве аргумента. Когда операция либо завершается, либо возникает ошибка, вызывается функция обратного вызова с объектом `Error` (если таковой имеется), переданным в качестве первого аргумента. Если ошибка не была обнаружена, первый аргумент будет передан как `null`.
-
-```js
-const fs = require('node:fs');
-
-function errorFirstCallback(err, data) {
-    if (err) {
-        console.error('Произошла ошибка', err);
-        return;
-    }
-    console.log(data);
-}
-
-fs.readFile(
-    '/some/file/that/does-not-exist',
-    errorFirstCallback
-);
-fs.readFile(
-    '/some/file/that/does-exist',
-    errorFirstCallback
-);
-```
-
-Механизм JavaScript `try...catch` **нельзя** использовать для перехвата ошибок, генерируемых асинхронными API. Частой ошибкой новичков является попытка использовать `throw` внутри обратного вызова error-first:
-
-```js
-// THIS WILL NOT WORK:
-const fs = require('node:fs');
-
-try {
-    fs.readFile(
-        '/some/file/that/does-not-exist',
-        (err, data) => {
-            // Mistaken assumption: throwing here...
-            if (err) {
-                throw err;
-            }
-        }
-    );
-} catch (err) {
-    // This will not catch the throw!
-    console.error(err);
-}
-```
-
-Это не сработает, потому что функция обратного вызова, переданная в `fs.readFile()`, вызывается асинхронно. К тому моменту, когда callback будет вызван, окружающий код, включая блок `try...catch`, уже завершится. Выброс ошибки внутри обратного вызова **может привести к краху процесса Node.js** в большинстве случаев. Если включены [domains](domain.md), или обработчик был зарегистрирован в `process.on('uncaughtException')`, такие ошибки могут быть перехвачены.
-
-<!-- 0002.part.md -->
+Смотрите документацию каждого метода, чтобы понять, как именно распространяются ошибки.
 
 ## Класс: `Error`
 
-Общий объект JavaScript [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), который не обозначает никаких конкретных обстоятельств того, почему произошла ошибка. Объекты `Error` фиксируют "трассировку стека", детализирующую точку в коде, в которой `Error` был инстанцирован, и могут предоставлять текстовое описание ошибки.
+<!--type=class-->
 
-Все ошибки, генерируемые Node.js, включая все системные ошибки и ошибки JavaScript, будут либо экземплярами класса `Error`, либо наследоваться от него.
+Обобщённый объект JavaScript [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), не указывающий конкретную причину ошибки.
+Объекты `Error` содержат «трассировку стека» — место в коде, где создан `Error`,
+и могут включать текстовое описание.
 
-<!-- 0003.part.md -->
+Все ошибки Node.js, включая системные и ошибки JavaScript, являются экземплярами
+`Error` или наследуются от него.
 
-### ### `new Error(message[, options])`
+### `new Error(message[, options])`
 
--   `сообщение` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `cause` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Ошибка, которая вызвала вновь созданную ошибку.
+* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `cause` {any} ошибка, послужившая причиной новой ошибки.
 
-Создает новый объект `Error` и устанавливает свойство `error.message` в предоставленное текстовое сообщение. Если в качестве `message` передан объект, текстовое сообщение генерируется вызовом `String(message)`. Если передана опция `cause`, она присваивается свойству `error.cause`. Свойство `error.stack` будет представлять точку в коде, в которой была вызвана `new Error()`. Трассировка стека зависит от [V8's stack trace API](https://v8.dev/docs/stack-trace-api). Трассировка стека распространяется только на (a) начало _синхронного выполнения кода_, или (b) количество кадров, заданное свойством `Error.stackTraceLimit`, в зависимости от того, что меньше.
-
-<!-- 0004.part.md -->
+Создаёт объект `Error` и задаёт свойство `error.message` переданным текстом.
+Если в `message` передан объект, текст получают вызовом `String(message)`.
+При наличии опции `cause` она попадает в `error.cause`. Свойство `error.stack`
+отражает место вызова `new Error()`. Трассировки зависят от [API трассировки стека V8][V8's stack trace API].
+Охват стека ограничен либо (a) началом _синхронного_ выполнения кода, либо (b) числом
+кадров из `Error.stackTraceLimit` — в зависимости от того, что меньше.
 
 ### `Error.captureStackTrace(targetObject[, constructorOpt])`
 
--   `targetObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `constructorOpt` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `targetObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `constructorOpt` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Создает свойство `.stack` на `targetObject`, которое при обращении к нему возвращает строку, представляющую место в коде, в котором была вызвана `Error.captureStackTrace()`.
+Создаёт на `targetObject` свойство `.stack`; при обращении к нему возвращается
+строка с местом в коде, где вызван `Error.captureStackTrace()`.
 
 ```js
 const myObject = {};
 Error.captureStackTrace(myObject);
-myObject.stack; // Аналогично `new Error().stack`.
+myObject.stack;  // Similar to `new Error().stack`
 ```
 
-Первая строка трассировки будет иметь префикс `${myObject.name}: ${myObject.message}`.
+Первая строка трассировки будет с префиксом
+`${myObject.name}: ${myObject.message}`.
 
-Необязательный аргумент `constructorOpt` принимает функцию. Если он задан, все фреймы выше `constructorOpt`, включая `constructorOpt`, будут опущены в сгенерированной трассировке стека.
+Необязательный аргумент `constructorOpt` — функция. Если задан, из трассировки
+исключаются все кадры выше `constructorOpt`, включая сам `constructorOpt`.
 
-Аргумент `constructorOpt` полезен для сокрытия от пользователя деталей реализации генерации ошибок. Например:
+Аргумент `constructorOpt` удобен, чтобы скрыть детали реализации генерации ошибок
+от пользователя. Пример:
 
 ```js
-function MyError() {
-    Error.captureStackTrace(this, MyError);
+function a() {
+  b();
 }
 
-// Без передачи MyError в captureStackTrace, MyError
-// кадр будет отображаться в свойстве .stack. Передавая
-// конструктору, мы опускаем этот кадр и сохраняем все кадры ниже него.
-new MyError().stack;
-```
+function b() {
+  c();
+}
 
-<!-- 0005.part.md -->
+function c() {
+  // Create an error without stack trace to avoid calculating the stack trace twice.
+  const { stackTraceLimit } = Error;
+  Error.stackTraceLimit = 0;
+  const error = new Error();
+  Error.stackTraceLimit = stackTraceLimit;
+
+  // Capture the stack trace above function b
+  Error.captureStackTrace(error, b); // Neither function c, nor b is included in the stack trace
+  throw error;
+}
+
+a();
+```
 
 ### `Error.stackTraceLimit`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Свойство `Error.stackTraceLimit` определяет количество кадров стека, собираемых трассировкой стека (независимо от того, генерируется ли она `new Error().stack` или `Error.captureStackTrace(obj)`).
+Свойство `Error.stackTraceLimit` задаёт число кадров стека, собираемых в трассировку
+(и для `new Error().stack`, и для `Error.captureStackTrace(obj)`).
 
-Значение по умолчанию - `10`, но может быть установлено в любое допустимое число JavaScript. Изменения будут влиять на любую трассировку стека, захваченную _после_ изменения значения.
+По умолчанию `10`, но можно задать любое допустимое число в JavaScript. Изменения
+влияют на трассировки, захваченные _после_ смены значения.
 
-Если значение не равно числу или равно отрицательному числу, трассировка стека не будет фиксироваться.
-
-<!-- 0006.part.md -->
+Если задать не число или отрицательное число, кадры в трассировку не попадут.
 
 ### `error.cause`
 
--   {любая}
+<!-- YAML
+added: v16.9.0
+-->
 
-Если присутствует, свойство `error.cause` является основной причиной `Error`. Оно используется, когда вы ловите ошибку и бросаете новую с другим сообщением или кодом, чтобы сохранить доступ к исходной ошибке.
+* Тип: {any}
 
-Свойство `error.cause` обычно устанавливается вызовом `new Error(message, { cause })`. Оно не устанавливается конструктором, если не указан параметр `cause`.
+Если задано, `error.cause` — исходная причина `Error`. Используется при перехвате
+ошибки и выбросе новой с другим сообщением или кодом, чтобы сохранить доступ к
+первоначальной ошибке.
 
-Это свойство позволяет связывать ошибки в цепочку. При сериализации объектов `Error`, [`util.inspect()`](util.md#utilinspectobject-options) рекурсивно сериализует `error.cause`, если оно установлено.
+Обычно `error.cause` задаётся вызовом `new Error(message, { cause })`. Конструктор
+не задаёт его, если опция `cause` не передана.
+
+Свойство позволяет связывать ошибки в цепочку. При сериализации объектов `Error`
+[`util.inspect()`][] рекурсивно обрабатывает `error.cause`, если оно есть.
 
 ```js
-const cause = new Error(
-    'The remote HTTP server responded with a 500 status'
-);
-const symptom = new Error('The message failed to send', {
-    cause,
-});
+const cause = new Error('The remote HTTP server responded with a 500 status');
+const symptom = new Error('The message failed to send', { cause });
 
 console.log(symptom);
 // Prints:
@@ -244,35 +271,35 @@ console.log(symptom);
 //         at [_line] [as _line] (node:internal/readline/interface:886:18)
 ```
 
-<!-- 0007.part.md -->
-
 ### `error.code`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `error.code` - это строковая метка, которая идентифицирует вид ошибки. `error.code` является наиболее стабильным способом идентификации ошибки. Он будет меняться только между основными версиями Node.js. В отличие от этого, строки `error.message` могут изменяться между любыми версиями Node.js. Подробности о конкретных кодах см. в [Node.js error codes](#nodejs-error-codes).
-
-<!-- 0008.part.md -->
+Свойство `error.code` — строковая метка вида ошибки. Это самый стабильный способ
+идентификации: оно меняется только между мажорными версиями Node.js. Строки
+`error.message`, напротив, могут меняться в любых версиях. Подробности по кодам —
+в разделе [коды ошибок Node.js][Node.js error codes].
 
 ### `error.message`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `error.message` - это строковое описание ошибки, заданное вызовом `new Error(message)`. Переданное конструктору `message` также появится в первой строке трассировки стека `Error`, однако изменение этого свойства после создания объекта `Error` может не изменить первую строку трассировки стека (например, если `error.stack` будет прочитан до изменения этого свойства).
+Свойство `error.message` — текстовое описание, задаваемое вызовом `new Error(message)`.
+`message` из конструктора также попадает в первую строку трассировки `Error`, но
+изменение этого свойства после создания объекта _может не_ изменить первую строку
+трассировки (например, если `error.stack` уже прочитали до смены свойства).
 
 ```js
-const err = new Error('Сообщение');
+const err = new Error('The message');
 console.error(err.message);
-// Выводит: Сообщение
+// Prints: The message
 ```
-
-<!-- 0009.part.md -->
 
 ### `error.stack`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `error.stack` представляет собой строку, описывающую точку в коде, в которой `Error` была инстанцирована.
+Свойство `error.stack` — строка с описанием места в коде, где создан `Error`.
 
 ```console
 Error: Things keep happening!
@@ -282,18 +309,24 @@ Error: Things keep happening!
    at increaseSynergy (/home/gbusey/actors.js:701:6)
 ```
 
-Первая строка отформатирована как `<имя класса ошибки>: <сообщение об ошибке>`, а за ней следует серия стековых кадров (каждая строка начинается с "at"). Каждый кадр описывает место вызова в коде, которое привело к возникновению ошибки. V8 пытается отобразить имя для каждой функции (по имени переменной, имени функции или имени метода объекта), но иногда ему не удается найти подходящее имя. Если V8 не может определить имя функции, для этого кадра будет отображаться только информация о местоположении. В противном случае будет выведено определенное имя функции с информацией о местоположении, заключенной в круглые скобки.
+Первая строка имеет вид `<имя класса ошибки>: <сообщение>`, далее идут кадры стека
+(каждая строка начинается с «at »). Каждый кадр — место вызова в коде, приведшее к
+ошибке. V8 старается показать имя функции (по имени переменной, объявлению функции
+или методу объекта), но иногда подходящего имени нет: тогда для кадра выводится только
+расположение. Иначе выводится имя функции и в скобках — расположение.
 
-Фреймы генерируются только для функций JavaScript. Если, например, выполнение синхронно проходит через функцию аддона C++ под названием `cheetahify`, которая сама вызывает функцию JavaScript, фрейм, представляющий вызов `cheetahify`, не будет присутствовать в стековых трассах:
+Кадры строятся только для функций JavaScript. Если, например, выполнение
+синхронно проходит через функцию аддона на C++ `cheetahify`, которая затем вызывает
+функцию JavaScript, кадра для вызова `cheetahify` в трассировке не будет:
 
 ```js
 const cheetahify = require('./native-binding.node');
 
 function makeFaster() {
-    // `cheetahify()` *synchronously* calls speedy.
-    cheetahify(function speedy() {
-        throw new Error('oh no!');
-    });
+  // `cheetahify()` *synchronously* calls speedy.
+  cheetahify(function speedy() {
+    throw new Error('oh no!');
+  });
 }
 
 makeFaster();
@@ -314,263 +347,261 @@ makeFaster();
 //       at node.js:906:3
 ```
 
-Информация о местоположении будет одной из:
+Сведения о расположении могут быть такими:
 
--   `native`, если кадр представляет собой вызов внутри V8 (как в `[].forEach`).
--   `plain-filename.js:line:column`, если фрейм представляет собой вызов внутри Node.js.
--   `/absolute/path/to/file.js:line:column`, если фрейм представляет собой вызов в пользовательской программе (использующей систему модулей CommonJS), или ее зависимостях.
--   `<transport-protocol>:///url/to/module/file.mjs:line:column`, если кадр представляет собой вызов в пользовательской программе (с использованием системы модулей ES), или ее зависимостей.
+* `native` — внутренний вызов V8 (как у `[].forEach`);
+* `plain-filename.js:строка:столбец` — вызов внутри Node.js;
+* `/absolute/path/to/file.js:строка:столбец` — вызов в пользовательской программе
+  (CommonJS) или зависимостях;
+* `<transport-protocol>:///url/to/module/file.mjs:строка:столбец` — вызов в
+  пользовательской программе (ESM) или зависимостях.
 
-Строка, представляющая трассировку стека, лениво генерируется при \*\*обращении к свойству `error.stack`.
+Число кадров в трассировке ограничено меньшим из двух: `Error.stackTraceLimit` и
+числа доступных кадров на текущем тике цикла событий.
 
-Количество кадров, захватываемых трассировкой стека, ограничено меньшим из значений `Error.stackTraceLimit` или количеством доступных кадров на текущем такте цикла событий.
-
-<!-- 0010.part.md -->
+`error.stack` — геттер/сеттер для внутреннего скрытого свойства, которое есть только
+у встроенных объектов `Error` (для которых [`Error.isError`][] возвращает `true`).
+Если `error` не встроенный объект ошибки, геттер `error.stack` всегда возвращает
+`undefined`, сеттер ничего не делает. Так бывает, если аксессор вызывают вручную с
+`this`, не являющимся встроенной ошибкой, например с [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy).
 
 ## Класс: `AssertionError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Указывает на неудачу утверждения. Подробнее см. в [`Класс: assert.AssertionError`](assert.md#class-assertassertionerror).
-
-<!-- 0011.part.md -->
+Означает сбой проверки утверждения. Подробнее см. [`Class: assert.AssertionError`][].
 
 ## Класс: `RangeError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Указывает, что предоставленный аргумент не входит в набор или диапазон допустимых значений для функции; будь то числовой диапазон, или вне набора опций для данного параметра функции.
+Указывает, что переданный аргумент вне допустимого набора или диапазона значений
+функции — будь то числовой диапазон или набор допустимых вариантов параметра.
 
 ```js
 require('node:net').connect(-1);
-// Выбрасывает "RangeError: параметр "port" должен быть >= 0 и < 65536: -1"
+// Throws "RangeError: "port" option should be >= 0 and < 65536: -1"
 ```
 
-Node.js будет генерировать и бросать экземпляры `RangeError` _немедленно_ в качестве формы проверки аргументов.
-
-<!-- 0012.part.md -->
+Node.js создаёт и выбрасывает `RangeError` _сразу_ как часть проверки аргументов.
 
 ## Класс: `ReferenceError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Указывает на попытку доступа к переменной, которая не определена. Такие ошибки обычно указывают на опечатки в коде или на другие сбои в программе.
+Указывает на обращение к необъявленной переменной. Часто это опечатки или иная
+поломка программы.
 
-Хотя клиентский код может генерировать и распространять эти ошибки, на практике это делает только V8.
+Прикладной код теоретически может порождать такие ошибки, но на практике их
+выдаёт только V8.
 
 ```js
 doesNotExist;
-// Выбрасывает ошибку ReferenceError, doesNotExist не является переменной в этой программе.
+// Throws ReferenceError, doesNotExist is not a variable in this program.
 ```
 
-Если только приложение не генерирует и не выполняет код динамически, случаи `ReferenceError` указывают на ошибку в коде или его зависимостях.
-
-<!-- 0013.part.md -->
+Если приложение не генерирует и не выполняет код динамически, экземпляры
+`ReferenceError` указывают на ошибку в коде или зависимостях.
 
 ## Класс: `SyntaxError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Указывает, что программа не является валидным JavaScript. Эти ошибки могут генерироваться и распространяться только в результате оценки кода. Оценка кода может происходить в результате `eval`, `Function`, `require` или [vm](vm.md). Эти ошибки почти всегда свидетельствуют о неработающей программе.
+Указывает, что программа не является допустимым JavaScript. Такие ошибки
+возникают и распространяются только при вычислении кода — через `eval`, `Function`,
+`require` или [vm][]. Почти всегда это признак поломанной программы.
 
 ```js
 try {
-    require('node:vm').runInThisContext('binary ! isNotOk');
+  require('node:vm').runInThisContext('binary ! isNotOk');
 } catch (err) {
-    // 'err' will be a SyntaxError.
+  // 'err' will be a SyntaxError.
 }
 ```
 
-Экземпляры `SyntaxError` не могут быть устранены в контексте, который их создал - они могут быть пойманы только другими контекстами.
-
-<!-- 0014.part.md -->
+Экземпляры `SyntaxError` в контексте, где они созданы, не исправить —
+их может перехватить только другой контекст.
 
 ## Класс: `SystemError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Node.js генерирует системные ошибки, когда в среде выполнения возникают исключения. Обычно они возникают, когда приложение нарушает ограничения операционной системы. Например, системная ошибка возникнет, если приложение попытается прочитать несуществующий файл.
+Node.js порождает системные ошибки при исключениях в среде выполнения. Обычно
+это нарушение ограничений ОС, например попытка прочитать несуществующий файл.
 
--   `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, адрес, с которым произошел сбой сетевого соединения.
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковый код ошибки
--   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, назначение пути к файлу при сообщении об ошибке файловой системы
--   `errno` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер ошибки, предоставляемый системой
--   `info` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если присутствует, дополнительные сведения о состоянии ошибки
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Предоставленное системой человекочитаемое описание ошибки
--   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если присутствует, путь к файлу при сообщении об ошибке файловой системы
--   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если присутствует, порт сетевого подключения, который недоступен
--   `syscall` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя системного вызова, вызвавшего ошибку
-
-<!-- 0015.part.md -->
+* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) если задано — адрес, при соединении с которым произошёл сбой
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) строковый код ошибки
+* `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) если задано — путь назначения при ошибке файловой системы
+* `errno` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) номер ошибки, предоставленный системой
+* `info` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) если задано — дополнительные сведения об условии ошибки
+* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) человекочитаемое описание от системы
+* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) если задано — путь к файлу при ошибке файловой системы
+* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) если задано — сетевой порт, который недоступен
+* `syscall` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя системного вызова, вызвавшего ошибку
 
 ### `error.address`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если присутствует, `error.address` - это строка, описывающая адрес, с которым не удалось установить сетевое соединение.
-
-<!-- 0016.part.md -->
+Если задано, `error.address` — адрес, при соединении с которым произошёл сбой.
 
 ### `error.code`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `error.code` - это строка, представляющая код ошибки.
-
-<!-- 0017.part.md -->
+Свойство `error.code` — строковое представление кода ошибки.
 
 ### `error.dest`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если присутствует, то `error.dest` является местом назначения пути к файлу при сообщении об ошибке файловой системы.
-
-<!-- 0018.part.md -->
+Если задано, `error.dest` — путь назначения при ошибке файловой системы.
 
 ### `error.errno`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Свойство `error.errno` - это отрицательное число, которое соответствует коду ошибки, определенному в [`libuv Error handling`](https://docs.libuv.org/en/v1.x/errors.html).
+Свойство `error.errno` — отрицательное число, соответствующее коду в
+[`libuv Error handling`][].
 
-В Windows номер ошибки, предоставляемый системой, будет нормализован libuv.
+В Windows номер ошибки от системы нормализуется libuv.
 
-Чтобы получить строковое представление кода ошибки, используйте [`util.getSystemErrorName(error.errno)`](util.md#utilgetsystemerrornameerr).
-
-<!-- 0019.part.md -->
+Строковое имя кода получают через [`util.getSystemErrorName(error.errno)`][].
 
 ### `error.info`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Если присутствует, `error.info` - это объект с подробной информацией о состоянии ошибки.
-
-<!-- 0020.part.md -->
+Если задано, `error.info` — объект с подробностями об условии ошибки.
 
 ### `error.message`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-`error.message` - это предоставленное системой человекочитаемое описание ошибки.
-
-<!-- 0021.part.md -->
+`error.message` — человекочитаемое описание от системы.
 
 ### `error.path`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Если присутствует, `error.path` - это строка, содержащая соответствующее неверное имя пути.
-
-<!-- 0022.part.md -->
+Если задано, `error.path` — недопустимый или релевантный путь.
 
 ### `error.port`
 
--   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Если присутствует, `error.port` - это порт сетевого подключения, который недоступен.
-
-<!-- 0023.part.md -->
+Если задано, `error.port` — сетевой порт, который недоступен.
 
 ### `error.syscall`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `error.syscall` - это строка, описывающая [syscall](https://man7.org/linux/man-pages/man2/syscalls.2.html), который завершился неудачей.
+Свойство `error.syscall` описывает [syscall][], завершившийся ошибкой.
 
-<!-- 0024.part.md -->
+### Типичные системные ошибки
 
-### Общие системные ошибки
+Ниже перечислены ошибки, часто встречающиеся в программах Node.js. Полный список
+см. на странице [`errno`(3) man page][].
 
-Это список системных ошибок, часто встречающихся при написании программ на Node.js. Полный список см. на странице [`errno`(3) man page](https://man7.org/linux/man-pages/man3/errno.3.html).
+* `EACCES` (Permission denied): попытка доступа к файлу способом, запрещённым правами.
 
--   `EACCES` (Разрешение отклонено): Была предпринята попытка получить доступ к файлу способом, запрещенным его разрешениями на доступ к файлу.
+* `EADDRINUSE` (Address already in use): не удалось привязать сервер ([`net`][], [`http`][]
+  или [`https`][]) к локальному адресу — его уже занимает другой сервер на этой машине.
 
--   `EADDRINUSE` (Адрес уже используется): Попытка привязать сервер ([`net`](net.md), [`http`](http.md) или [`https`](https.md)) к локальному адресу не удалась из-за того, что другой сервер в локальной системе уже занимает этот адрес.
+* `ECONNREFUSED` (Connection refused): соединение отклонено — целевая машина активно
+  отказала. Обычно сервис на удалённом хосте не слушает порт.
 
--   `ECONNREFUSED` (Connection refused): Не удалось установить соединение, поскольку целевая машина активно отказывается от него. Обычно это происходит при попытке подключения к службе, которая неактивна на внешнем узле.
+* `ECONNRESET` (Connection reset by peer): соединение разорвано удалённой стороной,
+  часто из‑за таймаута или перезагрузки. Типично в модулях [`http`][] и [`net`][].
 
--   `ECONNRESET` (Connection reset by peer): Соединение было принудительно закрыто сверстником. Обычно это происходит в результате потери соединения на удаленном сокете из-за тайм-аута или перезагрузки. Часто встречается в модулях [`http`](http.md) и [`net`](net.md).
+* `EEXIST` (File exists): целью операции был существующий файл, тогда как требовалось,
+  чтобы файла не было.
 
--   `EEXIST` (Файл существует): Существующий файл был целью операции, которая требовала, чтобы цель не существовала.
+* `EISDIR` (Is a directory): ожидался файл, а по указанному пути — каталог.
 
--   `EISDIR` (Is a directory): Операция ожидала файл, но заданный путь оказался каталогом.
+* `EMFILE` (Too many open files in system): достигнут предел [дескрипторов файлов][file descriptors]
+  в системе; новый дескриптор недоступен, пока не закроют хотя бы один. Часто при массовом
+  открытии файлов, особенно на macOS с низким лимитом. Повысить лимит: `ulimit -n 2048`
+  в той же оболочке, где запускают Node.js.
 
--   `EMFILE` (Слишком много открытых файлов в системе): Максимальное количество [файловых дескрипторов](https://en.wikipedia.org/wiki/File_descriptor), допустимое в системе, достигнуто, и запросы на другой дескриптор не могут быть выполнены, пока не будет закрыт хотя бы один. Это происходит при параллельном открытии большого количества файлов одновременно, особенно на системах (в частности, macOS), где существует низкий лимит файловых дескрипторов для процессов. Чтобы устранить низкий лимит, запустите `ulimit -n 2048` в той же оболочке, в которой будет запущен процесс Node.js.
+* `ENOENT` (No such file or directory): часто от операций [`fs`][] — компонент пути
+  не существует; по указанному пути не найден ни файл, ни каталог.
 
--   `ENOENT` (Нет такого файла или каталога): Обычно вызывается операциями [`fs`](fs.md), указывая на то, что компонент указанного пути не существует. По указанному пути не удалось найти ни одной сущности (файла или каталога).
+* `ENOTDIR` (Not a directory): компонент пути существует, но это не каталог, как ожидалось.
+  Часто от [`fs.readdir`][].
 
--   `ENOTDIR` (Не каталог): Компонент указанного пути существует, но не является каталогом, как ожидалось. Обычно вызывается [`fs.readdir`](fs.md#fsreaddirpath-options-callback).
+* `ENOTEMPTY` (Directory not empty): каталог не пуст, а операция требует пустого каталога;
+  обычно связано с [`fs.unlink`][].
 
--   `ENOTEMPTY` (Каталог не пуст): Каталог с записями был целью операции, требующей пустого каталога, обычно [`fs.unlink`](fs.md#fsunlinkpath-callback).
+* `ENOTFOUND` (DNS lookup failed): сбой DNS (`EAI_NODATA` или `EAI_NONAME`). Не стандартная ошибка POSIX.
 
--   `ENOTFOUND` (DNS-поиск не удался): Указывает на ошибку DNS либо `EAI_NODATA`, либо `EAI_NONAME`. Это не стандартная ошибка POSIX.
+* `EPERM` (Operation not permitted): операция требует повышенных привилегий.
 
--   `EPERM` (Операция не разрешена): Была предпринята попытка выполнить операцию, требующую повышенных привилегий.
+* `EPIPE` (Broken pipe): запись в pipe, сокет или FIFO, когда читателя нет. Часто на уровнях
+  [`net`][] и [`http`][] — удалённая сторона потока закрыла соединение.
 
--   `EPIPE` (Сломанная труба): Запись в трубу, сокет или FIFO, для которой нет процесса для чтения данных. Обычно встречается на уровнях [`net`](net.md) и [`http`](http.md), указывая на то, что удаленная сторона потока, на которую производится запись, была закрыта.
-
--   `ETIMEDOUT` (Операция завершилась): Запрос на подключение или отправку не прошел, потому что
-
-<!-- 0025.part.md -->
+* `ETIMEDOUT` (Operation timed out): таймаут connect/send — удалённая сторона не ответила
+  вовремя. Обычно в [`http`][] или [`net`][]. Часто признак того, что `socket.end()` не вызвали.
 
 ## Класс: `TypeError`
 
--   Расширяет [`<errors.Error>`](errors.md#error)
+* Наследует: [<errors.Error>](errors.md#error)
 
-Указывает, что предоставленный аргумент не является допустимым типом. Например, передача функции в параметр, который ожидает строку, будет `TypeError`.
+Указывает, что аргумент имеет недопустимый тип, например функция передана туда,
+где ожидается строка.
 
 ```js
-require('node:url').parse(() => {});
-// Выбросит TypeError, так как ожидается строка.
+require('node:url').parse(() => { });
+// Throws TypeError, since it expected a string.
 ```
 
-Node.js будет генерировать и бросать экземпляры `TypeError` _немедленно_ в качестве формы проверки аргументов.
-
-<!-- 0026.part.md -->
+Node.js создаёт и выбрасывает `TypeError` _сразу_ как часть проверки типов аргументов.
 
 ## Исключения и ошибки
 
-Исключение JavaScript - это значение, которое выбрасывается в результате некорректной операции или как цель оператора `throw`. Хотя не требуется, чтобы эти значения были экземплярами `Error` или классами, наследующими от `Error`, все исключения, выбрасываемые Node.js или временем выполнения JavaScript, _будут_ экземплярами `Error`.
+<!--type=misc-->
 
-Некоторые исключения являются _неустранимыми_ на уровне JavaScript. Такие исключения _всегда_ приводят к аварийному завершению процесса Node.js. Примерами могут служить проверки `assert()` или вызовы `abort()` на уровне C++.
+Исключение JavaScript — значение, выброшенное из‑за недопустимой операции или
+явным `throw`. Не обязательно, чтобы это были экземпляры `Error` или наследники,
+но все исключения, которые выбрасывают Node.js или движок JavaScript, _будут_
+экземплярами `Error`.
 
-<!-- 0027.part.md -->
+Некоторые исключения на уровне JavaScript _невосстановимы_: такие исключения
+_всегда_ завершают процесс Node.js. Примеры: проверки `assert()` или вызовы
+`abort()` в слое C++.
 
 ## Ошибки OpenSSL
 
-Ошибки, возникающие в `crypto` или `tls`, относятся к классу `Error`, и помимо стандартных свойств `.code` и `.message` могут иметь некоторые дополнительные свойства, специфичные для OpenSSL.
-
-<!-- 0028.part.md -->
+Ошибки из `crypto` или `tls` относятся к классу `Error`; помимо стандартных
+`.code` и `.message` могут быть дополнительные поля, специфичные для OpenSSL.
 
 ### `error.opensslErrorStack`
 
-Массив ошибок, который может дать представление о том, в каком месте библиотеки OpenSSL возникла ошибка.
-
-<!-- 0029.part.md -->
+Массив ошибок, уточняющих место в библиотеке OpenSSL, где возникла ошибка.
 
 ### `error.function`
 
 Функция OpenSSL, в которой возникла ошибка.
 
-<!-- 0030.part.md -->
-
 ### `error.library`
 
 Библиотека OpenSSL, в которой возникла ошибка.
 
-<!-- 0031.part.md -->
-
 ### `error.reason`
 
-Человекочитаемая строка, описывающая причину ошибки.
+Человекочитаемое описание причины ошибки.
 
-<!-- 0032.part.md -->
+<a id="nodejs-error-codes"></a>
 
-## Node.js error codes
+## Коды ошибок Node.js
 
-<!-- 0033.part.md -->
+<a id="ABORT_ERR"></a>
 
 ### `ABORT_ERR`
+
+<!-- YAML
+added: v15.0.0
+-->
 
 Используется, когда операция была прервана (обычно с помощью `AbortController`).
 
@@ -578,413 +609,581 @@ API, _не_ использующие `AbortSignal`, обычно не выдаю
 
 Этот код не использует обычное соглашение `ERR_*`, которое используется в ошибках Node.js, чтобы быть совместимым с `AbortError` веб-платформы.
 
-<!-- 0034.part.md -->
+<a id="ERR_ACCESS_DENIED"></a>
 
 ### `ERR_ACCESS_DENIED`
 
-Специальный тип ошибки, возникающий всякий раз, когда Node.js пытается получить доступ к ресурсу, ограниченному [Permission Model](permissions.md#permission-model).
+Специальный тип ошибки, возникающий всякий раз, когда Node.js пытается получить доступ к ресурсу, ограниченному [Permission Model][].
 
-<!-- 0035.part.md -->
+<a id="ERR_AMBIGUOUS_ARGUMENT"></a>
 
 ### `ERR_AMBIGUOUS_ARGUMENT`
 
 Аргумент функции используется таким образом, что подпись функции может быть неправильно понята. Модуль `node:assert` выбрасывает это сообщение, когда параметр `message` в `assert.throws(block, message)` совпадает с сообщением об ошибке, выброшенным `block`, поскольку такое использование предполагает, что пользователь считает `message` ожидаемым сообщением, а не сообщением, которое отобразит `AssertionError`, если `block` не выбросит сообщение.
 
-<!-- 0036.part.md -->
+<a id="ERR_ARG_NOT_ITERABLE"></a>
 
 ### `ERR_ARG_NOT_ITERABLE`
 
 Аргумент iterable (т.е. значение, которое работает с циклами `for...of`) был необходим, но не предоставлялся API Node.js.
 
-<!-- 0037.part.md -->
+<a id="ERR_ASSERTION"></a>
 
 ### `ERR_ASSERTION`
 
 Специальный тип ошибки, который может быть вызван всякий раз, когда Node.js обнаруживает исключительное нарушение логики, которое никогда не должно происходить. Обычно их вызывает модуль `node:assert`.
 
-<!-- 0038.part.md -->
+<a id="ERR_ASYNC_CALLBACK"></a>
 
 ### `ERR_ASYNC_CALLBACK`
 
 Была предпринята попытка зарегистрировать что-то, что не является функцией, в качестве обратного вызова `AsyncHooks`.
 
-<!-- 0039.part.md -->
+<a id="ERR_ASYNC_LOADER_REQUEST_NEVER_SETTLED"></a>
+
+### `ERR_ASYNC_LOADER_REQUEST_NEVER_SETTLED`
+
+Операция, связанная с загрузкой модулей, переопределена асинхронным хуком
+загрузчика, который не завершил промис до выхода потока загрузчика.
+
+<a id="ERR_ASYNC_TYPE"></a>
 
 ### `ERR_ASYNC_TYPE`
 
 Тип асинхронного ресурса был неверным. Пользователи также могут определять свои собственные типы при использовании общедоступного API embedder.
 
-<!-- 0040.part.md -->
+<a id="ERR_BROTLI_COMPRESSION_FAILED"></a>
 
 ### `ERR_BROTLI_COMPRESSION_FAILED`
 
 Данные, переданные в поток Brotli, не были успешно сжаты.
 
-<!-- 0041.part.md -->
+<a id="ERR_BROTLI_INVALID_PARAM"></a>
 
 ### `ERR_BROTLI_INVALID_PARAM`
 
 При построении потока Brotli был передан недопустимый ключ параметра.
 
-<!-- 0042.part.md -->
+<a id="ERR_BUFFER_CONTEXT_NOT_AVAILABLE"></a>
 
 ### `ERR_BUFFER_CONTEXT_NOT_AVAILABLE`
 
 Была предпринята попытка создать экземпляр Node.js `Buffer` из кода аддона или embedder, находясь в JS-движке Context, который не связан с экземпляром Node.js. Данные, переданные в метод `Buffer`, будут освобождены к моменту возврата метода.
 
-При возникновении этой ошибки возможной альтернативой созданию экземпляра `Buffer` является создание обычного `Uint8Array`, который отличается только прототипом получаемого объекта. `Uint8Array` общеприняты во всех основных API Node.js, где есть `Buffer`; они доступны во всех Contexts.
+При возникновении этой ошибки возможной альтернативой созданию экземпляра `Buffer` является создание обычного `Uint8Array`, который отличается только прототипом получаемого объекта. `Uint8Array` общеприняты во всех основных API Node.js, где есть `Buffer`; они доступны во всех контекстах.
 
-<!-- 0043.part.md -->
+<a id="ERR_BUFFER_OUT_OF_BOUNDS"></a>
 
 ### `ERR_BUFFER_OUT_OF_BOUNDS`
 
-Была предпринята попытка выполнить операцию, выходящую за пределы `Буфера`.
+Была предпринята попытка выполнить операцию, выходящую за пределы `Buffer`.
 
-<!-- 0044.part.md -->
+<a id="ERR_BUFFER_TOO_LARGE"></a>
 
 ### `ERR_BUFFER_TOO_LARGE`
 
 Была предпринята попытка создать `Буфер` большего размера, чем максимально допустимый.
 
-<!-- 0045.part.md -->
+<a id="ERR_CANNOT_WATCH_SIGINT"></a>
 
 ### `ERR_CANNOT_WATCH_SIGINT`
 
 Node.js не смог проследить за сигналом `SIGINT`.
 
-<!-- 0046.part.md -->
+<a id="ERR_CHILD_CLOSED_BEFORE_REPLY"></a>
 
 ### `ERR_CHILD_CLOSED_BEFORE_REPLY`
 
 Дочерний процесс был закрыт до того, как родительский процесс получил ответ.
 
-<!-- 0047.part.md -->
+<a id="ERR_CHILD_PROCESS_IPC_REQUIRED"></a>
 
 ### `ERR_CHILD_PROCESS_IPC_REQUIRED`
 
 Используется, когда дочерний процесс форкируется без указания IPC-канала.
 
-<!-- 0048.part.md -->
+<a id="ERR_CHILD_PROCESS_STDIO_MAXBUFFER"></a>
 
 ### `ERR_CHILD_PROCESS_STDIO_MAXBUFFER`
 
 Используется, когда основной процесс пытается прочитать данные из STDERR/STDOUT дочернего процесса, и длина данных превышает параметр `maxBuffer`.
 
-<!-- 0049.part.md -->
+<a id="ERR_CLOSED_MESSAGE_PORT"></a>
 
 ### `ERR_CLOSED_MESSAGE_PORT`
 
+<!-- YAML
+added: v10.5.0
+changes:
+  - version:
+      - v16.2.0
+      - v14.17.1
+    pr-url: https://github.com/nodejs/node/pull/38510
+    description: The error message was reintroduced.
+  - version: v11.12.0
+    pr-url: https://github.com/nodejs/node/pull/26487
+    description: The error message was removed.
+-->
+
+Добавлено в: v10.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.2.0, v14.17.1 | Сообщение об ошибке появилось снова. |
+    | v11.12.0 | Сообщение об ошибке было удалено. |
+
 Была попытка использовать экземпляр `MessagePort` в закрытом состоянии, обычно после вызова `.close()`.
 
-<!-- 0050.part.md -->
+<a id="ERR_CONSOLE_WRITABLE_STREAM"></a>
 
 ### `ERR_CONSOLE_WRITABLE_STREAM`
 
 `Console` была создана без потока `stdout`, или `Console` имеет незаписываемый поток `stdout` или `stderr`.
 
-<!-- 0051.part.md -->
+<a id="ERR_CONSTRUCT_CALL_INVALID"></a>
 
 ### `ERR_CONSTRUCT_CALL_INVALID`
 
+<!-- YAML
+added: v12.5.0
+-->
+
 Был вызван конструктор класса, который не является вызываемым.
 
-<!-- 0052.part.md -->
+<a id="ERR_CONSTRUCT_CALL_REQUIRED"></a>
 
 ### `ERR_CONSTRUCT_CALL_REQUIRED`
 
 Конструктор для класса был вызван без `new`.
 
-<!-- 0053.part.md -->
+<a id="ERR_CONTEXT_NOT_INITIALIZED"></a>
 
 ### `ERR_CONTEXT_NOT_INITIALIZED`
 
 Контекст vm, переданный в API, еще не инициализирован. Это может произойти, если во время создания контекста произошла (и была поймана) ошибка, например, если при создании контекста произошел сбой выделения или был достигнут максимальный размер стека вызовов.
 
-<!-- 0054.part.md -->
+<a id="ERR_CPU_PROFILE_ALREADY_STARTED"></a>
+
+### `ERR_CPU_PROFILE_ALREADY_STARTED`
+
+<!-- YAML
+added:
+  - v24.8.0
+  - v22.20.0
+-->
+
+Профиль CPU с указанным именем уже запущен.
+
+<a id="ERR_CPU_PROFILE_NOT_STARTED"></a>
+
+### `ERR_CPU_PROFILE_NOT_STARTED`
+
+<!-- YAML
+added:
+  - v24.8.0
+  - v22.20.0
+-->
+
+Профиль CPU с указанным именем не запущен.
+
+<a id="ERR_CPU_PROFILE_TOO_MANY"></a>
+
+### `ERR_CPU_PROFILE_TOO_MANY`
+
+<!-- YAML
+added:
+  - v24.8.0
+  - v22.20.0
+-->
+
+Собирается слишком много профилей CPU.
+
+<a id="ERR_CRYPTO_ARGON2_NOT_SUPPORTED"></a>
+
+### `ERR_CRYPTO_ARGON2_NOT_SUPPORTED`
+
+Argon2 не поддерживается используемой версией OpenSSL.
+
+<a id="ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED"></a>
 
 ### `ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED`
 
 Был запрошен механизм клиентского сертификата, который не поддерживается используемой версией OpenSSL.
 
-<!-- 0055.part.md -->
+<a id="ERR_CRYPTO_ECDH_INVALID_FORMAT"></a>
 
 ### `ERR_CRYPTO_ECDH_INVALID_FORMAT`
 
 В метод `getPublicKey()` класса `crypto.ECDH()` было передано недопустимое значение аргумента `format`.
 
-<!-- 0056.part.md -->
+<a id="ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY"></a>
 
 ### `ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY`
 
 В метод `crypto.ECDH()` класса `computeSecret()` было передано недопустимое значение аргумента `key`. Это означает, что открытый ключ лежит за пределами эллиптической кривой.
 
-<!-- 0057.part.md -->
+<a id="ERR_CRYPTO_ENGINE_UNKNOWN"></a>
 
 ### `ERR_CRYPTO_ENGINE_UNKNOWN`
 
 В [`require('node:crypto').setEngine()`](crypto.md#cryptosetengineengine-flags) был передан неверный идентификатор криптографического движка.
 
-<!-- 0058.part.md -->
+<a id="ERR_CRYPTO_FIPS_FORCED"></a>
 
 ### `ERR_CRYPTO_FIPS_FORCED`
 
 Был использован аргумент командной строки [`--force-fips`](cli.md#--force-fips), но была попытка включить или отключить режим FIPS в модуле `node:crypto`.
 
-<!-- 0059.part.md -->
+<a id="ERR_CRYPTO_FIPS_UNAVAILABLE"></a>
 
 ### `ERR_CRYPTO_FIPS_UNAVAILABLE`
 
 Была предпринята попытка включить или отключить режим FIPS, но режим FIPS был недоступен.
 
-<!-- 0060.part.md -->
+<a id="ERR_CRYPTO_HASH_FINALIZED"></a>
 
 ### `ERR_CRYPTO_HASH_FINALIZED`
 
 [`hash.digest()`](crypto.md#hashdigestencoding) был вызван несколько раз. Метод `hash.digest()` должен вызываться не более одного раза для каждого экземпляра объекта `Hash`.
 
-<!-- 0061.part.md -->
+<a id="ERR_CRYPTO_HASH_UPDATE_FAILED"></a>
 
 ### `ERR_CRYPTO_HASH_UPDATE_FAILED`
 
 [`hash.update()`](crypto.md#hashupdatedata-inputencoding) не удалось по какой-либо причине. Это должно происходить редко, если вообще происходит.
 
-<!-- 0062.part.md -->
+<a id="ERR_CRYPTO_INCOMPATIBLE_KEY"></a>
 
 ### `ERR_CRYPTO_INCOMPATIBLE_KEY`
 
 Данные криптографические ключи несовместимы с предпринимаемой операцией.
 
-<!-- 0063.part.md -->
+<a id="ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS"></a>
 
 ### `ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS`
 
 Выбранная кодировка открытого или закрытого ключа несовместима с другими вариантами.
 
-<!-- 0064.part.md -->
+<a id="ERR_CRYPTO_INITIALIZATION_FAILED"></a>
 
 ### `ERR_CRYPTO_INITIALIZATION_FAILED`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Инициализация криптоподсистемы не удалась.
 
-<!-- 0065.part.md -->
+<a id="ERR_CRYPTO_INVALID_AUTH_TAG"></a>
 
 ### `ERR_CRYPTO_INVALID_AUTH_TAG`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Был предоставлен недопустимый тег аутентификации.
 
-<!-- 0066.part.md -->
+<a id="ERR_CRYPTO_INVALID_COUNTER"></a>
 
 ### `ERR_CRYPTO_INVALID_COUNTER`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Для шифра с режимом счетчика был предоставлен некорректный счетчик.
 
-<!-- 0067.part.md -->
+<a id="ERR_CRYPTO_INVALID_CURVE"></a>
 
 ### `ERR_CRYPTO_INVALID_CURVE`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Была предоставлена недопустимая эллиптическая кривая.
 
-<!-- 0068.part.md -->
+<a id="ERR_CRYPTO_INVALID_DIGEST"></a>
 
 ### `ERR_CRYPTO_INVALID_DIGEST`
 
 Был указан неверный [алгоритм криптодайджеста](crypto.md#cryptogethashes).
 
-<!-- 0069.part.md -->
+<a id="ERR_CRYPTO_INVALID_IV"></a>
 
 ### `ERR_CRYPTO_INVALID_IV`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Был предоставлен недопустимый вектор инициализации.
 
-<!-- 0070.part.md -->
+<a id="ERR_CRYPTO_INVALID_JWK"></a>
 
 ### `ERR_CRYPTO_INVALID_JWK`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Был предоставлен недопустимый веб-ключ JSON.
 
-<!-- 0071.part.md -->
+<a id="ERR_CRYPTO_INVALID_KEYLEN"></a>
+
+### `ERR_CRYPTO_INVALID_KEYLEN`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+Указана недопустимая длина ключа.
+
+<a id="ERR_CRYPTO_INVALID_KEYPAIR"></a>
+
+### `ERR_CRYPTO_INVALID_KEYPAIR`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+Была предоставлена недопустимая пара ключей.
+
+<a id="ERR_CRYPTO_INVALID_KEYTYPE"></a>
+
+### `ERR_CRYPTO_INVALID_KEYTYPE`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+Был предоставлен недопустимый тип ключа.
+
+<a id="ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE"></a>
 
 ### `ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE`
 
 Тип данного объекта криптографического ключа не подходит для данной операции.
 
-<!-- 0072.part.md -->
-
-### `ERR_CRYPTO_INVALID_KEYLEN`
-
-Указана недопустимая длина ключа.
-
-<!-- 0073.part.md -->
-
-### `ERR_CRYPTO_INVALID_KEYPAIR`
-
-Была предоставлена недопустимая пара ключей.
-
-<!-- 0074.part.md -->
-
-### `ERR_CRYPTO_INVALID_KEYTYPE`
-
-Был предоставлен недопустимый тип ключа.
-
-<!-- 0075.part.md -->
+<a id="ERR_CRYPTO_INVALID_MESSAGELEN"></a>
 
 ### `ERR_CRYPTO_INVALID_MESSAGELEN`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Была предоставлена недопустимая длина сообщения.
 
-<!-- 0076.part.md -->
+<a id="ERR_CRYPTO_INVALID_SCRYPT_PARAMS"></a>
 
 ### `ERR_CRYPTO_INVALID_SCRYPT_PARAMS`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Были предоставлены неверные параметры алгоритма scrypt.
 
-<!-- 0077.part.md -->
+<a id="ERR_CRYPTO_INVALID_STATE"></a>
 
 ### `ERR_CRYPTO_INVALID_STATE`
 
 Метод crypto был использован на объекте, который находился в недопустимом состоянии. Например, вызов [`cipher.getAuthTag()`](crypto.md#ciphergetauthtag) перед вызовом `cipher.final()`.
 
-<!-- 0078.part.md -->
+<a id="ERR_CRYPTO_INVALID_TAG_LENGTH"></a>
 
 ### `ERR_CRYPTO_INVALID_TAG_LENGTH`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Была указана недопустимая длина тега аутентификации.
 
-<!-- 0079.part.md -->
+<a id="ERR_CRYPTO_JOB_INIT_FAILED"></a>
 
 ### `ERR_CRYPTO_JOB_INIT_FAILED`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Инициализация асинхронной криптооперации не удалась.
 
-<!-- 0080.part.md -->
+<a id="ERR_CRYPTO_JWK_UNSUPPORTED_CURVE"></a>
 
 ### `ERR_CRYPTO_JWK_UNSUPPORTED_CURVE`
 
 Эллиптическая кривая ключа не зарегистрирована для использования в [JSON Web Key Elliptic Curve Registry](https://www.iana.org/assignments/jose/jose.xhtml#web-key-elliptic-curve).
 
-<!-- 0081.part.md -->
+<a id="ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE"></a>
 
 ### `ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE`
 
 Асимметричный тип ключа не зарегистрирован для использования в [JSON Web Key Types Registry](https://www.iana.org/assignments/jose/jose.xhtml#web-key-types).
 
-<!-- 0082.part.md -->
+<a id="ERR_CRYPTO_KEM_NOT_SUPPORTED"></a>
+
+### `ERR_CRYPTO_KEM_NOT_SUPPORTED`
+
+<!-- YAML
+added: v24.7.0
+-->
+
+Attempted to use KEM operations while Node.js was not compiled with
+OpenSSL with KEM support.
+
+<a id="ERR_CRYPTO_OPERATION_FAILED"></a>
 
 ### `ERR_CRYPTO_OPERATION_FAILED`
 
+<!-- YAML
+added: v15.0.0
+-->
+
 Криптооперация завершилась неудачно по неустановленной причине.
 
-<!-- 0083.part.md -->
+<a id="ERR_CRYPTO_PBKDF2_ERROR"></a>
 
 ### `ERR_CRYPTO_PBKDF2_ERROR`
 
 Алгоритм PBKDF2 не сработал по неустановленным причинам. OpenSSL не предоставляет более подробной информации, и, соответственно, Node.js тоже.
 
-<!-- 0084.part.md -->
+<a id="ERR_CRYPTO_SCRYPT_NOT_SUPPORTED"></a>
 
-### `ERR_CRYPTO_SCRYPT_INVALID_PARAMETER`
+### `ERR_CRYPTO_SCRYPT_NOT_SUPPORTED`
 
-Один или несколько параметров [`crypto.scrypt()`](crypto.md#cryptoscryptpassword-salt-keylen-options-callback) или [`crypto.scryptSync()`](crypto.md#cryptoscryptsyncpassword-salt-keylen-options) находятся вне своего законного диапазона.
+Node.js was compiled without `scrypt` support. Not possible with the official
+release binaries but can happen with custom builds, including distro builds.
 
-<!-- 0085.part.md -->
+<a id="ERR_CRYPTO_SIGN_KEY_REQUIRED"></a>
 
-### `ERR_CRYPTO_SCRYPT_NOT_SUPPORTED`.
+### `ERR_CRYPTO_SIGN_KEY_REQUIRED`
 
-Node.js был скомпилирован без поддержки `scrypt`. Невозможно с двоичными файлами официального релиза, но может произойти с пользовательскими сборками, включая сборки дистрибутивов.
+Ключ подписи `key` не был передан в метод [`sign.sign()`][].
 
-<!-- 0086.part.md -->
-
-### `ERR_CRYPTO_SIGN_KEY_REQUIRED`.
-
-Методу [`sign.sign()`](crypto.md#signsignprivatekey-outputencoding) не был предоставлен ключ подписи.
-
-<!-- 0087.part.md -->
+<a id="ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH"></a>
 
 ### `ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH`
 
 [`crypto.timingSafeEqual()`](crypto.md#cryptotimingsafeequala-b) был вызван с аргументами `Buffer`, `TypedArray` или `DataView` разной длины.
 
-<!-- 0088.part.md -->
+<a id="ERR_CRYPTO_UNKNOWN_CIPHER"></a>
 
-### `ERR_CRYPTO_UNKNOWN_CIPHER`.
+### `ERR_CRYPTO_UNKNOWN_CIPHER`
 
 Был указан неизвестный шифр.
 
-<!-- 0089.part.md -->
+<a id="ERR_CRYPTO_UNKNOWN_DH_GROUP"></a>
 
 ### `ERR_CRYPTO_UNKNOWN_DH_GROUP`
 
 Указано неизвестное имя группы Диффи-Хеллмана. Список допустимых имен групп см. в [`crypto.getDiffieHellman()`](crypto.md#cryptogetdiffiehellmangroupname).
 
-<!-- 0090.part.md -->
+<a id="ERR_CRYPTO_UNSUPPORTED_OPERATION"></a>
 
 ### `ERR_CRYPTO_UNSUPPORTED_OPERATION`
 
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.18.0
+-->
+
 Была предпринята попытка вызвать неподдерживаемую криптооперацию.
 
-<!-- 0091.part.md -->
+<a id="ERR_DEBUGGER_ERROR"></a>
 
 ### `ERR_DEBUGGER_ERROR`
 
+<!-- YAML
+added:
+  - v16.4.0
+  - v14.17.4
+-->
+
 Произошла ошибка при работе с [отладчиком](debugger.md).
 
-<!-- 0092.part.md -->
+<a id="ERR_DEBUGGER_STARTUP_ERROR"></a>
 
 ### `ERR_DEBUGGER_STARTUP_ERROR`
 
+<!-- YAML
+added:
+  - v16.4.0
+  - v14.17.4
+-->
+
 [Отладчик](debugger.md) затянул время, ожидая, пока освободится требуемый хост/порт.
 
-<!-- 0093.part.md -->
-
-### `ERR_DLOPEN_DISABLED`
-
-Загрузка родных аддонов была отключена с помощью [`--no-addons`](cli.md#--no-addons).
-
-<!-- 0094.part.md -->
-
-### `ERR_DLOPEN_FAILED`
-
-Вызов `process.dlopen()` не удался.
-
-<!-- 0095.part.md -->
+<a id="ERR_DIR_CLOSED"></a>
 
 ### `ERR_DIR_CLOSED`
 
 Каталог [`fs.Dir`](fs.md#class-fsdir) был ранее закрыт.
 
-<!-- 0096.part.md -->
+<a id="ERR_DIR_CONCURRENT_OPERATION"></a>
 
 ### `ERR_DIR_CONCURRENT_OPERATION`
 
-A synchronous read or close call was attempted on an [`fs.Dir`](fs.md#class-fsdir) which has ongoing asynchronous operations.
+<!-- YAML
+added: v14.3.0
+-->
 
-<!-- 0097.part.md -->
+Была предпринята синхронная операция чтения или закрытия для [`fs.Dir`](fs.md#class-fsdir), у которого ещё выполняются асинхронные операции.
+
+<a id="ERR_DLOPEN_DISABLED"></a>
+
+### `ERR_DLOPEN_DISABLED`
+
+<!-- YAML
+added:
+  - v16.10.0
+  - v14.19.0
+-->
+
+Загрузка родных аддонов была отключена с помощью [`--no-addons`](cli.md#--no-addons).
+
+<a id="ERR_DLOPEN_FAILED"></a>
+
+### `ERR_DLOPEN_FAILED`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+Вызов `process.dlopen()` не удался.
+
+<a id="ERR_DNS_SET_SERVERS_FAILED"></a>
 
 ### `ERR_DNS_SET_SERVERS_FAILED`
 
 `c-ares` failed to set the DNS server.
 
-<!-- 0098.part.md -->
+<a id="ERR_DOMAIN_CALLBACK_NOT_AVAILABLE"></a>
 
 ### `ERR_DOMAIN_CALLBACK_NOT_AVAILABLE`
 
-The `node:domain` module was not usable since it could not establish the required error handling hooks, because [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) had been called at an earlier point in time.
+Модуль `node:domain` был недоступен: не удалось установить необходимые перехватчики обработки ошибок, потому что ранее уже был вызван [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn).
 
-<!-- 0099.part.md -->
+<a id="ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE"></a>
 
 ### `ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE`
 
 [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) could not be called because the `node:domain` module has been loaded at an earlier point in time.
 
-The stack trace is extended to include the point in time at which the `node:domain` module had been loaded.
+Трассировка стека дополнена моментом загрузки модуля `node:domain`.
 
-<!-- 0100.part.md -->
+<a id="ERR_DUPLICATE_STARTUP_SNAPSHOT_MAIN_FUNCTION"></a>
 
 ### `ERR_DUPLICATE_STARTUP_SNAPSHOT_MAIN_FUNCTION`
 
 [`v8.startupSnapshot.setDeserializeMainFunction()`](v8.md#v8startupsnapshotsetdeserializemainfunctioncallback-data) could not be called because it had already been called before.
 
-<!-- 0101.part.md -->
+<a id="ERR_ENCODING_INVALID_ENCODED_DATA"></a>
 
 ### `ERR_ENCODING_INVALID_ENCODED_DATA`
 
@@ -992,7 +1191,7 @@ Data provided to `TextDecoder()` API was invalid according to the encoding provi
 
 <a id="ERR_ENCODING_NOT_SUPPORTED"></a>
 
-<!-- 0102.part.md -->
+<a id="ERR_ENCODING_NOT_SUPPORTED"></a>
 
 ### `ERR_ENCODING_NOT_SUPPORTED`
 
@@ -1000,7 +1199,7 @@ Encoding provided to `TextDecoder()` API was not one of the [WHATWG Supported En
 
 <a id="ERR_EVAL_ESM_CANNOT_PRINT"></a>
 
-<!-- 0103.part.md -->
+<a id="ERR_EVAL_ESM_CANNOT_PRINT"></a>
 
 ### `ERR_EVAL_ESM_CANNOT_PRINT`
 
@@ -1008,7 +1207,7 @@ Encoding provided to `TextDecoder()` API was not one of the [WHATWG Supported En
 
 <a id="ERR_EVENT_RECURSION"></a>
 
-<!-- 0104.part.md -->
+<a id="ERR_EVENT_RECURSION"></a>
 
 ### `ERR_EVENT_RECURSION`
 
@@ -1016,103 +1215,131 @@ Thrown when an attempt is made to recursively dispatch an event on `EventTarget`
 
 <a id="ERR_EXECUTION_ENVIRONMENT_NOT_AVAILABLE"></a>
 
-<!-- 0105.part.md -->
+<a id="ERR_EXECUTION_ENVIRONMENT_NOT_AVAILABLE"></a>
 
 ### `ERR_EXECUTION_ENVIRONMENT_NOT_AVAILABLE`
 
-The JS execution context is not associated with a Node.js environment. This may occur when Node.js is used as an embedded library and some hooks for the JS engine are not set up properly.
+Контекст выполнения JS не связан со средой Node.js. Такое возможно при встраивании Node.js как библиотеки, если не настроены некоторые перехватчики движка JS.
 
 <a id="ERR_FALSY_VALUE_REJECTION"></a>
 
-<!-- 0106.part.md -->
+<a id="ERR_FALSY_VALUE_REJECTION"></a>
 
 ### `ERR_FALSY_VALUE_REJECTION`
 
-A `Promise` that was callbackified via `util.callbackify()` was rejected with a falsy value.
+`Promise`, преобразованный через `util.callbackify()`, был отклонён с ложным значением.
 
 <a id="ERR_FEATURE_UNAVAILABLE_ON_PLATFORM"></a>
 
-<!-- 0107.part.md -->
+<a id="ERR_FEATURE_UNAVAILABLE_ON_PLATFORM"></a>
 
 ### `ERR_FEATURE_UNAVAILABLE_ON_PLATFORM`
+
+<!-- YAML
+added: v14.0.0
+-->
 
 Used when a feature that is not available to the current platform which is running Node.js is used.
 
 <a id="ERR_FS_CP_DIR_TO_NON_DIR"></a>
 
-<!-- 0108.part.md -->
+<a id="ERR_FS_CP_DIR_TO_NON_DIR"></a>
 
 ### `ERR_FS_CP_DIR_TO_NON_DIR`
 
-An attempt was made to copy a directory to a non-directory (file, symlink, etc.) using [`fs.cp()`](fs.md#fscpsrc-dest-options-callback).
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка скопировать каталог в не-каталог (файл, симлинк и т. п.).
 
 <a id="ERR_FS_CP_EEXIST"></a>
 
-<!-- 0109.part.md -->
+<a id="ERR_FS_CP_EEXIST"></a>
 
 ### `ERR_FS_CP_EEXIST`
 
-An attempt was made to copy over a file that already existed with [`fs.cp()`](fs.md#fscpsrc-dest-options-callback), with the `force` and `errorOnExist` set to `true`.
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка перезаписать уже существующий файл при `force` и `errorOnExist`, равных `true`.
 
 <a id="ERR_FS_CP_EINVAL"></a>
 
-<!-- 0110.part.md -->
+<a id="ERR_FS_CP_EINVAL"></a>
 
 ### `ERR_FS_CP_EINVAL`
 
-When using [`fs.cp()`](fs.md#fscpsrc-dest-options-callback), `src` or `dest` pointed to an invalid path.
+<!-- YAML
+added: v16.7.0
+-->
+
+При использовании [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) `src` или `dest` указывали на недопустимый путь.
 
 <a id="ERR_FS_CP_FIFO_PIPE"></a>
 
-<!-- 0111.part.md -->
-
-### `ERR_HTTP_CONTENT_LENGTH_MISMATCH`
-
-Response body size doesn’t match with the specified content-length header value.
-
-<a id="ERR_HTTP_CONTENT_LENGTH_MISMATCH"></a>
-
-<!-- 0112.part.md -->
+<a id="ERR_FS_CP_FIFO_PIPE"></a>
 
 ### `ERR_FS_CP_FIFO_PIPE`
 
-An attempt was made to copy a named pipe with [`fs.cp()`](fs.md#fscpsrc-dest-options-callback).
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка скопировать именованный канал.
 
 <a id="ERR_FS_CP_NON_DIR_TO_DIR"></a>
 
-<!-- 0113.part.md -->
+<a id="ERR_FS_CP_NON_DIR_TO_DIR"></a>
 
 ### `ERR_FS_CP_NON_DIR_TO_DIR`
 
-An attempt was made to copy a non-directory (file, symlink, etc.) to a directory using [`fs.cp()`](fs.md#fscpsrc-dest-options-callback).
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка скопировать не-каталог (файл, симлинк и т. п.) в каталог.
 
 <a id="ERR_FS_CP_SOCKET"></a>
 
-<!-- 0114.part.md -->
+<a id="ERR_FS_CP_SOCKET"></a>
 
 ### `ERR_FS_CP_SOCKET`
 
-An attempt was made to copy to a socket with [`fs.cp()`](fs.md#fscpsrc-dest-options-callback).
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка копирования в сокет.
 
 <a id="ERR_FS_CP_SYMLINK_TO_SUBDIRECTORY"></a>
 
-<!-- 0115.part.md -->
+<a id="ERR_FS_CP_SYMLINK_TO_SUBDIRECTORY"></a>
 
 ### `ERR_FS_CP_SYMLINK_TO_SUBDIRECTORY`
 
-When using [`fs.cp()`](fs.md#fscpsrc-dest-options-callback), a symlink in `dest` pointed to a subdirectory of `src`.
+<!-- YAML
+added: v16.7.0
+-->
+
+При использовании [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) симлинк в `dest` указывал на подкаталог `src`.
 
 <a id="ERR_FS_CP_UNKNOWN"></a>
 
-<!-- 0116.part.md -->
+<a id="ERR_FS_CP_UNKNOWN"></a>
 
 ### `ERR_FS_CP_UNKNOWN`
 
-An attempt was made to copy to an unknown file type with [`fs.cp()`](fs.md#fscpsrc-dest-options-callback).
+<!-- YAML
+added: v16.7.0
+-->
+
+Через [`fs.cp()`](fs.md#fscpsrc-dest-options-callback) была предпринята попытка копирования в файл неизвестного типа.
 
 <a id="ERR_FS_EISDIR"></a>
 
-<!-- 0117.part.md -->
+<a id="ERR_FS_EISDIR"></a>
 
 ### `ERR_FS_EISDIR`
 
@@ -1120,159 +1347,110 @@ Path is a directory.
 
 <a id="ERR_FS_FILE_TOO_LARGE"></a>
 
-<!-- 0118.part.md -->
+<a id="ERR_FS_FILE_TOO_LARGE"></a>
 
 ### `ERR_FS_FILE_TOO_LARGE`
 
-An attempt has been made to read a file whose size is larger than the maximum allowed size for a `Buffer`.
+Была предпринята попытка прочитать файл, размер которого больше максимально допустимого для `Buffer`.
 
 <a id="ERR_FS_INVALID_SYMLINK_TYPE"></a>
 
-<!-- 0119.part.md -->
+<a id="ERR_FS_WATCH_QUEUE_OVERFLOW"></a>
 
-### `ERR_FS_INVALID_SYMLINK_TYPE`
+### `ERR_FS_WATCH_QUEUE_OVERFLOW`
 
-An invalid symlink type was passed to the [`fs.symlink()`](fs.md#fssymlinktarget-path-type-callback) or [`fs.symlinkSync()`](fs.md#fssymlinksynctarget-path-type) methods.
-
-<a id="ERR_HTTP_HEADERS_SENT"></a>
-
-<!-- 0120.part.md -->
-
-### `ERR_HTTP_HEADERS_SENT`
-
-An attempt was made to add more headers after the headers had already been sent.
-
-<a id="ERR_HTTP_INVALID_HEADER_VALUE"></a>
-
-<!-- 0121.part.md -->
-
-### `ERR_HTTP_INVALID_HEADER_VALUE`
-
-An invalid HTTP header value was specified.
-
-<a id="ERR_HTTP_INVALID_STATUS_CODE"></a>
-
-<!-- 0122.part.md -->
-
-### `ERR_HTTP_INVALID_STATUS_CODE`
-
-Status code was outside the regular status code range (100-999).
-
-<a id="ERR_HTTP_REQUEST_TIMEOUT"></a>
-
-<!-- 0123.part.md -->
-
-### `ERR_HTTP_REQUEST_TIMEOUT`
-
-The client has not sent the entire request within the allowed time.
-
-<a id="ERR_HTTP_SOCKET_ENCODING"></a>
-
-<!-- 0124.part.md -->
-
-### `ERR_HTTP_SOCKET_ENCODING`
-
-Changing the socket encoding is not allowed per [RFC 7230 Section 3](https://tools.ietf.org/html/rfc7230#section-3).
-
-<a id="ERR_HTTP_TRAILER_INVALID"></a>
-
-<!-- 0125.part.md -->
-
-### `ERR_HTTP_TRAILER_INVALID`
-
-The `Trailer` header was set even though the transfer encoding does not support that.
+Число событий ФС, поставленных в очередь и не обработанных, превысило значение,
+заданное в `maxQueue` для `fs.watch()`.
 
 <a id="ERR_HTTP2_ALTSVC_INVALID_ORIGIN"></a>
 
-<!-- 0126.part.md -->
-
 ### `ERR_HTTP2_ALTSVC_INVALID_ORIGIN`
 
-HTTP/2 ALTSVC frames require a valid origin.
+Кадры HTTP/2 ALTSVC требуют корректного origin.
 
 <a id="ERR_HTTP2_ALTSVC_LENGTH"></a>
 
-<!-- 0127.part.md -->
+<a id="ERR_HTTP2_ALTSVC_LENGTH"></a>
 
 ### `ERR_HTTP2_ALTSVC_LENGTH`
 
-HTTP/2 ALTSVC frames are limited to a maximum of 16,382 payload bytes.
+Кадры HTTP/2 ALTSVC ограничены максимум 16 382 байтами полезной нагрузки.
 
 <a id="ERR_HTTP2_CONNECT_AUTHORITY"></a>
 
-<!-- 0128.part.md -->
+<a id="ERR_HTTP2_CONNECT_AUTHORITY"></a>
 
 ### `ERR_HTTP2_CONNECT_AUTHORITY`
 
-For HTTP/2 requests using the `CONNECT` method, the `:authority` pseudo-header is required.
+Для HTTP/2-запросов с методом `CONNECT` псевдозаголовок `:authority` обязателен.
 
 <a id="ERR_HTTP2_CONNECT_PATH"></a>
 
-<!-- 0129.part.md -->
+<a id="ERR_HTTP2_CONNECT_PATH"></a>
 
 ### `ERR_HTTP2_CONNECT_PATH`
 
-For HTTP/2 requests using the `CONNECT` method, the `:path` pseudo-header is forbidden.
+Для HTTP/2-запросов с методом `CONNECT` псевдозаголовок `:path` запрещён.
 
 <a id="ERR_HTTP2_CONNECT_SCHEME"></a>
 
-<!-- 0130.part.md -->
+<a id="ERR_HTTP2_CONNECT_SCHEME"></a>
 
 ### `ERR_HTTP2_CONNECT_SCHEME`
 
-For HTTP/2 requests using the `CONNECT` method, the `:scheme` pseudo-header is forbidden.
+Для HTTP/2-запросов с методом `CONNECT` псевдозаголовок `:scheme` запрещён.
 
 <a id="ERR_HTTP2_ERROR"></a>
 
-<!-- 0131.part.md -->
+<a id="ERR_HTTP2_ERROR"></a>
 
 ### `ERR_HTTP2_ERROR`
 
-A non-specific HTTP/2 error has occurred.
+Произошла неспецифичная ошибка HTTP/2.
 
 <a id="ERR_HTTP2_GOAWAY_SESSION"></a>
 
-<!-- 0132.part.md -->
+<a id="ERR_HTTP2_GOAWAY_SESSION"></a>
 
 ### `ERR_HTTP2_GOAWAY_SESSION`
 
-New HTTP/2 Streams may not be opened after the `Http2Session` has received a `GOAWAY` frame from the connected peer.
+Новые потоки HTTP/2 нельзя открыть после того, как `Http2Session` получил кадр `GOAWAY` от удалённой стороны.
 
 <a id="ERR_HTTP2_HEADER_SINGLE_VALUE"></a>
 
-<!-- 0133.part.md -->
-
-### `ERR_HTTP2_HEADER_SINGLE_VALUE`
-
-Multiple values were provided for an HTTP/2 header field that was required to have only a single value.
-
 <a id="ERR_HTTP2_HEADERS_AFTER_RESPOND"></a>
-
-<!-- 0134.part.md -->
 
 ### `ERR_HTTP2_HEADERS_AFTER_RESPOND`
 
-An additional headers was specified after an HTTP/2 response was initiated.
+Дополнительные заголовки были указаны после начала HTTP/2-ответа.
 
 <a id="ERR_HTTP2_HEADERS_SENT"></a>
 
-<!-- 0135.part.md -->
+<a id="ERR_HTTP2_HEADERS_SENT"></a>
 
 ### `ERR_HTTP2_HEADERS_SENT`
 
-An attempt was made to send multiple response headers.
+Была предпринята попытка отправить несколько наборов заголовков ответа.
 
 <a id="ERR_HTTP2_INFO_STATUS_NOT_ALLOWED"></a>
 
-<!-- 0136.part.md -->
+<a id="ERR_HTTP2_HEADER_SINGLE_VALUE"></a>
+
+### `ERR_HTTP2_HEADER_SINGLE_VALUE`
+
+Для поля заголовка HTTP/2, которое должно иметь одно значение, передано несколько значений.
+
+<a id="ERR_HTTP2_HEADERS_AFTER_RESPOND"></a>
+
+<a id="ERR_HTTP2_INFO_STATUS_NOT_ALLOWED"></a>
 
 ### `ERR_HTTP2_INFO_STATUS_NOT_ALLOWED`
 
-Informational HTTP status codes (`1xx`) may not be set as the response status code on HTTP/2 responses.
+Информационные коды состояния HTTP (`1xx`) нельзя задавать как код ответа для HTTP/2.
 
 <a id="ERR_HTTP2_INVALID_CONNECTION_HEADERS"></a>
 
-<!-- 0137.part.md -->
+<a id="ERR_HTTP2_INVALID_CONNECTION_HEADERS"></a>
 
 ### `ERR_HTTP2_INVALID_CONNECTION_HEADERS`
 
@@ -1280,23 +1458,23 @@ HTTP/1 connection specific headers are forbidden to be used in HTTP/2 requests a
 
 <a id="ERR_HTTP2_INVALID_HEADER_VALUE"></a>
 
-<!-- 0138.part.md -->
+<a id="ERR_HTTP2_INVALID_HEADER_VALUE"></a>
 
 ### `ERR_HTTP2_INVALID_HEADER_VALUE`
 
-An invalid HTTP/2 header value was specified.
+Указано недопустимое значение заголовка HTTP/2.
 
 <a id="ERR_HTTP2_INVALID_INFO_STATUS"></a>
 
-<!-- 0139.part.md -->
+<a id="ERR_HTTP2_INVALID_INFO_STATUS"></a>
 
 ### `ERR_HTTP2_INVALID_INFO_STATUS`
 
-An invalid HTTP informational status code has been specified. Informational status codes must be an integer between `100` and `199` (inclusive).
+Указан недопустимый информационный код состояния HTTP. Такие коды должны быть целыми от `100` до `199` включительно.
 
 <a id="ERR_HTTP2_INVALID_ORIGIN"></a>
 
-<!-- 0140.part.md -->
+<a id="ERR_HTTP2_INVALID_ORIGIN"></a>
 
 ### `ERR_HTTP2_INVALID_ORIGIN`
 
@@ -1304,7 +1482,7 @@ HTTP/2 `ORIGIN` frames require a valid origin.
 
 <a id="ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH"></a>
 
-<!-- 0141.part.md -->
+<a id="ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH"></a>
 
 ### `ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH`
 
@@ -1312,7 +1490,7 @@ Input `Buffer` and `Uint8Array` instances passed to the `http2.getUnpackedSettin
 
 <a id="ERR_HTTP2_INVALID_PSEUDOHEADER"></a>
 
-<!-- 0142.part.md -->
+<a id="ERR_HTTP2_INVALID_PSEUDOHEADER"></a>
 
 ### `ERR_HTTP2_INVALID_PSEUDOHEADER`
 
@@ -1320,31 +1498,31 @@ Only valid HTTP/2 pseudoheaders (`:status`, `:path`, `:authority`, `:scheme`, an
 
 <a id="ERR_HTTP2_INVALID_SESSION"></a>
 
-<!-- 0143.part.md -->
+<a id="ERR_HTTP2_INVALID_SESSION"></a>
 
 ### `ERR_HTTP2_INVALID_SESSION`
 
-An action was performed on an `Http2Session` object that had already been destroyed.
+Операция выполнялась над объектом `Http2Session`, который уже был уничтожен.
 
 <a id="ERR_HTTP2_INVALID_SETTING_VALUE"></a>
 
-<!-- 0144.part.md -->
+<a id="ERR_HTTP2_INVALID_SETTING_VALUE"></a>
 
 ### `ERR_HTTP2_INVALID_SETTING_VALUE`
 
-An invalid value has been specified for an HTTP/2 setting.
+Для параметра HTTP/2 SETTINGS указано недопустимое значение.
 
 <a id="ERR_HTTP2_INVALID_STREAM"></a>
 
-<!-- 0145.part.md -->
+<a id="ERR_HTTP2_INVALID_STREAM"></a>
 
 ### `ERR_HTTP2_INVALID_STREAM`
 
-An operation was performed on a stream that had already been destroyed.
+Операция выполнялась над потоком, который уже был уничтожен.
 
 <a id="ERR_HTTP2_MAX_PENDING_SETTINGS_ACK"></a>
 
-<!-- 0146.part.md -->
+<a id="ERR_HTTP2_MAX_PENDING_SETTINGS_ACK"></a>
 
 ### `ERR_HTTP2_MAX_PENDING_SETTINGS_ACK`
 
@@ -1352,15 +1530,15 @@ Whenever an HTTP/2 `SETTINGS` frame is sent to a connected peer, the peer is req
 
 <a id="ERR_HTTP2_NESTED_PUSH"></a>
 
-<!-- 0147.part.md -->
+<a id="ERR_HTTP2_NESTED_PUSH"></a>
 
 ### `ERR_HTTP2_NESTED_PUSH`
 
-An attempt was made to initiate a new push stream from within a push stream. Nested push streams are not permitted.
+Была попытка открыть новый push-поток изнутри push-потока. Вложенные push-потоки не допускаются.
 
 <a id="ERR_HTTP2_NO_MEM"></a>
 
-<!-- 0148.part.md -->
+<a id="ERR_HTTP2_NO_MEM"></a>
 
 ### `ERR_HTTP2_NO_MEM`
 
@@ -1368,15 +1546,15 @@ Out of memory when using the `http2session.setLocalWindowSize(windowSize)` API.
 
 <a id="ERR_HTTP2_NO_SOCKET_MANIPULATION"></a>
 
-<!-- 0149.part.md -->
+<a id="ERR_HTTP2_NO_SOCKET_MANIPULATION"></a>
 
 ### `ERR_HTTP2_NO_SOCKET_MANIPULATION`
 
-An attempt was made to directly manipulate (read, write, pause, resume, etc.) a socket attached to an `Http2Session`.
+Была попытка напрямую управлять сокетом, привязанным к `Http2Session` (чтение, запись, pause, resume и т. д.).
 
 <a id="ERR_HTTP2_ORIGIN_LENGTH"></a>
 
-<!-- 0150.part.md -->
+<a id="ERR_HTTP2_ORIGIN_LENGTH"></a>
 
 ### `ERR_HTTP2_ORIGIN_LENGTH`
 
@@ -1384,31 +1562,31 @@ HTTP/2 `ORIGIN` frames are limited to a length of 16382 bytes.
 
 <a id="ERR_HTTP2_OUT_OF_STREAMS"></a>
 
-<!-- 0151.part.md -->
+<a id="ERR_HTTP2_OUT_OF_STREAMS"></a>
 
 ### `ERR_HTTP2_OUT_OF_STREAMS`
 
-The number of streams created on a single HTTP/2 session reached the maximum limit.
+Достигнуто максимальное число потоков на одной сессии HTTP/2.
 
 <a id="ERR_HTTP2_PAYLOAD_FORBIDDEN"></a>
 
-<!-- 0152.part.md -->
+<a id="ERR_HTTP2_PAYLOAD_FORBIDDEN"></a>
 
 ### `ERR_HTTP2_PAYLOAD_FORBIDDEN`
 
-A message payload was specified for an HTTP response code for which a payload is forbidden.
+Для кода ответа HTTP, которому запрещено тело, было указано тело сообщения.
 
 <a id="ERR_HTTP2_PING_CANCEL"></a>
 
-<!-- 0153.part.md -->
+<a id="ERR_HTTP2_PING_CANCEL"></a>
 
 ### `ERR_HTTP2_PING_CANCEL`
 
-An HTTP/2 ping was canceled.
+HTTP/2 PING был отменён.
 
 <a id="ERR_HTTP2_PING_LENGTH"></a>
 
-<!-- 0154.part.md -->
+<a id="ERR_HTTP2_PING_LENGTH"></a>
 
 ### `ERR_HTTP2_PING_LENGTH`
 
@@ -1416,71 +1594,71 @@ HTTP/2 ping payloads must be exactly 8 bytes in length.
 
 <a id="ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED"></a>
 
-<!-- 0155.part.md -->
+<a id="ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED"></a>
 
 ### `ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED`
 
-An HTTP/2 pseudo-header has been used inappropriately. Pseudo-headers are header key names that begin with the `:` prefix.
+Псевдозаголовок HTTP/2 использован недопустимо. Псевдозаголовки — имена ключей, начинающиеся с префикса `:`.
 
 <a id="ERR_HTTP2_PUSH_DISABLED"></a>
 
-<!-- 0156.part.md -->
+<a id="ERR_HTTP2_PUSH_DISABLED"></a>
 
 ### `ERR_HTTP2_PUSH_DISABLED`
 
-An attempt was made to create a push stream, which had been disabled by the client.
+Была попытка создать push-поток, хотя клиент отключил push.
 
 <a id="ERR_HTTP2_SEND_FILE"></a>
 
-<!-- 0157.part.md -->
+<a id="ERR_HTTP2_SEND_FILE"></a>
 
 ### `ERR_HTTP2_SEND_FILE`
 
-An attempt was made to use the `Http2Stream.prototype.responseWithFile()` API to send a directory.
+Через API `Http2Stream.prototype.responseWithFile()` была попытка отправить каталог.
 
 <a id="ERR_HTTP2_SEND_FILE_NOSEEK"></a>
 
-<!-- 0158.part.md -->
+<a id="ERR_HTTP2_SEND_FILE_NOSEEK"></a>
 
 ### `ERR_HTTP2_SEND_FILE_NOSEEK`
 
-An attempt was made to use the `Http2Stream.prototype.responseWithFile()` API to send something other than a regular file, but `offset` or `length` options were provided.
+Через `Http2Stream.prototype.responseWithFile()` была попытка отправить не обычный файл, при этом указаны опции `offset` или `length`.
 
 <a id="ERR_HTTP2_SESSION_ERROR"></a>
 
-<!-- 0159.part.md -->
+<a id="ERR_HTTP2_SESSION_ERROR"></a>
 
 ### `ERR_HTTP2_SESSION_ERROR`
 
-The `Http2Session` closed with a non-zero error code.
+`Http2Session` закрыта с ненулевым кодом ошибки.
 
 <a id="ERR_HTTP2_SETTINGS_CANCEL"></a>
 
-<!-- 0160.part.md -->
+<a id="ERR_HTTP2_SETTINGS_CANCEL"></a>
 
 ### `ERR_HTTP2_SETTINGS_CANCEL`
 
-The `Http2Session` settings canceled.
+Настройки `Http2Session` отменены.
 
 <a id="ERR_HTTP2_SOCKET_BOUND"></a>
 
-<!-- 0161.part.md -->
+<a id="ERR_HTTP2_SOCKET_BOUND"></a>
 
 ### `ERR_HTTP2_SOCKET_BOUND`
 
-An attempt was made to connect a `Http2Session` object to a `net.Socket` or `tls.TLSSocket` that had already been bound to another `Http2Session` object.
+Была попытка связать `Http2Session` с `net.Socket` или `tls.TLSSocket`, уже привязанным к другой `Http2Session`.
 
 <a id="ERR_HTTP2_SOCKET_UNBOUND"></a>
 
-<!-- 0162.part.md -->
+<a id="ERR_HTTP2_SOCKET_UNBOUND"></a>
 
 ### `ERR_HTTP2_SOCKET_UNBOUND`
 
-An attempt was made to use the `socket` property of an `Http2Session` that has already been closed.
+Была попытка использовать свойство `socket` у уже закрытой `Http2Session`.
 
 <a id="ERR_HTTP2_STATUS_101"></a>
 
-<!-- 0163.part.md -->
+<a id="ERR_HTTP2_STATUS_101"></a>
 
 ### `ERR_HTTP2_STATUS_101`
 
@@ -1488,47 +1666,57 @@ Use of the `101` Informational status code is forbidden in HTTP/2.
 
 <a id="ERR_HTTP2_STATUS_INVALID"></a>
 
-<!-- 0164.part.md -->
+<a id="ERR_HTTP2_STATUS_INVALID"></a>
 
 ### `ERR_HTTP2_STATUS_INVALID`
 
-An invalid HTTP status code has been specified. Status codes must be an integer between `100` and `599` (inclusive).
+Указан недопустимый код состояния HTTP. Код должен быть целым от `100` до `599` включительно.
 
 <a id="ERR_HTTP2_STREAM_CANCEL"></a>
 
-<!-- 0165.part.md -->
+<a id="ERR_HTTP2_STREAM_CANCEL"></a>
 
 ### `ERR_HTTP2_STREAM_CANCEL`
 
-An `Http2Stream` was destroyed before any data was transmitted to the connected peer.
+`Http2Stream` был уничтожен до передачи данных удалённой стороне.
 
 <a id="ERR_HTTP2_STREAM_ERROR"></a>
 
-<!-- 0166.part.md -->
+<a id="ERR_HTTP2_STREAM_ERROR"></a>
 
 ### `ERR_HTTP2_STREAM_ERROR`
 
-A non-zero error code was been specified in an `RST_STREAM` frame.
+В кадре `RST_STREAM` указан ненулевой код ошибки.
 
 <a id="ERR_HTTP2_STREAM_SELF_DEPENDENCY"></a>
 
-<!-- 0167.part.md -->
+<a id="ERR_HTTP2_STREAM_SELF_DEPENDENCY"></a>
 
 ### `ERR_HTTP2_STREAM_SELF_DEPENDENCY`
 
-When setting the priority for an HTTP/2 stream, the stream may be marked as a dependency for a parent stream. This error code is used when an attempt is made to mark a stream and dependent of itself.
+При задании приоритета потока HTTP/2 поток может быть помечен зависимым от родительского. Этот код используется при попытке сделать поток зависимым от самого себя.
 
 <a id="ERR_HTTP2_TOO_MANY_INVALID_FRAMES"></a>
 
-<!-- 0168.part.md -->
+<a id="ERR_HTTP2_TOO_MANY_CUSTOM_SETTINGS"></a>
+
+### `ERR_HTTP2_TOO_MANY_CUSTOM_SETTINGS`
+
+Превышено число поддерживаемых пользовательских настроек (10).
+
+<a id="ERR_HTTP2_TOO_MANY_INVALID_FRAMES"></a>
 
 ### `ERR_HTTP2_TOO_MANY_INVALID_FRAMES`
 
-The limit of acceptable invalid HTTP/2 protocol frames sent by the peer, as specified through the `maxSessionInvalidFrames` option, has been exceeded.
+<!-- YAML
+added: v15.14.0
+-->
+
+Превышен предел допустимого числа некорректных кадров протокола HTTP/2 от удалённой стороны, заданный опцией `maxSessionInvalidFrames`.
 
 <a id="ERR_HTTP2_TRAILERS_ALREADY_SENT"></a>
 
-<!-- 0169.part.md -->
+<a id="ERR_HTTP2_TRAILERS_ALREADY_SENT"></a>
 
 ### `ERR_HTTP2_TRAILERS_ALREADY_SENT`
 
@@ -1536,381 +1724,468 @@ Trailing headers have already been sent on the `Http2Stream`.
 
 <a id="ERR_HTTP2_TRAILERS_NOT_READY"></a>
 
-<!-- 0170.part.md -->
+<a id="ERR_HTTP2_TRAILERS_NOT_READY"></a>
 
 ### `ERR_HTTP2_TRAILERS_NOT_READY`
 
-The `http2stream.sendTrailers()` method cannot be called until after the `'wantTrailers'` event is emitted on an `Http2Stream` object. The `'wantTrailers'` event will only be emitted if the `waitForTrailers` option is set for the `Http2Stream`.
+Метод `http2stream.sendTrailers()` нельзя вызывать до события `'wantTrailers'` на объекте `Http2Stream`. Событие `'wantTrailers'` генерируется только если для `Http2Stream` задана опция `waitForTrailers`.
 
 <a id="ERR_HTTP2_UNSUPPORTED_PROTOCOL"></a>
 
-<!-- 0171.part.md -->
+<a id="ERR_HTTP2_UNSUPPORTED_PROTOCOL"></a>
 
 ### `ERR_HTTP2_UNSUPPORTED_PROTOCOL`
 
-`http2.connect()` was passed a URL that uses any protocol other than `http:` or `https:`.
+В `http2.connect()` передан URL с протоколом, отличным от `http:` или `https:`.
 
 <a id="ERR_ILLEGAL_CONSTRUCTOR"></a>
 
-<!-- 0172.part.md -->
+<a id="ERR_HTTP_BODY_NOT_ALLOWED"></a>
+
+### `ERR_HTTP_BODY_NOT_ALLOWED`
+
+Ошибка возникает при записи в HTTP-ответ, который не допускает тела.
+
+<a id="ERR_HTTP_CONTENT_LENGTH_MISMATCH"></a>
+
+### `ERR_HTTP_CONTENT_LENGTH_MISMATCH`
+
+Размер тела ответа не совпадает со значением заголовка Content-Length.
+
+<a id="ERR_HTTP_CONTENT_LENGTH_MISMATCH"></a>
+
+<a id="ERR_HTTP_HEADERS_SENT"></a>
+
+### `ERR_HTTP_HEADERS_SENT`
+
+Была попытка добавить заголовки после того, как заголовки уже были отправлены.
+
+<a id="ERR_HTTP_INVALID_HEADER_VALUE"></a>
+
+<a id="ERR_HTTP_INVALID_HEADER_VALUE"></a>
+
+### `ERR_HTTP_INVALID_HEADER_VALUE`
+
+Указано недопустимое значение HTTP-заголовка.
+
+<a id="ERR_HTTP_INVALID_STATUS_CODE"></a>
+
+<a id="ERR_HTTP_INVALID_STATUS_CODE"></a>
+
+### `ERR_HTTP_INVALID_STATUS_CODE`
+
+Код состояния вне обычного диапазона (100–999).
+
+<a id="ERR_HTTP_REQUEST_TIMEOUT"></a>
+
+<a id="ERR_HTTP_REQUEST_TIMEOUT"></a>
+
+### `ERR_HTTP_REQUEST_TIMEOUT`
+
+Клиент не отправил весь запрос за отведённое время.
+
+<a id="ERR_HTTP_SOCKET_ENCODING"></a>
+
+<a id="ERR_HTTP_SOCKET_ASSIGNED"></a>
+
+### `ERR_HTTP_SOCKET_ASSIGNED`
+
+Указанному [`ServerResponse`][] уже назначен сокет.
+
+<a id="ERR_HTTP_SOCKET_ENCODING"></a>
+
+### `ERR_HTTP_SOCKET_ENCODING`
+
+Согласно [RFC 7230, раздел 3](https://tools.ietf.org/html/rfc7230#section-3), смена кодировки сокета не допускается.
+
+<a id="ERR_HTTP_TRAILER_INVALID"></a>
+
+<a id="ERR_HTTP_TRAILER_INVALID"></a>
+
+### `ERR_HTTP_TRAILER_INVALID`
+
+Заголовок `Trailer` задан, хотя кодирование передачи это не поддерживает.
+
+<a id="ERR_HTTP2_ALTSVC_INVALID_ORIGIN"></a>
+
+<a id="ERR_ILLEGAL_CONSTRUCTOR"></a>
 
 ### `ERR_ILLEGAL_CONSTRUCTOR`
 
-An attempt was made to construct an object using a non-public constructor.
+Была попытка создать объект через непубличный конструктор.
 
 <a id="ERR_IMPORT_ASSERTION_TYPE_FAILED"></a>
 
-<!-- 0173.part.md -->
+<a id="ERR_IMPORT_ATTRIBUTE_MISSING"></a>
 
-### `ERR_IMPORT_ASSERTION_TYPE_FAILED`
+### `ERR_IMPORT_ATTRIBUTE_MISSING`
 
-An import assertion has failed, preventing the specified module to be imported.
+<!-- YAML
+added:
+  - v21.1.0
+-->
 
-<a id="ERR_IMPORT_ASSERTION_TYPE_MISSING"></a>
+Отсутствует атрибут импорта, из‑за чего указанный модуль нельзя импортировать.
 
-<!-- 0174.part.md -->
+<a id="ERR_IMPORT_ATTRIBUTE_TYPE_INCOMPATIBLE"></a>
 
-### `ERR_IMPORT_ASSERTION_TYPE_MISSING`
+### `ERR_IMPORT_ATTRIBUTE_TYPE_INCOMPATIBLE`
 
-An import assertion is missing, preventing the specified module to be imported.
+<!-- YAML
+added:
+  - v21.1.0
+-->
 
-<a id="ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED"></a>
+Атрибут импорта `type` указан, но модуль другого типа.
 
-<!-- 0175.part.md -->
+<a id="ERR_IMPORT_ATTRIBUTE_UNSUPPORTED"></a>
 
-### `ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED`
+### `ERR_IMPORT_ATTRIBUTE_UNSUPPORTED`
 
-An import assertion is not supported by this version of Node.js.
+<!-- YAML
+added:
+  - v21.0.0
+  - v20.10.0
+  - v18.19.0
+-->
+
+Атрибут импорта не поддерживается этой версией Node.js.
 
 <a id="ERR_INCOMPATIBLE_OPTION_PAIR"></a>
 
-<!-- 0176.part.md -->
-
 ### `ERR_INCOMPATIBLE_OPTION_PAIR`
 
-An option pair is incompatible with each other and cannot be used at the same time.
+Пара опций несовместима с самой собой и не может использоваться одновременно.
 
 <a id="ERR_INPUT_TYPE_NOT_ALLOWED"></a>
 
-<!-- 0177.part.md -->
+<a id="ERR_INPUT_TYPE_NOT_ALLOWED"></a>
 
 ### `ERR_INPUT_TYPE_NOT_ALLOWED`
 
 > Stability: 1 - Experimental
 
-The `--input-type` flag was used to attempt to execute a file. This flag can only be used with input via `--eval`, `--print`, or `STDIN`.
+Флаг `--input-type` использован для запуска файла. Его можно применять только вместе с вводом через `--eval`, `--print` или `STDIN`.
 
 <a id="ERR_INSPECTOR_ALREADY_ACTIVATED"></a>
 
-<!-- 0178.part.md -->
+<a id="ERR_INSPECTOR_ALREADY_ACTIVATED"></a>
 
 ### `ERR_INSPECTOR_ALREADY_ACTIVATED`
 
-While using the `node:inspector` module, an attempt was made to activate the inspector when it already started to listen on a port. Use `inspector.close()` before activating it on a different address.
+При использовании `node:inspector` была попытка активировать инспектор, когда он уже слушает порт. Вызовите `inspector.close()` перед активацией на другом адресе.
 
 <a id="ERR_INSPECTOR_ALREADY_CONNECTED"></a>
 
-<!-- 0179.part.md -->
+<a id="ERR_INSPECTOR_ALREADY_CONNECTED"></a>
 
 ### `ERR_INSPECTOR_ALREADY_CONNECTED`
 
-While using the `node:inspector` module, an attempt was made to connect when the inspector was already connected.
+При использовании `node:inspector` была попытка подключиться, когда инспектор уже подключён.
 
 <a id="ERR_INSPECTOR_CLOSED"></a>
 
-<!-- 0180.part.md -->
+<a id="ERR_INSPECTOR_CLOSED"></a>
 
 ### `ERR_INSPECTOR_CLOSED`
 
-While using the `node:inspector` module, an attempt was made to use the inspector after the session had already closed.
+При использовании `node:inspector` была попытка использовать инспектор после закрытия сессии.
 
 <a id="ERR_INSPECTOR_COMMAND"></a>
 
-<!-- 0181.part.md -->
+<a id="ERR_INSPECTOR_COMMAND"></a>
 
 ### `ERR_INSPECTOR_COMMAND`
 
-An error occurred while issuing a command via the `node:inspector` module.
+Ошибка при выполнении команды через модуль `node:inspector`.
 
 <a id="ERR_INSPECTOR_NOT_ACTIVE"></a>
 
-<!-- 0182.part.md -->
+<a id="ERR_INSPECTOR_NOT_ACTIVE"></a>
 
 ### `ERR_INSPECTOR_NOT_ACTIVE`
 
-The `inspector` is not active when `inspector.waitForDebugger()` is called.
+`inspector` не активен в момент вызова `inspector.waitForDebugger()`.
 
 <a id="ERR_INSPECTOR_NOT_AVAILABLE"></a>
 
-<!-- 0183.part.md -->
+<a id="ERR_INSPECTOR_NOT_AVAILABLE"></a>
 
 ### `ERR_INSPECTOR_NOT_AVAILABLE`
 
-The `node:inspector` module is not available for use.
+Модуль `node:inspector` недоступен.
 
 <a id="ERR_INSPECTOR_NOT_CONNECTED"></a>
 
-<!-- 0184.part.md -->
+<a id="ERR_INSPECTOR_NOT_CONNECTED"></a>
 
 ### `ERR_INSPECTOR_NOT_CONNECTED`
 
-While using the `node:inspector` module, an attempt was made to use the inspector before it was connected.
+При использовании `node:inspector` была попытка использовать инспектор до подключения.
 
 <a id="ERR_INSPECTOR_NOT_WORKER"></a>
 
-<!-- 0185.part.md -->
+<a id="ERR_INSPECTOR_NOT_WORKER"></a>
 
 ### `ERR_INSPECTOR_NOT_WORKER`
 
-An API was called on the main thread that can only be used from the worker thread.
+API вызван в основном потоке, хотя допускается только из потока worker.
 
 <a id="ERR_INTERNAL_ASSERTION"></a>
 
-<!-- 0186.part.md -->
+<a id="ERR_INTERNAL_ASSERTION"></a>
 
 ### `ERR_INTERNAL_ASSERTION`
 
-There was a bug in Node.js or incorrect usage of Node.js internals. To fix the error, open an issue at <https://github.com/nodejs/node/issues>.
+Обнаружена ошибка в Node.js или некорректное использование внутренностей Node.js. Сообщите об issue: <https://github.com/nodejs/node/issues>.
 
 <a id="ERR_INVALID_ADDRESS_FAMILY"></a>
 
-<!-- 0187.part.md -->
+<a id="ERR_INVALID_ADDRESS"></a>
+
+### `ERR_INVALID_ADDRESS`
+
+Переданный адрес не распознан API Node.js.
+
+<a id="ERR_INVALID_ADDRESS_FAMILY"></a>
 
 ### `ERR_INVALID_ADDRESS_FAMILY`
 
-The provided address family is not understood by the Node.js API.
+Переданное семейство адресов не распознано API Node.js.
 
 <a id="ERR_INVALID_ARG_TYPE"></a>
 
-<!-- 0188.part.md -->
+<a id="ERR_INVALID_ARG_TYPE"></a>
 
 ### `ERR_INVALID_ARG_TYPE`
 
-An argument of the wrong type was passed to a Node.js API.
+В API Node.js передан аргумент неверного типа.
 
 <a id="ERR_INVALID_ARG_VALUE"></a>
 
-<!-- 0189.part.md -->
+<a id="ERR_INVALID_ARG_VALUE"></a>
 
 ### `ERR_INVALID_ARG_VALUE`
 
-An invalid or unsupported value was passed for a given argument.
+Для аргумента передано недопустимое или неподдерживаемое значение.
 
 <a id="ERR_INVALID_ASYNC_ID"></a>
 
-<!-- 0190.part.md -->
+<a id="ERR_INVALID_ASYNC_ID"></a>
 
 ### `ERR_INVALID_ASYNC_ID`
 
-An invalid `asyncId` or `triggerAsyncId` was passed using `AsyncHooks`. An id less than -1 should never happen.
+Через `AsyncHooks` передан недопустимый `asyncId` или `triggerAsyncId`. Идентификатор меньше -1 не должен встречаться.
 
 <a id="ERR_INVALID_BUFFER_SIZE"></a>
 
-<!-- 0191.part.md -->
+<a id="ERR_INVALID_BUFFER_SIZE"></a>
 
 ### `ERR_INVALID_BUFFER_SIZE`
 
-A swap was performed on a `Buffer` but its size was not compatible with the operation.
+Для `Buffer` выполнен swap, но размер не подходит для операции.
 
 <a id="ERR_INVALID_CHAR"></a>
 
-<!-- 0192.part.md -->
+<a id="ERR_INVALID_CHAR"></a>
 
 ### `ERR_INVALID_CHAR`
 
-Invalid characters were detected in headers.
+В заголовках обнаружены недопустимые символы.
 
 <a id="ERR_INVALID_CURSOR_POS"></a>
 
-<!-- 0193.part.md -->
+<a id="ERR_INVALID_CURSOR_POS"></a>
 
 ### `ERR_INVALID_CURSOR_POS`
 
-A cursor on a given stream cannot be moved to a specified row without a specified column.
+Курсор потока нельзя переместить на указанную строку без указанного столбца.
 
 <a id="ERR_INVALID_FD"></a>
 
-<!-- 0194.part.md -->
+<a id="ERR_INVALID_FD"></a>
 
 ### `ERR_INVALID_FD`
 
-A file descriptor (‘fd’) was not valid (e.g. it was a negative value).
+Недопустимый файловый дескриптор (`fd`), например отрицательное значение.
 
 <a id="ERR_INVALID_FD_TYPE"></a>
 
-<!-- 0195.part.md -->
+<a id="ERR_INVALID_FD_TYPE"></a>
 
 ### `ERR_INVALID_FD_TYPE`
 
-A file descriptor (‘fd’) type was not valid.
+Недопустимый тип файлового дескриптора (`fd`).
 
 <a id="ERR_INVALID_FILE_URL_HOST"></a>
 
-<!-- 0196.part.md -->
+<a id="ERR_INVALID_FILE_URL_HOST"></a>
 
 ### `ERR_INVALID_FILE_URL_HOST`
 
-A Node.js API that consumes `file:` URLs (such as certain functions in the [`fs`](fs.md) module) encountered a file URL with an incompatible host. This situation can only occur on Unix-like systems where only `localhost` or an empty host is supported.
+API Node.js, работающее с URL `file:` (например функции [`fs`](fs.md)), получило URL с недопустимым хостом. Такое возможно только на Unix-подобных системах, где поддерживаются только `localhost` или пустой хост.
 
 <a id="ERR_INVALID_FILE_URL_PATH"></a>
 
-<!-- 0197.part.md -->
+<a id="ERR_INVALID_FILE_URL_PATH"></a>
 
 ### `ERR_INVALID_FILE_URL_PATH`
 
-A Node.js API that consumes `file:` URLs (such as certain functions in the [`fs`](fs.md) module) encountered a file URL with an incompatible path. The exact semantics for determining whether a path can be used is platform-dependent.
+API Node.js, работающее с URL `file:` (например [`fs`](fs.md)), получило URL с недопустимым путём. Допустимость пути зависит от платформы.
 
 <a id="ERR_INVALID_HANDLE_TYPE"></a>
 
-<!-- 0198.part.md -->
+<a id="ERR_INVALID_HANDLE_TYPE"></a>
 
 ### `ERR_INVALID_HANDLE_TYPE`
 
-An attempt was made to send an unsupported “handle” over an IPC communication channel to a child process. See [`subprocess.send()`](child_process.md#subprocesssendmessage-sendhandle-options-callback) and [`process.send()`](process.md#processsendmessage-sendhandle-options-callback) for more information.
+Попытка передать неподдерживаемый «handle» по IPC дочернему процессу. См. [`subprocess.send()`](child_process.md#subprocesssendmessage-sendhandle-options-callback) и [`process.send()`](process.md#processsendmessage-sendhandle-options-callback).
 
 <a id="ERR_INVALID_HTTP_TOKEN"></a>
 
-<!-- 0199.part.md -->
+<a id="ERR_INVALID_HTTP_TOKEN"></a>
 
 ### `ERR_INVALID_HTTP_TOKEN`
 
-An invalid HTTP token was supplied.
+Передан недопустимый HTTP-токен.
 
 <a id="ERR_INVALID_IP_ADDRESS"></a>
 
-<!-- 0200.part.md -->
+<a id="ERR_INVALID_IP_ADDRESS"></a>
 
 ### `ERR_INVALID_IP_ADDRESS`
 
-An IP address is not valid.
+Недопустимый IP-адрес.
 
 <a id="ERR_INVALID_MIME_SYNTAX"></a>
 
-<!-- 0201.part.md -->
+<a id="ERR_INVALID_MIME_SYNTAX"></a>
 
 ### `ERR_INVALID_MIME_SYNTAX`
 
-The syntax of a MIME is not valid.
+Синтаксис MIME некорректен.
 
 <a id="ERR_INVALID_MODULE"></a>
 
-<!-- 0202.part.md -->
+<a id="ERR_INVALID_MODULE"></a>
 
 ### `ERR_INVALID_MODULE`
 
-An attempt was made to load a module that does not exist or was otherwise not valid.
+<!-- YAML
+added:
+  - v15.0.0
+  - v14.18.0
+-->
+
+Попытка загрузить несуществующий или иначе недопустимый модуль.
 
 <a id="ERR_INVALID_MODULE_SPECIFIER"></a>
 
-<!-- 0203.part.md -->
+<a id="ERR_INVALID_MODULE_SPECIFIER"></a>
 
 ### `ERR_INVALID_MODULE_SPECIFIER`
 
-The imported module string is an invalid URL, package name, or package subpath specifier.
+Строка импортируемого модуля — недопустимый URL, имя пакета или спецификатор подпути.
 
 <a id="ERR_INVALID_OBJECT_DEFINE_PROPERTY"></a>
 
-<!-- 0204.part.md -->
+<a id="ERR_INVALID_OBJECT_DEFINE_PROPERTY"></a>
 
 ### `ERR_INVALID_OBJECT_DEFINE_PROPERTY`
 
-An error occurred while setting an invalid attribute on the property of an object.
+Ошибка при установке недопустимого атрибута свойства объекта.
 
 <a id="ERR_INVALID_PACKAGE_CONFIG"></a>
 
-<!-- 0205.part.md -->
+<a id="ERR_INVALID_PACKAGE_CONFIG"></a>
 
 ### `ERR_INVALID_PACKAGE_CONFIG`
 
-An invalid [`package.json`](packages.md#nodejs-packagejson-field-definitions) file failed parsing.
+Файл [`package.json`](packages.md#nodejs-packagejson-field-definitions) недопустим и не разобран.
 
 <a id="ERR_INVALID_PACKAGE_TARGET"></a>
 
-<!-- 0206.part.md -->
+<a id="ERR_INVALID_PACKAGE_TARGET"></a>
 
 ### `ERR_INVALID_PACKAGE_TARGET`
 
-The `package.json` [`"exports"`](packages.md#exports) field contains an invalid target mapping value for the attempted module resolution.
+Поле [`"exports"`](packages.md#exports) в `package.json` содержит недопустимое сопоставление цели для данного разрешения модуля.
 
 <a id="ERR_INVALID_PERFORMANCE_MARK"></a>
 
-<!-- 0207.part.md -->
-
-### `ERR_INVALID_PERFORMANCE_MARK`
-
-While using the Performance Timing API (`perf_hooks`), a performance mark is invalid.
-
 <a id="ERR_INVALID_PROTOCOL"></a>
-
-<!-- 0208.part.md -->
 
 ### `ERR_INVALID_PROTOCOL`
 
-An invalid `options.protocol` was passed to `http.request()`.
+В `http.request()` передан недопустимый `options.protocol`.
 
 <a id="ERR_INVALID_REPL_EVAL_CONFIG"></a>
 
-<!-- 0209.part.md -->
+<a id="ERR_INVALID_REPL_EVAL_CONFIG"></a>
 
 ### `ERR_INVALID_REPL_EVAL_CONFIG`
 
-Both `breakEvalOnSigint` and `eval` options were set in the [`REPL`](repl.md) config, which is not supported.
+В конфиге [`REPL`](repl.md) одновременно заданы `breakEvalOnSigint` и `eval`, что не поддерживается.
 
 <a id="ERR_INVALID_REPL_INPUT"></a>
 
-<!-- 0210.part.md -->
+<a id="ERR_INVALID_REPL_INPUT"></a>
 
 ### `ERR_INVALID_REPL_INPUT`
 
-The input may not be used in the [`REPL`](repl.md). The conditions under which this error is used are described in the [`REPL`](repl.md) documentation.
+Ввод нельзя использовать в [`REPL`](repl.md). Условия использования этой ошибки описаны в документации [`REPL`](repl.md).
 
 <a id="ERR_INVALID_RETURN_PROPERTY"></a>
 
-<!-- 0211.part.md -->
+<a id="ERR_INVALID_RETURN_PROPERTY"></a>
 
 ### `ERR_INVALID_RETURN_PROPERTY`
 
-Thrown in case a function option does not provide a valid value for one of its returned object properties on execution.
+Выбрасывается, если опция-функция не возвращает допустимое значение для одного из свойств объекта при выполнении.
 
 <a id="ERR_INVALID_RETURN_PROPERTY_VALUE"></a>
 
-<!-- 0212.part.md -->
+<a id="ERR_INVALID_RETURN_PROPERTY_VALUE"></a>
 
 ### `ERR_INVALID_RETURN_PROPERTY_VALUE`
 
-Thrown in case a function option does not provide an expected value type for one of its returned object properties on execution.
+Выбрасывается, если опция-функция не возвращает ожидаемый тип для одного из свойств объекта при выполнении.
 
 <a id="ERR_INVALID_RETURN_VALUE"></a>
 
-<!-- 0213.part.md -->
+<a id="ERR_INVALID_RETURN_VALUE"></a>
 
 ### `ERR_INVALID_RETURN_VALUE`
 
-Thrown in case a function option does not return an expected value type on execution, such as when a function is expected to return a promise.
+Выбрасывается, если опция-функция не возвращает ожидаемый тип при выполнении (например ожидался промис).
 
 <a id="ERR_INVALID_STATE"></a>
 
-<!-- 0214.part.md -->
+<a id="ERR_INVALID_STATE"></a>
 
 ### `ERR_INVALID_STATE`
 
-Indicates that an operation cannot be completed due to an invalid state. For instance, an object may have already been destroyed, or may be performing another operation.
+<!-- YAML
+added: v15.0.0
+-->
+
+Операция не может быть завершена из‑за недопустимого состояния: объект уже уничтожен или выполняет другую операцию.
 
 <a id="ERR_INVALID_SYNC_FORK_INPUT"></a>
 
-<!-- 0215.part.md -->
+<a id="ERR_INVALID_SYNC_FORK_INPUT"></a>
 
 ### `ERR_INVALID_SYNC_FORK_INPUT`
 
-A `Buffer`, `TypedArray`, `DataView`, or `string` was provided as stdio input to an asynchronous fork. See the documentation for the [`child_process`](child_process.md) module for more information.
+В асинхронный fork в качестве stdio переданы `Buffer`, `TypedArray`, `DataView` или строка. См. документацию [`child_process`](child_process.md).
 
 <a id="ERR_INVALID_THIS"></a>
 
-<!-- 0216.part.md -->
+<a id="ERR_INVALID_THIS"></a>
 
 ### `ERR_INVALID_THIS`
 
-A Node.js API function was called with an incompatible `this` value.
+Функция API Node.js вызвана с несовместимым значением `this`.
 
 ```js
 const urlSearchParams = new URLSearchParams(
@@ -1924,183 +2199,171 @@ urlSearchParams.has.call(buf, 'foo');
 
 <a id="ERR_INVALID_TRANSFER_OBJECT"></a>
 
-<!-- 0217.part.md -->
-
-### `ERR_INVALID_TRANSFER_OBJECT`
-
-An invalid transfer object was passed to `postMessage()`.
-
 <a id="ERR_INVALID_TUPLE"></a>
-
-<!-- 0218.part.md -->
 
 ### `ERR_INVALID_TUPLE`
 
-An element in the `iterable` provided to the [WHATWG](url.md#the-whatwg-url-api) [`URLSearchParams` constructor](url.md#new-urlsearchparamsiterable) did not represent a `[name, value]` tuple – that is, if an element is not iterable, or does not consist of exactly two elements.
+Элемент переданного `iterable` в [конструктор `URLSearchParams`](url.md#new-urlsearchparamsiterable) [WHATWG](url.md#the-whatwg-url-api) не является кортежем `[name, value]`: элемент не итерируемый или не из двух элементов.
 
 <a id="ERR_INVALID_URI"></a>
 
-<!-- 0219.part.md -->
+<a id="ERR_INVALID_TYPESCRIPT_SYNTAX"></a>
+
+### `ERR_INVALID_TYPESCRIPT_SYNTAX`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+changes:
+    - version:
+      - v23.7.0
+      - v22.14.0
+      pr-url: https://github.com/nodejs/node/pull/56610
+      description: This error is no longer thrown on valid yet unsupported syntax.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v23.7.0, v22.14.0 | Эта ошибка больше не выдается при допустимом, но неподдерживаемом синтаксисе. |
+
+Указанный синтаксис TypeScript недопустим.
+
+<a id="ERR_INVALID_URI"></a>
 
 ### `ERR_INVALID_URI`
 
-An invalid URI was passed.
+Передан недопустимый URI.
 
 <a id="ERR_INVALID_URL"></a>
 
-<!-- 0220.part.md -->
+<a id="ERR_INVALID_URL"></a>
 
 ### `ERR_INVALID_URL`
 
-An invalid URL was passed to the [WHATWG](url.md#the-whatwg-url-api) [`URL` constructor](url.md#new-urlinput-base) or the legacy [`url.parse()`](url.md#urlparseurlstring-parsequerystring-slashesdenotehost) to be parsed. The thrown error object typically has an additional property `'input'` that contains the URL that failed to parse.
+В [конструктор `URL`](url.md#new-urlinput-base) [WHATWG](url.md#the-whatwg-url-api) или устаревший [`url.parse()`](url.md#urlparseurlstring-parsequerystring-slashesdenotehost) передан недопустимый URL. У объекта ошибки обычно есть свойство `'input'` с неразобранным URL.
 
 <a id="ERR_INVALID_URL_SCHEME"></a>
 
-<!-- 0221.part.md -->
+<a id="ERR_INVALID_URL_PATTERN"></a>
+
+### `ERR_INVALID_URL_PATTERN`
+
+Передан недопустимый URLPattern в [WHATWG][WHATWG URL API]
+[`URLPattern` constructor][`new URLPattern(input)`] to be parsed.
+
+<a id="ERR_INVALID_URL_SCHEME"></a>
 
 ### `ERR_INVALID_URL_SCHEME`
 
-An attempt was made to use a URL of an incompatible scheme (protocol) for a specific purpose. It is only used in the [WHATWG URL API](url.md#the-whatwg-url-api) support in the [`fs`](fs.md) module (which only accepts URLs with `'file'` scheme), but may be used in other Node.js APIs as well in the future.
+Попытка использовать URL с несовместимой схемой (протоколом). Сейчас используется в [`fs`](fs.md) с [WHATWG URL API](url.md#the-whatwg-url-api) (только `'file'`), в будущем возможно и в других API.
 
 <a id="ERR_IPC_CHANNEL_CLOSED"></a>
 
-<!-- 0222.part.md -->
+<a id="ERR_IPC_CHANNEL_CLOSED"></a>
 
 ### `ERR_IPC_CHANNEL_CLOSED`
 
-An attempt was made to use an IPC communication channel that was already closed.
+Попытка использовать уже закрытый IPC-канал.
 
 <a id="ERR_IPC_DISCONNECTED"></a>
 
-<!-- 0223.part.md -->
+<a id="ERR_IPC_DISCONNECTED"></a>
 
 ### `ERR_IPC_DISCONNECTED`
 
-An attempt was made to disconnect an IPC communication channel that was already disconnected. See the documentation for the [`child_process`](child_process.md) module for more information.
+Попытка отключить уже отключённый IPC-канал. См. [`child_process`](child_process.md).
 
 <a id="ERR_IPC_ONE_PIPE"></a>
 
-<!-- 0224.part.md -->
+<a id="ERR_IPC_ONE_PIPE"></a>
 
 ### `ERR_IPC_ONE_PIPE`
 
-An attempt was made to create a child Node.js process using more than one IPC communication channel. See the documentation for the [`child_process`](child_process.md) module for more information.
+Попытка создать дочерний процесс Node.js с более чем одним IPC-каналом. См. [`child_process`](child_process.md).
 
 <a id="ERR_IPC_SYNC_FORK"></a>
 
-<!-- 0225.part.md -->
+<a id="ERR_IPC_SYNC_FORK"></a>
 
 ### `ERR_IPC_SYNC_FORK`
 
-An attempt was made to open an IPC communication channel with a synchronously forked Node.js process. See the documentation for the [`child_process`](child_process.md) module for more information.
+Попытка открыть IPC-канал с синхронно форкнутым процессом Node.js. См. [`child_process`](child_process.md).
 
 <a id="ERR_LOADER_CHAIN_INCOMPLETE"></a>
 
-<!-- 0226.part.md -->
+<a id="ERR_IP_BLOCKED"></a>
+
+### `ERR_IP_BLOCKED`
+
+IP is blocked by `net.BlockList`.
+
+<a id="ERR_LOADER_CHAIN_INCOMPLETE"></a>
 
 ### `ERR_LOADER_CHAIN_INCOMPLETE`
 
-An ESM loader hook returned without calling `next()` and without explicitly signaling a short circuit.
+<!-- YAML
+added:
+  - v18.6.0
+  - v16.17.0
+-->
+
+Хук загрузчика ESM вернул управление без вызова `next()` и без явного short circuit.
 
 <a id="ERR_MANIFEST_ASSERT_INTEGRITY"></a>
 
-<!-- 0227.part.md -->
+<a id="ERR_LOAD_SQLITE_EXTENSION"></a>
 
-### `ERR_MANIFEST_ASSERT_INTEGRITY`
+### `ERR_LOAD_SQLITE_EXTENSION`
 
-An attempt was made to load a resource, but the resource did not match the integrity defined by the policy manifest. See the documentation for [policy](permissions.md#policies) manifests for more information.
+<!-- YAML
+added:
+  - v23.5.0
+  - v22.13.0
+-->
 
-<a id="ERR_MANIFEST_DEPENDENCY_MISSING"></a>
-
-<!-- 0228.part.md -->
-
-### `ERR_MANIFEST_DEPENDENCY_MISSING`
-
-An attempt was made to load a resource, but the resource was not listed as a dependency from the location that attempted to load it. See the documentation for [policy](permissions.md#policies) manifests for more information.
-
-<a id="ERR_MANIFEST_INTEGRITY_MISMATCH"></a>
-
-<!-- 0229.part.md -->
-
-### `ERR_MANIFEST_INTEGRITY_MISMATCH`
-
-An attempt was made to load a policy manifest, but the manifest had multiple entries for a resource which did not match each other. Update the manifest entries to match in order to resolve this error. See the documentation for [policy](permissions.md#policies) manifests for more information.
-
-<a id="ERR_MANIFEST_INVALID_RESOURCE_FIELD"></a>
-
-<!-- 0230.part.md -->
-
-### `ERR_MANIFEST_INVALID_RESOURCE_FIELD`
-
-A policy manifest resource had an invalid value for one of its fields. Update the manifest entry to match in order to resolve this error. See the documentation for [policy](permissions.md#policies) manifests for more information.
-
-<a id="ERR_MANIFEST_INVALID_SPECIFIER"></a>
-
-<!-- 0231.part.md -->
-
-### `ERR_MANIFEST_INVALID_SPECIFIER`
-
-A policy manifest resource had an invalid value for one of its dependency mappings. Update the manifest entry to match to resolve this error. See the documentation for [policy](permissions.md#policies) manifests for more information.
-
-<a id="ERR_MANIFEST_PARSE_POLICY"></a>
-
-<!-- 0232.part.md -->
-
-### `ERR_MANIFEST_PARSE_POLICY`
-
-An attempt was made to load a policy manifest, but the manifest was unable to be parsed. See the documentation for [policy](permissions.md#policies) manifests for more information.
-
-<a id="ERR_MANIFEST_TDZ"></a>
-
-<!-- 0233.part.md -->
-
-### `ERR_MANIFEST_TDZ`
-
-An attempt was made to read from a policy manifest, but the manifest initialization has not yet taken place. This is likely a bug in Node.js.
-
-<a id="ERR_MANIFEST_UNKNOWN_ONERROR"></a>
-
-<!-- 0234.part.md -->
-
-### `ERR_MANIFEST_UNKNOWN_ONERROR`
-
-A policy manifest was loaded, but had an unknown value for its “onerror” behavior. See the documentation for [policy](permissions.md#policies) manifests for more information.
+Ошибка при загрузке расширения SQLite.
 
 <a id="ERR_MEMORY_ALLOCATION_FAILED"></a>
 
-<!-- 0235.part.md -->
-
 ### `ERR_MEMORY_ALLOCATION_FAILED`
 
-An attempt was made to allocate memory (usually in the C++ layer) but it failed.
+Не удалось выделить память (обычно в слое C++).
 
 <a id="ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE"></a>
 
-<!-- 0236.part.md -->
+<a id="ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE"></a>
 
 ### `ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE`
 
-A message posted to a [`MessagePort`](worker_threads.md#class-messageport) could not be deserialized in the target [vm](vm.md) `Context`. Not all Node.js objects can be successfully instantiated in any context at this time, and attempting to transfer them using `postMessage()` can fail on the receiving side in that case.
+<!-- YAML
+added:
+  - v14.5.0
+  - v12.19.0
+-->
+
+Сообщение в [`MessagePort`](worker_threads.md#class-messageport) не удалось десериализовать в целевом контексте [vm](vm.md). Не все объекты Node.js можно создать в любом контексте; передача через `postMessage()` может не сработать.
 
 <a id="ERR_METHOD_NOT_IMPLEMENTED"></a>
 
-<!-- 0237.part.md -->
+<a id="ERR_METHOD_NOT_IMPLEMENTED"></a>
 
 ### `ERR_METHOD_NOT_IMPLEMENTED`
 
-A method is required but not implemented.
+Требуемый метод не реализован.
 
 <a id="ERR_MISSING_ARGS"></a>
 
-<!-- 0238.part.md -->
+<a id="ERR_MISSING_ARGS"></a>
 
 ### `ERR_MISSING_ARGS`
 
-A required argument of a Node.js API was not passed. This is only used for strict compliance with the API specification (which in some cases may accept `func(undefined)` but not `func()`). In most native Node.js APIs, `func(undefined)` and `func()` are treated identically, and the [`ERR_INVALID_ARG_TYPE`](#err_invalid_arg_type) error code may be used instead.
+Не передан обязательный аргумент API Node.js (строгое соответствие спецификации: иногда допустимо `func(undefined)`, но не `func()`). В большинстве нативных API `func(undefined)` и `func()` эквивалентны; может использоваться [`ERR_INVALID_ARG_TYPE`](#err_invalid_arg_type).
 
 <a id="ERR_MISSING_OPTION"></a>
 
-<!-- 0239.part.md -->
+<a id="ERR_MISSING_OPTION"></a>
 
 ### `ERR_MISSING_OPTION`
 
@@ -2108,51 +2371,48 @@ For APIs that accept options objects, some options might be mandatory. This code
 
 <a id="ERR_MISSING_PASSPHRASE"></a>
 
-<!-- 0240.part.md -->
+<a id="ERR_MISSING_PASSPHRASE"></a>
 
 ### `ERR_MISSING_PASSPHRASE`
 
-An attempt was made to read an encrypted key without specifying a passphrase.
+Попытка прочитать зашифрованный ключ без пароля.
 
 <a id="ERR_MISSING_PLATFORM_FOR_WORKER"></a>
 
-<!-- 0241.part.md -->
+<a id="ERR_MISSING_PLATFORM_FOR_WORKER"></a>
 
 ### `ERR_MISSING_PLATFORM_FOR_WORKER`
 
-The V8 platform used by this instance of Node.js does not support creating Workers. This is caused by lack of embedder support for Workers. In particular, this error will not occur with standard builds of Node.js.
+Платформа V8 в этом экземпляре Node.js не поддерживает создание Workers из‑за отсутствия поддержки со стороны встраивания. В стандартных сборках Node.js эта ошибка не возникает.
 
 <a id="ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST"></a>
 
-<!-- 0242.part.md -->
+<a id="ERR_MODULE_LINK_MISMATCH"></a>
 
-### `ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`
+### `ERR_MODULE_LINK_MISMATCH`
 
-An object that needs to be explicitly listed in the `transferList` argument is in the object passed to a [`postMessage()`](worker_threads.md#portpostmessagevalue-transferlist) call, but is not provided in the `transferList` for that call. Usually, this is a `MessagePort`.
-
-In Node.js versions prior to v15.0.0, the error code being used here was [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](#err_missing_message_port_in_transfer_list). However, the set of transferable object types has been expanded to cover more types than `MessagePort`.
+Модуль нельзя связать: одинаковые запросы модуля в нём разрешаются в разные
+модули.
 
 <a id="ERR_MODULE_NOT_FOUND"></a>
 
-<!-- 0243.part.md -->
-
 ### `ERR_MODULE_NOT_FOUND`
 
-A module file could not be resolved by the ECMAScript modules loader while attempting an `import` operation or when loading the program entry point.
+Загрузчик ECMAScript-модулей не смог разрешить файл модуля при `import` или при загрузке точки входа.
 
 <a id="ERR_MULTIPLE_CALLBACK"></a>
 
-<!-- 0244.part.md -->
+<a id="ERR_MULTIPLE_CALLBACK"></a>
 
 ### `ERR_MULTIPLE_CALLBACK`
 
-A callback was called more than once.
+Колбэк вызван более одного раза.
 
-A callback is almost always meant to only be called once as the query can either be fulfilled or rejected but not both at the same time. The latter would be possible by calling a callback more than once.
+Колбэк обычно вызывают один раз: запрос выполняется или отклоняется, но не оба сразу. Повторный вызов нарушает это.
 
 <a id="ERR_NAPI_CONS_FUNCTION"></a>
 
-<!-- 0245.part.md -->
+<a id="ERR_NAPI_CONS_FUNCTION"></a>
 
 ### `ERR_NAPI_CONS_FUNCTION`
 
@@ -2160,7 +2420,7 @@ While using `Node-API`, a constructor passed was not a function.
 
 <a id="ERR_NAPI_INVALID_DATAVIEW_ARGS"></a>
 
-<!-- 0246.part.md -->
+<a id="ERR_NAPI_INVALID_DATAVIEW_ARGS"></a>
 
 ### `ERR_NAPI_INVALID_DATAVIEW_ARGS`
 
@@ -2168,7 +2428,7 @@ While calling `napi_create_dataview()`, a given `offset` was outside the bounds 
 
 <a id="ERR_NAPI_INVALID_TYPEDARRAY_ALIGNMENT"></a>
 
-<!-- 0247.part.md -->
+<a id="ERR_NAPI_INVALID_TYPEDARRAY_ALIGNMENT"></a>
 
 ### `ERR_NAPI_INVALID_TYPEDARRAY_ALIGNMENT`
 
@@ -2176,7 +2436,7 @@ While calling `napi_create_typedarray()`, the provided `offset` was not a multip
 
 <a id="ERR_NAPI_INVALID_TYPEDARRAY_LENGTH"></a>
 
-<!-- 0248.part.md -->
+<a id="ERR_NAPI_INVALID_TYPEDARRAY_LENGTH"></a>
 
 ### `ERR_NAPI_INVALID_TYPEDARRAY_LENGTH`
 
@@ -2184,127 +2444,181 @@ While calling `napi_create_typedarray()`, `(length * size_of_element) + byte_off
 
 <a id="ERR_NAPI_TSFN_CALL_JS"></a>
 
-<!-- 0249.part.md -->
+<a id="ERR_NAPI_TSFN_CALL_JS"></a>
 
 ### `ERR_NAPI_TSFN_CALL_JS`
 
-An error occurred while invoking the JavaScript portion of the thread-safe function.
+Ошибка при вызове JavaScript-части потокобезопасной функции.
 
 <a id="ERR_NAPI_TSFN_GET_UNDEFINED"></a>
 
-<!-- 0250.part.md -->
+<a id="ERR_NAPI_TSFN_GET_UNDEFINED"></a>
 
 ### `ERR_NAPI_TSFN_GET_UNDEFINED`
 
-An error occurred while attempting to retrieve the JavaScript `undefined` value.
+Ошибка при получении значения JavaScript `undefined`.
 
 <a id="ERR_NAPI_TSFN_START_IDLE_LOOP"></a>
 
-<!-- 0251.part.md -->
-
-### `ERR_NAPI_TSFN_START_IDLE_LOOP`
-
-On the main thread, values are removed from the queue associated with the thread-safe function in an idle loop. This error indicates that an error has occurred when attempting to start the loop.
-
-<a id="ERR_NAPI_TSFN_STOP_IDLE_LOOP"></a>
-
-<!-- 0252.part.md -->
-
-### `ERR_NAPI_TSFN_STOP_IDLE_LOOP`
-
-Once no more items are left in the queue, the idle loop must be suspended. This error indicates that the idle loop has failed to stop.
-
-<a id="ERR_NOT_BUILDING_SNAPSHOT"></a>
-
-<!-- 0253.part.md -->
-
-### `ERR_NOT_BUILDING_SNAPSHOT`
-
-An attempt was made to use operations that can only be used when building V8 startup snapshot even though Node.js isn’t building one.
-
-<a id="ERR_NO_CRYPTO"></a>
-
-<!-- 0254.part.md -->
-
-### `ERR_NO_CRYPTO`
-
-An attempt was made to use crypto features while Node.js was not compiled with OpenSSL crypto support.
-
-<a id="ERR_NO_ICU"></a>
-
-<!-- 0255.part.md -->
-
-### `ERR_NO_ICU`
-
-An attempt was made to use features that require [ICU](intl.md#internationalization-support), but Node.js was not compiled with ICU support.
-
 <a id="ERR_NON_CONTEXT_AWARE_DISABLED"></a>
-
-<!-- 0256.part.md -->
 
 ### `ERR_NON_CONTEXT_AWARE_DISABLED`
 
-A non-context-aware native addon was loaded in a process that disallows them.
+Загружен нативный аддон без поддержки контекста в процессе, где это запрещено.
 
 <a id="ERR_OUT_OF_RANGE"></a>
 
-<!-- 0257.part.md -->
+<a id="ERR_NOT_BUILDING_SNAPSHOT"></a>
+
+### `ERR_NOT_BUILDING_SNAPSHOT`
+
+Использованы операции, доступные только при сборке снимка запуска V8, хотя снимок не собирается.
+
+<a id="ERR_NO_CRYPTO"></a>
+
+<a id="ERR_NOT_IN_SINGLE_EXECUTABLE_APPLICATION"></a>
+
+### `ERR_NOT_IN_SINGLE_EXECUTABLE_APPLICATION`
+
+<!-- YAML
+added:
+  - v21.7.0
+  - v20.12.0
+-->
+
+Операция недоступна вне приложения в виде одного исполняемого файла.
+
+<a id="ERR_NOT_SUPPORTED_IN_SNAPSHOT"></a>
+
+### `ERR_NOT_SUPPORTED_IN_SNAPSHOT`
+
+Попытка выполнить операции, недоступные при сборке снимка запуска.
+
+<a id="ERR_NO_CRYPTO"></a>
+
+### `ERR_NO_CRYPTO`
+
+Использованы криптографические возможности при сборке Node.js без OpenSSL.
+
+<a id="ERR_NO_ICU"></a>
+
+<a id="ERR_NO_ICU"></a>
+
+### `ERR_NO_ICU`
+
+Требуются возможности [ICU](intl.md#internationalization-support), но Node.js собран без ICU.
+
+<a id="ERR_NON_CONTEXT_AWARE_DISABLED"></a>
+
+<a id="ERR_NO_TYPESCRIPT"></a>
+
+### `ERR_NO_TYPESCRIPT`
+
+<!-- YAML
+added:
+  - v23.0.0
+  - v22.12.0
+-->
+
+Требуется [поддержка Native TypeScript][], но Node.js собран без TypeScript.
+
+<a id="ERR_OPERATION_FAILED"></a>
+
+### `ERR_OPERATION_FAILED`
+
+<!-- YAML
+added: v15.0.0
+-->
+
+Операция не удалась. Обычно обозначает общий сбой асинхронной операции.
+
+<a id="ERR_OPTIONS_BEFORE_BOOTSTRAPPING"></a>
+
+### `ERR_OPTIONS_BEFORE_BOOTSTRAPPING`
+
+<!-- YAML
+added:
+ - v23.10.0
+ - v22.16.0
+-->
+
+Попытка получить опции до завершения начальной загрузки.
+
+<a id="ERR_OUT_OF_RANGE"></a>
 
 ### `ERR_OUT_OF_RANGE`
 
-A given value is out of the accepted range.
+Значение вне допустимого диапазона.
 
 <a id="ERR_PACKAGE_IMPORT_NOT_DEFINED"></a>
 
-<!-- 0258.part.md -->
+<a id="ERR_PACKAGE_IMPORT_NOT_DEFINED"></a>
 
 ### `ERR_PACKAGE_IMPORT_NOT_DEFINED`
 
-The `package.json` [`"imports"`](packages.md#imports) field does not define the given internal package specifier mapping.
+Поле [`"imports"`](packages.md#imports) в `package.json` не задаёт сопоставление для данного внутреннего спецификатора пакета.
 
 <a id="ERR_PACKAGE_PATH_NOT_EXPORTED"></a>
 
-<!-- 0259.part.md -->
+<a id="ERR_PACKAGE_PATH_NOT_EXPORTED"></a>
 
 ### `ERR_PACKAGE_PATH_NOT_EXPORTED`
 
-The `package.json` [`"exports"`](packages.md#exports) field does not export the requested subpath. Because exports are encapsulated, private internal modules that are not exported cannot be imported through the package resolution, unless using an absolute URL.
+Поле [`"exports"`](packages.md#exports) в `package.json` не экспортирует запрошенный подпуть. Экспорты инкапсулированы: приватные внутренние модули нельзя импортировать через разрешение пакета, кроме как по абсолютному URL.
 
 <a id="ERR_PARSE_ARGS_INVALID_OPTION_VALUE"></a>
 
-<!-- 0260.part.md -->
+<a id="ERR_PARSE_ARGS_INVALID_OPTION_VALUE"></a>
 
 ### `ERR_PARSE_ARGS_INVALID_OPTION_VALUE`
 
-When `strict` set to `true`, thrown by [`util.parseArgs()`](util.md#utilparseargsconfig) if a [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) value is provided for an option of type [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), or if a [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) value is provided for an option of type [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+<!-- YAML
+added:
+  - v18.3.0
+  - v16.17.0
+-->
+
+При `strict`, равном `true`, выбрасывается [`util.parseArgs()`](util.md#utilparseargsconfig), если для опции типа [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) передано значение [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type), или для опции типа [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) передана строка [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type).
 
 <a id="ERR_PARSE_ARGS_UNEXPECTED_POSITIONAL"></a>
 
-<!-- 0261.part.md -->
+<a id="ERR_PARSE_ARGS_UNEXPECTED_POSITIONAL"></a>
 
 ### `ERR_PARSE_ARGS_UNEXPECTED_POSITIONAL`
+
+<!-- YAML
+added:
+  - v18.3.0
+  - v16.17.0
+-->
 
 Thrown by [`util.parseArgs()`](util.md#utilparseargsconfig), when a positional argument is provided and `allowPositionals` is set to `false`.
 
 <a id="ERR_PARSE_ARGS_UNKNOWN_OPTION"></a>
 
-<!-- 0262.part.md -->
+<a id="ERR_PARSE_ARGS_UNKNOWN_OPTION"></a>
 
 ### `ERR_PARSE_ARGS_UNKNOWN_OPTION`
 
-When `strict` set to `true`, thrown by [`util.parseArgs()`](util.md#utilparseargsconfig) if an argument is not configured in `options`.
+<!-- YAML
+added:
+  - v18.3.0
+  - v16.17.0
+-->
+
+При `strict`, равном `true`, выбрасывается [`util.parseArgs()`](util.md#utilparseargsconfig), если аргумент не описан в `options`.
 
 <a id="ERR_PERFORMANCE_INVALID_TIMESTAMP"></a>
 
-<!-- 0263.part.md -->
+<a id="ERR_PERFORMANCE_INVALID_TIMESTAMP"></a>
 
 ### `ERR_PERFORMANCE_INVALID_TIMESTAMP`
 
-An invalid timestamp value was provided for a performance mark or measure.
+Для метки или измерения производительности передано недопустимое время.
 
 <a id="ERR_PERFORMANCE_MEASURE_INVALID_OPTIONS"></a>
 
-<!-- 0264.part.md -->
+<a id="ERR_PERFORMANCE_MEASURE_INVALID_OPTIONS"></a>
 
 ### `ERR_PERFORMANCE_MEASURE_INVALID_OPTIONS`
 
@@ -2312,7 +2626,7 @@ Invalid options were provided for a performance measure.
 
 <a id="ERR_PROTO_ACCESS"></a>
 
-<!-- 0265.part.md -->
+<a id="ERR_PROTO_ACCESS"></a>
 
 ### `ERR_PROTO_ACCESS`
 
@@ -2320,9 +2634,143 @@ Accessing `Object.prototype.__proto__` has been forbidden using [`--disable-prot
 
 <a id="ERR_REQUIRE_ESM"></a>
 
-<!-- 0266.part.md -->
+<a id="ERR_PROXY_INVALID_CONFIG"></a>
+
+### `ERR_PROXY_INVALID_CONFIG`
+
+Failed to proxy a request because the proxy configuration is invalid.
+
+<a id="ERR_PROXY_TUNNEL"></a>
+
+### `ERR_PROXY_TUNNEL`
+
+Failed to establish proxy tunnel when `NODE_USE_ENV_PROXY` or `--use-env-proxy` is enabled.
+
+<a id="ERR_QUIC_APPLICATION_ERROR"></a>
+
+### `ERR_QUIC_APPLICATION_ERROR`
+
+<!-- YAML
+added:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Stability: 1 - Experimental
+
+Ошибка приложения QUIC.
+
+<a id="ERR_QUIC_CONNECTION_FAILED"></a>
+
+### `ERR_QUIC_CONNECTION_FAILED`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+> Stability: 1 - Experimental
+
+Establishing a QUIC connection failed.
+
+<a id="ERR_QUIC_ENDPOINT_CLOSED"></a>
+
+### `ERR_QUIC_ENDPOINT_CLOSED`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+> Stability: 1 - Experimental
+
+Конечная точка QUIC закрыта с ошибкой.
+
+<a id="ERR_QUIC_OPEN_STREAM_FAILED"></a>
+
+### `ERR_QUIC_OPEN_STREAM_FAILED`
+
+<!-- YAML
+added:
+ - v23.0.0
+ - v22.10.0
+-->
+
+> Stability: 1 - Experimental
+
+Opening a QUIC stream failed.
+
+<a id="ERR_QUIC_TRANSPORT_ERROR"></a>
+
+### `ERR_QUIC_TRANSPORT_ERROR`
+
+<!-- YAML
+added:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Stability: 1 - Experimental
+
+Ошибка транспорта QUIC.
+
+<a id="ERR_QUIC_VERSION_NEGOTIATION_ERROR"></a>
+
+### `ERR_QUIC_VERSION_NEGOTIATION_ERROR`
+
+<!-- YAML
+added:
+  - v23.4.0
+  - v22.13.0
+-->
+
+> Stability: 1 - Experimental
+
+Сессия QUIC не удалась: требуется согласование версии.
+
+<a id="ERR_REQUIRE_ASYNC_MODULE"></a>
+
+### `ERR_REQUIRE_ASYNC_MODULE`
+
+При попытке `require()` [ES-модуля][] оказалось, что модуль асинхронный, то есть
+содержит top-level await.
+
+Чтобы увидеть, где находится top-level await, используйте
+`--experimental-print-required-tla` (при этом модули выполняются до поиска
+top-level await).
+
+<a id="ERR_REQUIRE_CYCLE_MODULE"></a>
+
+### `ERR_REQUIRE_CYCLE_MODULE`
+
+При попытке `require()` [ES-модуля][] участвует в немедленном цикле граница
+CommonJS↔ESM.
+Это недопустимо: ES-модули нельзя вычислять, пока они уже вычисляются.
+
+Чтобы разорвать цикл, вызов `require()` в цикле не должен происходить на верхнем
+уровне ни ES-модуля (через `createRequire()`), ни CommonJS-модуля — его следует
+отложить во внутреннюю функцию.
+
+<a id="ERR_REQUIRE_ESM"></a>
 
 ### `ERR_REQUIRE_ESM`
+
+<!-- YAML
+changes:
+  - version:
+    - v23.0.0
+    - v22.12.0
+    - v20.19.0
+    pr-url: https://github.com/nodejs/node/pull/55085
+    description: require() now supports loading synchronous ES modules by default.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v23.0.0, v22.12.0, v20.19.0 | require() теперь поддерживает загрузку синхронных модулей ES по умолчанию. |
 
 > Stability: 1 - Experimental
 
@@ -2330,7 +2778,7 @@ An attempt was made to `require()` an [ES Module](esm.md).
 
 <a id="ERR_SCRIPT_EXECUTION_INTERRUPTED"></a>
 
-<!-- 0267.part.md -->
+<a id="ERR_SCRIPT_EXECUTION_INTERRUPTED"></a>
 
 ### `ERR_SCRIPT_EXECUTION_INTERRUPTED`
 
@@ -2338,7 +2786,7 @@ Script execution was interrupted by `SIGINT` (For example, <kbd>Ctrl</kbd>+<kbd>
 
 <a id="ERR_SCRIPT_EXECUTION_TIMEOUT"></a>
 
-<!-- 0268.part.md -->
+<a id="ERR_SCRIPT_EXECUTION_TIMEOUT"></a>
 
 ### `ERR_SCRIPT_EXECUTION_TIMEOUT`
 
@@ -2346,23 +2794,36 @@ Script execution timed out, possibly due to bugs in the script being executed.
 
 <a id="ERR_SERVER_ALREADY_LISTEN"></a>
 
-<!-- 0269.part.md -->
+<a id="ERR_SERVER_ALREADY_LISTEN"></a>
 
 ### `ERR_SERVER_ALREADY_LISTEN`
 
-The [`server.listen()`](net.md#serverlisten) method was called while a `net.Server` was already listening. This applies to all instances of `net.Server`, including HTTP, HTTPS, and HTTP/2 `Server` instances.
+Метод [`server.listen()`](net.md#serverlisten) вызван, когда `net.Server` уже слушает. Это относится ко всем экземплярам `net.Server`, включая HTTP, HTTPS и HTTP/2.
 
 <a id="ERR_SERVER_NOT_RUNNING"></a>
 
-<!-- 0270.part.md -->
+<a id="ERR_SERVER_NOT_RUNNING"></a>
 
 ### `ERR_SERVER_NOT_RUNNING`
 
-The [`server.close()`](net.md#serverclosecallback) method was called when a `net.Server` was not running. This applies to all instances of `net.Server`, including HTTP, HTTPS, and HTTP/2 `Server` instances.
+Метод [`server.close()`](net.md#serverclosecallback) вызван, когда `net.Server` не работает. Это относится ко всем экземплярам `net.Server`, включая HTTP, HTTPS и HTTP/2.
 
 <a id="ERR_SOCKET_ALREADY_BOUND"></a>
 
-<!-- 0271.part.md -->
+<a id="ERR_SINGLE_EXECUTABLE_APPLICATION_ASSET_NOT_FOUND"></a>
+
+### `ERR_SINGLE_EXECUTABLE_APPLICATION_ASSET_NOT_FOUND`
+
+<!-- YAML
+added:
+  - v21.7.0
+  - v20.12.0
+-->
+
+A key was passed to single executable application APIs to identify an asset,
+but no match could be found.
+
+<a id="ERR_SOCKET_ALREADY_BOUND"></a>
 
 ### `ERR_SOCKET_ALREADY_BOUND`
 
@@ -2370,7 +2831,7 @@ An attempt was made to bind a socket that has already been bound.
 
 <a id="ERR_SOCKET_BAD_BUFFER_SIZE"></a>
 
-<!-- 0272.part.md -->
+<a id="ERR_SOCKET_BAD_BUFFER_SIZE"></a>
 
 ### `ERR_SOCKET_BAD_BUFFER_SIZE`
 
@@ -2378,7 +2839,7 @@ An invalid (negative) size was passed for either the `recvBufferSize` or `sendBu
 
 <a id="ERR_SOCKET_BAD_PORT"></a>
 
-<!-- 0273.part.md -->
+<a id="ERR_SOCKET_BAD_PORT"></a>
 
 ### `ERR_SOCKET_BAD_PORT`
 
@@ -2386,7 +2847,7 @@ An API function expecting a port \>= 0 and \< 65536 received an invalid value.
 
 <a id="ERR_SOCKET_BAD_TYPE"></a>
 
-<!-- 0274.part.md -->
+<a id="ERR_SOCKET_BAD_TYPE"></a>
 
 ### `ERR_SOCKET_BAD_TYPE`
 
@@ -2394,7 +2855,7 @@ An API function expecting a socket type (`udp4` or `udp6`) received an invalid v
 
 <a id="ERR_SOCKET_BUFFER_SIZE"></a>
 
-<!-- 0275.part.md -->
+<a id="ERR_SOCKET_BUFFER_SIZE"></a>
 
 ### `ERR_SOCKET_BUFFER_SIZE`
 
@@ -2402,7 +2863,7 @@ While using [`dgram.createSocket()`](dgram.md#dgramcreatesocketoptions-callback)
 
 <a id="ERR_SOCKET_CLOSED"></a>
 
-<!-- 0276.part.md -->
+<a id="ERR_SOCKET_CLOSED"></a>
 
 ### `ERR_SOCKET_CLOSED`
 
@@ -2410,15 +2871,22 @@ An attempt was made to operate on an already closed socket.
 
 <a id="ERR_SOCKET_CLOSED_BEFORE_CONNECTION"></a>
 
-<!-- 0277.part.md -->
+<a id="ERR_SOCKET_CLOSED_BEFORE_CONNECTION"></a>
 
 ### `ERR_SOCKET_CLOSED_BEFORE_CONNECTION`
 
-When calling [`net.Socket.write()`](net.md#socketwritedata-encoding-callback) on a connecting socket and the socket was closed before the connection was established.
+При вызове [`net.Socket.write()`](net.md#socketwritedata-encoding-callback) на подключающемся сокете сокет был закрыт до установления соединения.
 
 <a id="ERR_SOCKET_DGRAM_IS_CONNECTED"></a>
 
-<!-- 0278.part.md -->
+<a id="ERR_SOCKET_CONNECTION_TIMEOUT"></a>
+
+### `ERR_SOCKET_CONNECTION_TIMEOUT`
+
+Сокет не смог подключиться ни к одному адресу из DNS за отведённое время при
+автовыборе семейства адресов.
+
+<a id="ERR_SOCKET_DGRAM_IS_CONNECTED"></a>
 
 ### `ERR_SOCKET_DGRAM_IS_CONNECTED`
 
@@ -2426,7 +2894,7 @@ A [`dgram.connect()`](dgram.md#socketconnectport-address-callback) call was made
 
 <a id="ERR_SOCKET_DGRAM_NOT_CONNECTED"></a>
 
-<!-- 0279.part.md -->
+<a id="ERR_SOCKET_DGRAM_NOT_CONNECTED"></a>
 
 ### `ERR_SOCKET_DGRAM_NOT_CONNECTED`
 
@@ -2434,7 +2902,7 @@ A [`dgram.disconnect()`](dgram.md#socketdisconnect) or [`dgram.remoteAddress()`]
 
 <a id="ERR_SOCKET_DGRAM_NOT_RUNNING"></a>
 
-<!-- 0280.part.md -->
+<a id="ERR_SOCKET_DGRAM_NOT_RUNNING"></a>
 
 ### `ERR_SOCKET_DGRAM_NOT_RUNNING`
 
@@ -2442,7 +2910,40 @@ A call was made and the UDP subsystem was not running.
 
 <a id="ERR_SRI_PARSE"></a>
 
-<!-- 0281.part.md -->
+<a id="ERR_SOURCE_MAP_CORRUPT"></a>
+
+### `ERR_SOURCE_MAP_CORRUPT`
+
+Карту исходников не удалось разобрать: файл отсутствует или повреждён.
+
+<a id="ERR_SOURCE_MAP_MISSING_SOURCE"></a>
+
+### `ERR_SOURCE_MAP_MISSING_SOURCE`
+
+A file imported from a source map was not found.
+
+<a id="ERR_SOURCE_PHASE_NOT_DEFINED"></a>
+
+### `ERR_SOURCE_PHASE_NOT_DEFINED`
+
+<!-- YAML
+added: v24.0.0
+-->
+
+The provided module import does not provide a source phase imports representation for source phase
+import syntax `import source x from 'x'` or `import.source(x)`.
+
+<a id="ERR_SQLITE_ERROR"></a>
+
+### `ERR_SQLITE_ERROR`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+An error was returned from [SQLite][].
+
+<a id="ERR_SRI_PARSE"></a>
 
 ### `ERR_SRI_PARSE`
 
@@ -2450,7 +2951,7 @@ A string was provided for a Subresource Integrity check, but was unable to be pa
 
 <a id="ERR_STREAM_ALREADY_FINISHED"></a>
 
-<!-- 0282.part.md -->
+<a id="ERR_STREAM_ALREADY_FINISHED"></a>
 
 ### `ERR_STREAM_ALREADY_FINISHED`
 
@@ -2458,7 +2959,7 @@ A stream method was called that cannot complete because the stream was finished.
 
 <a id="ERR_STREAM_CANNOT_PIPE"></a>
 
-<!-- 0283.part.md -->
+<a id="ERR_STREAM_CANNOT_PIPE"></a>
 
 ### `ERR_STREAM_CANNOT_PIPE`
 
@@ -2466,7 +2967,7 @@ An attempt was made to call [`stream.pipe()`](stream.md#readablepipedestination-
 
 <a id="ERR_STREAM_DESTROYED"></a>
 
-<!-- 0284.part.md -->
+<a id="ERR_STREAM_DESTROYED"></a>
 
 ### `ERR_STREAM_DESTROYED`
 
@@ -2474,7 +2975,14 @@ A stream method was called that cannot complete because the stream was destroyed
 
 <a id="ERR_STREAM_NULL_VALUES"></a>
 
-<!-- 0285.part.md -->
+<a id="ERR_STREAM_ITER_MISSING_FLAG"></a>
+
+### `ERR_STREAM_ITER_MISSING_FLAG`
+
+A stream/iter API was used without the `--experimental-stream-iter` CLI flag
+enabled.
+
+<a id="ERR_STREAM_NULL_VALUES"></a>
 
 ### `ERR_STREAM_NULL_VALUES`
 
@@ -2482,7 +2990,7 @@ An attempt was made to call [`stream.write()`](stream.md#writablewritechunk-enco
 
 <a id="ERR_STREAM_PREMATURE_CLOSE"></a>
 
-<!-- 0286.part.md -->
+<a id="ERR_STREAM_PREMATURE_CLOSE"></a>
 
 ### `ERR_STREAM_PREMATURE_CLOSE`
 
@@ -2490,7 +2998,7 @@ An error returned by `stream.finished()` and `stream.pipeline()`, when a stream 
 
 <a id="ERR_STREAM_PUSH_AFTER_EOF"></a>
 
-<!-- 0287.part.md -->
+<a id="ERR_STREAM_PUSH_AFTER_EOF"></a>
 
 ### `ERR_STREAM_PUSH_AFTER_EOF`
 
@@ -2498,7 +3006,13 @@ An attempt was made to call [`stream.push()`](stream.md#readablepushchunk-encodi
 
 <a id="ERR_STREAM_UNSHIFT_AFTER_END_EVENT"></a>
 
-<!-- 0288.part.md -->
+<a id="ERR_STREAM_UNABLE_TO_PIPE"></a>
+
+### `ERR_STREAM_UNABLE_TO_PIPE`
+
+An attempt was made to pipe to a closed or destroyed stream in a pipeline.
+
+<a id="ERR_STREAM_UNSHIFT_AFTER_END_EVENT"></a>
 
 ### `ERR_STREAM_UNSHIFT_AFTER_END_EVENT`
 
@@ -2506,7 +3020,7 @@ An attempt was made to call [`stream.unshift()`](stream.md#readableunshiftchunk-
 
 <a id="ERR_STREAM_WRAP"></a>
 
-<!-- 0289.part.md -->
+<a id="ERR_STREAM_WRAP"></a>
 
 ### `ERR_STREAM_WRAP`
 
@@ -2521,7 +3035,7 @@ instance.setEncoding('utf8');
 
 <a id="ERR_STREAM_WRITE_AFTER_END"></a>
 
-<!-- 0290.part.md -->
+<a id="ERR_STREAM_WRITE_AFTER_END"></a>
 
 ### `ERR_STREAM_WRITE_AFTER_END`
 
@@ -2529,7 +3043,7 @@ An attempt was made to call [`stream.write()`](stream.md#writablewritechunk-enco
 
 <a id="ERR_STRING_TOO_LONG"></a>
 
-<!-- 0291.part.md -->
+<a id="ERR_STRING_TOO_LONG"></a>
 
 ### `ERR_STRING_TOO_LONG`
 
@@ -2537,7 +3051,7 @@ An attempt has been made to create a string longer than the maximum allowed leng
 
 <a id="ERR_SYNTHETIC"></a>
 
-<!-- 0292.part.md -->
+<a id="ERR_SYNTHETIC"></a>
 
 ### `ERR_SYNTHETIC`
 
@@ -2545,7 +3059,7 @@ An artificial error object used to capture the call stack for diagnostic reports
 
 <a id="ERR_SYSTEM_ERROR"></a>
 
-<!-- 0293.part.md -->
+<a id="ERR_SYSTEM_ERROR"></a>
 
 ### `ERR_SYSTEM_ERROR`
 
@@ -2553,39 +3067,29 @@ An unspecified or non-specific system error has occurred within the Node.js proc
 
 <a id="ERR_TAP_LEXER_ERROR"></a>
 
-<!-- 0294.part.md -->
-
-### `ERR_TAP_LEXER_ERROR`
-
-An error representing a failing lexer state.
-
-<a id="ERR_TAP_PARSER_ERROR"></a>
-
-<!-- 0295.part.md -->
-
-### `ERR_TAP_PARSER_ERROR`
-
-An error representing a failing parser state. Additional information about the token causing the error is available via the `cause` property.
-
-<a id="ERR_TAP_VALIDATION_ERROR"></a>
-
-<!-- 0296.part.md -->
-
-### `ERR_TAP_VALIDATION_ERROR`
-
-This error represents a failed TAP validation.
-
 <a id="ERR_TEST_FAILURE"></a>
-
-<!-- 0297.part.md -->
 
 ### `ERR_TEST_FAILURE`
 
-This error represents a failed test. Additional information about the failure is available via the `cause` property. The `failureType` property specifies what the test was doing when the failure occurred.
+Ошибка означает провал теста. Дополнительные сведения — в свойстве `cause`. Свойство `failureType` указывает, что делал тест при сбое.
 
 <a id="ERR_TLS_CERT_ALTNAME_FORMAT"></a>
 
-<!-- 0298.part.md -->
+<a id="ERR_TLS_ALPN_CALLBACK_INVALID_RESULT"></a>
+
+### `ERR_TLS_ALPN_CALLBACK_INVALID_RESULT`
+
+This error is thrown when an `ALPNCallback` returns a value that is not in the
+list of ALPN protocols offered by the client.
+
+<a id="ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS"></a>
+
+### `ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS`
+
+This error is thrown when creating a `TLSServer` if the TLS options include
+both `ALPNProtocols` and `ALPNCallback`. These options are mutually exclusive.
+
+<a id="ERR_TLS_CERT_ALTNAME_FORMAT"></a>
 
 ### `ERR_TLS_CERT_ALTNAME_FORMAT`
 
@@ -2593,7 +3097,7 @@ This error is thrown by `checkServerIdentity` if a user-supplied `subjectaltname
 
 <a id="ERR_TLS_CERT_ALTNAME_INVALID"></a>
 
-<!-- 0299.part.md -->
+<a id="ERR_TLS_CERT_ALTNAME_INVALID"></a>
 
 ### `ERR_TLS_CERT_ALTNAME_INVALID`
 
@@ -2601,7 +3105,7 @@ While using TLS, the host name/IP of the peer did not match any of the `subjectA
 
 <a id="ERR_TLS_DH_PARAM_SIZE"></a>
 
-<!-- 0300.part.md -->
+<a id="ERR_TLS_DH_PARAM_SIZE"></a>
 
 ### `ERR_TLS_DH_PARAM_SIZE`
 
@@ -2609,7 +3113,7 @@ While using TLS, the parameter offered for the Diffie-Hellman (`DH`) key-agreeme
 
 <a id="ERR_TLS_HANDSHAKE_TIMEOUT"></a>
 
-<!-- 0301.part.md -->
+<a id="ERR_TLS_HANDSHAKE_TIMEOUT"></a>
 
 ### `ERR_TLS_HANDSHAKE_TIMEOUT`
 
@@ -2617,23 +3121,27 @@ A TLS/SSL handshake timed out. In this case, the server must also abort the conn
 
 <a id="ERR_TLS_INVALID_CONTEXT"></a>
 
-<!-- 0302.part.md -->
+<a id="ERR_TLS_INVALID_CONTEXT"></a>
 
 ### `ERR_TLS_INVALID_CONTEXT`
 
-The context must be a `SecureContext`.
+<!-- YAML
+added: v13.3.0
+-->
+
+Контекст должен быть `SecureContext`.
 
 <a id="ERR_TLS_INVALID_PROTOCOL_METHOD"></a>
 
-<!-- 0303.part.md -->
+<a id="ERR_TLS_INVALID_PROTOCOL_METHOD"></a>
 
 ### `ERR_TLS_INVALID_PROTOCOL_METHOD`
 
-The specified `secureProtocol` method is invalid. It is either unknown, or disabled because it is insecure.
+Указанный метод `secureProtocol` недопустим: неизвестен или отключён как небезопасный.
 
 <a id="ERR_TLS_INVALID_PROTOCOL_VERSION"></a>
 
-<!-- 0304.part.md -->
+<a id="ERR_TLS_INVALID_PROTOCOL_VERSION"></a>
 
 ### `ERR_TLS_INVALID_PROTOCOL_VERSION`
 
@@ -2641,15 +3149,21 @@ Valid TLS protocol versions are `'TLSv1'`, `'TLSv1.1'`, or `'TLSv1.2'`.
 
 <a id="ERR_TLS_INVALID_STATE"></a>
 
-<!-- 0305.part.md -->
+<a id="ERR_TLS_INVALID_STATE"></a>
 
 ### `ERR_TLS_INVALID_STATE`
 
-The TLS socket must be connected and securely established. Ensure the ‘secure’ event is emitted before continuing.
+<!-- YAML
+added:
+ - v13.10.0
+ - v12.17.0
+-->
+
+TLS-сокет должен быть подключён и установлено безопасное соединение. Дождитесь события `secure` перед продолжением.
 
 <a id="ERR_TLS_PROTOCOL_VERSION_CONFLICT"></a>
 
-<!-- 0306.part.md -->
+<a id="ERR_TLS_PROTOCOL_VERSION_CONFLICT"></a>
 
 ### `ERR_TLS_PROTOCOL_VERSION_CONFLICT`
 
@@ -2657,15 +3171,13 @@ Attempting to set a TLS protocol `minVersion` or `maxVersion` conflicts with an 
 
 <a id="ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED"></a>
 
-<!-- 0307.part.md -->
+<a id="ERR_TLS_PSK_SET_IDENTITY_HINT_FAILED"></a>
 
-### `ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED`
+### `ERR_TLS_PSK_SET_IDENTITY_HINT_FAILED`
 
 Failed to set PSK identity hint. Hint may be too long.
 
 <a id="ERR_TLS_RENEGOTIATION_DISABLED"></a>
-
-<!-- 0308.part.md -->
 
 ### `ERR_TLS_RENEGOTIATION_DISABLED`
 
@@ -2673,7 +3185,7 @@ An attempt was made to renegotiate TLS on a socket instance with renegotiation d
 
 <a id="ERR_TLS_REQUIRED_SERVER_NAME"></a>
 
-<!-- 0309.part.md -->
+<a id="ERR_TLS_REQUIRED_SERVER_NAME"></a>
 
 ### `ERR_TLS_REQUIRED_SERVER_NAME`
 
@@ -2681,7 +3193,7 @@ While using TLS, the `server.addContext()` method was called without providing a
 
 <a id="ERR_TLS_SESSION_ATTACK"></a>
 
-<!-- 0310.part.md -->
+<a id="ERR_TLS_SESSION_ATTACK"></a>
 
 ### `ERR_TLS_SESSION_ATTACK`
 
@@ -2689,7 +3201,7 @@ An excessive amount of TLS renegotiations is detected, which is a potential vect
 
 <a id="ERR_TLS_SNI_FROM_SERVER"></a>
 
-<!-- 0311.part.md -->
+<a id="ERR_TLS_SNI_FROM_SERVER"></a>
 
 ### `ERR_TLS_SNI_FROM_SERVER`
 
@@ -2697,23 +3209,32 @@ An attempt was made to issue Server Name Indication from a TLS server-side socke
 
 <a id="ERR_TRACE_EVENTS_CATEGORY_REQUIRED"></a>
 
-<!-- 0312.part.md -->
+<a id="ERR_TRACE_EVENTS_CATEGORY_REQUIRED"></a>
 
 ### `ERR_TRACE_EVENTS_CATEGORY_REQUIRED`
 
-The `trace_events.createTracing()` method requires at least one trace event category.
+Метод `trace_events.createTracing()` требует хотя бы одну категорию трассировки.
 
 <a id="ERR_TRACE_EVENTS_UNAVAILABLE"></a>
 
-<!-- 0313.part.md -->
+<a id="ERR_TRACE_EVENTS_UNAVAILABLE"></a>
 
 ### `ERR_TRACE_EVENTS_UNAVAILABLE`
 
-The `node:trace_events` module could not be loaded because Node.js was compiled with the `--without-v8-platform` flag.
+Модуль `node:trace_events` не загружен: Node.js собран с флагом `--without-v8-platform`.
 
 <a id="ERR_TRANSFORM_ALREADY_TRANSFORMING"></a>
 
-<!-- 0314.part.md -->
+<a id="ERR_TRAILING_JUNK_AFTER_STREAM_END"></a>
+
+### `ERR_TRAILING_JUNK_AFTER_STREAM_END`
+
+Trailing junk found after the end of the compressed stream.
+This error is thrown when extra, unexpected data is detected
+after the end of a compressed stream (for example, in zlib
+or gzip decompression).
+
+<a id="ERR_TRANSFORM_ALREADY_TRANSFORMING"></a>
 
 ### `ERR_TRANSFORM_ALREADY_TRANSFORMING`
 
@@ -2721,7 +3242,7 @@ A `Transform` stream finished while it was still transforming.
 
 <a id="ERR_TRANSFORM_WITH_LENGTH_0"></a>
 
-<!-- 0315.part.md -->
+<a id="ERR_TRANSFORM_WITH_LENGTH_0"></a>
 
 ### `ERR_TRANSFORM_WITH_LENGTH_0`
 
@@ -2729,15 +3250,15 @@ A `Transform` stream finished with data still in the write buffer.
 
 <a id="ERR_TTY_INIT_FAILED"></a>
 
-<!-- 0316.part.md -->
+<a id="ERR_TTY_INIT_FAILED"></a>
 
 ### `ERR_TTY_INIT_FAILED`
 
-The initialization of a TTY failed due to a system error.
+Инициализация TTY не удалась из‑за системной ошибки.
 
 <a id="ERR_UNAVAILABLE_DURING_EXIT"></a>
 
-<!-- 0317.part.md -->
+<a id="ERR_UNAVAILABLE_DURING_EXIT"></a>
 
 ### `ERR_UNAVAILABLE_DURING_EXIT`
 
@@ -2745,17 +3266,17 @@ Function was called within a [`process.on('exit')`](process.md#event-exit) handl
 
 <a id="ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET"></a>
 
-<!-- 0318.part.md -->
+<a id="ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET"></a>
 
 ### `ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET`
 
 [`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) was called twice, without first resetting the callback to `null`.
 
-This error is designed to prevent accidentally overwriting a callback registered from another module.
+Эта ошибка предотвращает случайную перезапись колбэка, зарегистрированного другим модулем.
 
 <a id="ERR_UNESCAPED_CHARACTERS"></a>
 
-<!-- 0319.part.md -->
+<a id="ERR_UNESCAPED_CHARACTERS"></a>
 
 ### `ERR_UNESCAPED_CHARACTERS`
 
@@ -2763,7 +3284,7 @@ A string that contained unescaped characters was received.
 
 <a id="ERR_UNHANDLED_ERROR"></a>
 
-<!-- 0320.part.md -->
+<a id="ERR_UNHANDLED_ERROR"></a>
 
 ### `ERR_UNHANDLED_ERROR`
 
@@ -2771,7 +3292,7 @@ An unhandled error occurred (for instance, when an `'error'` event is emitted by
 
 <a id="ERR_UNKNOWN_BUILTIN_MODULE"></a>
 
-<!-- 0321.part.md -->
+<a id="ERR_UNKNOWN_BUILTIN_MODULE"></a>
 
 ### `ERR_UNKNOWN_BUILTIN_MODULE`
 
@@ -2779,7 +3300,7 @@ Used to identify a specific kind of internal Node.js error that should not typic
 
 <a id="ERR_UNKNOWN_CREDENTIAL"></a>
 
-<!-- 0322.part.md -->
+<a id="ERR_UNKNOWN_CREDENTIAL"></a>
 
 ### `ERR_UNKNOWN_CREDENTIAL`
 
@@ -2787,7 +3308,7 @@ A Unix group or user identifier that does not exist was passed.
 
 <a id="ERR_UNKNOWN_ENCODING"></a>
 
-<!-- 0323.part.md -->
+<a id="ERR_UNKNOWN_ENCODING"></a>
 
 ### `ERR_UNKNOWN_ENCODING`
 
@@ -2795,7 +3316,7 @@ An invalid or unknown encoding option was passed to an API.
 
 <a id="ERR_UNKNOWN_FILE_EXTENSION"></a>
 
-<!-- 0324.part.md -->
+<a id="ERR_UNKNOWN_FILE_EXTENSION"></a>
 
 ### `ERR_UNKNOWN_FILE_EXTENSION`
 
@@ -2805,7 +3326,7 @@ An attempt was made to load a module with an unknown or unsupported file extensi
 
 <a id="ERR_UNKNOWN_MODULE_FORMAT"></a>
 
-<!-- 0325.part.md -->
+<a id="ERR_UNKNOWN_MODULE_FORMAT"></a>
 
 ### `ERR_UNKNOWN_MODULE_FORMAT`
 
@@ -2815,7 +3336,7 @@ An attempt was made to load a module with an unknown or unsupported format.
 
 <a id="ERR_UNKNOWN_SIGNAL"></a>
 
-<!-- 0326.part.md -->
+<a id="ERR_UNKNOWN_SIGNAL"></a>
 
 ### `ERR_UNKNOWN_SIGNAL`
 
@@ -2823,7 +3344,7 @@ An invalid or unknown process signal was passed to an API expecting a valid sign
 
 <a id="ERR_UNSUPPORTED_DIR_IMPORT"></a>
 
-<!-- 0327.part.md -->
+<a id="ERR_UNSUPPORTED_DIR_IMPORT"></a>
 
 ### `ERR_UNSUPPORTED_DIR_IMPORT`
 
@@ -2837,7 +3358,7 @@ import 'package-name'; // supported
 
 <a id="ERR_UNSUPPORTED_ESM_URL_SCHEME"></a>
 
-<!-- 0328.part.md -->
+<a id="ERR_UNSUPPORTED_ESM_URL_SCHEME"></a>
 
 ### `ERR_UNSUPPORTED_ESM_URL_SCHEME`
 
@@ -2845,7 +3366,53 @@ import 'package-name'; // supported
 
 <a id="ERR_USE_AFTER_CLOSE"></a>
 
-<!-- 0329.part.md -->
+<a id="ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING"></a>
+
+### `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`
+
+<!-- YAML
+added: v22.6.0
+-->
+
+Type stripping is not supported for files descendent of a `node_modules` directory.
+
+<a id="ERR_UNSUPPORTED_RESOLVE_REQUEST"></a>
+
+### `ERR_UNSUPPORTED_RESOLVE_REQUEST`
+
+An attempt was made to resolve an invalid module referrer. This can happen when
+importing or calling `import.meta.resolve()` with either:
+
+* a bare specifier that is not a builtin module from a module whose URL scheme
+  is not `file`.
+* a [relative URL][] from a module whose URL scheme is not a [special scheme][].
+
+=== "MJS"
+
+    ```js
+    try {
+      // Trying to import the package 'bare-specifier' from a `data:` URL module:
+      await import('data:text/javascript,import "bare-specifier"');
+    } catch (e) {
+      console.log(e.code); // ERR_UNSUPPORTED_RESOLVE_REQUEST
+    }
+    ```
+
+<a id="ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX"></a>
+
+### `ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`
+
+<!-- YAML
+added:
+  - v23.7.0
+  - v22.14.0
+-->
+
+Указанный синтаксис TypeScript не поддерживается.
+This could happen when using TypeScript syntax that requires
+transformation with [type-stripping][].
+
+<a id="ERR_USE_AFTER_CLOSE"></a>
 
 ### `ERR_USE_AFTER_CLOSE`
 
@@ -2855,7 +3422,7 @@ An attempt was made to use something that was already closed.
 
 <a id="ERR_VALID_PERFORMANCE_ENTRY_TYPE"></a>
 
-<!-- 0330.part.md -->
+<a id="ERR_VALID_PERFORMANCE_ENTRY_TYPE"></a>
 
 ### `ERR_VALID_PERFORMANCE_ENTRY_TYPE`
 
@@ -2863,7 +3430,7 @@ While using the Performance Timing API (`perf_hooks`), no valid performance entr
 
 <a id="ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING"></a>
 
-<!-- 0331.part.md -->
+<a id="ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING"></a>
 
 ### `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`
 
@@ -2871,7 +3438,13 @@ A dynamic import callback was not specified.
 
 <a id="ERR_VM_MODULE_ALREADY_LINKED"></a>
 
-<!-- 0332.part.md -->
+<a id="ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG"></a>
+
+### `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`
+
+A dynamic import callback was invoked without `--experimental-vm-modules`.
+
+<a id="ERR_VM_MODULE_ALREADY_LINKED"></a>
 
 ### `ERR_VM_MODULE_ALREADY_LINKED`
 
@@ -2883,7 +3456,7 @@ The module attempted to be linked is not eligible for linking, because of one of
 
 <a id="ERR_VM_MODULE_CACHED_DATA_REJECTED"></a>
 
-<!-- 0333.part.md -->
+<a id="ERR_VM_MODULE_CACHED_DATA_REJECTED"></a>
 
 ### `ERR_VM_MODULE_CACHED_DATA_REJECTED`
 
@@ -2891,7 +3464,7 @@ The `cachedData` option passed to a module constructor is invalid.
 
 <a id="ERR_VM_MODULE_CANNOT_CREATE_CACHED_DATA"></a>
 
-<!-- 0334.part.md -->
+<a id="ERR_VM_MODULE_CANNOT_CREATE_CACHED_DATA"></a>
 
 ### `ERR_VM_MODULE_CANNOT_CREATE_CACHED_DATA`
 
@@ -2899,7 +3472,7 @@ Cached data cannot be created for modules which have already been evaluated.
 
 <a id="ERR_VM_MODULE_DIFFERENT_CONTEXT"></a>
 
-<!-- 0335.part.md -->
+<a id="ERR_VM_MODULE_DIFFERENT_CONTEXT"></a>
 
 ### `ERR_VM_MODULE_DIFFERENT_CONTEXT`
 
@@ -2907,7 +3480,7 @@ The module being returned from the linker function is from a different context t
 
 <a id="ERR_VM_MODULE_LINK_FAILURE"></a>
 
-<!-- 0336.part.md -->
+<a id="ERR_VM_MODULE_LINK_FAILURE"></a>
 
 ### `ERR_VM_MODULE_LINK_FAILURE`
 
@@ -2915,7 +3488,7 @@ The module was unable to be linked due to a failure.
 
 <a id="ERR_VM_MODULE_NOT_MODULE"></a>
 
-<!-- 0337.part.md -->
+<a id="ERR_VM_MODULE_NOT_MODULE"></a>
 
 ### `ERR_VM_MODULE_NOT_MODULE`
 
@@ -2923,7 +3496,7 @@ The fulfilled value of a linking promise is not a `vm.Module` object.
 
 <a id="ERR_VM_MODULE_STATUS"></a>
 
-<!-- 0338.part.md -->
+<a id="ERR_VM_MODULE_STATUS"></a>
 
 ### `ERR_VM_MODULE_STATUS`
 
@@ -2931,47 +3504,107 @@ The current module’s status does not allow for this operation. The specific me
 
 <a id="ERR_WASI_ALREADY_STARTED"></a>
 
-<!-- 0339.part.md -->
+<a id="ERR_WASI_ALREADY_STARTED"></a>
 
 ### `ERR_WASI_ALREADY_STARTED`
 
-The WASI instance has already started.
+Экземпляр WASI уже запущен.
 
 <a id="ERR_WASI_NOT_STARTED"></a>
 
-<!-- 0340.part.md -->
+<a id="ERR_WASI_NOT_STARTED"></a>
 
 ### `ERR_WASI_NOT_STARTED`
 
-The WASI instance has not been started.
+Экземпляр WASI не был запущен.
 
 <a id="ERR_WEBASSEMBLY_RESPONSE"></a>
 
-<!-- 0341.part.md -->
+<a id="ERR_WEBASSEMBLY_NOT_SUPPORTED"></a>
+
+### `ERR_WEBASSEMBLY_NOT_SUPPORTED`
+
+A feature requiring WebAssembly was used, but WebAssembly is not supported or
+has been disabled in the current environment (for example, when running with
+`--jitless`).
+
+<a id="ERR_WEBASSEMBLY_RESPONSE"></a>
 
 ### `ERR_WEBASSEMBLY_RESPONSE`
 
-The `Response` that has been passed to `WebAssembly.compileStreaming` or to `WebAssembly.instantiateStreaming` is not a valid WebAssembly response.
+<!-- YAML
+added: v18.1.0
+-->
+
+`Response`, переданный в `WebAssembly.compileStreaming` или `WebAssembly.instantiateStreaming`, не является корректным ответом WebAssembly.
 
 <a id="ERR_WORKER_INIT_FAILED"></a>
 
-<!-- 0342.part.md -->
+<a id="ERR_WORKER_INIT_FAILED"></a>
 
 ### `ERR_WORKER_INIT_FAILED`
 
-The `Worker` initialization failed.
+Инициализация `Worker` не удалась.
 
 <a id="ERR_WORKER_INVALID_EXEC_ARGV"></a>
 
-<!-- 0343.part.md -->
+<a id="ERR_WORKER_INVALID_EXEC_ARGV"></a>
 
 ### `ERR_WORKER_INVALID_EXEC_ARGV`
 
-The `execArgv` option passed to the `Worker` constructor contains invalid flags.
+Опция `execArgv` в конструкторе `Worker` содержит недопустимые флаги.
 
 <a id="ERR_WORKER_NOT_RUNNING"></a>
 
-<!-- 0344.part.md -->
+<a id="ERR_WORKER_MESSAGING_ERRORED"></a>
+
+### `ERR_WORKER_MESSAGING_ERRORED`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Stability: 1.1 - Active development
+
+В потоке назначения произошла ошибка при обработке сообщения, отправленного через [`postMessageToThread()`][].
+
+<a id="ERR_WORKER_MESSAGING_FAILED"></a>
+
+### `ERR_WORKER_MESSAGING_FAILED`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Stability: 1.1 - Active development
+
+Поток, указанный в [`postMessageToThread()`][], недопустим или у него нет обработчика `workerMessage`.
+
+<a id="ERR_WORKER_MESSAGING_SAME_THREAD"></a>
+
+### `ERR_WORKER_MESSAGING_SAME_THREAD`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Stability: 1.1 - Active development
+
+Запрошенный в [`postMessageToThread()`][] идентификатор потока совпадает с текущим.
+
+<a id="ERR_WORKER_MESSAGING_TIMEOUT"></a>
+
+### `ERR_WORKER_MESSAGING_TIMEOUT`
+
+<!-- YAML
+added: v22.5.0
+-->
+
+> Stability: 1.1 - Active development
+
+Sending a message via [`postMessageToThread()`][] timed out.
+
+<a id="ERR_WORKER_NOT_RUNNING"></a>
 
 ### `ERR_WORKER_NOT_RUNNING`
 
@@ -2979,23 +3612,23 @@ An operation failed because the `Worker` instance is not currently running.
 
 <a id="ERR_WORKER_OUT_OF_MEMORY"></a>
 
-<!-- 0345.part.md -->
+<a id="ERR_WORKER_OUT_OF_MEMORY"></a>
 
 ### `ERR_WORKER_OUT_OF_MEMORY`
 
-The `Worker` instance terminated because it reached its memory limit.
+Экземпляр `Worker` завершён из‑за достижения лимита памяти.
 
 <a id="ERR_WORKER_PATH"></a>
 
-<!-- 0346.part.md -->
+<a id="ERR_WORKER_PATH"></a>
 
 ### `ERR_WORKER_PATH`
 
-The path for the main script of a worker is neither an absolute path nor a relative path starting with `./` or `../`.
+Путь к основному скрипту worker не является ни абсолютным, ни относительным с `./` или `../`.
 
 <a id="ERR_WORKER_UNSERIALIZABLE_ERROR"></a>
 
-<!-- 0347.part.md -->
+<a id="ERR_WORKER_UNSERIALIZABLE_ERROR"></a>
 
 ### `ERR_WORKER_UNSERIALIZABLE_ERROR`
 
@@ -3003,15 +3636,15 @@ All attempts at serializing an uncaught exception from a worker thread failed.
 
 <a id="ERR_WORKER_UNSUPPORTED_OPERATION"></a>
 
-<!-- 0348.part.md -->
+<a id="ERR_WORKER_UNSUPPORTED_OPERATION"></a>
 
 ### `ERR_WORKER_UNSUPPORTED_OPERATION`
 
-The requested functionality is not supported in worker threads.
+Запрошенная возможность не поддерживается в потоках worker.
 
 <a id="ERR_ZLIB_INITIALIZATION_FAILED"></a>
 
-<!-- 0349.part.md -->
+<a id="ERR_ZLIB_INITIALIZATION_FAILED"></a>
 
 ### `ERR_ZLIB_INITIALIZATION_FAILED`
 
@@ -3019,15 +3652,51 @@ Creation of a [`zlib`](zlib.md) object failed due to incorrect configuration.
 
 <a id="HPE_HEADER_OVERFLOW"></a>
 
-<!-- 0350.part.md -->
+<a id="ERR_ZSTD_INVALID_PARAM"></a>
+
+### `ERR_ZSTD_INVALID_PARAM`
+
+An invalid parameter key was passed during construction of a Zstd stream.
+
+<a id="HPE_CHUNK_EXTENSIONS_OVERFLOW"></a>
+
+### `HPE_CHUNK_EXTENSIONS_OVERFLOW`
+
+<!-- YAML
+added:
+ - v21.6.2
+ - v20.11.1
+ - v18.19.1
+-->
+
+Too much data was received for a chunk extensions. In order to protect against
+malicious or malconfigured clients, if more than 16 KiB of data is received
+then an `Error` with this code will be emitted.
+
+<a id="HPE_HEADER_OVERFLOW"></a>
 
 ### `HPE_HEADER_OVERFLOW`
+
+<!-- YAML
+changes:
+  - version:
+     - v11.4.0
+     - v10.15.0
+    commit: 186035243fad247e3955f
+    pr-url: https://github.com/nodejs-private/node-private/pull/143
+    description: Max header size in `http_parser` was set to 8 KiB.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v11.4.0, v10.15.0 | Максимальный размер заголовка в http_parser был установлен на 8 КиБ. |
 
 Too much HTTP header data was received. In order to protect against malicious or malconfigured clients, if more than 8 KiB of HTTP header data is received then HTTP parsing will abort without a request or response object being created, and an `Error` with this code will be emitted.
 
 <a id="HPE_UNEXPECTED_CONTENT_LENGTH"></a>
 
-<!-- 0351.part.md -->
+<a id="HPE_UNEXPECTED_CONTENT_LENGTH"></a>
 
 ### `HPE_UNEXPECTED_CONTENT_LENGTH`
 
@@ -3039,295 +3708,976 @@ Use `Content-Length` or `Transfer-Encoding: chunked`.
 
 <a id="MODULE_NOT_FOUND"></a>
 
-<!-- 0352.part.md -->
+<a id="MODULE_NOT_FOUND"></a>
 
-### `MODULE_NOT_FOUND`.
+### `MODULE_NOT_FOUND`
 
-Файл модуля не может быть разрешен загрузчиком модулей CommonJS при попытке выполнить операцию [`require()`](modules.md#requireid) или при загрузке точки входа программы.
+<!-- YAML
+changes:
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25690
+    description: Added `requireStack` property.
+-->
 
-<!-- 0353.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v12.0.0 | Добавлено свойство requireStack. |
 
-## Legacy Node.js error codes
+A module file could not be resolved by the CommonJS modules loader while
+attempting a [`require()`][] operation or when loading the program entry point.
 
-> Stability: 0 - Deprecated. These error codes are either inconsistent, or have been removed.
+## Устаревшие коды ошибок Node.js
+
+> Стабильность: 0 — устарело. Эти коды либо непоследовательны, либо удалены.
 
 <a id="ERR_CANNOT_TRANSFER_OBJECT"></a>
 
-<!-- 0354.part.md -->
-
 ### `ERR_CANNOT_TRANSFER_OBJECT`
 
-The value passed to `postMessage()` contained an object that is not supported for transferring.
+<!-- YAML
+added: v10.5.0
+removed: v12.5.0
+-->
+
+В `postMessage()` передан объект, перенос которого не поддерживается.
+
+<a id="ERR_CPU_USAGE"></a>
+
+### `ERR_CPU_USAGE`
+
+<!-- YAML
+removed: v15.0.0
+-->
+
+Не удалось обработать нативный вызов из `process.cpuUsage`.
 
 <a id="ERR_CRYPTO_HASH_DIGEST_NO_UTF16"></a>
 
-<!-- 0355.part.md -->
-
 ### `ERR_CRYPTO_HASH_DIGEST_NO_UTF16`
 
-The UTF-16 encoding was used with [`hash.digest()`](crypto.md#hashdigestencoding). While the `hash.digest()` method does allow an `encoding` argument to be passed in, causing the method to return a string rather than a `Buffer`, the UTF-16 encoding (e.g. `ucs` or `utf16le`) is not supported.
+<!-- YAML
+added: v9.0.0
+removed: v12.12.0
+-->
+
+С [`hash.digest()`][] использована кодировка UTF-16. Хотя `hash.digest()` может
+принимать аргумент `encoding` и возвращать строку вместо `Buffer`, кодировки UTF-16
+(например `ucs` или `utf16le`) не поддерживаются.
+
+<a id="ERR_CRYPTO_SCRYPT_INVALID_PARAMETER"></a>
+
+### `ERR_CRYPTO_SCRYPT_INVALID_PARAMETER`
+
+<!-- YAML
+removed: v23.0.0
+-->
+
+An incompatible combination of options was passed to [`crypto.scrypt()`][] or
+[`crypto.scryptSync()`][]. New versions of Node.js use the error code
+[`ERR_INCOMPATIBLE_OPTION_PAIR`][] instead, which is consistent with other APIs.
+
+<a id="ERR_FS_INVALID_SYMLINK_TYPE"></a>
+
+### `ERR_FS_INVALID_SYMLINK_TYPE`
+
+<!-- YAML
+removed: v23.0.0
+-->
+
+An invalid symlink type was passed to the [`fs.symlink()`][] or
+[`fs.symlinkSync()`][] methods.
 
 <a id="ERR_HTTP2_FRAME_ERROR"></a>
 
-<!-- 0356.part.md -->
-
 ### `ERR_HTTP2_FRAME_ERROR`
 
-Used when a failure occurs sending an individual frame on the HTTP/2 session.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Used when a failure occurs sending an individual frame on the HTTP/2
+session.
 
 <a id="ERR_HTTP2_HEADERS_OBJECT"></a>
 
-<!-- 0357.part.md -->
-
 ### `ERR_HTTP2_HEADERS_OBJECT`
+
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
 Used when an HTTP/2 Headers Object is expected.
 
 <a id="ERR_HTTP2_HEADER_REQUIRED"></a>
 
-<!-- 0358.part.md -->
-
 ### `ERR_HTTP2_HEADER_REQUIRED`
+
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
 Used when a required header is missing in an HTTP/2 message.
 
 <a id="ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND"></a>
 
-<!-- 0359.part.md -->
-
 ### `ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND`
 
-HTTP/2 informational headers must only be sent _prior_ to calling the `Http2Stream.prototype.respond()` method.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+HTTP/2 informational headers must only be sent _prior_ to calling the
+`Http2Stream.prototype.respond()` method.
 
 <a id="ERR_HTTP2_STREAM_CLOSED"></a>
 
-<!-- 0360.part.md -->
-
 ### `ERR_HTTP2_STREAM_CLOSED`
 
-Used when an action has been performed on an HTTP/2 Stream that has already been closed.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Used when an action has been performed on an HTTP/2 Stream that has already
+been closed.
 
 <a id="ERR_HTTP_INVALID_CHAR"></a>
 
-<!-- 0361.part.md -->
-
 ### `ERR_HTTP_INVALID_CHAR`
 
-Used when an invalid character is found in an HTTP response status message (reason phrase).
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Used when an invalid character is found in an HTTP response status message
+(reason phrase).
+
+<a id="ERR_IMPORT_ASSERTION_TYPE_FAILED"></a>
+
+### `ERR_IMPORT_ASSERTION_TYPE_FAILED`
+
+<!-- YAML
+added:
+  - v17.1.0
+  - v16.14.0
+removed: v21.1.0
+-->
+
+An import assertion has failed, preventing the specified module to be imported.
+
+<a id="ERR_IMPORT_ASSERTION_TYPE_MISSING"></a>
+
+### `ERR_IMPORT_ASSERTION_TYPE_MISSING`
+
+<!-- YAML
+added:
+  - v17.1.0
+  - v16.14.0
+removed: v21.1.0
+-->
+
+An import assertion is missing, preventing the specified module to be imported.
+
+<a id="ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED"></a>
+
+### `ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED`
+
+<!-- YAML
+added:
+  - v17.1.0
+  - v16.14.0
+removed: v21.1.0
+-->
+
+Атрибут импорта не поддерживается этой версией Node.js.
 
 <a id="ERR_INDEX_OUT_OF_RANGE"></a>
 
-<!-- 0362.part.md -->
-
 ### `ERR_INDEX_OUT_OF_RANGE`
+
+<!-- YAML
+  added: v10.0.0
+  removed: v11.0.0
+-->
 
 A given index was out of the accepted range (e.g. negative offsets).
 
 <a id="ERR_INVALID_OPT_VALUE"></a>
 
-<!-- 0363.part.md -->
-
 ### `ERR_INVALID_OPT_VALUE`
+
+<!-- YAML
+added: v8.0.0
+removed: v15.0.0
+-->
 
 An invalid or unexpected value was passed in an options object.
 
 <a id="ERR_INVALID_OPT_VALUE_ENCODING"></a>
 
-<!-- 0364.part.md -->
-
 ### `ERR_INVALID_OPT_VALUE_ENCODING`
+
+<!-- YAML
+added: v9.0.0
+removed: v15.0.0
+-->
 
 An invalid or unknown file encoding was passed.
 
-<a id="ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST"></a>
+<a id="ERR_INVALID_PERFORMANCE_MARK"></a>
 
-<!-- 0365.part.md -->
+### `ERR_INVALID_PERFORMANCE_MARK`
+
+<!-- YAML
+added: v8.5.0
+removed: v16.7.0
+-->
+
+While using the Performance Timing API (`perf_hooks`), a performance mark is
+invalid.
+
+<a id="ERR_INVALID_TRANSFER_OBJECT"></a>
+
+### `ERR_INVALID_TRANSFER_OBJECT`
+
+<!-- YAML
+removed: v21.0.0
+changes:
+  - version: v21.0.0
+    pr-url: https://github.com/nodejs/node/pull/47839
+    description: A `DOMException` is thrown instead.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0 | Вместо этого выдается исключение DOMException. |
+
+An invalid transfer object was passed to `postMessage()`.
+
+<a id="ERR_MANIFEST_ASSERT_INTEGRITY"></a>
+
+### `ERR_MANIFEST_ASSERT_INTEGRITY`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+An attempt was made to load a resource, but the resource did not match the
+integrity defined by the policy manifest. See the documentation for policy
+manifests for more information.
+
+<a id="ERR_MANIFEST_DEPENDENCY_MISSING"></a>
+
+### `ERR_MANIFEST_DEPENDENCY_MISSING`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+An attempt was made to load a resource, but the resource was not listed as a
+dependency from the location that attempted to load it. See the documentation
+for policy manifests for more information.
+
+<a id="ERR_MANIFEST_INTEGRITY_MISMATCH"></a>
+
+### `ERR_MANIFEST_INTEGRITY_MISMATCH`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+An attempt was made to load a policy manifest, but the manifest had multiple
+entries for a resource which did not match each other. Update the manifest
+entries to match in order to resolve this error. See the documentation for
+policy manifests for more information.
+
+<a id="ERR_MANIFEST_INVALID_RESOURCE_FIELD"></a>
+
+### `ERR_MANIFEST_INVALID_RESOURCE_FIELD`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+A policy manifest resource had an invalid value for one of its fields. Update
+the manifest entry to match in order to resolve this error. See the
+documentation for policy manifests for more information.
+
+<a id="ERR_MANIFEST_INVALID_SPECIFIER"></a>
+
+### `ERR_MANIFEST_INVALID_SPECIFIER`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+A policy manifest resource had an invalid value for one of its dependency
+mappings. Update the manifest entry to match to resolve this error. See the
+documentation for policy manifests for more information.
+
+<a id="ERR_MANIFEST_PARSE_POLICY"></a>
+
+### `ERR_MANIFEST_PARSE_POLICY`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+An attempt was made to load a policy manifest, but the manifest was unable to
+be parsed. See the documentation for policy manifests for more information.
+
+<a id="ERR_MANIFEST_TDZ"></a>
+
+### `ERR_MANIFEST_TDZ`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+An attempt was made to read from a policy manifest, but the manifest
+initialization has not yet taken place. This is likely a bug in Node.js.
+
+<a id="ERR_MANIFEST_UNKNOWN_ONERROR"></a>
+
+### `ERR_MANIFEST_UNKNOWN_ONERROR`
+
+<!-- YAML
+removed: v22.2.0
+-->
+
+A policy manifest was loaded, but had an unknown value for its "onerror"
+behavior. See the documentation for policy manifests for more information.
+
+<a id="ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST"></a>
 
 ### `ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`
 
-This error code was replaced by [`ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`](#err_missing_transferable_in_transfer_list) in Node.js v15.0.0, because it is no longer accurate as other types of transferable objects also exist now.
+<!-- YAML
+removed: v15.0.0
+-->
+
+Этот код ошибки заменён на [`ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`][] в Node.js
+15.0.0: старое название больше не отражает ситуацию, так как появились и другие
+переносимые типы.
+
+<a id="ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST"></a>
+
+### `ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`
+
+<!-- YAML
+added: v15.0.0
+removed: v21.0.0
+changes:
+  - version: v21.0.0
+    pr-url: https://github.com/nodejs/node/pull/47839
+    description: A `DOMException` is thrown instead.
+-->
+
+Добавлено в: v15.0.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0 | Вместо этого выдается исключение DOMException. |
+
+An object that needs to be explicitly listed in the `transferList` argument
+is in the object passed to a [`postMessage()`][] call, but is not provided
+in the `transferList` for that call. Usually, this is a `MessagePort`.
+
+In Node.js versions prior to v15.0.0, the error code being used here was
+[`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][]. However, the set of
+transferable object types has been expanded to cover more types than
+`MessagePort`.
 
 <a id="ERR_NAPI_CONS_PROTOTYPE_OBJECT"></a>
 
-<!-- 0366.part.md -->
-
 ### `ERR_NAPI_CONS_PROTOTYPE_OBJECT`
+
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
 Used by the `Node-API` when `Constructor.prototype` is not an object.
 
-<a id="ERR_NETWORK_IMPORT_BAD_RESPONSE"></a>
+<a id="ERR_NAPI_TSFN_START_IDLE_LOOP"></a>
 
-<!-- 0367.part.md -->
+### `ERR_NAPI_TSFN_START_IDLE_LOOP`
 
-### `ERR_NETWORK_IMPORT_BAD_RESPONSE`
+<!-- YAML
+added:
+  - v10.6.0
+  - v8.16.0
+removed:
+  - v14.2.0
+  - v12.17.0
+-->
 
-> Stability: 1 - Experimental
+On the main thread, values are removed from the queue associated with the
+thread-safe function in an idle loop. This error indicates that an error
+has occurred when attempting to start the loop.
 
-Response was received but was invalid when importing a module over the network.
+<a id="ERR_NAPI_TSFN_STOP_IDLE_LOOP"></a>
 
-<a id="ERR_NETWORK_IMPORT_DISALLOWED"></a>
+### `ERR_NAPI_TSFN_STOP_IDLE_LOOP`
 
-<!-- 0368.part.md -->
+<!-- YAML
+added:
+  - v10.6.0
+  - v8.16.0
+removed:
+  - v14.2.0
+  - v12.17.0
+-->
 
-### `ERR_NETWORK_IMPORT_DISALLOWED`
-
-> Stability: 1 - Experimental
-
-A network module attempted to load another module that it is not allowed to load. Likely this restriction is for security reasons.
+Once no more items are left in the queue, the idle loop must be suspended. This
+error indicates that the idle loop has failed to stop.
 
 <a id="ERR_NO_LONGER_SUPPORTED"></a>
 
-<!-- 0369.part.md -->
-
 ### `ERR_NO_LONGER_SUPPORTED`
 
-A Node.js API was called in an unsupported manner, such as `Buffer.write(string, encoding, offset[, length])`.
-
-<a id="ERR_OPERATION_FAILED"></a>
-
-<!-- 0370.part.md -->
-
-### `ERR_OPERATION_FAILED`
-
-An operation failed. This is typically used to signal the general failure of an asynchronous operation.
+A Node.js API was called in an unsupported manner, such as
+`Buffer.write(string, encoding, offset[, length])`.
 
 <a id="ERR_OUTOFMEMORY"></a>
 
-<!-- 0371.part.md -->
-
 ### `ERR_OUTOFMEMORY`
 
-Used generically to identify that an operation caused an out of memory condition.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Used generically to identify that an operation caused an out of memory
+condition.
 
 <a id="ERR_PARSE_HISTORY_DATA"></a>
 
-<!-- 0372.part.md -->
-
 ### `ERR_PARSE_HISTORY_DATA`
 
-The `node:repl` module was unable to parse data from the REPL history file.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Модулю `node:repl` не удалось разобрать данные из файла истории REPL.
 
 <a id="ERR_SOCKET_CANNOT_SEND"></a>
 
-<!-- 0373.part.md -->
-
 ### `ERR_SOCKET_CANNOT_SEND`
+
+<!-- YAML
+added: v9.0.0
+removed: v14.0.0
+-->
 
 Data could not be sent on a socket.
 
 <a id="ERR_STDERR_CLOSE"></a>
 
-<!-- 0374.part.md -->
-
 ### `ERR_STDERR_CLOSE`
 
-An attempt was made to close the `process.stderr` stream. By design, Node.js does not allow `stdout` or `stderr` streams to be closed by user code.
+<!-- YAML
+removed: v10.12.0
+changes:
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/23053
+    description: Rather than emitting an error, `process.stderr.end()` now
+                 only closes the stream side but not the underlying resource,
+                 making this error obsolete.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.12.0 | Вместо того, чтобы выдавать ошибку, `process.stderr.end()` теперь закрывает только сторону потока, но не базовый ресурс, что делает эту ошибку устаревшей. |
+
+An attempt was made to close the `process.stderr` stream. By design, Node.js
+does not allow `stdout` or `stderr` streams to be closed by user code.
 
 <a id="ERR_STDOUT_CLOSE"></a>
 
-<!-- 0375.part.md -->
-
 ### `ERR_STDOUT_CLOSE`
 
-An attempt was made to close the `process.stdout` stream. By design, Node.js does not allow `stdout` or `stderr` streams to be closed by user code.
+<!-- YAML
+removed: v10.12.0
+changes:
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/23053
+    description: Rather than emitting an error, `process.stderr.end()` now
+                 only closes the stream side but not the underlying resource,
+                 making this error obsolete.
+-->
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.12.0 | Вместо того, чтобы выдавать ошибку, `process.stderr.end()` теперь закрывает только сторону потока, но не базовый ресурс, что делает эту ошибку устаревшей. |
+
+An attempt was made to close the `process.stdout` stream. By design, Node.js
+does not allow `stdout` or `stderr` streams to be closed by user code.
 
 <a id="ERR_STREAM_READ_NOT_IMPLEMENTED"></a>
 
-<!-- 0376.part.md -->
-
 ### `ERR_STREAM_READ_NOT_IMPLEMENTED`
 
-Used when an attempt is made to use a readable stream that has not implemented [`readable._read()`](stream.md#readable_readsize).
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
+
+Used when an attempt is made to use a readable stream that has not implemented
+[`readable._read()`][].
+
+<a id="ERR_TAP_LEXER_ERROR"></a>
+
+### `ERR_TAP_LEXER_ERROR`
+
+An error representing a failing lexer state.
+
+<a id="ERR_TAP_PARSER_ERROR"></a>
+
+### `ERR_TAP_PARSER_ERROR`
+
+An error representing a failing parser state. Additional information about
+the token causing the error is available via the `cause` property.
+
+<a id="ERR_TAP_VALIDATION_ERROR"></a>
+
+### `ERR_TAP_VALIDATION_ERROR`
+
+Ошибка означает провал проверки TAP.
 
 <a id="ERR_TLS_RENEGOTIATION_FAILED"></a>
 
-<!-- 0377.part.md -->
-
 ### `ERR_TLS_RENEGOTIATION_FAILED`
+
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
 Used when a TLS renegotiation request has failed in a non-specific way.
 
 <a id="ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER"></a>
 
-<!-- 0378.part.md -->
-
 ### `ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER`
 
-A `SharedArrayBuffer` whose memory is not managed by the JavaScript engine or by Node.js was encountered during serialization. Such a `SharedArrayBuffer` cannot be serialized.
+<!-- YAML
+added: v10.5.0
+removed: v14.0.0
+-->
 
-This can only happen when native addons create `SharedArrayBuffer`s in “externalized” mode, or put existing `SharedArrayBuffer` into externalized mode.
+A `SharedArrayBuffer` whose memory is not managed by the JavaScript engine
+or by Node.js was encountered during serialization. Such a `SharedArrayBuffer`
+cannot be serialized.
+
+Это возможно только если нативные аддоны создают `SharedArrayBuffer` в режиме
+«externalized» или переводят существующий `SharedArrayBuffer` в этот режим.
 
 <a id="ERR_UNKNOWN_STDIN_TYPE"></a>
 
-<!-- 0379.part.md -->
-
 ### `ERR_UNKNOWN_STDIN_TYPE`
 
-An attempt was made to launch a Node.js process with an unknown `stdin` file type. This error is usually an indication of a bug within Node.js itself, although it is possible for user code to trigger it.
+<!-- YAML
+added: v8.0.0
+removed: v11.7.0
+-->
+
+An attempt was made to launch a Node.js process with an unknown `stdin` file
+type. This error is usually an indication of a bug within Node.js itself,
+although it is possible for user code to trigger it.
 
 <a id="ERR_UNKNOWN_STREAM_TYPE"></a>
 
-<!-- 0380.part.md -->
-
 ### `ERR_UNKNOWN_STREAM_TYPE`
 
-An attempt was made to launch a Node.js process with an unknown `stdout` or `stderr` file type. This error is usually an indication of a bug within Node.js itself, although it is possible for user code to trigger it.
+<!-- YAML
+added: v8.0.0
+removed: v11.7.0
+-->
+
+An attempt was made to launch a Node.js process with an unknown `stdout` or
+`stderr` file type. This error is usually an indication of a bug within Node.js
+itself, although it is possible for user code to trigger it.
 
 <a id="ERR_V8BREAKITERATOR"></a>
 
-<!-- 0381.part.md -->
-
 ### `ERR_V8BREAKITERATOR`
 
-The V8 `BreakIterator` API was used but the full ICU data set is not installed.
+Использован API V8 `BreakIterator`, но полный набор данных ICU не установлен.
 
 <a id="ERR_VALUE_OUT_OF_RANGE"></a>
 
-<!-- 0382.part.md -->
-
 ### `ERR_VALUE_OUT_OF_RANGE`
+
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
 Used when a given value is out of the accepted range.
 
-<a id="ERR_VM_MODULE_NOT_LINKED"></a>
-
-<!-- 0383.part.md -->
-
-### `ERR_VM_MODULE_NOT_LINKED`
-
-The module must be successfully linked before instantiation.
-
 <a id="ERR_VM_MODULE_LINKING_ERRORED"></a>
-
-<!-- 0384.part.md -->
 
 ### `ERR_VM_MODULE_LINKING_ERRORED`
 
-The linker function returned a module for which linking has failed.
+<!-- YAML
+added: v10.0.0
+removed:
+  - v18.1.0
+  - v16.17.0
+-->
+
+Функция связывания вернула модуль, для которого связывание не удалось.
+
+<a id="ERR_VM_MODULE_NOT_LINKED"></a>
+
+### `ERR_VM_MODULE_NOT_LINKED`
+
+Модуль должен быть успешно связан до инстанцирования.
 
 <a id="ERR_WORKER_UNSUPPORTED_EXTENSION"></a>
 
-<!-- 0385.part.md -->
-
 ### `ERR_WORKER_UNSUPPORTED_EXTENSION`
 
-The pathname used for the main script of a worker has an unknown file extension.
+<!-- YAML
+added: v11.0.0
+removed: v16.9.0
+-->
+
+Путь к основному скрипту worker имеет неизвестное расширение файла.
 
 <a id="ERR_ZLIB_BINDING_CLOSED"></a>
 
-<!-- 0386.part.md -->
-
 ### `ERR_ZLIB_BINDING_CLOSED`
 
-Used when an attempt is made to use a `zlib` object after it has already been closed.
+<!-- YAML
+added: v9.0.0
+removed: v10.0.0
+-->
 
-<a id="ERR_CPU_USAGE"></a>
+Used when an attempt is made to use a `zlib` object after it has already been
+closed.
 
-<!-- 0387.part.md -->
+<a id="openssl-error-codes"></a>
 
-### `ERR_CPU_USAGE`.
+## Коды ошибок OpenSSL
 
-Собственный вызов из `process.cpuUsage` не может быть обработан.
+<a id="Time Validity Errors"></a>
 
-<!-- 0388.part.md -->
+### Ошибки срока действия
 
+<a id="CERT_NOT_YET_VALID"></a>
+
+#### `CERT_NOT_YET_VALID`
+
+Сертификат ещё не действителен: дата notBefore позже текущего времени.
+
+<a id="CERT_HAS_EXPIRED"></a>
+
+#### `CERT_HAS_EXPIRED`
+
+Срок действия сертификата истёк: дата notAfter раньше текущего времени.
+
+<a id="CRL_NOT_YET_VALID"></a>
+
+#### `CRL_NOT_YET_VALID`
+
+Список отзыва сертификатов (CRL) имеет дату выпуска в будущем.
+
+<a id="CRL_HAS_EXPIRED"></a>
+
+#### `CRL_HAS_EXPIRED`
+
+Срок действия списка отзыва сертификатов (CRL) истёк.
+
+<a id="CERT_REVOKED"></a>
+
+#### `CERT_REVOKED`
+
+Сертификат отозван; он есть в списке отзыва (CRL).
+
+<a id="Trust or Chain Related Errors"></a>
+
+### Trust or Chain Related Errors
+
+<a id="UNABLE_TO_GET_ISSUER_CERT"></a>
+
+#### `UNABLE_TO_GET_ISSUER_CERT`
+
+Сертификат издателя для найденного сертификата не найден. Обычно это значит, что
+список доверенных сертификатов неполон.
+
+<a id="UNABLE_TO_GET_ISSUER_CERT_LOCALLY"></a>
+
+#### `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`
+
+Издатель сертификата неизвестен. Так бывает, если издатель не входит в список
+доверенных сертификатов.
+
+<a id="DEPTH_ZERO_SELF_SIGNED_CERT"></a>
+
+#### `DEPTH_ZERO_SELF_SIGNED_CERT`
+
+Переданный сертификат самоподписанный, и тот же сертификат не найден в списке
+доверенных сертификатов.
+
+<a id="SELF_SIGNED_CERT_IN_CHAIN"></a>
+
+#### `SELF_SIGNED_CERT_IN_CHAIN`
+
+Издатель сертификата неизвестен. Так бывает, если издатель не входит в список
+доверенных сертификатов.
+
+<a id="CERT_CHAIN_TOO_LONG"></a>
+
+#### `CERT_CHAIN_TOO_LONG`
+
+Длина цепочки сертификатов больше максимальной глубины.
+
+<a id="UNABLE_TO_GET_CRL"></a>
+
+#### `UNABLE_TO_GET_CRL`
+
+Не найдена ссылка на CRL из сертификата.
+
+<a id="UNABLE_TO_VERIFY_LEAF_SIGNATURE"></a>
+
+#### `UNABLE_TO_VERIFY_LEAF_SIGNATURE`
+
+Подписи проверить нельзя: в цепочке только один сертификат, и он не
+самоподписанный.
+
+<a id="CERT_UNTRUSTED"></a>
+
+#### `CERT_UNTRUSTED`
+
+Корневой центр сертификации (CA) не помечен как доверенный для указанной цели.
+
+<a id="Basic Extension Errors"></a>
+
+### Basic Extension Errors
+
+<a id="INVALID_CA"></a>
+
+#### `INVALID_CA`
+
+Сертификат CA недопустим: это не CA или расширения не соответствуют цели.
+
+<a id="PATH_LENGTH_EXCEEDED"></a>
+
+#### `PATH_LENGTH_EXCEEDED`
+
+Превышен параметр pathlength в basicConstraints.
+
+<a id="Name Related Errors"></a>
+
+### Name Related Errors
+
+<a id="HOSTNAME_MISMATCH"></a>
+
+#### `HOSTNAME_MISMATCH`
+
+Certificate does not match provided name.
+
+<a id="Usage and Policy Errors"></a>
+
+### Usage and Policy Errors
+
+<a id="INVALID_PURPOSE"></a>
+
+#### `INVALID_PURPOSE`
+
+Предоставленный сертификат нельзя использовать для указанной цели.
+
+<a id="CERT_REJECTED"></a>
+
+#### `CERT_REJECTED`
+
+Корневой CA помечен как отклоняющий указанную цель.
+
+<a id="Formatting Errors"></a>
+
+### Formatting Errors
+
+<a id="CERT_SIGNATURE_FAILURE"></a>
+
+#### `CERT_SIGNATURE_FAILURE`
+
+Подпись сертификата недействительна.
+
+<a id="CRL_SIGNATURE_FAILURE"></a>
+
+#### `CRL_SIGNATURE_FAILURE`
+
+Подпись списка отзыва сертификатов (CRL) недействительна.
+
+<a id="ERROR_IN_CERT_NOT_BEFORE_FIELD"></a>
+
+#### `ERROR_IN_CERT_NOT_BEFORE_FIELD`
+
+The certificate notBefore field contains an invalid time.
+
+<a id="ERROR_IN_CERT_NOT_AFTER_FIELD"></a>
+
+#### `ERROR_IN_CERT_NOT_AFTER_FIELD`
+
+The certificate notAfter field contains an invalid time.
+
+<a id="ERROR_IN_CRL_LAST_UPDATE_FIELD"></a>
+
+#### `ERROR_IN_CRL_LAST_UPDATE_FIELD`
+
+The CRL lastUpdate field contains an invalid time.
+
+<a id="ERROR_IN_CRL_NEXT_UPDATE_FIELD"></a>
+
+#### `ERROR_IN_CRL_NEXT_UPDATE_FIELD`
+
+The CRL nextUpdate field contains an invalid time.
+
+<a id="UNABLE_TO_DECRYPT_CERT_SIGNATURE"></a>
+
+#### `UNABLE_TO_DECRYPT_CERT_SIGNATURE`
+
+The certificate signature could not be decrypted. This means that the actual
+signature value could not be determined rather than it not matching the expected
+value, this is only meaningful for RSA keys.
+
+<a id="UNABLE_TO_DECRYPT_CRL_SIGNATURE"></a>
+
+#### `UNABLE_TO_DECRYPT_CRL_SIGNATURE`
+
+The certificate revocation list (CRL) signature could not be decrypted: this
+means that the actual signature value could not be determined rather than it not
+matching the expected value.
+
+<a id="UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY"></a>
+
+#### `UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY`
+
+The public key in the certificate SubjectPublicKeyInfo could not be read.
+
+<a id="Other OpenSSL Errors"></a>
+
+### Other OpenSSL Errors
+
+<a id="OUT_OF_MEM"></a>
+
+#### `OUT_OF_MEM`
+
+An error occurred trying to allocate memory. This should never happen.
+
+[ES Module]: esm.md
+[ICU]: intl.md#internationalization-support
+[JSON Web Key Elliptic Curve Registry]: https://www.iana.org/assignments/jose/jose.xhtml#web-key-elliptic-curve
+[JSON Web Key Types Registry]: https://www.iana.org/assignments/jose/jose.xhtml#web-key-types
+[Native TypeScript support]: typescript.md#type-stripping
+[Node.js error codes]: #nodejs-error-codes
+[Permission Model]: permissions.md#permission-model
+[RFC 7230 Section 3]: https://tools.ietf.org/html/rfc7230#section-3
+[SQLite]: sqlite.md
+[Subresource Integrity specification]: https://www.w3.org/TR/SRI/#the-integrity-attribute
+[V8's stack trace API]: https://v8.dev/docs/stack-trace-api
+[WHATWG Supported Encodings]: util.md#whatwg-supported-encodings
+[WHATWG URL API]: url.md#the-whatwg-url-api
+[`"exports"`]: packages.md#exports
+[`"imports"`]: packages.md#imports
+[`'uncaughtException'`]: process.md#event-uncaughtexception
+[`--disable-proto=throw`]: cli.md#--disable-protomode
+[`--force-fips`]: cli.md#--force-fips
+[`--no-addons`]: cli.md#--no-addons
+[`--unhandled-rejections`]: cli.md#--unhandled-rejectionsmode
+[`Class: assert.AssertionError`]: assert.md#class-assertassertionerror
+[`ERR_INCOMPATIBLE_OPTION_PAIR`]: #err_incompatible_option_pair
+[`ERR_INVALID_ARG_TYPE`]: #err_invalid_arg_type
+[`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`]: #err_missing_message_port_in_transfer_list
+[`ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`]: #err_missing_transferable_in_transfer_list
+[`ERR_REQUIRE_ASYNC_MODULE`]: #err_require_async_module
+[`Error.isError`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError
+[`EventEmitter`]: events.md#class-eventemitter
+[`MessagePort`]: worker_threads.md#class-messageport
+[`Object.getPrototypeOf`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf
+[`Object.setPrototypeOf`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf
+[`REPL`]: repl.md
+[`ServerResponse`]: http.md#class-httpserverresponse
+[`Writable`]: stream.md#class-streamwritable
+[`child_process`]: child_process.md
+[`cipher.getAuthTag()`]: crypto.md#ciphergetauthtag
+[`crypto.getDiffieHellman()`]: crypto.md#cryptogetdiffiehellmangroupname
+[`crypto.scrypt()`]: crypto.md#cryptoscryptpassword-salt-keylen-options-callback
+[`crypto.scryptSync()`]: crypto.md#cryptoscryptsyncpassword-salt-keylen-options
+[`crypto.timingSafeEqual()`]: crypto.md#cryptotimingsafeequala-b
+[`dgram.connect()`]: dgram.md#socketconnectport-address-callback
+[`dgram.createSocket()`]: dgram.md#dgramcreatesocketoptions-callback
+[`dgram.disconnect()`]: dgram.md#socketdisconnect
+[`dgram.remoteAddress()`]: dgram.md#socketremoteaddress
+[`domException.name`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMException/name
+[`errno`(3) man page]: https://man7.org/linux/man-pages/man3/errno.3.html
+[`error.code`]: #errorcode
+[`error.message`]: #errormessage
+[`fs.Dir`]: fs.md#class-fsdir
+[`fs.cp()`]: fs.md#fscpsrc-dest-options-callback
+[`fs.readFileSync`]: fs.md#fsreadfilesyncpath-options
+[`fs.readdir`]: fs.md#fsreaddirpath-options-callback
+[`fs.symlink()`]: fs.md#fssymlinktarget-path-type-callback
+[`fs.symlinkSync()`]: fs.md#fssymlinksynctarget-path-type
+[`fs.unlink`]: fs.md#fsunlinkpath-callback
+[`fs`]: fs.md
+[`hash.digest()`]: crypto.md#hashdigestencoding
+[`hash.update()`]: crypto.md#hashupdatedata-inputencoding
+[`http`]: http.md
+[`https`]: https.md
+[`libuv Error handling`]: https://docs.libuv.org/en/v1.x/errors.html
+[`net.Socket.write()`]: net.md#socketwritedata-encoding-callback
+[`net`]: net.md
+[`new URL(input)`]: url.md#new-urlinput-base
+[`new URLPattern(input)`]: url.md#new-urlpatternstring-baseurl-options
+[`new URLSearchParams(iterable)`]: url.md#new-urlsearchparamsiterable
+[`package.json`]: packages.md#nodejs-packagejson-field-definitions
+[`postMessage()`]: worker_threads.md#portpostmessagevalue-transferlist
+[`postMessageToThread()`]: worker_threads.md#worker_threadspostmessagetothreadthreadid-value-transferlist-timeout
+[`process.on('exit')`]: process.md#event-exit
+[`process.send()`]: process.md#processsendmessage-sendhandle-options-callback
+[`process.setUncaughtExceptionCaptureCallback()`]: process.md#processsetuncaughtexceptioncapturecallbackfn
+[`readable._read()`]: stream.md#readable_readsize
+[`require('node:crypto').setEngine()`]: crypto.md#cryptosetengineengine-flags
+[`require()`]: modules.md#requireid
+[`server.close()`]: net.md#serverclosecallback
+[`server.listen()`]: net.md#serverlisten
+[`sign.sign()`]: crypto.md#signsignprivatekey-outputencoding
+[`stream.pipe()`]: stream.md#readablepipedestination-options
+[`stream.push()`]: stream.md#readablepushchunk-encoding
+[`stream.unshift()`]: stream.md#readableunshiftchunk-encoding
+[`stream.write()`]: stream.md#writablewritechunk-encoding-callback
+[`subprocess.kill()`]: child_process.md#subprocesskillsignal
+[`subprocess.send()`]: child_process.md#subprocesssendmessage-sendhandle-options-callback
+[`url.parse()`]: url.md#urlparseurlstring-parsequerystring-slashesdenotehost
+[`util.getSystemErrorName(error.errno)`]: util.md#utilgetsystemerrornameerr
+[`util.inspect()`]: util.md#utilinspectobject-options
+[`util.parseArgs()`]: util.md#utilparseargsconfig
+[`v8.startupSnapshot.setDeserializeMainFunction()`]: v8.md#v8startupsnapshotsetdeserializemainfunctioncallback-data
+[`zlib`]: zlib.md
+[crypto digest algorithm]: crypto.md#cryptogethashes
+[debugger]: debugger.md
+[define a custom subpath]: packages.md#subpath-exports
+[domains]: domain.md
+[event emitter-based]: events.md#class-eventemitter
+[file descriptors]: https://en.wikipedia.org/wiki/File_descriptor
+[relative URL]: https://url.spec.whatwg.org/#relative-url-string
+[self-reference a package using its name]: packages.md#self-referencing-a-package-using-its-name
+[special scheme]: https://url.spec.whatwg.org/#special-scheme
+[stream-based]: stream.md
+[syscall]: https://man7.org/linux/man-pages/man2/syscalls.2.html
+[try-catch]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
+[type-stripping]: typescript.md#type-stripping
+[vm]: vm.md

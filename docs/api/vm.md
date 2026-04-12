@@ -1,96 +1,194 @@
 ---
-description: Модуль vm позволяет компилировать и выполнять код в контексте виртуальной машины V8
+title: VM (выполнение JavaScript)
+description: Модуль node:vm — компиляция и запуск кода в контекстах виртуальной машины V8; не является средством изоляции для недоверенного кода
 ---
 
-# VM
+# VM (выполнение JavaScript)
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/vm.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/vm.html)
+
+<!--introduced_in=v0.10.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Модуль `node:vm` позволяет компилировать и выполнять код в контексте виртуальной машины V8.
+<!--name=vm-->
 
-**Модуль `node:vm` не является механизмом безопасности. Не используйте его для запуска недоверенного кода.**
+<!-- source_link=lib/vm.js -->
 
-Код JavaScript может быть скомпилирован и запущен сразу или скомпилирован, сохранен и запущен позже.
+Модуль `node:vm` позволяет компилировать и выполнять код в контекстах виртуальной
+машины V8.
 
-Чаще всего код запускается в другом контексте V8 Context. Это означает, что вызываемый код имеет другой глобальный объект, чем вызывающий код.
+<strong class="critical">Модуль `node:vm` не является механизмом
+безопасности. Не используйте его для запуска недоверенного кода.</strong>
 
-Контекст можно обеспечить, [_контекстируя_](#what-does-it-mean-to-contextify-an-object) объект. Вызываемый код рассматривает любое свойство в контексте как глобальную переменную. Любые изменения глобальных переменных, вызванные вызываемым кодом, отражаются в объекте контекста.
+Код на JavaScript можно скомпилировать и выполнить сразу или
+скомпилировать, сохранить и выполнить позже.
 
-```js
-const vm = require('node:vm');
+Типичный сценарий — выполнить код в другом контексте V8. Тогда у вызываемого кода
+другой глобальный объект, чем у вызывающего.
 
-const x = 1;
+Контекст можно задать, [_контекстируя_][contextified] объект. Вызываемый код
+воспринимает любое свойство контекста как глобальную переменную. Изменения глобальных
+переменных, внесённые вызываемым кодом, отражаются в объекте контекста.
 
-const context = { x: 2 };
-vm.createContext(context); // Contextify the object.
+=== "MJS"
 
-const code = 'x += 40; var y = 17;';
-// `x` and `y` are global variables in the context.
-// Initially, x has the value 2 because that is the value of context.x.
-vm.runInContext(code, context);
+    ```js
+    import { createContext, runInContext } from 'node:vm';
+    
+    const x = 1;
+    
+    const context = { x: 2 };
+    createContext(context); // Контекстировать объект.
+    
+    const code = 'x += 40; var y = 17;';
+    // `x` и `y` — глобальные переменные в контексте.
+    // Изначально x равен 2, потому что таково значение context.x.
+    runInContext(code, context);
+    
+    console.log(context.x); // 42
+    console.log(context.y); // 17
+    
+    console.log(x); // 1; y не определён
+    ```
 
-console.log(context.x); // 42
-console.log(context.y); // 17
+=== "CJS"
 
-console.log(x); // 1; y не определено.
-```
+    ```js
+    const { createContext, runInContext } = require('node:vm');
+    
+    const x = 1;
+    
+    const context = { x: 2 };
+    createContext(context); // Контекстировать объект.
+    
+    const code = 'x += 40; var y = 17;';
+    // `x` и `y` — глобальные переменные в контексте.
+    // Изначально x равен 2, потому что таково значение context.x.
+    runInContext(code, context);
+    
+    console.log(context.x); // 42
+    console.log(context.y); // 17
+    
+    console.log(x); // 1; y не определён
+    ```
 
 ## Класс: `vm.Script`
 
-Экземпляры класса `vm.Script` содержат предварительно скомпилированные сценарии, которые могут быть выполнены в определенных контекстах.
+<!-- YAML
+added: v0.3.1
+-->
 
-### `новый vm.Script(code[, options])`
+Экземпляры класса `vm.Script` содержат предварительно скомпилированные сценарии, которые
+можно выполнять в заданных контекстах.
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
--   `options` {Object|string}
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет имя файла, используемое в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-    -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. При предоставлении значение `cachedDataRejected` будет установлено в `true` или `false` в зависимости от принятия данных V8.
-    -   `produceCachedData` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true` и нет `cachedData`, V8 попытается создать данные кэша кода для `code`. В случае успеха будет создан `буфер` с данными кэша кода V8 и сохранен в свойстве `cachedData` возвращаемого экземпляра `vm.Script`. Значение `cachedDataProduced` будет установлено в `true` или `false` в зависимости от того, успешно ли были созданы данные кэша кода. Эта опция **устарела** в пользу `script.createCachedData()`. **По умолчанию:** `false`.
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) спецификатор, передаваемый в `import()`.
-        -   `script` {vm.Script}
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+### `new vm.Script(code[, options])`
 
-Если `options` - строка, то она указывает имя файла.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+  - version: v10.6.0
+    pr-url: https://github.com/nodejs/node/pull/20300
+    description: The `produceCachedData` is deprecated in favour of
+                 `script.createCachedData()`.
+  - version: v5.7.0
+    pr-url: https://github.com/nodejs/node/pull/4777
+    description: The `cachedData` and `produceCachedData` options are
+                 supported now.
+-->
 
-Создание нового объекта `vm.Script` компилирует `code`, но не запускает его. Скомпилированный `vm.Script` может быть запущен позже несколько раз. Код `code` не привязан к какому-либо глобальному объекту; скорее, он привязывается перед каждым запуском, только для этого запуска.
+Добавлено в: v0.3.1
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
+    | v10.6.0 | `produceCachedData` устарел в пользу `script.createCachedData()`. |
+    | v5.7.0 | Опции `cachedData` и `produceCachedData` теперь поддерживаются. |
+
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла в трассировках стека, создаваемых этим сценарием. **По умолчанию:** `'evalmachine.<anonymous>'`.
+  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
+  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
+    `TypedArray` или `DataView` с данными кэша кода V8 для исходного текста. Если задано,
+    свойство `cachedDataRejected` будет `true` или `false` в зависимости от того, принял ли V8 данные.
+  * `produceCachedData` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` и отсутствии `cachedData` V8
+    попытается создать данные кэша кода для `code`. При успехе будет создан
+    `Buffer` с кэшем кода V8 и сохранён в свойстве `cachedData` возвращённого экземпляра `vm.Script`.
+    Свойство `cachedDataProduced` будет `true` или `false` в зависимости от успеха.
+    Эта опция **устарела**; используйте `script.createCachedData()`.
+    **По умолчанию:** `false`.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Задаёт, как загружать модули при вычислении этого сценария при вызове `import()`. Опция относится к
+    экспериментальному API модулей. В production не рекомендуется.
+    Подробнее см. [Support of dynamic `import()` in compilation APIs][].
+
+Если `options` — строка, она задаёт имя файла.
+
+Создание объекта `vm.Script` компилирует `code`, но не выполняет его.
+Скомпилированный `vm.Script` можно многократно выполнять позже. Код `code` не привязан
+к глобальному объекту; привязка выполняется перед каждым запуском, только на время этого запуска.
 
 ### `script.cachedDataRejected`
 
--   {boolean|undefined}
+<!-- YAML
+added: v5.7.0
+-->
 
-Когда `cachedData` предоставляется для создания `vm.Script`, это значение будет установлено в `true` или `false` в зависимости от принятия данных V8. В противном случае значение будет `undefined`.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined
+
+Если при создании `vm.Script` передан `cachedData`, это значение будет
+`true` или `false` в зависимости от того, принял ли V8 данные.
+Иначе значение — `undefined`.
 
 ### `script.createCachedData()`
 
--   Возвращает: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added: v10.6.0
+-->
 
-Создает кэш кода, который можно использовать с опцией `cachedData` конструктора `Script`. Возвращает `буфер`. Этот метод может быть вызван в любое время и любое количество раз.
+* Возвращает: [<Buffer>](buffer.md#buffer)
 
-Кэш кода `Script` не содержит никаких наблюдаемых состояний JavaScript. Кэш кода можно сохранять вместе с исходным текстом сценария и использовать для создания новых экземпляров `Script` многократно.
+Создаёт кэш кода для опции `cachedData` конструктора `Script`. Возвращает `Buffer`. Метод можно вызывать в любое
+время и любое число раз.
 
-Функции в исходнике `Script` могут быть помечены как лениво компилируемые, и они не компилируются при построении `Script`. Эти функции будут скомпилированы, когда они будут вызваны в первый раз. Кэш кода сериализует метаданные, которые V8 знает о `Script` в настоящее время, и которые он может использовать для ускорения будущих компиляций.
+Кэш кода `Script` не содержит наблюдаемых из JavaScript состояний. Его можно сохранять рядом с исходным текстом и
+использовать для создания новых экземпляров `Script` многократно.
+
+Функции в исходнике `Script` могут быть помечены как лениво компилируемые и не
+компилируются при создании `Script`. Они скомпилируются при первом вызове. Кэш кода сериализует
+метаданные, которые V8 уже знает о `Script`, чтобы ускорить
+дальнейшие компиляции.
 
 ```js
-const script = new vm.Script(`}
+const script = new vm.Script(`
 function add(a, b) {
   return a + b;
 }
-
 
 const x = add(1, 2);
 `);
 
 const cacheWithoutAdd = script.createCachedData();
-// В `cacheWithoutAdd` функция `add()` помечена для полной компиляции
-// при вызове.
+// В `cacheWithoutAdd` функция `add()` помечена для полной компиляции при вызове.
 
 script.runInThisContext();
 
@@ -100,235 +198,357 @@ const cacheWithAdd = script.createCachedData();
 
 ### `script.runInContext(contextifiedObject[, options])`
 
--   `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) A [contextified](#what-does-it-mean-to-contextify-an-object) объект, возвращаемый методом `vm.createContext()`..
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, получает `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прервет выполнение и выбросит [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
--   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат самого последнего оператора, выполненного в сценарии.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakOnSigint` option is supported now.
+-->
 
-Выполняет скомпилированный код, содержащийся в объекте `vm.Script`, в пределах заданного `contextifiedObject` и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
+Добавлено в: v0.3.1
 
-Следующий пример компилирует код, который увеличивает глобальную переменную, устанавливает значение другой глобальной переменной, а затем выполняет код несколько раз. Глобальные переменные содержатся в объекте `context`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-```js
-const vm = require('node:vm');
+* `contextifiedObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстированный][contextified] объект, возвращённый
+  методом `vm.createContext()`.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][],
+    строка кода, вызвавшая ошибку, добавляется к трассировке стека. **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до принудительной остановки. При остановке выбрасывается [`Error`][].
+    Значение — строго положительное целое.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
+    [`Error`][]. Обработчики, подключённые через `process.on('SIGINT')`, на время выполнения сценария отключаются, затем снова действуют. **По умолчанию:** `false`.
+* Возвращает: {any} результат последнего выполненного оператора сценария.
 
-const context = {
-    animal: 'cat',
-    count: 2,
-};
+Выполняет скомпилированный код объекта `vm.Script` в заданном
+`contextifiedObject` и возвращает результат. У выполняемого кода нет доступа
+к локальной области видимости.
 
-const script = new vm.Script('count += 1; name = "kitty";');
+Пример компилирует код, увеличивающий глобальную переменную, задаёт
+другую глобальную переменную и несколько раз выполняет сценарий.
+Глобальные переменные хранятся в объекте `context`.
 
-vm.createContext(context);
-for (let i = 0; i < 10; ++i) {
-    script.runInContext(context);
-}
+=== "MJS"
 
-console.log(context);
-// Prints: { animal: 'cat', count: 12, name: 'kitty' }
-```
+    ```js
+    import { createContext, Script } from 'node:vm';
+    
+    const context = {
+      animal: 'cat',
+      count: 2,
+    };
+    
+    const script = new Script('count += 1; name = "kitty";');
+    
+    createContext(context);
+    for (let i = 0; i < 10; ++i) {
+      script.runInContext(context);
+    }
+    
+    console.log(context);
+    // Prints: { animal: 'cat', count: 12, name: 'kitty' }
+    ```
 
-Использование опций `timeout` или `breakOnSigint` приведет к запуску новых циклов событий и соответствующих потоков, которые имеют ненулевые затраты производительности.
+=== "CJS"
+
+    ```js
+    const { createContext, Script } = require('node:vm');
+    
+    const context = {
+      animal: 'cat',
+      count: 2,
+    };
+    
+    const script = new Script('count += 1; name = "kitty";');
+    
+    createContext(context);
+    for (let i = 0; i < 10; ++i) {
+      script.runInContext(context);
+    }
+    
+    console.log(context);
+    // Prints: { animal: 'cat', count: 12, name: 'kitty' }
+    ```
+
+Использование опций `timeout` или `breakOnSigint` запускает новые циклы событий
+и связанные потоки, что даёт ненулевые накладные расходы.
 
 ### `script.runInNewContext([contextObject[, options]])`
 
--   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован](#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество миллисекунд для выполнения `code` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). Это значение должно быть строго положительным целым числом.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-    -   `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
-    -   `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующий вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
-    -   `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-        -   `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-        -   `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-    -   `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
--   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат самого последнего оператора, выполненного в скрипте.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v22.8.0
+    - v20.18.0
+    pr-url: https://github.com/nodejs/node/pull/54394
+    description: Аргумент `contextObject` теперь может быть `vm.constants.DONT_CONTEXTIFY`.
+  - version: v14.6.0
+    pr-url: https://github.com/nodejs/node/pull/34023
+    description: Поддерживается опция `microtaskMode`.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19016
+    description: Поддерживается опция `contextCodeGeneration`.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: Поддерживается опция `breakOnSigint`.
+-->
 
-Сначала контекстирует заданный `contextObject`, запускает скомпилированный код, содержащийся в объекте `vm.Script` в созданном контексте, и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
+Добавлено в: v0.3.1
 
-В следующем примере компилируется код, который устанавливает глобальную переменную, затем код выполняется несколько раз в разных контекстах. Глобальные переменные устанавливаются в каждом отдельном `контексте` и содержатся в нем.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.8.0, v20.18.0 | Аргумент `contextObject` теперь может быть `vm.constants.DONT_CONTEXTIFY`. |
+    | v14.6.0 | Поддерживается опция `microtaskMode`. |
+    | v10.0.0 | Поддерживается опция `contextCodeGeneration`. |
+    | v6.3.0 | Поддерживается опция `breakOnSigint`. |
 
-```js
-const vm = require('node:vm');
+* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+  Либо [`vm.constants.DONT_CONTEXTIFY`][], либо объект, который будет [контекстифицирован][contextified].
+  Если `undefined`, для обратной совместимости создаётся пустой контекстифицированный объект.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][] при компиляции
+    `code` к стеку добавляется строка с ошибочным кодом.
+    **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code`
+    до прерывания. При прерывании выбрасывается [`Error`][].
+    Значение должно быть строго положительным целым.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
+    [`Error`][]. Обработчики `process.on('SIGINT')` отключаются на время выполнения скрипта, затем снова работают.
+    **По умолчанию:** `false`.
+  * `contextName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя нового контекста.
+    **По умолчанию:** `'VM Context i'`, где `i` — возрастающий индекс
+    созданного контекста.
+  * `contextOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
+    Формат как у URL, но только схема, хост и при необходимости порт, как
+    у [`url.origin`][] у [`URL`][]. Обратите внимание: без завершающего слэша, он означает путь.
+    **По умолчанию:** `''`.
+  * `contextCodeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, вызовы `eval` и конструкторов функций
+      (`Function`, `GeneratorFunction` и т.д.) дают
+      `EvalError`. **По умолчанию:** `true`.
+    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, компиляция WebAssembly
+      даёт `WebAssembly.CompileError`. **По умолчанию:** `true`.
+  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `afterEvaluate`, микрозадачи (через `Promise` и `async function`)
+    выполняются сразу после скрипта. В этом случае они входят в ограничения `timeout` и
+    `breakOnSigint`.
+* Возвращает: {any} результат последнего выполненного в скрипте выражения.
 
-const script = new vm.Script('globalVar = "set"');
+Эквивалентно `script.runInContext(vm.createContext(options), options)`.
+Делает следующее:
 
-const contexts = [{}, {}, {}];
-contexts.forEach((context) => {
-    script.runInNewContext(context);
-});
+1. Создаёт новый контекст.
+2. Если `contextObject` — объект, [контекстифицирует][contextified] его в новом контексте.
+   Если `contextObject` — `undefined`, создаётся новый объект и [контекстифицируется][contextified].
+   Если [`vm.constants.DONT_CONTEXTIFY`][] — ничего не [контекстифицировать][contextified].
+3. Запускает скомпилированный код `vm.Script` в созданном контексте. Код
+   не видит область, из которой вызван метод.
+4. Возвращает результат.
 
-console.log(contexts);
-// Prints: [{ globalVar: 'set' }, { globalVar: 'set' }, { globalVar: 'set' }]
-```
+В примере ниже компилируется код, задающий глобальную переменную, затем он выполняется
+несколько раз в разных контекстах. Глобальные переменные изолированы в каждом `context`.
+
+=== "MJS"
+
+    ```js
+    import { constants, Script } from 'node:vm';
+    
+    const script = new Script('globalVar = "set"');
+    
+    const contexts = [{}, {}, {}];
+    contexts.forEach((context) => {
+      script.runInNewContext(context);
+    });
+    
+    console.log(contexts);
+    // Prints: [{ globalVar: 'set' }, { globalVar: 'set' }, { globalVar: 'set' }]
+    
+    // This would throw if the context is created from a contextified object.
+    // constants.DONT_CONTEXTIFY allows creating contexts with ordinary
+    // global objects that can be frozen.
+    const freezeScript = new Script('Object.freeze(globalThis); globalThis;');
+    const frozenContext = freezeScript.runInNewContext(constants.DONT_CONTEXTIFY);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { constants, Script } = require('node:vm');
+    
+    const script = new Script('globalVar = "set"');
+    
+    const contexts = [{}, {}, {}];
+    contexts.forEach((context) => {
+      script.runInNewContext(context);
+    });
+    
+    console.log(contexts);
+    // Prints: [{ globalVar: 'set' }, { globalVar: 'set' }, { globalVar: 'set' }]
+    
+    // This would throw if the context is created from a contextified object.
+    // constants.DONT_CONTEXTIFY allows creating contexts with ordinary
+    // global objects that can be frozen.
+    const freezeScript = new Script('Object.freeze(globalThis); globalThis;');
+    const frozenContext = freezeScript.runInNewContext(constants.DONT_CONTEXTIFY);
+    ```
 
 ### `script.runInThisContext([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
--   Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakOnSigint` option is supported now.
+-->
 
-Запускает скомпилированный код, содержащийся в `vm.Script`, в контексте текущего объекта `global`. Выполняемый код не имеет доступа к локальной области видимости, но _имеет_ доступ к текущему объекту `global`.
+Добавлено в: v0.3.1
 
-Следующий пример компилирует код, который увеличивает переменную `global`, а затем выполняет этот код несколько раз:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-```js
-const vm = require('node:vm');
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][] при компиляции `code`
+    строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до остановки. При остановке
+    выбрасывается [`Error`][]. Значение — строго положительное целое.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
+    [`Error`][]. Обработчики `process.on('SIGINT')` отключаются на время выполнения
+    сценария, затем снова работают. **По умолчанию:** `false`.
+* Возвращает: {any} результат последнего выполненного в сценарии оператора.
 
-global.globalVar = 0;
+Выполняет скомпилированный код объекта `vm.Script` в контексте текущего объекта
+`global`. У выполняемого кода нет доступа к локальной области видимости, но есть
+к текущему `global`.
 
-const script = new vm.Script('globalVar += 1', {
-    filename: 'myfile.vm',
-});
+В примере ниже код увеличивает глобальную переменную и выполняется несколько раз:
 
-for (let i = 0; i < 1000; ++i) {
-    script.runInThisContext();
-}
+=== "MJS"
 
-console.log(globalVar);
+    ```js
+    import { Script } from 'node:vm';
+    
+    global.globalVar = 0;
+    
+    const script = new Script('globalVar += 1', { filename: 'myfile.vm' });
+    
+    for (let i = 0; i < 1000; ++i) {
+      script.runInThisContext();
+    }
+    
+    console.log(globalVar);
+    
+    // 1000
+    ```
 
-// 1000
-```
+=== "CJS"
+
+    ```js
+    const { Script } = require('node:vm');
+    
+    global.globalVar = 0;
+    
+    const script = new Script('globalVar += 1', { filename: 'myfile.vm' });
+    
+    for (let i = 0; i < 1000; ++i) {
+      script.runInThisContext();
+    }
+    
+    console.log(globalVar);
+    
+    // 1000
+    ```
 
 ### `script.sourceMapURL`
 
--   {string|undefined}
+<!-- YAML
+added:
+  - v19.1.0
+  - v18.13.0
+-->
 
-Когда скрипт компилируется из источника, содержащего магический комментарий карты источника, это свойство будет установлено в URL карты источника.
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
-```mjs
-import vm from 'node:vm';
+When the script is compiled from a source that contains a source map magic
+comment, this property will be set to the URL of the source map.
 
-const script = new vm.Script(`
-function myFunc() {}
-//# sourceMappingURL=sourcemap.json
-`);
+=== "MJS"
 
-console.log(script.sourceMapURL);
-// Печать: sourcemap.json
-```
+    ```js
+    import vm from 'node:vm';
+    
+    const script = new vm.Script(`
+    function myFunc() {}
+    //# sourceMappingURL=sourcemap.json
+    `);
+    
+    console.log(script.sourceMapURL);
+    // Prints: sourcemap.json
+    ```
 
-```cjs
-const vm = require('node:vm');
+=== "CJS"
 
-const script = new vm.Script(`
-function myFunc() {}
-//# sourceMappingURL=sourcemap.json
-`);
-
-console.log(script.sourceMapURL);
-// Печать: sourcemap.json
-```
+    ```js
+    const vm = require('node:vm');
+    
+    const script = new vm.Script(`
+    function myFunc() {}
+    //# sourceMappingURL=sourcemap.json
+    `);
+    
+    console.log(script.sourceMapURL);
+    // Prints: sourcemap.json
+    ```
 
 ## Класс: `vm.Module`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+ - v13.0.0
+ - v12.16.0
+-->
 
-    Экспериментальный
+> Stability: 1 - Experimental
 
-Эта возможность доступна только при включенном флаге команды `--experimental-vm-modules`.
+This feature is only available with the `--experimental-vm-modules` command
+flag enabled.
 
-Класс `vm.Module` предоставляет низкоуровневый интерфейс для использования модулей ECMAScript в контекстах виртуальных машин. Это аналог класса `vm.Script`, который в точности повторяет [Module Record](https://www.ecma-international.org/ecma-262/#sec-abstract-module-records), как определено в спецификации ECMAScript.
+The `vm.Module` class provides a low-level interface for using
+ECMAScript modules in VM contexts. It is the counterpart of the `vm.Script`
+class that closely mirrors [Module Record][]s as defined in the ECMAScript
+specification.
 
-Однако, в отличие от `vm.Script`, каждый объект `vm.Module` привязан к контексту с момента его создания. Операции над объектами `vm.Module` по своей сути асинхронны, в отличие от синхронной природы объектов `vm.Script`. Использование "асинхронных" функций может помочь при манипулировании объектами `vm.Module`.
+Unlike `vm.Script` however, every `vm.Module` object is bound to a context from
+its creation.
 
-Использование объекта `vm.Module` требует трех отдельных шагов: создание/разбор, связывание и оценка. Эти три этапа проиллюстрированы в следующем примере.
+Using a `vm.Module` object requires three distinct steps: creation/parsing,
+linking, and evaluation. These three steps are illustrated in the following
+example.
 
-Эта реализация находится на более низком уровне, чем [ECMAScript Module loader](esm.md#modules-ecmascript-modules). Также пока не существует способа взаимодействия с загрузчиком, хотя поддержка планируется.
+This implementation lies at a lower level than the [ECMAScript Module
+loader][]. There is also no way to interact with the Loader yet, though
+support is planned.
 
-```mjs
-import vm from 'node:vm';
+=== "MJS"
 
-const contextifiedObject = vm.createContext({
-    secret: 42,
-    print: console.log,
-});
-
-// Шаг 1
-//
-// Создайте модуль, построив новый объект `vm.SourceTextModule`. Этот
-// разбирает предоставленный исходный текст, выбрасывая `SyntaxError`, если что-то идет не так
-// неправильно. По умолчанию модуль создается в верхнем контексте. Но здесь мы.
-// указываем `contextifiedObject` в качестве контекста, к которому принадлежит этот модуль.
-//
-// Здесь мы пытаемся получить экспорт по умолчанию из модуля "foo", и
-// поместить его в локальное связывание "secret".
-
-const bar = new vm.SourceTextModule(
-    `
-  import s from 'foo';
-  s;
-  print(s);
-`,
-    { context: contextifiedObject }
-);
-
-// Шаг 2
-//
-// "Свяжите" импортированные зависимости этого модуля с ним.
-//
-// Предоставленный обратный вызов связывания ("компоновщик") принимает два аргумента:.
-// родительский модуль (`bar` в данном случае) и строку, которая является спецификатором
-// импортируемого модуля. Ожидается, что обратный вызов вернет модуль, который.
-// соответствует предоставленному спецификатору, с определенными требованиями, задокументированными
-// в `module.link()`.
-//
-// Если компоновка не началась для возвращаемого модуля, тот же обратный вызов компоновщика
-// обратный вызов будет вызван на возвращаемом Модуле.
-//
-// Даже Модули верхнего уровня без зависимостей должны быть явно линкованы. При этом
-// предоставленный обратный вызов никогда не будет вызван, однако.
-//
-// Метод link() возвращает Promise, который будет разрешен, когда разрешатся все
-// Обещания, возвращенные компоновщиком, разрешатся.
-//
-// Примечание: Это надуманный пример, так как функция компоновщика создает новый модуль
-// модуль "foo" каждый раз, когда она вызывается. В полноценной модульной системе, вероятно, будет использоваться
-// кэш, вероятно, будет использоваться, чтобы избежать дублирования модулей.
-
-async function linker(specifier, referencingModule) {
-    if (specifier === 'foo') {
-        return new vm.SourceTextModule(
-            `
-      // The "secret" variable refers to the global variable we added to
-      // "contextifiedObject" when creating the context.
-      export default secret;
-    `,
-            { context: referencingModule.context }
-        );
-
-        // Using `contextifiedObject` instead of `referencingModule.context`
-        // here would work as well.
-    }
-    throw new Error(
-        `Unable to resolve dependency: ${specifier}`
-    );
-}
-await bar.link(linker);
-
-// Step 3
-//
-// Evaluate the Module. The evaluate() method returns a promise which will
-// resolve after the module has finished evaluating.
-
-// Prints 42.
-await bar.evaluate();
-```
-
-```cjs
-const vm = require('node:vm');
-
-const contextifiedObject = vm.createContext({
-    secret: 42,
-    print: console.log,
-});
-
-(async () => {
+    ```js
+    import vm from 'node:vm';
+    
+    const contextifiedObject = vm.createContext({
+      secret: 42,
+      print: console.log,
+    });
+    
     // Step 1
     //
     // Create a Module by constructing a new `vm.SourceTextModule` object. This
@@ -338,699 +558,2233 @@ const contextifiedObject = vm.createContext({
     //
     // Here, we attempt to obtain the default export from the module "foo", and
     // put it into local binding "secret".
-
-    const bar = new vm.SourceTextModule(
-        `
-    import s from 'foo';
-    s;
-    print(s);
-  `,
-        { context: contextifiedObject }
-    );
-
+    
+    const rootModule = new vm.SourceTextModule(`
+      import s from 'foo';
+      s;
+      print(s);
+    `, { context: contextifiedObject });
+    
     // Step 2
     //
     // "Link" the imported dependencies of this Module to it.
     //
-    // The provided linking callback (the "linker") accepts two arguments: the
-    // parent module (`bar` in this case) and the string that is the specifier of
-    // the imported module. The callback is expected to return a Module that
-    // corresponds to the provided specifier, with certain requirements documented
-    // in `module.link()`.
-    //
-    // If linking has not started for the returned Module, the same linker
-    // callback will be called on the returned Module.
+    // Obtain the requested dependencies of a SourceTextModule by
+    // `sourceTextModule.moduleRequests` and resolve them.
     //
     // Even top-level Modules without dependencies must be explicitly linked. The
-    // callback provided would never be called, however.
+    // array passed to `sourceTextModule.linkRequests(modules)` can be
+    // empty, however.
     //
-    // The link() method returns a Promise that will be resolved when all the
-    // Promises returned by the linker resolve.
-    //
-    // Note: This is a contrived example in that the linker function creates a new
-    // "foo" module every time it is called. In a full-fledged module system, a
-    // cache would probably be used to avoid duplicated modules.
-
-    async function linker(specifier, referencingModule) {
-        if (specifier === 'foo') {
-            return new vm.SourceTextModule(
-                `
-        // The "secret" variable refers to the global variable we added to
-        // "contextifiedObject" when creating the context.
-        export default secret;
-      `,
-                { context: referencingModule.context }
-            );
-
-            // Using `contextifiedObject` instead of `referencingModule.context`
-            // here would work as well.
+    // Note: This is a contrived example in that the resolveAndLinkDependencies
+    // creates a new "foo" module every time it is called. In a full-fledged
+    // module system, a cache would probably be used to avoid duplicated modules.
+    
+    const moduleMap = new Map([
+      ['root', rootModule],
+    ]);
+    
+    function resolveAndLinkDependencies(module) {
+      const requestedModules = module.moduleRequests.map((request) => {
+        // In a full-fledged module system, the resolveAndLinkDependencies would
+        // resolve the module with the module cache key `[specifier, attributes]`.
+        // In this example, we just use the specifier as the key.
+        const specifier = request.specifier;
+    
+        let requestedModule = moduleMap.get(specifier);
+        if (requestedModule === undefined) {
+          requestedModule = new vm.SourceTextModule(`
+            // The "secret" variable refers to the global variable we added to
+            // "contextifiedObject" when creating the context.
+            export default secret;
+          `, { context: module.context });
+          moduleMap.set(specifier, requestedModule);
+          // Resolve the dependencies of the new module as well.
+          resolveAndLinkDependencies(requestedModule);
         }
-        throw new Error(
-            `Unable to resolve dependency: ${specifier}`
-        );
+    
+        return requestedModule;
+      });
+    
+      module.linkRequests(requestedModules);
     }
-    await bar.link(linker);
-
+    
+    resolveAndLinkDependencies(rootModule);
+    rootModule.instantiate();
+    
     // Step 3
     //
     // Evaluate the Module. The evaluate() method returns a promise which will
     // resolve after the module has finished evaluating.
-
+    
     // Prints 42.
-    await bar.evaluate();
-})();
-```
+    await rootModule.evaluate();
+    ```
 
-### `module.dependencySpecifiers`
+=== "CJS"
 
--   [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-
-Спецификаторы всех зависимостей этого модуля. Возвращаемый массив замораживается, чтобы запретить любые изменения в нем.
-
-Соответствует полю `[[RequestedModules]]` [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records)` в спецификации ECMAScript.
+    ```js
+    const vm = require('node:vm');
+    
+    const contextifiedObject = vm.createContext({
+      secret: 42,
+      print: console.log,
+    });
+    
+    (async () => {
+      // Step 1
+      //
+      // Create a Module by constructing a new `vm.SourceTextModule` object. This
+      // parses the provided source text, throwing a `SyntaxError` if anything goes
+      // wrong. By default, a Module is created in the top context. But here, we
+      // specify `contextifiedObject` as the context this Module belongs to.
+      //
+      // Here, we attempt to obtain the default export from the module "foo", and
+      // put it into local binding "secret".
+    
+      const rootModule = new vm.SourceTextModule(`
+        import s from 'foo';
+        s;
+        print(s);
+      `, { context: contextifiedObject });
+    
+      // Step 2
+      //
+      // "Link" the imported dependencies of this Module to it.
+      //
+      // Obtain the requested dependencies of a SourceTextModule by
+      // `sourceTextModule.moduleRequests` and resolve them.
+      //
+      // Even top-level Modules without dependencies must be explicitly linked. The
+      // array passed to `sourceTextModule.linkRequests(modules)` can be
+      // empty, however.
+      //
+      // Note: This is a contrived example in that the resolveAndLinkDependencies
+      // creates a new "foo" module every time it is called. In a full-fledged
+      // module system, a cache would probably be used to avoid duplicated modules.
+    
+      const moduleMap = new Map([
+        ['root', rootModule],
+      ]);
+    
+      function resolveAndLinkDependencies(module) {
+        const requestedModules = module.moduleRequests.map((request) => {
+          // In a full-fledged module system, the resolveAndLinkDependencies would
+          // resolve the module with the module cache key `[specifier, attributes]`.
+          // In this example, we just use the specifier as the key.
+          const specifier = request.specifier;
+    
+          let requestedModule = moduleMap.get(specifier);
+          if (requestedModule === undefined) {
+            requestedModule = new vm.SourceTextModule(`
+              // The "secret" variable refers to the global variable we added to
+              // "contextifiedObject" when creating the context.
+              export default secret;
+            `, { context: module.context });
+            moduleMap.set(specifier, requestedModule);
+            // Resolve the dependencies of the new module as well.
+            resolveAndLinkDependencies(requestedModule);
+          }
+    
+          return requestedModule;
+        });
+    
+        module.linkRequests(requestedModules);
+      }
+    
+      resolveAndLinkDependencies(rootModule);
+      rootModule.instantiate();
+    
+      // Step 3
+      //
+      // Evaluate the Module. The evaluate() method returns a promise which will
+      // resolve after the module has finished evaluating.
+    
+      // Prints 42.
+      await rootModule.evaluate();
+    })();
+    ```
 
 ### `module.error`
 
--   {любая}
+* Тип: {any}
 
-Если `module.status` имеет значение `'errored'`, то это свойство содержит исключение, выброшенное модулем во время оценки. Если статус имеет любое другое значение, обращение к этому свойству приведет к выброшенному исключению.
+If the `module.status` is `'errored'`, this property contains the exception
+thrown by the module during evaluation. If the status is anything else,
+accessing this property will result in a thrown exception.
 
-Значение `undefined` не может быть использовано для случаев, когда исключение не выбрасывается из-за возможной двусмысленности с `throw undefined;`.
+The value `undefined` cannot be used for cases where there is not a thrown
+exception due to possible ambiguity with `throw undefined;`.
 
-Соответствует полю `[[EvaluationError]]` в [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records) в спецификации ECMAScript.
+Corresponds to the `[[EvaluationError]]` field of [Cyclic Module Record][]s
+in the ECMAScript specification.
 
 ### `module.evaluate([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to evaluate before terminating execution. If execution is interrupted, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
--   Возвращается: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined` в случае успеха.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to evaluate
+    before terminating execution. If execution is interrupted, an [`Error`][]
+    will be thrown. This value must be a strictly positive integer.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
+    [`Error`][]. Existing handlers for the event that have been attached via
+    `process.on('SIGINT')` are disabled during script execution, but continue to
+    work after that. **По умолчанию:** `false`.
+* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
-Оценить модуль.
+Evaluate the module and its depenendencies. Corresponds to the [Evaluate() concrete method][] field of
+[Cyclic Module Record][]s in the ECMAScript specification.
 
-Эта функция должна быть вызвана после того, как модуль был связан; в противном случае произойдет отказ. Он может быть вызван и тогда, когда модуль уже был оценен, в этом случае он либо ничего не сделает, если первоначальная оценка завершилась успехом (`module.status` имеет значение `'evaluated'`), либо повторно вызовет исключение, к которому привела первоначальная оценка (`module.status` имеет значение `'errored'`).
+If the module is a `vm.SourceTextModule`, `evaluate()` must be called after the module has been instantiated;
+otherwise `evaluate()` will return a rejected promise.
 
-Этот метод не может быть вызван, пока модуль находится в процессе оценки (`module.status` имеет значение `'evaluating'`).
+For a `vm.SourceTextModule`, the promise returned by `evaluate()` may be fulfilled either
+synchronously or asynchronously:
 
-Соответствует полю [Evaluate() concrete method](https://tc39.es/ecma262/#sec-moduleevaluation) поля [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records)s в спецификации ECMAScript.
+1. If the `vm.SourceTextModule` has no top-level `await` in itself or any of its dependencies, the promise will be
+   fulfilled _synchronously_ after the module and all its dependencies have been evaluated.
+   1. If the evaluation succeeds, the promise will be _synchronously_ resolved to `undefined`.
+   2. If the evaluation results in an exception, the promise will be _synchronously_ rejected with the exception
+      that causes the evaluation to fail, which is the same as `module.error`.
+2. If the `vm.SourceTextModule` has top-level `await` in itself or any of its dependencies, the promise will be
+   fulfilled _asynchronously_ after the module and all its dependencies have been evaluated.
+   1. If the evaluation succeeds, the promise will be _asynchronously_ resolved to `undefined`.
+   2. If the evaluation results in an exception, the promise will be _asynchronously_ rejected with the exception
+      that causes the evaluation to fail.
+
+If the module is a `vm.SyntheticModule`, `evaluate()` always returns a promise that fulfills synchronously, see
+the specification of [Evaluate() of a Synthetic Module Record][]:
+
+1. If the `evaluateCallback` passed to its constructor throws an exception synchronously, `evaluate()` returns
+   a promise that will be synchronously rejected with that exception.
+2. If the `evaluateCallback` does not throw an exception, `evaluate()` returns a promise that will be
+   synchronously resolved to `undefined`.
+
+The `evaluateCallback` of a `vm.SyntheticModule` is executed synchronously within the `evaluate()` call, and its
+return value is discarded. This means if `evaluateCallback` is an asynchronous function, the promise returned by
+`evaluate()` will not reflect its asynchronous behavior, and any rejections from an asynchronous
+`evaluateCallback` will be lost.
+
+`evaluate()` could also be called again after the module has already been evaluated, in which case:
+
+1. If the initial evaluation ended in success (`module.status` is `'evaluated'`), it will do nothing
+   and return a promise that resolves to `undefined`.
+2. If the initial evaluation resulted in an exception (`module.status` is `'errored'`), it will re-reject
+   the exception that the initial evaluation resulted in.
+
+This method cannot be called while the module is being evaluated (`module.status` is `'evaluating'`).
 
 ### `module.identifier`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Идентификатор текущего модуля, установленный в конструкторе.
+The identifier of the current module, as set in the constructor.
 
 ### `module.link(linker)`
 
--   `linker` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+<!-- YAML
+changes:
+  - version:
+    - v21.1.0
+    - v20.10.0
+    - v18.19.0
+    pr-url: https://github.com/nodejs/node/pull/50141
+    description: The option `extra.assert` is renamed to `extra.attributes`. The
+                 former name is still provided for backward compatibility.
+-->
 
-    -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор запрашиваемого модуля:
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.1.0, v20.10.0, v18.19.0 | Опция «extra.assert» переименована в «extra.attributes». Прежнее имя по-прежнему предоставляется для обратной совместимости. |
 
-        ```mjs
-        import foo from 'foo';
-        // ^^^^^ спецификатор модуля
-        ```
+* `linker` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module:
+    ```mjs
+    import foo from 'foo';
+    //              ^^^^^ the module specifier
+    ```
 
-    -   `referencingModule` {vm.Module} Объект `модуля` `link()` вызывается на.
+  * `referencingModule` [<vm.Module>](vm.md) The `Module` object `link()` is called on.
 
-    -   `extra` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `extra` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `attributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The data from the attribute:
+      ```mjs
+      import foo from 'foo' with { name: 'value' };
+      //                         ^^^^^^^^^^^^^^^^^ the attribute
+      ```
+      Per ECMA-262, hosts are expected to trigger an error if an
+      unsupported attribute is present.
+    * `assert` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Alias for `extra.attributes`.
 
-        -   `assert` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Данные из утверждения:
+  * Возвращает: [<vm.Module>](vm.md) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-            ```js
-            import foo from "foo" assert { name: "value" };
-            // ^^^^^^^^^^^^^^^^^ утверждение
-            ```
+Link module dependencies. This method must be called before evaluation, and
+can only be called once per module.
 
-            Согласно ECMA-262, ожидается, что хосты будут игнорировать утверждения, которые они не поддерживают, в отличие, например, от выдачи ошибки при наличии неподдерживаемого утверждения.
+Use [`sourceTextModule.linkRequests(modules)`][] and
+[`sourceTextModule.instantiate()`][] to link modules either synchronously or
+asynchronously.
 
-    -   Возвращает: {vm.Module|Promise}
+The function is expected to return a `Module` object or a `Promise` that
+eventually resolves to a `Module` object. The returned `Module` must satisfy the
+following two invariants:
 
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* It must belong to the same context as the parent `Module`.
+* Its `status` must not be `'errored'`.
 
-Связать зависимости модуля. Этот метод должен быть вызван до оценки и может быть вызван только один раз для каждого модуля.
+If the returned `Module`'s `status` is `'unlinked'`, this method will be
+recursively called on the returned `Module` with the same provided `linker`
+function.
 
-Ожидается, что функция вернет объект `Module` или `Promise`, который в конечном итоге разрешится в объект `Module`. Возвращаемый `модуль` должен удовлетворять следующим двум инвариантам:
+`link()` returns a `Promise` that will either get resolved when all linking
+instances resolve to a valid `Module`, or rejected if the linker function either
+throws an exception or returns an invalid `Module`.
 
--   Он должен принадлежать к тому же контексту, что и родительский `модуль`.
--   Его `статус` не должен быть `"errored"`.
+The linker function roughly corresponds to the implementation-defined
+[HostResolveImportedModule][] abstract operation in the ECMAScript
+specification, with a few key differences:
 
-Если `статус` возвращаемого `модуля будет `'unlinked'`, этот метод будет рекурсивно вызван на возвращаемом `модуле`с той же самой предоставленной функцией`linker`.
+* The linker function is allowed to be asynchronous while
+  [HostResolveImportedModule][] is synchronous.
 
-`link()` возвращает `Promise`, который будет либо разрешен, если все экземпляры связывания разрешатся в правильный `модуль`, либо отклонен, если функция компоновщика либо выбросит исключение, либо вернет недействительный `модуль`.
+The actual [HostResolveImportedModule][] implementation used during module
+linking is one that returns the modules linked during linking. Since at
+that point all modules would have been fully linked already, the
+[HostResolveImportedModule][] implementation is fully synchronous per
+specification.
 
-Функция компоновщика примерно соответствует определяемой реализацией абстрактной операции [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) в спецификации ECMAScript, с несколькими ключевыми отличиями:
-
--   Функция компоновщика может быть асинхронной, а [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) - синхронной.
-
-Фактическая реализация [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule), используемая во время компоновки модулей, возвращает модули, связанные во время компоновки. Поскольку в этот момент все модули уже были бы полностью связаны, реализация [HostResolveImportedModule](https://tc39.es/ecma262/#sec-hostresolveimportedmodule) является полностью синхронной согласно спецификации.
-
-Соответствует полю [Link() concrete method](https://tc39.es/ecma262/#sec-moduledeclarationlinking) поля [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records)s в спецификации ECMAScript.
+Corresponds to the [Link() concrete method][] field of [Cyclic Module
+Record][]s in the ECMAScript specification.
 
 ### `module.namespace`
 
--   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Объект пространства имен модуля. Он доступен только после завершения связывания (`module.link()`).
+The namespace object of the module. This is only available after linking
+(`module.link()`) has completed.
 
-Соответствует абстрактной операции [GetModuleNamespace](https://tc39.es/ecma262/#sec-getmodulenamespace) в спецификации ECMAScript.
+Corresponds to the [GetModuleNamespace][] abstract operation in the ECMAScript
+specification.
 
 ### `module.status`
 
--   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Текущий статус модуля. Будет одним из:
+The current status of the module. Will be one of:
 
--   `'unlinked'`: `module.link()` еще не был вызван.
+* `'unlinked'`: `module.link()` has not yet been called.
 
--   `'linking'`: `module.link()` был вызван, но еще не все Promises, возвращенные функцией linker, были разрешены.
+* `'linking'`: `module.link()` has been called, but not all Promises returned
+  by the linker function have been resolved yet.
 
--   `'linked'`: Модуль был успешно связан, и все его зависимости связаны, но `module.evaluate()` еще не был вызван.
+* `'linked'`: The module has been linked successfully, and all of its
+  dependencies are linked, but `module.evaluate()` has not yet been called.
 
--   ` 'evaluating``: Модуль оценивается через  `module.evaluate()` для себя или родительского модуля.
+* `'evaluating'`: The module is being evaluated through a `module.evaluate()` on
+  itself or a parent module.
 
--   `'evaluated'`: Модуль был успешно оценен.
+* `'evaluated'`: The module has been successfully evaluated.
 
--   `'errored'`: Модуль был оценен, но возникло исключение.
+* `'errored'`: The module has been evaluated, but an exception was thrown.
 
-Кроме `'errored'`, эта строка состояния соответствует полю `[[Status]]` спецификации [Cyclic Module Record](https://tc39.es/ecma262/#sec-cyclic-module-records). `'errored'` соответствует `'evaluated'` в спецификации, но с `[[EvaluationError]]`, установленным на значение, которое не является `undefined`.
+Other than `'errored'`, this status string corresponds to the specification's
+[Cyclic Module Record][]'s `[[Status]]` field. `'errored'` corresponds to
+`'evaluated'` in the specification, but with `[[EvaluationError]]` set to a
+value that is not `undefined`.
 
 ## Класс: `vm.SourceTextModule`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added: v9.6.0
+-->
 
-    Экспериментальный
+> Stability: 1 - Experimental
 
-Эта возможность доступна только при включенном флаге команды `--experimental-vm-modules`.
+This feature is only available with the `--experimental-vm-modules` command
+flag enabled.
 
--   Расширяет: {vm.Module}
+* Extends: [<vm.Module>](vm.md)
 
-Класс `vm.SourceTextModule` предоставляет [Source Text Module Record](https://tc39.es/ecma262/#sec-source-text-module-records), как определено в спецификации ECMAScript.
+The `vm.SourceTextModule` class provides the [Source Text Module Record][] as
+defined in the ECMAScript specification.
 
-### `новый vm.SourceTextModule(code[, options])`
+### `new vm.SourceTextModule(code[, options])`
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код JavaScript-модуля для разбора
--   `options`
-    -   `идентификатор` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - контекстно-зависимый возрастающий индекс.
-    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника. Код `code` должен быть таким же, как и модуль, из которого были созданы эти `cachedData`.
-    -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
-    -   `lineOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
-    -   `columnOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим `модулем`. **По умолчанию:** `0`.
-    -   `initializeImportMeta` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого `модуля` для инициализации `import.meta`.
-        -   `meta` {import.meta}
-        -   `модуль` {vm.SourceTextModule}
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing).
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) спецификатор, переданный в `import()`.
-        -   `модуль` {vm.Module}
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
+<!-- YAML
+changes:
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+-->
 
-Создает новый экземпляр `SourceTextModule`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
 
-Свойства, назначенные объекту `import.meta`, которые являются объектами, могут позволить модулю получить доступ к информации вне указанного `контекста`. Используйте `vm.runInContext()` для создания объектов в определенном контексте.
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript Module code to parse
+* `options`
+  * `identifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
+    **По умолчанию:** `'vm:module(i)'` where `i` is a context-specific ascending
+    index.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+    `TypedArray`, or `DataView` with V8's code cache data for the supplied
+    source. The `code` must be the same as the module from which this
+    `cachedData` was created.
+  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][] object as returned by the
+    `vm.createContext()` method, to compile and evaluate this `Module` in.
+    If no context is specified, the module is evaluated in the current
+    execution context.
+  * `lineOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+    in stack traces produced by this `Module`. **По умолчанию:** `0`.
+  * `columnOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+    is displayed in stack traces produced by this `Module`. **По умолчанию:** `0`.
+  * `initializeImportMeta` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called during evaluation of this `Module`
+    to initialize the `import.meta`.
+    * `meta` {import.meta}
+    * `module` [<vm.SourceTextModule>](vm.md)
+  * `importModuleDynamically` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Used to specify the
+    how the modules should be loaded during the evaluation of this module
+    when `import()` is called. This option is part of the experimental
+    modules API. We do not recommend using it in a production environment.
+    For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
 
-```mjs
-import vm from 'node:vm';
+Creates a new `SourceTextModule` instance.
 
-const contextifiedObject = vm.createContext({ secret: 42 });
+Properties assigned to the `import.meta` object that are objects may
+allow the module to access information outside the specified `context`. Use
+`vm.runInContext()` to create objects in a specific context.
 
-const module = new vm.SourceTextModule(
-    'Object.getPrototypeOf(import.meta.prop).secret = secret;',
-    {
-        initializeImportMeta(meta) {
-            // Примечание: этот объект создается в верхнем контексте. Как таковой,
-            // Object.getPrototypeOf(import.meta.prop) указывает на
-            // Object.prototype в верхнем контексте, а не на прототип в
-            // контекстифицированном объекте.
-            meta.prop = {};
-        },
-    }
-);
-// Поскольку модуль не имеет зависимостей, функция linker никогда не будет вызвана.
-await module.link(() => {});
-await module.evaluate();
+=== "MJS"
 
-// Теперь Object.prototype.secret будет равен 42.
-//
-// Чтобы исправить эту проблему, замените
-// meta.prop = {};
-// выше на
-// meta.prop = vm.runInContext('{}', contextifiedObject);
-```
-
-```cjs
-const vm = require('node:vm');
-const contextifiedObject = vm.createContext({ secret: 42 });
-(async () => {
+    ```js
+    import vm from 'node:vm';
+    
+    const contextifiedObject = vm.createContext({ secret: 42 });
+    
     const module = new vm.SourceTextModule(
-        'Object.getPrototypeOf(import.meta.prop).secret = secret;',
-        {
-            initializeImportMeta(meta) {
-                // Note: this object is created in the top context. As such,
-                // Object.getPrototypeOf(import.meta.prop) points to the
-                // Object.prototype in the top context rather than that in
-                // the contextified object.
-                meta.prop = {};
-            },
-        }
-    );
-    // Since module has no dependencies, the linker function will never be called.
-    await module.link(() => {});
+      'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+      {
+        initializeImportMeta(meta) {
+          // Note: this object is created in the top context. As such,
+          // Object.getPrototypeOf(import.meta.prop) points to the
+          // Object.prototype in the top context rather than that in
+          // the contextified object.
+          meta.prop = {};
+        },
+      });
+    // The module has an empty `moduleRequests` array.
+    module.linkRequests([]);
+    module.instantiate();
     await module.evaluate();
+    
     // Now, Object.prototype.secret will be equal to 42.
     //
     // To fix this problem, replace
     //     meta.prop = {};
     // above with
     //     meta.prop = vm.runInContext('{}', contextifiedObject);
-})();
-```
+    ```
+
+=== "CJS"
+
+    ```js
+    const vm = require('node:vm');
+    const contextifiedObject = vm.createContext({ secret: 42 });
+    (async () => {
+      const module = new vm.SourceTextModule(
+        'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+        {
+          initializeImportMeta(meta) {
+            // Note: this object is created in the top context. As such,
+            // Object.getPrototypeOf(import.meta.prop) points to the
+            // Object.prototype in the top context rather than that in
+            // the contextified object.
+            meta.prop = {};
+          },
+        });
+      // The module has an empty `moduleRequests` array.
+      module.linkRequests([]);
+      module.instantiate();
+      await module.evaluate();
+      // Now, Object.prototype.secret will be equal to 42.
+      //
+      // To fix this problem, replace
+      //     meta.prop = {};
+      // above with
+      //     meta.prop = vm.runInContext('{}', contextifiedObject);
+    })();
+    ```
 
 ### `sourceTextModule.createCachedData()`
 
--   Возвращает: [`<Buffer>`](buffer.md#buffer)
+<!-- YAML
+added:
+ - v13.7.0
+ - v12.17.0
+-->
 
-Создает кэш кода, который может быть использован с опцией `cachedData` конструктора `SourceTextModule`. Возвращает `Буфер`. Этот метод может быть вызван любое количество раз до того, как модуль будет оценен.
+* Возвращает: [<Buffer>](buffer.md#buffer)
 
-Кэш кода `SourceTextModule` не содержит никаких наблюдаемых состояний JavaScript. Кэш кода можно сохранять вместе с исходным текстом сценария и использовать для создания новых экземпляров `SourceTextModule` многократно.
+Creates a code cache that can be used with the `SourceTextModule` constructor's
+`cachedData` option. Returns a `Buffer`. This method may be called any number
+of times before the module has been evaluated.
 
-Функции в источнике `SourceTextModule` могут быть помечены как лениво компилируемые, и они не компилируются при построении `SourceTextModule`. Эти функции будут скомпилированы, когда они будут вызваны в первый раз. Кэш кода сериализует метаданные, которые V8 знает о `SourceTextModule` на данный момент, которые он может использовать для ускорения компиляции в будущем.
+The code cache of the `SourceTextModule` doesn't contain any JavaScript
+observable states. The code cache is safe to be saved along side the script
+source and used to construct new `SourceTextModule` instances multiple times.
+
+Functions in the `SourceTextModule` source can be marked as lazily compiled
+and they are not compiled at construction of the `SourceTextModule`. These
+functions are going to be compiled when they are invoked the first time. The
+code cache serializes the metadata that V8 currently knows about the
+`SourceTextModule` that it can use to speed up future compilations.
 
 ```js
-// Создаем начальный модуль
+// Create an initial module
 const module = new vm.SourceTextModule('const a = 1;');
 
-// Создаем кэшированные данные из этого модуля
+// Create cached data from this module
 const cachedData = module.createCachedData();
 
-// Создайте новый модуль, используя кэшированные данные. Код должен быть одинаковым.
-const module2 = new vm.SourceTextModule('const a = 1;', {
-    cachedData,
-});
+// Create a new module using the cached data. The code must be the same.
+const module2 = new vm.SourceTextModule('const a = 1;', { cachedData });
 ```
 
-## Класс: `vm.SyntheticModule`.
+### `sourceTextModule.dependencySpecifiers`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+changes:
+  - version:
+    - v24.4.0
+    - v22.20.0
+    pr-url: https://github.com/nodejs/node/pull/20300
+    description: This is deprecated in favour of `sourceTextModule.moduleRequests`.
+-->
 
-    Экспериментальный
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.4.0, v22.20.0 | Это устарело в пользу `sourceTextModule.moduleRequests`. |
 
-Эта возможность доступна только при включенном флаге команды `--experimental-vm-modules`.
+> Stability: 0 - Deprecated: Use [`sourceTextModule.moduleRequests`][] instead.
 
--   Расширяет: {vm.Module}
+* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Класс `vm.SyntheticModule` предоставляет [Synthetic Module Record](https://heycam.github.io/webidl/#synthetic-module-records), как определено в спецификации WebIDL. Целью синтетических модулей является предоставление общего интерфейса для раскрытия источников не-JavaScript в графы модулей ECMAScript.
+The specifiers of all dependencies of this module. The returned array is frozen
+to disallow any changes to it.
+
+Corresponds to the `[[RequestedModules]]` field of [Cyclic Module Record][]s in
+the ECMAScript specification.
+
+### `sourceTextModule.hasAsyncGraph()`
+
+<!-- YAML
+added: v24.9.0
+-->
+
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Iterates over the dependency graph and returns `true` if any module in its
+dependencies or this module itself contains top-level `await` expressions,
+otherwise returns `false`.
+
+The search may be slow if the graph is big enough.
+
+This requires the module to be instantiated first. If the module is not
+instantiated yet, an error will be thrown.
+
+### `sourceTextModule.hasTopLevelAwait()`
+
+<!-- YAML
+added: v24.9.0
+-->
+
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Returns whether the module itself contains any top-level `await` expressions.
+
+This corresponds to the field `[[HasTLA]]` in [Cyclic Module Record][] in the
+ECMAScript specification.
+
+### `sourceTextModule.instantiate()`
+
+<!-- YAML
+added:
+ - v24.8.0
+ - v22.21.0
+-->
+
+* Возвращает: {undefined}
+
+Instantiate the module with the linked requested modules.
+
+This resolves the imported bindings of the module, including re-exported
+binding names. When there are any bindings that cannot be resolved,
+an error would be thrown synchronously.
+
+If the requested modules include cyclic dependencies, the
+[`sourceTextModule.linkRequests(modules)`][] method must be called on all
+modules in the cycle before calling this method.
+
+### `sourceTextModule.linkRequests(modules)`
+
+<!-- YAML
+added:
+ - v24.8.0
+ - v22.21.0
+-->
+
+* `modules` [<vm.Module[]>](vm.md) Array of `vm.Module` objects that this module depends on.
+  The order of the modules in the array is the order of
+  [`sourceTextModule.moduleRequests`][].
+* Возвращает: {undefined}
+
+Link module dependencies. This method must be called before evaluation, and
+can only be called once per module.
+
+The order of the module instances in the `modules` array should correspond to the order of
+[`sourceTextModule.moduleRequests`][] being resolved. If two module requests have the same
+specifier and import attributes, they must be resolved with the same module instance or an
+`ERR_MODULE_LINK_MISMATCH` would be thrown. For example, when linking requests for this
+module:
+
+<!-- eslint-disable no-duplicate-imports -->
+
+=== "MJS"
+
+    ```js
+    import foo from 'foo';
+    import source Foo from 'foo';
+    ```
+
+<!-- eslint-enable no-duplicate-imports -->
+
+The `modules` array must contain two references to the same instance, because the two
+module requests are identical but in two phases.
+
+If the module has no dependencies, the `modules` array can be empty.
+
+Users can use `sourceTextModule.moduleRequests` to implement the host-defined
+[HostLoadImportedModule][] abstract operation in the ECMAScript specification,
+and using `sourceTextModule.linkRequests()` to invoke specification defined
+[FinishLoadingImportedModule][], on the module with all dependencies in a batch.
+
+It's up to the creator of the `SourceTextModule` to determine if the resolution
+of the dependencies is synchronous or asynchronous.
+
+After each module in the `modules` array is linked, call
+[`sourceTextModule.instantiate()`][].
+
+### `sourceTextModule.moduleRequests`
+
+<!-- YAML
+added:
+  - v24.4.0
+  - v22.20.0
+-->
+
+* Тип: {ModuleRequest\[]} Dependencies of this module.
+
+The requested import dependencies of this module. The returned array is frozen
+to disallow any changes to it.
+
+For example, given a source text:
+
+<!-- eslint-disable no-duplicate-imports -->
+
+=== "MJS"
+
+    ```js
+    import foo from 'foo';
+    import fooAlias from 'foo';
+    import bar from './bar.js';
+    import withAttrs from '../with-attrs.ts' with { arbitraryAttr: 'attr-val' };
+    import source Module from 'wasm-mod.wasm';
+    ```
+
+<!-- eslint-enable no-duplicate-imports -->
+
+The value of the `sourceTextModule.moduleRequests` will be:
 
 ```js
-const vm = require('node:vm');
-
-const source = '{ "a": 1 }';
-const module = new vm.SyntheticModule(
-    ['default'],
-    function () {
-        const obj = JSON.parse(source);
-        this.setExport('default', obj);
-    }
-);
-
-// Использование `module` в связывании...
+[
+  {
+    specifier: 'foo',
+    attributes: {},
+    phase: 'evaluation',
+  },
+  {
+    specifier: 'foo',
+    attributes: {},
+    phase: 'evaluation',
+  },
+  {
+    specifier: './bar.js',
+    attributes: {},
+    phase: 'evaluation',
+  },
+  {
+    specifier: '../with-attrs.ts',
+    attributes: { arbitraryAttr: 'attr-val' },
+    phase: 'evaluation',
+  },
+  {
+    specifier: 'wasm-mod.wasm',
+    attributes: {},
+    phase: 'source',
+  },
+];
 ```
 
-### `новый vm.SyntheticModule(exportNames, evaluateCallback[, options])`
+## Класс: `vm.SyntheticModule`
 
--   `exportNames` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив имен, которые будут экспортированы из модуля.
--   `evaluateCallback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при оценке модуля.
--   `options`
-    -   `identifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, используемая в трассировках стека. **По умолчанию:** `'vm:module(i)'`, где `i` - специфический для контекста возрастающий индекс.
-    -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [контекстифицированный](#what-does-it-mean-to-contextify-an-object) объект, возвращенный методом `vm.createContext()`, для компиляции и оценки этого `модуля`.
+<!-- YAML
+added:
+ - v13.0.0
+ - v12.16.0
+-->
 
-Создает новый экземпляр `SyntheticModule`.
+> Stability: 1 - Experimental
 
-Объекты, назначенные на экспорты этого экземпляра, могут позволить импортерам модуля получить доступ к информации вне указанного `контекста`. Используйте `vm.runInContext()` для создания объектов в определенном контексте.
+This feature is only available with the `--experimental-vm-modules` command
+flag enabled.
+
+* Extends: [<vm.Module>](vm.md)
+
+The `vm.SyntheticModule` class provides the [Synthetic Module Record][] as
+defined in the WebIDL specification. The purpose of synthetic modules is to
+provide a generic interface for exposing non-JavaScript sources to ECMAScript
+module graphs.
+
+=== "MJS"
+
+    ```js
+    import { SyntheticModule } from 'node:vm';
+    
+    const source = '{ "a": 1 }';
+    const syntheticModule = new SyntheticModule(['default'], function() {
+      const obj = JSON.parse(source);
+      this.setExport('default', obj);
+    });
+    
+    // Use `syntheticModule` in linking
+    (async () => {
+      await syntheticModule.link(() => {});
+      await syntheticModule.evaluate();
+    
+      console.log('Default export:', syntheticModule.namespace.default);
+    })();
+    ```
+
+=== "CJS"
+
+    ```js
+    const { SyntheticModule } = require('node:vm');
+    
+    const source = '{ "a": 1 }';
+    const syntheticModule = new SyntheticModule(['default'], function() {
+      const obj = JSON.parse(source);
+      this.setExport('default', obj);
+    });
+    
+    // Use `syntheticModule` in linking
+    (async () => {
+      await syntheticModule.link(() => {});
+      await syntheticModule.evaluate();
+    
+      console.log('Default export:', syntheticModule.namespace.default);
+    })();
+    ```
+
+### `new vm.SyntheticModule(exportNames, evaluateCallback[, options])`
+
+<!-- YAML
+added:
+ - v13.0.0
+ - v12.16.0
+-->
+
+* `exportNames` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Array of names that will be exported from the
+  module.
+* `evaluateCallback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called when the module is evaluated.
+* `options`
+  * `identifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
+    **По умолчанию:** `'vm:module(i)'` where `i` is a context-specific ascending
+    index.
+  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][] object as returned by the
+    `vm.createContext()` method, to compile and evaluate this `Module` in.
+
+Creates a new `SyntheticModule` instance.
+
+Objects assigned to the exports of this instance may allow importers of
+the module to access information outside the specified `context`. Use
+`vm.runInContext()` to create objects in a specific context.
 
 ### `syntheticModule.setExport(name, value)`
 
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя экспорта, который нужно установить.
--   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, на которое нужно установить экспорт.
+<!-- YAML
+added:
+ - v13.0.0
+ - v12.16.0
+changes:
+  - version:
+     - v24.8.0
+     - v22.21.0
+    pr-url: https://github.com/nodejs/node/pull/59000
+    description: No longer need to call `syntheticModule.link()` before
+                 calling this method.
+-->
 
-Этот метод используется после соединения модуля для установки значений экспортов. Если он будет вызван до того, как модуль будет связан, то будет выдана ошибка [`ERR_VM_MODULE_STATUS`](errors.md#err_vm_module_status).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.8.0, v22.21.0 | Больше не нужно вызывать SyntheticModule.link() перед вызовом этого метода. |
 
-```mjs
-import vm from 'node:vm';
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the export to set.
+* `value` {any} The value to set the export to.
 
-const m = new vm.SyntheticModule(['x'], () => {
-    m.setExport('x', 1);
-});
+This method sets the module export binding slots with the given value.
 
-await m.link(() => {});
-await m.evaluate();
+=== "MJS"
 
-assert.strictEqual(m.namespace.x, 1);
-```
-
-```cjs
-const vm = require('node:vm');
-(async () => {
+    ```js
+    import vm from 'node:vm';
+    
     const m = new vm.SyntheticModule(['x'], () => {
-        m.setExport('x', 1);
+      m.setExport('x', 1);
     });
-    await m.link(() => {});
+    
     await m.evaluate();
+    
     assert.strictEqual(m.namespace.x, 1);
-})();
-```
+    ```
+
+=== "CJS"
+
+    ```js
+    const vm = require('node:vm');
+    (async () => {
+      const m = new vm.SyntheticModule(['x'], () => {
+        m.setExport('x', 1);
+      });
+      await m.evaluate();
+      assert.strictEqual(m.namespace.x, 1);
+    })();
+    ```
+
+## Тип: `ModuleRequest`
+
+<!-- YAML
+added:
+  - v24.4.0
+  - v22.20.0
+-->
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module.
+  * `attributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
+    [WithClause][] in a [ImportDeclaration][], or an empty object if no value was
+    provided.
+  * `phase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the requested module (`"source"` or `"evaluation"`).
+
+A `ModuleRequest` represents the request to import a module with given import attributes and phase.
 
 ## `vm.compileFunction(code[, params[, options]])`
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тело функции для компиляции.
--   `params` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк, содержащий все параметры для функции.
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `''`''.
-    -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-    -   `produceCachedData` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Указывает, нужно ли создавать новые данные кэша. **По умолчанию:** `false`.
-    -   `parsingContext` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [контекстированный](#what-does-it-mean-to-contextify-an-object) объект, в котором должна быть скомпилирована указанная функция.
-    -   `contextExtensions` {Object\[\]} Массив, содержащий коллекцию расширений контекста (объектов, оборачивающих текущую область видимости), которые будут применены при компиляции. **По умолчанию:** `[]`.
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей и не должна считаться стабильной.
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) спецификатор, передаваемый в `import()`.
-        -   `function` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
--   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+<!-- YAML
+added: v10.10.0
+changes:
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v19.6.0
+    - v18.15.0
+    pr-url: https://github.com/nodejs/node/pull/46320
+    description: The return value now includes `cachedDataRejected`
+                 with the same semantics as the `vm.Script` version
+                 if the `cachedData` option was passed.
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+  - version: v15.9.0
+    pr-url: https://github.com/nodejs/node/pull/35431
+    description: Added `importModuleDynamically` option again.
+  - version: v14.3.0
+    pr-url: https://github.com/nodejs/node/pull/33364
+    description: Removal of `importModuleDynamically` due to compatibility
+                 issues.
+  - version:
+    - v14.1.0
+    - v13.14.0
+    pr-url: https://github.com/nodejs/node/pull/32985
+    description: The `importModuleDynamically` option is now supported.
+-->
 
-Компилирует заданный код в предоставленный контекст (если контекст не предоставлен, используется текущий контекст) и возвращает его завернутым в функцию с заданными `параметрами`.
+Добавлено в: v10.10.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v19.6.0, v18.15.0 | Возвращаемое значение теперь включает в себя `cachedDataRejected` с той же семантикой, что и версия `vm.Script`, если была передана опция `cachedData`. |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
+    | v15.9.0 | Снова добавлена ​​опция importModuleDynamically. |
+    | v14.3.0 | Удаление importModuleDynamically из-за проблем совместимости. |
+    | v14.1.0, v13.14.0 | Опция importModuleDynamically теперь поддерживается. |
+
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The body of the function to compile.
+* `params` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An array of strings containing all parameters for the
+  function.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+    by this script. **По умолчанию:** `''`.
+  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+    in stack traces produced by this script. **По умолчанию:** `0`.
+  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+    is displayed in stack traces produced by this script. **По умолчанию:** `0`.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+    `TypedArray`, or `DataView` with V8's code cache data for the supplied
+    source. This must be produced by a prior call to [`vm.compileFunction()`][]
+    with the same `code` and `params`.
+  * `produceCachedData` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Specifies whether to produce new cache data.
+    **По умолчанию:** `false`.
+  * `parsingContext` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][] object in which the said
+    function should be compiled in.
+  * `contextExtensions` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An array containing a collection of context
+    extensions (objects wrapping the current scope) to be applied while
+    compiling. **По умолчанию:** `[]`.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Used to specify the how the modules should be loaded during the evaluation of
+    this function when `import()` is called. This option is part of the
+    experimental modules API. We do not recommend using it in a production
+    environment. For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
+* Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Compiles the given code into the provided context (if no context is
+supplied, the current context is used), and returns it wrapped inside a
+function with the given `params`.
+
+## `vm.constants`
+
+<!-- YAML
+added:
+  - v21.7.0
+  - v20.12.0
+-->
+
+* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns an object containing commonly used constants for VM operations.
+
+### `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`
+
+<!-- YAML
+added:
+  - v21.7.0
+  - v20.12.0
+-->
+
+> Stability: 1.1 - Active development
+
+A constant that can be used as the `importModuleDynamically` option to
+`vm.Script` and `vm.compileFunction()` so that Node.js uses the default
+ESM loader from the main context to load the requested module.
+
+For detailed information, see
+[Support of dynamic `import()` in compilation APIs][].
 
 ## `vm.createContext([contextObject[, options]])`
 
--   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Человекочитаемое имя вновь созданного контекста. **По умолчанию:** `'VM Context i'`, где `i` - возрастающий числовой индекс созданного контекста.
-    -   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), соответствующее вновь созданному контексту для целей отображения. Origin должен быть отформатирован как URL, но содержать только схему, хост и порт (если необходимо), как значение свойства [`url.origin`](url.md#urlorigin) объекта [`URL`](url.md#class-url). В частности, в этой строке не должно быть косой черты, так как она обозначает путь. **По умолчанию:** ``````.
-    -   `codeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-        -   `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-        -   `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-    -   `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут выполняться сразу после запуска скрипта через [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) контекстифицированный объект.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v22.8.0
+    - v20.18.0
+    pr-url: https://github.com/nodejs/node/pull/54394
+    description: The `contextObject` argument now accepts `vm.constants.DONT_CONTEXTIFY`.
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                 `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v21.2.0
+    - v20.11.0
+    pr-url: https://github.com/nodejs/node/pull/50360
+    description: The `importModuleDynamically` option is supported now.
+  - version: v14.6.0
+    pr-url: https://github.com/nodejs/node/pull/34023
+    description: The `microtaskMode` option is supported now.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19398
+    description: The first argument can no longer be a function.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19016
+    description: The `codeGeneration` option is supported now.
+-->
 
-Если дан `contextObject`, метод `vm.createContext()` [подготовит этот объект](#what-does-it-mean-to-contextify-an-object), чтобы его можно было использовать в вызовах [`vm.runInContext()`](#vmrunincontextcode-contextifiedobject-options) или [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). Внутри таких скриптов `contextObject` будет глобальным объектом, сохраняя все свои существующие свойства, но также имея встроенные объекты и функции, которые есть у любого стандартного [глобального объекта](https://es5.github.io/#x15.1). Вне скриптов, выполняемых модулем vm, глобальные переменные останутся неизменными.
+Добавлено в: v0.3.1
 
-```js
-const vm = require('node:vm');
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.8.0, v20.18.0 | Аргумент contextObject теперь принимает vm.constants.DONT_CONTEXTIFY. |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v21.2.0, v20.11.0 | Опция importModuleDynamically теперь поддерживается. |
+    | v14.6.0 | Опция microtaskMode теперь поддерживается. |
+    | v10.0.0 | Первый аргумент больше не может быть функцией. |
+    | v10.0.0 | Опция `codeGeneration` теперь поддерживается. |
 
-global.globalVar = 3;
+* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+  Either [`vm.constants.DONT_CONTEXTIFY`][] or an object that will be [contextified][].
+  If `undefined`, an empty contextified object will be created for backwards compatibility.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
+    **По умолчанию:** `'VM Context i'`, where `i` is an ascending numerical index of
+    the created context.
+  * `origin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly created
+    context for display purposes. The origin should be formatted like a URL,
+    but with only the scheme, host, and port (if necessary), like the value of
+    the [`url.origin`][] property of a [`URL`][] object. Most notably, this
+    string should omit the trailing slash, as that denotes a path.
+    **По умолчанию:** `''`.
+  * `codeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
+      constructors (`Function`, `GeneratorFunction`, etc) will throw an
+      `EvalError`. **По умолчанию:** `true`.
+    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
+      module will throw a `WebAssembly.CompileError`. **По умолчанию:** `true`.
+  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
+    scheduled through `Promise`s and `async function`s) will be run immediately
+    after a script has run through [`script.runInContext()`][].
+    They are included in the `timeout` and `breakOnSigint` scopes in that case.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Used to specify the how the modules should be loaded when `import()` is
+    called in this context without a referrer script or module. This option is
+    part of the experimental modules API. We do not recommend using it in a
+    production environment. For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
+* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) contextified object.
 
-const context = { globalVar: 1 };
-vm.createContext(context);
+If the given `contextObject` is an object, the `vm.createContext()` method will [prepare that
+object][contextified] and return a reference to it so that it can be used in
+calls to [`vm.runInContext()`][] or [`script.runInContext()`][]. Inside such
+scripts, the global object will be wrapped by the `contextObject`, retaining all of its
+existing properties but also having the built-in objects and functions any
+standard [global object][] has. Outside of scripts run by the vm module, global
+variables will remain unchanged.
 
-vm.runInContext('globalVar *= 2;', context);
+=== "MJS"
 
-console.log(context);
-// Prints: { globalVar: 2 }
+    ```js
+    import { createContext, runInContext } from 'node:vm';
+    
+    global.globalVar = 3;
+    
+    const context = { globalVar: 1 };
+    createContext(context);
+    
+    runInContext('globalVar *= 2;', context);
+    
+    console.log(context);
+    // Prints: { globalVar: 2 }
+    
+    console.log(global.globalVar);
+    // Prints: 3
+    ```
 
-console.log(global.globalVar);
-// Печатает: 3
-```
+=== "CJS"
 
-Если `contextObject` опущен (или передан явно как `undefined`), будет возвращен новый, пустой [контекстированный](#what-does-it-mean-to-contextify-an-object) объект.
+    ```js
+    const { createContext, runInContext } = require('node:vm');
+    
+    global.globalVar = 3;
+    
+    const context = { globalVar: 1 };
+    createContext(context);
+    
+    runInContext('globalVar *= 2;', context);
+    
+    console.log(context);
+    // Prints: { globalVar: 2 }
+    
+    console.log(global.globalVar);
+    // Prints: 3
+    ```
 
-Метод `vm.createContext()` в первую очередь полезен для создания единого контекста, который может быть использован для запуска нескольких сценариев. Например, при эмуляции веб-браузера этот метод можно использовать для создания одного контекста, представляющего глобальный объект окна, а затем запускать все теги `<script>` вместе в этом контексте.
+If `contextObject` is omitted (or passed explicitly as `undefined`), a new,
+empty [contextified][] object will be returned.
 
-Указанные `name` и `origin` контекста становятся видимыми через API Inspector.
+When the global object in the newly created context is [contextified][], it has some quirks
+compared to ordinary global objects. For example, it cannot be frozen. To create a context
+without the contextifying quirks, pass [`vm.constants.DONT_CONTEXTIFY`][] as the `contextObject`
+argument. See the documentation of [`vm.constants.DONT_CONTEXTIFY`][] for details.
+
+The `vm.createContext()` method is primarily useful for creating a single
+context that can be used to run multiple scripts. For instance, if emulating a
+web browser, the method can be used to create a single context representing a
+window's global object, then run all `<script>` tags together within that
+context.
+
+The provided `name` and `origin` of the context are made visible through the
+Inspector API.
 
 ## `vm.isContext(object)`
 
--   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.11.7
+-->
 
-Возвращает `true`, если данный объект `object` был [контекстирован](#what-does-it-mean-to-contextify-an-object) с помощью [`vm.createContext()`](#vmcreatecontextcontextobject-options).
+* `object` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Returns `true` if the given `object` object has been [contextified][] using
+[`vm.createContext()`][], or if it's the global object of a context created
+using [`vm.constants.DONT_CONTEXTIFY`][].
 
 ## `vm.measureMemory([options])`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added: v13.10.0
+-->
 
-    Экспериментальная
+> Stability: 1 - Experimental
 
-Измеряет память, известную V8 и используемую всеми контекстами, известными текущему изоляту V8 или основному контексту.
+Measure the memory known to V8 and used by all contexts known to the
+current V8 isolate, or the main context.
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно.
-    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Либо `сводный`, либо `детальный`. В кратком режиме будет возвращена только память, измеренная для основного контекста. В подробном режиме будет возвращена память, измеренная для всех контекстов, известных текущему изоляту V8. **По умолчанию:** `'summary'`.
-    -   `execution` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Либо `'default'`, либо `'eager'`. При выполнении по умолчанию обещание не будет разрешено до следующего запланированного запуска сборки мусора, что может занять некоторое время (или никогда, если программа завершится до следующего GC). При нетерпеливом выполнении GC будет запущен сразу же, чтобы измерить память. **По умолчанию:** `'default'\*.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Если память успешно измерена, обещание разрешится с объектом, содержащим информацию об использовании памяти.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional.
+  * `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'summary'` or `'detailed'`. In summary mode,
+    only the memory measured for the main context will be returned. In
+    detailed mode, the memory measured for all contexts known to the
+    current V8 isolate will be returned.
+    **По умолчанию:** `'summary'`
+  * `execution` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'default'` or `'eager'`. With default
+    execution, the promise will not resolve until after the next scheduled
+    garbage collection starts, which may take a while (or never if the program
+    exits before the next GC). With eager execution, the GC will be started
+    right away to measure the memory.
+    **По умолчанию:** `'default'`
+* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) If the memory is successfully measured, the promise will
+  resolve with an object containing information about the memory usage.
+  Otherwise it will be rejected with an `ERR_CONTEXT_NOT_INITIALIZED` error.
 
-Формат объекта, с которым может разрешиться возвращаемое обещание, специфичен для движка V8 и может меняться от версии V8 к версии.
+The format of the object that the returned Promise may resolve with is
+specific to the V8 engine and may change from one version of V8 to the next.
 
-Возвращаемый результат отличается от статистики, возвращаемой `v8.getHeapSpaceStatistics()` тем, что `vm.measureMemory()` измеряет память, достижимую каждым специфическим для V8 контекстом в текущем экземпляре движка V8, в то время как результат `v8.getHeapSpaceStatistics()` измеряет память, занимаемую каждым пространством кучи в текущем экземпляре V8.
+The returned result is different from the statistics returned by
+`v8.getHeapSpaceStatistics()` in that `vm.measureMemory()` measure the
+memory reachable by each V8 specific contexts in the current instance of
+the V8 engine, while the result of `v8.getHeapSpaceStatistics()` measure
+the memory occupied by each heap space in the current V8 instance.
 
-```js
-const vm = require('node:vm');
-// Измерьте память, используемую основным контекстом.
-vm.measureMemory({ mode: 'summary' })
-    // Это то же самое, что и vm.measureMemory()
-    .then((result) => {
-        // Текущий формат:
+=== "MJS"
+
+    ```js
+    import { createContext, measureMemory } from 'node:vm';
+    // Measure the memory used by the main context.
+    measureMemory({ mode: 'summary' })
+      // This is the same as vm.measureMemory()
+      .then((result) => {
+        // The current format is:
         // {
-        // итого: {
-        // jsMemoryEstimate: 2418479, jsMemoryRange: [ 2418479, 2745799 ]
-        // }
+        //   total: { jsMemoryEstimate: 1601828, jsMemoryRange: [1601828, 5275288] },
+        //   WebAssembly: { code: 0, metadata: 33962 },
         // }
         console.log(result);
+      });
+    
+    const context = createContext({ a: 1 });
+    measureMemory({ mode: 'detailed', execution: 'eager' }).then((result) => {
+      // Reference the context here so that it won't be GC'ed
+      // until the measurement is complete.
+      console.log('Context:', context.a);
+      // {
+      //   total: { jsMemoryEstimate: 1767100, jsMemoryRange: [1767100, 5440560] },
+      //   WebAssembly: { code: 0, metadata: 33962 },
+      //   current: { jsMemoryEstimate: 1601828, jsMemoryRange: [1601828, 5275288] },
+      //   other: [{ jsMemoryEstimate: 165272, jsMemoryRange: [Array] }],
+      // }
+      console.log(result);
     });
+    ```
 
-const context = vm.createContext({ a: 1 });
-vm.measureMemory({
-    mode: 'detailed',
-    execution: 'eager',
-}).then((result) => {
-    // Ссылаемся на контекст здесь, чтобы он не был GC'ed
-    // пока измерение не будет завершено.
-    console.log(context.a);
-    // {
-    // итого: {
-    // jsMemoryEstimate: 2574732,
-    // jsMemoryRange: [ 2574732, 2904372 ]
-    // },
-    // текущий: {
-    // jsMemoryEstimate: 2438996,
-    // jsMemoryRange: [ 2438996, 2768636 ]
-    // },
-    // other: [
-    // {
-    // jsMemoryEstimate: 135736,
-    // jsMemoryRange: [ 135736, 465376 ]
-    // }
-    // ]
-    // }
-    console.log(result);
-});
-```
+=== "CJS"
+
+    ```js
+    const { createContext, measureMemory } = require('node:vm');
+    // Measure the memory used by the main context.
+    measureMemory({ mode: 'summary' })
+      // This is the same as vm.measureMemory()
+      .then((result) => {
+        // The current format is:
+        // {
+        //   total: { jsMemoryEstimate: 1601828, jsMemoryRange: [1601828, 5275288] },
+        //   WebAssembly: { code: 0, metadata: 33962 },
+        // }
+        console.log(result);
+      });
+    
+    const context = createContext({ a: 1 });
+    measureMemory({ mode: 'detailed', execution: 'eager' }).then((result) => {
+      // Reference the context here so that it won't be GC'ed
+      // until the measurement is complete.
+      console.log('Context:', context.a);
+      // {
+      //   total: { jsMemoryEstimate: 1767100, jsMemoryRange: [1767100, 5440560] },
+      //   WebAssembly: { code: 0, metadata: 33962 },
+      //   current: { jsMemoryEstimate: 1601828, jsMemoryRange: [1601828, 5275288] },
+      //   other: [{ jsMemoryEstimate: 165272, jsMemoryRange: [Array] }],
+      // }
+      console.log(result);
+    });
+    ```
 
 ## `vm.runInContext(code, contextifiedObject[, options])`
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции и запуска.
--   `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) контекстифицированный объект, который будет использоваться в качестве `глобального` при компиляции и выполнении `кода`.
--   `options` {Object|string}
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-    -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-    -   `cachedData` {Buffer|TypedArray|DataView} Provides an optional `Buffer` or `TypedArray`, or `DataView` with V8’s code cache data for the supplied source.
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called during evaluation of this module when `import()` is called. If this option is not specified, calls to `import()` will reject with [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). This option is part of the experimental modules API. We do not recommend using it in a production environment.
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) specifier passed to `import()`
-        -   `script` {vm.Script}
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Module Namespace Object|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
--   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат самого последнего оператора, выполненного в сценарии.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakOnSigint` option is supported now.
+-->
 
-Метод `vm.runInContext()` компилирует `код`, выполняет его в контексте `contextifiedObject`, а затем возвращает результат. Выполняемый код не имеет доступа к локальной области видимости. Объект `contextifiedObject` _должен_ быть предварительно [контекстирован](#what-does-it-mean-to-contextify-an-object) с помощью метода [`vm.createContext()`](#vmcreatecontextcontextobject-options).
+Добавлено в: v0.3.1
 
-Если `options` - строка, то она задает имя файла.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
+    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-Следующий пример компилирует и выполняет различные скрипты, используя один объект [contextified](#what-does-it-mean-to-contextify-an-object):
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `contextifiedObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][] object that will be used
+  as the `global` when the `code` is compiled and run.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+    by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
+  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+    in stack traces produced by this script. **По умолчанию:** `0`.
+  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+    is displayed in stack traces produced by this script. **По умолчанию:** `0`.
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][] occurs
+    while compiling the `code`, the line of code causing the error is attached
+    to the stack trace. **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+    before terminating execution. If execution is terminated, an [`Error`][]
+    will be thrown. This value must be a strictly positive integer.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
+    [`Error`][]. Existing handlers for the event that have been attached via
+    `process.on('SIGINT')` are disabled during script execution, but continue to
+    work after that. **По умолчанию:** `false`.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+    `TypedArray`, or `DataView` with V8's code cache data for the supplied
+    source.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Used to specify the how the modules should be loaded during the evaluation
+    of this script when `import()` is called. This option is part of the
+    experimental modules API. We do not recommend using it in a production
+    environment. For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
 
-```js
-const vm = require('node:vm');
+The `vm.runInContext()` method compiles `code`, runs it within the context of
+the `contextifiedObject`, then returns the result. Running code does not have
+access to the local scope. The `contextifiedObject` object _must_ have been
+previously [contextified][] using the [`vm.createContext()`][] method.
 
-const contextObject = { globalVar: 1 };
-vm.createContext(contextObject);
+If `options` is a string, then it specifies the filename.
 
-for (let i = 0; i < 10; ++i) {
-    vm.runInContext('globalVar *= 2;', contextObject);
-}
-console.log(contextObject);
-// Prints: { globalVar: 1024 }
-```
+Следующий пример compiles and executes different scripts using a single
+[contextified][] object:
+
+=== "MJS"
+
+    ```js
+    import { createContext, runInContext } from 'node:vm';
+    
+    const contextObject = { globalVar: 1 };
+    createContext(contextObject);
+    
+    for (let i = 0; i < 10; ++i) {
+      runInContext('globalVar *= 2;', contextObject);
+    }
+    console.log(contextObject);
+    // Prints: { globalVar: 1024 }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { createContext, runInContext } = require('node:vm');
+    
+    const contextObject = { globalVar: 1 };
+    createContext(contextObject);
+    
+    for (let i = 0; i < 10; ++i) {
+      runInContext('globalVar *= 2;', contextObject);
+    }
+    console.log(contextObject);
+    // Prints: { globalVar: 1024 }
+    ```
 
 ## `vm.runInNewContext(code[, contextObject[, options]])`
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции и запуска.
--   `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, который будет [контекстирован](#what-does-it-mean-to-contextify-an-object). Если `не определено`, будет создан новый объект.
--   `options` {Object|string}
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Определяет имя файла, используемого в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `'evalmachine.<anonymous>'`.
-    -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задает смещение номера строки, которое отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет смещение номера колонки первой строки, которая отображается в трассировках стека, создаваемых этим скриптом. **По умолчанию:** `0`.
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, если при компиляции `кода` возникает [`ошибка`](errors.md#class-error), строка кода, вызвавшая ошибку, прикрепляется к трассировке стека. **По умолчанию:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет количество миллисекунд, в течение которых будет выполняться `код` перед завершением выполнения. Если выполнение прервано, будет выдана ошибка [`Error`](errors.md#class-error). This value must be a strictly positive integer.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Existing handlers for the event that have been attached via `process.on('SIGINT')` are disabled during script execution, but continue to work after that. **Default:** `false`.
-    -   `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context. **Default:** `'VM Context i'`, where `i` is an ascending numerical index of the created context.
-    -   `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) corresponding to the newly created context for display purposes. The origin should be formatted like a URL, but with only the scheme, host, and port (if necessary), like the value of the [`url.origin`](url.md#urlorigin) property of a [`URL`](url.md#class-url) object. Most notably, this string should omit the trailing slash, as that denotes a path. **Default:** `''`.
-    -   `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-        -   `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, любые вызовы `eval` или конструкторов функций (`Function`, `GeneratorFunction` и т.д.) будут вызывать `EvalError`. **По умолчанию:** `true`.
-        -   `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение false, то при любой попытке компиляции модуля WebAssembly будет выдаваться `WebAssembly.CompileError`. **По умолчанию:** `true`.
-    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) спецификатор, передаваемый в `import()`.
-        -   `script` {vm.Script}
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Module Namespace Object|vm.Module} Возвращать `vm.Module` рекомендуется для того, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
-    -   `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если установлено значение `afterEvaluate`, микрозадачи (задачи, запланированные через `Promise` и `async function`) будут запущены сразу после выполнения скрипта. В этом случае они включаются в диапазоны `timeout` и `breakOnSigint`.
--   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат самого последнего оператора, выполненного в скрипте.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v22.8.0
+    - v20.18.0
+    pr-url: https://github.com/nodejs/node/pull/54394
+    description: The `contextObject` argument now accepts `vm.constants.DONT_CONTEXTIFY`.
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+  - version: v14.6.0
+    pr-url: https://github.com/nodejs/node/pull/34023
+    description: The `microtaskMode` option is supported now.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19016
+    description: The `contextCodeGeneration` option is supported now.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakOnSigint` option is supported now.
+-->
 
-Команда `vm.runInNewContext()` сначала контекстирует заданный `contextObject` (или создает новый `contextObject`, если передан как `undefined`), компилирует `код`, запускает его в созданном контексте, а затем возвращает результат. Выполняемый код не имеет доступа к локальной области видимости.
+Добавлено в: v0.3.1
 
-Если `options` - строка, то она указывает имя файла.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.8.0, v20.18.0 | Аргумент contextObject теперь принимает vm.constants.DONT_CONTEXTIFY. |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
+    | v14.6.0 | Опция microtaskMode теперь поддерживается. |
+    | v10.0.0 | Опция contextCodeGeneration теперь поддерживается. |
+    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-Следующий пример компилирует и выполняет код, который увеличивает глобальную переменную и устанавливает новую. Эти глобальные переменные содержатся в `contextObject`.
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+  Either [`vm.constants.DONT_CONTEXTIFY`][] or an object that will be [contextified][].
+  If `undefined`, an empty contextified object will be created for backwards compatibility.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+    by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
+  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+    in stack traces produced by this script. **По умолчанию:** `0`.
+  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+    is displayed in stack traces produced by this script. **По умолчанию:** `0`.
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][] occurs
+    while compiling the `code`, the line of code causing the error is attached
+    to the stack trace. **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+    before terminating execution. If execution is terminated, an [`Error`][]
+    will be thrown. This value must be a strictly positive integer.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
+    [`Error`][]. Existing handlers for the event that have been attached via
+    `process.on('SIGINT')` are disabled during script execution, but continue to
+    work after that. **По умолчанию:** `false`.
+  * `contextName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
+    **По умолчанию:** `'VM Context i'`, where `i` is an ascending numerical index of
+    the created context.
+  * `contextOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly
+    created context for display purposes. The origin should be formatted like a
+    URL, but with only the scheme, host, and port (if necessary), like the
+    value of the [`url.origin`][] property of a [`URL`][] object. Most notably,
+    this string should omit the trailing slash, as that denotes a path.
+    **По умолчанию:** `''`.
+  * `contextCodeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
+      constructors (`Function`, `GeneratorFunction`, etc) will throw an
+      `EvalError`. **По умолчанию:** `true`.
+    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
+      module will throw a `WebAssembly.CompileError`. **По умолчанию:** `true`.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+    `TypedArray`, or `DataView` with V8's code cache data for the supplied
+    source.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Used to specify the how the modules should be loaded during the evaluation
+    of this script when `import()` is called. This option is part of the
+    experimental modules API. We do not recommend using it in a production
+    environment. For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
+  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
+    scheduled through `Promise`s and `async function`s) will be run immediately
+    after the script has run. They are included in the `timeout` and
+    `breakOnSigint` scopes in that case.
+* Возвращает: {any} the result of the very last statement executed in the script.
 
-```js
-const vm = require('node:vm');
+This method is a shortcut to
+`(new vm.Script(code, options)).runInContext(vm.createContext(options), options)`.
+If `options` is a string, then it specifies the filename.
 
-const contextObject = {
-    animal: 'cat',
-    count: 2,
-};
+It does several things at once:
 
-vm.runInNewContext(
-    'count += 1; name = "kitty"',
-    contextObject
-);
-console.log(contextObject);
-// Prints: { animal: 'cat', count: 3, name: 'kitty' }
-```
+1. Creates a new context.
+2. If `contextObject` is an object, [contextifies][contextified] it with the new context.
+   If `contextObject` is undefined, creates a new object and [contextifies][contextified] it.
+   If `contextObject` is [`vm.constants.DONT_CONTEXTIFY`][], don't [contextify][contextified] anything.
+3. Compiles the code as a `vm.Script`
+4. Runs the compiled code within the created context. The code does not have access to the scope in
+   which this method is called.
+5. Returns the result.
+
+Следующий пример compiles and executes code that increments a global
+variable and sets a new one. These globals are contained in the `contextObject`.
+
+=== "MJS"
+
+    ```js
+    import { runInNewContext, constants } from 'node:vm';
+    
+    const contextObject = {
+      animal: 'cat',
+      count: 2,
+    };
+    
+    runInNewContext('count += 1; name = "kitty"', contextObject);
+    console.log(contextObject);
+    // Prints: { animal: 'cat', count: 3, name: 'kitty' }
+    
+    // This would throw if the context is created from a contextified object.
+    // vm.constants.DONT_CONTEXTIFY allows creating contexts with ordinary global objects that
+    // can be frozen.
+    const frozenContext = runInNewContext(
+      'Object.freeze(globalThis); globalThis;',
+      constants.DONT_CONTEXTIFY,
+    );
+    ```
+
+=== "CJS"
+
+    ```js
+    const { runInNewContext, constants } = require('node:vm');
+    
+    const contextObject = {
+      animal: 'cat',
+      count: 2,
+    };
+    
+    runInNewContext('count += 1; name = "kitty"', contextObject);
+    console.log(contextObject);
+    // Prints: { animal: 'cat', count: 3, name: 'kitty' }
+    
+    // This would throw if the context is created from a contextified object.
+    // vm.constants.DONT_CONTEXTIFY allows creating contexts with ordinary global objects that
+    // can be frozen.
+    const frozenContext = runInNewContext(
+      'Object.freeze(globalThis); globalThis;',
+      constants.DONT_CONTEXTIFY,
+    );
+    ```
 
 ## `vm.runInThisContext(code[, options])`
 
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
--   `options` {Object|string}
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced by this script. **Default:** `'evalmachine.<anonymous>'`.
-    -   `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed in stack traces produced by this script. **Default:** `0`.
-    -   `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that is displayed in stack traces produced by this script. **Default:** `0`.
-    -   `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`](errors.md#class-error) occurs while compiling the `code`, the line of code causing the error is attached to the stack trace. **Default:** `true`.
-    -   `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code` before terminating execution. If execution is terminated, an [`Error`](errors.md#class-error) will be thrown. This value must be a strictly positive integer.
-    -   `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an [`Error`](errors.md#class-error). Существующие обработчики события, которые были подключены через `process.on('SIGINT')`, отключаются во время выполнения скрипта, но продолжают работать после этого. **По умолчанию:** `false`.
-    -   `cachedData` {Buffer|TypedArray|DataView} Предоставляет необязательный `Buffer` или `TypedArray`, или `DataView` с данными кэша кода V8 для предоставленного источника.
-    -   `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается во время оценки этого модуля при вызове `import()`. Если эта опция не указана, вызовы `import()` будут отклонены с [`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing). Эта опция является частью API экспериментальных модулей. Мы не рекомендуем использовать ее в производственной среде.
-        -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) спецификатор, передаваемый в `import()`.
-        -   `script` {vm.Script}
-        -   `importAssertions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"assert"`, переданное в опциональном параметре [`optionsExpression`](https://tc39.es/proposal-import-assertions/#sec-evaluate-import-call), или пустой объект, если значение не было предоставлено.
-        -   Возвращает: {Объект пространства имен модуля|vm.Module} Рекомендуется возвращать `vm.Module`, чтобы воспользоваться преимуществами отслеживания ошибок и избежать проблем с пространствами имен, содержащими экспорт функций `then`.
--   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат самого последнего оператора, выполненного в сценарии.
+<!-- YAML
+added: v0.3.1
+changes:
+  - version:
+    - v21.7.0
+    - v20.12.0
+    pr-url: https://github.com/nodejs/node/pull/51244
+    description: Added support for
+                `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`.
+  - version:
+    - v17.0.0
+    - v16.12.0
+    pr-url: https://github.com/nodejs/node/pull/40249
+    description: Added support for import attributes to the
+                 `importModuleDynamically` parameter.
+  - version: v6.3.0
+    pr-url: https://github.com/nodejs/node/pull/6635
+    description: The `breakOnSigint` option is supported now.
+-->
 
-`vm.runInThisContext()` компилирует `код`, выполняет его в контексте текущего `global` и возвращает результат. Выполняемый код не имеет доступа к локальной области видимости, но имеет доступ к текущему объекту `global`.
+Добавлено в: v0.3.1
 
-Если `options` - строка, то она указывает имя файла.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
+    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
+    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-Следующий пример иллюстрирует использование как `vm.runInThisContext()`, так и функции JavaScript [`eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) для выполнения одного и того же кода:
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+    by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
+  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+    in stack traces produced by this script. **По умолчанию:** `0`.
+  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+    is displayed in stack traces produced by this script. **По умолчанию:** `0`.
+  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][] occurs
+    while compiling the `code`, the line of code causing the error is attached
+    to the stack trace. **По умолчанию:** `true`.
+  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+    before terminating execution. If execution is terminated, an [`Error`][]
+    will be thrown. This value must be a strictly positive integer.
+  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+    (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
+    [`Error`][]. Existing handlers for the event that have been attached via
+    `process.on('SIGINT')` are disabled during script execution, but continue to
+    work after that. **По умолчанию:** `false`.
+  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+    `TypedArray`, or `DataView` with V8's code cache data for the supplied
+    source.
+  * `importModuleDynamically`
+    [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
+    Used to specify the how the modules should be loaded during the evaluation
+    of this script when `import()` is called. This option is part of the
+    experimental modules API. We do not recommend using it in a production
+    environment. For detailed information, see
+    [Support of dynamic `import()` in compilation APIs][].
+* Возвращает: {any} the result of the very last statement executed in the script.
 
-```js
-const vm = require('node:vm');
-let localVar = 'начальное значение';
+`vm.runInThisContext()` compiles `code`, runs it within the context of the
+current `global` and returns the result. Running code does not have access to
+local scope, but does have access to the current `global` object.
 
-const vmResult = vm.runInThisContext('localVar = "vm";');
-console.log(
-    `vmResult: '${vmResult}', localVar: '${localVar}'`
-);
-// Печатает: vmResult: 'vm', localVar: 'начальное значение'
+If `options` is a string, then it specifies the filename.
 
-const evalResult = eval('localVar = "eval";');
-console.log(
-    `evalResult: '${evalResult}', localVar: '${localVar}'`
-);
-// Печатает: evalResult: 'eval', localVar: 'eval'
-```
+Следующий пример illustrates using both `vm.runInThisContext()` and
+the JavaScript [`eval()`][] function to run the same code:
 
-Поскольку `vm.runInThisContext()` не имеет доступа к локальной области видимости, `localVar` остается неизменным. Напротив, [`eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) _имеет_ доступ к локальной области видимости, поэтому значение `localVar` изменяется. Таким образом, `vm.runInThisContext()` очень похож на [косвенный вызов `eval()`](https://es5.github.io/#x10.4.2), например, `(0,eval)('code')`.
+<!-- eslint-disable prefer-const -->
 
-## Пример: Запуск HTTP-сервера в виртуальной машине
+=== "MJS"
 
-При использовании [`script.runInThisContext()`](#scriptruninthiscontextoptions) или [`vm.runInThisContext()`](#vmruninthiscontextcode-options), код выполняется в текущем глобальном контексте V8. Код, переданный в этот контекст VM, будет иметь свою собственную изолированную область видимости.
+    ```js
+    import { runInThisContext } from 'node:vm';
+    let localVar = 'initial value';
+    
+    const vmResult = runInThisContext('localVar = "vm";');
+    console.log(`vmResult: '${vmResult}', localVar: '${localVar}'`);
+    // Prints: vmResult: 'vm', localVar: 'initial value'
+    
+    const evalResult = eval('localVar = "eval";');
+    console.log(`evalResult: '${evalResult}', localVar: '${localVar}'`);
+    // Prints: evalResult: 'eval', localVar: 'eval'
+    ```
 
-Чтобы запустить простой веб-сервер, использующий модуль `node:http`, код, переданный в контекст, должен либо сам вызвать `require('node:http')`, либо иметь ссылку на модуль `node:http`. Например:
+<!-- eslint-disable prefer-const -->
 
-```js
-'use strict';
-const vm = require('node:vm');
+=== "CJS"
 
-const code = `
-((require) => {
-  const http = require('node:http');
+    ```js
+    const { runInThisContext } = require('node:vm');
+    let localVar = 'initial value';
+    
+    const vmResult = runInThisContext('localVar = "vm";');
+    console.log(`vmResult: '${vmResult}', localVar: '${localVar}'`);
+    // Prints: vmResult: 'vm', localVar: 'initial value'
+    
+    const evalResult = eval('localVar = "eval";');
+    console.log(`evalResult: '${evalResult}', localVar: '${localVar}'`);
+    // Prints: evalResult: 'eval', localVar: 'eval'
+    ```
 
+Because `vm.runInThisContext()` does not have access to the local scope,
+`localVar` is unchanged. In contrast, a direct `eval()` call _does_ have access
+to the local scope, so the value `localVar` is changed. In this way
+`vm.runInThisContext()` is much like an [indirect `eval()` call][], e.g.
+`(0,eval)('code')`.
 
-  http.createServer((request, response) => {
-    response.writeHead(200, { 'Content-Type': 'text/plain' });
-    response.end('Hello World\n');
-  }).listen(8124);
+## Пример: Running an HTTP server within a VM
 
+When using either [`script.runInThisContext()`][] or
+[`vm.runInThisContext()`][], the code is executed within the current V8 global
+context. The code passed to this VM context will have its own isolated scope.
 
-  console.log('Server running at http://127.0.0.1:8124/');
-})`;
+In order to run a simple web server using the `node:http` module the code passed
+to the context must either call `require('node:http')` on its own, or have a
+reference to the `node:http` module passed to it. For instance:
 
-vm.runInThisContext(code)(require);
-```
+=== "MJS"
 
-В приведенном выше случае `require()` разделяет состояние с контекстом, из которого оно передается. Это может создать риск при выполнении недоверенного кода, например, изменить объекты в контексте нежелательным образом.
+    ```js
+    import { runInThisContext } from 'node:vm';
+    import { createRequire } from 'node:module';
+    
+    const require = createRequire(import.meta.url);
+    
+    const code = `
+    ((require) => {
+      const { createServer } = require('node:http');
+    
+      createServer((request, response) => {
+        response.writeHead(200, { 'Content-Type': 'text/plain' });
+        response.end('Hello World\\n');
+      }).listen(8124);
+    
+      console.log('Server running at http://127.0.0.1:8124/');
+    })`;
+    
+    runInThisContext(code)(require);
+    ```
 
-## Что значит "контекстифицировать" объект?
+=== "CJS"
 
-Весь JavaScript, выполняемый в Node.js, работает в рамках "контекста". Согласно [V8 Embedder's Guide](https://v8.dev/docs/embed#contexts):
+    ```js
+    const { runInThisContext } = require('node:vm');
+    
+    const code = `
+    ((require) => {
+      const { createServer } = require('node:http');
+    
+      createServer((request, response) => {
+        response.writeHead(200, { 'Content-Type': 'text/plain' });
+        response.end('Hello World\\n');
+      }).listen(8124);
+    
+      console.log('Server running at http://127.0.0.1:8124/');
+    })`;
+    
+    runInThisContext(code)(require);
+    ```
 
-> В V8 контекст - это среда выполнения, которая позволяет отдельным, не связанным между собой приложениям JavaScript выполняться в одном экземпляре V8. Вы должны явно указать контекст, в котором будет выполняться любой код JavaScript.
+The `require()` in the above case shares the state with the context it is
+passed from. This may introduce risks when untrusted code is executed, e.g.
+altering objects in the context in unwanted ways.
 
-Когда вызывается метод `vm.createContext()`, аргумент `contextObject` (или вновь созданный объект, если `contextObject` имеет значение `undefined`) ассоциируется с новым экземпляром V8 Context. Этот V8 Context предоставляет `коду`, выполняемому с помощью методов модуля `node:vm`, изолированную глобальную среду, в которой он может работать. Процесс создания V8 Context и ассоциирования его с `contextObject` - это то, что в данном документе называется "контекстированием" объекта.
+## What does it mean to "contextify" an object?
 
-## Взаимодействие по таймауту с асинхронными задачами и Promises
+All JavaScript executed within Node.js runs within the scope of a "context".
+According to the [V8 Embedder's Guide][]:
 
-`Promise` и `async function` могут планировать задачи, выполняемые движком JavaScript асинхронно. По умолчанию эти задачи запускаются после завершения выполнения всех функций JavaScript в текущем стеке. Это позволяет избежать функциональности опций `timeout` и `breakOnSigint`.
+> In V8, a context is an execution environment that allows separate, unrelated,
+> JavaScript applications to run in a single instance of V8. You must explicitly
+> specify the context in which you want any JavaScript code to be run.
 
-Например, следующий код, выполняемый `vm.runInNewContext()` с таймаутом в 5 миллисекунд, планирует бесконечный цикл для запуска после разрешения обещания. Запланированный цикл никогда не прерывается по таймауту:
+When the method `vm.createContext()` is called with an object, the `contextObject` argument
+will be used to wrap the global object of a new instance of a V8 Context
+(if `contextObject` is `undefined`, a new object will be created from the current context
+before its contextified). This V8 Context provides the `code` run using the `node:vm`
+module's methods with an isolated global environment within which it can operate.
+The process of creating the V8 Context and associating it with the `contextObject`
+in the outer context is what this document refers to as "contextifying" the object.
 
-```js
-const vm = require('node:vm');
+The contextifying would introduce some quirks to the `globalThis` value in the context.
+For example, it cannot be frozen, and it is not reference equal to the `contextObject`
+in the outer context.
 
-function loop() {
-    console.log('входим в цикл');
-    while (1) console.log(Date.now());
-}
+=== "MJS"
 
-vm.runInNewContext(
-    'Promise.resolve().then(() => loop());',
-    { loop, console },
-    { timeout: 5 }
-);
-// Это выводится *до* "входа в цикл" (!)
-console.log('done executing');
-```
+    ```js
+    import { createContext, runInContext } from 'node:vm';
+    
+    // An undefined `contextObject` option makes the global object contextified.
+    const context = createContext();
+    console.log(runInContext('globalThis', context) === context);  // false
+    // A contextified global object cannot be frozen.
+    try {
+      runInContext('Object.freeze(globalThis);', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // TypeError: Cannot freeze
+    }
+    console.log(runInContext('globalThis.foo = 1; foo;', context));  // 1
+    ```
 
-Это можно решить, передав `microtaskMode: 'afterEvaluate'` в код, который создает `Context`:
+=== "CJS"
 
-```js
-const vm = require('node:vm');
+    ```js
+    const { createContext, runInContext } = require('node:vm');
+    
+    // An undefined `contextObject` option makes the global object contextified.
+    const context = createContext();
+    console.log(runInContext('globalThis', context) === context);  // false
+    // A contextified global object cannot be frozen.
+    try {
+      runInContext('Object.freeze(globalThis);', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // TypeError: Cannot freeze
+    }
+    console.log(runInContext('globalThis.foo = 1; foo;', context));  // 1
+    ```
 
-function loop() {
-    while (1) console.log(Date.now());
-}
+To create a context with an ordinary global object and get access to a global proxy in
+the outer context with fewer quirks, specify `vm.constants.DONT_CONTEXTIFY` as the
+`contextObject` argument.
 
-vm.runInNewContext(
-    'Promise.resolve().then(() => loop());',
-    { loop, console },
-    { timeout: 5, microtaskMode: 'afterEvaluate' }
-);
-```
+### `vm.constants.DONT_CONTEXTIFY`
 
-В этом случае микрозадача, запланированная через `promise.then()`, будет запущена до возврата из `vm.runInNewContext()`, и будет прервана функцией `timeout`. Это относится только к коду, выполняющемуся в `vm.Context`, поэтому, например, [`vm.runInThisContext()`](#vmruninthiscontextcode-options) не принимает эту опцию.
+This constant, when used as the `contextObject` argument in vm APIs, instructs Node.js to create
+a context without wrapping its global object with another object in a Node.js-specific manner.
+As a result, the `globalThis` value inside the new context would behave more closely to an ordinary
+one.
 
-Обратные вызовы Promise заносятся в очередь микрозадач того контекста, в котором они были созданы. Например, если в примере выше заменить `() => loop()` на просто `loop`, то `loop` будет помещена в глобальную очередь микрозадач, поскольку она является функцией из внешнего (основного) контекста, и, таким образом, также сможет избежать таймаута.
+=== "MJS"
 
-Если внутри `vm.Context` доступны функции асинхронного планирования, такие как `process.nextTick()`, `queueMicrotask()`, `setTimeout()`, `setImmediate()` и т.д., то переданные им функции будут добавлены в глобальные очереди, общие для всех контекстов. Поэтому обратные вызовы, переданные этим функциям, также не контролируются через таймаут.
+    ```js
+    import { createContext, runInContext, constants } from 'node:vm';
+    
+    // Use vm.constants.DONT_CONTEXTIFY to freeze the global object.
+    const context = createContext(constants.DONT_CONTEXTIFY);
+    runInContext('Object.freeze(globalThis);', context);
+    try {
+      runInContext('bar = 1; bar;', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // ReferenceError: bar is not defined
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { createContext, runInContext, constants } = require('node:vm');
+    
+    // Use vm.constants.DONT_CONTEXTIFY to freeze the global object.
+    const context = createContext(constants.DONT_CONTEXTIFY);
+    runInContext('Object.freeze(globalThis);', context);
+    try {
+      runInContext('bar = 1; bar;', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // ReferenceError: bar is not defined
+    }
+    ```
+
+When `vm.constants.DONT_CONTEXTIFY` is used as the `contextObject` argument to [`vm.createContext()`][],
+the returned object is a proxy-like object to the global object in the newly created context with
+fewer Node.js-specific quirks. It is reference equal to the `globalThis` value in the new context,
+can be modified from outside the context, and can be used to access built-ins in the new context directly.
+
+=== "MJS"
+
+    ```js
+    import { createContext, runInContext, constants } from 'node:vm';
+    
+    const context = createContext(constants.DONT_CONTEXTIFY);
+    
+    // Returned object is reference equal to globalThis in the new context.
+    console.log(runInContext('globalThis', context) === context);  // true
+    
+    // Can be used to access globals in the new context directly.
+    console.log(context.Array);  // [Function: Array]
+    runInContext('foo = 1;', context);
+    console.log(context.foo);  // 1
+    context.bar = 1;
+    console.log(runInContext('bar;', context));  // 1
+    
+    // Can be frozen and it affects the inner context.
+    Object.freeze(context);
+    try {
+      runInContext('baz = 1; baz;', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // ReferenceError: baz is not defined
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { createContext, runInContext, constants } = require('node:vm');
+    
+    const context = createContext(constants.DONT_CONTEXTIFY);
+    
+    // Returned object is reference equal to globalThis in the new context.
+    console.log(runInContext('globalThis', context) === context);  // true
+    
+    // Can be used to access globals in the new context directly.
+    console.log(context.Array);  // [Function: Array]
+    runInContext('foo = 1;', context);
+    console.log(context.foo);  // 1
+    context.bar = 1;
+    console.log(runInContext('bar;', context));  // 1
+    
+    // Can be frozen and it affects the inner context.
+    Object.freeze(context);
+    try {
+      runInContext('baz = 1; baz;', context);
+    } catch (e) {
+      console.log(`${e.constructor.name}: ${e.message}`); // ReferenceError: baz is not defined
+    }
+    ```
+
+## Timeout interactions with asynchronous tasks and Promises
+
+`Promise`s and `async function`s can schedule tasks run by the JavaScript
+engine asynchronously. By default, these tasks are run after all JavaScript
+functions on the current stack are done executing.
+This allows escaping the functionality of the `timeout` and
+`breakOnSigint` options.
+
+For example, the following code executed by `vm.runInNewContext()` with a
+timeout of 5 milliseconds schedules an infinite loop to run after a promise
+resolves. The scheduled loop is never interrupted by the timeout:
+
+=== "MJS"
+
+    ```js
+    import { runInNewContext } from 'node:vm';
+    
+    function loop() {
+      console.log('entering loop');
+      while (1) console.log(Date.now());
+    }
+    
+    runInNewContext(
+      'Promise.resolve().then(() => loop());',
+      { loop, console },
+      { timeout: 5 },
+    );
+    // This is printed *before* 'entering infinite loop' (!)
+    console.log('done executing');
+    ```
+
+=== "CJS"
+
+    ```js
+    const { runInNewContext } = require('node:vm');
+    
+    function loop() {
+      console.log('entering loop');
+      while (1) console.log(Date.now());
+    }
+    
+    runInNewContext(
+      'Promise.resolve().then(() => loop());',
+      { loop, console },
+      { timeout: 5 },
+    );
+    // This is printed *before* 'entering infinite loop' (!)
+    console.log('done executing');
+    ```
+
+This can be addressed by passing `microtaskMode: 'afterEvaluate'` to the code
+that creates the `Context`:
+
+=== "MJS"
+
+    ```js
+    import { runInNewContext } from 'node:vm';
+    
+    function loop() {
+      while (1) console.log(Date.now());
+    }
+    
+    runInNewContext(
+      'Promise.resolve().then(() => loop());',
+      { loop, console },
+      { timeout: 5, microtaskMode: 'afterEvaluate' },
+    );
+    ```
+
+=== "CJS"
+
+    ```js
+    const { runInNewContext } = require('node:vm');
+    
+    function loop() {
+      while (1) console.log(Date.now());
+    }
+    
+    runInNewContext(
+      'Promise.resolve().then(() => loop());',
+      { loop, console },
+      { timeout: 5, microtaskMode: 'afterEvaluate' },
+    );
+    ```
+
+In this case, the microtask scheduled through `promise.then()` will be run
+before returning from `vm.runInNewContext()`, and will be interrupted
+by the `timeout` functionality. This applies only to code running in a
+`vm.Context`, so e.g. [`vm.runInThisContext()`][] does not take this option.
+
+Promise callbacks are entered into the microtask queue of the context in which
+they were created. For example, if `() => loop()` is replaced with just `loop`
+in the above example, then `loop` will be pushed into the global microtask
+queue, because it is a function from the outer (main) context, and thus will
+also be able to escape the timeout.
+
+If asynchronous scheduling functions such as `process.nextTick()`,
+`queueMicrotask()`, `setTimeout()`, `setImmediate()`, etc. are made available
+inside a `vm.Context`, functions passed to them will be added to global queues,
+which are shared by all contexts. Therefore, callbacks passed to those functions
+are not controllable through the timeout either.
+
+### When `microtaskMode` is `'afterEvaluate'`, beware sharing Promises between Contexts
+
+In `'afterEvaluate'` mode, the `Context` has its own microtask queue, separate
+from the global microtask queue used by the outer (main) context. While this
+mode is necessary to enforce `timeout` and enable `breakOnSigint` with
+asynchronous tasks, it also makes sharing promises between contexts challenging.
+
+In the example below, a promise is created in the inner context and shared with
+the outer context. When the outer context `await` on the promise, the execution
+flow of the outer context is disrupted in a surprising way: the log statement
+is never executed.
+
+=== "MJS"
+
+    ```js
+    import { createContext, runInContext } from 'node:vm';
+    
+    const inner_context = createContext({}, { microtaskMode: 'afterEvaluate' });
+    
+    // runInContext() returns a Promise created in the inner context.
+    const inner_promise = runInContext('Promise.resolve()', inner_context);
+    
+    // As part of performing `await`, the JavaScript runtime must enqueue a task
+    // on the microtask queue of the context where `inner_promise` was created.
+    // A task is added on the inner microtask queue, but **it will not be run
+    // automatically**: this task will remain pending indefinitely.
+    //
+    // Since the outer microtask queue is empty, execution in the outer module
+    // falls through, and the log statement below is never executed.
+    await inner_promise;
+    
+    console.log('this will NOT be printed');
+    ```
+
+=== "CJS"
+
+    ```js
+    const { createContext, runInContext } = require('node:vm');
+    
+    // runInContext() returns a Promise created in the inner context.
+    const inner_context = createContext({}, { microtaskMode: 'afterEvaluate' });
+    
+    (async () => {
+      const inner_promise = runInContext('Promise.resolve()', inner_context);
+    
+      // As part of performing `await`, the JavaScript runtime must enqueue a task
+      // on the microtask queue of the context where `inner_promise` was created.
+      // A task is added on the inner microtask queue, but **it will not be run
+      // automatically**: this task will remain pending indefinitely.
+      //
+      // Since the outer microtask queue is empty, execution in the outer module
+      // falls through, and the log statement below is never executed.
+      await inner_promise;
+    
+      console.log('this will NOT be printed');
+    })();
+    ```
+
+To successfully share promises between contexts with different microtask queues,
+it is necessary to ensure that tasks on the inner microtask queue will be run
+**whenever** the outer context enqueues a task on the inner microtask queue.
+
+The tasks on the microtask queue of a given context are run whenever
+`runInContext()` or `SourceTextModule.evaluate()` are invoked on a script or
+module using this context. In our example, the normal execution flow can be
+restored by scheduling a second call to `runInContext()` _before_ `await
+inner_promise`.
+
+=== "MJS"
+
+    ```js
+    // Schedule `runInContext()` to manually drain the inner context microtask
+    // queue; it will run after the `await` statement below.
+    setImmediate(() => {
+      vm.runInContext('', context);
+    });
+    
+    await inner_promise;
+    
+    console.log('OK');
+    ```
+
+**Note:** Strictly speaking, in this mode, `node:vm` departs from the letter of
+the ECMAScript specification for [enqueing jobs][], by allowing asynchronous
+tasks from different contexts to run in a different order than they were
+enqueued.
+
+## Support of dynamic `import()` in compilation APIs
+
+The following APIs support an `importModuleDynamically` option to enable dynamic
+`import()` in code compiled by the vm module.
+
+* `new vm.Script`
+* `vm.compileFunction()`
+* `new vm.SourceTextModule`
+* `vm.runInThisContext()`
+* `vm.runInContext()`
+* `vm.runInNewContext()`
+* `vm.createContext()`
+
+This option is still part of the experimental modules API. We do not recommend
+using it in a production environment.
+
+### When the `importModuleDynamically` option is not specified or undefined
+
+If this option is not specified, or if it's `undefined`, code containing
+`import()` can still be compiled by the vm APIs, but when the compiled code is
+executed and it actually calls `import()`, the result will reject with
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`][].
+
+### When `importModuleDynamically` is `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`
+
+This option is currently not supported for `vm.SourceTextModule`.
+
+With this option, when an `import()` is initiated in the compiled code, Node.js
+would use the default ESM loader from the main context to load the requested
+module and return it to the code being executed.
+
+This gives access to Node.js built-in modules such as `fs` or `http`
+to the code being compiled. If the code is executed in a different context,
+be aware that the objects created by modules loaded from the main context
+are still from the main context and not `instanceof` built-in classes in the
+new context.
+
+=== "CJS"
+
+    ```js
+    const { Script, constants } = require('node:vm');
+    const script = new Script(
+      'import("node:fs").then(({readFile}) => readFile instanceof Function)',
+      { importModuleDynamically: constants.USE_MAIN_CONTEXT_DEFAULT_LOADER });
+    
+    // false: URL loaded from the main context is not an instance of the Function
+    // class in the new context.
+    script.runInNewContext().then(console.log);
+    ```
+
+=== "MJS"
+
+    ```js
+    import { Script, constants } from 'node:vm';
+    
+    const script = new Script(
+      'import("node:fs").then(({readFile}) => readFile instanceof Function)',
+      { importModuleDynamically: constants.USE_MAIN_CONTEXT_DEFAULT_LOADER });
+    
+    // false: URL loaded from the main context is not an instance of the Function
+    // class in the new context.
+    script.runInNewContext().then(console.log);
+    ```
+
+This option also allows the script or function to load user modules:
+
+=== "MJS"
+
+    ```js
+    import { Script, constants } from 'node:vm';
+    import { resolve } from 'node:path';
+    import { writeFileSync } from 'node:fs';
+    
+    // Write test.js and test.txt to the directory where the current script
+    // being run is located.
+    writeFileSync(resolve(import.meta.dirname, 'test.mjs'),
+                  'export const filename = "./test.json";');
+    writeFileSync(resolve(import.meta.dirname, 'test.json'),
+                  '{"hello": "world"}');
+    
+    // Compile a script that loads test.mjs and then test.json
+    // as if the script is placed in the same directory.
+    const script = new Script(
+      `(async function() {
+        const { filename } = await import('./test.mjs');
+        return import(filename, { with: { type: 'json' } })
+      })();`,
+      {
+        filename: resolve(import.meta.dirname, 'test-with-default.js'),
+        importModuleDynamically: constants.USE_MAIN_CONTEXT_DEFAULT_LOADER,
+      });
+    
+    // { default: { hello: 'world' } }
+    script.runInThisContext().then(console.log);
+    ```
+
+=== "CJS"
+
+    ```js
+    const { Script, constants } = require('node:vm');
+    const { resolve } = require('node:path');
+    const { writeFileSync } = require('node:fs');
+    
+    // Write test.js and test.txt to the directory where the current script
+    // being run is located.
+    writeFileSync(resolve(__dirname, 'test.mjs'),
+                  'export const filename = "./test.json";');
+    writeFileSync(resolve(__dirname, 'test.json'),
+                  '{"hello": "world"}');
+    
+    // Compile a script that loads test.mjs and then test.json
+    // as if the script is placed in the same directory.
+    const script = new Script(
+      `(async function() {
+        const { filename } = await import('./test.mjs');
+        return import(filename, { with: { type: 'json' } })
+      })();`,
+      {
+        filename: resolve(__dirname, 'test-with-default.js'),
+        importModuleDynamically: constants.USE_MAIN_CONTEXT_DEFAULT_LOADER,
+      });
+    
+    // { default: { hello: 'world' } }
+    script.runInThisContext().then(console.log);
+    ```
+
+There are a few caveats with loading user modules using the default loader
+from the main context:
+
+1. The module being resolved would be relative to the `filename` option passed
+   to `vm.Script` or `vm.compileFunction()`. The resolution can work with a
+   `filename` that's either an absolute path or a URL string.  If `filename` is
+   a string that's neither an absolute path or a URL, or if it's undefined,
+   the resolution will be relative to the current working directory
+   of the process. In the case of `vm.createContext()`, the resolution is always
+   relative to the current working directory since this option is only used when
+   there isn't a referrer script or module.
+2. For any given `filename` that resolves to a specific path, once the process
+   manages to load a particular module from that path, the result may be cached,
+   and subsequent load of the same module from the same path would return the
+   same thing. If the `filename` is a URL string, the cache would not be hit
+   if it has different search parameters. For `filename`s that are not URL
+   strings, there is currently no way to bypass the caching behavior.
+
+### When `importModuleDynamically` is a function
+
+When `importModuleDynamically` is a function, it will be invoked when `import()`
+is called in the compiled code for users to customize how the requested module
+should be compiled and evaluated. Currently, the Node.js instance must be
+launched with the `--experimental-vm-modules` flag for this option to work. If
+the flag isn't set, this callback will be ignored. If the code evaluated
+actually calls to `import()`, the result will reject with
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`][].
+
+The callback `importModuleDynamically(specifier, referrer, importAttributes)`
+has the following signature:
+
+* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) specifier passed to `import()`
+* `referrer` [<vm.Script>](vm.md#new-vmscriptcode-options) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<vm.SourceTextModule>](vm.md) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  The referrer is the compiled `vm.Script` for `new vm.Script`,
+  `vm.runInThisContext`, `vm.runInContext` and `vm.runInNewContext`. It's the
+  compiled `Function` for `vm.compileFunction`, the compiled
+  `vm.SourceTextModule` for `new vm.SourceTextModule`, and the context `Object`
+  for `vm.createContext()`.
+* `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
+  [`optionsExpression`][] optional parameter, or an empty object if no value was
+  provided.
+* `phase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the dynamic import (`"source"` or `"evaluation"`).
+* Возвращает: [<Module Namespace Object>](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects) | [<vm.Module>](vm.md) Returning a `vm.Module` is
+  recommended in order to take advantage of error tracking, and to avoid issues
+  with namespaces that contain `then` function exports.
+
+=== "MJS"
+
+    ```js
+    // This script must be run with --experimental-vm-modules.
+    import { Script, SyntheticModule } from 'node:vm';
+    
+    const script = new Script('import("foo.json", { with: { type: "json" } })', {
+      async importModuleDynamically(specifier, referrer, importAttributes) {
+        console.log(specifier);  // 'foo.json'
+        console.log(referrer);   // The compiled script
+        console.log(importAttributes);  // { type: 'json' }
+        const m = new SyntheticModule(['bar'], () => { });
+        await m.link(() => { });
+        m.setExport('bar', { hello: 'world' });
+        return m;
+      },
+    });
+    const result = await script.runInThisContext();
+    console.log(result);  //  { bar: { hello: 'world' } }
+    ```
+
+=== "CJS"
+
+    ```js
+    // This script must be run with --experimental-vm-modules.
+    const { Script, SyntheticModule } = require('node:vm');
+    
+    (async function main() {
+      const script = new Script('import("foo.json", { with: { type: "json" } })', {
+        async importModuleDynamically(specifier, referrer, importAttributes) {
+          console.log(specifier);  // 'foo.json'
+          console.log(referrer);   // The compiled script
+          console.log(importAttributes);  // { type: 'json' }
+          const m = new SyntheticModule(['bar'], () => { });
+          await m.link(() => { });
+          m.setExport('bar', { hello: 'world' });
+          return m;
+        },
+      });
+      const result = await script.runInThisContext();
+      console.log(result);  //  { bar: { hello: 'world' } }
+    })();
+    ```
+
+[Cyclic Module Record]: https://tc39.es/ecma262/#sec-cyclic-module-records
+[ECMAScript Module Loader]: esm.md#modules-ecmascript-modules
+[Evaluate() concrete method]: https://tc39.es/ecma262/#sec-moduleevaluation
+[Evaluate() of a Synthetic Module Record]: https://tc39.es/ecma262/#sec-smr-Evaluate
+[FinishLoadingImportedModule]: https://tc39.es/ecma262/#sec-FinishLoadingImportedModule
+[GetModuleNamespace]: https://tc39.es/ecma262/#sec-getmodulenamespace
+[HostLoadImportedModule]: https://tc39.es/ecma262/#sec-HostLoadImportedModule
+[HostResolveImportedModule]: https://tc39.es/ecma262/#sec-hostresolveimportedmodule
+[ImportDeclaration]: https://tc39.es/ecma262/#prod-ImportDeclaration
+[Link() concrete method]: https://tc39.es/ecma262/#sec-moduledeclarationlinking
+[Module Record]: https://tc39.es/ecma262/#sec-abstract-module-records
+[Source Text Module Record]: https://tc39.es/ecma262/#sec-source-text-module-records
+[Support of dynamic `import()` in compilation APIs]: #support-of-dynamic-import-in-compilation-apis
+[Synthetic Module Record]: https://tc39.es/ecma262/#sec-synthetic-module-records
+[V8 Embedder's Guide]: https://v8.dev/docs/embed#contexts
+[WithClause]: https://tc39.es/ecma262/#prod-WithClause
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`]: errors.md#err_vm_dynamic_import_callback_missing_flag
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`]: errors.md#err_vm_dynamic_import_callback_missing
+[`Error`]: errors.md#class-error
+[`URL`]: url.md#class-url
+[`eval()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+[`optionsExpression`]: https://tc39.es/proposal-import-attributes/#sec-evaluate-import-call
+[`script.runInContext()`]: #scriptrunincontextcontextifiedobject-options
+[`script.runInThisContext()`]: #scriptruninthiscontextoptions
+[`sourceTextModule.instantiate()`]: #sourcetextmoduleinstantiate
+[`sourceTextModule.linkRequests(modules)`]: #sourcetextmodulelinkrequestsmodules
+[`sourceTextModule.moduleRequests`]: #sourcetextmodulemodulerequests
+[`url.origin`]: url.md#urlorigin
+[`vm.compileFunction()`]: #vmcompilefunctioncode-params-options
+[`vm.constants.DONT_CONTEXTIFY`]: #vmconstantsdont_contextify
+[`vm.createContext()`]: #vmcreatecontextcontextobject-options
+[`vm.runInContext()`]: #vmrunincontextcode-contextifiedobject-options
+[`vm.runInThisContext()`]: #vmruninthiscontextcode-options
+[contextified]: #what-does-it-mean-to-contextify-an-object
+[enqueing jobs]: https://tc39.es/ecma262/#sec-hostenqueuepromisejob
+[global object]: https://tc39.es/ecma262/#sec-global-object
+[indirect `eval()` call]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval
+[origin]: https://developer.mozilla.org/en-US/docs/Glossary/Origin

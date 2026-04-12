@@ -1,182 +1,195 @@
 ---
-title: Async hooks
-description: Модуль async_hooks предоставляет API для отслеживания асинхронных ресурсов
+title: Асинхронные хуки (async_hooks)
+description: Модуль async_hooks — API для отслеживания асинхронных ресурсов
 ---
 
 # Асинхронные хуки
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/async_hooks.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/async_hooks.html)
+
+<!--introduced_in=v8.1.0-->
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Пожалуйста, мигрируйте от этого API, если можете. Мы не рекомендуем использовать API [`createHook`](#async_hookscreatehookcallbacks), [`AsyncHook`](#class-asynchook) и [`executionAsyncResource`](#async_hooksexecutionasyncresource), так как они имеют проблемы с удобством использования, риски для безопасности и влияют на производительность. Для случаев использования отслеживания асинхронного контекста лучше использовать стабильный API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Если у вас есть сценарий использования `createHook`, `AsyncHook` или `executionAsyncResource`, выходящий за рамки потребностей отслеживания контекста, решаемых [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) или диагностических данных, предоставляемых в настоящее время [Diagnostics Channel](diagnostics_channel.md), пожалуйста, откройте проблему по адресу <https://github.com/nodejs/node/issues>, описав ваш сценарий использования, чтобы мы могли создать API, более ориентированный на конкретные цели.
+    Пожалуйста, мигрируйте от этого API, если можете. Мы не рекомендуем использовать API [`createHook`](#async_hookscreatehookoptions), [`AsyncHook`](#class-asynchook) и [`executionAsyncResource`](#async_hooksexecutionasyncresource), так как они имеют проблемы с удобством использования, риски для безопасности и влияют на производительность. Для случаев использования отслеживания асинхронного контекста лучше использовать стабильный API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Если у вас есть сценарий использования `createHook`, `AsyncHook` или `executionAsyncResource`, выходящий за рамки потребностей отслеживания контекста, решаемых [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) или диагностических данных, предоставляемых в настоящее время [Diagnostics Channel](diagnostics_channel.md), пожалуйста, откройте проблему по адресу <https://github.com/nodejs/node/issues>, описав ваш сценарий использования, чтобы мы могли создать API, более ориентированный на конкретные цели.
+
+<!-- source_link=lib/async_hooks.js -->
 
 Мы настоятельно не рекомендуем использовать API `async_hooks`. Другие API, которые могут покрыть большинство случаев использования, включают:
 
--   [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) пути async контекста
--   [`process.getActiveResourcesInfo()`](process.md#processgetactiveresourcesinfo) отслеживает активные ресурсы
+-   [`AsyncLocalStorage`][] — отслеживание async-контекста
+-   [`process.getActiveResourcesInfo()`][] — отслеживание активных ресурсов
 
-Модуль `node:async_hooks` предоставляет API для отслеживания асинхронных ресурсов. Доступ к нему можно получить, используя:
+Модуль `node:async_hooks` предоставляет API для отслеживания асинхронных ресурсов. Доступ к нему можно получить так:
 
-```mjs
-import async_hooks from 'node:async_hooks';
-```
+=== "MJS"
 
-```cjs
-const async_hooks = require('node:async_hooks');
-```
+    ```js
+    import async_hooks from 'node:async_hooks';
+    ```
+
+=== "CJS"
+
+    ```js
+    const async_hooks = require('node:async_hooks');
+    ```
 
 ## Терминология
 
-Асинхронный ресурс представляет собой объект с ассоциированным обратным вызовом. Этот обратный вызов может быть вызван несколько раз, например, событие `'connection'` в `net.createServer()`, или только один раз, как в `fs.open()`. Ресурс также может быть закрыт до вызова обратного вызова. `AsyncHook` не делает явного различия между этими разными случаями, но будет представлять их как абстрактную концепцию, которой является ресурс.
+Асинхронный ресурс представляет собой объект с ассоциированным обратным вызовом. Этот обратный вызов может вызываться несколько раз, например, для события `'connection'` в `net.createServer()`, или только один раз, как в `fs.open()`. Ресурс также может быть закрыт до вызова обратного вызова. `AsyncHook` не делает явного различия между этими случаями, но представляет их как абстрактную концепцию ресурса.
 
-Если используется [`Worker`](worker_threads.md#class-worker)s, каждый поток имеет независимый интерфейс `async_hooks`, и каждый поток будет использовать новый набор идентификаторов async.
+Если используются [`Worker`][], у каждого потока независимый интерфейс `async_hooks`, и каждый поток использует новый набор async ID.
 
 ## Обзор
 
-Ниже приведен простой обзор публичного API.
+Ниже приведён краткий обзор публичного API.
 
-```mjs
-import async_hooks from 'node:async_hooks';
+=== "MJS"
 
-// Возвращаем идентификатор текущего контекста выполнения.
-const eid = async_hooks.executionAsyncId();
+    ```js
+    import async_hooks from 'node:async_hooks';
 
-// Возвращаем идентификатор дескриптора, ответственного за инициирование обратного вызова из
-// текущего контекста выполнения для вызова.
-const tid = async_hooks.triggerAsyncId();
+    // Возвращает ID текущего контекста выполнения.
+    const eid = async_hooks.executionAsyncId();
 
-// Создаем новый экземпляр AsyncHook. Все эти обратные вызовы необязательны.
-const asyncHook = async_hooks.createHook({
-    init,
-    before,
-    after,
-    destroy,
-    promiseResolve,
-});
+    // Возвращает ID дескриптора, который инициировал вызов обратного вызова
+    // текущей области выполнения.
+    const tid = async_hooks.triggerAsyncId();
 
-// Разрешить обратные вызовы этого экземпляра AsyncHook. Это не является неявным
-// действие после выполнения конструктора, а должно быть явно запущено, чтобы начать
-// выполнение обратных вызовов.
-asyncHook.enable();
+    // Создаёт новый экземпляр AsyncHook. Все эти обратные вызовы необязательны.
+    const asyncHook =
+        async_hooks.createHook({ init, before, after, destroy, promiseResolve });
 
-// Отключить прослушивание новых асинхронных событий.
-asyncHook.disable();
+    // Разрешает вызов обратных вызовов этого экземпляра AsyncHook. Это не неявное
+    // действие после конструктора — его нужно явно вызвать, чтобы начать
+    // выполнять обратные вызовы.
+    asyncHook.enable();
 
-//
-// Ниже перечислены обратные вызовы, которые могут быть переданы в createHook().
-//
+    // Отключает прослушивание новых асинхронных событий.
+    asyncHook.disable();
 
-// init() вызывается во время создания объекта. Ресурс может не
-// завершено строительство, когда выполняется этот обратный вызов. Поэтому все поля
-// ресурса, на которые ссылается "asyncId", могут быть не заполнены.
-function init(asyncId, type, triggerAsyncId, resource) {}
+    //
+    // Ниже перечислены обратные вызовы, которые можно передать в createHook().
+    //
 
-// before() вызывается непосредственно перед вызовом обратного вызова ресурса. Она может быть
-// вызываться 0-N раз для обработчиков (таких как TCPWrap), и будет вызвана ровно 1
-// раз для запросов (например, FSReqCallback).
-function before(asyncId) {}
+    // init() вызывается при создании объекта. Ресурс может быть ещё не
+    // полностью сконструирован, когда выполняется этот обратный вызов. Поэтому все поля
+    // ресурса, на которые ссылается «asyncId», могут быть ещё не заполнены.
+    function init(asyncId, type, triggerAsyncId, resource) { }
 
-// after() вызывается сразу после завершения обратного вызова ресурса.
-function after(asyncId) {}
+    // before() вызывается непосредственно перед вызовом обратного вызова ресурса. Может
+    // вызываться 0–N раз для дескрипторов (например, TCPWrap) и ровно 1 раз
+    // для запросов (например, FSReqCallback).
+    function before(asyncId) { }
 
-// destroy() вызывается, когда ресурс уничтожается.
-function destroy(asyncId) {}
+    // after() вызывается сразу после завершения обратного вызова ресурса.
+    function after(asyncId) { }
 
-// promiseResolve() вызывается только для ресурсов промиса, когда функция promise(), переданная ресурсу, будет уничтожена.
-// функция resolve(), переданная конструктору Promise, вызывается
-// (либо напрямую, либо с помощью других средств разрешения промиса).
-function promiseResolve(asyncId) {}
-```
+    // destroy() вызывается при уничтожении ресурса.
+    function destroy(asyncId) { }
 
-```cjs
-const async_hooks = require('node:async_hooks');
+    // promiseResolve() вызывается только для ресурсов промиса, когда вызывается
+    // функция resolve(), переданная конструктору Promise
+    // (напрямую или через другие способы разрешения промиса).
+    function promiseResolve(asyncId) { }
+    ```
 
-// Возвращаем идентификатор текущего контекста выполнения.
-const eid = async_hooks.executionAsyncId();
+=== "CJS"
 
-// Возвращаем идентификатор дескриптора, ответственного за инициирование обратного вызова
-// текущего контекста выполнения для вызова.
-const tid = async_hooks.triggerAsyncId();
+    ```js
+    const async_hooks = require('node:async_hooks');
 
-// Создаем новый экземпляр AsyncHook. Все эти обратные вызовы необязательны.
-const asyncHook = async_hooks.createHook({
-    init,
-    before,
-    after,
-    destroy,
-    promiseResolve,
-});
+    // Возвращает ID текущего контекста выполнения.
+    const eid = async_hooks.executionAsyncId();
 
-// Разрешить обратные вызовы этого экземпляра AsyncHook. Это не является неявным
-// действие после выполнения конструктора, а должно быть явно запущено, чтобы начать
-// выполнение обратных вызовов.
-asyncHook.enable();
+    // Возвращает ID дескриптора, который инициировал вызов обратного вызова
+    // текущей области выполнения.
+    const tid = async_hooks.triggerAsyncId();
 
-// Отключить прослушивание новых асинхронных событий.
-asyncHook.disable();
+    // Создаёт новый экземпляр AsyncHook. Все эти обратные вызовы необязательны.
+    const asyncHook =
+        async_hooks.createHook({ init, before, after, destroy, promiseResolve });
 
-//
-// Ниже перечислены обратные вызовы, которые могут быть переданы в createHook().
-//
+    // Разрешает вызов обратных вызовов этого экземпляра AsyncHook. Это не неявное
+    // действие после конструктора — его нужно явно вызвать, чтобы начать
+    // выполнять обратные вызовы.
+    asyncHook.enable();
 
-// init() вызывается во время создания объекта. Ресурс может не
-// завершено строительство, когда выполняется этот обратный вызов. Поэтому все поля
-// ресурса, на которые ссылается "asyncId", могут быть не заполнены.
-function init(asyncId, type, triggerAsyncId, resource) {}
+    // Отключает прослушивание новых асинхронных событий.
+    asyncHook.disable();
 
-// before() вызывается непосредственно перед вызовом обратного вызова ресурса. Она может быть
-// вызываться 0-N раз для обработчиков (таких как TCPWrap), и будет вызвана ровно 1
-// раз для запросов (например, FSReqCallback).
-function before(asyncId) {}
+    //
+    // Ниже перечислены обратные вызовы, которые можно передать в createHook().
+    //
 
-// after() вызывается сразу после завершения обратного вызова ресурса.
-function after(asyncId) {}
+    // init() вызывается при создании объекта. Ресурс может быть ещё не
+    // полностью сконструирован, когда выполняется этот обратный вызов. Поэтому все поля
+    // ресурса, на которые ссылается «asyncId», могут быть ещё не заполнены.
+    function init(asyncId, type, triggerAsyncId, resource) { }
 
-// destroy() вызывается, когда ресурс уничтожается.
-function destroy(asyncId) {}
+    // before() вызывается непосредственно перед вызовом обратного вызова ресурса. Может
+    // вызываться 0–N раз для дескрипторов (например, TCPWrap) и ровно 1 раз
+    // для запросов (например, FSReqCallback).
+    function before(asyncId) { }
 
-// promiseResolve() вызывается только для ресурсов промиса, когда функция promise(), переданная ресурсу, будет уничтожена.
-// функция resolve(), переданная конструктору Promise, вызывается
-// (либо напрямую, либо с помощью других средств разрешения промиса).
-function promiseResolve(asyncId) {}
-```
+    // after() вызывается сразу после завершения обратного вызова ресурса.
+    function after(asyncId) { }
 
-## `async_hooks.createHook(callbacks)`
+    // destroy() вызывается при уничтожении ресурса.
+    function destroy(asyncId) { }
 
--   `callbacks` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обратные вызовы хука для регистрации
-    -   `init` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`init`](#initasyncid-type-triggerasyncid-resource).
-    -   `before` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`before`](#beforeasyncid).
-    -   `after` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`after`](#afterasyncid).
-    -   `destroy` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`destroy`](#destroyasyncid).
-    -   `promiseResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`promiseResolve`](#promiseresolveasyncid).
--   Возвращает: `AsyncHook` Экземпляр, используемый для отключения и включения хуков.
+    // promiseResolve() вызывается только для ресурсов промиса, когда вызывается
+    // функция resolve(), переданная конструктору Promise
+    // (напрямую или через другие способы разрешения промиса).
+    function promiseResolve(asyncId) { }
+    ```
 
-Регистрирует функции, которые будут вызываться для различных событий времени жизни каждой асинхронной операции.
+## `async_hooks.createHook(options)`
 
-Обратные вызовы `init()`/ `before()`/ `after()`/ `destroy()` вызываются для соответствующего асинхронного события в течение времени жизни ресурса.
+{: #async_hookscreatehookoptions}
 
-Все обратные вызовы необязательны. Например, если необходимо отслеживать только очистку ресурса, то нужно передать только обратный вызов `destroy`. Специфика всех функций, которые могут быть переданы в `callbacks`, находится в разделе [Hook Callbacks](#hook-callbacks).
+<!-- YAML
+added: v8.1.0
+-->
 
-```mjs
-import { createHook } from 'node:async_hooks';
+-   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука][hook callbacks] для регистрации
+    -   `init` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`init`][`init` callback].
+    -   `before` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`before`][`before` callback].
+    -   `after` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`after`][`after` callback].
+    -   `destroy` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`destroy`][`destroy` callback].
+    -   `promiseResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`promiseResolve`][`promiseresolve` callback].
+    -   `trackPromises` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должен ли хук отслеживать `Promise`. Не может быть `false`, если задан `promiseResolve`. **По умолчанию**: `true`.
+-   Возвращает: [<AsyncHook>](#class-asynchook) Экземпляр для отключения и включения хуков
 
-const asyncHook = createHook({
-    init(asyncId, type, triggerAsyncId, resource) {},
-    destroy(asyncId) {},
-});
-```
+Регистрирует функции, вызываемые при различных событиях жизненного цикла каждой асинхронной операции.
 
-```cjs
-const async_hooks = require('node:async_hooks');
+Обратные вызовы `init()` / `before()` / `after()` / `destroy()` вызываются для соответствующего асинхронного события в течение жизни ресурса.
 
-const asyncHook = async_hooks.createHook({
-    init(asyncId, type, triggerAsyncId, resource) {},
-    destroy(asyncId) {},
-});
-```
+Все обратные вызовы необязательны. Например, если нужно отслеживать только очистку ресурса, достаточно передать только `destroy`. Подробности по всем функциям, которые можно передать в `options`, см. в разделе [Обратные вызовы хука][hook callbacks].
 
-Обратные вызовы будут наследоваться через цепочку прототипов:
+=== "MJS"
+
+    ```js
+    import { createHook } from 'node:async_hooks';
+
+    const asyncHook = createHook({
+      init(asyncId, type, triggerAsyncId, resource) { },
+      destroy(asyncId) { },
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const async_hooks = require('node:async_hooks');
+
+    const asyncHook = async_hooks.createHook({
+      init(asyncId, type, triggerAsyncId, resource) { },
+      destroy(asyncId) { },
+    });
+    ```
+
+Обратные вызовы наследуются по цепочке прототипов:
 
 ```js
 class MyAsyncCallbacks {
@@ -194,253 +207,290 @@ const asyncHook = async_hooks.createHook(
 );
 ```
 
-Поскольку промисы являются асинхронными ресурсами, жизненный цикл которых отслеживается через механизм асинхронных крючков, обратные вызовы `init()`, `before()`, `after()` и `destroy()` \_не должны быть асинхронными функциями, возвращающими промисы.
+Поскольку промисы — асинхронные ресурсы, жизненный цикл которых отслеживается механизмом async hooks, обратные вызовы `init()`, `before()`, `after()` и `destroy()` _не должны_ быть async-функциями, возвращающими промисы.
 
 ### Обработка ошибок
 
-Если какой-либо обратный вызов `AsyncHook` отбрасывает ошибку, приложение выводит трассировку стека и завершает работу. Путь завершения следует за не пойманным исключением, но все слушатели `'uncaughtException'` удаляются, тем самым заставляя процесс завершиться. Обратные вызовы `'exit'` по-прежнему будут вызываться, если только приложение не запущено с `--abort-on-uncaught-exception`, в этом случае будет напечатана трассировка стека и приложение выйдет, оставив файл ядра.
+Если любой из обратных вызовов `AsyncHook` выбрасывает исключение, приложение выводит трассировку стека и завершает работу. Путь завершения соответствует неперехваченному исключению, но все слушатели `'uncaughtException'` удаляются, тем самым принудительно завершая процесс. Обратные вызовы `'exit'` по-прежнему вызываются, если только приложение не запущено с `--abort-on-uncaught-exception` — в этом случае выводится трассировка стека и приложение завершается, оставляя core dump.
 
-Причина такого поведения при обработке ошибок заключается в том, что эти обратные вызовы выполняются в потенциально изменчивые моменты жизни объекта, например, во время создания и уничтожения класса. В связи с этим считается необходимым быстро завершить процесс, чтобы предотвратить непреднамеренное прерывание в будущем. Это может быть изменено в будущем, если будет проведен всесторонний анализ, чтобы убедиться, что исключение может следовать нормальному потоку управления без непреднамеренных побочных эффектов.
+Такое поведение обусловлено тем, что эти обратные вызовы выполняются в потенциально нестабильные моменты жизни объекта, например при создании и уничтожении класса. Поэтому считается необходимым быстро завершить процесс, чтобы предотвратить непреднамеренный сбой в будущем. Это может измениться после всестороннего анализа, подтверждающего, что исключение может следовать обычному потоку управления без непреднамеренных побочных эффектов.
 
-### Печать в обратных вызовах `AsyncHook`
+### Вывод в обратных вызовах `AsyncHook`
 
-Поскольку печать на консоль является асинхронной операцией, `console.log()` вызовет обратные вызовы `AsyncHook`. Использование `console.log()` или подобных асинхронных операций внутри функции обратного вызова `AsyncHook` приведет к бесконечной рекурсии. Простым решением этой проблемы при отладке является использование синхронной операции протоколирования, такой как `fs.writeFileSync(file, msg, flag)`. Это приведет к печати в файл и не будет рекурсивно вызывать `AsyncHook`, поскольку она синхронна.
+Поскольку вывод на консоль — асинхронная операция, `console.log()` приведёт к вызову обратных вызовов `AsyncHook`. Использование `console.log()` или подобных асинхронных операций внутри обратного вызова `AsyncHook` вызовет бесконечную рекурсию. Простой обходной путь при отладке — синхронное логирование, например `fs.writeFileSync(file, msg, flag)`. Запись идёт в файл и не вызывает `AsyncHook` рекурсивно, так как операция синхронная.
 
-```mjs
-import { writeFileSync } from 'node:fs';
-import { format } from 'node:util';
+=== "MJS"
 
-function debug(...args) {
-    // Use a function like this one when debugging inside an AsyncHook callback
-    writeFileSync('log.out', `${format(...args)}\n`, {
-        flag: 'a',
-    });
-}
-```
+    ```js
+    import { writeFileSync } from 'node:fs';
+    import { format } from 'node:util';
 
-```cjs
-const fs = require('node:fs');
-const util = require('node:util');
+    function debug(...args) {
+      // При отладке внутри обратного вызова AsyncHook используйте подобную функцию
+      writeFileSync('log.out', `${format(...args)}\n`, { flag: 'a' });
+    }
+    ```
 
-function debug(...args) {
-    // Используйте функцию, подобную этой, при отладке внутри обратного вызова AsyncHook
-    fs.writeFileSync(
-        'log.out',
-        `${util.format(...args)}\n`,
-        {
-            flag: 'a',
-        }
-    );
-}
-```
+=== "CJS"
 
-Если асинхронная операция необходима для логирования, можно отслеживать, что вызвало асинхронную операцию, используя информацию, предоставляемую самим `AsyncHook`. Тогда логирование должно быть пропущено, если именно логирование вызвало обратный вызов `AsyncHook`. Таким образом, прерывается бесконечная рекурсия.
+    ```js
+    const fs = require('node:fs');
+    const util = require('node:util');
+
+    function debug(...args) {
+      // При отладке внутри обратного вызова AsyncHook используйте подобную функцию
+      fs.writeFileSync('log.out', `${util.format(...args)}\n`, { flag: 'a' });
+    }
+    ```
+
+Если для логирования нужна асинхронная операция, можно отслеживать, что её вызвало, по информации из самого `AsyncHook`. Логирование следует пропускать, если обратный вызов `AsyncHook` был вызван именно логированием. Так разрывается бесконечная рекурсия.
 
 ## Класс: `AsyncHook`
 
-Класс `AsyncHook` предоставляет интерфейс для отслеживания событий времени жизни асинхронных операций.
+{: #class-asynchook}
+
+Класс `AsyncHook` предоставляет интерфейс для отслеживания событий жизненного цикла асинхронных операций.
 
 ### `asyncHook.enable()`
 
--   Возвращает: `AsyncHook` Ссылка на `asyncHook`.
+-   Возвращает: [<AsyncHook>](#class-asynchook) Ссылка на `asyncHook`.
 
-Включает обратные вызовы для данного экземпляра `AsyncHook`. Если обратные вызовы не предоставлены, включение не имеет смысла.
+Включает обратные вызовы для данного экземпляра `AsyncHook`. Если обратные вызовы не заданы, включение не делает ничего.
 
-По умолчанию экземпляр `AsyncHook` отключен. Если экземпляр `AsyncHook` должен быть включен сразу после создания, можно использовать следующий шаблон.
+Экземпляр `AsyncHook` по умолчанию отключён. Чтобы включить его сразу после создания, можно использовать такой шаблон:
 
-```mjs
-import { createHook } from 'node:async_hooks';
+=== "MJS"
 
-const hook = createHook(callbacks).enable();
-```
+    ```js
+    import { createHook } from 'node:async_hooks';
 
-```cjs
-const async_hooks = require('node:async_hooks');
+    const hook = createHook(callbacks).enable();
+    ```
 
-const hook = async_hooks.createHook(callbacks).enable();
-```
+=== "CJS"
+
+    ```js
+    const async_hooks = require('node:async_hooks');
+
+    const hook = async_hooks.createHook(callbacks).enable();
+    ```
 
 ### `asyncHook.disable()`
 
--   Возвращает: `AsyncHook` Ссылка на `asyncHook`.
+-   Возвращает: [<AsyncHook>](#class-asynchook) Ссылка на `asyncHook`.
 
-Отключает обратные вызовы для данного экземпляра `AsyncHook` из глобального пула обратных вызовов `AsyncHook` для выполнения. После отключения хука он не будет вызываться снова, пока не будет включен.
+Отключает обратные вызовы данного экземпляра `AsyncHook` в глобальном пуле обратных вызовов `AsyncHook`. После отключения хук не будет вызываться, пока снова не включён.
 
 Для согласованности API `disable()` также возвращает экземпляр `AsyncHook`.
 
-### Обратные вызовы крючков
+### Обратные вызовы хука
 
-Ключевые события во время жизни асинхронных событий были разделены на четыре области: инстанцирование, до/после вызова обратного вызова, и когда экземпляр уничтожается.
+{: #hook-callbacks}
+
+Ключевые события жизни асинхронных операций сгруппированы в четыре области: создание, до и после вызова обратного вызова, уничтожение экземпляра.
 
 #### `init(asyncId, type, triggerAsyncId, resource)`
 
--   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный идентификатор для ресурса async.
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного ресурса.
--   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID ресурса async, в контексте выполнения которого был создан данный ресурс async.
--   `resource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ссылка на ресурс, представляющий асинхронную операцию, должен быть освобожден во время _destroy_.
+{: #initasyncid-type-triggerasyncid-resource}
 
-Вызывается при создании класса, который имеет _возможность_ испускать асинхронное событие. Это _не_ означает, что экземпляр должен вызвать `before`/`after` перед вызовом `destroy`, только то, что такая возможность существует.
+-   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса.
+-   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного ресурса.
+-   `triggerAsyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса, в контексте выполнения которого создан этот ресурс.
+-   `resource` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ссылка на ресурс, представляющий асинхронную операцию; должен быть освобождён при _destroy_.
 
-Такое поведение можно наблюдать, если сделать что-то вроде открытия ресурса, а затем закрыть его до того, как ресурс может быть использован. Следующий фрагмент демонстрирует это.
+Вызывается при конструировании класса, у которого _есть возможность_ инициировать асинхронное событие. Это _не_ означает, что экземпляр обязан вызвать `before`/`after` до `destroy` — только лишь то, что такая возможность существует.
 
-```mjs
-import { createServer } from 'node:net';
+Такое поведение видно, если открыть ресурс и закрыть его до использования. Ниже — пример.
 
-createServer().listen(function () {
-    this.close();
-});
-// ИЛИ
-clearTimeout(setTimeout(() => {}, 10));
-```
+=== "MJS"
 
-```cjs
-require('node:net')
-    .createServer()
-    .listen(function () {
-        this.close();
-    });
-// ИЛИ
-clearTimeout(setTimeout(() => {}, 10));
-```
+    ```js
+    import { createServer } from 'node:net';
 
-Каждому новому ресурсу присваивается идентификатор, уникальный в пределах текущего экземпляра Node.js.
+    createServer().listen(function() { this.close(); });
+    // или
+    clearTimeout(setTimeout(() => {}, 10));
+    ```
+
+=== "CJS"
+
+    ```js
+    require('node:net').createServer().listen(function() { this.close(); });
+    // или
+    clearTimeout(setTimeout(() => {}, 10));
+    ```
+
+Каждому новому ресурсу присваивается ID, уникальный в пределах текущего экземпляра Node.js.
 
 ##### `type`
 
-`type` - это строка, идентифицирующая тип ресурса, который вызвал вызов `init`. Как правило, она соответствует имени конструктора ресурса.
+`type` — строка, обозначающая тип ресурса, из-за которого вызван `init`. Обычно она совпадает с именем конструктора ресурса.
 
-Тип `type` ресурсов, создаваемых самим Node.js, может измениться в любом выпуске Node.js. Допустимые значения включают `TLSWRAP`, `TCPWRAP`, `TCPSERVERWRAP`, `GETADDRINFOREQWRAP`, `FSREQCALLBACK`, `Microtask` и `Timeout`. Для получения полного списка обратитесь к исходному коду используемой версии Node.js.
+Типы ресурсов, создаваемых самим Node.js, могут меняться в любом релизе. Допустимые значения включают `TLSWRAP`, `TCPWRAP`, `TCPSERVERWRAP`, `GETADDRINFOREQWRAP`, `FSREQCALLBACK`, `Microtask` и `Timeout`. Полный список смотрите в исходном коде используемой версии Node.js.
 
-Кроме того, пользователи [`AsyncResource`](async_context.md#class-asyncresource) создают асинхронные ресурсы независимо от самого Node.js.
+Кроме того, пользователи [`AsyncResource`][] создают асинхронные ресурсы независимо от Node.js.
 
-Существует также тип ресурса `PROMISE`, который используется для отслеживания экземпляров `Promise` и запланированных ими асинхронных работ.
+Есть также тип ресурса `PROMISE` для отслеживания экземпляров `Promise` и асинхронной работы, запланированной ими. `Promise` отслеживаются только если опция `trackPromises` равна `true`.
 
-Пользователи могут определить свой собственный `тип` при использовании публичного API embedder.
+Пользователи могут задавать собственный `type` через публичный API встраивания.
 
-Возможны столкновения имен типов. Встраивателям рекомендуется использовать уникальные префиксы, такие как имя пакета npm, чтобы избежать коллизий при прослушивании хуков.
+Возможны коллизии имён типов. Встраивателям рекомендуется использовать уникальные префиксы (например, имя npm-пакета), чтобы избежать конфликтов при подписке на хуки.
 
 ##### `triggerAsyncId`
 
-`triggerAsyncId` - это `asyncId` ресурса, который вызвал (или "запустил") инициализацию нового ресурса и вызвал вызов `init`. Это отличается от `async_hooks.executionAsyncId()`, который показывает только _когда_ был создан ресурс, в то время как `triggerAsyncId` показывает _почему_ был создан ресурс.
+`triggerAsyncId` — это `asyncId` ресурса, который вызвал («запустил») инициализацию нового ресурса и из-за которого вызван `init`. Это отличается от `async_hooks.executionAsyncId()`, который показывает только _когда_ ресурс создан, тогда как `triggerAsyncId` показывает _почему_ он создан.
 
-Ниже приведена простая демонстрация `triggerAsyncId`:
+Ниже — простая демонстрация `triggerAsyncId`:
 
-```mjs
-import { createHook, executionAsyncId } from "node:async_hooks";
-import { stdout } из "node:process";
-import net from "node:net";
-import fs from "node:fs";
+=== "MJS"
 
+    ```js
+    import { createHook, executionAsyncId } from 'node:async_hooks';
+    import { stdout } from 'node:process';
+    import net from 'node:net';
+    import fs from 'node:fs';
 
-createHook({
-  init(asyncId, type, triggerAsyncId) {
-    const eid = executionAsyncId();
-    fs.writeSync(stdout.fd, `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
-  },
-}).enable();
-
-
-net.createServer((conn) => {}).listen(8080);
-```
-
-```cjs
-const {
-    createHook,
-    executionAsyncId,
-} = require('node:async_hooks');
-const { stdout } = require('node:process');
-const net = require('node:net');
-const fs = require('node:fs');
-
-createHook({
-    init(asyncId, type, triggerAsyncId) {
+    createHook({
+      init(asyncId, type, triggerAsyncId) {
         const eid = executionAsyncId();
         fs.writeSync(
-            stdout.fd,
-            `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`
-        );
-    },
-}).enable();
+          stdout.fd,
+          `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+      },
+    }).enable();
 
-net.createServer((conn) => {}).listen(8080);
-```
+    net.createServer((conn) => {}).listen(8080);
+    ```
 
-Вывод при обращении к серверу с `nc localhost 8080`:
+=== "CJS"
+
+    ```js
+    const { createHook, executionAsyncId } = require('node:async_hooks');
+    const { stdout } = require('node:process');
+    const net = require('node:net');
+    const fs = require('node:fs');
+
+    createHook({
+      init(asyncId, type, triggerAsyncId) {
+        const eid = executionAsyncId();
+        fs.writeSync(
+          stdout.fd,
+          `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+      },
+    }).enable();
+
+    net.createServer((conn) => {}).listen(8080);
+    ```
+
+Вывод при обращении к серверу командой `nc localhost 8080`:
 
 ```console
 TCPSERVERWRAP(5): trigger: 1 execution: 1
-TCPWRAP(7): триггер: 5 выполнение: 0
+TCPWRAP(7): trigger: 5 execution: 0
 ```
 
-`TCPSERVERWRAP` - это сервер, который принимает соединения.
+`TCPSERVERWRAP` — сервер, принимающий соединения.
 
-`TCPWRAP` - это новое соединение от клиента. Когда создается новое соединение, немедленно создается экземпляр `TCPWrap`. Это происходит вне любого стека JavaScript. (Значение `executionAsyncId()` равное `0` означает, что это выполняется из C++ без стека JavaScript над ним). Имея только эту информацию, было бы невозможно связать ресурсы вместе с точки зрения того, что вызвало их создание, поэтому `triggerAsyncId` получает задачу распространить информацию о том, какой ресурс ответственен за существование нового ресурса.
+`TCPWRAP` — новое соединение от клиента. При новом соединении сразу создаётся экземпляр `TCPWrap`. Это происходит вне любого стека JavaScript. (`executionAsyncId()` равный `0` означает выполнение из C++ без стека JavaScript над ним.) Одной этой информации недостаточно, чтобы связать ресурсы по причине их появления, поэтому `triggerAsyncId` передаёт, какой ресурс отвечает за появление нового.
 
 ##### `resource`
 
-`resource` - это объект, представляющий реальный асинхронный ресурс, который был инициализирован. API для доступа к объекту может быть указан создателем ресурса. Ресурсы, созданные самим Node.js, являются внутренними и могут изменяться в любое время. Поэтому для них не указывается API.
+`resource` — объект, представляющий фактический инициализированный асинхронный ресурс. API доступа к объекту определяется создателем ресурса. Ресурсы, созданные Node.js, внутренние и могут меняться в любой момент; для них API не фиксируется.
 
-В некоторых случаях объект ресурса используется повторно по причинам производительности, поэтому небезопасно использовать его в качестве ключа в `WeakMap` или добавлять к нему свойства.
+В некоторых случаях объект ресурса переиспользуется из соображений производительности; использовать его как ключ в `WeakMap` или добавлять свойства небезопасно.
 
 ##### Пример асинхронного контекста
 
-Случай использования отслеживания контекста покрывается стабильным API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Этот пример только иллюстрирует работу асинхронных крючков, но [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) лучше подходит для этого случая использования.
+Сценарий отслеживания контекста покрывает стабильный API [`AsyncLocalStorage`][]. Этот пример иллюстрирует работу async hooks, но для этого случая лучше подходит [`AsyncLocalStorage`][].
 
-Ниже приведен пример с дополнительной информацией о вызовах `init` между вызовами `before` и `after`, в частности о том, как будет выглядеть обратный вызов `listen()`. Форматирование вывода немного более сложное, чтобы было легче увидеть контекст вызова.
+Ниже — пример с дополнительной информацией о вызовах `init` между `before` и `after`, в частности о том, как выглядит обратный вызов `listen()`. Форматирование вывода чуть подробнее, чтобы проще было видеть контекст вызова.
 
-```js
-const async_hooks = require('node:async_hooks');
-const fs = require('node:fs');
-const net = require('node:net');
-const { fd } = process.stdout;
+=== "MJS"
 
-let indent = 0;
-async_hooks
-    .createHook({
-        init(asyncId, type, triggerAsyncId) {
-            const eid = async_hooks.executionAsyncId();
-            const indentStr = ' '.repeat(indent);
-            fs.writeSync(
-                fd,
-                `${indentStr}${type}(${asyncId}):` +
-                    `триггер: ${triggerAsyncId} выполнение: ${eid}\n`
-            );
-        },
-        before(asyncId) {
-            const indentStr = ' '.repeat(indent);
-            fs.writeSync(
-                fd,
-                `${indentStr}before: ${asyncId}\n`
-            );
-            indent += 2;
-        },
-        after(asyncId) {
-            indent -= 2;
-            const indentStr = ' '.repeat(indent);
-            fs.writeSync(
-                fd,
-                `${indentStr}after: ${asyncId}\n`
-            );
-        },
-        destroy(asyncId) {
-            const indentStr = ' '.repeat(indent);
-            fs.writeSync(
-                fd,
-                `${indentStr}destroy: ${asyncId}\n`
-            );
-        },
-    })
-    .enable();
+    ```js
+    import async_hooks from 'node:async_hooks';
+    import fs from 'node:fs';
+    import net from 'node:net';
+    import { stdout } from 'node:process';
+    const { fd } = stdout;
 
-net.createServer(() => {}).listen(8080, () => {
-    // Давайте подождем 10 мс, прежде чем зарегистрировать запуск сервера.
-    setTimeout(() => {
+    let indent = 0;
+    async_hooks.createHook({
+      init(asyncId, type, triggerAsyncId) {
+        const eid = async_hooks.executionAsyncId();
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(
+          fd,
+          `${indentStr}${type}(${asyncId}):` +
+          ` trigger: ${triggerAsyncId} execution: ${eid}\n`);
+      },
+      before(asyncId) {
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}before:  ${asyncId}\n`);
+        indent += 2;
+      },
+      after(asyncId) {
+        indent -= 2;
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}after:  ${asyncId}\n`);
+      },
+      destroy(asyncId) {
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}destroy:  ${asyncId}\n`);
+      },
+    }).enable();
+
+    net.createServer(() => {}).listen(8080, () => {
+      // Подождём 10 мс перед логом о запуске сервера
+      setTimeout(() => {
         console.log('>>>', async_hooks.executionAsyncId());
-    }, 10);
-});
-```
+      }, 10);
+    });
+    ```
 
-Вывод только при запуске сервера:
+=== "CJS"
+
+    ```js
+    const async_hooks = require('node:async_hooks');
+    const fs = require('node:fs');
+    const net = require('node:net');
+    const { fd } = process.stdout;
+
+    let indent = 0;
+    async_hooks.createHook({
+      init(asyncId, type, triggerAsyncId) {
+        const eid = async_hooks.executionAsyncId();
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(
+          fd,
+          `${indentStr}${type}(${asyncId}):` +
+          ` trigger: ${triggerAsyncId} execution: ${eid}\n`);
+      },
+      before(asyncId) {
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}before:  ${asyncId}\n`);
+        indent += 2;
+      },
+      after(asyncId) {
+        indent -= 2;
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}after:  ${asyncId}\n`);
+      },
+      destroy(asyncId) {
+        const indentStr = ' '.repeat(indent);
+        fs.writeSync(fd, `${indentStr}destroy:  ${asyncId}\n`);
+      },
+    }).enable();
+
+    net.createServer(() => {}).listen(8080, () => {
+      // Подождём 10 мс перед логом о запуске сервера
+      setTimeout(() => {
+        console.log('>>>', async_hooks.executionAsyncId());
+      }, 10);
+    });
+    ```
+
+Вывод при одном только запуске сервера:
 
 ```console
 TCPSERVERWRAP(5): trigger: 1 execution: 1
@@ -457,9 +507,9 @@ before:  8
 after:   8
 ```
 
-Как показано в примере, `executionAsyncId()` и `execution` указывают значение текущего контекста выполнения, который определяется вызовами `before` и `after`.
+Как видно из примера, `executionAsyncId()` и `execution` задают значение текущего контекста выполнения; его границы определяются вызовами `before` и `after`.
 
-Только использование `execution` для построения графика распределения ресурсов приводит к следующему:
+Если строить граф только по `execution`, получится следующее:
 
 ```console
   root(1)
@@ -471,9 +521,9 @@ TickObject(6)
  Timeout(7)
 ```
 
-Привязка `TCPSERVERWRAP` не является частью этого графика, хотя она была причиной вызова `console.log()`. Это происходит потому, что привязка к порту без имени хоста является _синхронной_ операцией, но для поддержания полностью асинхронного API обратный вызов пользователя помещается в `process.nextTick()`. Именно поэтому `TickObject` присутствует в выводе и является "родителем" для обратного вызова `.listen()`.
+`TCPSERVERWRAP` не входит в этот граф, хотя именно из-за него вызывается `console.log()`. Привязка к порту без имени хоста — _синхронная_ операция, но чтобы API оставалось полностью асинхронным, обратный вызов пользователя помещается в `process.nextTick()`. Поэтому в выводе есть `TickObject` как «родитель» обратного вызова `.listen()`.
 
-График показывает только _когда_ был создан ресурс, но не _почему_, поэтому для отслеживания _почему_ используйте `triggerAsyncId`. Что может быть представлено следующим графиком:
+Граф показывает только _когда_ ресурс создан, но не _почему_; для _почему_ используйте `triggerAsyncId`. Это можно представить так:
 
 ```console
  bootstrap(1)
@@ -490,39 +540,51 @@ TCPSERVERWRAP(5)
 
 #### `before(asyncId)`
 
--   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+{: #beforeasyncid}
 
-Когда асинхронная операция инициируется (например, TCP-сервер получает новое соединение) или завершается (например, запись данных на диск), вызывается обратный вызов для уведомления пользователя. Обратный вызов `before` вызывается непосредственно перед выполнением указанного обратного вызова. `asyncId` - это уникальный идентификатор, присвоенный ресурсу, который собирается выполнить обратный вызов.
+-   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Обратный вызов `before` будет вызван от 0 до N раз. Обратный вызов `before` обычно вызывается 0 раз, если асинхронная операция была отменена или, например, если TCP-сервер не получает соединений. Постоянные асинхронные ресурсы, такие как TCP-сервер, обычно вызывают обратный вызов `before` несколько раз, в то время как другие операции, такие как `fs.open()`, вызывают его только один раз.
+Когда инициируется асинхронная операция (например, TCP-сервер принимает соединение) или она завершается (например, запись на диск), вызывается обратный вызов для уведомления. `before` вызывается непосредственно перед его выполнением. `asyncId` — уникальный идентификатор ресурса, который собирается выполнить обратный вызов.
+
+`before` может вызываться от 0 до N раз. Обычно 0 раз, если операция отменена или, например, TCP-сервер не получил соединений. Долгоживущие ресурсы вроде TCP-сервера обычно вызывают `before` несколько раз, а операции вроде `fs.open()` — один раз.
 
 #### `after(asyncId)`
 
--   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+{: #afterasyncid}
+
+-   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Вызывается сразу после завершения обратного вызова, указанного в `before`.
 
-Если во время выполнения обратного вызова произойдет не пойманное исключение, то `after` будет запущен _после_ того, как будет выдано событие `'uncaughtException'` или запущен обработчик `домена`.
+Если при выполнении обратного вызова возникает неперехваченное исключение, `after` выполняется _после_ события `'uncaughtException'` или обработчика `domain`.
 
 #### `destroy(asyncId)`
 
--   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+{: #destroyasyncid}
 
-Вызывается после уничтожения ресурса, соответствующего `asyncId`. Также вызывается асинхронно из API embedder `emitDestroy()`.
+-   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Некоторые ресурсы зависят от сборки мусора для очистки, поэтому если ссылка на объект `resource`, переданный в `init`, сделана, то возможно, что `destroy` никогда не будет вызван, что приведет к утечке памяти в приложении. Если ресурс не зависит от сборки мусора, то это не будет проблемой.
+Вызывается после уничтожения ресурса, соответствующего `asyncId`. Также вызывается асинхронно из API встраивания `emitDestroy()`.
 
-Использование хука destroy приводит к дополнительным накладным расходам, поскольку он позволяет отслеживать экземпляры `Promise` с помощью сборщика мусора.
+Некоторые ресурсы очищаются через сборку мусора: если сохранить ссылку на объект `resource` из `init`, `destroy` может никогда не вызваться, что приведёт к утечке памяти. Если ресурс не зависит от GC, проблемы не будет.
+
+Хук `destroy` добавляет накладные расходы, так как включает отслеживание экземпляров `Promise` через сборщик мусора.
 
 #### `promiseResolve(asyncId)`
 
--   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+{: #promiseresolveasyncid}
 
-Вызывается, когда вызывается функция `resolve`, переданная в конструктор `Promise` (напрямую или с помощью других средств разрешения промиса).
+<!-- YAML
+added: v8.6.0
+-->
 
-`resolve()` не выполняет никакой наблюдаемой синхронной работы.
+-   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Обещание не обязательно будет выполнено или отвергнуто в этот момент, если `Promise` было разрешено путем принятия состояния другого `Promise`.
+Вызывается, когда вызывается функция `resolve`, переданная конструктору `Promise` (напрямую или через другие способы разрешения промиса).
+
+`resolve()` не выполняет наблюдаемой синхронной работы.
+
+На этом этапе `Promise` ещё не обязательно выполнен или отклонён, если он был разрешён через принятие состояния другого `Promise`.
 
 ```js
 new Promise((resolve) => resolve(true)).then((a) => {});
@@ -532,266 +594,324 @@ new Promise((resolve) => resolve(true)).then((a) => {});
 
 ```text
 init for PROMISE with id 5, trigger id: 1
-  promise resolve 5      # corresponds to resolve(true)
-init for PROMISE with id 6, trigger id: 5  # the Promise returned by then()
-  before 6               # the then() callback is entered
-  promise resolve 6      # the then() callback resolves the promise by returning
+  promise resolve 5      # соответствует resolve(true)
+init for PROMISE with id 6, trigger id: 5  # Promise, возвращённый then()
+  before 6               # вход в обратный вызов then()
+  promise resolve 6      # обратный вызов then() разрешает промис возвратом значения
   after 6
 ```
 
 ### `async_hooks.executionAsyncResource()`
 
--   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ресурс, представляющий текущее выполнение. Полезно для хранения данных внутри ресурса.
+{: #async_hooksexecutionasyncresource}
 
-Объекты ресурсов, возвращаемые `executionAsyncResource()`, чаще всего являются внутренними объектами-ручками Node.js с недокументированными API. Использование любых функций или свойств этого объекта, скорее всего, приведет к краху вашего приложения, и его следует избегать.
+<!-- YAML
+added:
+ - v13.9.0
+ - v12.17.0
+-->
 
-Использование `executionAsyncResource()` в контексте выполнения верхнего уровня вернет пустой объект, поскольку нет объекта handle или request для использования, но наличие объекта, представляющего верхний уровень, может быть полезным.
+-   Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ресурс, представляющий текущее выполнение. Удобно хранить данные в ресурсе.
 
-```mjs
-import { open } from 'node:fs';
-import {
-    executionAsyncId,
-    executionAsyncResource,
-} from 'node:async_hooks';
+Объекты, возвращаемые `executionAsyncResource()`, чаще всего — внутренние handle-объекты Node.js с недокументированным API. Вызовы методов и обращение к полям могут привести к падению приложения; этого следует избегать.
 
-console.log(executionAsyncId(), executionAsyncResource()); // 1 {}
-open(new URL(import.meta.url), 'r', (err, fd) => {
-    console.log(
-        executionAsyncId(),
-        executionAsyncResource()
-    ); // 7 FSReqWrap
-});
-```
+В контексте выполнения верхнего уровня `executionAsyncResource()` возвращает пустой объект — нет handle или request, но наличие объекта для верхнего уровня может быть полезно.
 
-```cjs
-const { open } = require('node:fs');
-const {
-    executionAsyncId,
-    executionAsyncResource,
-} = require('node:async_hooks');
+=== "MJS"
 
-console.log(executionAsyncId(), executionAsyncResource()); // 1 {}
-open(__filename, 'r', (err, fd) => {
-    console.log(
-        executionAsyncId(),
-        executionAsyncResource()
-    ); // 7 FSReqWrap
-});
-```
+    ```js
+    import { open } from 'node:fs';
+    import { executionAsyncId, executionAsyncResource } from 'node:async_hooks';
 
-Это можно использовать для реализации локального хранилища продолжения без использования отслеживающего `Map` для хранения метаданных:
+    console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
+    open(new URL(import.meta.url), 'r', (err, fd) => {
+      console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+    });
+    ```
 
-```mjs
-import { createServer } from 'node:http';
-import {
-    executionAsyncId,
-    executionAsyncResource,
-    createHook,
-} from 'async_hooks';
-const sym = Symbol('state'); // Частный символ, чтобы избежать загрязнения
+=== "CJS"
 
-createHook({
-    init(asyncId, type, triggerAsyncId, resource) {
+    ```js
+    const { open } = require('node:fs');
+    const { executionAsyncId, executionAsyncResource } = require('node:async_hooks');
+
+    console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
+    open(__filename, 'r', (err, fd) => {
+      console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+    });
+    ```
+
+Так можно реализовать continuation local storage без отслеживающей `Map` для метаданных:
+
+=== "MJS"
+
+    ```js
+    import { createServer } from 'node:http';
+    import {
+      executionAsyncId,
+      executionAsyncResource,
+      createHook,
+    } from 'node:async_hooks';
+    const sym = Symbol('state'); // приватный символ, чтобы не засорять объект
+
+    createHook({
+      init(asyncId, type, triggerAsyncId, resource) {
         const cr = executionAsyncResource();
         if (cr) {
-            resource[sym] = cr[sym];
+          resource[sym] = cr[sym];
         }
-    },
-}).enable();
+      },
+    }).enable();
 
-const server = createServer((req, res) => {
-    executionAsyncResource()[sym] = { state: req.url };
-    setTimeout(function () {
-        res.end(
-            JSON.stringify(executionAsyncResource()[sym])
-        );
-    }, 100);
-}).listen(3000);
-```
+    const server = createServer((req, res) => {
+      executionAsyncResource()[sym] = { state: req.url };
+      setTimeout(function() {
+        res.end(JSON.stringify(executionAsyncResource()[sym]));
+      }, 100);
+    }).listen(3000);
+    ```
 
-```cjs
-const { createServer } = require('node:http');
-const {
-    executionAsyncId,
-    executionAsyncResource,
-    createHook,
-} = require('node:async_hooks');
-const sym = Symbol('state'); // Частный символ, чтобы избежать загрязнения
+=== "CJS"
 
-createHook({
-    init(asyncId, type, triggerAsyncId, resource) {
+    ```js
+    const { createServer } = require('node:http');
+    const {
+      executionAsyncId,
+      executionAsyncResource,
+      createHook,
+    } = require('node:async_hooks');
+    const sym = Symbol('state'); // приватный символ, чтобы не засорять объект
+
+    createHook({
+      init(asyncId, type, triggerAsyncId, resource) {
         const cr = executionAsyncResource();
         if (cr) {
-            resource[sym] = cr[sym];
+          resource[sym] = cr[sym];
         }
-    },
-}).enable();
+      },
+    }).enable();
 
-const server = createServer((req, res) => {
-    executionAsyncResource()[sym] = { state: req.url };
-    setTimeout(function () {
-        res.end(
-            JSON.stringify(executionAsyncResource()[sym])
-        );
-    }, 100);
-}).listen(3000);
-```
+    const server = createServer((req, res) => {
+      executionAsyncResource()[sym] = { state: req.url };
+      setTimeout(function() {
+        res.end(JSON.stringify(executionAsyncResource()[sym]));
+      }, 100);
+    }).listen(3000);
+    ```
 
 ### `async_hooks.executionAsyncId()`
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `asyncId` текущего контекста выполнения. Полезно для отслеживания того, когда что-то вызывается.
+<!-- YAML
+added: v8.1.0
+changes:
+  - version: v8.2.0
+    pr-url: https://github.com/nodejs/node/pull/13490
+    description: Renamed from `currentId`.
+-->
 
-```mjs
-import { executionAsyncId } from 'node:async_hooks';
-import fs from 'node:fs';
+Добавлено в: v8.1.0
 
-console.log(executionAsyncId()); // 1 - bootstrap
-fs.open(path, 'r', (err, fd) => {
-    console.log(executionAsyncId()); // 6 - open()
-});
-```
+??? note "История" | Версия | Изменения | | --- | --- | | v8.2.0 | Переименован из `currentId`. |
 
-```cjs
-const async_hooks = require('node:async_hooks');
-const fs = require('node:fs');
+-   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `asyncId` текущего контекста выполнения. Удобно отслеживать, кто что вызывает.
 
-console.log(async_hooks.executionAsyncId()); // 1 - bootstrap
-fs.open(path, 'r', (err, fd) => {
-    console.log(async_hooks.executionAsyncId()); // 6 - open()
-});
-```
+=== "MJS"
 
-ID, возвращаемый из `executionAsyncId()`, связан с временем выполнения, а не с причинно-следственной связью (которая покрывается `triggerAsyncId()`):
+    ```js
+    import { executionAsyncId } from 'node:async_hooks';
+    import fs from 'node:fs';
+
+    console.log(executionAsyncId());  // 1 - bootstrap
+    const path = '.';
+    fs.open(path, 'r', (err, fd) => {
+      console.log(executionAsyncId());  // 6 - open()
+    });
+    ```
+
+=== "CJS"
+
+    ```js
+    const async_hooks = require('node:async_hooks');
+    const fs = require('node:fs');
+
+    console.log(async_hooks.executionAsyncId());  // 1 - bootstrap
+    const path = '.';
+    fs.open(path, 'r', (err, fd) => {
+      console.log(async_hooks.executionAsyncId());  // 6 - open()
+    });
+    ```
+
+ID из `executionAsyncId()` связан со временем выполнения, а не с причинностью (её даёт `triggerAsyncId()`):
 
 ```js
 const server = net
     .createServer((conn) => {
-        // Возвращает идентификатор сервера, а не нового соединения, потому что
-        // обратный вызов выполняется в области выполнения MakeCallback() сервера.
+        // Возвращает ID сервера, а не нового соединения: обратный вызов
+        // выполняется в области MakeCallback() сервера.
         async_hooks.executionAsyncId();
     })
     .listen(port, () => {
-        // Возвращает идентификатор объекта TickObject (process.nextTick()), поскольку все
-        // обратные вызовы, переданные в .listen(), обернуты в nextTick().
+        // Возвращает ID TickObject (process.nextTick()): все обратные вызовы
+        // для .listen() обёрнуты в nextTick().
         async_hooks.executionAsyncId();
     });
 ```
 
-Контексты промисов могут не получать точные `executionAsyncIds` по умолчанию. См. раздел [отслеживание выполнения промисов](#promise-execution-tracking).
+Контексты промисов по умолчанию могут не получать точные `executionAsyncId`. См. раздел [отслеживание выполнения промисов][promise execution tracking].
 
 ### `async_hooks.triggerAsyncId()`
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор ресурса, ответственного за вызов обратного вызова, который выполняется в данный момент.
-
-<!-- конец списка -->
+-   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID ресурса, из-за которого вызван выполняемый сейчас обратный вызов.
 
 ```js
 const server = net
     .createServer((conn) => {
-        // Ресурс, который вызвал (или спровоцировал) этот обратный вызов.
-        // был ресурс нового соединения. Таким образом, возвращаемое значение triggerAsyncId()
-        // является asyncId "conn".
+        // Ресурс, из-за которого вызван этот обратный вызов, —
+        // новое соединение. Значит triggerAsyncId() даёт asyncId «conn».
         async_hooks.triggerAsyncId();
     })
     .listen(port, () => {
-        // Несмотря на то, что все обратные вызовы, переданные в .listen(), обернуты в nextTick()
-        // сам обратный вызов существует, потому что вызов серверного .listen()
-        // был сделан. Поэтому возвращаемым значением будет ID сервера.
+        // Хотя обратные вызовы .listen() обёрнуты в nextTick(),
+        // сам обратный вызов существует из-за вызова .listen() на сервере.
+        // Значит вернётся ID сервера.
         async_hooks.triggerAsyncId();
     });
 ```
 
-Контексты промисов могут не получать действительные `triggerAsyncId` по умолчанию. См. раздел об отслеживании выполнения промисов.
+Контексты промисов по умолчанию могут не получать корректные `triggerAsyncId`. См. раздел [отслеживание выполнения промисов][promise execution tracking].
 
-### `async_hooks.asyncWrapProviders`.
+### `async_hooks.asyncWrapProviders`
 
--   Возвращает: Карта типов провайдеров с соответствующим числовым идентификатором. Эта карта содержит все типы событий, которые могут быть испущены событием `async_hooks.init()`.
+<!-- YAML
+added:
+  - v17.2.0
+  - v16.14.0
+-->
 
-Эта функция подавляет устаревшее использование `process.binding('async_wrap').Providers`.
+-   Возвращает: Отображение типов провайдеров на числовые id. Содержит все типы событий, которые может порождать событие `async_hooks.init()`.
 
-## Отслеживание выполнения промиса
+Подавляет устаревшее использование `process.binding('async_wrap').Providers`. См.: [DEP0111][]
 
-По умолчанию выполнениям промисов не присваиваются `asyncId` из-за относительно дорогого характера [promise introspection API](https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit), предоставляемого V8. Это означает, что программы, использующие промисы или `async`/`await`, по умолчанию не будут получать корректные идентификаторы выполнения и триггера для контекстов обратного вызова промисов.
+## Отслеживание выполнения промисов
 
-```mjs
-import {
-    executionAsyncId,
-    triggerAsyncId,
-} from 'node:async_hooks';
+{: #promise-execution-tracking}
 
-Promise.resolve(1729).then(() => {
-    console.log(
-        `eid ${executionAsyncId()} tid ${triggerAsyncId()}`
-    );
-});
-// производит:
-// eid 1 tid 0
-```
+По умолчанию выполнениям промисов не назначаются `asyncId` из-за относительно высокой стоимости [promise introspection API][promisehooks] в V8. Программы на промисах или `async`/`await` по умолчанию не получают корректные execution и trigger id для контекстов обратных вызовов промисов.
 
-```cjs
-const {
-    executionAsyncId,
-    triggerAsyncId,
-} = require('node:async_hooks');
+=== "MJS"
 
-Promise.resolve(1729).then(() => {
-    console.log(
-        `eid ${executionAsyncId()} tid ${triggerAsyncId()}`
-    );
-});
-// производит:
-// eid 1 tid 0
-```
+    ```js
+    import { executionAsyncId, triggerAsyncId } from 'node:async_hooks';
 
-Обратите внимание, что обратный вызов `then()` утверждает, что он был выполнен в контексте внешней области видимости, даже несмотря на асинхронный переход. Также, значение `triggerAsyncId` равно `0`, что означает, что нам не хватает контекста о ресурсе, который вызвал (спровоцировал) выполнение обратного вызова `then()`.
+    Promise.resolve(1729).then(() => {
+      console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+    });
+    // вывод:
+    // eid 1 tid 0
+    ```
 
-Установка асинхронных хуков с помощью `async_hooks.createHook` позволяет отслеживать выполнение промисов:
+=== "CJS"
 
-```mjs
-import {
-    createHook,
-    executionAsyncId,
-    triggerAsyncId,
-} from 'node:async_hooks';
-createHook({ init() {} }).enable(); // заставляет PromiseHooks быть включенными.
-Promise.resolve(1729).then(() => {
-    console.log(
-        `eid ${executionAsyncId()} tid ${triggerAsyncId()}`
-    );
-});
-// производит:
-// eid 7 tid 6
-```
+    ```js
+    const { executionAsyncId, triggerAsyncId } = require('node:async_hooks');
 
-```cjs
-const {
-    createHook,
-    executionAsyncId,
-    triggerAsyncId,
-} = require('node:async_hooks');
+    Promise.resolve(1729).then(() => {
+      console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+    });
+    // вывод:
+    // eid 1 tid 0
+    ```
 
-createHook({ init() {} }).enable(); // заставляет PromiseHooks быть включенными.
-Promise.resolve(1729).then(() => {
-    console.log(
-        `eid ${executionAsyncId()} tid ${triggerAsyncId()}`
-    );
-});
-// производит:
-// eid 7 tid 6
-```
+Обратный вызов `then()` как будто выполняется во внешней области, хотя был асинхронный переход. `triggerAsyncId` равен `0` — не хватает контекста о ресурсе, который вызвал обратный вызов `then()`.
 
-В этом примере добавление любой фактической хук-функции позволило отслеживать обещания. В приведенном примере есть два обещания: обещание, созданное `Promise.resolve()`, и обещание, возвращенное вызовом `then()`. В приведенном примере первое обещание получило `asyncId` `6`, а второе - `asyncId` `7`. Во время выполнения обратного вызова `then()` мы выполняем в контексте обещания с `asyncId` `7`. Это обещание было вызвано ресурсом async `6`.
+Установка async hooks через `async_hooks.createHook` включает отслеживание выполнения промисов:
 
-Еще одна тонкость работы с обещаниями заключается в том, что обратные вызовы `before` и `after` выполняются только для цепочек обещаний. Это означает, что обещания, не созданные с помощью `then()`/`catch()`, не будут иметь обратных вызовов `before` и `after`. Более подробную информацию можно найти в деталях API V8 [PromiseHooks](https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit).
+=== "MJS"
 
-## JavaScript embedder API
+    ```js
+    import { createHook, executionAsyncId, triggerAsyncId } from 'node:async_hooks';
+    createHook({ init() {} }).enable(); // включает PromiseHooks
+    Promise.resolve(1729).then(() => {
+      console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+    });
+    // вывод:
+    // eid 7 tid 6
+    ```
 
-Разработчики библиотек, которые работают с собственными асинхронными ресурсами, выполняющими такие задачи, как ввод-вывод, пул соединений или управление очередями обратных вызовов, могут использовать JavaScript API `AsyncResource`, чтобы вызывались все соответствующие обратные вызовы.
+=== "CJS"
+
+    ```js
+    const { createHook, executionAsyncId, triggerAsyncId } = require('node:async_hooks');
+
+    createHook({ init() {} }).enable(); // включает PromiseHooks
+    Promise.resolve(1729).then(() => {
+      console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+    });
+    // вывод:
+    // eid 7 tid 6
+    ```
+
+В этом примере достаточно любой реальной функции хука, чтобы включилось отслеживание промисов. В примере два промиса: созданный `Promise.resolve()` и возвращённый `then()`. Первому присвоен `asyncId` `6`, второму — `7`. Во время обратного вызова `then()` выполнение идёт в контексте промиса с `asyncId` `7`; его вызвал ресурс `6`.
+
+Ещё нюанс: `before` и `after` вызываются только для цепочек промисов. Промисы не из `then()`/`catch()` не получат `before` и `after`. Подробнее — в документации V8 [PromiseHooks][].
+
+### Отключение отслеживания выполнения промисов
+
+Отслеживание выполнения промисов может сильно снижать производительность. Чтобы отключить его, задайте `trackPromises: false`:
+
+=== "CJS"
+
+    ```js
+    const { createHook } = require('node:async_hooks');
+    const { writeSync } = require('node:fs');
+    createHook({
+      init(asyncId, type, triggerAsyncId, resource) {
+        // При trackPromises: false этот init не вызывается для промисов
+        writeSync(1, `init hook triggered for ${type}\n`);
+      },
+      trackPromises: false,  // не отслеживать промисы
+    }).enable();
+    Promise.resolve(1729);
+    ```
+
+=== "MJS"
+
+    ```js
+    import { createHook } from 'node:async_hooks';
+    import { writeSync } from 'node:fs';
+
+    createHook({
+      init(asyncId, type, triggerAsyncId, resource) {
+        // При trackPromises: false этот init не вызывается для промисов
+        writeSync(1, `init hook triggered for ${type}\n`);
+      },
+      trackPromises: false,  // не отслеживать промисы
+    }).enable();
+    Promise.resolve(1729);
+    ```
+
+## JavaScript API встраивания
+
+Разработчики библиотек, которые сами управляют асинхронными ресурсами (I/O, пулы соединений, очереди обратных вызовов), могут использовать JavaScript API `AsyncResource`, чтобы вызывались все нужные обратные вызовы.
 
 ### Класс: `AsyncResource`
 
-Документация по этому классу переехала [`AsyncResource`](async_context.md#class-asyncresource).
+Документация по этому классу перенесена: [`AsyncResource`][].
 
 ## Класс: `AsyncLocalStorage`
 
-Документация по этому классу переехала [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage).
+Документация по этому классу перенесена: [`AsyncLocalStorage`][].
+
+[dep0111]: deprecations.md#dep0111-processbinding
+[hook callbacks]: #hook-callbacks
+[promisehooks]: https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit
+[`asynclocalstorage`]: async_context.md#class-asynclocalstorage
+[`asyncresource`]: async_context.md#class-asyncresource
+[`worker`]: worker_threads.md#class-worker
+[`after` callback]: #afterasyncid
+[`before` callback]: #beforeasyncid
+[`destroy` callback]: #destroyasyncid
+[`init` callback]: #initasyncid-type-triggerasyncid-resource
+[`process.getactiveresourcesinfo()`]: process.md#processgetactiveresourcesinfo
+[`promiseresolve` callback]: #promiseresolveasyncid
+[promise execution tracking]: #promise-execution-tracking

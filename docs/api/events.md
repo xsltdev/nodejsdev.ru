@@ -1,2138 +1,2905 @@
 ---
-title: Events
-description: Большая часть API ядра Node.js построена на идиоматической асинхронной управляемой событиями архитектуре, в которой определенные виды объектов испускают именованные события, которые вызывают Function вызываемые объекты
+title: События
+description: Модуль node:events, EventEmitter, слушатели, порядок вызова и обработка ошибок
 ---
 
 # События
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/dist/latest-v18.x/docs/api/events.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/events.html)
+
+<!--introduced_in=v0.10.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Большая часть API ядра Node.js построена вокруг идиоматической асинхронной событийно-ориентированной архитектуры, в которой определенные типы объектов (называемые "эмиттерами") испускают именованные события, которые вызывают объекты `функции` ("слушатели").
+<!--type=module-->
 
-Например: объект [`net.Server`](net.md#class-netserver) излучает событие каждый раз, когда к нему подключается пир; [`fs.ReadStream`](fs.md#class-fsreadstream) излучает событие, когда открывается файл; [stream](stream.md) излучает событие каждый раз, когда данные доступны для чтения.
+<!-- source_link=lib/events.js -->
 
-Все объекты, которые испускают события, являются экземплярами класса `EventEmitter`. Эти объекты открывают функцию `eventEmitter.on()`, которая позволяет прикрепить одну или несколько функций к именованным событиям, испускаемым объектом. Обычно имена событий представляют собой строки в верблюжьем регистре, но можно использовать любой допустимый ключ свойства JavaScript.
+Большая часть API ядра Node.js построена вокруг идиоматической асинхронной
+событийно-ориентированной архитектуры: объекты определённых типов («эмиттеры»)
+испускают именованные события, из‑за которых вызываются объекты `Function`
+(«слушатели»).
 
-Когда объект `EventEmitter` испускает событие, все функции, присоединенные к этому конкретному событию, вызываются _синхронно_. Любые значения, возвращенные вызванными слушателями, _игнорируются_ и отбрасываются.
+Например, объект [`net.Server`][] испускает событие при каждом подключении пира;
+[`fs.ReadStream`][] — когда файл открыт; [stream][] — когда данные доступны для чтения.
 
-В следующем примере показан простой экземпляр `EventEmitter` с одним слушателем. Метод `eventEmitter.on()` используется для регистрации слушателей, а метод `eventEmitter.emit()` используется для запуска события.
+Все объекты, которые испускают события, являются экземплярами класса `EventEmitter`.
+У них есть метод `eventEmitter.on()`, позволяющий привязать одну или несколько
+функций к именованным событиям. Обычно имена событий — строки в camelCase, но
+допустим любой корректный ключ свойства JavaScript.
 
-```mjs
-import { EventEmitter } from 'node:events';
+Когда `EventEmitter` испускает событие, все функции, привязанные к этому событию,
+вызываются _синхронно_. Возвращаемые слушателями значения _игнорируются_.
 
-class MyEmitter extends EventEmitter {}
+Ниже — простой экземпляр `EventEmitter` с одним слушателем: `eventEmitter.on()`
+регистрирует слушателей, `eventEmitter.emit()` инициирует событие.
 
-const myEmitter = new MyEmitter();
-myEmitter.on('event', () => {
-    console.log('произошло событие!');
-});
-myEmitter.emit('event');
-```
+=== "MJS"
 
-```cjs
-const EventEmitter = require('node:events');
+    ```js
+    import { EventEmitter } from 'node:events';
+    
+    class MyEmitter extends EventEmitter {}
+    
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', () => {
+      console.log('an event occurred!');
+    });
+    myEmitter.emit('event');
+    ```
 
-class MyEmitter extends EventEmitter {}
+=== "CJS"
 
-const myEmitter = new MyEmitter();
-myEmitter.on('event', () => {
-    console.log('произошло событие!');
-});
-myEmitter.emit('event');
-```
-
-<!-- 0000.part.md -->
+    ```js
+    const EventEmitter = require('node:events');
+    
+    class MyEmitter extends EventEmitter {}
+    
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', () => {
+      console.log('an event occurred!');
+    });
+    myEmitter.emit('event');
+    ```
 
 ## Передача аргументов и `this` слушателям
 
-Метод `eventEmitter.emit()` позволяет передавать произвольный набор аргументов в функции слушателя. Помните, что при вызове обычной функции слушателя стандартное ключевое слово `this` намеренно устанавливается для ссылки на экземпляр `EventEmitter`, к которому прикреплен слушатель.
+Метод `eventEmitter.emit()` может передать слушателям произвольный набор аргументов.
+Для обычной функции-слушателя ключевое слово `this` намеренно указывает на экземпляр
+`EventEmitter`, к которому привязан слушатель.
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', function (a, b) {
-    console.log(a, b, this, this === myEmitter);
-    // Печатает:
-    // a b MyEmitter {
-    // _events: [Object: null prototype] { event: [Function (anonymous)] } }
-    // _eventsCount: 1,
-    // _maxListeners: undefined,
-    // [Symbol(kCapture)]: false
-    // } true
-});
-myEmitter.emit('event', 'a', 'b');
-```
+=== "MJS"
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', function (a, b) {
-    console.log(a, b, this, this === myEmitter);
-    // Печатает:
-    // a b MyEmitter {
-    // _events: [Object: null prototype] { event: [Function (anonymous)] } }
-    // _eventsCount: 1,
-    // _maxListeners: undefined,
-    // [Symbol(kCapture)]: false
-    // } true
-});
-myEmitter.emit('event', 'a', 'b');
-```
-
-Можно использовать стрелочные функции ES6 в качестве слушателей, однако при этом ключевое слово `this` больше не будет ссылаться на экземпляр `EventEmitter`:
-
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', (a, b) => {
-    console.log(a, b, this);
-    // Печатает: a b {}
-});
-myEmitter.emit('event', 'a', 'b');
-```
-
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', (a, b) => {
-    console.log(a, b, this);
-    // Печатает: a b {}
-});
-myEmitter.emit('event', 'a', 'b');
-```
-
-<!-- 0001.part.md -->
-
-## Асинхронность против синхронности
-
-Устройство `EventEmitter` вызывает всех слушателей синхронно в том порядке, в котором они были зарегистрированы. Это обеспечивает правильную последовательность событий и помогает избежать условий гонки и логических ошибок. При необходимости функции слушателей могут переходить в асинхронный режим работы с помощью методов `setImmediate()` или `process.nextTick()`:
-
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', (a, b) => {
-    setImmediate(() => {
-        console.log('это происходит асинхронно');
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', function(a, b) {
+      console.log(a, b, this, this === myEmitter);
+      // Prints:
+      //   a b MyEmitter {
+      //     _events: [Object: null prototype] { event: [Function (anonymous)] },
+      //     _eventsCount: 1,
+      //     _maxListeners: undefined,
+      //     Symbol(shapeMode): false,
+      //     Symbol(kCapture): false
+      //   } true
     });
-});
-myEmitter.emit('event', 'a', 'b');
-```
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('event', (a, b) => {
-    setImmediate(() => {
-        console.log('это происходит асинхронно');
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', function(a, b) {
+      console.log(a, b, this, this === myEmitter);
+      // Prints:
+      //   a b MyEmitter {
+      //     _events: [Object: null prototype] { event: [Function (anonymous)] },
+      //     _eventsCount: 1,
+      //     _maxListeners: undefined,
+      //     Symbol(shapeMode): false,
+      //     Symbol(kCapture): false
+      //   } true
     });
-});
-myEmitter.emit('event', 'a', 'b');
-```
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-<!-- 0002.part.md -->
+В качестве слушателей можно использовать стрелочные функции ES6, но тогда `this`
+уже не ссылается на экземпляр `EventEmitter`:
 
-## Обработка событий только один раз
+=== "MJS"
 
-Когда слушатель зарегистрирован с помощью метода `eventEmitter.on()`, этот слушатель вызывается _каждый раз_, когда испускается названное событие.
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', (a, b) => {
+      console.log(a, b, this);
+      // Prints: a b undefined
+    });
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-let m = 0;
-myEmitter.on('event', () => {
-    console.log(++m);
-});
-myEmitter.emit('event');
-// Печатает: 1
-myEmitter.emit('event');
-// Печатает: 2
-```
+=== "CJS"
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-let m = 0;
-myEmitter.on('event', () => {
-    console.log(++m);
-});
-myEmitter.emit('event');
-// Печатает: 1
-myEmitter.emit('event');
-// Печатает: 2
-```
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', (a, b) => {
+      console.log(a, b, this);
+      // Prints: a b {}
+    });
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-Используя метод `eventEmitter.once()`, можно зарегистрировать слушатель, который вызывается не более одного раза для определенного события. Как только событие произойдет, слушатель будет снят с регистрации и _тогда_ вызван.
+## Асинхронность и синхронность
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-let m = 0;
-myEmitter.once('event', () => {
-    console.log(++m);
-});
-myEmitter.emit('event');
-// Печатает: 1
-myEmitter.emit('event');
-// Игнорируется
-```
+`EventEmitter` вызывает всех слушателей синхронно в порядке регистрации. Так
+сохраняется нужный порядок событий и снижается риск гонок и логических ошибок.
+При необходимости слушатель может перейти к асинхронной работе через `setImmediate()`
+или `process.nextTick()`:
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-let m = 0;
-myEmitter.once('event', () => {
-    console.log(++m);
-});
-myEmitter.emit('event');
-// Печатает: 1
-myEmitter.emit('event');
-// Игнорируется
-```
+=== "MJS"
 
-<!-- 0003.part.md -->
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', (a, b) => {
+      setImmediate(() => {
+        console.log('this happens asynchronously');
+      });
+    });
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-## События ошибки
+=== "CJS"
 
-Когда в экземпляре `EventEmitter` возникает ошибка, типичным действием является выдача события `'error'`. В Node.js это рассматривается как особый случай.
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('event', (a, b) => {
+      setImmediate(() => {
+        console.log('this happens asynchronously');
+      });
+    });
+    myEmitter.emit('event', 'a', 'b');
+    ```
 
-Если у `EventEmitter` нет _не_ хотя бы одного слушателя, зарегистрированного для события `'error'`, и событие `'error'` испускается, ошибка отбрасывается, печатается трассировка стека, и процесс Node.js завершается.
+## Событие только один раз
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.emit('error', new Error('whoops!'));
-// Выбрасывает и разрушает Node.js
-```
+Когда слушатель зарегистрирован с помощью метода `eventEmitter.on()`, этот
+слушатель вызывается _каждый раз_, когда испускается именованное событие.
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.emit('error', new Error('whoops!'));
-// Выбрасывает и разрушает Node.js
-```
+=== "MJS"
 
-Для защиты от сбоя процесса Node.js можно использовать модуль [`domain`](domain.md). (Заметим, однако, что модуль `node:domain` устарел).
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    let m = 0;
+    myEmitter.on('event', () => {
+      console.log(++m);
+    });
+    myEmitter.emit('event');
+    // Prints: 1
+    myEmitter.emit('event');
+    // Prints: 2
+    ```
 
-В качестве лучшей практики всегда следует добавлять слушателей для событий `error`.
+=== "CJS"
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('error', (err) => {
-    console.error('упс! произошла ошибка');
-});
-myEmitter.emit('error', new Error('whoops!'));
-// Выводит: упс! произошла ошибка
-```
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    let m = 0;
+    myEmitter.on('event', () => {
+      console.log(++m);
+    });
+    myEmitter.emit('event');
+    // Prints: 1
+    myEmitter.emit('event');
+    // Prints: 2
+    ```
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-myEmitter.on('error', (err) => {
-    console.error('упс! произошла ошибка');
-});
-myEmitter.emit('error', new Error('whoops!'));
-// Выводит: упс! произошла ошибка
-```
+Используя метод `eventEmitter.once()`, можно зарегистрировать слушатель,
+который вызывается не более одного раза для данного события. Как только событие
+испущено, слушатель снимается с регистрации и _затем_ вызывается.
 
-Можно отслеживать события `error` без потребления излучаемой ошибки, установив слушателя с помощью символа `events.errorMonitor`.
+=== "MJS"
 
-```mjs
-import { EventEmitter, errorMonitor } from 'node:events';
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    let m = 0;
+    myEmitter.once('event', () => {
+      console.log(++m);
+    });
+    myEmitter.emit('event');
+    // Prints: 1
+    myEmitter.emit('event');
+    // Ignored
+    ```
 
-const myEmitter = new EventEmitter();
-myEmitter.on(errorMonitor, (err) => {
-    MyMonitoringTool.log(err);
-});
-myEmitter.emit('error', new Error('whoops!'));
-// Все еще бросает и рушит Node.js
-```
+=== "CJS"
 
-```cjs
-const {
-    EventEmitter,
-    errorMonitor,
-} = require('node:events');
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    let m = 0;
+    myEmitter.once('event', () => {
+      console.log(++m);
+    });
+    myEmitter.emit('event');
+    // Prints: 1
+    myEmitter.emit('event');
+    // Ignored
+    ```
 
-const myEmitter = new EventEmitter();
-myEmitter.on(errorMonitor, (err) => {
-    MyMonitoringTool.log(err);
-});
-myEmitter.emit('error', new Error('whoops!'));
-// Все еще бросает и рушит Node.js
-```
+## События ошибок
 
-<!-- 0004.part.md -->
+Когда в экземпляре `EventEmitter` возникает ошибка, обычно испускается событие
+`'error'`. В Node.js такие случаи обрабатываются особым образом.
 
-## Перехват отказов обещаний
+Если у `EventEmitter` _нет_ хотя бы одного слушателя, зарегистрированного для
+события `'error'`, и при этом испускается `'error'`, ошибка пробрасывается,
+печатается трассировка стека и процесс Node.js завершается.
 
-Использование функций `async` с обработчиками событий проблематично, поскольку может привести к необработанному отказу в случае брошенного исключения:
+=== "MJS"
 
-```mjs
-import { EventEmitter } from 'node:events';
-const ee = new EventEmitter();
-ee.on('something', async (value) => {
-    throw new Error('kaboom');
-});
-```
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.emit('error', new Error('whoops!'));
+    // Throws and crashes Node.js
+    ```
 
-```cjs
-const EventEmitter = require('node:events');
-const ee = new EventEmitter();
-ee.on('something', async (value) => {
-    throw new Error('kaboom');
-});
-```
+=== "CJS"
 
-Опция `captureRejections` в конструкторе `EventEmitter` или глобальная настройка изменяют это поведение, устанавливая обработчик `.then(undefined, handler)` на `Promise`. Этот обработчик направляет исключение асинхронно в метод [`Symbol.for('nodejs.rejection')`](#emittersymbolfornodejsrejectionerr-eventname-args), если он есть, или в обработчик событий [`'error'`](#error-events), если его нет.
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.emit('error', new Error('whoops!'));
+    // Throws and crashes Node.js
+    ```
 
-```mjs
-import { EventEmitter } from 'node:events';
-const ee1 = new EventEmitter({ captureRejections: true });
-ee1.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+Чтобы снизить риск аварийного завершения процесса Node.js, можно использовать
+модуль [`domain`][]. (Однако модуль `node:domain` устарел.)
 
-ee1.on('error', console.log);
+Рекомендуется всегда добавлять слушателей для событий `'error'`.
 
-const ee2 = new EventEmitter({ captureRejections: true });
-ee2.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+=== "MJS"
 
-ee2[Symbol.for('nodejs.rejection')] = console.log;
-```
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('error', (err) => {
+      console.error('whoops! there was an error');
+    });
+    myEmitter.emit('error', new Error('whoops!'));
+    // Prints: whoops! there was an error
+    ```
 
-```cjs
-const EventEmitter = require('node:events');
-const ee1 = new EventEmitter({ captureRejections: true });
-ee1.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+=== "CJS"
 
-ee1.on('error', console.log);
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    myEmitter.on('error', (err) => {
+      console.error('whoops! there was an error');
+    });
+    myEmitter.emit('error', new Error('whoops!'));
+    // Prints: whoops! there was an error
+    ```
 
-const ee2 = new EventEmitter({ captureRejections: true });
-ee2.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+Можно отслеживать события `'error'`, не «поглощая» переданную ошибку, установив
+слушателя с символом `events.errorMonitor`.
 
-ee2[Symbol.for('nodejs.rejection')] = console.log;
-```
+=== "MJS"
 
-Установка `events.captureRejections = true` изменит значение по умолчанию для всех новых экземпляров `EventEmitter`.
+    ```js
+    import { EventEmitter, errorMonitor } from 'node:events';
+    
+    const myEmitter = new EventEmitter();
+    myEmitter.on(errorMonitor, (err) => {
+      MyMonitoringTool.log(err);
+    });
+    myEmitter.emit('error', new Error('whoops!'));
+    // Still throws and crashes Node.js
+    ```
 
-```mjs
-import { EventEmitter } from 'node:events';
+=== "CJS"
 
-EventEmitter.captureRejections = true;
-const ee1 = new EventEmitter();
-ee1.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+    ```js
+    const { EventEmitter, errorMonitor } = require('node:events');
+    
+    const myEmitter = new EventEmitter();
+    myEmitter.on(errorMonitor, (err) => {
+      MyMonitoringTool.log(err);
+    });
+    myEmitter.emit('error', new Error('whoops!'));
+    // Still throws and crashes Node.js
+    ```
 
-ee1.on('error', console.log);
-```
+## Перехват отклонений промисов
 
-```cjs
-const events = require('node:events');
-events.captureRejections = true;
-const ee1 = new events.EventEmitter();
-ee1.on('something', async (value) => {
-    throw new Error('kaboom');
-});
+Использование функций `async` в обработчиках событий неудобно: при выброшенном
+исключении возможен необработанный отказ промиса:
 
-ee1.on('error', console.log);
-```
+=== "MJS"
 
-События `'error'`, которые генерируются поведением `captureRejections`, не имеют обработчика `catch`, чтобы избежать бесконечных циклов ошибок: рекомендуется **не использовать функции `async` в качестве обработчиков событий `'error'`**.
+    ```js
+    import { EventEmitter } from 'node:events';
+    const ee = new EventEmitter();
+    ee.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    ```
 
-<!-- 0005.part.md -->
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    const ee = new EventEmitter();
+    ee.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    ```
+
+Опция `captureRejections` в конструкторе `EventEmitter` или глобальная настройка
+меняют это поведение, устанавливая на `Promise` обработчик `.then(undefined, handler)`.
+Он асинхронно передаёт исключение в метод [`Symbol.for('nodejs.rejection')`][rejection],
+если он есть, иначе — в обработчик события [`'error'`][error].
+
+=== "MJS"
+
+    ```js
+    import { EventEmitter } from 'node:events';
+    const ee1 = new EventEmitter({ captureRejections: true });
+    ee1.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee1.on('error', console.log);
+    
+    const ee2 = new EventEmitter({ captureRejections: true });
+    ee2.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee2[Symbol.for('nodejs.rejection')] = console.log;
+    ```
+
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    const ee1 = new EventEmitter({ captureRejections: true });
+    ee1.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee1.on('error', console.log);
+    
+    const ee2 = new EventEmitter({ captureRejections: true });
+    ee2.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee2[Symbol.for('nodejs.rejection')] = console.log;
+    ```
+
+Установка `events.captureRejections = true` меняет значение по умолчанию для всех
+новых экземпляров `EventEmitter`.
+
+=== "MJS"
+
+    ```js
+    import { EventEmitter } from 'node:events';
+    
+    EventEmitter.captureRejections = true;
+    const ee1 = new EventEmitter();
+    ee1.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee1.on('error', console.log);
+    ```
+
+=== "CJS"
+
+    ```js
+    const events = require('node:events');
+    events.captureRejections = true;
+    const ee1 = new events.EventEmitter();
+    ee1.on('something', async (value) => {
+      throw new Error('kaboom');
+    });
+    
+    ee1.on('error', console.log);
+    ```
+
+События `'error'`, порождённые поведением `captureRejections`, не получают
+обработчика `catch`, чтобы избежать бесконечных циклов ошибок; рекомендуется
+**не использовать функции `async` в качестве обработчиков события `'error'`**.
 
 ## Класс: `EventEmitter`
 
-Класс `EventEmitter` определяется и раскрывается модулем `node:events`:
+<!-- YAML
+added: v0.1.26
+changes:
+  - version:
+     - v13.4.0
+     - v12.16.0
+    pr-url: https://github.com/nodejs/node/pull/27867
+    description: Added captureRejections option.
+-->
 
-```mjs
-import { EventEmitter } from 'node:events';
-```
+Добавлено в: v0.1.26
 
-```cjs
-const EventEmitter = require('node:events');
-```
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.4.0, v12.16.0 | Добавлена ​​опция captureRejections. |
 
-Все `EventEmitter` испускают событие `'newListener'` при добавлении новых слушателей и `'removeListener'` при удалении существующих слушателей.
+Класс `EventEmitter` определяется и экспортируется модулем `node:events`:
 
-Он поддерживает следующую опцию:
+=== "MJS"
 
--   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматический перехват отказов обещаний](#capture-rejections-of-promises). **По умолчанию:** `false`.
+    ```js
+    import { EventEmitter } from 'node:events';
+    ```
 
-<!-- 0006.part.md -->
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    ```
+
+Все экземпляры `EventEmitter` испускают событие `'newListener'` при добавлении
+новых слушателей и `'removeListener'` при удалении существующих.
+
+Поддерживается следующая опция:
+
+* `captureRejections` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
+  [автоматический перехват отклонений промисов][capturerejections].
+  **По умолчанию:** `false`.
 
 ### Событие: `'newListener'`
 
--   `eventName` {string|symbol} Имя события, которое прослушивается
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+<!-- YAML
+added: v0.1.26
+-->
 
-Экземпляр `EventEmitter` будет испускать свое собственное событие `'newListener'` _до_ того, как слушатель будет добавлен в его внутренний массив слушателей.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 
-Слушателям, зарегистрированным для события `'newListener'`, передается имя события и ссылка на добавляемый слушатель.
+Экземпляр `EventEmitter` испускает собственное событие `'newListener'` _до_ того,
+как слушатель будет добавлен во внутренний массив слушателей.
 
-Тот факт, что событие запускается до добавления слушателя, имеет тонкий, но важный побочный эффект: любые _дополнительные_ слушатели, зарегистрированные на то же `имя` _в рамках_ обратного вызова `'newListener'`, вставляются _перед_ слушателем, который находится в процессе добавления.
+Слушателям события `'newListener'` передаются имя события и ссылка на добавляемый
+слушатель.
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
+То, что событие срабатывает до добавления слушателя, даёт тонкий, но важный
+побочный эффект: любые _дополнительные_ слушатели, зарегистрированные на то же
+`name` _внутри_ обратного вызова `'newListener'`, вставляются _перед_
+слушателем, который в процессе добавления.
 
-const myEmitter = new MyEmitter();
-// Делаем это только один раз, чтобы не циклиться вечно
-myEmitter.once('newListener', (event, listener) => {
-    if (event === 'event') {
-        // Вставляем новый слушатель
+=== "MJS"
+
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    
+    const myEmitter = new MyEmitter();
+    // Only do this once so we don't loop forever
+    myEmitter.once('newListener', (event, listener) => {
+      if (event === 'event') {
+        // Insert a new listener in front
         myEmitter.on('event', () => {
-            console.log('B');
+          console.log('B');
         });
-    }
-});
-myEmitter.on('event', () => {
-    console.log('A');
-});
-myEmitter.emit('event');
-// Печатает:
-// B
-// A
-```
+      }
+    });
+    myEmitter.on('event', () => {
+      console.log('A');
+    });
+    myEmitter.emit('event');
+    // Prints:
+    //   B
+    //   A
+    ```
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
+=== "CJS"
 
-const myEmitter = new MyEmitter();
-// Делаем это только один раз, чтобы не циклиться вечно
-myEmitter.once('newListener', (event, listener) => {
-    if (event === 'event') {
-        // Вставляем новый слушатель
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    
+    const myEmitter = new MyEmitter();
+    // Only do this once so we don't loop forever
+    myEmitter.once('newListener', (event, listener) => {
+      if (event === 'event') {
+        // Insert a new listener in front
         myEmitter.on('event', () => {
-            console.log('B');
+          console.log('B');
         });
-    }
-});
-myEmitter.on('event', () => {
-    console.log('A');
-});
-myEmitter.emit('event');
-// Печатает:
-// B
-// A
-```
-
-<!-- 0007.part.md -->
+      }
+    });
+    myEmitter.on('event', () => {
+      console.log('A');
+    });
+    myEmitter.emit('event');
+    // Prints:
+    //   B
+    //   A
+    ```
 
 ### Событие: `'removeListener'`
 
--   `eventName` {string|symbol} Имя события
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+<!-- YAML
+added: v0.9.3
+changes:
+  - version:
+    - v6.1.0
+    - v4.7.0
+    pr-url: https://github.com/nodejs/node/pull/6394
+    description: For listeners attached using `.once()`, the `listener` argument
+                 now yields the original listener function.
+-->
 
-Событие `'removeListener'` испускается _после_ удаления `listener'`.
+Добавлено в: v0.9.3
 
-<!-- 0008.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v6.1.0, v4.7.0 | Для прослушивателей, подключенных с помощью `.once()`, аргумент `listener` теперь возвращает исходную функцию прослушивателя. |
+
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+
+Событие `'removeListener'` испускается _после_ удаления `listener`.
 
 ### `emitter.addListener(eventName, listener)`
 
--   `eventName` {string|symbol}
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+<!-- YAML
+added: v0.1.26
+-->
+
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Псевдоним для `emitter.on(eventName, listener)`.
 
-<!-- 0009.part.md -->
-
 ### `emitter.emit(eventName[, ...args])`
 
--   `eventName` {string|symbol}
--   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v0.1.26
+-->
 
-Синхронно вызывает каждый из слушателей, зарегистрированных для события с именем `eventName`, в порядке их регистрации, передавая каждому из них указанные аргументы.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `...args` {any}
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Возвращает `true`, если у события были слушатели, `false` в противном случае.
+Синхронно вызывает каждого из слушателей, зарегистрированных для события
+`eventName`, в порядке регистрации, передавая им указанные аргументы.
 
-```mjs
-import { EventEmitter } from 'node:events';
-const myEmitter = new EventEmitter();
+Возвращает `true`, если у события были слушатели, иначе `false`.
 
-// Первый слушатель
-myEmitter.on('event', function firstListener() {
-    console.log('Helloooooo! первый слушатель');
-});
-// Второй слушатель
-myEmitter.on('event', function secondListener(arg1, arg2) {
-    console.log(
-        `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
-    );
-});
-// Третий слушатель
-myEmitter.on('event', function thirdListener(...args) {
-    const parameters = args.join(', ');
-    console.log(
-        `событие с параметрами ${параметры} в третьем слушателе`
-    );
-});
+=== "MJS"
 
-console.log(myEmitter.listeners('event'));
+    ```js
+    import { EventEmitter } from 'node:events';
+    const myEmitter = new EventEmitter();
+    
+    // First listener
+    myEmitter.on('event', function firstListener() {
+      console.log('Helloooo! first listener');
+    });
+    // Second listener
+    myEmitter.on('event', function secondListener(arg1, arg2) {
+      console.log(`event with parameters ${arg1}, ${arg2} in second listener`);
+    });
+    // Third listener
+    myEmitter.on('event', function thirdListener(...args) {
+      const parameters = args.join(', ');
+      console.log(`event with parameters ${parameters} in third listener`);
+    });
+    
+    console.log(myEmitter.listeners('event'));
+    
+    myEmitter.emit('event', 1, 2, 3, 4, 5);
+    
+    // Prints:
+    // [
+    //   [Function: firstListener],
+    //   [Function: secondListener],
+    //   [Function: thirdListener]
+    // ]
+    // Helloooo! first listener
+    // event with parameters 1, 2 in second listener
+    // event with parameters 1, 2, 3, 4, 5 in third listener
+    ```
 
-myEmitter.emit('event', 1, 2, 3, 4, 5);
+=== "CJS"
 
-// Печатает:
-// [
-// [Функция: firstListener],
-// [Function: secondListener],
-// [Function: thirdListener]
-// ]
-// первый слушатель
-// событие с параметрами 1, 2 во втором слушателе
-// событие с параметрами 1, 2, 3, 4, 5 в третьем слушателе
-```
-
-```cjs
-const EventEmitter = require('node:events');
-const myEmitter = new EventEmitter();
-
-// Первый слушатель
-myEmitter.on('event', function firstListener() {
-    console.log('Helloooooo! первый слушатель');
-});
-// Второй слушатель
-myEmitter.on('event', function secondListener(arg1, arg2) {
-    console.log(
-        `событие с параметрами ${arg1}, ${arg2} во втором слушателе`
-    );
-});
-// Третий слушатель
-myEmitter.on('event', function thirdListener(...args) {
-    const parameters = args.join(', ');
-    console.log(
-        `событие с параметрами ${параметры} в третьем слушателе`
-    );
-});
-
-console.log(myEmitter.listeners('event'));
-
-myEmitter.emit('event', 1, 2, 3, 4, 5);
-
-// Печатает:
-// [
-// [Функция: firstListener],
-// [Function: secondListener],
-// [Function: thirdListener]
-// ]
-// первый слушатель
-// событие с параметрами 1, 2 во втором слушателе
-// событие с параметрами 1, 2, 3, 4, 5 в третьем слушателе
-```
-
-<!-- 0010.part.md -->
+    ```js
+    const EventEmitter = require('node:events');
+    const myEmitter = new EventEmitter();
+    
+    // First listener
+    myEmitter.on('event', function firstListener() {
+      console.log('Helloooo! first listener');
+    });
+    // Second listener
+    myEmitter.on('event', function secondListener(arg1, arg2) {
+      console.log(`event with parameters ${arg1}, ${arg2} in second listener`);
+    });
+    // Third listener
+    myEmitter.on('event', function thirdListener(...args) {
+      const parameters = args.join(', ');
+      console.log(`event with parameters ${parameters} in third listener`);
+    });
+    
+    console.log(myEmitter.listeners('event'));
+    
+    myEmitter.emit('event', 1, 2, 3, 4, 5);
+    
+    // Prints:
+    // [
+    //   [Function: firstListener],
+    //   [Function: secondListener],
+    //   [Function: thirdListener]
+    // ]
+    // Helloooo! first listener
+    // event with parameters 1, 2 in second listener
+    // event with parameters 1, 2, 3, 4, 5 in third listener
+    ```
 
 ### `emitter.eventNames()`
 
--   Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
+<!-- YAML
+added: v6.0.0
+-->
 
-Возвращает массив, содержащий список событий, для которых эмиттер зарегистрировал слушателей. Значения в массиве - это строки или `символы`.
+* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 
-```mjs
-import { EventEmitter } from 'node:events';
+Возвращает массив имён событий, для которых у эмиттера зарегистрированы
+слушатели.
 
-const myEE = new EventEmitter();
-myEE.on('foo', () => {});
-myEE.on('bar', () => {});
+=== "MJS"
 
-const sym = Symbol('symbol');
-myEE.on(sym, () => {});
+    ```js
+    import { EventEmitter } from 'node:events';
+    
+    const myEE = new EventEmitter();
+    myEE.on('foo', () => {});
+    myEE.on('bar', () => {});
+    
+    const sym = Symbol('symbol');
+    myEE.on(sym, () => {});
+    
+    console.log(myEE.eventNames());
+    // Prints: [ 'foo', 'bar', Symbol(symbol) ]
+    ```
 
-console.log(myEE.eventNames());
-// Печатает: [ 'foo', 'bar', Symbol(symbol) ]
-```
+=== "CJS"
 
-```cjs
-const EventEmitter = require('node:events');
-
-const myEE = new EventEmitter();
-myEE.on('foo', () => {});
-myEE.on('bar', () => {});
-
-const sym = Symbol('symbol');
-myEE.on(sym, () => {});
-
-console.log(myEE.eventNames());
-// Печатает: [ 'foo', 'bar', Symbol(symbol) ]
-```
-
-<!-- 0011.part.md -->
+    ```js
+    const EventEmitter = require('node:events');
+    
+    const myEE = new EventEmitter();
+    myEE.on('foo', () => {});
+    myEE.on('bar', () => {});
+    
+    const sym = Symbol('symbol');
+    myEE.on(sym, () => {});
+    
+    console.log(myEE.eventNames());
+    // Prints: [ 'foo', 'bar', Symbol(symbol) ]
+    ```
 
 ### `emitter.getMaxListeners()`
 
--   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v1.0.0
+-->
 
-Возвращает текущее максимальное значение слушателя для `EventEmitter`, которое либо установлено [`emitter.setMaxListeners(n)`](#emittersetmaxlistenersn), либо по умолчанию равно [`events.defaultMaxListeners`](#eventsdefaultmaxlisteners).
+* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0012.part.md -->
+Возвращает текущее максимальное число слушателей для `EventEmitter` — либо
+заданное через [`emitter.setMaxListeners(n)`][], либо по умолчанию
+[`events.defaultMaxListeners`][].
 
-### `emitter.listenerCount(eventName)`
+### `emitter.listenerCount(eventName[, listener])`
 
--   `eventName` {string|symbol} Имя события, которое прослушивается
--   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v3.2.0
+changes:
+  - version:
+    - v19.8.0
+    - v18.16.0
+    pr-url: https://github.com/nodejs/node/pull/46523
+    description: Added the `listener` argument.
+-->
 
-Возвращает количество слушателей, прослушивающих событие с именем `eventName`.
+Добавлено в: v3.2.0
 
-<!-- 0013.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.8.0, v18.16.0 | Добавлен аргумент «слушатель». |
+
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Возвращает число слушателей события `eventName`.
+Если передан `listener`, возвращается, сколько раз этот обработчик встречается
+в списке слушателей события.
 
 ### `emitter.listeners(eventName)`
 
--   `eventName` {string|symbol}
--   Возвращает: {функция\[\]}
+<!-- YAML
+added: v0.1.26
+changes:
+  - version: v7.0.0
+    pr-url: https://github.com/nodejs/node/pull/6881
+    description: For listeners attached using `.once()` this returns the
+                 original listeners instead of wrapper functions now.
+-->
 
-Возвращает копию массива слушателей для события с именем `eventName`.
+Добавлено в: v0.1.26
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.0.0 | Для прослушивателей, подключенных с помощью .once(), теперь возвращаются исходные прослушиватели вместо функций-оболочек. |
+
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Возвращает копию массива слушателей для события `eventName`.
 
 ```js
 server.on('connection', (stream) => {
-    console.log('кто-то подключился!');
+  console.log('someone connected!');
 });
 console.log(util.inspect(server.listeners('connection')));
-// Выводит: [ [Функция]]
+// Prints: [ [Function] ]
 ```
-
-<!-- 0014.part.md -->
 
 ### `emitter.off(eventName, listener)`
 
--   `eventName` {string|symbol}
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v10.0.0
+-->
 
-Псевдоним для [`emitter.removeListener()`](#emitterremovelistenereventname-listener).
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
 
-<!-- 0015.part.md -->
+Псевдоним для [`emitter.removeListener()`][].
 
 ### `emitter.on(eventName, listener)`
 
--   `eventName` {string|symbol} Имя события.
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v0.1.101
+-->
 
-Добавляет функцию `listener` в конец массива слушателей для события с именем `eventName`. Не проверяется, не был ли `listener` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+
+Добавляет функцию `listener` в конец массива слушателей для события `eventName`.
+Проверка, не добавлен ли `listener` ранее, не выполняется. Повторные вызовы с той
+же парой `eventName` и `listener` приведут к многократному добавлению и вызову
+обработчика.
 
 ```js
 server.on('connection', (stream) => {
-    console.log('кто-то подключился!');
+  console.log('someone connected!');
 });
 ```
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
-По умолчанию слушатели событий вызываются в порядке их добавления. В качестве альтернативы можно использовать метод `emitter.prependListener()` для добавления слушателя события в начало массива слушателей.
+По умолчанию слушатели вызываются в порядке добавления. Альтернатива —
+`emitter.prependListener()`, чтобы добавить слушателя в начало массива.
 
-```mjs
-import { EventEmitter } from 'node:events';
-const myEE = new EventEmitter();
-myEE.on('foo', () => console.log('a'));
-myEE.prependListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Печатает:
-// b
-// a
-```
+=== "MJS"
 
-```cjs
-const EventEmitter = require('node:events');
-const myEE = new EventEmitter();
-myEE.on('foo', () => console.log('a'));
-myEE.prependListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Печатает:
-// b
-// a
-```
+    ```js
+    import { EventEmitter } from 'node:events';
+    const myEE = new EventEmitter();
+    myEE.on('foo', () => console.log('a'));
+    myEE.prependListener('foo', () => console.log('b'));
+    myEE.emit('foo');
+    // Prints:
+    //   b
+    //   a
+    ```
 
-<!-- 0016.part.md -->
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    const myEE = new EventEmitter();
+    myEE.on('foo', () => console.log('a'));
+    myEE.prependListener('foo', () => console.log('b'));
+    myEE.emit('foo');
+    // Prints:
+    //   b
+    //   a
+    ```
 
 ### `emitter.once(eventName, listener)`
 
--   `eventName` {string|symbol} Имя события.
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v0.3.0
+-->
 
-Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName`. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+
+Добавляет **одноразовую** функцию `listener` для события `eventName`. При
+следующем срабатывании `eventName` этот слушатель удаляется, затем вызывается.
 
 ```js
 server.once('connection', (stream) => {
-    console.log('Ах, у нас есть наш первый пользователь!');
+  console.log('Ah, we have our first user!');
 });
 ```
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
-По умолчанию слушатели событий вызываются в порядке их добавления. В качестве альтернативы можно использовать метод `emitter.prependOnceListener()` для добавления слушателя события в начало массива слушателей.
+По умолчанию слушатели вызываются в порядке добавления. Альтернатива —
+`emitter.prependOnceListener()`, чтобы добавить одноразового слушателя в начало
+массива.
 
-```mjs
-import { EventEmitter } from 'node:events';
-const myEE = new EventEmitter();
-myEE.once('foo', () => console.log('a'));
-myEE.prependOnceListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Печатает:
-// b
-// a
-```
+=== "MJS"
 
-```cjs
-const EventEmitter = require('node:events');
-const myEE = new EventEmitter();
-myEE.once('foo', () => console.log('a'));
-myEE.prependOnceListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Печатает:
-// b
-// a
-```
+    ```js
+    import { EventEmitter } from 'node:events';
+    const myEE = new EventEmitter();
+    myEE.once('foo', () => console.log('a'));
+    myEE.prependOnceListener('foo', () => console.log('b'));
+    myEE.emit('foo');
+    // Prints:
+    //   b
+    //   a
+    ```
 
-<!-- 0017.part.md -->
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    const myEE = new EventEmitter();
+    myEE.once('foo', () => console.log('a'));
+    myEE.prependOnceListener('foo', () => console.log('b'));
+    myEE.emit('foo');
+    // Prints:
+    //   b
+    //   a
+    ```
 
 ### `emitter.prependListener(eventName, listener)`
 
--   `eventName` {string|symbol} Имя события.
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v6.0.0
+-->
 
-Добавляет функцию `listener` в _начало_ массива слушателей для события с именем `eventName`. Не проверяется, не был ли `слушатель` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+
+Добавляет функцию `listener` в _начало_ массива слушателей для события
+`eventName`. Проверка, не добавлен ли `listener` ранее, не выполняется.
+Повторные вызовы с той же парой `eventName` и `listener` приведут к многократному
+добавлению и вызову обработчика.
 
 ```js
 server.prependListener('connection', (stream) => {
-    console.log('кто-то подключился!');
+  console.log('someone connected!');
 });
 ```
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть соединены в цепочку.
-
-<!-- 0018.part.md -->
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
 ### `emitter.prependOnceListener(eventName, listener)`
 
--   `eventName` {string|symbol} Имя события.
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v6.0.0
+-->
 
-Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName` в _начало_ массива слушателей. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+
+Добавляет **одноразовую** функцию `listener` для события `eventName` в _начало_
+массива слушателей. При следующем срабатывании `eventName` этот слушатель
+удаляется, затем вызывается.
 
 ```js
 server.prependOnceListener('connection', (stream) => {
-    console.log('Ах, у нас есть наш первый пользователь!');
+  console.log('Ah, we have our first user!');
 });
 ```
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
-
-<!-- 0019.part.md -->
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
 ### `emitter.removeAllListeners([eventName])`
 
--   `eventName` {string|symbol}
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v0.1.26
+-->
 
-Удаляет всех слушателей или слушателей указанного `eventName`.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
 
-Плохой практикой является удаление слушателей, добавленных в другом месте кода, особенно если экземпляр `EventEmitter` был создан каким-либо другим компонентом или модулем (например, сокеты или файловые потоки).
+Удаляет всех слушателей или только слушателей указанного `eventName`.
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
+Плохая практика — удалять слушателей, добавленных в другом месте кода, особенно
+если экземпляр `EventEmitter` создан другим компонентом или модулем (например
+сокеты или файловые потоки).
 
-<!-- 0020.part.md -->
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
 ### `emitter.removeListener(eventName, listener)`
 
--   `eventName` {string|symbol}
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v0.1.26
+-->
 
-Удаляет указанный `listener` из массива слушателей для события с именем `eventName`.
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+
+Удаляет указанный `listener` из массива слушателей события `eventName`.
 
 ```js
 const callback = (stream) => {
-    console.log('кто-то подключился!');
+  console.log('someone connected!');
 };
 server.on('connection', callback);
 // ...
 server.removeListener('connection', callback);
 ```
 
-Функция `removeListener()` удалит из массива слушателей не более одного экземпляра слушателя. Если какой-либо один слушатель был добавлен в массив слушателей несколько раз для указанного `eventName`, то `removeListener()` должен быть вызван несколько раз для удаления каждого экземпляра.
+`removeListener()` удаляет не более одного вхождения слушателя из массива.
+Если один и тот же обработчик был добавлен несколько раз для `eventName`,
+`removeListener()` нужно вызывать столько раз, сколько раз он был добавлен.
 
-Как только событие испущено, все слушатели, прикрепленные к нему на момент испускания, вызываются по порядку. Это означает, что любые вызовы `removeListener()` или `removeAllListeners()` _после_ испускания и _до_ завершения выполнения последнего слушателя не удалят их из `emit()` в процессе выполнения. Последующие события ведут себя так, как ожидалось.
+Когда событие испускается, вызываются все слушатели, привязанные к нему на момент
+вызова `emit()`, по порядку. Это значит, что вызовы `removeListener()` или
+`removeAllListeners()` _после_ начала `emit()`, но _до_ завершения последнего
+слушателя, не уберут их из текущего `emit()`. Последующие события ведут себя как
+ожидается.
 
-```mjs
-import { EventEmitter } from 'node:events';
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
+=== "MJS"
 
-const callbackA = () => {
-    console.log('A');
-    myEmitter.removeListener('event', callbackB);
-};
+    ```js
+    import { EventEmitter } from 'node:events';
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    
+    const callbackA = () => {
+      console.log('A');
+      myEmitter.removeListener('event', callbackB);
+    };
+    
+    const callbackB = () => {
+      console.log('B');
+    };
+    
+    myEmitter.on('event', callbackA);
+    
+    myEmitter.on('event', callbackB);
+    
+    // callbackA removes listener callbackB but it will still be called.
+    // Internal listener array at time of emit [callbackA, callbackB]
+    myEmitter.emit('event');
+    // Prints:
+    //   A
+    //   B
+    
+    // callbackB is now removed.
+    // Internal listener array [callbackA]
+    myEmitter.emit('event');
+    // Prints:
+    //   A
+    ```
 
-const callbackB = () => {
-    console.log('B');
-};
+=== "CJS"
 
-myEmitter.on('event', callbackA);
+    ```js
+    const EventEmitter = require('node:events');
+    class MyEmitter extends EventEmitter {}
+    const myEmitter = new MyEmitter();
+    
+    const callbackA = () => {
+      console.log('A');
+      myEmitter.removeListener('event', callbackB);
+    };
+    
+    const callbackB = () => {
+      console.log('B');
+    };
+    
+    myEmitter.on('event', callbackA);
+    
+    myEmitter.on('event', callbackB);
+    
+    // callbackA removes listener callbackB but it will still be called.
+    // Internal listener array at time of emit [callbackA, callbackB]
+    myEmitter.emit('event');
+    // Prints:
+    //   A
+    //   B
+    
+    // callbackB is now removed.
+    // Internal listener array [callbackA]
+    myEmitter.emit('event');
+    // Prints:
+    //   A
+    ```
 
-myEmitter.on('event', callbackB);
+Так как слушатели хранятся во внутреннем массиве, этот вызов меняет индексы
+любых слушателей, зарегистрированных _после_ удаляемого. На порядок вызова это
+не влияет, но копии массива, возвращённые `emitter.listeners()`, нужно получить
+заново.
 
-// callbackA удаляет слушателя callbackB, но он все равно будет вызван.
-// Внутренний массив слушателей во время испускания [callbackA, callbackB].
-myEmitter.emit('event');
-// Печатает:
-// A
-// B
+Если одна и та же функция добавлена несколько раз как обработчик одного события
+(как в примере ниже), `removeListener()` удалит самое недавно добавленное
+вхождение. В примере снимается слушатель `once('ping')`:
 
-// callbackB теперь удален.
-// Внутренний массив слушателей [callbackA].
-myEmitter.emit('event');
-// Печатает:
-// A
-```
+=== "MJS"
 
-```cjs
-const EventEmitter = require('node:events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
+    ```js
+    import { EventEmitter } from 'node:events';
+    const ee = new EventEmitter();
+    
+    function pong() {
+      console.log('pong');
+    }
+    
+    ee.on('ping', pong);
+    ee.once('ping', pong);
+    ee.removeListener('ping', pong);
+    
+    ee.emit('ping');
+    ee.emit('ping');
+    ```
 
-const callbackA = () => {
-    console.log('A');
-    myEmitter.removeListener('event', callbackB);
-};
+=== "CJS"
 
-const callbackB = () => {
-    console.log('B');
-};
+    ```js
+    const EventEmitter = require('node:events');
+    const ee = new EventEmitter();
+    
+    function pong() {
+      console.log('pong');
+    }
+    
+    ee.on('ping', pong);
+    ee.once('ping', pong);
+    ee.removeListener('ping', pong);
+    
+    ee.emit('ping');
+    ee.emit('ping');
+    ```
 
-myEmitter.on('event', callbackA);
-
-myEmitter.on('event', callbackB);
-
-// callbackA удаляет слушателя callbackB, но он все равно будет вызван.
-// Внутренний массив слушателей во время испускания [callbackA, callbackB].
-myEmitter.emit('event');
-// Печатает:
-// A
-// B
-
-// callbackB теперь удален.
-// Внутренний массив слушателей [callbackA].
-myEmitter.emit('event');
-// Печатает:
-// A
-```
-
-Поскольку управление слушателями осуществляется с помощью внутреннего массива, вызов этой функции изменит индексы позиций всех слушателей, зарегистрированных _после_ удаляемого слушателя. Это не повлияет на порядок вызова слушателей, но это означает, что все копии массива слушателей, возвращаемые методом `emitter.listeners()`, должны быть созданы заново.
-
-Когда одна функция была добавлена в качестве обработчика несколько раз для одного события (как в примере ниже), `removeListener()` удалит последний добавленный экземпляр. В примере удаляется слушатель `once('ping')`:
-
-```mjs
-import { EventEmitter } from 'node:events';
-const ee = new EventEmitter();
-
-function pong() {
-    console.log('pong');
-}
-
-ee.on('ping', pong);
-ee.once('ping', pong);
-ee.removeListener('ping', pong);
-
-ee.emit('ping');
-ee.emit('ping');
-```
-
-```cjs
-const EventEmitter = require('node:events');
-const ee = new EventEmitter();
-
-function pong() {
-    console.log('pong');
-}
-
-ee.on('ping', pong);
-ee.once('ping', pong);
-ee.removeListener('ping', pong);
-
-ee.emit('ping');
-ee.emit('ping');
-```
-
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
 ### `emitter.setMaxListeners(n)`
 
--   `n` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+<!-- YAML
+added: v0.3.5
+-->
 
-По умолчанию `EventEmitter` выводит предупреждение, если для определенного события добавлено более `10` слушателей. Это полезное значение по умолчанию, которое помогает найти утечки памяти. Метод `emitter.setMaxListeners()` позволяет изменить это ограничение для данного экземпляра `EventEmitter`. Значение может быть установлено в `бесконечность` (или `0`), чтобы указать неограниченное количество слушателей.
+* `n` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
 
-Возвращает ссылку на `EventEmitter`, так что вызовы могут быть объединены в цепочку.
+По умолчанию у `EventEmitter` выводится предупреждение, если для одного события
+добавлено более `10` слушателей. Это удобное ограничение для поиска утечек
+памяти. `emitter.setMaxListeners()` позволяет изменить лимит для данного
+экземпляра. Значение `Infinity` (или `0`) означает неограниченное число
+слушателей.
 
-<!-- 0022.part.md -->
+Возвращает ссылку на `EventEmitter`, чтобы можно было вызывать методы цепочкой.
 
 ### `emitter.rawListeners(eventName)`
 
--   `eventName` {string|symbol}
--   Возвращает: {функция\[\]}
+<!-- YAML
+added: v9.4.0
+-->
 
-Возвращает копию массива слушателей для события с именем `eventName`, включая любые обертки (например, созданные `.once()`).
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-```mjs
-import { EventEmitter } from 'node:events';
-const emitter = new EventEmitter();
-emitter.once('log', () => console.log('log once'));
+Возвращает копию массива слушателей для события `eventName`, включая обёртки
+(например созданные `.once()`).
 
-// Возвращает новый массив с функцией `onceWrapper`, которая имеет свойство
-// `listener`, которое содержит исходный слушатель, связанный выше
-const listeners = emitter.rawListeners('log');
-const logFnWrapper = listeners[0];
+=== "MJS"
 
-// Выводит "log once" в консоль и не отвязывает событие `once`.
-logFnWrapper.listener();
+    ```js
+    import { EventEmitter } from 'node:events';
+    const emitter = new EventEmitter();
+    emitter.once('log', () => console.log('log once'));
+    
+    // Returns a new Array with a function `onceWrapper` which has a property
+    // `listener` which contains the original listener bound above
+    const listeners = emitter.rawListeners('log');
+    const logFnWrapper = listeners[0];
+    
+    // Logs "log once" to the console and does not unbind the `once` event
+    logFnWrapper.listener();
+    
+    // Logs "log once" to the console and removes the listener
+    logFnWrapper();
+    
+    emitter.on('log', () => console.log('log persistently'));
+    // Will return a new Array with a single function bound by `.on()` above
+    const newListeners = emitter.rawListeners('log');
+    
+    // Logs "log persistently" twice
+    newListeners[0]();
+    emitter.emit('log');
+    ```
 
-// Выводит в консоль сообщение "log once" и удаляет слушателя
-logFnWrapper();
+=== "CJS"
 
-emitter.on('log', () => console.log('log persistently'));
-// Вернет новый массив с единственной функцией, связанной `.on()` выше
-const newListeners = emitter.rawListeners('log');
-
-// Записывает "log persistently" дважды
-newListeners[0]();
-emitter.emit('log');
-```
-
-```cjs
-const EventEmitter = require('node:events');
-const emitter = new EventEmitter();
-emitter.once('log', () => console.log('log once'));
-
-// Возвращает новый массив с функцией `onceWrapper`, которая имеет свойство
-// `listener`, которое содержит исходный слушатель, связанный выше
-const listeners = emitter.rawListeners('log');
-const logFnWrapper = listeners[0];
-
-// Выводит "log once" в консоль и не отвязывает событие `once`.
-logFnWrapper.listener();
-
-// Выводит в консоль сообщение "log once" и удаляет слушателя
-logFnWrapper();
-
-emitter.on('log', () => console.log('log persistently'));
-// Вернет новый массив с единственной функцией, связанной `.on()` выше
-const newListeners = emitter.rawListeners('log');
-
-// Записывает "log persistently" дважды
-newListeners[0]();
-emitter.emit('log');
-```
-
-<!-- 0023.part.md -->
+    ```js
+    const EventEmitter = require('node:events');
+    const emitter = new EventEmitter();
+    emitter.once('log', () => console.log('log once'));
+    
+    // Returns a new Array with a function `onceWrapper` which has a property
+    // `listener` which contains the original listener bound above
+    const listeners = emitter.rawListeners('log');
+    const logFnWrapper = listeners[0];
+    
+    // Logs "log once" to the console and does not unbind the `once` event
+    logFnWrapper.listener();
+    
+    // Logs "log once" to the console and removes the listener
+    logFnWrapper();
+    
+    emitter.on('log', () => console.log('log persistently'));
+    // Will return a new Array with a single function bound by `.on()` above
+    const newListeners = emitter.rawListeners('log');
+    
+    // Logs "log persistently" twice
+    newListeners[0]();
+    emitter.emit('log');
+    ```
 
 ### `emitter[Symbol.for('nodejs.rejection')](err, eventName[, ...args])`
 
--   `err` Ошибка
--   `eventName` {string|symbol}
--   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+<!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+changes:
+  - version:
+    - v17.4.0
+    - v16.14.0
+    pr-url: https://github.com/nodejs/node/pull/41267
+    description: No longer experimental.
+-->
 
-Метод `Symbol.for('nodejs.rejection')` вызывается в том случае, если при эмиссии события происходит отказ от обещания и на эмиттере включена функция [`captureRejections`](#capture-rejections-of-promises). Можно использовать [`events.captureRejectionSymbol`](#eventscapturerejectionsymbol) вместо `Symbol.for('nodejs.rejection')`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-```mjs
-import {
-    EventEmitter,
-    captureRejectionSymbol,
-} from 'node:events';
+* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `...args` {any}
 
-class MyClass extends EventEmitter {
-    constructor() {
+Метод `Symbol.for('nodejs.rejection')` вызывается при отклонении промиса при
+испускании события, если у эмиттера включён [`captureRejections`][capturerejections].
+Вместо `Symbol.for('nodejs.rejection')` можно использовать
+[`events.captureRejectionSymbol`][rejectionsymbol].
+
+=== "MJS"
+
+    ```js
+    import { EventEmitter, captureRejectionSymbol } from 'node:events';
+    
+    class MyClass extends EventEmitter {
+      constructor() {
         super({ captureRejections: true });
-    }
-
-    [captureRejectionSymbol](err, event, ...args) {
-        console.log(
-            'отклонение произошло для',
-            event,
-            'с',
-            err,
-            ...args
-        );
+      }
+    
+      [captureRejectionSymbol](err, event, ...args) {
+        console.log('rejection happened for', event, 'with', err, ...args);
         this.destroy(err);
+      }
+    
+      destroy(err) {
+        // Tear the resource down here.
+      }
     }
+    ```
 
-    destroy(err) {
-        // Уничтожаем ресурс здесь.
-    }
-}
-```
+=== "CJS"
 
-```cjs
-const {
-    EventEmitter,
-    captureRejectionSymbol,
-} = require('node:events');
-
-class MyClass extends EventEmitter {
-    constructor() {
+    ```js
+    const { EventEmitter, captureRejectionSymbol } = require('node:events');
+    
+    class MyClass extends EventEmitter {
+      constructor() {
         super({ captureRejections: true });
-    }
-
-    [captureRejectionSymbol](err, event, ...args) {
-        console.log(
-            'отклонение произошло для',
-            event,
-            'с',
-            err,
-            ...args
-        );
+      }
+    
+      [captureRejectionSymbol](err, event, ...args) {
+        console.log('rejection happened for', event, 'with', err, ...args);
         this.destroy(err);
+      }
+    
+      destroy(err) {
+        // Tear the resource down here.
+      }
     }
-
-    destroy(err) {
-        // Уничтожаем ресурс здесь.
-    }
-}
-```
-
-<!-- 0024.part.md -->
+    ```
 
 ## `events.defaultMaxListeners`
 
-По умолчанию для любого отдельного события может быть зарегистрировано не более `10` слушателей. Это ограничение можно изменить для отдельных экземпляров `EventEmitter` с помощью метода [`emitter.setMaxListeners(n)`](#emittersetmaxlistenersn). Чтобы изменить значение по умолчанию для _всех_ экземпляров `EventEmitter`, можно использовать свойство `events.defaultMaxListeners`. Если это значение не является положительным числом, будет выдана ошибка `RangeError`.
+<!-- YAML
+added: v0.11.2
+-->
 
-Будьте осторожны при установке `events.defaultMaxListeners`, поскольку изменение влияет на _все_ экземпляры `EventEmitter`, включая те, которые были созданы до внесения изменения. Однако вызов [`emitter.setMaxListeners(n)`](#emittersetmaxlistenersn) по-прежнему имеет приоритет над `events.defaultMaxListeners`.
+По умолчанию для любого одного события можно зарегистрировать не более `10`
+слушателей. Лимит для отдельных экземпляров `EventEmitter` меняется методом
+[`emitter.setMaxListeners(n)`][]. Чтобы изменить значение по умолчанию для всех
+экземпляров `EventEmitter`, используется свойство `events.defaultMaxListeners`.
+Если оно не положительное число, выбрасывается `RangeError`.
 
-Это не жесткое ограничение. Экземпляр `EventEmitter` позволит добавить больше слушателей, но выведет предупреждение в stderr о том, что была обнаружена "возможная утечка памяти EventEmitter". Для любого отдельного `EventEmitter` можно использовать методы `emitter.getMaxListeners()` и `emitter.setMaxListeners()`, чтобы временно избежать этого предупреждения:
+Будьте осторожны при изменении `events.defaultMaxListeners`: это затрагивает
+все экземпляры `EventEmitter`, в том числе созданные до изменения. Вызов
+[`emitter.setMaxListeners(n)`][] по-прежнему имеет приоритет над
+`events.defaultMaxListeners`.
 
-```mjs
-import { EventEmitter } from 'node:events';
-const emitter = new EventEmitter();
-emitter.setMaxListeners(emitter.getMaxListeners() + 1);
-emitter.once('event', () => {
-    // делать что-то
-    emitter.setMaxListeners(
-        Math.max(emitter.getMaxListeners() - 1, 0)
-    );
-});
-```
+Это не жёсткий предел: экземпляр `EventEmitter` позволит добавить больше
+слушателей, но выведет в stderr предупреждение с трассировкой о возможной утечке
+памяти `EventEmitter`. Для одного `EventEmitter` временно обойти предупреждение
+можно через `emitter.getMaxListeners()` и `emitter.setMaxListeners()`:
 
-```cjs
-const EventEmitter = require('node:events');
-const emitter = new EventEmitter();
-emitter.setMaxListeners(emitter.getMaxListeners() + 1);
-emitter.once('event', () => {
-    // делать что-то
-    emitter.setMaxListeners(
-        Math.max(emitter.getMaxListeners() - 1, 0)
-    );
-});
-```
+`defaultMaxListeners` не действует на экземпляры `AbortSignal`. Для отдельных
+`AbortSignal` по-прежнему можно задать порог через [`emitter.setMaxListeners(n)`][],
+но по умолчанию `AbortSignal` предупреждения не выводят.
 
-Флаг командной строки [`--trace-warnings`](cli.md#--trace-warnings) может быть использован для отображения стековой трассировки таких предупреждений.
+=== "MJS"
 
-Выданное предупреждение может быть проверено с помощью [`process.on('warning')`](process.md#event-warning) и будет иметь дополнительные свойства `emitter`, `type` и `count`, ссылающиеся на экземпляр эмиттера события, имя события и количество подключенных слушателей, соответственно. Его свойство `name` устанавливается в `'MaxListenersExceededWarning'`.
+    ```js
+    import { EventEmitter } from 'node:events';
+    const emitter = new EventEmitter();
+    emitter.setMaxListeners(emitter.getMaxListeners() + 1);
+    emitter.once('event', () => {
+      // do stuff
+      emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0));
+    });
+    ```
 
-<!-- 0025.part.md -->
+=== "CJS"
+
+    ```js
+    const EventEmitter = require('node:events');
+    const emitter = new EventEmitter();
+    emitter.setMaxListeners(emitter.getMaxListeners() + 1);
+    emitter.once('event', () => {
+      // do stuff
+      emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0));
+    });
+    ```
+
+Флаг командной строки [`--trace-warnings`][] включает вывод трассировки стека для
+таких предупреждений.
+
+Испущенное предупреждение можно разобрать в [`process.on('warning')`][]: у него
+дополнительно есть свойства `emitter`, `type` и `count` — соответственно
+эмиттер, имя события и число подключённых слушателей.
+Свойство `name` равно `'MaxListenersExceededWarning'`.
 
 ## `events.errorMonitor`
 
-Этот символ используется для установки слушателя только для мониторинга событий `'error'`. Слушатели, установленные с помощью этого символа, вызываются до вызова обычных слушателей `'error'`.
+<!-- YAML
+added:
+ - v13.6.0
+ - v12.17.0
+-->
 
-Установка слушателя с помощью этого символа не изменяет поведение процесса после возникновения события `'error'`. Поэтому процесс все равно завершится, если не установлен обычный `'error'``прослушиватель.
+Этот символ предназначен для установки слушателя, который только наблюдает за
+событиями `'error'`. Такие слушатели вызываются до обычных обработчиков `'error'`.
 
-<!-- 0026.part.md -->
+Установка слушателя с этим символом не меняет поведение при испускании `'error'`:
+если нет обычного слушателя `'error'`, процесс по-прежнему завершится с ошибкой.
 
 ## `events.getEventListeners(emitterOrTarget, eventName)`
 
--   `emitterOrTarget` {EventEmitter|EventTarget}
--   `eventName` {string|symbol}
--   Возвращает: {функция\[\]}
+<!-- YAML
+added:
+ - v15.2.0
+ - v14.17.0
+-->
 
-Возвращает копию массива слушателей для события с именем `eventName`.
+* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Для `EventEmitter` это ведет себя точно так же, как вызов `.listeners` для эмиттера.
+Возвращает копию массива слушателей для события `eventName`.
 
-Для `EventTarget` это единственный способ получить слушателей события для цели события. Это полезно для отладки и диагностики.
+Для `EventEmitter` это эквивалентно вызову `.listeners` у эмиттера.
 
-```mjs
-import {
-    getEventListeners,
-    EventEmitter,
-} from 'node:events';
+Для `EventTarget` это единственный способ получить список слушателей цели
+событий; удобно для отладки и диагностики.
 
-{
-    const ee = new EventEmitter();
-    const listener = () =>
-        console.log('События - это весело');
-    ee.on('foo', listener);
-    console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
-}
-{
-    const et = new EventTarget();
-    const listener = () =>
-        console.log('События - это весело');
-    et.addEventListener('foo', listener);
-    console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
-}
-```
+=== "MJS"
 
-```cjs
-const {
-    getEventListeners,
-    EventEmitter,
-} = require('node:events');
+    ```js
+    import { getEventListeners, EventEmitter } from 'node:events';
+    
+    {
+      const ee = new EventEmitter();
+      const listener = () => console.log('Events are fun');
+      ee.on('foo', listener);
+      console.log(getEventListeners(ee, 'foo')); // [ [Function: listener] ]
+    }
+    {
+      const et = new EventTarget();
+      const listener = () => console.log('Events are fun');
+      et.addEventListener('foo', listener);
+      console.log(getEventListeners(et, 'foo')); // [ [Function: listener] ]
+    }
+    ```
 
-{
-    const ee = new EventEmitter();
-    const listener = () =>
-        console.log('События - это весело');
-    ee.on('foo', listener);
-    console.log(getEventListeners(ee, 'foo')); // [ [Функция: listener] ]
-}
-{
-    const et = new EventTarget();
-    const listener = () =>
-        console.log('События - это весело');
-    et.addEventListener('foo', listener);
-    console.log(getEventListeners(et, 'foo')); // [ [Функция: listener] ]
-}
-```
+=== "CJS"
 
-<!-- 0027.part.md -->
+    ```js
+    const { getEventListeners, EventEmitter } = require('node:events');
+    
+    {
+      const ee = new EventEmitter();
+      const listener = () => console.log('Events are fun');
+      ee.on('foo', listener);
+      console.log(getEventListeners(ee, 'foo')); // [ [Function: listener] ]
+    }
+    {
+      const et = new EventTarget();
+      const listener = () => console.log('Events are fun');
+      et.addEventListener('foo', listener);
+      console.log(getEventListeners(et, 'foo')); // [ [Function: listener] ]
+    }
+    ```
+
+## `events.getMaxListeners(emitterOrTarget)`
+
+<!-- YAML
+added:
+  - v19.9.0
+  - v18.17.0
+-->
+
+* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+
+Возвращает текущее максимальное число слушателей.
+
+Для `EventEmitter` это эквивалентно вызову `.getMaxListeners` у эмиттера.
+
+Для `EventTarget` это единственный способ узнать лимит слушателей. Если число
+обработчиков у одного `EventTarget` превышает установленный максимум, выводится
+предупреждение.
+
+=== "MJS"
+
+    ```js
+    import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
+    
+    {
+      const ee = new EventEmitter();
+      console.log(getMaxListeners(ee)); // 10
+      setMaxListeners(11, ee);
+      console.log(getMaxListeners(ee)); // 11
+    }
+    {
+      const et = new EventTarget();
+      console.log(getMaxListeners(et)); // 10
+      setMaxListeners(11, et);
+      console.log(getMaxListeners(et)); // 11
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { getMaxListeners, setMaxListeners, EventEmitter } = require('node:events');
+    
+    {
+      const ee = new EventEmitter();
+      console.log(getMaxListeners(ee)); // 10
+      setMaxListeners(11, ee);
+      console.log(getMaxListeners(ee)); // 11
+    }
+    {
+      const et = new EventTarget();
+      console.log(getMaxListeners(et)); // 10
+      setMaxListeners(11, et);
+      console.log(getMaxListeners(et)); // 11
+    }
+    ```
 
 ## `events.once(emitter, name[, options])`
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter)
--   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидания события.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+<!-- YAML
+added:
+ - v11.13.0
+ - v10.16.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/34912
+    description: The `signal` option is supported now.
+-->
 
-Создает `Promise`, которое будет выполнено, когда `EventEmitter` испустит данное событие, или которое будет отклонено, если `EventEmitter` испустит `'error'` во время ожидания. Обещание `Promise` будет разрешено массивом всех аргументов, испущенных для данного события.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Опция `signal` теперь поддерживается. |
 
-Этот метод намеренно является общим и работает с интерфейсом веб-платформы [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget), который не имеет специальной семантики события `'error'` и не прослушивает событие `'error'`.
+* `emitter` [<EventEmitter>](events.md#class-eventemitter)
+* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `signal` [<AbortSignal>](globals.md#abortsignal) Можно использовать для отмены ожидания события.
+* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-```mjs
-import { once, EventEmitter } from 'node:events';
-import process from 'node:process';
+Создаёт `Promise`, который выполняется, когда `EventEmitter` испускает указанное
+событие, или отклоняется, если при ожидании испускается `'error'`.
+`Promise` разрешается массивом всех аргументов, переданных событию.
 
-const ee = new EventEmitter();
+Метод намеренно универсален и работает с веб-интерфейсом
+[EventTarget][WHATWG-EventTarget], у которого нет особой семантики `'error'` и
+нет прослушивания `'error'` по умолчанию.
 
-process.nextTick(() => {
-    ee.emit('myevent', 42);
-});
+=== "MJS"
 
-const [value] = await once(ee, 'myevent');
-console.log(value);
-
-const err = new Error('kaboom');
-process.nextTick(() => {
-    ee.emit('error', err);
-});
-
-try {
-    await once(ee, 'myevent');
-} catch (err) {
-    console.error('произошла ошибка', err);
-}
-```
-
-```cjs
-const { once, EventEmitter } = require('node:events');
-
-async function run() {
+    ```js
+    import { once, EventEmitter } from 'node:events';
+    import process from 'node:process';
+    
     const ee = new EventEmitter();
-
+    
     process.nextTick(() => {
-        ee.emit('myevent', 42);
+      ee.emit('myevent', 42);
     });
-
+    
     const [value] = await once(ee, 'myevent');
     console.log(value);
-
+    
     const err = new Error('kaboom');
     process.nextTick(() => {
-        ee.emit('error', err);
+      ee.emit('error', err);
     });
-
+    
     try {
-        await once(ee, 'myevent');
+      await once(ee, 'myevent');
     } catch (err) {
-        console.error('произошла ошибка', err);
+      console.error('error happened', err);
     }
-}
+    ```
 
-run();
-```
+=== "CJS"
 
-Специальная обработка события `'error'` используется только тогда, когда `events.once()` используется для ожидания другого события. Если `events.once()` используется для ожидания самого события '`error'`, то оно рассматривается как любое другое событие без специальной обработки:
+    ```js
+    const { once, EventEmitter } = require('node:events');
+    
+    async function run() {
+      const ee = new EventEmitter();
+    
+      process.nextTick(() => {
+        ee.emit('myevent', 42);
+      });
+    
+      const [value] = await once(ee, 'myevent');
+      console.log(value);
+    
+      const err = new Error('kaboom');
+      process.nextTick(() => {
+        ee.emit('error', err);
+      });
+    
+      try {
+        await once(ee, 'myevent');
+      } catch (err) {
+        console.error('error happened', err);
+      }
+    }
+    
+    run();
+    ```
 
-```mjs
-import { EventEmitter, once } from 'node:events';
+Особая обработка `'error'` применяется только когда `events.once()` ждёт другое
+событие. Если `events.once()` ждёт само событие `'error'`, оно обрабатывается
+как обычное событие, без особых правил:
 
-const ee = new EventEmitter();
+=== "MJS"
 
-once(ee, 'error')
-    .then(([err]) => console.log('ok', err.message))
-    .catch((err) => console.error('error', err.message));
+    ```js
+    import { EventEmitter, once } from 'node:events';
+    
+    const ee = new EventEmitter();
+    
+    once(ee, 'error')
+      .then(([err]) => console.log('ok', err.message))
+      .catch((err) => console.error('error', err.message));
+    
+    ee.emit('error', new Error('boom'));
+    
+    // Prints: ok boom
+    ```
 
-ee.emit('error', new Error('boom'));
+=== "CJS"
 
-// Выводит: ok boom
-```
+    ```js
+    const { EventEmitter, once } = require('node:events');
+    
+    const ee = new EventEmitter();
+    
+    once(ee, 'error')
+      .then(([err]) => console.log('ok', err.message))
+      .catch((err) => console.error('error', err.message));
+    
+    ee.emit('error', new Error('boom'));
+    
+    // Prints: ok boom
+    ```
 
-```cjs
-const { EventEmitter, once } = require('node:events');
+An [AbortSignal](globals.md#abortsignal) can be used to cancel waiting for the event:
 
-const ee = new EventEmitter();
+=== "MJS"
 
-once(ee, 'error')
-    .then(([err]) => console.log('ok', err.message))
-    .catch((err) => console.error('error', err.message));
-
-ee.emit('error', new Error('boom'));
-
-// Выводит: ok boom
-```
-
-Для отмены ожидания события можно использовать [`<AbortSignal>`](globals.md#abortsignal):
-
-```mjs
-import { EventEmitter, once } from 'node:events';
-
-const ee = new EventEmitter();
-const ac = new AbortController();
-
-async function foo(emitter, event, signal) {
-    try {
+    ```js
+    import { EventEmitter, once } from 'node:events';
+    
+    const ee = new EventEmitter();
+    const ac = new AbortController();
+    
+    async function foo(emitter, event, signal) {
+      try {
         await once(emitter, event, { signal });
         console.log('event emitted!');
-    } catch (error) {
+      } catch (error) {
         if (error.name === 'AbortError') {
-            console.error(
-                'Waiting for the event was canceled!'
-            );
+          console.error('Waiting for the event was canceled!');
         } else {
-            console.error(
-                'There was an error',
-                error.message
-            );
+          console.error('There was an error', error.message);
         }
+      }
     }
-}
+    
+    foo(ee, 'foo', ac.signal);
+    ac.abort(); // Prints: Waiting for the event was canceled!
+    ```
 
-foo(ee, 'foo', ac.signal);
-ac.abort(); // Abort waiting for the event
-ee.emit('foo'); // Prints: Waiting for the event was canceled!
-```
+=== "CJS"
 
-```cjs
-const { EventEmitter, once } = require('node:events');
-
-const ee = new EventEmitter();
-const ac = new AbortController();
-
-async function foo(emitter, event, signal) {
-    try {
+    ```js
+    const { EventEmitter, once } = require('node:events');
+    
+    const ee = new EventEmitter();
+    const ac = new AbortController();
+    
+    async function foo(emitter, event, signal) {
+      try {
         await once(emitter, event, { signal });
         console.log('event emitted!');
-    } catch (error) {
+      } catch (error) {
         if (error.name === 'AbortError') {
-            console.error(
-                'Waiting for the event was canceled!'
-            );
+          console.error('Waiting for the event was canceled!');
         } else {
-            console.error(
-                'There was an error',
-                error.message
-            );
+          console.error('There was an error', error.message);
         }
+      }
     }
-}
+    
+    foo(ee, 'foo', ac.signal);
+    ac.abort(); // Prints: Waiting for the event was canceled!
+    ```
 
-foo(ee, 'foo', ac.signal);
-ac.abort(); // Abort waiting for the event
-ee.emit('foo'); // Prints: Waiting for the event was canceled!
-```
+### Осторожно при ожидании нескольких событий
 
-### Ожидание нескольких событий, испускаемых на `process.nextTick()`
+При нескольких `await` с `events.once()` важен порядок выполнения.
 
-При использовании функции `events.once()` для ожидания нескольких событий, испускаемых в одной и той же партии операций `process.nextTick()`, или когда несколько событий испускаются синхронно, стоит обратить внимание на один крайний случай. В частности, поскольку очередь `process.nextTick()` осушается перед очередью микрозадачи `Promise`, и поскольку `EventEmitter` испускает все события синхронно, возможно, что `events.once()` пропустит событие.
+Обычные слушатели вызываются синхронно при испускании события: выполнение не
+пойдёт дальше, пока не завершатся все слушатели этого события.
 
-```mjs
-import { EventEmitter, once } from 'node:events';
-import process from 'node:process';
+С промисами, возвращаемыми `events.once()`, это _не_ так: задачи промисов
+обрабатываются после завершения текущего стека, поэтому до продолжения после
+`await` может успеть испуститься несколько событий.
 
-const myEE = new EventEmitter();
+Из-за этого события могут «потеряться», если подряд идут несколько
+`await events.once()` — в одной фазе цикла событий может произойти больше одного
+события. (То же при испускании через `process.nextTick()`: его задачи выполняются
+раньше задач промисов.)
 
-async function foo() {
-    await once(myEE, 'bar');
-    console.log('bar');
+=== "MJS"
 
-    // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
-    // уже было вызвано до создания Promise.
-    await once(myEE, 'foo');
-    console.log('foo');
-}
+    ```js
+    import { EventEmitter, once } from 'node:events';
+    import process from 'node:process';
+    
+    const myEE = new EventEmitter();
+    
+    async function listen() {
+      await once(myEE, 'foo');
+      console.log('foo');
+    
+      // This Promise will never resolve, because the 'bar' event will
+      // have already been emitted before the next line is executed.
+      await once(myEE, 'bar');
+      console.log('bar');
+    }
+    
+    process.nextTick(() => {
+      myEE.emit('foo');
+      myEE.emit('bar');
+    });
+    
+    listen().then(() => console.log('done'));
+    ```
 
-process.nextTick(() => {
-    myEE.emit('bar');
-    myEE.emit('foo');
-});
+=== "CJS"
 
-foo().then(() => console.log('done'));
-```
+    ```js
+    const { EventEmitter, once } = require('node:events');
+    
+    const myEE = new EventEmitter();
+    
+    async function listen() {
+      await once(myEE, 'foo');
+      console.log('foo');
+    
+      // This Promise will never resolve, because the 'bar' event will
+      // have already been emitted before the next line is executed.
+      await once(myEE, 'bar');
+      console.log('bar');
+    }
+    
+    process.nextTick(() => {
+      myEE.emit('foo');
+      myEE.emit('bar');
+    });
+    
+    listen().then(() => console.log('done'));
+    ```
 
-```cjs
-const { EventEmitter, once } = require('node:events');
+Чтобы поймать несколько событий, создайте все промисы _до_ первого `await`.
+Обычно удобнее через `Promise.all()`, `Promise.race()` или `Promise.allSettled()`:
 
-const myEE = new EventEmitter();
+=== "MJS"
 
-async function foo() {
-    await once(myEE, 'bar');
-    console.log('bar');
+    ```js
+    import { EventEmitter, once } from 'node:events';
+    import process from 'node:process';
+    
+    const myEE = new EventEmitter();
+    
+    async function listen() {
+      await Promise.all([
+        once(myEE, 'foo'),
+        once(myEE, 'bar'),
+      ]);
+      console.log('foo', 'bar');
+    }
+    
+    process.nextTick(() => {
+      myEE.emit('foo');
+      myEE.emit('bar');
+    });
+    
+    listen().then(() => console.log('done'));
+    ```
 
-    // Это обещание никогда не будет разрешено, потому что событие 'foo' будет
-    // уже было вызвано до создания Promise.
-    await once(myEE, 'foo');
-    console.log('foo');
-}
+=== "CJS"
 
-process.nextTick(() => {
-    myEE.emit('bar');
-    myEE.emit('foo');
-});
-
-foo().then(() => console.log('done'));
-```
-
-Чтобы поймать оба события, создайте каждое из обещаний _перед_ ожиданием любого из них, тогда станет возможным использовать `Promise.all()`, `Promise.race()` или `Promise.allSettled()`:
-
-```mjs
-import { EventEmitter, once } from 'node:events';
-import process from 'node:process';
-
-const myEE = new EventEmitter();
-
-async function foo() {
-    await Promise.all([
+    ```js
+    const { EventEmitter, once } = require('node:events');
+    
+    const myEE = new EventEmitter();
+    
+    async function listen() {
+      await Promise.all([
         once(myEE, 'bar'),
         once(myEE, 'foo'),
-    ]);
-    console.log('foo', 'bar');
-}
-
-process.nextTick(() => {
-    myEE.emit('bar');
-    myEE.emit('foo');
-});
-
-foo().then(() => console.log('done'));
-```
-
-```cjs
-const { EventEmitter, once } = require('node:events');
-
-const myEE = new EventEmitter();
-
-async function foo() {
-    await Promise.all([
-        once(myEE, 'bar'),
-        once(myEE, 'foo'),
-    ]);
-    console.log('foo', 'bar');
-}
-
-process.nextTick(() => {
-    myEE.emit('bar');
-    myEE.emit('foo');
-});
-
-foo().then(() => console.log('done'));
-```
-
-<!-- 0029.part.md -->
+      ]);
+      console.log('foo', 'bar');
+    }
+    
+    process.nextTick(() => {
+      myEE.emit('foo');
+      myEE.emit('bar');
+    });
+    
+    listen().then(() => console.log('done'));
+    ```
 
 ## `events.captureRejections`
 
-Значение: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added:
+ - v13.4.0
+ - v12.16.0
+changes:
+  - version:
+    - v17.4.0
+    - v16.14.0
+    pr-url: https://github.com/nodejs/node/pull/41267
+    description: No longer experimental.
+-->
 
-Изменение параметра по умолчанию `captureRejections` для всех новых объектов `EventEmitter`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-<!-- 0030.part.md -->
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Меняет значение по умолчанию опции `captureRejections` для всех новых объектов
+`EventEmitter`.
 
 ## `events.captureRejectionSymbol`
 
-Значение: `Symbol.for('nodejs.rejection')`.
+<!-- YAML
+added:
+  - v13.4.0
+  - v12.16.0
+changes:
+  - version:
+    - v17.4.0
+    - v16.14.0
+    pr-url: https://github.com/nodejs/node/pull/41267
+    description: No longer experimental.
+-->
 
-Посмотрите, как написать пользовательский обработчик [отказа](#emittersymbolfornodejsrejectionerr-eventname-args).
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-<!-- 0031.part.md -->
+* Тип: [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) `Symbol.for('nodejs.rejection')`
 
-## `events.listenerCount(emitter, eventName)`
+См. раздел о написании пользовательского [обработчика отклонений][rejection].
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+## `events.listenerCount(emitterOrTarget, eventName)`
 
-    Эта фича является проблемной и ее планируют изменить. Не стоит полагаться на нее. Использование фичи может вызвать ошибки. Не стоит ожидать от нее обратной совместимости.
+<!-- YAML
+added: v0.9.12
+changes:
+  - version:
+     - v25.4.0
+     - v24.14.0
+    pr-url: https://github.com/nodejs/node/pull/60214
+    description: Now accepts EventTarget arguments.
+  - version:
+     - v25.4.0
+     - v24.14.0
+    pr-url: https://github.com/nodejs/node/pull/60214
+    description: Deprecation revoked.
+  - version: v3.2.0
+    pr-url: https://github.com/nodejs/node/pull/2349
+    description: Documentation-only deprecation.
+-->
 
-    Вместо этого используйте [`emitter.listenerCount()`](#emitterlistenercounteventname).
+Добавлено в: v0.9.12
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter) Эмиттер для запроса
--   `eventName` {string|symbol} Имя события
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.4.0, v24.14.0 | Теперь принимает аргументы EventTarget. |
+    | v25.4.0, v24.14.0 | Устаревание отменено. |
+    | v3.2.0 | Прекращение поддержки только документации. |
 
-Метод класса, который возвращает количество слушателей для данного `eventName`, зарегистрированных на данном `emitter`.
+* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-```mjs
-import { EventEmitter, listenerCount } from 'node:events';
+Возвращает число зарегистрированных слушателей для события `eventName`.
 
-const myEmitter = new EventEmitter();
-myEmitter.on('event', () => {});
-myEmitter.on('event', () => {});
-console.log(listenerCount(myEmitter, 'event'));
-// Печатает: 2
-```
+Для `EventEmitter` это эквивалентно вызову `.listenerCount` у эмиттера.
 
-```cjs
-const {
-    EventEmitter,
-    listenerCount,
-} = require('node:events');
+Для `EventTarget` это единственный способ получить число слушателей; удобно для
+отладки и диагностики.
 
-const myEmitter = new EventEmitter();
-myEmitter.on('event', () => {});
-myEmitter.on('event', () => {});
-console.log(listenerCount(myEmitter, 'event'));
-// Печатает: 2
-```
+=== "MJS"
 
-<!-- 0032.part.md -->
+    ```js
+    import { EventEmitter, listenerCount } from 'node:events';
+    
+    {
+      const ee = new EventEmitter();
+      ee.on('event', () => {});
+      ee.on('event', () => {});
+      console.log(listenerCount(ee, 'event')); // 2
+    }
+    {
+      const et = new EventTarget();
+      et.addEventListener('event', () => {});
+      et.addEventListener('event', () => {});
+      console.log(listenerCount(et, 'event')); // 2
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const { EventEmitter, listenerCount } = require('node:events');
+    
+    {
+      const ee = new EventEmitter();
+      ee.on('event', () => {});
+      ee.on('event', () => {});
+      console.log(listenerCount(ee, 'event')); // 2
+    }
+    {
+      const et = new EventTarget();
+      et.addEventListener('event', () => {});
+      et.addEventListener('event', () => {});
+      console.log(listenerCount(et, 'event')); // 2
+    }
+    ```
 
 ## `events.on(emitter, eventName[, options])`
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter)
--   `eventName` {string|symbol} Имя события, которое прослушивается
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидающих событий.
--   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface), итератор событий `eventName`, испускаемых `emitter`.
+<!-- YAML
+added:
+ - v13.6.0
+ - v12.16.0
+changes:
+  - version:
+    - v22.0.0
+    - v20.13.0
+    pr-url: https://github.com/nodejs/node/pull/52080
+    description: Support `highWaterMark` and `lowWaterMark` options,
+                 For consistency. Old options are still supported.
+  - version:
+    - v20.0.0
+    pr-url: https://github.com/nodejs/node/pull/41276
+    description: The `close`, `highWatermark`, and `lowWatermark`
+                 options are supported now.
+-->
 
-<!-- конец списка -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.0.0, v20.13.0 | Поддержка опций highWaterMark и lowWaterMark для обеспечения единообразия. Старые варианты по-прежнему поддерживаются. |
+    | v20.0.0 | Параметры close, highWatermark и lowWatermark теперь поддерживаются. |
 
-```mjs
-import { on, EventEmitter } from 'node:events';
-import process from 'node:process';
+* `emitter` [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `signal` [<AbortSignal>](globals.md#abortsignal) Можно использовать для отмены ожидания событий.
+  * `close` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имена событий, завершающих итерацию.
+  * `highWaterMark` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Number.MAX_SAFE_INTEGER`
+    Верхняя отметка: эмиттер ставится на паузу, когда буфер событий больше этого
+    значения. Только для эмиттеров с методами `pause()` и `resume()`.
+  * `lowWaterMark` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1`
+    Нижняя отметка: эмиттер возобновляется, когда буфер меньше этого значения.
+    Только для эмиттеров с методами `pause()` и `resume()`.
+* Возвращает: [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface) — асинхронный итератор по событиям `eventName` от `emitter`
 
-const ee = new EventEmitter();
+=== "MJS"
 
-// Эмиттировать позже
-process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-});
-
-for await (const event of on(ee, 'foo')) {
-    // Выполнение этого внутреннего блока синхронно, и он
-    // обрабатывает одно событие за раз (даже с await). Не используйте.
-    // если требуется одновременное выполнение.
-    console.log(event); // печатает ['bar'] [42]
-}
-// Недоступно здесь
-```
-
-```cjs
-const { on, EventEmitter } = require('node:events');
-
-(async () => {
+    ```js
+    import { on, EventEmitter } from 'node:events';
+    import process from 'node:process';
+    
     const ee = new EventEmitter();
-
-    // Эмиттировать позже
+    
+    // Emit later on
     process.nextTick(() => {
-        ee.emit('foo', 'bar');
-        ee.emit('foo', 42);
+      ee.emit('foo', 'bar');
+      ee.emit('foo', 42);
     });
-
+    
     for await (const event of on(ee, 'foo')) {
-        // Выполнение этого внутреннего блока синхронно, и он
-        // обрабатывает одно событие за раз (даже с await). Не используйте.
-        // если требуется одновременное выполнение.
-        console.log(event); // печатает ['bar'] [42]
+      // The execution of this inner block is synchronous and it
+      // processes one event at a time (even with await). Do not use
+      // if concurrent execution is required.
+      console.log(event); // prints ['bar'] [42]
     }
-    // недоступно здесь
-})();
-```
+    // Unreachable here
+    ```
 
-Возвращает `AsyncIterator`, который итерирует события `eventName`. Если `EventEmitter` выдает `'error'`, он будет выброшен. Он удаляет всех слушателей при выходе из цикла. Значение `value`, возвращаемое каждой итерацией, представляет собой массив, состоящий из аргументов испускаемых событий.
+=== "CJS"
 
-Для отмены ожидания событий можно использовать [`<AbortSignal>`](globals.md#abortsignal):
-
-```mjs
-import { on, EventEmitter } from 'node:events';
-import process from 'node:process';
-
-const ac = new AbortController();
-
-(async () => {
-    const ee = new EventEmitter();
-
-    // Эмиттировать позже
-    process.nextTick(() => {
+    ```js
+    const { on, EventEmitter } = require('node:events');
+    
+    (async () => {
+      const ee = new EventEmitter();
+    
+      // Emit later on
+      process.nextTick(() => {
         ee.emit('foo', 'bar');
         ee.emit('foo', 42);
-    });
+      });
+    
+      for await (const event of on(ee, 'foo')) {
+        // The execution of this inner block is synchronous and it
+        // processes one event at a time (even with await). Do not use
+        // if concurrent execution is required.
+        console.log(event); // prints ['bar'] [42]
+      }
+      // Unreachable here
+    })();
+    ```
 
-    for await (const event of on(ee, 'foo', {
-        signal: ac.signal,
-    })) {
-        // Выполнение этого внутреннего блока синхронно и он
-        // обрабатывает одно событие за раз (даже с await). Не используйте.
-        // если требуется одновременное выполнение.
-        console.log(event); // печатает ['bar'] [42]
-    }
-    // недоступно здесь
-})();
+Возвращает `AsyncIterator` по событиям `eventName`. Выбросит ошибку, если
+`EventEmitter` испускает `'error'`. При выходе из цикла снимает все слушатели.
+Значение каждой итерации — массив аргументов, переданных событию.
 
-process.nextTick(() => ac.abort());
-```
+[AbortSignal](globals.md#abortsignal) можно использовать для отмены ожидания событий:
 
-```cjs
-const { on, EventEmitter } = require('node:events');
+=== "MJS"
 
-const ac = new AbortController();
-
-(async () => {
-    const ee = new EventEmitter();
-
-    // Эмиттировать позже
-    process.nextTick(() => {
+    ```js
+    import { on, EventEmitter } from 'node:events';
+    import process from 'node:process';
+    
+    const ac = new AbortController();
+    
+    (async () => {
+      const ee = new EventEmitter();
+    
+      // Emit later on
+      process.nextTick(() => {
         ee.emit('foo', 'bar');
         ee.emit('foo', 42);
-    });
+      });
+    
+      for await (const event of on(ee, 'foo', { signal: ac.signal })) {
+        // The execution of this inner block is synchronous and it
+        // processes one event at a time (even with await). Do not use
+        // if concurrent execution is required.
+        console.log(event); // prints ['bar'] [42]
+      }
+      // Unreachable here
+    })();
+    
+    process.nextTick(() => ac.abort());
+    ```
 
-    for await (const event of on(ee, 'foo', {
-        signal: ac.signal,
-    })) {
-        // Выполнение этого внутреннего блока синхронно и он
-        // обрабатывает одно событие за раз (даже с await). Не используйте.
-        // если требуется одновременное выполнение.
-        console.log(event); // печатает ['bar'] [42]
-    }
-    // недоступно здесь
-})();
+=== "CJS"
 
-process.nextTick(() => ac.abort());
-```
-
-<!-- 0033.part.md -->
+    ```js
+    const { on, EventEmitter } = require('node:events');
+    
+    const ac = new AbortController();
+    
+    (async () => {
+      const ee = new EventEmitter();
+    
+      // Emit later on
+      process.nextTick(() => {
+        ee.emit('foo', 'bar');
+        ee.emit('foo', 42);
+      });
+    
+      for await (const event of on(ee, 'foo', { signal: ac.signal })) {
+        // The execution of this inner block is synchronous and it
+        // processes one event at a time (even with await). Do not use
+        // if concurrent execution is required.
+        console.log(event); // prints ['bar'] [42]
+      }
+      // Unreachable here
+    })();
+    
+    process.nextTick(() => ac.abort());
+    ```
 
 ## `events.setMaxListeners(n[, ...eventTargets])`
 
--   `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
--   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или [`<EventEmitter>`](events.md#eventemitter). Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и [`<EventEmitter>`](events.md#eventemitter).
+<!-- YAML
+added: v15.4.0
+-->
 
-<!-- конец списка -->
+* `n` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число — максимум слушателей на одно событие
+  `EventTarget`.
+* `...eventsTargets` [<EventTarget[]>](https://dom.spec.whatwg.org/#interface-eventtarget) | [<EventEmitter[]>](events.md#class-eventemitter) Ноль или больше экземпляров
+  [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) или [EventEmitter](events.md#class-eventemitter). Если не указано, `n` задаётся по умолчанию для
+  всех вновь создаваемых [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) и [EventEmitter](events.md#class-eventemitter).
 
-```mjs
-import { setMaxListeners, EventEmitter } from 'node:events';
+=== "MJS"
 
-const target = new EventTarget();
-const emitter = new EventEmitter();
+    ```js
+    import { setMaxListeners, EventEmitter } from 'node:events';
+    
+    const target = new EventTarget();
+    const emitter = new EventEmitter();
+    
+    setMaxListeners(5, target, emitter);
+    ```
 
-setMaxListeners(5, target, emitter);
-```
+=== "CJS"
 
-```cjs
-const {
-    setMaxListeners,
-    EventEmitter,
-} = require('node:events');
+    ```js
+    const {
+      setMaxListeners,
+      EventEmitter,
+    } = require('node:events');
+    
+    const target = new EventTarget();
+    const emitter = new EventEmitter();
+    
+    setMaxListeners(5, target, emitter);
+    ```
 
-const target = new EventTarget();
-const emitter = new EventEmitter();
+## `events.addAbortListener(signal, listener)`
 
-setMaxListeners(5, target, emitter);
-```
+<!-- YAML
+added:
+ - v20.5.0
+ - v18.18.0
+changes:
+ - version:
+   - v24.0.0
+   - v22.16.0
+   pr-url: https://github.com/nodejs/node/pull/57765
+   description: Change stability index for this feature from Experimental to Stable.
+-->
 
-<!-- 0034.part.md -->
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
+
+* `signal` [<AbortSignal>](globals.md#abortsignal)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* Возвращает: {Disposable} Объект, снимающий слушатель `abort` при утилизации.
+
+Подписывается один раз на событие `abort` у переданного `signal`.
+
+Прослушивание `abort` у сигналов прерывания небезопасно и может приводить к
+утечкам: другой код с тем же сигналом может вызвать [`e.stopImmediatePropagation()`][].
+Node.js не может менять это без нарушения веб-стандарта; к тому же легко забыть
+снять слушателя.
+
+Этот API позволяет безопаснее использовать `AbortSignal` в Node.js: слушатель
+всё равно выполнится, даже если вызвали `stopImmediatePropagation`.
+
+Возвращает disposable для удобной отписки.
+
+=== "CJS"
+
+    ```js
+    const { addAbortListener } = require('node:events');
+    
+    function example(signal) {
+      signal.addEventListener('abort', (e) => e.stopImmediatePropagation());
+      // addAbortListener() returns a disposable, so the `using` keyword ensures
+      // the abort listener is automatically removed when this scope exits.
+      using _ = addAbortListener(signal, (e) => {
+        // Do something when signal is aborted.
+      });
+    }
+    ```
+
+=== "MJS"
+
+    ```js
+    import { addAbortListener } from 'node:events';
+    
+    function example(signal) {
+      signal.addEventListener('abort', (e) => e.stopImmediatePropagation());
+      // addAbortListener() returns a disposable, so the `using` keyword ensures
+      // the abort listener is automatically removed when this scope exits.
+      using _ = addAbortListener(signal, (e) => {
+        // Do something when signal is aborted.
+      });
+    }
+    ```
 
 ## Класс: `events.EventEmitterAsyncResource extends EventEmitter`
 
-Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста](async_context.md).
+<!-- YAML
+added:
+  - v17.4.0
+  - v16.14.0
+-->
 
-```mjs
-import {
-    EventEmitterAsyncResource,
-    EventEmitter,
-} from 'node:events';
-import { notStrictEqual, strictEqual } from 'node:assert';
-import {
-    executionAsyncId,
-    triggerAsyncId,
-} from 'node:async_hooks';
+Связывает `EventEmitter` с [AsyncResource](async_hooks.md#asyncresource) для случаев, где нужен явный учёт
+асинхронности. Все события, испускаемые `events.EventEmitterAsyncResource`,
+выполняются в его [асинхронном контексте][async context].
 
-// Инструментарий отслеживания асинхронных процессов определит это как 'Q'.
-const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
+=== "MJS"
 
-// Слушатели 'foo' будут запускаться в асинхронном контексте EventEmitters.
-ee1.on('foo', () => {
-    strictEqual(executionAsyncId(), ee1.asyncId);
-    strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
-});
+    ```js
+    import { EventEmitterAsyncResource, EventEmitter } from 'node:events';
+    import { notStrictEqual, strictEqual } from 'node:assert';
+    import { executionAsyncId, triggerAsyncId } from 'node:async_hooks';
+    
+    // Async tracking tooling will identify this as 'Q'.
+    const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
+    
+    // 'foo' listeners will run in the EventEmitters async context.
+    ee1.on('foo', () => {
+      strictEqual(executionAsyncId(), ee1.asyncId);
+      strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
+    });
+    
+    const ee2 = new EventEmitter();
+    
+    // 'foo' listeners on ordinary EventEmitters that do not track async
+    // context, however, run in the same async context as the emit().
+    ee2.on('foo', () => {
+      notStrictEqual(executionAsyncId(), ee2.asyncId);
+      notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
+    });
+    
+    Promise.resolve().then(() => {
+      ee1.emit('foo');
+      ee2.emit('foo');
+    });
+    ```
 
-const ee2 = new EventEmitter();
+=== "CJS"
 
-// Слушатели 'foo' на обычных EventEmitters, которые не отслеживают async
-// контекст, однако, запускаются в том же async контексте, что и emit().
-ee2.on('foo', () => {
-    notStrictEqual(executionAsyncId(), ee2.asyncId);
-    notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
-});
+    ```js
+    const { EventEmitterAsyncResource, EventEmitter } = require('node:events');
+    const { notStrictEqual, strictEqual } = require('node:assert');
+    const { executionAsyncId, triggerAsyncId } = require('node:async_hooks');
+    
+    // Async tracking tooling will identify this as 'Q'.
+    const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
+    
+    // 'foo' listeners will run in the EventEmitters async context.
+    ee1.on('foo', () => {
+      strictEqual(executionAsyncId(), ee1.asyncId);
+      strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
+    });
+    
+    const ee2 = new EventEmitter();
+    
+    // 'foo' listeners on ordinary EventEmitters that do not track async
+    // context, however, run in the same async context as the emit().
+    ee2.on('foo', () => {
+      notStrictEqual(executionAsyncId(), ee2.asyncId);
+      notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
+    });
+    
+    Promise.resolve().then(() => {
+      ee1.emit('foo');
+      ee2.emit('foo');
+    });
+    ```
 
-Promise.resolve().then(() => {
-    ee1.emit('foo');
-    ee2.emit('foo');
-});
-```
-
-```cjs
-const {
-    EventEmitterAsyncResource,
-    EventEmitter,
-} = require('node:events');
-const {
-    notStrictEqual,
-    strictEqual,
-} = require('node:assert');
-const {
-    executionAsyncId,
-    triggerAsyncId,
-} = require('node:async_hooks');
-
-// Инструментарий отслеживания асинхронных событий идентифицирует это как 'Q'.
-const ee1 = new EventEmitterAsyncResource({ name: 'Q' });
-
-// Слушатели 'foo' будут запускаться в асинхронном контексте EventEmitters.
-ee1.on('foo', () => {
-    strictEqual(executionAsyncId(), ee1.asyncId);
-    strictEqual(triggerAsyncId(), ee1.triggerAsyncId);
-});
-
-const ee2 = new EventEmitter();
-
-// Слушатели 'foo' на обычных EventEmitters, которые не отслеживают async
-// контекст, однако, запускаются в том же async контексте, что и emit().
-ee2.on('foo', () => {
-    notStrictEqual(executionAsyncId(), ee2.asyncId);
-    notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId);
-});
-
-Promise.resolve().then(() => {
-    ee1.emit('foo');
-    ee2.emit('foo');
-});
-```
-
-Класс `EventEmitterAsyncResource` имеет те же методы и принимает те же опции, что и `EventEmitter` и `AsyncResource`.
-
-<!-- 0035.part.md -->
+У класса `EventEmitterAsyncResource` те же методы и опции, что у `EventEmitter`
+и `AsyncResource`.
 
 ### `new events.EventEmitterAsyncResource([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает [автоматическое фиксирование отказов от обещаний](#capture-rejections-of-promises). **По умолчанию:** `false`.
-    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию::** [`new.target.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
-    -   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID контекста выполнения, который создал это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
-    -   `requireManualDestroy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, отключает `emitDestroy`, когда объект собирается в мусор. Обычно это значение не нужно устанавливать (даже если `emitDestroy` вызывается вручную), если только не получен `asyncId` ресурса и с ним не вызывается `emitDestroy` чувствительного API. Если установлено значение `false`, вызов `emitDestroy` на сборку мусора будет происходить только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
-
-<!-- 0036.part.md -->
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `captureRejections` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
+    [автоматический перехват отклонений промисов][capturerejections].
+    **По умолчанию:** `false`.
+  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию:** [`new.target.name`][].
+  * `triggerAsyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор контекста, создавшего это асинхронное
+    событие. **По умолчанию:** `executionAsyncId()`.
+  * `requireManualDestroy` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` отключает `emitDestroy` при
+    сборке мусора. Обычно не нужно (даже при ручном `emitDestroy`), если только
+    не получают `asyncId` ресурса и вызывают с ним `emitDestroy` из чувствительного API.
+    При `false` вызов `emitDestroy` при GC произойдёт только если есть хотя бы один
+    активный хук `destroy`. **По умолчанию:** `false`.
 
 ### `eventemitterasyncresource.asyncId`
 
--   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId`, присвоенный ресурсу.
-
-<!-- 0037.part.md -->
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId` ресурса.
 
 ### `eventemitterasyncresource.asyncResource`
 
--   Тип: Базовый [`<AsyncResource>`](async_hooks.md#asyncresource).
+* Тип: [<AsyncResource>](async_hooks.md#asyncresource) Базовый [AsyncResource](async_hooks.md#asyncresource).
 
-Возвращаемый объект `AsyncResource` имеет дополнительное свойство `eventEmitter`, которое предоставляет ссылку на этот `EventEmitterAsyncResource`.
+У возвращённого `AsyncResource` есть дополнительное свойство `eventEmitter` —
+ссылка на этот `EventEmitterAsyncResource`.
 
-<!-- 0038.part.md -->
+### `eventemitterasyncresource.emitDestroy()`
 
-### `eventemitterasyncresource.emitDestroy()`.
-
-Вызывает все крючки `destroy`. Эта функция должна быть вызвана только один раз. Если он будет вызван более одного раза, будет выдана ошибка. Это **должно** быть вызвано вручную. Если ресурс оставлен для сбора GC, то крючки `destroy` никогда не будут вызваны.
-
-<!-- 0039.part.md -->
+Вызывает все хуки `destroy`. Должен вызываться только один раз; повторный вызов
+выбросит ошибку. Вызывать **нужно** вручную. Если оставить ресурс на сборщик мусора,
+хуки `destroy` не выполнятся.
 
 ### `eventemitterasyncresource.triggerAsyncId`
 
--   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передается конструктору `AsyncResource`.
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, что передаётся в конструктор `AsyncResource`.
 
-<!-- 0040.part.md -->
+<a id="event-target-and-event-api"></a>
 
-## `EventTarget` и `Event` API
+## API `EventTarget` и `Event`
 
-Объекты `EventTarget` и `Event` являются специфической для Node.js реализацией [`EventTarget` Web API](https://dom.spec.whatwg.org/#eventtarget), которые открываются некоторыми API ядра Node.js.
+<!-- YAML
+added: v14.5.0
+changes:
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/37237
+    description: changed EventTarget error handling.
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/35949
+    description: No longer experimental.
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description:
+      The `EventTarget` and `Event` classes are now available as globals.
+-->
+
+Добавлено в: v14.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.0.0 | изменена обработка ошибок EventTarget. |
+    | v15.4.0 | Больше не экспериментально. |
+    | v15.0.0 | Классы EventTarget и Event теперь доступны как глобальные. |
+
+Объекты `EventTarget` и `Event` — реализация в Node.js для
+[`EventTarget` Web API][], используемая частью встроенных API.
 
 ```js
 const target = new EventTarget();
 
 target.addEventListener('foo', (event) => {
-    console.log('событие foo произошло!');
+  console.log('foo event happened!');
 });
 ```
 
-<!-- 0041.part.md -->
+### `EventTarget` в Node.js и в DOM
 
-### Node.js `EventTarget` vs. DOM `EventTarget`
+Два отличия Node.js `EventTarget` от [`EventTarget` Web API][]:
 
-Есть два ключевых различия между Node.js `EventTarget` и [`EventTarget` Web API](https://dom.spec.whatwg.org/#eventtarget):
+1. В DOM экземпляры `EventTarget` _могут_ быть иерархическими; в Node.js нет
+   иерархии и всплытия: событие, отправленное на `EventTarget`, не проходит по
+   цепочке вложенных целей с отдельными обработчиками.
+2. В Node.js `EventTarget`, если слушатель — `async` или возвращает `Promise`,
+   и промис отклоняется, отклонение перехватывается так же, как синхронное
+   исключение в слушателе (см. [обработку ошибок `EventTarget`][EventTarget error handling]).
 
-1.  В то время как экземпляры DOM `EventTarget` _могут_ быть иерархическими, в Node.js нет концепции иерархии и распространения событий. То есть, событие, отправленное на `EventTarget`, не распространяется через иерархию вложенных целевых объектов, каждый из которых может иметь свой собственный набор обработчиков для этого события.
-2.  В Node.js `EventTarget`, если слушатель события является асинхронной функцией или возвращает `Promise`, и возвращенный `Promise` отклоняется, отказ автоматически перехватывается и обрабатывается так же, как и слушатель, который бросает синхронно (подробности см. в [`EventTarget` error handling](#eventtarget-error-handling)).
+### `NodeEventTarget` и `EventEmitter`
 
-<!-- 0042.part.md -->
+`NodeEventTarget` реализует урезанный вариант API `EventEmitter` и может
+_подражать_ `EventEmitter` в отдельных сценариях. Это _не_ экземпляр `EventEmitter`
+и в большинстве случаев не подставляется вместо него.
 
-### `NodeEventTarget` vs. `EventEmitter`
-
-Объект `NodeEventTarget` реализует модифицированное подмножество API `EventEmitter`, что позволяет ему в определенных ситуациях близко _подражать_ `EventEmitter`. Объект `NodeEventTarget` не является экземпляром `EventEmitter` и не может быть использован вместо `EventEmitter` в большинстве случаев.
-
-1.  В отличие от `EventEmitter`, любой данный `listener` может быть зарегистрирован не более одного раза для каждого `типа события`. Попытки зарегистрировать `слушателя` несколько раз игнорируются.
-2.  `NodeEventTarget` не эмулирует полный API `EventEmitter`. В частности, не эмулируются API `prependListener()`, `prependOnceListener()`, `rawListeners()` и `errorMonitor`. События `'newListener'` и `'removeListener'` также не будут эмулироваться.
-3.  В `NodeEventTarget` не реализовано никакого специального поведения по умолчанию для событий с типом `'error'`.
-4.  Цель `NodeEventTarget` поддерживает объекты `EventListener`, а также функции в качестве обработчиков для всех типов событий.
-
-<!-- 0043.part.md -->
+1. В отличие от `EventEmitter`, один и тот же `listener` на тип события `type`
+   регистрируется не более одного раза; повторные попытки игнорируются.
+2. `NodeEventTarget` не эмулирует весь API `EventEmitter`. В частности, не
+   эмулируются `prependListener()`, `prependOnceListener()`, `rawListeners()` и
+   `errorMonitor`; события `'newListener'` и `'removeListener'` не испускаются.
+3. У `NodeEventTarget` нет особого поведения по умолчанию для событий типа `'error'`.
+4. `NodeEventTarget` принимает и объекты `EventListener`, и функции как обработчики
+   для всех типов событий.
 
 ### Слушатель события
 
-Слушатели событий, зарегистрированные для события `типа`, могут быть либо функциями JavaScript, либо объектами со свойством `handleEvent`, значением которого является функция.
+Слушатели для типа `type` могут быть функциями JavaScript или объектами с полем
+`handleEvent`, значением которого является функция.
 
-В любом случае функция-обработчик вызывается с аргументом `event`, переданным в функцию `eventTarget.dispatchEvent()`.
+В обоих случаях обработчик вызывается с аргументом `event`, переданным в
+`eventTarget.dispatchEvent()`.
 
-Асинхронные функции могут использоваться в качестве слушателей событий. Если функция-обработчик async отклоняется, отказ фиксируется и обрабатывается, как описано в [`EventTarget` error handling](#eventtarget-error-handling).
+Допустимы `async`-слушатели: при отклонении промиса отклонение обрабатывается, как
+описано в [`EventTarget` error handling][].
 
-Ошибка, вызванная одной функцией-обработчиком, не препятствует вызову других обработчиков.
+Ошибка в одном обработчике не отменяет вызов остальных.
 
-Возвращаемое значение функции-обработчика игнорируется.
+Возвращаемое значение обработчика игнорируется.
 
-Обработчики всегда вызываются в том порядке, в котором они были добавлены.
+Обработчики вызываются в порядке добавления.
 
-Функции обработчика могут изменять объект `event`.
+Обработчики могут изменять объект `event`.
 
 ```js
 function handler1(event) {
-    console.log(event.type); // Выводит 'foo'
-    event.a = 1;
+  console.log(event.type);  // Prints 'foo'
+  event.a = 1;
 }
 
 async function handler2(event) {
-    console.log(event.type); // Печатает 'foo'
-    console.log(event.a); // Печатает 1
+  console.log(event.type);  // Prints 'foo'
+  console.log(event.a);  // Prints 1
 }
 
 const handler3 = {
-    handleEvent(event) {
-        console.log(event.type); // Печатает 'foo'
-    },
+  handleEvent(event) {
+    console.log(event.type);  // Prints 'foo'
+  },
 };
 
 const handler4 = {
-    async handleEvent(event) {
-        console.log(event.type); // Печатает 'foo'
-    },
+  async handleEvent(event) {
+    console.log(event.type);  // Prints 'foo'
+  },
 };
 
 const target = new EventTarget();
 
 target.addEventListener('foo', handler1);
 target.addEventListener('foo', handler2);
-target.addEventListener('foo', обработчик3);
+target.addEventListener('foo', handler3);
 target.addEventListener('foo', handler4, { once: true });
 ```
 
-<!-- 0044.part.md -->
+### Обработка ошибок `EventTarget`
 
-### `EventTarget` обработка ошибок
+Если зарегистрированный слушатель выбрасывает ошибку (или возвращает промис,
+который отклоняется), по умолчанию это считается необработанным исключением на
+`process.nextTick()`, то есть необработанные исключения в `EventTarget` по
+умолчанию завершают процесс Node.js.
 
-Когда зарегистрированный слушатель событий бросает (или возвращает Promise, который отклоняет), по умолчанию ошибка рассматривается как не пойманное исключение на `process.nextTick()`. Это означает, что не пойманные исключения в `EventTarget` будут завершать процесс Node.js по умолчанию.
+Исключение в одном слушателе _не_ останавливает вызов остальных зарегистрированных
+обработчиков.
 
-Бросок внутри слушателя события _не_ остановит вызов других зарегистрированных обработчиков.
+`EventTarget` не реализует особую обработку событий типа `'error'`, в отличие от
+`EventEmitter`.
 
-В `EventTarget` не реализована какая-либо специальная обработка по умолчанию для событий типа `'error'`, как в `EventEmitter`.
-
-В настоящее время ошибки сначала направляются в событие `process.on('error')`, прежде чем достигнут `process.on('uncaughtException')`. Это поведение устарело и будет изменено в будущем выпуске, чтобы привести `EventTarget` в соответствие с другими API Node.js. Любой код, полагающийся на событие `process.on('error')`, должен быть приведен в соответствие с новым поведением.
-
-<!-- 0045.part.md -->
+Сейчас ошибки сначала попадают в `process.on('error')`, затем в
+`process.on('uncaughtException')`. Такое поведение устарело и в будущем изменится,
+чтобы согласовать `EventTarget` с другими API Node.js. Код, рассчитывающий на
+`process.on('error')`, стоит привести в соответствие.
 
 ### Класс: `Event`
 
-Объект `Event` является адаптацией [`Event` Web API](https://dom.spec.whatwg.org/#event). Экземпляры создаются внутри Node.js.
+<!-- YAML
+added: v14.5.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description: The `Event` class is now available through the global object.
+-->
 
-<!-- 0046.part.md -->
+Добавлено в: v14.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Класс Event теперь доступен через глобальный объект. |
+
+Объект `Event` — адаптация [`Event` Web API][]. Экземпляры создаются внутри Node.js.
 
 #### `event.bubbles`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
+<!-- YAML
+added: v14.5.0
+-->
 
-Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
-<!-- 0047.part.md -->
+В Node.js не используется, оставлено для полноты совместимости.
 
 #### `event.cancelBubble`
 
-!!!note "Стабильность: 3 – Закрыто"
+<!-- YAML
+added: v14.5.0
+-->
 
-    Наследие: Вместо этого используйте [`event.stopPropagation()`](#eventstoppropagation).
+> Stability: 3 - Legacy: Use [`event.stopPropagation()`][] instead.
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Псевдоним для `event.stopPropagation()`, если установлено значение `true`. Он не используется в Node.js и приведен исключительно для полноты.
-
-<!-- 0048.part.md -->
+Псевдоним для `event.stopPropagation()` при значении `true`. В Node.js не
+используется, оставлено для полноты.
 
 #### `event.cancelable`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Истина, если событие было создано с опцией `cancelable`.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0049.part.md -->
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие создано с опцией `cancelable`.
 
 #### `event.composed`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
+<!-- YAML
+added: v14.5.0
+-->
 
-Этот параметр не используется в Node.js и приведен исключительно для полноты картины.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
-<!-- 0050.part.md -->
+В Node.js не используется, оставлено для полноты.
 
 #### `event.composedPath()`
 
-Возвращает массив, содержащий текущую `EventTarget` в качестве единственного элемента или пустой, если событие не отправляется. Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0051.part.md -->
+Возвращает массив с текущим `EventTarget` как единственным элементом или пустой
+массив, если событие не диспетчеризуется. В Node.js не используется, оставлено для
+полноты.
 
 #### `event.currentTarget`
 
--   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+<!-- YAML
+added: v14.5.0
+-->
+
+* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 Псевдоним для `event.target`.
-
-<!-- 0052.part.md -->
 
 #### `event.defaultPrevented`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Является `true`, если `cancelable` является `true` и `event.preventDefault()` был вызван.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0053.part.md -->
+`true`, если `cancelable` равен `true` и вызван `event.preventDefault()`.
 
 #### `event.eventPhase`
 
--   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Возвращает `0`, если событие не отправляется, `2`, если отправляется.
+<!-- YAML
+added: v14.5.0
+-->
 
-Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Возвращает `0`, пока событие не диспетчеризуется, и `2` во время
+  диспетчеризации.
 
-<!-- 0054.part.md -->
+В Node.js не используется, оставлено для полноты.
+
+#### `event.initEvent(type[, bubbles[, cancelable]])`
+
+<!-- YAML
+added: v19.5.0
+-->
+
+> Stability: 3 - Legacy: The WHATWG spec considers it deprecated and users
+> shouldn't use it at all.
+
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `bubbles` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `cancelable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+Избыточно при наличии конструкторов событий и не задаёт `composed`. В Node.js не
+используется, оставлено для полноты.
 
 #### `event.isTrusted`
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Событие [`<AbortSignal>`](globals.md#abortsignal) `abort` испускается, если значение `isTrusted` установлено в `true`. Во всех остальных случаях значение `false`.
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0055.part.md -->
+Для события `"abort"` у [AbortSignal](globals.md#abortsignal) `isTrusted` равен `true`. В остальных
+случаях — `false`.
 
 #### `event.preventDefault()`
 
-Устанавливает свойство `defaultPrevented` в `true`, если `cancelable` равно `true`.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0056.part.md -->
+Устанавливает `defaultPrevented` в `true`, если `cancelable` равен `true`.
 
 #### `event.returnValue`
 
-!!!note "Стабильность: 3 – Закрыто"
+<!-- YAML
+added: v14.5.0
+-->
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+> Stability: 3 - Legacy: Use [`event.defaultPrevented`][] instead.
 
-    Вместо этого используйте [`event.defaultPrevented`](#eventdefaultprevented).
+* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие не отменено.
 
--   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Истинно, если событие не было отменено.
-
-Значение `event.returnValue` всегда противоположно `event.defaultPrevented`. Этот параметр не используется в Node.js и приводится исключительно для полноты картины.
-
-<!-- 0057.part.md -->
+Значение `event.returnValue` всегда противоположно `event.defaultPrevented`.
+В Node.js не используется, оставлено для полноты.
 
 #### `event.srcElement`
 
-!!!note "Стабильность: 3 – Закрыто"
+<!-- YAML
+added: v14.5.0
+-->
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+> Stability: 3 - Legacy: Use [`event.target`][] instead.
 
-    Вместо этого используйте [`event.target`](#eventtarget).
-
--   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 Псевдоним для `event.target`.
 
-<!-- 0058.part.md -->
-
 #### `event.stopImmediatePropagation()`
 
-Останавливает вызов слушателей событий после завершения текущего.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0059.part.md -->
+Прекращает вызов слушателей после завершения текущего.
 
 #### `event.stopPropagation()`
 
-Это не используется в Node.js и приводится исключительно для полноты картины.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0060.part.md -->
+В Node.js не используется, оставлено для полноты.
 
 #### `event.target`
 
--   Тип: {EventTarget} Цель `EventTarget`, диспетчеризирующая событие.
+<!-- YAML
+added: v14.5.0
+-->
 
-<!-- 0061.part.md -->
+* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 #### `event.timeStamp`
 
--   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Миллисекундная метка времени, когда был создан объект `Event`.
+* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0062.part.md -->
+Метка времени в миллисекундах на момент создания объекта `Event`.
 
 #### `event.type`
 
--   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
+
+* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор типа события.
 
-<!-- 0063.part.md -->
-
 ### Класс: `EventTarget`
 
-<!-- 0064.part.md -->
+<!-- YAML
+added: v14.5.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/35496
+    description:
+      The `EventTarget` class is now available through the global object.
+-->
+
+Добавлено в: v14.5.0
+
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.0.0 | Класс EventTarget теперь доступен через глобальный объект. |
 
 #### `eventTarget.addEventListener(type, listener[, options])`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `listener` {Function|EventListener}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `once` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, слушатель автоматически удаляется при первом вызове. **По умолчанию:** `false`.
-    -   `passive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Когда `true`, служит подсказкой, что слушатель не будет вызывать метод `preventDefault()` объекта `Event`. **По умолчанию:** `false`.
-    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Не используется непосредственно в Node.js. Добавлен для полноты API. **По умолчанию:** `false`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Слушатель будет удален при вызове метода `abort()` данного объекта AbortSignal.
+<!-- YAML
+added: v14.5.0
+changes:
+  - version: v15.4.0
+    pr-url: https://github.com/nodejs/node/pull/36258
+    description: add support for `signal` option.
+-->
 
-Добавляет новый обработчик для события `type`. Любой заданный `listener` добавляется только один раз для каждого `type` и для каждого значения опции `capture`.
+Добавлено в: v14.5.0
 
-Если опция `once` имеет значение `true`, то `слушатель` будет удален после следующего отправления события `type`.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.4.0 | добавить поддержку опции «сигнал». |
 
-Опция `capture` не используется Node.js каким-либо функциональным образом, кроме отслеживания зарегистрированных слушателей событий в соответствии со спецификацией `EventTarget`. В частности, опция `capture` используется как часть ключа при регистрации `слушателя`. Любой отдельный `слушатель` может быть добавлен один раз с `capture = false` и один раз с `capture = true`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `once` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` слушатель автоматически снимается после первого
+    вызова. **По умолчанию:** `false`.
+  * `passive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` намекает, что слушатель не будет вызывать
+    `preventDefault()` у объекта `Event`. **По умолчанию:** `false`.
+  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) В Node.js напрямую не используется; добавлено для полноты API.
+    **По умолчанию:** `false`.
+  * `signal` [<AbortSignal>](globals.md#abortsignal) Слушатель снимается при вызове `abort()` у указанного
+    `AbortSignal`.
+
+Добавляет обработчик для события `type`. Один и тот же `listener` добавляется не
+более одного раза для пары (`type`, значение `capture`).
+
+Если `once` равен `true`, слушатель удаляется после следующей диспетчеризации
+события `type`.
+
+Опция `capture` в Node.js не влияет на поведение иначе как на учёт регистраций по
+спецификации `EventTarget`: она входит в ключ при регистрации. Один слушатель
+можно добавить с `capture = false` и отдельно с `capture = true`.
 
 ```js
 function handler(event) {}
 
 const target = new EventTarget();
-target.addEventListener('foo', handler, { capture: true }); // сначала
-target.addEventListener('foo', handler, { capture: false }); // второй
+target.addEventListener('foo', handler, { capture: true });  // first
+target.addEventListener('foo', handler, { capture: false }); // second
 
-// Удаляет второй экземпляр обработчика
+// Removes the second instance of handler
 target.removeEventListener('foo', handler);
 
-// Удаляет первый экземпляр обработчика
-target.removeEventListener('foo', handler, {
-    capture: true,
-});
+// Removes the first instance of handler
+target.removeEventListener('foo', handler, { capture: true });
 ```
-
-<!-- 0065.part.md -->
 
 #### `eventTarget.dispatchEvent(event)`
 
--   `event` {Event}
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если либо значение атрибута `cancelable` события равно false, либо его метод `preventDefault()` не был вызван, иначе `false`.
+<!-- YAML
+added: v14.5.0
+-->
 
-Отправляет `событие` в список обработчиков для `event.type`.
+* `event` [<Event>](globals.md)
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если у события `cancelable` равен `false` или
+  `preventDefault()` не вызывался, иначе `false`.
 
-Зарегистрированные обработчики событий синхронно вызываются в том порядке, в котором они были зарегистрированы.
+Диспетчеризует `event` списку обработчиков для `event.type`.
 
-<!-- 0066.part.md -->
+Зарегистрированные слушатели вызываются синхронно в порядке регистрации.
 
 #### `eventTarget.removeEventListener(type, listener[, options])`
 
--   `тип` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `listener` {Function|EventListener}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Удаляет `listener` из списка обработчиков события `type`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-<!-- 0067.part.md -->
+Удаляет `listener` из списка обработчиков для события `type`.
 
 ### Класс: `CustomEvent`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+  - v18.7.0
+  - v16.17.0
+changes:
+  - version: v23.0.0
+    pr-url: https://github.com/nodejs/node/pull/52723
+    description: No longer experimental.
+  - version:
+    - v22.1.0
+    - v20.13.0
+    pr-url: https://github.com/nodejs/node/pull/52618
+    description: CustomEvent is now stable.
+  - version: v19.0.0
+    pr-url: https://github.com/nodejs/node/pull/44860
+    description: No longer behind `--experimental-global-customevent` CLI flag.
+-->
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v23.0.0 | Больше не экспериментально. |
+    | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
+    | v19.0.0 | Флаг CLI `--experimental-global-customevent` больше не используется. |
 
--   Расширяет: {Event}
+* Extends: [<Event>](globals.md)
 
-Объект `CustomEvent` является адаптацией [`CustomEvent` Web API](https://dom.spec.whatwg.org/#customevent). Экземпляры создаются внутри Node.js.
-
-<!-- 0068.part.md -->
+Объект `CustomEvent` — адаптация [`CustomEvent` Web API][]. Экземпляры создаются
+внутри Node.js.
 
 #### `event.detail`
 
-!!!warning "Стабильность: 1 – Экспериментальная"
+<!-- YAML
+added:
+  - v18.7.0
+  - v16.17.0
+changes:
+  - version:
+    - v22.1.0
+    - v20.13.0
+    pr-url: https://github.com/nodejs/node/pull/52618
+    description: CustomEvent is now stable.
+-->
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+??? note "История"
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
 
--   Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Возвращает пользовательские данные, переданные при инициализации.
+* Тип: {any} Пользовательские данные, переданные при инициализации.
 
 Только для чтения.
 
-<!-- 0069.part.md -->
-
 ### Класс: `NodeEventTarget`
 
--   Расширяет: {EventTarget}
+<!-- YAML
+added: v14.5.0
+-->
 
-`NodeEventTarget` - это специфическое для Node.js расширение `EventTarget`, которое эмулирует часть API `EventEmitter`.
+* Расширяет: [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget)
 
-<!-- 0070.part.md -->
+`NodeEventTarget` — расширение Node.js для `EventTarget`, подражающее части API
+`EventEmitter`.
 
 #### `nodeEventTarget.addListener(type, listener)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   `listener` {Function|EventListener}
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   Возвращает: {EventTarget} this
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-Node.js-специфическое расширение класса `EventTarget`, которое эмулирует эквивалентный API `EventEmitter`. Единственное различие между `addListener()` и `addEventListener()` заключается в том, что `addListener()` возвращает ссылку на `EventTarget`.
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
-<!-- 0071.part.md -->
+Расширение Node.js для `EventTarget`, аналог соответствующего API `EventEmitter`.
+Отличие от `addEventListener()` в том, что `addListener()` возвращает ссылку на
+`EventTarget`.
+
+#### `nodeEventTarget.emit(type, arg)`
+
+<!-- YAML
+added: v15.2.0
+-->
+
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `arg` {any}
+* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для `type` есть слушатели, иначе `false`.
+
+Расширение Node.js: передаёт `arg` списку обработчиков для `type`.
 
 #### `nodeEventTarget.eventNames()`
 
--   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Node.js-специфическое расширение класса `EventTarget`, которое возвращает массив имен событий `типа`, для которых зарегистрированы слушатели событий.
+* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0072.part.md -->
+Расширение Node.js: возвращает массив имён типов событий, для которых есть
+слушатели.
 
 #### `nodeEventTarget.listenerCount(type)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество слушателей событий, зарегистрированных для `type`.
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0073.part.md -->
+Расширение Node.js: число слушателей для `type`.
 
 #### `nodeEventTarget.setMaxListeners(n)`
 
--   `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Node.js-специфическое расширение класса `EventTarget`, которое устанавливает число максимальных слушателей событий как `n`.
+* `n` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0074.part.md -->
+Расширение Node.js: задаёт максимальное число слушателей равным `n`.
 
 #### `nodeEventTarget.getMaxListeners()`
 
--   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+<!-- YAML
+added: v14.5.0
+-->
 
-Node.js-специфическое расширение класса `EventTarget`, которое возвращает количество максимальных слушателей событий.
+* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!-- 0075.part.md -->
+Расширение Node.js: возвращает максимальное число слушателей.
 
 #### `nodeEventTarget.off(type, listener[, options])`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `listener` {Function|EventListener}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
--   Возвращает: {EventTarget} this
+<!-- YAML
+added: v14.5.0
+-->
 
-Node.js-специфический псевдоним для `eventTarget.removeListener()`.
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-<!-- 0076.part.md -->
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+
+Псевдоним Node.js для `eventTarget.removeEventListener()`.
 
 #### `nodeEventTarget.on(type, listener)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   `listener` {Function|EventListener}
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   Возвращает: {EventTarget} this
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-Node.js-специфический псевдоним для `eventTarget.addListener()`.
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
-<!-- 0077.part.md -->
+Псевдоним Node.js для `eventTarget.addEventListener()`.
 
 #### `nodeEventTarget.once(type, listener)`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   `listener` {Function|EventListener}
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   Возвращает: {EventTarget} this
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-Node.js-специфическое расширение класса `EventTarget`, которое добавляет `once` слушателя для заданного `type` события. Это эквивалентно вызову `on` с опцией `once`, установленной в `true`.
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
-<!-- 0078.part.md -->
+Расширение Node.js: добавляет одноразового слушателя для `type`. Эквивалентно
+`on` с опцией `once: true`.
 
 #### `nodeEventTarget.removeAllListeners([type])`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   Возвращает: {EventTarget} this
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Специфическое для Node.js расширение класса `EventTarget`. Если указан `type`, удаляет всех зарегистрированных слушателей для `type`, в противном случае удаляет всех зарегистрированных слушателей.
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
-<!-- 0079.part.md -->
+Расширение Node.js: если указан `type`, снимает всех слушателей для него, иначе —
+всех слушателей.
 
 #### `nodeEventTarget.removeListener(type, listener[, options])`
 
--   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v14.5.0
+-->
 
--   `listener` {Function|EventListener}
+* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-    -   `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
--   Возвращает: {EventTarget} this
+* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
-Node.js-специфическое расширение класса `EventTarget`, которое удаляет `слушателя` для заданного `типа`. Единственная разница между `removeListener()` и `removeEventListener()` заключается в том, что `removeListener()` возвращает ссылку на `EventTarget`.
+Расширение Node.js: удаляет `listener` для `type`. Отличие от
+`removeEventListener()` в том, что `removeListener()` возвращает ссылку на
+`EventTarget`.
 
-<!-- 0080.part.md -->
+[WHATWG-EventTarget]: https://dom.spec.whatwg.org/#interface-eventtarget
+[`--trace-warnings`]: cli.md#--trace-warnings
+[`CustomEvent` Web API]: https://dom.spec.whatwg.org/#customevent
+[`EventTarget` Web API]: https://dom.spec.whatwg.org/#eventtarget
+[`EventTarget` error handling]: #eventtarget-error-handling
+[`Event` Web API]: https://dom.spec.whatwg.org/#event
+[`domain`]: domain.md
+[`e.stopImmediatePropagation()`]: #eventstopimmediatepropagation
+[`emitter.removeListener()`]: #emitterremovelistenereventname-listener
+[`emitter.setMaxListeners(n)`]: #emittersetmaxlistenersn
+[`event.defaultPrevented`]: #eventdefaultprevented
+[`event.stopPropagation()`]: #eventstoppropagation
+[`event.target`]: #eventtarget
+[`events.defaultMaxListeners`]: #eventsdefaultmaxlisteners
+[`fs.ReadStream`]: fs.md#class-fsreadstream
+[`net.Server`]: net.md#class-netserver
+[`new.target.name`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target
+[`process.on('warning')`]: process.md#event-warning
+[async context]: async_context.md
+[capturerejections]: #capture-rejections-of-promises
+[error]: #error-events
+[rejection]: #emittersymbolfornodejsrejectionerr-eventname-args
+[rejectionsymbol]: #eventscapturerejectionsymbol
+[stream]: stream.md

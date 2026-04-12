@@ -18,7 +18,9 @@ hide:
 
     Перевод официальной документации
 
-    **[:octicons-arrow-right-24: Node.js API](api/index.md)** <small>18.x.x</small>
+    **[:octicons-arrow-right-24: Node.js API v25](./api/index.md)** <small>25.x.x</small>
+
+    [:octicons-arrow-right-24: Node.js API v18](./archive/api.18/index.md) <small>18.x.x</small>
 
     [:octicons-arrow-right-24: Карта обучения :octicons-link-external-16:](https://devmaps.ru/nodejs-2020)
 

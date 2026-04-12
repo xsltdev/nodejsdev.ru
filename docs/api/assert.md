@@ -1,2037 +1,2587 @@
 ---
-description: В assert модуль предоставляет набор функций утверждения для проверки инвариантов
-title: Assert
+title: Утверждения (assert)
+description: Модуль node:assert — набор функций утверждения для проверки инвариантов
 ---
 
 # Тестирование
 
-[:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/assert.html)
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/assert.html)
+
+<!--introduced_in=v0.1.21-->
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Модуль **`node:assert`** предоставляет набор функций утверждения для проверки инвариантов.
+<!-- source_link=lib/assert.js -->
+<!-- markdownlint-disable MD024 -->
+
+Модуль `node:assert` предоставляет набор функций утверждения для проверки инвариантов.
 
 ## Режим строгого утверждения
 
-В режиме строгого утверждения нестрогие методы ведут себя как соответствующие им строгие методы. Например, [`assert.deepEqual()`](#assertdeepequalactual-expected-message) будет вести себя как [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
+<!-- YAML
+added: v9.9.0
+changes:
+  - version: v15.0.0
+    pr-url: https://github.com/nodejs/node/pull/34001
+    description: Exposed as `require('node:assert/strict')`.
+  - version:
+      - v13.9.0
+      - v12.16.2
+    pr-url: https://github.com/nodejs/node/pull/31635
+    description: Changed "strict mode" to "strict assertion mode" and "legacy
+                 mode" to "legacy assertion mode" to avoid confusion with the
+                 more usual meaning of "strict mode".
+  - version: v9.9.0
+    pr-url: https://github.com/nodejs/node/pull/17615
+    description: Added error diffs to the strict assertion mode.
+  - version: v9.9.0
+    pr-url: https://github.com/nodejs/node/pull/17002
+    description: Added strict assertion mode to the assert module.
+-->
 
-В режиме strict assertion сообщения об ошибках для объектов отображают diff. В режиме legacy assertion сообщения об ошибках для объектов отображают сами объекты, часто в усеченном виде.
+Добавлено в: v9.9.0
+
+??? note "История" | Версия | Изменения | | --- | --- | | v15.0.0 | Представлен как `require('node:assert/strict')`. | | v13.9.0, v12.16.2 | Изменен «строгий режим» на «режим строгого утверждения», а «устаревший режим» на «устаревший режим утверждения», чтобы избежать путаницы с более обычным значением «строгого режима». | | v9.9.0 | Добавлены различия ошибок в режиме строгого утверждения. | | v9.9.0 | В модуль утверждения добавлен строгий режим утверждения. |
+
+В режиме строгого утверждения нестрогие методы ведут себя как соответствующие им строгие методы. Например, [`assert.deepEqual()`][] будет вести себя как [`assert.deepStrictEqual()`][].
+
+В режиме строгого утверждения сообщения об ошибках для объектов показывают diff. В устаревшем режиме утверждения сообщения об ошибках для объектов показывают сами объекты, часто в усечённом виде.
+
+### Семантика параметра `message`
+
+Для методов утверждения, принимающих необязательный параметр `message`, сообщение можно передать в одной из следующих форм:
+
+-   **string**: Используется как есть. Если после строки `message` указаны дополнительные аргументы, они обрабатываются как подстановки в стиле printf (см. [`util.format()`][]).
+-   **Error**: Если в качестве `message` передан экземпляр `Error`, выбрасывается именно эта ошибка, а не `AssertionError`.
+-   **function**: Функция вида `(actual, expected) => string`. Вызывается только при провале утверждения и должна вернуть строку, которая будет использована как сообщение об ошибке. Нестроковые возвращаемые значения игнорируются, вместо них используется сообщение по умолчанию.
+
+Если вместе с `message` в виде `Error` или функции переданы дополнительные аргументы, вызов отклоняется с `ERR_AMBIGUOUS_ARGUMENT`.
+
+Если первый аргумент не является строкой, `Error` или функцией, выбрасывается `ERR_INVALID_ARG_TYPE`.
 
 Чтобы использовать режим строгого утверждения:
 
-```mjs
-import { strict as assert } from 'node:assert';
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert').strict;
-```
+    ```js
+    import { strict as assert } from 'node:assert';
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
-```
+=== "CJS"
 
-```cjs
-const assert = require('node:assert/strict');
-```
+    ```js
+    const assert = require('node:assert').strict;
+    ```
 
-Пример разницы ошибок:
+=== "MJS"
 
-```mjs
-import { strict as assert } from 'node:assert';
+    ```js
+    import assert from 'node:assert/strict';
+    ```
 
+=== "CJS"
 
-assert.deepEqual([[[1, 2, 3]], 4, 5], [[[1, 2, '3']], 4, 5]]);
-// AssertionError: Ожидается, что входные данные будут строго равны по глубине:
-// + фактические - ожидаемые ... Строки пропущены
-//
-// [
-// [
-// ...
-// 2,
-// + 3
-// - '3'
-// ],
-// ...
-// 5
-// ]
-```
+    ```js
+    const assert = require('node:assert/strict');
+    ```
 
-```cjs
-const assert = require('node:assert/strict');
+Пример diff в сообщении об ошибке:
 
-assert.deepEqual(
-    [[[1, 2, 3]], 4, 5],
-    [[[1, 2, '3']], 4, 5]
-);
-// AssertionError: Ожидается, что входные данные будут строго равны по глубине:
-// + фактические - ожидаемые ... Строки пропущены
-//
-// [
-// [
-// ...
-// 2,
-// + 3
-// - '3'
-// ],
-// ...
-// 5
-// ]
-```
+=== "MJS"
 
-Чтобы отключить цвета, используйте переменные окружения `NO_COLOR` или `NODE_DISABLE_COLORS`. Это также отключит цвета в REPL. Подробнее о поддержке цветов в терминальных средах читайте в документации по tty [`getColorDepth()`](tty.md#writestreamgetcolordepthenv).
+    ```js
+    import { strict as assert } from 'node:assert';
+
+    assert.deepEqual(
+        [[[1, 2, 3]], 4, 5],
+        [[[1, 2, '3']], 4, 5]
+    );
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected ... Lines skipped
+    //
+    //   [
+    //     [
+    // ...
+    //       2,
+    // +     3
+    // -     '3'
+    //     ],
+    // ...
+    //     5
+    //   ]
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.deepEqual(
+        [[[1, 2, 3]], 4, 5],
+        [[[1, 2, '3']], 4, 5]
+    );
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected ... Lines skipped
+    //
+    //   [
+    //     [
+    // ...
+    //       2,
+    // +     3
+    // -     '3'
+    //     ],
+    // ...
+    //     5
+    //   ]
+    ```
+
+Чтобы отключить цвета, используйте переменные окружения `NO_COLOR` или `NODE_DISABLE_COLORS`. Это также отключит цвета в REPL. Подробнее о поддержке цветов в терминальных средах см. документацию по tty [`getColorDepth()`][].
 
 ## Устаревший режим утверждения
 
-Наследный режим утверждения использует оператор [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Equality) в:
+Устаревший режим утверждения использует оператор [`==` operator][] в:
 
--   [`assert.deepEqual()`](#assertdeepequalactual-expected-message)
--   [`assert.equal()`](#asserttequalactual-expected-message)
--   [`assert.notDeepEqual()`](#assertnotdeepepequalactual-expected-message)
--   [`assert.notEqual()`](#assertnotequalactual-expected-message)
+-   [`assert.deepEqual()`][]
+-   [`assert.equal()`][]
+-   [`assert.notDeepEqual()`][]
+-   [`assert.notEqual()`][]
 
-Чтобы использовать унаследованный режим утверждения:
+Чтобы использовать устаревший режим утверждения:
 
-```mjs
-import assert from 'node:assert';
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert');
-```
+    ```js
+    import assert from 'node:assert';
+    ```
 
-Наследие режима assertion может привести к неожиданным результатам, особенно при использовании [`assert.deepEqual()`](#assertdeepequalactual-expected-message):
+=== "CJS"
 
-```js
-// ВНИМАНИЕ: Это не приводит к ошибке AssertionError
-// в унаследованном режиме утверждения!
-assert.deepEqual(/a/gi, new Date());
-```
+    ```js
+    const assert = require('node:assert');
+    ```
 
-## Класс: assert.AssertionError
+Устаревший режим утверждения может давать неожиданные результаты, особенно при использовании [`assert.deepEqual()`][]:
 
--   Расширяется: [`<errors.Error>`](errors.md#error)
+=== "CJS"
 
-Указывает на неудачу утверждения. Все ошибки, выбрасываемые модулем `node:assert`, будут экземплярами класса `AssertionError`.
+    ```js
+    // ВНИМАНИЕ: в устаревшем режиме утверждения это не вызывает AssertionError!
+    assert.deepEqual(/a/gi, new Date());
+    ```
+
+## Класс: `assert.AssertionError`
+
+{: #class-assertassertionerror}
+
+-   Наследует: [<errors.Error>](errors.md#error)
+
+Указывает на неудачу утверждения. Все ошибки, выбрасываемые модулем `node:assert`, являются экземплярами класса `AssertionError`.
 
 ### `new assert.AssertionError(options)`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если предоставлено, сообщение об ошибке устанавливается в это значение.
-    -   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Свойство `actual` экземпляра ошибки.
-    -   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Свойство `expected` экземпляра ошибки.
-    -   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Свойство `operator` для экземпляра ошибки.
-    -   `stackStartFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если задано, то в сгенерированной трассировке стека будут опущены кадры до этой функции.
+<!-- YAML
+added: v0.1.21
+-->
 
-Подкласс `Error`, который указывает на неудачу утверждения.
+-   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если указано, сообщение об ошибке устанавливается в это значение.
+    -   `actual` {any} Свойство `actual` у экземпляра ошибки.
+    -   `expected` {any} Свойство `expected` у экземпляра ошибки.
+    -   `operator` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Свойство `operator` у экземпляра ошибки.
+    -   `stackStartFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если задано, сгенерированная трассировка стека не включает кадры выше этой функции.
+    -   `diff` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
+
+Подкласс [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), указывающий на неудачу утверждения.
 
 Все экземпляры содержат встроенные свойства `Error` (`message` и `name`) и:
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Устанавливается в аргумент `actual` для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Устанавливается на `ожидаемое` значение для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
--   `generatedMessage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Указывает, было ли сообщение сгенерировано автоматически (`true`) или нет.
--   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение всегда `ERR_ASSERTION`, чтобы показать, что ошибка является ошибкой утверждения.
--   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устанавливается в переданное значение оператора.
+-   `actual` {any} Устанавливается в аргумент `actual` для таких методов, как [`assert.strictEqual()`][].
+-   `expected` {any} Устанавливается в ожидаемое значение для таких методов, как [`assert.strictEqual()`][].
+-   `generatedMessage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Показывает, было ли сообщение сгенерировано автоматически (`true`) или нет.
+-   `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение всегда `ERR_ASSERTION`, чтобы указать, что это ошибка утверждения.
+-   `operator` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устанавливается в переданное значение оператора.
 
-```mjs
-import assert from 'node:assert';
+=== "MJS"
 
-// Generate an AssertionError to compare the error message later:
-const { message } = new assert.AssertionError({
-    actual: 1,
-    expected: 2,
-    operator: 'strictEqual',
-});
+    ```js
+    import assert from 'node:assert';
 
-// Verify error output:
-try {
-    assert.strictEqual(1, 2);
-} catch (err) {
-    assert(err instanceof assert.AssertionError);
-    assert.strictEqual(err.message, message);
-    assert.strictEqual(err.name, 'AssertionError');
-    assert.strictEqual(err.actual, 1);
-    assert.strictEqual(err.expected, 2);
-    assert.strictEqual(err.code, 'ERR_ASSERTION');
-    assert.strictEqual(err.operator, 'strictEqual');
-    assert.strictEqual(err.generatedMessage, true);
+    // Создаём AssertionError для последующего сравнения сообщения об ошибке:
+    const { message } = new assert.AssertionError({
+        actual: 1,
+        expected: 2,
+        operator: 'strictEqual',
+    });
+
+    // Проверяем вывод ошибки:
+    try {
+        assert.strictEqual(1, 2);
+    } catch (err) {
+        assert(err instanceof assert.AssertionError);
+        assert.strictEqual(err.message, message);
+        assert.strictEqual(err.name, 'AssertionError');
+        assert.strictEqual(err.actual, 1);
+        assert.strictEqual(err.expected, 2);
+        assert.strictEqual(err.code, 'ERR_ASSERTION');
+        assert.strictEqual(err.operator, 'strictEqual');
+        assert.strictEqual(err.generatedMessage, true);
+    }
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert');
+
+    // Создаём AssertionError для последующего сравнения сообщения об ошибке:
+    const { message } = new assert.AssertionError({
+        actual: 1,
+        expected: 2,
+        operator: 'strictEqual',
+    });
+
+    // Проверяем вывод ошибки:
+    try {
+        assert.strictEqual(1, 2);
+    } catch (err) {
+        assert(err instanceof assert.AssertionError);
+        assert.strictEqual(err.message, message);
+        assert.strictEqual(err.name, 'AssertionError');
+        assert.strictEqual(err.actual, 1);
+        assert.strictEqual(err.expected, 2);
+        assert.strictEqual(err.code, 'ERR_ASSERTION');
+        assert.strictEqual(err.operator, 'strictEqual');
+        assert.strictEqual(err.generatedMessage, true);
+    }
+    ```
+
+## Класс: `assert.Assert`
+
+<!-- YAML
+added:
+ - v24.6.0
+ - v22.19.0
+-->
+
+Класс `Assert` позволяет создавать независимые экземпляры утверждений с пользовательскими параметрами.
+
+### `new assert.Assert([options])`
+
+<!-- YAML
+changes:
+  - version: v24.9.0
+    pr-url: https://github.com/nodejs/node/pull/59762
+    description: Added `skipPrototype` option.
+-->
+
+??? note "История" | Версия | Изменения | | --- | --- | | v24.9.0 | Добавлена ​​опция «skipPrototype». |
+
+-   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `diff` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
+    -   `strict` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` нестрогие методы ведут себя как соответствующие строгие. По умолчанию `true`.
+    -   `skipPrototype` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` при глубоком сравнении на равенство не сравниваются прототип и конструктор. По умолчанию `false`.
+
+Создаёт новый экземпляр утверждений. Параметр `diff` задаёт подробность diff в сообщениях об ошибках утверждения.
+
+```js
+const { Assert } = require('node:assert');
+const assertInstance = new Assert({ diff: 'full' });
+assertInstance.deepStrictEqual({ a: 1 }, { a: 2 });
+// В сообщении об ошибке показывается полный diff.
+```
+
+**Важно:** при деструктуризации методов утверждений из экземпляра `Assert` они теряют связь с параметрами конфигурации экземпляра (такими как `diff`, `strict` и `skipPrototype`). У деструктурированных методов используется поведение по умолчанию.
+
+```js
+const myAssert = new Assert({ diff: 'full' });
+
+// Работает как ожидается - используется полный diff
+myAssert.strictEqual({ a: 1 }, { b: { c: 1 } });
+
+// Здесь теряется настройка полного diff - используется значение по умолчанию `simple`
+const { strictEqual } = myAssert;
+strictEqual({ a: 1 }, { b: { c: 1 } });
+```
+
+Параметр `skipPrototype` влияет на все методы глубокого сравнения:
+
+```js
+class Foo {
+    constructor(a) {
+        this.a = a;
+    }
 }
-```
 
-```cjs
-const assert = require('node:assert');
-
-// Generate an AssertionError to compare the error message later:
-const { message } = new assert.AssertionError({
-    actual: 1,
-    expected: 2,
-    operator: 'strictEqual',
-});
-
-// Verify error output:
-try {
-    assert.strictEqual(1, 2);
-} catch (err) {
-    assert(err instanceof assert.AssertionError);
-    assert.strictEqual(err.message, message);
-    assert.strictEqual(err.name, 'AssertionError');
-    assert.strictEqual(err.actual, 1);
-    assert.strictEqual(err.expected, 2);
-    assert.strictEqual(err.code, 'ERR_ASSERTION');
-    assert.strictEqual(err.operator, 'strictEqual');
-    assert.strictEqual(err.generatedMessage, true);
+class Bar {
+    constructor(a) {
+        this.a = a;
+    }
 }
+
+const foo = new Foo(1);
+const bar = new Bar(1);
+
+// Поведение по умолчанию - ошибка из-за разных конструкторов
+const assert1 = new Assert();
+assert1.deepStrictEqual(foo, bar); // AssertionError
+
+// Без сравнения прототипа - проходит, если свойства равны
+const assert2 = new Assert({ skipPrototype: true });
+assert2.deepStrictEqual(foo, bar); // OK
 ```
 
-<!-- 0004.part.md -->
-
-## Класс: `assert.CallTracker`
-
-!!!warning "Стабильность: 1 – Экспериментальная"
-
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
-
-Эта функция в настоящее время является экспериментальной, и ее поведение может измениться.
-
-### `new assert.CallTracker()`
-
-Создает новый объект [`CallTracker`](#class-assertcalltracker), который можно использовать для отслеживания того, вызывались ли функции определенное количество раз. Для проверки необходимо вызвать `tracker.verify()`. Обычная схема - вызвать его в обработчике [`process.on('exit')`](process.md#event-exit).
-
-```mjs
-import assert from 'node:assert';
-import process from 'node:process';
-
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// callsfunc() должна быть вызвана ровно 1 раз перед tracker.verify().
-const callsfunc = tracker.calls(func, 1);
-
-callsfunc();
-
-// Вызывает tracker.verify() и проверяет, все ли функции tracker.calls()
-// были вызваны точное количество раз.
-process.on('exit', () => {
-    tracker.verify();
-});
-```
-
-```cjs
-const assert = require('node:assert');
-
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// callsfunc() должен быть вызван ровно 1 раз перед tracker.verify().
-const callsfunc = tracker.calls(func, 1);
-
-callsfunc();
-
-// Вызывает tracker.verify() и проверяет, все ли функции tracker.calls()
-// были вызваны точное количество раз.
-process.on('exit', () => {
-    tracker.verify();
-});
-```
-
-### `tracker.calls([fn][, exact])`
-
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) **По умолчанию:** Безотказная функция.
--   `exact` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1`.
--   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function), которая обертывает `fn`.
-
-Ожидается, что функция-обертка будет вызвана ровно `exact` раз. Если на момент вызова [`tracker.verify()`](#trackerverify) функция не была вызвана ровно `точное` количество раз, то [`tracker.verify()`](#trackerverify) выдаст ошибку.
-
-```mjs
-import assert from 'node:assert';
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func);
-```
-
-```cjs
-const assert = require('node:assert');
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func);
-```
-
-### `tracker.getCalls(fn)`
-
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function).
-
--   Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) со всеми вызовами отслеживаемой функции.
-
--   Объект [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-    -   `thisArg` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `arguments` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) аргументы, переданные отслеживаемой функции.
-
-```mjs
-import assert from 'node:assert';
-
-const tracker = new assert.CallTracker();
-
-function func() {}
-const callsfunc = tracker.calls(func);
-callsfunc(1, 2, 3);
-
-assert.deepStrictEqual(tracker.getCalls(callsfunc), [
-    { thisArg: this, arguments: [1, 2, 3] },
-]);
-```
-
-```cjs
-const assert = require('node:assert');
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-const callsfunc = tracker.calls(func);
-callsfunc(1, 2, 3);
-
-assert.deepStrictEqual(tracker.getCalls(callsfunc), [
-    { thisArg: this, arguments: [1, 2, 3] },
-]);
-```
-
-### `tracker.report()`
-
--   Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) объектов, содержащих информацию о функциях-обертках, возвращаемых [`tracker.calls()`](#trackercallsfn-exact).
--   Объект [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `сообщение` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    -   `actual` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Фактическое количество раз, когда функция была вызвана.
-    -   `expected` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемое количество вызовов функции.
-    -   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя функции, которая обернута.
-    -   `stack` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Трассировка стека функции.
-
-Массивы содержат информацию об ожидаемом и фактическом количестве вызовов функций, которые не были вызваны ожидаемое количество раз.
-
-```mjs
-import assert from 'node:assert';
-
-// Создается трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func, 2);
-
-// Возвращает массив, содержащий информацию о callfunc()
-tracker.report();
-// [
-// {
-// сообщение: 'Ожидалось, что функция func будет выполнена 2 раза(а), но было выполнено...
-// выполнена 0 раз(ов).',
-// фактическое: 0,
-// ожидаемое: 2,
-// оператор: 'func',
-// стек: трассировка стека
-// }
-// ]
-```
-
-```cjs
-const assert = require('node:assert');
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func, 2);
-
-// Возвращает массив, содержащий информацию о callfunc()
-tracker.report();
-// [
-// {
-// сообщение: 'Ожидалось, что функция func будет выполнена 2 раза(а), но было выполнено...
-// выполнена 0 раз(ов).',
-// фактическое: 0,
-// ожидаемое: 2,
-// оператор: 'func',
-// стек: трассировка стека
-// }
-// ]
-```
-
-### `tracker.reset([fn])`
-
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) отслеживаемая функция для сброса.
-
-сбрасывает вызовы трекера вызовов. если отслеживаемая функция передана в качестве аргумента, вызовы будут сброшены для нее. если аргументы не переданы, все отслеживаемые функции будут сброшены.
-
-```mjs
-import assert from 'node:assert';
-
-const tracker = new assert.CallTracker();
-
-function func() {}
-const callsfunc = tracker.calls(func);
-
-callsfunc();
-// Tracker was called once
-tracker.getCalls(callsfunc).length === 1;
-
-tracker.reset(callsfunc);
-tracker.getCalls(callsfunc).length === 0;
-```
-
-```cjs
-const assert = require('node:assert');
-
-function func() {}
-const callsfunc = tracker.calls(func);
-
-callsfunc();
-// Tracker was called once
-tracker.getCalls(callsfunc).length === 1;
-
-tracker.reset(callsfunc);
-tracker.getCalls(callsfunc).length === 0;
-```
-
-### `tracker.verify()`
-
-Просматривает список функций, переданных в [`tracker.calls()`](#trackercallsfn-exact), и выдает ошибку для функций, которые не были вызваны ожидаемое количество раз.
-
-```mjs
-import assert from 'node:assert';
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func, 2);
-
-callsfunc();
-
-// Выбросит ошибку, так как callsfunc() была вызвана только один раз.
-tracker.verify();
-```
-
-```cjs
-const assert = require('node:assert');
-
-// Создает трекер вызовов.
-const tracker = new assert.CallTracker();
-
-function func() {}
-
-// Возвращает функцию, обертывающую func(), которая должна быть вызвана точное время
-// перед tracker.verify().
-const callsfunc = tracker.calls(func, 2);
-
-callsfunc();
-
-// Выбросит ошибку, так как callsfunc() была вызвана только один раз.
-tracker.verify();
-```
+При деструктуризации методы теряют доступ к контексту `this` экземпляра и возвращаются к поведению утверждений по умолчанию (diff: `'simple'`, нестрогий режим). Чтобы сохранить пользовательские параметры при использовании деструктурированных методов, не применяйте деструктуризацию и вызывайте методы напрямую у экземпляра.
 
 ## `assert(value[, message])`
 
--   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входные данные, которые проверяются на истинность.
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.5.9
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+-->
 
-Псевдоним [`assert.ok()`](#assertokvalue-message).
+Добавлено в: v0.5.9
+
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
+
+-   `value` {any} Входное значение, проверяемое на истинность.
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Псевдоним [`assert.ok()`][].
 
 ## `assert.deepEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/59448
+    description: Promises are not considered equal anymore if they are not of
+                 the same instance.
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/57627
+    description: Invalid dates are now considered equal.
+  - version: v24.0.0
+    pr-url: https://github.com/nodejs/node/pull/57622
+    description: Recursion now stops when either side encounters a circular
+                 reference.
+  - version:
+      - v22.2.0
+      - v20.15.0
+    pr-url: https://github.com/nodejs/node/pull/51805
+    description: Error cause and errors properties are now compared as well.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41020
+    description: Regular expressions lastIndex property is now compared as well.
+  - version:
+      - v16.0.0
+      - v14.18.0
+    pr-url: https://github.com/nodejs/node/pull/38113
+    description: In Legacy assertion mode, changed status from Deprecated to
+                 Legacy.
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30766
+    description: NaN is now treated as being identical if both sides are
+                 NaN.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25008
+    description: The type tags are now properly compared and there are a couple
+                 minor comparison adjustments to make the check less surprising.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15001
+    description: The `Error` names and messages are now properly compared.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12142
+    description: The `Set` and `Map` content is also compared.
+  - version:
+      - v6.4.0
+      - v4.7.1
+    pr-url: https://github.com/nodejs/node/pull/8002
+    description: Typed array slices are handled correctly now.
+  - version:
+      - v6.1.0
+      - v4.5.0
+    pr-url: https://github.com/nodejs/node/pull/6432
+    description: Objects with circular references can be used as inputs now.
+  - version:
+      - v5.10.1
+      - v4.4.3
+    pr-url: https://github.com/nodejs/node/pull/5910
+    description: Handle non-`Uint8Array` typed arrays correctly.
+-->
 
-**Строгий режим утверждения**.
+Добавлено в: v0.1.21
 
-Псевдоним [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v25.0.0 | Промисы больше не считаются равными, если они не относятся к одному и тому же экземпляру. | | v25.0.0 | Недопустимые даты теперь считаются равными. | | v24.0.0 | Рекурсия теперь останавливается, когда какая-либо из сторон встречает циклическую ссылку. | | v22.2.0, v20.15.0 | Теперь также сравниваются причины и свойства ошибок. | | v18.0.0 | Свойство LastIndex регулярных выражений теперь также сравнивается. | | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». | | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. | | v12.0.0 | Теги типов теперь сравниваются правильно, и есть пара небольших изменений в сравнении, чтобы сделать проверку менее неожиданной. | | v9.0.0 | Имена и сообщения `Error` теперь корректно сравниваются. | | v8.0.0 | Содержимое Set и Map также сравнивается. | | v6.4.0, v4.7.1 | Срезы типизированного массива теперь обрабатываются правильно. | | v6.1.0, v4.5.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. | | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
-**Режим утверждения Legacy**.
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-!!!note "Стабильность: 3 – Закрыто"
+**Режим строгих утверждений (strict assertion mode)**
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+Псевдоним [`assert.deepStrictEqual()`][].
 
-    Вместо этого используйте [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
+**Режим унаследованных утверждений (legacy assertion mode)**
 
-Проверяет глубокое равенство между параметрами `actual` и `expected`. Вместо этого используйте [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message). [`assert.deepEqual()`](#assertdeepepequalactual-expected-message) может привести к неожиданным результатам.
+> Стабильность: 3 - Legacy: вместо этого используйте [`assert.deepStrictEqual()`][].
 
-_Глубокое равенство_ означает, что перечислимые "собственные" свойства дочерних объектов также рекурсивно оцениваются по следующим правилам.
+Проверяет глубокое равенство между параметрами `actual` и `expected`. Предпочтительно использовать [`assert.deepStrictEqual()`][] - у [`assert.deepEqual()`][] результат может быть неожиданным.
+
+_Глубокое равенство_ означает, что перечислимые собственные свойства вложенных объектов также рекурсивно оцениваются по следующим правилам.
 
 ### Детали сравнения
 
--   Примитивные значения сравниваются с помощью оператора [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality), за исключением `NaN`. Оно считается идентичным, если обе стороны `NaN`.
--   [Теги типов](https://tc39.github.io/ecma262/#sec-object.prototype.tostring) объектов должны быть одинаковыми.
--   Учитываются только [перечислимые "собственные" свойства](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
--   [`Error`](errors.md#class-error) имена и сообщения всегда сравниваются, даже если это не перечислимые свойства.
--   [Object wrappers](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) сравниваются как объекты, так и развернутые значения.
--   Свойства `Object` сравниваются неупорядоченно.
--   Ключи [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и элементы [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) сравниваются неупорядоченно.
--   Рекурсия останавливается, когда обе стороны различаются или обе стороны встречают круговую ссылку.
--   Реализация не проверяет [`[[Prototype]]`](https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots) объектов.
--   Свойства [`Symbol`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) не сравниваются.
--   Сравнение [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) не опирается на их значения.
--   [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) lastIndex, флаги и источник всегда сравниваются, даже если это не перечислимые свойства.
+-   Примитивы сравниваются оператором [`==`][], за исключением {NaN}: если с обеих сторон {NaN}, они считаются совпадающими.
+-   [Теги типов][object.prototype.tostring()] объектов должны совпадать.
+-   Учитываются только [перечислимые собственные свойства][enumerable "own" properties].
+-   При наличии сравниваются конструкторы объектов.
+-   Имена, сообщения, причины (cause) и свойство errors у [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) всегда сравниваются, даже если это не перечислимые свойства.
+-   [Обёртки над примитивами][object wrappers] сравниваются и как объекты, и как развёрнутые значения.
+-   Свойства объектов `Object` сравниваются без учёта порядка.
+-   Ключи [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и элементы [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) сравниваются без учёта порядка.
+-   Рекурсия останавливается, когда значения различаются или когда одна из сторон натыкается на циклическую ссылку.
+-   Реализация не проверяет [`[[Prototype]]`][prototype-spec] объектов.
+-   Свойства [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) не сравниваются.
+-   Экземпляры [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) и [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) **не** сравниваются структурно: они равны только если ссылаются на один и тот же объект. Любое сравнение разных экземпляров `WeakMap`, `WeakSet` или `Promise` даёт неравенство, даже при одинаковом содержимом.
+-   У [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) всегда сравниваются `lastIndex`, флаги и `source`, даже если это не перечислимые свойства.
 
-Следующий пример не вызывает [`AssertionError`](#class-assertassertionerror), потому что примитивы сравниваются с помощью оператора [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality).
+Следующий пример не выбрасывает [`AssertionError`][], потому что примитивы сравниваются оператором [`==`][].
 
-```mjs
-import assert from 'node:assert';
-// ВНИМАНИЕ: Это не приводит к ошибке утверждения!
+=== "MJS"
 
-assert.deepEqual('+000000', false);
-```
+    ```js
+    import assert from 'node:assert';
+    // ВНИМАНИЕ: AssertionError при этом не возникает!
 
-```cjs
-const assert = require('node:assert');
-// ВНИМАНИЕ: Это не приводит к ошибке утверждения!
+    assert.deepEqual('+00000000', false);
+    ```
 
-assert.deepEqual('+000000', false);
-```
+=== "CJS"
 
-"Глубокое" равенство означает, что перечислимые "собственные" свойства дочерних объектов также оцениваются:
+    ```js
+    const assert = require('node:assert');
+    // ВНИМАНИЕ: AssertionError при этом не возникает!
 
-```mjs
-import assert from 'node:assert';
+    assert.deepEqual('+00000000', false);
+    ```
 
-const obj1 = {
-    a: {
-        b: 1,
-    },
-};
-const obj2 = {
-    a: {
-        b: 2,
-    },
-};
-const obj3 = {
-    a: {
-        b: 1,
-    },
-};
-const obj4 = { __proto__: obj1 };
+«Глубокое» равенство означает, что перечислимые собственные свойства вложенных объектов также учитываются:
 
-assert.deepEqual(obj1, obj1);
-// OK
+=== "MJS"
 
-// Values of b are different:
-assert.deepEqual(obj1, obj2);
-// AssertionError: { a: { b: 1 } } deepEqual { a: { b: 2 } }
+    ```js
+    import assert from 'node:assert';
 
-assert.deepEqual(obj1, obj3);
-// OK
+    const obj1 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj2 = {
+        a: {
+            b: 2,
+        },
+    };
+    const obj3 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj4 = { __proto__: obj1 };
 
-// Prototypes are ignored:
-assert.deepEqual(obj1, obj4);
-// AssertionError: { a: { b: 1 } } deepEqual {}
-```
+    assert.deepEqual(obj1, obj1);
+    // OK
 
-```cjs
-const assert = require('node:assert');
+    // Значения b различаются:
+    assert.deepEqual(obj1, obj2);
+    // AssertionError: { a: { b: 1 } } deepEqual { a: { b: 2 } }
 
-const obj1 = {
-    a: {
-        b: 1,
-    },
-};
-const obj2 = {
-    a: {
-        b: 2,
-    },
-};
-const obj3 = {
-    a: {
-        b: 1,
-    },
-};
-const obj4 = { __proto__: obj1 };
+    assert.deepEqual(obj1, obj3);
+    // OK
 
-assert.deepEqual(obj1, obj1);
-// OK
+    // Прототипы игнорируются:
+    assert.deepEqual(obj1, obj4);
+    // AssertionError: { a: { b: 1 } } deepEqual {}
+    ```
 
-// Values of b are different:
-assert.deepEqual(obj1, obj2);
-// AssertionError: { a: { b: 1 } } deepEqual { a: { b: 2 } }
+=== "CJS"
 
-assert.deepEqual(obj1, obj3);
-// OK
+    ```js
+    const assert = require('node:assert');
 
-// Prototypes are ignored:
-assert.deepEqual(obj1, obj4);
-// AssertionError: { a: { b: 1 } } deepEqual {}
-```
+    const obj1 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj2 = {
+        a: {
+            b: 2,
+        },
+    };
+    const obj3 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj4 = { __proto__: obj1 };
 
-Если значения не равны, возникает [`AssertionError`](#class-assertassertionerror) со свойством `message`, установленным равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+    assert.deepEqual(obj1, obj1);
+    // OK
+
+    // Значения b различаются:
+    assert.deepEqual(obj1, obj2);
+    // AssertionError: { a: { b: 1 } } deepEqual { a: { b: 2 } }
+
+    assert.deepEqual(obj1, obj3);
+    // OK
+
+    // Прототипы игнорируются:
+    assert.deepEqual(obj1, obj4);
+    // AssertionError: { a: { b: 1 } } deepEqual {}
+    ```
+
+Если значения не равны, выбрасывается [`AssertionError`][]: свойство `message` равно значению параметра `message`. Если `message` не передан, подставляется сообщение по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`][].
 
 ## `assert.deepStrictEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v1.2.0
+changes:
+  - version: v25.1.0
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/59448
+    description: Promises are not considered equal anymore if they are not of
+                 the same instance.
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/57627
+    description: Invalid dates are now considered equal.
+  - version: v24.0.0
+    pr-url: https://github.com/nodejs/node/pull/57622
+    description: Recursion now stops when either side encounters a circular
+                 reference.
+  - version:
+    - v22.2.0
+    - v20.15.0
+    pr-url: https://github.com/nodejs/node/pull/51805
+    description: Error cause and errors properties are now compared as well.
+  - version: v18.0.0
+    pr-url: https://github.com/nodejs/node/pull/41020
+    description: Regular expressions lastIndex property is now compared as well.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15169
+    description: Enumerable symbol properties are now compared.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15036
+    description: The `NaN` is now compared using the
+              [SameValueZero](https://tc39.github.io/ecma262/#sec-samevaluezero)
+              comparison.
+  - version: v8.5.0
+    pr-url: https://github.com/nodejs/node/pull/15001
+    description: The `Error` names and messages are now properly compared.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12142
+    description: The `Set` and `Map` content is also compared.
+  - version:
+    - v6.4.0
+    - v4.7.1
+    pr-url: https://github.com/nodejs/node/pull/8002
+    description: Typed array slices are handled correctly now.
+  - version: v6.1.0
+    pr-url: https://github.com/nodejs/node/pull/6432
+    description: Objects with circular references can be used as inputs now.
+  - version:
+    - v5.10.1
+    - v4.4.3
+    pr-url: https://github.com/nodejs/node/pull/5910
+    description: Handle non-`Uint8Array` typed arrays correctly.
+-->
 
-Проверяет глубокое равенство между параметрами `actual` и `expected`. "Глубокое" равенство означает, что перечислимые "собственные" свойства дочерних объектов рекурсивно оцениваются также по следующим правилам.
+Добавлено в: v1.2.0
+
+??? note "История" | Версия | Изменения | | --- | --- | | v25.1.0 | Сообщение теперь может быть строкой формата или функцией типа printf. | | v25.0.0 | Промисы больше не считаются равными, если они не относятся к одному и тому же экземпляру. | | v25.0.0 | Недопустимые даты теперь считаются равными. | | v24.0.0 | Рекурсия теперь останавливается, когда какая-либо из сторон встречает циклическую ссылку. | | v22.2.0, v20.15.0 | Теперь также сравниваются причины и свойства ошибок. | | v18.0.0 | Свойство LastIndex регулярных выражений теперь также сравнивается. | | v9.0.0 | Свойства перечислимых символов теперь сравниваются. | | v9.0.0 | `NaN` теперь сравнивается с использованием сравнения [SameValueZero](https://tc39.github.io/ecma262/#sec-samevaluezero). | | v8.5.0 | Имена и сообщения `Error` теперь корректно сравниваются. | | v8.0.0 | Содержимое Set и Map также сравнивается. | | v6.4.0, v4.7.1 | Срезы типизированного массива теперь обрабатываются правильно. | | v6.1.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. | | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
+
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Проверяет глубокое равенство между параметрами `actual` и `expected`. «Глубокое» равенство означает, что перечислимые собственные свойства вложенных объектов также рекурсивно оцениваются по следующим правилам.
 
 ### Детали сравнения
 
--   Примитивные значения сравниваются с помощью [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
--   [Теги типов](https://tc39.github.io/ecma262/#sec-object.prototype.tostring) объектов должны быть одинаковыми.
--   [`[[Прототип]]`](https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots) объектов сравниваются с помощью оператора [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality).
--   Учитываются только [перечислимые "собственные" свойства](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
--   Имена и сообщения [`Error`](errors.md#class-error) всегда сравниваются, даже если они не являются перечислимыми свойствами.
--   Перечислимые собственные свойства [`Symbol`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) также сравниваются.
--   [Object wrappers](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) сравниваются как объекты, так и развернутые значения.
--   Свойства `Object` сравниваются неупорядоченно.
--   Ключи [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и элементы [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) сравниваются неупорядоченно.
--   Рекурсия прекращается, когда обе стороны различаются или обе стороны встречают круговую ссылку.
--   Сравнение [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) и [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) не зависит от их значений. Более подробную информацию см. ниже.
--   [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) lastIndex, флаги и источник всегда сравниваются, даже если это не перечислимые свойства.
+-   Примитивы сравниваются через [`Object.is()`][].
+-   [Теги типов][object.prototype.tostring()] объектов должны совпадать.
+-   [`[[Prototype]]`][prototype-spec] объектов сравнивается оператором [`===` operator][].
+-   Учитываются только [перечислимые собственные свойства][enumerable "own" properties].
+-   Имена, сообщения, причины (cause) и свойство errors у [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) всегда сравниваются, даже если это не перечислимые свойства. Сравнивается и свойство `errors`.
+-   Сравниваются и перечислимые собственные свойства [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
+-   [Обёртки над примитивами][object wrappers] сравниваются и как объекты, и как развёрнутые значения.
+-   Свойства объектов `Object` сравниваются без учёта порядка.
+-   Ключи [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и элементы [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) сравниваются без учёта порядка.
+-   Рекурсия останавливается, когда значения различаются или когда одна из сторон натыкается на циклическую ссылку.
+-   Экземпляры [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) и [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) **не** сравниваются структурно: они равны только если ссылаются на один и тот же объект. Любое сравнение разных экземпляров `WeakMap`, `WeakSet` или `Promise` даёт неравенство, даже при одинаковом содержимом.
+-   У [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) всегда сравниваются `lastIndex`, флаги и `source`, даже если это не перечислимые свойства.
 
-```mjs
-import assert from 'node:assert/strict';
+=== "MJS"
 
-// This fails because 1 !== '1'.
-assert.deepStrictEqual({ a: 1 }, { a: '1' });
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-//   {
-// +   a: 1
-// -   a: '1'
-//   }
+    ```js
+    import assert from 'node:assert/strict';
 
-// The following objects don't have own properties
-const date = new Date();
-const object = {};
-const fakeDate = {};
-Object.setPrototypeOf(fakeDate, Date.prototype);
+    // Не проходит, так как 1 !== '1'.
+    assert.deepStrictEqual({ a: 1 }, { a: '1' });
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    //   {
+    // +   a: 1
+    // -   a: '1'
+    //   }
 
-// Different [[Prototype]]:
-assert.deepStrictEqual(object, fakeDate);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + {}
-// - Date {}
+    // У следующих объектов нет собственных свойств
+    const date = new Date();
+    const object = {};
+    const fakeDate = {};
+    Object.setPrototypeOf(fakeDate, Date.prototype);
 
-// Different type tags:
-assert.deepStrictEqual(date, fakeDate);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + 2018-04-26T00:49:08.604Z
-// - Date {}
+    // Разный [[Prototype]]:
+    assert.deepStrictEqual(object, fakeDate);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + {}
+    // - Date {}
 
-assert.deepStrictEqual(NaN, NaN);
-// OK because Object.is(NaN, NaN) is true.
+    // Разные теги типов:
+    assert.deepStrictEqual(date, fakeDate);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + 2018-04-26T00:49:08.604Z
+    // - Date {}
 
-// Different unwrapped numbers:
-assert.deepStrictEqual(new Number(1), new Number(2));
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + [Number: 1]
-// - [Number: 2]
+    assert.deepStrictEqual(NaN, NaN);
+    // OK: Object.is(NaN, NaN) === true.
 
-assert.deepStrictEqual(new String('foo'), Object('foo'));
-// OK because the object and the string are identical when unwrapped.
+    // Разные развёрнутые числа:
+    assert.deepStrictEqual(new Number(1), new Number(2));
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + [Number: 1]
+    // - [Number: 2]
 
-assert.deepStrictEqual(-0, -0);
-// OK
+    assert.deepStrictEqual(new String('foo'), Object('foo'));
+    // OK: объект и строка совпадают после развёртывания.
 
-// Different zeros:
-assert.deepStrictEqual(0, -0);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + 0
-// - -0
+    assert.deepStrictEqual(-0, -0);
+    // OK
 
-const symbol1 = Symbol();
-const symbol2 = Symbol();
-assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol1]: 1 });
-// OK, because it is the same symbol on both objects.
+    // Разные нули:
+    assert.deepStrictEqual(0, -0);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + 0
+    // - -0
 
-assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol2]: 1 });
-// AssertionError [ERR_ASSERTION]: Inputs identical but not reference equal:
-//
-// {
-//   [Symbol()]: 1
-// }
+    const symbol1 = Symbol();
+    const symbol2 = Symbol();
+    assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol1]: 1 });
+    // OK: в обоих объектах используется один и тот же символ.
 
-const weakMap1 = new WeakMap();
-const weakMap2 = new WeakMap([[{}, {}]]);
-const weakMap3 = new WeakMap();
-weakMap3.unequal = true;
+    assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol2]: 1 });
+    // AssertionError [ERR_ASSERTION]: Inputs identical but not reference equal:
+    //
+    // {
+    //   Symbol(): 1
+    // }
 
-assert.deepStrictEqual(weakMap1, weakMap2);
-// OK, because it is impossible to compare the entries
+    const weakMap1 = new WeakMap();
+    const weakMap2 = new WeakMap();
+    const obj = {};
 
-// Fails because weakMap3 has a property that weakMap1 does not contain:
-assert.deepStrictEqual(weakMap1, weakMap3);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-//   WeakMap {
-// +   [items unknown]
-// -   [items unknown],
-// -   unequal: true
-//   }
-```
+    weakMap1.set(obj, 'value');
+    weakMap2.set(obj, 'value');
 
-```cjs
-const assert = require('node:assert/strict');
+    // Сравнение разных экземпляров не проходит, даже при одинаковом содержимом
+    assert.deepStrictEqual(weakMap1, weakMap2);
+    // AssertionError: Values have same structure but are not reference-equal:
+    //
+    // WeakMap {
+    //   <items unknown>
+    // }
 
-// This fails because 1 !== '1'.
-assert.deepStrictEqual({ a: 1 }, { a: '1' });
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-//   {
-// +   a: 1
-// -   a: '1'
-//   }
+    // Сравнение экземпляра с самим собой проходит
+    assert.deepStrictEqual(weakMap1, weakMap1);
+    // OK
 
-// The following objects don't have own properties
-const date = new Date();
-const object = {};
-const fakeDate = {};
-Object.setPrototypeOf(fakeDate, Date.prototype);
+    const weakSet1 = new WeakSet();
+    const weakSet2 = new WeakSet();
+    weakSet1.add(obj);
+    weakSet2.add(obj);
 
-// Different [[Prototype]]:
-assert.deepStrictEqual(object, fakeDate);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + {}
-// - Date {}
+    // Сравнение разных экземпляров не проходит, даже при одинаковом содержимом
+    assert.deepStrictEqual(weakSet1, weakSet2);
+    // AssertionError: Values have same structure but are not reference-equal:
+    // + actual - expected
+    //
+    // WeakSet {
+    //   <items unknown>
+    // }
 
-// Different type tags:
-assert.deepStrictEqual(date, fakeDate);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + 2018-04-26T00:49:08.604Z
-// - Date {}
+    // Сравнение экземпляра с самим собой проходит
+    assert.deepStrictEqual(weakSet1, weakSet1);
+    // OK
+    ```
 
-assert.deepStrictEqual(NaN, NaN);
-// OK because Object.is(NaN, NaN) is true.
+=== "CJS"
 
-// Different unwrapped numbers:
-assert.deepStrictEqual(new Number(1), new Number(2));
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + [Number: 1]
-// - [Number: 2]
+    ```js
+    const assert = require('node:assert/strict');
 
-assert.deepStrictEqual(new String('foo'), Object('foo'));
-// OK because the object and the string are identical when unwrapped.
+    // Не проходит, так как 1 !== '1'.
+    assert.deepStrictEqual({ a: 1 }, { a: '1' });
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    //   {
+    // +   a: 1
+    // -   a: '1'
+    //   }
 
-assert.deepStrictEqual(-0, -0);
-// OK
+    // У следующих объектов нет собственных свойств
+    const date = new Date();
+    const object = {};
+    const fakeDate = {};
+    Object.setPrototypeOf(fakeDate, Date.prototype);
 
-// Different zeros:
-assert.deepStrictEqual(0, -0);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-// + 0
-// - -0
+    // Разный [[Prototype]]:
+    assert.deepStrictEqual(object, fakeDate);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + {}
+    // - Date {}
 
-const symbol1 = Symbol();
-const symbol2 = Symbol();
-assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol1]: 1 });
-// OK, because it is the same symbol on both objects.
+    // Разные теги типов:
+    assert.deepStrictEqual(date, fakeDate);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + 2018-04-26T00:49:08.604Z
+    // - Date {}
 
-assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol2]: 1 });
-// AssertionError [ERR_ASSERTION]: Inputs identical but not reference equal:
-//
-// {
-//   [Symbol()]: 1
-// }
+    assert.deepStrictEqual(NaN, NaN);
+    // OK: Object.is(NaN, NaN) === true.
 
-const weakMap1 = new WeakMap();
-const weakMap2 = new WeakMap([[{}, {}]]);
-const weakMap3 = new WeakMap();
-weakMap3.unequal = true;
+    // Разные развёрнутые числа:
+    assert.deepStrictEqual(new Number(1), new Number(2));
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + [Number: 1]
+    // - [Number: 2]
 
-assert.deepStrictEqual(weakMap1, weakMap2);
-// OK, because it is impossible to compare the entries
+    assert.deepStrictEqual(new String('foo'), Object('foo'));
+    // OK: объект и строка совпадают после развёртывания.
 
-// Fails because weakMap3 has a property that weakMap1 does not contain:
-assert.deepStrictEqual(weakMap1, weakMap3);
-// AssertionError: Expected inputs to be strictly deep-equal:
-// + actual - expected
-//
-//   WeakMap {
-// +   [items unknown]
-// -   [items unknown],
-// -   unequal: true
-//   }
-```
+    assert.deepStrictEqual(-0, -0);
+    // OK
 
-Если значения не равны, возникает [`AssertionError`](#class-assertassertionerror) со свойством `message`, установленным равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`.
+    // Разные нули:
+    assert.deepStrictEqual(0, -0);
+    // AssertionError: Expected inputs to be strictly deep-equal:
+    // + actual - expected
+    //
+    // + 0
+    // - -0
+
+    const symbol1 = Symbol();
+    const symbol2 = Symbol();
+    assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol1]: 1 });
+    // OK: в обоих объектах используется один и тот же символ.
+
+    assert.deepStrictEqual({ [symbol1]: 1 }, { [symbol2]: 1 });
+    // AssertionError [ERR_ASSERTION]: Inputs identical but not reference equal:
+    //
+    // {
+    //   Symbol(): 1
+    // }
+
+    const weakMap1 = new WeakMap();
+    const weakMap2 = new WeakMap();
+    const obj = {};
+
+    weakMap1.set(obj, 'value');
+    weakMap2.set(obj, 'value');
+
+    // Сравнение разных экземпляров не проходит, даже при одинаковом содержимом
+    assert.deepStrictEqual(weakMap1, weakMap2);
+    // AssertionError: Values have same structure but are not reference-equal:
+    //
+    // WeakMap {
+    //   <items unknown>
+    // }
+
+    // Сравнение экземпляра с самим собой проходит
+    assert.deepStrictEqual(weakMap1, weakMap1);
+    // OK
+
+    const weakSet1 = new WeakSet();
+    const weakSet2 = new WeakSet();
+    weakSet1.add(obj);
+    weakSet2.add(obj);
+
+    // Сравнение разных экземпляров не проходит, даже при одинаковом содержимом
+    assert.deepStrictEqual(weakSet1, weakSet2);
+    // AssertionError: Values have same structure but are not reference-equal:
+    // + actual - expected
+    //
+    // WeakSet {
+    //   <items unknown>
+    // }
+
+    // Сравнение экземпляра с самим собой проходит
+    assert.deepStrictEqual(weakSet1, weakSet1);
+    // OK
+    ```
+
+Если значения не равны, выбрасывается [`AssertionError`][]: свойство `message` равно значению параметра `message`. Если `message` не передан, подставляется сообщение по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не `AssertionError`.
 
 ## `assert.doesNotMatch(string, regexp[, message])`
 
--   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `regexp` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added:
+  - v13.6.0
+  - v12.16.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/38111
+    description: This API is no longer experimental.
+-->
 
-Ожидает, что входная `строка` не будет соответствовать регулярному выражению.
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v16.0.0 | Этот API больше не является экспериментальным. |
 
-```mjs
-import assert from 'node:assert/strict';
+-   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `regexp` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-assert.doesNotMatch('I will fail', /fail/);
-// AssertionError [ERR_ASSERTION]: Ожидалось, что входные данные не будут соответствовать ...
+Ожидается, что строка `string` **не** будет соответствовать регулярному выражению.
 
-assert.doesNotMatch(123, /pass/);
-// AssertionError [ERR_ASSERTION]: Аргумент "string" должен быть типа string.
+=== "MJS"
 
-assert.doesNotMatch('Я сдам', /different/);
-// OK
-```
+    ```js
+    import assert from 'node:assert/strict';
 
-```cjs
-const assert = require('node:assert/strict');
+    assert.doesNotMatch('I will fail', /fail/);
+    // AssertionError [ERR_ASSERTION]: The input was expected to not match the ...
 
-assert.doesNotMatch('I will fail', /fail/);
-// AssertionError [ERR_ASSERTION]: Ожидалось, что входные данные не будут соответствовать ...
+    assert.doesNotMatch(123, /pass/);
+    // AssertionError [ERR_ASSERTION]: The "string" argument must be of type string.
 
-assert.doesNotMatch(123, /pass/);
-// AssertionError [ERR_ASSERTION]: Аргумент "string" должен быть типа string.
+    assert.doesNotMatch('I will pass', /different/);
+    // OK
+    ```
 
-assert.doesNotMatch('Я сдам', /different/);
-// OK
-```
+=== "CJS"
 
-Если значения совпадают, или аргумент `string` имеет тип, отличный от `string`, то возникает ошибка [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.doesNotMatch('I will fail', /fail/);
+    // AssertionError [ERR_ASSERTION]: The input was expected to not match the ...
+
+    assert.doesNotMatch(123, /pass/);
+    // AssertionError [ERR_ASSERTION]: The "string" argument must be of type string.
+
+    assert.doesNotMatch('I will pass', /different/);
+    // OK
+    ```
+
+Если строка совпадает с шаблоном или аргумент `string` имеет тип, отличный от `string`, выбрасывается [`AssertionError`][]: свойство `message` равно значению параметра `message`. Если `message` не передан, подставляется сообщение по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`][].
 
 ## `assert.doesNotReject(asyncFn[, error][, message])`
 
--   `asyncFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   `error` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v10.0.0
+-->
 
-Ожидает промис `asyncFn` или, если `asyncFn` является функцией, немедленно вызывает функцию и ожидает выполнения возвращенного промиса. Затем проверяется, что промис не был отклонен.
+-   `asyncFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Если `asyncFn` является функцией и синхронно выбрасывает ошибку, `assert.doesNotReject()` вернет отвергнутое `Promise` с этой ошибкой. Если функция не возвращает промис, `assert.doesNotReject()` вернет отклоненный `Promise` с ошибкой [`ERR_INVALID_RETURN_VALUE`](errors.md#err_invalid_return_value). В обоих случаях обработчик ошибки пропускается.
+Ожидает завершения промиса `asyncFn` или, если `asyncFn` - функция, сразу вызывает её и ожидает промис из возвращаемого значения. Затем проверяется, что промис **не** был отклонён.
 
-Использование `assert.doesNotReject()` на самом деле бесполезно, потому что мало пользы от перехвата отказа и последующего повторного отказа. Вместо этого следует добавить комментарий к определенному пути кода, который не должен отклоняться, и сделать сообщения об ошибках как можно более выразительными.
+Если `asyncFn` - функция и она синхронно выбрасывает ошибку, `assert.doesNotReject()` вернёт отклонённый `Promise` с этой ошибкой. Если функция не возвращает промис, `assert.doesNotReject()` вернёт отклонённый `Promise` с ошибкой [`ERR_INVALID_RETURN_VALUE`][]. В обоих случаях обработчик ошибки из проверки типа не используется.
 
-Если указано, `error` может быть [`Class`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes), [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) или функцией проверки. Подробнее см. в [`assert.throws()`](#assertthrowsfn-error-message).
+На практике `assert.doesNotReject()` почти не полезен: мало смысла перехватывать отклонение и снова отклонять промис. Лучше оставить комментарий у участка кода, который не должен завершаться отклонением, и формулировать сообщения об ошибках максимально ясно.
 
-Помимо асинхронной природы await завершение ведет себя идентично [`assert.doesNotThrow()`](#assertdoesnotthrowfn-error-message).
+При необходимости параметр `error` может быть [`Class`][], [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) или функцией проверки. Подробнее - в [`assert.throws()`][].
 
-```mjs
-import assert from 'node:assert/strict';
+Поведение после ожидания завершения совпадает с [`assert.doesNotThrow()`][], кроме асинхронности.
 
-await assert.doesNotReject(async () => {
-    throw new TypeError('Неверное значение');
-}, SyntaxError);
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert/strict');
+    ```js
+    import assert from 'node:assert/strict';
 
-(async () => {
     await assert.doesNotReject(async () => {
-        throw new TypeError('Неверное значение');
+        throw new TypeError('Wrong value');
     }, SyntaxError);
-})();
-```
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
+=== "CJS"
 
+    ```js
+    const assert = require('node:assert/strict');
 
-assert.doesNotReject(Promise.reject(new TypeError('Wrong value'))))
-  .then(() => {
-    // ...
-  });
-```
+    (async () => {
+        await assert.doesNotReject(async () => {
+            throw new TypeError('Wrong value');
+        }, SyntaxError);
+    })();
+    ```
 
-```cjs
-const assert = require('node:assert/strict');
+=== "MJS"
 
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.doesNotReject(Promise.reject(new TypeError('Wrong value'))))
-  .then(() => {
-    // ...
-  });
-```
+    assert
+        .doesNotReject(
+            Promise.reject(new TypeError('Wrong value'))
+        )
+        .then(() => {
+            // ...
+        });
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert
+        .doesNotReject(
+            Promise.reject(new TypeError('Wrong value'))
+        )
+        .then(() => {
+            // ...
+        });
+    ```
 
 ## `assert.doesNotThrow(fn[, error][, message])`
 
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `error` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version:
+    - v5.11.0
+    - v4.4.5
+    pr-url: https://github.com/nodejs/node/pull/2407
+    description: The `message` parameter is respected now.
+  - version: v4.2.0
+    pr-url: https://github.com/nodejs/node/pull/3276
+    description: The `error` parameter can now be an arrow function.
+-->
+
+Добавлено в: v0.1.21
+
+??? note "История" | Версия | Изменения | | --- | --- | | v5.11.0, v4.4.5 | Параметр `message` теперь учитывается. | | v4.2.0 | Параметр error теперь может быть стрелочной функцией. |
+
+-   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Утверждает, что функция `fn` не выбрасывает ошибку.
 
-Использование `assert.doesNotThrow()` на самом деле бесполезно, потому что нет никакой пользы от перехвата ошибки и ее повторного выброса. Вместо этого следует добавить комментарий к определенному пути кода, который не должен выбрасывать ошибку, и сделать сообщения об ошибках как можно более выразительными.
+На практике `assert.doesNotThrow()` почти не полезен: мало смысла перехватывать ошибку и тут же пробрасывать её снова. Лучше оставить комментарий у участка кода, который не должен выбрасывать ошибку, и формулировать сообщения максимально ясно.
 
-Когда вызывается `assert.doesNotThrow()`, немедленно вызывается функция `fn`.
+При вызове `assert.doesNotThrow()` функция `fn` выполняется сразу.
 
-Если возникла ошибка, тип которой совпадает с типом, заданным параметром `error`, то возникает [`AssertionError`](#class-assertassertionerror). Если ошибка другого типа, или если параметр `error` не определен, то ошибка передается обратно вызывающей стороне.
+Если ошибка выброшена и её тип совпадает с типом, заданным параметром `error`, выбрасывается [`AssertionError`][]. Если тип другой или параметр `error` не задан, ошибка пробрасывается вызывающему коду.
 
-Если указано, `error` может быть [`Class`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes), [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) или функцией проверки. Подробнее см. в [`assert.throws()`](#assertthrowsfn-error-message).
+При необходимости `error` может быть [`Class`][], [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) или функцией проверки. Подробнее - в [`assert.throws()`][].
 
-Например, следующее утверждение выбросит [`TypeError`](errors.md#class-typeerror), потому что в утверждении нет соответствующего типа ошибки:
+В следующем примере будет выброшен [TypeError](errors.md#class-typeerror), потому что в утверждении нет подходящего типа ошибки:
 
-```mjs
-import assert from 'node:assert/strict';
+=== "MJS"
 
-assert.doesNotThrow(() => {
-    throw new TypeError('Неверное значение');
-}, SyntaxError);
-```
+    ```js
+    import assert from 'node:assert/strict';
 
-```cjs
-const assert = require('node:assert/strict');
-
-assert.doesNotThrow(() => {
-    throw new TypeError('Неверное значение');
-}, SyntaxError);
-```
-
-Однако, следующее приведет к [`AssertionError`](#class-assertassertionerror) с сообщением 'Got unwanted exception...':
-
-```mjs
-import assert from 'node:assert/strict';
-
-assert.doesNotThrow(() => {
-    throw new TypeError('Неверное значение');
-}, TypeError);
-```
-
-```cjs
-const assert = require('node:assert/strict');
-
-assert.doesNotThrow(() => {
-    throw new TypeError('Неверное значение');
-}, TypeError);
-```
-
-Если выброшен [`AssertionError`](#class-assertassertionerror) и для параметра `message` указано значение, то значение `message` будет добавлено к сообщению [`AssertionError`](#class-assertassertionerror):
-
-```mjs
-import assert from 'node:assert/strict';
-
-assert.doesNotThrow(
-    () => {
+    assert.doesNotThrow(() => {
         throw new TypeError('Wrong value');
-    },
-    /Wrong value/,
-    'Whoops'
-);
-// Throws: AssertionError: Получено нежелательное исключение: Whoops
-```
+    }, SyntaxError);
+    ```
 
-```cjs
-const assert = require('node:assert/strict');
+=== "CJS"
 
-assert.doesNotThrow(
-    () => {
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.doesNotThrow(() => {
         throw new TypeError('Wrong value');
-    },
-    /Wrong value/,
-    'Whoops'
-);
-// Throws: AssertionError: Получено нежелательное исключение: Whoops
-```
+    }, SyntaxError);
+    ```
+
+Следующий пример приводит к [`AssertionError`][] с сообщением «Got unwanted exception...»:
+
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert/strict';
+
+    assert.doesNotThrow(() => {
+        throw new TypeError('Wrong value');
+    }, TypeError);
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.doesNotThrow(() => {
+        throw new TypeError('Wrong value');
+    }, TypeError);
+    ```
+
+Если выброшена [`AssertionError`][] и для параметра `message` задано значение, оно дописывается к сообщению [`AssertionError`][]:
+
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert/strict';
+
+    assert.doesNotThrow(
+        () => {
+            throw new TypeError('Wrong value');
+        },
+        /Wrong value/,
+        'Whoops'
+    );
+    // Throws: AssertionError: Got unwanted exception: Whoops
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.doesNotThrow(
+        () => {
+            throw new TypeError('Wrong value');
+        },
+        /Wrong value/,
+        'Whoops'
+    );
+    // Throws: AssertionError: Got unwanted exception: Whoops
+    ```
 
 ## `assert.equal(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version:
+      - v16.0.0
+      - v14.18.0
+    pr-url: https://github.com/nodejs/node/pull/38113
+    description: In Legacy assertion mode, changed status from Deprecated to
+                 Legacy.
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30766
+    description: NaN is now treated as being identical if both sides are
+                 NaN.
+-->
 
-**Строгий режим утверждения**.
+Добавлено в: v0.1.21
 
-Псевдоним [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». | | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. |
 
-**Строгий режим утверждения**
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-!!!note "Стабильность: 3 – Закрыто"
+**Режим строгих утверждений (strict assertion mode)**
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+Псевдоним [`assert.strictEqual()`][].
 
-    Вместо этого используйте [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
+**Режим унаследованных утверждений (legacy assertion mode)**
 
-Проверяет неглубокое, принудительное равенство между `фактическим` и `ожидаемым` параметрами, используя [`==` оператор](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality). Оператор `NaN` специально обрабатывается и рассматривается как идентичный, если обе стороны являются `NaN`.
+> Стабильность: 3 - Legacy: вместо этого используйте [`assert.strictEqual()`][].
 
-```mjs
-import assert from 'node:assert';
+Проверяет неглубокое равенство с приведением типов между `actual` и `expected` с помощью оператора [`==`][]. `NaN` обрабатывается особым образом: считается совпадающим, если `NaN` с обеих сторон.
 
-assert.equal(1, 1);
-// OK, 1 == 1
-assert.equal(1, '1');
-// ОК, 1 == '1'
-assert.equal(NaN, NaN);
-// OK
+=== "MJS"
 
-assert.equal(1, 2);
-// AssertionError: 1 == 2
-assert.equal({ a: { b: 1 } }, { a: { b: 1 } });
-// AssertionError: { a: { b: 1 } } == { a: { b: 1 } }
-```
+    ```js
+    import assert from 'node:assert';
 
-```cjs
-const assert = require('node:assert');
+    assert.equal(1, 1);
+    // OK, 1 == 1
+    assert.equal(1, '1');
+    // OK, 1 == '1'
+    assert.equal(NaN, NaN);
+    // OK
 
-assert.equal(1, 1);
-// OK, 1 == 1
-assert.equal(1, '1');
-// ОК, 1 == '1'
-assert.equal(NaN, NaN);
-// OK
+    assert.equal(1, 2);
+    // AssertionError: 1 == 2
+    assert.equal({ a: { b: 1 } }, { a: { b: 1 } });
+    // AssertionError: { a: { b: 1 } } == { a: { b: 1 } }
+    ```
 
-assert.equal(1, 2);
-// AssertionError: 1 == 2
-assert.equal({ a: { b: 1 } }, { a: { b: 1 } });
-// AssertionError: { a: { b: 1 } } == { a: { b: 1 } }
-```
+=== "CJS"
 
-Если значения не равны, возникает ошибка [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`.
+    ```js
+    const assert = require('node:assert');
+
+    assert.equal(1, 1);
+    // OK, 1 == 1
+    assert.equal(1, '1');
+    // OK, 1 == '1'
+    assert.equal(NaN, NaN);
+    // OK
+
+    assert.equal(1, 2);
+    // AssertionError: 1 == 2
+    assert.equal({ a: { b: 1 } }, { a: { b: 1 } });
+    // AssertionError: { a: { b: 1 } } == { a: { b: 1 } }
+    ```
+
+Если значения не равны, выбрасывается [`AssertionError`][]: свойство `message` равно значению параметра `message`. Если `message` не передан, подставляется сообщение по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не `AssertionError`.
 
 ## `assert.fail([message])`
 
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) **По умолчанию:** `Не удалось`.
+<!-- YAML
+added: v0.1.21
+-->
 
-Выбрасывает [`AssertionError`](#class-assertassertionerror) с предоставленным сообщением об ошибке или сообщением об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) **По умолчанию:** `'Failed'`
 
-```mjs
-import assert from 'node:assert/strict';
+Выбрасывает [`AssertionError`][] с указанным сообщением или сообщением по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`][].
 
-assert.fail();
-// AssertionError [ERR_ASSERTION]: Failed
+=== "MJS"
 
-assert.fail('boom');
-// AssertionError [ERR_ASSERTION]: boom
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.fail(new TypeError('need array'));
-// TypeError: need array
-```
+    assert.fail();
+    // AssertionError [ERR_ASSERTION]: Failed
 
-```cjs
-const assert = require('node:assert/strict');
+    assert.fail('boom');
+    // AssertionError [ERR_ASSERTION]: boom
 
-assert.fail();
-// AssertionError [ERR_ASSERTION]: Failed
+    assert.fail(new TypeError('need array'));
+    // TypeError: need array
+    ```
 
-assert.fail('boom');
-// AssertionError [ERR_ASSERTION]: boom
+=== "CJS"
 
-assert.fail(new TypeError('need array'));
-// TypeError: need array
-```
+    ```js
+    const assert = require('node:assert/strict');
 
-Использование `assert.fail()` с более чем двумя аргументами возможно, но устарело. Более подробную информацию смотрите ниже.
+    assert.fail();
+    // AssertionError [ERR_ASSERTION]: Failed
 
-## `assert.fail(actual, expected[, message[, operator[, stackStartFn]]])`
+    assert.fail('boom');
+    // AssertionError [ERR_ASSERTION]: boom
 
-!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
-
-    Вместо этого используйте `assert.fail([message])` или другие функции assert.
-
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `!='`
--   `stackStartFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) **По умолчанию:** `assert.fail`.
-
-Если `message` является falsy, сообщение об ошибке устанавливается как значения `actual` и `expected`, разделенные предоставленным `оператором`. Если указаны только два аргумента `actual` и `expected`, то `operator` по умолчанию будет равен `'!='`. Если в качестве третьего аргумента указано `message`, то оно будет использоваться в качестве сообщения об ошибке, а остальные аргументы будут сохранены как свойства брошенного объекта. Если указан `stackStartFn`, то все кадры стека выше этой функции будут удалены из трассировки стека (см. [`Error.captureStackTrace`](errors.md#errorcapturestacktracetargetobject-constructoropt)). Если аргументы не указаны, будет использовано сообщение по умолчанию `Failed`.
-
-```mjs
-import assert from 'node:assert/strict';
-
-assert.fail('a', 'b');
-// AssertionError [ERR_ASSERTION]: 'a' != 'b'
-
-assert.fail(1, 2, undefined, '>');
-// AssertionError [ERR_ASSERTION]: 1 > 2
-
-assert.fail(1, 2, 'fail');
-// AssertionError [ERR_ASSERTION]: fail
-
-assert.fail(1, 2, 'whoops', '>');
-// AssertionError [ERR_ASSERTION]: whoops
-
-assert.fail(1, 2, new TypeError('need array'));
-// TypeError: need array
-```
-
-```cjs
-const assert = require('node:assert/strict');
-
-assert.fail('a', 'b');
-// AssertionError [ERR_ASSERTION]: 'a' != 'b'
-
-assert.fail(1, 2, undefined, '>');
-// AssertionError [ERR_ASSERTION]: 1 > 2
-
-assert.fail(1, 2, 'fail');
-// AssertionError [ERR_ASSERTION]: fail
-
-assert.fail(1, 2, 'whoops', '>');
-// AssertionError [ERR_ASSERTION]: whoops
-
-assert.fail(1, 2, new TypeError('need array'));
-// TypeError: need array
-```
-
-В последних трех случаях `actual`, `expected` и `operator` не влияют на сообщение об ошибке.
-
-Пример использования `stackStartFn` для усечения стек-трейса исключения:
-
-```mjs
-import assert from 'node:assert/strict';
-
-function suppressFrame() {
-    assert.fail('a', 'b', undefined, '!==', suppressFrame);
-}
-suppressFrame();
-// AssertionError [ERR_ASSERTION]: 'a' !== 'b'
-// at repl:1:1
-// at ContextifyScript.Script.runInThisContext (vm.js:44:33)
-// ...
-```
-
-```cjs
-const assert = require('node:assert/strict');
-
-function suppressFrame() {
-    assert.fail('a', 'b', undefined, '!==', suppressFrame);
-}
-suppressFrame();
-// AssertionError [ERR_ASSERTION]: 'a' !== 'b'
-// at repl:1:1
-// at ContextifyScript.Script.runInThisContext (vm.js:44:33)
-// ...
-```
+    assert.fail(new TypeError('need array'));
+    // TypeError: need array
+    ```
 
 ## `assert.ifError(value)`
 
--   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+<!-- YAML
+added: v0.1.97
+changes:
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18247
+    description: Instead of throwing the original error it is now wrapped into
+                 an [`AssertionError`][] that contains the full stack trace.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18247
+    description: Value may now only be `undefined` or `null`. Before all falsy
+                 values were handled the same as `null` and did not throw.
+-->
 
-Выбрасывает `value`, если `value` не является `undefined` или `null`. Это полезно при проверке аргумента `error` в обратных вызовах. Трассировка стека содержит все кадры из ошибки, переданной в `ifError()`, включая потенциальные новые кадры для самой `ifError()`.
+Добавлено в: v0.1.97
 
-```mjs
-import assert from 'node:assert/strict';
+??? note "История" | Версия | Изменения | | --- | --- | | v10.0.0 | Вместо того, чтобы выдавать исходную ошибку, она теперь заключена в [`AssertionError`][], который содержит полную трассировку стека. | | v10.0.0 | Значение теперь может быть только «неопределенным» или «нулевым». Раньше все ложные значения обрабатывались так же, как и null, и не выбрасывались. |
 
-assert.ifError(null);
-// OK
-assert.ifError(0);
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: 0
-assert.ifError('error');
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: 'error'
-assert.ifError(new Error());
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: Error
+-   `value` {any}
 
-// Создайте несколько случайных фреймов ошибок.
-let err;
-(function errorFrame() {
-    err = new Error('ошибка теста');
-})();
+Выбрасывает `value`, если оно не `undefined` и не `null`. Удобно при проверке аргумента `error` в колбэках. В трассировку стека входят все кадры из переданной в `ifError()` ошибки, включая возможные новые кадры для самой `ifError()`.
 
-(function ifErrorFrame() {
-    assert.ifError(err);
-})();
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: ошибка теста
-// в ifErrorFrame
-// в errorFrame
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert/strict');
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.ifError(null);
-// OK
-assert.ifError(0);
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: 0
-assert.ifError('error');
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: 'error'
-assert.ifError(new Error());
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: Error
+    assert.ifError(null);
+    // OK
+    assert.ifError(0);
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: 0
+    assert.ifError('error');
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: 'error'
+    assert.ifError(new Error());
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Error
 
-// Создайте несколько случайных фреймов ошибок.
-let err;
-(function errorFrame() {
-    err = new Error('ошибка теста');
-})();
+    // Несколько произвольных кадров стека ошибки.
+    let err;
+    (function errorFrame() {
+        err = new Error('test error');
+    })();
 
-(function ifErrorFrame() {
-    assert.ifError(err);
-})();
-// AssertionError [ERR_ASSERTION]: ifError получил нежелательное исключение: ошибка теста
-// в ifErrorFrame
-// в errorFrame
-```
+    (function ifErrorFrame() {
+        assert.ifError(err);
+    })();
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: test error
+    //     at ifErrorFrame
+    //     at errorFrame
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.ifError(null);
+    // OK
+    assert.ifError(0);
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: 0
+    assert.ifError('error');
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: 'error'
+    assert.ifError(new Error());
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Error
+
+    // Несколько произвольных кадров стека ошибки.
+    let err;
+    (function errorFrame() {
+        err = new Error('test error');
+    })();
+
+    (function ifErrorFrame() {
+        assert.ifError(err);
+    })();
+    // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: test error
+    //     at ifErrorFrame
+    //     at errorFrame
+    ```
 
 ## `assert.match(string, regexp[, message])`
 
--   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `regexp` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added:
+  - v13.6.0
+  - v12.16.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v16.0.0
+    pr-url: https://github.com/nodejs/node/pull/38111
+    description: This API is no longer experimental.
+-->
 
-Ожидает, что входная `string` будет соответствовать регулярному выражению.
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v16.0.0 | Этот API больше не является экспериментальным. |
 
-```mjs
-import assert from 'node:assert/strict';
+-   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `regexp` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-assert.match('I will fail', /pass/);
-// AssertionError [ERR_ASSERTION]: Входные данные не соответствуют регулярному ...
+Ожидается, что строка `string` соответствует регулярному выражению.
 
-assert.match(123, /pass/);
-// AssertionError [ERR_ASSERTION]: Аргумент "string" должен быть типа string.
+=== "MJS"
 
-assert.match('I will pass', /pass/);
-// OK
-```
+    ```js
+    import assert from 'node:assert/strict';
 
-```cjs
-const assert = require('node:assert/strict');
+    assert.match('I will fail', /pass/);
+    // AssertionError [ERR_ASSERTION]: The input did not match the regular ...
 
-assert.match('I will fail', /pass/);
-// AssertionError [ERR_ASSERTION]: Входные данные не соответствуют регулярному ...
+    assert.match(123, /pass/);
+    // AssertionError [ERR_ASSERTION]: The "string" argument must be of type string.
 
-assert.match(123, /pass/);
-// AssertionError [ERR_ASSERTION]: Аргумент "string" должен быть типа string.
+    assert.match('I will pass', /pass/);
+    // OK
+    ```
 
-assert.match('I will pass', /pass/);
-// OK
-```
+=== "CJS"
 
-Если значения не совпадают или аргумент `string` имеет тип, отличный от `string`, возникает ошибка [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.match('I will fail', /pass/);
+    // AssertionError [ERR_ASSERTION]: The input did not match the regular ...
+
+    assert.match(123, /pass/);
+    // AssertionError [ERR_ASSERTION]: The "string" argument must be of type string.
+
+    assert.match('I will pass', /pass/);
+    // OK
+    ```
+
+Если строка не совпадает с шаблоном или аргумент `string` имеет тип, отличный от `string`, выбрасывается [`AssertionError`][]: свойство `message` равно значению параметра `message`. Если `message` не передан, подставляется сообщение по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`][].
 
 ## `assert.notDeepEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version:
+      - v16.0.0
+      - v14.18.0
+    pr-url: https://github.com/nodejs/node/pull/38113
+    description: In Legacy assertion mode, changed status from Deprecated to
+                 Legacy.
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30766
+    description: NaN is now treated as being identical if both sides are
+                 NaN.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15001
+    description: The `Error` names and messages are now properly compared.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12142
+    description: The `Set` and `Map` content is also compared.
+  - version:
+      - v6.4.0
+      - v4.7.1
+    pr-url: https://github.com/nodejs/node/pull/8002
+    description: Typed array slices are handled correctly now.
+  - version:
+      - v6.1.0
+      - v4.5.0
+    pr-url: https://github.com/nodejs/node/pull/6432
+    description: Objects with circular references can be used as inputs now.
+  - version:
+      - v5.10.1
+      - v4.4.3
+    pr-url: https://github.com/nodejs/node/pull/5910
+    description: Handle non-`Uint8Array` typed arrays correctly.
+-->
 
-**Строгий режим утверждения**.
+Добавлено в: v0.1.21
 
-Псевдоним [`assert.notDeepStrictEqual()`](#assertnotdeepstrictequalactual-expected-message).
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». | | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. | | v9.0.0 | Имена и сообщения `Error` теперь корректно сравниваются. | | v8.0.0 | Содержимое Set и Map также сравнивается. | | v6.4.0, v4.7.1 | Срезы типизированного массива теперь обрабатываются правильно. | | v6.1.0, v4.5.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. | | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
-**Режим утверждения Legacy**.
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-!!!note "Стабильность: 3 – Закрыто"
+**Строгий режим утверждения**
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+Псевдоним [`assert.notDeepStrictEqual()`][].
 
-    Вместо этого используйте [`assert.notDeepStrictEqual()`](#assertnotdeepstrictequalactual-expected-message).
+**Режим утверждения Legacy**
 
-Проверяет любое глубокое неравенство. Противоположность [`assert.deepEqual()`](#assertdeepepequalactual-expected-message).
+> Стабильность: 3 - Legacy: вместо этого используйте [`assert.notDeepStrictEqual()`][].
 
-```mjs
-import assert from 'node:assert';
+Проверяет произвольное глубокое неравенство. Противоположность [`assert.deepEqual()`][].
 
-const obj1 = {
-    a: {
-        b: 1,
-    },
-};
-const obj2 = {
-    a: {
-        b: 2,
-    },
-};
-const obj3 = {
-    a: {
-        b: 1,
-    },
-};
-const obj4 = { __proto__: obj1 };
+=== "MJS"
 
-assert.notDeepEqual(obj1, obj1);
-// AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
+    ```js
+    import assert from 'node:assert';
 
-assert.notDeepEqual(obj1, obj2);
-// OK
+    const obj1 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj2 = {
+        a: {
+            b: 2,
+        },
+    };
+    const obj3 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj4 = { __proto__: obj1 };
 
-assert.notDeepEqual(obj1, obj3);
-// AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
+    assert.notDeepEqual(obj1, obj1);
+    // AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
 
-assert.notDeepEqual(obj1, obj4);
-// OK
-```
+    assert.notDeepEqual(obj1, obj2);
+    // OK
 
-```cjs
-const assert = require('node:assert');
+    assert.notDeepEqual(obj1, obj3);
+    // AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
 
-const obj1 = {
-    a: {
-        b: 1,
-    },
-};
-const obj2 = {
-    a: {
-        b: 2,
-    },
-};
-const obj3 = {
-    a: {
-        b: 1,
-    },
-};
-const obj4 = { __proto__: obj1 };
+    assert.notDeepEqual(obj1, obj4);
+    // OK
+    ```
 
-assert.notDeepEqual(obj1, obj1);
-// AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
+=== "CJS"
 
-assert.notDeepEqual(obj1, obj2);
-// OK
+    ```js
+    const assert = require('node:assert');
 
-assert.notDeepEqual(obj1, obj3);
-// AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
+    const obj1 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj2 = {
+        a: {
+            b: 2,
+        },
+    };
+    const obj3 = {
+        a: {
+            b: 1,
+        },
+    };
+    const obj4 = { __proto__: obj1 };
 
-assert.notDeepEqual(obj1, obj4);
-// OK
-```
+    assert.notDeepEqual(obj1, obj1);
+    // AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
 
-Если значения глубоко равны, возникает ошибка [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`.
+    assert.notDeepEqual(obj1, obj2);
+    // OK
+
+    assert.notDeepEqual(obj1, obj3);
+    // AssertionError: { a: { b: 1 } } notDeepEqual { a: { b: 1 } }
+
+    assert.notDeepEqual(obj1, obj4);
+    // OK
+    ```
+
+Если значения глубоко равны, выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` имеет значение `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), он будет выброшен вместо `AssertionError`.
 
 ## `assert.notDeepStrictEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v1.2.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15398
+    description: The `-0` and `+0` are not considered equal anymore.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15036
+    description: The `NaN` is now compared using the
+              [SameValueZero](https://tc39.github.io/ecma262/#sec-samevaluezero)
+              comparison.
+  - version: v9.0.0
+    pr-url: https://github.com/nodejs/node/pull/15001
+    description: The `Error` names and messages are now properly compared.
+  - version: v8.0.0
+    pr-url: https://github.com/nodejs/node/pull/12142
+    description: The `Set` and `Map` content is also compared.
+  - version:
+    - v6.4.0
+    - v4.7.1
+    pr-url: https://github.com/nodejs/node/pull/8002
+    description: Typed array slices are handled correctly now.
+  - version: v6.1.0
+    pr-url: https://github.com/nodejs/node/pull/6432
+    description: Objects with circular references can be used as inputs now.
+  - version:
+    - v5.10.1
+    - v4.4.3
+    pr-url: https://github.com/nodejs/node/pull/5910
+    description: Handle non-`Uint8Array` typed arrays correctly.
+-->
 
-Проверяет глубокое строгое неравенство. Противоположность [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
+Добавлено в: v1.2.0
 
-```mjs
-import assert from 'node:assert/strict';
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v9.0.0 | `-0` и `+0` больше не считаются равными. | | v9.0.0 | `NaN` теперь сравнивается с использованием сравнения [SameValueZero](https://tc39.github.io/ecma262/#sec-samevaluezero). | | v9.0.0 | Имена и сообщения `Error` теперь корректно сравниваются. | | v8.0.0 | Содержимое Set и Map также сравнивается. | | v6.4.0, v4.7.1 | Срезы типизированного массива теперь обрабатываются правильно. | | v6.1.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. | | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
-assert.notDeepStrictEqual({ a: 1 }, { a: '1' });
-// OK
-```
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-```cjs
-const assert = require('node:assert/strict');
+Проверяет глубокое строгое неравенство. Противоположность [`assert.deepStrictEqual()`][].
 
-assert.notDeepStrictEqual({ a: 1 }, { a: '1' });
-// OK
-```
+=== "MJS"
 
-Если значения глубоко и строго равны, то выбрасывается [`AssertionError`](#class-assertassertionerror) со свойством `message`, установленным равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+    ```js
+    import assert from 'node:assert/strict';
+
+    assert.notDeepStrictEqual({ a: 1 }, { a: '1' });
+    // OK
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.notDeepStrictEqual({ a: 1 }, { a: '1' });
+    // OK
+    ```
+
+Если значения глубоко и строго равны, выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` имеет значение `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), он будет выброшен вместо [`AssertionError`][].
 
 ## `assert.notEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version:
+      - v16.0.0
+      - v14.18.0
+    pr-url: https://github.com/nodejs/node/pull/38113
+    description: In Legacy assertion mode, changed status from Deprecated to
+                 Legacy.
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30766
+    description: NaN is now treated as being identical if both sides are
+                 NaN.
+-->
 
-**Строгий режим утверждения**.
+Добавлено в: v0.1.21
 
-Псевдоним [`assert.notStrictEqual()`](#assertnotstrictequalactual-expected-message).
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». | | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. |
 
-**Режим утверждения Legacy**.
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-!!!note "Стабильность: 3 – Закрыто"
+**Строгий режим утверждения**
 
-    Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
+Псевдоним [`assert.notStrictEqual()`][].
 
-    Вместо этого используйте [`assert.notStrictEqual()`](#assertnotstrictequalactual-expected-message).
+**Режим утверждения Legacy**
 
-Проверяет неглубокое принудительное неравенство с помощью оператора [`!=`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Inequality). `NaN` специально обрабатывается и рассматривается как идентичное, если обе стороны `NaN`.
+> Стабильность: 3 - Legacy: вместо этого используйте [`assert.notStrictEqual()`][].
 
-```mjs
-import assert from 'node:assert';
+Проверяет неглубокое принудительное неравенство с помощью [`!=` operator][]. `NaN` обрабатывается особым образом и считается совпадающим, если обе стороны - `NaN`.
 
-assert.notEqual(1, 2);
-// OK
+=== "MJS"
 
-assert.notEqual(1, 1);
-// AssertionError: 1 != 1
+    ```js
+    import assert from 'node:assert';
 
-assert.notEqual(1, '1');
-// AssertionError: 1 != '1'
-```
+    assert.notEqual(1, 2);
+    // OK
 
-```cjs
-const assert = require('node:assert');
+    assert.notEqual(1, 1);
+    // AssertionError: 1 != 1
 
-assert.notEqual(1, 2);
-// OK
+    assert.notEqual(1, '1');
+    // AssertionError: 1 != '1'
+    ```
 
-assert.notEqual(1, 1);
-// AssertionError: 1 != 1
+=== "CJS"
 
-assert.notEqual(1, '1');
-// AssertionError: 1 != '1'
-```
+    ```js
+    const assert = require('node:assert');
 
-Если значения равны, возникает [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`.
+    assert.notEqual(1, 2);
+    // OK
+
+    assert.notEqual(1, 1);
+    // AssertionError: 1 != 1
+
+    assert.notEqual(1, '1');
+    // AssertionError: 1 != '1'
+    ```
+
+Если значения равны, выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` имеет значение `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), он будет выброшен вместо `AssertionError`.
 
 ## `assert.notStrictEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17003
+    description: Used comparison changed from Strict Equality to `Object.is()`.
+-->
 
-Проверяет строгое неравенство между параметрами `actual` и `expected`, определяемое [`Object.is()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
+Добавлено в: v0.1.21
 
-```mjs
-import assert from 'node:assert/strict';
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v10.0.0 | Используемое сравнение изменено со «Строгого равенства» на «Object.is()». |
 
-assert.notStrictEqual(1, 2);
-// OK
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-assert.notStrictEqual(1, 1);
-// AssertionError [ERR_ASSERTION]: Ожидалось, что "actual" будет строго неравнозначно:
-//
-// 1
+Проверяет строгое неравенство между параметрами `actual` и `expected`, определяемое [`Object.is()`][].
 
-assert.notStrictEqual(1, '1');
-// OK
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert/strict');
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.notStrictEqual(1, 2);
-// OK
+    assert.notStrictEqual(1, 2);
+    // OK
 
-assert.notStrictEqual(1, 1);
-// AssertionError [ERR_ASSERTION]: Ожидалось, что "actual" будет строго неравнозначно:
-//
-// 1
+    assert.notStrictEqual(1, 1);
+    // AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+    //
+    // 1
 
-assert.notStrictEqual(1, '1');
-// OK
-```
+    assert.notStrictEqual(1, '1');
+    // OK
+    ```
 
-Если значения строго равны, возникает ошибка [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`.
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.notStrictEqual(1, 2);
+    // OK
+
+    assert.notStrictEqual(1, 1);
+    // AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+    //
+    // 1
+
+    assert.notStrictEqual(1, '1');
+    // OK
+    ```
+
+Если значения строго равны, выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` имеет значение `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), он будет выброшен вместо `AssertionError`.
 
 ## `assert.ok(value[, message])`
 
--   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/18319
+    description: The `assert.ok()` (no arguments) will now use a predefined
+                 error message.
+-->
 
-Проверяет, является ли `значение` истинным. Это эквивалентно `assert.equal(!!value, true, message)`.
+Добавлено в: v0.1.21
 
-Если `значение` не является истинным, то возникает [`AssertionError`](#class-assertassertionerror) со свойством `message`, равным значению параметра `message`. Если параметр `message` равен `undefined`, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо `AssertionError`. Если аргументы не переданы вообще, то `message` будет установлен в строку: ``Нет аргумента значения, переданного в `assert.ok()```.
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v10.0.0 | `assert.ok()` (без аргументов) теперь будет использовать предопределенное сообщение об ошибке. |
 
-Имейте в виду, что в `repl` сообщение об ошибке будет отличаться от того, которое выводится в файле\! Более подробную информацию смотрите ниже.
+-   `value` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-```mjs
-import assert from 'node:assert/strict';
+Проверяет, является ли `value` истинным (truthy). Эквивалентно `assert.equal(!!value, true, message)`.
 
-assert.ok(true);
-// OK
-assert.ok(1);
-// OK
+Если `value` ложно (falsy), выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` имеет значение `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), он будет выброшен вместо `AssertionError`. Если аргументы не переданы вообще, `message` будет установлена в строку `` 'No value argument passed to `assert.ok()`' ``.
 
-assert.ok();
-// AssertionError: В `assert.ok()` не передан аргумент value
+Имейте в виду: в REPL текст ошибки отличается от того, что выводится при выполнении файла. Подробности ниже.
 
-assert.ok(false, "it's false");
-// AssertionError: it's false
+<!-- eslint-skip -->
 
-// В реплике:
-assert.ok(typeof 123 === 'string');
-// AssertionError: false == true
+=== "MJS"
 
-// В файле (например, test.js):
-assert.ok(typeof 123 === 'string');
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(typeof 123 === 'string')
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.ok(false);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(false)
+    assert.ok(true);
+    // OK
+    assert.ok(1);
+    // OK
 
-assert.ok(0);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(0)
-```
+    assert.ok();
+    // AssertionError: No value argument passed to `assert.ok()`
 
-```cjs
-const assert = require('node:assert/strict');
+    assert.ok(false, "it's false");
+    // AssertionError: it's false
 
-assert.ok(true);
-// OK
-assert.ok(1);
-// OK
+    // В REPL:
+    assert.ok(typeof 123 === 'string');
+    // AssertionError: false == true
 
-assert.ok();
-// AssertionError: В `assert.ok()` не передан аргумент value
+    // В файле (например, test.js):
+    assert.ok(typeof 123 === 'string');
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(typeof 123 === 'string')
 
-assert.ok(false, "it's false");
-// AssertionError: it's false
+    assert.ok(false);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(false)
 
-// В реплике:
-assert.ok(typeof 123 === 'string');
-// AssertionError: false == true
+    assert.ok(0);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(0)
+    ```
 
-// В файле (например, test.js):
-assert.ok(typeof 123 === 'string');
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(typeof 123 === 'string')
+<!-- eslint-skip -->
 
-assert.ok(false);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(false)
+=== "CJS"
 
-assert.ok(0);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert.ok(0)
-```
+    ```js
+    const assert = require('node:assert/strict');
 
-```mjs
-import assert from 'node:assert/strict';
+    assert.ok(true);
+    // OK
+    assert.ok(1);
+    // OK
 
-// Использование `assert()` работает так же:
-assert(0);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert(0)
-```
+    assert.ok();
+    // AssertionError: No value argument passed to `assert.ok()`
 
-```cjs
-const assert = require('node:assert');
+    assert.ok(false, "it's false");
+    // AssertionError: it's false
 
-// Использование `assert()` работает так же:
-assert(0);
-// AssertionError: Выражение оценивается в ложное значение:
-//
-// assert(0)
-```
+    // В REPL:
+    assert.ok(typeof 123 === 'string');
+    // AssertionError: false == true
+
+    // В файле (например, test.js):
+    assert.ok(typeof 123 === 'string');
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(typeof 123 === 'string')
+
+    assert.ok(false);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(false)
+
+    assert.ok(0);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert.ok(0)
+    ```
+
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert/strict';
+
+    // Вызов `assert()` ведёт себя так же:
+    assert(2 + 2 > 5);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert(2 + 2 > 5)
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert');
+
+    // Вызов `assert()` ведёт себя так же:
+    assert(2 + 2 > 5);
+    // AssertionError: The expression evaluated to a falsy value:
+    //
+    //   assert(2 + 2 > 5)
+    ```
 
 ## `assert.rejects(asyncFn[, error][, message])`
 
--   `asyncFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   `error` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v10.0.0
+-->
 
-Ожидает промис `asyncFn` или, если `asyncFn` является функцией, немедленно вызывает функцию и ожидает выполнения возвращенного промиса. Затем проверяется, что промис отклонен.
+-   `asyncFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Если `asyncFn` является функцией и синхронно выбрасывает ошибку, `assert.rejects()` вернет отклоненное `Promise` с этой ошибкой. Если функция не возвращает промис, `assert.rejects()` вернет отклоненный `Promise` с ошибкой [`ERR_INVALID_RETURN_VALUE`](errors.md#err_invalid_return_value). В обоих случаях обработчик ошибки пропускается.
+Ожидает промис `asyncFn` или, если `asyncFn` - функция, сразу вызывает её и ожидает завершения возвращённого промиса. Затем проверяется, что промис отклонён.
 
-Помимо асинхронного характера ожидания, завершение ведет себя идентично [`assert.throws()`](#assertthrowsfn-error-message).
+Если `asyncFn` - функция и она синхронно выбрасывает ошибку, `assert.rejects()` вернёт отклонённый `Promise` с этой ошибкой. Если функция не возвращает промис, `assert.rejects()` вернёт отклонённый `Promise` с ошибкой [`ERR_INVALID_RETURN_VALUE`][]. В обоих случаях обработчик ошибки пропускается.
 
-Если указано, то `error` может быть [`Class`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes), [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions), функцией проверки, объектом, где каждое свойство будет проверяться, или экземпляром ошибки, где каждое свойство будет проверяться, включая неперечислимые свойства `message` и `name`.
+Помимо асинхронного ожидания завершения поведение совпадает с [`assert.throws()`][].
 
-Если указано, `message` будет сообщением, предоставляемым [`AssertionError`](#class-assertassertionerror), если `asyncFn` не удастся отклонить.
+Если указано, `error` может быть [`Class`][], [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions), функцией проверки, объектом, для которого проверяется каждое свойство, или экземпляром ошибки, для которого проверяется каждое свойство, включая неперечислимые свойства `message` и `name`.
 
-```mjs
-import assert from 'node:assert/strict';
+Если указано, `message` будет сообщением, которое передаёт [`AssertionError`][], если `asyncFn` не отклонится.
 
-await assert.rejects(
-    async () => {
-        throw new TypeError('Неверное значение');
-    },
-    {
-        name: 'TypeError',
-        message: 'Неверное значение',
-    }
-);
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert/strict');
+    ```js
+    import assert from 'node:assert/strict';
 
-(async () => {
     await assert.rejects(
         async () => {
-            throw new TypeError('Неверное значение');
+            throw new TypeError('Wrong value');
         },
         {
             name: 'TypeError',
-            message: 'Неверное значение',
+            message: 'Wrong value',
         }
     );
-})();
-```
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
+=== "CJS"
 
-await assert.rejects(
-    async () => {
-        throw new TypeError('Неверное значение');
-    },
-    (err) => {
-        assert.strictEqual(err.name, 'TypeError');
-        assert.strictEqual(
-            err.message,
-            'Неверное значение'
+    ```js
+    const assert = require('node:assert/strict');
+
+    (async () => {
+        await assert.rejects(
+            async () => {
+                throw new TypeError('Wrong value');
+            },
+            {
+                name: 'TypeError',
+                message: 'Wrong value',
+            }
         );
-        return true;
-    }
-);
-```
+    })();
+    ```
 
-```cjs
-const assert = require('node:assert/strict');
+=== "MJS"
 
-(async () => {
+    ```js
+    import assert from 'node:assert/strict';
+
     await assert.rejects(
         async () => {
-            throw new TypeError('Неверное значение');
+            throw new TypeError('Wrong value');
         },
         (err) => {
             assert.strictEqual(err.name, 'TypeError');
-            assert.strictEqual(
-                err.message,
-                'Неверное значение'
-            );
+            assert.strictEqual(err.message, 'Wrong value');
             return true;
         }
     );
-})();
-```
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
+=== "CJS"
 
-assert
-    .rejects(
-        Promise.reject(new Error('Неверное значение')),
-        Error
-    )
-    .then(() => {
-        // ...
-    });
-```
+    ```js
+    const assert = require('node:assert/strict');
 
-```cjs
-const assert = require('node:assert/strict');
+    (async () => {
+        await assert.rejects(
+            async () => {
+                throw new TypeError('Wrong value');
+            },
+            (err) => {
+                assert.strictEqual(err.name, 'TypeError');
+                assert.strictEqual(err.message, 'Wrong value');
+                return true;
+            }
+        );
+    })();
+    ```
 
-assert
-    .rejects(
-        Promise.reject(new Error('Неверное значение')),
-        Error
-    )
-    .then(() => {
-        // ...
-    });
-```
+=== "MJS"
 
-`error` не может быть строкой. Если в качестве второго аргумента указана строка, то считается, что `error` опущен, и строка будет использована для `message`. Это может привести к легко пропущенным ошибкам. Пожалуйста, внимательно прочитайте пример в [`assert.throws()`](#assertthrowsfn-error-message), если использование строки в качестве второго аргумента будет рассмотрено.
+    ```js
+    import assert from 'node:assert/strict';
+
+    assert
+        .rejects(
+            Promise.reject(new Error('Wrong value')),
+            Error
+        )
+        .then(() => {
+            // ...
+        });
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert
+        .rejects(
+            Promise.reject(new Error('Wrong value')),
+            Error
+        )
+        .then(() => {
+            // ...
+        });
+    ```
+
+`error` не может быть строкой. Если вторым аргументом передана строка, считается, что `error` опущен, и строка используется как `message`. Это легко даёт незаметные ошибки. Внимательно прочитайте пример в [`assert.throws()`][], если рассматриваете передачу строки вторым аргументом.
 
 ## `assert.strictEqual(actual, expected[, message])`
 
--   `actual` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `expected` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/58849
+    description: Message may now be a `printf`-like format string or function.
+  - version: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/17003
+    description: Used comparison changed from Strict Equality to `Object.is()`.
+-->
 
-Проверяет строгое равенство между параметрами `actual` и `expected`, определяемое [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
+Добавлено в: v0.1.21
 
-```mjs
-import assert from 'node:assert/strict';
+??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. | | v10.0.0 | Используемое сравнение изменено со «Строгого равенства» на «Object.is()». |
 
-assert.strictEqual(1, 2);
-// AssertionError [ERR_ASSERTION]: Ожидается, что входные данные будут строго равны:
-//
-// 1 !== 2
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Постфиксные аргументы в стиле `printf`, если `message` используется как строка формата. Если `message` - функция, она вызывается при несовпадении сравнения. Функция получает аргументы `actual` и `expected` и должна вернуть строку, которая будет использована как сообщение об ошибке. Строки формата в стиле `printf` и функции удобны для производительности, когда аргументы пробрасываются дальше. Кроме того, так проще получить аккуратное форматирование.
 
-assert.strictEqual(1, 1);
-// OK
+Проверяет строгое равенство между параметрами `actual` и `expected` так, как определяет [`Object.is()`][].
 
-assert.strictEqual('Hello foobar', 'Hello World!');
-// AssertionError [ERR_ASSERTION]: Ожидается, что входные данные будут строго равны:
-// + фактический - ожидаемый
-//
-// + 'Hello foobar'
-// - 'Hello World!'
-// ^
+=== "MJS"
 
-const apples = 1;
-const oranges = 2;
-assert.strictEqual(
-    apples,
-    oranges,
-    `apples ${apples} !== oranges ${oranges}`
-);
-// AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.strictEqual(
-    1,
-    '1',
-    new TypeError('Входы не идентичны')
-);
-// TypeError: Входные данные не идентичны
-```
+    assert.strictEqual(1, 2);
+    // AssertionError [ERR_ASSERTION]: Ожидается, что входные значения строго равны:
+    //
+    // 1 !== 2
 
-```cjs
-const assert = require('node:assert/strict');
+    assert.strictEqual(1, 1);
+    // OK
 
-assert.strictEqual(1, 2);
-// AssertionError [ERR_ASSERTION]: Ожидалось, что входные данные будут строго равны:
-//
-// 1 !== 2
+    assert.strictEqual('Hello foobar', 'Hello World!');
+    // AssertionError [ERR_ASSERTION]: Ожидается, что входные значения строго равны:
+    // + фактическое - ожидаемое
+    //
+    // + 'Hello foobar'
+    // - 'Hello World!'
+    //          ^
 
-assert.strictEqual(1, 1);
-// OK
+    const apples = 1;
+    const oranges = 2;
+    assert.strictEqual(
+        apples,
+        oranges,
+        `apples ${apples} !== oranges ${oranges}`
+    );
+    // AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
 
-assert.strictEqual('Hello foobar', 'Hello World!');
-// AssertionError [ERR_ASSERTION]: Ожидается, что входные данные будут строго равны:
-// + фактический - ожидаемый
-//
-// + 'Hello foobar'
-// - 'Hello World!'
-// ^
+    assert.strictEqual(
+        apples,
+        oranges,
+        'apples %s !== oranges %s',
+        apples,
+        oranges
+    );
+    // AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
 
-const apples = 1;
-const oranges = 2;
-assert.strictEqual(
-    apples,
-    oranges,
-    `apples ${apples} !== oranges ${oranges}`
-);
-// AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
+    assert.strictEqual(
+        1,
+        '1',
+        new TypeError('Inputs are not identical')
+    );
+    // TypeError: Inputs are not identical
 
-assert.strictEqual(
-    1,
-    '1',
-    new TypeError('Входы не идентичны')
-);
-// TypeError: Входные данные не идентичны
-```
+    assert.strictEqual(apples, oranges, (actual, expected) => {
+        // «Тяжёлые» вычисления
+        return `I expected ${expected} but I got ${actual}`;
+    });
+    // AssertionError [ERR_ASSERTION]: I expected oranges but I got apples
+    ```
 
-Если значения не являются строго равными, возникает [`AssertionError`](#class-assertassertionerror) со свойством `message`, установленным равным значению параметра `message`. Если параметр `message` не определен, назначается сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [`Error`](errors.md#class-error), то он будет выброшен вместо [`AssertionError`](#class-assertassertionerror).
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.strictEqual(1, 2);
+    // AssertionError [ERR_ASSERTION]: Ожидается, что входные значения строго равны:
+    //
+    // 1 !== 2
+
+    assert.strictEqual(1, 1);
+    // OK
+
+    assert.strictEqual('Hello foobar', 'Hello World!');
+    // AssertionError [ERR_ASSERTION]: Ожидается, что входные значения строго равны:
+    // + фактическое - ожидаемое
+    //
+    // + 'Hello foobar'
+    // - 'Hello World!'
+    //          ^
+
+    const apples = 1;
+    const oranges = 2;
+    assert.strictEqual(
+        apples,
+        oranges,
+        `apples ${apples} !== oranges ${oranges}`
+    );
+    // AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
+
+    assert.strictEqual(
+        apples,
+        oranges,
+        'apples %s !== oranges %s',
+        apples,
+        oranges
+    );
+    // AssertionError [ERR_ASSERTION]: apples 1 !== oranges 2
+
+    assert.strictEqual(
+        1,
+        '1',
+        new TypeError('Inputs are not identical')
+    );
+    // TypeError: Inputs are not identical
+
+    assert.strictEqual(apples, oranges, (actual, expected) => {
+        // «Тяжёлые» вычисления
+        return `I expected ${expected} but I got ${actual}`;
+    });
+    // AssertionError [ERR_ASSERTION]: I expected oranges but I got apples
+    ```
+
+Если значения не строго равны, выбрасывается [`AssertionError`][] со свойством `message`, равным значению параметра `message`. Если параметр `message` равен `undefined`, подставляется сообщение об ошибке по умолчанию. Если параметр `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`][].
 
 ## `assert.throws(fn[, error][, message])`
 
--   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `error` [`<RegExp>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+<!-- YAML
+added: v0.1.21
+changes:
+  - version: v10.2.0
+    pr-url: https://github.com/nodejs/node/pull/20485
+    description: The `error` parameter can be an object containing regular
+                 expressions now.
+  - version: v9.9.0
+    pr-url: https://github.com/nodejs/node/pull/17584
+    description: The `error` parameter can now be an object as well.
+  - version: v4.2.0
+    pr-url: https://github.com/nodejs/node/pull/3276
+    description: The `error` parameter can now be an arrow function.
+-->
 
-Ожидает, что функция `fn` выдаст ошибку.
+Добавлено в: v0.1.21
 
-Если указано, `error` может быть [`Class`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes), [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions), функцией проверки, объектом проверки, где каждое свойство будет проверяться на строгое равенство, или экземпляром ошибки, где каждое свойство будет проверяться на строгое равенство, включая неперечислимые свойства `message` и `name`. При использовании объекта можно также использовать регулярное выражение при проверке строкового свойства. Примеры смотрите ниже.
+??? note "История" | Версия | Изменения | | --- | --- | | v10.2.0 | Параметр error теперь может быть объектом, содержащим регулярные выражения. | | v9.9.0 | Параметр error теперь также может быть объектом. | | v4.2.0 | Параметр error теперь может быть стрелочной функцией. |
 
-Если указано, `message` будет добавлено к сообщению, предоставленному `AssertionError`, если вызов `fn` не сможет бросить или если валидация ошибки не удалась.
+-   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Пользовательский объект валидации/экземпляр ошибки:
+Ожидает, что функция `fn` выбросит ошибку.
 
-```mjs
-import assert from 'node:assert/strict';
+Если указано, `error` может быть [`Class`][], [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions), функцией проверки, объектом проверки, для каждого свойства которого проверяется строгое глубокое равенство, или экземпляром ошибки, для каждого свойства которого проверяется строгое глубокое равенство, включая неперечислимые свойства `message` и `name`. При использовании объекта для проверки строкового свойства можно использовать регулярное выражение. Примеры см. ниже.
 
-const err = new TypeError('Wrong value');
-err.code = 404;
-err.foo = 'bar';
-err.info = {
-    nested: true,
-    baz: 'text',
-};
-err.reg = /abc/i;
+Если указано, `message` дополняет сообщение, которое даёт `AssertionError`, если вызов `fn` не привёл к выбросу или если проверка ошибки не прошла.
 
-assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        name: 'TypeError',
-        message: 'Wrong value',
-        info: {
-            nested: true,
-            baz: 'text',
+Пользовательский объект проверки / экземпляр ошибки:
+
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert/strict';
+
+    const err = new TypeError('Wrong value');
+    err.code = 404;
+    err.foo = 'bar';
+    err.info = {
+        nested: true,
+        baz: 'text',
+    };
+    err.reg = /abc/i;
+
+    assert.throws(
+        () => {
+            throw err;
         },
-        // Only properties on the validation object will be tested for.
-        // Using nested objects requires all properties to be present. Otherwise
-        // the validation is going to fail.
-    }
-);
-
-// Using regular expressions to validate error properties:
-assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        // The `name` and `message` properties are strings and using regular
-        // expressions on those will match against the string. If they fail, an
-        // error is thrown.
-        name: /^TypeError$/,
-        message: /Wrong/,
-        foo: 'bar',
-        info: {
-            nested: true,
-            // It is not possible to use regular expressions for nested properties!
-            baz: 'text',
-        },
-        // The `reg` property contains a regular expression and only if the
-        // validation object contains an identical regular expression, it is going
-        // to pass.
-        reg: /abc/i,
-    }
-);
-
-// Fails due to the different `message` and `name` properties:
-assert.throws(
-    () => {
-        const otherErr = new Error('Not found');
-        // Copy all enumerable properties from `err` to `otherErr`.
-        for (const [key, value] of Object.entries(err)) {
-            otherErr[key] = value;
+        {
+            name: 'TypeError',
+            message: 'Wrong value',
+            info: {
+                nested: true,
+                baz: 'text',
+            },
+            // Проверяются только свойства объекта проверки.
+            // Для вложенных объектов должны присутствовать все свойства, иначе
+            // проверка не пройдёт.
         }
-        throw otherErr;
-    },
-    // The error's `message` and `name` properties will also be checked when using
-    // an error as validation object.
-    err
-);
-```
+    );
 
-```cjs
-const assert = require('node:assert/strict');
-
-const err = new TypeError('Wrong value');
-err.code = 404;
-err.foo = 'bar';
-err.info = {
-    nested: true,
-    baz: 'text',
-};
-err.reg = /abc/i;
-
-assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        name: 'TypeError',
-        message: 'Wrong value',
-        info: {
-            nested: true,
-            baz: 'text',
+    // Регулярные выражения для проверки свойств ошибки:
+    assert.throws(
+        () => {
+            throw err;
         },
-        // Only properties on the validation object will be tested for.
-        // Using nested objects requires all properties to be present. Otherwise
-        // the validation is going to fail.
-    }
-);
-
-// Using regular expressions to validate error properties:
-assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        // The `name` and `message` properties are strings and using regular
-        // expressions on those will match against the string. If they fail, an
-        // error is thrown.
-        name: /^TypeError$/,
-        message: /Wrong/,
-        foo: 'bar',
-        info: {
-            nested: true,
-            // It is not possible to use regular expressions for nested properties!
-            baz: 'text',
-        },
-        // The `reg` property contains a regular expression and only if the
-        // validation object contains an identical regular expression, it is going
-        // to pass.
-        reg: /abc/i,
-    }
-);
-
-// Fails due to the different `message` and `name` properties:
-assert.throws(
-    () => {
-        const otherErr = new Error('Not found');
-        // Copy all enumerable properties from `err` to `otherErr`.
-        for (const [key, value] of Object.entries(err)) {
-            otherErr[key] = value;
+        {
+            // Свойства `name` и `message` - строки; для них регулярные выражения
+            // сопоставляются со строкой. При неудаче выбрасывается ошибка.
+            name: /^TypeError$/,
+            message: /Wrong/,
+            foo: 'bar',
+            info: {
+                nested: true,
+                // Для вложенных свойств нельзя использовать регулярные выражения!
+                baz: 'text',
+            },
+            // Свойство `reg` содержит регулярное выражение; проверка пройдёт только
+            // если в объекте проверки то же самое регулярное выражение.
+            reg: /abc/i,
         }
-        throw otherErr;
-    },
-    // The error's `message` and `name` properties will also be checked when using
-    // an error as validation object.
-    err
-);
-```
+    );
 
-Проверьте `instanceof` с помощью конструктора:
+    // Не проходит из-за разных свойств `message` и `name`:
+    assert.throws(
+        () => {
+            const otherErr = new Error('Not found');
+            // Копируем все перечислимые свойства из `err` в `otherErr`.
+            for (const [key, value] of Object.entries(err)) {
+                otherErr[key] = value;
+            }
+            throw otherErr;
+        },
+        // Свойства `message` и `name` ошибки также проверяются, если ошибка
+        // используется как объект проверки.
+        err
+    );
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
+=== "CJS"
 
-assert.throws(() => {
-    throw new Error('Wrong value');
-}, Error);
-```
+    ```js
+    const assert = require('node:assert/strict');
 
-```cjs
-const assert = require('node:assert/strict');
+    const err = new TypeError('Wrong value');
+    err.code = 404;
+    err.foo = 'bar';
+    err.info = {
+        nested: true,
+        baz: 'text',
+    };
+    err.reg = /abc/i;
 
-assert.throws(() => {
-    throw new Error('Wrong value');
-}, Error);
-```
+    assert.throws(
+        () => {
+            throw err;
+        },
+        {
+            name: 'TypeError',
+            message: 'Wrong value',
+            info: {
+                nested: true,
+                baz: 'text',
+            },
+            // Проверяются только свойства объекта проверки.
+            // Для вложенных объектов должны присутствовать все свойства, иначе
+            // проверка не пройдёт.
+        }
+    );
 
-Проверьте сообщение об ошибке с помощью [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions):
+    // Регулярные выражения для проверки свойств ошибки:
+    assert.throws(
+        () => {
+            throw err;
+        },
+        {
+            // Свойства `name` и `message` - строки; для них регулярные выражения
+            // сопоставляются со строкой. При неудаче выбрасывается ошибка.
+            name: /^TypeError$/,
+            message: /Wrong/,
+            foo: 'bar',
+            info: {
+                nested: true,
+                // Для вложенных свойств нельзя использовать регулярные выражения!
+                baz: 'text',
+            },
+            // Свойство `reg` содержит регулярное выражение; проверка пройдёт только
+            // если в объекте проверки то же самое регулярное выражение.
+            reg: /abc/i,
+        }
+    );
 
-Использование регулярного выражения запускает `.toString` для объекта ошибки и, следовательно, включает в себя также имя ошибки.
+    // Не проходит из-за разных свойств `message` и `name`:
+    assert.throws(
+        () => {
+            const otherErr = new Error('Not found');
+            // Копируем все перечислимые свойства из `err` в `otherErr`.
+            for (const [key, value] of Object.entries(err)) {
+                otherErr[key] = value;
+            }
+            throw otherErr;
+        },
+        // Свойства `message` и `name` ошибки также проверяются, если ошибка
+        // используется как объект проверки.
+        err
+    );
+    ```
 
-```mjs
-import assert from 'node:assert/strict';
+Проверка `instanceof` через конструктор:
 
-assert.throws(() => {
-    throw new Error('Wrong value');
-}, /^Error: Wrong value$/);
-```
+=== "MJS"
 
-```cjs
-const assert = require('node:assert/strict');
+    ```js
+    import assert from 'node:assert/strict';
 
-assert.throws(() => {
-    throw new Error('Wrong value');
-}, /^Error: Wrong value$/);
-```
-
-Пользовательская валидация ошибок:
-
-Функция должна возвращать `true`, чтобы показать, что все внутренние проверки пройдены. В противном случае она завершится с ошибкой [`AssertionError`](#class-assertassertionerror).
-
-```mjs
-import assert from 'node:assert/strict';
-
-assert.throws(
-    () => {
+    assert.throws(() => {
         throw new Error('Wrong value');
-    },
-    (err) => {
-        assert(err instanceof Error);
-        assert(/value/.test(err));
-        // Avoid returning anything from validation functions besides `true`.
-        // Otherwise, it's not clear what part of the validation failed. Instead,
-        // throw an error about the specific validation that failed (as done in this
-        // example) and add as much helpful debugging information to that error as
-        // possible.
-        return true;
-    },
-    'unexpected error'
-);
-```
+    }, Error);
+    ```
 
-```cjs
-const assert = require('node:assert/strict');
+=== "CJS"
 
-assert.throws(
-    () => {
+    ```js
+    const assert = require('node:assert/strict');
+
+    assert.throws(() => {
         throw new Error('Wrong value');
-    },
-    (err) => {
-        assert(err instanceof Error);
-        assert(/value/.test(err));
-        // Avoid returning anything from validation functions besides `true`.
-        // Otherwise, it's not clear what part of the validation failed. Instead,
-        // throw an error about the specific validation that failed (as done in this
-        // example) and add as much helpful debugging information to that error as
-        // possible.
-        return true;
-    },
-    'unexpected error'
-);
-```
+    }, Error);
+    ```
 
-`error` не может быть строкой. Если в качестве второго аргумента указана строка, то считается, что `error` опущен, и строка будет использована для `message`. Это может привести к легко пропущенным ошибкам. Использование того же сообщения, что и брошенное сообщение об ошибке, приведет к ошибке `ERR_AMBIGUOUS_ARGUMENT`. Пожалуйста, внимательно прочитайте приведенный ниже пример, если в качестве второго аргумента будет использоваться строка:
+Проверка сообщения об ошибке с помощью [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions):
 
-```mjs
-import assert from 'node:assert/strict';
+При использовании регулярного выражения для объекта ошибки вызывается `.toString`, поэтому в сопоставление попадает и имя ошибки.
 
-function throwingFirst() {
-    throw new Error('First');
-}
+=== "MJS"
 
-function throwingSecond() {
-    throw new Error('Second');
-}
+    ```js
+    import assert from 'node:assert/strict';
 
-function notThrowing() {}
+    assert.throws(() => {
+        throw new Error('Wrong value');
+    }, /^Error: Wrong value$/);
+    ```
 
-// The second argument is a string and the input function threw an Error.
-// The first case will not throw as it does not match for the error message
-// thrown by the input function!
-assert.throws(throwingFirst, 'Second');
-// In the next example the message has no benefit over the message from the
-// error and since it is not clear if the user intended to actually match
-// against the error message, Node.js throws an `ERR_AMBIGUOUS_ARGUMENT` error.
-assert.throws(throwingSecond, 'Second');
-// TypeError [ERR_AMBIGUOUS_ARGUMENT]
+=== "CJS"
 
-// The string is only used (as message) in case the function does not throw:
-assert.throws(notThrowing, 'Second');
-// AssertionError [ERR_ASSERTION]: Missing expected exception: Second
+    ```js
+    const assert = require('node:assert/strict');
 
-// If it was intended to match for the error message do this instead:
-// It does not throw because the error messages match.
-assert.throws(throwingSecond, /Second$/);
+    assert.throws(() => {
+        throw new Error('Wrong value');
+    }, /^Error: Wrong value$/);
+    ```
 
-// If the error message does not match, an AssertionError is thrown.
-assert.throws(throwingFirst, /Second$/);
-// AssertionError [ERR_ASSERTION]
-```
+Пользовательская проверка ошибки:
 
-```cjs
-const assert = require('node:assert/strict');
+Функция должна вернуть `true`, чтобы показать, что все внутренние проверки прошли. Иначе проверка завершится с [`AssertionError`][].
 
-function throwingFirst() {
-    throw new Error('First');
-}
+=== "MJS"
 
-function throwingSecond() {
-    throw new Error('Second');
-}
+    ```js
+    import assert from 'node:assert/strict';
 
-function notThrowing() {}
+    assert.throws(
+        () => {
+            throw new Error('Wrong value');
+        },
+        (err) => {
+            assert(err instanceof Error);
+            assert(/value/.test(err));
+            // Не возвращайте из функций проверки ничего, кроме `true`.
+            // Иначе непонятно, какая часть проверки не прошла. Вместо этого
+            // выбросьте ошибку о конкретной неудавшейся проверке (как в этом
+            // примере) и добавьте в неё как можно больше полезной отладочной информации.
+            return true;
+        },
+        'unexpected error'
+    );
+    ```
 
-// The second argument is a string and the input function threw an Error.
-// The first case will not throw as it does not match for the error message
-// thrown by the input function!
-assert.throws(throwingFirst, 'Second');
-// In the next example the message has no benefit over the message from the
-// error and since it is not clear if the user intended to actually match
-// against the error message, Node.js throws an `ERR_AMBIGUOUS_ARGUMENT` error.
-assert.throws(throwingSecond, 'Second');
-// TypeError [ERR_AMBIGUOUS_ARGUMENT]
+=== "CJS"
 
-// The string is only used (as message) in case the function does not throw:
-assert.throws(notThrowing, 'Second');
-// AssertionError [ERR_ASSERTION]: Missing expected exception: Second
+    ```js
+    const assert = require('node:assert/strict');
 
-// If it was intended to match for the error message do this instead:
-// It does not throw because the error messages match.
-assert.throws(throwingSecond, /Second$/);
+    assert.throws(
+        () => {
+            throw new Error('Wrong value');
+        },
+        (err) => {
+            assert(err instanceof Error);
+            assert(/value/.test(err));
+            // Не возвращайте из функций проверки ничего, кроме `true`.
+            // Иначе непонятно, какая часть проверки не прошла. Вместо этого
+            // выбросьте ошибку о конкретной неудавшейся проверке (как в этом
+            // примере) и добавьте в неё как можно больше полезной отладочной информации.
+            return true;
+        },
+        'unexpected error'
+    );
+    ```
 
-// If the error message does not match, an AssertionError is thrown.
-assert.throws(throwingFirst, /Second$/);
-// AssertionError [ERR_ASSERTION]
-```
+`error` не может быть строкой. Если вторым аргументом передана строка, считается, что `error` опущен, и строка используется как `message`. Это легко даёт незаметные ошибки. Если сообщение совпадает с текстом выброшенной ошибки, возникнет ошибка `ERR_AMBIGUOUS_ARGUMENT`. Внимательно прочитайте пример ниже, если рассматриваете передачу строки вторым аргументом:
 
-Из-за запутанной нотации, приводящей к ошибкам, избегайте строки в качестве второго аргумента.
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert/strict';
+
+    function throwingFirst() {
+        throw new Error('First');
+    }
+
+    function throwingSecond() {
+        throw new Error('Second');
+    }
+
+    function notThrowing() {}
+
+    // Второй аргумент - строка, а входная функция выбросила Error.
+    // Первый случай не выбросит ошибку, так как не совпадает с сообщением
+    // ошибки из входной функции!
+    assert.throws(throwingFirst, 'Second');
+    // В следующем примере сообщение не добавляет ничего к сообщению из
+    // ошибки, и неясно, хотел ли пользователь сопоставлять именно текст ошибки,
+    // поэтому Node.js выбрасывает ошибку `ERR_AMBIGUOUS_ARGUMENT`.
+    assert.throws(throwingSecond, 'Second');
+    // TypeError [ERR_AMBIGUOUS_ARGUMENT]
+
+    // Строка используется (как message) только если функция не выбросила ошибку:
+    assert.throws(notThrowing, 'Second');
+    // AssertionError [ERR_ASSERTION]: Missing expected exception: Second
+
+    // Если нужно сопоставлять сообщение об ошибке, сделайте так:
+    // Ошибка не выбрасывается, так как сообщения совпадают.
+    assert.throws(throwingSecond, /Second$/);
+
+    // Если сообщение не совпадает, выбрасывается AssertionError.
+    assert.throws(throwingFirst, /Second$/);
+    // AssertionError [ERR_ASSERTION]
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert/strict');
+
+    function throwingFirst() {
+        throw new Error('First');
+    }
+
+    function throwingSecond() {
+        throw new Error('Second');
+    }
+
+    function notThrowing() {}
+
+    // Второй аргумент - строка, а входная функция выбросила Error.
+    // Первый случай не выбросит ошибку, так как не совпадает с сообщением
+    // ошибки из входной функции!
+    assert.throws(throwingFirst, 'Second');
+    // В следующем примере сообщение не добавляет ничего к сообщению из
+    // ошибки, и неясно, хотел ли пользователь сопоставлять именно текст ошибки,
+    // поэтому Node.js выбрасывает ошибку `ERR_AMBIGUOUS_ARGUMENT`.
+    assert.throws(throwingSecond, 'Second');
+    // TypeError [ERR_AMBIGUOUS_ARGUMENT]
+
+    // Строка используется (как message) только если функция не выбросила ошибку:
+    assert.throws(notThrowing, 'Second');
+    // AssertionError [ERR_ASSERTION]: Missing expected exception: Second
+
+    // Если нужно сопоставлять сообщение об ошибке, сделайте так:
+    // Ошибка не выбрасывается, так как сообщения совпадают.
+    assert.throws(throwingSecond, /Second$/);
+
+    // Если сообщение не совпадает, выбрасывается AssertionError.
+    assert.throws(throwingFirst, /Second$/);
+    // AssertionError [ERR_ASSERTION]
+    ```
+
+Из-за запутанной и подверженной ошибкам записи не используйте строку вторым аргументом.
+
+## `assert.partialDeepStrictEqual(actual, expected[, message])`
+
+<!-- YAML
+added:
+  - v23.4.0
+  - v22.13.0
+changes:
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/59448
+    description: Promises are not considered equal anymore if they are not of
+                 the same instance.
+  - version: v25.0.0
+    pr-url: https://github.com/nodejs/node/pull/57627
+    description: Invalid dates are now considered equal.
+  - version:
+      - v24.0.0
+      - v22.17.0
+    pr-url: https://github.com/nodejs/node/pull/57370
+    description: partialDeepStrictEqual is now Stable. Previously, it had been Experimental.
+-->
+
+??? note "История" | Версия | Изменения | | --- | --- | | v25.0.0 | Промисы больше не считаются равными, если они не относятся к одному и тому же экземпляру. | | v25.0.0 | Недопустимые даты теперь считаются равными. | | v24.0.0, v22.17.0 | PartialDeepStrictEqual теперь является стабильным. Раньше это был экспериментальный вариант. |
+
+-   `actual` {any}
+-   `expected` {any}
+-   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+
+Проверяет частичное глубокое равенство между параметрами `actual` и `expected`. «Глубокое» равенство означает, что перечислимые собственные свойства дочерних объектов рекурсивно оцениваются по правилам ниже. «Частичное» равенство означает, что сравниваются только свойства, присутствующие в параметре `expected`.
+
+Этот метод всегда проходит те же проверки, что и [`assert.deepStrictEqual()`][], и ведёт себя как надмножество этой функции.
+
+### Детали сравнения
+
+-   Примитивы сравниваются через [`Object.is()`][].
+-   [Теги типов][object.prototype.tostring()] объектов должны совпадать.
+-   [`[[Prototype]]`][prototype-spec] объектов не сравниваются.
+-   Учитываются только [перечислимые собственные свойства][enumerable "own" properties].
+-   Имена, сообщения, причины (`cause`) и ошибки [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) сравниваются всегда, даже если это неперечислимые свойства. Сравнивается и `errors`.
+-   Сравниваются и перечислимые собственные свойства [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
+-   [Обёртки объектов][object wrappers] сравниваются и как объекты, и как развёрнутые значения.
+-   Свойства `Object` сравниваются без учёта порядка.
+-   Ключи [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) и элементы [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) сравниваются без учёта порядка.
+-   Рекурсия останавливается, когда обе стороны различаются или обе доходят до циклической ссылки.
+-   Экземпляры [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) и [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) **не** сравниваются структурно. Они равны только если ссылаются на один и тот же объект. Любое сравнение разных экземпляров `WeakMap`, `WeakSet` или `Promise` даст неравенство, даже при одинаковом содержимом.
+-   У [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) всегда сравниваются `lastIndex`, флаги и `source`, даже если это неперечислимые свойства.
+-   Дыры в разреженных массивах игнорируются.
+
+=== "MJS"
+
+    ```js
+    import assert from 'node:assert';
+
+    assert.partialDeepStrictEqual(
+        { a: { b: { c: 1 } } },
+        { a: { b: { c: 1 } } }
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        { a: 1, b: 2, c: 3 },
+        { b: 2 }
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [4, 5, 8]
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        new Set([{ a: 1 }, { b: 1 }]),
+        new Set([{ a: 1 }])
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        new Map([
+            ['key1', 'value1'],
+            ['key2', 'value2'],
+        ]),
+        new Map([['key2', 'value2']])
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(123n, 123n);
+    // OK
+
+    assert.partialDeepStrictEqual(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [5, 4, 8]
+    );
+    // AssertionError
+
+    assert.partialDeepStrictEqual({ a: 1 }, { a: 1, b: 2 });
+    // AssertionError
+
+    assert.partialDeepStrictEqual(
+        { a: { b: 2 } },
+        { a: { b: '2' } }
+    );
+    // AssertionError
+    ```
+
+=== "CJS"
+
+    ```js
+    const assert = require('node:assert');
+
+    assert.partialDeepStrictEqual(
+        { a: { b: { c: 1 } } },
+        { a: { b: { c: 1 } } }
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        { a: 1, b: 2, c: 3 },
+        { b: 2 }
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [4, 5, 8]
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        new Set([{ a: 1 }, { b: 1 }]),
+        new Set([{ a: 1 }])
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(
+        new Map([
+            ['key1', 'value1'],
+            ['key2', 'value2'],
+        ]),
+        new Map([['key2', 'value2']])
+    );
+    // OK
+
+    assert.partialDeepStrictEqual(123n, 123n);
+    // OK
+
+    assert.partialDeepStrictEqual(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [5, 4, 8]
+    );
+    // AssertionError
+
+    assert.partialDeepStrictEqual({ a: 1 }, { a: 1, b: 2 });
+    // AssertionError
+
+    assert.partialDeepStrictEqual(
+        { a: { b: 2 } },
+        { a: { b: '2' } }
+    );
+    // AssertionError
+    ```
+
+[object wrappers]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures#primitive_values
+[object.prototype.tostring()]: https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+[`!=` operator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Inequality
+[`===` operator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality
+[`==` operator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality
+[`assertionerror`]: #класс-assertassertionerror
+[`class`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+[`err_invalid_return_value`]: errors.md#err_invalid_return_value
+[`object.is()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+[`assert.deepequal()`]: #assertdeepequalactual-expected-message
+[`assert.deepstrictequal()`]: #assertdeepstrictequalactual-expected-message
+[`assert.doesnotthrow()`]: #assertdoesnotthrowfn-error-message
+[`assert.equal()`]: #assertequalactual-expected-message
+[`assert.notdeepequal()`]: #assertnotdeepequalactual-expected-message
+[`assert.notdeepstrictequal()`]: #assertnotdeepstrictequalactual-expected-message
+[`assert.notequal()`]: #assertnotequalactual-expected-message
+[`assert.notstrictequal()`]: #assertnotstrictequalactual-expected-message
+[`assert.ok()`]: #assertokvalue-message
+[`assert.strictequal()`]: #assertstrictequalactual-expected-message
+[`assert.throws()`]: #assertthrowsfn-error-message
+[`getcolordepth()`]: tty.md#writestreamgetcolordepthenv
+[`util.format()`]: util.md#utilformatformat-args
+[enumerable "own" properties]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties
+[prototype-spec]: https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots
+
+<!-- markdownlint-enable MD024 -->
