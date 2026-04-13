@@ -17,25 +17,23 @@ description: Глобальные объекты и API, доступные во
 
 Эти объекты доступны во всех модулях.
 
-Следующие переменные могут казаться глобальными, но таковыми не являются. Они существуют только в
-области видимости [модулей CommonJS][CommonJS modules]:
+Следующие переменные могут казаться глобальными, но таковыми не являются. Они существуют только в области видимости [модулей CommonJS](modules.md):
 
-* [`__dirname`][`__dirname`]
-* [`__filename`][`__filename`]
-* [`exports`][`exports`]
-* [`module`][`module`]
-* [`require()`][`require()`]
+-   [`__dirname`](modules.md#__dirname)
+-   [`__filename`](modules.md#__filename)
+-   [`exports`](modules.md#exports)
+-   [`module`](modules.md#module)
+-   [`require()`](modules.md#requireid)
 
-Перечисленные ниже объекты относятся к Node.js. Есть и [встроенные объекты][built-in objects],
-входящие в сам язык JavaScript; они тоже доступны глобально.
+Перечисленные ниже объекты относятся к Node.js. Есть и [встроенные объекты](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects), входящие в сам язык JavaScript; они тоже доступны глобально.
 
 ## `__dirname`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`__dirname`][`__dirname`].
+Эта переменная может казаться глобальной, но таковой не является. См. [`__dirname`](modules.md#__dirname).
 
 ## `__filename`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`__filename`][`__filename`].
+Эта переменная может казаться глобальной, но таковой не является. См. [`__filename`](modules.md#__filename).
 
 ## Класс: `AbortController`
 
@@ -55,18 +53,20 @@ changes:
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
-Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`.
-API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`. API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 
 ```js
 const ac = new AbortController();
 
-ac.signal.addEventListener('abort', () => console.log('Aborted!'),
-                           { once: true });
+ac.signal.addEventListener(
+    'abort',
+    () => console.log('Aborted!'),
+    { once: true }
+);
 
 ac.abort();
 
-console.log(ac.signal.aborted);  // Выводит true
+console.log(ac.signal.aborted); // Выводит true
 ```
 
 ### `abortController.abort([reason])`
@@ -89,10 +89,9 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
-* `reason` {any} Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
+-   `reason` {any} Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
-Инициирует сигнал отмены: у `abortController.signal` генерируется
-событие `'abort'`.
+Инициирует сигнал отмены: у `abortController.signal` генерируется событие `'abort'`.
 
 ### `abortController.signal`
 
@@ -102,7 +101,7 @@ added:
   - v14.17.0
 -->
 
-* Тип: [<AbortSignal>](globals.md#abortsignal)
+-   Тип: [<AbortSignal>](globals.md#abortsignal)
 
 ## Класс: `AbortSignal`
 
@@ -112,10 +111,9 @@ added:
   - v14.17.0
 -->
 
-* Расширяет: [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget)
+-   Расширяет: [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget)
 
-`AbortSignal` уведомляет подписчиков о вызове метода
-`abortController.abort()`.
+`AbortSignal` уведомляет подписчиков о вызове метода `abortController.abort()`.
 
 ### Статический метод: `AbortSignal.abort([reason])`
 
@@ -137,8 +135,8 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
-* `reason` {any}
-* Возвращает: [<AbortSignal>](globals.md#abortsignal)
+-   `reason` {any}
+-   Возвращает: [<AbortSignal>](globals.md#abortsignal)
 
 Возвращает новый уже прерванный `AbortSignal`.
 
@@ -150,8 +148,7 @@ added:
   - v16.14.0
 -->
 
-* `delay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания
-  `AbortSignal`.
+-   `delay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван через `delay` миллисекунд.
 
@@ -163,11 +160,9 @@ added:
   - v18.17.0
 -->
 
-* `signals` [<AbortSignal[]>](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
+-   `signals` [<AbortSignal[]>](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
 
-Возвращает новый `AbortSignal`, который будет прерван, если прерван любой из переданных
-сигналов. Свойство [`abortSignal.reason`][`abortSignal.reason`] получит значение той причины,
-которая привела к прерыванию.
+Возвращает новый `AbortSignal`, который будет прерван, если прерван любой из переданных сигналов. Свойство [`abortSignal.reason`](globals.md#abortsignalreason) получит значение той причины, которая привела к прерыванию.
 
 ### Событие: `'abort'`
 
@@ -177,8 +172,7 @@ added:
   - v14.17.0
 -->
 
-Событие `'abort'` генерируется при вызове `abortController.abort()`.
-Колбэк получает один объект-аргумент с единственным свойством `type`, равным `'abort'`:
+Событие `'abort'` генерируется при вызове `abortController.abort()`. Колбэк получает один объект-аргумент с единственным свойством `type`, равным `'abort'`:
 
 ```js
 const ac = new AbortController();
@@ -187,9 +181,13 @@ const ac = new AbortController();
 ac.signal.onabort = () => console.log('aborted!');
 
 // Или через API EventTarget...
-ac.signal.addEventListener('abort', (event) => {
-  console.log(event.type);  // Выводит 'abort'
-}, { once: true });
+ac.signal.addEventListener(
+    'abort',
+    (event) => {
+        console.log(event.type); // Выводит 'abort'
+    },
+    { once: true }
+);
 
 ac.abort();
 ```
@@ -206,7 +204,7 @@ added:
   - v14.17.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true` после того, как `AbortController` был прерван.
 
@@ -218,10 +216,9 @@ added:
   - v14.17.0
 -->
 
-* Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Необязательный колбэк, который пользовательский код может задать для уведомления
-о вызове `abortController.abort()`.
+Необязательный колбэк, который пользовательский код может задать для уведомления о вызове `abortController.abort()`.
 
 ### `abortSignal.reason`
 
@@ -231,14 +228,14 @@ added:
   - v16.14.0
 -->
 
-* Тип: {any}
+-   Тип: {any}
 
 Необязательная причина, указанная при срабатывании `AbortSignal`.
 
 ```js
 const ac = new AbortController();
 ac.abort(new Error('boom!'));
-console.log(ac.signal.reason);  // Error: boom!
+console.log(ac.signal.reason); // Error: boom!
 ```
 
 ### `abortSignal.throwIfAborted()`
@@ -261,7 +258,7 @@ added: v16.0.0
 
     Используйте вместо этого `Buffer.from(data, 'base64')`.
 
-Глобальный псевдоним для [`buffer.atob()`][`buffer.atob()`].
+Глобальный псевдоним для [`buffer.atob()`](buffer.md#bufferatobdata).
 
 Доступна автоматическая миграция ([исходники](https://github.com/nodejs/userland-migrations/tree/main/recipes/buffer-atob-btoa)):
 
@@ -295,7 +292,7 @@ added: v16.0.0
 
     Используйте вместо этого `buf.toString('base64')`.
 
-Глобальный псевдоним для [`buffer.btoa()`][`buffer.btoa()`].
+Глобальный псевдоним для [`buffer.btoa()`](buffer.md#bufferbtoadata).
 
 Доступна автоматическая миграция ([исходники](https://github.com/nodejs/userland-migrations/tree/main/recipes/buffer-atob-btoa)):
 
@@ -309,9 +306,9 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 added: v0.1.103
 -->
 
-* Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Для работы с двоичными данными. См. раздел [buffer][buffer section].
+Для работы с двоичными данными. См. раздел [buffer](buffer.md).
 
 ## Класс: `ByteLengthQueuingStrategy`
 
@@ -333,7 +330,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ByteLengthQueuingStrategy`][`ByteLengthQueuingStrategy`], совместимая с браузером.
+Реализация [`ByteLengthQueuingStrategy`](webstreams.md#class-bytelengthqueuingstrategy), совместимая с браузером.
 
 ## `clearImmediate(immediateObject)`
 
@@ -341,7 +338,7 @@ changes:
 added: v0.9.1
 -->
 
-[`clearImmediate`][`clearImmediate`] описан в разделе [таймеры][timers].
+[`clearImmediate`](timers.md#clearimmediateimmediate) описан в разделе [таймеры](timers.md).
 
 ## `clearInterval(intervalObject)`
 
@@ -349,7 +346,7 @@ added: v0.9.1
 added: v0.0.1
 -->
 
-[`clearInterval`][`clearInterval`] описан в разделе [таймеры][timers].
+[`clearInterval`](timers.md#clearintervaltimeout) описан в разделе [таймеры](timers.md).
 
 ## `clearTimeout(timeoutObject)`
 
@@ -357,7 +354,7 @@ added: v0.0.1
 added: v0.0.1
 -->
 
-[`clearTimeout`][`clearTimeout`] описан в разделе [таймеры][timers].
+[`clearTimeout`](timers.md#cleartimeouttimeout) описан в разделе [таймеры](timers.md).
 
 ## Класс: `CloseEvent`
 
@@ -365,8 +362,7 @@ added: v0.0.1
 added: v23.0.0
 -->
 
-Реализация [CloseEvent](globals.md), совместимая с браузером. Отключите это API
-флагом CLI [`--no-experimental-websocket`][`--no-experimental-websocket`].
+Реализация [CloseEvent](globals.md), совместимая с браузером. Отключите это API флагом CLI [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `CompressionStream`
 
@@ -394,7 +390,7 @@ changes:
     | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`CompressionStream`][`CompressionStream`], совместимая с браузером.
+Реализация [`CompressionStream`](webstreams.md#class-compressionstream), совместимая с браузером.
 
 ## `console`
 
@@ -402,7 +398,7 @@ changes:
 added: v0.1.100
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Вывод в stdout и stderr. См. раздел [`console`][`console`].
 
@@ -426,7 +422,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`CountQueuingStrategy`][`CountQueuingStrategy`], совместимая с браузером.
+Реализация [`CountQueuingStrategy`][`countqueuingstrategy`], совместимая с браузером.
 
 ## Класс: `Crypto`
 
@@ -450,9 +446,7 @@ changes:
     | v23.0.0 | Больше не экспериментально. |
     | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
-Реализация [Crypto](crypto.md), совместимая с браузером. Глобал доступен
-только если бинарник Node.js собран с поддержкой модуля
-`node:crypto`.
+Реализация [Crypto](crypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## `crypto`
 
@@ -476,7 +470,7 @@ changes:
     | v23.0.0 | Больше не экспериментально. |
     | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
-Реализация [Web Crypto API][Web Crypto API], совместимая с браузером.
+Реализация [Web Crypto API][web crypto api], совместимая с браузером.
 
 ## Класс: `CryptoKey`
 
@@ -500,9 +494,7 @@ changes:
     | v23.0.0 | Больше не экспериментально. |
     | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
-Реализация [CryptoKey](webcrypto.md#class-cryptokey), совместимая с браузером. Глобал доступен
-только если бинарник Node.js собран с поддержкой модуля
-`node:crypto`.
+Реализация [CryptoKey](webcrypto.md#class-cryptokey), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `CustomEvent`
 
@@ -560,7 +552,7 @@ changes:
     | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`DecompressionStream`][`DecompressionStream`], совместимая с браузером.
+Реализация [`DecompressionStream`][`decompressionstream`], совместимая с браузером.
 
 ## Класс: `DOMException`
 
@@ -596,8 +588,7 @@ changes:
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
-Реализация класса `Event`, совместимая с браузером. Подробнее —
-[`EventTarget` and `Event` API][`EventTarget` and `Event` API].
+Реализация класса `Event`, совместимая с браузером. Подробнее — [`EventTarget` and `Event` API][`eventtarget` and `event` api].
 
 ## Класс: `EventSource`
 
@@ -631,8 +622,7 @@ changes:
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
-Реализация класса `EventTarget`, совместимая с браузером. Подробнее —
-[`EventTarget` and `Event` API][`EventTarget` and `Event` API].
+Реализация класса `EventTarget`, совместимая с браузером. Подробнее — [`EventTarget` and `Event` API][`eventtarget` and `event` api].
 
 ## `exports`
 
@@ -677,15 +667,13 @@ changes:
 
 ### Пользовательский dispatcher
 
-Можно передать свой dispatcher в опциях `fetch`. Он должен быть совместим с
-[`Dispatcher` из undici](https://undici.nodejs.org/#/docs/api/Dispatcher.md).
+Можно передать свой dispatcher в опциях `fetch`. Он должен быть совместим с [`Dispatcher` из undici](https://undici.nodejs.org/#/docs/api/Dispatcher.md).
 
 ```js
 fetch(url, { dispatcher: new MyAgent() });
 ```
 
-Глобальный dispatcher в Node.js можно сменить, установив `undici` и вызвав
-`setGlobalDispatcher()`. Это затронет и `undici`, и Node.js.
+Глобальный dispatcher в Node.js можно сменить, установив `undici` и вызвав `setGlobalDispatcher()`. Это затронет и `undici`, и Node.js.
 
 === "MJS"
 
@@ -698,10 +686,10 @@ fetch(url, { dispatcher: new MyAgent() });
 
 С `fetch` можно использовать глобалы:
 
-* [`FormData`][`FormData`]
-* [`Headers`][`Headers`]
-* [`Request`][`Request`]
-* [`Response`][`Response`]
+-   [`FormData`][`formdata`]
+-   [`Headers`][`headers`]
+-   [`Request`][`request`]
+-   [`Response`][`response`]
 
 ## Класс: `File`
 
@@ -746,9 +734,9 @@ added: v0.1.27
 
     Используйте вместо этого [`globalThis`][`globalThis`].
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
+-   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
 
-В браузерах традиционно верхний уровень — глобальная область: `var something` создаёт глобальную переменную (кроме модулей ECMAScript). В Node.js иначе: верхний уровень модуля не совпадает с глобальной областью; `var something` в модуле Node.js локально для этого модуля — и для [CommonJS][CommonJS module], и для [ECMAScript][ECMAScript module].
+В браузерах традиционно верхний уровень — глобальная область: `var something` создаёт глобальную переменную (кроме модулей ECMAScript). В Node.js иначе: верхний уровень модуля не совпадает с глобальной областью; `var something` в модуле Node.js локально для этого модуля — и для [CommonJS][commonjs module], и для [ECMAScript][ecmascript module].
 
 ## Класс: `Headers`
 
@@ -809,11 +797,7 @@ changes:
 
     Отключите это API флагом [`--no-experimental-webstorage`][`--no-experimental-webstorage`].
 
-Реализация [`localStorage`][`localStorage`], совместимая с браузером. Данные хранятся
-без шифрования в файле, заданном флагом CLI [`--localstorage-file`][`--localstorage-file`].
-Максимальный объём — 10 МБ.
-Изменение данных вне Web Storage API не поддерживается.
-На сервере `localStorage` не разделён по пользователям или запросам: данные общие для всех.
+Реализация [`localStorage`][`localstorage`], совместимая с браузером. Данные хранятся без шифрования в файле, заданном флагом CLI [`--localstorage-file`][`--localstorage-file`]. Максимальный объём — 10 МБ. Изменение данных вне Web Storage API не поддерживается. На сервере `localStorage` не разделён по пользователям или запросам: данные общие для всех.
 
 ## Класс: `MessageChannel`
 
@@ -821,7 +805,7 @@ changes:
 added: v15.0.0
 -->
 
-Класс `MessageChannel`. Подробнее — [`MessageChannel`][`MessageChannel`].
+Класс `MessageChannel`. Подробнее — [`MessageChannel`][`messagechannel`].
 
 ## Класс: `MessageEvent`
 
@@ -837,7 +821,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-Класс `MessagePort`. Подробнее — [`MessagePort`][`MessagePort`].
+Класс `MessagePort`. Подробнее — [`MessagePort`][`messageport`].
 
 ## `module`
 
@@ -853,7 +837,7 @@ added: v21.0.0
 
     Отключите это API флагом [`--no-experimental-global-navigator`][`--no-experimental-global-navigator`].
 
-Частичная реализация [Navigator API][Navigator API].
+Частичная реализация [Navigator API][navigator api].
 
 ## `navigator`
 
@@ -873,13 +857,14 @@ added: v21.0.0
 added: v21.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Свойство `navigator.hardwareConcurrency` только для чтения: число
-логических процессоров, доступных текущему экземпляру Node.js.
+Свойство `navigator.hardwareConcurrency` только для чтения: число логических процессоров, доступных текущему экземпляру Node.js.
 
 ```js
-console.log(`This process is running on ${navigator.hardwareConcurrency} logical processors`);
+console.log(
+    `This process is running on ${navigator.hardwareConcurrency} logical processors`
+);
 ```
 
 ### `navigator.language`
@@ -888,16 +873,18 @@ console.log(`This process is running on ${navigator.hardwareConcurrency} logical
 added: v21.2.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.language` только для чтения: предпочитаемый язык экземпляра Node.js. Определяется библиотекой ICU по умолчанию языка ОС.
 
-Формат — как в [RFC 5646][RFC 5646].
+Формат — как в [RFC 5646][rfc 5646].
 
 Без ICU значение по умолчанию — `'en-US'`.
 
 ```js
-console.log(`The preferred language of the Node.js instance has the tag '${navigator.language}'`);
+console.log(
+    `The preferred language of the Node.js instance has the tag '${navigator.language}'`
+);
 ```
 
 ### `navigator.languages`
@@ -906,15 +893,16 @@ console.log(`The preferred language of the Node.js instance has the tag '${navig
 added: v21.2.0
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Свойство `navigator.languages` только для чтения: массив предпочитаемых языков.
-По умолчанию содержит только `navigator.language` (см. выше).
+Свойство `navigator.languages` только для чтения: массив предпочитаемых языков. По умолчанию содержит только `navigator.language` (см. выше).
 
 Без ICU — `['en-US']`.
 
 ```js
-console.log(`The preferred languages are '${navigator.languages}'`);
+console.log(
+    `The preferred languages are '${navigator.languages}'`
+);
 ```
 
 ### `navigator.locks`
@@ -925,7 +913,7 @@ added: v24.5.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-Свойство `navigator.locks` только для чтения: экземпляр [`LockManager`][`LockManager`] для координации доступа к ресурсам между потоками одного процесса. Семантика соответствует [браузерному API `LockManager`][browser `LockManager`].
+Свойство `navigator.locks` только для чтения: экземпляр [`LockManager`][`lockmanager`] для координации доступа к ресурсам между потоками одного процесса. Семантика соответствует [браузерному API `LockManager`][browser `lockmanager`].
 
 === "MJS"
 
@@ -934,7 +922,7 @@ added: v24.5.0
     await navigator.locks.request('my_resource', async (lock) => {
       console.log(`Lock acquired: ${lock.name}`);
     });
-    
+
     // Разделяемая блокировка
     await navigator.locks.request('shared_resource', { mode: 'shared' }, async (lock) => {
       console.log(`Shared lock acquired: ${lock.name}`);
@@ -949,7 +937,7 @@ added: v24.5.0
     }).then(() => {
       console.log('Lock released');
     });
-    
+
     navigator.locks.request('shared_resource', { mode: 'shared' }, async (lock) => {
       console.log(`Shared lock acquired: ${lock.name}`);
     }).then(() => {
@@ -965,12 +953,14 @@ added: v24.5.0
 added: v21.2.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.platform` только для чтения: строка с идентификатором платформы.
 
 ```js
-console.log(`This process is running on ${navigator.platform}`);
+console.log(
+    `This process is running on ${navigator.platform}`
+);
 ```
 
 ### `navigator.userAgent`
@@ -979,7 +969,7 @@ console.log(`This process is running on ${navigator.platform}`);
 added: v21.1.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.userAgent` только для чтения: user agent — имя среды и мажорная версия.
 
@@ -1001,7 +991,7 @@ added: v16.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceEntry`. См. [`PerformanceEntry`][`PerformanceEntry`].
+Класс `PerformanceEntry`. См. [`PerformanceEntry`][`performanceentry`].
 
 ## Класс: `PerformanceMark`
 
@@ -1009,7 +999,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceMark`. См. [`PerformanceMark`][`PerformanceMark`].
+Класс `PerformanceMark`. См. [`PerformanceMark`][`performancemark`].
 
 ## Класс: `PerformanceMeasure`
 
@@ -1017,7 +1007,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceMeasure`. См. [`PerformanceMeasure`][`PerformanceMeasure`].
+Класс `PerformanceMeasure`. См. [`PerformanceMeasure`][`performancemeasure`].
 
 ## Класс: `PerformanceObserver`
 
@@ -1025,7 +1015,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceObserver`. См. [`PerformanceObserver`][`PerformanceObserver`].
+Класс `PerformanceObserver`. См. [`PerformanceObserver`][`performanceobserver`].
 
 ## Класс: `PerformanceObserverEntryList`
 
@@ -1033,8 +1023,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceObserverEntryList`. См.
-[`PerformanceObserverEntryList`][`PerformanceObserverEntryList`].
+Класс `PerformanceObserverEntryList`. См. [`PerformanceObserverEntryList`][`performanceobserverentrylist`].
 
 ## Класс: `PerformanceResourceTiming`
 
@@ -1042,7 +1031,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`][`PerformanceResourceTiming`].
+Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`][`performanceresourcetiming`].
 
 ## `process`
 
@@ -1050,7 +1039,7 @@ added: v19.0.0
 added: v0.1.7
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект process. См. раздел [объект `process`][`process` object].
 
@@ -1060,12 +1049,11 @@ added: v0.1.7
 added: v11.0.0
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
+-   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
-`queueMicrotask()` ставит микрозадачу на вызов `callback`. Если
-`callback` выбрасывает исключение, генерируется событие [`process` object][`process` object] `'uncaughtException'`.
+`queueMicrotask()` ставит микрозадачу на вызов `callback`. Если `callback` выбрасывает исключение, генерируется событие [`process` object][`process` object] `'uncaughtException'`.
 
-Очередь микрозадач управляется V8; её можно сравнить с очередью [`process.nextTick()`][`process.nextTick()`], которую управляет Node.js. Очередь `process.nextTick()` всегда обрабатывается раньше очереди микрозадач в каждом цикле событий.
+Очередь микрозадач управляется V8; её можно сравнить с очередью [`process.nextTick()`][`process.nexttick()`], которую управляет Node.js. Очередь `process.nextTick()` всегда обрабатывается раньше очереди микрозадач в каждом цикле событий.
 
 ```js
 // `queueMicrotask()` гарантирует, что событие 'load' всегда
@@ -1073,17 +1061,17 @@ added: v11.0.0
 // всегда шло бы раньше других задач с промисами.
 
 DataHandler.prototype.load = async function load(key) {
-  const hit = this._cache.get(key);
-  if (hit !== undefined) {
-    queueMicrotask(() => {
-      this.emit('load', hit);
-    });
-    return;
-  }
+    const hit = this._cache.get(key);
+    if (hit !== undefined) {
+        queueMicrotask(() => {
+            this.emit('load', hit);
+        });
+        return;
+    }
 
-  const data = await fetchData(key);
-  this._cache.set(key, data);
-  this.emit('load', data);
+    const data = await fetchData(key);
+    this._cache.set(key, data);
+    this.emit('load', data);
 };
 ```
 
@@ -1115,7 +1103,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableByteStreamController`][`ReadableByteStreamController`], совместимая с браузером.
+Реализация [`ReadableByteStreamController`][`readablebytestreamcontroller`], совместимая с браузером.
 
 ## Класс: `ReadableStream`
 
@@ -1137,7 +1125,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStream`][`ReadableStream`], совместимая с браузером.
+Реализация [`ReadableStream`][`readablestream`], совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBReader`
 
@@ -1159,7 +1147,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamBYOBReader`][`ReadableStreamBYOBReader`], совместимая с браузером.
+Реализация [`ReadableStreamBYOBReader`][`readablestreambyobreader`], совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBRequest`
 
@@ -1181,7 +1169,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamBYOBRequest`][`ReadableStreamBYOBRequest`], совместимая с браузером.
+Реализация [`ReadableStreamBYOBRequest`][`readablestreambyobrequest`], совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultController`
 
@@ -1203,7 +1191,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamDefaultController`][`ReadableStreamDefaultController`], совместимая с браузером.
+Реализация [`ReadableStreamDefaultController`][`readablestreamdefaultcontroller`], совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultReader`
 
@@ -1225,7 +1213,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamDefaultReader`][`ReadableStreamDefaultReader`], совместимая с браузером.
+Реализация [`ReadableStreamDefaultReader`][`readablestreamdefaultreader`], совместимая с браузером.
 
 ## Класс: `Request`
 
@@ -1303,7 +1291,7 @@ changes:
 
     Отключите это API флагом [`--no-experimental-webstorage`][`--no-experimental-webstorage`].
 
-Реализация [`sessionStorage`][`sessionStorage`], совместимая с браузером. Данные в памяти, квота 10 МБ. `sessionStorage` живёт только в текущем процессе и не разделяется между worker.
+Реализация [`sessionStorage`][`sessionstorage`], совместимая с браузером. Данные в памяти, квота 10 МБ. `sessionStorage` живёт только в текущем процессе и не разделяется между worker.
 
 ## `setImmediate(callback[, ...args])`
 
@@ -1311,7 +1299,7 @@ changes:
 added: v0.9.1
 -->
 
-[`setImmediate`][`setImmediate`] описан в разделе [таймеры][timers].
+[`setImmediate`][`setimmediate`] описан в разделе [таймеры][timers].
 
 ## `setInterval(callback, delay[, ...args])`
 
@@ -1319,7 +1307,7 @@ added: v0.9.1
 added: v0.0.1
 -->
 
-[`setInterval`][`setInterval`] описан в разделе [таймеры][timers].
+[`setInterval`][`setinterval`] описан в разделе [таймеры][timers].
 
 ## `setTimeout(callback, delay[, ...args])`
 
@@ -1327,7 +1315,7 @@ added: v0.0.1
 added: v0.0.1
 -->
 
-[`setTimeout`][`setTimeout`] описан в разделе [таймеры][timers].
+[`setTimeout`][`settimeout`] описан в разделе [таймеры][timers].
 
 ## Класс: `Storage`
 
@@ -1347,7 +1335,7 @@ added: v22.4.0
 added: v17.0.0
 -->
 
-Метод WHATWG [`structuredClone`][`structuredClone`].
+Метод WHATWG [`structuredClone`][`structuredclone`].
 
 ## Класс: `SubtleCrypto`
 
@@ -1367,9 +1355,7 @@ changes:
     | --- | --- |
     | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
-Реализация [SubtleCrypto](webcrypto.md), совместимая с браузером. Глобал доступен
-только если бинарник Node.js собран с поддержкой модуля
-`node:crypto`.
+Реализация [SubtleCrypto](webcrypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `TextDecoder`
 
@@ -1377,7 +1363,7 @@ changes:
 added: v11.0.0
 -->
 
-Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`][`TextDecoder`].
+Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`][`textdecoder`].
 
 ## Класс: `TextDecoderStream`
 
@@ -1399,7 +1385,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TextDecoderStream`][`TextDecoderStream`], совместимая с браузером.
+Реализация [`TextDecoderStream`][`textdecoderstream`], совместимая с браузером.
 
 ## Класс: `TextEncoder`
 
@@ -1407,7 +1393,7 @@ changes:
 added: v11.0.0
 -->
 
-Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`][`TextEncoder`].
+Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`][`textencoder`].
 
 ## Класс: `TextEncoderStream`
 
@@ -1429,7 +1415,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TextEncoderStream`][`TextEncoderStream`], совместимая с браузером.
+Реализация [`TextEncoderStream`][`textencoderstream`], совместимая с браузером.
 
 ## Класс: `TransformStream`
 
@@ -1451,7 +1437,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TransformStream`][`TransformStream`], совместимая с браузером.
+Реализация [`TransformStream`][`transformstream`], совместимая с браузером.
 
 ## Класс: `TransformStreamDefaultController`
 
@@ -1473,7 +1459,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TransformStreamDefaultController`][`TransformStreamDefaultController`], совместимая с браузером.
+Реализация [`TransformStreamDefaultController`][`transformstreamdefaultcontroller`], совместимая с браузером.
 
 ## Класс: `URL`
 
@@ -1481,7 +1467,7 @@ changes:
 added: v10.0.0
 -->
 
-Класс WHATWG `URL`. См. раздел [`URL`][`URL`].
+Класс WHATWG `URL`. См. раздел [`URL`][`url`].
 
 ## Класс: `URLPattern`
 
@@ -1491,7 +1477,7 @@ added: v24.0.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-Класс WHATWG `URLPattern`. См. раздел [`URLPattern`][`URLPattern`].
+Класс WHATWG `URLPattern`. См. раздел [`URLPattern`][`urlpattern`].
 
 ## Класс: `URLSearchParams`
 
@@ -1499,7 +1485,7 @@ added: v24.0.0
 added: v10.0.0
 -->
 
-Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`][`URLSearchParams`].
+Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`][`urlsearchparams`].
 
 ## Класс: `WebAssembly`
 
@@ -1507,11 +1493,9 @@ added: v10.0.0
 added: v8.0.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Пространство имён для функциональности W3C
-[WebAssembly][webassembly-org]. Использование и совместимость — на
-[MDN][webassembly-mdn].
+Пространство имён для функциональности W3C [WebAssembly][webassembly-org]. Использование и совместимость — на [MDN][webassembly-mdn].
 
 ## Класс: `WebSocket`
 
@@ -1535,8 +1519,7 @@ changes:
     | v22.4.0 | Больше не экспериментально. |
     | v22.0.0 | Больше нет флага CLI `--experimental-websocket`. |
 
-Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API
-флагом [`--no-experimental-websocket`][`--no-experimental-websocket`].
+Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API флагом [`--no-experimental-websocket`][`--no-experimental-websocket`].
 
 ## Класс: `WritableStream`
 
@@ -1558,7 +1541,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStream`][`WritableStream`], совместимая с браузером.
+Реализация [`WritableStream`][`writablestream`], совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultController`
 
@@ -1580,7 +1563,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStreamDefaultController`][`WritableStreamDefaultController`], совместимая с браузером.
+Реализация [`WritableStreamDefaultController`][`writablestreamdefaultcontroller`], совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultWriter`
 
@@ -1602,81 +1585,81 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStreamDefaultWriter`][`WritableStreamDefaultWriter`], совместимая с браузером.
+Реализация [`WritableStreamDefaultWriter`][`writablestreamdefaultwriter`], совместимая с браузером.
 
-[CommonJS module]: modules.md
-[CommonJS modules]: modules.md
-[ECMAScript module]: esm.md
-[Navigator API]: https://html.spec.whatwg.org/multipage/system-state.html#the-navigator-object
-[RFC 5646]: https://www.rfc-editor.org/rfc/rfc5646.txt
-[Web Crypto API]: webcrypto.md
+[commonjs module]: modules.md
+[commonjs modules]: modules.md
+[ecmascript module]: esm.md
+[navigator api]: https://html.spec.whatwg.org/multipage/system-state.html#the-navigator-object
+[rfc 5646]: https://www.rfc-editor.org/rfc/rfc5646.txt
+[web crypto api]: webcrypto.md
 [`--experimental-eventsource`]: cli.md#--experimental-eventsource
 [`--localstorage-file`]: cli.md#--localstorage-filefile
 [`--no-experimental-global-navigator`]: cli.md#--no-experimental-global-navigator
 [`--no-experimental-websocket`]: cli.md#--no-experimental-websocket
 [`--no-experimental-webstorage`]: cli.md#--no-experimental-webstorage
-[`ByteLengthQueuingStrategy`]: webstreams.md#class-bytelengthqueuingstrategy
-[`CompressionStream`]: webstreams.md#class-compressionstream
-[`CountQueuingStrategy`]: webstreams.md#class-countqueuingstrategy
-[`DecompressionStream`]: webstreams.md#class-decompressionstream
-[`EventTarget` and `Event` API]: events.md#eventtarget-and-event-api
-[`FormData`]: #class-formdata
-[`Headers`]: #class-headers
-[`LockManager`]: worker_threads.md#class-lockmanager
-[`MessageChannel`]: worker_threads.md#class-messagechannel
-[`MessagePort`]: worker_threads.md#class-messageport
-[`PerformanceEntry`]: perf_hooks.md#class-performanceentry
-[`PerformanceMark`]: perf_hooks.md#class-performancemark
-[`PerformanceMeasure`]: perf_hooks.md#class-performancemeasure
-[`PerformanceObserverEntryList`]: perf_hooks.md#class-performanceobserverentrylist
-[`PerformanceObserver`]: perf_hooks.md#class-performanceobserver
-[`PerformanceResourceTiming`]: perf_hooks.md#class-performanceresourcetiming
-[`ReadableByteStreamController`]: webstreams.md#class-readablebytestreamcontroller
-[`ReadableStreamBYOBReader`]: webstreams.md#class-readablestreambyobreader
-[`ReadableStreamBYOBRequest`]: webstreams.md#class-readablestreambyobrequest
-[`ReadableStreamDefaultController`]: webstreams.md#class-readablestreamdefaultcontroller
-[`ReadableStreamDefaultReader`]: webstreams.md#class-readablestreamdefaultreader
-[`ReadableStream`]: webstreams.md#class-readablestream
-[`Request`]: #class-request
-[`Response`]: #class-response
-[`TextDecoderStream`]: webstreams.md#class-textdecoderstream
-[`TextDecoder`]: util.md#class-utiltextdecoder
-[`TextEncoderStream`]: webstreams.md#class-textencoderstream
-[`TextEncoder`]: util.md#class-utiltextencoder
-[`TransformStreamDefaultController`]: webstreams.md#class-transformstreamdefaultcontroller
-[`TransformStream`]: webstreams.md#class-transformstream
-[`URLPattern`]: url.md#class-urlpattern
-[`URLSearchParams`]: url.md#class-urlsearchparams
-[`URL`]: url.md#class-url
-[`WritableStreamDefaultController`]: webstreams.md#class-writablestreamdefaultcontroller
-[`WritableStreamDefaultWriter`]: webstreams.md#class-writablestreamdefaultwriter
-[`WritableStream`]: webstreams.md#class-writablestream
+[`bytelengthqueuingstrategy`]: webstreams.md#class-bytelengthqueuingstrategy
+[`compressionstream`]: webstreams.md#class-compressionstream
+[`countqueuingstrategy`]: webstreams.md#class-countqueuingstrategy
+[`decompressionstream`]: webstreams.md#class-decompressionstream
+[`eventtarget` and `event` api]: events.md#eventtarget-and-event-api
+[`formdata`]: #class-formdata
+[`headers`]: #class-headers
+[`lockmanager`]: worker_threads.md#class-lockmanager
+[`messagechannel`]: worker_threads.md#class-messagechannel
+[`messageport`]: worker_threads.md#class-messageport
+[`performanceentry`]: perf_hooks.md#class-performanceentry
+[`performancemark`]: perf_hooks.md#class-performancemark
+[`performancemeasure`]: perf_hooks.md#class-performancemeasure
+[`performanceobserverentrylist`]: perf_hooks.md#class-performanceobserverentrylist
+[`performanceobserver`]: perf_hooks.md#class-performanceobserver
+[`performanceresourcetiming`]: perf_hooks.md#class-performanceresourcetiming
+[`readablebytestreamcontroller`]: webstreams.md#class-readablebytestreamcontroller
+[`readablestreambyobreader`]: webstreams.md#class-readablestreambyobreader
+[`readablestreambyobrequest`]: webstreams.md#class-readablestreambyobrequest
+[`readablestreamdefaultcontroller`]: webstreams.md#class-readablestreamdefaultcontroller
+[`readablestreamdefaultreader`]: webstreams.md#class-readablestreamdefaultreader
+[`readablestream`]: webstreams.md#class-readablestream
+[`request`]: #class-request
+[`response`]: #class-response
+[`textdecoderstream`]: webstreams.md#class-textdecoderstream
+[`textdecoder`]: util.md#class-utiltextdecoder
+[`textencoderstream`]: webstreams.md#class-textencoderstream
+[`textencoder`]: util.md#class-utiltextencoder
+[`transformstreamdefaultcontroller`]: webstreams.md#class-transformstreamdefaultcontroller
+[`transformstream`]: webstreams.md#class-transformstream
+[`urlpattern`]: url.md#class-urlpattern
+[`urlsearchparams`]: url.md#class-urlsearchparams
+[`url`]: url.md#class-url
+[`writablestreamdefaultcontroller`]: webstreams.md#class-writablestreamdefaultcontroller
+[`writablestreamdefaultwriter`]: webstreams.md#class-writablestreamdefaultwriter
+[`writablestream`]: webstreams.md#class-writablestream
 [`__dirname`]: modules.md#__dirname
 [`__filename`]: modules.md#__filename
-[`abortSignal.reason`]: #abortsignalreason
+[`abortsignal.reason`]: #abortsignalreason
 [`buffer.atob()`]: buffer.md#bufferatobdata
 [`buffer.btoa()`]: buffer.md#bufferbtoadata
-[`clearImmediate`]: timers.md#clearimmediateimmediate
-[`clearInterval`]: timers.md#clearintervaltimeout
-[`clearTimeout`]: timers.md#cleartimeouttimeout
+[`clearimmediate`]: timers.md#clearimmediateimmediate
+[`clearinterval`]: timers.md#clearintervaltimeout
+[`cleartimeout`]: timers.md#cleartimeouttimeout
 [`console`]: console.md
 [`exports`]: modules.md#exports
 [`fetch()`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch
-[`globalThis`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis
-[`localStorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+[`globalthis`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis
+[`localstorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [`module`]: modules.md#module
 [`perf_hooks.performance`]: perf_hooks.md#perf_hooksperformance
-[`process.nextTick()`]: process.md#processnexttickcallback-args
+[`process.nexttick()`]: process.md#processnexttickcallback-args
 [`process` object]: process.md#process
 [`require()`]: modules.md#requireid
-[`sessionStorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
-[`setImmediate`]: timers.md#setimmediatecallback-args
-[`setInterval`]: timers.md#setintervalcallback-delay-args
-[`setTimeout`]: timers.md#settimeoutcallback-delay-args
-[`structuredClone`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone
+[`sessionstorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+[`setimmediate`]: timers.md#setimmediatecallback-args
+[`setinterval`]: timers.md#setintervalcallback-delay-args
+[`settimeout`]: timers.md#settimeoutcallback-delay-args
+[`structuredclone`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone
 [`window.navigator`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/navigator
 [`worker_threads.locks`]: worker_threads.md#worker_threadslocks
-[browser `LockManager`]: https://developer.mozilla.org/en-US/docs/Web/API/LockManager
+[browser `lockmanager`]: https://developer.mozilla.org/en-US/docs/Web/API/LockManager
 [buffer section]: buffer.md
 [built-in objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 [timers]: timers.md

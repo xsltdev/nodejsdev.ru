@@ -17,8 +17,8 @@ description: Модуль async_hooks — API для отслеживания а
 
 Мы настоятельно не рекомендуем использовать API `async_hooks`. Другие API, которые могут покрыть большинство случаев использования, включают:
 
--   [`AsyncLocalStorage`][`asynclocalstorage`] — отслеживание async-контекста
--   [`process.getActiveResourcesInfo()`][`process.getactiveresourcesinfo()`] — отслеживание активных ресурсов
+-   [AsyncLocalStorage](async_context.md#class-asynclocalstorage) — отслеживание async-контекста
+-   [process.getActiveResourcesInfo()](process.md#processgetactiveresourcesinfo) — отслеживание активных ресурсов
 
 Модуль `node:async_hooks` предоставляет API для отслеживания асинхронных ресурсов. Доступ к нему можно получить так:
 
@@ -38,7 +38,7 @@ description: Модуль async_hooks — API для отслеживания а
 
 Асинхронный ресурс представляет собой объект с ассоциированным обратным вызовом. Этот обратный вызов может вызываться несколько раз, например, для события `'connection'` в `net.createServer()`, или только один раз, как в `fs.open()`. Ресурс также может быть закрыт до вызова обратного вызова. `AsyncHook` не делает явного различия между этими случаями, но представляет их как абстрактную концепцию ресурса.
 
-Если используются [`Worker`][`worker`], у каждого потока независимый интерфейс `async_hooks`, и каждый поток использует новый набор async ID.
+Если используются [Worker](worker_threads.md#class-worker), у каждого потока независимый интерфейс `async_hooks`, и каждый поток использует новый набор async ID.
 
 ## Обзор
 
@@ -152,12 +152,12 @@ description: Модуль async_hooks — API для отслеживания а
 added: v8.1.0
 -->
 
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука][hook callbacks] для регистрации
-    -   `init` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`init`][`init` callback].
-    -   `before` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`before`][`before` callback].
-    -   `after` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`after`][`after` callback].
-    -   `destroy` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`destroy`][`destroy` callback].
-    -   `promiseResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [`promiseResolve`][`promiseresolve` callback].
+-   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука](#hook-callbacks) для регистрации
+    -   `init` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [init](#initasyncid-type-triggerasyncid-resource).
+    -   `before` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [before](#beforeasyncid).
+    -   `after` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [after](#afterasyncid).
+    -   `destroy` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [destroy](#destroyasyncid).
+    -   `promiseResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [promiseResolve](#promiseresolveasyncid).
     -   `trackPromises` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должен ли хук отслеживать `Promise`. Не может быть `false`, если задан `promiseResolve`. **По умолчанию**: `true`.
 -   Возвращает: [<AsyncHook>](#class-asynchook) Экземпляр для отключения и включения хуков
 
@@ -165,7 +165,7 @@ added: v8.1.0
 
 Обратные вызовы `init()` / `before()` / `after()` / `destroy()` вызываются для соответствующего асинхронного события в течение жизни ресурса.
 
-Все обратные вызовы необязательны. Например, если нужно отслеживать только очистку ресурса, достаточно передать только `destroy`. Подробности по всем функциям, которые можно передать в `options`, см. в разделе [Обратные вызовы хука][hook callbacks].
+Все обратные вызовы необязательны. Например, если нужно отслеживать только очистку ресурса, достаточно передать только `destroy`. Подробности по всем функциям, которые можно передать в `options`, см. в разделе [Обратные вызовы хука](#hook-callbacks).
 
 === "MJS"
 
@@ -328,7 +328,7 @@ const asyncHook = async_hooks.createHook(
 
 Типы ресурсов, создаваемых самим Node.js, могут меняться в любом релизе. Допустимые значения включают `TLSWRAP`, `TCPWRAP`, `TCPSERVERWRAP`, `GETADDRINFOREQWRAP`, `FSREQCALLBACK`, `Microtask` и `Timeout`. Полный список смотрите в исходном коде используемой версии Node.js.
 
-Кроме того, пользователи [`AsyncResource`][`asyncresource`] создают асинхронные ресурсы независимо от Node.js.
+Кроме того, пользователи [AsyncResource](async_context.md#class-asyncresource) создают асинхронные ресурсы независимо от Node.js.
 
 Есть также тип ресурса `PROMISE` для отслеживания экземпляров `Promise` и асинхронной работы, запланированной ими. `Promise` отслеживаются только если опция `trackPromises` равна `true`.
 
@@ -401,7 +401,7 @@ TCPWRAP(7): trigger: 5 execution: 0
 
 ##### Пример асинхронного контекста
 
-Сценарий отслеживания контекста покрывает стабильный API [`AsyncLocalStorage`][`asynclocalstorage`]. Этот пример иллюстрирует работу async hooks, но для этого случая лучше подходит [`AsyncLocalStorage`][`asynclocalstorage`].
+Сценарий отслеживания контекста покрывает стабильный API [AsyncLocalStorage](async_context.md#class-asynclocalstorage). Этот пример иллюстрирует работу async hooks, но для этого случая лучше подходит [AsyncLocalStorage](async_context.md#class-asynclocalstorage).
 
 Ниже — пример с дополнительной информацией о вызовах `init` между `before` и `after`, в частности о том, как выглядит обратный вызов `listen()`. Форматирование вывода чуть подробнее, чтобы проще было видеть контекст вызова.
 
@@ -761,7 +761,7 @@ const server = net
     });
 ```
 
-Контексты промисов по умолчанию могут не получать точные `executionAsyncId`. См. раздел [отслеживание выполнения промисов][promise execution tracking].
+Контексты промисов по умолчанию могут не получать точные `executionAsyncId`. См. раздел [отслеживание выполнения промисов](#promise-execution-tracking).
 
 ### `async_hooks.triggerAsyncId()`
 
@@ -782,7 +782,7 @@ const server = net
     });
 ```
 
-Контексты промисов по умолчанию могут не получать корректные `triggerAsyncId`. См. раздел [отслеживание выполнения промисов][promise execution tracking].
+Контексты промисов по умолчанию могут не получать корректные `triggerAsyncId`. См. раздел [отслеживание выполнения промисов](#promise-execution-tracking).
 
 ### `async_hooks.asyncWrapProviders`
 
@@ -900,22 +900,8 @@ added:
 
 ### Класс: `AsyncResource`
 
-Документация по этому классу перенесена: [`AsyncResource`][`asyncresource`].
+Документация по этому классу перенесена: [AsyncResource](async_context.md#class-asyncresource).
 
 ## Класс: `AsyncLocalStorage`
 
-Документация по этому классу перенесена: [`AsyncLocalStorage`][`asynclocalstorage`].
-
-[dep0111]: deprecations.md#dep0111-processbinding
-[hook callbacks]: #hook-callbacks
-[promisehooks]: https://docs.google.com/document/d/1rda3yKGHimKIhg5YeoAmCOtyURgsbTH_qaYR79FELlk/edit
-[`asynclocalstorage`]: async_context.md#class-asynclocalstorage
-[`asyncresource`]: async_context.md#class-asyncresource
-[`worker`]: worker_threads.md#class-worker
-[`after` callback]: #afterasyncid
-[`before` callback]: #beforeasyncid
-[`destroy` callback]: #destroyasyncid
-[`init` callback]: #initasyncid-type-triggerasyncid-resource
-[`process.getactiveresourcesinfo()`]: process.md#processgetactiveresourcesinfo
-[`promiseresolve` callback]: #promiseresolveasyncid
-[promise execution tracking]: #promise-execution-tracking
+Документация по этому классу перенесена: [AsyncLocalStorage](async_context.md#class-asynclocalstorage).
