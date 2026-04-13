@@ -194,7 +194,7 @@ added: v0.5.10
 Если при порождении процесса для опции `serialization` было задано значение
 `advanced`, аргумент `message` может содержать данные, которые JSON представить
 не может.
-Подробнее см. [Advanced serialization for `child_process`][Advanced serialization for `child_process`].
+Подробнее см. [расширенную сериализацию для `child_process`][расширенную сериализацию для `child_process`].
 
 ### Событие: `'rejectionHandled'`
 
@@ -914,7 +914,7 @@ added: v0.5.0
 added: v0.1.27
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.argv` возвращает массив аргументов командной строки,
 переданных при запуске процесса Node.js. Первым элементом будет
@@ -1826,7 +1826,7 @@ node -e 'process.env.foo = "bar"' && echo $foo
 added: v0.7.7
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `process.execArgv` возвращает набор специфичных для Node.js опций
 командной строки, переданных при запуске процесса. Они не попадают в массив
@@ -1882,7 +1882,7 @@ added:
 > Стабильность: 1 — экспериментально
 
 * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя или путь исполняемого файла
-* `args` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) список строковых аргументов. Ни один не может содержать нулевой байт (`\u0000`).
+* `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) список строковых аргументов. Ни один не может содержать нулевой байт (`\u0000`).
 * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) пары ключ–значение окружения.
   Ни ключ, ни значение не могут содержать нулевой байт (`\u0000`).
   **По умолчанию:** `process.env`.
@@ -2474,7 +2474,7 @@ changes:
     | --- | --- |
     | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `process.getActiveResourcesInfo()` возвращает массив строк с типами активных
 ресурсов, которые сейчас удерживают цикл событий.
@@ -2651,7 +2651,7 @@ added: v0.1.31
 added: v0.9.4
 -->
 
-* Возвращает: [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.getgroups()` возвращает массив дополнительных идентификаторов групп.
 В POSIX не уточняется, входит ли эффективный GID, но Node.js всегда включает его.
@@ -2730,8 +2730,8 @@ added: v0.7.6
 
 > Стабильность: 3 — устаревшее. Используйте [`process.hrtime.bigint()`][`process.hrtime.bigint()`].
 
-* `time` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) результат предыдущего вызова `process.hrtime()`
-* Возвращает: [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `time` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) результат предыдущего вызова `process.hrtime()`
+* Возвращает: [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Устаревший вариант [`process.hrtime.bigint()`][`process.hrtime.bigint()`] до появления `bigint` в JavaScript.
 
@@ -2883,7 +2883,7 @@ added: v0.0.6
 
 Метод `process.kill()` отправляет сигнал `signal` процессу `pid`.
 
-Имена сигналов — строки вроде `'SIGINT'` или `'SIGHUP'`. См. [Signal Events][Signal Events]
+Имена сигналов — строки вроде `'SIGINT'` или `'SIGHUP'`. См. [события сигналов][события сигналов]
 и kill(2).
 
 Метод выбрасывает ошибку, если целевой `pid` не существует. Особый случай: сигнал
@@ -2927,7 +2927,7 @@ added: v0.0.6
     process.kill(process.pid, 'SIGHUP');
     ```
 
-При получении `SIGUSR1` процессом Node.js запускается отладчик. См. [Signal Events][Signal Events].
+При получении `SIGUSR1` процессом Node.js запускается отладчик. См. [события сигналов][события сигналов].
 
 ## `process.loadEnvFile(path)`
 
@@ -4261,7 +4261,7 @@ added: v0.1.31
 added: v0.9.4
 -->
 
-* `groups` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `groups` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `process.setgroups()` задаёт дополнительные GID процесса Node.js. Это
 привилегированная операция: нужны `root` или возможность `CAP_SETGID`.
@@ -4849,7 +4849,7 @@ Node.js не загрузит модуль, собранный под другу
   Так принято в POSIX: коды выхода — 7 бит, при завершении по сигналу задаётся старший бит и номер сигнала.
   Например, у `SIGABRT` код `6`, ожидаемый код выхода `128` + `6` = `134`.
 
-[Advanced serialization for `child_process`]: child_process.md#advanced-serialization
+[расширенную сериализацию для `child_process`]: child_process.md#advanced-serialization
 [Android building]: https://github.com/nodejs/node/blob/HEAD/BUILDING.md#android
 [Child Process]: child_process.md
 [Cluster]: cluster.md
@@ -4858,7 +4858,7 @@ Node.js не загрузит модуль, собранный под другу
 [LTS]: https://github.com/nodejs/Release
 [Permission Model]: permissions.md#permission-model
 [Readable]: stream.md#readable-streams
-[Signal Events]: #signal-events
+[события сигналов]: #signal-events
 [Source Map]: https://tc39.es/ecma426/
 [Stream compatibility]: stream.md#compatibility-with-older-nodejs-versions
 [TTY]: tty.md#tty

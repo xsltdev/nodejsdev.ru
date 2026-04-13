@@ -1654,7 +1654,7 @@ added: REPLACEME
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `writev` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `data` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer[]>](buffer.md#buffer) | [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `data` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1857,8 +1857,8 @@ added: v16.18.0
 ##### Event: `'execve'`
 
 * `execPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `args` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `env` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `env` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерируется при вызове [`process.execve()`][`process.execve()`].
 

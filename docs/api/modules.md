@@ -12,7 +12,7 @@ description: Система модулей CommonJS — require, module.exports,
 <!--name=module-->
 
 **Модули CommonJS** — изначальный способ упаковки кода JavaScript для Node.js.
-Node.js также поддерживает стандарт [ECMAScript modules][ECMAScript Modules], который используют браузеры
+Node.js также поддерживает стандарт [модулей ECMAScript][ECMAScript Modules], который используют браузеры
 и другие среды выполнения JavaScript.
 
 В Node.js каждый файл считается отдельным модулем. Например,
@@ -77,7 +77,7 @@ module.exports = class Square {
 
 <!-- type=misc -->
 
-У Node.js две системы модулей: CommonJS и [ECMAScript modules][ECMAScript Modules].
+У Node.js две системы модулей: CommonJS и [модули ECMAScript][ECMAScript Modules].
 
 По умолчанию Node.js считает модулями CommonJS следующее:
 
@@ -754,7 +754,7 @@ Node.js ищет модули и там, если не нашла раньше.
 added: v0.1.27
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя каталога текущего модуля. Совпадает с
 [`path.dirname()`][`path.dirname()`] от [`__filename`][`__filename`].
@@ -774,7 +774,7 @@ console.log(path.dirname(__filename));
 added: v0.0.1
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя файла текущего модуля — абсолютный путь с разрешёнными симлинками.
 
@@ -809,7 +809,7 @@ console.log(__dirname);
 added: v0.1.12
 -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Сокращение для `module.exports`.
 См. [сокращение exports][exports shortcut], когда использовать
@@ -821,7 +821,7 @@ added: v0.1.12
 added: v0.1.16
 -->
 
-* Type: [`<module>`](modules.md#module)
+* Тип: [`<module>`](modules.md#module)
 
 Ссылка на текущий модуль, см. объект [`module` object][`module` object].
 `module.exports` задаёт, что модуль экспортирует и отдаёт через `require()`.
@@ -833,7 +833,7 @@ added: v0.1.13
 -->
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) module name or path
-* Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
 
 Импорт модулей, `JSON` и локальных файлов. Модули из `node_modules`, локальные файлы и JSON —
 через относительный путь (например `./`, `./foo`, `./bar/baz`, `../foo`), разрешаемый
@@ -859,7 +859,7 @@ const crypto = require('node:crypto');
 added: v0.3.0
 -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Здесь кэшируются загруженные модули. Удалив ключ,
 следующий `require` перезагрузит модуль.
@@ -891,7 +891,7 @@ deprecated: v0.10.6
 
 > Stability: 0 - Deprecated
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Задаёт обработку расширений файлов для `require`.
 
@@ -912,7 +912,7 @@ require.extensions['.sjs'] = require.extensions['.js'];
 added: v0.1.17
 -->
 
-* Type: [`<module>`](modules.md#module) | undefined
+* Тип: [`<module>`](modules.md#module) | undefined
 
 Объект `Module` для сценария входа при запуске процесса Node.js,
 или `undefined`, если точка входа не CommonJS-модуль.
@@ -965,11 +965,11 @@ changes:
 
 * `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The module path to resolve.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `paths` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Каталоги для разрешения модуля. Если заданы, используются вместо путей по умолчанию, кроме
+  * `paths` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Каталоги для разрешения модуля. Если заданы, используются вместо путей по умолчанию, кроме
     [GLOBAL\_FOLDERS][GLOBAL_FOLDERS] вроде `$HOME/.node_modules` — они
     всегда учитываются. Каждый путь — стартовая точка для
     алгоритма разрешения, то есть от неё проверяется иерархия `node_modules`.
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Внутренний механизм `require()` для поиска файла модуля без его загрузки — возвращается разрешённый путь.
 
@@ -982,7 +982,7 @@ added: v8.9.0
 -->
 
 * `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The module path whose lookup paths are being retrieved.
-* Returns: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Массив путей, просмотренных при разрешении `request`, или
 `null`, если `request` — встроенный модуль, например `http` или
@@ -996,7 +996,7 @@ added: v0.1.16
 
 <!-- name=module -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 В каждом модуле свободная переменная `module` — ссылка на объект
 текущего модуля. Для удобства к `module.exports` есть доступ через глобальную для модуля переменную `exports`. Сама `module` не глобальна, а локальна для модуля.
@@ -1007,7 +1007,7 @@ added: v0.1.16
 added: v0.1.16
 -->
 
-* Type: [<module[]>](modules.md#module)
+* Тип: [`<module[]>`](modules.md#module)
 
 Объекты модулей, которые этот модуль впервые подключил через `require`.
 
@@ -1017,7 +1017,7 @@ added: v0.1.16
 added: v0.1.16
 -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект `module.exports` создаётся системой `Module`. Иногда нужен не он, а, например, экземпляр класса — тогда
 присвойте `module.exports` нужный объект. Присвоение того же объекта переменной `exports`
@@ -1115,7 +1115,7 @@ function require(/* ... */) {
 added: v0.1.16
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Полностью разрешённое имя файла модуля.
 
@@ -1125,7 +1125,7 @@ added: v0.1.16
 added: v0.1.16
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор модуля. Обычно это полностью разрешённое имя файла.
 
@@ -1137,7 +1137,7 @@ added:
   - v14.17.0
 -->
 
-* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль выполняется на фазе предзагрузки Node.js.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль выполняется на фазе предзагрузки Node.js.
 
 ### `module.loaded` {: #moduleloaded}
 
@@ -1145,7 +1145,7 @@ added:
 added: v0.1.16
 -->
 
-* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Загрузка модуля завершена или ещё идёт.
 
@@ -1161,7 +1161,7 @@ deprecated:
 > Stability: 0 - Deprecated: Please use [`require.main`][`require.main`] and
 > [`module.children`][`module.children`] instead.
 
-* Type: [`<module>`](modules.md#module) | null | undefined
+* Тип: [`<module>`](modules.md#module) | null | undefined
 
 Модуль, который первым подключил этот, или `null`, если текущий модуль —
 точка входа процесса, или `undefined`, если загрузчик не CommonJS (например REPL или `import`).
@@ -1172,7 +1172,7 @@ deprecated:
 added: v11.14.0
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог модуля. Обычно совпадает с
 [`path.dirname()`][`path.dirname()`] от [`module.id`][`module.id`].
@@ -1183,7 +1183,7 @@ added: v11.14.0
 added: v0.4.0
 -->
 
-* Type: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Пути поиска для модуля.
 
@@ -1194,7 +1194,7 @@ added: v0.5.1
 -->
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
 
 `module.require()` загружает модуль так, как если бы `require()` вызвали из исходного модуля.
 

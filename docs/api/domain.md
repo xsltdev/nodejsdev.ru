@@ -246,7 +246,7 @@ serverDomain.run(() => {
 
 ## `domain.create()`
 
-* Returns: [`<Domain>`](domain.md)
+* Возвращает: [`<Domain>`](domain.md)
 
 ## Класс: `Domain`
 

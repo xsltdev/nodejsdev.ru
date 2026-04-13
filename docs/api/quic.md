@@ -444,7 +444,7 @@ added: v23.8.0
 
 * Тип: [`<quic.QuicEndpoint>`](quic.md)
 
-Endpoint, создавший эту сессию. Только для чтения.
+Конечная точка, создавшая эту сессию. Только для чтения.
 
 ### `session.onstream`
 
@@ -993,7 +993,7 @@ added: v23.8.0
 
 ## Типы
 
-### Type: `EndpointOptions`
+### Тип: `EndpointOptions`
 
 <!-- YAML
 added: v23.8.0
@@ -1021,7 +1021,7 @@ added: v23.8.0
 
 * Тип: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Endpoint хранит внутренний кэш проверенных адресов сокетов для
+Конечная точка хранит внутренний кэш проверенных адресов сокетов для
 оптимизации. Эта опция задаёт максимальное число адресов в кэше.
 Расширенная опция, обычно не требуется.
 
@@ -1150,7 +1150,7 @@ added: v23.8.0
 При `true` endpoint должен проверять адреса пиров через retry-пакеты
 при установлении нового соединения.
 
-### Type: `SessionOptions`
+### Тип: `SessionOptions`
 
 <!-- YAML
 added: v23.8.0
@@ -1184,9 +1184,9 @@ added: REPLACEME
 added: v23.8.0
 -->
 
-* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
-CA-сертификаты для клиентских сессий. Для серверных сертификаты CA
+Сертификаты центра сертификации (CA) для клиентских сессий. Для серверных сертификаты CA
 задаются по идентичности в карте [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.cc`
@@ -1207,9 +1207,9 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
-TLS-сертификаты для клиентских сессий. Для серверных сертификаты
+TLS-сертификаты для клиентских сессий. Для серверных сессий сертификаты
 задаются по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.ciphers`
@@ -1228,9 +1228,9 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
-CRL для клиентских сессий. Для серверных CRL задаются
+Списки отзыва сертификатов (CRL) для клиентских сессий. Для серверных CRL задаются
 по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.groups`
@@ -1271,7 +1271,7 @@ changes:
     | --- | --- |
     | v25.9.0 | CryptoKey больше не принимается. |
 
-* Тип: [`<KeyObject>`](#class-keyobject) | [<KeyObject[]>](#class-keyobject)
+* Тип: [`<KeyObject>`](#class-keyobject) | [`<KeyObject[]>`](#class-keyobject)
 
 Криптографические ключи TLS для клиентских сессий. Для серверных ключи
 задаются по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
@@ -1343,7 +1343,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) Session ticket для возобновления сессии 0-RTT.
+* Тип: [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) Билет сессии для возобновления сессии 0-RTT.
 
 #### `sessionOptions.handshakeTimeout`
 
@@ -1373,16 +1373,16 @@ added: REPLACEME
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Объект «имя хоста — параметры TLS-идентичности» для поддержки Server Name
-Indication (SNI). Обязателен для серверных сессий. Специальный ключ `'*'` задаёт
+Объект «имя хоста — параметры TLS-идентичности» для поддержки указания
+имени сервера (SNI). Обязателен для серверных сессий. Специальный ключ `'*'` задаёт
 идентичность по умолчанию, если не подошло другое имя. В записи могут быть:
 
-* `keys` [`<KeyObject>`](#class-keyobject) | [<KeyObject[]>](#class-keyobject) Закрытые ключи TLS. **Обязательно.**
-* `certs` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* `keys` [`<KeyObject>`](#class-keyobject) | [`<KeyObject[]>`](#class-keyobject) Закрытые ключи TLS. **Обязательно.**
+* `certs` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
   Сертификаты TLS. **Обязательно.**
-* `ca` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* `ca` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
   Необязательные переопределения CA.
-* `crl` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
+* `crl` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
   Необязательные списки отзыва сертификатов.
 * `verifyPrivateKey` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Проверять закрытый ключ. По умолчанию: `false`.
 
@@ -1467,7 +1467,7 @@ added: v23.8.0
 
 Номер версии QUIC. Расширенная опция, обычно не требуется.
 
-### Type: `TransportParams`
+### Тип: `TransportParams`
 
 <!-- YAML
 added: v23.8.0
@@ -1650,8 +1650,8 @@ added: v23.8.0
 
 * `this` [`<quic.QuicSession>`](quic.md)
 * `version` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `requestedVersions` [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `supportedVersions` [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `requestedVersions` [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `supportedVersions` [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Callback: `OnHandshakeCallback`
 

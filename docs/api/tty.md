@@ -266,7 +266,7 @@ added: v9.9.0
 added: v0.7.7
 -->
 
-* Возвращает: [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 `writeStream.getWindowSize()` возвращает размер TTY,
 соответствующий этому `WriteStream`. Массив имеет вид

@@ -765,7 +765,7 @@ cluster.on('online', (worker) => {
     -   `exec` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к рабочему файлу. **По умолчанию:** `process.argv[1]`.
     -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковые аргументы, передаваемые рабочему. **По умолчанию:** `process.argv.slice(2)`.
     -   `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текущий рабочий каталог рабочего процесса. **По умолчанию:** `undefined` (наследуется от родительского процесса).
-    -   `serialization` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Вид сериализации сообщений между процессами. Допустимые значения: `'json'` и `'advanced'`. Подробнее — [Advanced serialization for `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
+    -   `serialization` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Вид сериализации сообщений между процессами. Допустимые значения: `'json'` и `'advanced'`. Подробнее — [расширенная сериализация для `child_process`](child_process.md#advanced-serialization). **По умолчанию:** `false`.
     -   `silent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Посылать ли вывод на родительский stdio. **По умолчанию:** `false`.
     -   `stdio` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Настраивает stdio вилочных процессов. Поскольку для работы кластерного модуля используется IPC, эта конфигурация должна содержать запись `'ipc'`. Когда эта опция указана, она отменяет `silent`.
     -   `uid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает идентификатор пользователя процесса. (См. setuid(2).)
@@ -903,7 +903,7 @@ cluster.on('online', (worker) => {
 
 <!-- 0034.part.md -->
 
-[Advanced serialization for `child_process`]: child_process.md#advanced-serialization
+[расширенная сериализация для `child_process`]: child_process.md#advanced-serialization
 [Child Process module]: child_process.md#child_processforkmodulepath-args-options
 [`.fork()`]: #clusterforkenv
 [`.setupPrimary()`]: #clustersetupprimarysettings

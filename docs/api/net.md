@@ -172,7 +172,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список правил, добавленных в блок-лист.
 
@@ -209,7 +209,7 @@ blockList.fromJSON(data);
 blockList.fromJSON(JSON.stringify(data));
 ```
 
-* `value` Blocklist.rules
+* `value` — данные в том же формате, что и `blockList.rules`
 
 ### `blockList.toJSON()`
 
@@ -221,7 +221,7 @@ added:
  - v22.19.0
 -->
 
-* Returns Blocklist.rules
+* Возвращает: то же, что и `blockList.rules`
 
 ## Класс: `net.SocketAddress`
 
@@ -529,7 +529,7 @@ added: v0.5.10
 -->
 
 * `handle` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Common parameter of [`server.listen()`][`server.listen()`] functions
+* `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`]
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<net.Server>`](net.md#class-netserver)
 
@@ -784,48 +784,43 @@ changes:
     | v15.14.0 | Добавлена ​​поддержка AbortSignal. |
     | v12.10.0 | Добавлена ​​опция onread. |
 
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Available options are:
-  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
-    automatically end the writable side when the readable side ends. See
-    [`net.createServer()`][`net.createServer()`] and the [`'end'`][`'end'`] event for details. **Default:**
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
+  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, сокет автоматически завершит запись,
+    когда закончится чтение. Подробнее см. [`net.createServer()`][`net.createServer()`] и событие [`'end'`][`'end'`]. **По умолчанию:**
     `false`.
-  * `blockList` [`<net.BlockList>`](net.md) `blockList` can be used for disabling outbound
-    access to specific IP addresses, IP ranges, or IP subnets.
-  * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If specified, wrap around an existing socket with
-    the given file descriptor, otherwise a new socket will be created.
-  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality on
-    the socket immediately after the connection is established, similarly on what
-    is done in [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **Default:** `false`.
-  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
-    initial delay before the first keepalive probe is sent on an idle socket. **Default:** `0`.
-  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's algorithm
-    immediately after the socket is established. **Default:** `false`.
-  * `onread` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) If specified, incoming data is stored in a single `buffer`
-    and passed to the supplied `callback` when data arrives on the socket.
-    This will cause the streaming functionality to not provide any data.
-    The socket will emit events like `'error'`, `'end'`, and `'close'`
-    as usual. Methods like `pause()` and `resume()` will also behave as
-    expected.
-    * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Either a reusable chunk of memory to
-      use for storing incoming data or a function that returns such.
-    * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) This function is called for every chunk of incoming
-      data. Two arguments are passed to it: the number of bytes written to
-      `buffer` and a reference to `buffer`. Return `false` from this function to
-      implicitly `pause()` the socket. This function will be executed in the
-      global context.
-  * `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow reads on the socket when an `fd` is passed,
-    otherwise ignored. **Default:** `false`.
-  * `signal` [`<AbortSignal>`](globals.md#abortsignal) An Abort signal that may be used to destroy the
-    socket.
-  * `typeOfService` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The initial Type of Service (TOS) value.
-  * `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow writes on the socket when an `fd` is passed,
-    otherwise ignored. **Default:** `false`.
+  * `blockList` [`<net.BlockList>`](net.md) `blockList` можно использовать, чтобы запретить исходящий
+    доступ к заданным IP-адресам, диапазонам или подсетям.
+  * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если указан, оборачивает уже существующий сокет с
+    данным файловым дескриптором, иначе создаётся новый сокет.
+  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сразу после установления соединения включает keep-alive для
+    сокета, аналогично [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **По умолчанию:** `false`.
+  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано положительное число, задаёт
+    начальную задержку перед первой пробой keep-alive на простаивающем сокете. **По умолчанию:** `0`.
+  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сразу после установления соединения отключает алгоритм Нейгла.
+    **По умолчанию:** `false`.
+  * `onread` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если указан, входящие данные складываются в один `buffer`
+    и передаются в заданный `callback` по мере поступления данных в сокет.
+    При этом потоковый режим не отдаёт данные через обычный механизм чтения.
+    Сокет по-прежнему испускает события вроде `'error'`, `'end'` и `'close'`.
+    Методы `pause()` и `resume()` ведут себя как ожидается.
+    * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Переиспользуемый фрагмент памяти для
+      входящих данных или функция, возвращающая такой фрагмент.
+    * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается для каждого фрагмента входящих
+      данных. Передаются два аргумента: число записанных в `buffer` байт и ссылка на `buffer`. Верните `false`, чтобы
+      неявно вызвать `pause()` у сокета. Функция выполняется в
+      глобальном контексте.
+  * `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешить чтение с сокета при переданном `fd`,
+    иначе игнорируется. **По умолчанию:** `false`.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Сигнал прерывания, которым можно уничтожить
+    сокет.
+  * `typeOfService` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальное значение Type of Service (TOS).
+  * `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешить запись в сокет при переданном `fd`,
+    иначе игнорируется. **По умолчанию:** `false`.
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Creates a new socket object.
+Создаёт новый объект сокета.
 
-The newly created socket can be either a TCP socket or a streaming [IPC][IPC]
-endpoint, depending on what it [`connect()`][`socket.connect()`] to.
+Новый сокет может быть TCP или потоковой [IPC][IPC]-конечной точкой в зависимости от того, к чему затем вызывается [`connect()`][`socket.connect()`].
 
 ### Событие: `'close'`
 
@@ -855,9 +850,9 @@ added:
   - v20.12.0
 -->
 
-* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket is attempting to connect to.
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket is attempting to connect to.
-* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) IP-адрес, к которому сокет пытается подключиться.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому сокет пытается подключиться.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство адреса: `6` для IPv6 или `4` для IPv4.
 
 Генерируется при начале новой попытки соединения. Может повторяться,
 если в [`socket.connect(options)`][`socket.connect(options)`] включён автоподбор семейства адреса.
@@ -870,10 +865,10 @@ added:
   - v20.12.0
 -->
 
-* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
-* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The error associated with the failure.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) IP-адрес, к которому выполнялась попытка подключения.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому выполнялась попытка подключения.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство адреса: `6` для IPv6 или `4` для IPv4.
+* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ошибка, связанная с неудачей.
 
 Генерируется при неудачной попытке соединения. Может повторяться,
 если в [`socket.connect(options)`][`socket.connect(options)`] включён автоподбор семейства адреса.
@@ -886,9 +881,9 @@ added:
   - v20.12.0
 -->
 
-* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
-* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) IP-адрес, к которому выполнялась попытка подключения.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому выполнялась попытка подключения.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство адреса: `6` для IPv6 или `4` для IPv4.
 
 Генерируется при таймауте попытки соединения. Только (и может повторяться)
 при включённом автоподборе семейства в
@@ -1013,8 +1008,8 @@ changes:
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Returns the bound `address`, the address `family` name and `port` of the
-socket as reported by the operating system:
+Возвращает привязанный `address`, имя семейства `family` и `port` сокета,
+как сообщает ОС:
 `{ port: 12346, family: 'IPv4', address: '127.0.0.1' }`
 
 ### `socket.autoSelectFamilyAttemptedAddresses`
@@ -1025,13 +1020,13 @@ added:
  - v18.18.0
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-This property is only present if the family autoselection algorithm is enabled in
-[`socket.connect(options)`][`socket.connect(options)`] and it is an array of the addresses that have been attempted.
+Свойство есть только если в [`socket.connect(options)`][`socket.connect(options)`] включён алгоритм автоподбора семейства адреса;
+значение — массив адресов, к которым уже были попытки подключения.
 
-Each address is a string in the form of `$IP:$PORT`. If the connection was successful,
-then the last address is the one that the socket is currently connected to.
+Каждый адрес — строка вида `$IP:$PORT`. Если соединение установлено,
+последний элемент — адрес, к которому сокет подключён в итоге.
 
 ### `socket.bufferSize`
 
@@ -1041,24 +1036,22 @@ deprecated:
   - v14.6.0
 -->
 
-> Stability: 0 - Deprecated: Use [`writable.writableLength`][`writable.writableLength`] instead.
+> Стабильность: 0 — устарело: используйте [`writable.writableLength`][`writable.writableLength`].
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-This property shows the number of characters buffered for writing. The buffer
-may contain strings whose length after encoding is not yet known. So this number
-is only an approximation of the number of bytes in the buffer.
+Показывает число символов, буферизованных для записи. Буфер
+может содержать строки, длина которых после кодирования ещё неизвестна, поэтому число
+лишь приближённо отражает объём байт в буфере.
 
-`net.Socket` has the property that `socket.write()` always works. This is to
-help users get up and running quickly. The computer cannot always keep up
-with the amount of data that is written to a socket. The network connection
-simply might be too slow. Node.js will internally queue up the data written to a
-socket and send it out over the wire when it is possible.
+У `net.Socket` такое свойство: `socket.write()` всегда выполняется без немедленной ошибки — это
+упрощает старт. Но система не всегда успевает отправлять
+весь объём данных в сокет. Сеть может быть слишком медленной. Node.js ставит записанные данные во внутреннюю очередь
+и отправляет их по мере возможности.
 
-The consequence of this internal buffering is that memory may grow.
-Users who experience large or growing `bufferSize` should attempt to
-"throttle" the data flows in their program with
-[`socket.pause()`][`socket.pause()`] and [`socket.resume()`][`socket.resume()`].
+Из-за такой буферизации может расти потребление памяти.
+Если `bufferSize` большой или растёт, имеет смысл ограничить поток данных в программе с помощью
+[`socket.pause()`][`socket.pause()`] и [`socket.resume()`][`socket.resume()`].
 
 ### `socket.bytesRead`
 
@@ -1068,7 +1061,7 @@ added: v0.5.3
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The amount of received bytes.
+Число полученных байт.
 
 ### `socket.bytesWritten`
 
@@ -1078,31 +1071,29 @@ added: v0.5.3
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The amount of bytes sent.
+Число отправленных байт.
 
 ### `socket.connect()`
 
-Initiate a connection on a given socket.
+Инициирует соединение на данном сокете.
 
-Possible signatures:
+Возможные сигнатуры:
 
 * [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
 * [`socket.connect(path[, connectListener])`][`socket.connect(path)`]
-  for [IPC][IPC] connections.
+  для [IPC][IPC]-соединений.
 * [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`]
-  for TCP connections.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+  для TCP-соединений.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-This function is asynchronous. When the connection is established, the
-[`'connect'`][`'connect'`] event will be emitted. If there is a problem connecting,
-instead of a [`'connect'`][`'connect'`] event, an [`'error'`][`'error'`] event will be emitted with
-the error passed to the [`'error'`][`'error'`] listener.
-The last parameter `connectListener`, if supplied, will be added as a listener
-for the [`'connect'`][`'connect'`] event **once**.
+Функция асинхронна. Когда соединение установлено, испускается событие
+[`'connect'`][`'connect'`]. При ошибке подключения вместо [`'connect'`][`'connect'`] испускается [`'error'`][`'error'`] с
+ошибкой для слушателя [`'error'`][`'error'`].
+Последний параметр `connectListener`, если он задан, добавляется как слушатель
+события [`'connect'`][`'connect'`] **один раз**.
 
-This function should only be used for reconnecting a socket after
-`'close'` has been emitted or otherwise it may lead to undefined
-behavior.
+Использовать эту функцию следует только для повторного подключения сокета после
+события `'close'`; иначе возможно неопределённое поведение.
 
 #### `socket.connect(options[, connectListener])`
 
@@ -1157,62 +1148,59 @@ changes:
     | v5.11.0 | Опция `подсказки` теперь поддерживается. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
-  methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`][`socket.connect()`]:
+  добавляется как однократный слушатель события [`'connect'`][`'connect'`].
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Initiate a connection on a given socket. Normally this method is not needed,
-the socket should be created and opened with [`net.createConnection()`][`net.createConnection()`]. Use
-this only when implementing a custom Socket.
+Инициирует соединение на данном сокете. Обычно этот метод не нужен:
+сокет создают и открывают через [`net.createConnection()`][`net.createConnection()`]. Используйте
+его при собственной реализации `Socket`.
 
-For TCP connections, available `options` are:
+Для TCP доступны такие `options`:
 
-* `autoSelectFamily` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): If set to `true`, it enables a family
-  autodetection algorithm that loosely implements section 5 of [RFC 8305][RFC 8305]. The
-  `all` option passed to lookup is set to `true` and the sockets attempts to
-  connect to all obtained IPv6 and IPv4 addresses, in sequence, until a
-  connection is established. The first returned AAAA address is tried first,
-  then the first returned A address, then the second returned AAAA address and
-  so on. Each connection attempt (but the last one) is given the amount of time
-  specified by the `autoSelectFamilyAttemptTimeout` option before timing out and
-  trying the next address. Ignored if the `family` option is not `0` or if
-  `localAddress` is set. Connection errors are not emitted if at least one
-  connection succeeds. If all connections attempts fails, a single
-  `AggregateError` with all failed attempts is emitted. **Default:**
+* `autoSelectFamily` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): при `true` включается алгоритм автоподбора семейства адреса,
+  в общих чертах соответствующий разделу 5 [RFC 8305][RFC 8305]. Для lookup задаётся
+  `all: true`, сокет по очереди пытается подключиться ко всем полученным IPv6- и IPv4-адресам, пока не
+  установится соединение. Сначала пробуется первый полученный AAAA, затем первый A, затем второй AAAA и
+  так далее. Каждой попытке (кроме последней) отводится время
+  `autoSelectFamilyAttemptTimeout` до таймаута и перехода к следующему адресу. Опция игнорируется, если `family` не `0` или задан
+  `localAddress`. Ошибки отдельных попыток не испускаются, если хотя бы одно
+  соединение удалось. Если все попытки неудачны, испускается один
+  `AggregateError` со всеми ошибками. **По умолчанию:**
   [`net.getDefaultAutoSelectFamily()`][`net.getDefaultAutoSelectFamily()`].
-* `autoSelectFamilyAttemptTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): The amount of time in milliseconds
-  to wait for a connection attempt to finish before trying the next address when
-  using the `autoSelectFamily` option. If set to a positive integer less than
-  `10`, then the value `10` will be used instead. **Default:**
+* `autoSelectFamilyAttemptTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): время в миллисекундах,
+  сколько ждать завершения попытки подключения перед следующим адресом при
+  использовании `autoSelectFamily`. Если передано целое меньше
+  `10`, вместо него используется `10`. **По умолчанию:**
   [`net.getDefaultAutoSelectFamilyAttemptTimeout()`][`net.getDefaultAutoSelectFamilyAttemptTimeout()`].
-* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): Version of IP stack. Must be `4`, `6`, or `0`. The value
-  `0` indicates that both IPv4 and IPv6 addresses are allowed. **Default:** `0`.
-* `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional [`dns.lookup()` hints][`dns.lookup()` hints].
-* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. **Default:** `'localhost'`.
-* `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Local address the socket should connect from.
-* `localPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Local port the socket should connect from.
-* `lookup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Custom lookup function. **Default:** [`dns.lookup()`][`dns.lookup()`].
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Required. Port the socket should connect to.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): версия стека IP. Должно быть `4`, `6` или `0`. Значение
+  `0` допускает и IPv4, и IPv6. **По умолчанию:** `0`.
+* `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательные [`подсказки для dns.lookup()`][`dns.lookup()` hints].
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для подключения. **По умолчанию:** `'localhost'`.
+* `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальный адрес, с которого подключаться.
+* `localPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Локальный порт, с которого подключаться.
+* `lookup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция разрешения имён. **По умолчанию:** [`dns.lookup()`][`dns.lookup()`].
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Обязателен. Порт для подключения.
 
-For [IPC][IPC] connections, available `options` are:
+Для [IPC][IPC] доступны такие `options`:
 
-* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Required. Path the client should connect to.
-  See [Identifying paths for IPC connections][Identifying paths for IPC connections]. If provided, the TCP-specific
-  options above are ignored.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Обязателен. Путь, к которому подключается клиент.
+  См. [Пути для IPC-соединений][Identifying paths for IPC connections]. Если задан `path`, перечисленные выше TCP-опции
+  игнорируются.
 
 #### `socket.connect(path[, connectListener])`
 
-* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the client should connect to. See
-  [Identifying paths for IPC connections][Identifying paths for IPC connections].
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
-  methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для подключения клиента. См.
+  [Пути для IPC-соединений][Identifying paths for IPC connections].
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`][`socket.connect()`]:
+  добавляется как однократный слушатель события [`'connect'`][`'connect'`].
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Initiate an [IPC][IPC] connection on the given socket.
+Инициирует [IPC][IPC]-соединение на данном сокете.
 
-Alias to
+Синоним вызова
 [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
-called with `{ path: path }` as `options`.
+с `options` вида `{ path: path }`.
 
 #### `socket.connect(port[, host][, connectListener])`
 
@@ -1220,17 +1208,17 @@ called with `{ path: path }` as `options`.
 added: v0.1.90
 -->
 
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the client should connect to.
-* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the client should connect to.
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
-  methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому подключается клиент.
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, к которому подключается клиент.
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`][`socket.connect()`]:
+  добавляется как однократный слушатель события [`'connect'`][`'connect'`].
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Initiate a TCP connection on the given socket.
+Инициирует TCP-соединение на данном сокете.
 
-Alias to
+Синоним вызова
 [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
-called with `{port: port, host: host}` as `options`.
+с `options` вида `{ port: port, host: host }`.
 
 ### `socket.connecting`
 
@@ -1240,13 +1228,12 @@ added: v6.1.0
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-If `true`,
-[`socket.connect(options[, connectListener])`][`socket.connect(options)`] was
-called and has not yet finished. It will stay `true` until the socket becomes
-connected, then it is set to `false` and the `'connect'` event is emitted. Note
-that the
+`true`, если был вызван
+[`socket.connect(options[, connectListener])`][`socket.connect(options)`], который ещё не завершился. Остаётся `true`, пока сокет не станет
+подключённым, затем сбрасывается в `false` и испускается `'connect'`. Обратите внимание:
+обратный вызов
 [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
-callback is a listener for the `'connect'` event.
+является слушателем события `'connect'`.
 
 ### `socket.destroy([error])`
 
@@ -1257,17 +1244,17 @@ added: v0.1.90
 * `error` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Ensures that no more I/O activity happens on this socket.
-Destroys the stream and closes the connection.
+Гарантирует отсутствие дальнейшего ввода-вывода на этом сокете.
+Уничтожает поток и закрывает соединение.
 
-See [`writable.destroy()`][`writable.destroy()`] for further details.
+Подробнее см. [`writable.destroy()`][`writable.destroy()`].
 
 ### `socket.destroyed`
 
-* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates if the connection is destroyed or not. Once a
-  connection is destroyed no further data can be transferred using it.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Показывает, уничтожено ли соединение. После уничтожения
+  передавать данные через сокет нельзя.
 
-See [`writable.destroyed`][`writable.destroyed`] for further details.
+См. [`writable.destroyed`][`writable.destroyed`].
 
 ### `socket.destroySoon()`
 
@@ -1275,9 +1262,9 @@ See [`writable.destroyed`][`writable.destroyed`] for further details.
 added: v0.3.4
 -->
 
-Destroys the socket after all data is written. If the `'finish'` event was
-already emitted the socket is destroyed immediately. If the socket is still
-writable it implicitly calls `socket.end()`.
+Уничтожает сокет после записи всех данных. Если событие `'finish'` уже было
+испущено, сокет уничтожается сразу. Если сокет ещё доступен для записи,
+неявно вызывается `socket.end()`.
 
 ### `socket.end([data[, encoding]][, callback])`
 
@@ -1286,14 +1273,14 @@ added: v0.1.90
 -->
 
 * `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `'utf8'`.
-* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional callback for when the socket is finished.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используется только если `data` — строка. **По умолчанию:** `'utf8'`.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный обратный вызов по завершении сокета.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Half-closes the socket. i.e., it sends a FIN packet. It is possible the
-server will still send some data.
+Полузакрывает сокет: отправляется пакет FIN. Удалённый сервер всё ещё может
+отправить данные.
 
-See [`writable.end()`][`writable.end()`] for further details.
+См. [`writable.end()`][`writable.end()`].
 
 ### `socket.localAddress`
 
@@ -1303,9 +1290,9 @@ added: v0.9.6
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The string representation of the local IP address the remote client is
-connecting on. For example, in a server listening on `'0.0.0.0'`, if a client
-connects on `'192.168.1.1'`, the value of `socket.localAddress` would be
+Строковое представление локального IP, на котором удалённый клиент
+установил соединение. Например, если сервер слушает `'0.0.0.0'`, а клиент
+подключился к `'192.168.1.1'`, то `socket.localAddress` будет
 `'192.168.1.1'`.
 
 ### `socket.localPort`
@@ -1316,7 +1303,7 @@ added: v0.9.6
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The numeric representation of the local port. For example, `80` or `21`.
+Числовое представление локального порта. Например, `80` или `21`.
 
 ### `socket.localFamily`
 
@@ -1328,14 +1315,14 @@ added:
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The string representation of the local IP family. `'IPv4'` or `'IPv6'`.
+Строковое представление локального семейства IP: `'IPv4'` или `'IPv6'`.
 
 ### `socket.pause()`
 
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Pauses the reading of data. That is, [`'data'`][`'data'`] events will not be emitted.
-Useful to throttle back an upload.
+Приостанавливает чтение: события [`'data'`][`'data'`] не испускаются.
+Удобно для ограничения скорости отправки (например, загрузки).
 
 ### `socket.pending`
 
@@ -1347,9 +1334,8 @@ added:
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-This is `true` if the socket is not connected yet, either because `.connect()`
-has not yet been called or because it is still in the process of connecting
-(see [`socket.connecting`][`socket.connecting`]).
+`true`, если сокет ещё не подключён: либо `.connect()` ещё не вызывали, либо подключение ещё идёт
+(см. [`socket.connecting`][`socket.connecting`]).
 
 ### `socket.ref()`
 
@@ -1357,11 +1343,11 @@ has not yet been called or because it is still in the process of connecting
 added: v0.9.1
 -->
 
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Opposite of `unref()`, calling `ref()` on a previously `unref`ed socket will
-_not_ let the program exit if it's the only socket left (the default behavior).
-If the socket is `ref`ed calling `ref` again will have no effect.
+Противоположность `unref()`: вызов `ref()` у ранее отвязанного (`unref`) сокета снова
+удержит процесс, если это единственный оставшийся сокет (поведение по умолчанию).
+Если сокет уже `ref`, повторный `ref()` не действует.
 
 ### `socket.remoteAddress`
 
@@ -1371,9 +1357,9 @@ added: v0.5.10
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The string representation of the remote IP address. For example,
-`'74.125.127.100'` or `'2001:4860:a005::68'`. Value may be `undefined` if
-the socket is destroyed (for example, if the client disconnected).
+Строковое представление удалённого IP. Например,
+`'74.125.127.100'` или `'2001:4860:a005::68'`. Может быть `undefined`, если
+сокет уничтожен (например, клиент отключился).
 
 ### `socket.remoteFamily`
 
@@ -1383,8 +1369,8 @@ added: v0.11.14
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The string representation of the remote IP family. `'IPv4'` or `'IPv6'`. Value may be `undefined` if
-the socket is destroyed (for example, if the client disconnected).
+Строковое представление семейства удалённого IP: `'IPv4'` или `'IPv6'`. Может быть `undefined`, если
+сокет уничтожен (например, клиент отключился).
 
 ### `socket.remotePort`
 
@@ -1394,8 +1380,8 @@ added: v0.5.10
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The numeric representation of the remote port. For example, `80` or `21`. Value may be `undefined` if
-the socket is destroyed (for example, if the client disconnected).
+Числовое представление удалённого порта. Например, `80` или `21`. Может быть `undefined`, если
+сокет уничтожен (например, клиент отключился).
 
 ### `socket.resetAndDestroy()`
 
@@ -1407,16 +1393,16 @@ added:
 
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Close the TCP connection by sending an RST packet and destroy the stream.
-If this TCP socket is in connecting status, it will send an RST packet and destroy this TCP socket once it is connected.
-Otherwise, it will call `socket.destroy` with an `ERR_SOCKET_CLOSED` Error.
-If this is not a TCP socket (for example, a pipe), calling this method will immediately throw an `ERR_INVALID_HANDLE_TYPE` Error.
+Закрывает TCP-соединение пакетом RST и уничтожает поток.
+Если TCP-сокет ещё в состоянии подключения, RST будет отправлен и сокет уничтожен после установления соединения.
+Иначе будет вызван `socket.destroy` с ошибкой `ERR_SOCKET_CLOSED`.
+Если это не TCP-сокет (например, pipe), метод сразу выбросит `ERR_INVALID_HANDLE_TYPE`.
 
 ### `socket.resume()`
 
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Resumes reading after a call to [`socket.pause()`][`socket.pause()`].
+Возобновляет чтение после [`socket.pause()`][`socket.pause()`].
 
 ### `socket.setEncoding([encoding])`
 
@@ -1425,10 +1411,10 @@ added: v0.1.90
 -->
 
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Set the encoding for the socket as a [Readable Stream][Readable Stream]. See
-[`readable.setEncoding()`][`readable.setEncoding()`] for more information.
+Задаёт кодировку сокета как [читаемого потока][Readable Stream]. См.
+[`readable.setEncoding()`][`readable.setEncoding()`].
 
 ### `socket.setKeepAlive([enable][, initialDelay])`
 
@@ -1450,19 +1436,19 @@ changes:
     | --- | --- |
     | v13.12.0, v12.17.0 | Были добавлены новые значения по умолчанию для параметров сокетов TCP_KEEPCNT и TCP_KEEPINTVL. |
 
-* `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`
-* `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `0`
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
+* `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Enable/disable keep-alive functionality, and optionally set the initial
-delay before the first keepalive probe is sent on an idle socket.
+Включает или отключает keep-alive и при необходимости задаёт начальную
+задержку перед первой пробой keep-alive на простаивающем сокете.
 
-Set `initialDelay` (in milliseconds) to set the delay between the last
-data packet received and the first keepalive probe. Setting `0` for
-`initialDelay` will leave the value unchanged from the default
-(or previous) setting.
+`initialDelay` (в миллисекундах) — интервал между последним
+полученным пакетом данных и первой пробой keep-alive. Значение `0` для
+`initialDelay` оставляет параметр без изменения относительно значения по умолчанию
+(или предыдущей настройки).
 
-Enabling the keep-alive functionality will set the following socket options:
+При включении keep-alive задаются следующие параметры сокета:
 
 * `SO_KEEPALIVE=1`
 * `TCP_KEEPIDLE=initialDelay`
@@ -1475,19 +1461,18 @@ Enabling the keep-alive functionality will set the following socket options:
 added: v0.1.90
 -->
 
-* `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `true`
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Enable/disable the use of Nagle's algorithm.
+Включает или отключает алгоритм Нейгла.
 
-When a TCP connection is created, it will have Nagle's algorithm enabled.
+При создании TCP-соединения алгоритм Нейгла включён.
 
-Nagle's algorithm delays data before it is sent via the network. It attempts
-to optimize throughput at the expense of latency.
+Алгоритм Нейгла откладывает отправку данных по сети, стремясь
+повысить пропускную способность в ущерб задержке.
 
-Passing `true` for `noDelay` or not passing an argument will disable Nagle's
-algorithm for the socket. Passing `false` for `noDelay` will enable Nagle's
-algorithm.
+Передать `true` в `noDelay` или не передавать аргумент — отключить алгоритм Нейгла
+для сокета. Передать `false` — включить алгоритм Нейгла.
 
 ### `socket.setTimeout(timeout[, callback])`
 
@@ -1511,14 +1496,14 @@ changes:
 
 * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Sets the socket to timeout after `timeout` milliseconds of inactivity on
-the socket. By default `net.Socket` do not have a timeout.
+Устанавливает таймаут сокета после `timeout` миллисекунд неактивности.
+По умолчанию у `net.Socket` таймаута нет.
 
-When an idle timeout is triggered the socket will receive a [`'timeout'`][`'timeout'`]
-event but the connection will not be severed. The user must manually call
-[`socket.end()`][`socket.end()`] or [`socket.destroy()`][`socket.destroy()`] to end the connection.
+При срабатывании таймаута простоя сокет получает событие [`'timeout'`][`'timeout'`],
+но соединение не разрывается — нужно явно вызвать
+[`socket.end()`][`socket.end()`] или [`socket.destroy()`][`socket.destroy()`].
 
 ```js
 socket.setTimeout(3000);
@@ -1528,10 +1513,10 @@ socket.on('timeout', () => {
 });
 ```
 
-If `timeout` is 0, then the existing idle timeout is disabled.
+Если `timeout` равен `0`, текущий таймаут простоя отключается.
 
-The optional `callback` parameter will be added as a one-time listener for the
-[`'timeout'`][`'timeout'`] event.
+Необязательный `callback` добавляется как однократный слушатель события
+[`'timeout'`][`'timeout'`].
 
 ### `socket.getTypeOfService()`
 
@@ -1539,18 +1524,18 @@ The optional `callback` parameter will be added as a one-time listener for the
 added: v25.6.0
 -->
 
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current TOS value.
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Текущее значение TOS.
 
-Returns the current Type of Service (TOS) field for IPv4 packets or Traffic
-Class for IPv6 packets for this socket.
+Возвращает текущее поле Type of Service (TOS) для IPv4-пакетов или Traffic
+Class для IPv6-пакетов этого сокета.
 
-`setTypeOfService()` may be called before the socket is connected; the value
-will be cached and applied when the socket establishes a connection.
-`getTypeOfService()` will return the currently set value even before connection.
+`setTypeOfService()` можно вызвать до подключения; значение
+кэшируется и применяется при установлении соединения.
+`getTypeOfService()` возвращает установленное значение и до подключения.
 
-On some platforms (e.g., Linux), certain TOS/ECN bits may be masked or ignored,
-and behavior can differ between IPv4 and IPv6 or dual-stack sockets. Callers
-should verify platform-specific semantics.
+На некоторых платформах (например, Linux) отдельные биты TOS/ECN могут маскироваться или игнорироваться,
+поведение может различаться для IPv4, IPv6 и dual-stack. Вызывающему коду
+стоит сверяться с особенностями платформы.
 
 ### `socket.setTypeOfService(tos)`
 
@@ -1558,19 +1543,19 @@ should verify platform-specific semantics.
 added: v25.6.0
 -->
 
-* `tos` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The TOS value to set (0-255).
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* `tos` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение TOS (0–255).
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Sets the Type of Service (TOS) field for IPv4 packets or Traffic Class for IPv6
-Packets sent from this socket. This can be used to prioritize network traffic.
+Задаёт поле Type of Service (TOS) для IPv4-пакетов или Traffic Class для IPv6-
+пакетов, отправляемых с этого сокета. Можно использовать для приоритизации трафика.
 
-`setTypeOfService()` may be called before the socket is connected; the value
-will be cached and applied when the socket establishes a connection.
-`getTypeOfService()` will return the currently set value even before connection.
+`setTypeOfService()` можно вызвать до подключения; значение
+кэшируется и применяется при установлении соединения.
+`getTypeOfService()` возвращает установленное значение и до подключения.
 
-On some platforms (e.g., Linux), certain TOS/ECN bits may be masked or ignored,
-and behavior can differ between IPv4 and IPv6 or dual-stack sockets. Callers
-should verify platform-specific semantics.
+На некоторых платформах (например, Linux) отдельные биты TOS/ECN могут маскироваться или игнорироваться,
+поведение может различаться для IPv4, IPv6 и dual-stack. Вызывающему коду
+стоит сверяться с особенностями платформы.
 
 ### `socket.timeout`
 
@@ -1580,8 +1565,8 @@ added: v10.7.0
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
-The socket timeout in milliseconds as set by [`socket.setTimeout()`][`socket.setTimeout()`].
-It is `undefined` if a timeout has not been set.
+Таймаут сокета в миллисекундах, заданный [`socket.setTimeout()`][`socket.setTimeout()`].
+`undefined`, если таймаут не устанавливали.
 
 ### `socket.unref()`
 
@@ -1589,11 +1574,11 @@ It is `undefined` if a timeout has not been set.
 added: v0.9.1
 -->
 
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
 
-Calling `unref()` on a socket will allow the program to exit if this is the only
-active socket in the event system. If the socket is already `unref`ed calling
-`unref()` again will have no effect.
+Вызов `unref()` позволяет процессу завершиться, если это единственный
+активный сокет в системе событий. Если сокет уже отвязан (`unref`), повторный
+`unref()` не действует.
 
 ### `socket.write(data[, encoding][, callback])`
 
@@ -1602,22 +1587,21 @@ added: v0.1.90
 -->
 
 * `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `utf8`.
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используется только если `data` — строка. **По умолчанию:** `utf8`.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Sends data on the socket. The second parameter specifies the encoding in the
-case of a string. It defaults to UTF8 encoding.
+Отправляет данные через сокет. Второй аргумент задаёт кодировку для
+строки. По умолчанию — UTF-8.
 
-Returns `true` if the entire data was flushed successfully to the kernel
-buffer. Returns `false` if all or part of the data was queued in user memory.
-[`'drain'`][`'drain'`] will be emitted when the buffer is again free.
+Возвращает `true`, если все данные успешно сброшены в буфер ядра.
+Возвращает `false`, если данные полностью или частично поставлены в пользовательскую очередь.
+Событие [`'drain'`][`'drain'`] придёт, когда буфер снова освободится.
 
-The optional `callback` parameter will be executed when the data is finally
-written out, which may not be immediately.
+Необязательный `callback` вызывается, когда данные фактически
+отправлены — это может произойти не сразу.
 
-See `Writable` stream [`write()`][stream_writable_write] method for more
-information.
+См. метод потока `Writable` [`write()`][stream_writable_write].
 
 ### `socket.readyState`
 
@@ -1627,25 +1611,25 @@ added: v0.5.0
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-This property represents the state of the connection as a string.
+Строковое представление состояния соединения.
 
-* If the stream is connecting `socket.readyState` is `opening`.
-* If the stream is readable and writable, it is `open`.
-* If the stream is readable and not writable, it is `readOnly`.
-* If the stream is not readable and writable, it is `writeOnly`.
+* Если поток подключается — `socket.readyState` равен `opening`.
+* Если поток читаем и записываем — `open`.
+* Если читаем, но не записываем — `readOnly`.
+* Если не читаем и не записываем — `writeOnly`.
 
 ## `net.connect()`
 
-Aliases to
+Синоним
 [`net.createConnection()`][`net.createConnection()`].
 
-Possible signatures:
+Возможные сигнатуры:
 
 * [`net.connect(options[, connectListener])`][`net.connect(options)`]
-* [`net.connect(path[, connectListener])`][`net.connect(path)`] for [IPC][IPC]
-  connections.
+* [`net.connect(path[, connectListener])`][`net.connect(path)`] для [IPC][IPC]-
+  соединений.
 * [`net.connect(port[, host][, connectListener])`][`net.connect(port, host)`]
-  for TCP connections.
+  для TCP-соединений.
 
 ### `net.connect(options[, connectListener])`
 
@@ -1657,7 +1641,7 @@ added: v0.7.0
 * `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Alias to
+Синоним
 [`net.createConnection(options[, connectListener])`][`net.createConnection(options)`].
 
 ### `net.connect(path[, connectListener])`
@@ -1670,7 +1654,7 @@ added: v0.1.90
 * `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Alias to
+Синоним
 [`net.createConnection(path[, connectListener])`][`net.createConnection(path)`].
 
 ### `net.connect(port[, host][, connectListener])`
@@ -1684,28 +1668,27 @@ added: v0.1.90
 * `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
-Alias to
+Синоним
 [`net.createConnection(port[, host][, connectListener])`][`net.createConnection(port, host)`].
 
 ## `net.createConnection()`
 
-A factory function, which creates a new [`net.Socket`][`net.Socket`],
-immediately initiates connection with [`socket.connect()`][`socket.connect()`],
-then returns the `net.Socket` that starts the connection.
+Фабричная функция: создаёт новый [`net.Socket`][`net.Socket`],
+сразу инициирует соединение через [`socket.connect()`][`socket.connect()`]
+и возвращает этот `net.Socket`.
 
-When the connection is established, a [`'connect'`][`'connect'`] event will be emitted
-on the returned socket. The last parameter `connectListener`, if supplied,
-will be added as a listener for the [`'connect'`][`'connect'`] event **once**.
+Когда соединение установлено, на возвращённом сокете испускается [`'connect'`][`'connect'`]. Последний параметр `connectListener`, если задан,
+добавляется как однократный слушатель [`'connect'`][`'connect'`].
 
-Possible signatures:
+Возможные сигнатуры:
 
 * [`net.createConnection(options[, connectListener])`][`net.createConnection(options)`]
 * [`net.createConnection(path[, connectListener])`][`net.createConnection(path)`]
-  for [IPC][IPC] connections.
+  для [IPC][IPC]-соединений.
 * [`net.createConnection(port[, host][, connectListener])`][`net.createConnection(port, host)`]
-  for TCP connections.
+  для TCP-соединений.
 
-The [`net.connect()`][`net.connect()`] function is an alias to this function.
+Функция [`net.connect()`][`net.connect()`] — синоним этой функции.
 
 ### `net.createConnection(options[, connectListener])`
 
@@ -1713,27 +1696,25 @@ The [`net.connect()`][`net.connect()`] function is an alias to this function.
 added: v0.1.90
 -->
 
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Required. Will be passed to both the
-  [`new net.Socket([options])`][`new net.Socket(options)`] call and the
-  [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
-  method.
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
-  [`net.createConnection()`][`net.createConnection()`] functions. If supplied, will be added as
-  a listener for the [`'connect'`][`'connect'`] event on the returned socket once.
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Передаётся и в вызов
+  [`new net.Socket([options])`][`new net.Socket(options)`], и в
+  [`socket.connect(options[, connectListener])`][`socket.connect(options)`].
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций
+  [`net.createConnection()`][`net.createConnection()`]. Если задан, добавляется как однократный слушатель
+  [`'connect'`][`'connect'`] на возвращённом сокете.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Новый сокет, с которого начато соединение.
 
-For available options, see
+Список опций см. в
 [`new net.Socket([options])`][`new net.Socket(options)`]
-and [`socket.connect(options[, connectListener])`][`socket.connect(options)`].
+и [`socket.connect(options[, connectListener])`][`socket.connect(options)`].
 
-Additional options:
+Дополнительные опции:
 
-* `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set, will be used to call
-  [`socket.setTimeout(timeout)`][`socket.setTimeout(timeout)`] after the socket is created, but before
-  it starts the connection.
+* `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задан, после создания сокета, но до
+  начала соединения, будет вызван
+  [`socket.setTimeout(timeout)`][`socket.setTimeout(timeout)`].
 
-Following is an example of a client of the echo server described
-in the [`net.createServer()`][`net.createServer()`] section:
+Ниже — пример клиента echo-сервера из раздела [`net.createServer()`][`net.createServer()`]:
 
 === "MJS"
 
@@ -1771,16 +1752,16 @@ in the [`net.createServer()`][`net.createServer()`] section:
     });
     ```
 
-To connect on the socket `/tmp/echo.sock`:
+Подключение к сокету `/tmp/echo.sock`:
 
 ```js
 const client = net.createConnection({ path: '/tmp/echo.sock' });
 ```
 
-Following is an example of a client using the `port` and `onread`
-option. In this case, the `onread` option will be only used to call
-`new net.Socket([options])` and the `port` option will be used to
-call `socket.connect(options[, connectListener])`.
+Пример клиента с опциями `port` и `onread`.
+Здесь `onread` используется только при вызове
+`new net.Socket([options])`, а `port` — при вызове
+`socket.connect(options[, connectListener])`.
 
 === "MJS"
 
@@ -1823,21 +1804,21 @@ call `socket.connect(options[, connectListener])`.
 added: v0.1.90
 -->
 
-* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the socket should connect to. Will be passed to
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для подключения сокета. Передаётся в
   [`socket.connect(path[, connectListener])`][`socket.connect(path)`].
-  See [Identifying paths for IPC connections][Identifying paths for IPC connections].
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
-  [`net.createConnection()`][`net.createConnection()`] functions, an "once" listener for the
-  `'connect'` event on the initiating socket. Will be passed to
+  См. [Пути для IPC-соединений][Identifying paths for IPC connections].
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций
+  [`net.createConnection()`][`net.createConnection()`]: однократный слушатель события
+  `'connect'` на инициирующем сокете. Передаётся в
   [`socket.connect(path[, connectListener])`][`socket.connect(path)`].
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Новый сокет, с которого начато соединение.
 
-Initiates an [IPC][IPC] connection.
+Инициирует [IPC][IPC]-соединение.
 
-This function creates a new [`net.Socket`][`net.Socket`] with all options set to default,
-immediately initiates connection with
-[`socket.connect(path[, connectListener])`][`socket.connect(path)`],
-then returns the `net.Socket` that starts the connection.
+Создаёт новый [`net.Socket`][`net.Socket`] с опциями по умолчанию,
+сразу вызывает
+[`socket.connect(path[, connectListener])`][`socket.connect(path)`]
+и возвращает этот `net.Socket`.
 
 ### `net.createConnection(port[, host][, connectListener])`
 
@@ -1845,23 +1826,23 @@ then returns the `net.Socket` that starts the connection.
 added: v0.1.90
 -->
 
-* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the socket should connect to. Will be passed to
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для подключения. Передаётся в
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
-* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. Will be passed to
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для подключения. Передаётся в
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
-  **Default:** `'localhost'`.
-* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
-  [`net.createConnection()`][`net.createConnection()`] functions, an "once" listener for the
-  `'connect'` event on the initiating socket. Will be passed to
+  **По умолчанию:** `'localhost'`.
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций
+  [`net.createConnection()`][`net.createConnection()`]: однократный слушатель события
+  `'connect'` на инициирующем сокете. Передаётся в
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
-* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) Новый сокет, с которого начато соединение.
 
-Initiates a TCP connection.
+Инициирует TCP-соединение.
 
-This function creates a new [`net.Socket`][`net.Socket`] with all options set to default,
-immediately initiates connection with
-[`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`],
-then returns the `net.Socket` that starts the connection.
+Создаёт новый [`net.Socket`][`net.Socket`] с опциями по умолчанию,
+сразу вызывает
+[`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`]
+и возвращает этот `net.Socket`.
 
 ## `net.createServer([options][, connectionListener])`
 
@@ -1891,56 +1872,49 @@ changes:
     | v17.7.0, v16.15.0 | Параметры noDelay, KeepAlive и KeepAliveInitialDelay теперь поддерживаются. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
-    automatically end the writable side when the readable side ends.
-    **Default:** `false`.
-  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optionally overrides all [`net.Socket`][`net.Socket`]s'
-    `readableHighWaterMark` and `writableHighWaterMark`.
-    **Default:** See [`stream.getDefaultHighWaterMark()`][`stream.getDefaultHighWaterMark()`].
-  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality
-    on the socket immediately after a new incoming connection is received,
-    similarly on what is done in [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **Default:**
+  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, сокет автоматически завершит запись,
+    когда закончится чтение.
+    **По умолчанию:** `false`.
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательно переопределяет для всех [`net.Socket`][`net.Socket`]
+    `readableHighWaterMark` и `writableHighWaterMark`.
+    **По умолчанию:** см. [`stream.getDefaultHighWaterMark()`][`stream.getDefaultHighWaterMark()`].
+  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сразу после приёма нового входящего соединения включает keep-alive для
+    сокета, аналогично [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **По умолчанию:**
     `false`.
-  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
-    initial delay before the first keepalive probe is sent on an idle socket.
-    **Default:** `0`.
-  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's
-    algorithm immediately after a new incoming connection is received.
-    **Default:** `false`.
-  * `pauseOnConnect` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the socket should be
-    paused on incoming connections. **Default:** `false`.
-  * `blockList` [`<net.BlockList>`](net.md) `blockList` can be used for disabling inbound
-    access to specific IP addresses, IP ranges, or IP subnets. This does not
-    work if the server is behind a reverse proxy, NAT, etc. because the address
-    checked against the block list is the address of the proxy, or the one
-    specified by the NAT.
+  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано положительное число, задаёт
+    начальную задержку перед первой пробой keep-alive на простаивающем сокете.
+    **По умолчанию:** `0`.
+  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сразу после приёма нового входящего соединения отключает алгоритм Нейгла.
+    **По умолчанию:** `false`.
+  * `pauseOnConnect` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Приостанавливать ли сокет при каждом входящем соединении. **По умолчанию:** `false`.
+  * `blockList` [`<net.BlockList>`](net.md) `blockList` можно использовать, чтобы запретить входящий
+    доступ с заданных IP-адресов, диапазонов или подсетей. Это не
+    сработает, если сервер за обратным прокси, NAT и т.п.: проверяется адрес
+    прокси или адрес, указанный NAT.
 
-* `connectionListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Automatically set as a listener for the
-  [`'connection'`][`'connection'`] event.
+* `connectionListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Автоматически устанавливается слушателем события
+  [`'connection'`][`'connection'`].
 
 * Возвращает: [`<net.Server>`](net.md#class-netserver)
 
-Creates a new TCP or [IPC][IPC] server.
+Создаёт новый TCP- или [IPC][IPC]-сервер.
 
-If `allowHalfOpen` is set to `true`, when the other end of the socket
-signals the end of transmission, the server will only send back the end of
-transmission when [`socket.end()`][`socket.end()`] is explicitly called. For example, in the
-context of TCP, when a FIN packed is received, a FIN packed is sent
-back only when [`socket.end()`][`socket.end()`] is explicitly called. Until then the
-connection is half-closed (non-readable but still writable). See [`'end'`][`'end'`]
-event and [RFC 1122][half-closed] (section 4.2.2.13) for more information.
+Если `allowHalfOpen` равен `true`, когда другая сторона сокета
+сигнализирует о конце передачи, сервер отправит ответный конец передачи
+только при явном вызове [`socket.end()`][`socket.end()`]. Например, в TCP при получении FIN пакет FIN
+отправляется обратно только при явном вызове [`socket.end()`][`socket.end()`]. До этого соединение
+полузакрыто (чтение недоступно, запись ещё возможна). См. событие [`'end'`][`'end'`]
+и [RFC 1122][half-closed] (раздел 4.2.2.13).
 
-If `pauseOnConnect` is set to `true`, then the socket associated with each
-incoming connection will be paused, and no data will be read from its handle.
-This allows connections to be passed between processes without any data being
-read by the original process. To begin reading data from a paused socket, call
+Если `pauseOnConnect` равен `true`, сокет каждого входящего соединения
+ставится на паузу, данные из его дескриптора не читаются.
+Так можно передавать соединения между процессами, не прочитав данные в исходном процессе. Чтобы снова читать с приостановленного сокета, вызовите
 [`socket.resume()`][`socket.resume()`].
 
-The server can be a TCP server or an [IPC][IPC] server, depending on what it
-[`listen()`][`server.listen()`] to.
+Сервер может быть TCP или [IPC][IPC] в зависимости от аргументов
+[`listen()`][`server.listen()`].
 
-Here is an example of a TCP echo server which listens for connections
-on port 8124:
+Пример TCP echo-сервера, принимающего соединения на порту 8124:
 
 === "MJS"
 
@@ -1984,13 +1958,13 @@ on port 8124:
     });
     ```
 
-Test this by using `telnet`:
+Проверка через `telnet`:
 
 ```bash
 telnet localhost 8124
 ```
 
-To listen on the socket `/tmp/echo.sock`:
+Прослушивание сокета `/tmp/echo.sock`:
 
 ```js
 server.listen('/tmp/echo.sock', () => {
@@ -1998,7 +1972,7 @@ server.listen('/tmp/echo.sock', () => {
 });
 ```
 
-Use `nc` to connect to a Unix domain socket server:
+Подключение к серверу на Unix domain socket с помощью `nc`:
 
 ```bash
 nc -U /tmp/echo.sock
@@ -2010,11 +1984,11 @@ nc -U /tmp/echo.sock
 added: v19.4.0
 -->
 
-Gets the current default value of the `autoSelectFamily` option of [`socket.connect(options)`][`socket.connect(options)`].
-The initial default value is `true`, unless the command line option
-`--no-network-family-autoselection` is provided.
+Возвращает текущее значение по умолчанию для опции `autoSelectFamily` в [`socket.connect(options)`][`socket.connect(options)`].
+Изначально по умолчанию — `true`, если не передан флаг командной строки
+`--no-network-family-autoselection`.
 
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The current default value of the `autoSelectFamily` option.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Текущее значение по умолчанию для опции `autoSelectFamily`.
 
 ## `net.setDefaultAutoSelectFamily(value)`
 
@@ -2022,11 +1996,11 @@ The initial default value is `true`, unless the command line option
 added: v19.4.0
 -->
 
-Sets the default value of the `autoSelectFamily` option of [`socket.connect(options)`][`socket.connect(options)`].
+Задаёт значение по умолчанию для опции `autoSelectFamily` в [`socket.connect(options)`][`socket.connect(options)`].
 
-* `value` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The new default value.
-  The initial default value is `true`, unless the command line option
-  `--no-network-family-autoselection` is provided.
+* `value` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Новое значение по умолчанию.
+  Изначально по умолчанию — `true`, если не передан флаг командной строки
+  `--no-network-family-autoselection`.
 
 ## `net.getDefaultAutoSelectFamilyAttemptTimeout()`
 
@@ -2036,11 +2010,11 @@ added:
  - v18.18.0
 -->
 
-Gets the current default value of the `autoSelectFamilyAttemptTimeout` option of [`socket.connect(options)`][`socket.connect(options)`].
-The initial default value is `500` or the value specified via the command line
-option `--network-family-autoselection-attempt-timeout`.
+Возвращает текущее значение по умолчанию для опции `autoSelectFamilyAttemptTimeout` в [`socket.connect(options)`][`socket.connect(options)`].
+Изначально по умолчанию — `500` или значение из командной строки
+`--network-family-autoselection-attempt-timeout`.
 
-* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current default value of the `autoSelectFamilyAttemptTimeout` option.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Текущее значение по умолчанию для опции `autoSelectFamilyAttemptTimeout`.
 
 ## `net.setDefaultAutoSelectFamilyAttemptTimeout(value)`
 
@@ -2050,11 +2024,11 @@ added:
  - v18.18.0
 -->
 
-Sets the default value of the `autoSelectFamilyAttemptTimeout` option of [`socket.connect(options)`][`socket.connect(options)`].
+Задаёт значение по умолчанию для опции `autoSelectFamilyAttemptTimeout` в [`socket.connect(options)`][`socket.connect(options)`].
 
-* `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The new default value, which must be a positive number. If the number is less than `10`,
-  the value `10` is used instead. The initial default value is `250` or the value specified via the command line
-  option `--network-family-autoselection-attempt-timeout`.
+* `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Новое значение по умолчанию; должно быть положительным числом. Если число меньше `10`,
+  вместо него используется `10`. Изначально по умолчанию — `250` или значение из командной строки
+  `--network-family-autoselection-attempt-timeout`.
 
 ## `net.isIP(input)`
 
@@ -2065,8 +2039,8 @@ added: v0.3.0
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Returns `6` if `input` is an IPv6 address. Returns `4` if `input` is an IPv4
-address in [dot-decimal notation][dot-decimal notation] with no leading zeroes. Otherwise, returns
+Возвращает `6`, если `input` — IPv6-адрес. Возвращает `4`, если `input` — IPv4-
+адрес в [десятичной записи с точками][dot-decimal notation] без ведущих нулей. Иначе возвращает
 `0`.
 
 ```js
@@ -2086,8 +2060,8 @@ added: v0.3.0
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if `input` is an IPv4 address in [dot-decimal notation][dot-decimal notation] with no
-leading zeroes. Otherwise, returns `false`.
+Возвращает `true`, если `input` — IPv4-адрес в [десятичной записи с точками][dot-decimal notation] без
+ведущих нулей. Иначе возвращает `false`.
 
 ```js
 net.isIPv4('127.0.0.1'); // returns true
@@ -2105,7 +2079,7 @@ added: v0.3.0
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if `input` is an IPv6 address. Otherwise, returns `false`.
+Возвращает `true`, если `input` — IPv6-адрес. Иначе возвращает `false`.
 
 ```js
 net.isIPv6('::1'); // returns true

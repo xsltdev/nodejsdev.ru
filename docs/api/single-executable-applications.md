@@ -322,7 +322,7 @@ added:
   - v22.20.0
 -->
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив ключей всех встроенных ресурсов. Если ресурсов нет — пустой массив.
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив ключей всех встроенных ресурсов. Если ресурсов нет — пустой массив.
 
 Возвращает список ключей ресурсов, встроенных в исполняемый файл.
 Вне одноисполняемого приложения вызов приводит к ошибке.

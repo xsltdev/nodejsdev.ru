@@ -494,7 +494,7 @@ changes:
     | --- | --- |
     | v16.7.0 | Добавлен стандартный параметр «окончания» для замены окончаний строк и удален нестандартный параметр «кодировка». |
 
--   `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Blob[]>](https://developer.mozilla.org/en-US/docs/Web/API/Blob) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `Blob`.
+-   `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Blob[]>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `Blob`.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `endings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из значений `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к родному для платформы виду, как в `require('node:os').EOL`.
     -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип содержимого блоба. Поле `type` задаёт предполагаемый тип данных; формат строки не проверяется.
@@ -658,7 +658,7 @@ MIME-тип содержимого `Blob`.
 
 Класс `Buffer` — глобальный тип для прямой работы с двоичными данными. Его можно создавать разными способами.
 
-### Статический метод: `Buffer.alloc(size[, fill[, encoding]])`
+### Статический метод: `Buffer.alloc(size[, fill[, encoding]])` {#static-method-bufferallocsize-fill-encoding}
 
 <!-- YAML
 added: v5.10.0
@@ -780,7 +780,7 @@ changes:
 
 Если `size` не является числом, выбрасывается `TypeError`.
 
-### Статический метод: `Buffer.allocUnsafe(size)`
+### Статический метод: `Buffer.allocUnsafe(size)` {#static-method-bufferallocunsafesize}
 
 <!-- YAML
 added: v5.10.0
@@ -853,7 +853,7 @@ changes:
 
 Использование этого пула — ключевое отличие между `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`: `Buffer.alloc(size, fill)` _никогда_ не использует внутренний пул `Buffer`, а `Buffer.allocUnsafe(size).fill(fill)` _использует_ его, если `size` не больше половины `Buffer.poolSize`. Разница тонкая, но важна, когда нужна дополнительная производительность [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
-### Статический метод: `Buffer.allocUnsafeSlow(size)`
+### Статический метод: `Buffer.allocUnsafeSlow(size)` {#static-method-bufferallocunsafeslowsize}
 
 <!-- YAML
 added: v5.12.0
@@ -1043,7 +1043,7 @@ changes:
     // (This result is equal to: [buf2, buf1].)
     ```
 
-### Статический метод: `Buffer.concat(list[, totalLength])`
+### Статический метод: `Buffer.concat(list[, totalLength])` {#static-method-bufferconcatlist-totallength}
 
 <!-- YAML
 added: v0.7.11
@@ -1061,7 +1061,7 @@ changes:
     | --- | --- |
     | v8.0.0 | Элементами списка теперь могут быть элементы Uint8Array. |
 
--   `list` [<Buffer[]>](buffer.md#buffer) | [<Uint8Array[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Список экземпляров `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для объединения.
+-   `list` [`<Buffer[]>`](buffer.md#buffer) | [`<Uint8Array[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Список экземпляров `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для объединения.
 -   `totalLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Суммарная длина экземпляров `Buffer` в `list` после конкатенации.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
@@ -1121,7 +1121,7 @@ changes:
 
 `Buffer.concat()` также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
-### Статический метод: `Buffer.copyBytesFrom(view[, offset[, length]])`
+### Статический метод: `Buffer.copyBytesFrom(view[, offset[, length]])` {#static-method-buffercopybytesfromview-offset-length}
 
 <!-- YAML
 added:
@@ -1145,13 +1145,13 @@ console.log(buf[0]); // 255
 console.log(buf[1]); // 255
 ```
 
-### Статический метод: `Buffer.from(array)`
+### Статический метод: `Buffer.from(array)` {#static-method-bufferfromarray}
 
 <!-- YAML
 added: v5.10.0
 -->
 
--   `array` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `array` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Выделяет новый `Buffer`, используя `array` байтов в диапазоне `0` – `255`. Элементы массива вне этого диапазона усекаются, чтобы поместиться в него.
@@ -1180,7 +1180,7 @@ added: v5.10.0
 
 `Buffer.from(array)` и [`Buffer.from(string)`](#static-method-bufferfromstring-encoding) также могут использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
-### Статический метод: `Buffer.from(arrayBuffer[, byteOffset[, length]])`
+### Статический метод: `Buffer.from(arrayBuffer[, byteOffset[, length]])` {#static-method-bufferfromarraybuffer-byteoffset-length}
 
 <!-- YAML
 added: v5.10.0
@@ -1297,7 +1297,7 @@ added: v5.10.0
     // Prints: <Buffer 63 64 65 66>
     ```
 
-### Статический метод: `Buffer.from(buffer)`
+### Статический метод: `Buffer.from(buffer)` {#static-method-bufferfrombuffer}
 
 <!-- YAML
 added: v5.10.0
@@ -1407,7 +1407,7 @@ added: v8.2.0
 
 Будет выброшен `TypeError`, если у `object` нет указанных методов или тип не подходит для вариантов `Buffer.from()`.
 
-### Статический метод: `Buffer.from(string[, encoding])`
+### Статический метод: `Buffer.from(string[, encoding])` {#static-method-bufferfromstring-encoding}
 
 <!-- YAML
 added: v5.10.0
@@ -1844,6 +1844,8 @@ added: v0.1.90
     // Prints: !!!!!!!!qrst!!!!!!!!!!!!!
     ```
 
+---
+
 === "MJS"
 
     ```js
@@ -2209,7 +2211,7 @@ changes:
     // Prints: false
     ```
 
-### `buf.indexOf(value[, start[, end]][, encoding])`
+### `buf.indexOf(value[, start[, end]][, encoding])` {#bufindexofvalue-byteoffset-encoding}
 
 <!-- YAML
 added: v1.5.0
@@ -2594,7 +2596,7 @@ added: v0.1.90
 deprecated: v8.0.0
 -->
 
-> Stability: 0 - Deprecated: Use [`buf.buffer`](#bufbuffer) instead.
+> Стабильность: 0 - Устарело: используйте [`buf.buffer`](#bufbuffer) вместо этого.
 
 Свойство `buf.parent` — устаревший псевдоним для `buf.buffer`.
 
@@ -2942,7 +2944,7 @@ changes:
 
 Читает знаковое 8-битное целое из `buf` по указанному смещению `offset`.
 
-Integers read from a `Buffer` are interpreted as two's complement signed values.
+Целые числа, считываемые из `Buffer`, интерпретируются как знаковые значения в дополнительном коде.
 
 === "MJS"
 
@@ -2998,7 +3000,7 @@ changes:
 
 Читает знаковое 16-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
-Integers read from a `Buffer` are interpreted as two's complement signed values.
+Целые числа, считываемые из `Buffer`, интерпретируются как знаковые значения в дополнительном коде.
 
 === "MJS"
 
@@ -3046,7 +3048,7 @@ changes:
 
 Читает знаковое 16-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
-Integers read from a `Buffer` are interpreted as two's complement signed values.
+Целые числа, считываемые из `Buffer`, интерпретируются как знаковые значения в дополнительном коде.
 
 === "MJS"
 
@@ -3098,7 +3100,7 @@ changes:
 
 Читает знаковое 32-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
-Integers read from a `Buffer` are interpreted as two's complement signed values.
+Целые числа, считываемые из `Buffer`, интерпретируются как знаковые значения в дополнительном коде.
 
 === "MJS"
 
@@ -3146,7 +3148,7 @@ changes:
 
 Читает знаковое 32-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
-Integers read from a `Buffer` are interpreted as two's complement signed values.
+Целые числа, считываемые из `Buffer`, интерпретируются как знаковые значения в дополнительном коде.
 
 === "MJS"
 
@@ -3854,7 +3856,7 @@ changes:
     | v7.1.0, v6.9.2 | Приведение смещений к целым числам теперь правильно обрабатывает значения вне диапазона 32-битных целых чисел. |
     | v7.0.0 | Все смещения теперь приводятся к целым числам перед выполнением каких-либо вычислений с ними. |
 
-> Stability: 0 - Deprecated: Use [`buf.subarray`](#bufsubarraystart-end) instead.
+> Стабильность: 0 - Устарело: используйте [`buf.subarray`](#bufsubarraystart-end) вместо этого.
 
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
 -   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
@@ -3920,7 +3922,7 @@ added: v5.10.0
 
 -   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
-Interprets `buf` as an array of unsigned 16-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size) if [`buf.length`](#buflength) is not a multiple of 2.
+Интерпретирует `buf` как массив беззнаковых 16-битных целых чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size), если [`buf.length`](#buflength) не кратно 2.
 
 === "MJS"
 
@@ -3964,7 +3966,7 @@ Interprets `buf` as an array of unsigned 16-bit integers and swaps the byte orde
     // Throws ERR_INVALID_BUFFER_SIZE.
     ```
 
-One convenient use of `buf.swap16()` is to perform a fast in-place conversion between UTF-16 little-endian and UTF-16 big-endian:
+Одним из удобных применений `buf.swap16()` является быстрое преобразование на месте между UTF-16 little-endian и UTF-16 big-endian:
 
 === "MJS"
 
@@ -3992,7 +3994,7 @@ added: v5.10.0
 
 -   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
-Interprets `buf` as an array of unsigned 32-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size) if [`buf.length`](#buflength) is not a multiple of 4.
+Интерпретирует `buf` как массив беззнаковых 32-битных целых чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size), если [`buf.length`](#buflength) не кратно 4.
 
 === "MJS"
 
@@ -5584,7 +5586,7 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`Buffer.from(array)`](#static-method-bufferfromarray) instead.
 
--   `array` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Массив байтов для копирования.
+-   `array` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Массив байтов для копирования.
 
 См. [`Buffer.from(array)`](#static-method-bufferfromarray).
 
@@ -5620,7 +5622,7 @@ changes:
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
     | v6.0.0 | Параметры `byteOffset` и `length` теперь поддерживаются. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.from(arrayBuffer[, byteOffset[, length]])`](#static-method-bufferfromarraybuffer-byteoffset-length) instead.
+> Стабильность: 0 - Устарело: используйте [`Buffer.from(arrayBuffer[, byteOffset[, length]])`](#static-method-bufferfromarraybuffer-byteoffset-length) вместо этого.
 
 -   `arrayBuffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) или свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 -   `byteOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
@@ -5653,7 +5655,7 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.from(buffer)`](#static-method-bufferfrombuffer) instead.
+> Стабильность: 0 - Устарело: используйте [`Buffer.from(buffer)`](#static-method-bufferfrombuffer) вместо этого.
 
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
 
@@ -5689,7 +5691,7 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) instead (also see [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize)).
+> Стабильность: 0 - Устарело: используйте [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) вместо этого (см. также [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize)).
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 
@@ -5720,7 +5722,7 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.from(string[, encoding])`](#static-method-bufferfromstring-encoding) instead.
+> Стабильность: 0 - Устарело: используйте [`Buffer.from(string[, encoding])`](#static-method-bufferfromstring-encoding) вместо этого.
 
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
@@ -5761,7 +5763,7 @@ added:
   - v18.13.0
 -->
 
--   `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Blob[]>](https://developer.mozilla.org/en-US/docs/Web/API/Blob) | [<File[]>](https://developer.mozilla.org/en-US/docs/Web/API/File) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView), [File](https://developer.mozilla.org/en-US/docs/Web/API/File) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `File`.
+-   `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Blob[]>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) | [`<File[]>`](https://developer.mozilla.org/en-US/docs/Web/API/File) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView), [File](https://developer.mozilla.org/en-US/docs/Web/API/File) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `File`.
 -   `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `endings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к виду, заданному `require('node:os').EOL`.
@@ -5804,7 +5806,7 @@ added:
   - v14.17.0
 -->
 
-> Stability: 3 - Legacy. Use `Buffer.from(data, 'base64')` instead.
+> Стабильность: 3 - Закрыто. Вместо этого используйте `Buffer.from(data, 'base64')`.
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входная строка в Base64.
 
@@ -5828,7 +5830,7 @@ added:
   - v14.17.0
 -->
 
-> Stability: 3 - Legacy. Use `buf.toString('base64')` instead.
+> Стабильность: 3 - Закрыто. Вместо этого используйте `buf.toString('base64')`.
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Строка ASCII (Latin1).
 

@@ -393,7 +393,7 @@ added:
 
 * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы. Может быть `'main'` (основная база по умолчанию) или любая другая,
   добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Путь к файлу базы. Для базы в памяти
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Путь к файлу базы. Для базы в памяти
   возвращается `null`.
 
 Метод является обёрткой над [`sqlite3_db_filename()`][`sqlite3_db_filename()`].
@@ -529,7 +529,7 @@ added:
   - v22.15.0
 -->
 
-* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Открыта ли база в данный момент.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Открыта ли база в данный момент.
 
 ### `database.isTransaction`
 
@@ -539,7 +539,7 @@ added:
   - v22.16.0
 -->
 
-* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Находится ли соединение внутри транзакции. Метод
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Находится ли соединение внутри транзакции. Метод
   является обёрткой над [`sqlite3_get_autocommit()`][`sqlite3_get_autocommit()`].
 
 ### `database.limits`
@@ -548,7 +548,7 @@ added:
 added: v25.8.0
 -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект для чтения и установки лимитов базы SQLite во время выполнения.
 Каждое свойство соответствует лимиту SQLite и может читаться или задаваться.
@@ -591,7 +591,7 @@ added: REPLACEME
 * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сериализуемой базы. Может быть `'main'`
   (основная по умолчанию) или любая другая, добавленная через
   [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы.
+* Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы.
 
 Сериализует базу в двоичный вид (`Uint8Array`). Удобно для сохранения,
 клонирования или переноса in-memory базы. Метод является обёрткой над [`sqlite3_serialize()`][`sqlite3_serialize()`].
@@ -688,7 +688,7 @@ added: v22.5.0
     параметров без префикса. **По умолчанию:** наследуется из опций базы или `true`.
   * `allowUnknownNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, неизвестные именованные параметры
     игнорируются. **По умолчанию:** наследуется из опций базы или `false`.
-* Returns: [`<StatementSync>`](sqlite.md) Подготовленное выражение.
+* Возвращает: [`<StatementSync>`](sqlite.md) Подготовленное выражение.
 
 Компилирует SQL в [подготовленное выражение][prepared statement]. Метод является обёрткой
 над [`sqlite3_prepare_v2()`][`sqlite3_prepare_v2()`].
@@ -701,7 +701,7 @@ added: v24.9.0
 
 * `maxSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число подготовленных выражений в кэше.
   **По умолчанию:** `1000`.
-* Returns: [`<SQLTagStore>`](#class-sqltagstore) Новый тег-хранилище SQL для кэширования выражений.
+* Возвращает: [`<SQLTagStore>`](#class-sqltagstore) Новый тег-хранилище SQL для кэширования выражений.
 
 Создаёт [`SQLTagStore`][`SQLTagStore`] — LRU-кэш
 подготовленных выражений. Позволяет повторно использовать
@@ -830,7 +830,7 @@ added:
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры сессии.
   * `table` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Конкретная таблица для отслеживания изменений. По умолчанию отслеживаются все таблицы.
   * `db` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы для отслеживания. Полезно при нескольких базах через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [`<Session>`](sqlite.md) Дескриптор сессии.
+* Возвращает: [`<Session>`](sqlite.md) Дескриптор сессии.
 
 Создаёт и подключает сессию к базе. Метод является обёрткой над [`sqlite3session_create()`][`sqlite3session_create()`] и [`sqlite3session_attach()`][`sqlite3session_attach()`].
 
@@ -866,7 +866,7 @@ added:
     применение changeset прерывается с откатом.
 
     **По умолчанию:** функция, возвращающая `SQLITE_CHANGESET_ABORT`.
-* Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Успешно ли применён changeset без прерывания.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Успешно ли применён changeset без прерывания.
 
 Если база не открыта, выбрасывается исключение.
 Метод является обёрткой над [`sqlite3changeset_apply()`][`sqlite3changeset_apply()`].
@@ -951,7 +951,7 @@ added:
   - v22.12.0
 -->
 
-* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset для применения к другим базам.
+* Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset для применения к другим базам.
 
 Возвращает changeset со всеми изменениями с момента создания сессии. Можно вызывать несколько раз.
 Если база или сессия не открыты, выбрасывается исключение. Метод является обёрткой над [`sqlite3session_changeset()`][`sqlite3session_changeset()`].
@@ -964,7 +964,7 @@ added:
   - v22.12.0
 -->
 
-* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный patchset для применения к другим базам.
+* Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный patchset для применения к другим базам.
 
 Аналогично предыдущему методу, но формирует более компактный patchset. См. [Changesets and Patchsets][Changesets and Patchsets]
 в документации SQLite. Если база или сессия не открыты, выбрасывается исключение. Метод является
@@ -1023,7 +1023,7 @@ changes:
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект — строка
+* Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект — строка
   результата выполнения выражения. Ключи и значения —
   имена столбцов и значения в строке.
 
@@ -1039,7 +1039,7 @@ added:
   - v22.16.0
 -->
 
-* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект описывает столбец
+* Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект описывает столбец
   подготовленного выражения и содержит поля:
 
   * `column` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя столбца в исходной таблице без псевдонима
@@ -1068,7 +1068,7 @@ added:
 added: v22.5.0
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL с подставленными значениями параметров.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL с подставленными значениями параметров.
 
 Текст подготовленного выражения, в котором плейсхолдеры заменены значениями
 последнего выполнения. Свойство является обёрткой над
@@ -1098,7 +1098,7 @@ changes:
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Объект первой строки
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Объект первой строки
   результата или `undefined`, если строк нет.
 
 Выполняет выражение и возвращает первую строку как
@@ -1129,7 +1129,7 @@ changes:
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
 
 Выполняет выражение и возвращает итератор по
 строкам. Если строк нет, итератор пустой. [Параметры][parameters are bound] привязываются
@@ -1159,7 +1159,7 @@ changes:
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `changes` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число строк, изменённых, вставленных или удалённых
     последним завершённым `INSERT`, `UPDATE` или `DELETE`.
     Тип — число или `BigInt` в зависимости от настроек
@@ -1236,7 +1236,7 @@ added: v22.5.0
 added: v22.5.0
 -->
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL, из которого создано выражение.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL, из которого создано выражение.
 
 Текст подготовленного выражения. Свойство является
 обёрткой над [`sqlite3_sql()`][`sqlite3_sql()`].
@@ -1263,10 +1263,10 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
+* `stringElements` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
 * `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов — все строки результата.
+* Возвращает: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов — все строки результата.
 
 Выполняет запрос и возвращает все строки.
 
@@ -1278,10 +1278,10 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
+* `stringElements` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
 * `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Первая строка результата
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Первая строка результата
   или `undefined`, если строк нет.
 
 Выполняет запрос и возвращает первую строку.
@@ -1294,10 +1294,10 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
+* `stringElements` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
 * `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
 
 Выполняет запрос и возвращает итератор по строкам.
 
@@ -1309,10 +1309,10 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
+* `stringElements` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
 * `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения о выполнении, включая `changes` и `lastInsertRowid`.
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения о выполнении, включая `changes` и `lastInsertRowid`.
 
 Выполняет запрос без набора строк (например INSERT, UPDATE, DELETE).
 
@@ -1338,7 +1338,7 @@ changes:
     | --- | --- |
     | v25.5.0, v24.13.1 | Из метода изменился геттер. |
 
-* Type: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Только для чтения: число подготовленных выражений в кэше.
 
@@ -1348,7 +1348,7 @@ changes:
 added: v24.9.0
 -->
 
-* Type: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Только для чтения: максимальное число выражений в кэше.
 
@@ -1358,7 +1358,7 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* Type: [`<DatabaseSync>`](sqlite.md)
+* Тип: [`<DatabaseSync>`](sqlite.md)
 
 Только для чтения: связанный с хранилищем объект `DatabaseSync`.
 
@@ -1397,7 +1397,7 @@ changes:
   * `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
   * `rate` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число страниц за один шаг копирования. **По умолчанию:** `100`.
   * `progress` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный callback после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
-* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
 
 Создаёт резервную копию базы. Обёртка над [`sqlite3_backup_init()`][`sqlite3_backup_init()`], [`sqlite3_backup_step()`][`sqlite3_backup_step()`]
 и [`sqlite3_backup_finish()`][`sqlite3_backup_finish()`].
@@ -1447,7 +1447,7 @@ added:
   - v22.13.0
 -->
 
-* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с распространёнными константами для операций SQLite.
 

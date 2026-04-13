@@ -160,7 +160,7 @@ added:
   - v18.17.0
 -->
 
--   `signals` [<AbortSignal[]>](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
+-   `signals` [`<AbortSignal[]>`](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван, если прерван любой из переданных сигналов. Свойство [`abortSignal.reason`](globals.md#abortsignalreason) получит значение той причины, которая привела к прерыванию.
 
@@ -893,7 +893,7 @@ console.log(
 added: v21.2.0
 -->
 
--   Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.languages` только для чтения: массив предпочитаемых языков. По умолчанию содержит только `navigator.language` (см. выше).
 

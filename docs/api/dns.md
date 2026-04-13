@@ -216,7 +216,7 @@ added:
 added: v0.11.3
 -->
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив строк IP-адресов в формате [RFC 5952][RFC 5952],
 сейчас настроенных для DNS-разрешения. Если задан нестандартный порт, строка может содержать секцию с портом.
@@ -467,7 +467,7 @@ changes:
 * `rrtype` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип ресурсной записи. **По умолчанию:** `'A'`.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `records` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `records` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает имя хоста (например `'nodejs.org'`) в массив
 ресурсных записей. У колбэка аргументы `(err, records)`. При успехе `records` —
@@ -487,7 +487,7 @@ changes:
 | `'SOA'`   | начало зоны                     | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dns.resolveSoa()`][`dns.resolveSoa()`]   |
 | `'SRV'`   | службы                          | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dns.resolveSrv()`][`dns.resolveSrv()`]   |
 | `'TLSA'`  | привязки сертификатов           | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dns.resolveTlsa()`][`dns.resolveTlsa()`]  |
-| `'TXT'`   | текстовые записи                | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dns.resolveTxt()`][`dns.resolveTxt()`]   |
+| `'TXT'`   | текстовые записи                | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dns.resolveTxt()`][`dns.resolveTxt()`]   |
 
 При ошибке `err` — объект [`Error`][`Error`], поле `err.code` — один из
 [DNS error codes][DNS error codes].
@@ -525,7 +525,7 @@ changes:
     TTL в секундах.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает IPv4-адреса (записи `A`) для `hostname`.
 Аргумент `addresses` у колбэка — массив IPv4-адресов, например
@@ -564,7 +564,7 @@ changes:
     TTL в секундах.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает IPv6-адреса (записи `AAAA`) для `hostname`.
 Аргумент `addresses` у колбэка — массив IPv6-адресов.
@@ -589,7 +589,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `ret` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `ret` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает все записи (запрос `ANY` или `*`).
 Аргумент `ret` у колбэка — массив объектов разных типов. У каждого объекта есть поле `type` —
@@ -657,7 +657,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 По протоколу DNS разрешает записи `CNAME` для `hostname`.
 Аргумент `addresses` у колбэка — массив канонических имён для `hostname`
@@ -686,7 +686,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `records` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `records` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает записи `CAA` для `hostname`.
 Аргумент `addresses` у колбэка — массив записей авторизации центра сертификации
@@ -716,7 +716,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `addresses` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает записи почтового обмена (`MX`) для `hostname`.
 Аргумент `addresses` у колбэка — массив объектов с полями `priority` и `exchange`
@@ -745,7 +745,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `addresses` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает записи `NAPTR` для `hostname`.
 Аргумент `addresses` у колбэка — массив объектов со свойствами:
@@ -793,7 +793,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 По протоколу DNS разрешает записи серверов имён (`NS`) для `hostname`.
 Аргумент `addresses` у колбэка — массив записей NS для `hostname`
@@ -822,7 +822,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `addresses` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 По протоколу DNS разрешает записи `PTR` для `hostname`.
 Аргумент `addresses` у колбэка — массив строк с ответными записями.
@@ -900,7 +900,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `addresses` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `addresses` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 По протоколу DNS разрешает записи `SRV` для `hostname`.
 Аргумент `addresses` у колбэка — массив объектов со свойствами:
@@ -934,7 +934,7 @@ added:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `records` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `records` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 <!--lint enable no-undefined-references list-item-bullet-indent-->
 
@@ -980,7 +980,7 @@ changes:
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `records` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `records` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 По протоколу DNS разрешает текстовые записи (`TXT`) для `hostname`.
 Аргумент `records` у колбэка — двумерный массив фрагментов TXT для `hostname` (например
@@ -996,7 +996,7 @@ added: v0.1.16
 * `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `hostnames` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `hostnames` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Выполняет обратный DNS-запрос: IPv4- или IPv6-адрес преобразуется в массив имён хостов.
 
@@ -1074,7 +1074,7 @@ changes:
 added: v0.11.3
 -->
 
-* `servers` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952][RFC 5952]
+* `servers` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952][RFC 5952]
 
 Задаёт IP-адреса и порты DNS-серверов для разрешения имён. Аргумент `servers` —
 массив строк в формате [RFC 5952][RFC 5952]. Порт по умолчанию IANA для DNS (53) можно не указывать.
@@ -1206,7 +1206,7 @@ added:
 added: v10.6.0
 -->
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает массив строк IP в формате [RFC 5952][RFC 5952],
 сейчас настроенных для DNS-разрешения. При нестандартном порту строка может содержать порт.
@@ -1381,7 +1381,7 @@ added: v10.6.0
 | `'SOA'`   | начало зоны                     | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dnsPromises.resolveSoa()`][`dnsPromises.resolveSoa()`]   |
 | `'SRV'`   | службы                          | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dnsPromises.resolveSrv()`][`dnsPromises.resolveSrv()`]   |
 | `'TLSA'`  | привязки сертификатов           | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dnsPromises.resolveTlsa()`][`dnsPromises.resolveTlsa()`]  |
-| `'TXT'`   | текстовые записи                | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dnsPromises.resolveTxt()`][`dnsPromises.resolveTxt()`]   |
+| `'TXT'`   | текстовые записи                | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dnsPromises.resolveTxt()`][`dnsPromises.resolveTxt()`]   |
 
 При ошибке промис отклоняется с [`Error`][`Error`], поле `err.code` — один из [DNS error codes][DNS error codes].
 
@@ -1713,7 +1713,7 @@ added:
 added: v10.6.0
 -->
 
-* `servers` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952][RFC 5952]
+* `servers` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) массив адресов в формате [RFC 5952][RFC 5952]
 
 Задаёт IP и порты DNS-серверов. Аргумент `servers` — массив строк [RFC 5952][RFC 5952]; порт 53 можно не указывать.
 

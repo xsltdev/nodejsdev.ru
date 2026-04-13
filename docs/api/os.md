@@ -88,7 +88,7 @@ added: v6.3.0
 added: v0.3.3
 -->
 
-* Возвращает: [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Массив объектов с информацией о каждом логическом ядре ЦП.
 Пустой массив, если сведений нет (например, недоступна `/proc`).
@@ -240,7 +240,7 @@ added: v0.3.3
 added: v0.3.3
 -->
 
-* Возвращает: [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Массив из средних нагрузок за 1, 5 и 15 минут.
 

@@ -452,7 +452,7 @@ added: v10.0.0
 -->
 
 * `tabularData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `properties` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативный набор свойств для столбцов.
+* `properties` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативный набор свойств для столбцов.
 
 Пытается построить таблицу: столбцы из свойств `tabularData` (или из `properties`), строки — элементы `tabularData`, и вывести её. Если данные не удаётся разобрать как табличные, логируется аргумент как есть.
 

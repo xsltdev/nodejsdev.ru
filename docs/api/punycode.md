@@ -141,7 +141,7 @@ punycode.ucs2.decode('\uD834\uDF06'); // [0x1D306]
 added: v0.7.0
 -->
 
-* `codePoints` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `codePoints` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метод `punycode.ucs2.encode()` возвращает строку по массиву числовых кодовых точек.
 

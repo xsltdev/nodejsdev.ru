@@ -363,7 +363,7 @@ changes:
     | --- | --- |
     | v18.10.0, v16.18.0 | Поддержка tee для байтового читаемого потока. |
 
-* Возвращает: [<ReadableStream[]>](webstreams.md#readablestream)
+* Возвращает: [`<ReadableStream[]>`](webstreams.md#readablestream)
 
 Возвращает пару новых экземпляров [ReadableStream](webstreams.md#readablestream), в которые пересылаются
 данные этого `ReadableStream`. Оба получают одинаковые данные.
@@ -1155,8 +1155,8 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` when the writer is ready
-  to be used.
+* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется со значением `undefined`, когда writer готов
+  к использованию.
 
 #### `writableStreamDefaultWriter.releaseLock()`
 

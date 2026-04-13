@@ -710,7 +710,7 @@ deprecated:
 
     Используйте [module.builtinModules][module.builtinModules] вместо этого API.
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список имён части модулей Node.js, например `'http'`.
 

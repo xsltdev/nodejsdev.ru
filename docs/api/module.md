@@ -38,7 +38,7 @@ changes:
     | --- | --- |
     | v23.5.0 | Список теперь также содержит модули только с префиксами. |
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список имён всех модулей, предоставляемых Node.js. Можно использовать, чтобы проверить,
 поддерживается ли модуль третьей стороной или нет.
@@ -234,7 +234,7 @@ changes:
   * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
     если `parentURL` передан вторым аргументом. **По умолчанию:** `'data:'`
   * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`][`initialize`].
-  * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
+  * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
     хука `initialize`.
 
 Регистрирует модуль, экспортирующий [хуки][hooks], меняющие разрешение и загрузку
@@ -272,7 +272,7 @@ changes:
     завершения процесса.
 
 Регистрирует [хуки][hooks], меняющие разрешение и загрузку модулей.
-См. [Customization hooks][Customization hooks]. Возвращённый объект позволяет
+См. [хуки настройки][Customization hooks]. Возвращённый объект позволяет
 [снять хуки][deregistration of synchronous customization hooks].
 
 ### `module.stripTypeScriptTypes(code[, options])`
@@ -392,7 +392,7 @@ import('node:fs').then((esmFS) => {
 });
 ```
 
-## Кэш компиляции модулей
+## Кэш компиляции модулей {: #module-compile-cache}
 
 <!-- YAML
 added: v22.1.0
@@ -443,7 +443,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
 
 Два способа включить переносимый режим:
 
-1. Using the portable option in [`module.enableCompileCache()`][`module.enableCompileCache()`]:
+1. Через опцию `portable` в [`module.enableCompileCache()`][`module.enableCompileCache()`]:
 
    ```js
    // Non-portable cache (default): cache breaks if project is moved
@@ -453,7 +453,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
    module.enableCompileCache({ directory: '/path/to/cache/storage/dir', portable: true });
    ```
 
-2. Setting the environment variable: [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`]
+2. Через переменную окружения [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`]
 
 ### Ограничения кэша компиляции
 
@@ -487,41 +487,37 @@ changes:
 
 <table>
   <tr>
-    <th>Constant</th>
-    <th>Description</th>
+    <th>Константа</th>
+    <th>Описание</th>
   </tr>
   <tr>
     <td><code>ENABLED</code></td>
     <td>
-      Node.js has enabled the compile cache successfully. The directory used to store the
-      compile cache will be returned in the <code>directory</code> field in the
-      returned object.
+      Node.js успешно включил кэш компиляции. Каталог, в котором хранится кэш,
+      будет указан в поле <code>directory</code> возвращаемого объекта.
     </td>
   </tr>
   <tr>
     <td><code>ALREADY_ENABLED</code></td>
     <td>
-      The compile cache has already been enabled before, either by a previous call to
-      <code>module.enableCompileCache()</code>, or by the <code>NODE_COMPILE_CACHE=dir</code>
-      environment variable. The directory used to store the
-      compile cache will be returned in the <code>directory</code> field in the
-      returned object.
+      Кэш компиляции уже был включён ранее — либо предыдущим вызовом
+      <code>module.enableCompileCache()</code>, либо переменной окружения <code>NODE_COMPILE_CACHE=dir</code>.
+      Каталог хранения кэша будет указан в поле <code>directory</code> возвращаемого объекта.
     </td>
   </tr>
   <tr>
     <td><code>FAILED</code></td>
     <td>
-      Node.js fails to enable the compile cache. This can be caused by the lack of
-      permission to use the specified directory, or various kinds of file system errors.
-      The detail of the failure will be returned in the <code>message</code> field in the
-      returned object.
+      Node.js не удалось включить кэш компиляции. Причина может быть в отсутствии прав
+      на использование указанного каталога или в ошибках файловой системы.
+      Подробности сбоя возвращаются в поле <code>message</code> возвращаемого объекта.
     </td>
   </tr>
   <tr>
     <td><code>DISABLED</code></td>
     <td>
-      Node.js cannot enable the compile cache because the environment variable
-      <code>NODE_DISABLE_COMPILE_CACHE=1</code> has been set.
+      Кэш компиляции нельзя включить, так как задана переменная окружения
+      <code>NODE_DISABLE_COMPILE_CACHE=1</code>.
     </td>
   </tr>
 </table>
@@ -556,43 +552,39 @@ changes:
     | v25.0.0, v24.12.0 | Добавьте опцию «portable», чтобы включить переносимый кеш компиляции. |
     | v25.0.0, v24.12.0 | Переименуйте невыпущенную опцию «path» в «directory», чтобы обеспечить согласованность. |
 
-* `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional. If a string is passed, it is considered to be `options.directory`.
-  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional. Directory to store the compile cache. If not specified,
-    the directory specified by the [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`] environment variable
-    will be used if it's set, or `path.join(os.tmpdir(), 'node-compile-cache')`
-    otherwise.
-  * `portable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Optional. If `true`, enables portable compile cache so that
-    the cache can be reused even if the project directory is moved. This is a best-effort
-    feature. If not specified, it will depend on whether the environment variable
-    [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`] is set.
+* `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно. Если передана строка, она считается значением `options.directory`.
+  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Каталог для хранения кэша компиляции. Если не указан,
+    используется каталог из переменной окружения [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`],
+    если она задана, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
+  * `portable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Необязательно. При `true` включается переносимый кэш компиляции, чтобы
+    кэш можно было переиспользовать после переноса каталога проекта. Режим работает по возможности.
+    Если не указано, поведение зависит от того, задана ли переменная окружения
+    [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`].
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `status` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) One of the [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
-  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If Node.js cannot enable the compile cache, this contains
-    the error message. Only set if `status` is `module.constants.compileCacheStatus.FAILED`.
-  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If the compile cache is enabled, this contains the directory
-    where the compile cache is stored. Only set if  `status` is
-    `module.constants.compileCacheStatus.ENABLED` or
+  * `status` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из значений [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
+  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Если Node.js не удалось включить кэш компиляции, здесь
+    сообщение об ошибке. Заполняется только при `status` равном `module.constants.compileCacheStatus.FAILED`.
+  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Если кэш компиляции включён, здесь каталог,
+    в котором он хранится. Заполняется только если `status` равен
+    `module.constants.compileCacheStatus.ENABLED` или
     `module.constants.compileCacheStatus.ALREADY_ENABLED`.
 
-Enable [module compile cache][module compile cache] in the current Node.js instance.
+Включает [кэш компиляции модулей][module compile cache] в текущем экземпляре Node.js.
 
-For general use cases, it's recommended to call `module.enableCompileCache()` without
-specifying the `options.directory`, so that the directory can be overridden by the
-`NODE_COMPILE_CACHE` environment variable when necessary.
+В типичных сценариях рекомендуется вызывать `module.enableCompileCache()` без указания
+`options.directory`, чтобы при необходимости каталог можно было переопределить переменной окружения
+`NODE_COMPILE_CACHE`.
 
-Since compile cache is supposed to be a optimization that is not mission critical, this
-method is designed to not throw any exception when the compile cache cannot be enabled.
-Instead, it will return an object containing an error message in the `message` field to
-aid debugging. If compile cache is enabled successfully, the `directory` field in the
-returned object contains the path to the directory where the compile cache is stored. The
-`status` field in the returned object would be one of the `module.constants.compileCacheStatus`
-values to indicate the result of the attempt to enable the [module compile cache][module compile cache].
+Кэш компиляции — это оптимизация, не критичная для работы приложения, поэтому метод
+не бросает исключение, если кэш включить не удалось. Вместо этого возвращается объект
+с текстом ошибки в поле `message` для отладки. При успешном включении в поле `directory`
+возвращаемого объекта указывается путь к каталогу кэша. Поле `status` содержит одно из значений
+`module.constants.compileCacheStatus` и отражает результат попытки включить [кэш компиляции модулей][module compile cache].
 
-This method only affects the current Node.js instance. To enable it in child worker threads,
-either call this method in child worker threads too, or set the
-`process.env.NODE_COMPILE_CACHE` value to compile cache directory so the behavior can
-be inherited into the child workers. The directory can be obtained either from the
-`directory` field returned by this method, or with [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
+Метод действует только в текущем экземпляре Node.js. Чтобы включить кэш в дочерних потоках worker,
+либо вызывайте этот метод и в них, либо задайте `process.env.NODE_COMPILE_CACHE` равным каталогу кэша,
+чтобы поведение унаследовалось дочерними worker. Каталог можно взять из поля `directory`
+возвращаемого этим методом объекта или через [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
 
 ### `module.flushCompileCache()`
 
@@ -612,11 +604,10 @@ changes:
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-Flush the [module compile cache][module compile cache] accumulated from modules already loaded
-in the current Node.js instance to disk. This returns after all the flushing
-file system operations come to an end, no matter they succeed or not. If there
-are any errors, this will fail silently, since compile cache misses should not
-interfere with the actual operation of the application.
+Сбрасывает накопленный к [кэшу компиляции модулей][module compile cache] в текущем экземпляре Node.js
+соответствующий уже загруженным модулям. Возврат происходит после завершения всех операций
+записи на диск, независимо от успеха. При ошибках сбой не сигнализируется: промахи кэша
+не должны мешать работе приложения.
 
 ### `module.getCompileCacheDir()`
 
@@ -636,12 +627,12 @@ changes:
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Path to the [module compile cache][module compile cache] directory if it is enabled,
-  or `undefined` otherwise.
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Путь к каталогу [кэша компиляции модулей][module compile cache], если он включён,
+  иначе `undefined`.
 
 <i id="module_customization_hooks"></i>
 
-## Customization Hooks
+## Хуки настройки {: #customization-hooks}
 
 <!-- YAML
 added: v8.8.0
@@ -686,30 +677,27 @@ changes:
 
 <!-- type=misc -->
 
-Node.js currently supports two types of module customization hooks:
+Сейчас Node.js поддерживает два вида хуков настройки модулей:
 
-1. [`module.registerHooks(options)`][`module.registerHooks()`]: takes synchronous hook
-   functions that are run directly on the thread where the modules are loaded.
-2. [`module.register(specifier[, parentURL][, options])`][`register`]: takes specifier to a
-   module that exports asynchronous hook functions. The functions are run on a
-   separate loader thread.
+1. [`module.registerHooks(options)`][`module.registerHooks()`]: принимает синхронные функции-хуки,
+   которые выполняются в том же потоке, где загружаются модули.
+2. [`module.register(specifier[, parentURL][, options])`][`register`]: принимает спецификатор модуля,
+   экспортирующего асинхронные функции-хуки. Они выполняются в отдельном потоке загрузчика.
 
-The asynchronous hooks incur extra overhead from inter-thread communication,
-and have [several caveats][caveats of asynchronous customization hooks] especially
-when customizing CommonJS modules in the module graph.
-In most cases, it's recommended to use synchronous hooks via `module.registerHooks()`
-for simplicity.
+Асинхронные хуки добавляют накладные расходы на обмен между потоками и связаны с
+[рядом ограничений][caveats of asynchronous customization hooks], в частности при настройке модулей CommonJS в графе.
+В большинстве случаев проще использовать синхронные хуки через `module.registerHooks()`.
 
-### Synchronous customization hooks
+### Синхронные хуки настройки {: #synchronous-customization-hooks}
 
 > Стабильность: 1.2 — кандидат в релиз
 
 <i id="enabling_module_customization_hooks"></i>
 
-#### Registration of synchronous customization hooks
+#### Регистрация синхронных хуков настройки {: #registration-of-synchronous-customization-hooks}
 
-To register synchronous customization hooks, use [`module.registerHooks()`][`module.registerHooks()`], which
-takes [synchronous hook functions][synchronous hook functions] directly in-line.
+Чтобы зарегистрировать синхронные хуки настройки, используйте [`module.registerHooks()`][`module.registerHooks()`] —
+в него передаются [синхронные функции-хуки][synchronous hook functions] напрямую.
 
 === "MJS"
 
@@ -733,42 +721,38 @@ takes [synchronous hook functions][synchronous hook functions] directly in-line.
     });
     ```
 
-##### Registering hooks before application code runs with flags
+##### Регистрация хуков до запуска кода приложения через флаги {: #registering-hooks-before-application-code-runs-with-flags}
 
-The hooks can be registered before the application code is run by using the
-[`--import`][`--import`] or [`--require`][`--require`] flag:
+Хуки можно зарегистрировать до выполнения кода приложения с помощью флагов
+[`--import`][`--import`] или [`--require`][`--require`]:
 
 ```bash
 node --import ./register-hooks.js ./my-app.js
 node --require ./register-hooks.js ./my-app.js
 ```
 
-The specifier passed to `--import` or `--require` can also come from a package:
+Спецификатор для `--import` или `--require` может задаваться и через пакет:
 
 ```bash
 node --import some-package/register ./my-app.js
 node --require some-package/register ./my-app.js
 ```
 
-Where `some-package` has an [`"exports"`][`"exports"`] field defining the `/register`
-export to map to a file that calls `registerHooks()`, like the
-`register-hooks.js` examples above.
+Если у `some-package` в поле [`"exports"`][`"exports"`] задан экспорт `/register`,
+он может указывать на файл, вызывающий `registerHooks()`, как в примерах `register-hooks.js` выше.
 
-Using `--import` or `--require` ensures that the hooks are registered before any
-application code is loaded, including the entry point of the application and for
-any worker threads by default as well.
+Флаги `--import` и `--require` гарантируют регистрацию хуков до загрузки любого кода приложения,
+включая точку входа и по умолчанию — дочерние потоки worker.
 
-##### Registering hooks before application code runs programmatically
+##### Регистрация хуков до запуска кода приложения из кода {: #registering-hooks-before-application-code-runs-programmatically}
 
-Alternatively, `registerHooks()` can be called from the entry point.
+Альтернатива — вызвать `registerHooks()` из точки входа.
 
-If the entry point needs to load other modules and the loading process needs to be
-customized, load them using either `require()` or dynamic `import()` after the hooks
-are registered. Do not use static `import` statements to load modules that need to be
-customized in the same module that registers the hooks, because static `import` statements
-are evaluated before any code in the importer module is run, including the call to
-`registerHooks()`, regardless of where the static `import` statements appear in the importer
-module.
+Если точке входа нужно подгружать другие модули с настраиваемой загрузкой, подключайте их через
+`require()` или динамический `import()` уже после регистрации хуков. Не используйте статический `import`
+для модулей, которые нужно настроить в том же файле, где вызывается `registerHooks()`: статические `import`
+выполняются до любого кода в импортирующем модуле, в том числе до вызова `registerHooks()`, независимо
+от порядка следования `import` в файле.
 
 === "MJS"
 
@@ -799,25 +783,22 @@ module.
     // require('./my-app.mjs');
     ```
 
-##### Registering hooks before application code runs with a `data:` URL
+##### Регистрация хуков до запуска кода приложения через URL `data:` {: #registering-hooks-before-application-code-runs-with-a-data-url}
 
-Alternatively, inline JavaScript code can be embedded in `data:` URLs to register
-the hooks before the application code runs. For example,
+Код регистрации хуков можно встроить во встроенный URL `data:` так, чтобы он выполнился до кода приложения. Например:
 
 ```bash
 node --import 'data:text/javascript,import {registerHooks} from "node:module"; registerHooks(/* hooks code */);' ./my-app.js
 ```
 
-#### Convention of hooks and chaining
+#### Соглашения о хуках и цепочке {: #convention-of-hooks-and-chaining}
 
-Hooks are part of a chain, even if that chain consists of only one
-custom (user-provided) hook and the default hook, which is always present.
+Хуки образуют цепочку, даже если в ней только один пользовательский хук и встроенный хук по умолчанию.
 
-Hook functions nest: each one must always return a plain object, and chaining happens
-as a result of each function calling `next<hookName>()`, which is a reference to
-the subsequent loader's hook (in LIFO order).
+Функции-хуки вкладываются друг в друга: каждая должна возвращать обычный объект; цепочка строится
+так, что каждая вызывает `next<hookName>()`, ссылаясь на следующий хук загрузчика (порядок LIFO).
 
-It's possible to call `registerHooks()` more than once:
+`registerHooks()` можно вызывать несколько раз:
 
 === "MJS"
 
@@ -845,32 +826,26 @@ It's possible to call `registerHooks()` more than once:
     registerHooks(hook2);
     ```
 
-In this example, the registered hooks will form chains. These chains run
-last-in, first-out (LIFO). If both `hook1` and `hook2` define a `resolve`
-hook, they will be called like so (note the right-to-left,
-starting with `hook2.resolve`, then `hook1.resolve`, then the Node.js default):
+В этом примере зарегистрированные хуки образуют цепочки с порядком «последний зарегистрированный — первый вызываемый» (LIFO). Если и `hook1`, и `hook2` задают хук `resolve`, вызовы идут справа налево:
+сначала `hook2.resolve`, затем `hook1.resolve`, затем встроенный в Node.js:
 
 Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 
-The same applies to all the other hooks.
+То же относится к остальным хукам.
 
-A hook that returns a value lacking a required property triggers an exception. A
-hook that returns without calling `next<hookName>()` _and_ without returning
-`shortCircuit: true` also triggers an exception. These errors are to help
-prevent unintentional breaks in the chain. Return `shortCircuit: true` from a
-hook to signal that the chain is intentionally ending at your hook.
+Если хук возвращает объект без обязательного свойства, выбрасывается исключение. Если хук завершается
+без вызова `next<hookName>()` и без `shortCircuit: true`, тоже выбрасывается исключение — так
+предотвращают случайный обрыв цепочки. Укажите `shortCircuit: true`, если цепочку нужно намеренно завершить на вашем хуке.
 
-If a hook should be applied when loading other hook modules, the other hook
-modules should be loaded after the hook is registered.
+Если хук должен участвовать при загрузке других модулей с хуками, те модули нужно подключать после регистрации этого хука.
 
-#### Deregistration of synchronous customization hooks
+#### Снятие регистрации синхронных хуков настройки {: #deregistration-of-synchronous-customization-hooks}
 
-The object returned by `registerHooks()` has a `deregister()` method that can be
-used to remove the hooks from the chain. Once `deregister()` is called, the hooks
-will no longer be invoked during module resolution or loading.
+Объект, возвращаемый `registerHooks()`, содержит метод `deregister()`, удаляющий хуки из цепочки.
+После `deregister()` хуки больше не вызываются при разрешении и загрузке модулей.
 
-This is currently only available for synchronous hooks registered via `registerHooks()`, not for asynchronous
-hooks registered via `module.register()`.
+Сейчас это доступно только для синхронных хуков, зарегистрированных через `registerHooks()`, а не для асинхронных
+через `module.register()`.
 
 === "MJS"
 
@@ -924,7 +899,7 @@ hooks registered via `module.register()`.
     require('./another-module.cjs');
     ```
 
-#### Hook functions accepted by `module.registerHooks()`
+#### Функции-хуки, принимаемые `module.registerHooks()` {: #hook-functions-accepted-by-moduleregisterhooks}
 
 <!-- YAML
 added:
@@ -932,7 +907,7 @@ added:
   - v22.15.0
 -->
 
-The `module.registerHooks()` method accepts the following synchronous hook functions.
+Метод `module.registerHooks()` принимает следующие синхронные функции-хуки.
 
 === "MJS"
 
@@ -946,16 +921,14 @@ The `module.registerHooks()` method accepts the following synchronous hook funct
     }
     ```
 
-Synchronous hooks are run in the same thread and the same [realm][realm] where the modules
-are loaded, the code in the hook function can pass values to the modules being referenced
-directly via global variables or other shared states.
+Синхронные хуки выполняются в том же потоке и той же [области][realm], где загружаются модули;
+код хука может передавать значения в модули через глобальные переменные или общее состояние.
 
-Unlike the asynchronous hooks, the synchronous hooks are not inherited into child worker
-threads by default, though if the hooks are registered using a file preloaded by
-[`--import`][`--import`] or [`--require`][`--require`], child worker threads can inherit the preloaded scripts
-via `process.execArgv` inheritance. See [the documentation of `Worker`][the documentation of `Worker`] for details.
+В отличие от асинхронных, синхронные хуки по умолчанию не наследуются дочерними worker, но если хуки
+зарегистрированы через предзагружаемый файл [`--import`][`--import`] или [`--require`][`--require`], дочерние worker
+могут унаследовать предзагрузку через `process.execArgv`. Подробнее — в [документации `Worker`][the documentation of `Worker`].
 
-#### Synchronous `resolve(specifier, context, nextResolve)`
+#### Синхронный `resolve(specifier, context, nextResolve)` {: #synchronous-resolvespecifier-context-nextresolve}
 
 <!-- YAML
 changes:
@@ -974,49 +947,35 @@ changes:
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
-    attributes for the module to import
-  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
-    if this is the Node.js entry point
-* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
-  Node.js default `resolve` hook after the last user-supplied `resolve` hook
+  * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с атрибутами импортируемого модуля
+  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Модуль, который импортирует текущий, либо `undefined`,
+    если это точка входа Node.js
+* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий в цепочке хук `resolve` или встроенный в Node.js хук `resolve`
+  после последнего пользовательского хука `resolve`
   * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
-    are merged in with preference to the provided properties.
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Если опущен, подставляются значения по умолчанию; если передан,
+    умолчания объединяются с переданным, с приоритетом у явно указанных полей.
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
-    module format (such as `'commonjs'` or `'module'`) or an arbitrary value like `'css'` or
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined Подсказка для хука `load` (может быть проигнорирована): формат
+    модуля (например `'commonjs'` или `'module'`) или произвольное значение вроде `'css'` или
     `'yaml'`.
-  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
-    caching the module (optional; if excluded the input will be used)
-  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
-    terminate the chain of `resolve` hooks. **Default:** `false`
-  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Атрибуты импорта для кэширования модуля (необязательно;
+    если не заданы, используются входные данные)
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сигнал о намерении завершить цепочку хуков `resolve` на этом хуке. **По умолчанию:** `false`
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный URL, в который разрешается входной спецификатор
 
-The `resolve` hook chain is responsible for telling Node.js where to find and
-how to cache a given `import` statement or expression, or `require` call. It can
-optionally return a format (such as `'module'`) as a hint to the `load` hook. If
-a format is specified, the `load` hook is ultimately responsible for providing
-the final `format` value (and it is free to ignore the hint provided by
-`resolve`); if `resolve` provides a `format`, a custom `load` hook is required
-even if only to pass the value to the Node.js default `load` hook.
+Цепочка хуков `resolve` задаёт Node.js, где искать модуль и как кэшировать данный оператор или выражение `import`, либо вызов `require`. Она может
+вернуть формат (например `'module'`) как подсказку хуку `load`. Если формат указан, окончательное значение `format` задаёт хук `load` (он может проигнорировать подсказку
+от `resolve`); если `resolve` возвращает `format`, нужен пользовательский хук `load`,
+хотя бы чтобы передать значение встроенному хуку `load` Node.js.
 
-Import type attributes are part of the cache key for saving loaded modules into
-the internal module cache. The `resolve` hook is responsible for returning an
-`importAttributes` object if the module should be cached with different
-attributes than were present in the source code.
+Атрибуты типа импорта входят в ключ кэша внутреннего кэша модулей. Хук `resolve` должен вернуть объект `importAttributes`, если модуль нужно кэшировать с другими
+атрибутами, чем в исходном коде.
 
-The `conditions` property in `context` is an array of conditions that will be used
-to match [package exports conditions][Conditional exports] for this resolution
-request. They can be used for looking up conditional mappings elsewhere or to
-modify the list when calling the default resolution logic.
+Свойство `conditions` в `context` — массив условий для сопоставления с [условиями экспорта пакета][Conditional exports] при этом запросе разрешения. Его можно использовать для поиска условных сопоставлений в других местах или при вызове встроенной логики разрешения.
 
-The current [package exports conditions][Conditional exports] are always in
-the `context.conditions` array passed into the hook. To guarantee _default
-Node.js module specifier resolution behavior_ when calling `defaultResolve`, the
-`context.conditions` array passed to it _must_ include _all_ elements of the
-`context.conditions` array originally passed into the `resolve` hook.
+Текущие [условия экспорта пакета][Conditional exports] всегда присутствуют в массиве `context.conditions`, передаваемом в хук. Чтобы при вызове `defaultResolve` сохранить _стандартное поведение разрешения спецификаторов модулей Node.js_, в передаваемый ему массив `context.conditions` _нужно_ включить _все_ элементы массива `context.conditions`, изначально переданного в хук `resolve`.
 
 === "MJS"
 
@@ -1051,7 +1010,7 @@ Node.js module specifier resolution behavior_ when calling `defaultResolve`, the
     registerHooks({ resolve });
     ```
 
-#### Synchronous `load(url, context, nextLoad)`
+#### Синхронный `load(url, context, nextLoad)` {: #synchronous-loadurl-context-nextload}
 
 <!-- YAML
 changes:
@@ -1068,32 +1027,27 @@ changes:
     | --- | --- |
     | v23.5.0, v22.15.0 | Добавьте поддержку синхронной и внутрипоточной версии. |
 
-* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
-    `resolve` hook chain. This can be any string value as an input; input values do not need to
-    conform to the list of acceptable return values described below.
+  * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined Формат, опционально заданный цепочкой хуков `resolve`.
+    На вход может прийти любая строка; она не обязана входить в список допустимых возвращаемых значений ниже.
   * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
-  Node.js default `load` hook after the last user-supplied `load` hook
+* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий в цепочке хук `load` или встроенный хук `load` Node.js
+  после последнего пользовательского хука `load`
   * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
-    merged in with preference to the provided properties. In the default `nextLoad`, if
-    the module pointed to by `url` does not have explicit module type information,
-    `context.format` is mandatory.
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Если опущен, подставляются значения по умолчанию; если передан,
+    умолчания объединяются с переданным, с приоритетом у явно указанных полей. Во встроенном `nextLoad`, если
+    у модуля по `url` нет явной информации о типе модуля, поле `context.format` обязательно.
     <!-- TODO(joyeecheung): make it at least optionally non-mandatory by allowing
          JS-style/TS-style module detection when the format is simply unknown -->
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) One of the acceptable module formats listed [below][accepted final formats].
-  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
-    terminate the chain of `load` hooks. **Default:** `false`
-  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один из допустимых форматов модуля, перечисленных [ниже][accepted final formats].
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сигнал о намерении завершить цепочку хуков `load` на этом хуке. **По умолчанию:** `false`
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Исходный код для выполнения в Node.js
 
-The `load` hook provides a way to define a custom method for retrieving the
-source code of a resolved URL. This would allow a loader to potentially avoid
-reading files from disk. It could also be used to map an unrecognized format to
-a supported one, for example `yaml` to `module`.
+Хук `load` задаёт способ получить исходный код из разрешённого URL. Так можно, например, не читать
+файлы с диска или преобразовать неподдерживаемый формат в поддерживаемый, например `yaml` в `module`.
 
 === "MJS"
 
@@ -1125,73 +1079,53 @@ a supported one, for example `yaml` to `module`.
     registerHooks({ resolve });
     ```
 
-In a more advanced scenario, this can also be used to transform an unsupported
-source to a supported one (see [Examples](#examples) below).
+В более сложных сценариях хук можно использовать для преобразования неподдерживаемого исходника в поддерживаемый (см. [примеры](#examples) ниже).
 
-##### Accepted final formats returned by `load`
+##### Допустимые итоговые форматы, возвращаемые `load` {: #accepted-final-formats-returned-by-load}
 
-The final value of `format` must be one of the following:
+Итоговое значение `format` должно быть одним из следующих:
 
-| `format`                | Description                                           | Acceptable types for `source` returned by `load`   |
+| `format`                | Описание                                           | Допустимые типы для `source`, возвращаемого `load`   |
 | ----------------------- | ----------------------------------------------------- | -------------------------------------------------- |
-| `'addon'`               | Load a Node.js addon                                  | {null}                                             |
-| `'builtin'`             | Load a Node.js builtin module                         | {null}                                             |
-| `'commonjs-typescript'` | Load a Node.js CommonJS module with TypeScript syntax | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
-| `'commonjs'`            | Load a Node.js CommonJS module                        | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
-| `'json'`                | Load a JSON file                                      | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'module-typescript'`   | Load an ES module with TypeScript syntax              | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'module'`              | Load an ES module                                     | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'wasm'`                | Load a WebAssembly module                             | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                          |
+| `'addon'`               | Загрузка нативного аддона Node.js                                  | {null}                                             |
+| `'builtin'`             | Загрузка встроенного модуля Node.js                         | {null}                                             |
+| `'commonjs-typescript'` | Загрузка CommonJS-модуля Node.js с синтаксисом TypeScript | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
+| `'commonjs'`            | Загрузка CommonJS-модуля Node.js                        | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
+| `'json'`                | Загрузка JSON-файла                                      | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'module-typescript'`   | Загрузка ES-модуля с синтаксисом TypeScript              | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'module'`              | Загрузка ES-модуля                                     | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'wasm'`                | Загрузка модуля WebAssembly                             | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                          |
 
-The value of `source` is ignored for format `'builtin'` because currently it is
-not possible to replace the value of a Node.js builtin (core) module.
+Для формата `'builtin'` значение `source` игнорируется: сейчас нельзя подменить значение встроенного (ядрового) модуля Node.js.
 
-> These types all correspond to classes defined in ECMAScript.
+> Все эти типы соответствуют классам, определённым в ECMAScript.
 
-* The specific [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) object is a [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
-* The specific [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) object is a [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
+* Конкретный объект [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) — это [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
+* Конкретный объект [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) — это [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
-If the source value of a text-based format (i.e., `'json'`, `'module'`)
-is not a string, it is converted to a string using [`util.TextDecoder`][`util.TextDecoder`].
+Если для текстового формата (например `'json'`, `'module'`) значение `source` не строка, оно приводится к строке через [`util.TextDecoder`][`util.TextDecoder`].
 
-### Asynchronous customization hooks
+### Асинхронные хуки настройки {: #asynchronous-customization-hooks}
 
 > Стабильность: 1.1 — активная разработка
 
-#### Caveats of asynchronous customization hooks
+#### Ограничения асинхронных хуков настройки {: #caveats-of-asynchronous-customization-hooks}
 
-The asynchronous customization hooks have many caveats and it is uncertain if their
-issues can be resolved. Users are encouraged to use the synchronous customization hooks
-via `module.registerHooks()` instead to avoid these caveats.
+У асинхронных хуков настройки много ограничений, и неясно, удастся ли их устранить. Рекомендуется использовать синхронные хуки через `module.registerHooks()`.
 
-* Asynchronous hooks run on a separate thread, so the hook functions cannot directly
-  mutate the global state of the modules being customized. It's typical to use message
-  channels and atomics to pass data between the two or to affect control flows.
-  See [Communication with asynchronous module customization hooks](#communication-with-asynchronous-module-customization-hooks).
-* Asynchronous hooks do not affect all `require()` calls in the module graph.
-  * Custom `require` functions created using `module.createRequire()` are not
-    affected.
-  * If the asynchronous `load` hook does not override the `source` for CommonJS modules
-    that go through it, the child modules loaded by those CommonJS modules via built-in
-    `require()` would not be affected by the asynchronous hooks either.
-* There are several caveats that the asynchronous hooks need to handle when
-  customizing CommonJS modules. See [asynchronous `resolve` hook][asynchronous `resolve` hook] and
-  [asynchronous `load` hook][asynchronous `load` hook] for details.
-* When `require()` calls inside CommonJS modules are customized by asynchronous hooks,
-  Node.js may need to load the source code of the CommonJS module multiple times to maintain
-  compatibility with existing CommonJS monkey-patching. If the module code changes between
-  loads, this may lead to unexpected behaviors.
-  * As a side effect, if both asynchronous hooks and synchronous hooks are registered and the
-    asynchronous hooks choose to customize the CommonJS module, the synchronous hooks may be
-    invoked multiple times for the `require()` calls in that CommonJS module.
+* Асинхронные хуки выполняются в отдельном потоке, поэтому глобальное состояние настраиваемых модулей напрямую менять нельзя. Обычно используют каналы сообщений и атомики для обмена данными или управления потоком. См. [взаимодействие с асинхронными хуками настройки модулей](#communication-with-asynchronous-module-customization-hooks).
+* Асинхронные хуки не затрагивают все вызовы `require()` в графе модулей.
+  * На пользовательские функции `require`, созданные через `module.createRequire()`, они не действуют.
+  * Если асинхронный хук `load` не переопределяет `source` для проходящих через него CommonJS-модулей, дочерние модули, подключаемые из них встроенным `require()`, тоже не проходят через асинхронные хуки.
+* При настройке CommonJS-модулей есть дополнительные нюансы — см. [асинхронный хук `resolve`][asynchronous `resolve` hook] и [асинхронный хук `load`][asynchronous `load` hook].
+* Когда вызовы `require()` внутри CommonJS-модулей настраиваются асинхронными хуками, Node.js может несколько раз загружать исходный код модуля для совместимости с существующим «monkey patching» в CommonJS. Если код между загрузками меняется, возможно неожиданное поведение.
+  * Побочный эффект: если зарегистрированы и асинхронные, и синхронные хуки, а асинхронные настраивают CommonJS-модуль, синхронные хуки для вызовов `require()` в этом модуле могут вызываться несколько раз.
 
-#### Registration of asynchronous customization hooks
+#### Регистрация асинхронных хуков настройки {: #registration-of-asynchronous-customization-hooks}
 
-Asynchronous customization hooks are registered using [`module.register()`][`register`] which takes
-a path or URL to another module that exports the [asynchronous hook functions][asynchronous hook functions].
+Асинхронные хуки регистрируются через [`module.register()`][`register`] — передаётся путь или URL модуля, экспортирующего [асинхронные функции-хуки][asynchronous hook functions].
 
-Similar to `registerHooks()`, `register()` can be called in a module preloaded by `--import` or
-`--require`, or called directly within the entry point.
+Как и `registerHooks()`, `register()` можно вызвать из предзагружаемого по `--import` или `--require` модуля или прямо из точки входа.
 
 === "MJS"
 
@@ -1219,7 +1153,7 @@ Similar to `registerHooks()`, `register()` can be called in a module preloaded b
     import('./my-app.mjs');
     ```
 
-In `hooks.mjs`:
+В файле `hooks.mjs`:
 
 === "MJS"
 
@@ -1233,8 +1167,8 @@ In `hooks.mjs`:
     }
     ```
 
-Unlike synchronous hooks, the asynchronous hooks would not run for these modules loaded in the file
-that calls `register()`:
+В отличие от синхронных, асинхронные хуки не выполняются для модулей, загруженных в том же файле,
+где вызывается `register()`:
 
 <!-- eslint-disable no-restricted-globals -->
 
@@ -1269,18 +1203,17 @@ that calls `register()`:
     userRequire('./my-app-3.cjs');  // Hooks won't affect this
     ```
 
-Asynchronous hooks can also be registered using a `data:` URL with the `--import` flag:
+Асинхронные хуки можно зарегистрировать и через URL `data:` с флагом `--import`:
 
 ```bash
 node --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("my-instrumentation", pathToFileURL("./"));' ./my-app.js
 ```
 
-#### Chaining of asynchronous customization hooks
+#### Цепочка асинхронных хуков настройки {: #chaining-of-asynchronous-customization-hooks}
 
-Chaining of `register()` work similarly to `registerHooks()`. If synchronous and asynchronous
-hooks are mixed, the synchronous hooks are always run first before the asynchronous
-hooks start running, that is, in the last synchronous hook being run, its next
-hook includes invocation of the asynchronous hooks.
+Цепочка вызовов `register()` устроена похоже на `registerHooks()`. При смешении синхронных и асинхронных
+хуков сначала всегда выполняются синхронные; у последнего синхронного хука следующим шагом идёт
+вызов асинхронных хуков.
 
 === "MJS"
 
@@ -1306,30 +1239,23 @@ hook includes invocation of the asynchronous hooks.
     import('./my-app.mjs');
     ```
 
-If `foo.mjs` and `bar.mjs` define a `resolve` hook, they will be called like so
-(note the right-to-left, starting with `./bar.mjs`, then `./foo.mjs`, then the Node.js default):
+Если в `foo.mjs` и `bar.mjs` объявлены хуки `resolve`, вызовы идут справа налево: сначала `./bar.mjs`, затем `./foo.mjs`, затем встроенная логика Node.js:
 
 Node.js default ← `./foo.mjs` ← `./bar.mjs`
 
-When using the asynchronous hooks, the registered hooks also affect subsequent
-`register` calls, which takes care of loading hook modules. In the example above,
-`bar.mjs` will be resolved and loaded via the hooks registered by `foo.mjs`
-(because `foo`'s hooks will have already been added to the chain). This allows
-for things like writing hooks in non-JavaScript languages, so long as
-earlier registered hooks transpile into JavaScript.
+При использовании асинхронных хуков уже зарегистрированные хуки влияют и на последующие вызовы `register`,
+которые подгружают модули с хуками. В примере выше `bar.mjs` будет разрешён и загружен через хуки,
+зарегистрированные в `foo.mjs` (хуки `foo` уже в цепочке). Так можно писать хуки не на JavaScript,
+если более ранние хуки транспилируют код в JavaScript.
 
-The `register()` method cannot be called from the thread running the hook module that
-exports the asynchronous hooks or its dependencies.
+Метод `register()` нельзя вызывать из потока, в котором выполняется модуль с хуками или его зависимости.
 
-#### Communication with asynchronous module customization hooks
+#### Взаимодействие с асинхронными хуками настройки модулей {: #communication-with-asynchronous-module-customization-hooks}
 
-Asynchronous hooks run on a dedicated thread, separate from the main
-thread that runs application code. This means mutating global variables won't
-affect the other thread(s), and message channels must be used to communicate
-between the threads.
+Асинхронные хуки выполняются в отдельном потоке, не в основном потоке приложения. Поэтому изменение глобальных переменных
+не затронет другой поток — для обмена нужны каналы сообщений.
 
-The `register` method can be used to pass data to an [`initialize`][`initialize`] hook. The
-data passed to the hook may include transferable objects like ports.
+Через `register` можно передать данные в хук [`initialize`][`initialize`], в том числе передаваемые объекты вроде портов.
 
 === "MJS"
 
@@ -1376,7 +1302,7 @@ data passed to the hook may include transferable objects like ports.
     });
     ```
 
-#### Asynchronous hooks accepted by `module.register()`
+#### Асинхронные хуки, принимаемые `module.register()` {: #asynchronous-hooks-accepted-by-moduleregister}
 
 <!-- YAML
 added: v8.8.0
@@ -1407,10 +1333,8 @@ changes:
     | v18.6.0, v16.17.0 | Добавьте поддержку цепочки загрузчиков. |
     | v16.12.0 | Удалены `getFormat`, `getSource`, `transformSource` и `globalPreload`; добавлен хук `load` и `getGlobalPreload`. |
 
-The [`register`][`register`] method can be used to register a module that exports a set of
-hooks. The hooks are functions that are called by Node.js to customize the
-module resolution and loading process. The exported functions must have specific
-names and signatures, and they must be exported as named exports.
+Метод [`register`][`register`] регистрирует модуль, экспортирующий набор хуков. Это функции, которые Node.js вызывает для настройки
+разрешения и загрузки модулей. Имена и сигнатуры должны совпадать с ожидаемыми, экспорт — именованный.
 
 === "MJS"
 
@@ -1428,13 +1352,10 @@ names and signatures, and they must be exported as named exports.
     }
     ```
 
-Asynchronous hooks are run in a separate thread, isolated from the main thread where
-application code runs. That means it is a different [realm][realm]. The hooks thread
-may be terminated by the main thread at any time, so do not depend on
-asynchronous operations (like `console.log`) to complete. They are inherited into
-child workers by default.
+Асинхронные хуки выполняются в отдельном потоке, изолированно от основного потока приложения — это другая [область][realm]. Поток хуков
+может быть завершён основным потоком в любой момент, не рассчитывайте на завершение асинхронных операций вроде `console.log`. По умолчанию хуки наследуются дочерними worker.
 
-#### `initialize()`
+#### `initialize()` {: #initialize}
 
 <!-- YAML
 added:
@@ -1442,22 +1363,17 @@ added:
   - v18.19.0
 -->
 
-* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The data from `register(loader, import.meta.url, { data })`.
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные из `register(loader, import.meta.url, { data })`.
 
-The `initialize` hook is only accepted by [`register`][`register`]. `registerHooks()` does
-not support nor need it since initialization done for synchronous hooks can be run
-directly before the call to `registerHooks()`.
+Хук `initialize` поддерживается только в [`register`][`register`]. В `registerHooks()` он не нужен: инициализацию для синхронных хуков можно выполнить
+непосредственно перед вызовом `registerHooks()`.
 
-The `initialize` hook provides a way to define a custom function that runs in
-the hooks thread when the hooks module is initialized. Initialization happens
-when the hooks module is registered via [`register`][`register`].
+Хук `initialize` задаёт функцию, которая выполняется в потоке хуков при инициализации модуля с хуками — при регистрации через [`register`][`register`].
 
-This hook can receive data from a [`register`][`register`] invocation, including
-ports and other transferable objects. The return value of `initialize` can be a
-[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), in which case it will be awaited before the main application thread
-execution resumes.
+Хук может получить данные из вызова [`register`][`register`], включая порты и другие передаваемые объекты. Возвращаемое значение может быть
+[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise); тогда основной поток дождётся его перед продолжением.
 
-Module customization code:
+Код настройки модуля:
 
 === "MJS"
 
@@ -1469,7 +1385,7 @@ Module customization code:
     }
     ```
 
-Caller code:
+Код вызывающей стороны:
 
 === "MJS"
 
@@ -1520,7 +1436,7 @@ Caller code:
     });
     ```
 
-#### Asynchronous `resolve(specifier, context, nextResolve)`
+#### Асинхронный `resolve(specifier, context, nextResolve)` {: #asynchronous-resolvespecifier-context-nextresolve}
 
 <!-- YAML
 changes:
@@ -1556,42 +1472,31 @@ changes:
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
-    attributes for the module to import
-  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
-    if this is the Node.js entry point
-* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
-  Node.js default `resolve` hook after the last user-supplied `resolve` hook
+  * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с атрибутами импортируемого модуля
+  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Модуль, который импортирует текущий, либо `undefined`,
+    если это точка входа Node.js
+* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий в цепочке хук `resolve` или встроенный хук `resolve` Node.js
+  после последнего пользовательского хука `resolve`
   * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
-    are merged in with preference to the provided properties.
-* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
-  following properties, or a `Promise` that will resolve to such an object.
-  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
-    module format (such as `'commonjs'` or `'module'`) or an arbitrary value like `'css'` or
-    `'yaml'`.
-  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
-    caching the module (optional; if excluded the input will be used)
-  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
-    terminate the chain of `resolve` hooks. **Default:** `false`
-  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Если опущен, подставляются значения по умолчанию; если передан,
+    умолчания объединяются с переданным, с приоритетом у явно указанных полей.
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Асинхронная версия принимает объект с перечисленными ниже полями
+  или `Promise`, который разрешится таким объектом.
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined Подсказка для хука `load` (может быть проигнорирована): формат
+    модуля или произвольное значение вроде `'css'` / `'yaml'`.
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Атрибуты импорта для кэширования (необязательно;
+    если не заданы, используются входные данные)
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сигнал о намерении завершить цепочку хуков `resolve` на этом хуке. **По умолчанию:** `false`
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный URL, в который разрешается входной спецификатор
 
-The asynchronous version works similarly to the synchronous version, only that the
-`nextResolve` function returns a `Promise`, and the `resolve` hook itself can return a `Promise`.
+Поведение совпадает с синхронной версией, но `nextResolve` возвращает `Promise`, а сам хук `resolve` может возвращать `Promise`.
 
-> **Warning** In the case of the asynchronous version, despite support for returning
-> promises and async functions, calls to `resolve` may still block the main thread which
-> can impact performance.
+> **Предупреждение** В асинхронной версии, несмотря на поддержку промисов и `async`-функций, вызовы `resolve` могут по-прежнему блокировать основной поток и влиять на производительность.
 
-> **Warning** The `resolve` hook invoked for `require()` calls inside CommonJS modules
-> customized by asynchronous hooks does not receive the original specifier passed to
-> `require()`. Instead, it receives a URL already fully resolved using the default
-> CommonJS resolution.
+> **Предупреждение** Хук `resolve`, вызываемый для `require()` внутри настраиваемых асинхронными хуками CommonJS-модулей, не получает исходный спецификатор из `require()` — вместо этого передаётся уже полностью разрешённый по умолчанию правилам CommonJS URL.
 
-> **Warning** In the CommonJS modules that are customized by the asynchronous customization hooks,
-> `require.resolve()` and `require()` will use `"import"` export condition instead of
-> `"require"`, which may cause unexpected behaviors when loading dual packages.
+> **Предупреждение** В таких CommonJS-модулях `require.resolve()` и `require()` используют условие экспорта `"import"`, а не `"require"`, что может давать неожиданные эффекты при загрузке dual package.
 
 === "MJS"
 
@@ -1622,7 +1527,7 @@ The asynchronous version works similarly to the synchronous version, only that t
     }
     ```
 
-#### Asynchronous `load(url, context, nextLoad)`
+#### Асинхронный `load(url, context, nextLoad)` {: #asynchronous-loadurl-context-nextload}
 
 <!-- YAML
 changes:
@@ -1647,61 +1552,38 @@ changes:
     | --- | --- |
     | v22.6.0 | Добавьте поддержку исходного кода в формате commonjs-typescript и module-typescript. |
     | v20.6.0 | Добавьте поддержку исходного кода в формате commonjs. |
-    | v18.6.0, v16.17.0 | Добавьте поддержку цепочки грузовых крюков. Каждый хук должен либо вызвать nextLoad(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
+    | v18.6.0, v16.17.0 | Добавьте поддержку цепочки хуков load. Каждый хук должен либо вызвать nextLoad(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
 
-* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
-    `resolve` hook chain. This can be any string value as an input; input values do not need to
-    conform to the list of acceptable return values described below.
+  * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined Формат, опционально заданный цепочкой `resolve`.
+    На вход может прийти любая строка; она не обязана входить в список допустимых возвращаемых значений ниже.
   * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
-  Node.js default `load` hook after the last user-supplied `load` hook
+* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Следующий в цепочке хук `load` или встроенный хук `load` Node.js
+  после последнего пользовательского хука `load`
   * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
-    merged in with preference to the provided properties. In the default `nextLoad`, if
-    the module pointed to by `url` does not have explicit module type information,
-    `context.format` is mandatory.
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Если опущен, подставляются значения по умолчанию; если передан,
+    умолчания объединяются с переданным, с приоритетом у явно указанных полей. Во встроенном `nextLoad`, если
+    у модуля по `url` нет явной информации о типе модуля, поле `context.format` обязательно.
     <!-- TODO(joyeecheung): make it at least optionally non-mandatory by allowing
          JS-style/TS-style module detection when the format is simply unknown -->
-* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
-  following properties, or a `Promise` that will resolve to such an object.
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Объект с перечисленными ниже полями или `Promise`, который разрешится таким объектом.
   * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
-    terminate the chain of `load` hooks. **Default:** `false`
-  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сигнал о намерении завершить цепочку хуков `load` на этом хуке. **По умолчанию:** `false`
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Исходный код для выполнения в Node.js
 
-> **Warning**: The asynchronous `load` hook and namespaced exports from CommonJS
-> modules are incompatible. Attempting to use them together will result in an empty
-> object from the import. This may be addressed in the future. This does not apply
-> to the synchronous `load` hook, in which case exports can be used as usual.
+> **Предупреждение**: асинхронный хук `load` несовместим с экспортом через пространства имён из CommonJS-модулей.
+> Совместное использование даёт пустой объект при импорте. В будущем это могут исправить. С синхронным хуком `load` такой проблемы нет — экспорты работают как обычно.
 
-The asynchronous version works similarly to the synchronous version, though
-when using the asynchronous `load` hook, omitting vs providing a `source` for
-`'commonjs'` has very different effects:
+Поведение в целом как у синхронной версии, но при асинхронном хуке `load` отсутствие или наличие `source` для `'commonjs'` даёт сильно разный эффект:
 
-* When a `source` is provided, all `require` calls from this module will be
-  processed by the ESM loader with registered `resolve` and `load` hooks; all
-  `require.resolve` calls from this module will be processed by the ESM loader
-  with registered `resolve` hooks; only a subset of the CommonJS API will be
-  available (e.g. no `require.extensions`, no `require.cache`, no
-  `require.resolve.paths`) and monkey-patching on the CommonJS module loader
-  will not apply.
-* If `source` is undefined or `null`, it will be handled by the CommonJS module
-  loader and `require`/`require.resolve` calls will not go through the
-  registered hooks. This behavior for nullish `source` is temporary — in the
-  future, nullish `source` will not be supported.
+* Если `source` задан, все вызовы `require` из этого модуля обрабатывает ESM-загрузчик с зарегистрированными хуками `resolve` и `load`; все `require.resolve` — ESM-загрузчиком с хуками `resolve`; доступен лишь подмножество API CommonJS (нет `require.extensions`, `require.cache`, `require.resolve.paths`), подмена загрузчика CommonJS не действует.
+* Если `source` — `undefined` или `null`, обработку ведёт загрузчик CommonJS, вызовы `require`/`require.resolve` не проходят через зарегистрированные хуки. Поведение для «пустого» `source` временное — в будущем такая форма не будет поддерживаться.
 
-These caveats do not apply to the synchronous `load` hook, in which case
-the complete set of CommonJS APIs available to the customized CommonJS
-modules, and `require`/`require.resolve` always go through the registered
-hooks.
+Для синхронного хука `load` эти ограничения не действуют: доступен полный набор API CommonJS для настраиваемых модулей, и `require`/`require.resolve` всегда идут через зарегистрированные хуки.
 
-The Node.js internal asynchronous `load` implementation, which is the value of `next` for the
-last hook in the `load` chain, returns `null` for `source` when `format` is
-`'commonjs'` for backward compatibility. Here is an example hook that would
-opt-in to using the non-default behavior:
+Внутренняя асинхронная реализация `load` Node.js (значение `next` для последнего хука в цепочке `load`) для обратной совместимости возвращает `null` в `source`, когда `format` — `'commonjs'`. Ниже пример хука, который явно переходит на недефолтное поведение:
 
 === "MJS"
 
@@ -1719,23 +1601,15 @@ opt-in to using the non-default behavior:
     }
     ```
 
-This doesn't apply to the synchronous `load` hook either, in which case the
-`source` returned contains source code loaded by the next hook, regardless
-of module format.
+Для синхронного хука `load` это тоже не так: возвращаемый `source` содержит код, загруженный следующим хуком, независимо от формата модуля.
 
-### Examples
+### Примеры {: #examples}
 
-The various module customization hooks can be used together to accomplish
-wide-ranging customizations of the Node.js code loading and evaluation
-behaviors.
+Разные хуки настройки модулей можно комбинировать для широкого круга сценариев загрузки и выполнения кода в Node.js.
 
-#### Import from HTTPS
+#### Импорт по HTTPS {: #import-from-https}
 
-The hook below registers hooks to enable rudimentary support for such
-specifiers. While this may seem like a significant improvement to Node.js core
-functionality, there are substantial downsides to actually using these hooks:
-performance is much slower than loading files from disk, there is no caching,
-and there is no security.
+Ниже хук включает базовую поддержку таких спецификаторов. Это может выглядеть как сильное расширение возможностей ядра, но на практике есть серьёзные минусы: производительность ниже, чем при чтении с диска, нет кэширования и нет модели безопасности.
 
 === "MJS"
 
@@ -1777,24 +1651,22 @@ and there is no security.
     console.log(VERSION);
     ```
 
-With the preceding hooks module, running
+С подключённым выше модулем хуков команда
 `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./https-hooks.mjs"));' ./main.mjs`
-prints the current version of CoffeeScript per the module at the URL in
+выводит текущую версию CoffeeScript согласно модулю по URL из
 `main.mjs`.
 
 <!-- TODO(joyeecheung): add an example on how to implement it with a fetchSync based on
 workers and Atomics.wait() - or all these examples are too much to be put in the API
 documentation already and should be put into a repository instead? -->
 
-#### Transpilation
+#### Транспиляция {: #transpilation}
 
-Sources that are in formats Node.js doesn't understand can be converted into
-JavaScript using the [`load` hook][load hook].
+Исходники в форматах, которые Node.js не понимает напрямую, можно преобразовать в JavaScript через [хук `load`][load hook].
 
-This is less performant than transpiling source files before running Node.js;
-transpiler hooks should only be used for development and testing purposes.
+Это медленнее, чем транспилировать файлы до запуска Node.js; хуки-транспиляторы имеют смысл в основном для разработки и тестов.
 
-##### Asynchronous version
+##### Асинхронная версия {: #asynchronous-version}
 
 === "MJS"
 
@@ -1846,7 +1718,7 @@ transpiler hooks should only be used for development and testing purposes.
     }
     ```
 
-##### Synchronous version
+##### Синхронная версия
 
 === "MJS"
 
@@ -1889,7 +1761,7 @@ transpiler hooks should only be used for development and testing purposes.
     registerHooks({ load });
     ```
 
-#### Running hooks
+#### Запуск с хуками
 
 ```coffee
 # main.coffee
@@ -1905,8 +1777,7 @@ console.log "Brought to you by Node.js version #{version}"
 export scream = (str) -> str.toUpperCase()
 ```
 
-For the sake of running the example, add a `package.json` file containing the
-module type of the CoffeeScript files.
+Для запуска примера добавьте `package.json` с полем `type`, задающим тип модулей для CoffeeScript.
 
 ```json
 {
@@ -1914,28 +1785,22 @@ module type of the CoffeeScript files.
 }
 ```
 
-This is only for running the example. In real world loaders, `getPackageType()` must be
-able to return an `format` known to Node.js even in the absence of an explicit type in a
-`package.json`, or otherwise the `nextLoad` call would throw `ERR_UNKNOWN_FILE_EXTENSION`
-(if undefined) or `ERR_UNKNOWN_MODULE_FORMAT` (if it's not a known format listed in
-the [load hook][load hook] documentation).
+Это только для примера. В реальных загрузчиках `getPackageType()` должен возвращать `format`,
+известный Node.js, даже без явного `type` в `package.json`, иначе `nextLoad` выбросит `ERR_UNKNOWN_FILE_EXTENSION`
+(если `undefined`) или `ERR_UNKNOWN_MODULE_FORMAT` (если формат не из списка в [документации хука `load`][load hook]).
 
-With the preceding hooks modules, running
+С подключёнными выше модулями хуков команды
 `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./coffeescript-hooks.mjs"));' ./main.coffee`
-or `node --import ./coffeescript-sync-hooks.mjs ./main.coffee`
-causes `main.coffee` to be turned into JavaScript after its source code is
-loaded from disk but before Node.js executes it; and so on for any `.coffee`,
-`.litcoffee` or `.coffee.md` files referenced via `import` statements of any
-loaded file.
+или `node --import ./coffeescript-sync-hooks.mjs ./main.coffee`
+превращают `main.coffee` в JavaScript после чтения исходника с диска, но до выполнения; то же для любых `.coffee`,
+`.litcoffee` или `.coffee.md`, на которые есть `import` в загружаемых файлах.
 
-#### Import maps
+#### Карты импорта (import maps) {: #import-maps}
 
-The previous two examples defined `load` hooks. This is an example of a
-`resolve` hook. This hooks module reads an `import-map.json` file that defines
-which specifiers to override to other URLs (this is a very simplistic
-implementation of a small subset of the "import maps" specification).
+В двух предыдущих примерах использовались хуки `load`. Ниже — пример хука `resolve`: модуль читает `import-map.json`,
+в котором задано, какие спецификаторы подменять другими URL (упрощённая реализация небольшой части спецификации import maps).
 
-##### Asynchronous version
+##### Асинхронная версия (карты импорта)
 
 === "MJS"
 
@@ -1954,7 +1819,7 @@ implementation of a small subset of the "import maps" specification).
     }
     ```
 
-##### Synchronous version
+##### Синхронная версия (карты импорта)
 
 === "MJS"
 
@@ -1976,9 +1841,9 @@ implementation of a small subset of the "import maps" specification).
     module.registerHooks({ resolve });
     ```
 
-##### Using the hooks
+##### Использование хуков
 
-With these files:
+При таких файлах:
 
 === "MJS"
 
@@ -2003,11 +1868,11 @@ With these files:
     console.log('some module!');
     ```
 
-Running `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./import-map-hooks.js"));' main.js`
-or `node --import ./import-map-sync-hooks.js main.js`
-should print `some module!`.
+Команда `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./import-map-hooks.js"));' main.js`
+или `node --import ./import-map-sync-hooks.js main.js`
+должна вывести `some module!`.
 
-## Source Map Support
+## Поддержка source map {: #source-map-support}
 
 <!-- YAML
 added:
@@ -2015,18 +1880,16 @@ added:
  - v12.17.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 — экспериментальная
 
-Node.js supports TC39 ECMA-426 [Source Map][Source Map] format (it was called Source map
-revision 3 format).
+Node.js поддерживает формат TC39 ECMA-426 [Source Map][Source Map] (ранее его называли форматом Source map revision 3).
 
-The APIs in this section are helpers for interacting with the source map
-cache. This cache is populated when source map parsing is enabled and
-[source map include directives][source map include directives] are found in a modules' footer.
+API в этом разделе помогают работать с кэшем source map. Кэш заполняется, когда включён разбор source map и
+в «подвале» модулей найдены [директивы подключения source map][source map include directives].
 
-To enable source map parsing, Node.js must be run with the flag
-[`--enable-source-maps`][`--enable-source-maps`], or with code coverage enabled by setting
-[`NODE_V8_COVERAGE=dir`][`NODE_V8_COVERAGE=dir`], or be enabled programmatically via
+Чтобы включить разбор source map, запустите Node.js с флагом
+[`--enable-source-maps`][`--enable-source-maps`], с покрытием кода через
+[`NODE_V8_COVERAGE=dir`][`NODE_V8_COVERAGE=dir`] или включите поддержку программно через
 [`module.setSourceMapsSupport()`][`module.setSourceMapsSupport()`].
 
 === "MJS"
@@ -2054,12 +1917,11 @@ added:
 -->
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the source maps support is enabled
-  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for files in `node_modules`.
-  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for generated code from `eval` or `new Function`.
+  * `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включена ли поддержка source map
+  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включена ли поддержка для файлов в `node_modules`.
+  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включена ли поддержка для кода из `eval` или `new Function`.
 
-This method returns whether the [Source Map v3][Source Map] support for stack
-traces is enabled.
+Метод сообщает, включена ли поддержка [Source Map v3][Source Map] для трассировок стека.
 
 <!-- Anchors to make sure old links find a target -->
 
@@ -2072,11 +1934,10 @@ added:
 -->
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [`<module.SourceMap>`](module.md) | undefined Returns `module.SourceMap` if a source
-  map is found, `undefined` otherwise.
+* Возвращает: [`<module.SourceMap>`](module.md) | undefined `module.SourceMap`, если source map найден,
+  иначе `undefined`.
 
-`path` is the resolved path for the file for which a corresponding source map
-should be fetched.
+`path` — разрешённый путь к файлу, для которого нужно получить соответствующий source map.
 
 ### `module.setSourceMapsSupport(enabled[, options])`
 
@@ -2086,26 +1947,23 @@ added:
   - v22.14.0
 -->
 
-* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Enable the source map support.
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional
-  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for files in
-    `node_modules`. **Default:** `false`.
-  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for generated code from
-    `eval` or `new Function`. **Default:** `false`.
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить поддержку source map.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно
+  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить поддержку для файлов в
+    `node_modules`. **По умолчанию:** `false`.
+  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить поддержку для кода из
+    `eval` или `new Function`. **По умолчанию:** `false`.
 
-This function enables or disables the [Source Map v3][Source Map] support for
-stack traces.
+Функция включает или отключает поддержку [Source Map v3][Source Map] для трассировок стека.
 
-It provides same features as launching Node.js process with commandline options
-`--enable-source-maps`, with additional options to alter the support for files
-in `node_modules` or generated codes.
+По возможностям это близко к запуску Node.js с опциями командной строки
+`--enable-source-maps`, с дополнительными параметрами для файлов в `node_modules` и сгенерированного кода.
 
-Only source maps in JavaScript files that are loaded after source maps has been
-enabled will be parsed and loaded. Preferably, use the commandline options
-`--enable-source-maps` to avoid losing track of source maps of modules loaded
-before this API call.
+Разбираются и загружаются только source map в JS-файлах, подключённых после включения поддержки.
+Надёжнее задать `--enable-source-maps` в командной строке, чтобы не потерять source map у модулей,
+загруженных до вызова этого API.
 
-### Class: `module.SourceMap`
+### Класс: `module.SourceMap`
 
 <!-- YAML
 added:
@@ -2129,64 +1987,48 @@ changes:
     | v20.5.0 | Добавьте поддержку `lineLengths`. |
 
 * `payload` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `lineLengths` [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `lineLengths` [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Creates a new `sourceMap` instance.
+Создаёт новый экземпляр `sourceMap`.
 
-`payload` is an object with keys matching the [Source map format][Source map format]:
+`payload` — объект с полями по [формату Source map][Source map format]:
 
 * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `version` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `sourcesContent` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `names` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `sourcesContent` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `names` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `mappings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `sourceRoot` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-`lineLengths` is an optional array of the length of each line in the
-generated code.
+`lineLengths` — необязательный массив длин строк сгенерированного кода.
 
 #### `sourceMap.payload`
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Getter for the payload used to construct the [`SourceMap`][`SourceMap`] instance.
+Геттер для полезной нагрузки, из которой создан экземпляр [`SourceMap`][`SourceMap`].
 
 #### `sourceMap.findEntry(lineOffset, columnOffset)`
 
-* `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed line number offset in
-  the generated source
-* `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed column number offset
-  in the generated source
+* `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки (с нуля) в сгенерированном исходнике
+* `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера столбца (с нуля) в сгенерированном исходнике
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Given a line offset and column offset in the generated source
-file, returns an object representing the SourceMap range in the
-original file if found, or an empty object if not.
+По смещению строки и столбца в сгенерированном файле возвращает объект с диапазоном SourceMap в исходном файле или пустой объект, если не найдено.
 
-The object returned contains the following keys:
+Объект содержит поля:
 
-* `generatedLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
-  range in the generated source
-* `generatedColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
-  range in the generated source
-* `originalSource` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source,
-  as reported in the SourceMap
-* `originalLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
-  range in the original source
-* `originalColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
-  range in the original source
+* `generatedLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение строки начала диапазона в сгенерированном исходнике
+* `generatedColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение столбца начала диапазона в сгенерированном исходнике
+* `originalSource` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла исходника, как в SourceMap
+* `originalLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение строки начала диапазона в исходном файле
+* `originalColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение столбца начала диапазона в исходном файле
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The returned value represents the raw range as it appears in the
-SourceMap, based on zero-indexed offsets, _not_ 1-indexed line and
-column numbers as they appear in Error messages and CallSite
-objects.
+Возвращаемое значение — «сырой» диапазон в SourceMap в координатах с нулевой базой, а не номера строки/столбца с единицей, как в сообщениях `Error` и объектах `CallSite`.
 
-To get the corresponding 1-indexed line and column numbers from a
-lineNumber and columnNumber as they are reported by Error stacks
-and CallSite objects, use `sourceMap.findOrigin(lineNumber,
-columnNumber)`
+Чтобы получить номера строки и столбца с единицей, как в стеках `Error` и `CallSite`, используйте `sourceMap.findOrigin(lineNumber, columnNumber)`.
 
 #### `sourceMap.findOrigin(lineNumber, columnNumber)`
 
@@ -2196,28 +2038,18 @@ added:
   - v18.18.0
 -->
 
-* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed line number of the call
-  site in the generated source
-* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed column number
-  of the call site in the generated source
+* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер строки (с единицы) позиции вызова в сгенерированном исходнике
+* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер столбца (с единицы) позиции вызова в сгенерированном исходнике
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Given a 1-indexed `lineNumber` and `columnNumber` from a call site in
-the generated source, find the corresponding call site location
-in the original source.
+По номерам строки и столбца (с единицы) в сгенерированном исходнике находит соответствующую позицию в исходном файле.
 
-If the `lineNumber` and `columnNumber` provided are not found in any
-source map, then an empty object is returned. Otherwise, the
-returned object contains the following keys:
+Если пара `lineNumber`/`columnNumber` не найдена в source map, возвращается пустой объект. Иначе объект содержит:
 
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The name of the range in the
-  source map, if one was provided
-* `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source, as
-  reported in the SourceMap
-* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed lineNumber of the
-  corresponding call site in the original source
-* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed columnNumber of the
-  corresponding call site in the original source
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Имя диапазона в source map, если было задано
+* `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходного файла, как в SourceMap
+* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер строки (с единицы) соответствующей позиции в исходнике
+* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер столбца (с единицы) соответствующей позиции в исходнике
 
 [CommonJS]: modules.md
 [Conditional exports]: packages.md#conditional-exports

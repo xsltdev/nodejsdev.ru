@@ -232,7 +232,7 @@ myURL = new URL('foo:Example.com/', 'https://example.org/');
 
 #### `url.hash`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт фрагмент URL.
 
@@ -252,7 +252,7 @@ console.log(myURL.href);
 
 #### `url.host`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт часть хоста URL.
 
@@ -270,7 +270,7 @@ console.log(myURL.href);
 
 #### `url.hostname`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт имя хоста в URL. Главное отличие `url.host` и `url.hostname`: в
 `url.hostname` _не_ входит порт.
@@ -295,7 +295,7 @@ console.log(myURL.href);
 
 #### `url.href`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт сериализованный URL.
 
@@ -332,7 +332,7 @@ changes:
     | --- | --- |
     | v15.0.0 | Схема «gopher» больше не особая; для неё `url.origin` теперь возвращает `'null'`. |
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает только для чтения сериализацию происхождения (origin) URL.
 
@@ -353,7 +353,7 @@ console.log(idnURL.hostname);
 
 #### `url.password`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт часть пароля URL.
 
@@ -373,7 +373,7 @@ console.log(myURL.href);
 
 #### `url.pathname`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт путь URL.
 
@@ -406,7 +406,7 @@ changes:
     | --- | --- |
     | v15.0.0 | Схема «gopher» больше не особая. |
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт порт в URL.
 
@@ -482,7 +482,7 @@ console.log(myURL.port);
 
 #### `url.protocol`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт схему (протокол) URL.
 
@@ -549,7 +549,7 @@ console.log(u.href);
 
 #### `url.search`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт сериализованную строку запроса URL.
 
@@ -569,7 +569,7 @@ console.log(myURL.href);
 
 #### `url.searchParams`
 
-* Type: [`<URLSearchParams>`](url.md#class-urlsearchparams)
+* Тип: [`<URLSearchParams>`](url.md#class-urlsearchparams)
 
 Возвращает объект [`URLSearchParams`][`URLSearchParams`] с параметрами запроса URL. Свойство
 только для чтения, но через `URLSearchParams` можно менять экземпляр URL; чтобы
@@ -593,7 +593,7 @@ console.log(myURL.search);  // prints ?foo=%7Ebar
 
 #### `url.username`
 
-* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Читает и задаёт имя пользователя в URL.
 
@@ -613,7 +613,7 @@ console.log(myURL.href);
 
 #### `url.toString()`
 
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `toString()` объекта `URL` возвращает сериализованный URL; результат
 совпадает с [`url.href`][`url.href`] и [`url.toJSON()`][`url.toJSON()`].
@@ -626,7 +626,7 @@ added:
   - v6.13.0
 -->
 
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `toJSON()` объекта `URL` возвращает сериализованный URL; результат
 совпадает с [`url.href`][`url.href`] и [`url.toString()`][`url.toString()`].
@@ -664,7 +664,7 @@ changes:
     | v24.0.0, v22.17.0 | API помечен как стабильный. |
 
 * `blob` [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Создаёт строку URL `'blob:nodedata:...'`, представляющую переданный объект [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob);
 по ней позже можно получить тот же `Blob`.
@@ -729,7 +729,7 @@ added:
   не строка, сначала [преобразуется в строку][converted to a string].
 * `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовый URL, если `input` не абсолютный. Если `base` не строка,
   сначала [преобразуется в строку][converted to a string].
-* Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Проверяет, можно ли разобрать `input` относительно `base` в корректный `URL`.
 
@@ -750,7 +750,7 @@ added: v22.1.0
   не строка, сначала [преобразуется в строку][converted to a string].
 * `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовый URL, если `input` не абсолютный. Если `base` не строка,
   сначала [преобразуется в строку][converted to a string].
-* Returns: [`<URL>`](url.md#the-whatwg-url-api) | null
+* Возвращает: [`<URL>`](url.md#the-whatwg-url-api) | null
 
 Разбирает строку как URL. Если задан `base`, он используется для разрешения
 неабсолютных `input`. Возвращает `null`, если параметры нельзя привести к допустимому URL.
@@ -1066,7 +1066,7 @@ changes:
 
 #### `urlSearchParams.entries()`
 
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает ES6-итератор по парам имя–значение в запросе. Каждый элемент — массив
 `Array`: первый элемент — `name`, второй — `value`.
@@ -1107,14 +1107,14 @@ myURL.searchParams.forEach((value, name, searchParams) => {
 #### `urlSearchParams.get(name)`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Строка или `null`, если пары с таким `name` нет.
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Строка или `null`, если пары с таким `name` нет.
 
 Возвращает значение первой пары с именем `name`; если таких пар нет — `null`.
 
 #### `urlSearchParams.getAll(name)`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает значения всех пар с именем `name`; если таких пар нет — пустой массив.
 
@@ -1137,7 +1137,7 @@ changes:
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Проверяет наличие пар по `name` и необязательному `value`.
 
@@ -1147,7 +1147,7 @@ changes:
 
 #### `urlSearchParams.keys()`
 
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает ES6-итератор по именам в парах имя–значение.
 
@@ -1216,19 +1216,19 @@ console.log(params.toString());
 
 #### `urlSearchParams.toString()`
 
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает параметры запроса в виде строки с необходимым процентным кодированием.
 
 #### `urlSearchParams.values()`
 
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает ES6-итератор по значениям в парах имя–значение.
 
 #### `urlSearchParams[Symbol.iterator]()`
 
-* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+* Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Возвращает ES6-итератор по парам имя–значение в строке запроса. Каждый элемент —
 массив `Array`: первый элемент — `name`, второй — `value`.
@@ -1266,7 +1266,7 @@ changes:
     | v20.0.0, v18.17.0 | Требование ICU снято. |
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает ASCII-представление `domain` в [Punycode][Punycode]. Если домен недопустим —
 пустая строка.
@@ -1320,7 +1320,7 @@ changes:
     | v20.0.0, v18.17.0 | Требование ICU снято. |
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает Unicode-представление `domain`. Если домен недопустим — пустая строка.
 
@@ -1377,7 +1377,7 @@ changes:
   * `windows` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined `true` — путь как в Windows, `false` — POSIX,
     `undefined` — по умолчанию для системы.
     **По умолчанию:** `undefined`.
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Полностью разрешённый путь к файлу для текущей платформы.
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Полностью разрешённый путь к файлу для текущей платформы.
 
 Функция корректно декодирует процентное кодирование и возвращает допустимую
 абсолютную строку пути на разных платформах.
@@ -1443,7 +1443,7 @@ added:
   * `windows` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined `true` — путь как в Windows, `false` — POSIX,
     `undefined` — по умолчанию для системы.
     **По умолчанию:** `undefined`.
-* Returns: [`<Buffer>`](buffer.md#buffer) Полностью разрешённый путь к файлу в виде [Buffer](buffer.md#buffer).
+* Возвращает: [`<Buffer>`](buffer.md#buffer) Полностью разрешённый путь к файлу в виде [Buffer](buffer.md#buffer).
 
 Как `url.fileURLToPath(...)`, но возвращается `Buffer` вместо строки. Удобно,
 если в URL есть процентно закодированные фрагменты, не являющиеся корректным UTF-8.
@@ -1468,7 +1468,7 @@ added: v7.6.0
   * `search` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` — включать строку запроса. **По умолчанию:** `true`.
   * `unicode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` — символы Юникода в хосте кодируются напрямую, а не
     через Punycode. **По умолчанию:** `false`.
-* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Настраиваемая сериализация объекта [WHATWG URL][WHATWG URL] в строку.
 
@@ -1532,7 +1532,7 @@ changes:
   * `windows` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined `true` — путь как в Windows, `false` — POSIX,
     `undefined` — по умолчанию для системы.
     **По умолчанию:** `undefined`.
-* Returns: [`<URL>`](url.md#the-whatwg-url-api) Объект file URL.
+* Возвращает: [`<URL>`](url.md#the-whatwg-url-api) Объект file URL.
 
 Функция разрешает `path` в абсолютный путь и корректно кодирует управляющие символы
 при преобразовании в file URL.
@@ -1587,7 +1587,7 @@ changes:
     | v19.9.0, v18.17.0 | Возвращаемый объект также содержит все собственные перечислимые свойства аргумента `url`. |
 
 * `url` [`<URL>`](url.md#the-whatwg-url-api) Объект [WHATWG URL][WHATWG URL] для преобразования в объект опций.
-* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект опций
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект опций
   * `protocol` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Протокол.
   * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Доменное имя или IP сервера.
   * `hash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Фрагмент URL.

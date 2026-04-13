@@ -738,7 +738,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Массив строк с операциями, для которых может использоваться ключ.
 
@@ -890,7 +890,7 @@ added: v24.7.0
 * `ciphertext` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 * `sharedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `usages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Получатель сообщения использует свой асимметричный закрытый ключ, чтобы расшифровать
@@ -1035,7 +1035,7 @@ changes:
 * `baseKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `derivedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 <!--lint enable maximum-line-length remark-lint-->
@@ -1145,7 +1145,7 @@ added: v24.7.0
 * `encapsulationKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `sharedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `usages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedKey](webcrypto.md).
 
 Использует асимметричный открытый ключ получателя сообщения для шифрования временного симметричного ключа.
@@ -1287,7 +1287,7 @@ added: v24.7.0
 > Стабильность: 1.1 – Активная разработка
 
 * `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey) Закрытый ключ, из которого выводится соответствующий открытый ключ.
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Выводит открытый ключ из заданного закрытого ключа.
@@ -1329,7 +1329,7 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey) | [CryptoKeyPair](webcrypto.md).
 
 По параметрам из `algorithm` метод
@@ -1422,7 +1422,7 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Метод пытается интерпретировать переданные `keyData`
@@ -1557,7 +1557,7 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
+* `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование

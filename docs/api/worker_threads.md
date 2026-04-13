@@ -1,5 +1,5 @@
 ---
-title: Worker threads
+title: Потоки worker
 description: Модуль node:worker_threads — потоки выполнения JavaScript в параллели, общая память, MessagePort, Worker и BroadcastChannel
 ---
 
@@ -113,7 +113,7 @@ JavaScript параллельно. Подключение:
 документации `async_hooks`.
 
 Потоки worker по умолчанию наследуют опции, не зависящие от процесса. См.
-[`Worker constructor options`][`Worker constructor options`] — настройка `argv` и `execArgv`.
+[параметры конструктора `Worker`][`Worker constructor options`] — настройка `argv` и `execArgv`.
 
 ## `worker_threads.getEnvironmentData(key)`
 
@@ -191,7 +191,7 @@ added:
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Is `true` if this code is running inside of an internal [`Worker`][`Worker`] thread (e.g the loader thread).
+`true`, если этот код выполняется во внутреннем потоке [`Worker`][`Worker`] (например, в потоке загрузчика).
 
 ```bash
 node --experimental-loader ./loader.js main.js
@@ -241,7 +241,7 @@ added: v10.5.0
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Is `true` if this code is not running inside of a [`Worker`][`Worker`] thread.
+`true`, если этот код выполняется не в потоке [`Worker`][`Worker`].
 
 === "MJS"
 
@@ -539,7 +539,7 @@ added:
   выбрасывается [`ERR_WORKER_MESSAGING_FAILED`][`ERR_WORKER_MESSAGING_FAILED`]. Если ID совпадает с текущим потоком,
   выбрасывается [`ERR_WORKER_MESSAGING_SAME_THREAD`][`ERR_WORKER_MESSAGING_SAME_THREAD`].
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Отправляемое значение.
-* `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `value` передаются один или несколько объектов, похожих на `MessagePort`,
+* `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `value` передаются один или несколько объектов, похожих на `MessagePort`,
   для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`].
   См. [`port.postMessage()`][`port.postMessage()`].
 * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидание доставки сообщения в миллисекундах.
@@ -1197,7 +1197,7 @@ changes:
     | --- | --- |
     | v14.7.0 | класс теперь наследует `EventTarget`, а не `EventEmitter`. |
 
-* Extends: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
+* Наследует: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
 
 Класс `worker.MessagePort` — один конец асинхронного
 двустороннего канала. Через него передают
@@ -1335,15 +1335,15 @@ changes:
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | ошибка, если в списке передачи есть непередаваемый объект. |
-    | v15.14.0, v14.18.0 | Добавьте «BlockList» в список клонируемых типов. |
-    | v15.9.0, v14.18.0 | Добавьте типы «Гистограммы» в список клонируемых типов. |
+    | v15.14.0, v14.18.0 | В список клонируемых типов добавлен `BlockList`. |
+    | v15.9.0, v14.18.0 | В список клонируемых типов добавлены типы `Histogram`. |
     | v15.6.0 | В список клонируемых типов добавлен X509Certificate. |
     | v15.0.0 | В список клонируемых типов добавлен «CryptoKey». |
     | v14.5.0, v12.19.0 | В список клонируемых типов добавлен KeyObject. |
     | v14.5.0, v12.19.0 | В список передаваемых типов добавлен FileHandle. |
 
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Отправляет значение JavaScript на приёмную сторону канала.
 `value` передаётся совместимо с
@@ -1627,7 +1627,7 @@ added: v10.5.0
 added: v10.5.0
 -->
 
-* Extends: [`<EventEmitter>`](events.md#class-eventemitter)
+* Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `Worker` представляет независимый поток выполнения JavaScript.
 Большинство API Node.js в нём доступно.
@@ -1771,7 +1771,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v19.8.0, v18.16.0 | Добавлена ​​поддержка опции name, которая позволяет добавлять имя к заголовку работника для отладки. |
+    | v19.8.0, v18.16.0 | Добавлена поддержка опции `name` для отладки (имя в заголовке worker). |
     | v14.9.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол data:. |
     | v14.9.0 | По умолчанию для параметра trackUnmanagedFds установлено значение true. |
     | v14.6.0, v12.19.0 | Была введена опция trackUnmanagedFds. |
@@ -1780,81 +1780,34 @@ changes:
     | v13.4.0, v12.16.0 | Была введена опция `argv`. |
     | v13.2.0, v12.16.0 | Была введена опция `resourceLimits`. |
 
-* `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) The path to the Worker's main script or module. Must
-  be either an absolute path or a relative path (i.e. relative to the
-  current working directory) starting with `./` or `../`, or a WHATWG `URL`
-  object using `file:` or `data:` protocol.
-  When using a [`data:` URL][`data:` URL], the data is interpreted based on MIME type using
-  the [ECMAScript module loader][ECMAScript module loader].
-  If `options.eval` is `true`, this is a string containing JavaScript code
-  rather than a path.
+* `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Путь к основному скрипту или модулю Worker. Должен быть либо абсолютным путём, либо относительным (относительно текущего рабочего каталога) с префиксом `./` или `../`, либо объектом WHATWG `URL` с протоколом `file:` или `data:`.
+  При использовании [`data:` URL][`data:` URL] данные интерпретируются по MIME-типу с помощью [загрузчика модулей ECMAScript][ECMAScript module loader].
+  Если `options.eval` равен `true`, это строка с кодом JavaScript, а не путь.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `argv` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) List of arguments which would be stringified and appended to
-    `process.argv` in the worker. This is mostly similar to the `workerData`
-    but the values are available on the global `process.argv` as if they
-    were passed as CLI options to the script.
-  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) If set, specifies the initial value of `process.env` inside
-    the Worker thread. As a special value, [`worker.SHARE_ENV`][`worker.SHARE_ENV`] may be used
-    to specify that the parent thread and the child thread should share their
-    environment variables; in that case, changes to one thread's `process.env`
-    object affect the other thread as well. **Default:** `process.env`.
-  * `eval` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true` and the first argument is a `string`, interpret
-    the first argument to the constructor as a script that is executed once the
-    worker is online.
-  * `execArgv` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) List of node CLI options passed to the worker.
-    V8 options (such as `--max-old-space-size`) and options that affect the
-    process (such as `--title`) are not supported. If set, this is provided
-    as [`process.execArgv`][`process.execArgv`] inside the worker. By default, options are
-    inherited from the parent thread.
-  * `stdin` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If this is set to `true`, then `worker.stdin`
-    provides a writable stream whose contents appear as `process.stdin`
-    inside the Worker. By default, no data is provided.
-  * `stdout` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If this is set to `true`, then `worker.stdout` is
-    not automatically piped through to `process.stdout` in the parent.
-  * `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If this is set to `true`, then `worker.stderr` is
-    not automatically piped through to `process.stderr` in the parent.
-  * `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Any JavaScript value that is cloned and made
-    available as [`require('node:worker_threads').workerData`][`require('node:worker_threads').workerData`]. The cloning
-    occurs as described in the [HTML structured clone algorithm][HTML structured clone algorithm], and an error
-    is thrown if the object cannot be cloned (e.g. because it contains
-    `function`s).
-  * `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If this is set to `true`, then the Worker
-    tracks raw file descriptors managed through [`fs.open()`][`fs.open()`] and
-    [`fs.close()`][`fs.close()`], and closes them when the Worker exits, similar to other
-    resources like network sockets or file descriptors managed through
-    the [`FileHandle`][`FileHandle`] API. This option is automatically inherited by all
-    nested `Worker`s. **Default:** `true`.
-  * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) If one or more `MessagePort`-like objects
-    are passed in `workerData`, a `transferList` is required for those
-    items or [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`] is thrown.
-    See [`port.postMessage()`][`port.postMessage()`] for more information.
-  * `resourceLimits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An optional set of resource limits for the new JS
-    engine instance. Reaching these limits leads to termination of the `Worker`
-    instance. These limits only affect the JS engine, and no external data,
-    including no `ArrayBuffer`s. Even if these limits are set, the process may
-    still abort if it encounters a global out-of-memory situation.
-    * `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum size of the main heap in
-      MB. If the command-line argument [`--max-old-space-size`][`--max-old-space-size`] is set, it
-      overrides this setting.
-    * `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum size of a heap space for
-      recently created objects. If the command-line argument
-      [`--max-semi-space-size`][`--max-semi-space-size`] is set, it overrides this setting.
-    * `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The size of a pre-allocated memory range
-      used for generated code.
-    * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The default maximum stack size for the thread.
-      Small values may lead to unusable Worker instances. **Default:** `4`.
-  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An optional `name` to be replaced in the thread name
-    and to the worker title for debugging/identification purposes,
-    making the final title as `[worker ${id}] ${name}`.
-    This parameter has a maximum allowed size, depending on the operating
-    system. If the provided name exceeds the limit, it will be truncated
-    * Maximum sizes:
-      * Windows: 32,767 characters
-      * macOS: 64 characters
-      * Linux: 16 characters
-      * NetBSD: limited to `PTHREAD_MAX_NAMELEN_NP`
-      * FreeBSD and OpenBSD: limited to `MAXCOMLEN`
-        **Default:** `'WorkerThread'`.
+  * `argv` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Список аргументов, которые преобразуются в строки и добавляются к `process.argv` в worker. По смыслу близко к `workerData`, но значения доступны в глобальном `process.argv`, как если бы они были переданы скрипту в командной строке.
+  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если задано, задаёт начальное значение `process.env` в потоке Worker. В качестве особого значения можно указать [`worker.SHARE_ENV`][`worker.SHARE_ENV`], чтобы родительский и дочерний потоки разделяли переменные окружения; тогда изменения объекта `process.env` в одном потоке видны и в другом. **По умолчанию:** `process.env`.
+  * `eval` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true` и первый аргумент — строка, первый аргумент конструктора трактуется как скрипт, выполняемый после перехода worker в состояние online.
+  * `execArgv` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список опций CLI Node.js, передаваемых worker. Опции V8 (например `--max-old-space-size`) и опции, влияющие на процесс (например `--title`), не поддерживаются. Если задано, внутри worker доступно как [`process.execArgv`][`process.execArgv`]. По умолчанию опции наследуются от родительского потока.
+  * `stdin` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stdin` — поток записи, содержимое которого попадает в `process.stdin` внутри Worker. По умолчанию данные не подаются.
+  * `stdout` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stdout` не перенаправляется автоматически в `process.stdout` родителя.
+  * `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stderr` не перенаправляется автоматически в `process.stderr` родителя.
+  * `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript, клонируемое и доступное как [`require('node:worker_threads').workerData`][`require('node:worker_threads').workerData`]. Клонирование выполняется по [алгоритму структурированного клонирования HTML][HTML structured clone algorithm]; если объект клонировать нельзя (например, из‑за наличия `function`), выбрасывается ошибка.
+  * `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, Worker отслеживает «сырые» дескрипторы файлов, открытые через [`fs.open()`][`fs.open()`] и [`fs.close()`][`fs.close()`], и закрывает их при завершении Worker, аналогично другим ресурсам (сетевые сокеты, дескрипторы через API [`FileHandle`][`FileHandle`]). Опция автоматически наследуется всеми вложенными `Worker`. **По умолчанию:** `true`.
+  * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `workerData` передан один или несколько объектов, похожих на `MessagePort`, для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`]. Подробнее см. [`port.postMessage()`][`port.postMessage()`].
+  * `resourceLimits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный набор ограничений ресурсов для нового экземпляра JS-движка. При достижении лимитов экземпляр `Worker` завершается. Ограничения действуют только на движок JS, не на внешние данные, в том числе на `ArrayBuffer`. Даже при заданных лимитах процесс может аварийно завершиться при глобальной нехватке памяти.
+    * `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер основной кучи в МБ. Если задан аргумент командной строки [`--max-old-space-size`][`--max-old-space-size`], он переопределяет это значение.
+    * `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер области кучи для недавно созданных объектов. Если задан аргумент [`--max-semi-space-size`][`--max-semi-space-size`], он переопределяет это значение.
+    * `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер заранее выделенного диапазона памяти для сгенерированного кода.
+    * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер стека потока по умолчанию. Слишком малые значения могут сделать экземпляры Worker непригодными. **По умолчанию:** `4`.
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя `name`, подставляемое в имя потока и заголовок worker для отладки и идентификации; итоговый заголовок вида `[worker ${id}] ${name}`.
+    Максимальная длина зависит от ОС. Если имя длиннее допустимого, оно обрезается.
+    * Максимальные размеры:
+      * Windows: 32 767 символов
+      * macOS: 64 символа
+      * Linux: 16 символов
+      * NetBSD: ограничено `PTHREAD_MAX_NAMELEN_NP`
+      * FreeBSD и OpenBSD: ограничено `MAXCOMLEN`
+        **По умолчанию:** `'WorkerThread'`.
 
 ### Event: `'error'`
 
@@ -1864,8 +1817,8 @@ added: v10.5.0
 
 * `err` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
-The `'error'` event is emitted if the worker thread throws an uncaught
-exception. In that case, the worker is terminated.
+Событие `'error'` генерируется, если в потоке worker выброшено необработанное
+исключение. В этом случае worker завершается.
 
 ### Event: `'exit'`
 
@@ -1875,12 +1828,11 @@ added: v10.5.0
 
 * `exitCode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The `'exit'` event is emitted once the worker has stopped. If the worker
-exited by calling [`process.exit()`][`process.exit()`], the `exitCode` parameter is the
-passed exit code. If the worker was terminated, the `exitCode` parameter is
-`1`.
+Событие `'exit'` генерируется после остановки worker. Если worker завершился
+вызовом [`process.exit()`][`process.exit()`], параметр `exitCode` — переданный код выхода.
+Если worker был принудительно завершён, `exitCode` равен `1`.
 
-This is the final event emitted by any `Worker` instance.
+Это последнее событие, которое генерирует любой экземпляр `Worker`.
 
 ### Event: `'message'`
 
@@ -1888,14 +1840,14 @@ This is the final event emitted by any `Worker` instance.
 added: v10.5.0
 -->
 
-* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The transmitted value
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
-The `'message'` event is emitted when the worker thread has invoked
+Событие `'message'` генерируется, когда поток worker вызывает
 [`require('node:worker_threads').parentPort.postMessage()`][`require('node:worker_threads').parentPort.postMessage()`].
-See the [`port.on('message')`][`port.on('message')`] event for more details.
+Подробнее см. событие [`port.on('message')`][`port.on('message')`].
 
-All messages sent from the worker thread are emitted before the
-[`'exit'` event][`'exit'` event] is emitted on the `Worker` object.
+Все сообщения, отправленные из потока worker, доставляются до генерации
+события [`'exit'`][`'exit'` event] на объекте `Worker`.
 
 ### Event: `'messageerror'`
 
@@ -1905,9 +1857,9 @@ added:
   - v12.19.0
 -->
 
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An Error object
+* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Объект Error
 
-The `'messageerror'` event is emitted when deserializing a message failed.
+Событие `'messageerror'` генерируется при ошибке десериализации сообщения.
 
 ### Event: `'online'`
 
@@ -1915,8 +1867,8 @@ The `'messageerror'` event is emitted when deserializing a message failed.
 added: v10.5.0
 -->
 
-The `'online'` event is emitted when the worker thread has started executing
-JavaScript code.
+Событие `'online'` генерируется, когда поток worker начал выполнение
+кода JavaScript.
 
 ### `worker.cpuUsage([prev])`
 
@@ -1928,9 +1880,9 @@ added:
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-This method returns a `Promise` that will resolve to an object identical to [`process.threadCpuUsage()`][`process.threadCpuUsage()`],
-or reject with an [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`] error if the worker is no longer running.
-This methods allows the statistics to be observed from outside the actual thread.
+Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`process.threadCpuUsage()`][`process.threadCpuUsage()`],
+или будет отклонён с [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`], если worker уже не работает.
+Позволяет получать статистику использования CPU потока извне, не находясь в нём.
 
 ### `worker.getHeapSnapshot([options])`
 
@@ -1948,22 +1900,22 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v19.1.0 | Параметры поддержки для настройки моментального снимка кучи. |
+    | v19.1.0 | Поддержка параметров настройки снимка кучи. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `exposeInternals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If true, expose internals in the heap snapshot.
-    **Default:** `false`.
-  * `exposeNumericValues` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If true, expose numeric values in
-    artificial fields. **Default:** `false`.
-* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) A promise for a Readable Stream containing
-  a V8 heap snapshot
+  * `exposeInternals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, в снимок кучи включаются внутренности движка.
+    **По умолчанию:** `false`.
+  * `exposeNumericValues` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, числовые значения попадают в
+    искусственные поля. **По умолчанию:** `false`.
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с потоком чтения (`Readable`), содержащим
+  снимок кучи V8
 
-Returns a readable stream for a V8 snapshot of the current state of the Worker.
-See [`v8.getHeapSnapshot()`][`v8.getHeapSnapshot()`] for more details.
+Возвращает поток чтения со снимком V8 текущего состояния Worker.
+Подробнее см. [`v8.getHeapSnapshot()`][`v8.getHeapSnapshot()`].
 
-If the Worker thread is no longer running, which may occur before the
-[`'exit'` event][`'exit'` event] is emitted, the returned `Promise` is rejected
-immediately with an [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`] error.
+Если поток Worker уже не выполняется (это возможно до генерации
+события [`'exit'`][`'exit'` event]), возвращённый `Promise` сразу отклоняется
+с ошибкой [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`].
 
 ### `worker.getHeapStatistics()`
 
@@ -1975,9 +1927,9 @@ added:
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-This method returns a `Promise` that will resolve to an object identical to [`v8.getHeapStatistics()`][`v8.getHeapStatistics()`],
-or reject with an [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`] error if the worker is no longer running.
-This methods allows the statistics to be observed from outside the actual thread.
+Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`v8.getHeapStatistics()`][`v8.getHeapStatistics()`],
+или будет отклонён с [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`], если worker уже не работает.
+Позволяет получать статистику кучи извне, не находясь в потоке worker.
 
 ### `worker.performance`
 
@@ -1988,8 +1940,7 @@ added:
   - v12.22.0
 -->
 
-An object that can be used to query performance information from a worker
-instance.
+Объект для запроса сведений о производительности экземпляра worker.
 
 #### `performance.eventLoopUtilization([utilization1[, utilization2]])`
 
@@ -2000,26 +1951,25 @@ added:
   - v12.22.0
 -->
 
-* `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The result of a previous call to
+* `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
   `eventLoopUtilization()`.
-* `utilization2` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The result of a previous call to
-  `eventLoopUtilization()` prior to `utilization1`.
+* `utilization2` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
+  `eventLoopUtilization()` до момента `utilization1`.
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `active` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `utilization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The same call as [`perf_hooks` `eventLoopUtilization()`][`perf_hooks` `eventLoopUtilization()`], except the values
-of the worker instance are returned.
+Тот же вызов, что и [`perf_hooks` `eventLoopUtilization()`][`perf_hooks` `eventLoopUtilization()`], но возвращаются значения
+для экземпляра worker.
 
-One difference is that, unlike the main thread, bootstrapping within a worker
-is done within the event loop. So the event loop utilization is
-immediately available once the worker's script begins execution.
+Отличие: в отличие от главного потока, инициализация в worker выполняется
+внутри цикла событий, поэтому загрузку цикла событий можно измерить сразу
+после начала выполнения скрипта worker.
 
-An `idle` time that does not increase does not indicate that the worker is
-stuck in bootstrap. The following examples shows how the worker's entire
-lifetime never accumulates any `idle` time, but is still be able to process
-messages.
+Если время `idle` не растёт, это не значит, что worker «застрял» в
+инициализации. Ниже показано, как за всё время жизни worker не накапливается
+`idle`, но сообщения всё равно обрабатываются.
 
 === "MJS"
 
@@ -2067,9 +2017,8 @@ messages.
     }
     ```
 
-The event loop utilization of a worker is available only after the [`'online'`
-event][] emitted, and if called before this, or after the [`'exit'`
-event][], then all properties have the value of `0`.
+Загрузку цикла событий worker можно получить только после генерации события [`'online'`][`'online'` event]; при вызове до этого или после события [`'exit'`][`'exit'` event]
+все свойства равны `0`.
 
 ### `worker.postMessage(value[, transferList])`
 
@@ -2078,11 +2027,11 @@ added: v10.5.0
 -->
 
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Send a message to the worker that is received via
+Отправляет сообщение worker; оно принимается в
 [`require('node:worker_threads').parentPort.on('message')`][`require('node:worker_threads').parentPort.on('message')`].
-See [`port.postMessage()`][`port.postMessage()`] for more details.
+Подробнее см. [`port.postMessage()`][`port.postMessage()`].
 
 ### `worker.ref()`
 
@@ -2090,10 +2039,9 @@ See [`port.postMessage()`][`port.postMessage()`] for more details.
 added: v10.5.0
 -->
 
-Opposite of `unref()`, calling `ref()` on a previously `unref()`ed worker does
-_not_ let the program exit if it's the only active handle left (the default
-behavior). If the worker is `ref()`ed, calling `ref()` again has
-no effect.
+Противоположность `unref()`: вызов `ref()` у ранее `unref()`ed worker _не_
+даёт процессу завершиться, если это единственный активный handle (поведение
+по умолчанию). Если worker уже `ref()`ed, повторный `ref()` не действует.
 
 ### `worker.resourceLimits`
 
@@ -2109,11 +2057,11 @@ added:
   * `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Provides the set of JS engine resource constraints for this Worker thread.
-If the `resourceLimits` option was passed to the [`Worker`][`Worker`] constructor,
-this matches its values.
+Задаёт ограничения ресурсов JS-движка для этого потока Worker.
+Если в конструктор [`Worker`][`Worker`] передавалась опция `resourceLimits`,
+значения совпадают с ней.
 
-If the worker has stopped, the return value is an empty object.
+Если worker остановлен, возвращается пустой объект.
 
 ### `worker.startCpuProfile()`
 
@@ -2123,8 +2071,8 @@ added: v24.8.0
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Starting a CPU profile then return a Promise that fulfills with an error
-or an `CPUProfileHandle` object. This API supports `await using` syntax.
+Запускает профиль CPU и возвращает `Promise`, который выполняется с ошибкой
+или объектом `CPUProfileHandle`. Этот API поддерживает синтаксис `await using`.
 
 === "CJS"
 
@@ -2144,7 +2092,7 @@ or an `CPUProfileHandle` object. This API supports `await using` syntax.
     });
     ```
 
-`await using` example.
+Пример с `await using`.
 
 === "CJS"
 
@@ -2171,20 +2119,20 @@ added:
 -->
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `sampleInterval` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The average sampling interval in bytes.
-    **Default:** `524288` (512 KiB).
-  * `stackDepth` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum stack depth for samples.
-    **Default:** `16`.
-  * `forceGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Force garbage collection before taking the profile.
-    **Default:** `false`.
-  * `includeObjectsCollectedByMajorGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Include objects collected
-    by major GC. **Default:** `false`.
-  * `includeObjectsCollectedByMinorGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Include objects collected
-    by minor GC. **Default:** `false`.
+  * `sampleInterval` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Средний интервал выборки в байтах.
+    **По умолчанию:** `524288` (512 KiB).
+  * `stackDepth` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная глубина стека для образцов.
+    **По умолчанию:** `16`.
+  * `forceGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Принудительная сборка мусора перед снятием профиля.
+    **По умолчанию:** `false`.
+  * `includeObjectsCollectedByMajorGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включать объекты, собранные
+    major GC. **По умолчанию:** `false`.
+  * `includeObjectsCollectedByMinorGC` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включать объекты, собранные
+    minor GC. **По умолчанию:** `false`.
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Starting a Heap profile then return a Promise that fulfills with an error
-or an `HeapProfileHandle` object. This API supports `await using` syntax.
+Запускает профиль кучи и возвращает `Promise`, который выполняется с ошибкой
+или объектом `HeapProfileHandle`. Этот API поддерживает синтаксис `await using`.
 
 === "CJS"
 
@@ -2222,7 +2170,7 @@ or an `HeapProfileHandle` object. This API supports `await using` syntax.
     });
     ```
 
-`await using` example.
+Пример с `await using`.
 
 === "CJS"
 
@@ -2264,10 +2212,9 @@ added: v10.5.0
 
 * Тип: [`<stream.Readable>`](stream.md#streamreadable)
 
-This is a readable stream which contains data written to [`process.stderr`][`process.stderr`]
-inside the worker thread. If `stderr: true` was not passed to the
-[`Worker`][`Worker`] constructor, then data is piped to the parent thread's
-[`process.stderr`][`process.stderr`] stream.
+Поток чтения с данными, записанными в [`process.stderr`][`process.stderr`]
+внутри потока worker. Если в конструктор [`Worker`][`Worker`] не передано `stderr: true`,
+данные перенаправляются в [`process.stderr`][`process.stderr`] родительского потока.
 
 ### `worker.stdin`
 
@@ -2277,9 +2224,8 @@ added: v10.5.0
 
 * Тип: null | [`<stream.Writable>`](stream.md#streamwritable)
 
-If `stdin: true` was passed to the [`Worker`][`Worker`] constructor, this is a
-writable stream. The data written to this stream will be made available in
-the worker thread as [`process.stdin`][`process.stdin`].
+Если в конструктор [`Worker`][`Worker`] передано `stdin: true`, это поток
+записи. Данные, записанные в него, доступны в потоке worker как [`process.stdin`][`process.stdin`].
 
 ### `worker.stdout`
 
@@ -2289,10 +2235,9 @@ added: v10.5.0
 
 * Тип: [`<stream.Readable>`](stream.md#streamreadable)
 
-This is a readable stream which contains data written to [`process.stdout`][`process.stdout`]
-inside the worker thread. If `stdout: true` was not passed to the
-[`Worker`][`Worker`] constructor, then data is piped to the parent thread's
-[`process.stdout`][`process.stdout`] stream.
+Поток чтения с данными, записанными в [`process.stdout`][`process.stdout`]
+внутри потока worker. Если в конструктор [`Worker`][`Worker`] не передано `stdout: true`,
+данные перенаправляются в [`process.stdout`][`process.stdout`] родительского потока.
 
 ### `worker.terminate()`
 
@@ -2317,9 +2262,9 @@ changes:
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Stop all JavaScript execution in the worker thread as soon as possible.
-Returns a Promise for the exit code that is fulfilled when the
-[`'exit'` event][`'exit'` event] is emitted.
+Останавливает выполнение JavaScript в потоке worker как можно скорее.
+Возвращает `Promise` с кодом выхода, который выполняется при генерации
+события [`'exit'`][`'exit'` event].
 
 ### `worker.threadId`
 
@@ -2329,9 +2274,9 @@ added: v10.5.0
 
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-An integer identifier for the referenced thread. Inside the worker thread,
-it is available as [`require('node:worker_threads').threadId`][`require('node:worker_threads').threadId`].
-This value is unique for each `Worker` instance inside a single process.
+Целочисленный идентификатор соответствующего потока. В потоке worker
+доступен как [`require('node:worker_threads').threadId`][`require('node:worker_threads').threadId`].
+Уникален для каждого экземпляра `Worker` в одном процессе.
 
 ### `worker.threadName`
 
@@ -2343,8 +2288,8 @@ added:
 
 * [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
-A string identifier for the referenced thread or null if the thread is not running.
-Inside the worker thread, it is available as [`require('node:worker_threads').threadName`][`require('node:worker_threads').threadName`].
+Строковый идентификатор потока или `null`, если поток не выполняется.
+В потоке worker доступен как [`require('node:worker_threads').threadName`][`require('node:worker_threads').threadName`].
 
 ### `worker.unref()`
 
@@ -2352,9 +2297,9 @@ Inside the worker thread, it is available as [`require('node:worker_threads').th
 added: v10.5.0
 -->
 
-Calling `unref()` on a worker allows the thread to exit if this is the only
-active handle in the event system. If the worker is already `unref()`ed calling
-`unref()` again has no effect.
+Вызов `unref()` у worker позволяет потоку завершиться, если это единственный
+активный handle в системе событий. Если worker уже `unref()`ed, повторный
+`unref()` не действует.
 
 ### `worker[Symbol.asyncDispose]()`
 
@@ -2364,7 +2309,7 @@ added:
  - v22.18.0
 -->
 
-Calls [`worker.terminate()`][`worker.terminate()`] when the dispose scope is exited.
+Вызывает [`worker.terminate()`][`worker.terminate()`] при выходе из области dispose.
 
 ```js
 async function example() {
@@ -2377,10 +2322,9 @@ async function example() {
 
 ### Синхронная блокировка stdio
 
-`Worker`s utilize message passing via [MessagePort](worker_threads.md#class-messageport) to implement interactions
-with `stdio`. This means that `stdio` output originating from a `Worker` can
-get blocked by synchronous code on the receiving end that is blocking the
-Node.js event loop.
+Экземпляры `Worker` используют передачу сообщений через [MessagePort](worker_threads.md#class-messageport) для взаимодействия
+со `stdio`. Поэтому вывод `stdio` из worker может блокироваться синхронным кодом на принимающей стороне,
+который удерживает цикл событий Node.js.
 
 === "MJS"
 
@@ -2424,12 +2368,10 @@ Node.js event loop.
 
 ### Запуск потоков worker из preload-скриптов
 
-Take care when launching worker threads from preload scripts (scripts loaded
-and run using the `-r` command line flag). Unless the `execArgv` option is
-explicitly set, new Worker threads automatically inherit the command line flags
-from the running process and will preload the same preload scripts as the main
-thread. If the preload script unconditionally launches a worker thread, every
-thread spawned will spawn another until the application crashes.
+Будьте осторожны при запуске потоков worker из preload-скриптов (скриптов, подключаемых
+флагом `-r`). Пока явно не задана опция `execArgv`, новые потоки Worker наследуют флаги командной строки
+текущего процесса и подгружают те же preload-скрипты, что и главный поток. Если preload-скрипт безусловно
+создаёт поток worker, каждый новый поток породит ещё один, пока приложение не упадёт.
 
 [Addons worker support]: addons.md#worker-support
 [ECMAScript module loader]: esm.md#data-imports

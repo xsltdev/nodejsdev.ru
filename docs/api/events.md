@@ -679,7 +679,7 @@ added: v0.1.26
 added: v6.0.0
 -->
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 
 Возвращает массив имён событий, для которых у эмиттера зарегистрированы
 слушатели.
@@ -776,7 +776,7 @@ changes:
     | v7.0.0 | Для прослушивателей, подключенных с помощью .once(), теперь возвращаются исходные прослушиватели вместо функций-оболочек. |
 
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<Function[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`.
 
@@ -1135,7 +1135,7 @@ added: v9.4.0
 -->
 
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<Function[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`, включая обёртки
 (например созданные `.once()`).
@@ -1347,7 +1347,7 @@ added:
 
 * `emitterOrTarget` [`<EventEmitter>`](events.md#class-eventemitter) | [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<Function[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`.
 
@@ -1904,7 +1904,7 @@ changes:
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `signal` [`<AbortSignal>`](globals.md#abortsignal) Можно использовать для отмены ожидания событий.
-  * `close` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имена событий, завершающих итерацию.
+  * `close` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имена событий, завершающих итерацию.
   * `highWaterMark` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Number.MAX_SAFE_INTEGER`
     Верхняя отметка: эмиттер ставится на паузу, когда буфер событий больше этого
     значения. Только для эмиттеров с методами `pause()` и `resume()`.
@@ -2031,7 +2031,7 @@ added: v15.4.0
 
 * `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число — максимум слушателей на одно событие
   `EventTarget`.
-* `...eventsTargets` [<EventTarget[]>](https://dom.spec.whatwg.org/#interface-eventtarget) | [<EventEmitter[]>](events.md#class-eventemitter) Ноль или больше экземпляров
+* `...eventsTargets` [`<EventTarget[]>`](https://dom.spec.whatwg.org/#interface-eventtarget) | [`<EventEmitter[]>`](events.md#class-eventemitter) Ноль или больше экземпляров
   [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) или [EventEmitter](events.md#class-eventemitter). Если не указано, `n` задаётся по умолчанию для
   всех вновь создаваемых [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) и [EventEmitter](events.md#class-eventemitter).
 
@@ -2779,7 +2779,7 @@ added: v15.2.0
 added: v14.5.0
 -->
 
-* Возвращает: [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Расширение Node.js: возвращает массив имён типов событий, для которых есть
 слушатели.
