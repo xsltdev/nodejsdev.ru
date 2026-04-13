@@ -322,10 +322,10 @@ REPL поддерживает двунаправленный reverse-i-search в
 
 Функция оценки принимает четыре аргумента:
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код для выполнения (например `1 + 1`).
-* `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Контекст выполнения — глобальный JavaScript или контекст экземпляра REPL в зависимости от `useGlobal`.
-* `replResourceName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Идентификатор ресурса REPL для текущей оценки (удобно для отладки).
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении оценки с двумя параметрами:
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код для выполнения (например `1 + 1`).
+* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Контекст выполнения — глобальный JavaScript или контекст экземпляра REPL в зависимости от `useGlobal`.
+* `replResourceName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Идентификатор ресурса REPL для текущей оценки (удобно для отладки).
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении оценки с двумя параметрами:
   * объект ошибки при ошибке оценки, иначе `null`/`undefined`;
   * результат оценки (не используется, если передана ошибка).
 
@@ -459,8 +459,8 @@ false
 added: v0.1.91
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [`repl.start()`][`repl.start()`]
-* Наследует: [<readline.Interface>](readline.md)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [`repl.start()`][`repl.start()`]
+* Наследует: [`<readline.Interface>`](readline.md)
 
 Экземпляры `repl.REPLServer` создаются через [`repl.start()`][`repl.start()`]
 или напрямую оператором `new`.
@@ -570,14 +570,14 @@ Clearing context...
 added: v0.3.0
 -->
 
-* `keyword` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Ключевое слово команды (_без_ ведущей `.`).
-* `cmd` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при обработке команды.
+* `keyword` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Ключевое слово команды (_без_ ведущей `.`).
+* `cmd` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при обработке команды.
 
 `replServer.defineCommand()` добавляет новые команды с префиксом `.` в экземпляр REPL.
 Ввод: `.` и `keyword`. `cmd` — либо `Function`, либо `Object` со свойствами:
 
-* `help` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст для `.help` (необязательно).
-* `action` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Выполняемая функция, опционально с одним строковым аргументом.
+* `help` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст для `.help` (необязательно).
+* `action` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Выполняемая функция, опционально с одним строковым аргументом.
 
 Пример двух новых команд:
 
@@ -636,7 +636,7 @@ Goodbye!
 added: v0.1.91
 -->
 
-* `preserveCursor` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `preserveCursor` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `replServer.displayPrompt()` готовит REPL к вводу: выводит настроенный `prompt` на новой строке в `output`
 и возобновляет приём в `input`.
@@ -676,22 +676,22 @@ changes:
     | --- | --- |
     | v24.2.0 | Обновлен параметр «historyConfig», теперь он принимает объект со свойствами «filePath», «size», «removeHistoryDuulates» и «onHistoryFileLoaded». |
 
-* `historyConfig` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к файлу истории.
+* `historyConfig` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к файлу истории.
   Если строка — это путь к файлу.
   Если объект, возможны свойства:
-  * `filePath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь к файлу истории
-  * `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум строк истории. Чтобы отключить историю, укажите `0`. Имеет смысл только если
+  * `filePath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь к файлу истории
+  * `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум строк истории. Чтобы отключить историю, укажите `0`. Имеет смысл только если
     `terminal` равен `true` (пользователем или проверкой `output`),
     иначе кэш истории не инициализируется.
     **По умолчанию:** `30`.
-  * `removeHistoryDuplicates` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` при добавлении строки, дублирующей более старую, старая удаляется.
+  * `removeHistoryDuplicates` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` при добавлении строки, дублирующей более старую, старая удаляется.
     **По умолчанию:** `false`.
-  * `onHistoryFileLoaded` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) вызывается при готовности записи истории или при ошибке
-    * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    * `repl` [<repl.REPLServer>](#class-replserver)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) то же (необязателен, если задан `onHistoryFileLoaded` в `historyConfig`)
-  * `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `repl` [<repl.REPLServer>](#class-replserver)
+  * `onHistoryFileLoaded` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) вызывается при готовности записи истории или при ошибке
+    * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+    * `repl` [`<repl.REPLServer>`](#class-replserver)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) то же (необязателен, если задан `onHistoryFileLoaded` в `historyConfig`)
+  * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+  * `repl` [`<repl.REPLServer>`](#class-replserver)
 
 Инициализирует файл истории для экземпляра REPL. При запуске `node` с интерактивным REPL файл истории
 создаётся по умолчанию; при программном создании REPL — нет. Используйте этот метод для файла истории
@@ -775,41 +775,41 @@ changes:
     | v6.3.0 | Опция `breakEvalOnSigint` теперь поддерживается. |
     | v5.8.0 | Параметр `options` теперь является необязательным. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `prompt` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Приглашение ввода. **По умолчанию:** `'> '`
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Приглашение ввода. **По умолчанию:** `'> '`
     (с пробелом в конце).
-  * `input` [<stream.Readable>](stream.md#streamreadable) Поток `Readable` для ввода REPL.
+  * `input` [`<stream.Readable>`](stream.md#streamreadable) Поток `Readable` для ввода REPL.
     **По умолчанию:** `process.stdin`.
-  * `output` [<stream.Writable>](stream.md#streamwritable) Поток `Writable` для вывода REPL.
+  * `output` [`<stream.Writable>`](stream.md#streamwritable) Поток `Writable` для вывода REPL.
     **По умолчанию:** `process.stdout`.
-  * `terminal` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` вывод `output` считается TTY.
+  * `terminal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` вывод `output` считается TTY.
     **По умолчанию:** проверка `isTTY` у `output` при создании.
-  * `eval` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция оценки каждой строки ввода. **По умолчанию:** асинхронная обёртка над `eval()`.
+  * `eval` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция оценки каждой строки ввода. **По умолчанию:** асинхронная обёртка над `eval()`.
     Ошибка с `repl.Recoverable` означает неполный ввод и запрос дополнительных строк. См. раздел
     [custom evaluation functions][custom evaluation functions].
-  * `useColors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный `writer` добавляет ANSI-цвета к выводу. При своём `writer` не действует.
+  * `useColors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный `writer` добавляет ANSI-цвета к выводу. При своём `writer` не действует.
     **По умолчанию:** проверка цветов на `output`, если у репла `terminal` равен `true`.
-  * `useGlobal` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный оценщик использует JavaScript `global`, а не отдельный контекст REPL.
+  * `useGlobal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный оценщик использует JavaScript `global`, а не отдельный контекст REPL.
     CLI `node` задаёт `true`. **По умолчанию:** `false`.
-  * `ignoreUndefined` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный writer не выводит результат команды, если он `undefined`. **По умолчанию:** `false`.
-  * `writer` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Форматирование вывода каждой команды перед записью в `output`. **По умолчанию:** [`util.inspect()`][`util.inspect()`].
-  * `completer` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательно: своё автодополнение по Tab. Пример — [`readline.InterfaceCompleter`][`readline.InterfaceCompleter`].
-  * `replMode` [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Режим оценщика: strict или sloppy.
+  * `ignoreUndefined` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный writer не выводит результат команды, если он `undefined`. **По умолчанию:** `false`.
+  * `writer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Форматирование вывода каждой команды перед записью в `output`. **По умолчанию:** [`util.inspect()`][`util.inspect()`].
+  * `completer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательно: своё автодополнение по Tab. Пример — [`readline.InterfaceCompleter`][`readline.InterfaceCompleter`].
+  * `replMode` [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Режим оценщика: strict или sloppy.
     Значения:
     * `repl.REPL_MODE_SLOPPY` — sloppy mode.
     * `repl.REPL_MODE_STRICT` — strict mode (как `'use strict'` перед каждой строкой).
-  * `breakEvalOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Остановить оценку текущего кода при `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>).
+  * `breakEvalOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Остановить оценку текущего кода при `SIGINT` (<kbd>Ctrl</kbd>+<kbd>C</kbd>).
     Несовместимо с пользовательским `eval`. **По умолчанию:** `false`.
-  * `preview` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Печатать ли предпросмотр автодополнения и вывода. **По умолчанию:** `true` со встроенным `eval` и
+  * `preview` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Печатать ли предпросмотр автодополнения и вывода. **По умолчанию:** `true` со встроенным `eval` и
     `false` с пользовательским `eval`. Если `terminal` ложен, предпросмотра нет, `preview` не влияет.
-  * `handleError` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Настройка обработки ошибок в REPL.
+  * `handleError` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Настройка обработки ошибок в REPL.
     Первый аргумент — исключение; синхронно вернуть одно из:
     * `'print'` — вывести ошибку в поток вывода (по умолчанию).
     * `'ignore'` — пропустить остальную обработку ошибки.
     * `'unhandled'` — считать исключение полностью необработанным; оно уйдёт в глобальные обработчики, например
       [`'uncaughtException'`][`'uncaughtException'`].
       `'unhandled'` при уже закрытом `REPLServer` может быть нежелателен — зависит от задачи.
-* Возвращает: [<repl.REPLServer>](#class-replserver)
+* Возвращает: [`<repl.REPLServer>`](#class-replserver)
 
 `repl.start()` создаёт и запускает экземпляр [`repl.REPLServer`][`repl.ReplServer`].
 

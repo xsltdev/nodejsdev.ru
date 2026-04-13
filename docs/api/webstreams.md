@@ -152,33 +152,33 @@ added: v16.5.0
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `underlyingSource` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `start` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
+* `underlyingSource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
     `ReadableStream`.
-    * `controller` [<ReadableStreamDefaultController>](webstreams.md#class-readablestreamdefaultcontroller) | [<ReadableByteStreamController>](webstreams.md#class-readablebytestreamcontroller)
+    * `controller` [`<ReadableStreamDefaultController>`](webstreams.md#class-readablestreamdefaultcontroller) | [`<ReadableByteStreamController>`](webstreams.md#class-readablebytestreamcontroller)
     * Возвращает: `undefined` или промис, выполняемый с `undefined`.
-  * `pull` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая повторно, пока
+  * `pull` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая повторно, пока
     внутренняя очередь `ReadableStream` не заполнена. Операция может быть синхронной или
     асинхронной. Если асинхронная, функция не вызывается снова, пока не выполнится
     ранее возвращённый промис.
-    * `controller` [<ReadableStreamDefaultController>](webstreams.md#class-readablestreamdefaultcontroller) | [<ReadableByteStreamController>](webstreams.md#class-readablebytestreamcontroller)
+    * `controller` [`<ReadableStreamDefaultController>`](webstreams.md#class-readablestreamdefaultcontroller) | [`<ReadableByteStreamController>`](webstreams.md#class-readablebytestreamcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `cancel` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при отмене
+  * `cancel` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при отмене
     `ReadableStream`.
-    * `reason` {any}
+    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'bytes'` или `undefined`.
-  * `autoAllocateChunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Используется только при `type`, равном
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'bytes'` или `undefined`.
+  * `autoAllocateChunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Используется только при `type`, равном
     `'bytes'`. При ненулевом значении буфер представления автоматически
     выделяется для `ReadableByteStreamController.byobRequest`. Если не задано,
     данные передаются через внутренние очереди потока и обычный
     читатель `ReadableStreamDefaultReader`.
-* `strategy` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
-  * `size` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
+* `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
+  * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` {any}
-    * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -188,7 +188,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для этого [ReadableStream](webstreams.md#readablestream) есть активный читатель.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для этого [ReadableStream](webstreams.md#readablestream) есть активный читатель.
 
 Свойство `readableStream.locked` по умолчанию `false` и становится
 `true`, пока активный читатель потребляет данные потока.
@@ -199,7 +199,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined` после завершения отмены.
 
 #### `readableStream.getReader([options])`
@@ -208,9 +208,9 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'byob'` или `undefined`
-* Возвращает: [<ReadableStreamDefaultReader>](webstreams.md#class-readablestreamdefaultreader) | [<ReadableStreamBYOBReader>](webstreams.md#class-readablestreambyobreader)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'byob'` или `undefined`
+* Возвращает: [`<ReadableStreamDefaultReader>`](webstreams.md#class-readablestreamdefaultreader) | [`<ReadableStreamBYOBReader>`](webstreams.md#class-readablestreambyobreader)
 
 === "MJS"
 
@@ -244,21 +244,21 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `transform` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `readable` [<ReadableStream>](webstreams.md#readablestream) `ReadableStream`, в который
+* `transform` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `readable` [`<ReadableStream>`](webstreams.md#readablestream) `ReadableStream`, в который
     `transform.writable` помещает возможно изменённые данные,
     полученные из этого `ReadableStream`.
-  * `writable` [<WritableStream>](webstreams.md#class-writablestream) `WritableStream`, в который записываются
+  * `writable` [`<WritableStream>`](webstreams.md#class-writablestream) `WritableStream`, в который записываются
     данные этого `ReadableStream`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `preventAbort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream`
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `preventAbort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream`
     не приводят к прерыванию `transform.writable`.
-  * `preventCancel` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в целевом
+  * `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в целевом
     `transform.writable` не отменяют этот `ReadableStream`.
-  * `preventClose` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream`
+  * `preventClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream`
     не закрывает `transform.writable`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Позволяет отменить передачу данных через [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
-* Возвращает: [<ReadableStream>](webstreams.md#readablestream) из `transform.readable`.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет отменить передачу данных через [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+* Возвращает: [`<ReadableStream>`](webstreams.md#readablestream) из `transform.readable`.
 
 Соединяет этот [ReadableStream](webstreams.md#readablestream) с парой [ReadableStream](webstreams.md#readablestream) и
 [WritableStream](webstreams.md#class-writablestream) из аргумента `transform`: данные из этого [ReadableStream](webstreams.md#readablestream) записываются в `transform.writable`,
@@ -329,16 +329,16 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `destination` [<WritableStream>](webstreams.md#class-writablestream) [WritableStream](webstreams.md#class-writablestream), в который записываются
+* `destination` [`<WritableStream>`](webstreams.md#class-writablestream) [WritableStream](webstreams.md#class-writablestream), в который записываются
   данные этого `ReadableStream`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `preventAbort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream`
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `preventAbort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в этом `ReadableStream`
     не приводят к прерыванию `destination`.
-  * `preventCancel` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в `destination`
+  * `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, ошибки в `destination`
     не отменяют этот `ReadableStream`.
-  * `preventClose` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream`
+  * `preventClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, закрытие этого `ReadableStream`
     не закрывает `destination`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Позволяет отменить передачу данных через [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Позволяет отменить передачу данных через [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 * Возвращает: промис, выполняемый с `undefined`
 
 Пока активна операция pipe, `readableStream.locked` равен `true`.
@@ -376,8 +376,8 @@ changes:
 added: v16.5.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `preventCancel` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, [ReadableStream](webstreams.md#readablestream) не закрывается
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, [ReadableStream](webstreams.md#readablestream) не закрывается
     при резком завершении асинхронного итератора.
     **По умолчанию**: `false`.
 
@@ -448,7 +448,7 @@ port2.postMessage(stream, [stream]);
 added: v20.6.0
 -->
 
-* `iterable` [<Iterable>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Объект, реализующий протокол итерируемости `Symbol.asyncIterator` или
+* `iterable` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Объект, реализующий протокол итерируемости `Symbol.asyncIterator` или
   `Symbol.iterator`.
 
 Вспомогательный метод создаёт новый [ReadableStream](webstreams.md#readablestream) из итерируемого объекта.
@@ -558,7 +558,7 @@ changes:
 added: v16.5.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream)
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
 Создаёт новый [ReadableStreamDefaultReader](webstreams.md#class-readablestreamdefaultreader), привязанный к
 заданному [ReadableStream](webstreams.md#readablestream).
@@ -569,7 +569,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Отменяет [ReadableStream](webstreams.md#readablestream) и возвращает промис, выполняемый
@@ -581,7 +581,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
+* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [ReadableStream](webstreams.md#readablestream) закрыт, или отклоняется при ошибке потока или снятии
   блокировки читателя до завершения закрытия.
 
@@ -592,8 +592,8 @@ added: v16.5.0
 -->
 
 * Возвращает: промис, выполняемый с объектом:
-  * `value` {any}
-  * `done` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * `done` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Запрашивает следующий фрагмент данных из нижележащего [ReadableStream](webstreams.md#readablestream)
 и возвращает промис, выполняемый, когда данные доступны.
@@ -699,7 +699,7 @@ changes:
 added: v16.5.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream)
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
 Создаёт новый `ReadableStreamBYOBReader`, привязанный к
 заданному [ReadableStream](webstreams.md#readablestream).
@@ -710,7 +710,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Отменяет [ReadableStream](webstreams.md#readablestream) и возвращает промис, выполняемый
@@ -722,7 +722,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
+* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [ReadableStream](webstreams.md#readablestream) закрыт, или отклоняется при ошибке потока или снятии
   блокировки читателя до завершения закрытия.
 
@@ -746,14 +746,14 @@ changes:
     | --- | --- |
     | v21.7.0, v20.17.0 | Добавлена опция `min`. |
 
-* `view` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `min` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано, промис выполнится только когда доступно
+* `view` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `min` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано, промис выполнится только когда доступно
     не менее `min` элементов.
     Если не задано, промис выполняется, когда доступен хотя бы один элемент.
 * Возвращает: промис, выполняемый с объектом:
-  * `value` [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-  * `done` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `value` [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+  * `done` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Запрашивает следующий фрагмент данных из нижележащего [ReadableStream](webstreams.md#readablestream)
 и возвращает промис, выполняемый, когда данные доступны.
@@ -802,7 +802,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает объём данных, которого не хватает до заполнения очереди [ReadableStream](webstreams.md#readablestream).
 
@@ -812,7 +812,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` {any}
+* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Добавляет новый фрагмент данных в очередь [ReadableStream](webstreams.md#readablestream).
 
@@ -822,7 +822,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `error` {any}
+* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
@@ -854,7 +854,7 @@ changes:
 added: v16.5.0
 -->
 
-* Тип: [<ReadableStreamBYOBRequest>](webstreams.md#class-readablestreambyobrequest)
+* Тип: [`<ReadableStreamBYOBRequest>`](webstreams.md#class-readablestreambyobrequest)
 
 #### `readableByteStreamController.close()`
 
@@ -870,7 +870,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает объём данных, которого не хватает до заполнения очереди [ReadableStream](webstreams.md#readablestream).
 
@@ -880,7 +880,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
 Добавляет новый фрагмент данных в очередь [ReadableStream](webstreams.md#readablestream).
 
@@ -890,7 +890,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `error` {any}
+* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
@@ -928,7 +928,7 @@ changes:
 added: v16.5.0
 -->
 
-* `bytesWritten` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Сообщает, что в `readableStreamBYOBRequest.view` записано `bytesWritten` байт.
 
@@ -938,7 +938,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `view` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `view` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
 Сообщает, что запрос выполнен: данные записаны в новый `Buffer`, `TypedArray` или `DataView`.
 
@@ -948,7 +948,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Тип: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
 ### Класс: `WritableStream`
 
@@ -992,31 +992,31 @@ changes:
 added: v16.5.0
 -->
 
-* `underlyingSink` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `start` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
+* `underlyingSink` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
     `WritableStream`.
-    * `controller` [<WritableStreamDefaultController>](webstreams.md#class-writablestreamdefaultcontroller)
+    * `controller` [`<WritableStreamDefaultController>`](webstreams.md#class-writablestreamdefaultcontroller)
     * Возвращает: `undefined` или промис, выполняемый с `undefined`.
-  * `write` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при записи фрагмента
+  * `write` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при записи фрагмента
     данных в `WritableStream`.
-    * `chunk` {any}
-    * `controller` [<WritableStreamDefaultController>](webstreams.md#class-writablestreamdefaultcontroller)
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `controller` [`<WritableStreamDefaultController>`](webstreams.md#class-writablestreamdefaultcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `close` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при закрытии
+  * `close` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при закрытии
     `WritableStream`.
     * Возвращает: промис, выполняемый с `undefined`.
-  * `abort` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для немедленного закрытия
+  * `abort` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для немедленного закрытия
     `WritableStream`.
-    * `reason` {any}
+    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `type` {any} Опция `type` зарезервирована и _должна_ быть
+  * `type` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Опция `type` зарезервирована и _должна_ быть
     `undefined`.
-* `strategy` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
-  * `size` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
+* `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
+  * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` {any}
-    * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `writableStream.abort([reason])`
 
@@ -1024,7 +1024,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Немедленно завершает `WritableStream`. Все запросы записи в очереди
@@ -1046,7 +1046,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Возвращает: [<WritableStreamDefaultWriter>](webstreams.md#class-writablestreamdefaultwriter)
+* Возвращает: [`<WritableStreamDefaultWriter>`](webstreams.md#class-writablestreamdefaultwriter)
 
 Создаёт и возвращает новый writer для записи
 данных в `WritableStream`.
@@ -1057,7 +1057,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Свойство `writableStream.locked` по умолчанию `false` и становится
 `true`, пока к этому `WritableStream` привязан активный writer.
@@ -1102,7 +1102,7 @@ changes:
 added: v16.5.0
 -->
 
-* `stream` [<WritableStream>](webstreams.md#class-writablestream)
+* `stream` [`<WritableStream>`](webstreams.md#class-writablestream)
 
 Создаёт новый `WritableStreamDefaultWriter`, привязанный к заданному
 `WritableStream`.
@@ -1113,7 +1113,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Немедленно завершает `WritableStream`. Все запросы записи в очереди
@@ -1135,7 +1135,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
+* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [WritableStream](webstreams.md#class-writablestream) закрыт, или отклоняется при ошибке потока или снятии
   блокировки writer до завершения закрытия.
 
@@ -1145,7 +1145,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Объём данных, необходимый для заполнения очереди [WritableStream](webstreams.md#class-writablestream).
 
@@ -1155,7 +1155,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` when the writer is ready
+* Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` when the writer is ready
   to be used.
 
 #### `writableStreamDefaultWriter.releaseLock()`
@@ -1172,7 +1172,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` {any}
+* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Ставит в очередь новый фрагмент данных для записи в [WritableStream](webstreams.md#class-writablestream).
@@ -1204,7 +1204,7 @@ changes:
 added: v16.5.0
 -->
 
-* `error` {any}
+* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Вызывается из кода пользователя, чтобы сообщить об ошибке при обработке
 данных `WritableStream`. При вызове [WritableStream](webstreams.md#class-writablestream) прерывается,
@@ -1212,7 +1212,7 @@ added: v16.5.0
 
 #### `writableStreamDefaultController.signal`
 
-* Тип: [<AbortSignal>](globals.md#abortsignal) `AbortSignal` для отмены ожидающих
+* Тип: [`<AbortSignal>`](globals.md#abortsignal) `AbortSignal` для отмены ожидающих
   операций записи или закрытия при прерывании [WritableStream](webstreams.md#class-writablestream).
 
 ### Класс: `TransformStream`
@@ -1276,42 +1276,42 @@ changes:
     | --- | --- |
     | v21.5.0, v20.14.0 | Поддержка колбэка `cancel` у трансформера. |
 
-* `transformer` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `start` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
+* `transformer` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
     `TransformStream`.
-    * `controller` [<TransformStreamDefaultController>](webstreams.md#class-transformstreamdefaultcontroller)
+    * `controller` [`<TransformStreamDefaultController>`](webstreams.md#class-transformstreamdefaultcontroller)
     * Возвращает: `undefined` или промис, выполняемый с `undefined`
-  * `transform` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция: получает и при необходимости изменяет
+  * `transform` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция: получает и при необходимости изменяет
     фрагмент данных, записанный в `transformStream.writable`,
     затем передаёт его в `transformStream.readable`.
-    * `chunk` {any}
-    * `controller` [<TransformStreamDefaultController>](webstreams.md#class-transformstreamdefaultcontroller)
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `controller` [`<TransformStreamDefaultController>`](webstreams.md#class-transformstreamdefaultcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `flush` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая непосредственно перед
+  * `flush` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая непосредственно перед
     закрытием записывающей стороны `TransformStream`, сигнализируя о завершении
     преобразования.
-    * `controller` [<TransformStreamDefaultController>](webstreams.md#class-transformstreamdefaultcontroller)
+    * `controller` [`<TransformStreamDefaultController>`](webstreams.md#class-transformstreamdefaultcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `cancel` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция при отмене читающей стороны
+  * `cancel` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция при отмене читающей стороны
     `TransformStream` или прерывании записывающей.
-    * `reason` {any}
+    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `readableType` {any} опция `readableType` зарезервирована
+  * `readableType` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `readableType` зарезервирована
     и _должна_ быть `undefined`.
-  * `writableType` {any} опция `writableType` зарезервирована
+  * `writableType` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `writableType` зарезервирована
     и _должна_ быть `undefined`.
-* `writableStrategy` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
-  * `size` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
+* `writableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
+  * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` {any}
-    * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `readableStrategy` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
-  * `size` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `readableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
+  * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` {any}
-    * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `transformStream.readable`
 
@@ -1319,7 +1319,7 @@ changes:
 added: v16.5.0
 -->
 
-* Тип: [<ReadableStream>](webstreams.md#readablestream)
+* Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `transformStream.writable`
 
@@ -1327,7 +1327,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<WritableStream>](webstreams.md#class-writablestream)
+* Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 #### Передача через postMessage()
 
@@ -1373,7 +1373,7 @@ changes:
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Объём данных, необходимый для заполнения очереди читающей стороны.
 
@@ -1383,7 +1383,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` {any}
+* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Добавляет фрагмент данных в очередь читающей стороны.
 
@@ -1393,7 +1393,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` {any}
+* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке на читающей и записывающей сторонах при обработке
 данных трансформации; обе стороны немедленно закрываются.
@@ -1431,8 +1431,8 @@ changes:
 added: v16.5.0
 -->
 
-* `init` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `init` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.highWaterMark`
 
@@ -1440,7 +1440,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.size`
 
@@ -1448,9 +1448,9 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-  * `chunk` {any}
-  * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `CountQueuingStrategy`
 
@@ -1476,8 +1476,8 @@ changes:
 added: v16.5.0
 -->
 
-* `init` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `init` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.highWaterMark`
 
@@ -1485,7 +1485,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.size`
 
@@ -1493,9 +1493,9 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-  * `chunk` {any}
-  * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `TextEncoderStream`
 
@@ -1529,7 +1529,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextEncoderStream`.
 
@@ -1539,7 +1539,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<ReadableStream>](webstreams.md#readablestream)
+* Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textEncoderStream.writable`
 
@@ -1547,7 +1547,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<WritableStream>](webstreams.md#class-writablestream)
+* Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `TextDecoderStream`
 
@@ -1573,11 +1573,11 @@ changes:
 added: v16.6.0
 -->
 
-* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка, которую поддерживает этот `TextDecoder`.
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка, которую поддерживает этот `TextDecoder`.
   **По умолчанию:** `'utf-8'`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `fatal` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если ошибки декодирования фатальны.
-  * `ignoreBOM` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `TextDecoderStream` включает
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `fatal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если ошибки декодирования фатальны.
+  * `ignoreBOM` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `TextDecoderStream` включает
     метку порядка байтов в результат. Если `false`, метка
     удаляется из вывода. Опция используется только при `encoding`
     `'utf-8'`, `'utf-16be'` или `'utf-16le'`. **По умолчанию:** `false`.
@@ -1590,7 +1590,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Кодировка, поддерживаемая экземпляром `TextDecoderStream`.
 
@@ -1600,7 +1600,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true`, если при ошибках декодирования выбрасывается `TypeError`.
 
@@ -1610,7 +1610,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true`, если в результат декодирования включается метка порядка байтов.
 
@@ -1620,7 +1620,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<ReadableStream>](webstreams.md#readablestream)
+* Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textDecoderStream.writable`
 
@@ -1628,7 +1628,7 @@ added: v16.6.0
 added: v16.6.0
 -->
 
-* Тип: [<WritableStream>](webstreams.md#class-writablestream)
+* Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `CompressionStream`
 
@@ -1674,7 +1674,7 @@ changes:
     | v24.7.0, v22.20.0 | для format теперь допустимо значение `brotli`. |
     | v21.2.0, v20.12.0 | для format теперь допустимо значение `deflate-raw`. |
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
 
 #### `compressionStream.readable`
 
@@ -1682,7 +1682,7 @@ changes:
 added: v17.0.0
 -->
 
-* Тип: [<ReadableStream>](webstreams.md#readablestream)
+* Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `compressionStream.writable`
 
@@ -1690,7 +1690,7 @@ added: v17.0.0
 added: v17.0.0
 -->
 
-* Тип: [<WritableStream>](webstreams.md#class-writablestream)
+* Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `DecompressionStream`
 
@@ -1736,7 +1736,7 @@ changes:
     | v24.7.0, v22.20.0 | для format теперь допустимо значение `brotli`. |
     | v21.2.0, v20.12.0 | для format теперь допустимо значение `deflate-raw`. |
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
 
 #### `decompressionStream.readable`
 
@@ -1744,7 +1744,7 @@ changes:
 added: v17.0.0
 -->
 
-* Тип: [<ReadableStream>](webstreams.md#readablestream)
+* Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `decompressionStream.writable`
 
@@ -1752,7 +1752,7 @@ added: v17.0.0
 added: v17.0.0
 -->
 
-* Тип: [<WritableStream>](webstreams.md#class-writablestream)
+* Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Утилиты-потребители
 
@@ -1795,8 +1795,8 @@ added: v16.7.0
 added: v16.7.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с `ArrayBuffer`, содержащим полное
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с `ArrayBuffer`, содержащим полное
   содержимое потока.
 
 === "MJS"
@@ -1837,8 +1837,8 @@ added: v16.7.0
 added: v16.7.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), содержащим полное содержимое
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), содержащим полное содержимое
   потока.
 
 === "MJS"
@@ -1874,8 +1874,8 @@ added: v16.7.0
 added: v16.7.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Buffer](buffer.md#buffer), содержащим полное
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Buffer](buffer.md#buffer), содержащим полное
   содержимое потока.
 
 === "MJS"
@@ -1917,8 +1917,8 @@ added:
  - v24.14.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), содержащим полное
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), содержащим полное
   содержимое потока.
 
 === "MJS"
@@ -1958,8 +1958,8 @@ added:
 added: v16.7.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка, затем результат `JSON.parse()`.
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка, затем результат `JSON.parse()`.
 
 === "MJS"
 
@@ -2010,8 +2010,8 @@ added: v16.7.0
 added: v16.7.0
 -->
 
-* `stream` [<ReadableStream>](webstreams.md#readablestream) | [<stream.Readable>](stream.md#streamreadable) | [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка.
+* `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка.
 
 === "MJS"
 

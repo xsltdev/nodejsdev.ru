@@ -373,7 +373,7 @@ fs.readFileSync === readFileSync;
 
 ## `import.meta`
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Мета-свойство `import.meta` — это `Object` со следующими свойствами. Оно поддерживается только в ES-модулях.
 
@@ -397,7 +397,7 @@ changes:
     | --- | --- |
     | v24.0.0, v22.16.0 | Это свойство больше не является экспериментальным. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя каталога текущего модуля.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя каталога текущего модуля.
 
 Это то же самое, что [`path.dirname()`][`path.dirname()`] от [`import.meta.filename`][`import.meta.filename`].
 
@@ -423,7 +423,7 @@ changes:
     | --- | --- |
     | v24.0.0, v22.16.0 | Это свойство больше не является экспериментальным. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Полный абсолютный путь и имя файла текущего модуля с разрешёнными
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Полный абсолютный путь и имя файла текущего модуля с разрешёнными
   символическими ссылками.
 
 Это то же самое, что [`url.fileURLToPath()`][`url.fileURLToPath()`] от [`import.meta.url`][`import.meta.url`].
@@ -433,7 +433,7 @@ changes:
 
 ### `import.meta.url` {: #importmetaurl}
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный `file:` URL модуля.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный `file:` URL модуля.
 
 Определено так же, как в браузерах: URL текущего файла модуля.
 
@@ -454,7 +454,7 @@ added:
 
 > Stability: 1.0 - Early development
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если текущий модуль — точка входа процесса; иначе `false`.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если текущий модуль — точка входа процесса; иначе `false`.
 
 Эквивалентно `require.main === module` в CommonJS.
 
@@ -516,8 +516,8 @@ changes:
 
 > Stability: 1.2 - Release candidate
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор модуля для разрешения относительно текущего модуля.
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютная строка URL, в которую разрешился бы спецификатор.
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор модуля для разрешения относительно текущего модуля.
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютная строка URL, в которую разрешился бы спецификатор.
 
 [`import.meta.resolve`][`import.meta.resolve`] — функция разрешения относительно модуля с областью действия
 на каждый модуль; возвращает строку URL.
@@ -544,7 +544,7 @@ import.meta.resolve('./dep.js');
 При использовании флага `--experimental-import-meta-resolve` функция принимает
 второй аргумент:
 
-* `parent` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Необязательный абсолютный URL родительского модуля, от которого разрешать.
+* `parent` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Необязательный абсолютный URL родительского модуля, от которого разрешать.
   **По умолчанию:** `import.meta.url`
 
 ## Взаимодействие с CommonJS

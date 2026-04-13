@@ -35,7 +35,7 @@ description: Модуль node:os — методы и свойства для с
 added: v0.7.8
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Маркер конца строки для текущей ОС.
 
@@ -50,7 +50,7 @@ added:
   - v18.14.0
 -->
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Оценка рекомендуемой степени параллелизма для программы.
 Всегда возвращает значение больше нуля.
@@ -63,7 +63,7 @@ added:
 added: v0.5.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Архитектура ЦП, под которую скомпилирован бинарник Node.js. Возможные значения:
 `'arm'`, `'arm64'`, `'ia32'`, `'loong64'`,
@@ -77,7 +77,7 @@ added: v0.5.0
 added: v6.3.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Часто используемые константы ОС: коды ошибок, сигналы процесса и т.д. Перечень —
 в разделе [Константы ОС](#os-constants).
@@ -95,14 +95,14 @@ added: v0.3.3
 
 Свойства каждого объекта:
 
-* `model` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `speed` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (в МГц)
-* `times` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `user` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в пользовательском режиме
-  * `nice` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме nice
-  * `sys` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме ядра
-  * `idle` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в простое
-  * `irq` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды обработки IRQ
+* `model` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `speed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (в МГц)
+* `times` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `user` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в пользовательском режиме
+  * `nice` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме nice
+  * `sys` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме ядра
+  * `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в простое
+  * `irq` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды обработки IRQ
 
 <!-- eslint-disable @stylistic/js/semi -->
 
@@ -168,7 +168,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Путь к нулевому устройству для текущей платформы.
 
@@ -181,7 +181,7 @@ added:
 added: v0.9.4
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с порядком байт ЦП, под которое скомпилирован бинарник Node.js.
 
@@ -193,7 +193,7 @@ added: v0.9.4
 added: v0.3.3
 -->
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Объём свободной оперативной памяти в байтах (целое число).
 
@@ -203,9 +203,9 @@ added: v0.3.3
 added: v10.10.0
 -->
 
-* `pid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для запроса приоритета планирования.
+* `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для запроса приоритета планирования.
   **По умолчанию:** `0`.
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Приоритет планирования процесса `pid`. Если `pid` не передан или равен `0`, возвращается приоритет текущего процесса.
 
@@ -215,7 +215,7 @@ added: v10.10.0
 added: v2.3.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с путём домашнего каталога текущего пользователя.
 
@@ -230,7 +230,7 @@ added: v2.3.0
 added: v0.3.3
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя хоста ОС в виде строки.
 
@@ -256,7 +256,7 @@ added:
   - v16.18.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Тип машины строкой, например `arm`, `arm64`, `aarch64`,
 `mips`, `mips64`, `ppc64`, `ppc64le`, `s390x`, `i386`, `i686`, `x86_64`.
@@ -286,7 +286,7 @@ changes:
     | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
     | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с сетевыми интерфейсами, которым назначен адрес.
 
@@ -294,13 +294,13 @@ changes:
 
 Свойства объекта адреса:
 
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) назначенный IPv4 или IPv6
-* `netmask` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) маска сети IPv4 или IPv6
-* `family` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `IPv4` или `IPv6`
-* `mac` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес интерфейса
-* `internal` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для loopback и аналогичных недоступных извне интерфейсов; иначе `false`
-* `scopeid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
-* `cidr` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) назначенный IPv4 или IPv6
+* `netmask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) маска сети IPv4 или IPv6
+* `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `IPv4` или `IPv6`
+* `mac` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес интерфейса
+* `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для loopback и аналогичных недоступных извне интерфейсов; иначе `false`
+* `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
+* `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
 
 <!-- eslint-skip -->
 
@@ -353,7 +353,7 @@ changes:
 added: v0.5.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с платформой ОС, под которую скомпилирован бинарник Node.js. Значение задаётся при сборке.
 Возможные значения: `'aix'`, `'darwin'`, `'freebsd'`,`'linux'`,
@@ -370,7 +370,7 @@ added: v0.5.0
 added: v0.3.3
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с версией выпуска ОС.
 
@@ -383,9 +383,9 @@ added: v0.3.3
 added: v10.10.0
 -->
 
-* `pid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для установки приоритета.
+* `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для установки приоритета.
   **По умолчанию:** `0`.
-* `priority` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Приоритет планирования.
+* `priority` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Приоритет планирования.
 
 Пытается задать приоритет планирования процесса `pid`. Если `pid` не передан или равен `0`, используется текущий процесс.
 
@@ -412,7 +412,7 @@ changes:
     | --- | --- |
     | v2.0.0 | Эта функция теперь является кроссплатформенной и больше не возвращает путь с косой чертой на конце ни на одной платформе. |
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог временных файлов по умолчанию для ОС.
 
@@ -428,7 +428,7 @@ changes:
 added: v0.3.3
 -->
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Общий объём оперативной памяти в байтах (целое число).
 
@@ -438,7 +438,7 @@ added: v0.3.3
 added: v0.3.3
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя ОС, как в [`uname(3)`][`uname(3)`]. Например `'Linux'`, `'Darwin'` на macOS, `'Windows_NT'` в Windows.
 
@@ -463,7 +463,7 @@ changes:
     | --- | --- |
     | v10.0.0 | Результат этой функции больше не содержит дробный компонент в Windows. |
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Время работы системы в секундах.
 
@@ -473,10 +473,10 @@ changes:
 added: v6.0.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для строк результата.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для строк результата.
     При `'buffer'` поля `username`, `shell` и `homedir` — экземпляры `Buffer`. **По умолчанию:** `'utf8'`.
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Сведения о текущем эффективном пользователе. В POSIX обычно подмножество файла паролей: `username`, `uid`, `gid`, `shell`, `homedir`. В Windows `uid` и `gid` равны `-1`, `shell` — `null`.
 
@@ -492,7 +492,7 @@ added:
  - v12.17.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с версией ядра.
 

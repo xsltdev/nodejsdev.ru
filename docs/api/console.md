@@ -141,19 +141,19 @@ changes:
     | v10.0.0 | Конструктор Console теперь поддерживает аргумент options, а также появилась опция colorMode. |
     | v8.0.0 | Была введена опция `ignoreErrors`. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `stdout` [<stream.Writable>](stream.md#streamwritable)
-  * `stderr` [<stream.Writable>](stream.md#streamwritable)
-  * `ignoreErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Игнорировать ошибки записи в базовые
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `stdout` [`<stream.Writable>`](stream.md#streamwritable)
+  * `stderr` [`<stream.Writable>`](stream.md#streamwritable)
+  * `ignoreErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Игнорировать ошибки записи в базовые
     потоки. **По умолчанию:** `true`.
-  * `colorMode` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Поддержка цвета для этого экземпляра `Console`.
+  * `colorMode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Поддержка цвета для этого экземпляра `Console`.
     `true` — раскраска при инспекции значений.
     `false` — без раскраски.
     `'auto'` — зависит от `isTTY` и результата `getColorDepth()` для соответствующего потока.
     Нельзя использовать вместе с `inspectOptions.colors`.
     **По умолчанию:** `'auto'`.
-  * `inspectOptions` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Map>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) Параметры для [`util.inspect()`][`util.inspect()`]. Может быть объектом опций или, если для stdout и stderr нужны разные опции, `Map` от потоков к опциям.
-  * `groupIndentation` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Отступ для групп.
+  * `inspectOptions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Map>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) Параметры для [`util.inspect()`][`util.inspect()`]. Может быть объектом опций или, если для stdout и stderr нужны разные опции, `Map` от потоков к опциям.
+  * `groupIndentation` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Отступ для групп.
     **По умолчанию:** `2`.
 
 Создаёт новый `Console` с одним или двумя потоками записи. `stdout` — для логов и информации. `stderr` — для предупреждений и ошибок. Если `stderr` не задан, для ошибок используется `stdout`.
@@ -218,8 +218,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Реализация теперь соответствует спецификации и больше не выдает ошибок. |
 
-* `value` {any} Проверяемое значение на истинность.
-* `...message` {any} Остальные аргументы — текст сообщения.
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Проверяемое значение на истинность.
+* `...message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Остальные аргументы — текст сообщения.
 
 `console.assert()` выводит сообщение, если `value` [ложно][falsy] или не передано. Выполнение не прерывается. Вывод всегда начинается с `"Assertion failed"`. Если передан `message`, он форматируется через [`util.format()`][`util.format()`].
 
@@ -251,7 +251,7 @@ added: v8.3.0
 added: v8.3.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
 
 Ведёт внутренний счётчик для `label` и выводит в `stdout`, сколько раз `console.count()` вызывали с этим `label`.
 
@@ -285,7 +285,7 @@ undefined
 added: v8.3.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
 
 Сбрасывает внутренний счётчик для `label`.
 
@@ -321,8 +321,8 @@ changes:
     | --- | --- |
     | v8.10.0 | «`console.debug` теперь является псевдонимом `console.log`». |
 
-* `data` {any}
-* `...args` {any}
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.debug()` — псевдоним [`console.log()`][`console.log()`].
 
@@ -332,11 +332,11 @@ changes:
 added: v0.1.101
 -->
 
-* `obj` {any}
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `showHidden` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, показываются ненумеруемые и символьные свойства. **По умолчанию:** `false`.
-  * `depth` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Глубина рекурсии для [`util.inspect()`][`util.inspect()`] при форматировании. Для бесконечной глубины передайте `null`. **По умолчанию:** `2`.
-  * `colors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, вывод с ANSI-цветами. Настройка цветов — см. [настройку цветов `util.inspect()`][customizing `util.inspect()` colors]. **По умолчанию:** `false`.
+* `obj` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `showHidden` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, показываются ненумеруемые и символьные свойства. **По умолчанию:** `false`.
+  * `depth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Глубина рекурсии для [`util.inspect()`][`util.inspect()`] при форматировании. Для бесконечной глубины передайте `null`. **По умолчанию:** `2`.
+  * `colors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, вывод с ANSI-цветами. Настройка цветов — см. [настройку цветов `util.inspect()`][customizing `util.inspect()` colors]. **По умолчанию:** `false`.
 
 Вызывает [`util.inspect()`][`util.inspect()`] для `obj` и пишет строку в `stdout`.
 Пользовательская функция `inspect()` на `obj` обходится.
@@ -359,7 +359,7 @@ changes:
     | --- | --- |
     | v9.3.0 | «`console.dirxml` теперь вызывает `console.log` для получения своих аргументов." |
 
-* `...data` {any}
+* `...data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Вызывает `console.log()` с теми же аргументами.
 XML-форматирования не производится.
@@ -370,8 +370,8 @@ XML-форматирования не производится.
 added: v0.1.100
 -->
 
-* `data` {any}
-* `...args` {any}
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stderr` с переводом строки. Можно передать несколько аргументов: первый — основное сообщение, остальные — подстановки в стиле printf(3) (все аргументы передаются в [`util.format()`][`util.format()`]).
 
@@ -391,7 +391,7 @@ console.error('error', code);
 added: v8.5.0
 -->
 
-* `...label` {any}
+* `...label` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Увеличивает отступ последующих строк на `groupIndentation` пробелов.
 
@@ -419,8 +419,8 @@ added: v8.5.0
 added: v0.1.100
 -->
 
-* `data` {any}
-* `...args` {any}
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.info()` — псевдоним [`console.log()`][`console.log()`].
 
@@ -430,8 +430,8 @@ added: v0.1.100
 added: v0.1.100
 -->
 
-* `data` {any}
-* `...args` {any}
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stdout` с переводом строки. Несколько аргументов: первый — сообщение, остальные — подстановки как в printf(3) (через [`util.format()`][`util.format()`]).
 
@@ -451,7 +451,7 @@ console.log('count:', count);
 added: v10.0.0
 -->
 
-* `tabularData` {any}
+* `tabularData` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `properties` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативный набор свойств для столбцов.
 
 Пытается построить таблицу: столбцы из свойств `tabularData` (или из `properties`), строки — элементы `tabularData`, и вывести её. Если данные не удаётся разобрать как табличные, логируется аргумент как есть.
@@ -487,7 +487,7 @@ console.table([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }], ['a']);
 added: v0.1.104
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
 
 Запускает таймер для измерения длительности операции. Таймеры различаются по `label`. Используйте тот же `label` в [`console.timeEnd()`][`console.timeEnd()`], чтобы остановить таймер и вывести прошедшее время в подходящих единицах в `stdout`. Например, при 3869 мс `console.timeEnd()` покажет "3.869s".
 
@@ -514,7 +514,7 @@ changes:
     | v13.0.0 | Прошедшее время отображается в подходящей единице времени. |
     | v6.0.0 | Этот метод больше не поддерживает множественные вызовы, которые не соответствуют отдельным вызовам console.time(); подробности см. ниже. |
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
 
 Останавливает таймер, запущенный [`console.time()`][`console.time()`], и выводит результат в `stdout`:
 
@@ -531,8 +531,8 @@ console.timeEnd('bunch-of-stuff');
 added: v10.7.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
-* `...data` {any}
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
+* `...data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Для таймера, запущенного [`console.time()`][`console.time()`], выводит прошедшее время и остальные аргументы `data` в `stdout`:
 
@@ -551,8 +551,8 @@ console.timeEnd('process');
 added: v0.1.104
 -->
 
-* `message` {any}
-* `...args` {any}
+* `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stderr` строку `'Trace: '`, затем сообщение, отформатированное [`util.format()`][`util.format()`], и стек до текущего места в коде.
 
@@ -578,8 +578,8 @@ console.trace('Show me');
 added: v0.1.100
 -->
 
-* `data` {any}
-* `...args` {any}
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.warn()` — псевдоним [`console.error()`][`console.error()`].
 
@@ -594,7 +594,7 @@ added: v0.1.100
 added: v8.0.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Вне инспектора ничего не отображает. `console.profile()` начинает CPU-профиль JavaScript с необязательной меткой до вызова [`console.profileEnd()`][`console.profileEnd()`]. Профиль затем попадает на панель **Profile** инспектора.
 
@@ -611,7 +611,7 @@ console.profileEnd('MyLabel');
 added: v8.0.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Вне инспектора ничего не отображает. Останавливает текущую сессию CPU-профилирования, если она была начата, и выводит отчёт на панель **Profiles**. Пример — см. [`console.profile()`][`console.profile()`].
 
@@ -623,7 +623,7 @@ added: v8.0.0
 added: v8.0.0
 -->
 
-* `label` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Вне инспектора ничего не отображает. `console.timeStamp()` добавляет событие с меткой на панель **Timeline** инспектора.
 

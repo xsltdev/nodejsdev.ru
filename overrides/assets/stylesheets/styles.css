@@ -151,14 +151,3 @@ h3 {
 	background: url('/heart.svg') left center / 16px 16px
 		no-repeat;
 }
-
-/* auto scroll for code */
-.md-typeset .highlight {
-	max-height: 400px;
-	overflow-y: auto;
-}
-
-.md-typeset .highlighttable {
-	margin-top: 0;
-	margin-bottom: 0;
-}

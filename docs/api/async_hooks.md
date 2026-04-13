@@ -152,14 +152,14 @@ description: Модуль async_hooks — API для отслеживания а
 added: v8.1.0
 -->
 
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука](#hook-callbacks) для регистрации
-    -   `init` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [init](#initasyncid-type-triggerasyncid-resource).
-    -   `before` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [before](#beforeasyncid).
-    -   `after` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [after](#afterasyncid).
-    -   `destroy` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [destroy](#destroyasyncid).
-    -   `promiseResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [promiseResolve](#promiseresolveasyncid).
-    -   `trackPromises` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должен ли хук отслеживать `Promise`. Не может быть `false`, если задан `promiseResolve`. **По умолчанию**: `true`.
--   Возвращает: [<AsyncHook>](#class-asynchook) Экземпляр для отключения и включения хуков
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука](#hook-callbacks) для регистрации
+    -   `init` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [init](#initasyncid-type-triggerasyncid-resource).
+    -   `before` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [before](#beforeasyncid).
+    -   `after` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [after](#afterasyncid).
+    -   `destroy` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [destroy](#destroyasyncid).
+    -   `promiseResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [promiseResolve](#promiseresolveasyncid).
+    -   `trackPromises` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должен ли хук отслеживать `Promise`. Не может быть `false`, если задан `promiseResolve`. **По умолчанию**: `true`.
+-   Возвращает: [`<AsyncHook>`](#class-asynchook) Экземпляр для отключения и включения хуков
 
 Регистрирует функции, вызываемые при различных событиях жизненного цикла каждой асинхронной операции.
 
@@ -253,7 +253,7 @@ const asyncHook = async_hooks.createHook(
 
 ### `asyncHook.enable()`
 
--   Возвращает: [<AsyncHook>](#class-asynchook) Ссылка на `asyncHook`.
+-   Возвращает: [`<AsyncHook>`](#class-asynchook) Ссылка на `asyncHook`.
 
 Включает обратные вызовы для данного экземпляра `AsyncHook`. Если обратные вызовы не заданы, включение не делает ничего.
 
@@ -277,7 +277,7 @@ const asyncHook = async_hooks.createHook(
 
 ### `asyncHook.disable()`
 
--   Возвращает: [<AsyncHook>](#class-asynchook) Ссылка на `asyncHook`.
+-   Возвращает: [`<AsyncHook>`](#class-asynchook) Ссылка на `asyncHook`.
 
 Отключает обратные вызовы данного экземпляра `AsyncHook` в глобальном пуле обратных вызовов `AsyncHook`. После отключения хук не будет вызываться, пока снова не включён.
 
@@ -293,10 +293,10 @@ const asyncHook = async_hooks.createHook(
 
 {: #initasyncid-type-triggerasyncid-resource}
 
--   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса.
--   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного ресурса.
--   `triggerAsyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса, в контексте выполнения которого создан этот ресурс.
--   `resource` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ссылка на ресурс, представляющий асинхронную операцию; должен быть освобождён при _destroy_.
+-   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного ресурса.
+-   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса, в контексте выполнения которого создан этот ресурс.
+-   `resource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ссылка на ресурс, представляющий асинхронную операцию; должен быть освобождён при _destroy_.
 
 Вызывается при конструировании класса, у которого _есть возможность_ инициировать асинхронное событие. Это _не_ означает, что экземпляр обязан вызвать `before`/`after` до `destroy` — только лишь то, что такая возможность существует.
 
@@ -542,7 +542,7 @@ TCPSERVERWRAP(5)
 
 {: #beforeasyncid}
 
--   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Когда инициируется асинхронная операция (например, TCP-сервер принимает соединение) или она завершается (например, запись на диск), вызывается обратный вызов для уведомления. `before` вызывается непосредственно перед его выполнением. `asyncId` — уникальный идентификатор ресурса, который собирается выполнить обратный вызов.
 
@@ -552,7 +552,7 @@ TCPSERVERWRAP(5)
 
 {: #afterasyncid}
 
--   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Вызывается сразу после завершения обратного вызова, указанного в `before`.
 
@@ -562,7 +562,7 @@ TCPSERVERWRAP(5)
 
 {: #destroyasyncid}
 
--   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Вызывается после уничтожения ресурса, соответствующего `asyncId`. Также вызывается асинхронно из API встраивания `emitDestroy()`.
 
@@ -578,7 +578,7 @@ TCPSERVERWRAP(5)
 added: v8.6.0
 -->
 
--   `asyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Вызывается, когда вызывается функция `resolve`, переданная конструктору `Promise` (напрямую или через другие способы разрешения промиса).
 
@@ -611,7 +611,7 @@ added:
  - v12.17.0
 -->
 
--   Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ресурс, представляющий текущее выполнение. Удобно хранить данные в ресурсе.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ресурс, представляющий текущее выполнение. Удобно хранить данные в ресурсе.
 
 Объекты, возвращаемые `executionAsyncResource()`, чаще всего — внутренние handle-объекты Node.js с недокументированным API. Вызовы методов и обращение к полям могут привести к падению приложения; этого следует избегать.
 
@@ -717,7 +717,7 @@ changes:
     | --- | --- |
     | v8.2.0 | Переименован из `currentId`. |
 
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `asyncId` текущего контекста выполнения. Удобно отслеживать, кто что вызывает.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `asyncId` текущего контекста выполнения. Удобно отслеживать, кто что вызывает.
 
 === "MJS"
 
@@ -765,7 +765,7 @@ const server = net
 
 ### `async_hooks.triggerAsyncId()`
 
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID ресурса, из-за которого вызван выполняемый сейчас обратный вызов.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID ресурса, из-за которого вызван выполняемый сейчас обратный вызов.
 
 ```js
 const server = net

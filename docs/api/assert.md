@@ -82,6 +82,8 @@ changes:
     const assert = require('node:assert').strict;
     ```
 
+---
+
 === "MJS"
 
     ```js
@@ -171,18 +173,15 @@ changes:
 
 Устаревший режим утверждения может давать неожиданные результаты, особенно при использовании [`assert.deepEqual()`](#assertdeepequalactual-expected-message):
 
-=== "CJS"
+```js
+// ВНИМАНИЕ: в устаревшем режиме утверждения
+// это не вызывает AssertionError!
+assert.deepEqual(/a/gi, new Date());
+```
 
-    ```js
-    // ВНИМАНИЕ: в устаревшем режиме утверждения это не вызывает AssertionError!
-    assert.deepEqual(/a/gi, new Date());
-    ```
+## Класс: `assert.AssertionError` {#class-assertassertionerror}
 
-## Класс: `assert.AssertionError`
-
-{: #class-assertassertionerror}
-
--   Наследует: [<errors.Error>](errors.md#error)
+-   Наследует: [`<errors.Error>`](errors.md#error)
 
 Указывает на неудачу утверждения. Все ошибки, выбрасываемые модулем `node:assert`, являются экземплярами класса `AssertionError`.
 
@@ -192,23 +191,23 @@ changes:
 added: v0.1.21
 -->
 
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если указано, сообщение об ошибке устанавливается в это значение.
-    -   `actual` {any} Свойство `actual` у экземпляра ошибки.
-    -   `expected` {any} Свойство `expected` у экземпляра ошибки.
-    -   `operator` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Свойство `operator` у экземпляра ошибки.
-    -   `stackStartFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если задано, сгенерированная трассировка стека не включает кадры выше этой функции.
-    -   `diff` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если указано, сообщение об ошибке устанавливается в это значение.
+    -   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Свойство `actual` у экземпляра ошибки.
+    -   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Свойство `expected` у экземпляра ошибки.
+    -   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Свойство `operator` у экземпляра ошибки.
+    -   `stackStartFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если задано, сгенерированная трассировка стека не включает кадры выше этой функции.
+    -   `diff` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
 
 Подкласс [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), указывающий на неудачу утверждения.
 
 Все экземпляры содержат встроенные свойства `Error` (`message` и `name`) и:
 
--   `actual` {any} Устанавливается в аргумент `actual` для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
--   `expected` {any} Устанавливается в ожидаемое значение для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
--   `generatedMessage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Показывает, было ли сообщение сгенерировано автоматически (`true`) или нет.
--   `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение всегда `ERR_ASSERTION`, чтобы указать, что это ошибка утверждения.
--   `operator` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устанавливается в переданное значение оператора.
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Устанавливается в аргумент `actual` для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Устанавливается в ожидаемое значение для таких методов, как [`assert.strictEqual()`](#assertstrictequalactual-expected-message).
+-   `generatedMessage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Показывает, было ли сообщение сгенерировано автоматически (`true`) или нет.
+-   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Значение всегда `ERR_ASSERTION`, чтобы указать, что это ошибка утверждения.
+-   `operator` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Устанавливается в переданное значение оператора.
 
 === "MJS"
 
@@ -289,10 +288,10 @@ changes:
     | --- | --- |
     | v24.9.0 | Добавлена ​​опция «skipPrototype». |
 
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `diff` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
-    -   `strict` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` нестрогие методы ведут себя как соответствующие строгие. По умолчанию `true`.
-    -   `skipPrototype` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` при глубоком сравнении на равенство не сравниваются прототип и конструктор. По умолчанию `false`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `diff` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При значении `'full'` в ошибках утверждения показывается полный diff. По умолчанию `'simple'`. Допустимые значения: `'simple'`, `'full'`.
+    -   `strict` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` нестрогие методы ведут себя как соответствующие строгие. По умолчанию `true`.
+    -   `skipPrototype` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` при глубоком сравнении на равенство не сравниваются прототип и конструктор. По умолчанию `false`.
 
 Создаёт новый экземпляр утверждений. Параметр `diff` задаёт подробность diff в сообщениях об ошибках утверждения.
 
@@ -363,8 +362,8 @@ changes:
     | --- | --- |
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
 
--   `value` {any} Входное значение, проверяемое на истинность.
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входное значение, проверяемое на истинность.
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Псевдоним [`assert.ok()`](#assertokvalue-message).
 
@@ -453,9 +452,9 @@ changes:
     | v6.1.0, v4.5.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. |
     | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 **Режим строгих утверждений (strict assertion mode)**
 
@@ -654,9 +653,9 @@ changes:
     | v6.1.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. |
     | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Проверяет глубокое равенство между параметрами `actual` и `expected`. «Глубокое» равенство означает, что перечислимые собственные свойства вложенных объектов также рекурсивно оцениваются по следующим правилам.
 
@@ -921,9 +920,9 @@ changes:
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
     | v16.0.0 | Этот API больше не является экспериментальным. |
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `regexp` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `regexp` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Ожидается, что строка `string` **не** будет соответствовать регулярному выражению.
 
@@ -965,10 +964,10 @@ changes:
 added: v10.0.0
 -->
 
--   `asyncFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `asyncFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `error` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Ожидает завершения промиса `asyncFn` или, если `asyncFn` - функция, сразу вызывает её и ожидает промис из возвращаемого значения. Затем проверяется, что промис **не** был отклонён.
 
@@ -1054,9 +1053,9 @@ changes:
     | v5.11.0, v4.4.5 | Параметр `message` теперь учитывается. |
     | v4.2.0 | Параметр error теперь может быть стрелочной функцией. |
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `error` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Утверждает, что функция `fn` не выбрасывает ошибку.
 
@@ -1174,9 +1173,9 @@ changes:
     | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». |
     | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 **Режим строгих утверждений (strict assertion mode)**
 
@@ -1232,7 +1231,7 @@ changes:
 added: v0.1.21
 -->
 
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) **По умолчанию:** `'Failed'`
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) **По умолчанию:** `'Failed'`
 
 Выбрасывает [`AssertionError`](#класс-assertassertionerror) с указанным сообщением или сообщением по умолчанию. Если `message` является экземпляром [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), выбрасывается он, а не [`AssertionError`](#класс-assertassertionerror).
 
@@ -1290,7 +1289,7 @@ changes:
     | v10.0.0 | Вместо того, чтобы выдавать исходную ошибку, она теперь заключена в [`AssertionError`](#класс-assertassertionerror), который содержит полную трассировку стека. |
     | v10.0.0 | Значение теперь может быть только «неопределенным» или «нулевым». Раньше все ложные значения обрабатывались так же, как и null, и не выбрасывались. |
 
--   `value` {any}
+-   `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Выбрасывает `value`, если оно не `undefined` и не `null`. Удобно при проверке аргумента `error` в колбэках. В трассировку стека входят все кадры из переданной в `ifError()` ошибки, включая возможные новые кадры для самой `ifError()`.
 
@@ -1372,9 +1371,9 @@ changes:
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
     | v16.0.0 | Этот API больше не является экспериментальным. |
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `regexp` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `regexp` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Ожидается, что строка `string` соответствует регулярному выражению.
 
@@ -1466,9 +1465,9 @@ changes:
     | v6.1.0, v4.5.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. |
     | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 **Строгий режим утверждения**
 
@@ -1604,9 +1603,9 @@ changes:
     | v6.1.0 | Объекты с циклическими ссылками теперь можно использовать в качестве входных данных. |
     | v5.10.1, v4.4.3 | Правильно обрабатывайте массивы, не относящиеся к Uint8Array. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Проверяет глубокое строгое неравенство. Противоположность [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
 
@@ -1660,9 +1659,9 @@ changes:
     | v16.0.0, v14.18.0 | В режиме утверждения устаревших версий статус изменен с «Устарело» на «Устаревшее». |
     | v14.0.0 | NaN теперь считается идентичным, если обе стороны равны NaN. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 **Строгий режим утверждения**
 
@@ -1728,9 +1727,9 @@ changes:
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
     | v10.0.0 | Используемое сравнение изменено со «Строгого равенства» на «Object.is()». |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Проверяет строгое неравенство между параметрами `actual` и `expected`, определяемое [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
 
@@ -1793,8 +1792,8 @@ changes:
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
     | v10.0.0 | `assert.ok()` (без аргументов) теперь будет использовать предопределенное сообщение об ошибке. |
 
--   `value` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Проверяет, является ли `value` истинным (truthy). Эквивалентно `assert.equal(!!value, true, message)`.
 
@@ -1910,10 +1909,10 @@ changes:
 added: v10.0.0
 -->
 
--   `asyncFn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `asyncFn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   `error` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Ожидает промис `asyncFn` или, если `asyncFn` - функция, сразу вызывает её и ожидает завершения возвращённого промиса. Затем проверяется, что промис отклонён.
 
@@ -2049,9 +2048,9 @@ changes:
     | REPLACEME | Сообщение теперь может быть строкой формата или функцией типа printf. |
     | v10.0.0 | Используемое сравнение изменено со «Строгого равенства» на «Object.is()». |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Постфиксные аргументы в стиле `printf`, если `message` используется как строка формата. Если `message` - функция, она вызывается при несовпадении сравнения. Функция получает аргументы `actual` и `expected` и должна вернуть строку, которая будет использована как сообщение об ошибке. Строки формата в стиле `printf` и функции удобны для производительности, когда аргументы пробрасываются дальше. Кроме того, так проще получить аккуратное форматирование.
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Постфиксные аргументы в стиле `printf`, если `message` используется как строка формата. Если `message` - функция, она вызывается при несовпадении сравнения. Функция получает аргументы `actual` и `expected` и должна вернуть строку, которая будет использована как сообщение об ошибке. Строки формата в стиле `printf` и функции удобны для производительности, когда аргументы пробрасываются дальше. Кроме того, так проще получить аккуратное форматирование.
 
 Проверяет строгое равенство между параметрами `actual` и `expected` так, как определяет [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
 
@@ -2190,9 +2189,9 @@ changes:
     | v9.9.0 | Параметр error теперь также может быть объектом. |
     | v4.2.0 | Параметр error теперь может быть стрелочной функцией. |
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `error` [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `error` [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Ожидает, что функция `fn` выбросит ошибку.
 
@@ -2543,9 +2542,9 @@ changes:
     | v25.0.0 | Недопустимые даты теперь считаются равными. |
     | v24.0.0, v22.17.0 | PartialDeepStrictEqual теперь является стабильным. Раньше это был экспериментальный вариант. |
 
--   `actual` {any}
--   `expected` {any}
--   `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `actual` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `expected` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Проверяет частичное глубокое равенство между параметрами `actual` и `expected`. «Глубокое» равенство означает, что перечислимые собственные свойства дочерних объектов рекурсивно оцениваются по правилам ниже. «Частичное» равенство означает, что сравниваются только свойства, присутствующие в параметре `expected`.
 

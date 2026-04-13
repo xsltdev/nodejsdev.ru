@@ -74,7 +74,7 @@ description: Модуль node:dgram предоставляет реализац
 added: v0.1.99
 -->
 
-* Наследует: [<EventEmitter>](events.md#class-eventemitter)
+* Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Инкапсулирует работу с датаграммами.
 
@@ -105,7 +105,7 @@ added: v12.0.0
 added: v0.1.99
 -->
 
-* `exception` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+* `exception` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Событие `'error'` испускается при любой ошибке. Обработчику передаётся один объект `Error`.
 
@@ -146,12 +146,12 @@ changes:
 Событие `'message'` испускается, когда на сокете доступна новая датаграмма.
 Обработчику передаются два аргумента: `msg` и `rinfo`.
 
-* `msg` [<Buffer>](buffer.md#buffer) Сообщение.
-* `rinfo` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения об удалённом адресе.
-  * `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Адрес отправителя.
-  * `family` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство адресов (`'IPv4'` или `'IPv6'`).
-  * `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт отправителя.
-  * `size` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер сообщения.
+* `msg` [`<Buffer>`](buffer.md#buffer) Сообщение.
+* `rinfo` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения об удалённом адресе.
+  * `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Адрес отправителя.
+  * `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство адресов (`'IPv4'` или `'IPv6'`).
+  * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт отправителя.
+  * `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер сообщения.
 
 Если исходный адрес входящего пакета — IPv6 link-local,
 к имени интерфейса добавляется к полю `address`. Например,
@@ -164,8 +164,8 @@ changes:
 added: v0.6.9
 -->
 
-* `multicastAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastInterface` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Указывает ядру присоединиться к multicast-группе по заданным `multicastAddress` и
 `multicastInterface` с опцией сокета `IP_ADD_MEMBERSHIP`. Если аргумент
@@ -221,9 +221,9 @@ added:
  - v12.16.0
 -->
 
-* `sourceAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `groupAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `sourceAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `groupAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastInterface` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Указывает ядру присоединиться к source-specific multicast-каналу по заданным
 `sourceAddress` и `groupAddress`, используя `multicastInterface` и опцию сокета
@@ -240,7 +240,7 @@ added:
 added: v0.1.99
 -->
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект с адресной информацией сокета.
 Для UDP-сокета в объекте будут свойства `address`, `family` и `port`.
@@ -267,9 +267,9 @@ changes:
     | --- | --- |
     | v0.9.1 | Метод был изменен на модель асинхронного выполнения. Устаревший код необходимо будет изменить, чтобы передать функцию обратного вызова в вызов метода. |
 
-* `port` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) без параметров. Вызывается по завершении привязки.
+* `port` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) без параметров. Вызывается по завершении привязки.
 
 Для UDP-сокета заставляет `dgram.Socket` принимать датаграммы
 на указанном `port` и необязательном `address`. Если `port` не
@@ -344,12 +344,12 @@ changes:
 added: v0.11.14
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Поддерживает свойства:
-  * `port` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-  * `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `exclusive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-  * `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Поддерживает свойства:
+  * `port` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `exclusive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Для UDP-сокета заставляет `dgram.Socket` принимать датаграммы
 на указанном `port` и необязательном `address`, переданных как свойства
@@ -392,7 +392,7 @@ socket.bind({
 added: v0.1.99
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после закрытия сокета.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после закрытия сокета.
 
 Закрывает нижележащий сокет и прекращает приём данных. Если передан `callback`,
 он добавляется как обработчик события [`'close'`][`'close'`].
@@ -424,9 +424,9 @@ changes:
 added: v12.0.0
 -->
 
-* `port` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при успешном соединении или при ошибке.
+* `port` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при успешном соединении или при ошибке.
 
 Связывает `dgram.Socket` с удалённым адресом и портом. Каждое сообщение,
 отправляемое этим дескриптором, уходит на этот адрес. Сокет принимает сообщения
@@ -453,8 +453,8 @@ added: v12.0.0
 added: v0.6.9
 -->
 
-* `multicastAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastInterface` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Указывает ядру покинуть multicast-группу по `multicastAddress` с опцией сокета
 `IP_DROP_MEMBERSHIP`. Ядро вызывает это автоматически при закрытии сокета или
@@ -470,9 +470,9 @@ added:
  - v12.16.0
 -->
 
-* `sourceAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `groupAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `sourceAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `groupAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastInterface` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Указывает ядру покинуть source-specific multicast-канал по заданным
 `sourceAddress` и `groupAddress` с опцией `IP_DROP_SOURCE_MEMBERSHIP`.
@@ -486,7 +486,7 @@ added:
 added: v8.7.0
 -->
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера приёма сокета `SO_RCVBUF` в байтах.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера приёма сокета `SO_RCVBUF` в байтах.
 
 Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`] на несвязанном сокете.
 
@@ -496,7 +496,7 @@ added: v8.7.0
 added: v8.7.0
 -->
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера отправки сокета `SO_SNDBUF` в байтах.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера отправки сокета `SO_SNDBUF` в байтах.
 
 Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`] на несвязанном сокете.
 
@@ -508,7 +508,7 @@ added:
   - v16.19.0
 -->
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в очереди на отправку.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в очереди на отправку.
 
 ### `socket.getSendQueueCount()`
 
@@ -518,7 +518,7 @@ added:
   - v16.19.0
 -->
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число запросов на отправку в очереди, ожидающих обработки.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число запросов на отправку в очереди, ожидающих обработки.
 
 ### `socket.ref()`
 
@@ -526,7 +526,7 @@ added:
 added: v0.9.1
 -->
 
-* Возвращает: [<dgram.Socket>](dgram.md#class-dgramsocket)
+* Возвращает: [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 По умолчанию привязка сокета удерживает процесс Node.js от завершения, пока сокет открыт.
 `socket.unref()` исключает сокет из подсчёта ссылок, удерживающего процесс.
@@ -542,7 +542,7 @@ added: v0.9.1
 added: v12.0.0
 -->
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект с `address`, `family` и `port` удалённого узла.
 Если сокет не подключён, выбрасывается [`ERR_SOCKET_DGRAM_NOT_CONNECTED`][`ERR_SOCKET_DGRAM_NOT_CONNECTED`].
@@ -594,12 +594,12 @@ changes:
     | v6.0.0 | В случае успеха обратный вызов теперь будет вызываться с аргументом error, равным null, а не 0. |
     | v5.7.0 | Параметр `msg` теперь может быть массивом. Кроме того, параметры offset и length теперь являются необязательными. |
 
-* `msg` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Отправляемое сообщение.
-* `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в буфере, с которого начинается сообщение.
-* `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в сообщении.
-* `port` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт назначения.
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста или IP-адрес назначения.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после отправки сообщения.
+* `msg` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Отправляемое сообщение.
+* `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в буфере, с которого начинается сообщение.
+* `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в сообщении.
+* `port` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт назначения.
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста или IP-адрес назначения.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после отправки сообщения.
 
 Отправляет датаграмму через сокет.
 Для сокетов без соединения нужно указать `port` и `address` назначения.
@@ -753,7 +753,7 @@ changes:
 added: v0.6.9
 -->
 
-* `flag` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `flag` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Устанавливает или сбрасывает опцию сокета `SO_BROADCAST`. При `true` UDP-пакеты
 можно отправлять на широковещательный адрес локального интерфейса.
@@ -766,7 +766,7 @@ added: v0.6.9
 added: v8.6.0
 -->
 
-* `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `multicastInterface` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 _Все упоминания scope здесь относятся к [IPv6 Zone Indexes][IPv6 Zone Indexes], определённым в [RFC 4007][RFC 4007].
 В строковой форме IP с индексом области записывается как `'IP%scope'`, где scope — имя интерфейса или его номер._
@@ -836,7 +836,7 @@ socket.bind(1234, () => {
 added: v0.3.8
 -->
 
-* `flag` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `flag` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Устанавливает или сбрасывает опцию `IP_MULTICAST_LOOP`. При `true` multicast-пакеты
 также принимаются на локальном интерфейсе.
@@ -849,7 +849,7 @@ added: v0.3.8
 added: v0.3.8
 -->
 
-* `ttl` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `ttl` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт опцию `IP_MULTICAST_TTL`. Хотя TTL обычно расшифровывают как «Time to Live»,
 здесь это число IP-прыжков для multicast-трафика. Каждый маршрутизатор уменьшает TTL;
@@ -865,7 +865,7 @@ added: v0.3.8
 added: v8.7.0
 -->
 
-* `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт опцию `SO_RCVBUF` — максимальный буфер приёма сокета в байтах.
 
@@ -877,7 +877,7 @@ added: v8.7.0
 added: v8.7.0
 -->
 
-* `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт опцию `SO_SNDBUF` — максимальный буфер отправки сокета в байтах.
 
@@ -889,7 +889,7 @@ added: v8.7.0
 added: v0.1.101
 -->
 
-* `ttl` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `ttl` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт опцию `IP_TTL`. Здесь это число IP-прыжков для пакета; маршрутизаторы уменьшают TTL;
  при 0 пакет не пересылается. Изменение TTL обычно используют для зондов или multicast.
@@ -904,7 +904,7 @@ added: v0.1.101
 added: v0.9.1
 -->
 
-* Возвращает: [<dgram.Socket>](dgram.md#class-dgramsocket)
+* Возвращает: [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 По умолчанию привязка сокета удерживает процесс Node.js от завершения, пока сокет открыт.
 `socket.unref()` исключает сокет из подсчёта ссылок, и процесс может завершиться, даже если сокет ещё слушает.
@@ -952,30 +952,30 @@ changes:
     | v8.7.0 | Параметры RecvBufferSize и sendBufferSize теперь поддерживаются. |
     | v8.6.0 | Поддерживается опция поиска. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство сокета: `'udp4'` или `'udp6'`.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство сокета: `'udp4'` или `'udp6'`.
     Обязательно.
-  * `reuseAddr` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
+  * `reuseAddr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
     адрес, даже если другой процесс уже привязал сокет, но
     данные получит только один сокет.
     **По умолчанию:** `false`.
-  * `reusePort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
+  * `reusePort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
     порт, даже если другой процесс уже привязал сокет. Входящие
     датаграммы распределяются между слушающими сокетами. Опция доступна
     только на части платформ: Linux 3.9+, DragonFlyBSD 3.6+, FreeBSD 12.0+,
     Solaris 11.4, AIX 7.2.5+. На неподдерживаемых платформах при привязке возникает ошибка.
     **По умолчанию:** `false`.
-  * `ipv6Only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `ipv6Only: true` отключается dual-stack,
+  * `ipv6Only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `ipv6Only: true` отключается dual-stack,
     т.е. привязка к `::` не привязывает `0.0.0.0`. **По умолчанию:** `false`.
-  * `recvBufferSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_RCVBUF`.
-  * `sendBufferSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_SNDBUF`.
-  * `lookup` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`][`dns.lookup()`].
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Сигнал для закрытия сокета.
-  * `receiveBlockList` [<net.BlockList>](net.md) Отбрасывает входящие датаграммы с заданных IP, диапазонов или подсетей. Не
+  * `recvBufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_RCVBUF`.
+  * `sendBufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_SNDBUF`.
+  * `lookup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`][`dns.lookup()`].
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Сигнал для закрытия сокета.
+  * `receiveBlockList` [`<net.BlockList>`](net.md) Отбрасывает входящие датаграммы с заданных IP, диапазонов или подсетей. Не
     работает за обратным прокси, NAT и т.п.: проверяется адрес прокси или NAT, а не клиента.
-  * `sendBlockList` [<net.BlockList>](net.md) Блокирует исходящую отправку на заданные IP, диапазоны или подсети.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик событий `'message'`. Необязательно.
-* Возвращает: [<dgram.Socket>](dgram.md#class-dgramsocket)
+  * `sendBlockList` [`<net.BlockList>`](net.md) Блокирует исходящую отправку на заданные IP, диапазоны или подсети.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик событий `'message'`. Необязательно.
+* Возвращает: [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 Создаёт объект `dgram.Socket`. После создания вызов [`socket.bind()`][`socket.bind()`] запускает приём датаграмм.
 Если в [`socket.bind()`][`socket.bind()`] не переданы `address` и `port`, сокет привязывается к адресу «все интерфейсы»
@@ -1002,9 +1002,9 @@ controller.abort();
 added: v0.1.99
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'udp4'` или `'udp6'`.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик событий `'message'`.
-* Возвращает: [<dgram.Socket>](dgram.md#class-dgramsocket)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'udp4'` или `'udp6'`.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик событий `'message'`.
+* Возвращает: [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 Создаёт `dgram.Socket` указанного `type`.
 

@@ -236,7 +236,7 @@ cluster.fork().on('disconnect', () => {
 ### Событие: `message`
 
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `handle` undefined | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `handle` undefined | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Аналогично событию `'message'` из `cluster`, но специфично для этого рабочего.
 
@@ -349,7 +349,7 @@ cluster.fork().on('online', () => {
 
 ### `worker.disconnect()`
 
--   Возвращает: [<cluster.Worker>](cluster.md) Ссылка на `worker`.
+-   Возвращает: [`<cluster.Worker>`](cluster.md) Ссылка на `worker`.
 
 В рабочем эта функция закроет все серверы, дождется события `'close'` на этих серверах, а затем отключит IPC-канал.
 
@@ -570,7 +570,7 @@ if (cluster.isPrimary) {
 
 ## Событие: `'disconnect'`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 
 Выдается после отключения IPC-канала рабочего. Это может произойти, когда рабочий изящно завершает работу, его убивают или отключают вручную (например, с помощью `worker.disconnect()`).
 
@@ -586,7 +586,7 @@ cluster.on('disconnect', (worker) => {
 
 ## Событие: `'exit'`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 -   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если он вышел нормально.
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала (например, `'SIGHUP'`), который вызвал завершение процесса.
 
@@ -611,7 +611,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 ## Событие: `fork`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 
 При форке нового рабочего модуль кластера будет выдавать событие `'fork'`. Это событие можно использовать для регистрации активности рабочего и создания пользовательского таймаута.
 
@@ -637,7 +637,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 ## Событие: `listening`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 -   `адрес` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 После вызова функции `listen()` от рабочего, когда событие `'listening'` испускается на сервере, событие `'listening'` также будет испущено на `cluster` в первичном.
@@ -663,9 +663,9 @@ cluster.on('listening', (worker, address) => {
 
 ## Событие: `message`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 -   `сообщение` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `handle` undefined | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `handle` undefined | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Выдается, когда основной кластер получает сообщение от любого рабочего.
 
@@ -675,7 +675,7 @@ cluster.on('listening', (worker, address) => {
 
 ## Событие: `online`
 
--   `worker` [<cluster.Worker>](cluster.md)
+-   `worker` [`<cluster.Worker>`](cluster.md)
 
 После `fork()` нового рабочего тот должен прислать сигнал готовности. Когда основной процесс получает это сообщение, испускается событие `'online'`. Событие `'fork'` возникает, когда основной вызывает `fork()`, а `'online'` — когда рабочий процесс действительно запущен и готов.
 
@@ -718,7 +718,7 @@ cluster.on('online', (worker) => {
 ## `cluster.fork([env])`
 
 -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары ключ/значение для добавления в окружение рабочего процесса.
--   Возвращает: [<cluster.Worker>](cluster.md)
+-   Возвращает: [`<cluster.Worker>`](cluster.md)
 
 Порождает новый рабочий процесс.
 
@@ -770,7 +770,7 @@ cluster.on('online', (worker) => {
     -   `stdio` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Настраивает stdio вилочных процессов. Поскольку для работы кластерного модуля используется IPC, эта конфигурация должна содержать запись `'ipc'`. Когда эта опция указана, она отменяет `silent`.
     -   `uid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает идентификатор пользователя процесса. (См. setuid(2).)
     -   `gid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает групповую идентификацию процесса. (См. setgid(2).)
-    -   `inspectPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Задает инспекторский порт рабочего. Это может быть число или функция, которая не принимает аргументов и возвращает число. По умолчанию каждый рабочий получает свой собственный порт, увеличивающийся от `process.debugPort` первичного.
+    -   `inspectPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Задает инспекторский порт рабочего. Это может быть число или функция, которая не принимает аргументов и возвращает число. По умолчанию каждый рабочий получает свой собственный порт, увеличивающийся от `process.debugPort` первичного.
     -   `windowsHide` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Скрыть консольное окно вилочных процессов, которое обычно создается в системах Windows. **По умолчанию:** `false`.
 
 После вызова [`.setupPrimary()`](#clustersetupprimarysettings) (или [`.fork()`](#clusterforkenv)) этот объект настроек будет содержать настройки, включая значения по умолчанию.

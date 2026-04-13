@@ -246,11 +246,11 @@ serverDomain.run(() => {
 
 ## `domain.create()`
 
-* Returns: [<Domain>](domain.md)
+* Returns: [`<Domain>`](domain.md)
 
 ## Класс: `Domain`
 
-* Extends: [<EventEmitter>](events.md#class-eventemitter)
+* Extends: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `Domain` инкапсулирует маршрутизацию ошибок и необработанных исключений к активному объекту `Domain`.
 
@@ -258,7 +258,7 @@ serverDomain.run(() => {
 
 ### `domain.members`
 
-* Тип: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
+* Тип: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 Массив эмиттеров, явно добавленных в домен.
 
@@ -277,7 +277,7 @@ changes:
     | --- | --- |
     | v9.3.0 | Больше не принимает объекты таймера. |
 
-* `emitter` [<EventEmitter>](events.md#class-eventemitter) эмиттер, добавляемый в домен
+* `emitter` [`<EventEmitter>`](events.md#class-eventemitter) эмиттер, добавляемый в домен
 
 Явно добавляет эмиттер в домен. Если обработчики эмиттера выбрасывают ошибку или эмиттер генерирует `'error'`,
 это маршрутизируется в `'error'` домена, как при неявном связывании.
@@ -286,8 +286,8 @@ changes:
 
 ### `domain.bind(callback)`
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова
-* Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обёрнутая функция
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова
+* Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обёрнутая функция
 
 Возвращаемая функция оборачивает переданный колбэк. При её вызове выброшенные ошибки направляются
 в событие `'error'` домена.
@@ -331,8 +331,8 @@ d.on('error', (er) => {
 
 ### `domain.intercept(callback)`
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова
-* Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) перехватывающая функция
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова
+* Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) перехватывающая функция
 
 Почти то же, что [`domain.bind(callback)`][`domain.bind(callback)`], но помимо перехвата выброшенных ошибок перехватывает
 объекты [`Error`][`Error`], переданные первым аргументом в функцию.
@@ -359,14 +359,14 @@ d.on('error', (er) => {
 
 ### `domain.remove(emitter)`
 
-* `emitter` [<EventEmitter>](events.md#class-eventemitter) эмиттер, удаляемый из домена
+* `emitter` [`<EventEmitter>`](events.md#class-eventemitter) эмиттер, удаляемый из домена
 
 Противоположность [`domain.add(emitter)`][`domain.add(emitter)`]. Снимает обработку домена с указанного эмиттера.
 
 ### `domain.run(fn[, ...args])`
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* `...args` {any}
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Выполняет переданную функцию в контексте домена, неявно связывая все эмиттеры событий, таймеры и низкоуровневые
 запросы, созданные в этом контексте. Опционально в функцию передаются аргументы.

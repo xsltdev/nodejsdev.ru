@@ -13,7 +13,7 @@ added: v0.3.7
 
 ## Объект `Module`
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Общие вспомогательные методы при работе с экземплярами
 `Module` и переменной [`module`][`module`], часто встречающейся в модулях [CommonJS][CommonJS]. Доступ
@@ -68,7 +68,7 @@ changes:
 added: v12.2.0
 -->
 
-* `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Имя файла для построения функции
+* `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Имя файла для построения функции
   `require`. Должно быть объектом file URL, строкой file URL или абсолютным путём.
 * Возвращает: {require} Функция `require`
 
@@ -92,13 +92,13 @@ added:
 
 > Стабильность: 1.1 — активная разработка
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Спецификатор модуля, для которого нужно получить `package.json`.
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Спецификатор модуля, для которого нужно получить `package.json`.
   При _голом спецификаторе_ возвращается `package.json` в корне пакета. При _относительном_ или _абсолютном_
   спецификаторе — ближайший родительский `package.json`.
-* `base` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Абсолютное расположение (`file:` URL или путь ФС) содержащего
+* `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Абсолютное расположение (`file:` URL или путь ФС) содержащего
   модуля. В CJS используйте `__filename` (не `__dirname`!); в ESM — `import.meta.url`.
   Не нужно передавать, если `specifier` — абсолютный спецификатор.
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Путь, если `package.json` найден. Для пакета — корневой
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Путь, если `package.json` найден. Для пакета — корневой
   `package.json`; для относительного или неразрешённого — ближайший родительский `package.json` к `specifier`.
 
 > **Ограничение**: не используйте это для определения формата модуля. На формат влияет много факторов;
@@ -179,8 +179,8 @@ added:
   - v16.17.0
 -->
 
-* `moduleName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя модуля
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль встроенный, иначе `false`
+* `moduleName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя модуля
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль встроенный, иначе `false`
 
 === "MJS"
 
@@ -226,14 +226,14 @@ changes:
 
 > Стабильность: 0 — устарело: используйте [`module.registerHooks()`][`module.registerHooks()`].
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Модуль с хуками настройки; обычно та же строка, что для
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Модуль с хуками настройки; обычно та же строка, что для
   `import()`, но относительные спецификаторы разрешаются относительно `parentURL`.
-* `parentURL` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`, например
+* `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`, например
   `import.meta.url`. **По умолчанию:** `'data:'`
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `parentURL` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
     если `parentURL` передан вторым аргументом. **По умолчанию:** `'data:'`
-  * `data` {any} Произвольное клонируемое значение для хука [`initialize`][`initialize`].
+  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`][`initialize`].
   * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
     хука `initialize`.
 
@@ -264,11 +264,11 @@ changes:
 
 > Стабильность: 1.2 — кандидат в релиз
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `load` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined См. [хук load][load hook]. **По умолчанию:** `undefined`.
-  * `resolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined См. [хук resolve][resolve hook]. **По умолчанию:** `undefined`.
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект со свойством:
-  * `deregister()` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Снимает зарегистрированные хуки; иначе хуки живут до
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `load` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined См. [хук load][load hook]. **По умолчанию:** `undefined`.
+  * `resolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined См. [хук resolve][resolve hook]. **По умолчанию:** `undefined`.
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект со свойством:
+  * `deregister()` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Снимает зарегистрированные хуки; иначе хуки живут до
     завершения процесса.
 
 Регистрирует [хуки][hooks], меняющие разрешение и загрузку модулей.
@@ -295,12 +295,12 @@ changes:
 
 > Стабильность: 1.2 — кандидат в релиз
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный код, из которого нужно убрать аннотации типов.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'strip'`. Допустимые значения:
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный код, из которого нужно убрать аннотации типов.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'strip'`. Допустимые значения:
     * `'strip'` — только снятие аннотаций без преобразования конструкций TypeScript.
-  * `sourceUrl` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL исходника для source map.
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код без аннотаций типов.
+  * `sourceUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL исходника для source map.
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код без аннотаций типов.
 
 `module.stripTypeScriptTypes()` удаляет аннотации типов из кода TypeScript. Его
 можно вызывать перед запуском через `vm.runInContext()` или `vm.compileFunction()`.
@@ -556,20 +556,20 @@ changes:
     | v25.0.0, v24.12.0 | Добавьте опцию «portable», чтобы включить переносимый кеш компиляции. |
     | v25.0.0, v24.12.0 | Переименуйте невыпущенную опцию «path» в «directory», чтобы обеспечить согласованность. |
 
-* `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional. If a string is passed, it is considered to be `options.directory`.
-  * `directory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional. Directory to store the compile cache. If not specified,
+* `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional. If a string is passed, it is considered to be `options.directory`.
+  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional. Directory to store the compile cache. If not specified,
     the directory specified by the [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`] environment variable
     will be used if it's set, or `path.join(os.tmpdir(), 'node-compile-cache')`
     otherwise.
-  * `portable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Optional. If `true`, enables portable compile cache so that
+  * `portable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Optional. If `true`, enables portable compile cache so that
     the cache can be reused even if the project directory is moved. This is a best-effort
     feature. If not specified, it will depend on whether the environment variable
     [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`] is set.
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `status` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) One of the [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
-  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If Node.js cannot enable the compile cache, this contains
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `status` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) One of the [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
+  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If Node.js cannot enable the compile cache, this contains
     the error message. Only set if `status` is `module.constants.compileCacheStatus.FAILED`.
-  * `directory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If the compile cache is enabled, this contains the directory
+  * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If the compile cache is enabled, this contains the directory
     where the compile cache is stored. Only set if  `status` is
     `module.constants.compileCacheStatus.ENABLED` or
     `module.constants.compileCacheStatus.ALREADY_ENABLED`.
@@ -636,7 +636,7 @@ changes:
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Path to the [module compile cache][module compile cache] directory if it is enabled,
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Path to the [module compile cache][module compile cache] directory if it is enabled,
   or `undefined` otherwise.
 
 <i id="module_customization_hooks"></i>
@@ -972,27 +972,27 @@ changes:
     | --- | --- |
     | v23.5.0, v22.15.0 | Добавьте поддержку синхронных и внутрипоточных перехватчиков. |
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
     attributes for the module to import
-  * `parentURL` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
+  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
     if this is the Node.js entry point
-* `nextResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
+* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
   Node.js default `resolve` hook after the last user-supplied `resolve` hook
-  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
+  * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
     are merged in with preference to the provided properties.
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
     module format (such as `'commonjs'` or `'module'`) or an arbitrary value like `'css'` or
     `'yaml'`.
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
     caching the module (optional; if excluded the input will be used)
-  * `shortCircuit` undefined | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
     terminate the chain of `resolve` hooks. **Default:** `false`
-  * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
 
 The `resolve` hook chain is responsible for telling Node.js where to find and
 how to cache a given `import` statement or expression, or `require` call. It can
@@ -1068,27 +1068,27 @@ changes:
     | --- | --- |
     | v23.5.0, v22.15.0 | Добавьте поддержку синхронной и внутрипоточной версии. |
 
-* `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
-* `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
+* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
     `resolve` hook chain. This can be any string value as an input; input values do not need to
     conform to the list of acceptable return values described below.
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `nextLoad` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
   Node.js default `load` hook after the last user-supplied `load` hook
-  * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
     merged in with preference to the provided properties. In the default `nextLoad`, if
     the module pointed to by `url` does not have explicit module type information,
     `context.format` is mandatory.
     <!-- TODO(joyeecheung): make it at least optionally non-mandatory by allowing
          JS-style/TS-style module detection when the format is simply unknown -->
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) One of the acceptable module formats listed [below][accepted final formats].
-  * `shortCircuit` undefined | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) One of the acceptable module formats listed [below][accepted final formats].
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
     terminate the chain of `load` hooks. **Default:** `false`
-  * `source` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
 
 The `load` hook provides a way to define a custom method for retrieving the
 source code of a resolved URL. This would allow a loader to potentially avoid
@@ -1136,12 +1136,12 @@ The final value of `format` must be one of the following:
 | ----------------------- | ----------------------------------------------------- | -------------------------------------------------- |
 | `'addon'`               | Load a Node.js addon                                  | {null}                                             |
 | `'builtin'`             | Load a Node.js builtin module                         | {null}                                             |
-| `'commonjs-typescript'` | Load a Node.js CommonJS module with TypeScript syntax | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
-| `'commonjs'`            | Load a Node.js CommonJS module                        | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
-| `'json'`                | Load a JSON file                                      | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'module-typescript'`   | Load an ES module with TypeScript syntax              | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'module'`              | Load an ES module                                     | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
-| `'wasm'`                | Load a WebAssembly module                             | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                          |
+| `'commonjs-typescript'` | Load a Node.js CommonJS module with TypeScript syntax | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
+| `'commonjs'`            | Load a Node.js CommonJS module                        | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | null | undefined |
+| `'json'`                | Load a JSON file                                      | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'module-typescript'`   | Load an ES module with TypeScript syntax              | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'module'`              | Load an ES module                                     | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                  |
+| `'wasm'`                | Load a WebAssembly module                             | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)                          |
 
 The value of `source` is ignored for format `'builtin'` because currently it is
 not possible to replace the value of a Node.js builtin (core) module.
@@ -1442,7 +1442,7 @@ added:
   - v18.19.0
 -->
 
-* `data` {any} The data from `register(loader, import.meta.url, { data })`.
+* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The data from `register(loader, import.meta.url, { data })`.
 
 The `initialize` hook is only accepted by [`register`][`register`]. `registerHooks()` does
 not support nor need it since initialization done for synchronous hooks can be run
@@ -1554,28 +1554,28 @@ changes:
     | v18.6.0, v16.17.0 | Добавьте поддержку цепочек разрешений. Каждый хук должен либо вызвать nextResolve(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
     | v17.1.0, v16.14.0 | Добавьте поддержку утверждений импорта. |
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object whose key-value pairs represent the
     attributes for the module to import
-  * `parentURL` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
+  * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The module importing this one, or undefined
     if this is the Node.js entry point
-* `nextResolve` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
+* `nextResolve` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `resolve` hook in the chain, or the
   Node.js default `resolve` hook after the last user-supplied `resolve` hook
-  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
+  * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, the defaults are provided. When provided, defaults
     are merged in with preference to the provided properties.
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
   following properties, or a `Promise` that will resolve to such an object.
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined A hint to the `load` hook (it might be ignored). It can be a
     module format (such as `'commonjs'` or `'module'`) or an arbitrary value like `'css'` or
     `'yaml'`.
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined The import attributes to use when
     caching the module (optional; if excluded the input will be used)
-  * `shortCircuit` undefined | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
     terminate the chain of `resolve` hooks. **Default:** `false`
-  * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute URL to which this input resolves
 
 The asynchronous version works similarly to the synchronous version, only that the
 `nextResolve` function returns a `Promise`, and the `resolve` hook itself can return a `Promise`.
@@ -1649,28 +1649,28 @@ changes:
     | v20.6.0 | Добавьте поддержку исходного кода в формате commonjs. |
     | v18.6.0, v16.17.0 | Добавьте поддержку цепочки грузовых крюков. Каждый хук должен либо вызвать nextLoad(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
 
-* `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
-* `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The URL returned by the `resolve` chain
+* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Export conditions of the relevant `package.json`
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined The format optionally supplied by the
     `resolve` hook chain. This can be any string value as an input; input values do not need to
     conform to the list of acceptable return values described below.
-  * `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `nextLoad` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
+  * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `nextLoad` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The subsequent `load` hook in the chain, or the
   Node.js default `load` hook after the last user-supplied `load` hook
-  * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
+  * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined When omitted, defaults are provided. When provided, defaults are
     merged in with preference to the provided properties. In the default `nextLoad`, if
     the module pointed to by `url` does not have explicit module type information,
     `context.format` is mandatory.
     <!-- TODO(joyeecheung): make it at least optionally non-mandatory by allowing
          JS-style/TS-style module detection when the format is simply unknown -->
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) The asynchronous version takes either an object containing the
   following properties, or a `Promise` that will resolve to such an object.
-  * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `shortCircuit` undefined | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
+  * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `shortCircuit` undefined | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) A signal that this hook intends to
     terminate the chain of `load` hooks. **Default:** `false`
-  * `source` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) The source for Node.js to evaluate
 
 > **Warning**: The asynchronous `load` hook and namespaced exports from CommonJS
 > modules are incompatible. Attempting to use them together will result in an empty
@@ -2053,10 +2053,10 @@ added:
   - v22.14.0
 -->
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the source maps support is enabled
-  * `nodeModules` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for files in `node_modules`.
-  * `generatedCode` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for generated code from `eval` or `new Function`.
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the source maps support is enabled
+  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for files in `node_modules`.
+  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If the support is enabled for generated code from `eval` or `new Function`.
 
 This method returns whether the [Source Map v3][Source Map] support for stack
 traces is enabled.
@@ -2071,8 +2071,8 @@ added:
  - v12.17.0
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<module.SourceMap>](module.md) | undefined Returns `module.SourceMap` if a source
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<module.SourceMap>`](module.md) | undefined Returns `module.SourceMap` if a source
   map is found, `undefined` otherwise.
 
 `path` is the resolved path for the file for which a corresponding source map
@@ -2086,11 +2086,11 @@ added:
   - v22.14.0
 -->
 
-* `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Enable the source map support.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional
-  * `nodeModules` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for files in
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Enable the source map support.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional
+  * `nodeModules` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for files in
     `node_modules`. **Default:** `false`.
-  * `generatedCode` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for generated code from
+  * `generatedCode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If enabling the support for generated code from
     `eval` or `new Function`. **Default:** `false`.
 
 This function enables or disables the [Source Map v3][Source Map] support for
@@ -2128,37 +2128,37 @@ changes:
     | --- | --- |
     | v20.5.0 | Добавьте поддержку `lineLengths`. |
 
-* `payload` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `payload` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `lineLengths` [<number[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Creates a new `sourceMap` instance.
 
 `payload` is an object with keys matching the [Source map format][Source map format]:
 
-* `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `version` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `version` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `sourcesContent` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `names` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `mappings` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `sourceRoot` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `mappings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `sourceRoot` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 `lineLengths` is an optional array of the length of each line in the
 generated code.
 
 #### `sourceMap.payload`
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Getter for the payload used to construct the [`SourceMap`][`SourceMap`] instance.
 
 #### `sourceMap.findEntry(lineOffset, columnOffset)`
 
-* `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed line number offset in
+* `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed line number offset in
   the generated source
-* `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed column number offset
+* `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The zero-indexed column number offset
   in the generated source
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Given a line offset and column offset in the generated source
 file, returns an object representing the SourceMap range in the
@@ -2166,17 +2166,17 @@ original file if found, or an empty object if not.
 
 The object returned contains the following keys:
 
-* `generatedLine` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
+* `generatedLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
   range in the generated source
-* `generatedColumn` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
+* `generatedColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
   range in the generated source
-* `originalSource` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source,
+* `originalSource` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source,
   as reported in the SourceMap
-* `originalLine` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
+* `originalLine` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line offset of the start of the
   range in the original source
-* `originalColumn` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
+* `originalColumn` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The column offset of start of the
   range in the original source
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The returned value represents the raw range as it appears in the
 SourceMap, based on zero-indexed offsets, _not_ 1-indexed line and
@@ -2196,11 +2196,11 @@ added:
   - v18.18.0
 -->
 
-* `lineNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed line number of the call
+* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed line number of the call
   site in the generated source
-* `columnNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed column number
+* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed column number
   of the call site in the generated source
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Given a 1-indexed `lineNumber` and `columnNumber` from a call site in
 the generated source, find the corresponding call site location
@@ -2210,13 +2210,13 @@ If the `lineNumber` and `columnNumber` provided are not found in any
 source map, then an empty object is returned. Otherwise, the
 returned object contains the following keys:
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The name of the range in the
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The name of the range in the
   source map, if one was provided
-* `fileName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source, as
+* `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file name of the original source, as
   reported in the SourceMap
-* `lineNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed lineNumber of the
+* `lineNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed lineNumber of the
   corresponding call site in the original source
-* `columnNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed columnNumber of the
+* `columnNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The 1-indexed columnNumber of the
   corresponding call site in the original source
 
 [CommonJS]: modules.md

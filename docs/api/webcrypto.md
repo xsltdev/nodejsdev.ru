@@ -653,7 +653,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<SubtleCrypto>](webcrypto.md)
+* Тип: [`<SubtleCrypto>`](webcrypto.md)
 
 Предоставляет доступ к API `SubtleCrypto`.
 
@@ -663,8 +663,8 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* `typedArray` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
-* Возвращает: [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+* `typedArray` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+* Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
 
 Генерирует криптографически стойкие случайные значения. Переданный `typedArray`
 заполняется случайными значениями, возвращается ссылка на `typedArray`.
@@ -680,7 +680,7 @@ added: v15.0.0
 added: v16.7.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерирует случайный UUID версии 4 по [RFC 4122][RFC 4122]. UUID создаётся с помощью
 криптографически стойкого генератора псевдослучайных чисел.
@@ -699,7 +699,7 @@ added: v15.0.0
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* Тип: [<KeyAlgorithm>](webcrypto.md) | [<RsaHashedKeyAlgorithm>](webcrypto.md) | [<EcKeyAlgorithm>](webcrypto.md) | [<AesKeyAlgorithm>](webcrypto.md) | [<HmacKeyAlgorithm>](webcrypto.md) | [<KmacKeyAlgorithm>](webcrypto.md)
+* Тип: [`<KeyAlgorithm>`](webcrypto.md) | [`<RsaHashedKeyAlgorithm>`](webcrypto.md) | [`<EcKeyAlgorithm>`](webcrypto.md) | [`<AesKeyAlgorithm>`](webcrypto.md) | [`<HmacKeyAlgorithm>`](webcrypto.md) | [`<KmacKeyAlgorithm>`](webcrypto.md)
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -714,7 +714,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, [CryptoKey](webcrypto.md#class-cryptokey) можно извлечь через
 [`subtle.exportKey()`][`subtle.exportKey()`] или [`subtle.wrapKey()`][`subtle.wrapKey()`].
@@ -727,7 +727,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'secret'`, `'private'` или `'public'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'secret'`, `'private'` или `'public'`.
 
 Строка, указывающая, является ли ключ симметричным (`'secret'`) или
 асимметричным (`'private'` или `'public'`).
@@ -815,7 +815,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<CryptoKey>](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'private'`.
+* Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'private'`.
 
 ### `cryptoKeyPair.publicKey`
 
@@ -823,7 +823,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<CryptoKey>](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'public'`.
+* Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'public'`.
 
 ## Класс: `SubtleCrypto`
 
@@ -841,10 +841,10 @@ added: v24.7.0
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `operation` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `"encrypt"`, `"decrypt"`, `"sign"`, `"verify"`, `"digest"`, `"generateKey"`, `"deriveKey"`, `"deriveBits"`, `"importKey"`, `"exportKey"`, `"getPublicKey"`, `"wrapKey"`, `"unwrapKey"`, `"encapsulateBits"`, `"encapsulateKey"`, `"decapsulateBits"` или `"decapsulateKey"`
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
-* `lengthOrAdditionalAlgorithm` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | undefined В зависимости от операции: игнорируется; либо значение аргумента длины, если операция — `"deriveBits"`; либо алгоритм выводимого ключа при `"deriveKey"`; либо алгоритм ключа, экспортируемого перед упаковкой при `"wrapKey"`; либо алгоритм ключа, импортируемого после распаковки при `"unwrapKey"`; либо алгоритм ключа, импортируемого после инкапсуляции/декапсуляции при `"encapsulateKey"` или `"decapsulateKey"`. **По умолчанию:** `null`, если операция — `"deriveBits"`, иначе `undefined`.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, поддерживает ли реализация заданную операцию
+* `operation` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `"encrypt"`, `"decrypt"`, `"sign"`, `"verify"`, `"digest"`, `"generateKey"`, `"deriveKey"`, `"deriveBits"`, `"importKey"`, `"exportKey"`, `"getPublicKey"`, `"wrapKey"`, `"unwrapKey"`, `"encapsulateBits"`, `"encapsulateKey"`, `"decapsulateBits"` или `"decapsulateKey"`
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
+* `lengthOrAdditionalAlgorithm` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | undefined В зависимости от операции: игнорируется; либо значение аргумента длины, если операция — `"deriveBits"`; либо алгоритм выводимого ключа при `"deriveKey"`; либо алгоритм ключа, экспортируемого перед упаковкой при `"wrapKey"`; либо алгоритм ключа, импортируемого после распаковки при `"unwrapKey"`; либо алгоритм ключа, импортируемого после инкапсуляции/декапсуляции при `"encapsulateKey"` или `"decapsulateKey"`. **По умолчанию:** `null`, если операция — `"deriveBits"`, иначе `undefined`.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, поддерживает ли реализация заданную операцию
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -862,10 +862,10 @@ added: v24.7.0
 
 > Стабильность: 1.1 – Активная разработка
 
-* `decapsulationAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
-* `decapsulationKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `ciphertext` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `decapsulationAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
+* `decapsulationKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `ciphertext` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 Получатель сообщения использует свой асимметричный закрытый ключ, чтобы расшифровать
 «инкапсулированный ключ» (`ciphertext`) и восстановить временный симметричный
@@ -885,13 +885,13 @@ added: v24.7.0
 
 > Стабильность: 1.1 – Активная разработка
 
-* `decapsulationAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
-* `decapsulationKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `ciphertext` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* `sharedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `decapsulationAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
+* `decapsulationKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `ciphertext` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* `sharedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Получатель сообщения использует свой асимметричный закрытый ключ, чтобы расшифровать
 «инкапсулированный ключ» (`ciphertext`) и восстановить временный симметричный
@@ -925,10 +925,10 @@ changes:
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
     | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
 
-* `algorithm` [<RsaOaepParams>](webcrypto.md) | [<AesCtrParams>](webcrypto.md) | [<AesCbcParams>](webcrypto.md) | [<AeadParams>](webcrypto.md)
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `algorithm` [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 По методу и параметрам из `algorithm` и ключевому материалу из `key`
 метод пытается расшифровать переданные `data`. При успехе промис выполняется
@@ -977,10 +977,10 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<EcdhKeyDeriveParams>](webcrypto.md) | [<HkdfParams>](webcrypto.md) | [<Pbkdf2Params>](webcrypto.md) | [<Argon2Params>](webcrypto.md)
-* `baseKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `length` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `algorithm` [`<EcdhKeyDeriveParams>`](webcrypto.md) | [`<HkdfParams>`](webcrypto.md) | [`<Pbkdf2Params>`](webcrypto.md) | [`<Argon2Params>`](webcrypto.md)
+* `baseKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `length` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -1031,12 +1031,12 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<EcdhKeyDeriveParams>](webcrypto.md) | [<HkdfParams>](webcrypto.md) | [<Pbkdf2Params>](webcrypto.md) | [<Argon2Params>](webcrypto.md)
-* `baseKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `derivedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `algorithm` [`<EcdhKeyDeriveParams>`](webcrypto.md) | [`<HkdfParams>`](webcrypto.md) | [`<Pbkdf2Params>`](webcrypto.md) | [`<Argon2Params>`](webcrypto.md)
+* `baseKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `derivedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -1086,9 +1086,9 @@ changes:
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
     | v24.7.0 | Алгоритмы SHAKE теперь поддерживаются. |
 
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<CShakeParams>](webcrypto.md) | [<TurboShakeParams>](webcrypto.md) | [<KangarooTwelveParams>](webcrypto.md)
-* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<CShakeParams>`](webcrypto.md) | [`<TurboShakeParams>`](webcrypto.md) | [`<KangarooTwelveParams>`](webcrypto.md)
+* `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 По методу из `algorithm` метод пытается вычислить дайджест `data`. При успехе промис
 выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим вычисленный дайджест.
@@ -1120,9 +1120,9 @@ added: v24.7.0
 
 > Стабильность: 1.1 – Активная разработка
 
-* `encapsulationAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
-* `encapsulationKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedBits](webcrypto.md).
+* `encapsulationAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
+* `encapsulationKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedBits](webcrypto.md).
 
 Использует асимметричный открытый ключ получателя сообщения для шифрования временного симметричного ключа.
 Этот зашифрованный ключ — «инкапсулированный ключ» в виде [EncapsulatedBits](webcrypto.md).
@@ -1141,12 +1141,12 @@ added: v24.7.0
 
 > Стабильность: 1.1 – Активная разработка
 
-* `encapsulationAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
-* `encapsulationKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `sharedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `encapsulationAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
+* `encapsulationKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `sharedKeyAlgorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<AesDerivedKeyParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedKey](webcrypto.md).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedKey](webcrypto.md).
 
 Использует асимметричный открытый ключ получателя сообщения для шифрования временного симметричного ключа.
 Этот зашифрованный ключ — «инкапсулированный ключ» в виде [EncapsulatedKey](webcrypto.md).
@@ -1179,10 +1179,10 @@ changes:
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
     | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
 
-* `algorithm` [<RsaOaepParams>](webcrypto.md) | [<AesCtrParams>](webcrypto.md) | [<AesCbcParams>](webcrypto.md) | [<AeadParams>](webcrypto.md)
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `algorithm` [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 По методу и параметрам из `algorithm` и ключевому материалу из `key`
 метод пытается зашифровать `data`.
@@ -1238,10 +1238,10 @@ changes:
     | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`. |
     | v15.9.0 | Удалён экспорт JWK `'NODE-DSA'`. |
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object).
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object).
 
 Экспортирует ключ в указанный формат, если он поддерживается.
 
@@ -1286,9 +1286,9 @@ added: v24.7.0
 
 > Стабильность: 1.1 – Активная разработка
 
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey) Закрытый ключ, из которого выводится соответствующий открытый ключ.
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey) Закрытый ключ, из которого выводится соответствующий открытый ключ.
 * `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Выводит открытый ключ из заданного закрытого ключа.
 
@@ -1324,13 +1324,13 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaHashedKeyGenParams>](webcrypto.md) | [<EcKeyGenParams>](webcrypto.md) | [<HmacKeyGenParams>](webcrypto.md) | [<AesKeyGenParams>](webcrypto.md) | [<KmacKeyGenParams>](webcrypto.md)
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedKeyGenParams>`](webcrypto.md) | [`<EcKeyGenParams>`](webcrypto.md) | [`<HmacKeyGenParams>`](webcrypto.md) | [`<AesKeyGenParams>`](webcrypto.md) | [`<KmacKeyGenParams>`](webcrypto.md)
 
 <!--lint enable maximum-line-length remark-lint-->
 
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey) | [CryptoKeyPair](webcrypto.md).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey) | [CryptoKeyPair](webcrypto.md).
 
 По параметрам из `algorithm` метод
 пытается сгенерировать новый ключевой материал. В зависимости от алгоритма
@@ -1411,19 +1411,19 @@ changes:
     | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`. |
     | v15.9.0 | Удалён импорт JWK `'NODE-DSA'`. |
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
-* `keyData` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `keyData` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaHashedImportParams>](webcrypto.md) | [<EcKeyImportParams>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedImportParams>`](webcrypto.md) | [`<EcKeyImportParams>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 
 <!--lint enable maximum-line-length remark-lint-->
 
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Метод пытается интерпретировать переданные `keyData`
 в формате `format` и создать экземпляр [CryptoKey](webcrypto.md#class-cryptokey) с использованием
@@ -1496,10 +1496,10 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaPssParams>](webcrypto.md) | [<EcdsaParams>](webcrypto.md) | [<ContextParams>](webcrypto.md) | [<KmacParams>](webcrypto.md)
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -1544,21 +1544,21 @@ changes:
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
     | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
-* `wrappedKey` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* `unwrappingKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
+* `wrappedKey` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* `unwrappingKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `unwrapAlgo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaOaepParams>](webcrypto.md) | [<AesCtrParams>](webcrypto.md) | [<AesCbcParams>](webcrypto.md) | [<AeadParams>](webcrypto.md)
-* `unwrappedKeyAlgo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaHashedImportParams>](webcrypto.md) | [<EcKeyImportParams>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
+* `unwrapAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
+* `unwrappedKeyAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedImportParams>`](webcrypto.md) | [`<EcKeyImportParams>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 
 <!--lint enable maximum-line-length remark-lint-->
 
-* `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод пытается расшифровать упакованный
@@ -1635,11 +1635,11 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `algorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaPssParams>](webcrypto.md) | [<EcdsaParams>](webcrypto.md) | [<ContextParams>](webcrypto.md) | [<KmacParams>](webcrypto.md)
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `signature` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* `data` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
+* `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `signature` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -1686,12 +1686,12 @@ changes:
 
 <!--lint disable maximum-line-length remark-lint-->
 
-* `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
+* `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
-* `key` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `wrappingKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
-* `wrapAlgo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<RsaOaepParams>](webcrypto.md) | [<AesCtrParams>](webcrypto.md) | [<AesCbcParams>](webcrypto.md) | [<AeadParams>](webcrypto.md)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+* `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `wrappingKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
+* `wrapAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -1732,7 +1732,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `AeadParams`
 
@@ -1746,7 +1746,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Дополнительные данные, которые не шифруются, но участвуют в аутентификации
 данных. Использование `additionalData` необязательно.
@@ -1757,7 +1757,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Вектор инициализации должен быть уникален для каждой операции шифрования с
 данным ключом.
@@ -1768,7 +1768,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-GCM'`, `'AES-OCB'`, или `'ChaCha20-Poly1305'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-GCM'`, `'AES-OCB'`, или `'ChaCha20-Poly1305'`.
 
 #### `aeadParams.tagLength`
 
@@ -1776,7 +1776,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер в битах сгенерированного тега аутентификации.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер в битах сгенерированного тега аутентификации.
 
 ### Класс: `AesDerivedKeyParams`
 
@@ -1790,7 +1790,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, `'AES-OCB'`, или `'AES-KW'`
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, `'AES-OCB'`, или `'AES-KW'`
 
 #### `aesDerivedKeyParams.length`
 
@@ -1798,7 +1798,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина выводимого ключа AES. Должна быть `128`, `192`
 или `256`.
@@ -1815,7 +1815,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Вектор инициализации. Длина ровно 16 байт;
 должен быть непредсказуемым и криптографически случайным.
@@ -1826,7 +1826,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CBC'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CBC'`.
 
 ### Класс: `AesCtrParams`
 
@@ -1840,7 +1840,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Начальное значение блока счётчика. Длина ровно 16 байт.
 
@@ -1853,7 +1853,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число бит в `aesCtrParams.counter`, используемых
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число бит в `aesCtrParams.counter`, используемых
   в качестве счётчика.
 
 #### `aesCtrParams.name`
@@ -1862,7 +1862,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CTR'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CTR'`.
 
 ### Класс: `AesKeyAlgorithm`
 
@@ -1876,7 +1876,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина ключа AES в битах.
 
@@ -1886,7 +1886,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `AesKeyGenParams`
 
@@ -1900,7 +1900,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина генерируемого ключа AES. Должна быть `128`, `192`
 или `256`.
@@ -1911,7 +1911,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, или
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, или
   `'AES-KW'`
 
 ### Класс: `Argon2Params`
@@ -1926,7 +1926,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Необязательные связанные данные.
 
@@ -1936,7 +1936,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Объём памяти в кибибайтах. Должен быть не меньше 8-кратной степени параллелизма.
 
@@ -1946,7 +1946,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'Argon2d'`, `'Argon2i'`, или `'Argon2id'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'Argon2d'`, `'Argon2i'`, или `'Argon2id'`.
 
 #### `argon2Params.nonce`
 
@@ -1954,7 +1954,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Одноразовое число (nonce), в приложениях хеширования паролей используется как соль.
 
@@ -1964,7 +1964,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Степень параллелизма.
 
@@ -1974,7 +1974,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число проходов.
 
@@ -1984,7 +1984,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Необязательное секретное значение.
 
@@ -1994,7 +1994,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Номер версии Argon2. По умолчанию и сейчас единственно определённая версия — `19` (`0x13`).
 
@@ -2010,7 +2010,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `Ed448`[^secure-curves], `'ML-DSA-44'`[^modern-algos],
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `Ed448`[^secure-curves], `'ML-DSA-44'`[^modern-algos],
   `'ML-DSA-65'`[^modern-algos], или `'ML-DSA-87'`[^modern-algos].
 
 #### `contextParams.context`
@@ -2031,7 +2031,7 @@ changes:
     | --- | --- |
     | v24.8.0 | Поддерживается непустой контекст. |
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Свойство `context` задаёт необязательные контекстные данные, связываемые с
 сообщением.
@@ -2060,7 +2060,7 @@ changes:
 added: v24.7.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'cSHAKE128'`[^modern-algos] или `'cSHAKE256'`[^modern-algos]
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'cSHAKE128'`[^modern-algos] или `'cSHAKE256'`[^modern-algos]
 
 #### `cShakeParams.outputLength`
 
@@ -2068,7 +2068,7 @@ added: v24.7.0
 added: v25.9.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
 #### `cShakeParams.functionName`
 
@@ -2076,7 +2076,7 @@ added: v25.9.0
 added: v24.7.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Свойство `functionName` задаёт имя функции, которое NIST использует для определения
 функций на основе cSHAKE.
@@ -2089,7 +2089,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Свойство `customization` задаёт строку настройки.
 Реализация Web Crypto API в Node.js поддерживает только нулевую длину `customization`,
@@ -2107,7 +2107,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDH'`, `'X25519'`, или `'X448'`[^secure-curves].
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDH'`, `'X25519'`, или `'X448'`[^secure-curves].
 
 #### `ecdhKeyDeriveParams.public`
 
@@ -2115,7 +2115,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<CryptoKey>](webcrypto.md#class-cryptokey)
+* Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
 Вывод ключа ECDH использует на входе закрытый ключ одной стороны и
 открытый ключ другой — из них получается общий секрет.
@@ -2145,7 +2145,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2166,7 +2166,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDSA'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDSA'`.
 
 ### Класс: `EcKeyAlgorithm`
 
@@ -2180,7 +2180,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 #### `ecKeyAlgorithm.namedCurve`
 
@@ -2188,7 +2188,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `EcKeyGenParams`
 
@@ -2202,7 +2202,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyGenParams.namedCurve`
 
@@ -2210,7 +2210,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EcKeyImportParams`
 
@@ -2224,7 +2224,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyImportParams.namedCurve`
 
@@ -2232,7 +2232,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EncapsulatedBits`
 
@@ -2251,7 +2251,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 #### `encapsulatedBits.sharedKey`
 
@@ -2259,7 +2259,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 ### Класс: `EncapsulatedKey`
 
@@ -2278,7 +2278,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 #### `encapsulatedKey.sharedKey`
 
@@ -2286,7 +2286,7 @@ added: v24.7.0
 added: v24.7.0
 -->
 
-* Тип: [<CryptoKey>](webcrypto.md#class-cryptokey)
+* Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
 ### Класс: `HkdfParams`
 
@@ -2312,7 +2312,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2333,7 +2333,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Контекстные данные приложения для алгоритма HKDF.
 Может быть нулевой длины, но должно быть указано.
@@ -2344,7 +2344,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HKDF'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HKDF'`.
 
 #### `hkdfParams.salt`
 
@@ -2352,7 +2352,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Соль существенно повышает стойкость HKDF.
 Она должна быть случайной или псевдослучайной и той же длины, что и
@@ -2382,7 +2382,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2403,7 +2403,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Необязательное число бит в ключе HMAC. Обычно не указывается.
 
@@ -2413,7 +2413,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
 
 ### Класс: `HmacKeyAlgorithm`
 
@@ -2427,7 +2427,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<Algorithm>](webcrypto.md)
+* Тип: [`<Algorithm>`](webcrypto.md)
 
 #### `hmacKeyAlgorithm.length`
 
@@ -2435,7 +2435,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина ключа HMAC в битах.
 
@@ -2445,7 +2445,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `HmacKeyGenParams`
 
@@ -2471,7 +2471,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2492,7 +2492,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число бит для генерируемого ключа HMAC. Если не указано,
 длина определяется используемым алгоритмом хеширования.
@@ -2504,7 +2504,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
 
 ### Класс: `KeyAlgorithm`
 
@@ -2518,7 +2518,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `KangarooTwelveParams`
 
@@ -2532,7 +2532,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Необязательная строка настройки для KangarooTwelve.
 
@@ -2542,7 +2542,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KT128'`[^modern-algos] или `'KT256'`[^modern-algos]
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KT128'`[^modern-algos] или `'KT256'`[^modern-algos]
 
 #### `kangarooTwelveParams.outputLength`
 
@@ -2550,7 +2550,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
 ### Класс: `KmacImportParams`
 
@@ -2564,7 +2564,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Необязательное число бит в ключе KMAC. Обычно не указывается.
 
@@ -2574,7 +2574,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 ### Класс: `KmacKeyAlgorithm`
 
@@ -2588,7 +2588,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина ключа KMAC в битах.
 
@@ -2598,7 +2598,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `KmacKeyGenParams`
 
@@ -2612,7 +2612,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число бит для генерируемого ключа KMAC. Если не указано,
 длина определяется используемым алгоритмом KMAC.
@@ -2624,7 +2624,7 @@ added: v24.8.0
 added: v24.8.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 ### Класс: `KmacParams`
 
@@ -2650,7 +2650,7 @@ changes:
 added: v24.8.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 #### `kmacParams.outputLength`
 
@@ -2658,7 +2658,7 @@ added: v24.8.0
 added: v25.9.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина вывода в байтах. Должна быть положительным целым числом.
 
@@ -2668,7 +2668,7 @@ added: v25.9.0
 added: v24.8.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer) | undefined
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Свойство `customization` задаёт необязательную строку настройки.
 
@@ -2696,7 +2696,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2717,7 +2717,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число итераций PBKDF2 при выводе битов.
 
@@ -2727,7 +2727,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'PBKDF2'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'PBKDF2'`.
 
 #### `pbkdf2Params.salt`
 
@@ -2735,7 +2735,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Рекомендуется не менее 16 случайных или псевдослучайных байт.
 
@@ -2763,7 +2763,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2784,7 +2784,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
   `'RSA-OAEP'`.
 
 ### Класс: `RsaHashedKeyAlgorithm`
@@ -2799,7 +2799,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<Algorithm>](webcrypto.md)
+* Тип: [`<Algorithm>`](webcrypto.md)
 
 #### `rsaHashedKeyAlgorithm.modulusLength`
 
@@ -2807,7 +2807,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина модуля RSA в битах.
 
@@ -2817,7 +2817,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 #### `rsaHashedKeyAlgorithm.publicExponent`
 
@@ -2825,7 +2825,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+* Тип: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
 Открытая экспонента RSA.
 
@@ -2853,7 +2853,7 @@ changes:
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
 
@@ -2874,7 +2874,7 @@ changes:
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина модуля RSA в битах. Рекомендуется не меньше `2048`.
 
@@ -2884,7 +2884,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
   `'RSA-OAEP'`.
 
 #### `rsaHashedKeyGenParams.publicExponent`
@@ -2893,7 +2893,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+* Тип: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
 Открытая экспонента RSA. Должна быть [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) с целым без знака в формате big-endian,
 помещающимся в 32 бита. В [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) допустимы ведущие нулевые биты. Значение должно быть простым. Если нет причин выбирать другое, используйте `new Uint8Array([1, 0, 1])`
@@ -2911,7 +2911,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
+* Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
 Дополнительные байты, которые не шифруются, но связываются
 с полученным шифротекстом.
@@ -2924,7 +2924,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-OAEP'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-OAEP'`.
 
 ### Класс: `RsaPssParams`
 
@@ -2938,7 +2938,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-PSS'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-PSS'`.
 
 #### `rsaPssParams.saltLength`
 
@@ -2946,7 +2946,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Длина (в байтах) используемой случайной соли.
 
@@ -2962,7 +2962,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
 Необязательный байт разделения доменов (0x01–0x7f). **По умолчанию:** `0x1f`.
 
@@ -2972,7 +2972,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'TurboSHAKE128'`[^modern-algos] или `'TurboSHAKE256'`[^modern-algos]
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'TurboSHAKE128'`[^modern-algos] или `'TurboSHAKE256'`[^modern-algos]
 
 #### `turboShakeParams.outputLength`
 
@@ -2980,7 +2980,7 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
 [^secure-curves]: См. [Secure Curves in the Web Cryptography API][Secure Curves in the Web Cryptography API]
 

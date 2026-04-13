@@ -89,7 +89,7 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
--   `reason` {any} Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
+-   `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
 Инициирует сигнал отмены: у `abortController.signal` генерируется событие `'abort'`.
 
@@ -101,7 +101,7 @@ added:
   - v14.17.0
 -->
 
--   Тип: [<AbortSignal>](globals.md#abortsignal)
+-   Тип: [`<AbortSignal>`](globals.md#abortsignal)
 
 ## Класс: `AbortSignal`
 
@@ -135,8 +135,8 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
--   `reason` {any}
--   Возвращает: [<AbortSignal>](globals.md#abortsignal)
+-   `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
 
 Возвращает новый уже прерванный `AbortSignal`.
 
@@ -148,7 +148,7 @@ added:
   - v16.14.0
 -->
 
--   `delay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания `AbortSignal`.
+-   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван через `delay` миллисекунд.
 
@@ -204,7 +204,7 @@ added:
   - v14.17.0
 -->
 
--   Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true` после того, как `AbortController` был прерван.
 
@@ -216,7 +216,7 @@ added:
   - v14.17.0
 -->
 
--   Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Необязательный колбэк, который пользовательский код может задать для уведомления о вызове `abortController.abort()`.
 
@@ -228,7 +228,7 @@ added:
   - v16.14.0
 -->
 
--   Тип: {any}
+-   Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Необязательная причина, указанная при срабатывании `AbortSignal`.
 
@@ -306,7 +306,7 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 added: v0.1.103
 -->
 
--   Тип: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Для работы с двоичными данными. См. раздел [buffer](buffer.md).
 
@@ -398,7 +398,7 @@ changes:
 added: v0.1.100
 -->
 
--   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Вывод в stdout и stderr. См. раздел [`console`][`console`].
 
@@ -734,7 +734,7 @@ added: v0.1.27
 
     Используйте вместо этого [`globalThis`][`globalThis`].
 
--   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
 
 В браузерах традиционно верхний уровень — глобальная область: `var something` создаёт глобальную переменную (кроме модулей ECMAScript). В Node.js иначе: верхний уровень модуля не совпадает с глобальной областью; `var something` в модуле Node.js локально для этого модуля — и для [CommonJS][commonjs module], и для [ECMAScript][ecmascript module].
 
@@ -857,7 +857,7 @@ added: v21.0.0
 added: v21.0.0
 -->
 
--   Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `navigator.hardwareConcurrency` только для чтения: число логических процессоров, доступных текущему экземпляру Node.js.
 
@@ -873,7 +873,7 @@ console.log(
 added: v21.2.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.language` только для чтения: предпочитаемый язык экземпляра Node.js. Определяется библиотекой ICU по умолчанию языка ОС.
 
@@ -953,7 +953,7 @@ added: v24.5.0
 added: v21.2.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.platform` только для чтения: строка с идентификатором платформы.
 
@@ -969,7 +969,7 @@ console.log(
 added: v21.1.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.userAgent` только для чтения: user agent — имя среды и мажорная версия.
 
@@ -1039,7 +1039,7 @@ added: v19.0.0
 added: v0.1.7
 -->
 
--   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект process. См. раздел [объект `process`][`process` object].
 
@@ -1049,7 +1049,7 @@ added: v0.1.7
 added: v11.0.0
 -->
 
--   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
 `queueMicrotask()` ставит микрозадачу на вызов `callback`. Если `callback` выбрасывает исключение, генерируется событие [`process` object][`process` object] `'uncaughtException'`.
 
@@ -1493,7 +1493,7 @@ added: v10.0.0
 added: v8.0.0
 -->
 
--   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Пространство имён для функциональности W3C [WebAssembly][webassembly-org]. Использование и совместимость — на [MDN][webassembly-mdn].
 

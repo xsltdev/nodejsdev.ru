@@ -93,9 +93,9 @@ changes:
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `suffix` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный суффикс, который нужно убрать
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `suffix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный суффикс, который нужно убрать
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Завершающие [разделители каталогов][`path.sep`]
 игнорируются.
@@ -127,7 +127,7 @@ path.win32.basename('C:\\foo.HTML', '.html');
 added: v0.9.3
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Разделитель путей для текущей платформы:
 
@@ -172,8 +172,8 @@ changes:
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.dirname()` возвращает имя каталога для `path`, аналогично команде Unix `dirname`. Завершающие разделители каталогов игнорируются, см.
 [`path.sep`][`path.sep`].
@@ -203,8 +203,8 @@ changes:
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.extname()` возвращает расширение `path`: от последнего символа `.` до конца строки в последней части пути. Если в последней части `path` нет `.`, либо нет символов `.`, кроме первого символа
 basename `path` (см. `path.basename()`), возвращается пустая строка.
@@ -249,13 +249,13 @@ changes:
     | --- | --- |
     | v19.0.0 | Точка будет добавлена, если она не указана в `ext`. |
 
-* `pathObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любой объект JavaScript со свойствами:
-  * `dir` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `root` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `base` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `ext` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `pathObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любой объект JavaScript со свойствами:
+  * `dir` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `root` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `ext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.format()` собирает строку пути из объекта. Обратная операция к [`path.parse()`][`path.parse()`].
 
@@ -332,9 +332,9 @@ changes:
     | --- | --- |
     | v24.8.0, v22.20.0 | Маркировка стабильного API. |
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для сопоставления с шаблоном.
-* `pattern` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Glob-шаблон.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Совпадает ли `path` с `pattern`.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для сопоставления с шаблоном.
+* `pattern` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Glob-шаблон.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Совпадает ли `path` с `pattern`.
 
 Метод `path.matchesGlob()` определяет, соответствует ли `path` шаблону `pattern`.
 
@@ -353,8 +353,8 @@ path.matchesGlob('/foo/bar*', 'foo/bird'); // false
 added: v0.11.2
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `path.isAbsolute()` определяет, является ли строка `path` абсолютным путём в буквальном смысле. Поэтому он не подходит как единственная защита от обхода каталога (path traversal).
 
@@ -390,8 +390,8 @@ path.isAbsolute('.');           // false
 added: v0.1.16
 -->
 
-* `...paths` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность сегментов пути
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность сегментов пути
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.join()` соединяет все сегменты `path` с разделителем для текущей платформы, затем нормализует результат.
 
@@ -413,8 +413,8 @@ path.join('foo', {}, 'bar');
 added: v0.1.23
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.normalize()` нормализует `path`, разрешая сегменты `'..'` и `'.'`.
 
@@ -453,18 +453,18 @@ path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
 added: v0.11.15
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Метод `path.parse()` возвращает объект, свойства которого соответствуют частям `path`. Завершающие разделители каталогов игнорируются, см. [`path.sep`][`path.sep`].
 
 У объекта будут свойства:
 
-* `dir` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `root` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `base` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `ext` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `dir` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `root` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `ext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Например, на POSIX:
 
@@ -530,7 +530,7 @@ changes:
     | --- | --- |
     | v15.3.0 | Представлен как `require('path/posix')`. |
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `path.posix` даёт доступ к реализациям методов `path` в стиле POSIX.
 
@@ -555,9 +555,9 @@ changes:
     | --- | --- |
     | v6.8.0 | В Windows ведущие косые черты UNC-путей теперь включаются в возвращаемое значение. |
 
-* `from` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `to` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `from` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `to` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.relative()` возвращает относительный путь от `from` к `to` относительно текущего рабочего каталога. Если `from` и `to` после `path.resolve()` совпадают, возвращается пустая строка.
 
@@ -585,8 +585,8 @@ path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 added: v0.3.4
 -->
 
-* `...paths` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность путей или сегментов
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность путей или сегментов
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.resolve()` превращает последовательность путей или сегментов в абсолютный путь.
 
@@ -623,7 +623,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 added: v0.7.9
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Разделитель сегментов пути для текущей платформы:
 
@@ -652,8 +652,8 @@ added: v0.7.9
 added: v9.0.0
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Только в Windows: возвращает эквивалентный путь с [префиксом пространства имён][namespace-prefixed path] для данного `path`. Если `path` не строка, возвращается без изменений.
 
@@ -677,7 +677,7 @@ changes:
     | --- | --- |
     | v15.3.0 | Представлено как `require('path/win32')`. |
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `path.win32` даёт доступ к реализациям методов `path` для Windows.
 

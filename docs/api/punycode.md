@@ -49,7 +49,7 @@ const punycode = require('node:punycode');
 added: v0.5.1
 -->
 
-* `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `punycode.decode()` преобразует строку [Punycode][Punycode] из символов ASCII в
 эквивалентную строку кодовых точек Unicode.
@@ -65,7 +65,7 @@ punycode.decode('--dqo34k'); // '☃-⌘'
 added: v0.5.1
 -->
 
-* `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `punycode.encode()` преобразует строку кодовых точек Unicode в строку
 [Punycode][Punycode] из символов ASCII.
@@ -81,7 +81,7 @@ punycode.encode('☃-⌘'); // '--dqo34k'
 added: v0.6.1
 -->
 
-* `domain` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `punycode.toASCII()` преобразует строку Unicode с интернационализированным
 доменным именем в [Punycode][Punycode]. Преобразуются только не-ASCII части имени.
@@ -100,7 +100,7 @@ punycode.toASCII('example.com'); // 'example.com'
 added: v0.6.1
 -->
 
-* `domain` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `punycode.toUnicode()` преобразует строку доменного имени с закодированными
 в [Punycode][Punycode] частями в Unicode. Преобразуются только части в Punycode.
@@ -124,7 +124,7 @@ added: v0.7.0
 added: v0.7.0
 -->
 
-* `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `punycode.ucs2.decode()` возвращает массив числовых значений кодовых точек
 каждого символа Unicode в строке.
@@ -156,7 +156,7 @@ punycode.ucs2.encode([0x1D306]); // '\uD834\uDF06'
 added: v0.6.1
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает строку с номером текущей версии [Punycode.js][Punycode.js].
 

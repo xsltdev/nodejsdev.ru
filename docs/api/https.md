@@ -106,11 +106,11 @@ changes:
     | v24.5.0, v22.21.0 | Добавьте поддержку defaultPort и протокола. |
     | v12.5.0 | не задавайте имя сервера автоматически, если целевой хост был указан с использованием IP-адреса. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
   Может содержать те же поля, что и [`http.Agent(options)`][`http.Agent(options)`], а также
-  * `maxCachedSessions` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число кэшированных TLS-сессий.
+  * `maxCachedSessions` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число кэшированных TLS-сессий.
     Укажите `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
-  * `servername` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения
+  * `servername` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения
     [Server Name Indication][sni wiki], отправляемое серверу. Пустая строка `''`
     отключает отправку расширения.
     **По умолчанию:** имя хоста целевого сервера, если только целевой сервер
@@ -126,8 +126,8 @@ added:
  - v12.16.0
 -->
 
-* `line` [<Buffer>](buffer.md#buffer) Строка ASCII-текста в формате NSS `SSLKEYLOGFILE`.
-* `tlsSocket` [<tls.TLSSocket>](tls.md#class-tlstlssocket) Экземпляр `tls.TLSSocket`, для которого материал был сгенерирован.
+* `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII-текста в формате NSS `SSLKEYLOGFILE`.
+* `tlsSocket` [`<tls.TLSSocket>`](tls.md#class-tlstlssocket) Экземпляр `tls.TLSSocket`, для которого материал был сгенерирован.
 
 Событие `keylog` испускается, когда ключевой материал генерируется или получается соединением, управляемым этим агентом (обычно до завершения рукопожатия, но не обязательно). Этот материал можно сохранять для отладки: по нему можно расшифровать захваченный трафик TLS. Для каждого сокета событие может испускаться несколько раз.
 
@@ -146,7 +146,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 added: v0.3.4
 -->
 
-* Наследует: [<tls.Server>](#class-tlsserver)
+* Наследует: [`<tls.Server>`](#class-tlsserver)
 
 См. [`http.Server`][`http.Server`].
 
@@ -156,8 +156,8 @@ added: v0.3.4
 added: v0.1.90
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<https.Server>](https.md)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<https.Server>`](https.md)
 
 См. [`server.close()`][`server.close()`] в модуле `node:http`.
 
@@ -203,7 +203,7 @@ added: v18.2.0
 added: v11.3.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
 
 См. [`server.headersTimeout`][`server.headersTimeout`] в модуле `node:http`.
 
@@ -214,7 +214,7 @@ added: v11.3.0
 
 ### `server.maxHeadersCount`
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`
 
 См. [`server.maxHeadersCount`][`server.maxHeadersCount`] в модуле `node:http`.
 
@@ -237,7 +237,7 @@ changes:
     | --- | --- |
     | v18.0.0 | Тайм-аут запроса по умолчанию изменен с «нет тайм-аута» на 300 с (5 минут). |
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
 
 См. [`server.requestTimeout`][`server.requestTimeout`] в модуле `node:http`.
 
@@ -247,9 +247,9 @@ changes:
 added: v0.11.2
 -->
 
-* `msecs` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<https.Server>](https.md)
+* `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<https.Server>`](https.md)
 
 См. [`server.setTimeout()`][`server.setTimeout()`] в модуле `node:http`.
 
@@ -271,7 +271,7 @@ changes:
     | --- | --- |
     | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 
 См. [`server.timeout`][`server.timeout`] в модуле `node:http`.
 
@@ -281,7 +281,7 @@ changes:
 added: v8.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
 
 См. [`server.keepAliveTimeout`][`server.keepAliveTimeout`] в модуле `node:http`.
 
@@ -291,10 +291,10 @@ added: v8.0.0
 added: v0.3.4
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`][`tls.createServer()`],
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`][`tls.createServer()`],
   [`tls.createSecureContext()`][`tls.createSecureContext()`] и [`http.createServer()`][`http.createServer()`].
-* `requestListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик, добавляемый к событию `'request'`.
-* Возвращает: [<https.Server>](https.md)
+* `requestListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик, добавляемый к событию `'request'`.
+* Возвращает: [`<https.Server>`](https.md)
 
 === "MJS"
 
@@ -407,11 +407,11 @@ changes:
     | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
     | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
 
-* `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Принимает те же `options`, что и
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает те же `options`, что и
   [`https.request()`][`https.request()`], метод по умолчанию — GET.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<http.ClientRequest>](#httpclientrequest)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<http.ClientRequest>`](#httpclientrequest)
 
 Аналог [`http.get()`][`http.get()`], но для HTTPS.
 
@@ -525,14 +525,14 @@ changes:
     | v9.3.0 | Параметр `options` теперь может включать `clientCertEngine`. |
     | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
 
-* `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Принимает все `options` из
+* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает все `options` из
   [`http.request()`][`http.request()`], с отличиями значений по умолчанию:
   * `protocol` **По умолчанию:** `'https:'`
   * `port` **По умолчанию:** `443`
   * `agent` **По умолчанию:** `https.globalAgent`
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<http.ClientRequest>](#httpclientrequest)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<http.ClientRequest>`](#httpclientrequest)
 
 Выполняет запрос к защищённому веб-серверу.
 

@@ -119,10 +119,10 @@ changes:
 | Класс хранения | JavaScript → SQLite        | SQLite → JavaScript                   |
 | -------------- | -------------------------- | ------------------------------------- |
 | `NULL`        | {null}                     | {null}                                |
-| `INTEGER`     | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)       | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) _(configurable)_ |
-| `REAL`        | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                   | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                              |
-| `TEXT`        | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                   | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                              |
-| `BLOB`        | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) or [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)                          |
+| `INTEGER`     | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)       | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) _(configurable)_ |
+| `REAL`        | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                   | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                              |
+| `TEXT`        | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                   | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                              |
+| `BLOB`        | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) or [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)                          |
 
 API, читающие значения из SQLite, имеют опции, определяющие,
 преобразуются ли `INTEGER` в `number` или `bigint` в JavaScript —
@@ -192,58 +192,58 @@ changes:
     | v25.1.0, v24.12.0 | Добавьте опцию «защита». |
     | v24.4.0, v22.18.0 | Добавьте новые параметры базы данных SQLite. |
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) Путь к базе. База SQLite может храниться
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Путь к базе. База SQLite может храниться
   в файле или полностью [в памяти][in memory]. Для файловой базы
   укажите путь к файлу. Для in-memory используйте
   специальное имя `':memory:'`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры подключения. Поддерживаются:
-  * `open` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` база открывается в конструкторе. Если
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры подключения. Поддерживаются:
+  * `open` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` база открывается в конструкторе. Если
     `false`, открытие через метод `open()`.
     **По умолчанию:** `true`.
-  * `readOnly` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` база только для чтения.
+  * `readOnly` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` база только для чтения.
     Если файла нет, открытие завершится ошибкой. **По умолчанию:** `false`.
-  * `enableForeignKeyConstraints` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включены внешние ключи.
+  * `enableForeignKeyConstraints` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включены внешние ключи.
     Рекомендуется; можно отключить для совместимости со старыми схемами. Ограничения
     можно включать и выключать после открытия через
     [`PRAGMA foreign_keys`][`PRAGMA foreign_keys`]. **По умолчанию:** `true`.
-  * `enableDoubleQuotedStringLiterals` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` SQLite принимает
+  * `enableDoubleQuotedStringLiterals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` SQLite принимает
     [строковые литералы в двойных кавычках][double-quoted string literals]. Не рекомендуется; можно включить
     для совместимости со старыми схемами.
     **По умолчанию:** `false`.
-  * `allowExtension` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` доступны SQL-функция `loadExtension`
+  * `allowExtension` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` доступны SQL-функция `loadExtension`
     и метод `loadExtension()`.
     Позже можно вызвать `enableLoadExtension(false)`.
     **По умолчанию:** `false`.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) [Тайм-аут занятости][busy timeout] в миллисекундах — максимальное время ожидания
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) [Тайм-аут занятости][busy timeout] в миллисекундах — максимальное время ожидания
     снятия блокировки базы перед ошибкой.
     **По умолчанию:** `0`.
-  * `readBigInts` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` целые читаются как JavaScript `BigInt`. При `false` —
+  * `readBigInts` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` целые читаются как JavaScript `BigInt`. При `false` —
     как числа. **По умолчанию:** `false`.
-  * `returnArrays` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` результаты запросов — массивы, а не объекты.
+  * `returnArrays` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` результаты запросов — массивы, а не объекты.
     **По умолчанию:** `false`.
-  * `allowBareNamedParameters` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` разрешены именованные параметры без префикса
+  * `allowBareNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` разрешены именованные параметры без префикса
     (например `foo` вместо `:foo`). **По умолчанию:** `true`.
-  * `allowUnknownNamedParameters` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` неизвестные именованные параметры при привязке игнорируются.
+  * `allowUnknownNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` неизвестные именованные параметры при привязке игнорируются.
     При `false` — исключение. **По умолчанию:** `false`.
-  * `defensive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включается режим defensive: отключаются возможности SQL,
+  * `defensive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включается режим defensive: отключаются возможности SQL,
     позволяющие намеренно повредить файл базы.
     То же задаёт `enableDefensive()`.
     **По умолчанию:** `true`.
-  * `limits` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Лимиты SQLite для ограничения ресурсов при
+  * `limits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Лимиты SQLite для ограничения ресурсов при
     обработке потенциально вредоносного ввода. См. [Run-Time Limits][Run-Time Limits] и [Limit Constants][Limit Constants]
     в документации SQLite. Значения по умолчанию зависят от сборки.
     Свойства:
-    * `length` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина строки или BLOB.
-    * `sqlLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина SQL-выражения.
-    * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число столбцов.
-    * `exprDepth` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная глубина дерева выражения.
-    * `compoundSelect` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число частей в compound SELECT.
-    * `vdbeOp` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число инструкций VDBE.
-    * `functionArg` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число аргументов функции.
-    * `attach` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число прикреплённых баз.
-    * `likePatternLength` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина шаблона LIKE.
-    * `variableNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число SQL-переменных.
-    * `triggerDepth` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная глубина рекурсии триггеров.
+    * `length` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина строки или BLOB.
+    * `sqlLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина SQL-выражения.
+    * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число столбцов.
+    * `exprDepth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная глубина дерева выражения.
+    * `compoundSelect` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число частей в compound SELECT.
+    * `vdbeOp` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число инструкций VDBE.
+    * `functionArg` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число аргументов функции.
+    * `attach` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число прикреплённых баз.
+    * `likePatternLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина шаблона LIKE.
+    * `variableNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число SQL-переменных.
+    * `triggerDepth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная глубина рекурсии триггеров.
 
 Создаёт экземпляр `DatabaseSync`.
 
@@ -258,30 +258,30 @@ added:
 Регистрирует новую агрегатную функцию в базе SQLite. Метод является обёрткой над
 [`sqlite3_create_window_function()`][`sqlite3_create_window_function()`].
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя создаваемой функции SQLite.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Настройки функции.
-  * `deterministic` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя создаваемой функции SQLite.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Настройки функции.
+  * `deterministic` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
     флаг [`SQLITE_DETERMINISTIC`][`SQLITE_DETERMINISTIC`].
     **По умолчанию:** `false`.
-  * `directOnly` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
+  * `directOnly` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
     флаг [`SQLITE_DIRECTONLY`][`SQLITE_DIRECTONLY`].
     **По умолчанию:** `false`.
-  * `useBigIntArguments` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы для `options.step` и `options.inverse`
+  * `useBigIntArguments` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы для `options.step` и `options.inverse`
     преобразуются в `BigInt`. Если `false`, целые передаются как
     числа JavaScript. **По умолчанию:** `false`.
-  * `varargs` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `options.step` и `options.inverse` могут вызываться с любым числом
+  * `varargs` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `options.step` и `options.inverse` могут вызываться с любым числом
     аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`][`SQLITE_MAX_FUNCTION_ARG`]). Если `false`,
     `inverse` и `step` должны вызываться ровно с `length` аргументами.
     **По умолчанию:** `false`.
-  * `start` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Начальное
+  * `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Начальное
     значение для агрегатной функции. Используется при инициализации агрегата.
     Если передана [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function), начальным значением будет её результат.
-  * `step` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая для каждой строки агрегации.
+  * `step` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая для каждой строки агрегации.
     Получает текущее состояние и значение строки. Возвращаемое значение
     задаёт новое состояние.
-  * `result` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для получения итога агрегации.
+  * `result` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для получения итога агрегации.
     Получает финальное состояние и должна вернуть результат агрегации.
-  * `inverse` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если указана, метод `aggregate` работает как оконная функция.
+  * `inverse` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Если указана, метод `aggregate` работает как оконная функция.
     Получает текущее состояние и значение исключаемой строки. Возвращаемое значение — новое состояние.
 
 При использовании в качестве оконной функции `result` может вызываться несколько раз.
@@ -349,7 +349,7 @@ added:
   - v22.13.0
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к загружаемой динамической библиотеке.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к загружаемой динамической библиотеке.
 
 Загружает разделяемую библиотеку в соединение с базой. Метод является обёрткой
 над [`sqlite3_load_extension()`][`sqlite3_load_extension()`]. Нужно включить опцию
@@ -363,7 +363,7 @@ added:
   - v22.13.0
 -->
 
-* `allow` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешать ли загрузку расширений.
+* `allow` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешать ли загрузку расширений.
 
 Включает или отключает SQL-функцию `loadExtension` и метод `loadExtension()`.
 Если при создании `allowExtension` было `false`, включить загрузку расширений
@@ -377,7 +377,7 @@ added:
   - v24.12.0
 -->
 
-* `active` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Установить ли флаг defensive.
+* `active` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Установить ли флаг defensive.
 
 Включает или отключает режим defensive. При активном флаге отключаются
 возможности SQL, позволяющие намеренно повредить файл базы.
@@ -391,9 +391,9 @@ added:
   - v22.16.0
 -->
 
-* `dbName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы. Может быть `'main'` (основная база по умолчанию) или любая другая,
+* `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы. Может быть `'main'` (основная база по умолчанию) или любая другая,
   добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Путь к файлу базы. Для базы в памяти
+* Returns: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Путь к файлу базы. Для базы в памяти
   возвращается `null`.
 
 Метод является обёрткой над [`sqlite3_db_filename()`][`sqlite3_db_filename()`].
@@ -404,7 +404,7 @@ added:
 added: v22.5.0
 -->
 
-* `sql` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка SQL для выполнения.
+* `sql` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка SQL для выполнения.
 
 Позволяет выполнить одну или несколько SQL-команд без возврата
 результатов. Удобно при выполнении SQL, прочитанного из файла.
@@ -418,23 +418,23 @@ added:
   - v22.13.0
 -->
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя создаваемой функции SQLite.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные настройки функции. Поддерживаются
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя создаваемой функции SQLite.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные настройки функции. Поддерживаются
   свойства:
-  * `deterministic` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
+  * `deterministic` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
     флаг [`SQLITE_DETERMINISTIC`][`SQLITE_DETERMINISTIC`].
     **По умолчанию:** `false`.
-  * `directOnly` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
+  * `directOnly` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
     флаг [`SQLITE_DIRECTONLY`][`SQLITE_DIRECTONLY`].
     **По умолчанию:** `false`.
-  * `useBigIntArguments` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы `function`
+  * `useBigIntArguments` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы `function`
     преобразуются в `BigInt`. Если `false`, целые передаются как
     числа JavaScript. **По умолчанию:** `false`.
-  * `varargs` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `function` может вызываться с любым числом
+  * `varargs` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `function` может вызываться с любым числом
     аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`][`SQLITE_MAX_FUNCTION_ARG`]). Если `false`,
     `function` должна вызываться ровно с `function.length` аргументами.
     **По умолчанию:** `false`.
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция JavaScript, вызываемая при обращении к функции SQLite.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция JavaScript, вызываемая при обращении к функции SQLite.
   Возвращаемое значение должно быть допустимым типом данных SQLite:
   см. [преобразование типов между JavaScript и SQLite][Type conversion between JavaScript and SQLite]. Если возвращается `undefined`, в SQLite уходит
   `NULL`.
@@ -448,7 +448,7 @@ added:
 added: v24.10.0
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | null Функция-авторизатор или `null` для
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | null Функция-авторизатор или `null` для
   сброса текущего авторизатора.
 
 Задаёт callback авторизации, который SQLite вызывает при попытке
@@ -458,12 +458,12 @@ added: v24.10.0
 
 При вызове callback получает пять аргументов:
 
-* `actionCode` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тип операции (например
+* `actionCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тип операции (например
   `SQLITE_INSERT`, `SQLITE_UPDATE`, `SQLITE_SELECT`).
-* `arg1` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Первый аргумент (зависит от контекста, часто имя таблицы).
-* `arg2` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Второй аргумент (зависит от контекста, часто имя столбца).
-* `dbName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя базы.
-* `triggerOrView` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя триггера или представления, из-за которого происходит обращение.
+* `arg1` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Первый аргумент (зависит от контекста, часто имя таблицы).
+* `arg2` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Второй аргумент (зависит от контекста, часто имя столбца).
+* `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя базы.
+* `triggerOrView` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя триггера или представления, из-за которого происходит обращение.
 
 Callback должен вернуть одну из констант:
 
@@ -529,7 +529,7 @@ added:
   - v22.15.0
 -->
 
-* Type: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Открыта ли база в данный момент.
+* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Открыта ли база в данный момент.
 
 ### `database.isTransaction`
 
@@ -539,7 +539,7 @@ added:
   - v22.16.0
 -->
 
-* Type: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Находится ли соединение внутри транзакции. Метод
+* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Находится ли соединение внутри транзакции. Метод
   является обёрткой над [`sqlite3_get_autocommit()`][`sqlite3_get_autocommit()`].
 
 ### `database.limits`
@@ -548,7 +548,7 @@ added:
 added: v25.8.0
 -->
 
-* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект для чтения и установки лимитов базы SQLite во время выполнения.
 Каждое свойство соответствует лимиту SQLite и может читаться или задаваться.
@@ -588,10 +588,10 @@ added: v22.5.0
 added: REPLACEME
 -->
 
-* `dbName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сериализуемой базы. Может быть `'main'`
+* `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сериализуемой базы. Может быть `'main'`
   (основная по умолчанию) или любая другая, добавленная через
   [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы.
+* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы.
 
 Сериализует базу в двоичный вид (`Uint8Array`). Удобно для сохранения,
 клонирования или переноса in-memory базы. Метод является обёрткой над [`sqlite3_serialize()`][`sqlite3_serialize()`].
@@ -626,10 +626,10 @@ added: REPLACEME
 added: REPLACEME
 -->
 
-* `buffer` [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы, например результат
+* `buffer` [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы, например результат
   [`database.serialize()`][`database.serialize()`].
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры десериализации.
-  * `dbName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы, в которую загружают данные.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры десериализации.
+  * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы, в которую загружают данные.
     **По умолчанию:** `'main'`.
 
 Загружает сериализованную базу в это соединение, заменяя текущую.
@@ -678,17 +678,17 @@ added: REPLACEME
 added: v22.5.0
 -->
 
-* `sql` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка SQL для компиляции в подготовленное выражение.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры подготовленного выражения.
-  * `readBigInts` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целые поля читаются как `BigInt`.
+* `sql` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка SQL для компиляции в подготовленное выражение.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры подготовленного выражения.
+  * `readBigInts` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целые поля читаются как `BigInt`.
     **По умолчанию:** наследуется из опций базы или `false`.
-  * `returnArrays` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, результаты возвращаются массивами.
+  * `returnArrays` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, результаты возвращаются массивами.
     **По умолчанию:** наследуется из опций базы или `false`.
-  * `allowBareNamedParameters` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, допускается привязка именованных
+  * `allowBareNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, допускается привязка именованных
     параметров без префикса. **По умолчанию:** наследуется из опций базы или `true`.
-  * `allowUnknownNamedParameters` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, неизвестные именованные параметры
+  * `allowUnknownNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, неизвестные именованные параметры
     игнорируются. **По умолчанию:** наследуется из опций базы или `false`.
-* Returns: [<StatementSync>](sqlite.md) Подготовленное выражение.
+* Returns: [`<StatementSync>`](sqlite.md) Подготовленное выражение.
 
 Компилирует SQL в [подготовленное выражение][prepared statement]. Метод является обёрткой
 над [`sqlite3_prepare_v2()`][`sqlite3_prepare_v2()`].
@@ -699,9 +699,9 @@ added: v22.5.0
 added: v24.9.0
 -->
 
-* `maxSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число подготовленных выражений в кэше.
+* `maxSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число подготовленных выражений в кэше.
   **По умолчанию:** `1000`.
-* Returns: [<SQLTagStore>](#class-sqltagstore) Новый тег-хранилище SQL для кэширования выражений.
+* Returns: [`<SQLTagStore>`](#class-sqltagstore) Новый тег-хранилище SQL для кэширования выражений.
 
 Создаёт [`SQLTagStore`][`SQLTagStore`] — LRU-кэш
 подготовленных выражений. Позволяет повторно использовать
@@ -827,10 +827,10 @@ added:
   - v22.12.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры сессии.
-  * `table` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Конкретная таблица для отслеживания изменений. По умолчанию отслеживаются все таблицы.
-  * `db` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы для отслеживания. Полезно при нескольких базах через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-* Returns: [<Session>](sqlite.md) Дескриптор сессии.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры сессии.
+  * `table` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Конкретная таблица для отслеживания изменений. По умолчанию отслеживаются все таблицы.
+  * `db` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы для отслеживания. Полезно при нескольких базах через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+* Returns: [`<Session>`](sqlite.md) Дескриптор сессии.
 
 Создаёт и подключает сессию к базе. Метод является обёрткой над [`sqlite3session_create()`][`sqlite3session_create()`] и [`sqlite3session_attach()`][`sqlite3session_attach()`].
 
@@ -842,11 +842,11 @@ added:
   - v22.12.0
 -->
 
-* `changeset` [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset или patchset.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры применения изменений.
-  * `filter` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пропускать изменения, для которых при передаче имени целевой таблицы функция возвращает истинное значение.
+* `changeset` [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset или patchset.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры применения изменений.
+  * `filter` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пропускать изменения, для которых при передаче имени целевой таблицы функция возвращает истинное значение.
     По умолчанию применяются все изменения.
-  * `onConflict` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик конфликтов. Получает один аргумент —
+  * `onConflict` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик конфликтов. Получает один аргумент —
     одно из значений:
 
     * `SQLITE_CHANGESET_DATA`: для `DELETE` или `UPDATE` нет ожидаемых «старых» значений.
@@ -866,7 +866,7 @@ added:
     применение changeset прерывается с откатом.
 
     **По умолчанию:** функция, возвращающая `SQLITE_CHANGESET_ABORT`.
-* Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Успешно ли применён changeset без прерывания.
+* Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Успешно ли применён changeset без прерывания.
 
 Если база не открыта, выбрасывается исключение.
 Метод является обёрткой над [`sqlite3changeset_apply()`][`sqlite3changeset_apply()`].
@@ -951,7 +951,7 @@ added:
   - v22.12.0
 -->
 
-* Returns: [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset для применения к другим базам.
+* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset для применения к другим базам.
 
 Возвращает changeset со всеми изменениями с момента создания сессии. Можно вызывать несколько раз.
 Если база или сессия не открыты, выбрасывается исключение. Метод является обёрткой над [`sqlite3session_changeset()`][`sqlite3session_changeset()`].
@@ -964,7 +964,7 @@ added:
   - v22.12.0
 -->
 
-* Returns: [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный patchset для применения к другим базам.
+* Returns: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный patchset для применения к другим базам.
 
 Аналогично предыдущему методу, но формирует более компактный patchset. См. [Changesets and Patchsets][Changesets and Patchsets]
 в документации SQLite. Если база или сессия не открыты, выбрасывается исключение. Метод является
@@ -1019,11 +1019,11 @@ changes:
     | --- | --- |
     | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
 
-* `namedParameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
+* `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
-* `...anonymousParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
+* `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект — строка
+* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект — строка
   результата выполнения выражения. Ключи и значения —
   имена столбцов и значения в строке.
 
@@ -1039,23 +1039,23 @@ added:
   - v22.16.0
 -->
 
-* Returns: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект описывает столбец
+* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов. Каждый объект описывает столбец
   подготовленного выражения и содержит поля:
 
-  * `column` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя столбца в исходной таблице без псевдонима
+  * `column` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя столбца в исходной таблице без псевдонима
     или `null`, если столбец получен из выражения или подзапроса.
     Соответствует [`sqlite3_column_origin_name()`][`sqlite3_column_origin_name()`].
-  * `database` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной базы без псевдонима
+  * `database` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной базы без псевдонима
     или `null` для выражения/подзапроса.
     Соответствует [`sqlite3_column_database_name()`][`sqlite3_column_database_name()`].
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя столбца в наборе результатов
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя столбца в наборе результатов
     `SELECT`.
     Соответствует
     [`sqlite3_column_name()`][`sqlite3_column_name()`].
-  * `table` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной таблицы без псевдонима или `null`
+  * `table` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной таблицы без псевдонима или `null`
     для выражения/подзапроса.
     Соответствует [`sqlite3_column_table_name()`][`sqlite3_column_table_name()`].
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Объявленный тип столбца или `null`
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Объявленный тип столбца или `null`
     для выражения/подзапроса.
     Соответствует [`sqlite3_column_decltype()`][`sqlite3_column_decltype()`].
 
@@ -1068,7 +1068,7 @@ added:
 added: v22.5.0
 -->
 
-* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL с подставленными значениями параметров.
+* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL с подставленными значениями параметров.
 
 Текст подготовленного выражения, в котором плейсхолдеры заменены значениями
 последнего выполнения. Свойство является обёрткой над
@@ -1094,11 +1094,11 @@ changes:
     | --- | --- |
     | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
 
-* `namedParameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
+* `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
-* `...anonymousParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
+* `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Объект первой строки
+* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Объект первой строки
   результата или `undefined`, если строк нет.
 
 Выполняет выражение и возвращает первую строку как
@@ -1125,11 +1125,11 @@ changes:
     | --- | --- |
     | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
 
-* `namedParameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
+* `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
-* `...anonymousParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
+* `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
+* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
 
 Выполняет выражение и возвращает итератор по
 строкам. Если строк нет, итератор пустой. [Параметры][parameters are bound] привязываются
@@ -1155,17 +1155,17 @@ changes:
     | --- | --- |
     | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
 
-* `namedParameters` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
+* `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
-* `...anonymousParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
+* `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
   больше значений для анонимных параметров.
-* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `changes` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число строк, изменённых, вставленных или удалённых
+* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `changes` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число строк, изменённых, вставленных или удалённых
     последним завершённым `INSERT`, `UPDATE` или `DELETE`.
     Тип — число или `BigInt` в зависимости от настроек
     выражения. Соответствует
     [`sqlite3_changes64()`][`sqlite3_changes64()`].
-  * `lastInsertRowid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Идентификатор последней вставленной строки.
+  * `lastInsertRowid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Идентификатор последней вставленной строки.
     Тип — число или `BigInt` в зависимости от настроек выражения.
     Соответствует
     [`sqlite3_last_insert_rowid()`][`sqlite3_last_insert_rowid()`].
@@ -1180,7 +1180,7 @@ changes:
 added: v22.5.0
 -->
 
-* `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить или отключить привязку именованных параметров
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить или отключить привязку именованных параметров
   без префиксного символа.
 
 Имена параметров SQLite начинаются с префиксного символа. По умолчанию
@@ -1201,7 +1201,7 @@ added:
   - v22.15.0
 -->
 
-* `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить или отключить игнорирование неизвестных имён.
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить или отключить игнорирование неизвестных имён.
 
 По умолчанию неизвестное имя при привязке вызывает исключение.
 Этот метод позволяет такие имена игнорировать.
@@ -1214,7 +1214,7 @@ added:
   - v22.16.0
 -->
 
-* `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Возвращать результаты запросов массивами.
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Возвращать результаты запросов массивами.
 
 Если включено, `all()`, `get()` и `iterate()` возвращают строки массивами, а не объектами.
 
@@ -1224,7 +1224,7 @@ added:
 added: v22.5.0
 -->
 
-* `enabled` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Читать поля `INTEGER` как `BigInt`.
+* `enabled` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Читать поля `INTEGER` как `BigInt`.
 
 По умолчанию `INTEGER` из SQLite отображаются в числа JavaScript,
 но SQLite может хранить значения вне диапазона `number`. В таких случаях метод
@@ -1236,7 +1236,7 @@ added: v22.5.0
 added: v22.5.0
 -->
 
-* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL, из которого создано выражение.
+* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL, из которого создано выражение.
 
 Текст подготовленного выражения. Свойство является
 обёрткой над [`sqlite3_sql()`][`sqlite3_sql()`].
@@ -1264,9 +1264,9 @@ added: v24.9.0
 -->
 
 * `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
-* `...boundParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов — все строки результата.
+* Returns: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив объектов — все строки результата.
 
 Выполняет запрос и возвращает все строки.
 
@@ -1279,9 +1279,9 @@ added: v24.9.0
 -->
 
 * `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
-* `...boundParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Первая строка результата
+* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Первая строка результата
   или `undefined`, если строк нет.
 
 Выполняет запрос и возвращает первую строку.
@@ -1295,9 +1295,9 @@ added: v24.9.0
 -->
 
 * `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
-* `...boundParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
+* Returns: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
 
 Выполняет запрос и возвращает итератор по строкам.
 
@@ -1310,9 +1310,9 @@ added: v24.9.0
 -->
 
 * `stringElements` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Части шаблонного литерала с SQL.
-* `...boundParameters` null | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* `...boundParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
   Значения для плейсхолдеров.
-* Returns: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения о выполнении, включая `changes` и `lastInsertRowid`.
+* Returns: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Сведения о выполнении, включая `changes` и `lastInsertRowid`.
 
 Выполняет запрос без набора строк (например INSERT, UPDATE, DELETE).
 
@@ -1338,7 +1338,7 @@ changes:
     | --- | --- |
     | v25.5.0, v24.13.1 | Из метода изменился геттер. |
 
-* Type: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Type: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Только для чтения: число подготовленных выражений в кэше.
 
@@ -1348,7 +1348,7 @@ changes:
 added: v24.9.0
 -->
 
-* Type: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Type: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Только для чтения: максимальное число выражений в кэше.
 
@@ -1358,7 +1358,7 @@ added: v24.9.0
 added: v24.9.0
 -->
 
-* Type: [<DatabaseSync>](sqlite.md)
+* Type: [`<DatabaseSync>`](sqlite.md)
 
 Только для чтения: связанный с хранилищем объект `DatabaseSync`.
 
@@ -1388,16 +1388,16 @@ changes:
     | --- | --- |
     | v23.10.0 | Аргумент path теперь поддерживает объекты Buffer и URL. |
 
-* `sourceDb` [<DatabaseSync>](sqlite.md) База для резервного копирования. Должна быть открыта.
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) Путь к создаваемой копии. Если файл уже есть,
+* `sourceDb` [`<DatabaseSync>`](sqlite.md) База для резервного копирования. Должна быть открыта.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Путь к создаваемой копии. Если файл уже есть,
   он перезаписывается.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры резервного копирования.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры резервного копирования.
   Поддерживаются:
-  * `source` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходной базы: `'main'` или база, добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-  * `target` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-  * `rate` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число страниц за один шаг копирования. **По умолчанию:** `100`.
-  * `progress` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный callback после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
-* Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходной базы: `'main'` или база, добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  * `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  * `rate` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число страниц за один шаг копирования. **По умолчанию:** `100`.
+  * `progress` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный callback после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
+* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
 
 Создаёт резервную копию базы. Обёртка над [`sqlite3_backup_init()`][`sqlite3_backup_init()`], [`sqlite3_backup_step()`][`sqlite3_backup_step()`]
 и [`sqlite3_backup_finish()`][`sqlite3_backup_finish()`].
@@ -1447,7 +1447,7 @@ added:
   - v22.13.0
 -->
 
-* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с распространёнными константами для операций SQLite.
 

@@ -495,9 +495,9 @@ changes:
     | v16.7.0 | Добавлен стандартный параметр «окончания» для замены окончаний строк и удален нестандартный параметр «кодировка». |
 
 -   `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Blob[]>](https://developer.mozilla.org/en-US/docs/Web/API/Blob) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `Blob`.
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `endings` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из значений `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к родному для платформы виду, как в `require('node:os').EOL`.
-    -   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип содержимого блоба. Поле `type` задаёт предполагаемый тип данных; формат строки не проверяется.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `endings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из значений `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к родному для платформы виду, как в `require('node:os').EOL`.
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип содержимого блоба. Поле `type` задаёт предполагаемый тип данных; формат строки не проверяется.
 
 Создаёт новый объект `Blob`, объединяющий указанные источники.
 
@@ -513,7 +513,7 @@ added:
   - v14.18.0
 -->
 
--   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Возвращает промис, который выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим копию данных `Blob`.
 
@@ -552,9 +552,9 @@ added:
   - v14.18.0
 -->
 
--   `start` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальный индекс.
--   `end` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Конечный индекс.
--   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип для нового `Blob`
+-   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальный индекс.
+-   `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Конечный индекс.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип для нового `Blob`
 
 Создаёт и возвращает новый `Blob` с подмножеством данных этого `Blob`. Исходный `Blob` не изменяется.
 
@@ -576,7 +576,7 @@ added:
   - v14.18.0
 -->
 
--   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Возвращает промис, который выполняется со строкой — содержимым `Blob`, декодированным как UTF-8.
 
@@ -588,7 +588,7 @@ added:
   - v14.18.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 MIME-тип содержимого `Blob`.
 
@@ -697,10 +697,10 @@ changes:
     | v10.0.0 | Указание недопустимой строки для `fill` вызывает исключение. |
     | v8.9.3 | Указание недопустимой строки для `fill` теперь приводит к заполнению буфера нулями. |
 
--   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
--   `fill` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для предварительного заполнения нового `Buffer`. **По умолчанию:** `0`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `fill` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
+-   `fill` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для предварительного заполнения нового `Buffer`. **По умолчанию:** `0`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `fill` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Выделяет новый `Buffer` размером `size` байт. Если `fill` равен `undefined`, буфер заполняется нулями.
 
@@ -808,8 +808,8 @@ changes:
     | v15.0.0 | Выдавайте ERR_INVALID_ARG_VALUE вместо ERR_INVALID_OPT_VALUE для недопустимых входных аргументов. |
     | v7.0.0 | Передача отрицательного размера теперь приведет к ошибке. |
 
--   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Выделяет новый `Buffer` размером `size` байт. Если `size` больше `buffer.constants.MAX_LENGTH` или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`](errors.md#err_out_of_range).
 
@@ -877,8 +877,8 @@ changes:
     | v20.0.0 | Выдавайте ERR_INVALID_ARG_TYPE или ERR_OUT_OF_RANGE вместо ERR_INVALID_ARG_VALUE для недопустимых входных аргументов. |
     | v15.0.0 | Выдавайте ERR_INVALID_ARG_VALUE вместо ERR_INVALID_OPT_VALUE для недопустимых входных аргументов. |
 
--   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Выделяет новый `Buffer` размером `size` байт. Если `size` больше `buffer.constants.MAX_LENGTH` или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`](errors.md#err_out_of_range). При `size` равном 0 создаётся `Buffer` нулевой длины.
 
@@ -957,9 +957,9 @@ changes:
     | v7.0.0 | Передача недопустимого ввода теперь приведет к ошибке. |
     | v5.10.0 | Параметром string теперь может быть любой TypedArray, DataView или ArrayBuffer. |
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) Значение, для которого вычисляется длина.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в `string` при заданной интерпретации.
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) Значение, для которого вычисляется длина.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в `string` при заданной интерпретации.
 
 Возвращает длину строки в байтах при кодировании в `encoding`. Это не то же самое, что [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length): длина в символах не учитывает кодировку при преобразовании в байты.
 
@@ -1009,9 +1009,9 @@ changes:
     | --- | --- |
     | v8.0.0 | Аргументы теперь могут быть Uint8Array. |
 
--   `buf1` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
--   `buf2` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `-1`, `0` или `1` в зависимости от результата сравнения. Подробности см. в [`buf.compare()`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
+-   `buf1` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+-   `buf2` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `-1`, `0` или `1` в зависимости от результата сравнения. Подробности см. в [`buf.compare()`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
 
 Сравнивает `buf1` с `buf2`, обычно для сортировки массивов экземпляров `Buffer`. Эквивалентно вызову [`buf1.compare(buf2)`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
 
@@ -1062,8 +1062,8 @@ changes:
     | v8.0.0 | Элементами списка теперь могут быть элементы Uint8Array. |
 
 -   `list` [<Buffer[]>](buffer.md#buffer) | [<Uint8Array[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Список экземпляров `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для объединения.
--   `totalLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Суммарная длина экземпляров `Buffer` в `list` после конкатенации.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `totalLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Суммарная длина экземпляров `Buffer` в `list` после конкатенации.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Возвращает новый `Buffer`, полученный конкатенацией всех экземпляров `Buffer` из `list`.
 
@@ -1129,10 +1129,10 @@ added:
  - v18.16.0
 -->
 
--   `view` [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) для копирования.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальное смещение в `view`. **По умолчанию:** `0`.
--   `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число элементов из `view` для копирования. **По умолчанию:** `view.length - offset`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `view` [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) для копирования.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальное смещение в `view`. **По умолчанию:** `0`.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число элементов из `view` для копирования. **По умолчанию:** `view.length - offset`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Копирует базовую память `view` в новый `Buffer`.
 
@@ -1152,7 +1152,7 @@ added: v5.10.0
 -->
 
 -   `array` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Выделяет новый `Buffer`, используя `array` байтов в диапазоне `0` – `255`. Элементы массива вне этого диапазона усекаются, чтобы поместиться в него.
 
@@ -1186,10 +1186,10 @@ added: v5.10.0
 added: v5.10.0
 -->
 
--   `arrayBuffer` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), например свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
--   `byteOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
--   `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байтов для «раскрытия». **По умолчанию:** `arrayBuffer.byteLength - byteOffset`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `arrayBuffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), например свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+-   `byteOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байтов для «раскрытия». **По умолчанию:** `arrayBuffer.byteLength - byteOffset`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Создаёт представление [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) без копирования базовой памяти. Например, при передаче ссылки на свойство `.buffer` экземпляра [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) вновь созданный `Buffer` будет использовать ту же выделенную память, что и базовый `ArrayBuffer` [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 
@@ -1303,8 +1303,8 @@ added: v5.10.0
 added: v5.10.0
 -->
 
--   `buffer` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Копирует данные переданного `buffer` в новый экземпляр `Buffer`.
 
@@ -1348,10 +1348,10 @@ added: v5.10.0
 added: v8.2.0
 -->
 
--   `object` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с поддержкой `Symbol.toPrimitive` или `valueOf()`.
--   `offsetOrEncoding` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Смещение в байтах или кодировка.
--   `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с поддержкой `Symbol.toPrimitive` или `valueOf()`.
+-   `offsetOrEncoding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Смещение в байтах или кодировка.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Для объектов, у которых `valueOf()` возвращает значение, не строго равное `object`, возвращается `Buffer.from(object.valueOf(), offsetOrEncoding, length)`.
 
@@ -1413,9 +1413,9 @@ added: v8.2.0
 added: v5.10.0
 -->
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Создаёт новый `Buffer`, содержащий `string`. Параметр `encoding` задаёт кодировку символов при преобразовании `string` в байты.
 
@@ -1461,8 +1461,8 @@ added: v5.10.0
 added: v0.1.101
 -->
 
--   `obj` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `obj` — это `Buffer`, иначе `false`.
 
@@ -1496,8 +1496,8 @@ added: v0.1.101
 added: v0.9.1
 -->
 
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кодировки для проверки.
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кодировки для проверки.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `encoding` — имя поддерживаемой кодировки символов, иначе `false`.
 
@@ -1543,13 +1543,13 @@ added: v0.9.1
 added: v0.11.3
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `8192`
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `8192`
 
 Это размер (в байтах) предварительно выделенных внутренних экземпляров `Buffer`, используемых для пулинга. Это значение можно изменить.
 
 ### `buf[index]`
 
--   `index` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `index` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Оператор индекса `[index]` позволяет читать и задавать октет в позиции `index` в `buf`. Значения соответствуют отдельным байтам, поэтому допустимый диапазон — от `0x00` до `0xFF` (шестнадцатеричный) или от `0` до `255` (десятичный).
 
@@ -1597,7 +1597,7 @@ added: v0.11.3
 
 ### `buf.buffer`
 
--   Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) Базовый объект `ArrayBuffer`, на основе которого создан этот `Buffer`.
+-   Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) Базовый объект `ArrayBuffer`, на основе которого создан этот `Buffer`.
 
 Не гарантируется, что этот `ArrayBuffer` в точности соответствует исходному `Buffer`. Подробности см. в примечаниях к `buf.byteOffset`.
 
@@ -1627,7 +1627,7 @@ added: v0.11.3
 
 ### `buf.byteOffset`
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `byteOffset` базового объекта `ArrayBuffer` у `Buffer`.
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `byteOffset` базового объекта `ArrayBuffer` у `Buffer`.
 
 При задании `byteOffset` в `Buffer.from(ArrayBuffer, byteOffset, length)` или иногда при выделении `Buffer` меньше `Buffer.poolSize` буфер не начинается с нулевого смещения в базовом `ArrayBuffer`.
 
@@ -1685,12 +1685,12 @@ changes:
     | v8.0.0 | Параметр target теперь может быть Uint8Array. |
     | v5.11.0 | Теперь поддерживаются дополнительные параметры для указания смещений. |
 
--   `target` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), с которым сравнивается `buf`.
--   `targetStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается сравнение. **По умолчанию:** `0`.
--   `targetEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, на котором сравнение заканчивается (не включая). **По умолчанию:** `target.length`.
--   `sourceStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается сравнение. **По умолчанию:** `0`.
--   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором сравнение заканчивается (не включая). **По умолчанию:** `buf.length`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), с которым сравнивается `buf`.
+-   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается сравнение. **По умолчанию:** `0`.
+-   `targetEnd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, на котором сравнение заканчивается (не включая). **По умолчанию:** `target.length`.
+-   `sourceStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается сравнение. **По умолчанию:** `0`.
+-   `sourceEnd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором сравнение заканчивается (не включая). **По умолчанию:** `buf.length`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Сравнивает `buf` с `target` и возвращает число, показывающее, идёт ли `buf` в порядке сортировки до, после или совпадает с `target`. Сравнение основано на фактической последовательности байтов в каждом `Buffer`.
 
@@ -1788,11 +1788,11 @@ changes:
 added: v0.1.90
 -->
 
--   `target` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), в который копируют.
--   `targetStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается запись. **По умолчанию:** `0`.
--   `sourceStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается копирование. **По умолчанию:** `0`.
--   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором копирование останавливается (не включая). **По умолчанию:** `buf.length`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число скопированных байтов.
+-   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), в который копируют.
+-   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается запись. **По умолчанию:** `0`.
+-   `sourceStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается копирование. **По умолчанию:** `0`.
+-   `sourceEnd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором копирование останавливается (не включая). **По умолчанию:** `buf.length`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число скопированных байтов.
 
 Копирует данные из области `buf` в область `target`, даже если память `target` перекрывается с `buf`.
 
@@ -1892,7 +1892,7 @@ added: v0.1.90
 added: v1.1.0
 -->
 
--   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) пар `[index, byte]` по содержимому `buf`.
 
@@ -1956,8 +1956,8 @@ changes:
     | --- | --- |
     | v8.0.0 | Аргументы теперь могут быть Uint8Array. |
 
--   `otherBuffer` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для сравнения с `buf`.
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `otherBuffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для сравнения с `buf`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если у `buf` и `otherBuffer` совпадают все байты, иначе `false`. Эквивалентно выражению [`buf.compare(otherBuffer) === 0`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
 
@@ -2027,11 +2027,11 @@ changes:
     | v10.0.0 | Указание недопустимой строки для `value` вызывает исключение. |
     | v5.7.0 | Параметр `encoding` теперь поддерживается. |
 
--   `value` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для заполнения `buf`. Пустое значение (строка, Uint8Array, Buffer) приводится к `0`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед началом заполнения `buf`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить заполнение `buf` (не включая). **По умолчанию:** `buf.length`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для `value`, если `value` — строка. **По умолчанию:** `'utf8'`.
--   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для заполнения `buf`. Пустое значение (строка, Uint8Array, Buffer) приводится к `0`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед началом заполнения `buf`. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить заполнение `buf` (не включая). **По умолчанию:** `buf.length`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для `value`, если `value` — строка. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Заполняет `buf` указанным `value`. Если `offset` и `end` не заданы, заполняется весь `buf`:
 
@@ -2155,11 +2155,11 @@ changes:
     | REPLACEME | Добавлен параметр `end`. |
     | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
 
--   `value` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если `value` найден в `buf`, иначе `false`.
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если `value` найден в `buf`, иначе `false`.
 
 Эквивалентно выражению [`buf.indexOf() !== -1`](#bufindexofvalue-byteoffset-encoding).
 
@@ -2238,11 +2238,11 @@ changes:
     | v8.0.0 | Значением теперь может быть Uint8Array. |
     | v5.7.0, v4.4.0 | При передаче encoding параметр byteOffset больше не требуется. |
 
--   `value` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, задаёт кодировку для двоичного представления строки при поиске в `buf`. **По умолчанию:** `'utf8'`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого вхождения `value` в `buf` или `-1`, если `value` в `buf` нет.
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, задаёт кодировку для двоичного представления строки при поиске в `buf`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого вхождения `value` в `buf` или `-1`, если `value` в `buf` нет.
 
 Если `value` — это:
 
@@ -2358,7 +2358,7 @@ changes:
 added: v1.1.0
 -->
 
--   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) по ключам `buf` (индексам).
 
@@ -2422,11 +2422,11 @@ changes:
     | REPLACEME | Добавлен параметр `end`. |
     | v8.0.0 | Значением теперь может быть Uint8Array. |
 
--   `value` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `buf.length - 1`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, задаёт кодировку для двоичного представления строки при поиске в `buf`. **По умолчанию:** `'utf8'`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс последнего вхождения `value` в `buf` или `-1`, если `value` в `buf` нет.
+-   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `buf.length - 1`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, задаёт кодировку для двоичного представления строки при поиске в `buf`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс последнего вхождения `value` в `buf` или `-1`, если `value` в `buf` нет.
 
 То же, что [`buf.indexOf()`](#bufindexofvalue-byteoffset-encoding), но ищется последнее вхождение `value`, а не первое.
 
@@ -2548,7 +2548,7 @@ changes:
 added: v0.1.90
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает число байт в `buf`.
 
@@ -2606,8 +2606,8 @@ added:
  - v10.20.0
 -->
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Читает знаковое 64-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -2621,8 +2621,8 @@ added:
  - v10.20.0
 -->
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Читает знаковое 64-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -2648,8 +2648,8 @@ changes:
     | --- | --- |
     | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.readBigUint64BE()`. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Читает беззнаковое 64-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -2697,8 +2697,8 @@ changes:
     | --- | --- |
     | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.readBigUint64LE()`. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
 Читает беззнаковое 64-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -2745,8 +2745,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает 64-битное число с плавающей запятой (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -2791,8 +2791,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает 64-битное число с плавающей запятой (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -2841,8 +2841,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает 32-битное число с плавающей запятой (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -2887,8 +2887,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает 32-битное число с плавающей запятой (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -2937,8 +2937,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает знаковое 8-битное целое из `buf` по указанному смещению `offset`.
 
@@ -2993,8 +2993,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает знаковое 16-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -3041,8 +3041,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает знаковое 16-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -3093,8 +3093,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает знаковое 32-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -3141,8 +3141,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает знаковое 32-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -3200,9 +3200,9 @@ changes:
     | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает из `buf` начиная с `offset` ровно `byteLength` байт и интерпретирует результат как знаковое целое в дополнении до двух (big-endian) с точностью до 48 бит.
 
@@ -3262,9 +3262,9 @@ changes:
     | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает из `buf` начиная с `offset` ровно `byteLength` байт и интерпретирует результат как знаковое целое в дополнении до двух (little-endian) с точностью до 48 бит.
 
@@ -3315,8 +3315,8 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint8()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает беззнаковое 8-битное целое из `buf` по указанному смещению `offset`.
 
@@ -3377,8 +3377,8 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint16BE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает беззнаковое 16-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -3435,8 +3435,8 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint16LE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает беззнаковое 16-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -3497,8 +3497,8 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint32BE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает беззнаковое 32-битное целое (big-endian) из `buf` по указанному смещению `offset`.
 
@@ -3551,8 +3551,8 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint32LE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает беззнаковое 32-битное целое (little-endian) из `buf` по указанному смещению `offset`.
 
@@ -3615,9 +3615,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUintBE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает из `buf` начиная с `offset` ровно `byteLength` байт и интерпретирует результат как беззнаковое целое (big-endian) с точностью до 48 бит.
 
@@ -3680,9 +3680,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUintLE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Читает из `buf` начиная с `offset` ровно `byteLength` байт и интерпретирует результат как беззнаковое целое (little-endian) с точностью до 48 бит.
 
@@ -3716,9 +3716,9 @@ changes:
 added: v3.0.0
 -->
 
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Возвращает новый `Buffer`, ссылающийся на ту же память, что и исходный, но со смещением и обрезкой по индексам `start` и `end`.
 
@@ -3856,9 +3856,9 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`buf.subarray`](#bufsubarraystart-end) instead.
 
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Возвращает новый `Buffer`, ссылающийся на ту же память, что и исходный, но со смещением и обрезкой по индексам `start` и `end`.
 
@@ -3918,7 +3918,7 @@ changes:
 added: v5.10.0
 -->
 
--   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Interprets `buf` as an array of unsigned 16-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size) if [`buf.length`](#buflength) is not a multiple of 2.
 
@@ -3990,7 +3990,7 @@ One convenient use of `buf.swap16()` is to perform a fast in-place conversion be
 added: v5.10.0
 -->
 
--   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Interprets `buf` as an array of unsigned 32-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size) if [`buf.length`](#buflength) is not a multiple of 4.
 
@@ -4042,7 +4042,7 @@ Interprets `buf` as an array of unsigned 32-bit integers and swaps the byte orde
 added: v6.3.0
 -->
 
--   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Интерпретирует `buf` как массив 64-битных чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size), если [`buf.length`](#buflength) не кратен 8.
 
@@ -4094,7 +4094,7 @@ added: v6.3.0
 added: v0.9.2
 -->
 
--   Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает JSON-представление `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) неявно вызывает эту функцию при сериализации экземпляра `Buffer`.
 
@@ -4162,10 +4162,10 @@ changes:
     | --- | --- |
     | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
 
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов. **По умолчанию:** `'utf8'`.
--   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, с которого начинать декодирование. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, на котором декодирование останавливается (не включая). **По умолчанию:** `buf.length`.
--   Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов. **По умолчанию:** `'utf8'`.
+-   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, с которого начинать декодирование. **По умолчанию:** `0`.
+-   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, на котором декодирование останавливается (не включая). **По умолчанию:** `buf.length`.
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Декодирует `buf` в строку в соответствии с кодировкой `encoding`. Можно передать `start` и `end`, чтобы декодировать только часть `buf`.
 
@@ -4233,7 +4233,7 @@ changes:
 added: v1.1.0
 -->
 
--   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
+-   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) по значениям `buf` (байтам). Функция вызывается автоматически, когда `Buffer` используется в операторе `for..of`.
 
@@ -4317,11 +4317,11 @@ changes:
     | --- | --- |
     | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью `string`. **По умолчанию:** `0`.
--   `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум байт для записи (не больше `buf.length - offset`). **По умолчанию:** `buf.length - offset`.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов `string`. **По умолчанию:** `'utf8'`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число записанных байт.
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью `string`. **По умолчанию:** `0`.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум байт для записи (не больше `buf.length - offset`). **По умолчанию:** `buf.length - offset`.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов `string`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число записанных байт.
 
 Записывает `string` в `buf` начиная с `offset` в кодировке `encoding`. Параметр `length` — сколько байт записать. Если в `buf` недостаточно места для всей строки, будет записана только часть `string`. Частично закодированные символы не записываются.
 
@@ -4373,9 +4373,9 @@ added:
  - v10.20.0
 -->
 
--   `value` [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian.
 
@@ -4415,9 +4415,9 @@ added:
  - v10.20.0
 -->
 
--   `value` [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian.
 
@@ -4469,9 +4469,9 @@ changes:
     | --- | --- |
     | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.writeBigUint64BE()`. |
 
--   `value` [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian.
 
@@ -4523,9 +4523,9 @@ changes:
     | --- | --- |
     | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.writeBigUint64LE()`. |
 
--   `value` [<bigint>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian.
 
@@ -4576,9 +4576,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. `value` должно быть числом JavaScript. Поведение не определено, если `value` не является числом JavaScript.
 
@@ -4627,9 +4627,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. `value` должно быть числом JavaScript. Поведение не определено, если `value` не является числом JavaScript.
 
@@ -4678,9 +4678,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. Поведение не определено, если `value` не является числом JavaScript.
 
@@ -4729,9 +4729,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. Поведение не определено, если `value` не является числом JavaScript.
 
@@ -4780,9 +4780,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset`. `value` должно быть корректным знаковым 8-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -4835,9 +4835,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. `value` должно быть корректным знаковым 16-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -4888,9 +4888,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. `value` должно быть корректным знаковым 16-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -4941,9 +4941,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. `value` должно быть корректным знаковым 32-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -4994,9 +4994,9 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. `value` должно быть корректным знаковым 32-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5047,10 +5047,10 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `byteLength` байт `value` в `buf` по смещению `offset` в порядке big-endian. Поддерживается точность до 48 бит. Поведение не определено, если `value` не является знаковым целым.
 
@@ -5099,10 +5099,10 @@ changes:
     | --- | --- |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `byteLength` байт `value` в `buf` по смещению `offset` в порядке little-endian. Поддерживается точность до 48 бит. Поведение не определено, если `value` не является знаковым целым.
 
@@ -5157,9 +5157,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint8()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset`. `value` должно быть корректным беззнаковым 8-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5222,9 +5222,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint16BE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. `value` должно быть корректным беззнаковым 16-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5283,9 +5283,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint16LE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. `value` должно быть корректным беззнаковым 16-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5344,9 +5344,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint32BE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке big-endian. `value` должно быть корректным беззнаковым 32-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5403,9 +5403,9 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint32LE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `value` в `buf` по смещению `offset` в порядке little-endian. `value` должно быть корректным беззнаковым 32-битным целым. Поведение не определено, если `value` не является таким числом.
 
@@ -5462,10 +5462,10 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUintBE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `byteLength` байт `value` в `buf` по смещению `offset` в порядке big-endian. Поддерживается точность до 48 бит. Поведение не определено, если `value` не является беззнаковым целым.
 
@@ -5522,10 +5522,10 @@ changes:
     | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUintLE()`. |
     | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
--   `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
--   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
--   `byteLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
+-   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
+-   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
 
 Записывает `byteLength` байт `value` в `buf` по смещению `offset` в порядке little-endian. Поддерживается точность до 48 бит. Поведение не определено, если `value` не является беззнаковым целым.
 
@@ -5622,9 +5622,9 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`Buffer.from(arrayBuffer[, byteOffset[, length]])`](#static-method-bufferfromarraybuffer-byteoffset-length) instead.
 
--   `arrayBuffer` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<SharedArrayBuffer>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) или свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
--   `byteOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
--   `length` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байтов для «раскрытия». **По умолчанию:** `arrayBuffer.byteLength - byteOffset`.
+-   `arrayBuffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) или свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+-   `byteOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байтов для «раскрытия». **По умолчанию:** `arrayBuffer.byteLength - byteOffset`.
 
 См. [`Buffer.from(arrayBuffer[, byteOffset[, length]])`](#static-method-bufferfromarraybuffer-byteoffset-length).
 
@@ -5655,7 +5655,7 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`Buffer.from(buffer)`](#static-method-bufferfrombuffer) instead.
 
--   `buffer` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
 
 См. [`Buffer.from(buffer)`](#static-method-bufferfrombuffer).
 
@@ -5691,7 +5691,7 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) instead (also see [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize)).
 
--   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
+-   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 
 См. [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) и [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize). Этот вариант конструктора эквивалентен [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding).
 
@@ -5722,8 +5722,8 @@ changes:
 
 > Stability: 0 - Deprecated: Use [`Buffer.from(string[, encoding])`](#static-method-bufferfromstring-encoding) instead.
 
--   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
--   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
+-   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
 
 См. [`Buffer.from(string[, encoding])`](#static-method-bufferfromstring-encoding).
 
@@ -5749,7 +5749,7 @@ changes:
     | v23.0.0 | Делает экземпляры файлов клонируемыми. |
     | v20.0.0 | Больше не экспериментально. |
 
--   Наследует: [<Blob>](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+-   Наследует: [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 
 [File](https://developer.mozilla.org/en-US/docs/Web/API/File) представляет сведения о файле.
 
@@ -5762,11 +5762,11 @@ added:
 -->
 
 -   `sources` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Blob[]>](https://developer.mozilla.org/en-US/docs/Web/API/Blob) | [<File[]>](https://developer.mozilla.org/en-US/docs/Web/API/File) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView), [File](https://developer.mozilla.org/en-US/docs/Web/API/File) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `File`.
--   `fileName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла.
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `endings` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к виду, заданному `require('node:os').EOL`.
-    -   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип файла.
-    -   `lastModified` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Время последнего изменения файла. **По умолчанию:** `Date.now()`.
+-   `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `endings` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'transparent'` или `'native'`. При `'native'` окончания строк в строковых частях приводятся к виду, заданному `require('node:os').EOL`.
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MIME-тип файла.
+    -   `lastModified` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Время последнего изменения файла. **По умолчанию:** `Date.now()`.
 
 ### `file.name`
 
@@ -5776,7 +5776,7 @@ added:
   - v18.13.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя `File`.
 
@@ -5788,7 +5788,7 @@ added:
   - v18.13.0
 -->
 
--   Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Дата последнего изменения `File`.
 
@@ -5806,7 +5806,7 @@ added:
 
 > Stability: 3 - Legacy. Use `Buffer.from(data, 'base64')` instead.
 
--   `data` {any} Входная строка в Base64.
+-   `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входная строка в Base64.
 
 Декодирует строку Base64 в байты и кодирует эти байты в строку Latin-1 (ISO-8859-1).
 
@@ -5830,7 +5830,7 @@ added:
 
 > Stability: 3 - Legacy. Use `buf.toString('base64')` instead.
 
--   `data` {any} Строка ASCII (Latin1).
+-   `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Строка ASCII (Latin1).
 
 Декодирует строку в байты по Latin-1 (ISO-8859) и кодирует байты в Base64.
 
@@ -5852,8 +5852,8 @@ added:
   - v18.15.0
 -->
 
--   `input` [<Buffer>](buffer.md#buffer) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `input` [`<Buffer>`](buffer.md#buffer) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `input` содержит только корректные данные в ASCII, в том числе при пустом `input`.
 
@@ -5867,8 +5867,8 @@ added:
   - v18.14.0
 -->
 
--   `input` [<Buffer>](buffer.md#buffer) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
--   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `input` [`<Buffer>`](buffer.md#buffer) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `input` содержит только корректные данные UTF-8, в том числе при пустом `input`.
 
@@ -5880,7 +5880,7 @@ added:
 added: v0.5.4
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `50`
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `50`
 
 Максимальное число байт, возвращаемых при вызове `buf.inspect()`. Пользовательские модули могут переопределить значение. Подробнее о поведении `buf.inspect()` см. [`util.inspect()`](util.md#utilinspectobject-options).
 
@@ -5890,7 +5890,7 @@ added: v0.5.4
 added: v3.0.0
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
 
 Псевдоним [`buffer.constants.MAX_LENGTH`](#bufferconstantsmax_length).
 
@@ -5900,7 +5900,7 @@ added: v3.0.0
 added: v3.0.0
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
 
 Псевдоним [`buffer.constants.MAX_STRING_LENGTH`](#bufferconstantsmax_string_length).
 
@@ -5924,8 +5924,8 @@ changes:
     | --- | --- |
     | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
--   `id` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL вида `'blob:nodedata:...`, полученная ранее от `URL.createObjectURL()`.
--   Возвращает: [<Blob>](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+-   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL вида `'blob:nodedata:...`, полученная ранее от `URL.createObjectURL()`.
+-   Возвращает: [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 
 Сопоставляет `'blob:nodedata:...'` с соответствующим объектом [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), зарегистрированным ранее через `URL.createObjectURL()`.
 
@@ -5947,10 +5947,10 @@ changes:
     | --- | --- |
     | v8.0.0 | Параметр `source` теперь может быть `Uint8Array`. |
 
--   `source` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Экземпляр `Buffer` или `Uint8Array`.
--   `fromEnc` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходная кодировка.
--   `toEnc` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Целевая кодировка.
--   Возвращает: [<Buffer>](buffer.md#buffer)
+-   `source` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Экземпляр `Buffer` или `Uint8Array`.
+-   `fromEnc` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходная кодировка.
+-   `toEnc` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Целевая кодировка.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Перекодирует данные из одной символьной кодировки в другую. Возвращает новый `Buffer`.
 
@@ -6017,7 +6017,7 @@ changes:
     | v15.0.0 | Значение изменяется на 2<sup>32</sup> в 64-разрядных архитектурах. |
     | v14.0.0 | Значение изменено с 2<sup>31</sup> – 1 на 2<sup>32</sup> – 1 в 64-разрядных архитектурах. |
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
 
 На 32-битных архитектурах значение равно 2<sup>31</sup> - 1 (около 2 ГиБ).
 
@@ -6033,7 +6033,7 @@ changes:
 added: v8.2.0
 -->
 
--   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
+-   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
 
 Наибольшая длина `length` у примитива `string` в UTF-16 кодовых единицах.
 

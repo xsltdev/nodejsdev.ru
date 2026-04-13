@@ -820,17 +820,17 @@ changes:
 
 Часть полей имеет смысл только при сжатии и игнорируется классами распаковки.
 
-* `flush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_NO_FLUSH`
-* `finishFlush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_FINISH`
-* `chunkSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
-* `windowBits` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `level` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
-* `memLevel` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
-* `strategy` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
-* `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) (только deflate/inflate,
+* `flush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_NO_FLUSH`
+* `finishFlush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.Z_FINISH`
+* `chunkSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
+* `windowBits` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `level` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
+* `memLevel` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
+* `strategy` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (только сжатие)
+* `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) (только deflate/inflate,
   по умолчанию пустой словарь)
-* `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) (при `true` возвращается объект с `buffer` и `engine`.)
-* `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
+* `info` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) (при `true` возвращается объект с `buffer` и `engine`.)
+* `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
   [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
 
 Подробнее см. документацию [`deflateInit2` and `inflateInit2`][`deflateInit2` and `inflateInit2`].
@@ -859,13 +859,13 @@ changes:
 
 У каждого класса на базе Brotli есть объект `options`. Все поля необязательны.
 
-* `flush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_PROCESS`
-* `finishFlush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_FINISH`
-* `chunkSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Brotli][Brotli parameters].
-* `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
+* `flush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_PROCESS`
+* `finishFlush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.BROTLI_OPERATION_FINISH`
+* `chunkSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Brotli][Brotli parameters].
+* `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
   [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
-* `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
+* `info` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
 
 Например:
 
@@ -1055,7 +1055,7 @@ changes:
 added: v10.0.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Свойство `zlib.bytesWritten` задаёт число байт, записанных в движок до обработки (сжатия или распаковки — в зависимости от производного класса).
 
@@ -1065,7 +1065,7 @@ added: v10.0.0
 added: v0.9.4
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Закрывает нижележащий дескриптор.
 
@@ -1077,7 +1077,7 @@ added: v0.5.8
 
 * `kind` **По умолчанию:** `zlib.constants.Z_FULL_FLUSH` для потоков на zlib,
   `zlib.constants.BROTLI_OPERATION_FLUSH` для потоков на Brotli.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Сбрасывает накопленные данные. Вызывать без нужды не стоит: преждевременный flush ухудшает сжатие.
 
@@ -1089,9 +1089,9 @@ added: v0.5.8
 added: v0.11.4
 -->
 
-* `level` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `strategy` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `level` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `strategy` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Только для потоков на zlib, не для Brotli.
 
@@ -1122,14 +1122,14 @@ added:
 
 У каждого класса на базе Zstd есть объект `options`. Все поля необязательны.
 
-* `flush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.ZSTD_e_continue`
-* `finishFlush` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.ZSTD_e_end`
-* `chunkSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Zstd][Zstd parameters].
-* `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
+* `flush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.ZSTD_e_continue`
+* `finishFlush` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `zlib.constants.ZSTD_e_end`
+* `chunkSize` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Zstd][Zstd parameters].
+* `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
   [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
-* `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
-* `dictionary` [<Buffer>](buffer.md#buffer) Необязательный словарь для
+* `info` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
+* `dictionary` [`<Buffer>`](buffer.md#buffer) Необязательный словарь для
   повышения эффективности сжатия/распаковки данных с общими с словарём шаблонами.
 
 Например:
@@ -1188,10 +1188,10 @@ added:
   - v20.15.0
 -->
 
-* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Если `data` — строка,
+* `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Если `data` — строка,
   перед вычислением она кодируется в UTF-8.
-* `value` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное начальное значение. Должно быть 32-битным беззнаковым целым. **По умолчанию:** `0`
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) 32-битное беззнаковое целое с контрольной суммой.
+* `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное начальное значение. Должно быть 32-битным беззнаковым целым. **По умолчанию:** `0`
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) 32-битное беззнаковое целое с контрольной суммой.
 
 Вычисляет 32-битную контрольную сумму [CRC][Cyclic Redundancy Check] для `data`. Если задан
 `value`, оно используется как начальное значение суммы,
@@ -1381,9 +1381,9 @@ added:
  - v10.16.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.brotliCompressSync(buffer[, options])`
 
@@ -1393,7 +1393,7 @@ added:
  - v10.16.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
 
 Сжимает фрагмент данных через [`BrotliCompress`][`BrotliCompress`].
@@ -1406,9 +1406,9 @@ added:
  - v10.16.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.brotliDecompressSync(buffer[, options])`
 
@@ -1418,7 +1418,7 @@ added:
  - v10.16.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
 
 Распаковывает фрагмент данных через [`BrotliDecompress`][`BrotliDecompress`].
@@ -1449,9 +1449,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.deflateSync(buffer[, options])`
 
@@ -1479,7 +1479,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Сжимает фрагмент данных через [`Deflate`][`Deflate`].
@@ -1506,9 +1506,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.deflateRawSync(buffer[, options])`
 
@@ -1536,7 +1536,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Сжимает фрагмент данных через [`DeflateRaw`][`DeflateRaw`].
@@ -1567,9 +1567,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.gunzipSync(buffer[, options])`
 
@@ -1597,7 +1597,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Распаковывает фрагмент данных через [`Gunzip`][`Gunzip`].
@@ -1628,9 +1628,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.gzipSync(buffer[, options])`
 
@@ -1658,7 +1658,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Сжимает фрагмент данных через [`Gzip`][`Gzip`].
@@ -1689,9 +1689,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.inflateSync(buffer[, options])`
 
@@ -1719,7 +1719,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Распаковывает фрагмент данных через [`Inflate`][`Inflate`].
@@ -1750,9 +1750,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.inflateRawSync(buffer[, options])`
 
@@ -1780,7 +1780,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Распаковывает фрагмент данных через [`InflateRaw`][`InflateRaw`].
@@ -1811,9 +1811,9 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.unzipSync(buffer[, options])`
 
@@ -1841,7 +1841,7 @@ changes:
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
     | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
 Распаковывает фрагмент данных через [`Unzip`][`Unzip`].
@@ -1858,9 +1858,9 @@ added:
   - v22.15.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.zstdCompressSync(buffer[, options])`
 
@@ -1874,7 +1874,7 @@ added:
   - v22.15.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
 
 Сжимает фрагмент данных через [`ZstdCompress`][`ZstdCompress`].
@@ -1887,9 +1887,9 @@ added:
   - v22.15.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 ### `zlib.zstdDecompressSync(buffer[, options])`
 
@@ -1903,7 +1903,7 @@ added:
   - v22.15.0
 -->
 
-* `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
 
 Распаковывает фрагмент данных через [`ZstdDecompress`][`ZstdDecompress`].

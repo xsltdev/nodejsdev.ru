@@ -163,9 +163,9 @@ changes:
     | v19.7.0, v18.16.0 | Удалена экспериментальная опция onPropagate. |
     | v19.2.0, v18.13.0 | Добавьте опцию onPropagate. |
 
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `defaultValue` {any} Значение по умолчанию, которое будет использоваться, если хранилище не передано.
-    -   `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя для значения `AsyncLocalStorage`.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `defaultValue` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение по умолчанию, которое будет использоваться, если хранилище не передано.
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя для значения `AsyncLocalStorage`.
 
 Создаёт новый экземпляр `AsyncLocalStorage`. Хранилище доступно только внутри вызова `run()` или после вызова `enterWith()`.
 
@@ -189,8 +189,8 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
--   Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию, которая вызывает `fn` в захваченном контексте выполнения.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию, которая вызывает `fn` в захваченном контексте выполнения.
 
 Привязывает переданную функцию к текущему контексту выполнения.
 
@@ -214,7 +214,7 @@ changes:
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
--   Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию с сигнатурой `(fn: (...args) : R, ...args) : R`.
+-   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию с сигнатурой `(fn: (...args) : R, ...args) : R`.
 
 Захватывает текущий контекст выполнения и возвращает функцию, принимающую другую функцию в качестве аргумента. Каждый раз, когда вызывается возвращённая функция, она вызывает переданную ей функцию в захваченном контексте.
 
@@ -274,7 +274,7 @@ added:
  - v12.17.0
 -->
 
--   Возвращает: {any}
+-   Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Возвращает текущее хранилище. Если метод вызывается вне асинхронного контекста, инициализированного вызовом `asyncLocalStorage.run()` или `asyncLocalStorage.enterWith()`, он возвращает `undefined`.
 
@@ -290,7 +290,7 @@ added:
 
     Экспериментальный
 
--   `store` {any}
+-   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Переходит в контекст на оставшуюся часть текущего синхронного выполнения, а затем сохраняет хранилище во всех последующих асинхронных вызовах.
 
@@ -329,7 +329,7 @@ asyncLocalStorage.getStore(); // Returns the same object
 added: v24.0.0
 -->
 
--   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя экземпляра `AsyncLocalStorage`, если оно задано.
 
@@ -341,9 +341,9 @@ added:
  - v12.17.0
 -->
 
--   `store` {any}
--   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `...args` {any}
+-   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Синхронно выполняет функцию внутри контекста и возвращает её возвращаемое значение. Хранилище недоступно вне callback-функции. Хранилище доступно для любых асинхронных операций, созданных внутри callback.
 
@@ -381,8 +381,8 @@ added:
 
     Экспериментальный
 
--   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `...args` {any}
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Синхронно выполняет функцию вне контекста и возвращает её возвращаемое значение. Хранилище недоступно внутри callback-функции или асинхронных операций, созданных в её рамках. Любой вызов `getStore()`, выполненный внутри callback-функции, всегда будет возвращать `undefined`.
 
@@ -418,8 +418,8 @@ added: v25.9.0
 
     Экспериментальный
 
--   `store` {any}
--   Возвращает: [<RunScope>](async_context.md)
+-   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<RunScope>`](async_context.md)
 
 Создаёт освобождаемый scope, который входит в переданное хранилище и автоматически восстанавливает предыдущее значение хранилища при освобождении scope. Этот метод предназначен для работы с механизмом явного управления ресурсами в JavaScript (синтаксис `using`).
 
@@ -685,10 +685,10 @@ changes:
 
 ### `new AsyncResource(type[, options])`
 
--   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события.
--   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `triggerAsyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID контекста выполнения, создавшего это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
-    -   `requireManualDestroy` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено в `true`, отключает `emitDestroy` при сборке объекта мусорщиком. Обычно это значение задавать не требуется (даже если `emitDestroy` вызывается вручную), кроме случая, когда был получен `asyncId` ресурса и с ним вызывается `emitDestroy` чувствительного API. Если установлено в `false`, вызов `emitDestroy` при сборке мусора произойдёт только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID контекста выполнения, создавшего это асинхронное событие. **По умолчанию:** `executionAsyncId()`.
+    -   `requireManualDestroy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено в `true`, отключает `emitDestroy` при сборке объекта мусорщиком. Обычно это значение задавать не требуется (даже если `emitDestroy` вызывается вручную), кроме случая, когда был получен `asyncId` ресурса и с ним вызывается `emitDestroy` чувствительного API. Если установлено в `false`, вызов `emitDestroy` при сборке мусора произойдёт только при наличии хотя бы одного активного хука `destroy`. **По умолчанию:** `false`.
 
 Пример использования:
 
@@ -743,9 +743,9 @@ changes:
     | v17.8.0, v16.15.0 | Изменено значение по умолчанию, когда thisArg не определен, чтобы использовать this от вызывающего объекта. |
     | v16.0.0 | Добавлен необязательный thisArg. |
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
--   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя, связанное с базовым `AsyncResource`.
--   `thisArg` {any}
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
+-   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя, связанное с базовым `AsyncResource`.
+-   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Привязывает переданную функцию к текущему контексту выполнения.
 
@@ -780,8 +780,8 @@ changes:
     | v17.8.0, v16.15.0 | Изменено значение по умолчанию, когда thisArg не определен, чтобы использовать this от вызывающего объекта. |
     | v16.0.0 | Добавлен необязательный thisArg. |
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему `AsyncResource`.
--   `thisArg` {any}
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему `AsyncResource`.
+-   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Привязывает переданную функцию к выполнению в scope этого `AsyncResource`.
 
@@ -791,25 +791,25 @@ changes:
 added: v9.6.0
 -->
 
--   `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно вызвать в контексте выполнения этого асинхронного ресурса.
--   `thisArg` {any} Получатель, который будет использован при вызове функции.
--   `...args` {any} Необязательные аргументы, передаваемые в функцию.
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно вызвать в контексте выполнения этого асинхронного ресурса.
+-   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Получатель, который будет использован при вызове функции.
+-   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы, передаваемые в функцию.
 
 Вызывает переданную функцию с указанными аргументами в контексте выполнения асинхронного ресурса. Это установит контекст, вызовет AsyncHooks before для callback-функций, вызовет функцию, затем AsyncHooks after и после этого восстановит исходный контекст выполнения.
 
 ### `asyncResource.emitDestroy()`
 
--   Возвращает: [<AsyncResource>](async_hooks.md#asyncresource) Ссылку на `asyncResource`.
+-   Возвращает: [`<AsyncResource>`](async_hooks.md#asyncresource) Ссылку на `asyncResource`.
 
 Вызывает все хуки `destroy`. Этот метод должен вызываться только один раз. Если вызвать его более одного раза, будет выброшена ошибка. Его **необходимо** вызывать вручную. Если ресурс будет просто собран GC, хуки `destroy` никогда не будут вызваны.
 
 ### `asyncResource.asyncId()`
 
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId`, присвоенный ресурсу.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId`, присвоенный ресурсу.
 
 ### `asyncResource.triggerAsyncId()`
 
--   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передаётся в конструктор `AsyncResource`.
+-   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передаётся в конструктор `AsyncResource`.
 
 ### Использование `AsyncResource` для пула потоков `Worker` {#async-resource-worker-pool}
 

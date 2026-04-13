@@ -262,7 +262,7 @@ added:
   - v20.12.0
 -->
 
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Выполняется ли этот скрипт внутри одноисполняемого приложения.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Выполняется ли этот скрипт внутри одноисполняемого приложения.
 
 ### `sea.getAsset(key[, encoding])`
 
@@ -275,10 +275,10 @@ added:
 Метод возвращает ресурсы, заданные для включения в одноисполняемое приложение на этапе сборки.
 Если ресурс не найден, выбрасывается ошибка.
 
-* `key`  [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
-* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если указано, ресурс декодируется в строку. Допустима любая кодировка, поддерживаемая `TextDecoder`.
+* `key`  [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если указано, ресурс декодируется в строку. Допустима любая кодировка, поддерживаемая `TextDecoder`.
   Если не указано, возвращается `ArrayBuffer` с копией данных.
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 ### `sea.getAssetAsBlob(key[, options])`
 
@@ -291,10 +291,10 @@ added:
 Аналогично [`sea.getAsset()`][`sea.getAsset()`], но результат — [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
 Если ресурс не найден, выбрасывается ошибка.
 
-* `key`  [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) необязательный MIME-тип для blob.
-* Возвращает: [<Blob>](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+* `key`  [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) необязательный MIME-тип для blob.
+* Возвращает: [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 
 ### `sea.getRawAsset(key)`
 
@@ -311,8 +311,8 @@ added:
 
 Пока не следует записывать в возвращённый `ArrayBuffer`. Если внедрённая секция не помечена как доступная для записи или выравнивание неверное, запись может привести к падению.
 
-* `key`  [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
-* Возвращает: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* `key`  [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) ключ в словаре поля `assets` конфигурации одноисполняемого приложения.
+* Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 ### `sea.getAssetKeys()`
 

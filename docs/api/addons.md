@@ -62,8 +62,8 @@ void Method(const FunctionCallbackInfo<Value>& args) {
 void Initialize(Local<Object> exports) {
   NODE_SET_METHOD(exports, "hello", Method);
 }
-
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize) // Примечание: без точки с запятой, это не функция
+// Примечание: без точки с запятой, это не функция
+NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 
 }  // namespace demo
 ```
@@ -149,7 +149,8 @@ class AddonData {
  public:
   explicit AddonData(Isolate* isolate):
       call_count(0) {
-    // Гарантируем удаление этих данных экземпляра аддона при очистке среды.
+    // Гарантируем удаление этих данных экземпляра аддона
+	// при очистке среды.
     node::AddEnvironmentCleanupHook(isolate, DeleteInstance, this);
   }
 
@@ -181,8 +182,9 @@ NODE_MODULE_INIT(/* exports, module, context */) {
   // который мы экспортируем.
   Local<External> external = External::New(isolate, data);
 
-  // Экспортируем метод `Method` в JavaScript и гарантируем, что он получит
-  // данные конкретного экземпляра аддона, созданные выше, передавая `external`
+  // Экспортируем метод `Method` в JavaScript и гарантируем,
+  // что он получит данные конкретного экземпляра аддона,
+  // созданные выше, передавая `external`
   // как третий параметр в конструктор `FunctionTemplate`.
   exports->Set(context,
                String::NewFromUtf8(isolate, "method").ToLocalChecked(),
@@ -239,7 +241,8 @@ using v8::Isolate;
 using v8::Local;
 using v8::Object;
 
-// Примечание: в реальном приложении не полагайтесь на статические/глобальные данные.
+// Примечание: в реальном приложении не полагайтесь
+// на статические/глобальные данные.
 static char cookie[] = "yum yum";
 static int cleanup_cb1_called = 0;
 static int cleanup_cb2_called = 0;
@@ -353,15 +356,13 @@ added:
 
 Если взять пример Hello World выше, можно сделать так:
 
-=== "MJS"
+```js
+// hello.mjs
+import myAddon from './hello.node';
+// Примечание: import {hello} from './hello.node' не сработает
 
-    ```js
-    // hello.mjs
-    import myAddon from './hello.node';
-    // Примечание: import {hello} from './hello.node' не сработает
-
-    console.log(myAddon.hello());
-    ```
+console.log(myAddon.hello());
+```
 
 ```console
 $ node --experimental-addon-modules hello.mjs

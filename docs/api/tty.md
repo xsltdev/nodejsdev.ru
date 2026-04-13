@@ -71,8 +71,8 @@ added: v0.5.8
 added: v0.7.7
 -->
 
-* `mode` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, настраивает `tty.ReadStream` на работу в режиме «сырого» устройства. Если `false` — на обычный режим. Свойство `readStream.isRaw` будет установлено в соответствующий режим.
-* Возвращает: [<this>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this) Экземпляр потока чтения.
+* `mode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, настраивает `tty.ReadStream` на работу в режиме «сырого» устройства. Если `false` — на обычный режим. Свойство `readStream.isRaw` будет установлено в соответствующий режим.
+* Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this) Экземпляр потока чтения.
 
 Позволяет настроить `tty.ReadStream` так, чтобы он работал как «сырое» устройство.
 
@@ -108,10 +108,10 @@ changes:
     | --- | --- |
     | v0.9.4 | Аргумент `options` поддерживается. |
 
-* `fd` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры, передаваемые родительскому `net.Socket`;
+* `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры, передаваемые родительскому `net.Socket`;
   см. `options` у [конструктора `net.Socket`][`net.Socket` constructor].
-* Возвращает: [<tty.ReadStream>](tty.md)
+* Возвращает: [`<tty.ReadStream>`](tty.md)
 
 Создаёт `ReadStream` для `fd`, связанного с TTY.
 
@@ -121,8 +121,8 @@ changes:
 added: v0.5.8
 -->
 
-* `fd` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
-* Возвращает: [<tty.WriteStream>](tty.md)
+* `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
+* Возвращает: [`<tty.WriteStream>`](tty.md)
 
 Создаёт `WriteStream` для `fd`, связанного с TTY.
 
@@ -160,12 +160,12 @@ changes:
     | --- | --- |
     | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
-* `dir` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `dir` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `-1`: влево от курсора
   * `1`: вправо от курсора
   * `0`: вся строка
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
   события `'drain'` перед продолжением записи; иначе `true`.
 
 `writeStream.clearLine()` очищает текущую строку этого `WriteStream` в направлении, заданном `dir`.
@@ -188,8 +188,8 @@ changes:
     | --- | --- |
     | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
   события `'drain'` перед продолжением записи; иначе `true`.
 
 `writeStream.clearScreenDown()` очищает этот `WriteStream` от текущей позиции курсора вниз.
@@ -221,10 +221,10 @@ changes:
     | --- | --- |
     | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
-* `x` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `y` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
+* `x` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `y` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
   события `'drain'` перед продолжением записи; иначе `true`.
 
 `writeStream.cursorTo()` перемещает курсор этого `WriteStream` в указанную позицию.
@@ -235,10 +235,10 @@ changes:
 added: v9.9.0
 -->
 
-* `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с переменными окружения для проверки. Это
+* `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с переменными окружения для проверки. Это
   позволяет имитировать использование конкретного терминала. **По умолчанию:**
   `process.env`.
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает:
 
@@ -281,12 +281,12 @@ added:
  - v10.16.0
 -->
 
-* `count` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Запрашиваемое число цветов (минимум 2).
+* `count` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Запрашиваемое число цветов (минимум 2).
   **По умолчанию:** 16.
-* `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с переменными окружения для проверки. Это
+* `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с переменными окружения для проверки. Это
   позволяет имитировать использование конкретного терминала. **По умолчанию:**
   `process.env`.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если `writeStream` поддерживает не меньше цветов, чем указано в
 `count`. Минимальная поддержка — 2 (чёрный и белый).
@@ -331,10 +331,10 @@ changes:
     | --- | --- |
     | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
-* `dx` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `dy` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
+* `dx` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `dy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
   события `'drain'` перед продолжением записи; иначе `true`.
 
 `writeStream.moveCursor()` перемещает курсор этого `WriteStream` _относительно_ текущей позиции.
@@ -354,8 +354,8 @@ added: v0.7.7
 added: v0.5.8
 -->
 
-* `fd` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой дескриптор файла
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой дескриптор файла
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Метод `tty.isatty()` возвращает `true`, если указанный `fd` связан с
 TTY, и `false`, если нет, в том числе когда `fd` не является неотрицательным целым числом.

@@ -477,7 +477,7 @@ changes:
 
 Поддерживается следующая опция:
 
-* `captureRejections` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
+* `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
   [автоматический перехват отклонений промисов][capturerejections].
   **По умолчанию:** `false`.
 
@@ -487,8 +487,8 @@ changes:
 added: v0.1.26
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 
 Экземпляр `EventEmitter` испускает собственное событие `'newListener'` _до_ того,
 как слушатель будет добавлен во внутренний массив слушателей.
@@ -572,8 +572,8 @@ changes:
     | --- | --- |
     | v6.1.0, v4.7.0 | Для прослушивателей, подключенных с помощью `.once()`, аргумент `listener` теперь возвращает исходную функцию прослушивателя. |
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 
 Событие `'removeListener'` испускается _после_ удаления `listener`.
 
@@ -583,8 +583,8 @@ changes:
 added: v0.1.26
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Псевдоним для `emitter.on(eventName, listener)`.
 
@@ -594,9 +594,9 @@ added: v0.1.26
 added: v0.1.26
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `...args` {any}
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Синхронно вызывает каждого из слушателей, зарегистрированных для события
 `eventName`, в порядке регистрации, передавая им указанные аргументы.
@@ -722,7 +722,7 @@ added: v6.0.0
 added: v1.0.0
 -->
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает текущее максимальное число слушателей для `EventEmitter` — либо
 заданное через [`emitter.setMaxListeners(n)`][`emitter.setMaxListeners(n)`], либо по умолчанию
@@ -748,9 +748,9 @@ changes:
     | --- | --- |
     | v19.8.0, v18.16.0 | Добавлен аргумент «слушатель». |
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает число слушателей события `eventName`.
 Если передан `listener`, возвращается, сколько раз этот обработчик встречается
@@ -775,7 +775,7 @@ changes:
     | --- | --- |
     | v7.0.0 | Для прослушивателей, подключенных с помощью .once(), теперь возвращаются исходные прослушиватели вместо функций-оболочек. |
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 * Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`.
@@ -794,9 +794,9 @@ console.log(util.inspect(server.listeners('connection')));
 added: v10.0.0
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Псевдоним для [`emitter.removeListener()`][`emitter.removeListener()`].
 
@@ -806,9 +806,9 @@ added: v10.0.0
 added: v0.1.101
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет функцию `listener` в конец массива слушателей для события `eventName`.
 Проверка, не добавлен ли `listener` ранее, не выполняется. Повторные вызовы с той
@@ -858,9 +858,9 @@ server.on('connection', (stream) => {
 added: v0.3.0
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет **одноразовую** функцию `listener` для события `eventName`. При
 следующем срабатывании `eventName` этот слушатель удаляется, затем вызывается.
@@ -909,9 +909,9 @@ server.once('connection', (stream) => {
 added: v6.0.0
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет функцию `listener` в _начало_ массива слушателей для события
 `eventName`. Проверка, не добавлен ли `listener` ранее, не выполняется.
@@ -932,9 +932,9 @@ server.prependListener('connection', (stream) => {
 added: v6.0.0
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет **одноразовую** функцию `listener` для события `eventName` в _начало_
 массива слушателей. При следующем срабатывании `eventName` этот слушатель
@@ -954,8 +954,8 @@ server.prependOnceListener('connection', (stream) => {
 added: v0.1.26
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Удаляет всех слушателей или только слушателей указанного `eventName`.
 
@@ -971,9 +971,9 @@ added: v0.1.26
 added: v0.1.26
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Удаляет указанный `listener` из массива слушателей события `eventName`.
 
@@ -1117,8 +1117,8 @@ server.removeListener('connection', callback);
 added: v0.3.5
 -->
 
-* `n` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* Возвращает: [<EventEmitter>](events.md#class-eventemitter)
+* `n` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 По умолчанию у `EventEmitter` выводится предупреждение, если для одного события
 добавлено более `10` слушателей. Это удобное ограничение для поиска утечек
@@ -1134,7 +1134,7 @@ added: v0.3.5
 added: v9.4.0
 -->
 
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 * Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`, включая обёртки
@@ -1214,9 +1214,9 @@ changes:
     | --- | --- |
     | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `...args` {any}
+* `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Метод `Symbol.for('nodejs.rejection')` вызывается при отклонении промиса при
 испускании события, если у эмиттера включён [`captureRejections`][capturerejections].
@@ -1345,8 +1345,8 @@ added:
  - v14.17.0
 -->
 
-* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `emitterOrTarget` [`<EventEmitter>`](events.md#class-eventemitter) | [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 * Возвращает: [<Function[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Возвращает копию массива слушателей для события `eventName`.
@@ -1402,8 +1402,8 @@ added:
   - v18.17.0
 -->
 
-* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `emitterOrTarget` [`<EventEmitter>`](events.md#class-eventemitter) | [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает текущее максимальное число слушателей.
 
@@ -1469,11 +1469,11 @@ changes:
     | --- | --- |
     | v15.0.0 | Опция `signal` теперь поддерживается. |
 
-* `emitter` [<EventEmitter>](events.md#class-eventemitter)
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Можно использовать для отмены ожидания события.
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Можно использовать для отмены ожидания события.
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Создаёт `Promise`, который выполняется, когда `EventEmitter` испускает указанное
 событие, или отклоняется, если при ожидании испускается `'error'`.
@@ -1765,7 +1765,7 @@ changes:
     | --- | --- |
     | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Меняет значение по умолчанию опции `captureRejections` для всех новых объектов
 `EventEmitter`.
@@ -1790,7 +1790,7 @@ changes:
     | --- | --- |
     | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
-* Тип: [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) `Symbol.for('nodejs.rejection')`
+* Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) `Symbol.for('nodejs.rejection')`
 
 См. раздел о написании пользовательского [обработчика отклонений][rejection].
 
@@ -1824,9 +1824,9 @@ changes:
     | v25.4.0, v24.14.0 | Устаревание отменено. |
     | v3.2.0 | Прекращение поддержки только документации. |
 
-* `emitterOrTarget` [<EventEmitter>](events.md#class-eventemitter) | [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget)
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `emitterOrTarget` [`<EventEmitter>`](events.md#class-eventemitter) | [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает число зарегистрированных слушателей для события `eventName`.
 
@@ -1900,18 +1900,18 @@ changes:
     | v22.0.0, v20.13.0 | Поддержка опций highWaterMark и lowWaterMark для обеспечения единообразия. Старые варианты по-прежнему поддерживаются. |
     | v20.0.0 | Параметры close, highWatermark и lowWatermark теперь поддерживаются. |
 
-* `emitter` [<EventEmitter>](events.md#class-eventemitter)
-* `eventName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Можно использовать для отмены ожидания событий.
+* `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
+* `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Можно использовать для отмены ожидания событий.
   * `close` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имена событий, завершающих итерацию.
-  * `highWaterMark` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Number.MAX_SAFE_INTEGER`
+  * `highWaterMark` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Number.MAX_SAFE_INTEGER`
     Верхняя отметка: эмиттер ставится на паузу, когда буфер событий больше этого
     значения. Только для эмиттеров с методами `pause()` и `resume()`.
-  * `lowWaterMark` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1`
+  * `lowWaterMark` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `1`
     Нижняя отметка: эмиттер возобновляется, когда буфер меньше этого значения.
     Только для эмиттеров с методами `pause()` и `resume()`.
-* Возвращает: [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface) — асинхронный итератор по событиям `eventName` от `emitter`
+* Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) — асинхронный итератор по событиям `eventName` от `emitter`
 
 === "MJS"
 
@@ -2029,7 +2029,7 @@ changes:
 added: v15.4.0
 -->
 
-* `n` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число — максимум слушателей на одно событие
+* `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число — максимум слушателей на одно событие
   `EventTarget`.
 * `...eventsTargets` [<EventTarget[]>](https://dom.spec.whatwg.org/#interface-eventtarget) | [<EventEmitter[]>](events.md#class-eventemitter) Ноль или больше экземпляров
   [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) или [EventEmitter](events.md#class-eventemitter). Если не указано, `n` задаётся по умолчанию для
@@ -2080,8 +2080,8 @@ changes:
     | --- | --- |
     | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
 
-* `signal` [<AbortSignal>](globals.md#abortsignal)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `signal` [`<AbortSignal>`](globals.md#abortsignal)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 * Возвращает: {Disposable} Объект, снимающий слушатель `abort` при утилизации.
 
 Подписывается один раз на событие `abort` у переданного `signal`.
@@ -2205,14 +2205,14 @@ added:
 
 ### `new events.EventEmitterAsyncResource([options])`
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `captureRejections` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `captureRejections` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включает
     [автоматический перехват отклонений промисов][capturerejections].
     **По умолчанию:** `false`.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию:** [`new.target.name`][`new.target.name`].
-  * `triggerAsyncId` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор контекста, создавшего это асинхронное
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного события. **По умолчанию:** [`new.target.name`][`new.target.name`].
+  * `triggerAsyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор контекста, создавшего это асинхронное
     событие. **По умолчанию:** `executionAsyncId()`.
-  * `requireManualDestroy` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` отключает `emitDestroy` при
+  * `requireManualDestroy` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` отключает `emitDestroy` при
     сборке мусора. Обычно не нужно (даже при ручном `emitDestroy`), если только
     не получают `asyncId` ресурса и вызывают с ним `emitDestroy` из чувствительного API.
     При `false` вызов `emitDestroy` при GC произойдёт только если есть хотя бы один
@@ -2220,11 +2220,11 @@ added:
 
 ### `eventemitterasyncresource.asyncId`
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId` ресурса.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный `asyncId` ресурса.
 
 ### `eventemitterasyncresource.asyncResource`
 
-* Тип: [<AsyncResource>](async_hooks.md#asyncresource) Базовый [AsyncResource](async_hooks.md#asyncresource).
+* Тип: [`<AsyncResource>`](async_hooks.md#asyncresource) Базовый [AsyncResource](async_hooks.md#asyncresource).
 
 У возвращённого `AsyncResource` есть дополнительное свойство `eventEmitter` —
 ссылка на этот `EventEmitterAsyncResource`.
@@ -2237,7 +2237,7 @@ added:
 
 ### `eventemitterasyncresource.triggerAsyncId`
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, что передаётся в конструктор `AsyncResource`.
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, что передаётся в конструктор `AsyncResource`.
 
 ## API `EventTarget` и `Event` {#event-target-and-event-api}
 
@@ -2397,7 +2397,7 @@ changes:
 added: v14.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
 В Node.js не используется, оставлено для полноты совместимости.
 
@@ -2409,7 +2409,7 @@ added: v14.5.0
 
 > Stability: 3 - Legacy: Use [`event.stopPropagation()`][`event.stopPropagation()`] instead.
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Псевдоним для `event.stopPropagation()` при значении `true`. В Node.js не
 используется, оставлено для полноты.
@@ -2420,7 +2420,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие создано с опцией `cancelable`.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие создано с опцией `cancelable`.
 
 #### `event.composed`
 
@@ -2428,7 +2428,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Всегда возвращает `false`.
 
 В Node.js не используется, оставлено для полноты.
 
@@ -2448,7 +2448,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
+* Тип: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 Псевдоним для `event.target`.
 
@@ -2458,7 +2458,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true`, если `cancelable` равен `true` и вызван `event.preventDefault()`.
 
@@ -2468,7 +2468,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Возвращает `0`, пока событие не диспетчеризуется, и `2` во время
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Возвращает `0`, пока событие не диспетчеризуется, и `2` во время
   диспетчеризации.
 
 В Node.js не используется, оставлено для полноты.
@@ -2482,9 +2482,9 @@ added: v19.5.0
 > Stability: 3 - Legacy: The WHATWG spec considers it deprecated and users
 > shouldn't use it at all.
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `bubbles` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `cancelable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `bubbles` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `cancelable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Избыточно при наличии конструкторов событий и не задаёт `composed`. В Node.js не
 используется, оставлено для полноты.
@@ -2495,7 +2495,7 @@ added: v19.5.0
 added: v14.5.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Для события `"abort"` у [AbortSignal](globals.md#abortsignal) `isTrusted` равен `true`. В остальных
 случаях — `false`.
@@ -2516,7 +2516,7 @@ added: v14.5.0
 
 > Stability: 3 - Legacy: Use [`event.defaultPrevented`][`event.defaultPrevented`] instead.
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие не отменено.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие не отменено.
 
 Значение `event.returnValue` всегда противоположно `event.defaultPrevented`.
 В Node.js не используется, оставлено для полноты.
@@ -2529,7 +2529,7 @@ added: v14.5.0
 
 > Stability: 3 - Legacy: Use [`event.target`][`event.target`] instead.
 
-* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
+* Тип: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 Псевдоним для `event.target`.
 
@@ -2555,7 +2555,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
+* Тип: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
 #### `event.timeStamp`
 
@@ -2563,7 +2563,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах на момент создания объекта `Event`.
 
@@ -2573,7 +2573,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор типа события.
 
@@ -2614,16 +2614,16 @@ changes:
     | --- | --- |
     | v15.4.0 | добавить поддержку опции «сигнал». |
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `once` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` слушатель автоматически снимается после первого
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `once` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` слушатель автоматически снимается после первого
     вызова. **По умолчанию:** `false`.
-  * `passive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` намекает, что слушатель не будет вызывать
+  * `passive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` намекает, что слушатель не будет вызывать
     `preventDefault()` у объекта `Event`. **По умолчанию:** `false`.
-  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) В Node.js напрямую не используется; добавлено для полноты API.
+  * `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) В Node.js напрямую не используется; добавлено для полноты API.
     **По умолчанию:** `false`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Слушатель снимается при вызове `abort()` у указанного
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Слушатель снимается при вызове `abort()` у указанного
     `AbortSignal`.
 
 Добавляет обработчик для события `type`. Один и тот же `listener` добавляется не
@@ -2656,8 +2656,8 @@ target.removeEventListener('foo', handler, { capture: true });
 added: v14.5.0
 -->
 
-* `event` [<Event>](globals.md)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если у события `cancelable` равен `false` или
+* `event` [`<Event>`](globals.md)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если у события `cancelable` равен `false` или
   `preventDefault()` не вызывался, иначе `false`.
 
 Диспетчеризует `event` списку обработчиков для `event.type`.
@@ -2670,10 +2670,10 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Удаляет `listener` из списка обработчиков для события `type`.
 
@@ -2705,7 +2705,7 @@ changes:
     | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
     | v19.0.0 | Флаг CLI `--experimental-global-customevent` больше не используется. |
 
-* Extends: [<Event>](globals.md)
+* Extends: [`<Event>`](globals.md)
 
 Объект `CustomEvent` — адаптация [`CustomEvent` Web API][`CustomEvent` Web API]. Экземпляры создаются
 внутри Node.js.
@@ -2730,7 +2730,7 @@ changes:
     | --- | --- |
     | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
 
-* Тип: {any} Пользовательские данные, переданные при инициализации.
+* Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Пользовательские данные, переданные при инициализации.
 
 Только для чтения.
 
@@ -2751,11 +2751,11 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Расширение Node.js для `EventTarget`, аналог соответствующего API `EventEmitter`.
 Отличие от `addEventListener()` в том, что `addListener()` возвращает ссылку на
@@ -2767,9 +2767,9 @@ added: v14.5.0
 added: v15.2.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `arg` {any}
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для `type` есть слушатели, иначе `false`.
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `arg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для `type` есть слушатели, иначе `false`.
 
 Расширение Node.js: передаёт `arg` списку обработчиков для `type`.
 
@@ -2790,9 +2790,9 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Расширение Node.js: число слушателей для `type`.
 
@@ -2802,7 +2802,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `n` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Расширение Node.js: задаёт максимальное число слушателей равным `n`.
 
@@ -2812,7 +2812,7 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Расширение Node.js: возвращает максимальное число слушателей.
 
@@ -2822,14 +2822,14 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Псевдоним Node.js для `eventTarget.removeEventListener()`.
 
@@ -2839,11 +2839,11 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Псевдоним Node.js для `eventTarget.addEventListener()`.
 
@@ -2853,11 +2853,11 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Расширение Node.js: добавляет одноразового слушателя для `type`. Эквивалентно
 `on` с опцией `once: true`.
@@ -2868,9 +2868,9 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Расширение Node.js: если указан `type`, снимает всех слушателей для него, иначе —
 всех слушателей.
@@ -2881,14 +2881,14 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-* `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<EventListener>](https://developer.mozilla.org/docs/Web/API/EventListener)
+* `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `capture` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `capture` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-* Возвращает: [<EventTarget>](https://dom.spec.whatwg.org/#interface-eventtarget) this
+* Возвращает: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) this
 
 Расширение Node.js: удаляет `listener` для `type`. Отличие от
 `removeEventListener()` в том, что `removeListener()` возвращает ссылку на

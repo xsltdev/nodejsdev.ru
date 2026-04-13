@@ -93,9 +93,9 @@ description: Модуль node:zlib/iter — преобразования сжа
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
     `zlib.constants`. Основные параметры компрессора:
     * `BROTLI_PARAM_MODE` — `BROTLI_MODE_GENERIC` (по умолчанию),
       `BROTLI_MODE_TEXT` или `BROTLI_MODE_FONT`.
@@ -110,8 +110,8 @@ added: v25.9.0
       память без существенной потери сжатия для потоковых сценариев.
     * `BROTLI_PARAM_LGBLOCK` — размер блока входа (log2).
       Полный список см. в разделе [параметры компрессора Brotli][параметры компрессора Brotli] в документации по zlib.
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование сжатия Brotli. Выход совместим с
 `zlib.brotliDecompress()` и `decompressBrotli()`/`decompressBrotliSync()`.
@@ -124,14 +124,14 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `level` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень сжатия (`0`–`9`). **По умолчанию:** `4`.
-  * `windowBits` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
-  * `memLevel` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `9`.
-  * `strategy` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_STRATEGY`.
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `level` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень сжатия (`0`–`9`). **По умолчанию:** `4`.
+  * `windowBits` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
+  * `memLevel` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `9`.
+  * `strategy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_STRATEGY`.
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование сжатия deflate. Выход совместим с
 `zlib.inflate()` и `decompressDeflate()`/`decompressDeflateSync()`.
@@ -144,14 +144,14 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `level` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень сжатия (`0`–`9`). **По умолчанию:** `4`.
-  * `windowBits` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
-  * `memLevel` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `9`.
-  * `strategy` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_STRATEGY`.
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `level` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уровень сжатия (`0`–`9`). **По умолчанию:** `4`.
+  * `windowBits` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
+  * `memLevel` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `9`.
+  * `strategy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_STRATEGY`.
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование сжатия gzip. Выход совместим с `zlib.gunzip()`
 и `decompressGzip()`/`decompressGzipSync()`.
@@ -164,9 +164,9 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
     `zlib.constants`. Основные параметры компрессора:
     * `ZSTD_c_compressionLevel` — **по умолчанию:** `ZSTD_CLEVEL_DEFAULT` (3).
     * `ZSTD_c_checksumFlag` — формировать контрольную сумму. **По умолчанию:** `0`.
@@ -175,9 +175,9 @@ added: v25.9.0
       `ZSTD_lazy2`, `ZSTD_btlazy2`, `ZSTD_btopt`, `ZSTD_btultra`,
       `ZSTD_btultra2`.
       Полный список см. в разделе [параметры компрессора Zstd][параметры компрессора Zstd] в документации по zlib.
-  * `pledgedSrcSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемый несжатый размер (необязательная подсказка).
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+  * `pledgedSrcSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемый несжатый размер (необязательная подсказка).
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование сжатия Zstandard. Выход совместим с
 `zlib.zstdDecompress()` и `decompressZstd()`/`decompressZstdSync()`.
@@ -190,17 +190,17 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
     `zlib.constants`. Доступные параметры декомпрессора:
     * `BROTLI_DECODER_PARAM_DISABLE_RING_BUFFER_REALLOCATION` — логический
       флаг, влияющий на внутреннее выделение памяти.
     * `BROTLI_DECODER_PARAM_LARGE_WINDOW` — логический флаг, включающий режим «Large
       Window Brotli» (несовместим с [RFC 7932][RFC 7932]).
       Подробнее см. в разделе [параметры декомпрессора Brotli][параметры декомпрессора Brotli] в документации по zlib.
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование распаковки Brotli.
 
@@ -212,11 +212,11 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `windowBits` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `windowBits` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование распаковки deflate.
 
@@ -228,11 +228,11 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `windowBits` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `windowBits` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `Z_DEFAULT_WINDOWBITS` (15).
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование распаковки gzip.
 
@@ -244,15 +244,15 @@ added: v25.9.0
 added: v25.9.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
-  * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
+  * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение», где ключи и значения — записи
     `zlib.constants`. Доступные параметры декомпрессора:
     * `ZSTD_d_windowLogMax` — максимальный размер окна (log2), который декомпрессор
       может выделить. Ограничивает использование памяти при вредоносном входе.
       Подробнее см. в разделе [параметры декомпрессора Zstd][параметры декомпрессора Zstd] в документации по zlib.
-  * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
+  * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
 Создаёт преобразование распаковки Zstandard.
 

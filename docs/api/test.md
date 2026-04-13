@@ -1624,110 +1624,110 @@ changes:
     | v22.0.0, v20.14.0 | Добавлена ​​опция ForceExit. |
     | v20.1.0, v18.17.0 | Добавьте параметр testNamePatterns. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for running tests. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for running tests. The following
   properties are supported:
-  * `concurrency` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If a number is provided,
+  * `concurrency` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If a number is provided,
     then that many test processes would run in parallel, where each process
     corresponds to one test file.
     If `true`, it would run `os.availableParallelism() - 1` test files in
     parallel.
     If `false`, it would only run one test file at a time.
     **Default:** `false`.
-  * `cwd` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the current working directory to be used by the test runner.
+  * `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the current working directory to be used by the test runner.
     Serves as the base path for resolving files as if [running tests from the command line][running tests from the command line] from that directory.
     **Default:** `process.cwd()`.
-  * `files` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of files to run.
+  * `files` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of files to run.
     **Default:** Same as [running tests from the command line][running tests from the command line].
-  * `forceExit` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Configures the test runner to exit the process once
+  * `forceExit` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Configures the test runner to exit the process once
     all known tests have finished executing even if the event loop would
     otherwise remain active. **Default:** `false`.
-  * `globPatterns` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of glob patterns to
+  * `globPatterns` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of glob patterns to
     match test files. This option cannot be used together with `files`.
     **Default:** Same as [running tests from the command line][running tests from the command line].
-  * `inspectPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Sets inspector port of test child process.
+  * `inspectPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Sets inspector port of test child process.
     This can be a number, or a function that takes no arguments and returns a
     number. If a nullish value is provided, each process gets its own port,
     incremented from the primary's `process.debugPort`. This option is ignored
     if the `isolation` option is set to `'none'` as no child processes are
     spawned. **Default:** `undefined`.
-  * `isolation` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Configures the type of test isolation. If set to
+  * `isolation` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Configures the type of test isolation. If set to
     `'process'`, each test file is run in a separate child process. If set to
     `'none'`, all test files run in the current process. **Default:**
     `'process'`.
-  * `only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, the test context will only run tests that
+  * `only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, the test context will only run tests that
     have the `only` option set
-  * `setup` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function that accepts the `TestsStream` instance
+  * `setup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function that accepts the `TestsStream` instance
     and can be used to setup listeners before any tests are run.
     **Default:** `undefined`.
-  * `execArgv` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of CLI flags to pass to the `node` executable when
+  * `execArgv` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of CLI flags to pass to the `node` executable when
     spawning the subprocesses. This option has no effect when `isolation` is `'none`'.
     **Default:** `[]`
-  * `argv` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of CLI flags to pass to each test file when spawning the
+  * `argv` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of CLI flags to pass to each test file when spawning the
     subprocesses. This option has no effect when `isolation` is `'none'`.
     **Default:** `[]`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress test execution.
-  * `testNamePatterns` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) A String, RegExp or a RegExp Array,
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress test execution.
+  * `testNamePatterns` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) A String, RegExp or a RegExp Array,
     that can be used to only run tests whose name matches the provided pattern.
     Test name patterns are interpreted as JavaScript regular expressions.
     For each test that is executed, any corresponding test hooks, such as
     `beforeEach()`, are also run.
     **Default:** `undefined`.
-  * `testSkipPatterns` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) A String, RegExp or a RegExp Array,
+  * `testSkipPatterns` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) A String, RegExp or a RegExp Array,
     that can be used to exclude running tests whose name matches the provided pattern.
     Test name patterns are interpreted as JavaScript regular expressions.
     For each test that is executed, any corresponding test hooks, such as
     `beforeEach()`, are also run.
     **Default:** `undefined`.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test execution will
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test execution will
     fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
-  * `watch` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether to run in watch mode or not. **Default:** `false`.
-  * `shard` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Running tests in a specific shard. **Default:** `undefined`.
-    * `index` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) is a positive integer between 1 and `<total>`
+  * `watch` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether to run in watch mode or not. **Default:** `false`.
+  * `shard` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Running tests in a specific shard. **Default:** `undefined`.
+    * `index` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) is a positive integer between 1 and `<total>`
       that specifies the index of the shard to run. This option is _required_.
-    * `total` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) is a positive integer that specifies the total number
+    * `total` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) is a positive integer that specifies the total number
       of shards to split the test files to. This option is _required_.
-  * `randomize` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Randomize execution order for test files and queued tests.
+  * `randomize` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Randomize execution order for test files and queued tests.
     This option is not supported with `watch: true`.
     **Default:** `false`.
-  * `randomSeed` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Seed used when randomizing execution order. If this
+  * `randomSeed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Seed used when randomizing execution order. If this
     option is set, runs can replay the same randomized order deterministically,
     and setting this option also enables randomization. The value must be an
     integer between `0` and `4294967295`.
     **Default:** `undefined`.
-  * `rerunFailuresFilePath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) A file path where the test runner will
+  * `rerunFailuresFilePath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) A file path where the test runner will
     store the state of the tests to allow rerunning only the failed tests on a next run.
     see \[Rerunning failed tests]\[] for more information.
     **Default:** `undefined`.
-  * `coverage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) enable [code coverage][code coverage] collection.
+  * `coverage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) enable [code coverage][code coverage] collection.
     **Default:** `false`.
-  * `coverageExcludeGlobs` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Excludes specific files from code coverage
+  * `coverageExcludeGlobs` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Excludes specific files from code coverage
     using a glob pattern, which can match both absolute and relative file paths.
     This property is only applicable when `coverage` was set to `true`.
     If both `coverageExcludeGlobs` and `coverageIncludeGlobs` are provided,
     files must meet **both** criteria to be included in the coverage report.
     **Default:** `undefined`.
-  * `coverageIncludeGlobs` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Includes specific files in code coverage
+  * `coverageIncludeGlobs` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Includes specific files in code coverage
     using a glob pattern, which can match both absolute and relative file paths.
     This property is only applicable when `coverage` was set to `true`.
     If both `coverageExcludeGlobs` and `coverageIncludeGlobs` are provided,
     files must meet **both** criteria to be included in the coverage report.
     **Default:** `undefined`.
-  * `lineCoverage` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered lines. If code
+  * `lineCoverage` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered lines. If code
     coverage does not reach the threshold specified, the process will exit with code `1`.
     **Default:** `0`.
-  * `branchCoverage` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered branches. If code
+  * `branchCoverage` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered branches. If code
     coverage does not reach the threshold specified, the process will exit with code `1`.
     **Default:** `0`.
-  * `functionCoverage` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered functions. If code
+  * `functionCoverage` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Require a minimum percent of covered functions. If code
     coverage does not reach the threshold specified, the process will exit with code `1`.
     **Default:** `0`.
-  * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Specify environment variables to be passed along to the test process.
+  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Specify environment variables to be passed along to the test process.
     This options is not compatible with `isolation='none'`. These variables will override
     those from the main process, and are not merged with `process.env`.
     **Default:** `process.env`.
-* Returns: [<TestsStream>](test.md)
+* Returns: [`<TestsStream>`](test.md)
 
 **Note:** `shard` is used to horizontally parallelize test running across
 machines or processes, ideal for large-scale executions across varied
@@ -1773,15 +1773,15 @@ added:
   - v20.13.0
 -->
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the suite, which is displayed when reporting test
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the suite, which is displayed when reporting test
   results. **Default:** The `name` property of `fn`, or `'<anonymous>'` if `fn`
   does not have a name.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the suite.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the suite.
   This supports the same options as `test([name][, options][, fn])`.
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The suite function declaring nested tests and
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The suite function declaring nested tests and
   suites. The first argument to this function is a [`SuiteContext`][`SuiteContext`] object.
   **Default:** A no-op function.
-* Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Immediately fulfilled with `undefined`.
+* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Immediately fulfilled with `undefined`.
 
 Функция `suite()` импортируется из модуля `node:test`.
 
@@ -1850,18 +1850,18 @@ changes:
     | v18.8.0, v16.18.0 | Добавьте опцию «сигнал». |
     | v18.7.0, v16.17.0 | Добавьте опцию «тайм-аут». |
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the test, which is displayed when reporting test
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the test, which is displayed when reporting test
   results. **Default:** The `name` property of `fn`, or `'<anonymous>'` if `fn`
   does not have a name.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the test. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the test. The following
   properties are supported:
-  * `concurrency` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If a number is provided,
+  * `concurrency` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If a number is provided,
     then that many tests would run asynchronously (they are still managed by the single-threaded event loop).
     If `true`, all scheduled asynchronous tests run concurrently within the
     thread. If `false`, only one test runs at a time.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `false`.
-  * `expectFailure` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) If truthy, the
+  * `expectFailure` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) If truthy, the
     test is expected to fail. If a non-empty string is provided, that string is displayed
     in the test results as the reason why the test is expected to fail. If a [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     is provided directly (without wrapping in `{ match: … }`), the test passes
@@ -1869,28 +1869,28 @@ changes:
     [`assert.throws`][`assert.throws`]. To provide both a reason and validation, pass an object
     with `label` (string) and `match` (RegExp, Function, Object, or Error).
     **Default:** `false`.
-  * `only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, and the test context is configured to run
+  * `only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, and the test context is configured to run
     `only` tests, then this test will be run. Otherwise, the test is skipped.
     **Default:** `false`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress test.
-  * `skip` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test is skipped. If a string is
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress test.
+  * `skip` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test is skipped. If a string is
     provided, that string is displayed in the test results as the reason for
     skipping the test. **Default:** `false`.
-  * `todo` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test marked as `TODO`. If a string
+  * `todo` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test marked as `TODO`. If a string
     is provided, that string is displayed in the test results as the reason why
     the test is `TODO`. **Default:** `false`.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test will fail after.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
-  * `plan` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests expected to be run in the test.
+  * `plan` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests expected to be run in the test.
     If the number of assertions run in the test does not match the number
     specified in the plan, the test will fail.
     **Default:** `undefined`.
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the test uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once
+* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once
   the test completes, or immediately if the test runs within a suite.
 
 `test()` — это значение, импортируемое из модуля `test`. Каждый вызов регистрирует тест в [TestsStream](test.md).
@@ -2014,14 +2014,14 @@ added:
   - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
   If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -2044,14 +2044,14 @@ added:
  - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
   If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -2077,14 +2077,14 @@ added:
   - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
   If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -2107,14 +2107,14 @@ added:
   - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function.
   If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -2169,7 +2169,7 @@ added: v22.3.0
 added: v22.3.0
 -->
 
-* `serializers` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used as the default
+* `serializers` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used as the default
   serializers for snapshot tests.
 
 This function is used to customize the default serialization mechanism used by
@@ -2184,7 +2184,7 @@ more robust serialization mechanism is required, this function should be used.
 added: v22.3.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function used to compute the location of the snapshot file.
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function used to compute the location of the snapshot file.
   The function receives the path of the test file as its only argument. If the
   test is not associated with a file (for example in the REPL), the input is
   undefined. `fn()` must return a string specifying the location of the snapshot
@@ -2213,21 +2213,21 @@ added:
   - v18.13.0
 -->
 
-* Type: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
+* Type: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 A getter that returns a copy of the internal array used to track calls to the
 mock. Each entry in the array is an object with the following properties.
 
-* `arguments` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of the arguments passed to the mock function.
-* `error` {any} If the mocked function threw then this property contains the
+* `arguments` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of the arguments passed to the mock function.
+* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) If the mocked function threw then this property contains the
   thrown value. **Default:** `undefined`.
-* `result` {any} The value returned by the mocked function.
-* `stack` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
+* `result` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value returned by the mocked function.
+* `stack` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
   callsite of the mocked function invocation.
-* `target` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined If the mocked function is a constructor, this
+* `target` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined If the mocked function is a constructor, this
   field contains the class being constructed. Otherwise this will be
   `undefined`.
-* `this` {any} The mocked function's `this` value.
+* `this` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The mocked function's `this` value.
 
 ### `ctx.callCount()`
 
@@ -2237,7 +2237,7 @@ added:
   - v18.13.0
 -->
 
-* Returns: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that this mock has been invoked.
+* Returns: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that this mock has been invoked.
 
 This function returns the number of times that this mock has been invoked. This
 function is more efficient than checking `ctx.calls.length` because `ctx.calls`
@@ -2251,7 +2251,7 @@ added:
   - v18.13.0
 -->
 
-* `implementation` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function to be used as the
+* `implementation` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function to be used as the
   mock's new implementation.
 
 This function is used to change the behavior of an existing mock.
@@ -2290,9 +2290,9 @@ added:
   - v18.13.0
 -->
 
-* `implementation` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function to be used as the
+* `implementation` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function to be used as the
   mock's implementation for the invocation number specified by `onCall`.
-* `onCall` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The invocation number that will use `implementation`. If
+* `onCall` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The invocation number that will use `implementation`. If
   the specified invocation has already occurred then an exception is thrown.
   **Default:** The number of the next invocation.
 
@@ -2385,19 +2385,19 @@ of property mocks created via the [`MockTracker`][`MockTracker`] APIs.
 
 ### `ctx.accesses`
 
-* Type: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
+* Type: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 A getter that returns a copy of the internal array used to track accesses (get/set) to
 the mocked property. Each entry in the array is an object with the following properties:
 
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'get'` or `'set'`, indicating the type of access.
-* `value` {any} The value that was read (for `'get'`) or written (for `'set'`).
-* `stack` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'get'` or `'set'`, indicating the type of access.
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value that was read (for `'get'`) or written (for `'set'`).
+* `stack` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
   callsite of the mocked function invocation.
 
 ### `ctx.accessCount()`
 
-* Returns: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the property was accessed (read or written).
+* Returns: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the property was accessed (read or written).
 
 This function returns the number of times that the property was accessed.
 This function is more efficient than checking `ctx.accesses.length` because
@@ -2405,15 +2405,15 @@ This function is more efficient than checking `ctx.accesses.length` because
 
 ### `ctx.mockImplementation(value)`
 
-* `value` {any} The new value to be set as the mocked property value.
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The new value to be set as the mocked property value.
 
 This function is used to change the value returned by the mocked property getter.
 
 ### `ctx.mockImplementationOnce(value[, onAccess])`
 
-* `value` {any} The value to be used as the mock's
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to be used as the mock's
   implementation for the invocation number specified by `onAccess`.
-* `onAccess` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The invocation number that will use `value`. If
+* `onAccess` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The invocation number that will use `value`. If
   the specified invocation has already occurred then an exception is thrown.
   **Default:** The number of the next invocation.
 
@@ -2476,19 +2476,19 @@ added:
   - v18.13.0
 -->
 
-* `original` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function to create a mock on.
+* `original` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function to create a mock on.
   **Default:** A no-op function.
-* `implementation` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function used as the
+* `implementation` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function used as the
   mock implementation for `original`. This is useful for creating mocks that
   exhibit one behavior for a specified number of calls and then restore the
   behavior of `original`. **Default:** The function specified by `original`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock function. The
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock function. The
   following properties are supported:
-  * `times` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the mock will use the behavior of
+  * `times` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the mock will use the behavior of
     `implementation`. Once the mock function has been called `times` times, it
     will automatically restore the behavior of `original`. This value must be an
     integer greater than zero. **Default:** `Infinity`.
-* Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked function. The mocked function contains a special
+* Returns: [`<Proxy>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked function. The mocked function contains a special
   `mock` property, which is an instance of [`MockFunctionContext`][`MockFunctionContext`], and can
   be used for inspecting and changing the behavior of the mocked function.
 
@@ -2540,23 +2540,23 @@ added:
   - v18.13.0
 -->
 
-* `object` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The object whose method is being mocked.
-* `methodName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) The identifier of the method on `object` to mock.
+* `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The object whose method is being mocked.
+* `methodName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) The identifier of the method on `object` to mock.
   If `object[methodName]` is not a function, an error is thrown.
-* `implementation` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function used as the
+* `implementation` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An optional function used as the
   mock implementation for `object[methodName]`. **Default:** The original method
   specified by `object[methodName]`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock method. The
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock method. The
   following properties are supported:
-  * `getter` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `object[methodName]` is treated as a getter.
+  * `getter` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `object[methodName]` is treated as a getter.
     This option cannot be used with the `setter` option. **Default:** false.
-  * `setter` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `object[methodName]` is treated as a setter.
+  * `setter` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `object[methodName]` is treated as a setter.
     This option cannot be used with the `getter` option. **Default:** false.
-  * `times` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the mock will use the behavior of
+  * `times` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times that the mock will use the behavior of
     `implementation`. Once the mocked method has been called `times` times, it
     will automatically restore the original behavior. This value must be an
     integer greater than zero. **Default:** `Infinity`.
-* Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked method. The mocked method contains a special
+* Returns: [`<Proxy>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked method. The mocked method contains a special
   `mock` property, which is an instance of [`MockFunctionContext`][`MockFunctionContext`], and can
   be used for inspecting and changing the behavior of the mocked method.
 
@@ -2610,14 +2610,14 @@ changes:
 
 > Stability: 1.0 - Early development
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) A string identifying the module to mock.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock module. The
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) A string identifying the module to mock.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the mock module. The
   following properties are supported:
-  * `cache` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `false`, each call to `require()` or `import()`
+  * `cache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `false`, each call to `require()` or `import()`
     generates a new mock module. If `true`, subsequent calls will return the same
     module mock, and the mock module is inserted into the CommonJS cache.
     **Default:** false.
-  * `exports` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional mocked exports. The `default` property, if
+  * `exports` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional mocked exports. The `default` property, if
     provided, is used as the mocked module's default export. All other own
     enumerable properties are used as named exports.
     **This option cannot be used with `defaultExport` or `namedExports`.**
@@ -2627,7 +2627,7 @@ changes:
       `module.exports` defaults to an empty object.
     * If named exports are provided with a non-object default export, the mock
       throws an exception when used as a CommonJS or builtin module.
-  * `defaultExport` {any} An optional value used as the mocked module's default
+  * `defaultExport` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mocked module's default
     export. If this value is not provided, ESM mocks do not include a default
     export. If the mock is a CommonJS or builtin module, this setting is used as
     the value of `module.exports`. If this value is not provided, CJS and builtin
@@ -2635,7 +2635,7 @@ changes:
     **This option cannot be used with `options.exports`.**
     This option is deprecated and will be removed in a later version.
     Prefer `options.exports.default`.
-  * `namedExports` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An optional object whose keys and values are used to
+  * `namedExports` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An optional object whose keys and values are used to
     create the named exports of the mock module. If the mock is a CommonJS or
     builtin module, these values are copied onto `module.exports`. Therefore, if a
     mock is created with both named exports and a non-object default export, the
@@ -2643,7 +2643,7 @@ changes:
     **This option cannot be used with `options.exports`.**
     This option is deprecated and will be removed in a later version.
     Prefer `options.exports`.
-* Returns: [<MockModuleContext>](test.md) An object that can be used to manipulate the mock.
+* Returns: [`<MockModuleContext>`](test.md) An object that can be used to manipulate the mock.
 
 This function is used to mock the exports of ECMAScript modules, CommonJS modules, JSON modules, and
 Node.js builtin modules. Any references to the original module prior to mocking are not impacted. In
@@ -2695,11 +2695,11 @@ added:
   - v22.20.0
 -->
 
-* `object` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The object whose value is being mocked.
-* `propertyName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) The identifier of the property on `object` to mock.
-* `value` {any} An optional value used as the mock value
+* `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The object whose value is being mocked.
+* `propertyName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) The identifier of the property on `object` to mock.
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mock value
   for `object[propertyName]`. **Default:** The original property value.
-* Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) A proxy to the mocked object. The mocked object contains a
+* Returns: [`<Proxy>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) A proxy to the mocked object. The mocked object contains a
   special `mock` property, which is an instance of [`MockPropertyContext`][`MockPropertyContext`], and
   can be used for inspecting and changing the behavior of the mocked property.
 
@@ -2817,15 +2817,15 @@ changes:
 
 Enables timer mocking for the specified timers.
 
-* `enableOptions` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for enabling timer
+* `enableOptions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for enabling timer
   mocking. The following properties are supported:
-  * `apis` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An optional array containing the timers to mock.
+  * `apis` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An optional array containing the timers to mock.
     The currently supported timer values are `'setInterval'`, `'setTimeout'`, `'setImmediate'`,
     and `'Date'`. **Default:** `['setInterval', 'setTimeout', 'setImmediate', 'Date']`.
     If no array is provided, all time related APIs (`'setInterval'`, `'clearInterval'`,
     `'setTimeout'`, `'clearTimeout'`, `'setImmediate'`, `'clearImmediate'`, and
     `'Date'`) will be mocked by default.
-  * `now` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date) An optional number or Date object representing the
+  * `now` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date) An optional number or Date object representing the
     initial time (in milliseconds) to use as the value
     for `Date.now()`. **Default:** `0`.
 
@@ -2940,7 +2940,7 @@ added:
 
 Advances time for all mocked timers.
 
-* `milliseconds` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The amount of time, in milliseconds,
+* `milliseconds` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The amount of time, in milliseconds,
   to advance the timers. **Default:** `1`.
 
 **Note:** This diverges from how `setTimeout` in Node.js behaves and accepts
@@ -3456,7 +3456,7 @@ changes:
     | --- | --- |
     | v20.0.0, v19.9.0, v18.17.0 | добавлен тип событий test:pass и test:fail, когда тест представляет собой набор. |
 
-* Extends [<Readable>](stream.md#readable-streams)
+* Extends [`<Readable>`](stream.md#readable-streams)
 
 A successful call to [`run()`][`run()`] method will return a new [TestsStream](test.md)
 object, streaming a series of events representing the execution of the tests.
@@ -3467,77 +3467,77 @@ are defined, while others are emitted in the order that the tests execute.
 
 ### Event: `'test:coverage'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `summary` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing the coverage report.
-    * `files` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of coverage reports for individual files. Each
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `summary` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing the coverage report.
+    * `files` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of coverage reports for individual files. Each
       report is an object with the following schema:
-      * `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute path of the file.
-      * `totalLineCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of lines.
-      * `totalBranchCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of branches.
-      * `totalFunctionCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of functions.
-      * `coveredLineCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered lines.
-      * `coveredBranchCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered branches.
-      * `coveredFunctionCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered functions.
-      * `coveredLinePercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of lines covered.
-      * `coveredBranchPercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of branches covered.
-      * `coveredFunctionPercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of functions covered.
-      * `functions` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of functions representing function
+      * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The absolute path of the file.
+      * `totalLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of lines.
+      * `totalBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of branches.
+      * `totalFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of functions.
+      * `coveredLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered lines.
+      * `coveredBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered branches.
+      * `coveredFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered functions.
+      * `coveredLinePercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of lines covered.
+      * `coveredBranchPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of branches covered.
+      * `coveredFunctionPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of functions covered.
+      * `functions` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of functions representing function
         coverage.
-        * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the function.
-        * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number where the function is defined.
-        * `count` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the function was called.
-      * `branches` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of branches representing branch coverage.
-        * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number where the branch is defined.
-        * `count` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the branch was taken.
-      * `lines` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of lines representing line
+        * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the function.
+        * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number where the function is defined.
+        * `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the function was called.
+      * `branches` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of branches representing branch coverage.
+        * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number where the branch is defined.
+        * `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the branch was taken.
+      * `lines` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of lines representing line
         numbers and the number of times they were covered.
-        * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number.
-        * `count` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the line was covered.
-    * `thresholds` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing whether or not the coverage for
+        * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line number.
+        * `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of times the line was covered.
+    * `thresholds` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing whether or not the coverage for
       each coverage type.
-      * `function` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The function coverage threshold.
-      * `branch` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The branch coverage threshold.
-      * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line coverage threshold.
-    * `totals` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing a summary of coverage for all
+      * `function` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The function coverage threshold.
+      * `branch` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The branch coverage threshold.
+      * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The line coverage threshold.
+    * `totals` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing a summary of coverage for all
       files.
-      * `totalLineCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of lines.
-      * `totalBranchCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of branches.
-      * `totalFunctionCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of functions.
-      * `coveredLineCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered lines.
-      * `coveredBranchCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered branches.
-      * `coveredFunctionCount` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered functions.
-      * `coveredLinePercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of lines covered.
-      * `coveredBranchPercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of branches covered.
-      * `coveredFunctionPercent` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of functions covered.
-    * `workingDirectory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The working directory when code coverage
+      * `totalLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of lines.
+      * `totalBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of branches.
+      * `totalFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of functions.
+      * `coveredLineCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered lines.
+      * `coveredBranchCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered branches.
+      * `coveredFunctionCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of covered functions.
+      * `coveredLinePercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of lines covered.
+      * `coveredBranchPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of branches covered.
+      * `coveredFunctionPercent` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The percentage of functions covered.
+    * `workingDirectory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The working directory when code coverage
       began. This is useful for displaying relative path names in case the tests
       changed the working directory of the Node.js process.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
 
 Emitted when code coverage is enabled and all tests have completed.
 
 ### Event: `'test:complete'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `details` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
-    * `passed` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the test passed or not.
-    * `duration_ms` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
-    * `error` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | undefined An error wrapping the error thrown by the test
+  * `details` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
+    * `passed` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the test passed or not.
+    * `duration_ms` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
+    * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | undefined An error wrapping the error thrown by the test
       if it did not pass.
-      * `cause` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The actual error thrown by the test.
-    * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
+      * `cause` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The actual error thrown by the test.
+    * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
       this is a suite.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `testNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
+  * `todo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test completes its execution.
 This event is not emitted in the same order as the tests are
@@ -3546,16 +3546,16 @@ The corresponding declaration ordered events are `'test:pass'` and `'test:fail'`
 
 ### Event: `'test:dequeue'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test type. Either `'suite'` or `'test'`.
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test type. Either `'suite'` or `'test'`.
 
 Emitted when a test is dequeued, right before it is executed.
 This event is not guaranteed to be emitted in the same order as the tests are
@@ -3563,16 +3563,16 @@ defined. The corresponding declaration ordered event is `'test:start'`.
 
 ### Event: `'test:diagnostic'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The diagnostic message.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `level` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The severity level of the diagnostic message.
+  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The diagnostic message.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `level` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The severity level of the diagnostic message.
     Possible values are:
     * `'info'`: Informational messages.
     * `'warn'`: Warnings.
@@ -3584,41 +3584,41 @@ defined.
 
 ### Event: `'test:enqueue'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test type. Either `'suite'` or `'test'`.
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test type. Either `'suite'` or `'test'`.
 
 Emitted when a test is enqueued for execution.
 
 ### Event: `'test:fail'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `details` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
-    * `duration_ms` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
-    * `error` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An error wrapping the error thrown by the test.
-      * `cause` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The actual error thrown by the test.
-    * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
+  * `details` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
+    * `duration_ms` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
+    * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An error wrapping the error thrown by the test.
+      * `cause` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The actual error thrown by the test.
+    * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
       this is a suite.
-    * `attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
+    * `attempt` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
       present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `testNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
+  * `todo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test fails.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3631,17 +3631,17 @@ The corresponding execution ordered event is `'test:complete'`.
 added: v25.7.0
 -->
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `tests` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of objects containing information about the
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `tests` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of objects containing information about the
     interrupted tests.
-    * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined,
+    * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined,
       or `undefined` if the test was run through the REPL.
-    * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+    * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
       `undefined` if test was run through the REPL.
-    * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+    * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
       `undefined` if the test was run through the REPL.
-    * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-    * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+    * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+    * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
 
 Emitted when the test runner is interrupted by a `SIGINT` signal (e.g., when
 pressing <kbd>Ctrl</kbd>+<kbd>C</kbd>). The event contains information about
@@ -3653,26 +3653,26 @@ since the parent runner only knows about file-level tests. When using
 
 ### Event: `'test:pass'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `details` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
-    * `duration_ms` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
-    * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
+  * `details` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional execution metadata.
+    * `duration_ms` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test in milliseconds.
+    * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
       this is a suite.
-    * `attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
+    * `attempt` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
       present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
-    * `passed_on_attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number the test passed on,
+    * `passed_on_attempt` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number the test passed on,
       present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `testNumber` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
+  * `todo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test passes.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3681,15 +3681,15 @@ The corresponding execution ordered event is `'test:complete'`.
 
 ### Event: `'test:plan'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
-  * `count` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of subtests that have ran.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of subtests that have ran.
 
 Emitted when all subtests have completed for a given test.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3697,15 +3697,15 @@ defined.
 
 ### Event: `'test:start'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `column` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `column` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The column number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
-  * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
+  * `line` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
     `undefined` if the test was run through the REPL.
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
-  * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
+  * `nesting` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
 
 Emitted when a test starts reporting its own and its subtests status.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3714,9 +3714,9 @@ The corresponding execution ordered event is `'test:dequeue'`.
 
 ### Event: `'test:stderr'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The path of the test file.
-  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The message written to `stderr`.
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The path of the test file.
+  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The message written to `stderr`.
 
 Emitted when a running test writes to `stderr`.
 This event is only emitted if `--test` flag is passed.
@@ -3725,9 +3725,9 @@ defined.
 
 ### Event: `'test:stdout'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The path of the test file.
-  * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The message written to `stdout`.
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The path of the test file.
+  * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The message written to `stdout`.
 
 Emitted when a running test writes to `stdout`.
 This event is only emitted if `--test` flag is passed.
@@ -3736,21 +3736,21 @@ defined.
 
 ### Event: `'test:summary'`
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `counts` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing the counts of various test results.
-    * `cancelled` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of cancelled tests.
-    * `failed` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of failed tests.
-    * `passed` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of passed tests.
-    * `skipped` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of skipped tests.
-    * `suites` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of suites run.
-    * `tests` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of tests run, excluding suites.
-    * `todo` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of TODO tests.
-    * `topLevel` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of top level tests and suites.
-  * `duration_ms` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test run in milliseconds.
-  * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file that generated the
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `counts` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object containing the counts of various test results.
+    * `cancelled` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of cancelled tests.
+    * `failed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of failed tests.
+    * `passed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of passed tests.
+    * `skipped` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of skipped tests.
+    * `suites` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of suites run.
+    * `tests` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of tests run, excluding suites.
+    * `todo` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of TODO tests.
+    * `topLevel` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of top level tests and suites.
+  * `duration_ms` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The duration of the test run in milliseconds.
+  * `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file that generated the
     summary. If the summary corresponds to multiple files, this value is
     `undefined`.
-  * `success` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether or not the test run is considered
+  * `success` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether or not the test run is considered
     successful or not. If any error condition occurs, such as a failing test or
     unmet coverage threshold, this value will be set to `false`.
 
@@ -3773,7 +3773,7 @@ Emitted when one or more tests are restarted due to a file change in watch mode.
 added: REPLACEME
 -->
 
-* Returns: [<TestContext>](#class-testcontext) | [<SuiteContext>](#class-suitecontext) | undefined
+* Returns: [`<TestContext>`](#class-testcontext) | [`<SuiteContext>`](#class-suitecontext) | undefined
 
 Returns the [`TestContext`][`TestContext`] or [`SuiteContext`][`SuiteContext`] object associated with the
 currently executing test or suite, or `undefined` if called outside of a test or
@@ -3839,14 +3839,14 @@ added:
   - v18.17.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -3861,14 +3861,14 @@ added:
   - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -3895,14 +3895,14 @@ added:
   - v18.13.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -3924,14 +3924,14 @@ added:
   - v16.18.0
 -->
 
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
   properties are supported:
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress hook.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress hook.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the hook will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
 
@@ -3977,14 +3977,14 @@ added:
   - v22.14.0
 -->
 
-* `value` {any} A value to serialize to a string. If Node.js was started with
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
   the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   `path`. Otherwise, the serialized value is compared to the contents of the
   existing snapshot file.
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file where the serialized `value` is written.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options. The following properties
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file where the serialized `value` is written.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options. The following properties
   are supported:
-  * `serializers` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used to serialize
+  * `serializers` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used to serialize
     `value` into a string. `value` is passed as the only argument to the first
     serializer function. The return value of each serializer is passed as input
     to the next serializer. Once all serializers have run, the resulting value
@@ -4014,13 +4014,13 @@ highlighting.
 added: v22.3.0
 -->
 
-* `value` {any} A value to serialize to a string. If Node.js was started with
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
   the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   the snapshot file. Otherwise, the serialized value is compared to the
   corresponding value in the existing snapshot file.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options. The following properties
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options. The following properties
   are supported:
-  * `serializers` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used to serialize
+  * `serializers` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of synchronous functions used to serialize
     `value` into a string. `value` is passed as the only argument to the first
     serializer function. The return value of each serializer is passed as input
     to the next serializer. Once all serializers have run, the resulting value
@@ -4049,7 +4049,7 @@ added:
   - v16.17.0
 -->
 
-* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Message to be reported.
+* `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Message to be reported.
 
 This function is used to write diagnostics to the output. Any diagnostic
 information is included at the end of the test's results. This function does
@@ -4101,7 +4101,7 @@ added:
   - v20.12.0
 -->
 
-* Type: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false` before the test is executed, e.g. in a `beforeEach` hook.
+* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false` before the test is executed, e.g. in a `beforeEach` hook.
 
 Indicated whether the test succeeded.
 
@@ -4113,7 +4113,7 @@ added:
   - v20.12.0
 -->
 
-* Type: [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null
+* Type: [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null
 
 The failure reason for the test/case; wrapped and available via `context.error.cause`.
 
@@ -4123,7 +4123,7 @@ The failure reason for the test/case; wrapped and available via `context.error.c
 added: v25.0.0
 -->
 
-* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Type: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The attempt number of the test. This value is zero-based, so the first attempt is `0`,
 the second attempt is `1`, and so on. This property is useful in conjunction with the
@@ -4135,7 +4135,7 @@ the second attempt is `1`, and so on. This property is useful in conjunction wit
 added: v25.8.0
 -->
 
-* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
+* Type: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
 The unique identifier of the worker running the current test file. This value is
 derived from the `NODE_TEST_WORKER_ID` environment variable. When running tests
@@ -4190,9 +4190,9 @@ changes:
     | v23.9.0, v22.15.0 | Добавьте параметр `options`. |
     | v23.4.0, v22.13.0 | Эта функция больше не является экспериментальной. |
 
-* `count` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests that are expected to run.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional options for the plan.
-  * `wait` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The wait time for the plan:
+* `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests that are expected to run.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Additional options for the plan.
+  * `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The wait time for the plan:
     * If `true`, the plan waits indefinitely for all assertions and subtests to run.
     * If `false`, the plan performs an immediate check after the test function completes,
       without waiting for any pending assertions or subtests.
@@ -4267,7 +4267,7 @@ added:
   - v16.17.0
 -->
 
-* `shouldRunOnlyTests` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether or not to run `only` tests.
+* `shouldRunOnlyTests` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether or not to run `only` tests.
 
 If `shouldRunOnlyTests` is truthy, the test context will only run tests that
 have the `only` option set. Otherwise, all tests are run. If Node.js was not
@@ -4293,7 +4293,7 @@ added:
   - v16.17.0
 -->
 
-* Type: [<AbortSignal>](globals.md#abortsignal)
+* Type: [`<AbortSignal>`](globals.md#abortsignal)
 
 Can be used to abort test subtasks when the test has been aborted.
 
@@ -4311,7 +4311,7 @@ added:
   - v16.17.0
 -->
 
-* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional skip message.
+* `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional skip message.
 
 This function causes the test's output to indicate the test as skipped. If
 `message` is provided, it is included in the output. Calling `skip()` does
@@ -4333,7 +4333,7 @@ added:
   - v16.17.0
 -->
 
-* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional `TODO` message.
+* `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional `TODO` message.
 
 This function adds a `TODO` directive to the test's output. If `message` is
 provided, it is included in the output. Calling `todo()` does not terminate
@@ -4372,39 +4372,39 @@ changes:
     | v18.8.0, v16.18.0 | Добавьте опцию «сигнал». |
     | v18.7.0, v16.17.0 | Добавьте опцию «тайм-аут». |
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the subtest, which is displayed when reporting
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The name of the subtest, which is displayed when reporting
   test results. **Default:** The `name` property of `fn`, or `'<anonymous>'` if
   `fn` does not have a name.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the subtest. The following
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the subtest. The following
   properties are supported:
-  * `concurrency` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | null If a number is provided,
+  * `concurrency` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | null If a number is provided,
     then that many tests would run asynchronously (they are still managed by the single-threaded event loop).
     If `true`, it would run all subtests in parallel.
     If `false`, it would only run one test at a time.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `null`.
-  * `only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, and the test context is configured to run
+  * `only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, and the test context is configured to run
     `only` tests, then this test will be run. Otherwise, the test is skipped.
     **Default:** `false`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Allows aborting an in-progress test.
-  * `skip` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test is skipped. If a string is
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Allows aborting an in-progress test.
+  * `skip` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test is skipped. If a string is
     provided, that string is displayed in the test results as the reason for
     skipping the test. **Default:** `false`.
-  * `todo` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test marked as `TODO`. If a string
+  * `todo` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If truthy, the test marked as `TODO`. If a string
     is provided, that string is displayed in the test results as the reason why
     the test is `TODO`. **Default:** `false`.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test will fail after.
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A number of milliseconds the test will fail after.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `Infinity`.
-  * `plan` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests expected to be run in the test.
+  * `plan` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of assertions and subtests expected to be run in the test.
     If the number of assertions run in the test does not match the number
     specified in the plan, the test will fail.
     **Default:** `undefined`.
-* `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
+* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
   to this function is a [`TestContext`][`TestContext`] object. If the test uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once the test completes.
+* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once the test completes.
 
 This function is used to create subtests under the current test. This function
 behaves in the same fashion as the top level [`test()`][`test()`] function.
@@ -4429,17 +4429,17 @@ added:
   - v22.14.0
 -->
 
-* `condition` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An assertion function that is invoked
+* `condition` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) An assertion function that is invoked
   periodically until it completes successfully or the defined polling timeout
   elapses. Successful completion is defined as not throwing or rejecting. This
   function does not accept any arguments, and is allowed to return any value.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An optional configuration object for the polling operation.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An optional configuration object for the polling operation.
   The following properties are supported:
-  * `interval` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of milliseconds to wait after an unsuccessful
+  * `interval` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of milliseconds to wait after an unsuccessful
     invocation of `condition` before trying again. **Default:** `50`.
-  * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The poll timeout in milliseconds. If `condition` has not
+  * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The poll timeout in milliseconds. If `condition` has not
     succeeded by the time this elapses, an error occurs. **Default:** `1000`.
-* Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with the value returned by `condition`.
+* Returns: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with the value returned by `condition`.
 
 This method polls a `condition` function until that function either returns
 successfully or the operation times out.
@@ -4494,7 +4494,7 @@ added:
   - v16.17.0
 -->
 
-* Type: [<AbortSignal>](globals.md#abortsignal)
+* Type: [`<AbortSignal>`](globals.md#abortsignal)
 
 Can be used to abort test subtasks when the test has been aborted.
 
@@ -4504,7 +4504,7 @@ Can be used to abort test subtasks when the test has been aborted.
 added: REPLACEME
 -->
 
-* Type: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Type: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Indicates whether the suite and all of its subtests have passed.
 
@@ -4514,7 +4514,7 @@ Indicates whether the suite and all of its subtests have passed.
 added: REPLACEME
 -->
 
-* Type: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Type: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The attempt number of the suite. This value is zero-based, so the first attempt is `0`,
 the second attempt is `1`, and so on. This property is useful in conjunction with the
@@ -4526,7 +4526,7 @@ the second attempt is `1`, and so on. This property is useful in conjunction wit
 added: REPLACEME
 -->
 
-* `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) A diagnostic message to output.
+* `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) A diagnostic message to output.
 
 Output a diagnostic message. This is typically used for logging information
 about the current suite or its tests.

@@ -171,15 +171,15 @@ changes:
     | v20.0.0 | Параметр версии теперь является обязательным и не имеет значения по умолчанию. |
     | v19.8.0 | Поле версии добавлено в опции. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `args` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет видеть как аргументы командной строки. Первый аргумент — виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
-  * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, аналогичный `process.env`, который приложение WebAssembly будет видеть как своё окружение. **По умолчанию:** `{}`.
-  * `preopens` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Локальная структура каталогов приложения WebAssembly. Строковые ключи `preopens` трактуются как каталоги в виртуальной файловой системе. Соответствующие значения — реальные пути к этим каталогам на хосте.
-  * `returnOnExit` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию, когда приложения WASI вызывают `__wasi_proc_exit()`, метод `wasi.start()` возвращает управление с указанным кодом выхода вместо завершения процесса. Значение `false` приводит к завершению процесса Node.js с указанным кодом выхода. **По умолчанию:** `true`.
-  * `stdin` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный ввод в приложении WebAssembly. **По умолчанию:** `0`.
-  * `stdout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный вывод в приложении WebAssembly. **По умолчанию:** `1`.
-  * `stderr` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный поток ошибок в приложении WebAssembly. **По умолчанию:** `2`.
-  * `version` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Запрашиваемая версия WASI. Сейчас поддерживаются только `unstable` и `preview1`. Параметр **обязателен**.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `args` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет видеть как аргументы командной строки. Первый аргумент — виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
+  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, аналогичный `process.env`, который приложение WebAssembly будет видеть как своё окружение. **По умолчанию:** `{}`.
+  * `preopens` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Локальная структура каталогов приложения WebAssembly. Строковые ключи `preopens` трактуются как каталоги в виртуальной файловой системе. Соответствующие значения — реальные пути к этим каталогам на хосте.
+  * `returnOnExit` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию, когда приложения WASI вызывают `__wasi_proc_exit()`, метод `wasi.start()` возвращает управление с указанным кодом выхода вместо завершения процесса. Значение `false` приводит к завершению процесса Node.js с указанным кодом выхода. **По умолчанию:** `true`.
+  * `stdin` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный ввод в приложении WebAssembly. **По умолчанию:** `0`.
+  * `stdout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный вывод в приложении WebAssembly. **По умолчанию:** `1`.
+  * `stderr` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, используемый как стандартный поток ошибок в приложении WebAssembly. **По умолчанию:** `2`.
+  * `version` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Запрашиваемая версия WASI. Сейчас поддерживаются только `unstable` и `preview1`. Параметр **обязателен**.
 
 ### `wasi.getImportObject()`
 
@@ -209,7 +209,7 @@ added:
  - v12.16.0
 -->
 
-* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
+* `instance` [`<WebAssembly.Instance>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
 
 Пытается начать выполнение `instance` как команды WASI, вызывая экспорт `_start()`. Если в `instance` нет экспорта `_start()` или есть экспорт `_initialize()`, выбрасывается исключение.
 
@@ -225,7 +225,7 @@ added:
  - v12.19.0
 -->
 
-* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
+* `instance` [`<WebAssembly.Instance>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
 
 Пытается инициализировать `instance` как реактор WASI, вызывая экспорт `_initialize()`, если он есть. Если в `instance` есть экспорт `_start()`, выбрасывается исключение.
 
@@ -239,9 +239,9 @@ added:
 added: v24.4.0
 -->
 
-* `instance` [<WebAssembly.Instance>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `memory` [<WebAssembly.Memory>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory) **По умолчанию:** `instance.exports.memory`.
+* `instance` [`<WebAssembly.Instance>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `memory` [`<WebAssembly.Memory>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory) **По умолчанию:** `instance.exports.memory`.
 
 Настраивает привязки хоста WASI к `instance` без вызова `initialize()` или `start()`. Полезно, когда модуль WASI создаётся в дочерних потоках с разделяемой памятью.
 
@@ -257,7 +257,7 @@ added:
  - v12.16.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 `wasiImport` — объект, реализующий API системных вызовов WASI. Его следует передавать как импорт `wasi_snapshot_preview1` при создании [`WebAssembly.Instance`][`WebAssembly.Instance`].
 

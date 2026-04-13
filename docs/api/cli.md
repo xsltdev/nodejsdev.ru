@@ -484,8 +484,8 @@ changes:
 
 Поддерживаются такие поля:
 
--   `builder` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Обязательное. Имя скрипта, который выполняется перед сборкой снимка, как если бы был передан [`--build-snapshot`](#--build-snapshot) с `builder` в качестве основного скрипта.
--   `withoutCodeCache` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Необязательно. Включение кэша кода ускоряет компиляцию функций из снимка, но увеличивает размер и может ухудшить переносимость снимка.
+-   `builder` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Обязательное. Имя скрипта, который выполняется перед сборкой снимка, как если бы был передан [`--build-snapshot`](#--build-snapshot) с `builder` в качестве основного скрипта.
+-   `withoutCodeCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Необязательно. Включение кэша кода ускоряет компиляцию функций из снимка, но увеличивает размер и может ухудшить переносимость снимка.
 
 С этим флагом дополнительные файлы скриптов в командной строке не выполняются — они интерпретируются как обычные аргументы.
 

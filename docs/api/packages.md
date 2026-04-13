@@ -979,7 +979,7 @@ changes:
     | --- | --- |
     | v13.6.0, v12.16.0 | Удалите опцию `--experimental-resolve-self`. |
 
-* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -1000,7 +1000,7 @@ The `"name"` field can be used in addition to the [`"exports"`][`"exports"`] fie
 added: v0.4.0
 -->
 
-* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -1044,7 +1044,7 @@ changes:
     | --- | --- |
     | v13.2.0, v12.17.0 | Снимите флаг `--experimental-modules`. |
 
-* Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Type: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The `"type"` field defines the module format that Node.js uses for all
 `.js` files that have that `package.json` file as their nearest parent.
@@ -1129,7 +1129,7 @@ changes:
     | v13.7.0, v12.16.0 | Удалите опцию `--experimental-conditional-exports`. В версии 12.16.0 условный экспорт по-прежнему отстает от `--experimental-modules`. |
     | v13.2.0, v12.16.0 | Реализуйте условный экспорт. |
 
-* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
 {
@@ -1158,7 +1158,7 @@ added:
  - v12.19.0
 -->
 
-* Type: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Type: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ```json
 // package.json

@@ -128,7 +128,7 @@ added: v10.0.0
 added: v10.0.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список категорий событий трассировки, разделённых запятыми, которые охватывает данный объект `Tracing`.
 
@@ -192,7 +192,7 @@ added: v10.0.0
 added: v10.0.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` только если объект `Tracing` был включён.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` только если объект `Tracing` был включён.
 
 ### `trace_events.createTracing(options)`
 
@@ -200,7 +200,7 @@ added: v10.0.0
 added: v10.0.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `categories` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив имён категорий трассировки. Значения при возможности приводятся к строке. При невозможности приведения будет выброшена ошибка.
 * Возвращает: {Tracing}.
 
@@ -234,7 +234,7 @@ added: v10.0.0
 added: v10.0.0
 -->
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает список через запятую всех в данный момент включённых категорий событий трассировки. Текущее множество определяется _объединением_ всех включённых объектов `Tracing` и категорий, заданных флагом `--trace-event-categories`.
 

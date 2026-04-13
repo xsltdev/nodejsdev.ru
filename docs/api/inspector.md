@@ -77,7 +77,7 @@ added: v8.0.0
 added: v8.0.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
 Генерируется при получении любого уведомления от V8 Inspector.
 
@@ -97,7 +97,7 @@ session.on('inspectorNotification', (message) => console.log(message.method));
 added: v8.0.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
 Генерируется при получении уведомления инспектора, у которого поле `method` равно `<inspector-protocol-method>`.
 
@@ -142,9 +142,9 @@ added: v8.0.0
 added: v19.0.0
 -->
 
-* `method` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Отправляет сообщение в бэкенд инспектора.
 
@@ -243,7 +243,7 @@ added: v8.0.0
 added: v8.0.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
 Генерируется при получении любого уведомления от V8 Inspector.
 
@@ -263,7 +263,7 @@ session.on('inspectorNotification', (message) => console.log(message.method));
 added: v8.0.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
 Генерируется при получении уведомления инспектора, у которого поле `method` равно `<inspector-protocol-method>`.
 
@@ -322,9 +322,9 @@ changes:
     | --- | --- |
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-* `method` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Отправляет сообщение в бэкенд инспектора. `callback` вызывается при получении ответа. `callback` — функция с двумя необязательными аргументами: ошибка и результат, зависящий от сообщения.
 
@@ -417,7 +417,7 @@ changes:
 
 ### `inspector.console`
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект для отправки сообщений в удалённую консоль инспектора.
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект для отправки сообщений в удалённую консоль инспектора.
 
 ```js
 require('node:inspector').console.log('a message');
@@ -440,9 +440,9 @@ changes:
     | --- | --- |
     | v20.6.0 | инспектор.open() теперь возвращает объект «Одноразовый». |
 
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
-* `wait` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Блокировать выполнение до подключения клиента. Необязательно. **По умолчанию:** `false`.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
+* `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Блокировать выполнение до подключения клиента. Необязательно. **По умолчанию:** `false`.
 * Возвращает: {Disposable} объект `Disposable`, вызывающий [`inspector.close()`][`inspector.close()`].
 
 Включает инспектор на указанном хосте и порту. Эквивалентно `node --inspect=[[host:]port]`, но может быть вызвано программно после старта Node.js.
@@ -453,7 +453,7 @@ changes:
 
 ### `inspector.url()`
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
+* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
 Возвращает URL активного инспектора или `undefined`, если инспектор не активен.
 
@@ -514,7 +514,7 @@ added:
  - v22.17.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -530,7 +530,7 @@ added:
   - v22.18.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -544,7 +544,7 @@ added:
  - v20.18.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -558,7 +558,7 @@ added:
  - v20.18.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -572,7 +572,7 @@ added:
  - v20.18.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -586,7 +586,7 @@ added:
  - v20.18.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -599,7 +599,7 @@ added:
   - v24.7.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -612,7 +612,7 @@ added:
   - v24.7.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -626,7 +626,7 @@ added:
   - v24.7.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-network-inspection`.
 
@@ -678,13 +678,13 @@ added:
   - v25.5.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `storageId` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `securityOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `storageKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `isLocalStorage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `newValue` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `securityOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `storageKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `newValue` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Доступно только при включённом флаге `--experimental-storage-inspection`.
 
@@ -698,12 +698,12 @@ added:
   - v25.5.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `storageId` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `securityOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `storageKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `isLocalStorage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `securityOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `storageKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Доступно только при включённом флаге `--experimental-storage-inspection`.
 
@@ -717,14 +717,14 @@ added:
   - v25.5.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `storageId` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `securityOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `storageKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `isLocalStorage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-  * `key` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `oldValue` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `newValue` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `securityOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `storageKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `oldValue` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `newValue` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Доступно только при включённом флаге `--experimental-storage-inspection`.
 
@@ -738,11 +738,11 @@ added:
   - v25.5.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `storageId` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `securityOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `storageKey` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    * `isLocalStorage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `securityOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `storageKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Доступно только при включённом флаге `--experimental-storage-inspection`.
 
@@ -755,9 +755,9 @@ added:
   - v25.5.0
 -->
 
-* `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `isLocalStorage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-  * `storageMap` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+  * `storageMap` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Доступно только при включённом флаге `--experimental-storage-inspection`.
 

@@ -122,15 +122,15 @@ changes:
     | v10.6.0 | `produceCachedData` устарел в пользу `script.createCachedData()`. |
     | v5.7.0 | Опции `cachedData` и `produceCachedData` теперь поддерживаются. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла в трассировках стека, создаваемых этим сценарием. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
-  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла в трассировках стека, создаваемых этим сценарием. **По умолчанию:** `'evalmachine.<anonymous>'`.
+  * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
+  * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
     `TypedArray` или `DataView` с данными кэша кода V8 для исходного текста. Если задано,
     свойство `cachedDataRejected` будет `true` или `false` в зависимости от того, принял ли V8 данные.
-  * `produceCachedData` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` и отсутствии `cachedData` V8
+  * `produceCachedData` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` и отсутствии `cachedData` V8
     попытается создать данные кэша кода для `code`. При успехе будет создан
     `Buffer` с кэшем кода V8 и сохранён в свойстве `cachedData` возвращённого экземпляра `vm.Script`.
     Свойство `cachedDataProduced` будет `true` или `false` в зависимости от успеха.
@@ -154,7 +154,7 @@ changes:
 added: v5.7.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined
 
 Если при создании `vm.Script` передан `cachedData`, это значение будет
 `true` или `false` в зависимости от того, принял ли V8 данные.
@@ -166,7 +166,7 @@ added: v5.7.0
 added: v10.6.0
 -->
 
-* Возвращает: [<Buffer>](buffer.md#buffer)
+* Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Создаёт кэш кода для опции `cachedData` конструктора `Script`. Возвращает `Buffer`. Метод можно вызывать в любое
 время и любое число раз.
@@ -215,17 +215,17 @@ changes:
     | --- | --- |
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-* `contextifiedObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстированный][contextified] объект, возвращённый
+* `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстированный][contextified] объект, возвращённый
   методом `vm.createContext()`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
     строка кода, вызвавшая ошибку, добавляется к трассировке стека. **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до принудительной остановки. При остановке выбрасывается [`Error`][`Error`].
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до принудительной остановки. При остановке выбрасывается [`Error`][`Error`].
     Значение — строго положительное целое.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
     [`Error`][`Error`]. Обработчики, подключённые через `process.on('SIGINT')`, на время выполнения сценария отключаются, затем снова действуют. **По умолчанию:** `false`.
-* Возвращает: {any} результат последнего выполненного оператора сценария.
+* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного оператора сценария.
 
 Выполняет скомпилированный код объекта `vm.Script` в заданном
 `contextifiedObject` и возвращает результат. У выполняемого кода нет доступа
@@ -312,37 +312,37 @@ changes:
     | v10.0.0 | Поддерживается опция `contextCodeGeneration`. |
     | v6.3.0 | Поддерживается опция `breakOnSigint`. |
 
-* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+* `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
   Либо [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`], либо объект, который будет [контекстифицирован][contextified].
   Если `undefined`, для обратной совместимости создаётся пустой контекстифицированный объект.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции
     `code` к стеку добавляется строка с ошибочным кодом.
     **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code`
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code`
     до прерывания. При прерывании выбрасывается [`Error`][`Error`].
     Значение должно быть строго положительным целым.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
     [`Error`][`Error`]. Обработчики `process.on('SIGINT')` отключаются на время выполнения скрипта, затем снова работают.
     **По умолчанию:** `false`.
-  * `contextName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя нового контекста.
+  * `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя нового контекста.
     **По умолчанию:** `'VM Context i'`, где `i` — возрастающий индекс
     созданного контекста.
-  * `contextOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
+  * `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
     Формат как у URL, но только схема, хост и при необходимости порт, как
     у [`url.origin`][`url.origin`] у [`URL`][`URL`]. Обратите внимание: без завершающего слэша, он означает путь.
     **По умолчанию:** `''`.
-  * `contextCodeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, вызовы `eval` и конструкторов функций
+  * `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, вызовы `eval` и конструкторов функций
       (`Function`, `GeneratorFunction` и т.д.) дают
       `EvalError`. **По умолчанию:** `true`.
-    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, компиляция WebAssembly
+    * `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, компиляция WebAssembly
       даёт `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `afterEvaluate`, микрозадачи (через `Promise` и `async function`)
+  * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `afterEvaluate`, микрозадачи (через `Promise` и `async function`)
     выполняются сразу после скрипта. В этом случае они входят в ограничения `timeout` и
     `breakOnSigint`.
-* Возвращает: {any} результат последнего выполненного в скрипте выражения.
+* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в скрипте выражения.
 
 Эквивалентно `script.runInContext(vm.createContext(options), options)`.
 Делает следующее:
@@ -420,16 +420,16 @@ changes:
     | --- | --- |
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции `code`
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции `code`
     строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до остановки. При остановке
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до остановки. При остановке
     выбрасывается [`Error`][`Error`]. Значение — строго положительное целое.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
     [`Error`][`Error`]. Обработчики `process.on('SIGINT')` отключаются на время выполнения
     сценария, затем снова работают. **По умолчанию:** `false`.
-* Возвращает: {any} результат последнего выполненного в сценарии оператора.
+* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в сценарии оператора.
 
 Выполняет скомпилированный код объекта `vm.Script` в контексте текущего объекта
 `global`. У выполняемого кода нет доступа к локальной области видимости, но есть
@@ -481,7 +481,7 @@ added:
   - v18.13.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
 When the script is compiled from a source that contains a source map magic
 comment, this property will be set to the URL of the source map.
@@ -711,7 +711,7 @@ support is planned.
 
 ### `module.error`
 
-* Тип: {any}
+* Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 If the `module.status` is `'errored'`, this property contains the exception
 thrown by the module during evaluation. If the status is anything else,
@@ -725,16 +725,16 @@ in the ECMAScript specification.
 
 ### `module.evaluate([options])`
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to evaluate
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to evaluate
     before terminating execution. If execution is interrupted, an [`Error`][`Error`]
     will be thrown. This value must be a strictly positive integer.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
     [`Error`][`Error`]. Existing handlers for the event that have been attached via
     `process.on('SIGINT')` are disabled during script execution, but continue to
     work after that. **По умолчанию:** `false`.
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
 Evaluate the module and its depenendencies. Corresponds to the [Evaluate() concrete method][Evaluate() concrete method] field of
 [Cyclic Module Record][Cyclic Module Record]s in the ECMAScript specification.
@@ -780,7 +780,7 @@ This method cannot be called while the module is being evaluated (`module.status
 
 ### `module.identifier`
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The identifier of the current module, as set in the constructor.
 
@@ -803,27 +803,27 @@ changes:
     | --- | --- |
     | v21.1.0, v20.10.0, v18.19.0 | Опция «extra.assert» переименована в «extra.attributes». Прежнее имя по-прежнему предоставляется для обратной совместимости. |
 
-* `linker` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module:
+* `linker` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+  * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module:
     ```mjs
     import foo from 'foo';
     //              ^^^^^ the module specifier
     ```
 
-  * `referencingModule` [<vm.Module>](vm.md) The `Module` object `link()` is called on.
+  * `referencingModule` [`<vm.Module>`](vm.md) The `Module` object `link()` is called on.
 
-  * `extra` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `attributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The data from the attribute:
+  * `extra` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `attributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The data from the attribute:
       ```mjs
       import foo from 'foo' with { name: 'value' };
       //                         ^^^^^^^^^^^^^^^^^ the attribute
       ```
       Per ECMA-262, hosts are expected to trigger an error if an
       unsupported attribute is present.
-    * `assert` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Alias for `extra.attributes`.
+    * `assert` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Alias for `extra.attributes`.
 
-  * Возвращает: [<vm.Module>](vm.md) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+  * Возвращает: [`<vm.Module>`](vm.md) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Link module dependencies. This method must be called before evaluation, and
 can only be called once per module.
@@ -865,7 +865,7 @@ Record][]s in the ECMAScript specification.
 
 ### `module.namespace`
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 The namespace object of the module. This is only available after linking
 (`module.link()`) has completed.
@@ -875,7 +875,7 @@ specification.
 
 ### `module.status`
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The current status of the module. Will be one of:
 
@@ -910,7 +910,7 @@ added: v9.6.0
 This feature is only available with the `--experimental-vm-modules` command
 flag enabled.
 
-* Extends: [<vm.Module>](vm.md)
+* Extends: [`<vm.Module>`](vm.md)
 
 The `vm.SourceTextModule` class provides the [Source Text Module Record][Source Text Module Record] as
 defined in the ECMAScript specification.
@@ -933,28 +933,28 @@ changes:
     | --- | --- |
     | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript Module code to parse
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript Module code to parse
 * `options`
-  * `identifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
+  * `identifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
     **По умолчанию:** `'vm:module(i)'` where `i` is a context-specific ascending
     index.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
     `TypedArray`, or `DataView` with V8's code cache data for the supplied
     source. The `code` must be the same as the module from which this
     `cachedData` was created.
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object as returned by the
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object as returned by the
     `vm.createContext()` method, to compile and evaluate this `Module` in.
     If no context is specified, the module is evaluated in the current
     execution context.
-  * `lineOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+  * `lineOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
     in stack traces produced by this `Module`. **По умолчанию:** `0`.
-  * `columnOffset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+  * `columnOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
     is displayed in stack traces produced by this `Module`. **По умолчанию:** `0`.
-  * `initializeImportMeta` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called during evaluation of this `Module`
+  * `initializeImportMeta` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called during evaluation of this `Module`
     to initialize the `import.meta`.
     * `meta` {import.meta}
-    * `module` [<vm.SourceTextModule>](vm.md)
-  * `importModuleDynamically` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Used to specify the
+    * `module` [`<vm.SourceTextModule>`](vm.md)
+  * `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Used to specify the
     how the modules should be loaded during the evaluation of this module
     when `import()` is called. This option is part of the experimental
     modules API. We do not recommend using it in a production environment.
@@ -1036,7 +1036,7 @@ added:
  - v12.17.0
 -->
 
-* Возвращает: [<Buffer>](buffer.md#buffer)
+* Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Creates a code cache that can be used with the `SourceTextModule` constructor's
 `cachedData` option. Returns a `Buffer`. This method may be called any number
@@ -1096,7 +1096,7 @@ the ECMAScript specification.
 added: v24.9.0
 -->
 
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Iterates over the dependency graph and returns `true` if any module in its
 dependencies or this module itself contains top-level `await` expressions,
@@ -1113,7 +1113,7 @@ instantiated yet, an error will be thrown.
 added: v24.9.0
 -->
 
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns whether the module itself contains any top-level `await` expressions.
 
@@ -1263,7 +1263,7 @@ added:
 This feature is only available with the `--experimental-vm-modules` command
 flag enabled.
 
-* Extends: [<vm.Module>](vm.md)
+* Extends: [`<vm.Module>`](vm.md)
 
 The `vm.SyntheticModule` class provides the [Synthetic Module Record][Synthetic Module Record] as
 defined in the WebIDL specification. The purpose of synthetic modules is to
@@ -1320,12 +1320,12 @@ added:
 
 * `exportNames` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Array of names that will be exported from the
   module.
-* `evaluateCallback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called when the module is evaluated.
+* `evaluateCallback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called when the module is evaluated.
 * `options`
-  * `identifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
+  * `identifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) String used in stack traces.
     **По умолчанию:** `'vm:module(i)'` where `i` is a context-specific ascending
     index.
-  * `context` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object as returned by the
+  * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object as returned by the
     `vm.createContext()` method, to compile and evaluate this `Module` in.
 
 Creates a new `SyntheticModule` instance.
@@ -1355,8 +1355,8 @@ changes:
     | --- | --- |
     | v24.8.0, v22.21.0 | Больше не нужно вызывать SyntheticModule.link() перед вызовом этого метода. |
 
-* `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the export to set.
-* `value` {any} The value to set the export to.
+* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the export to set.
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to set the export to.
 
 This method sets the module export binding slots with the given value.
 
@@ -1395,12 +1395,12 @@ added:
   - v22.20.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module.
-  * `attributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The specifier of the requested module.
+  * `attributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
     [WithClause][WithClause] in a [ImportDeclaration][ImportDeclaration], or an empty object if no value was
     provided.
-  * `phase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the requested module (`"source"` or `"evaluation"`).
+  * `phase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the requested module (`"source"` or `"evaluation"`).
 
 A `ModuleRequest` represents the request to import a module with given import attributes and phase.
 
@@ -1455,23 +1455,23 @@ changes:
     | v14.3.0 | Удаление importModuleDynamically из-за проблем совместимости. |
     | v14.1.0, v13.14.0 | Опция importModuleDynamically теперь поддерживается. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The body of the function to compile.
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The body of the function to compile.
 * `params` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An array of strings containing all parameters for the
   function.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
     by this script. **По умолчанию:** `''`.
-  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+  * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
     in stack traces produced by this script. **По умолчанию:** `0`.
-  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+  * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
     is displayed in stack traces produced by this script. **По умолчанию:** `0`.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
     `TypedArray`, or `DataView` with V8's code cache data for the supplied
     source. This must be produced by a prior call to [`vm.compileFunction()`][`vm.compileFunction()`]
     with the same `code` and `params`.
-  * `produceCachedData` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Specifies whether to produce new cache data.
+  * `produceCachedData` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Specifies whether to produce new cache data.
     **По умолчанию:** `false`.
-  * `parsingContext` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object in which the said
+  * `parsingContext` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object in which the said
     function should be compiled in.
   * `contextExtensions` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An array containing a collection of context
     extensions (objects wrapping the current scope) to be applied while
@@ -1483,7 +1483,7 @@ changes:
     experimental modules API. We do not recommend using it in a production
     environment. For detailed information, see
     [Support of dynamic `import()` in compilation APIs][Support of dynamic `import()` in compilation APIs].
-* Возвращает: [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Compiles the given code into the provided context (if no context is
 supplied, the current context is used), and returns it wrapped inside a
@@ -1497,7 +1497,7 @@ added:
   - v20.12.0
 -->
 
-* Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Returns an object containing commonly used constants for VM operations.
 
@@ -1563,26 +1563,26 @@ changes:
     | v10.0.0 | Первый аргумент больше не может быть функцией. |
     | v10.0.0 | Опция `codeGeneration` теперь поддерживается. |
 
-* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+* `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
   Either [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`] or an object that will be [contextified][contextified].
   If `undefined`, an empty contextified object will be created for backwards compatibility.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
     **По умолчанию:** `'VM Context i'`, where `i` is an ascending numerical index of
     the created context.
-  * `origin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly created
+  * `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly created
     context for display purposes. The origin should be formatted like a URL,
     but with only the scheme, host, and port (if necessary), like the value of
     the [`url.origin`][`url.origin`] property of a [`URL`][`URL`] object. Most notably, this
     string should omit the trailing slash, as that denotes a path.
     **По умолчанию:** `''`.
-  * `codeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
+  * `codeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
       constructors (`Function`, `GeneratorFunction`, etc) will throw an
       `EvalError`. **По умолчанию:** `true`.
-    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
+    * `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
       module will throw a `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
+  * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
     scheduled through `Promise`s and `async function`s) will be run immediately
     after a script has run through [`script.runInContext()`][`script.runInContext()`].
     They are included in the `timeout` and `breakOnSigint` scopes in that case.
@@ -1593,7 +1593,7 @@ changes:
     part of the experimental modules API. We do not recommend using it in a
     production environment. For detailed information, see
     [Support of dynamic `import()` in compilation APIs][Support of dynamic `import()` in compilation APIs].
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) contextified object.
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) contextified object.
 
 If the given `contextObject` is an object, the `vm.createContext()` method will [prepare that
 object][contextified] and return a reference to it so that it can be used in
@@ -1664,8 +1664,8 @@ Inspector API.
 added: v0.11.7
 -->
 
-* `object` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the given `object` object has been [contextified][contextified] using
 [`vm.createContext()`][`vm.createContext()`], or if it's the global object of a context created
@@ -1682,19 +1682,19 @@ added: v13.10.0
 Measure the memory known to V8 and used by all contexts known to the
 current V8 isolate, or the main context.
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional.
-  * `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'summary'` or `'detailed'`. In summary mode,
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional.
+  * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'summary'` or `'detailed'`. In summary mode,
     only the memory measured for the main context will be returned. In
     detailed mode, the memory measured for all contexts known to the
     current V8 isolate will be returned.
     **По умолчанию:** `'summary'`
-  * `execution` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'default'` or `'eager'`. With default
+  * `execution` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'default'` or `'eager'`. With default
     execution, the promise will not resolve until after the next scheduled
     garbage collection starts, which may take a while (or never if the program
     exits before the next GC). With eager execution, the GC will be started
     right away to measure the memory.
     **По умолчанию:** `'default'`
-* Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) If the memory is successfully measured, the promise will
+* Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) If the memory is successfully measured, the promise will
   resolve with an object containing information about the memory usage.
   Otherwise it will be rejected with an `ERR_CONTEXT_NOT_INITIALIZED` error.
 
@@ -1801,28 +1801,28 @@ changes:
     | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
-* `contextifiedObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object that will be used
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The [contextified][contextified] object that will be used
   as the `global` when the `code` is compiled and run.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
     by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+  * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
     in stack traces produced by this script. **По умолчанию:** `0`.
-  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+  * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
     is displayed in stack traces produced by this script. **По умолчанию:** `0`.
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
     while compiling the `code`, the line of code causing the error is attached
     to the stack trace. **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
     before terminating execution. If execution is terminated, an [`Error`][`Error`]
     will be thrown. This value must be a strictly positive integer.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
     [`Error`][`Error`]. Existing handlers for the event that have been attached via
     `process.on('SIGINT')` are disabled during script execution, but continue to
     work after that. **По умолчанию:** `false`.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
     `TypedArray`, or `DataView` with V8's code cache data for the supplied
     source.
   * `importModuleDynamically`
@@ -1919,44 +1919,44 @@ changes:
     | v10.0.0 | Опция contextCodeGeneration теперь поддерживается. |
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
-* `contextObject` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<vm.constants.DONT_CONTEXTIFY>](#vmconstantsdont_contextify) | undefined
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
   Either [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`] or an object that will be [contextified][contextified].
   If `undefined`, an empty contextified object will be created for backwards compatibility.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
     by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+  * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
     in stack traces produced by this script. **По умолчанию:** `0`.
-  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+  * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
     is displayed in stack traces produced by this script. **По умолчанию:** `0`.
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
     while compiling the `code`, the line of code causing the error is attached
     to the stack trace. **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
     before terminating execution. If execution is terminated, an [`Error`][`Error`]
     will be thrown. This value must be a strictly positive integer.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
     [`Error`][`Error`]. Existing handlers for the event that have been attached via
     `process.on('SIGINT')` are disabled during script execution, but continue to
     work after that. **По умолчанию:** `false`.
-  * `contextName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
+  * `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Human-readable name of the newly created context.
     **По умолчанию:** `'VM Context i'`, where `i` is an ascending numerical index of
     the created context.
-  * `contextOrigin` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly
+  * `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] corresponding to the newly
     created context for display purposes. The origin should be formatted like a
     URL, but with only the scheme, host, and port (if necessary), like the
     value of the [`url.origin`][`url.origin`] property of a [`URL`][`URL`] object. Most notably,
     this string should omit the trailing slash, as that denotes a path.
     **По умолчанию:** `''`.
-  * `contextCodeGeneration` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    * `strings` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
+  * `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any calls to `eval` or function
       constructors (`Function`, `GeneratorFunction`, etc) will throw an
       `EvalError`. **По умолчанию:** `true`.
-    * `wasm` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
+    * `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to false any attempt to compile a WebAssembly
       module will throw a `WebAssembly.CompileError`. **По умолчанию:** `true`.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
     `TypedArray`, or `DataView` with V8's code cache data for the supplied
     source.
   * `importModuleDynamically`
@@ -1966,11 +1966,11 @@ changes:
     experimental modules API. We do not recommend using it in a production
     environment. For detailed information, see
     [Support of dynamic `import()` in compilation APIs][Support of dynamic `import()` in compilation APIs].
-  * `microtaskMode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
+  * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `afterEvaluate`, microtasks (tasks
     scheduled through `Promise`s and `async function`s) will be run immediately
     after the script has run. They are included in the `timeout` and
     `breakOnSigint` scopes in that case.
-* Возвращает: {any} the result of the very last statement executed in the script.
+* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
 
 This method is a shortcut to
 `(new vm.Script(code, options)).runInContext(vm.createContext(options), options)`.
@@ -2068,26 +2068,26 @@ changes:
     | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
+* `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The JavaScript code to compile and run.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the filename used in stack traces produced
     by this script. **По умолчанию:** `'evalmachine.<anonymous>'`.
-  * `lineOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
+  * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the line number offset that is displayed
     in stack traces produced by this script. **По умолчанию:** `0`.
-  * `columnOffset` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
+  * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the first-line column number offset that
     is displayed in stack traces produced by this script. **По умолчанию:** `0`.
-  * `displayErrors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, if an [`Error`][`Error`] occurs
     while compiling the `code`, the line of code causing the error is attached
     to the stack trace. **По умолчанию:** `true`.
-  * `timeout` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of milliseconds to execute `code`
     before terminating execution. If execution is terminated, an [`Error`][`Error`]
     will be thrown. This value must be a strictly positive integer.
-  * `breakOnSigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
+  * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, receiving `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) will terminate execution and throw an
     [`Error`][`Error`]. Existing handlers for the event that have been attached via
     `process.on('SIGINT')` are disabled during script execution, but continue to
     work after that. **По умолчанию:** `false`.
-  * `cachedData` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
+  * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Provides an optional `Buffer` or
     `TypedArray`, or `DataView` with V8's code cache data for the supplied
     source.
   * `importModuleDynamically`
@@ -2097,7 +2097,7 @@ changes:
     experimental modules API. We do not recommend using it in a production
     environment. For detailed information, see
     [Support of dynamic `import()` in compilation APIs][Support of dynamic `import()` in compilation APIs].
-* Возвращает: {any} the result of the very last statement executed in the script.
+* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
 
 `vm.runInThisContext()` compiles `code`, runs it within the context of the
 current `global` and returns the result. Running code does not have access to
@@ -2704,18 +2704,18 @@ actually calls to `import()`, the result will reject with
 The callback `importModuleDynamically(specifier, referrer, importAttributes)`
 has the following signature:
 
-* `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) specifier passed to `import()`
-* `referrer` [<vm.Script>](vm.md#new-vmscriptcode-options) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<vm.SourceTextModule>](vm.md) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) specifier passed to `import()`
+* `referrer` [`<vm.Script>`](vm.md#new-vmscriptcode-options) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<vm.SourceTextModule>`](vm.md) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   The referrer is the compiled `vm.Script` for `new vm.Script`,
   `vm.runInThisContext`, `vm.runInContext` and `vm.runInNewContext`. It's the
   compiled `Function` for `vm.compileFunction`, the compiled
   `vm.SourceTextModule` for `new vm.SourceTextModule`, and the context `Object`
   for `vm.createContext()`.
-* `importAttributes` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
+* `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The `"with"` value passed to the
   [`optionsExpression`][`optionsExpression`] optional parameter, or an empty object if no value was
   provided.
-* `phase` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the dynamic import (`"source"` or `"evaluation"`).
-* Возвращает: [<Module Namespace Object>](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects) | [<vm.Module>](vm.md) Returning a `vm.Module` is
+* `phase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The phase of the dynamic import (`"source"` or `"evaluation"`).
+* Возвращает: [`<Module Namespace Object>`](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects) | [`<vm.Module>`](vm.md) Returning a `vm.Module` is
   recommended in order to take advantage of error tracking, and to avoid issues
   with namespaces that contain `then` function exports.
 

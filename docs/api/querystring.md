@@ -47,7 +47,7 @@ added: v0.1.99
 added: v0.1.25
 -->
 
-* `str` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `querystring.escape()` выполняет процентное кодирование URL для заданного `str` способом, оптимизированным для специфических требований строк запросов URL.
 
@@ -81,12 +81,12 @@ changes:
     | v6.0.0 | Возвращенный объект больше не наследуется от Object.prototype. |
     | v6.0.0, v4.2.4 | Параметр `eq` теперь может иметь длину более `1`. |
 
-* `str` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка запроса URL для разбора
-* `sep` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
-* `eq` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `decodeURIComponent` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую следует использовать при декодировании символов в процентном кодировании в строке запроса. **По умолчанию:** `querystring.unescape()`.
-  * `maxKeys` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт максимальное количество ключей для разбора. Укажите `0`, чтобы снять ограничение на подсчёт ключей. **По умолчанию:** `1000`.
+* `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка запроса URL для разбора
+* `sep` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
+* `eq` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `decodeURIComponent` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую следует использовать при декодировании символов в процентном кодировании в строке запроса. **По умолчанию:** `querystring.unescape()`.
+  * `maxKeys` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт максимальное количество ключей для разбора. Укажите `0`, чтобы снять ограничение на подсчёт ключей. **По умолчанию:** `1000`.
 
 Метод `querystring.parse()` разбирает строку запроса URL (`str`) в набор пар ключей и значений.
 
@@ -116,11 +116,11 @@ querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null,
 added: v0.1.25
 -->
 
-* `obj` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект для сериализации в строку запроса URL
-* `sep` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
-* `eq` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
+* `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект для сериализации в строку запроса URL
+* `sep` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
+* `eq` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.
 * `options`
-  * `encodeURIComponent` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую следует использовать при преобразовании небезопасных для URL символов в процентное кодирование в строке запроса. **По умолчанию:** `querystring.escape()`.
+  * `encodeURIComponent` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую следует использовать при преобразовании небезопасных для URL символов в процентное кодирование в строке запроса. **По умолчанию:** `querystring.escape()`.
 
 Метод `querystring.stringify()` формирует строку запроса URL из заданного `obj`, перебирая «собственные свойства» объекта.
 
@@ -151,7 +151,7 @@ querystring.stringify({ w: '中文', foo: 'bar' }, null, null,
 added: v0.1.25
 -->
 
-* `str` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `querystring.unescape()` выполняет декодирование символов в процентном кодировании URL для заданного `str`.
 

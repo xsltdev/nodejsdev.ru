@@ -100,8 +100,8 @@ added:
   - v14.18.0
 -->
 
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<net.SocketAddress>](net.md) IPv4- или IPv6-адрес.
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<net.SocketAddress>`](net.md) IPv4- или IPv6-адрес.
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
 
 Добавляет правило блокировки для указанного IP-адреса.
 
@@ -113,9 +113,9 @@ added:
   - v14.18.0
 -->
 
-* `start` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<net.SocketAddress>](net.md) Начало диапазона IPv4 или IPv6.
-* `end` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<net.SocketAddress>](net.md) Конец диапазона IPv4 или IPv6.
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
+* `start` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<net.SocketAddress>`](net.md) Начало диапазона IPv4 или IPv6.
+* `end` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<net.SocketAddress>`](net.md) Конец диапазона IPv4 или IPv6.
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
 
 Добавляет правило блокировки диапазона адресов от `start` (включительно) до
 `end` (включительно).
@@ -128,10 +128,10 @@ added:
   - v14.18.0
 -->
 
-* `net` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<net.SocketAddress>](net.md) IPv4- или IPv6-адрес сети.
-* `prefix` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число бит префикса CIDR. Для IPv4 — от `0` до `32`, для IPv6 —
+* `net` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<net.SocketAddress>`](net.md) IPv4- или IPv6-адрес сети.
+* `prefix` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число бит префикса CIDR. Для IPv4 — от `0` до `32`, для IPv6 —
   от `0` до `128`.
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
 
 Добавляет правило блокировки диапазона адресов, заданного маской подсети.
 
@@ -143,9 +143,9 @@ added:
   - v14.18.0
 -->
 
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<net.SocketAddress>](net.md) Проверяемый IP-адрес
-* `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<net.SocketAddress>`](net.md) Проверяемый IP-адрес
+* `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`. **По умолчанию:** `'ipv4'`.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если указанный IP попадает под любое из правил в `BlockList`.
 
@@ -184,7 +184,7 @@ added:
   - v22.13.0
 -->
 
-* `value` {any} Произвольное значение JavaScript
+* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript
 * Возвращает `true`, если `value` — экземпляр `net.BlockList`.
 
 ### `blockList.fromJSON(value)`
@@ -239,14 +239,14 @@ added:
   - v14.18.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сетевой адрес в виде строки IPv4 или IPv6.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сетевой адрес в виде строки IPv4 или IPv6.
     **По умолчанию:** `'127.0.0.1'`, если `family` — `'ipv4'`; `'::'`, если `family` —
     `'ipv6'`.
-  * `family` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`.
+  * `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`.
     **По умолчанию:** `'ipv4'`.
-  * `flowlabel` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Метка потока IPv6, только при `family` — `'ipv6'`.
-  * `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт.
+  * `flowlabel` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Метка потока IPv6, только при `family` — `'ipv6'`.
+  * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт.
 
 ### `socketaddress.address`
 
@@ -256,7 +256,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### `socketaddress.family`
 
@@ -266,7 +266,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`.
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'ipv4'` или `'ipv6'`.
 
 ### `socketaddress.flowlabel`
 
@@ -276,7 +276,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### `socketaddress.port`
 
@@ -286,7 +286,7 @@ added:
   - v14.18.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### `SocketAddress.parse(input)`
 
@@ -296,9 +296,9 @@ added:
   - v22.13.0
 -->
 
-* `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка с IP-адресом и при необходимости портом,
+* `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка с IP-адресом и при необходимости портом,
   например `123.1.2.3:1234` или `[1::1]:1234`.
-* Возвращает: [<net.SocketAddress>](net.md) Экземпляр `SocketAddress` при успешном разборе,
+* Возвращает: [`<net.SocketAddress>`](net.md) Экземпляр `SocketAddress` при успешном разборе,
   иначе `undefined`.
 
 ## Класс: `net.Server`
@@ -313,11 +313,11 @@ added: v0.1.90
 
 ### `new net.Server([options][, connectionListener])`
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) См.
   [`net.createServer([options][, connectionListener])`][`net.createServer()`].
-* `connectionListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Автоматически устанавливается слушателем события
+* `connectionListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Автоматически устанавливается слушателем события
   [`'connection'`][`'connection'`].
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 `net.Server` — это [`EventEmitter`][`EventEmitter`] со следующими событиями:
 
@@ -336,7 +336,7 @@ added: v0.5.0
 added: v0.1.90
 -->
 
-* Тип: [<net.Socket>](net.md#class-netsocket) Объект соединения
+* Тип: [`<net.Socket>`](net.md#class-netsocket) Объект соединения
 
 Генерируется при новом соединении. `socket` — экземпляр
 `net.Socket`.
@@ -347,7 +347,7 @@ added: v0.1.90
 added: v0.1.90
 -->
 
-* Тип: [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+* Тип: [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке. В отличие от [`net.Socket`][`net.Socket`], событие [`'close'`][`'close'`]
 **не** следует сразу за этим, пока явно не вызван
@@ -374,13 +374,13 @@ added:
 новые подключения и вместо этого испускает `'drop'`. Для TCP-сервера аргумент
 описан ниже, иначе аргумент — `undefined`.
 
-* `data` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Аргумент, передаваемый слушателю события.
-  * `localAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальный адрес.
-  * `localPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Локальный порт.
-  * `localFamily` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальное семейство адресов.
-  * `remoteAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Удалённый адрес.
-  * `remotePort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Удалённый порт.
-  * `remoteFamily` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство удалённого IP: `'IPv4'` или `'IPv6'`.
+* `data` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Аргумент, передаваемый слушателю события.
+  * `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальный адрес.
+  * `localPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Локальный порт.
+  * `localFamily` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Локальное семейство адресов.
+  * `remoteAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Удалённый адрес.
+  * `remotePort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Удалённый порт.
+  * `remoteFamily` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство удалённого IP: `'IPv4'` или `'IPv6'`.
 
 ### `server.address()`
 
@@ -404,7 +404,7 @@ changes:
     | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
     | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Возвращает привязанный `address`, имя `family` и `port` сервера, как сообщает ОС,
 если прослушивается IP-сокет (удобно узнать назначенный порт при выборе порта ОС):
@@ -435,8 +435,8 @@ server.listen(() => {
 added: v0.1.90
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при закрытии сервера.
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается при закрытии сервера.
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Останавливает приём новых соединений, сохраняя существующие. Функция асинхронна:
 сервер окончательно закрывается, когда все соединения завершены и испущено
@@ -471,8 +471,8 @@ changes:
 added: v0.9.7
 -->
 
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Асинхронно возвращает число одновременных соединений на сервере. Работает, если
 сокеты передавались в форки.
@@ -528,10 +528,10 @@ server.on('error', (e) => {
 added: v0.5.10
 -->
 
-* `handle` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `backlog` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Common parameter of [`server.listen()`][`server.listen()`] functions
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `handle` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Common parameter of [`server.listen()`][`server.listen()`] functions
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Запускает сервер на уже привязанном `handle` (порт, Unix domain socket или
 именованная труба Windows).
@@ -569,26 +569,26 @@ changes:
     | v15.6.0 | Добавлена ​​поддержка AbortSignal. |
     | v11.4.0 | Поддерживается опция `ipv6Only`. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Поддерживаемые свойства:
-  * `backlog` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
-  * `exclusive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-  * `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `ipv6Only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для TCP: при `true` отключается dual-stack: привязка к
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Поддерживаемые свойства:
+  * `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
+  * `exclusive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
+  * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+  * `ipv6Only` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для TCP: при `true` отключается dual-stack: привязка к
     `::` не привязывает `0.0.0.0`. **По умолчанию:** `false`.
-  * `reusePort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для TCP: при `true` несколько сокетов на одном хосте
+  * `reusePort` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для TCP: при `true` несколько сокетов на одном хосте
     могут слушать один порт; ОС распределяет входящие соединения. Доступно не на
     всех платформах (Linux 3.9+, DragonFlyBSD 3.6+, FreeBSD 12.0+, Solaris 11.4,
     AIX 7.2.5+ и т.д.). На неподдерживаемых платформах — ошибка. **По умолчанию:** `false`.
-  * `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Игнорируется, если задан `port`. См.
+  * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Игнорируется, если задан `port`. См.
     [Пути для IPC-соединений][Identifying paths for IPC connections].
-  * `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-  * `readableAll` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для IPC делает трубу читаемой для всех пользователей.
+  * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+  * `readableAll` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для IPC делает трубу читаемой для всех пользователей.
     **По умолчанию:** `false`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) Можно использовать для закрытия прослушивающего сервера.
-  * `writableAll` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для IPC делает трубу доступной для записи всем.
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) Можно использовать для закрытия прослушивающего сервера.
+  * `writableAll` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Для IPC делает трубу доступной для записи всем.
     **По умолчанию:** `false`.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Если указан `port`, поведение как у
 [`server.listen([port[, host[, backlog]]][, callback])`][`server.listen(port)`].
@@ -635,11 +635,11 @@ controller.abort();
 added: v0.1.90
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь, который должен прослушивать сервер. См.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь, который должен прослушивать сервер. См.
   [Пути для IPC-соединений][Identifying paths for IPC connections].
-* `backlog` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function).
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function).
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Запускает [IPC][IPC]-сервер на указанном `path`.
 
@@ -649,11 +649,11 @@ added: v0.1.90
 added: v0.1.90
 -->
 
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `backlog` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function).
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`][`server.listen()`].
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function).
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Запускает TCP-сервер на указанных `port` и `host`.
 
@@ -672,7 +672,7 @@ added: v0.1.90
 added: v5.7.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Прослушивает ли сервер соединения.
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Прослушивает ли сервер соединения.
 
 ### `server.maxConnections`
 
@@ -693,7 +693,7 @@ changes:
     | --- | --- |
     | v21.0.0 | Установка для maxConnections значения «0» отключает все входящие соединения. Раньше его трактовали как «Бесконечность». |
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Когда число соединений достигает порога `server.maxConnections`:
 
@@ -713,7 +713,7 @@ added:
   - v22.12.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 При `true` при достижении [`server.maxConnections`][`server.maxConnections`] начинается закрытие
 соединений. Имеет смысл только в режиме кластера.
@@ -724,7 +724,7 @@ added:
 added: v0.9.1
 -->
 
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Противоположность `unref()`: `ref()` у ранее `unref`-сервера снова удерживает
 процесс, если это единственный сервер. Повторный `ref()` на уже `ref`-сервере
@@ -736,7 +736,7 @@ added: v0.9.1
 added: v0.9.1
 -->
 
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 `unref()` позволяет процессу завершиться, если это единственный активный сервер.
 Повторный `unref()` на уже отвязанном сервере не действует.
@@ -784,43 +784,43 @@ changes:
     | v15.14.0 | Добавлена ​​поддержка AbortSignal. |
     | v12.10.0 | Добавлена ​​опция onread. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Available options are:
-  * `allowHalfOpen` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Available options are:
+  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
     automatically end the writable side when the readable side ends. See
     [`net.createServer()`][`net.createServer()`] and the [`'end'`][`'end'`] event for details. **Default:**
     `false`.
-  * `blockList` [<net.BlockList>](net.md) `blockList` can be used for disabling outbound
+  * `blockList` [`<net.BlockList>`](net.md) `blockList` can be used for disabling outbound
     access to specific IP addresses, IP ranges, or IP subnets.
-  * `fd` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If specified, wrap around an existing socket with
+  * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If specified, wrap around an existing socket with
     the given file descriptor, otherwise a new socket will be created.
-  * `keepAlive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality on
+  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality on
     the socket immediately after the connection is established, similarly on what
     is done in [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **Default:** `false`.
-  * `keepAliveInitialDelay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
+  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
     initial delay before the first keepalive probe is sent on an idle socket. **Default:** `0`.
-  * `noDelay` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's algorithm
+  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's algorithm
     immediately after the socket is established. **Default:** `false`.
-  * `onread` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) If specified, incoming data is stored in a single `buffer`
+  * `onread` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) If specified, incoming data is stored in a single `buffer`
     and passed to the supplied `callback` when data arrives on the socket.
     This will cause the streaming functionality to not provide any data.
     The socket will emit events like `'error'`, `'end'`, and `'close'`
     as usual. Methods like `pause()` and `resume()` will also behave as
     expected.
-    * `buffer` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Either a reusable chunk of memory to
+    * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Either a reusable chunk of memory to
       use for storing incoming data or a function that returns such.
-    * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) This function is called for every chunk of incoming
+    * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) This function is called for every chunk of incoming
       data. Two arguments are passed to it: the number of bytes written to
       `buffer` and a reference to `buffer`. Return `false` from this function to
       implicitly `pause()` the socket. This function will be executed in the
       global context.
-  * `readable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow reads on the socket when an `fd` is passed,
+  * `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow reads on the socket when an `fd` is passed,
     otherwise ignored. **Default:** `false`.
-  * `signal` [<AbortSignal>](globals.md#abortsignal) An Abort signal that may be used to destroy the
+  * `signal` [`<AbortSignal>`](globals.md#abortsignal) An Abort signal that may be used to destroy the
     socket.
-  * `typeOfService` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The initial Type of Service (TOS) value.
-  * `writable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow writes on the socket when an `fd` is passed,
+  * `typeOfService` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The initial Type of Service (TOS) value.
+  * `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Allow writes on the socket when an `fd` is passed,
     otherwise ignored. **Default:** `false`.
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Creates a new socket object.
 
@@ -833,7 +833,7 @@ endpoint, depending on what it [`connect()`][`socket.connect()`] to.
 added: v0.1.90
 -->
 
-* `hadError` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если на сокете была ошибка передачи.
+* `hadError` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если на сокете была ошибка передачи.
 
 Генерируется после полного закрытия сокета. `hadError` — булево значение:
 закрытие из‑за ошибки передачи.
@@ -855,9 +855,9 @@ added:
   - v20.12.0
 -->
 
-* `ip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket is attempting to connect to.
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket is attempting to connect to.
-* `family` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket is attempting to connect to.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket is attempting to connect to.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
 
 Генерируется при начале новой попытки соединения. Может повторяться,
 если в [`socket.connect(options)`][`socket.connect(options)`] включён автоподбор семейства адреса.
@@ -870,10 +870,10 @@ added:
   - v20.12.0
 -->
 
-* `ip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
-* `family` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
-* `error` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The error associated with the failure.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
+* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) The error associated with the failure.
 
 Генерируется при неудачной попытке соединения. Может повторяться,
 если в [`socket.connect(options)`][`socket.connect(options)`] включён автоподбор семейства адреса.
@@ -886,9 +886,9 @@ added:
   - v20.12.0
 -->
 
-* `ip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
-* `family` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
+* `ip` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The IP which the socket attempted to connect to.
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The port which the socket attempted to connect to.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The family of the IP. It can be `6` for IPv6 or `4` for IPv4.
 
 Генерируется при таймауте попытки соединения. Только (и может повторяться)
 при включённом автоподборе семейства в
@@ -900,7 +900,7 @@ added:
 added: v0.1.90
 -->
 
-* Тип: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерируется при получении данных. Аргумент `data` — `Buffer` или
 `String`. Кодировка задаётся [`socket.setEncoding()`][`socket.setEncoding()`].
@@ -938,7 +938,7 @@ added: v0.1.90
 added: v0.1.90
 -->
 
-* Тип: [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+* Тип: [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке. Сразу после него вызывается событие `'close'`.
 
@@ -963,10 +963,10 @@ changes:
 Генерируется после разрешения имени хоста, до подключения.
 Не применяется к Unix-сокетам.
 
-* `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null Объект ошибки. См. [`dns.lookup()`][`dns.lookup()`].
-* `address` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) IP-адрес.
-* `family` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Тип адреса. См. [`dns.lookup()`][`dns.lookup()`].
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста.
+* `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null Объект ошибки. См. [`dns.lookup()`][`dns.lookup()`].
+* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) IP-адрес.
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Тип адреса. См. [`dns.lookup()`][`dns.lookup()`].
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста.
 
 ### Событие: `'ready'`
 
@@ -1011,7 +1011,7 @@ changes:
     | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
     | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
 
-* Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Returns the bound `address`, the address `family` name and `port` of the
 socket as reported by the operating system:
@@ -1043,7 +1043,7 @@ deprecated:
 
 > Stability: 0 - Deprecated: Use [`writable.writableLength`][`writable.writableLength`] instead.
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 This property shows the number of characters buffered for writing. The buffer
 may contain strings whose length after encoding is not yet known. So this number
@@ -1066,7 +1066,7 @@ Users who experience large or growing `bufferSize` should attempt to
 added: v0.5.3
 -->
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The amount of received bytes.
 
@@ -1076,7 +1076,7 @@ The amount of received bytes.
 added: v0.5.3
 -->
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The amount of bytes sent.
 
@@ -1091,7 +1091,7 @@ Possible signatures:
   for [IPC][IPC] connections.
 * [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`]
   for TCP connections.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 This function is asynchronous. When the connection is established, the
 [`'connect'`][`'connect'`] event will be emitted. If there is a problem connecting,
@@ -1156,10 +1156,10 @@ changes:
     | v6.0.0 | Опция «подсказки» теперь во всех случаях по умолчанию равна «0». Раньше, при отсутствии опции «family», по умолчанию использовалось значение «dns.ADDRCONFIG \| dns.V4MAPPED`. |
     | v5.11.0 | Опция `подсказки` теперь поддерживается. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
   methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Initiate a connection on a given socket. Normally this method is not needed,
 the socket should be created and opened with [`net.createConnection()`][`net.createConnection()`]. Use
@@ -1167,7 +1167,7 @@ this only when implementing a custom Socket.
 
 For TCP connections, available `options` are:
 
-* `autoSelectFamily` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): If set to `true`, it enables a family
+* `autoSelectFamily` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type): If set to `true`, it enables a family
   autodetection algorithm that loosely implements section 5 of [RFC 8305][RFC 8305]. The
   `all` option passed to lookup is set to `true` and the sockets attempts to
   connect to all obtained IPv6 and IPv4 addresses, in sequence, until a
@@ -1180,33 +1180,33 @@ For TCP connections, available `options` are:
   connection succeeds. If all connections attempts fails, a single
   `AggregateError` with all failed attempts is emitted. **Default:**
   [`net.getDefaultAutoSelectFamily()`][`net.getDefaultAutoSelectFamily()`].
-* `autoSelectFamilyAttemptTimeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): The amount of time in milliseconds
+* `autoSelectFamilyAttemptTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): The amount of time in milliseconds
   to wait for a connection attempt to finish before trying the next address when
   using the `autoSelectFamily` option. If set to a positive integer less than
   `10`, then the value `10` will be used instead. **Default:**
   [`net.getDefaultAutoSelectFamilyAttemptTimeout()`][`net.getDefaultAutoSelectFamilyAttemptTimeout()`].
-* `family` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): Version of IP stack. Must be `4`, `6`, or `0`. The value
+* `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): Version of IP stack. Must be `4`, `6`, or `0`. The value
   `0` indicates that both IPv4 and IPv6 addresses are allowed. **Default:** `0`.
-* `hints` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional [`dns.lookup()` hints][`dns.lookup()` hints].
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. **Default:** `'localhost'`.
-* `localAddress` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Local address the socket should connect from.
-* `localPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Local port the socket should connect from.
-* `lookup` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Custom lookup function. **Default:** [`dns.lookup()`][`dns.lookup()`].
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Required. Port the socket should connect to.
+* `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional [`dns.lookup()` hints][`dns.lookup()` hints].
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. **Default:** `'localhost'`.
+* `localAddress` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Local address the socket should connect from.
+* `localPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Local port the socket should connect from.
+* `lookup` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Custom lookup function. **Default:** [`dns.lookup()`][`dns.lookup()`].
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Required. Port the socket should connect to.
 
 For [IPC][IPC] connections, available `options` are:
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Required. Path the client should connect to.
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Required. Path the client should connect to.
   See [Identifying paths for IPC connections][Identifying paths for IPC connections]. If provided, the TCP-specific
   options above are ignored.
 
 #### `socket.connect(path[, connectListener])`
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the client should connect to. See
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the client should connect to. See
   [Identifying paths for IPC connections][Identifying paths for IPC connections].
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
   methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Initiate an [IPC][IPC] connection on the given socket.
 
@@ -1220,11 +1220,11 @@ called with `{ path: path }` as `options`.
 added: v0.1.90
 -->
 
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the client should connect to.
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the client should connect to.
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the client should connect to.
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the client should connect to.
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of [`socket.connect()`][`socket.connect()`]
   methods. Will be added as a listener for the [`'connect'`][`'connect'`] event once.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Initiate a TCP connection on the given socket.
 
@@ -1238,7 +1238,7 @@ called with `{port: port, host: host}` as `options`.
 added: v6.1.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 If `true`,
 [`socket.connect(options[, connectListener])`][`socket.connect(options)`] was
@@ -1254,8 +1254,8 @@ callback is a listener for the `'connect'` event.
 added: v0.1.90
 -->
 
-* `error` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* `error` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Ensures that no more I/O activity happens on this socket.
 Destroys the stream and closes the connection.
@@ -1264,7 +1264,7 @@ See [`writable.destroy()`][`writable.destroy()`] for further details.
 
 ### `socket.destroyed`
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates if the connection is destroyed or not. Once a
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates if the connection is destroyed or not. Once a
   connection is destroyed no further data can be transferred using it.
 
 See [`writable.destroyed`][`writable.destroyed`] for further details.
@@ -1285,10 +1285,10 @@ writable it implicitly calls `socket.end()`.
 added: v0.1.90
 -->
 
-* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `'utf8'`.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional callback for when the socket is finished.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `'utf8'`.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional callback for when the socket is finished.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Half-closes the socket. i.e., it sends a FIN packet. It is possible the
 server will still send some data.
@@ -1301,7 +1301,7 @@ See [`writable.end()`][`writable.end()`] for further details.
 added: v0.9.6
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The string representation of the local IP address the remote client is
 connecting on. For example, in a server listening on `'0.0.0.0'`, if a client
@@ -1314,7 +1314,7 @@ connects on `'192.168.1.1'`, the value of `socket.localAddress` would be
 added: v0.9.6
 -->
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The numeric representation of the local port. For example, `80` or `21`.
 
@@ -1326,13 +1326,13 @@ added:
   - v16.18.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The string representation of the local IP family. `'IPv4'` or `'IPv6'`.
 
 ### `socket.pause()`
 
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Pauses the reading of data. That is, [`'data'`][`'data'`] events will not be emitted.
 Useful to throttle back an upload.
@@ -1345,7 +1345,7 @@ added:
  - v10.16.0
 -->
 
-* Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 This is `true` if the socket is not connected yet, either because `.connect()`
 has not yet been called or because it is still in the process of connecting
@@ -1357,7 +1357,7 @@ has not yet been called or because it is still in the process of connecting
 added: v0.9.1
 -->
 
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Opposite of `unref()`, calling `ref()` on a previously `unref`ed socket will
 _not_ let the program exit if it's the only socket left (the default behavior).
@@ -1369,7 +1369,7 @@ If the socket is `ref`ed calling `ref` again will have no effect.
 added: v0.5.10
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The string representation of the remote IP address. For example,
 `'74.125.127.100'` or `'2001:4860:a005::68'`. Value may be `undefined` if
@@ -1381,7 +1381,7 @@ the socket is destroyed (for example, if the client disconnected).
 added: v0.11.14
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 The string representation of the remote IP family. `'IPv4'` or `'IPv6'`. Value may be `undefined` if
 the socket is destroyed (for example, if the client disconnected).
@@ -1392,7 +1392,7 @@ the socket is destroyed (for example, if the client disconnected).
 added: v0.5.10
 -->
 
-* Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 The numeric representation of the remote port. For example, `80` or `21`. Value may be `undefined` if
 the socket is destroyed (for example, if the client disconnected).
@@ -1405,7 +1405,7 @@ added:
   - v16.17.0
 -->
 
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Close the TCP connection by sending an RST packet and destroy the stream.
 If this TCP socket is in connecting status, it will send an RST packet and destroy this TCP socket once it is connected.
@@ -1414,7 +1414,7 @@ If this is not a TCP socket (for example, a pipe), calling this method will imme
 
 ### `socket.resume()`
 
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Resumes reading after a call to [`socket.pause()`][`socket.pause()`].
 
@@ -1424,8 +1424,8 @@ Resumes reading after a call to [`socket.pause()`][`socket.pause()`].
 added: v0.1.90
 -->
 
-* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Set the encoding for the socket as a [Readable Stream][Readable Stream]. See
 [`readable.setEncoding()`][`readable.setEncoding()`] for more information.
@@ -1450,9 +1450,9 @@ changes:
     | --- | --- |
     | v13.12.0, v12.17.0 | Были добавлены новые значения по умолчанию для параметров сокетов TCP_KEEPCNT и TCP_KEEPINTVL. |
 
-* `enable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`
-* `initialDelay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `0`
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `false`
+* `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **Default:** `0`
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Enable/disable keep-alive functionality, and optionally set the initial
 delay before the first keepalive probe is sent on an idle socket.
@@ -1475,8 +1475,8 @@ Enabling the keep-alive functionality will set the following socket options:
 added: v0.1.90
 -->
 
-* `noDelay` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `true`
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **Default:** `true`
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Enable/disable the use of Nagle's algorithm.
 
@@ -1509,9 +1509,9 @@ changes:
     | --- | --- |
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
-* `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Sets the socket to timeout after `timeout` milliseconds of inactivity on
 the socket. By default `net.Socket` do not have a timeout.
@@ -1539,7 +1539,7 @@ The optional `callback` parameter will be added as a one-time listener for the
 added: v25.6.0
 -->
 
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current TOS value.
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current TOS value.
 
 Returns the current Type of Service (TOS) field for IPv4 packets or Traffic
 Class for IPv6 packets for this socket.
@@ -1558,8 +1558,8 @@ should verify platform-specific semantics.
 added: v25.6.0
 -->
 
-* `tos` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The TOS value to set (0-255).
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* `tos` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The TOS value to set (0-255).
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Sets the Type of Service (TOS) field for IPv4 packets or Traffic Class for IPv6
 Packets sent from this socket. This can be used to prioritize network traffic.
@@ -1578,7 +1578,7 @@ should verify platform-specific semantics.
 added: v10.7.0
 -->
 
-* Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
+* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
 The socket timeout in milliseconds as set by [`socket.setTimeout()`][`socket.setTimeout()`].
 It is `undefined` if a timeout has not been set.
@@ -1589,7 +1589,7 @@ It is `undefined` if a timeout has not been set.
 added: v0.9.1
 -->
 
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The socket itself.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The socket itself.
 
 Calling `unref()` on a socket will allow the program to exit if this is the only
 active socket in the event system. If the socket is already `unref`ed calling
@@ -1601,10 +1601,10 @@ active socket in the event system. If the socket is already `unref`ed calling
 added: v0.1.90
 -->
 
-* `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `utf8`.
-* `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Only used when data is `string`. **Default:** `utf8`.
+* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Sends data on the socket. The second parameter specifies the encoding in the
 case of a string. It defaults to UTF8 encoding.
@@ -1625,7 +1625,7 @@ information.
 added: v0.5.0
 -->
 
-* Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 This property represents the state of the connection as a string.
 
@@ -1653,9 +1653,9 @@ Possible signatures:
 added: v0.7.0
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Alias to
 [`net.createConnection(options[, connectListener])`][`net.createConnection(options)`].
@@ -1666,9 +1666,9 @@ Alias to
 added: v0.1.90
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Alias to
 [`net.createConnection(path[, connectListener])`][`net.createConnection(path)`].
@@ -1679,10 +1679,10 @@ Alias to
 added: v0.1.90
 -->
 
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [<net.Socket>](net.md#class-netsocket)
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Alias to
 [`net.createConnection(port[, host][, connectListener])`][`net.createConnection(port, host)`].
@@ -1713,14 +1713,14 @@ The [`net.connect()`][`net.connect()`] function is an alias to this function.
 added: v0.1.90
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Required. Will be passed to both the
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Required. Will be passed to both the
   [`new net.Socket([options])`][`new net.Socket(options)`] call and the
   [`socket.connect(options[, connectListener])`][`socket.connect(options)`]
   method.
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
   [`net.createConnection()`][`net.createConnection()`] functions. If supplied, will be added as
   a listener for the [`'connect'`][`'connect'`] event on the returned socket once.
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The newly created socket used to start the connection.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
 
 For available options, see
 [`new net.Socket([options])`][`new net.Socket(options)`]
@@ -1728,7 +1728,7 @@ and [`socket.connect(options[, connectListener])`][`socket.connect(options)`].
 
 Additional options:
 
-* `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set, will be used to call
+* `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set, will be used to call
   [`socket.setTimeout(timeout)`][`socket.setTimeout(timeout)`] after the socket is created, but before
   it starts the connection.
 
@@ -1823,14 +1823,14 @@ call `socket.connect(options[, connectListener])`.
 added: v0.1.90
 -->
 
-* `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the socket should connect to. Will be passed to
+* `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Path the socket should connect to. Will be passed to
   [`socket.connect(path[, connectListener])`][`socket.connect(path)`].
   See [Identifying paths for IPC connections][Identifying paths for IPC connections].
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
   [`net.createConnection()`][`net.createConnection()`] functions, an "once" listener for the
   `'connect'` event on the initiating socket. Will be passed to
   [`socket.connect(path[, connectListener])`][`socket.connect(path)`].
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The newly created socket used to start the connection.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
 
 Initiates an [IPC][IPC] connection.
 
@@ -1845,16 +1845,16 @@ then returns the `net.Socket` that starts the connection.
 added: v0.1.90
 -->
 
-* `port` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the socket should connect to. Will be passed to
+* `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Port the socket should connect to. Will be passed to
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
-* `host` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. Will be passed to
+* `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Host the socket should connect to. Will be passed to
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
   **Default:** `'localhost'`.
-* `connectListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
+* `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Common parameter of the
   [`net.createConnection()`][`net.createConnection()`] functions, an "once" listener for the
   `'connect'` event on the initiating socket. Will be passed to
   [`socket.connect(port[, host][, connectListener])`][`socket.connect(port)`].
-* Возвращает: [<net.Socket>](net.md#class-netsocket) The newly created socket used to start the connection.
+* Возвращает: [`<net.Socket>`](net.md#class-netsocket) The newly created socket used to start the connection.
 
 Initiates a TCP connection.
 
@@ -1890,35 +1890,35 @@ changes:
     | v20.1.0, v18.17.0 | Опция highWaterMark теперь поддерживается. |
     | v17.7.0, v16.15.0 | Параметры noDelay, KeepAlive и KeepAliveInitialDelay теперь поддерживаются. |
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `allowHalfOpen` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `false`, then the socket will
     automatically end the writable side when the readable side ends.
     **Default:** `false`.
-  * `highWaterMark` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optionally overrides all [`net.Socket`][`net.Socket`]s'
+  * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optionally overrides all [`net.Socket`][`net.Socket`]s'
     `readableHighWaterMark` and `writableHighWaterMark`.
     **Default:** See [`stream.getDefaultHighWaterMark()`][`stream.getDefaultHighWaterMark()`].
-  * `keepAlive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality
+  * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it enables keep-alive functionality
     on the socket immediately after a new incoming connection is received,
     similarly on what is done in [`socket.setKeepAlive()`][`socket.setKeepAlive()`]. **Default:**
     `false`.
-  * `keepAliveInitialDelay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
+  * `keepAliveInitialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If set to a positive number, it sets the
     initial delay before the first keepalive probe is sent on an idle socket.
     **Default:** `0`.
-  * `noDelay` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's
+  * `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If set to `true`, it disables the use of Nagle's
     algorithm immediately after a new incoming connection is received.
     **Default:** `false`.
-  * `pauseOnConnect` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the socket should be
+  * `pauseOnConnect` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the socket should be
     paused on incoming connections. **Default:** `false`.
-  * `blockList` [<net.BlockList>](net.md) `blockList` can be used for disabling inbound
+  * `blockList` [`<net.BlockList>`](net.md) `blockList` can be used for disabling inbound
     access to specific IP addresses, IP ranges, or IP subnets. This does not
     work if the server is behind a reverse proxy, NAT, etc. because the address
     checked against the block list is the address of the proxy, or the one
     specified by the NAT.
 
-* `connectionListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Automatically set as a listener for the
+* `connectionListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Automatically set as a listener for the
   [`'connection'`][`'connection'`] event.
 
-* Возвращает: [<net.Server>](net.md#class-netserver)
+* Возвращает: [`<net.Server>`](net.md#class-netserver)
 
 Creates a new TCP or [IPC][IPC] server.
 
@@ -2014,7 +2014,7 @@ Gets the current default value of the `autoSelectFamily` option of [`socket.conn
 The initial default value is `true`, unless the command line option
 `--no-network-family-autoselection` is provided.
 
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The current default value of the `autoSelectFamily` option.
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The current default value of the `autoSelectFamily` option.
 
 ## `net.setDefaultAutoSelectFamily(value)`
 
@@ -2024,7 +2024,7 @@ added: v19.4.0
 
 Sets the default value of the `autoSelectFamily` option of [`socket.connect(options)`][`socket.connect(options)`].
 
-* `value` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The new default value.
+* `value` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) The new default value.
   The initial default value is `true`, unless the command line option
   `--no-network-family-autoselection` is provided.
 
@@ -2040,7 +2040,7 @@ Gets the current default value of the `autoSelectFamilyAttemptTimeout` option of
 The initial default value is `500` or the value specified via the command line
 option `--network-family-autoselection-attempt-timeout`.
 
-* Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current default value of the `autoSelectFamilyAttemptTimeout` option.
+* Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The current default value of the `autoSelectFamilyAttemptTimeout` option.
 
 ## `net.setDefaultAutoSelectFamilyAttemptTimeout(value)`
 
@@ -2052,7 +2052,7 @@ added:
 
 Sets the default value of the `autoSelectFamilyAttemptTimeout` option of [`socket.connect(options)`][`socket.connect(options)`].
 
-* `value` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The new default value, which must be a positive number. If the number is less than `10`,
+* `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The new default value, which must be a positive number. If the number is less than `10`,
   the value `10` is used instead. The initial default value is `250` or the value specified via the command line
   option `--network-family-autoselection-attempt-timeout`.
 
@@ -2062,8 +2062,8 @@ Sets the default value of the `autoSelectFamilyAttemptTimeout` option of [`socke
 added: v0.3.0
 -->
 
-* `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+* `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Returns `6` if `input` is an IPv6 address. Returns `4` if `input` is an IPv4
 address in [dot-decimal notation][dot-decimal notation] with no leading zeroes. Otherwise, returns
@@ -2083,8 +2083,8 @@ net.isIP('fhqwhgads'); // returns 0
 added: v0.3.0
 -->
 
-* `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if `input` is an IPv4 address in [dot-decimal notation][dot-decimal notation] with no
 leading zeroes. Otherwise, returns `false`.
@@ -2102,8 +2102,8 @@ net.isIPv4('fhqwhgads'); // returns false
 added: v0.3.0
 -->
 
-* `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+* `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if `input` is an IPv6 address. Otherwise, returns `false`.
 
