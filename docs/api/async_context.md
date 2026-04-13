@@ -406,9 +406,7 @@ try {
 }
 ```
 
-### `asyncLocalStorage.withScope(store)`
-
-{: #asynclocalstoragewithscopestore}
+### `asyncLocalStorage.withScope(store)` {#asynclocalstoragewithscopestore}
 
 <!-- YAML
 added: v25.9.0
@@ -592,9 +590,7 @@ added: v25.9.0
     // storage.getStore() === undefined here
     ```
 
-## Класс: `AsyncResource`
-
-{: #class-asyncresource}
+## Класс: `AsyncResource` {#class-asyncresource}
 
 <!-- YAML
 changes:

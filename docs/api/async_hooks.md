@@ -144,9 +144,7 @@ description: Модуль async_hooks — API для отслеживания а
     function promiseResolve(asyncId) { }
     ```
 
-## `async_hooks.createHook(options)`
-
-{: #async_hookscreatehookoptions}
+## `async_hooks.createHook(options)` {#async_hookscreatehookoptions}
 
 <!-- YAML
 added: v8.1.0
@@ -245,9 +243,7 @@ const asyncHook = async_hooks.createHook(
 
 Если для логирования нужна асинхронная операция, можно отслеживать, что её вызвало, по информации из самого `AsyncHook`. Логирование следует пропускать, если обратный вызов `AsyncHook` был вызван именно логированием. Так разрывается бесконечная рекурсия.
 
-## Класс: `AsyncHook`
-
-{: #class-asynchook}
+## Класс: `AsyncHook` {#class-asynchook}
 
 Класс `AsyncHook` предоставляет интерфейс для отслеживания событий жизненного цикла асинхронных операций.
 
@@ -283,15 +279,11 @@ const asyncHook = async_hooks.createHook(
 
 Для согласованности API `disable()` также возвращает экземпляр `AsyncHook`.
 
-### Обратные вызовы хука
-
-{: #hook-callbacks}
+### Обратные вызовы хука {#hook-callbacks}
 
 Ключевые события жизни асинхронных операций сгруппированы в четыре области: создание, до и после вызова обратного вызова, уничтожение экземпляра.
 
-#### `init(asyncId, type, triggerAsyncId, resource)`
-
-{: #initasyncid-type-triggerasyncid-resource}
+#### `init(asyncId, type, triggerAsyncId, resource)` {#initasyncid-type-triggerasyncid-resource}
 
 -   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Уникальный ID асинхронного ресурса.
 -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип асинхронного ресурса.
@@ -538,9 +530,7 @@ TCPSERVERWRAP(5)
   Timeout(7)
 ```
 
-#### `before(asyncId)`
-
-{: #beforeasyncid}
+#### `before(asyncId)` {#beforeasyncid}
 
 -   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -548,9 +538,7 @@ TCPSERVERWRAP(5)
 
 `before` может вызываться от 0 до N раз. Обычно 0 раз, если операция отменена или, например, TCP-сервер не получил соединений. Долгоживущие ресурсы вроде TCP-сервера обычно вызывают `before` несколько раз, а операции вроде `fs.open()` — один раз.
 
-#### `after(asyncId)`
-
-{: #afterasyncid}
+#### `after(asyncId)` {#afterasyncid}
 
 -   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -558,9 +546,7 @@ TCPSERVERWRAP(5)
 
 Если при выполнении обратного вызова возникает неперехваченное исключение, `after` выполняется _после_ события `'uncaughtException'` или обработчика `domain`.
 
-#### `destroy(asyncId)`
-
-{: #destroyasyncid}
+#### `destroy(asyncId)` {#destroyasyncid}
 
 -   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -570,9 +556,7 @@ TCPSERVERWRAP(5)
 
 Хук `destroy` добавляет накладные расходы, так как включает отслеживание экземпляров `Promise` через сборщик мусора.
 
-#### `promiseResolve(asyncId)`
-
-{: #promiseresolveasyncid}
+#### `promiseResolve(asyncId)` {#promiseresolveasyncid}
 
 <!-- YAML
 added: v8.6.0
@@ -601,9 +585,7 @@ init for PROMISE with id 6, trigger id: 5  # Promise, возвращённый t
   after 6
 ```
 
-### `async_hooks.executionAsyncResource()`
-
-{: #async_hooksexecutionasyncresource}
+### `async_hooks.executionAsyncResource()` {#async_hooksexecutionasyncresource}
 
 <!-- YAML
 added:
@@ -796,9 +778,7 @@ added:
 
 Подавляет устаревшее использование `process.binding('async_wrap').Providers`. См.: [DEP0111][dep0111]
 
-## Отслеживание выполнения промисов
-
-{: #promise-execution-tracking}
+## Отслеживание выполнения промисов {#promise-execution-tracking}
 
 По умолчанию выполнениям промисов не назначаются `asyncId` из-за относительно высокой стоимости [promise introspection API][promisehooks] в V8. Программы на промисах или `async`/`await` по умолчанию не получают корректные execution и trigger id для контекстов обратных вызовов промисов.
 
