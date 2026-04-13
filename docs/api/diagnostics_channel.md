@@ -182,7 +182,7 @@ added:
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
 * `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
-  * `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
+  * `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
 
 Регистрирует обработчик подписки на канал. Обработчик вызывается синхронно при каждой публикации. Ошибки в обработчике приводят к [`'uncaughtException'`][`'uncaughtException'`].
@@ -405,7 +405,7 @@ added:
  - v14.17.0
 -->
 
-* `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков канала
+* `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков канала
 
 Публикует сообщение всем подписчикам канала. Обработчики вызываются синхронно в том же контексте.
 
@@ -460,7 +460,7 @@ changes:
     | v18.7.0, v16.17.0 | Прекращение поддержки только документации. |
 
 * `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
-  * `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
+  * `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
 
 Регистрирует обработчик подписки на этот канал. Обработчик выполняется синхронно при каждой публикации. Ошибки в обработчике приводят к [`'uncaughtException'`][`'uncaughtException'`].
@@ -666,10 +666,10 @@ added:
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-* `context` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков и привязки к хранилищам
+* `context` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков и привязки к хранилищам
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, выполняемая во введённом контексте хранилища
-* `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова функции
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова функции
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
 
 Применяет данные ко всем экземплярам `AsyncLocalStorage`, привязанным к каналу, на время выполнения `fn`, затем публикует в канал в области, где данные применены к хранилищам.
 
@@ -726,7 +726,7 @@ added: REPLACEME
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные для привязки к хранилищам
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные для привязки к хранилищам
 * Возвращает: [`<RunStoresScope>`](diagnostics_channel.md) объект области видимости с `Disposable`
 
 Создаёт область с автоматическим освобождением: привязывает данные к экземплярам `AsyncLocalStorage`, привязанным к каналу, и публикует их подписчикам. При освобождении восстанавливает предыдущие контексты хранилищ.
@@ -954,9 +954,9 @@ added:
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий
-* `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует синхронный вызов: всегда генерируются [`start` event][`start` event] и [`end` event][`end` event] вокруг выполнения и при необходимости [`error` event][`error` event], если функция выбросила ошибку. Функция выполняется через [`channel.runStores(context, ...)`][`channel.runStores(context, ...)`] на канале `start`, чтобы привязанные хранилища соответствовали контексту трассировки.
 
@@ -1011,9 +1011,9 @@ changes:
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий трассировки
-* `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат `fn` или результат `.then(...)`, если у канала трассировки есть активные подписчики. Если значение не `Promise` и не thenable, оно возвращается как есть и выводится предупреждение.
+* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат `fn` или результат `.then(...)`, если у канала трассировки есть активные подписчики. Если значение не `Promise` и не thenable, оно возвращается как есть и выводится предупреждение.
 
 Трассирует асинхронный вызов, возвращающий [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или [thenable object][thenable object]. Всегда генерируются [`start` event][`start` event] и [`end` event][`end` event] вокруг синхронной части; при разрешении или отклонении промиса — [`asyncStart` event][`asyncStart` event] и [`asyncEnd` event][`asyncEnd` event]. Возможен [`error` event][`error` event], если функция выбросила ошибку или промис отклонён. Выполнение идёт через [`channel.runStores(context, ...)`][`channel.runStores(context, ...)`] на канале `start`.
 
@@ -1060,9 +1060,9 @@ added:
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, принимающая колбэк, для обёртки трассировкой
 * `position` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) индекс (с нуля) аргумента с ожидаемым колбэком (по умолчанию — последний аргумент, если передан `undefined`)
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции (по умолчанию `{}`, если `undefined`)
-* `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) аргументы вызова (должен включать колбэк)
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) аргументы вызова (должен включать колбэк)
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует вызов функции с колбэком в типичной конвенции «ошибка первым аргументом». Всегда даёт [`start` event][`start` event] и [`end` event][`end` event] вокруг синхронной части и [`asyncStart` event][`asyncStart` event] с [`asyncEnd` event][`asyncEnd` event] вокруг выполнения колбэка. Возможен [`error` event][`error` event], если функция выбросила ошибку или в колбэк передан первый аргумент (ошибка). Выполнение через [`channel.runStores(context, ...)`][`channel.runStores(context, ...)`] на канале `start`.
 
@@ -1326,9 +1326,9 @@ added: REPLACEME
 
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции событий
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
-* `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует синхронный вызов: события `start` и `end` вокруг выполнения. Функция выполняется через [`channel.runStores(context, ...)`][`channel.runStores(context, ...)`] на канале `start`.
 
@@ -1528,31 +1528,31 @@ added: REPLACEME
 
 ##### Event: `'console.log'`
 
-* `args` {any\[]}
+* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.log()`. Передаётся массив аргументов вызова `console.log()`.
 
 ##### Event: `'console.info'`
 
-* `args` {any\[]}
+* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.info()`. Передаётся массив аргументов вызова `console.info()`.
 
 ##### Event: `'console.debug'`
 
-* `args` {any\[]}
+* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.debug()`. Передаётся массив аргументов вызова `console.debug()`.
 
 ##### Event: `'console.warn'`
 
-* `args` {any\[]}
+* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.warn()`. Передаётся массив аргументов вызова `console.warn()`.
 
 ##### Event: `'console.error'`
 
-* `args` {any\[]}
+* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.error()`. Передаётся массив аргументов вызова `console.error()`.
 

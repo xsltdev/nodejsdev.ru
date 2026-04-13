@@ -135,9 +135,9 @@ changes:
     | --- | --- |
     | v17.5.0, v16.15.0 | Больше не экспериментально. |
 
-* `key` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
+* `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
   ключа [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 В потоке worker `worker.getEnvironmentData()` возвращает клон
 данных, переданных через `worker.setEnvironmentData()` породившего потока.
@@ -281,7 +281,7 @@ added:
   - v12.19.0
 -->
 
-* `object` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
+* `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
 
 Помечает объект как непередаваемый. Если `object` попадает в список передачи вызова
 [`port.postMessage()`][`port.postMessage()`], выбрасывается ошибка. Для примитивных значений
@@ -361,7 +361,7 @@ added:
 added: v21.0.0
 -->
 
-* `object` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript.
+* `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript.
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Проверяет, помечен ли объект как непередаваемый через
@@ -401,7 +401,7 @@ added:
  - v22.10.0
 -->
 
-* `object` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
+* `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
 
 Помечает объект как неклонируемый. Если `object` используется как [`message`](#event-message) в
 вызове [`port.postMessage()`][`port.postMessage()`], выбрасывается ошибка. Для примитивных значений `object` ничего не делает.
@@ -538,7 +538,7 @@ added:
 * `threadId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID целевого потока. Если ID недействителен,
   выбрасывается [`ERR_WORKER_MESSAGING_FAILED`][`ERR_WORKER_MESSAGING_FAILED`]. Если ID совпадает с текущим потоком,
   выбрасывается [`ERR_WORKER_MESSAGING_SAME_THREAD`][`ERR_WORKER_MESSAGING_SAME_THREAD`].
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Отправляемое значение.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Отправляемое значение.
 * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `value` передаются один или несколько объектов, похожих на `MessagePort`,
   для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`].
   См. [`port.postMessage()`][`port.postMessage()`].
@@ -773,9 +773,9 @@ changes:
     | --- | --- |
     | v17.5.0, v16.15.0 | Больше не экспериментально. |
 
-* `key` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
+* `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
   ключа [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение; клонируется
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение; клонируется
   и автоматически передаётся всем новым `Worker`. Если передать `undefined`,
   ранее заданное значение для `key` удаляется.
 
@@ -1083,7 +1083,7 @@ changes:
 added: v15.4.0
 -->
 
-* `name` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Имя канала. Допустимо любое значение JavaScript,
+* `name` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Имя канала. Допустимо любое значение JavaScript,
   приводимое к строке через `` `${name}` ``.
 
 ### `broadcastChannel.close()`
@@ -1118,7 +1118,7 @@ added: v15.4.0
 added: v15.4.0
 -->
 
-* `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое клонируемое значение JavaScript.
+* `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое клонируемое значение JavaScript.
 
 ### `broadcastChannel.ref()`
 
@@ -1255,7 +1255,7 @@ added: v10.5.0
 added: v10.5.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
 Событие `'message'` генерируется для каждого входящего сообщения с клоном
 аргумента [`port.postMessage()`][`port.postMessage()`].
@@ -1342,7 +1342,7 @@ changes:
     | v14.5.0, v12.19.0 | В список клонируемых типов добавлен KeyObject. |
     | v14.5.0, v12.19.0 | В список передаваемых типов добавлен FileHandle. |
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Отправляет значение JavaScript на приёмную сторону канала.
@@ -1789,7 +1789,7 @@ changes:
   If `options.eval` is `true`, this is a string containing JavaScript code
   rather than a path.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `argv` {any\[]} List of arguments which would be stringified and appended to
+  * `argv` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) List of arguments which would be stringified and appended to
     `process.argv` in the worker. This is mostly similar to the `workerData`
     but the values are available on the global `process.argv` as if they
     were passed as CLI options to the script.
@@ -1813,7 +1813,7 @@ changes:
     not automatically piped through to `process.stdout` in the parent.
   * `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If this is set to `true`, then `worker.stderr` is
     not automatically piped through to `process.stderr` in the parent.
-  * `workerData` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Any JavaScript value that is cloned and made
+  * `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Any JavaScript value that is cloned and made
     available as [`require('node:worker_threads').workerData`][`require('node:worker_threads').workerData`]. The cloning
     occurs as described in the [HTML structured clone algorithm][HTML structured clone algorithm], and an error
     is thrown if the object cannot be cloned (e.g. because it contains
@@ -1862,7 +1862,7 @@ changes:
 added: v10.5.0
 -->
 
-* `err` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `err` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 The `'error'` event is emitted if the worker thread throws an uncaught
 exception. In that case, the worker is terminated.
@@ -1888,7 +1888,7 @@ This is the final event emitted by any `Worker` instance.
 added: v10.5.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The transmitted value
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The transmitted value
 
 The `'message'` event is emitted when the worker thread has invoked
 [`require('node:worker_threads').parentPort.postMessage()`][`require('node:worker_threads').parentPort.postMessage()`].
@@ -2077,7 +2077,7 @@ event][], then all properties have the value of `0`.
 added: v10.5.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Send a message to the worker that is received via

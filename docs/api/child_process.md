@@ -1375,7 +1375,7 @@ added: v0.5.9
 -->
 
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Разобранный JSON-объект или примитив.
--   `sendHandle` {Handle|undefined} `undefined` либо объект [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver) или [`dgram.Socket`](dgram.md#class-dgramsocket).
+-   `sendHandle` [`<Handle | undefined>`](child_process.md) `undefined` либо объект [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver) или [`dgram.Socket`](dgram.md#class-dgramsocket).
 
 Событие `'message'` возникает, когда дочерний процесс вызывает [`process.send()`](process.md#processsendmessage-sendhandle-options-callback).
 
@@ -1686,7 +1686,7 @@ changes:
     | v4.0.0 | Параметр `callback` теперь поддерживается. |
 
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   `sendHandle` {Handle|undefined} `undefined`, or a [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver), or [`dgram.Socket`](dgram.md#class-dgramsocket) object.
+-   `sendHandle` [`<Handle | undefined>`](child_process.md) `undefined`, or a [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver), or [`dgram.Socket`](dgram.md#class-dgramsocket) object.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если задан, дополняет отправку некоторых типов дескрипторов. Поддерживаемые свойства:
     -   `keepOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При передаче `net.Socket`: если `true`, сокет остаётся открытым в отправляющем процессе. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)

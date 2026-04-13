@@ -1052,7 +1052,7 @@ changes:
     | v6.1.0 | Опция maxArrayLength теперь поддерживается; в частности, длинные массивы по умолчанию усекаются. |
     | v6.1.0 | Опция `showProxy` теперь поддерживается. |
 
-* `object` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Any JavaScript primitive or `Object`.
+* `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Any JavaScript primitive or `Object`.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `showHidden` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `object`'s non-enumerable symbols and
     properties are included in the formatted result. [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and
@@ -1759,8 +1759,8 @@ changes:
     | --- | --- |
     | v24.9.0 | Добавлен параметр options, позволяющий пропустить сравнение прототипов. |
 
-* `val1` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `val2` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `val1` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `val2` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `skipPrototype` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, prototype and constructor
   comparison is skipped during deep strict equality check. **Default:** `false`.
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -3288,7 +3288,7 @@ The API is accessible via `require('node:util').types` or `require('node:util/ty
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) or
@@ -3308,7 +3308,7 @@ util.types.isAnyArrayBuffer(new SharedArrayBuffer());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an instance of one of the [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
@@ -3328,7 +3328,7 @@ util.types.isArrayBufferView(new ArrayBuffer());  // false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an `arguments` object.
@@ -3347,7 +3347,7 @@ function foo() {
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instance.
@@ -3365,7 +3365,7 @@ util.types.isArrayBuffer(new SharedArrayBuffer());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an [async function][async function].
@@ -3384,7 +3384,7 @@ util.types.isAsyncFunction(async function foo() {});  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a `BigInt64Array` instance.
@@ -3400,7 +3400,7 @@ util.types.isBigInt64Array(new BigUint64Array());  // Returns false
 added: v10.4.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a BigInt object, e.g. created
@@ -3418,7 +3418,7 @@ util.types.isBigIntObject(123);  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a `BigUint64Array` instance.
@@ -3434,7 +3434,7 @@ util.types.isBigUint64Array(new BigUint64Array());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a boolean object, e.g. created
@@ -3455,7 +3455,7 @@ util.types.isBooleanObject(Boolean(true));  // Returns false
 added: v10.11.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is any boxed primitive object, e.g. created
@@ -3488,7 +3488,7 @@ Returns `true` if `value` is a [CryptoKey](webcrypto.md#class-cryptokey), `false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) instance.
@@ -3507,7 +3507,7 @@ See also [`ArrayBuffer.isView()`][`ArrayBuffer.isView()`].
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date) instance.
@@ -3522,7 +3522,7 @@ util.types.isDate(new Date());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a native `External` value.
@@ -3586,7 +3586,7 @@ added:
  - v22.16.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Float16Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Float16Array) instance.
@@ -3603,7 +3603,7 @@ util.types.isFloat16Array(new Float32Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Float32Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array) instance.
@@ -3620,7 +3620,7 @@ util.types.isFloat32Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Float64Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array) instance.
@@ -3637,7 +3637,7 @@ util.types.isFloat64Array(new Float64Array());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a generator function.
@@ -3656,7 +3656,7 @@ util.types.isGeneratorFunction(function* foo() {});  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a generator object as returned from a
@@ -3677,7 +3677,7 @@ util.types.isGeneratorObject(generator);  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Int8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array) instance.
@@ -3694,7 +3694,7 @@ util.types.isInt8Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Int16Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array) instance.
@@ -3711,7 +3711,7 @@ util.types.isInt16Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Int32Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array) instance.
@@ -3739,7 +3739,7 @@ Returns `true` if `value` is a [KeyObject](#class-keyobject), `false` otherwise.
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) instance.
@@ -3754,7 +3754,7 @@ util.types.isMap(new Map());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an iterator returned for a built-in
@@ -3774,7 +3774,7 @@ util.types.isMapIterator(map[Symbol.iterator]());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an instance of a [Module Namespace Object][Module Namespace Object].
@@ -3799,7 +3799,7 @@ deprecated: v24.2.0
 **Note:** As of Node.js 24, `Error.isError()` is currently slower than `util.types.isNativeError()`.
 If performance is critical, consider benchmarking both in your environment.
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value was returned by the constructor of a
@@ -3863,7 +3863,7 @@ console.log(myError instanceof Error); // true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a number object, e.g. created
@@ -3880,7 +3880,7 @@ util.types.isNumberObject(new Number(0));   // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise).
@@ -3895,7 +3895,7 @@ util.types.isPromise(Promise.resolve(42));  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) instance.
@@ -3913,7 +3913,7 @@ util.types.isProxy(proxy);  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a regular expression object.
@@ -3929,7 +3929,7 @@ util.types.isRegExp(new RegExp('abc'));  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) instance.
@@ -3944,7 +3944,7 @@ util.types.isSet(new Set());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is an iterator returned for a built-in
@@ -3964,7 +3964,7 @@ util.types.isSetIterator(set[Symbol.iterator]());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance.
@@ -3982,7 +3982,7 @@ util.types.isSharedArrayBuffer(new SharedArrayBuffer());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a string object, e.g. created
@@ -3999,7 +3999,7 @@ util.types.isStringObject(new String('foo'));   // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a symbol object, created
@@ -4017,7 +4017,7 @@ util.types.isSymbolObject(Object(symbol));   // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) instance.
@@ -4036,7 +4036,7 @@ See also [`ArrayBuffer.isView()`][`ArrayBuffer.isView()`].
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) instance.
@@ -4053,7 +4053,7 @@ util.types.isUint8Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Uint8ClampedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray) instance.
@@ -4070,7 +4070,7 @@ util.types.isUint8ClampedArray(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Uint16Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array) instance.
@@ -4087,7 +4087,7 @@ util.types.isUint16Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [Uint32Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array) instance.
@@ -4104,7 +4104,7 @@ util.types.isUint32Array(new Float64Array());  // Returns false
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) instance.
@@ -4119,7 +4119,7 @@ util.types.isWeakMap(new WeakMap());  // Returns true
 added: v10.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value is a built-in [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) instance.
@@ -4166,7 +4166,7 @@ deprecated: v4.0.0
 
 > Stability: 0 - Deprecated: Use [`Array.isArray()`][`Array.isArray()`] instead.
 
-* `object` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Returns: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Alias for [`Array.isArray()`][`Array.isArray()`].

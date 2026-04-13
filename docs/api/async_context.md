@@ -164,7 +164,7 @@ changes:
     | v19.2.0, v18.13.0 | Добавьте опцию onPropagate. |
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `defaultValue` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение по умолчанию, которое будет использоваться, если хранилище не передано.
+    -   `defaultValue` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение по умолчанию, которое будет использоваться, если хранилище не передано.
     -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя для значения `AsyncLocalStorage`.
 
 Создаёт новый экземпляр `AsyncLocalStorage`. Хранилище доступно только внутри вызова `run()` или после вызова `enterWith()`.
@@ -274,7 +274,7 @@ added:
  - v12.17.0
 -->
 
--   Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Возвращает текущее хранилище. Если метод вызывается вне асинхронного контекста, инициализированного вызовом `asyncLocalStorage.run()` или `asyncLocalStorage.enterWith()`, он возвращает `undefined`.
 
@@ -290,7 +290,7 @@ added:
 
     Экспериментальный
 
--   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `store` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Переходит в контекст на оставшуюся часть текущего синхронного выполнения, а затем сохраняет хранилище во всех последующих асинхронных вызовах.
 
@@ -341,9 +341,9 @@ added:
  - v12.17.0
 -->
 
--   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `store` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Синхронно выполняет функцию внутри контекста и возвращает её возвращаемое значение. Хранилище недоступно вне callback-функции. Хранилище доступно для любых асинхронных операций, созданных внутри callback.
 
@@ -382,7 +382,7 @@ added:
     Экспериментальный
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Синхронно выполняет функцию вне контекста и возвращает её возвращаемое значение. Хранилище недоступно внутри callback-функции или асинхронных операций, созданных в её рамках. Любой вызов `getStore()`, выполненный внутри callback-функции, всегда будет возвращать `undefined`.
 
@@ -418,7 +418,7 @@ added: v25.9.0
 
     Экспериментальный
 
--   `store` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `store` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<RunScope>`](async_context.md)
 
 Создаёт освобождаемый scope, который входит в переданное хранилище и автоматически восстанавливает предыдущее значение хранилища при освобождении scope. Этот метод предназначен для работы с механизмом явного управления ресурсами в JavaScript (синтаксис `using`).
@@ -745,7 +745,7 @@ changes:
 
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
 -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя, связанное с базовым `AsyncResource`.
--   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Привязывает переданную функцию к текущему контексту выполнения.
 
@@ -781,7 +781,7 @@ changes:
     | v16.0.0 | Добавлен необязательный thisArg. |
 
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему `AsyncResource`.
--   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Привязывает переданную функцию к выполнению в scope этого `AsyncResource`.
 
@@ -792,8 +792,8 @@ added: v9.6.0
 -->
 
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно вызвать в контексте выполнения этого асинхронного ресурса.
--   `thisArg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Получатель, который будет использован при вызове функции.
--   `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы, передаваемые в функцию.
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Получатель, который будет использован при вызове функции.
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы, передаваемые в функцию.
 
 Вызывает переданную функцию с указанными аргументами в контексте выполнения асинхронного ресурса. Это установит контекст, вызовет AsyncHooks before для callback-функций, вызовет функцию, затем AsyncHooks after и после этого восстановит исходный контекст выполнения.
 

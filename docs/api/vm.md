@@ -225,7 +225,7 @@ changes:
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
     [`Error`][`Error`]. Обработчики, подключённые через `process.on('SIGINT')`, на время выполнения сценария отключаются, затем снова действуют. **По умолчанию:** `false`.
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного оператора сценария.
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного оператора сценария.
 
 Выполняет скомпилированный код объекта `vm.Script` в заданном
 `contextifiedObject` и возвращает результат. У выполняемого кода нет доступа
@@ -342,7 +342,7 @@ changes:
   * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `afterEvaluate`, микрозадачи (через `Promise` и `async function`)
     выполняются сразу после скрипта. В этом случае они входят в ограничения `timeout` и
     `breakOnSigint`.
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в скрипте выражения.
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в скрипте выражения.
 
 Эквивалентно `script.runInContext(vm.createContext(options), options)`.
 Делает следующее:
@@ -429,7 +429,7 @@ changes:
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
     [`Error`][`Error`]. Обработчики `process.on('SIGINT')` отключаются на время выполнения
     сценария, затем снова работают. **По умолчанию:** `false`.
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в сценарии оператора.
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в сценарии оператора.
 
 Выполняет скомпилированный код объекта `vm.Script` в контексте текущего объекта
 `global`. У выполняемого кода нет доступа к локальной области видимости, но есть
@@ -711,7 +711,7 @@ support is planned.
 
 ### `module.error`
 
-* Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 If the `module.status` is `'errored'`, this property contains the exception
 thrown by the module during evaluation. If the status is anything else,
@@ -952,7 +952,7 @@ changes:
     is displayed in stack traces produced by this `Module`. **По умолчанию:** `0`.
   * `initializeImportMeta` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Called during evaluation of this `Module`
     to initialize the `import.meta`.
-    * `meta` {import.meta}
+    * `meta` [`<import.meta>`](esm.md#importmeta)
     * `module` [`<vm.SourceTextModule>`](vm.md)
   * `importModuleDynamically` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Used to specify the
     how the modules should be loaded during the evaluation of this module
@@ -1128,7 +1128,7 @@ added:
  - v22.21.0
 -->
 
-* Возвращает: {undefined}
+* Возвращает: [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 
 Instantiate the module with the linked requested modules.
 
@@ -1151,7 +1151,7 @@ added:
 * `modules` [<vm.Module[]>](vm.md) Array of `vm.Module` objects that this module depends on.
   The order of the modules in the array is the order of
   [`sourceTextModule.moduleRequests`][`sourceTextModule.moduleRequests`].
-* Возвращает: {undefined}
+* Возвращает: [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 
 Link module dependencies. This method must be called before evaluation, and
 can only be called once per module.
@@ -1197,7 +1197,7 @@ added:
   - v22.20.0
 -->
 
-* Тип: {ModuleRequest\[]} Dependencies of this module.
+* Тип: [`<ModuleRequest[]>`](vm.md) Dependencies of this module.
 
 The requested import dependencies of this module. The returned array is frozen
 to disallow any changes to it.
@@ -1356,7 +1356,7 @@ changes:
     | v24.8.0, v22.21.0 | Больше не нужно вызывать SyntheticModule.link() перед вызовом этого метода. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Name of the export to set.
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to set the export to.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to set the export to.
 
 This method sets the module export binding slots with the given value.
 
@@ -1970,7 +1970,7 @@ changes:
     scheduled through `Promise`s and `async function`s) will be run immediately
     after the script has run. They are included in the `timeout` and
     `breakOnSigint` scopes in that case.
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
 
 This method is a shortcut to
 `(new vm.Script(code, options)).runInContext(vm.createContext(options), options)`.
@@ -2097,7 +2097,7 @@ changes:
     experimental modules API. We do not recommend using it in a production
     environment. For detailed information, see
     [Support of dynamic `import()` in compilation APIs][Support of dynamic `import()` in compilation APIs].
-* Возвращает: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the result of the very last statement executed in the script.
 
 `vm.runInThisContext()` compiles `code`, runs it within the context of the
 current `global` and returns the result. Running code does not have access to

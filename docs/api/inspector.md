@@ -443,7 +443,7 @@ changes:
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Блокировать выполнение до подключения клиента. Необязательно. **По умолчанию:** `false`.
-* Возвращает: {Disposable} объект `Disposable`, вызывающий [`inspector.close()`][`inspector.close()`].
+* Возвращает: [`<Disposable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol/dispose) объект `Disposable`, вызывающий [`inspector.close()`][`inspector.close()`].
 
 Включает инспектор на указанном хосте и порту. Эквивалентно `node --inspect=[[host:]port]`, но может быть вызвано программно после старта Node.js.
 

@@ -266,7 +266,7 @@ added:
 - v20.19.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение, переданное через [`postMessageToThread()`][`postMessageToThread()`].
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение, переданное через [`postMessageToThread()`][`postMessageToThread()`].
 * `source` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) идентификатор потока worker, отправившего сообщение, или `0` для основного потока.
 
 Событие `'workerMessage'` испускается для любого входящего сообщения, отправленного
@@ -3138,7 +3138,7 @@ changes:
 > Стабильность: 3 — устаревшее. Используйте [`queueMicrotask()`][`queueMicrotask()`].
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) дополнительные аргументы для вызова `callback`
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) дополнительные аргументы для вызова `callback`
 
 `process.nextTick()` помещает `callback` в очередь «next tick». Она полностью
 выполняется после завершения текущей операции на стеке JavaScript и до продолжения
@@ -3521,7 +3521,7 @@ added:
 
 > Стабильность: 1 — экспериментально
 
-* `maybeRefable` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) объект, который может поддерживать «ref»
+* `maybeRefable` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) объект, который может поддерживать «ref»
 
 Объект «refable», если реализует протокол Node.js «Refable»: методы
 `Symbol.for('nodejs.ref')` и `Symbol.for('nodejs.unref')`. Объекты с ref удерживают
@@ -4692,7 +4692,7 @@ added:
 
 > Стабильность: 1 — экспериментально
 
-* `maybeRefable` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) объект, для которого возможен «unref»
+* `maybeRefable` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) объект, для которого возможен «unref»
 
 Объект «unrefable», если реализует протокол Node.js «Refable»: методы
 `Symbol.for('nodejs.ref')` и `Symbol.for('nodejs.unref')`. Объекты с ref удерживают

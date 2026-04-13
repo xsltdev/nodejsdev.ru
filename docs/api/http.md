@@ -1058,7 +1058,7 @@ added: v1.6.0
 -->
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Читает заголовок запроса. Имя не чувствительно к регистру. Тип возвращаемого
 значения зависит от аргументов, переданных в [`request.setHeader()`][`request.setHeader()`].
@@ -1326,7 +1326,7 @@ added: v1.6.0
 -->
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Задаёт одно значение заголовка в объекте заголовков. Если заголовок уже есть
 среди отправляемых, значение заменяется. Для нескольких заголовков с одним именем
@@ -4420,7 +4420,7 @@ added: v14.3.0
 -->
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Низкоуровневая проверка `value`, как при `res.setHeader(name, value)`.
 

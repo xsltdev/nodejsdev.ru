@@ -165,7 +165,7 @@ added: v16.5.0
     * Возвращает: промис, выполняемый с `undefined`.
   * `cancel` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при отмене
     `ReadableStream`.
-    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
   * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'bytes'` или `undefined`.
   * `autoAllocateChunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Используется только при `type`, равном
@@ -177,7 +177,7 @@ added: v16.5.0
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
   * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 <!--lint enable maximum-line-length remark-lint-->
@@ -199,7 +199,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined` после завершения отмены.
 
 #### `readableStream.getReader([options])`
@@ -569,7 +569,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Отменяет [ReadableStream](webstreams.md#readablestream) и возвращает промис, выполняемый
@@ -592,7 +592,7 @@ added: v16.5.0
 -->
 
 * Возвращает: промис, выполняемый с объектом:
-  * `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
   * `done` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Запрашивает следующий фрагмент данных из нижележащего [ReadableStream](webstreams.md#readablestream)
@@ -710,7 +710,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Отменяет [ReadableStream](webstreams.md#readablestream) и возвращает промис, выполняемый
@@ -812,7 +812,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Добавляет новый фрагмент данных в очередь [ReadableStream](webstreams.md#readablestream).
 
@@ -822,7 +822,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
@@ -890,7 +890,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
@@ -999,7 +999,7 @@ added: v16.5.0
     * Возвращает: `undefined` или промис, выполняемый с `undefined`.
   * `write` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при записи фрагмента
     данных в `WritableStream`.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * `controller` [`<WritableStreamDefaultController>`](webstreams.md#class-writablestreamdefaultcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
   * `close` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая при закрытии
@@ -1007,15 +1007,15 @@ added: v16.5.0
     * Возвращает: промис, выполняемый с `undefined`.
   * `abort` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для немедленного закрытия
     `WritableStream`.
-    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `type` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Опция `type` зарезервирована и _должна_ быть
+  * `type` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Опция `type` зарезервирована и _должна_ быть
     `undefined`.
 * `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
   * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `writableStream.abort([reason])`
@@ -1024,7 +1024,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Немедленно завершает `WritableStream`. Все запросы записи в очереди
@@ -1113,7 +1113,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Немедленно завершает `WritableStream`. Все запросы записи в очереди
@@ -1172,7 +1172,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
 
 Ставит в очередь новый фрагмент данных для записи в [WritableStream](webstreams.md#class-writablestream).
@@ -1204,7 +1204,7 @@ changes:
 added: v16.5.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Вызывается из кода пользователя, чтобы сообщить об ошибке при обработке
 данных `WritableStream`. При вызове [WritableStream](webstreams.md#class-writablestream) прерывается,
@@ -1284,7 +1284,7 @@ changes:
   * `transform` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция: получает и при необходимости изменяет
     фрагмент данных, записанный в `transformStream.writable`,
     затем передаёт его в `transformStream.readable`.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * `controller` [`<TransformStreamDefaultController>`](webstreams.md#class-transformstreamdefaultcontroller)
     * Возвращает: промис, выполняемый с `undefined`.
   * `flush` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая непосредственно перед
@@ -1294,23 +1294,23 @@ changes:
     * Возвращает: промис, выполняемый с `undefined`.
   * `cancel` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция при отмене читающей стороны
     `TransformStream` или прерывании записывающей.
-    * `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: промис, выполняемый с `undefined`.
-  * `readableType` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `readableType` зарезервирована
+  * `readableType` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `readableType` зарезервирована
     и _должна_ быть `undefined`.
-  * `writableType` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `writableType` зарезервирована
+  * `writableType` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) опция `writableType` зарезервирована
     и _должна_ быть `undefined`.
 * `writableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
   * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `readableStrategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер внутренней очереди до срабатывания обратного давления.
   * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция для определения размера каждого
     фрагмента данных.
-    * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+    * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `transformStream.readable`
@@ -1383,7 +1383,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Добавляет фрагмент данных в очередь читающей стороны.
 
@@ -1393,7 +1393,7 @@ added: v16.5.0
 added: v16.5.0
 -->
 
-* `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Сообщает об ошибке на читающей и записывающей сторонах при обработке
 данных трансформации; обе стороны немедленно закрываются.
@@ -1449,7 +1449,7 @@ added: v16.5.0
 -->
 
 * Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-  * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
   * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `CountQueuingStrategy`
@@ -1494,7 +1494,7 @@ added: v16.5.0
 -->
 
 * Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-  * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+  * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
   * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 ### Класс: `TextEncoderStream`

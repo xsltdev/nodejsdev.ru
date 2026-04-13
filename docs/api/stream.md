@@ -2211,7 +2211,7 @@ changes:
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to map over every chunk in the
   stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2272,7 +2272,7 @@ changes:
 > Stability: 1 - Experimental
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to filter chunks from the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2325,7 +2325,7 @@ added:
 > Stability: 1 - Experimental
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to call on each chunk of the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2422,7 +2422,7 @@ added:
 > Stability: 1 - Experimental
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to call on each chunk of the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2470,7 +2470,7 @@ added:
 > Stability: 1 - Experimental
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to call on each chunk of the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2524,7 +2524,7 @@ added:
 > Stability: 1 - Experimental
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to call on each chunk of the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2578,7 +2578,7 @@ added:
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncGeneratorFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a function to map over
   every chunk in the stream.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
@@ -2683,13 +2683,13 @@ added:
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) a reducer function to call over every chunk
   in the stream.
-  * `previous` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the value obtained from the last call to `fn` or the
+  * `previous` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the value obtained from the last call to `fn` or the
     `initial` value if specified or the first chunk of the stream otherwise.
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) a chunk of data from the stream.
   * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `signal` [`<AbortSignal>`](globals.md#abortsignal) aborted if the stream is destroyed allowing to
       abort the `fn` call early.
-* `initial` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the initial value to use in the reduction.
+* `initial` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) the initial value to use in the reduction.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `signal` [`<AbortSignal>`](globals.md#abortsignal) allows destroying the stream if the signal is
     aborted.
@@ -3397,7 +3397,7 @@ changes:
       given `stream.Readable`.
     * `size` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function that size of the given chunk of data.
       If no value is provided, the size will be `1` for all the chunks.
-      * `chunk` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+      * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
       * Returns: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the type of the created `ReadableStream`. Must be
     `'bytes'` or undefined.

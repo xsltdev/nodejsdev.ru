@@ -366,7 +366,7 @@ d.on('error', (er) => {
 ### `domain.run(fn[, ...args])`
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Выполняет переданную функцию в контексте домена, неявно связывая все эмиттеры событий, таймеры и низкоуровневые
 запросы, созданные в этом контексте. Опционально в функцию передаются аргументы.

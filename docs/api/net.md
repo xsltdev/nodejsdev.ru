@@ -184,7 +184,7 @@ added:
   - v22.13.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript
 * Возвращает `true`, если `value` — экземпляр `net.BlockList`.
 
 ### `blockList.fromJSON(value)`

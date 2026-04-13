@@ -202,7 +202,7 @@ added: v10.0.0
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `categories` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив имён категорий трассировки. Значения при возможности приводятся к строке. При невозможности приведения будет выброшена ошибка.
-* Возвращает: {Tracing}.
+* Возвращает: [`<Tracing>`](tracing.md).
 
 Создаёт и возвращает объект `Tracing` для заданного набора `categories`.
 

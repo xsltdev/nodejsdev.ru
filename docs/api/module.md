@@ -70,7 +70,7 @@ added: v12.2.0
 
 * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Имя файла для построения функции
   `require`. Должно быть объектом file URL, строкой file URL или абсолютным путём.
-* Возвращает: {require} Функция `require`
+* Возвращает: [`<require>`](modules.md#requireid) Функция `require`
 
 === "MJS"
 
@@ -233,7 +233,7 @@ changes:
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
     если `parentURL` передан вторым аргументом. **По умолчанию:** `'data:'`
-  * `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`][`initialize`].
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`][`initialize`].
   * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
     хука `initialize`.
 
@@ -1442,7 +1442,7 @@ added:
   - v18.19.0
 -->
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The data from `register(loader, import.meta.url, { data })`.
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The data from `register(loader, import.meta.url, { data })`.
 
 The `initialize` hook is only accepted by [`register`][`register`]. `registerHooks()` does
 not support nor need it since initialization done for synchronous hooks can be run

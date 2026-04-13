@@ -8363,7 +8363,7 @@ The `'write'` event is emitted when a write operation has completed. The number 
     -   `mode`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specify the creating file mode (see `fs.open()`).
     -   `periodicFlush`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Calls flush every `periodicFlush` milliseconds.
     -   `retryEAGAIN` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function that will be called when `write()`, `writeSync()`, or `flushSync()` encounters an `EAGAIN` or `EBUSY` error. If the return value is `true` the operation will be retried, otherwise it will bubble the error. The `err` is the error that caused this function to be called, `writeBufferLen` is the length of the buffer that was written, and `remainingBufferLen` is the length of the remaining buffer that the stream did not try to write.
-        -   `err` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An error or `null`.
+        -   `err` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An error or `null`.
         -   `writeBufferLen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
         -   `remainingBufferLen`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `sync`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Perform writes synchronously.

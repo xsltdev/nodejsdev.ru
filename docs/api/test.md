@@ -2219,15 +2219,15 @@ A getter that returns a copy of the internal array used to track calls to the
 mock. Each entry in the array is an object with the following properties.
 
 * `arguments` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array of the arguments passed to the mock function.
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) If the mocked function threw then this property contains the
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) If the mocked function threw then this property contains the
   thrown value. **Default:** `undefined`.
-* `result` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value returned by the mocked function.
+* `result` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value returned by the mocked function.
 * `stack` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
   callsite of the mocked function invocation.
 * `target` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined If the mocked function is a constructor, this
   field contains the class being constructed. Otherwise this will be
   `undefined`.
-* `this` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The mocked function's `this` value.
+* `this` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The mocked function's `this` value.
 
 ### `ctx.callCount()`
 
@@ -2391,7 +2391,7 @@ A getter that returns a copy of the internal array used to track accesses (get/s
 the mocked property. Each entry in the array is an object with the following properties:
 
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'get'` or `'set'`, indicating the type of access.
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value that was read (for `'get'`) or written (for `'set'`).
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value that was read (for `'get'`) or written (for `'set'`).
 * `stack` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) An `Error` object whose stack can be used to determine the
   callsite of the mocked function invocation.
 
@@ -2405,13 +2405,13 @@ This function is more efficient than checking `ctx.accesses.length` because
 
 ### `ctx.mockImplementation(value)`
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The new value to be set as the mocked property value.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The new value to be set as the mocked property value.
 
 This function is used to change the value returned by the mocked property getter.
 
 ### `ctx.mockImplementationOnce(value[, onAccess])`
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to be used as the mock's
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) The value to be used as the mock's
   implementation for the invocation number specified by `onAccess`.
 * `onAccess` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The invocation number that will use `value`. If
   the specified invocation has already occurred then an exception is thrown.
@@ -2627,7 +2627,7 @@ changes:
       `module.exports` defaults to an empty object.
     * If named exports are provided with a non-object default export, the mock
       throws an exception when used as a CommonJS or builtin module.
-  * `defaultExport` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mocked module's default
+  * `defaultExport` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mocked module's default
     export. If this value is not provided, ESM mocks do not include a default
     export. If the mock is a CommonJS or builtin module, this setting is used as
     the value of `module.exports`. If this value is not provided, CJS and builtin
@@ -2697,7 +2697,7 @@ added:
 
 * `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) The object whose value is being mocked.
 * `propertyName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) The identifier of the property on `object` to mock.
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mock value
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An optional value used as the mock value
   for `object[propertyName]`. **Default:** The original property value.
 * Returns: [`<Proxy>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) A proxy to the mocked object. The mocked object contains a
   special `mock` property, which is an instance of [`MockPropertyContext`][`MockPropertyContext`], and
@@ -3977,7 +3977,7 @@ added:
   - v22.14.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
   the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   `path`. Otherwise, the serialized value is compared to the contents of the
   existing snapshot file.
@@ -4014,7 +4014,7 @@ highlighting.
 added: v22.3.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) A value to serialize to a string. If Node.js was started with
   the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   the snapshot file. Otherwise, the serialized value is compared to the
   corresponding value in the existing snapshot file.

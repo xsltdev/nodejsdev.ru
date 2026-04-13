@@ -5806,7 +5806,7 @@ added:
 
 > Stability: 3 - Legacy. Use `Buffer.from(data, 'base64')` instead.
 
--   `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входная строка в Base64.
+-   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Входная строка в Base64.
 
 Декодирует строку Base64 в байты и кодирует эти байты в строку Latin-1 (ISO-8859-1).
 
@@ -5830,7 +5830,7 @@ added:
 
 > Stability: 3 - Legacy. Use `buf.toString('base64')` instead.
 
--   `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Строка ASCII (Latin1).
+-   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Строка ASCII (Latin1).
 
 Декодирует строку в байты по Latin-1 (ISO-8859) и кодирует байты в Base64.
 

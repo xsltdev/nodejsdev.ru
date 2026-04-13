@@ -161,7 +161,7 @@ setImmediate(() => {
 
 * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `cause` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) ошибка, послужившая причиной новой ошибки.
+  * `cause` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) ошибка, послужившая причиной новой ошибки.
 
 Создаёт объект `Error` и задаёт свойство `error.message` переданным текстом.
 Если в `message` передан объект, текст получают вызовом `String(message)`.
@@ -235,7 +235,7 @@ a();
 added: v16.9.0
 -->
 
-* Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Если задано, `error.cause` — исходная причина `Error`. Используется при перехвате
 ошибки и выбросе новой с другим сообщением или кодом, чтобы сохранить доступ к

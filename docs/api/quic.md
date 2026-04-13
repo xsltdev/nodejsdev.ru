@@ -86,7 +86,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* `onsession` {quic.OnSessionCallback}
+* `onsession` [`<quic.OnSessionCallback>`](quic.md)
 * `options` [`<quic.SessionOptions>`](quic.md)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) промис с [quic.QuicEndpoint](quic.md)
 
@@ -209,7 +209,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Принудительно закрывает endpoint, немедленно закрывая все открытые сессии.
 
@@ -229,9 +229,9 @@ added: v23.8.0
 added: REPLACEME
 -->
 
-* `entries` {object} Объект «имя хоста — параметры TLS-идентичности».
+* `entries` [`<object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «имя хоста — параметры TLS-идентичности».
   В каждой записи должны быть `keys` и `certs`.
-* `options` {object}
+* `options` [`<object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `replace` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, заменяет всю карту SNI. Если `false`
     (по умолчанию), объединяет записи с существующей картой.
 
@@ -421,7 +421,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Немедленно уничтожает сессию. Все потоки уничтожаются,
 сессия закрывается.
@@ -452,7 +452,7 @@ Endpoint, создавший эту сессию. Только для чтени
 added: v23.8.0
 -->
 
-* Тип: {quic.OnStreamCallback}
+* Тип: [`<quic.OnStreamCallback>`](quic.md)
 
 Вызывается при инициации нового потока удалённым пиром. Чтение и запись.
 
@@ -462,7 +462,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnDatagramCallback}
+* Тип: [`<quic.OnDatagramCallback>`](quic.md)
 
 Вызывается при получении новой датаграммы от удалённого пира. Чтение и запись.
 
@@ -472,7 +472,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnDatagramStatusCallback}
+* Тип: [`<quic.OnDatagramStatusCallback>`](quic.md)
 
 Вызывается при изменении статуса датаграммы. Чтение и запись.
 
@@ -482,7 +482,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnPathValidationCallback}
+* Тип: [`<quic.OnPathValidationCallback>`](quic.md)
 
 Вызывается при обновлении проверки пути. Чтение и запись.
 
@@ -492,7 +492,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnSessionTicketCallback}
+* Тип: [`<quic.OnSessionTicketCallback>`](quic.md)
 
 Вызывается при получении нового session ticket. Чтение и запись.
 
@@ -502,7 +502,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnVersionNegotiationCallback}
+* Тип: [`<quic.OnVersionNegotiationCallback>`](quic.md)
 
 Вызывается при начале согласования версии. Чтение и запись.
 
@@ -512,7 +512,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnHandshakeCallback}
+* Тип: [`<quic.OnHandshakeCallback>`](quic.md)
 
 Вызывается при завершении TLS-рукопожатия. Чтение и запись.
 
@@ -807,7 +807,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Немедленно и аварийно уничтожает поток.
 
@@ -847,7 +847,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnBlockedCallback}
+* Тип: [`<quic.OnBlockedCallback>`](quic.md)
 
 Вызывается, когда поток заблокирован. Чтение и запись.
 
@@ -857,7 +857,7 @@ added: v23.8.0
 added: v23.8.0
 -->
 
-* Тип: {quic.OnStreamErrorCallback}
+* Тип: [`<quic.OnStreamErrorCallback>`](quic.md)
 
 Вызывается при сбросе потока. Чтение и запись.
 
@@ -1683,7 +1683,7 @@ added: v23.8.0
 -->
 
 * `this` [`<quic.QuicStream>`](quic.md)
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 ## Диагностические каналы
 
@@ -1729,7 +1729,7 @@ added: v23.8.0
 -->
 
 * `endpoint` [`<quic.QuicEndpoint>`](quic.md)
-* `error` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 ### Channel: `quic.endpoint.busy.change`
 

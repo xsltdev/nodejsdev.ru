@@ -283,7 +283,7 @@ changes:
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `detail` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные сведения для метки.
+  * `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные сведения для метки.
   * `startTime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательная метка времени для момента метки.
     **По умолчанию**: `performance.now()`.
 
@@ -369,7 +369,7 @@ changes:
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `startMarkOrOptions` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно.
-  * `detail` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные сведения для измерения.
+  * `detail` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Дополнительные необязательные сведения для измерения.
   * `duration` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длительность между началом и концом.
   * `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка времени конца или строка с именем ранее записанной метки.
   * `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка времени начала или строка с именем ранее записанной метки.
@@ -683,7 +683,7 @@ changes:
     | --- | --- |
     | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMark в качестве получателя. |
 
-* Type: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Type: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительные сведения, заданные при создании через `Performance.mark()`.
 
@@ -720,7 +720,7 @@ changes:
     | --- | --- |
     | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMeasure в качестве получателя. |
 
-* Type: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Type: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительные сведения, заданные при создании через `Performance.measure()`.
 
@@ -757,7 +757,7 @@ changes:
     | --- | --- |
     | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceNodeEntry в качестве получателя. |
 
-* Type: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* Type: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительные сведения, зависящие от `entryType`.
 

@@ -89,7 +89,7 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
--   `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
+-   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
 Инициирует сигнал отмены: у `abortController.signal` генерируется событие `'abort'`.
 
@@ -135,7 +135,7 @@ changes:
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
--   `reason` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
 
 Возвращает новый уже прерванный `AbortSignal`.
@@ -228,7 +228,7 @@ added:
   - v16.14.0
 -->
 
--   Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Необязательная причина, указанная при срабатывании `AbortSignal`.
 

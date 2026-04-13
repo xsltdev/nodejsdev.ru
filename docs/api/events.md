@@ -595,7 +595,7 @@ added: v0.1.26
 -->
 
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Синхронно вызывает каждого из слушателей, зарегистрированных для события
@@ -1216,7 +1216,7 @@ changes:
 
 * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Метод `Symbol.for('nodejs.rejection')` вызывается при отклонении промиса при
 испускании события, если у эмиттера включён [`captureRejections`][capturerejections].
@@ -2082,7 +2082,7 @@ changes:
 
 * `signal` [`<AbortSignal>`](globals.md#abortsignal)
 * `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
-* Возвращает: {Disposable} Объект, снимающий слушатель `abort` при утилизации.
+* Возвращает: [`<Disposable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol/dispose) Объект, снимающий слушатель `abort` при утилизации.
 
 Подписывается один раз на событие `abort` у переданного `signal`.
 
@@ -2730,7 +2730,7 @@ changes:
     | --- | --- |
     | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
 
-* Тип: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Пользовательские данные, переданные при инициализации.
+* Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Пользовательские данные, переданные при инициализации.
 
 Только для чтения.
 
@@ -2768,7 +2768,7 @@ added: v15.2.0
 -->
 
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `arg` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `arg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для `type` есть слушатели, иначе `false`.
 
 Расширение Node.js: передаёт `arg` списку обработчиков для `type`.

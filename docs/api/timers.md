@@ -208,7 +208,7 @@ changes:
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая в конце текущего витка [цикла событий][Event Loop] Node.js
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
 * Возвращает: [`<Immediate>`](timers.md) для использования с [`clearImmediate()`][`clearImmediate()`]
 
 Планирует «немедленный» вызов `callback` после обратных вызовов событий ввода-вывода.
@@ -242,7 +242,7 @@ changes:
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при срабатывании таймера.
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
   `callback`. **По умолчанию:** `1`.
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
 * Возвращает: [`<Timeout>`](timers.md) для использования с [`clearInterval()`][`clearInterval()`]
 
 Планирует периодический вызов `callback` каждые `delay` миллисекунд.
@@ -277,7 +277,7 @@ changes:
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при срабатывании таймера.
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
   `callback`. **По умолчанию:** `1`.
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
 * Возвращает: [`<Timeout>`](timers.md) для использования с [`clearTimeout()`][`clearTimeout()`]
 
 Планирует однократный вызов `callback` через `delay` миллисекунд.
@@ -461,7 +461,7 @@ added: v15.0.0
 -->
 
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед выполнением промиса. **По умолчанию:** `1`.
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, запланированный `Timeout`
     не удерживает цикл событий Node.js активным.
@@ -498,7 +498,7 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, запланированный `Immediate`
     не удерживает цикл событий Node.js активным.
@@ -540,7 +540,7 @@ added: v15.9.0
 
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Интервал в миллисекундах между итерациями.
   **По умолчанию:** `1`.
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, которое возвращает итератор.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, которое возвращает итератор.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ref` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, запланированный `Timeout`
     между итерациями не удерживает цикл событий Node.js

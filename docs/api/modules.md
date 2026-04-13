@@ -833,7 +833,7 @@ added: v0.1.13
 -->
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) module name or path
-* Returns: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
 
 Импорт модулей, `JSON` и локальных файлов. Модули из `node_modules`, локальные файлы и JSON —
 через относительный путь (например `./`, `./foo`, `./bar/baz`, `../foo`), разрешаемый
@@ -1194,7 +1194,7 @@ added: v0.5.1
 -->
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Returns: [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* Returns: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
 
 `module.require()` загружает модуль так, как если бы `require()` вызвали из исходного модуля.
 

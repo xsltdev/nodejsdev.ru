@@ -218,8 +218,8 @@ changes:
     | --- | --- |
     | v10.0.0 | Реализация теперь соответствует спецификации и больше не выдает ошибок. |
 
-* `value` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Проверяемое значение на истинность.
-* `...message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Остальные аргументы — текст сообщения.
+* `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Проверяемое значение на истинность.
+* `...message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Остальные аргументы — текст сообщения.
 
 `console.assert()` выводит сообщение, если `value` [ложно][falsy] или не передано. Выполнение не прерывается. Вывод всегда начинается с `"Assertion failed"`. Если передан `message`, он форматируется через [`util.format()`][`util.format()`].
 
@@ -321,8 +321,8 @@ changes:
     | --- | --- |
     | v8.10.0 | «`console.debug` теперь является псевдонимом `console.log`». |
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.debug()` — псевдоним [`console.log()`][`console.log()`].
 
@@ -332,7 +332,7 @@ changes:
 added: v0.1.101
 -->
 
-* `obj` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `obj` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `showHidden` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, показываются ненумеруемые и символьные свойства. **По умолчанию:** `false`.
   * `depth` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Глубина рекурсии для [`util.inspect()`][`util.inspect()`] при форматировании. Для бесконечной глубины передайте `null`. **По умолчанию:** `2`.
@@ -359,7 +359,7 @@ changes:
     | --- | --- |
     | v9.3.0 | «`console.dirxml` теперь вызывает `console.log` для получения своих аргументов." |
 
-* `...data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Вызывает `console.log()` с теми же аргументами.
 XML-форматирования не производится.
@@ -370,8 +370,8 @@ XML-форматирования не производится.
 added: v0.1.100
 -->
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stderr` с переводом строки. Можно передать несколько аргументов: первый — основное сообщение, остальные — подстановки в стиле printf(3) (все аргументы передаются в [`util.format()`][`util.format()`]).
 
@@ -391,7 +391,7 @@ console.error('error', code);
 added: v8.5.0
 -->
 
-* `...label` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...label` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Увеличивает отступ последующих строк на `groupIndentation` пробелов.
 
@@ -419,8 +419,8 @@ added: v8.5.0
 added: v0.1.100
 -->
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.info()` — псевдоним [`console.log()`][`console.log()`].
 
@@ -430,8 +430,8 @@ added: v0.1.100
 added: v0.1.100
 -->
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stdout` с переводом строки. Несколько аргументов: первый — сообщение, остальные — подстановки как в printf(3) (через [`util.format()`][`util.format()`]).
 
@@ -451,7 +451,7 @@ console.log('count:', count);
 added: v10.0.0
 -->
 
-* `tabularData` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `tabularData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `properties` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативный набор свойств для столбцов.
 
 Пытается построить таблицу: столбцы из свойств `tabularData` (или из `properties`), строки — элементы `tabularData`, и вывести её. Если данные не удаётся разобрать как табличные, логируется аргумент как есть.
@@ -532,7 +532,7 @@ added: v10.7.0
 -->
 
 * `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
-* `...data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Для таймера, запущенного [`console.time()`][`console.time()`], выводит прошедшее время и остальные аргументы `data` в `stdout`:
 
@@ -551,8 +551,8 @@ console.timeEnd('process');
 added: v0.1.104
 -->
 
-* `message` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Пишет в `stderr` строку `'Trace: '`, затем сообщение, отформатированное [`util.format()`][`util.format()`], и стек до текущего места в коде.
 
@@ -578,8 +578,8 @@ console.trace('Show me');
 added: v0.1.100
 -->
 
-* `data` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
-* `...args` [<any>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.warn()` — псевдоним [`console.error()`][`console.error()`].
 
