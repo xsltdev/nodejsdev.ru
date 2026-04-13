@@ -20,6 +20,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
@@ -139,7 +140,7 @@ test('top level test', async (t) => {
 
 Раннер может сохранять состояние прогона в файл и затем перезапускать только
 проваленные тесты без полного прогона. Укажите путь к файлу состояния ключом
-[`--test-rerun-failures`][]; если файла нет, он будет создан.
+[`--test-rerun-failures`][`--test-rerun-failures`]; если файла нет, он будет создан.
 
 Файл состояния — JSON с массивом попыток запуска. Каждая попытка — объект,
 сопоставляющий успешно прошедшие тесты с номером попытки, на которой они впервые
@@ -175,8 +176,8 @@ node --test-rerun-failures /path/to/state/file
 
 ## Псевдонимы `describe()` и `it()`
 
-Наборы и тесты можно оформлять через `describe()` и `it()`: [`describe()`][]
-это псевдоним [`suite()`][], [`it()`][] — псевдоним [`test()`][].
+Наборы и тесты можно оформлять через `describe()` и `it()`: [`describe()`][`describe()`]
+это псевдоним [`suite()`][`suite()`], [`it()`][`it()`] — псевдоним [`test()`][`test()`].
 
 ```js
 describe('A thing', () => {
@@ -295,7 +296,7 @@ it('should do the thing', { expectFailure: 'feature not implemented' }, () => {
 ```
 
 Если `expectFailure` имеет тип [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), тест проходит только при
-выбросе совпадающего значения. См. [`assert.throws`][] про обработку типов.
+выбросе совпадающего значения. См. [`assert.throws`][`assert.throws`] про обработку типов.
 
 Следующие тесты падают _несмотря_ на `expectFailure`, потому что ошибка не совпадает с ожидаемой.
 
@@ -357,7 +358,7 @@ it.todo('should do the thing', { expectFailure: true }, () => {
 
 ## Тесты `only`
 
-Если Node.js запущен с [`--test-only`][] или отключена изоляция тестов, можно выполнить
+Если Node.js запущен с [`--test-only`][`--test-only`] или отключена изоляция тестов, можно выполнить
 только выбранные тесты, передав им опцию `only`. У теста с `only` выполняются и все подтесты.
 Если `only` задан у набора, выполняются все тесты набора, кроме случая, когда у потомков тоже
 есть `only` — тогда только они.
@@ -420,8 +421,8 @@ describe.only('a suite', () => {
 
 ## Фильтрация тестов по имени
 
-Опция командной строки [`--test-name-pattern`][] позволяет запускать только те тесты,
-имя которых соответствует заданному шаблону; опция [`--test-skip-pattern`][] —
+Опция командной строки [`--test-name-pattern`][`--test-name-pattern`] позволяет запускать только те тесты,
+имя которых соответствует заданному шаблону; опция [`--test-skip-pattern`][`--test-skip-pattern`] —
 пропускать тесты, имя которых соответствует шаблону. Шаблоны имён интерпретируются как
 регулярные выражения JavaScript. Опции `--test-name-pattern` и
 `--test-skip-pattern` можно указывать несколько раз, в том числе для вложенных тестов.
@@ -588,7 +589,7 @@ added: v24.0.0
 ## Запуск тестов из командной строки
 
 Раннер тестов Node.js вызывается из командной строки с флагом
-[`--test`][]:
+[`--test`][`--test`]:
 
 ```bash
 node --test
@@ -603,7 +604,7 @@ node --test
 * `**/test.{cjs,mjs,js}`
 * `**/test/**/*.{cjs,mjs,js}`
 
-Если не указан [`--no-strip-types`][], дополнительно учитываются:
+Если не указан [`--no-strip-types`][`--no-strip-types`], дополнительно учитываются:
 
 * `**/*.test.{cts,mts,ts}`
 * `**/*-test.{cts,mts,ts}`
@@ -613,7 +614,7 @@ node --test
 * `**/test/**/*.{cts,mts,ts}`
 
 Вместо этого в конце команды Node.js можно передать один или несколько шаблонов glob,
-как показано ниже. Поведение glob соответствует [`glob(7)`][].
+как показано ниже. Поведение glob соответствует [`glob(7)`][`glob(7)`].
 Шаблоны glob в командной строке лучше заключать в двойные кавычки,
 чтобы оболочка не раскрывала их — так выше переносимость между системами.
 
@@ -720,12 +721,12 @@ API в стиле suite (`describe()`/`it()` или `suite()`/`test()`)
 
 При включённой изоляции тестов на уровне процесса каждый подходящий файл теста
 выполняется в отдельном дочернем процессе. Максимальное число одновременных дочерних
-процессов задаёт [`--test-concurrency`][]. Если дочерний процесс завершился с кодом 0,
+процессов задаёт [`--test-concurrency`][`--test-concurrency`]. Если дочерний процесс завершился с кодом 0,
 тест считается пройденным; иначе — провалом. Файлы должны быть исполняемы Node.js,
 но не обязаны использовать внутри модуль `node:test`.
 
 Каждый файл выполняется как обычный скрипт: если в нём через `node:test` объявлены тесты,
-они выполняются в одном потоке приложения, независимо от опции `concurrency` у [`test()`][].
+они выполняются в одном потоке приложения, независимо от опции `concurrency` у [`test()`][`test()`].
 
 При отключённой изоляции каждый файл импортируется в процесс раннера. После загрузки всех
 файлов тесты верхнего уровня выполняются с параллелизмом 1. Общий контекст позволяет тестам
@@ -735,7 +736,7 @@ API в стиле suite (`describe()`/`it()` или `suite()`/`test()`)
 #### Наследование опций дочерним процессом
 
 В режиме изоляции процессов (по умолчанию) дочерние процессы наследуют опции Node.js
-от родителя, в том числе из [файлов конфигурации][]. Часть флаков отфильтрована для корректной
+от родителя, в том числе из [файлов конфигурации][configuration files]. Часть флаков отфильтрована для корректной
 работы раннера:
 
 * `--test` — запрещён, чтобы избежать рекурсивного запуска тестов
@@ -755,13 +756,13 @@ API в стиле suite (`describe()`/`it()` или `suite()`/`test()`)
 
 > Стабильность: 1 — экспериментально
 
-При запуске Node.js с флагом [`--experimental-test-coverage`][]
+При запуске Node.js с флагом [`--experimental-test-coverage`][`--experimental-test-coverage`]
 собирается покрытие кода; после завершения всех тестов выводится статистика.
-Если переменная окружения [`NODE_V8_COVERAGE`][] задаёт каталог покрытия,
+Если переменная окружения [`NODE_V8_COVERAGE`][`NODE_V8_COVERAGE`] задаёт каталог покрытия,
 файлы V8 записываются туда. Модули ядра Node.js и файлы в `node_modules/` по умолчанию
-не входят в отчёт; их можно явно включить флагом [`--test-coverage-include`][].
+не входят в отчёт; их можно явно включить флагом [`--test-coverage-include`][`--test-coverage-include`].
 По умолчанию все подходящие тестовые файлы исключаются из отчёта о покрытии;
-исключения можно переопределить [`--test-coverage-exclude`][].
+исключения можно переопределить [`--test-coverage-exclude`][`--test-coverage-exclude`].
 При включённом покрытии отчёт передаётся [репортёрам тестов][test reporters] через
 событие `'test:coverage'`.
 
@@ -859,7 +860,7 @@ node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-de
     });
     ```
 
-Та же функциональность доступна на объекте [`TestContext`][] каждого теста.
+Та же функциональность доступна на объекте [`TestContext`][`TestContext`] каждого теста.
 В примере ниже шпион создаётся для метода объекта через API контекста.
 Плюс подмен через контекст: раннер сам восстанавливает подменённое поведение
 после завершения теста.
@@ -892,7 +893,7 @@ test('spies on an object method', (t) => {
 Подмена таймеров — распространённый приём: имитация и управление `setInterval` и
 `setTimeout` без реального ожидания интервалов.
 
-Полный список методов и возможностей — в классе [`MockTimers`][].
+Полный список методов и возможностей — в классе [`MockTimers`][`MockTimers`].
 
 Так проще писать устойчивые и предсказуемые тесты для логики, зависящей от времени.
 
@@ -958,7 +959,7 @@ test('spies on an object method', (t) => {
     });
     ```
 
-Та же функциональность доступна в свойстве `mock` у [`TestContext`][].
+Та же функциональность доступна в свойстве `mock` у [`TestContext`][`TestContext`].
 При подмене через контекст раннер после теста автоматически восстанавливает
 подменённые таймеры.
 
@@ -1007,7 +1008,7 @@ test('spies on an object method', (t) => {
 API подмены таймеров позволяет подменять и объект `Date` — удобно для тестов,
 зависящих от времени, и для симуляции `Date.now()` и т. п.
 
-Реализация даты тоже входит в [`MockTimers`][] — см. там полный список методов.
+Реализация даты тоже входит в [`MockTimers`][`MockTimers`] — см. там полный список методов.
 
 **Примечание:** при совместной подмене `Date` и таймеров они связаны: сдвиг времени
 двигает и подменённую дату — имитируется один общий внутренний таймер.
@@ -1244,6 +1245,7 @@ changes:
 Добавлено в: v22.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.4.0 | Тестирование моментальных снимков больше не является экспериментальным. |
@@ -1253,7 +1255,7 @@ changes:
 но формат остаётся читаемым для отладки. Файлы снимков обычно коммитят вместе с тестами.
 
 Файлы снимков создаются при запуске Node.js с флагом
-[`--test-update-snapshots`][]. На каждый тестовый файл — отдельный файл снимка.
+[`--test-update-snapshots`][`--test-update-snapshots`]. На каждый тестовый файл — отдельный файл снимка.
 По умолчанию имя совпадает с тестом и расширением `.snapshot`; поведение настраивается
 через `snapshot.setResolveSnapshotPath()`. Каждое утверждение снимка соответствует
 экспорту в файле.
@@ -1308,12 +1310,13 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0 | Средство создания отчетов по умолчанию для стандартного вывода без TTY изменено с `tap` на `spec`, что соответствует стандартному выводу TTY. |
     | v19.9.0, v18.17.0 | Репортеры теперь доступны по адресу `node:test/reporters`. |
 
-В модуле `node:test` можно передать флаги [`--test-reporter`][], чтобы
+В модуле `node:test` можно передать флаги [`--test-reporter`][`--test-reporter`], чтобы
 раннер использовал нужный репортёр.
 
 Встроенные репортёры:
@@ -1322,7 +1325,7 @@ changes:
   Выводит результаты в удобочитаемом виде. Репортёр по умолчанию.
 
 * `tap`
-  Формат [TAP][].
+  Формат [TAP][TAP].
 
 * `dot`
   Компактный вывод: успешный тест — `.`, провал — `X`.
@@ -1331,7 +1334,7 @@ changes:
   jUnit XML.
 
 * `lcov`
-  Покрытие кода; используется с [`--experimental-test-coverage`][].
+  Покрытие кода; используется с [`--experimental-test-coverage`][`--experimental-test-coverage`].
 
 Точный формат вывода может меняться между версиями Node.js и не гарантирован для программного разбора.
 Для программного доступа к результатам подписывайтесь на события [TestsStream](test.md).
@@ -1352,8 +1355,8 @@ changes:
 
 ### Пользовательские репортёры
 
-[`--test-reporter`][] может указывать путь к своему репортёру.
-Это модуль, экспортирующий значение, допустимое для [stream.compose][].
+[`--test-reporter`][`--test-reporter`] может указывать путь к своему репортёру.
+Это модуль, экспортирующий значение, допустимое для [stream.compose][stream.compose].
 Репортёр преобразует события [TestsStream](test.md).
 
 Пример репортёра на базе [stream.Transform](stream.md#class-streamtransform):
@@ -1551,12 +1554,12 @@ changes:
     ```
 
 Значение для `--test-reporter` — строка в том же виде, что аргумент динамического `import()`,
-или значение, как у [`--import`][].
+или значение, как у [`--import`][`--import`].
 
 ### Несколько репортёров
 
-Флаг [`--test-reporter`][] можно указать несколько раз, чтобы получить вывод в нескольких форматах.
-Тогда для каждого репортёра нужно задать назначение через [`--test-reporter-destination`][]:
+Флаг [`--test-reporter`][`--test-reporter`] можно указать несколько раз, чтобы получить вывод в нескольких форматах.
+Тогда для каждого репортёра нужно задать назначение через [`--test-reporter-destination`][`--test-reporter-destination`]:
 `stdout`, `stderr` или путь к файлу. Пары «репортёр — назначение» сопоставляются по порядку следования.
 
 В примере `spec` пишет в `stdout`, а `dot` — в `file.txt`:
@@ -1609,6 +1612,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.6.0, v24.14.0 | Добавьте опцию env. |
@@ -1630,16 +1634,16 @@ changes:
     If `false`, it would only run one test file at a time.
     **Default:** `false`.
   * `cwd` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the current working directory to be used by the test runner.
-    Serves as the base path for resolving files as if [running tests from the command line][] from that directory.
+    Serves as the base path for resolving files as if [running tests from the command line][running tests from the command line] from that directory.
     **Default:** `process.cwd()`.
   * `files` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of files to run.
-    **Default:** Same as [running tests from the command line][].
+    **Default:** Same as [running tests from the command line][running tests from the command line].
   * `forceExit` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Configures the test runner to exit the process once
     all known tests have finished executing even if the event loop would
     otherwise remain active. **Default:** `false`.
   * `globPatterns` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) An array containing the list of glob patterns to
     match test files. This option cannot be used together with `files`.
-    **Default:** Same as [running tests from the command line][].
+    **Default:** Same as [running tests from the command line][running tests from the command line].
   * `inspectPort` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Sets inspector port of test child process.
     This can be a number, or a function that takes no arguments and returns a
     number. If a nullish value is provided, each process gets its own port,
@@ -1696,7 +1700,7 @@ changes:
     store the state of the tests to allow rerunning only the failed tests on a next run.
     see \[Rerunning failed tests]\[] for more information.
     **Default:** `undefined`.
-  * `coverage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) enable [code coverage][] collection.
+  * `coverage` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) enable [code coverage][code coverage] collection.
     **Default:** `false`.
   * `coverageExcludeGlobs` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Excludes specific files from code coverage
     using a glob pattern, which can match both absolute and relative file paths.
@@ -1775,7 +1779,7 @@ added:
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options for the suite.
   This supports the same options as `test([name][, options][, fn])`.
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The suite function declaring nested tests and
-  suites. The first argument to this function is a [`SuiteContext`][] object.
+  suites. The first argument to this function is a [`SuiteContext`][`SuiteContext`] object.
   **Default:** A no-op function.
 * Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Immediately fulfilled with `undefined`.
 
@@ -1839,6 +1843,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.2.0, v18.17.0 | Добавлены сокращения «skip», «todo» и «only». |
@@ -1861,7 +1866,7 @@ changes:
     in the test results as the reason why the test is expected to fail. If a [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     is provided directly (without wrapping in `{ match: … }`), the test passes
     only if the thrown error matches, following the behavior of
-    [`assert.throws`][]. To provide both a reason and validation, pass an object
+    [`assert.throws`][`assert.throws`]. To provide both a reason and validation, pass an object
     with `label` (string) and `match` (RegExp, Function, Object, or Error).
     **Default:** `false`.
   * `only` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If truthy, and the test context is configured to run
@@ -1882,7 +1887,7 @@ changes:
     specified in the plan, the test will fail.
     **Default:** `undefined`.
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
-  to this function is a [`TestContext`][] object. If the test uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the test uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once
@@ -1931,7 +1936,7 @@ test('top level test', async (t) => {
 
 ## `describe([name][, options][, fn])`
 
-Псевдоним [`suite()`][].
+Псевдоним [`suite()`][`suite()`].
 
 Функция `describe()` импортируется из модуля `node:test`.
 
@@ -1971,11 +1976,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v19.8.0, v18.16.0 | Вызов `it()` теперь эквивалентен вызову `test()`. |
 
-Псевдоним [`test()`][].
+Псевдоним [`test()`][`test()`].
 
 Функция `it()` импортируется из модуля `node:test`.
 
@@ -2197,7 +2203,7 @@ added:
 -->
 
 The `MockFunctionContext` class is used to inspect or manipulate the behavior of
-mocks created via the [`MockTracker`][] APIs.
+mocks created via the [`MockTracker`][`MockTracker`] APIs.
 
 ### `ctx.calls`
 
@@ -2354,7 +2360,7 @@ added:
 > Stability: 1.0 - Early development
 
 The `MockModuleContext` class is used to manipulate the behavior of module mocks
-created via the [`MockTracker`][] APIs.
+created via the [`MockTracker`][`MockTracker`] APIs.
 
 ### `ctx.restore()`
 
@@ -2375,7 +2381,7 @@ added:
 -->
 
 The `MockPropertyContext` class is used to inspect or manipulate the behavior
-of property mocks created via the [`MockTracker`][] APIs.
+of property mocks created via the [`MockTracker`][`MockTracker`] APIs.
 
 ### `ctx.accesses`
 
@@ -2483,7 +2489,7 @@ added:
     will automatically restore the behavior of `original`. This value must be an
     integer greater than zero. **Default:** `Infinity`.
 * Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked function. The mocked function contains a special
-  `mock` property, which is an instance of [`MockFunctionContext`][], and can
+  `mock` property, which is an instance of [`MockFunctionContext`][`MockFunctionContext`], and can
   be used for inspecting and changing the behavior of the mocked function.
 
 This function is used to create a mock function.
@@ -2523,7 +2529,7 @@ added:
   - v18.13.0
 -->
 
-This function is syntax sugar for [`MockTracker.method`][] with `options.getter`
+This function is syntax sugar for [`MockTracker.method`][`MockTracker.method`] with `options.getter`
 set to `true`.
 
 ### `mock.method(object, methodName[, implementation][, options])`
@@ -2551,7 +2557,7 @@ added:
     will automatically restore the original behavior. This value must be an
     integer greater than zero. **Default:** `Infinity`.
 * Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) The mocked method. The mocked method contains a special
-  `mock` property, which is an instance of [`MockFunctionContext`][], and can
+  `mock` property, which is an instance of [`MockFunctionContext`][`MockFunctionContext`], and can
   be used for inspecting and changing the behavior of the mocked method.
 
 This function is used to create a mock on an existing object method. The
@@ -2597,6 +2603,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.0.0, v22.17.0 | Поддержка модулей JSON. |
@@ -2641,9 +2648,9 @@ changes:
 This function is used to mock the exports of ECMAScript modules, CommonJS modules, JSON modules, and
 Node.js builtin modules. Any references to the original module prior to mocking are not impacted. In
 order to enable module mocking, Node.js must be started with the
-[`--experimental-test-module-mocks`][] command-line flag.
+[`--experimental-test-module-mocks`][`--experimental-test-module-mocks`] command-line flag.
 
-**Note**: [module customization hooks][] registered via the **synchronous** API effect resolution of
+**Note**: [module customization hooks][module customization hooks] registered via the **synchronous** API effect resolution of
 the `specifier` provided to `mock.module`. Customization hooks registered via the **asynchronous**
 API are currently ignored (because the test runner's loader is synchronous, and node does not
 support multi-chain / cross-chain loading).
@@ -2693,7 +2700,7 @@ added:
 * `value` {any} An optional value used as the mock value
   for `object[propertyName]`. **Default:** The original property value.
 * Returns: [<Proxy>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) A proxy to the mocked object. The mocked object contains a
-  special `mock` property, which is an instance of [`MockPropertyContext`][], and
+  special `mock` property, which is an instance of [`MockPropertyContext`][`MockPropertyContext`], and
   can be used for inspecting and changing the behavior of the mocked property.
 
 Creates a mock for a property value on an object. This allows you to track and control access to a specific property,
@@ -2757,7 +2764,7 @@ added:
   - v18.13.0
 -->
 
-This function is syntax sugar for [`MockTracker.method`][] with `options.setter`
+This function is syntax sugar for [`MockTracker.method`][`MockTracker.method`] with `options.setter`
 set to `true`.
 
 ## Class: `MockTimers`
@@ -2773,6 +2780,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.1.0 | Мок-таймеры теперь стабильны. |
@@ -2783,7 +2791,7 @@ without actually waiting for the specified time intervals.
 
 MockTimers is also able to mock the `Date` object.
 
-The [`MockTracker`][] provides a top-level `timers` export
+The [`MockTracker`][`MockTracker`] provides a top-level `timers` export
 which is a `MockTimers` instance.
 
 ### `timers.enable([enableOptions])`
@@ -2802,6 +2810,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.2.0, v20.11.0 | Обновлены параметры, теперь они представляют собой объект опции с доступными API и начальной эпохой по умолчанию. |
@@ -3442,13 +3451,14 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0, v19.9.0, v18.17.0 | добавлен тип событий test:pass и test:fail, когда тест представляет собой набор. |
 
 * Extends [<Readable>](stream.md#readable-streams)
 
-A successful call to [`run()`][] method will return a new [TestsStream](test.md)
+A successful call to [`run()`][`run()`] method will return a new [TestsStream](test.md)
 object, streaming a series of events representing the execution of the tests.
 `TestsStream` will emit events, in the order of the tests definition
 
@@ -3526,8 +3536,8 @@ Emitted when code coverage is enabled and all tests have completed.
   * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
   * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
   * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][] is called
+  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test completes its execution.
 This event is not emitted in the same order as the tests are
@@ -3568,7 +3578,7 @@ defined. The corresponding declaration ordered event is `'test:start'`.
     * `'warn'`: Warnings.
     * `'error'`: Errors.
 
-Emitted when [`context.diagnostic`][] is called.
+Emitted when [`context.diagnostic`][`context.diagnostic`] is called.
 This event is guaranteed to be emitted in the same order as the tests are
 defined.
 
@@ -3599,7 +3609,7 @@ Emitted when a test is enqueued for execution.
     * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
       this is a suite.
     * `attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
-      present only when using the [`--test-rerun-failures`][] flag.
+      present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
   * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
   * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
@@ -3607,8 +3617,8 @@ Emitted when a test is enqueued for execution.
   * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
   * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
   * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][] is called
+  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test fails.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3651,9 +3661,9 @@ since the parent runner only knows about file-level tests. When using
     * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The type of the test, used to denote whether
       this is a suite.
     * `attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number of the test run,
-      present only when using the [`--test-rerun-failures`][] flag.
+      present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
     * `passed_on_attempt` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The attempt number the test passed on,
-      present only when using the [`--test-rerun-failures`][] flag.
+      present only when using the [`--test-rerun-failures`][`--test-rerun-failures`] flag.
   * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined The path of the test file,
     `undefined` if test was run through the REPL.
   * `line` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined The line number where the test is defined, or
@@ -3661,8 +3671,8 @@ since the parent runner only knows about file-level tests. When using
   * `name` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The test name.
   * `nesting` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The nesting level of the test.
   * `testNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The ordinal number of the test.
-  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][] is called
-  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][] is called
+  * `todo` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.todo`][`context.todo`] is called
+  * `skip` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined Present if [`context.skip`][`context.skip`] is called
 
 Emitted when a test passes.
 This event is guaranteed to be emitted in the same order as the tests are
@@ -3765,7 +3775,7 @@ added: REPLACEME
 
 * Returns: [<TestContext>](#class-testcontext) | [<SuiteContext>](#class-suitecontext) | undefined
 
-Returns the [`TestContext`][] or [`SuiteContext`][] object associated with the
+Returns the [`TestContext`][`TestContext`] or [`SuiteContext`][`SuiteContext`] object associated with the
 currently executing test or suite, or `undefined` if called outside of a test or
 suite. This function can be used to access context information from within the
 test or suite function or any async operations within them.
@@ -3786,8 +3796,8 @@ test or suite function or any async operations within them.
     });
     ```
 
-When called from a test, returns a [`TestContext`][].
-When called from a suite, returns a [`SuiteContext`][].
+When called from a test, returns a [`TestContext`][`TestContext`].
+When called from a suite, returns a [`SuiteContext`][`SuiteContext`].
 
 If called from outside a test or suite (e.g., at the top level of a module or in
 a setTimeout callback after execution has completed), this function returns
@@ -3812,6 +3822,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.1.0, v18.17.0 | В TestContext была добавлена ​​функция «before». |
@@ -3829,7 +3840,7 @@ added:
 -->
 
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
-  to this function is a [`TestContext`][] object. If the hook uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
@@ -3851,7 +3862,7 @@ added:
 -->
 
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
-  to this function is a [`TestContext`][] object. If the hook uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
@@ -3885,7 +3896,7 @@ added:
 -->
 
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
-  to this function is a [`TestContext`][] object. If the hook uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
@@ -3914,7 +3925,7 @@ added:
 -->
 
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The hook function. The first argument
-  to this function is a [`TestContext`][] object. If the hook uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the hook uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Configuration options for the hook. The following
@@ -3967,7 +3978,7 @@ added:
 -->
 
 * `value` {any} A value to serialize to a string. If Node.js was started with
-  the [`--test-update-snapshots`][] flag, the serialized value is written to
+  the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   `path`. Otherwise, the serialized value is compared to the contents of the
   existing snapshot file.
 * `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file where the serialized `value` is written.
@@ -4004,7 +4015,7 @@ added: v22.3.0
 -->
 
 * `value` {any} A value to serialize to a string. If Node.js was started with
-  the [`--test-update-snapshots`][] flag, the serialized value is written to
+  the [`--test-update-snapshots`][`--test-update-snapshots`] flag, the serialized value is written to
   the snapshot file. Otherwise, the serialized value is compared to the
   corresponding value in the existing snapshot file.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional configuration options. The following properties
@@ -4173,6 +4184,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.9.0, v22.15.0 | Добавьте параметр `options`. |
@@ -4259,7 +4271,7 @@ added:
 
 If `shouldRunOnlyTests` is truthy, the test context will only run tests that
 have the `only` option set. Otherwise, all tests are run. If Node.js was not
-started with the [`--test-only`][] command-line option, this function is a
+started with the [`--test-only`][`--test-only`] command-line option, this function is a
 no-op.
 
 ```js
@@ -4354,6 +4366,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.8.0, v16.18.0 | Добавьте опцию «сигнал». |
@@ -4388,13 +4401,13 @@ changes:
     specified in the plan, the test will fail.
     **Default:** `undefined`.
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<AsyncFunction>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The function under test. The first argument
-  to this function is a [`TestContext`][] object. If the test uses callbacks,
+  to this function is a [`TestContext`][`TestContext`] object. If the test uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
 * Returns: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfilled with `undefined` once the test completes.
 
 This function is used to create subtests under the current test. This function
-behaves in the same fashion as the top level [`test()`][] function.
+behaves in the same fashion as the top level [`test()`][`test()`] function.
 
 ```js
 test('top level test', async (t) => {

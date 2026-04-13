@@ -18,12 +18,12 @@ description: Модуль node:zlib/iter — преобразования сжа
 <!-- source_link=lib/zlib/iter.js -->
 
 Модуль `node:zlib/iter` предоставляет преобразования сжатия и распаковки
-для API итерируемых потоков [`node:stream/iter`][].
+для API итерируемых потоков [`node:stream/iter`][`node:stream/iter`].
 
 Модуль доступен только при включённом флаге CLI `--experimental-stream-iter`.
 
 У каждого алгоритма есть асинхронный вариант (сохраняющий состояние async generator — для
-[`pull()`][] и [`pipeTo()`][]) и синхронный вариант (сохраняющий состояние sync generator — для `pullSync()` и `pipeToSync()`).
+[`pull()`][`pull()`] и [`pipeTo()`][`pipeTo()`]) и синхронный вариант (сохраняющий состояние sync generator — для `pullSync()` и `pipeToSync()`).
 
 Асинхронные преобразования выполняют сжатие в пуле потоков libuv, перекрывая
 ввод-вывод с выполнением JavaScript. Синхронные выполняют сжатие прямо
@@ -109,7 +109,7 @@ added: v25.9.0
       В библиотеке Brotli по умолчанию 22 (4 МБ); уменьшенное значение экономит
       память без существенной потери сжатия для потоковых сценариев.
     * `BROTLI_PARAM_LGBLOCK` — размер блока входа (log2).
-      Полный список см. в разделе [параметры компрессора Brotli][] в документации по zlib.
+      Полный список см. в разделе [параметры компрессора Brotli][параметры компрессора Brotli] в документации по zlib.
   * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
@@ -174,7 +174,7 @@ added: v25.9.0
       `ZSTD_fast`, `ZSTD_dfast`, `ZSTD_greedy`, `ZSTD_lazy`,
       `ZSTD_lazy2`, `ZSTD_btlazy2`, `ZSTD_btopt`, `ZSTD_btultra`,
       `ZSTD_btultra2`.
-      Полный список см. в разделе [параметры компрессора Zstd][] в документации по zlib.
+      Полный список см. в разделе [параметры компрессора Zstd][параметры компрессора Zstd] в документации по zlib.
   * `pledgedSrcSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемый несжатый размер (необязательная подсказка).
   * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
@@ -197,8 +197,8 @@ added: v25.9.0
     * `BROTLI_DECODER_PARAM_DISABLE_RING_BUFFER_REALLOCATION` — логический
       флаг, влияющий на внутреннее выделение памяти.
     * `BROTLI_DECODER_PARAM_LARGE_WINDOW` — логический флаг, включающий режим «Large
-      Window Brotli» (несовместим с [RFC 7932][]).
-      Подробнее см. в разделе [параметры декомпрессора Brotli][] в документации по zlib.
+      Window Brotli» (несовместим с [RFC 7932][RFC 7932]).
+      Подробнее см. в разделе [параметры декомпрессора Brotli][параметры декомпрессора Brotli] в документации по zlib.
   * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 
@@ -250,7 +250,7 @@ added: v25.9.0
     `zlib.constants`. Доступные параметры декомпрессора:
     * `ZSTD_d_windowLogMax` — максимальный размер окна (log2), который декомпрессор
       может выделить. Ограничивает использование памяти при вредоносном входе.
-      Подробнее см. в разделе [параметры декомпрессора Zstd][] в документации по zlib.
+      Подробнее см. в разделе [параметры декомпрессора Zstd][параметры декомпрессора Zstd] в документации по zlib.
   * `dictionary` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.
 

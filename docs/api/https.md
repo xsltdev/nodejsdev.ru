@@ -36,7 +36,7 @@ Node.js может быть собран без поддержки модуля 
 
 При использовании лексического ключевого слова ESM `import` ошибку можно перехватить только если обработчик `process.on('uncaughtException')` зарегистрирован _до_ любой попытки загрузить модуль (например, с помощью модуля предварительной загрузки).
 
-При использовании ESM, если есть вероятность запуска кода на сборке Node.js без поддержки криптографии, рассмотрите использование функции [`import()`][] вместо лексического `import`:
+При использовании ESM, если есть вероятность запуска кода на сборке Node.js без поддержки криптографии, рассмотрите использование функции [`import()`][`import()`] вместо лексического `import`:
 
 === "MJS"
 
@@ -66,16 +66,17 @@ changes:
 Добавлено в: v0.4.5
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v5.3.0 | поддержка `0` `maxCachedSessions` для отключения кэширования сеанса TLS. |
     | v2.5.0 | параметр maxCachedSessions добавлен в параметры для повторного использования сеансов TLS. |
 
-Объект [`Agent`][] для HTTPS, аналогичный [`http.Agent`][]. Подробнее см. [`https.request()`][].
+Объект [`Agent`][`Agent`] для HTTPS, аналогичный [`http.Agent`][`http.Agent`]. Подробнее см. [`https.request()`][`https.request()`].
 
 Как и у `http.Agent`, метод `createConnection(options[, callback])` можно переопределить, чтобы настроить установление TLS-соединений.
 
-> Подробности о переопределении этого метода, в том же числе об асинхронном создании сокета с колбэком, см. в [`agent.createConnection()`][].
+> Подробности о переопределении этого метода, в том же числе об асинхронном создании сокета с колбэком, см. в [`agent.createConnection()`][`agent.createConnection()`].
 
 ### `new Agent([options])`
 
@@ -98,6 +99,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.5.0, v22.21.0 | Добавьте поддержку proxyEnv. |
@@ -105,7 +107,7 @@ changes:
     | v12.5.0 | не задавайте имя сервера автоматически, если целевой хост был указан с использованием IP-адреса. |
 
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
-  Может содержать те же поля, что и [`http.Agent(options)`][], а также
+  Может содержать те же поля, что и [`http.Agent(options)`][`http.Agent(options)`], а также
   * `maxCachedSessions` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число кэшированных TLS-сессий.
     Укажите `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
   * `servername` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения
@@ -114,7 +116,7 @@ changes:
     **По умолчанию:** имя хоста целевого сервера, если только целевой сервер
     не задан IP-адресом — тогда по умолчанию `''` (без расширения).
 
-    См. [`Session Resumption`][] о повторном использовании TLS-сессий.
+    См. [`Session Resumption`][`Session Resumption`] о повторном использовании TLS-сессий.
 
 #### Событие: `'keylog'`
 
@@ -146,7 +148,7 @@ added: v0.3.4
 
 * Наследует: [<tls.Server>](#class-tlsserver)
 
-См. [`http.Server`][].
+См. [`http.Server`][`http.Server`].
 
 ### `server.close([callback])`
 
@@ -157,7 +159,7 @@ added: v0.1.90
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [<https.Server>](https.md)
 
-См. [`server.close()`][] в модуле `node:http`.
+См. [`server.close()`][`server.close()`] в модуле `node:http`.
 
 ### `server[Symbol.asyncDispose]()`
 
@@ -172,6 +174,7 @@ changes:
 Добавлено в: v20.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
@@ -184,7 +187,7 @@ changes:
 added: v18.2.0
 -->
 
-См. [`server.closeAllConnections()`][] в модуле `node:http`.
+См. [`server.closeAllConnections()`][`server.closeAllConnections()`] в модуле `node:http`.
 
 ### `server.closeIdleConnections()`
 
@@ -192,7 +195,7 @@ added: v18.2.0
 added: v18.2.0
 -->
 
-См. [`server.closeIdleConnections()`][] в модуле `node:http`.
+См. [`server.closeIdleConnections()`][`server.closeIdleConnections()`] в модуле `node:http`.
 
 ### `server.headersTimeout`
 
@@ -202,18 +205,18 @@ added: v11.3.0
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
 
-См. [`server.headersTimeout`][] в модуле `node:http`.
+См. [`server.headersTimeout`][`server.headersTimeout`] в модуле `node:http`.
 
 ### `server.listen()`
 
 Запускает прослушивание HTTPS-сервером зашифрованных соединений.
-Метод совпадает с [`server.listen()`][] у [`net.Server`][].
+Метод совпадает с [`server.listen()`][`server.listen()`] у [`net.Server`][`net.Server`].
 
 ### `server.maxHeadersCount`
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`
 
-См. [`server.maxHeadersCount`][] в модуле `node:http`.
+См. [`server.maxHeadersCount`][`server.maxHeadersCount`] в модуле `node:http`.
 
 ### `server.requestTimeout`
 
@@ -229,13 +232,14 @@ changes:
 Добавлено в: v14.11.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.0.0 | Тайм-аут запроса по умолчанию изменен с «нет тайм-аута» на 300 с (5 минут). |
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
 
-См. [`server.requestTimeout`][] в модуле `node:http`.
+См. [`server.requestTimeout`][`server.requestTimeout`] в модуле `node:http`.
 
 ### `server.setTimeout([msecs][, callback])`
 
@@ -247,7 +251,7 @@ added: v0.11.2
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [<https.Server>](https.md)
 
-См. [`server.setTimeout()`][] в модуле `node:http`.
+См. [`server.setTimeout()`][`server.setTimeout()`] в модуле `node:http`.
 
 ### `server.timeout`
 
@@ -262,13 +266,14 @@ changes:
 Добавлено в: v0.11.2
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 
-См. [`server.timeout`][] в модуле `node:http`.
+См. [`server.timeout`][`server.timeout`] в модуле `node:http`.
 
 ### `server.keepAliveTimeout`
 
@@ -278,7 +283,7 @@ added: v8.0.0
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
 
-См. [`server.keepAliveTimeout`][] в модуле `node:http`.
+См. [`server.keepAliveTimeout`][`server.keepAliveTimeout`] в модуле `node:http`.
 
 ## `https.createServer([options][, requestListener])`
 
@@ -286,8 +291,8 @@ added: v8.0.0
 added: v0.3.4
 -->
 
-* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`][],
-  [`tls.createSecureContext()`][] и [`http.createServer()`][].
+* `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`][`tls.createServer()`],
+  [`tls.createSecureContext()`][`tls.createSecureContext()`] и [`http.createServer()`][`http.createServer()`].
 * `requestListener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик, добавляемый к событию `'request'`.
 * Возвращает: [<https.Server>](https.md)
 
@@ -396,6 +401,7 @@ changes:
 Добавлено в: v0.3.6
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
@@ -403,13 +409,13 @@ changes:
 
 * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api)
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Принимает те же `options`, что и
-  [`https.request()`][], метод по умолчанию — GET.
+  [`https.request()`][`https.request()`], метод по умолчанию — GET.
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [<http.ClientRequest>](#httpclientrequest)
 
-Аналог [`http.get()`][], но для HTTPS.
+Аналог [`http.get()`][`http.get()`], но для HTTPS.
 
-`options` может быть объектом, строкой или объектом [`URL`][]. Если `options` — строка, она автоматически разбирается через [`new URL()`][]. Если это [`URL`][], он преобразуется в обычный объект `options`.
+`options` может быть объектом, строкой или объектом [`URL`][`URL`]. Если `options` — строка, она автоматически разбирается через [`new URL()`][`new URL()`]. Если это [`URL`][`URL`], он преобразуется в обычный объект `options`.
 
 === "MJS"
 
@@ -463,11 +469,12 @@ changes:
 Добавлено в: v0.5.9
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v19.0.0 | Агент теперь по умолчанию использует HTTP Keep-Alive и 5-секундный тайм-аут. |
 
-Глобальный экземпляр [`https.Agent`][] для всех клиентских HTTPS-запросов. Отличается от конфигурации [`https.Agent`][] по умолчанию тем, что у него включён `keepAlive` и `timeout` 5 секунд.
+Глобальный экземпляр [`https.Agent`][`https.Agent`] для всех клиентских HTTPS-запросов. Отличается от конфигурации [`https.Agent`][`https.Agent`] по умолчанию тем, что у него включён `keepAlive` и `timeout` 5 секунд.
 
 ## `https.request(options[, callback])`
 
@@ -508,6 +515,7 @@ changes:
 Добавлено в: v0.3.6
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Параметр clientCertEngine зависит от поддержки специального механизма в OpenSSL, который устарел в OpenSSL 3. |
@@ -519,7 +527,7 @@ changes:
 
 * `url` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api)
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Принимает все `options` из
-  [`http.request()`][], с отличиями значений по умолчанию:
+  [`http.request()`][`http.request()`], с отличиями значений по умолчанию:
   * `protocol` **По умолчанию:** `'https:'`
   * `port` **По умолчанию:** `443`
   * `agent` **По умолчанию:** `https.globalAgent`
@@ -528,15 +536,15 @@ changes:
 
 Выполняет запрос к защищённому веб-серверу.
 
-Также принимаются дополнительные `options` из [`tls.connect()`][]:
+Также принимаются дополнительные `options` из [`tls.connect()`][`tls.connect()`]:
 `ca`, `cert`, `ciphers`, `clientCertEngine` (устарело), `crl`, `dhparam`, `ecdhCurve`,
 `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`,
 `secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`,
 `highWaterMark`.
 
-`options` может быть объектом, строкой или объектом [`URL`][]. Если `options` — строка, она автоматически разбирается через [`new URL()`][]. Если это [`URL`][], он преобразуется в обычный объект `options`.
+`options` может быть объектом, строкой или объектом [`URL`][`URL`]. Если `options` — строка, она автоматически разбирается через [`new URL()`][`new URL()`]. Если это [`URL`][`URL`], он преобразуется в обычный объект `options`.
 
-`https.request()` возвращает экземпляр класса [`http.ClientRequest`][].
+`https.request()` возвращает экземпляр класса [`http.ClientRequest`][`http.ClientRequest`].
 `ClientRequest` — поток для записи. Чтобы загрузить файл запросом POST, пишите в объект `ClientRequest`.
 
 === "MJS"
@@ -594,7 +602,7 @@ changes:
     req.end();
     ```
 
-Пример с опциями из [`tls.connect()`][]:
+Пример с опциями из [`tls.connect()`][`tls.connect()`]:
 
 ```js
 const options = {
@@ -612,7 +620,7 @@ const req = https.request(options, (res) => {
 });
 ```
 
-Либо отключите пул соединений, не используя [`Agent`][].
+Либо отключите пул соединений, не используя [`Agent`][`Agent`].
 
 ```js
 const options = {
@@ -630,7 +638,7 @@ const req = https.request(options, (res) => {
 });
 ```
 
-Пример с [`URL`][] в качестве `options`:
+Пример с [`URL`][`URL`] в качестве `options`:
 
 ```js
 const options = new URL('https://abc:xyz@example.com');

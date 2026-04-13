@@ -17,7 +17,7 @@ description: Модуль node:child_process позволяет порождат
 
 Модуль `node:child_process` предоставляет возможность порождать подпроцессы
 способом, который похож, но не идентичен popen(3). В основном эта возможность
-реализуется функцией [`child_process.spawn()`][]:
+реализуется функцией [`child_process.spawn()`][`child_process.spawn()`]:
 
 === "CJS"
 
@@ -77,26 +77,26 @@ description: Модуль node:child_process позволяет порождат
 запись. Это может вызывать проблемы в Windows при передаче в опцию `env` объектов
 с несколькими вариантами одного и того же ключа, например `PATH` и `Path`.
 
-Метод [`child_process.spawn()`][] порождает дочерний процесс асинхронно,
-не блокируя цикл событий Node.js. Функция [`child_process.spawnSync()`][]
+Метод [`child_process.spawn()`][`child_process.spawn()`] порождает дочерний процесс асинхронно,
+не блокируя цикл событий Node.js. Функция [`child_process.spawnSync()`][`child_process.spawnSync()`]
 предоставляет эквивалентную функциональность синхронно, блокируя цикл событий,
 пока порождённый процесс не завершится или не будет принудительно остановлен.
 
 Для удобства модуль `node:child_process` предоставляет несколько синхронных и
-асинхронных альтернатив [`child_process.spawn()`][] и [`child_process.spawnSync()`][].
-Каждая из этих альтернатив реализована поверх [`child_process.spawn()`][] или
-[`child_process.spawnSync()`][].
+асинхронных альтернатив [`child_process.spawn()`][`child_process.spawn()`] и [`child_process.spawnSync()`][`child_process.spawnSync()`].
+Каждая из этих альтернатив реализована поверх [`child_process.spawn()`][`child_process.spawn()`] или
+[`child_process.spawnSync()`][`child_process.spawnSync()`].
 
-* [`child_process.exec()`][]: порождает оболочку и выполняет команду внутри неё,
+* [`child_process.exec()`][`child_process.exec()`]: порождает оболочку и выполняет команду внутри неё,
   передавая `stdout` и `stderr` в функцию обратного вызова по завершении.
-* [`child_process.execFile()`][]: похож на [`child_process.exec()`][], но
+* [`child_process.execFile()`][`child_process.execFile()`]: похож на [`child_process.exec()`][`child_process.exec()`], но
   по умолчанию запускает команду напрямую, без предварительного порождения оболочки.
-* [`child_process.fork()`][]: порождает новый процесс Node.js и вызывает указанный
+* [`child_process.fork()`][`child_process.fork()`]: порождает новый процесс Node.js и вызывает указанный
   модуль с установленным каналом IPC, позволяющим обмениваться сообщениями между
   родителем и дочерним процессом.
-* [`child_process.execSync()`][]: синхронная версия [`child_process.exec()`][], блокирующая
+* [`child_process.execSync()`][`child_process.execSync()`]: синхронная версия [`child_process.exec()`][`child_process.exec()`], блокирующая
   цикл событий Node.js.
-* [`child_process.execFileSync()`][]: синхронная версия [`child_process.execFile()`][],
+* [`child_process.execFileSync()`][`child_process.execFileSync()`]: синхронная версия [`child_process.execFile()`][`child_process.execFile()`],
   блокирующая цикл событий Node.js.
 
 В некоторых сценариях, например при автоматизации сценариев оболочки,
@@ -106,31 +106,31 @@ description: Модуль node:child_process позволяет порождат
 
 ## Асинхронное создание процессов {#asynchronous-process-creation}
 
-Методы [`child_process.spawn()`][], [`child_process.fork()`][], [`child_process.exec()`][] и
-[`child_process.execFile()`][] следуют идиоматической схеме асинхронного программирования,
+Методы [`child_process.spawn()`][`child_process.spawn()`], [`child_process.fork()`][`child_process.fork()`], [`child_process.exec()`][`child_process.exec()`] и
+[`child_process.execFile()`][`child_process.execFile()`] следуют идиоматической схеме асинхронного программирования,
 характерной для других API Node.js.
 
-Каждый из методов возвращает экземпляр [`ChildProcess`][]. Эти объекты реализуют API
-[`EventEmitter`][] в Node.js и позволяют родительскому процессу регистрировать обработчики,
+Каждый из методов возвращает экземпляр [`ChildProcess`][`ChildProcess`]. Эти объекты реализуют API
+[`EventEmitter`][`EventEmitter`] в Node.js и позволяют родительскому процессу регистрировать обработчики,
 вызываемые при определённых событиях в жизненном цикле дочернего процесса.
 
-Методы [`child_process.exec()`][] и [`child_process.execFile()`][] дополнительно
+Методы [`child_process.exec()`][`child_process.exec()`] и [`child_process.execFile()`][`child_process.execFile()`] дополнительно
 позволяют указать необязательную функцию `callback`, вызываемую при завершении
 дочернего процесса.
 
 ### Запуск файлов `.bat` и `.cmd` в Windows
 
-Важность различия между [`child_process.exec()`][] и [`child_process.execFile()`][]
-может зависеть от платформы. В Unix-совместимых ОС (Unix, Linux, macOS) [`child_process.execFile()`][]
+Важность различия между [`child_process.exec()`][`child_process.exec()`] и [`child_process.execFile()`][`child_process.execFile()`]
+может зависеть от платформы. В Unix-совместимых ОС (Unix, Linux, macOS) [`child_process.execFile()`][`child_process.execFile()`]
 может быть эффективнее, так как по умолчанию не порождает оболочку. В Windows
 файлы `.bat` и `.cmd` не исполняются сами по себе без терминала и поэтому не могут
-быть запущены через [`child_process.execFile()`][].
+быть запущены через [`child_process.execFile()`][`child_process.execFile()`].
 В Windows файлы `.bat` и `.cmd` можно вызвать так:
 
-* используя [`child_process.spawn()`][] с установленной опцией `shell` (не рекомендуется, см. [DEP0190][]), или
-* используя [`child_process.exec()`][], или
+* используя [`child_process.spawn()`][`child_process.spawn()`] с установленной опцией `shell` (не рекомендуется, см. [DEP0190][DEP0190]), или
+* используя [`child_process.exec()`][`child_process.exec()`], или
 * запустив `cmd.exe` и передав файл `.bat` или `.cmd` аргументом
-  (как внутренне делает [`child_process.exec()`][]).
+  (как внутренне делает [`child_process.exec()`][`child_process.exec()`]).
 
 В любом случае, если имя файла скрипта содержит пробелы, его нужно заключить в кавычки.
 
@@ -184,6 +184,7 @@ changes:
 Добавлено в: v0.1.90
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
@@ -203,7 +204,7 @@ changes:
     `AbortSignal`.
   * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
   * `maxBuffer` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный объём данных в байтах, допустимый в stdout или
-    stderr. При превышении дочерний процесс завершается, вывод обрезается. См. оговорку в [`maxBuffer` and Unicode][].
+    stderr. При превышении дочерний процесс завершается, вывод обрезается. См. оговорку в [`maxBuffer` and Unicode][`maxBuffer` and Unicode].
     **По умолчанию:** `1024 * 1024`.
   * `killSignal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `'SIGTERM'`
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
@@ -251,7 +252,7 @@ changes:
 
 Если указана функция `callback`, она вызывается с аргументами
 `(error, stdout, stderr)`. При успехе `error` будет `null`. При ошибке
-`error` будет экземпляром [`Error`][]. Свойство `error.code` —
+`error` будет экземпляром [`Error`][`Error`]. Свойство `error.code` —
 код выхода процесса. По соглашению любой код выхода, отличный от `0`,
 означает ошибку. `error.signal` — сигнал, которым завершили процесс.
 
@@ -297,7 +298,7 @@ changes:
 В отличие от системного вызова exec(3) POSIX, `child_process.exec()` не заменяет
 текущий процесс и выполняет команду через оболочку.
 
-Если метод вызывается в варианте с [`util.promisify()`][], он возвращает
+Если метод вызывается в варианте с [`util.promisify()`][`util.promisify()`], он возвращает
 `Promise` на объект с полями `stdout` и `stderr`. Экземпляр
 `ChildProcess` прикреплён к `Promise` как свойство `child`. При
 ошибке (включая ненулевой код выхода) промис отклоняется с тем же объектом
@@ -389,6 +390,7 @@ changes:
 Добавлено в: v0.1.91
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Передача аргументов, когда для параметра Shell установлено значение true, устарела. |
@@ -405,7 +407,7 @@ changes:
   * `timeout` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
   * `maxBuffer` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный объём данных в байтах для stdout или
     stderr. При превышении дочерний процесс завершается, вывод обрезается.
-    См. оговорку в [`maxBuffer` and Unicode][].
+    См. оговорку в [`maxBuffer` and Unicode][`maxBuffer` and Unicode].
     **По умолчанию:** `1024 * 1024`.
   * `killSignal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `'SIGTERM'`
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
@@ -425,11 +427,11 @@ changes:
   * `stderr` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 * Возвращает: [<ChildProcess>](child_process.md#class-childprocess)
 
-Функция `child_process.execFile()` похожа на [`child_process.exec()`][],
+Функция `child_process.execFile()` похожа на [`child_process.exec()`][`child_process.exec()`],
 но по умолчанию не порождает оболочку: указанный исполняемый `file` запускается
-напрямую как новый процесс, что немного эффективнее, чем [`child_process.exec()`][].
+напрямую как новый процесс, что немного эффективнее, чем [`child_process.exec()`][`child_process.exec()`].
 
-Поддерживаются те же опции, что и у [`child_process.exec()`][]. Поскольку оболочка
+Поддерживаются те же опции, что и у [`child_process.exec()`][`child_process.exec()`]. Поскольку оболочка
 не запускается, перенаправление ввода-вывода и подстановка имён файлов (globbing) недоступны.
 
 === "CJS"
@@ -461,7 +463,7 @@ changes:
 задаёт кодировку для декодирования stdout и stderr. Если `encoding` равен `'buffer'`
 или нераспознанной кодировке, в callback передаются объекты `Buffer`.
 
-В варианте с [`util.promisify()`][] метод возвращает `Promise` на объект с полями
+В варианте с [`util.promisify()`][`util.promisify()`] метод возвращает `Promise` на объект с полями
 `stdout` и `stderr`; экземпляр `ChildProcess` доступен как `child` у промиса. При
 ошибке (включая ненулевой код выхода) промис отклоняется с тем же `error`, что в
 callback, плюс свойства `stdout` и `stderr`.
@@ -570,6 +572,7 @@ changes:
 Добавлено в: v0.5.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v17.4.0, v16.14.0 | Параметр modulePath может быть объектом URL WHATWG, использующим протокол file:. |
@@ -586,7 +589,7 @@ changes:
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `cwd` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Текущий рабочий каталог дочернего процесса.
   * `detached` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Подготовить дочерний процесс к работе независимо от
-    родителя. Поведение зависит от платформы (см. [`options.detached`][]).
+    родителя. Поведение зависит от платформы (см. [`options.detached`][`options.detached`]).
   * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары «ключ–значение» окружения. **По умолчанию:** `process.env`.
   * `execPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исполняемый файл для создания дочернего процесса.
   * `execArgv` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Аргументы, передаваемые исполняемому файлу.
@@ -600,9 +603,9 @@ changes:
     **По умолчанию:** `'SIGTERM'`.
   * `silent` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, stdin, stdout и stderr дочернего процесса
     направляются в родитель; иначе наследуются от родителя — см. варианты `'pipe'`
-    и `'inherit'` у [`stdio`][] в [`child_process.spawn()`][].
+    и `'inherit'` у [`stdio`][`stdio`] в [`child_process.spawn()`][`child_process.spawn()`].
     **По умолчанию:** `false`.
-  * `stdio` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [`stdio`][] у [`child_process.spawn()`][].
+  * `stdio` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [`stdio`][`stdio`] у [`child_process.spawn()`][`child_process.spawn()`].
     При указании этой опции она перекрывает `silent`. В массиве должен быть ровно
     один элемент `'ipc'`, иначе будет ошибка. Например `[0, 1, 2, 'ipc']`.
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
@@ -612,16 +615,16 @@ changes:
     **По умолчанию:** `undefined`.
 * Возвращает: [<ChildProcess>](child_process.md#class-childprocess)
 
-Метод `child_process.fork()` — частный случай [`child_process.spawn()`][] для
-запуска новых процессов Node.js. Как и [`child_process.spawn()`][], возвращает
-[`ChildProcess`][] с дополнительным встроенным каналом обмена сообщениями между
-родителем и потомком. Подробнее — [`subprocess.send()`][].
+Метод `child_process.fork()` — частный случай [`child_process.spawn()`][`child_process.spawn()`] для
+запуска новых процессов Node.js. Как и [`child_process.spawn()`][`child_process.spawn()`], возвращает
+[`ChildProcess`][`ChildProcess`] с дополнительным встроенным каналом обмена сообщениями между
+родителем и потомком. Подробнее — [`subprocess.send()`][`subprocess.send()`].
 
 Порождённые процессы Node.js независимы от родителя, кроме установленного канала IPC.
 У каждого процесса своя память и свой экземпляр V8. Из‑за накладных расходов не
 рекомендуется порождать очень много дочерних процессов Node.js.
 
-По умолчанию `child_process.fork()` запускает Node.js с [`process.execPath`][]
+По умолчанию `child_process.fork()` запускает Node.js с [`process.execPath`][`process.execPath`]
 родителя. Свойство `execPath` в `options` задаёт другой путь к исполняемому файлу.
 
 Процессы Node.js с пользовательским `execPath` обмениваются с родителем через
@@ -630,7 +633,7 @@ changes:
 В отличие от системного вызова fork(2) POSIX, `child_process.fork()` не клонирует
 текущий процесс.
 
-Опция `shell` из [`child_process.spawn()`][] для `child_process.fork()` не
+Опция `shell` из [`child_process.spawn()`][`child_process.spawn()`] для `child_process.fork()` не
 поддерживается и игнорируется, если задана.
 
 Если включена опция `signal`, вызов `.abort()` на соответствующем
@@ -729,6 +732,7 @@ changes:
 Добавлено в: v0.1.90
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Передача аргументов, когда для параметра Shell установлено значение true, устарела. |
@@ -751,14 +755,14 @@ changes:
   * `stdio` [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Конфигурация stdio дочернего процесса (см.
     [`options.stdio`][`stdio`]).
   * `detached` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Подготовить дочерний процесс к работе независимо от
-    родителя. Поведение зависит от платформы (см. [`options.detached`][]).
+    родителя. Поведение зависит от платформы (см. [`options.detached`][`options.detached`]).
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
   * `gid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор группы процесса (см. setgid(2)).
   * `serialization` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Вид сериализации сообщений: `'json'` или `'advanced'`.
-    Подробнее — [Advanced serialization][]. **По умолчанию:** `'json'`.
+    Подробнее — [Advanced serialization][Advanced serialization]. **По умолчанию:** `'json'`.
   * `shell` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `true`, запускает `command` в оболочке. На Unix —
     `'/bin/sh'`, в Windows — `process.env.ComSpec`. Можно указать другую оболочку.
-    См. [Shell requirements][] и [Default Windows shell][]. **По умолчанию:** `false` (без оболочки).
+    См. [Shell requirements][Shell requirements] и [Default Windows shell][Default Windows shell]. **По умолчанию:** `false` (без оболочки).
   * `windowsVerbatimArguments` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) В Windows аргументы не экранируются.
     На Unix игнорируется. Автоматически `true`, если задан `shell` и это CMD.
     **По умолчанию:** `false`.
@@ -793,7 +797,7 @@ const defaults = {
 возникает, если команда не найдена.
 
 `env` задаёт переменные окружения, видимые новому процессу; по умолчанию —
-[`process.env`][].
+[`process.env`][`process.env`].
 
 Значения `undefined` в `env` игнорируются.
 
@@ -1081,6 +1085,7 @@ changes:
 Добавлено в: v0.7.10
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.6.0, v14.18.0 | Добавлен флаг stdio `overlapped`. |
@@ -1088,8 +1093,8 @@ changes:
 
 Опция `options.stdio` задаёт каналы между родителем и дочерним процессом.
 По умолчанию stdin, stdout и stderr дочернего процесса связаны с потоками
-[`subprocess.stdin`][], [`subprocess.stdout`][] и [`subprocess.stderr`][] на
-объекте [`ChildProcess`][]. Это эквивалентно `options.stdio` равному
+[`subprocess.stdin`][`subprocess.stdin`], [`subprocess.stdout`][`subprocess.stdout`] и [`subprocess.stderr`][`subprocess.stderr`] на
+объекте [`ChildProcess`][`ChildProcess`]. Это эквивалентно `options.stdio` равному
 `['pipe', 'pipe', 'pipe']`.
 
 Для удобства `options.stdio` может быть одной из строк:
@@ -1105,20 +1110,20 @@ Fd 0, 1 и 2 — stdin, stdout и stderr; дополнительные fd соз
 
 1. `'pipe'`: канал между дочерним и родительским процессом.
    Со стороны родителя доступен как [`subprocess.stdio[fd]`][`subprocess.stdio`].
-   Для fd 0, 1 и 2 также доступны [`subprocess.stdin`][],
-   [`subprocess.stdout`][] и [`subprocess.stderr`][].
+   Для fd 0, 1 и 2 также доступны [`subprocess.stdin`][`subprocess.stdin`],
+   [`subprocess.stdout`][`subprocess.stdout`] и [`subprocess.stderr`][`subprocess.stderr`].
    Это не настоящие Unix pipe, дочерний процесс не может обращаться к ним
    через дескрипторы вроде `/dev/fd/2` или `/dev/stdout`.
 2. `'overlapped'`: как `'pipe'`, но на дескрипторе установлен флаг `FILE_FLAG_OVERLAPPED`
    (нужно для overlapped I/O у stdio в Windows). Подробнее — в
    [документации Microsoft](https://docs.microsoft.com/en-us/windows/win32/fileio/synchronous-and-asynchronous-i-o).
    На не-Windows совпадает с `'pipe'`.
-3. `'ipc'`: канал IPC для сообщений и передачи дескрипторов файлов. У [`ChildProcess`][]
-   не больше одного stdio с `'ipc'`. Включает [`subprocess.send()`][]. Если потомок —
-   Node.js, доступны [`process.send()`][] и [`process.disconnect()`][], события
-   [`'disconnect'`][] и [`'message'`][] в дочернем процессе.
+3. `'ipc'`: канал IPC для сообщений и передачи дескрипторов файлов. У [`ChildProcess`][`ChildProcess`]
+   не больше одного stdio с `'ipc'`. Включает [`subprocess.send()`][`subprocess.send()`]. Если потомок —
+   Node.js, доступны [`process.send()`][`process.send()`] и [`process.disconnect()`][`process.disconnect()`], события
+   [`'disconnect'`][`'disconnect'`] и [`'message'`][`'message'`] в дочернем процессе.
 
-   Обращение к fd IPC иначе как через [`process.send()`][] или IPC с не-Node.js
+   Обращение к fd IPC иначе как через [`process.send()`][`process.send()`] или IPC с не-Node.js
    процессом не поддерживается.
 4. `'ignore'`: Node.js игнорирует этот fd у потомка. Fd 0–2 всё равно открываются;
    при `'ignore'` для fd подставляется `/dev/null`.
@@ -1169,14 +1174,14 @@ Fd 0, 1 и 2 — stdin, stdout и stderr; дополнительные fd соз
     ```
 
 _Если между процессами установлен канал IPC и потомок — экземпляр Node.js, канал IPC
-запускается с `unref()`, пока в потомке не зарегистрирован обработчик [`'disconnect'`][]
-или [`'message'`][]. Тогда процесс может завершиться, не удерживаясь открытым IPC._
-См. также [`child_process.exec()`][] и [`child_process.fork()`][].
+запускается с `unref()`, пока в потомке не зарегистрирован обработчик [`'disconnect'`][`'disconnect'`]
+или [`'message'`][`'message'`]. Тогда процесс может завершиться, не удерживаясь открытым IPC._
+См. также [`child_process.exec()`][`child_process.exec()`] и [`child_process.fork()`][`child_process.fork()`].
 
 ## Синхронное создание процессов {#synchronous-process-creation}
 
-Методы [`child_process.spawnSync()`][], [`child_process.execSync()`][] и
-[`child_process.execFileSync()`][] выполняются синхронно и блокируют цикл событий
+Методы [`child_process.spawnSync()`][`child_process.spawnSync()`], [`child_process.execSync()`][`child_process.execSync()`] и
+[`child_process.execFileSync()`][`child_process.execFileSync()`] выполняются синхронно и блокируют цикл событий
 Node.js до завершения порождённого процесса.
 
 Такие блокирующие вызовы удобны для сценариев общего назначения и для загрузки
@@ -1213,6 +1218,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
@@ -1228,7 +1234,7 @@ changes:
   * `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Данные для stdin порождённого процесса.
     Если `stdio[0]` равен `'pipe'`, это значение перекрывает `stdio[0]`.
   * `stdio` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Конфигурация stdio дочернего процесса.
-    См. [`stdio`][] у [`child_process.spawn()`][]. По умолчанию `stderr` идёт в stderr
+    См. [`stdio`][`stdio`] у [`child_process.spawn()`][`child_process.spawn()`]. По умолчанию `stderr` идёт в stderr
     родителя, пока не задано иное `stdio`.
     **По умолчанию:** `'pipe'`.
   * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары «ключ–значение» окружения. **По умолчанию:** `process.env`.
@@ -1239,26 +1245,26 @@ changes:
   * `killSignal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сигнал при принудительном завершении.
     **По умолчанию:** `'SIGTERM'`.
   * `maxBuffer` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный объём данных в байтах для stdout или stderr.
-    При превышении дочерний процесс завершается. См. [`maxBuffer` and Unicode][].
+    При превышении дочерний процесс завершается. См. [`maxBuffer` and Unicode][`maxBuffer` and Unicode].
     **По умолчанию:** `1024 * 1024`.
   * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для всех stdio.
     **По умолчанию:** `'buffer'`.
   * `windowsHide` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Скрыть консольное окно подпроцесса в Windows.
     **По умолчанию:** `false`.
   * `shell` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `true`, запускает `command` в оболочке. На Unix —
-    `'/bin/sh'`, в Windows — `process.env.ComSpec`. См. [Shell requirements][] и
-    [Default Windows shell][]. **По умолчанию:** `false` (без оболочки).
+    `'/bin/sh'`, в Windows — `process.env.ComSpec`. См. [Shell requirements][Shell requirements] и
+    [Default Windows shell][Default Windows shell]. **По умолчанию:** `false` (без оболочки).
 * Возвращает: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) stdout команды.
 
-Метод `child_process.execFileSync()` в целом совпадает с [`child_process.execFile()`][],
+Метод `child_process.execFileSync()` в целом совпадает с [`child_process.execFile()`][`child_process.execFile()`],
 но не возвращает управление, пока дочерний процесс полностью не закроется. При
 таймауте и отправке `killSignal` метод ждёт полного завершения процесса.
 
 Если потомок перехватывает `SIGTERM` и не завершается, родитель всё равно ждёт его
 завершения.
 
-При таймауте или ненулевом коде выхода метод выбрасывает [`Error`][] с полным
-результатом нижележащего [`child_process.spawnSync()`][].
+При таймауте или ненулевом коде выхода метод выбрасывает [`Error`][`Error`] с полным
+результатом нижележащего [`child_process.spawnSync()`][`child_process.spawnSync()`].
 
 **При включённой опции `shell` не передавайте несанированный ввод; метасимволы оболочки
 могут привести к выполнению произвольной команды.**
@@ -1347,6 +1353,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
@@ -1360,12 +1367,12 @@ changes:
   * `input` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Данные для stdin порождённого процесса.
     Если `stdio[0]` равен `'pipe'`, это значение перекрывает `stdio[0]`.
   * `stdio` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Конфигурация stdio дочернего процесса.
-    См. [`stdio`][] у [`child_process.spawn()`][]. По умолчанию `stderr` идёт в stderr
+    См. [`stdio`][`stdio`] у [`child_process.spawn()`][`child_process.spawn()`]. По умолчанию `stderr` идёт в stderr
     родителя, пока не задано иное `stdio`.
     **По умолчанию:** `'pipe'`.
   * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары «ключ–значение» окружения. **По умолчанию:** `process.env`.
   * `shell` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Оболочка для выполнения команды. См.
-    [Shell requirements][] и [Default Windows shell][]. **По умолчанию:**
+    [Shell requirements][Shell requirements] и [Default Windows shell][Default Windows shell]. **По умолчанию:**
     `'/bin/sh'` на Unix, `process.env.ComSpec` в Windows.
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
   * `gid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор группы процесса (см. setgid(2)).
@@ -1374,7 +1381,7 @@ changes:
   * `killSignal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сигнал при принудительном завершении.
     **По умолчанию:** `'SIGTERM'`.
   * `maxBuffer` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный объём в байтах для stdout или stderr; при
-    превышении процесс завершается, вывод обрезается. См. [`maxBuffer` and Unicode][].
+    превышении процесс завершается, вывод обрезается. См. [`maxBuffer` and Unicode][`maxBuffer` and Unicode].
     **По умолчанию:** `1024 * 1024`.
   * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для всех stdio.
     **По умолчанию:** `'buffer'`.
@@ -1382,13 +1389,13 @@ changes:
     **По умолчанию:** `false`.
 * Возвращает: [<Buffer>](buffer.md#buffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) stdout команды.
 
-Метод `child_process.execSync()` в целом совпадает с [`child_process.exec()`][],
+Метод `child_process.execSync()` в целом совпадает с [`child_process.exec()`][`child_process.exec()`],
 но не возвращает управление, пока дочерний процесс полностью не закроется. При
 таймауте и `killSignal` метод ждёт полного завершения. Если потомок перехватывает
 `SIGTERM` и не выходит, родитель ждёт его завершения.
 
-При таймауте или ненулевом коде выхода метод выбрасывает исключение. Объект [`Error`][]
-содержит полный результат [`child_process.spawnSync()`][].
+При таймауте или ненулевом коде выхода метод выбрасывает исключение. Объект [`Error`][`Error`]
+содержит полный результат [`child_process.spawnSync()`][`child_process.spawnSync()`].
 
 **Никогда не передавайте несанированный пользовательский ввод. Метасимволы оболочки
 могут привести к выполнению произвольной команды.**
@@ -1427,6 +1434,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
@@ -1444,7 +1452,7 @@ changes:
     Если `stdio[0]` равен `'pipe'`, это значение перекрывает `stdio[0]`.
   * `argv0` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Явно задаёт `argv[0]` для дочернего процесса; если не указано — `command`.
   * `stdio` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Конфигурация stdio дочернего процесса.
-    См. [`stdio`][] у [`child_process.spawn()`][]. **По умолчанию:** `'pipe'`.
+    См. [`stdio`][`stdio`] у [`child_process.spawn()`][`child_process.spawn()`]. **По умолчанию:** `'pipe'`.
   * `env` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары «ключ–значение» окружения. **По умолчанию:** `process.env`.
   * `uid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор пользователя процесса (см. setuid(2)).
   * `gid` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт идентификатор группы процесса (см. setgid(2)).
@@ -1453,13 +1461,13 @@ changes:
   * `killSignal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сигнал при принудительном завершении.
     **По умолчанию:** `'SIGTERM'`.
   * `maxBuffer` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный объём в байтах для stdout или stderr; при
-    превышении процесс завершается, вывод обрезается. См. [`maxBuffer` and Unicode][].
+    превышении процесс завершается, вывод обрезается. См. [`maxBuffer` and Unicode][`maxBuffer` and Unicode].
     **По умолчанию:** `1024 * 1024`.
   * `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для всех stdio.
     **По умолчанию:** `'buffer'`.
   * `shell` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `true`, запускает `command` в оболочке. На Unix —
-    `'/bin/sh'`, в Windows — `process.env.ComSpec`. См. [Shell requirements][] и
-    [Default Windows shell][]. **По умолчанию:** `false` (без оболочки).
+    `'/bin/sh'`, в Windows — `process.env.ComSpec`. См. [Shell requirements][Shell requirements] и
+    [Default Windows shell][Default Windows shell]. **По умолчанию:** `false` (без оболочки).
   * `windowsVerbatimArguments` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) В Windows аргументы не экранируются.
     На Unix игнорируется. Автоматически `true`, если задан `shell` и это CMD.
     **По умолчанию:** `false`.
@@ -1474,7 +1482,7 @@ changes:
   * `signal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Сигнал завершения или `null`, если не по сигналу.
   * `error` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Объект ошибки при сбое или таймауте.
 
-Метод `child_process.spawnSync()` в целом совпадает с [`child_process.spawn()`][],
+Метод `child_process.spawnSync()` в целом совпадает с [`child_process.spawn()`][`child_process.spawn()`],
 но не возвращает управление, пока дочерний процесс полностью не закроется. При
 таймауте и `killSignal` метод ждёт полного завершения. Если процесс перехватывает
 `SIGTERM` и не выходит, родитель ждёт его завершения.
@@ -1493,8 +1501,8 @@ added: v2.2.0
 Экземпляры `ChildProcess` представляют порождённые дочерние процессы.
 
 Экземпляры `ChildProcess` не предназначены для прямого создания. Используйте
-[`child_process.spawn()`][], [`child_process.exec()`][],
-[`child_process.execFile()`][] или [`child_process.fork()`][].
+[`child_process.spawn()`][`child_process.spawn()`], [`child_process.exec()`][`child_process.exec()`],
+[`child_process.execFile()`][`child_process.execFile()`] или [`child_process.fork()`][`child_process.fork()`].
 
 ### Событие: `'close'` {#event-close}
 
@@ -1506,9 +1514,9 @@ added: v0.7.7
 * `signal` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сигнал завершения или `null`, если завершение не по сигналу.
 
 Событие `'close'` генерируется после завершения процесса _и_ закрытия всех stdio
-потоков дочернего процесса. Оно отличается от [`'exit'`][], так как несколько процессов
-могут разделять одни и те же stdio. `'close'` всегда следует после [`'exit'`][],
-либо после [`'error'`][], если породить процесс не удалось.
+потоков дочернего процесса. Оно отличается от [`'exit'`][`'exit'`], так как несколько процессов
+могут разделять одни и те же stdio. `'close'` всегда следует после [`'exit'`][`'exit'`],
+либо после [`'error'`][`'error'`], если породить процесс не удалось.
 
 Если процесс завершился штатно, `code` — итоговый код выхода, иначе `null`. Если
 завершение по сигналу, `signal` — имя сигнала, иначе `null`. Ровно одно из двух
@@ -1562,9 +1570,9 @@ added: v0.7.7
 added: v0.7.2
 -->
 
-Событие `'disconnect'` генерируется после вызова [`subprocess.disconnect()`][] в
-родителе или [`process.disconnect()`][] в дочернем процессе. После отключения
-отправка и приём сообщений невозможны, свойство [`subprocess.connected`][]
+Событие `'disconnect'` генерируется после вызова [`subprocess.disconnect()`][`subprocess.disconnect()`] в
+родителе или [`process.disconnect()`][`process.disconnect()`] в дочернем процессе. После отключения
+отправка и приём сообщений невозможны, свойство [`subprocess.connected`][`subprocess.connected`]
 равно `false`.
 
 ### Событие: `'error'` {#event-error}
@@ -1581,7 +1589,7 @@ added: v0.7.2
 Событие `'exit'` после ошибки может возникнуть, а может и нет. При подписке и на
 `'exit'`, и на `'error'` избегайте повторных вызовов обработчиков.
 
-См. также [`subprocess.kill()`][] и [`subprocess.send()`][].
+См. также [`subprocess.kill()`][`subprocess.kill()`] и [`subprocess.send()`][`subprocess.send()`].
 
 ### Событие: `'exit'` {#event-exit}
 
@@ -1604,7 +1612,7 @@ Node.js устанавливает обработчики `SIGINT` и `SIGTERM` 
 См. waitpid(2).
 
 Если `code` равен `null` из‑за сигнала, для перевода в POSIX-код выхода используйте
-[`util.convertProcessSignalToExitCode()`][].
+[`util.convertProcessSignalToExitCode()`][`util.convertProcessSignalToExitCode()`].
 
 ### Событие: `'message'` {#event-message}
 
@@ -1613,16 +1621,16 @@ added: v0.5.9
 -->
 
 * `message` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Разобранный JSON-объект или примитив.
-* `sendHandle` {Handle|undefined} `undefined` либо объект [`net.Socket`][],
-  [`net.Server`][] или [`dgram.Socket`][].
+* `sendHandle` {Handle|undefined} `undefined` либо объект [`net.Socket`][`net.Socket`],
+  [`net.Server`][`net.Server`] или [`dgram.Socket`][`dgram.Socket`].
 
-Событие `'message'` возникает, когда дочерний процесс вызывает [`process.send()`][].
+Событие `'message'` возникает, когда дочерний процесс вызывает [`process.send()`][`process.send()`].
 
 Сообщение сериализуется и разбирается; итог может отличаться от исходного.
 
 Если при порождении был задан `serialization: 'advanced'`, аргумент `message`
 может содержать данные, которые JSON не представляет.
-Подробнее — [Advanced serialization][].
+Подробнее — [Advanced serialization][Advanced serialization].
 
 ### Событие: `'spawn'` {#event-spawn}
 
@@ -1654,6 +1662,7 @@ changes:
 Добавлено в: v7.1.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v14.0.0 | Объект больше не случайно предоставляет собственные привязки C++. |
@@ -1704,7 +1713,7 @@ added: v0.7.2
 Событие `'disconnect'` приходит, когда не осталось сообщений в процессе приёма; чаще
 всего сразу после `subprocess.disconnect()`.
 
-Если потомок — экземпляр Node.js (например, через [`child_process.fork()`][]), в нём
+Если потомок — экземпляр Node.js (например, через [`child_process.fork()`][`child_process.fork()`]), в нём
 можно вызвать `process.disconnect()` для закрытия IPC.
 
 ### `subprocess.exitCode`
@@ -1714,7 +1723,7 @@ added: v0.7.2
 Свойство `subprocess.exitCode` — код выхода дочернего процесса. Пока процесс ещё
 работает, значение `null`.
 
-При завершении по сигналу `subprocess.exitCode` равен `null`, а [`subprocess.signalCode`][]
+При завершении по сигналу `subprocess.exitCode` равен `null`, а [`subprocess.signalCode`][`subprocess.signalCode`]
 заполнен. Для соответствующего POSIX-кода выхода используйте
 [`util.convertProcessSignalToExitCode(subprocess.signalCode)`][`util.convertProcessSignalToExitCode()`].
 
@@ -1761,7 +1770,7 @@ kill(2) успешен, иначе `false`.
     grep.kill('SIGHUP');
     ```
 
-Объект [`ChildProcess`][] может сгенерировать [`'error'`][], если сигнал не доставлен.
+Объект [`ChildProcess`][`ChildProcess`] может сгенерировать [`'error'`][`'error'`], если сигнал не доставлен.
 Отправка сигнала уже завершившемуся процессу не считается ошибкой, но может иметь
 непредвиденные последствия: если PID уже переназначен другому процессу, сигнал
 получит он.
@@ -1772,7 +1781,7 @@ kill(2) успешен, иначе `false`.
 
 В Windows, где нет POSIX-сигналов, аргумент `signal` игнорируется, кроме
 `'SIGKILL'`, `'SIGTERM'`, `'SIGINT'` и `'SIGQUIT'`; процесс всегда завершается
-принудительно (как при `'SIGKILL'`). Подробнее — [Signal Events][].
+принудительно (как при `'SIGKILL'`). Подробнее — [Signal Events][Signal Events].
 
 В Linux при завершении родителя не завершаются «внуки» — это часто при запуске
 через оболочку или с опцией `shell` у `ChildProcess`:
@@ -1834,11 +1843,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
 
-Вызывает [`subprocess.kill()`][] с `'SIGTERM'`.
+Вызывает [`subprocess.kill()`][`subprocess.kill()`] с `'SIGTERM'`.
 
 ### `subprocess.killed`
 
@@ -1942,6 +1952,7 @@ changes:
 Добавлено в: v0.5.9
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v5.8.0 | Параметр `options` и, в частности, `keepOpen` теперь поддерживаются. |
@@ -1949,8 +1960,8 @@ changes:
     | v4.0.0 | Параметр `callback` теперь поддерживается. |
 
 * `message` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-* `sendHandle` {Handle|undefined} `undefined`, or a [`net.Socket`][],
-  [`net.Server`][], or [`dgram.Socket`][] object.
+* `sendHandle` {Handle|undefined} `undefined`, or a [`net.Socket`][`net.Socket`],
+  [`net.Server`][`net.Server`], or [`dgram.Socket`][`dgram.Socket`] object.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если задан, дополняет отправку некоторых типов дескрипторов.
   Поддерживаемые свойства:
   * `keepOpen` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При передаче `net.Socket`: если `true`, сокет остаётся
@@ -1959,9 +1970,9 @@ changes:
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-При установленном IPC между родителем и потомком (например, через [`child_process.fork()`][])
+При установленном IPC между родителем и потомком (например, через [`child_process.fork()`][`child_process.fork()`])
 метод `subprocess.send()` отправляет сообщения дочернему процессу. Если потомок —
-Node.js, сообщения принимаются событием [`'message'`][].
+Node.js, сообщения принимаются событием [`'message'`][`'message'`].
 
 Сообщение сериализуется и разбирается; результат может отличаться от исходного.
 
@@ -2006,22 +2017,22 @@ process.on('message', (message) => {
 process.send({ foo: 'bar', baz: NaN });
 ```
 
-У дочернего процесса Node.js есть свой [`process.send()`][] для отправки сообщений родителю.
+У дочернего процесса Node.js есть свой [`process.send()`][`process.send()`] для отправки сообщений родителю.
 
 Особый случай — сообщения `{ cmd: 'NODE_foo' }`. Префикс `NODE_` в `cmd` зарезервирован
-в ядре Node.js и не попадает в событие [`'message'`][] потомка: такие сообщения идут через
+в ядре Node.js и не попадает в событие [`'message'`][`'message'`] потомка: такие сообщения идут через
 `'internalMessage'` и обрабатываются внутри Node.js. Приложениям не следует на это
 опираться — поведение может измениться без предупреждения.
 
 Необязательный аргумент `sendHandle` в `subprocess.send()` передаёт сервер или сокет TCP
-дочернему процессу. Потомок получит его вторым аргументом обработчика [`'message'`][].
+дочернему процессу. Потомок получит его вторым аргументом обработчика [`'message'`][`'message'`].
 Данные, уже принятые и буферизованные в сокете, до потомка не переданы. Передача IPC-сокетов
 в Windows не поддерживается.
 
 Необязательный `callback` вызывается после отправки сообщения, но до того, как потомок
-его мог получить; аргумент — `null` при успехе или [`Error`][] при ошибке.
+его мог получить; аргумент — `null` при успехе или [`Error`][`Error`] при ошибке.
 
-Если `callback` не задан и отправить сообщение нельзя, [`ChildProcess`][] генерирует
+Если `callback` не задан и отправить сообщение нельзя, [`ChildProcess`][`ChildProcess`] генерирует
 `'error'` (например, когда потомок уже завершился).
 
 `subprocess.send()` возвращает `false`, если канал закрыт или очередь неотправленных
@@ -2165,7 +2176,7 @@ process.on('message', (m, socket) => {
 
 Свойство `subprocess.signalCode` — сигнал, полученный дочерним процессом, либо `null`.
 
-При завершении по сигналу [`subprocess.exitCode`][] будет `null`. Для POSIX-кода выхода
+При завершении по сигналу [`subprocess.exitCode`][`subprocess.exitCode`] будет `null`. Для POSIX-кода выхода
 используйте
 [`util.convertProcessSignalToExitCode(subprocess.signalCode)`][`util.convertProcessSignalToExitCode()`].
 
@@ -2182,9 +2193,9 @@ process.on('message', (m, socket) => {
 
 Свойство `subprocess.spawnfile` — имя исполняемого файла дочернего процесса.
 
-Для [`child_process.fork()`][] совпадает с [`process.execPath`][].
-Для [`child_process.spawn()`][] — имя исполняемого файла.
-Для [`child_process.exec()`][] — имя оболочки, в которой запущен потомок.
+Для [`child_process.fork()`][`child_process.fork()`] совпадает с [`process.execPath`][`process.execPath`].
+Для [`child_process.spawn()`][`child_process.spawn()`] — имя исполняемого файла.
+Для [`child_process.exec()`][`child_process.exec()`] — имя оболочки, в которой запущен потомок.
 
 ### `subprocess.stderr`
 
@@ -2228,8 +2239,8 @@ added: v0.7.10
 
 * Type: [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
-Разреженный массив каналов к дочернему процессу для позиций опции [`stdio`][] в
-[`child_process.spawn()`][], где задано `'pipe'`. `subprocess.stdio[0]`, `[1]` и `[2]`
+Разреженный массив каналов к дочернему процессу для позиций опции [`stdio`][`stdio`] в
+[`child_process.spawn()`][`child_process.spawn()`], где задано `'pipe'`. `subprocess.stdio[0]`, `[1]` и `[2]`
 доступны также как `subprocess.stdin`, `subprocess.stdout` и `subprocess.stderr`.
 
 В примере ниже только fd `1` (stdout) потомка — `'pipe'`, поэтому только
@@ -2401,7 +2412,7 @@ added:
 Формат не является полным надмножеством JSON: например, собственные свойства на объектах
 встроенных типов через сериализацию не проходят. Производительность может отличаться от JSON
 в зависимости от данных. Включение — явно, через опцию `serialization: 'advanced'` при вызове
-[`child_process.spawn()`][] или [`child_process.fork()`][].
+[`child_process.spawn()`][`child_process.spawn()`] или [`child_process.fork()`][`child_process.fork()`].
 
 [Advanced serialization]: #advanced-serialization
 [DEP0190]: deprecations.md#DEP0190

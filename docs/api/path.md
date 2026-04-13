@@ -50,7 +50,7 @@ path.basename('C:\\temp\\myfile.html');
 ```
 
 Чтобы получать согласованные результаты при работе с путями Windows на любой
-операционной системе, используйте [`path.win32`][]:
+операционной системе, используйте [`path.win32`][`path.win32`]:
 
 На POSIX и Windows:
 
@@ -60,7 +60,7 @@ path.win32.basename('C:\\temp\\myfile.html');
 ```
 
 Чтобы получать согласованные результаты при работе с путями POSIX на любой
-операционной системе, используйте [`path.posix`][]:
+операционной системе, используйте [`path.posix`][`path.posix`]:
 
 На POSIX и Windows:
 
@@ -88,6 +88,7 @@ changes:
 Добавлено в: v0.1.25
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
@@ -118,7 +119,7 @@ path.win32.basename('C:\\foo.HTML', '.html');
 // Возвращает: 'foo.HTML'
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка или если указан `suffix`, который не является строкой.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка или если указан `suffix`, который не является строкой.
 
 ## `path.delimiter`
 
@@ -166,6 +167,7 @@ changes:
 Добавлено в: v0.1.16
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
@@ -174,14 +176,14 @@ changes:
 * Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.dirname()` возвращает имя каталога для `path`, аналогично команде Unix `dirname`. Завершающие разделители каталогов игнорируются, см.
-[`path.sep`][].
+[`path.sep`][`path.sep`].
 
 ```js
 path.dirname('/foo/bar/baz/asdf/quux');
 // Возвращает: '/foo/bar/baz/asdf'
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
 
 ## `path.extname(path)`
 
@@ -196,6 +198,7 @@ changes:
 Добавлено в: v0.1.25
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
@@ -226,7 +229,7 @@ path.extname('.index.md');
 // Возвращает: '.md'
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
 
 ## `path.format(pathObject)`
 
@@ -241,6 +244,7 @@ changes:
 Добавлено в: v0.11.15
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v19.0.0 | Точка будет добавлена, если она не указана в `ext`. |
@@ -253,7 +257,7 @@ changes:
   * `ext` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Метод `path.format()` собирает строку пути из объекта. Обратная операция к [`path.parse()`][].
+Метод `path.format()` собирает строку пути из объекта. Обратная операция к [`path.parse()`][`path.parse()`].
 
 При заполнении `pathObject` помните, что в некоторых сочетаниях одно свойство важнее другого:
 
@@ -323,6 +327,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0, v22.20.0 | Маркировка стабильного API. |
@@ -340,7 +345,7 @@ path.matchesGlob('/foo/bar', '/foo/*'); // true
 path.matchesGlob('/foo/bar*', 'foo/bird'); // false
 ```
 
-Выбрасывается [`TypeError`][], если `path` или `pattern` не строки.
+Выбрасывается [`TypeError`][`TypeError`], если `path` или `pattern` не строки.
 
 ## `path.isAbsolute(path)`
 
@@ -377,7 +382,7 @@ path.isAbsolute('bar/baz');     // false
 path.isAbsolute('.');           // false
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
 
 ## `path.join([...paths])`
 
@@ -400,7 +405,7 @@ path.join('foo', {}, 'bar');
 // Throws 'TypeError: Path must be a string. Received {}'
 ```
 
-Выбрасывается [`TypeError`][], если какой-либо сегмент не строка.
+Выбрасывается [`TypeError`][`TypeError`], если какой-либо сегмент не строка.
 
 ## `path.normalize(path)`
 
@@ -440,7 +445,7 @@ path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
 // Возвращает: 'C:\\temp\\foo\\bar'
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
 
 ## `path.parse(path)`
 
@@ -451,7 +456,7 @@ added: v0.11.15
 * `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Метод `path.parse()` возвращает объект, свойства которого соответствуют частям `path`. Завершающие разделители каталогов игнорируются, см. [`path.sep`][].
+Метод `path.parse()` возвращает объект, свойства которого соответствуют частям `path`. Завершающие разделители каталогов игнорируются, см. [`path.sep`][`path.sep`].
 
 У объекта будут свойства:
 
@@ -505,7 +510,7 @@ path.parse('C:\\path\\dir\\file.txt');
 (Пробелы в строке "" только для выравнивания, их следует игнорировать.)
 ```
 
-Выбрасывается [`TypeError`][], если `path` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
 
 ## `path.posix`
 
@@ -520,6 +525,7 @@ changes:
 Добавлено в: v0.11.15
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.3.0 | Представлен как `require('path/posix')`. |
@@ -544,6 +550,7 @@ changes:
 Добавлено в: v0.5.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.8.0 | В Windows ведущие косые черты UNC-путей теперь включаются в возвращаемое значение. |
@@ -570,7 +577,7 @@ path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 // Возвращает: '..\\..\\impl\\bbb'
 ```
 
-Выбрасывается [`TypeError`][], если `from` или `to` не строка.
+Выбрасывается [`TypeError`][`TypeError`], если `from` или `to` не строка.
 
 ## `path.resolve([...paths])`
 
@@ -608,7 +615,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 // вернёт '/home/myself/node/wwwroot/static_files/gif/image.gif'
 ```
 
-Выбрасывается [`TypeError`][], если какой-либо аргумент не строка.
+Выбрасывается [`TypeError`][`TypeError`], если какой-либо аргумент не строка.
 
 ## `path.sep`
 
@@ -665,6 +672,7 @@ changes:
 Добавлено в: v0.11.15
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.3.0 | Представлено как `require('path/win32')`. |

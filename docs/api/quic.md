@@ -1187,7 +1187,7 @@ added: v23.8.0
 * Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
 CA-сертификаты для клиентских сессий. Для серверных сертификаты CA
-задаются по идентичности в карте [`sessionOptions.sni`][].
+задаются по идентичности в карте [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.cc`
 
@@ -1210,7 +1210,7 @@ added: v23.8.0
 * Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
 TLS-сертификаты для клиентских сессий. Для серверных сертификаты
-задаются по идентичности в [`sessionOptions.sni`][].
+задаются по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.ciphers`
 
@@ -1231,7 +1231,7 @@ added: v23.8.0
 * Тип: [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) | [<ArrayBuffer[]>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
 CRL для клиентских сессий. Для серверных CRL задаются
-по идентичности в [`sessionOptions.sni`][].
+по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.groups`
 
@@ -1266,6 +1266,7 @@ changes:
 Добавлено в: v23.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | CryptoKey больше не принимается. |
@@ -1273,7 +1274,7 @@ changes:
 * Тип: [<KeyObject>](#class-keyobject) | [<KeyObject[]>](#class-keyobject)
 
 Криптографические ключи TLS для клиентских сессий. Для серверных ключи
-задаются по идентичности в [`sessionOptions.sni`][].
+задаются по идентичности в [`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.maxPayloadSize`
 
@@ -1454,7 +1455,7 @@ added: v23.8.0
 
 `true` — требовать проверку закрытого ключа для клиентских сессий. Для серверных
 эта опция задаётся по идентичности в
-[`sessionOptions.sni`][].
+[`sessionOptions.sni`][`sessionOptions.sni`].
 
 #### `sessionOptions.version`
 

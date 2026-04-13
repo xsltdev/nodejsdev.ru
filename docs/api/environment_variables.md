@@ -34,7 +34,7 @@ description: Переменные окружения процесса Node.js, p
 ### Файлы .env
 
 Файлы `.env` (также называемые dotenv-файлами) задают переменные окружения,
-с которыми затем могут работать приложения Node.js (подход популяризован пакетом [dotenv][]).
+с которыми затем могут работать приложения Node.js (подход популяризован пакетом [dotenv][dotenv]).
 
 Ниже пример содержимого простого файла `.env`:
 
@@ -144,17 +144,17 @@ export MY_VAR = my variable
 
 Файлы `.env` можно использовать для заполнения объекта `process.env` одним из параметров CLI:
 
-* [`--env-file=file`][]
+* [`--env-file=file`][`--env-file=file`]
 
-* [`--env-file-if-exists=file`][]
+* [`--env-file-if-exists=file`][`--env-file-if-exists=file`]
 
 ### Программные API
 
 Две следующие функции позволяют напрямую работать с файлами `.env`:
 
-* [`process.loadEnvFile`][] — загружает файл `.env` и помещает переменные в `process.env`
+* [`process.loadEnvFile`][`process.loadEnvFile`] — загружает файл `.env` и помещает переменные в `process.env`
 
-* [`util.parseEnv`][] — разбирает сырое содержимое файла `.env` и возвращает объект
+* [`util.parseEnv`][`util.parseEnv`] — разбирает сырое содержимое файла `.env` и возвращает объект
 
 [CLI Environment Variables documentation]: cli.md#environment-variables_1
 [`--env-file-if-exists=file`]: cli.md#--env-file-if-existsfile

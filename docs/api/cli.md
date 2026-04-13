@@ -22,7 +22,7 @@ description: Флаги запуска node, точка входа, переме
 
 `node --v8-options`
 
-Запуск без аргументов открывает [REPL][].
+Запуск без аргументов открывает [REPL][REPL].
 
 Подробнее о `node inspect` — в документации [отладчика][debugger].
 
@@ -34,7 +34,7 @@ description: Флаги запуска node, точка входа, переме
 
 * процесс запущен с флагом, принудительно загружающим точку входа через загрузчик ECMAScript-модулей, например `--import`;
 * у файла расширение `.mjs`, `.mts` или `.wasm`;
-* у файла нет расширения `.cjs`, и у ближайшего родительского `package.json` в корне указано поле [`"type"`][] со значением `"module"`.
+* у файла нет расширения `.cjs`, и у ближайшего родительского `package.json` в корне указано поле [`"type"`][`"type"`] со значением `"module"`.
 
 См. [разрешение и загрузку модулей][Module resolution and loading].
 
@@ -49,6 +49,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v10.12.0 | Подчеркивания вместо тире теперь разрешены и для параметров Node.js, в дополнение к параметрам V8. |
@@ -57,7 +58,7 @@ changes:
 
 Во всех опциях, включая опции V8, слова в имени можно разделять и дефисом (`-`), и подчёркиванием (`_`). Например, `--pending-deprecation` эквивалентно `--pending_deprecation`.
 
-Если опция с одним значением (например `--max-http-header-size`) передана несколько раз, используется последнее значение. Опции из командной строки имеют приоритет над опциями из переменной окружения [`NODE_OPTIONS`][].
+Если опция с одним значением (например `--max-http-header-size`) передана несколько раз, используется последнее значение. Опции из командной строки имеют приоритет над опциями из переменной окружения [`NODE_OPTIONS`][`NODE_OPTIONS`].
 
 ### `-`
 
@@ -84,7 +85,7 @@ added: v0.10.8
 
 Аварийное завершение вместо обычного выхода позволяет получить core dump для постмортем-анализа в отладчике (`lldb`, `gdb`, `mdb` и т. п.).
 
-Даже с этим флагом поведение можно изменить через [`process.setUncaughtExceptionCaptureCallback()`][] (и через модуль `node:domain`, который её использует).
+Даже с этим флагом поведение можно изменить через [`process.setUncaughtExceptionCaptureCallback()`][`process.setUncaughtExceptionCaptureCallback()`] (и через модуль `node:domain`, который её использует).
 
 ### `--allow-addons`
 
@@ -146,6 +147,7 @@ changes:
 Добавлено в: v20.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.4.0, v22.18.0 | При создании процесса с включенной моделью разрешений. Флаги наследуются дочерним процессом Node.js через переменную среды NODE_OPTIONS. |
@@ -206,6 +208,7 @@ changes:
 Добавлено в: v20.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0, v22.17.0 | Точки входа вашего приложения разрешено читать неявно. |
@@ -254,6 +257,7 @@ changes:
 Добавлено в: v20.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.5.0, v22.13.0 | Флаги модели разрешений и --allow-fs стабильны. |
@@ -426,6 +430,7 @@ changes:
 Добавлено в: v18.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0, v24.13.1 | Процесс создания снимков больше не является экспериментальным. |
@@ -449,7 +454,7 @@ $ node --snapshot-blob snapshot.blob index.js
 I am from the snapshot
 ```
 
-API [`v8.startupSnapshot` API][] позволяет задать точку входа на этапе сборки снимка,
+API [`v8.startupSnapshot` API][`v8.startupSnapshot` API] позволяет задать точку входа на этапе сборки снимка,
 без дополнительного скрипта при десериализации:
 
 ```console
@@ -459,7 +464,7 @@ $ node --snapshot-blob snapshot.blob
 I am from the snapshot
 ```
 
-Подробнее — в документации [`v8.startupSnapshot` API][].
+Подробнее — в документации [`v8.startupSnapshot` API][`v8.startupSnapshot` API].
 
 Сейчас при сборке снимка поддерживается только одна точка входа; можно подключать
 встроенные модули, но не дополнительные пользовательские — приложение обычно
@@ -468,14 +473,14 @@ I am from the snapshot
 Гарантировать сериализуемость всех встроенных модулей сложно, и их число растёт;
 лишь часть встроенных модулей надёжно проверена на сериализуемость при сборке
 снимка. Тесты Node.js проверяют несколько относительно сложных приложений.
-Список встроенных модулей, [captured by the built-in snapshot of Node.js][], считается
+Список встроенных модулей, [captured by the built-in snapshot of Node.js][captured by the built-in snapshot of Node.js], считается
 поддерживаемым. Если при сборке встречается встроенный модуль, который нельзя
 сериализовать, процесс сборки снимка может аварийно завершиться; типичный обход —
 отложить загрузку такого модуля до выполнения, через
-[`v8.startupSnapshot.setDeserializeMainFunction()`][] или
-[`v8.startupSnapshot.addDeserializeCallback()`][]. Если нужна сериализация
-дополнительного модуля при сборке снимка, создайте запрос в [Node.js issue tracker][] и
-сошлитесь на [tracking issue for user-land snapshots][].
+[`v8.startupSnapshot.setDeserializeMainFunction()`][`v8.startupSnapshot.setDeserializeMainFunction()`] или
+[`v8.startupSnapshot.addDeserializeCallback()`][`v8.startupSnapshot.addDeserializeCallback()`]. Если нужна сериализация
+дополнительного модуля при сборке снимка, создайте запрос в [Node.js issue tracker][Node.js issue tracker] и
+сошлитесь на [tracking issue for user-land snapshots][tracking issue for user-land snapshots].
 
 ### `--build-snapshot-config`
 
@@ -492,17 +497,18 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0, v24.13.1 | Процесс создания снимков больше не является экспериментальным. |
 
-Specifies the path to a JSON configuration file which configures snapshot
-creation behavior.
+Указывает путь к JSON-файлу конфигурации, который задаёт параметры создания
+снимка.
 
 Поддерживаются такие поля:
 
 * `builder` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Обязательное. Имя скрипта, который выполняется перед сборкой
-  снимка, как если бы был передан [`--build-snapshot`][] с `builder` в качестве
+  снимка, как если бы был передан [`--build-snapshot`][`--build-snapshot`] с `builder` в качестве
   основного скрипта.
 * `withoutCodeCache` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Необязательно. Включение кэша кода ускоряет компиляцию
   функций из снимка, но увеличивает размер и может ухудшить переносимость снимка.
@@ -523,6 +529,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v10.0.0 | Опция `--require` теперь поддерживается при проверке файла. |
@@ -535,7 +542,8 @@ Syntax check the script without executing.
 added: v10.12.0
 -->
 
-Print source-able bash completion script for Node.js.
+Выводит bash-скрипт автодополнения для Node.js, который можно подключить через
+`source`.
 
 ```bash
 node --completion-bash > node_bash_completion
@@ -557,11 +565,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.9.0, v20.18.0 | Флаг больше не является экспериментальным. |
 
-Provide custom [conditional exports][] resolution conditions.
+Provide custom [conditional exports][conditional exports] resolution conditions.
 
 Any number of custom string condition names are permitted.
 
@@ -589,6 +598,7 @@ changes:
 Добавлено в: v12.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--cpu-prof` теперь стабильны. |
@@ -635,15 +645,16 @@ changes:
 Добавлено в: v12.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--cpu-prof` теперь стабильны. |
 
-Specify the directory where the CPU profiles generated by `--cpu-prof` will
-be placed.
+Указывает каталог, в который будут помещаться профили CPU, созданные с помощью
+`--cpu-prof`.
 
-The default value is controlled by the
-[`--diagnostic-dir`][] command-line option.
+Значение по умолчанию задаётся параметром командной строки
+[`--diagnostic-dir`][`--diagnostic-dir`].
 
 ### `--cpu-prof-interval`
 
@@ -660,6 +671,7 @@ changes:
 Добавлено в: v12.2.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--cpu-prof` теперь стабильны. |
@@ -682,22 +694,23 @@ changes:
 Добавлено в: v12.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--cpu-prof` теперь стабильны. |
 
-Specify the file name of the CPU profile generated by `--cpu-prof`.
+Указывает имя файла профиля CPU, созданного с помощью `--cpu-prof`.
 
 ### `--diagnostic-dir=directory`
 
-Set the directory to which all diagnostic output files are written.
-Defaults to current working directory.
+Задаёт каталог, в который записываются все файлы диагностического вывода.
+По умолчанию используется текущий рабочий каталог.
 
-Affects the default output directory of:
+Влияет на каталог вывода по умолчанию для:
 
-* [`--cpu-prof-dir`][]
-* [`--heap-prof-dir`][]
-* [`--redirect-warnings`][]
+* [`--cpu-prof-dir`][`--cpu-prof-dir`]
+* [`--heap-prof-dir`][`--heap-prof-dir`]
+* [`--redirect-warnings`][`--redirect-warnings`]
 
 ### `--disable-proto=mode`
 
@@ -726,6 +739,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0, v22.20.0 | Опция больше не является экспериментальной. |
@@ -745,13 +759,13 @@ added:
 
 Disable specific process warnings by `code` or `type`.
 
-Warnings emitted from [`process.emitWarning()`][emit_warning] may contain a
-`code` and a `type`. This option will not-emit warnings that have a matching
-`code` or `type`.
+Предупреждения, выдаваемые через [`process.emitWarning()`][emit_warning], могут
+содержать `code` и `type`. Этот параметр подавляет предупреждения с
+совпадающим `code` или `type`.
 
-List of [deprecation warnings][].
+Список [предупреждений об устаревании][deprecation warnings].
 
-The Node.js core warning types are: `DeprecationWarning` and
+Основные типы предупреждений в Node.js: `DeprecationWarning` и
 `ExperimentalWarning`
 
 For example, the following script will not emit
@@ -773,7 +787,7 @@ For example, the following script will not emit
 For example, the following script will emit the
 [DEP0025 `require('node:sys')`][DEP0025 warning], but not any Experimental
 Warnings (such as
-[ExperimentalWarning: `vm.measureMemory` is an experimental feature][]
+[ExperimentalWarning: `vm.measureMemory` is an experimental feature][ExperimentalWarning: `vm.measureMemory` is an experimental feature]
 in <=v21) when executed with `node --disable-warning=ExperimentalWarning`:
 
 === "MJS"
@@ -811,6 +825,7 @@ changes:
 Добавлено в: v22.2.0, v20.15.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | REPLACEME | Node.js теперь автоматически отключает trap handler, если при запуске недостаточно виртуальной памяти для выделения одного cage. |
@@ -825,18 +840,21 @@ to accommodate typical WebAssembly usages, but if the machine has manual limits
 on virtual memory (e.g. through `ulimit -v`), WebAssembly memory allocation is
 more likely to fail with `WebAssembly.Memory(): could not allocate memory`.
 
-At startup, Node.js automatically checks whether there is enough virtual memory
-available to allocate at least one cage, and if not, the trap-handler optimization
-is automatically disabled so that WebAssembly can still run using inline
-bound checks (with less optimal performance). But if the application needs to create
-many WebAssembly memory instances and the machine still configures a relatively high
-limit on virtual memory, allocation of WebAssembly memory instances may still fail
-more quickly than expected due to the raised virtual memory usage.
+При запуске Node.js автоматически проверяет, достаточно ли доступной
+виртуальной памяти для выделения хотя бы одной области, и если нет, то
+оптимизация trap-handler автоматически отключается, чтобы WebAssembly всё ещё
+мог выполняться с inline-проверками границ (с менее оптимальной
+производительностью). Но если приложению нужно создать много экземпляров памяти
+WebAssembly, а на машине при этом всё ещё установлен относительно высокий лимит
+виртуальной памяти, выделение памяти для WebAssembly может по-прежнему
+завершаться ошибкой быстрее, чем ожидается, из-за увеличенного потребления
+виртуальной памяти.
 
-`--disable-wasm-trap-handler` fully disables this optimization so that WebAssembly memory
-instances always use inline bound checks instead of reserving large virtual memory cages.
-This allows more instances to be created when the virtual memory address space available
-to the Node.js process is limited.
+`--disable-wasm-trap-handler` полностью отключает эту оптимизацию, поэтому
+экземпляры памяти WebAssembly всегда используют inline-проверки границ вместо
+резервирования больших областей виртуальной памяти. Это позволяет создавать
+больше экземпляров, когда доступное процессу Node.js адресное пространство
+виртуальной памяти ограничено.
 
 ### `--disallow-code-generation-from-strings`
 
@@ -866,20 +884,22 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.1.0, v20.13.0 | `ipv6first` теперь поддерживается. |
     | v17.0.0 | Изменено значение по умолчанию на `verbatim`. |
 
-Set the default value of `order` in [`dns.lookup()`][] and
-[`dnsPromises.lookup()`][]. The value could be:
+Задаёт значение по умолчанию для `order` в [`dns.lookup()`][`dns.lookup()`] и
+[`dnsPromises.lookup()`][`dnsPromises.lookup()`]. Возможные значения:
 
-* `ipv4first`: sets default `order` to `ipv4first`.
-* `ipv6first`: sets default `order` to `ipv6first`.
-* `verbatim`: sets default `order` to `verbatim`.
+* `ipv4first`: устанавливает `order` по умолчанию в `ipv4first`.
+* `ipv6first`: устанавливает `order` по умолчанию в `ipv6first`.
+* `verbatim`: устанавливает `order` по умолчанию в `verbatim`.
 
-The default is `verbatim` and [`dns.setDefaultResultOrder()`][] have higher
-priority than `--dns-result-order`.
+По умолчанию используется `verbatim`, а
+[`dns.setDefaultResultOrder()`][`dns.setDefaultResultOrder()`] имеет более
+высокий приоритет, чем `--dns-result-order`.
 
 ### `--enable-fips`
 
@@ -905,11 +925,12 @@ changes:
 Добавлено в: v12.12.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.11.0, v14.18.0 | Этот API больше не является экспериментальным. |
 
-Enable [Source Map][] support for stack traces.
+Enable [Source Map][Source Map] support for stack traces.
 
 When using a transpiler, such as TypeScript, stack traces thrown by an
 application reference the transpiled code, not the original source position.
@@ -943,14 +964,14 @@ added:
   - v22.10.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 When present, Node.js will interpret the entry point as a URL, rather than a
 path.
 
-Follows [ECMAScript module][] resolution rules.
+Follows [ECMAScript module][ECMAScript module] resolution rules.
 
-Any query parameter or hash in the URL will be accessible via [`import.meta.url`][].
+Any query parameter or hash in the URL will be accessible via [`import.meta.url`][`import.meta.url`].
 
 ```bash
 node --entry-url 'file:///path/to/file.js?queryparams=work#and-hashes-too'
@@ -973,11 +994,12 @@ changes:
 Добавлено в: v22.9.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.10.0, v22.21.0 | Флаг --env-file-if-exists больше не является экспериментальным. |
 
-Behavior is the same as [`--env-file`][], but an error is not thrown if the file
+Behavior is the same as [`--env-file`][`--env-file`], but an error is not thrown if the file
 does not exist.
 
 ### `--env-file=file`
@@ -1000,6 +1022,7 @@ changes:
 Добавлено в: v20.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.10.0, v22.21.0 | Флаг `--env-file` больше не является экспериментальным. |
@@ -1020,22 +1043,22 @@ An error is thrown if the file does not exist.
 node --env-file=.env --env-file=.development.env index.js
 ```
 
-The format of the file should be one line per key-value pair of environment
-variable name and value separated by `=`:
+Формат файла должен быть таким: одна строка на каждую пару ключ-значение
+переменной окружения, разделённых символом `=`:
 
 ```text
 PORT=3000
 ```
 
-Any text after a `#` is treated as a comment:
+Любой текст после `#` считается комментарием:
 
 ```text
 # This is a comment
 PORT=3000 # This is also a comment
 ```
 
-Values can start and end with the following quotes: `` ` ``, `"` or `'`.
-They are omitted from the values.
+Значения могут начинаться и заканчиваться следующими кавычками: `` ` ``, `"`
+или `'`. В итоговое значение они не входят.
 
 ```text
 USERNAME="nodejs" # will result in `nodejs` as the value.
@@ -1056,7 +1079,7 @@ export USERNAME="nodejs" # will result in `nodejs` as the value.
 ```
 
 If you want to load environment variables from a file that may not exist, you
-can use the [`--env-file-if-exists`][] flag instead.
+can use the [`--env-file-if-exists`][`--env-file-if-exists`] flag instead.
 
 ### `-e`, `--eval "script"`
 
@@ -1074,6 +1097,7 @@ changes:
 Добавлено в: v0.5.2
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.6.0 | Eval теперь поддерживает экспериментальное удаление типов. |
@@ -1090,7 +1114,7 @@ only recognizes double `"` for quoting. In Powershell or Git bash, both `'`
 and `"` are usable.
 
 It is possible to run code containing inline types unless the
-[`--no-strip-types`][] flag is provided.
+[`--no-strip-types`][`--no-strip-types`] flag is provided.
 
 ### `--experimental-addon-modules`
 
@@ -1138,18 +1162,20 @@ in the `$schema` must be replaced with the version of Node.js you are using.
 }
 ```
 
-The configuration file supports namespace-specific options:
+Файл конфигурации поддерживает параметры, специфичные для пространств имён:
 
-* The `nodeOptions` field contains CLI flags that are allowed in [`NODE_OPTIONS`][].
+* Поле `nodeOptions` содержит CLI-флаги, разрешённые в
+  [`NODE_OPTIONS`][`NODE_OPTIONS`].
 
-* Namespace fields like `test`, `watch`, and `permission` contain configuration specific to that subsystem.
+* Поля пространств имён, такие как `test`, `watch` и `permission`, содержат
+  конфигурацию, специфичную для соответствующей подсистемы.
 
-When a namespace is present in the
-configuration file, Node.js automatically enables the corresponding flag
-(e.g., `--test`, `--watch`, `--permission`). This allows you to configure
-subsystem-specific options without explicitly passing the flag on the command line.
+Когда пространство имён присутствует в файле конфигурации, Node.js
+автоматически включает соответствующий флаг (например, `--test`, `--watch`,
+`--permission`). Это позволяет настраивать параметры конкретной подсистемы без
+явной передачи флага в командной строке.
 
-For example:
+Например:
 
 ```json
 {
@@ -1159,7 +1185,7 @@ For example:
 }
 ```
 
-is equivalent to:
+эквивалентно:
 
 ```bash
 node --test --test-isolation=process
@@ -1186,30 +1212,30 @@ Each key in the configuration file corresponds to a flag that can be passed
 as a command-line argument. The value of the key is the value that would be
 passed to the flag.
 
-For example, the configuration file above is equivalent to
-the following command-line arguments:
+Например, приведённый выше файл конфигурации эквивалентен следующим
+аргументам командной строки:
 
 ```bash
 node --import amaro/strip --watch-path=src --watch-preserve-output --test-isolation=process
 ```
 
-The priority in configuration is as follows:
+Приоритет конфигурации таков:
 
-1. NODE\_OPTIONS and command-line options
-2. Configuration file
-3. Dotenv NODE\_OPTIONS
+1. `NODE_OPTIONS` и параметры командной строки
+2. Файл конфигурации
+3. `NODE_OPTIONS` из dotenv-файла
 
-Values in the configuration file will not override the values in the environment
-variables and command-line options, but will override the values in the `NODE_OPTIONS`
-env file parsed by the `--env-file` flag.
+Значения из файла конфигурации не переопределяют значения из переменных
+окружения и параметров командной строки, но переопределяют значения из
+файла `NODE_OPTIONS`, разобранного флагом `--env-file`.
 
 Keys cannot be duplicated within the same or different namespaces.
 
-The configuration parser will throw an error if the configuration file contains
-unknown keys or keys that cannot be used in a namespace.
+Парсер конфигурации выдаст ошибку, если файл конфигурации содержит неизвестные
+ключи или ключи, которые нельзя использовать в пространстве имён.
 
-Node.js will not sanitize or perform validation on the user-provided configuration,
-so **NEVER** use untrusted configuration files.
+Node.js не очищает и не валидирует пользовательскую конфигурацию, поэтому
+**НИКОГДА** не используйте недоверенные файлы конфигурации.
 
 ### `--experimental-default-config-file`
 
@@ -1233,7 +1259,7 @@ added:
   - v20.18.0
 -->
 
-Enable exposition of [EventSource Web API][] on the global scope.
+Enable exposition of [EventSource Web API][EventSource Web API] on the global scope.
 
 ### `--experimental-import-meta-resolve`
 
@@ -1252,6 +1278,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.6.0, v18.19.0 | синхронный import.meta.resolve доступен по умолчанию, с сохраненным флагом для включения экспериментального второго аргумента, как это поддерживалось ранее. |
@@ -1294,19 +1321,23 @@ changes:
 Добавлено в: v8.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
     | v12.11.1 | Этот флаг был переименован с `--loader` на `--experimental-loader`. |
 
 > This flag is discouraged and may be removed in a future version of Node.js.
-> Please use
-> [`--import` with `register()`][preloading asynchronous module customization hooks] instead.
+> Вместо этого используйте
+> [`--import` с `register()`][preloading asynchronous module customization hooks].
 
-Specify the `module` containing exported [asynchronous module customization hooks][].
-`module` may be any string accepted as an [`import` specifier][].
+Указывает `module`, содержащий экспортируемые
+[асинхронные хуки настройки модулей][asynchronous module customization hooks].
+`module` может быть любой строкой, допустимой в качестве
+[`import`-спецификатора][`import` specifier].
 
-This feature requires `--allow-worker` if used with the [Permission Model][].
+Для использования этой возможности с [моделью разрешений][Permission Model]
+требуется `--allow-worker`.
 
 ### `--experimental-network-inspection`
 
@@ -1316,7 +1347,7 @@ added:
   - v20.18.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Enable experimental support for the network inspection with Chrome DevTools.
 
@@ -1351,7 +1382,7 @@ added: v20.0.0
 > Stability: 1 - Experimental
 
 Use this flag to generate a blob that can be injected into the Node.js
-binary to produce a [single executable application][]. See the documentation
+binary to produce a [single executable application][single executable application]. See the documentation
 about [this configuration][`--experimental-sea-config`] for details.
 
 ### `--experimental-shadow-realm`
@@ -1362,7 +1393,7 @@ added:
   - v18.13.0
 -->
 
-Use this flag to enable [ShadowRealm][] support.
+Use this flag to enable [ShadowRealm][ShadowRealm] support.
 
 ### `--experimental-storage-inspection`
 
@@ -1383,7 +1414,7 @@ added: v25.9.0
 
 > Stability: 1 - Experimental
 
-Enable the experimental [`node:stream/iter`][] module.
+Enable the experimental [`node:stream/iter`][`node:stream/iter`] module.
 
 ### `--experimental-test-coverage`
 
@@ -1400,6 +1431,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.1.0, v18.17.0 | Эту опцию можно использовать с --test. |
@@ -1407,7 +1439,7 @@ changes:
 When used in conjunction with the `node:test` module, a code coverage report is
 generated as part of the test runner output. If no tests are run, a coverage
 report is not generated. See the documentation on
-[collecting code coverage from tests][] for more details.
+[collecting code coverage from tests][collecting code coverage from tests] for more details.
 
 ### `--experimental-test-module-mocks`
 
@@ -1426,15 +1458,17 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
 
-> Stability: 1.0 - Early development
+> Стабильность: 1.0 - Ранняя разработка
 
-Enable module mocking in the test runner.
+Включает подмену модулей в средстве запуска тестов.
 
-This feature requires `--allow-worker` if used with the [Permission Model][].
+Для использования этой возможности с [моделью разрешений][Permission Model]
+требуется `--allow-worker`.
 
 ### `--experimental-vm-modules`
 
@@ -1464,6 +1498,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0, v18.17.0 | Этот параметр больше не требуется, поскольку WASI включен по умолчанию, но его все равно можно передать. |
@@ -1491,10 +1526,10 @@ added:
   - v20.18.0
 -->
 
-> Stability: 1 - Experimental. This flag is inherited from V8 and is subject to
-> change upstream.
+> Стабильность: 1 - Экспериментальная. Этот флаг унаследован от V8 и может
+> измениться в upstream.
 
-This flag will expose the gc extension from V8.
+Этот флаг делает доступным расширение `gc` из V8.
 
 ```js
 if (globalThis.gc) {
@@ -1508,7 +1543,7 @@ if (globalThis.gc) {
 added: v12.12.0
 -->
 
-Disable loading native addons that are not [context-aware][].
+Disable loading native addons that are not [context-aware][context-aware].
 
 ### `--force-fips`
 
@@ -1548,7 +1583,7 @@ Only the root context is supported. There is no guarantee that
 under this flag.
 
 To allow polyfills to be added,
-[`--require`][] and [`--import`][] both run before freezing intrinsics.
+[`--require`][`--require`] and [`--import`][`--import`] both run before freezing intrinsics.
 
 ### `--heap-prof`
 
@@ -1565,6 +1600,7 @@ changes:
 Добавлено в: v12.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
@@ -1599,15 +1635,16 @@ changes:
 Добавлено в: v12.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
 
-Specify the directory where the heap profiles generated by `--heap-prof` will
-be placed.
+Указывает каталог, в который будут помещаться профили кучи, созданные с
+помощью `--heap-prof`.
 
-The default value is controlled by the
-[`--diagnostic-dir`][] command-line option.
+Значение по умолчанию задаётся параметром командной строки
+[`--diagnostic-dir`][`--diagnostic-dir`].
 
 ### `--heap-prof-interval`
 
@@ -1624,6 +1661,7 @@ changes:
 Добавлено в: v12.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
@@ -1646,6 +1684,7 @@ changes:
 Добавлено в: v12.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
@@ -1668,6 +1707,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0, v24.13.1, v22.22.1 | Флаг больше не является экспериментальным. |
@@ -1737,8 +1777,8 @@ Heap.20190718.133405.15554.0.001.heapsnapshot
 added: v0.1.3
 -->
 
-Print node command-line options.
-The output of this option is less detailed than this document.
+Выводит параметры командной строки `node`.
+Вывод этой опции менее подробен, чем этот документ.
 
 ### `--icu-data-dir=file`
 
@@ -1746,7 +1786,7 @@ The output of this option is less detailed than this document.
 added: v0.11.15
 -->
 
-Specify ICU data load path. (Overrides `NODE_ICU_DATA`.)
+Указывает путь загрузки данных ICU. (Переопределяет `NODE_ICU_DATA`.)
 
 ### `--import=module`
 
@@ -1760,10 +1800,10 @@ added:
 
 Preload the specified module at startup. If the flag is provided several times,
 each module will be executed sequentially in the order they appear, starting
-with the ones provided in [`NODE_OPTIONS`][].
+with the ones provided in [`NODE_OPTIONS`][`NODE_OPTIONS`].
 
-Follows [ECMAScript module][] resolution rules.
-Use [`--require`][] to load a [CommonJS module][].
+Follows [ECMAScript module][ECMAScript module] resolution rules.
+Use [`--require`][`--require`] to load a [CommonJS module][CommonJS module].
 Modules preloaded with `--require` will run before modules preloaded with `--import`.
 
 Modules are preloaded into the main thread as well as any worker threads,
@@ -1789,34 +1829,41 @@ changes:
 Добавлено в: v12.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.6.0, v22.18.0 | Добавить поддержку значений `-typescript`. |
     | v22.7.0, v20.19.0 | Обнаружение синтаксиса ESM включено по умолчанию. |
 
-This configures Node.js to interpret `--eval` or `STDIN` input as CommonJS or
-as an ES module. Valid values are `"commonjs"`, `"module"`, `"module-typescript"` and `"commonjs-typescript"`.
-The `"-typescript"` values are not available with the flag `--no-strip-types`.
-The default is no value, or `"commonjs"` if `--no-experimental-detect-module` is passed.
+Этот параметр указывает Node.js интерпретировать ввод из `--eval` или `STDIN`
+как CommonJS либо как ES-модуль. Допустимые значения:
+`"commonjs"`, `"module"`, `"module-typescript"` и
+`"commonjs-typescript"`.
+Значения с `"-typescript"` недоступны при использовании флага
+`--no-strip-types`.
+По умолчанию значение не задано, либо используется `"commonjs"`, если передан
+`--no-experimental-detect-module`.
 
-If `--input-type` is not provided,
-Node.js will try to detect the syntax with the following steps:
+Если `--input-type` не указан, Node.js попытается определить синтаксис
+следующим образом:
 
-1. Run the input as CommonJS.
-2. If step 1 fails, run the input as an ES module.
-3. If step 2 fails with a SyntaxError, strip the types.
-4. If step 3 fails with an error code [`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`][]
-   or [`ERR_INVALID_TYPESCRIPT_SYNTAX`][],
-   throw the error from step 2, including the TypeScript error in the message,
-   else run as CommonJS.
-5. If step 4 fails, run the input as an ES module.
+1. Запустить ввод как CommonJS.
+2. Если шаг 1 завершился неудачей, запустить ввод как ES-модуль.
+3. Если шаг 2 завершился с `SyntaxError`, удалить типы.
+4. Если шаг 3 завершился с кодом ошибки
+   [`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`][`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`]
+   или [`ERR_INVALID_TYPESCRIPT_SYNTAX`][`ERR_INVALID_TYPESCRIPT_SYNTAX`],
+   выбросить ошибку из шага 2, включив в сообщение ошибку TypeScript,
+   иначе выполнить как CommonJS.
+5. Если шаг 4 завершился неудачей, выполнить ввод как ES-модуль.
 
-To avoid the delay of multiple syntax detection passes, the `--input-type=type` flag can be used to specify
-how the `--eval` input should be interpreted.
+Чтобы избежать задержки из-за нескольких проходов определения синтаксиса, можно
+использовать флаг `--input-type=type`, чтобы явно указать, как следует
+интерпретировать ввод `--eval`.
 
-The REPL does not support this option. Usage of `--input-type=module` with
-[`--print`][] will throw an error, as `--print` does not support ES module
-syntax.
+REPL не поддерживает этот параметр. Использование `--input-type=module`
+совместно с [`--print`][`--print`] приведёт к ошибке, так как `--print` не
+поддерживает синтаксис ES-модулей.
 
 ### `--insecure-http-parser`
 
@@ -1827,23 +1874,23 @@ added:
  - v10.19.0
 -->
 
-Enable leniency flags on the HTTP parser. This may allow
-interoperability with non-conformant HTTP implementations.
+Включает флаги более мягкой обработки в HTTP-парсере. Это может обеспечить
+совместимость с не полностью корректными HTTP-реализациями.
 
-When enabled, the parser will accept the following:
+При включении парсер будет принимать следующее:
 
-* Invalid HTTP headers values.
-* Invalid HTTP versions.
-* Allow message containing both `Transfer-Encoding`
-  and `Content-Length` headers.
-* Allow extra data after message when `Connection: close` is present.
-* Allow extra transfer encodings after `chunked` has been provided.
-* Allow `\n` to be used as token separator instead of `\r\n`.
-* Allow `\r\n` not to be provided after a chunk.
-* Allow spaces to be present after a chunk size and before `\r\n`.
+* недопустимые значения HTTP-заголовков;
+* недопустимые версии HTTP;
+* сообщения, содержащие одновременно заголовки `Transfer-Encoding`
+  и `Content-Length`;
+* дополнительные данные после сообщения при наличии `Connection: close`;
+* дополнительные transfer-encoding после уже указанного `chunked`;
+* использование `\n` в качестве разделителя токенов вместо `\r\n`;
+* отсутствие `\r\n` после чанка;
+* наличие пробелов после размера чанка и перед `\r\n`.
 
-All the above will expose your application to request smuggling
-or poisoning attack. Avoid using this option.
+Всё перечисленное выше делает приложение уязвимым к атакам request smuggling
+или poisoning. Избегайте использования этого параметра.
 
 ### `--inspect-brk[=[host:]port]`
 
@@ -1855,9 +1902,9 @@ Activate inspector on `host:port` and break at start of user script.
 Default `host:port` is `127.0.0.1:9229`. If port `0` is specified,
 a random available port will be used.
 
-See [V8 Inspector integration for Node.js][] for further explanation on Node.js debugger.
+See [V8 Inspector integration for Node.js][V8 Inspector integration for Node.js] for further explanation on Node.js debugger.
 
-See the [security warning][] below regarding the `host`
+See the [security warning][security warning] below regarding the `host`
 parameter usage.
 
 ### `--inspect-port=[host:]port`
@@ -1866,15 +1913,15 @@ parameter usage.
 added: v7.6.0
 -->
 
-Set the `host:port` to be used when the inspector is activated.
-Useful when activating the inspector by sending the `SIGUSR1` signal.
-Except when [`--disable-sigusr1`][] is passed.
+Задаёт `host:port`, которые будут использоваться при активации инспектора.
+Полезно при активации инспектора отправкой сигнала `SIGUSR1`,
+кроме случаев, когда передан [`--disable-sigusr1`][`--disable-sigusr1`].
 
-Default host is `127.0.0.1`. If port `0` is specified,
-a random available port will be used.
+Хост по умолчанию: `127.0.0.1`. Если указан порт `0`,
+будет использован случайный доступный порт.
 
-See the [security warning][] below regarding the `host`
-parameter usage.
+Ознакомьтесь с приведённым ниже [предупреждением о безопасности][security warning]
+относительно использования параметра `host`.
 
 ### `--inspect-publish-uid=stderr,http`
 
@@ -1895,9 +1942,9 @@ Activate inspector on `host:port` and wait for debugger to be attached.
 Default `host:port` is `127.0.0.1:9229`. If port `0` is specified,
 a random available port will be used.
 
-See [V8 Inspector integration for Node.js][] for further explanation on Node.js debugger.
+See [V8 Inspector integration for Node.js][V8 Inspector integration for Node.js] for further explanation on Node.js debugger.
 
-See the [security warning][] below regarding the `host`
+See the [security warning][security warning] below regarding the `host`
 parameter usage.
 
 ### `--inspect[=[host:]port]`
@@ -1911,18 +1958,16 @@ specified, a random available port will be used.
 
 V8 inspector integration allows tools such as Chrome DevTools and IDEs to debug
 and profile Node.js instances. The tools attach to Node.js instances via a
-tcp port and communicate using the [Chrome DevTools Protocol][].
-See [V8 Inspector integration for Node.js][] for further explanation on Node.js debugger.
+tcp port and communicate using the [Chrome DevTools Protocol][Chrome DevTools Protocol].
+See [V8 Inspector integration for Node.js][V8 Inspector integration for Node.js] for further explanation on Node.js debugger.
 
 <!-- Anchor to make sure old links find a target -->
 
-<a id="inspector_security"></a>
-
-#### Warning: binding inspector to a public IP:port combination is insecure
+#### Warning: binding inspector to a public IP:port combination is insecure {#inspector_security}
 
 Binding the inspector to a public IP (including `0.0.0.0`) with an open port is
 insecure, as it allows external hosts to connect to the inspector and perform
-a [remote code execution][] attack.
+a [remote code execution][remote code execution] attack.
 
 If specifying a host, make sure that either:
 
@@ -1932,7 +1977,7 @@ If specifying a host, make sure that either:
 **More specifically, `--inspect=0.0.0.0` is insecure if the port (`9229` by
 default) is not firewall-protected.**
 
-See the [debugging security implications][] section for more information.
+See the [debugging security implications][debugging security implications] section for more information.
 
 ### `-i`, `--interactive`
 
@@ -1961,11 +2006,11 @@ surface on other platforms, but the performance impact may be severe.
 added: v22.4.0
 -->
 
-> Stability: 1.2 - Release candidate.
+> Стабильность: 1.2 - Кандидат на выпуск.
 
-The file used to store `localStorage` data. If the file does not exist, it is
-created the first time `localStorage` is accessed. The same file may be shared
-between multiple Node.js processes concurrently.
+Файл, используемый для хранения данных `localStorage`. Если файл не существует,
+он создаётся при первом обращении к `localStorage`. Один и тот же файл может
+одновременно использоваться несколькими процессами Node.js.
 
 ### `--max-http-header-size=size`
 
@@ -1980,22 +2025,24 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.13.0 | Измените максимальный размер HTTP-заголовков по умолчанию с 8 КБ до 16 КБ. |
 
-Specify the maximum size, in bytes, of HTTP headers. Defaults to 16 KiB.
+Указывает максимальный размер HTTP-заголовков в байтах. По умолчанию: 16 KiB.
 
 ### `--max-old-space-size-percentage=percentage`
 
-Sets the maximum memory size of V8's old memory section as a percentage of available system memory.
-This flag takes precedence over `--max-old-space-size` when both are specified.
+Устанавливает максимальный размер старой области памяти V8 как процент от
+доступной системной памяти.
+Этот флаг имеет приоритет над `--max-old-space-size`, если указаны оба.
 
-The `percentage` parameter must be a number greater than 0 and up to 100, representing the percentage
-of available system memory to allocate to the V8 heap.
+Параметр `percentage` должен быть числом больше 0 и не больше 100 и задаёт
+процент доступной системной памяти, выделяемой под кучу V8.
 
-**Note:** This flag utilizes `--max-old-space-size`, which may be unreliable on 32-bit platforms due to
-integer overflow issues.
+**Примечание:** Этот флаг использует `--max-old-space-size`, который может быть
+ненадёжен на 32-битных платформах из-за переполнения целых чисел.
 
 ```bash
 # Using 50% of available system memory
@@ -2011,7 +2058,7 @@ node --max-old-space-size-percentage=75 index.js
 added: v7.10.0
 -->
 
-This option is a no-op. It is kept for compatibility.
+Этот параметр ничего не делает. Он сохранён для совместимости.
 
 ### `--network-family-autoselection-attempt-timeout`
 
@@ -2021,8 +2068,10 @@ added:
   - v20.13.0
 -->
 
-Sets the default value for the network family autoselection attempt timeout.
-For more information, see [`net.getDefaultAutoSelectFamilyAttemptTimeout()`][].
+Задаёт значение по умолчанию для тайм-аута попытки автоподбора сетевого
+семейства.
+Подробнее см. в
+[`net.getDefaultAutoSelectFamilyAttemptTimeout()`][`net.getDefaultAutoSelectFamilyAttemptTimeout()`].
 
 ### `--no-addons`
 
@@ -2042,7 +2091,7 @@ requiring a native C++ addon will fail and throw an exception.
 added: v24.0.0
 -->
 
-Disables the use of [`AsyncLocalStorage`][] backed by `AsyncContextFrame` and
+Disables the use of [`AsyncLocalStorage`][`AsyncLocalStorage`] backed by `AsyncContextFrame` and
 uses the prior implementation which relied on async\_hooks. The previous model
 is retained for compatibility with Electron and for cases where the context
 flow may differ. However, if a difference in flow is found please report it.
@@ -2070,11 +2119,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.7.0, v20.19.0 | Обнаружение синтаксиса включено по умолчанию. |
 
-Disable using [syntax detection][] to determine module type.
+Disable using [syntax detection][syntax detection] to determine module type.
 
 ### `--no-experimental-global-navigator`
 
@@ -2084,7 +2134,7 @@ added: v21.2.0
 
 > Stability: 1 - Experimental
 
-Disable exposition of [Navigator API][] on the global scope.
+Disable exposition of [Navigator API][Navigator API] on the global scope.
 
 ### `--no-experimental-repl-await`
 
@@ -2115,14 +2165,15 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Флаг был переименован с `--no-experimental-require-module` на `--no-require-module`, причем первый флаг помечен как устаревший. |
     | v23.0.0, v22.12.0, v20.19.0 | Теперь это ложь по умолчанию. |
 
-> Stability: 3 - Legacy: Use [`--no-require-module`][] instead.
+> Stability: 3 - Legacy: Use [`--no-require-module`][`--no-require-module`] instead.
 
-Legacy alias for [`--no-require-module`][].
+Legacy alias for [`--no-require-module`][`--no-require-module`].
 
 ### `--no-experimental-sqlite`
 
@@ -2139,11 +2190,12 @@ changes:
 Добавлено в: v22.5.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.4.0, v22.13.0 | SQLite не помечен, но все еще является экспериментальным. |
 
-Disable the experimental [`node:sqlite`][] module.
+Disable the experimental [`node:sqlite`][`node:sqlite`] module.
 
 ### `--no-experimental-websocket`
 
@@ -2166,13 +2218,14 @@ changes:
 Добавлено в: v22.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.0.0 | Теперь эта функция включена по умолчанию. |
 
 > Stability: 1.2 - Release candidate.
 
-Disable [`Web Storage`][] support.
+Disable [`Web Storage`][`Web Storage`] support.
 
 ### `--no-extra-info-on-fatal-exception`
 
@@ -2215,6 +2268,7 @@ changes:
 Добавлено в: v19.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Флаг был переименован с --no-enable-network-family-autoselection` на `--no-network-family-autoselection`. Старое имя по-прежнему может работать как псевдоним. |
@@ -2222,9 +2276,7 @@ changes:
 Disables the family autoselection algorithm unless connection options explicitly
 enables it.
 
-<a id="--experimental-require-module"></a>
-
-### `--no-require-module`
+### `--no-require-module` {#--experimental-require-module}
 
 <!-- YAML
 added:
@@ -2249,6 +2301,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Этот флаг больше не является экспериментальным. |
@@ -2257,7 +2310,7 @@ changes:
 
 Disable support for loading a synchronous ES module graph in `require()`.
 
-See [Loading ECMAScript modules using `require()`][].
+See [Loading ECMAScript modules using `require()`][Loading ECMAScript modules using `require()`].
 
 ### `--no-strip-types`
 
@@ -2280,13 +2333,14 @@ changes:
 Добавлено в: v22.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.2.0, v24.12.0 | Удаление типов теперь стабильно, флаг был переименован с `--no-experimental-strip-types` на `--no-strip-types`. |
     | v23.6.0, v22.18.0 | Удаление типов включено по умолчанию. |
 
 Disable type-stripping for TypeScript files.
-For more information, see the [TypeScript type-stripping][] documentation.
+For more information, see the [TypeScript type-stripping][TypeScript type-stripping] documentation.
 
 ### `--no-warnings`
 
@@ -2337,14 +2391,15 @@ added:
   - v14.21.0
 -->
 
-Enable OpenSSL default configuration section, `openssl_conf` to be read from
-the OpenSSL configuration file. The default configuration file is named
-`openssl.cnf` but this can be changed using the environment variable
-`OPENSSL_CONF`, or by using the command line option `--openssl-config`.
-The location of the default OpenSSL configuration file depends on how OpenSSL
-is being linked to Node.js. Sharing the OpenSSL configuration may have unwanted
-implications and it is recommended to use a configuration section specific to
-Node.js which is `nodejs_conf` and is default when this option is not used.
+Включает чтение раздела конфигурации OpenSSL по умолчанию `openssl_conf` из
+конфигурационного файла OpenSSL. Файл конфигурации по умолчанию называется
+`openssl.cnf`, но это можно изменить с помощью переменной окружения
+`OPENSSL_CONF` или параметра командной строки `--openssl-config`.
+Расположение конфигурационного файла OpenSSL по умолчанию зависит от того,
+каким образом OpenSSL подключён к Node.js. Совместное использование
+конфигурации OpenSSL может иметь нежелательные последствия, поэтому
+рекомендуется использовать специфичный для Node.js раздел `nodejs_conf`,
+который и применяется по умолчанию, если этот параметр не используется.
 
 ### `--pending-deprecation`
 
@@ -2352,14 +2407,15 @@ Node.js which is `nodejs_conf` and is default when this option is not used.
 added: v8.0.0
 -->
 
-Emit pending deprecation warnings.
+Выводит ожидающие предупреждения об устаревании.
 
-Pending deprecations are generally identical to a runtime deprecation with the
-notable exception that they are turned _off_ by default and will not be emitted
-unless either the `--pending-deprecation` command-line flag, or the
-`NODE_PENDING_DEPRECATION=1` environment variable, is set. Pending deprecations
-are used to provide a kind of selective "early warning" mechanism that
-developers may leverage to detect deprecated API usage.
+Ожидающие предупреждения об устаревании в целом идентичны предупреждениям
+времени выполнения, за исключением того, что по умолчанию они _выключены_ и не
+выводятся, если не установлен либо флаг командной строки
+`--pending-deprecation`, либо переменная окружения
+`NODE_PENDING_DEPRECATION=1`. Они служат своего рода выборочным механизмом
+"раннего предупреждения", который разработчики могут использовать для
+обнаружения применения устаревших API.
 
 ### `--permission`
 
@@ -2376,6 +2432,7 @@ changes:
 Добавлено в: v20.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.5.0, v22.13.0 | Модель разрешений теперь стабильна. |
@@ -2384,12 +2441,12 @@ Enable the Permission Model for current process. When enabled, the
 following permissions are restricted:
 
 * File System - manageable through
-  [`--allow-fs-read`][], [`--allow-fs-write`][] flags
-* Network - manageable through [`--allow-net`][] flag
-* Child Process - manageable through [`--allow-child-process`][] flag
-* Worker Threads - manageable through [`--allow-worker`][] flag
-* WASI - manageable through [`--allow-wasi`][] flag
-* Addons - manageable through [`--allow-addons`][] flag
+  [`--allow-fs-read`][`--allow-fs-read`], [`--allow-fs-write`][`--allow-fs-write`] flags
+* Network - manageable through [`--allow-net`][`--allow-net`] flag
+* Child Process - manageable through [`--allow-child-process`][`--allow-child-process`] flag
+* Worker Threads - manageable through [`--allow-worker`][`--allow-worker`] flag
+* WASI - manageable through [`--allow-wasi`][`--allow-wasi`] flag
+* Addons - manageable through [`--allow-addons`][`--allow-addons`] flag
 
 ### `--permission-audit`
 
@@ -2432,19 +2489,20 @@ be thrown if `moduleA` attempts to require `moduleB` as a peer dependency:
      └── package.json
 ```
 
-The `--preserve-symlinks` command-line flag instructs Node.js to use the
-symlink path for modules as opposed to the real path, allowing symbolically
-linked peer dependencies to be found.
+Флаг командной строки `--preserve-symlinks` заставляет Node.js использовать для
+модулей путь символьной ссылки вместо реального пути, что позволяет находить
+peer-зависимости, подключённые через символьные ссылки.
 
-Note, however, that using `--preserve-symlinks` can have other side effects.
-Specifically, symbolically linked _native_ modules can fail to load if those
-are linked from more than one location in the dependency tree (Node.js would
-see those as two separate modules and would attempt to load the module multiple
-times, causing an exception to be thrown).
+Однако использование `--preserve-symlinks` может иметь и другие побочные
+эффекты. В частности, подключённые через символьные ссылки _нативные_ модули
+могут не загрузиться, если на них есть ссылки более чем из одного места в
+дереве зависимостей (Node.js увидит их как два отдельных модуля и попытается
+загрузить модуль несколько раз, что приведёт к исключению).
 
-The `--preserve-symlinks` flag does not apply to the main module, which allows
-`node --preserve-symlinks node_module/.bin/<foo>` to work. To apply the same
-behavior for the main module, also use `--preserve-symlinks-main`.
+Флаг `--preserve-symlinks` не применяется к главному модулю, благодаря чему
+команда `node --preserve-symlinks node_module/.bin/<foo>` работает. Чтобы
+применить такое же поведение к главному модулю, используйте также
+`--preserve-symlinks-main`.
 
 ### `--preserve-symlinks-main`
 
@@ -2452,19 +2510,20 @@ behavior for the main module, also use `--preserve-symlinks-main`.
 added: v10.2.0
 -->
 
-Instructs the module loader to preserve symbolic links when resolving and
-caching the main module (`require.main`).
+Указывает загрузчику модулей сохранять символьные ссылки при разрешении и
+кэшировании главного модуля (`require.main`).
 
-This flag exists so that the main module can be opted-in to the same behavior
-that `--preserve-symlinks` gives to all other imports; they are separate flags,
-however, for backward compatibility with older Node.js versions.
+Этот флаг существует для того, чтобы главный модуль можно было перевести в тот
+же режим поведения, который `--preserve-symlinks` даёт всем остальным
+импортам; однако это отдельные флаги для обратной совместимости со старыми
+версиями Node.js.
 
 `--preserve-symlinks-main` does not imply `--preserve-symlinks`; use
 `--preserve-symlinks-main` in addition to
 `--preserve-symlinks` when it is not desirable to follow symlinks before
 resolving relative paths.
 
-See [`--preserve-symlinks`][] for more information.
+See [`--preserve-symlinks`][`--preserve-symlinks`] for more information.
 
 ### `-p`, `--print "script"`
 
@@ -2479,6 +2538,7 @@ changes:
 Добавлено в: v0.6.4
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v5.11.0 | Встроенные библиотеки теперь доступны как предопределенные переменные. |
@@ -2509,12 +2569,12 @@ added: v8.0.0
 
 Write process warnings to the given file instead of printing to stderr. The
 file will be created if it does not exist, and will be appended to if it does.
-If an error occurs while attempting to write the warning to the file, the
-warning will be written to stderr instead.
+Если при попытке записать предупреждение в файл произойдёт ошибка,
+предупреждение будет записано в `stderr`.
 
-The `file` name may be an absolute path. If it is not, the default directory it
-will be written to is controlled by the
-[`--diagnostic-dir`][] command-line option.
+Имя `file` может быть абсолютным путём. Если это не так, каталог по умолчанию,
+в который будет выполнена запись, задаётся параметром командной строки
+[`--diagnostic-dir`][`--diagnostic-dir`].
 
 ### `--report-compact`
 
@@ -2524,9 +2584,9 @@ added:
  - v12.17.0
 -->
 
-Write reports in a compact format, single-line JSON, more easily consumable
-by log processing systems than the default multi-line format designed for
-human consumption.
+Записывает отчёты в компактном формате, как однострочный JSON, который проще
+обрабатывать системам обработки логов, чем формат по умолчанию из нескольких
+строк, рассчитанный на чтение человеком.
 
 ### `--report-dir=directory`, `--report-directory=directory`
 
@@ -2547,12 +2607,13 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.12.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | Изменено с `--diagnostic-report-directory` на `--report-directory`. |
 
-Location at which the report will be generated.
+Каталог, в котором будет создан отчёт.
 
 ### `--report-exclude-env`
 
@@ -2562,8 +2623,8 @@ added:
   - v22.13.0
 -->
 
-When `--report-exclude-env` is passed the diagnostic report generated will not
-contain the `environmentVariables` data.
+Если передан `--report-exclude-env`, сгенерированный диагностический отчёт не
+будет содержать данные `environmentVariables`.
 
 ### `--report-exclude-network`
 
@@ -2573,8 +2634,8 @@ added:
   - v20.13.0
 -->
 
-Exclude `header.networkInterfaces` from the diagnostic report. By default
-this is not set and the network interfaces are included.
+Исключает `header.networkInterfaces` из диагностического отчёта. По умолчанию
+этот параметр не задан, и сетевые интерфейсы включаются.
 
 ### `--report-filename=filename`
 
@@ -2595,15 +2656,16 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.12.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | изменен с `--diagnostic-report-filename` на `--report-filename`. |
 
-Name of the file to which the report will be written.
+Имя файла, в который будет записан отчёт.
 
-If the filename is set to `'stdout'` or `'stderr'`, the report is written to
-the stdout or stderr of the process respectively.
+Если имя файла задано как `'stdout'` или `'stderr'`, отчёт записывается
+соответственно в `stdout` или `stderr` процесса.
 
 ### `--report-on-fatalerror`
 
@@ -2625,16 +2687,17 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v14.0.0, v13.14.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | изменен с `--diagnostic-report-on-fatalerror` на `--report-on-fatalerror`. |
 
-Enables the report to be triggered on fatal errors (internal errors within
-the Node.js runtime such as out of memory) that lead to termination of the
-application. Useful to inspect various diagnostic data elements such as heap,
-stack, event loop state, resource consumption etc. to reason about the fatal
-error.
+Включает генерацию отчёта при фатальных ошибках (внутренних ошибках среды
+выполнения Node.js, например нехватке памяти), приводящих к завершению
+приложения. Полезно для просмотра различных диагностических данных: кучи,
+стека, состояния цикла событий, потребления ресурсов и т. д., чтобы понять
+причину фатальной ошибки.
 
 ### `--report-on-signal`
 
@@ -2655,14 +2718,15 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.12.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | изменен с `--diagnostic-report-on-signal` на `--report-on-signal`. |
 
-Enables report to be generated upon receiving the specified (or predefined)
-signal to the running Node.js process. The signal to trigger the report is
-specified through `--report-signal`.
+Включает генерацию отчёта при получении указанного (или предопределённого)
+сигнала запущенным процессом Node.js. Сигнал для запуска отчёта задаётся
+через `--report-signal`.
 
 ### `--report-signal=signal`
 
@@ -2683,13 +2747,14 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.12.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | изменен с `--diagnostic-report-signal` на `--report-signal`. |
 
-Sets or resets the signal for report generation (not supported on Windows).
-Default signal is `SIGUSR2`.
+Устанавливает или сбрасывает сигнал для генерации отчёта (не поддерживается в
+Windows). Сигнал по умолчанию: `SIGUSR2`.
 
 ### `--report-uncaught-exception`
 
@@ -2715,15 +2780,16 @@ changes:
 Добавлено в: v11.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.8.0, v16.18.0 | Отчет не создается, если неперехваченное исключение обработано. |
     | v13.12.0, v12.17.0 | Этот вариант больше не является экспериментальным. |
     | v12.0.0 | изменено с `--diagnostic-report-uncaught-Exception` на `--report-uncaught-Exception`. |
 
-Enables report to be generated when the process exits due to an uncaught
-exception. Useful when inspecting the JavaScript stack in conjunction with
-native stack and other runtime environment data.
+Включает генерацию отчёта при завершении процесса из-за неперехваченного
+исключения. Полезно при анализе стека JavaScript вместе с нативным стеком и
+другими данными среды выполнения.
 
 ### `-r`, `--require module`
 
@@ -2741,19 +2807,21 @@ changes:
 Добавлено в: v1.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0, v22.12.0, v20.19.0 | Эта опция также поддерживает модуль ECMAScript. |
 
-Preload the specified module at startup.
+Предзагружает указанный модуль при запуске.
 
-Follows `require()`'s module resolution
-rules. `module` may be either a path to a file, or a node module name.
+Следует правилам разрешения модулей `require()`. `module` может быть либо
+путём к файлу, либо именем модуля Node.js.
 
-Modules preloaded with `--require` will run before modules preloaded with `--import`.
+Модули, предзагруженные с помощью `--require`, выполняются раньше модулей,
+предзагруженных с помощью `--import`.
 
-Modules are preloaded into the main thread as well as any worker threads,
-forked processes, or clustered processes.
+Модули предзагружаются в основной поток, а также в любые потоки worker,
+порождённые процессы или процессы кластера.
 
 ### `--run`
 
@@ -2776,59 +2844,59 @@ changes:
 Добавлено в: v22.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.3.0 | Добавлена ​​переменная среды NODE_RUN_SCRIPT_NAME. |
     | v22.3.0 | Добавлена ​​переменная среды NODE_RUN_PACKAGE_JSON_PATH. |
     | v22.3.0 | Перемещается в корневой каталог, находит файл package.json для запуска команды и соответствующим образом обновляет переменную среды PATH. |
 
-This runs a specified command from a package.json's `"scripts"` object.
-If a missing `"command"` is provided, it will list the available scripts.
+Запускает указанную команду из объекта `"scripts"` в `package.json`.
+Если передана отсутствующая `"command"`, будет показан список доступных
+скриптов.
 
-`--run` will traverse up to the root directory and finds a `package.json`
-file to run the command from.
+`--run` поднимается вверх до корневого каталога и находит файл `package.json`,
+из которого нужно запустить команду.
 
-`--run` prepends `./node_modules/.bin` for each ancestor of
-the current directory, to the `PATH` in order to execute the binaries from
-different folders where multiple `node_modules` directories are present, if
-`ancestor-folder/node_modules/.bin` is a directory.
+`--run` добавляет `./node_modules/.bin` для каждого родительского каталога
+текущего каталога в `PATH`, чтобы можно было выполнять бинарные файлы из
+разных папок, когда присутствует несколько каталогов `node_modules`, если
+`ancestor-folder/node_modules/.bin` является каталогом.
 
-`--run` executes the command in the directory containing the related `package.json`.
+`--run` выполняет команду в каталоге, содержащем соответствующий `package.json`.
 
-For example, the following command will run the `test` script of
-the `package.json` in the current folder:
+Например, следующая команда запустит скрипт `test` из `package.json`
+в текущей папке:
 
 ```console
 $ node --run test
 ```
 
-You can also pass arguments to the command. Any argument after `--` will
-be appended to the script:
+Команде также можно передавать аргументы. Любой аргумент после `--` будет
+добавлен к скрипту:
 
 ```console
 $ node --run test -- --verbose
 ```
 
-#### Intentional limitations
+#### Намеренные ограничения
 
-`node --run` is not meant to match the behaviors of `npm run` or of the `run`
-commands of other package managers. The Node.js implementation is intentionally
-more limited, in order to focus on top performance for the most common use
-cases.
-Some features of other `run` implementations that are intentionally excluded
-are:
+`node --run` не предназначен для полного повторения поведения `npm run` или
+команд `run` других менеджеров пакетов. Реализация в Node.js намеренно более
+ограничена, чтобы сосредоточиться на максимальной производительности для самых
+частых сценариев использования.
+Некоторые возможности других реализаций `run`, которые намеренно исключены:
 
-* Running `pre` or `post` scripts in addition to the specified script.
-* Defining package manager-specific environment variables.
+* Запуск `pre`- или `post`-скриптов помимо указанного скрипта.
+* Определение переменных окружения, специфичных для менеджера пакетов.
 
-#### Environment variables
+#### Переменные окружения
 
-The following environment variables are set when running a script with `--run`:
+При запуске скрипта с `--run` устанавливаются следующие переменные окружения:
 
-* `NODE_RUN_SCRIPT_NAME`: The name of the script being run. For example, if
-  `--run` is used to run `test`, the value of this variable will be `test`.
-* `NODE_RUN_PACKAGE_JSON_PATH`: The path to the `package.json` that is being
-  processed.
+* `NODE_RUN_SCRIPT_NAME`: имя запускаемого скрипта. Например, если `--run`
+  используется для запуска `test`, значением этой переменной будет `test`.
+* `NODE_RUN_PACKAGE_JSON_PATH`: путь к обрабатываемому `package.json`.
 
 ### `--secure-heap-min=n`
 
@@ -2836,10 +2904,10 @@ The following environment variables are set when running a script with `--run`:
 added: v15.6.0
 -->
 
-When using `--secure-heap`, the `--secure-heap-min` flag specifies the
-minimum allocation from the secure heap. The minimum value is `2`.
-The maximum value is the lesser of `--secure-heap` or `2147483647`.
-The value given must be a power of two.
+При использовании `--secure-heap` флаг `--secure-heap-min` задаёт минимальный
+размер выделения из защищённой кучи. Минимальное значение: `2`.
+Максимальное значение равно меньшему из `--secure-heap` и `2147483647`.
+Указанное значение должно быть степенью двойки.
 
 ### `--secure-heap=n`
 
@@ -2847,24 +2915,23 @@ The value given must be a power of two.
 added: v15.6.0
 -->
 
-Initializes an OpenSSL secure heap of `n` bytes. When initialized, the
-secure heap is used for selected types of allocations within OpenSSL
-during key generation and other operations. This is useful, for instance,
-to prevent sensitive information from leaking due to pointer overruns
-or underruns.
+Инициализирует защищённую кучу OpenSSL размером `n` байт. После инициализации
+она используется для некоторых типов выделения памяти внутри OpenSSL во время
+генерации ключей и других операций. Это, например, полезно для предотвращения
+утечки чувствительной информации из-за выхода указателей за границы буфера.
 
-The secure heap is a fixed size and cannot be resized at runtime so,
-if used, it is important to select a large enough heap to cover all
-application uses.
+Защищённая куча имеет фиксированный размер и не может быть изменена во время
+выполнения, поэтому при её использовании важно выбрать достаточно большой
+размер, чтобы покрыть все потребности приложения.
 
-The heap size given must be a power of two. Any value less than 2
-will disable the secure heap.
+Указанный размер кучи должен быть степенью двойки. Любое значение меньше 2
+отключит защищённую кучу.
 
-The secure heap is disabled by default.
+По умолчанию защищённая куча отключена.
 
-The secure heap is not available on Windows.
+Защищённая куча недоступна в Windows.
 
-See [`CRYPTO_secure_malloc_init`][] for more details.
+Подробнее см. [`CRYPTO_secure_malloc_init`][`CRYPTO_secure_malloc_init`].
 
 ### `--snapshot-blob=path`
 
@@ -2872,24 +2939,25 @@ See [`CRYPTO_secure_malloc_init`][] for more details.
 added: v18.8.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-When used with `--build-snapshot`, `--snapshot-blob` specifies the path
-where the generated snapshot blob is written to. If not specified, the
-generated blob is written to `snapshot.blob` in the current working directory.
+Вместе с `--build-snapshot` параметр `--snapshot-blob` задаёт путь, по
+которому записывается сгенерированный blob снимка. Если не указан,
+сгенерированный blob записывается в `snapshot.blob` в текущем рабочем
+каталоге.
 
-When used without `--build-snapshot`, `--snapshot-blob` specifies the
-path to the blob that is used to restore the application state.
+Без `--build-snapshot` параметр `--snapshot-blob` задаёт путь к blob,
+используемому для восстановления состояния приложения.
 
-When loading a snapshot, Node.js checks that:
+При загрузке снимка Node.js проверяет, что:
 
-1. The version, architecture, and platform of the running Node.js binary
-   are exactly the same as that of the binary that generates the snapshot.
-2. The V8 flags and CPU features are compatible with that of the binary
-   that generates the snapshot.
+1. Версия, архитектура и платформа запущенного бинарника Node.js в точности
+   совпадают с теми, что у бинарника, сгенерировавшего снимок.
+2. Флаги V8 и возможности CPU совместимы с бинарником, сгенерировавшим
+   снимок.
 
-If they don't match, Node.js refuses to load the snapshot and exits with
-status code 1.
+Если условия не выполняются, Node.js отказывается загружать снимок и
+завершается с кодом состояния 1.
 
 ### `--test`
 
@@ -2909,15 +2977,17 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
     | v19.2.0, v18.13.0 | Тест-раннер теперь поддерживает работу в режиме просмотра. |
 
-Starts the Node.js command line test runner. This flag cannot be combined with
-`--watch-path`, `--check`, `--eval`, `--interactive`, or the inspector.
-See the documentation on [running tests from the command line][]
-for more details.
+Запускает средство запуска тестов из командной строки Node.js. Этот флаг нельзя
+сочетать с `--watch-path`, `--check`, `--eval`, `--interactive` или
+инспектором.
+Подробнее см. документацию по
+[запуску тестов из командной строки][running tests from the command line].
 
 ### `--test-concurrency`
 
@@ -2928,10 +2998,10 @@ added:
   - v18.19.0
 -->
 
-The maximum number of test files that the test runner CLI will execute
-concurrently. If `--test-isolation` is set to `'none'`, this flag is ignored and
-concurrency is one. Otherwise, concurrency defaults to
-`os.availableParallelism() - 1`.
+Максимальное количество файлов тестов, которое CLI средства запуска тестов
+будет выполнять одновременно. Если `--test-isolation` установлен в `'none'`,
+этот флаг игнорируется, и параллелизм равен единице. В противном случае по
+умолчанию используется `os.availableParallelism() - 1`.
 
 ### `--test-coverage-branches=threshold`
 
@@ -2941,8 +3011,8 @@ added: v22.8.0
 
 > Stability: 1 - Experimental
 
-Require a minimum percent of covered branches. If code coverage does not reach
-the threshold specified, the process will exit with code `1`.
+Требует минимальный процент покрытия ветвей. Если покрытие кода не достигает
+указанного порога, процесс завершится с кодом `1`.
 
 ### `--test-coverage-exclude`
 
@@ -2953,16 +3023,18 @@ added:
 
 > Stability: 1 - Experimental
 
-Excludes specific files from code coverage using a glob pattern, which can match
-both absolute and relative file paths.
+Исключает определённые файлы из покрытия кода с помощью glob-шаблона, который
+может соответствовать как абсолютным, так и относительным путям файлов.
 
-This option may be specified multiple times to exclude multiple glob patterns.
+Этот параметр можно указывать несколько раз, чтобы исключить несколько
+glob-шаблонов.
 
-If both `--test-coverage-exclude` and `--test-coverage-include` are provided,
-files must meet **both** criteria to be included in the coverage report.
+Если указаны и `--test-coverage-exclude`, и `--test-coverage-include`,
+файлы должны соответствовать **обоим** критериям, чтобы попасть в отчёт о
+покрытии.
 
-By default all the matching test files are excluded from the coverage report.
-Specifying this option will override the default behavior.
+По умолчанию все подходящие файлы тестов исключаются из отчёта о покрытии.
+Указание этого параметра переопределяет поведение по умолчанию.
 
 ### `--test-coverage-functions=threshold`
 
@@ -2970,10 +3042,10 @@ Specifying this option will override the default behavior.
 added: v22.8.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-Require a minimum percent of covered functions. If code coverage does not reach
-the threshold specified, the process will exit with code `1`.
+Требует минимальный процент покрытия функций. Если покрытие кода не достигает
+указанного порога, процесс завершится с кодом `1`.
 
 ### `--test-coverage-include`
 
@@ -2982,15 +3054,17 @@ added:
   - v22.5.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-Includes specific files in code coverage using a glob pattern, which can match
-both absolute and relative file paths.
+Включает определённые файлы в покрытие кода с помощью glob-шаблона, который
+может соответствовать как абсолютным, так и относительным путям файлов.
 
-This option may be specified multiple times to include multiple glob patterns.
+Этот параметр можно указывать несколько раз, чтобы включить несколько
+glob-шаблонов.
 
-If both `--test-coverage-exclude` and `--test-coverage-include` are provided,
-files must meet **both** criteria to be included in the coverage report.
+Если указаны и `--test-coverage-exclude`, и `--test-coverage-include`,
+файлы должны соответствовать **обоим** критериям, чтобы попасть в отчёт о
+покрытии.
 
 ### `--test-coverage-lines=threshold`
 
@@ -2998,10 +3072,10 @@ files must meet **both** criteria to be included in the coverage report.
 added: v22.8.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-Require a minimum percent of covered lines. If code coverage does not reach
-the threshold specified, the process will exit with code `1`.
+Требует минимальный процент покрытия строк. Если покрытие кода не достигает
+указанного порога, процесс завершится с кодом `1`.
 
 ### `--test-force-exit`
 
@@ -3011,8 +3085,9 @@ added:
   - v20.14.0
 -->
 
-Configures the test runner to exit the process once all known tests have
-finished executing even if the event loop would otherwise remain active.
+Настраивает средство запуска тестов так, чтобы процесс завершался после
+выполнения всех известных тестов, даже если цикл обработки событий в противном
+случае оставался бы активным.
 
 ### `--test-global-setup=module`
 
@@ -3020,12 +3095,13 @@ finished executing even if the event loop would otherwise remain active.
 added: v24.0.0
 -->
 
-> Stability: 1.0 - Early development
+> Стабильность: 1.0 - Ранняя разработка
 
-Specify a module that will be evaluated before all tests are executed and
-can be used to setup global state or fixtures for tests.
+Указывает модуль, который будет вычислен до выполнения всех тестов и может
+использоваться для настройки глобального состояния или фикстур для тестов.
 
-See the documentation on [global setup and teardown][] for more details.
+Подробнее см. документацию по
+[глобальной настройке и завершению][global setup and teardown].
 
 ### `--test-isolation=mode`
 
@@ -3041,15 +3117,18 @@ changes:
 Добавлено в: v22.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.6.0 | Этот флаг был переименован с `--experimental-test-isolation` на `--test-isolation`. |
 
-Configures the type of test isolation used in the test runner. When `mode` is
-`'process'`, each test file is run in a separate child process. When `mode` is
-`'none'`, all test files run in the same process as the test runner. The default
-isolation mode is `'process'`. This flag is ignored if the `--test` flag is not
-present. See the [test runner execution model][] section for more information.
+Настраивает тип изоляции тестов, используемый средством запуска тестов. Когда
+`mode` имеет значение `'process'`, каждый файл теста запускается в отдельном
+дочернем процессе. Когда `mode` имеет значение `'none'`, все файлы тестов
+запускаются в том же процессе, что и средство запуска тестов. Режим изоляции
+по умолчанию - `'process'`. Этот флаг игнорируется, если флаг `--test`
+отсутствует. Подробнее см. раздел
+[модель выполнения средства запуска тестов][test runner execution model].
 
 ### `--test-name-pattern`
 
@@ -3064,16 +3143,18 @@ changes:
 Добавлено в: v18.11.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
 
-A regular expression that configures the test runner to only execute tests
-whose name matches the provided pattern. See the documentation on
-[filtering tests by name][] for more details.
+Регулярное выражение, настраивающее средство запуска тестов так, чтобы
+выполнялись только тесты, имя которых соответствует указанному шаблону.
+Подробнее см. в документации по
+[фильтрации тестов по имени][filtering tests by name].
 
-If both `--test-name-pattern` and `--test-skip-pattern` are supplied,
-tests must satisfy **both** requirements in order to be executed.
+Если указаны оба параметра `--test-name-pattern` и `--test-skip-pattern`,
+тесты должны удовлетворять **обоим** условиям, чтобы быть выполненными.
 
 ### `--test-only`
 
@@ -3088,12 +3169,14 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
 
-Configures the test runner to only execute top level tests that have the `only`
-option set. This flag is not necessary when test isolation is disabled.
+Настраивает средство запуска тестов так, чтобы выполнялись только тесты
+верхнего уровня, у которых установлен параметр `only`. Этот флаг не нужен,
+когда изоляция тестов отключена.
 
 ### `--test-random-seed`
 
@@ -3101,13 +3184,15 @@ option set. This flag is not necessary when test isolation is disabled.
 added: REPLACEME
 -->
 
-Set the seed used to randomize test execution order. This applies to both test
-file execution order and queued tests within each file. Providing this flag
-enables randomization implicitly, even without `--test-randomize`.
+Задаёт зерно, используемое для случайного порядка выполнения тестов. Это
+применяется как к порядку выполнения файлов тестов, так и к очередям тестов
+внутри каждого файла. Передача этого флага неявно включает рандомизацию даже
+без `--test-randomize`.
 
-The value must be an integer between `0` and `4294967295`.
+Значение должно быть целым числом от `0` до `4294967295`.
 
-This flag cannot be used with `--watch` or `--test-rerun-failures`.
+Этот флаг нельзя использовать вместе с `--watch` или
+`--test-rerun-failures`.
 
 ### `--test-randomize`
 
@@ -3115,17 +3200,19 @@ This flag cannot be used with `--watch` or `--test-rerun-failures`.
 added: REPLACEME
 -->
 
-Randomize test execution order. This applies to both test file execution order
-and queued tests within each file. This can help detect tests that rely on
-shared state or execution order.
+Случайным образом меняет порядок выполнения тестов. Это применяется как к
+порядку выполнения файлов тестов, так и к очередям тестов внутри каждого
+файла. Это может помочь обнаружить тесты, зависящие от общего состояния или
+порядка выполнения.
 
-The seed used for randomization is printed in the test summary and can be
-reused with `--test-random-seed`.
+Зерно, использованное для рандомизации, выводится в сводке тестов и может быть
+повторно использовано с `--test-random-seed`.
 
-For detailed behavior and examples, see
-[randomizing tests execution order][].
+Подробное описание поведения и примеры см. в разделе
+[randomizing tests execution order][randomizing tests execution order].
 
-This flag cannot be used with `--watch` or `--test-rerun-failures`.
+Этот флаг нельзя использовать вместе с `--watch` или
+`--test-rerun-failures`.
 
 ### `--test-reporter`
 
@@ -3140,12 +3227,13 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
 
-A test reporter to use when running tests. See the documentation on
-[test reporters][] for more details.
+Репортёр тестов, используемый при запуске тестов. Подробнее см. в документации
+по [репортёрам тестов][test reporters].
 
 ### `--test-reporter-destination`
 
@@ -3160,12 +3248,13 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.0.0 | Тестовый запуск теперь стабилен. |
 
-The destination for the corresponding test reporter. See the documentation on
-[test reporters][] for more details.
+Назначение для соответствующего репортера тестов. Подробнее см. в документации
+по [репортерам тестов][test reporters].
 
 ### `--test-rerun-failures`
 
@@ -3174,12 +3263,13 @@ added:
   - v24.7.0
 -->
 
-A path to a file allowing the test runner to persist the state of the test
-suite between runs. The test runner will use this file to determine which tests
-have already succeeded or failed, allowing for re-running of failed tests
-without having to re-run the entire test suite. The test runner will create this
-file if it does not exist.
-See the documentation on [test reruns][] for more details.
+Путь к файлу, позволяющему средству запуска тестов сохранять состояние
+набора тестов между запусками. Средство запуска будет использовать этот файл,
+чтобы определить, какие тесты уже завершились успешно или неудачно, что
+позволяет повторно запускать только провалившиеся тесты без повторного запуска
+всего набора тестов. Если файла не существует, средство запуска тестов создаст
+его.
+Подробнее см. в документации по [повторным запускам тестов][test reruns].
 
 ### `--test-shard`
 
@@ -3189,15 +3279,15 @@ added:
   - v18.19.0
 -->
 
-Test suite shard to execute in a format of `<index>/<total>`, where
+Часть набора тестов для выполнения в формате `<index>/<total>`, где
 
-* `index` is a positive integer, index of divided parts.
-* `total` is a positive integer, total of divided part.
+* `index` - положительное целое число, индекс части.
+* `total` - положительное целое число, общее количество частей.
 
-This command will divide all tests files into `total` equal parts,
-and will run only those that happen to be in an `index` part.
+Эта команда разделит все файлы тестов на `total` равных частей и запустит
+только те, которые попали в часть `index`.
 
-For example, to split your tests suite into three parts, use this:
+Например, чтобы разделить набор тестов на три части, используйте:
 
 ```bash
 node --test --test-shard=1/3
@@ -3212,12 +3302,12 @@ added:
   - v22.1.0
 -->
 
-A regular expression that configures the test runner to skip tests
-whose name matches the provided pattern. See the documentation on
-[filtering tests by name][] for more details.
+Регулярное выражение, настраивающее средство запуска тестов так, чтобы
+пропускать тесты, имя которых соответствует указанному шаблону. Подробнее см.
+в документации по [фильтрации тестов по имени][filtering tests by name].
 
-If both `--test-name-pattern` and `--test-skip-pattern` are supplied,
-tests must satisfy **both** requirements in order to be executed.
+Если указаны оба параметра `--test-name-pattern` и `--test-skip-pattern`,
+тесты должны удовлетворять **обоим** условиям, чтобы быть выполненными.
 
 ### `--test-timeout`
 
@@ -3227,8 +3317,9 @@ added:
   - v20.11.0
 -->
 
-A number of milliseconds the test execution will fail after. If unspecified,
-subtests inherit this value from their parent. The default value is `Infinity`.
+Количество миллисекунд, по истечении которого выполнение теста завершается
+ошибкой. Если значение не указано, подтесты наследуют его от родительского
+теста. Значение по умолчанию: `Infinity`.
 
 ### `--test-update-snapshots`
 
@@ -3245,11 +3336,13 @@ changes:
 Добавлено в: v22.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.4.0, v22.13.0 | Тестирование моментальных снимков больше не является экспериментальным. |
 
-Regenerates the snapshot files used by the test runner for [snapshot testing][].
+Повторно создаёт файлы снимков, используемые средством запуска тестов для
+[snapshot testing][snapshot testing].
 
 ### `--throw-deprecation`
 
@@ -3257,7 +3350,7 @@ Regenerates the snapshot files used by the test runner for [snapshot testing][].
 added: v0.11.14
 -->
 
-Throw errors for deprecations.
+Вызывает ошибки для устаревших возможностей.
 
 ### `--title=title`
 
@@ -3265,7 +3358,7 @@ Throw errors for deprecations.
 added: v10.7.0
 -->
 
-Set `process.title` on startup.
+Устанавливает `process.title` при запуске.
 
 ### `--tls-cipher-list=list`
 
@@ -3273,8 +3366,8 @@ Set `process.title` on startup.
 added: v4.0.0
 -->
 
-Specify an alternative default TLS cipher list. Requires Node.js to be built
-with crypto support (default).
+Указывает альтернативный список шифров TLS по умолчанию. Требует, чтобы Node.js
+был собран с поддержкой crypto (по умолчанию так и есть).
 
 ### `--tls-keylog=file`
 
@@ -3284,9 +3377,9 @@ added:
  - v12.16.0
 -->
 
-Log TLS key material to a file. The key material is in NSS `SSLKEYLOGFILE`
-format and can be used by software (such as Wireshark) to decrypt the TLS
-traffic.
+Записывает ключевой материал TLS в файл. Ключевой материал имеет формат NSS
+`SSLKEYLOGFILE` и может использоваться программами (например, Wireshark) для
+расшифровки TLS-трафика.
 
 ### `--tls-max-v1.2`
 
@@ -3296,8 +3389,8 @@ added:
  - v10.20.0
 -->
 
-Set [`tls.DEFAULT_MAX_VERSION`][] to 'TLSv1.2'. Use to disable support for
-TLSv1.3.
+Устанавливает [`tls.DEFAULT_MAX_VERSION`][`tls.DEFAULT_MAX_VERSION`] в
+`'TLSv1.2'`. Используется для отключения поддержки TLSv1.3.
 
 ### `--tls-max-v1.3`
 
@@ -3305,8 +3398,9 @@ TLSv1.3.
 added: v12.0.0
 -->
 
-Set default [`tls.DEFAULT_MAX_VERSION`][] to 'TLSv1.3'. Use to enable support
-for TLSv1.3.
+Устанавливает значение
+[`tls.DEFAULT_MAX_VERSION`][`tls.DEFAULT_MAX_VERSION`] по умолчанию в
+`'TLSv1.3'`. Используется для включения поддержки TLSv1.3.
 
 ### `--tls-min-v1.0`
 
@@ -3316,8 +3410,10 @@ added:
  - v10.20.0
 -->
 
-Set default [`tls.DEFAULT_MIN_VERSION`][] to 'TLSv1'. Use for compatibility with
-old TLS clients or servers.
+Устанавливает значение
+[`tls.DEFAULT_MIN_VERSION`][`tls.DEFAULT_MIN_VERSION`] по умолчанию в
+`'TLSv1'`. Используется для совместимости со старыми TLS-клиентами или
+серверами.
 
 ### `--tls-min-v1.1`
 
@@ -3327,8 +3423,10 @@ added:
  - v10.20.0
 -->
 
-Set default [`tls.DEFAULT_MIN_VERSION`][] to 'TLSv1.1'. Use for compatibility
-with old TLS clients or servers.
+Устанавливает значение
+[`tls.DEFAULT_MIN_VERSION`][`tls.DEFAULT_MIN_VERSION`] по умолчанию в
+`'TLSv1.1'`. Используется для совместимости со старыми TLS-клиентами или
+серверами.
 
 ### `--tls-min-v1.2`
 
@@ -3338,9 +3436,10 @@ added:
  - v10.20.0
 -->
 
-Set default [`tls.DEFAULT_MIN_VERSION`][] to 'TLSv1.2'. This is the default for
-12.x and later, but the option is supported for compatibility with older Node.js
-versions.
+Устанавливает значение
+[`tls.DEFAULT_MIN_VERSION`][`tls.DEFAULT_MIN_VERSION`] по умолчанию в
+`'TLSv1.2'`. Это значение используется по умолчанию в 12.x и новее, но сам
+параметр поддерживается для совместимости со старыми версиями Node.js.
 
 ### `--tls-min-v1.3`
 
@@ -3348,8 +3447,10 @@ versions.
 added: v12.0.0
 -->
 
-Set default [`tls.DEFAULT_MIN_VERSION`][] to 'TLSv1.3'. Use to disable support
-for TLSv1.2, which is not as secure as TLSv1.3.
+Устанавливает значение
+[`tls.DEFAULT_MIN_VERSION`][`tls.DEFAULT_MIN_VERSION`] по умолчанию в
+`'TLSv1.3'`. Используется для отключения поддержки TLSv1.2, которая менее
+безопасна, чем TLSv1.3.
 
 ### `--trace-deprecation`
 
@@ -3357,7 +3458,7 @@ for TLSv1.2, which is not as secure as TLSv1.3.
 added: v0.8.0
 -->
 
-Print stack traces for deprecations.
+Выводит трассировки стека для предупреждений об устаревании.
 
 ### `--trace-env`
 
@@ -3367,22 +3468,23 @@ added:
   - v22.13.0
 -->
 
-Print information about any access to environment variables done in the current Node.js
-instance to stderr, including:
+Выводит в `stderr` сведения о любом доступе к переменным окружения,
+выполненном в текущем экземпляре Node.js, включая:
 
-* The environment variable reads that Node.js does internally.
-* Writes in the form of `process.env.KEY = "SOME VALUE"`.
-* Reads in the form of `process.env.KEY`.
-* Definitions in the form of `Object.defineProperty(process.env, 'KEY', {...})`.
-* Queries in the form of `Object.hasOwn(process.env, 'KEY')`,
-  `process.env.hasOwnProperty('KEY')` or `'KEY' in process.env`.
-* Deletions in the form of `delete process.env.KEY`.
-* Enumerations inf the form of `...process.env` or `Object.keys(process.env)`.
+* чтения переменных окружения, которые Node.js выполняет внутри себя;
+* записи вида `process.env.KEY = "SOME VALUE"`;
+* чтения вида `process.env.KEY`;
+* определения вида `Object.defineProperty(process.env, 'KEY', {...})`;
+* проверки вида `Object.hasOwn(process.env, 'KEY')`,
+  `process.env.hasOwnProperty('KEY')` или `'KEY' in process.env`.
+* Удаления вида `delete process.env.KEY`.
+* Переборы вида `...process.env` или `Object.keys(process.env)`.
 
-Only the names of the environment variables being accessed are printed. The values are not printed.
+Выводятся только имена переменных окружения, к которым производится доступ.
+Их значения не выводятся.
 
-To print the stack trace of the access, use `--trace-env-js-stack` and/or
-`--trace-env-native-stack`.
+Чтобы вывести трассировку стека для такого доступа, используйте
+`--trace-env-js-stack` и/или `--trace-env-native-stack`.
 
 ### `--trace-env-js-stack`
 
@@ -3392,7 +3494,8 @@ added:
   - v22.13.0
 -->
 
-In addition to what `--trace-env` does, this prints the JavaScript stack trace of the access.
+Помимо того, что делает `--trace-env`, этот параметр выводит JavaScript-
+трассировку стека для такого доступа.
 
 ### `--trace-env-native-stack`
 
@@ -3402,7 +3505,8 @@ added:
   - v22.13.0
 -->
 
-In addition to what `--trace-env` does, this prints the native stack trace of the access.
+Помимо того, что делает `--trace-env`, этот параметр выводит нативную
+трассировку стека для такого доступа.
 
 ### `--trace-event-categories`
 
@@ -3410,8 +3514,8 @@ In addition to what `--trace-env` does, this prints the native stack trace of th
 added: v7.7.0
 -->
 
-A comma separated list of categories that should be traced when trace event
-tracing is enabled using `--trace-events-enabled`.
+Список категорий, разделённых запятыми, которые следует трассировать, когда
+трассировка событий включена с помощью `--trace-events-enabled`.
 
 ### `--trace-event-file-pattern`
 
@@ -3419,8 +3523,8 @@ tracing is enabled using `--trace-events-enabled`.
 added: v9.8.0
 -->
 
-Template string specifying the filepath for the trace event data, it
-supports `${rotation}` and `${pid}`.
+Строка шаблона, задающая путь к файлу для данных trace event; поддерживает
+`${rotation}` и `${pid}`.
 
 ### `--trace-events-enabled`
 
@@ -3428,7 +3532,7 @@ supports `${rotation}` and `${pid}`.
 added: v7.7.0
 -->
 
-Enables the collection of trace event tracing information.
+Включает сбор информации трассировки trace event.
 
 ### `--trace-exit`
 
@@ -3438,8 +3542,8 @@ added:
  - v12.16.0
 -->
 
-Prints a stack trace whenever an environment is exited proactively,
-i.e. invoking `process.exit()`.
+Выводит трассировку стека каждый раз, когда выполнение окружения завершается
+принудительно, то есть при вызове `process.exit()`.
 
 ### `--trace-require-module=mode`
 
@@ -3450,10 +3554,12 @@ added:
  - v20.19.0
 -->
 
-Prints information about usage of [Loading ECMAScript modules using `require()`][].
+Выводит информацию об использовании
+[загрузки модулей ECMAScript с помощью `require()`][Loading ECMAScript modules using `require()`].
 
-When `mode` is `all`, all usage is printed. When `mode` is `no-node-modules`, usage
-from the `node_modules` folder is excluded.
+Когда `mode` имеет значение `all`, выводятся все случаи использования. Когда
+`mode` имеет значение `no-node-modules`, случаи использования из папки
+`node_modules` исключаются.
 
 ### `--trace-sigint`
 
@@ -3463,7 +3569,7 @@ added:
  - v12.17.0
 -->
 
-Prints a stack trace on SIGINT.
+Выводит трассировку стека при `SIGINT`.
 
 ### `--trace-sync-io`
 
@@ -3471,8 +3577,8 @@ Prints a stack trace on SIGINT.
 added: v2.1.0
 -->
 
-Prints a stack trace whenever synchronous I/O is detected after the first turn
-of the event loop.
+Выводит трассировку стека всякий раз, когда синхронный ввод-вывод
+обнаруживается после первого цикла обработки событий.
 
 ### `--trace-tls`
 
@@ -3480,8 +3586,8 @@ of the event loop.
 added: v12.2.0
 -->
 
-Prints TLS packet trace information to `stderr`. This can be used to debug TLS
-connection problems.
+Выводит информацию трассировки TLS-пакетов в `stderr`. Это можно использовать
+для отладки проблем TLS-соединений.
 
 ### `--trace-uncaught`
 
@@ -3489,12 +3595,13 @@ connection problems.
 added: v13.1.0
 -->
 
-Print stack traces for uncaught exceptions; usually, the stack trace associated
-with the creation of an `Error` is printed, whereas this makes Node.js also
-print the stack trace associated with throwing the value (which does not need
-to be an `Error` instance).
+Выводит трассировки стека для неперехваченных исключений; обычно выводится
+трассировка, связанная с созданием `Error`, а этот параметр заставляет Node.js
+также выводить трассировку, связанную с выбрасыванием значения
+(которое не обязано быть экземпляром `Error`).
 
-Enabling this option may affect garbage collection behavior negatively.
+Включение этого параметра может негативно повлиять на поведение сборщика
+мусора.
 
 ### `--trace-warnings`
 
@@ -3502,7 +3609,8 @@ Enabling this option may affect garbage collection behavior negatively.
 added: v6.0.0
 -->
 
-Print stack traces for process warnings (including deprecations).
+Выводит трассировки стека для предупреждений процесса
+(включая предупреждения об устаревании).
 
 ### `--track-heap-objects`
 
@@ -3510,7 +3618,7 @@ Print stack traces for process warnings (including deprecations).
 added: v2.4.0
 -->
 
-Track heap object allocations for heap snapshots.
+Отслеживает выделение объектов кучи для снимков кучи.
 
 ### `--unhandled-rejections=mode`
 
@@ -3526,25 +3634,31 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.0.0 | Изменен режим по умолчанию на `throw`. Ранее было вынесено предупреждение. |
 
-Using this flag allows to change what should happen when an unhandled rejection
-occurs. One of the following modes can be chosen:
+Использование этого флага позволяет изменить поведение при возникновении
+необработанного отклонения промиса. Можно выбрать один из следующих режимов:
 
-* `throw`: Emit [`unhandledRejection`][]. If this hook is not set, raise the
-  unhandled rejection as an uncaught exception. This is the default.
-* `strict`: Raise the unhandled rejection as an uncaught exception. If the
-  exception is handled, [`unhandledRejection`][] is emitted.
-* `warn`: Always trigger a warning, no matter if the [`unhandledRejection`][]
-  hook is set or not but do not print the deprecation warning.
-* `warn-with-error-code`: Emit [`unhandledRejection`][]. If this hook is not
-  set, trigger a warning, and set the process exit code to 1.
-* `none`: Silence all warnings.
+* `throw`: генерирует [`unhandledRejection`][`unhandledRejection`]. Если этот
+  хук не установлен, необработанное отклонение выбрасывается как
+  неперехваченное исключение. Это значение по умолчанию.
+* `strict`: выбрасывает необработанное отклонение как неперехваченное
+  исключение. Если исключение обработано, генерируется
+  [`unhandledRejection`][`unhandledRejection`].
+* `warn`: всегда выдаёт предупреждение независимо от того, установлен ли хук
+  [`unhandledRejection`][`unhandledRejection`], но не выводит предупреждение об
+  устаревании.
+* `warn-with-error-code`: генерирует
+  [`unhandledRejection`][`unhandledRejection`]. Если этот хук не установлен,
+  выдаёт предупреждение и устанавливает код завершения процесса в 1.
+* `none`: подавляет все предупреждения.
 
-If a rejection happens during the command line entry point's ES module static
-loading phase, it will always raise it as an uncaught exception.
+Если отклонение происходит на этапе статической загрузки ES-модуля в точке
+входа командной строки, оно всегда выбрасывается как неперехваченное
+исключение.
 
 ### `--use-bundled-ca`, `--use-openssl-ca`
 
@@ -3552,18 +3666,19 @@ loading phase, it will always raise it as an uncaught exception.
 added: v6.11.0
 -->
 
-Use bundled Mozilla CA store as supplied by current Node.js version
-or use OpenSSL's default CA store. The default store is selectable
-at build-time.
+Использует встроенное хранилище CA Mozilla, поставляемое текущей версией
+Node.js, либо хранилище CA OpenSSL по умолчанию. Хранилище по умолчанию
+выбирается на этапе сборки.
 
-The bundled CA store, as supplied by Node.js, is a snapshot of Mozilla CA store
-that is fixed at release time. It is identical on all supported platforms.
+Встроенное хранилище CA, поставляемое с Node.js, представляет собой снимок
+хранилища CA Mozilla, зафиксированный на момент выпуска. Оно одинаково на всех
+поддерживаемых платформах.
 
-Using OpenSSL store allows for external modifications of the store. For most
-Linux and BSD distributions, this store is maintained by the distribution
-maintainers and system administrators. OpenSSL CA store location is dependent on
-configuration of the OpenSSL library but this can be altered at runtime using
-environment variables.
+Использование хранилища OpenSSL допускает внешние изменения этого хранилища.
+В большинстве дистрибутивов Linux и BSD это хранилище поддерживается
+сопровождающими дистрибутива и системными администраторами. Расположение
+хранилища CA OpenSSL зависит от конфигурации библиотеки OpenSSL, но его можно
+изменить во время выполнения с помощью переменных окружения.
 
 See `SSL_CERT_DIR` and `SSL_CERT_FILE`.
 
@@ -3577,12 +3692,13 @@ added:
 
 > Stability: 1.1 - Active Development
 
-When enabled, Node.js parses the `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`
-environment variables during startup, and tunnels requests over the
-specified proxy.
+При включении Node.js во время запуска разбирает переменные окружения
+`HTTP_PROXY`, `HTTPS_PROXY` и `NO_PROXY` и направляет запросы через указанный
+прокси.
 
-This is equivalent to setting the [`NODE_USE_ENV_PROXY=1`][] environment variable.
-When both are set, `--use-env-proxy` takes precedence.
+Это эквивалентно установке переменной окружения
+[`NODE_USE_ENV_PROXY=1`][`NODE_USE_ENV_PROXY=1`].
+Если заданы оба варианта, приоритет имеет `--use-env-proxy`.
 
 ### `--use-largepages=mode`
 
@@ -3592,17 +3708,17 @@ added:
  - v12.17.0
 -->
 
-Re-map the Node.js static code to large memory pages at startup. If supported on
-the target system, this will cause the Node.js static code to be moved onto 2
-MiB pages instead of 4 KiB pages.
+Переназначает статический код Node.js на большие страницы памяти при запуске.
+Если целевая система это поддерживает, статический код Node.js будет перенесён
+на страницы размером 2 MiB вместо 4 KiB.
 
-The following values are valid for `mode`:
+Для `mode` допустимы следующие значения:
 
-* `off`: No mapping will be attempted. This is the default.
-* `on`: If supported by the OS, mapping will be attempted. Failure to map will
-  be ignored and a message will be printed to standard error.
-* `silent`: If supported by the OS, mapping will be attempted. Failure to map
-  will be ignored and will not be reported.
+* `off`: попытка отображения не выполняется. Это значение по умолчанию.
+* `on`: если ОС поддерживает, будет выполнена попытка отображения. Неудача
+  будет проигнорирована, а сообщение выведено в стандартный поток ошибок.
+* `silent`: если ОС поддерживает, будет выполнена попытка отображения.
+  Неудача будет проигнорирована и не будет сообщена.
 
 ### `--use-system-ca`
 
@@ -3617,58 +3733,63 @@ changes:
 Добавлено в: v23.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.9.0 | Добавлена ​​поддержка не-Windows и не-macOS. |
 
-Node.js uses the trusted CA certificates present in the system store along with
-the `--use-bundled-ca` option and the `NODE_EXTRA_CA_CERTS` environment variable.
-On platforms other than Windows and macOS, this loads certificates from the directory
-and file trusted by OpenSSL, similar to `--use-openssl-ca`, with the difference being
-that it caches the certificates after first load.
+Node.js использует доверенные сертификаты CA, присутствующие в системном
+хранилище, вместе с параметром `--use-bundled-ca` и переменной окружения
+`NODE_EXTRA_CA_CERTS`.
+На платформах, отличных от Windows и macOS, это загружает сертификаты из
+каталога и файла, которым доверяет OpenSSL, аналогично `--use-openssl-ca`, но
+с тем отличием, что сертификаты кэшируются после первой загрузки.
 
-On Windows and macOS, the certificate trust policy is similar to
-[Chromium's policy for locally trusted certificates][], but with some differences:
+В Windows и macOS политика доверия к сертификатам похожа на
+[политику Chromium для локально доверенных сертификатов][Chromium's policy for locally trusted certificates],
+но с некоторыми отличиями:
 
-On macOS, the following settings are respected:
+В macOS учитываются следующие настройки:
 
-* Default and System Keychains
-  * Trust:
-    * Any certificate where the “When using this certificate” flag is set to “Always Trust” or
-    * Any certificate where the “Secure Sockets Layer (SSL)” flag is set to “Always Trust”.
-  * The certificate must also be valid, with "X.509 Basic Policy" set to  “Always Trust”.
+* Связки ключей `Default` и `System`
+  * Доверие:
+    * Любой сертификат, у которого флаг "When using this certificate" установлен в "Always Trust", или
+    * Любой сертификат, у которого флаг "Secure Sockets Layer (SSL)" установлен в "Always Trust".
+  * Сертификат также должен быть действительным, а "X.509 Basic Policy" должно быть установлено в "Always Trust".
 
-On Windows, the following settings are respected:
+В Windows учитываются следующие настройки:
 
-* Local Machine (accessed via `certlm.msc`)
-  * Trust:
-    * Trusted Root Certification Authorities
-    * Trusted People
-    * Enterprise Trust -> Enterprise -> Trusted Root Certification Authorities
-    * Enterprise Trust -> Enterprise -> Trusted People
-    * Enterprise Trust -> Group Policy -> Trusted Root Certification Authorities
-    * Enterprise Trust -> Group Policy -> Trusted People
-* Current User (accessed via `certmgr.msc`)
-  * Trust:
-    * Trusted Root Certification Authorities
-    * Enterprise Trust -> Group Policy -> Trusted Root Certification Authorities
+* `Local Machine` (доступ через `certlm.msc`)
+  * Доверие:
+    * `Trusted Root Certification Authorities`
+    * `Trusted People`
+    * `Enterprise Trust -> Enterprise -> Trusted Root Certification Authorities`
+    * `Enterprise Trust -> Enterprise -> Trusted People`
+    * `Enterprise Trust -> Group Policy -> Trusted Root Certification Authorities`
+    * `Enterprise Trust -> Group Policy -> Trusted People`
+* `Current User` (доступ через `certmgr.msc`)
+  * Доверие:
+    * `Trusted Root Certification Authorities`
+    * `Enterprise Trust -> Group Policy -> Trusted Root Certification Authorities`
 
-On Windows and macOS, Node.js would check that the user settings for the trusted
-certificates do not forbid them for TLS server authentication before using them.
+В Windows и macOS перед использованием доверенных сертификатов для
+аутентификации TLS-сервера Node.js проверяет, не запрещают ли это
+пользовательские настройки для этих сертификатов.
 
-Node.js currently does not support distrust/revocation of certificates
-from another source based on system settings.
+В настоящее время Node.js не поддерживает недоверие/отзыв сертификатов из
+другого источника на основе системных настроек.
 
-On other systems, Node.js loads certificates from the default certificate file
-(typically `/etc/ssl/cert.pem`) and default certificate directory (typically
-`/etc/ssl/certs`) that the version of OpenSSL that Node.js links to respects.
-This typically works with the convention on major Linux distributions and other
-Unix-like systems. If the overriding OpenSSL environment variables
-(typically `SSL_CERT_FILE` and `SSL_CERT_DIR`, depending on the configuration
-of the OpenSSL that Node.js links to) are set, the specified paths will be used to load
-certificates instead. These environment variables can be used as workarounds
-if the conventional paths used by the version of OpenSSL Node.js links to are
-not consistent with the system configuration that the users have for some reason.
+На других системах Node.js загружает сертификаты из файла сертификатов по
+умолчанию (обычно `/etc/ssl/cert.pem`) и каталога сертификатов по умолчанию
+(обычно `/etc/ssl/certs`), которые использует версия OpenSSL, с которой связан
+Node.js. Обычно это соответствует принятому соглашению в основных дистрибутивах
+Linux и других Unix-подобных системах. Если заданы переопределяющие переменные
+окружения OpenSSL (обычно `SSL_CERT_FILE` и `SSL_CERT_DIR`, в зависимости от
+конфигурации OpenSSL, с которой связан Node.js), для загрузки сертификатов
+будут использованы указанные пути. Эти переменные окружения можно использовать
+как обходной путь, если обычные пути, используемые версией OpenSSL, с которой
+связан Node.js, по какой-либо причине не совпадают с системной конфигурацией
+пользователей.
 
 ### `--v8-options`
 
@@ -3676,7 +3797,7 @@ not consistent with the system configuration that the users have for some reason
 added: v0.1.3
 -->
 
-Print V8 command-line options.
+Выводит параметры командной строки V8.
 
 ### `--v8-pool-size=num`
 
@@ -3684,14 +3805,15 @@ Print V8 command-line options.
 added: v5.10.0
 -->
 
-Set V8's thread pool size which will be used to allocate background jobs.
+Задаёт размер пула потоков V8, который будет использоваться для распределения
+фоновых задач.
 
-If set to `0` then Node.js will choose an appropriate size of the thread pool
-based on an estimate of the amount of parallelism.
+Если указать `0`, Node.js сам выберет подходящий размер пула потоков на основе
+оценки степени параллелизма.
 
-The amount of parallelism refers to the number of computations that can be
-carried out simultaneously in a given machine. In general, it's the same as the
-amount of CPUs, but it may diverge in environments such as VMs or containers.
+Степень параллелизма означает количество вычислений, которые можно выполнять
+одновременно на данной машине. Обычно это соответствует числу CPU, но может
+отличаться в средах вроде виртуальных машин или контейнеров.
 
 ### `-v`, `--version`
 
@@ -3699,7 +3821,7 @@ amount of CPUs, but it may diverge in environments such as VMs or containers.
 added: v0.1.3
 -->
 
-Print node's version.
+Выводит версию Node.js.
 
 ### `--watch`
 
@@ -3721,24 +3843,25 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.0.0, v20.13.0 | Режим просмотра теперь стабилен. |
     | v19.2.0, v18.13.0 | Тест-раннер теперь поддерживает работу в режиме просмотра. |
 
-Starts Node.js in watch mode.
-When in watch mode, changes in the watched files cause the Node.js process to
-restart.
-By default, watch mode will watch the entry point
-and any required or imported module.
-Use `--watch-path` to specify what paths to watch.
+Запускает Node.js в режиме наблюдения.
+В этом режиме изменения в отслеживаемых файлах приводят к перезапуску процесса
+Node.js.
+По умолчанию режим наблюдения отслеживает точку входа и любые требуемые или
+импортированные модули.
+Используйте `--watch-path`, чтобы указать, какие пути нужно отслеживать.
 
-This flag cannot be combined with
-`--check`, `--eval`, `--interactive`, or the REPL.
+Этот флаг нельзя сочетать с `--check`, `--eval`, `--interactive` или REPL.
 
-Note: The `--watch` flag requires a file path as an argument and is incompatible
-with `--run` or inline script input, as `--run` takes precedence and ignores watch
-mode. If no file is provided, Node.js will exit with status code `9`.
+Примечание: флаг `--watch` требует путь к файлу в качестве аргумента и
+несовместим с `--run` или встроенным вводом скрипта, так как `--run` имеет
+приоритет и игнорирует режим наблюдения. Если файл не указан, Node.js
+завершится с кодом состояния `9`.
 
 ```bash
 node --watch index.js
@@ -3752,9 +3875,10 @@ added:
   - v22.18.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
-Customizes the signal sent to the process on watch mode restarts.
+Настраивает сигнал, отправляемый процессу при перезапусках в режиме
+наблюдения.
 
 ```bash
 node --watch --watch-kill-signal SIGINT test.js
@@ -3775,29 +3899,31 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.0.0, v20.13.0 | Режим просмотра теперь стабилен. |
 
-Starts Node.js in watch mode and specifies what paths to watch.
-When in watch mode, changes in the watched paths cause the Node.js process to
-restart.
-This will turn off watching of required or imported modules, even when used in
-combination with `--watch`.
+Запускает Node.js в режиме наблюдения и задаёт пути, которые нужно
+отслеживать. В режиме наблюдения изменения в этих путях приводят к
+перезапуску процесса Node.js.
+Это отключает отслеживание требуемых или импортированных модулей, даже если
+параметр используется совместно с `--watch`.
 
-This flag cannot be combined with
-`--check`, `--eval`, `--interactive`, `--test`, or the REPL.
+Этот флаг нельзя сочетать с `--check`, `--eval`, `--interactive`, `--test`
+или REPL.
 
-Note: Using `--watch-path` implicitly enables `--watch`, which requires a file path
-and is incompatible with `--run`, as `--run` takes precedence and ignores watch mode.
+Примечание: использование `--watch-path` неявно включает `--watch`, который
+требует путь к файлу и несовместим с `--run`, так как `--run` имеет приоритет
+и игнорирует режим наблюдения.
 
 ```bash
 node --watch-path=./src --watch-path=./tests index.js
 ```
 
-This option is only supported on macOS and Windows.
-An `ERR_FEATURE_UNAVAILABLE_ON_PLATFORM` exception will be thrown
-when the option is used on a platform that does not support it.
+Этот параметр поддерживается только в macOS и Windows.
+Если использовать его на платформе, которая его не поддерживает, будет
+выброшено исключение `ERR_FEATURE_UNAVAILABLE_ON_PLATFORM`.
 
 ### `--watch-preserve-output`
 
@@ -3807,7 +3933,7 @@ added:
   - v18.13.0
 -->
 
-Disable the clearing of the console when watch mode restarts the process.
+Отключает очистку консоли при перезапуске процесса в режиме наблюдения.
 
 ```bash
 node --watch --watch-preserve-output test.js
@@ -3819,7 +3945,8 @@ node --watch --watch-preserve-output test.js
 added: v6.0.0
 -->
 
-Automatically zero-fills all newly allocated [`Buffer`][] instances.
+Автоматически заполняет нулями все вновь выделенные экземпляры
+[`Buffer`][`Buffer`].
 
 ## Environment variables
 
@@ -3827,17 +3954,17 @@ Automatically zero-fills all newly allocated [`Buffer`][] instances.
 
 ### `FORCE_COLOR=[1, 2, 3]`
 
-The `FORCE_COLOR` environment variable is used to
-enable ANSI colorized output. The value may be:
+Переменная окружения `FORCE_COLOR` используется для включения ANSI-цветного
+вывода. Возможные значения:
 
-* `1`, `true`, or the empty string `''` indicate 16-color support,
-* `2` to indicate 256-color support, or
-* `3` to indicate 16 million-color support.
+* `1`, `true` или пустая строка `''` означают поддержку 16 цветов,
+* `2` означает поддержку 256 цветов,
+* `3` означает поддержку 16 миллионов цветов.
 
-When `FORCE_COLOR` is used and set to a supported value, both the `NO_COLOR`,
-and `NODE_DISABLE_COLORS` environment variables are ignored.
+Если `FORCE_COLOR` используется и имеет поддерживаемое значение, переменные
+окружения `NO_COLOR` и `NODE_DISABLE_COLORS` игнорируются.
 
-Any other value will result in colorized output being disabled.
+Любое другое значение приведёт к отключению цветного вывода.
 
 ### `NODE_COMPILE_CACHE=dir`
 
@@ -3852,17 +3979,20 @@ changes:
 Добавлено в: v22.1.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-Enable the [module compile cache][] for the Node.js instance. See the documentation of
-[module compile cache][] for details.
+Включает [кэш компиляции модулей][module compile cache] для экземпляра
+Node.js. Подробнее см. документацию по
+[кэшу компиляции модулей][module compile cache].
 
 ### `NODE_COMPILE_CACHE_PORTABLE=1`
 
-When set to 1, the [module compile cache][]  can be reused across different directory
-locations as long as the module layout relative to the cache directory remains the same.
+Если установлено значение `1`, [кэш компиляции модулей][module compile cache]
+можно повторно использовать в разных расположениях каталогов, пока структура
+модулей относительно каталога кэша остаётся одинаковой.
 
 ### `NODE_DEBUG=module[,…]`
 
@@ -3870,11 +4000,13 @@ locations as long as the module layout relative to the cache directory remains t
 added: v0.1.32
 -->
 
-`','`-separated list of core modules that should print debug information.
+Список основных модулей, разделённых `','`, для которых следует выводить
+отладочную информацию.
 
 ### `NODE_DEBUG_NATIVE=module[,…]`
 
-`','`-separated list of core C++ modules that should print debug information.
+Список основных C++-модулей, разделённых `','`, для которых следует выводить
+отладочную информацию.
 
 ### `NODE_DISABLE_COLORS=1`
 
@@ -3882,7 +4014,7 @@ added: v0.1.32
 added: v0.3.0
 -->
 
-When set, colors will not be used in the REPL.
+Если установлено, в REPL не будут использоваться цвета.
 
 ### `NODE_DISABLE_COMPILE_CACHE=1`
 
@@ -3890,10 +4022,11 @@ When set, colors will not be used in the REPL.
 added: v22.8.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
-Disable the [module compile cache][] for the Node.js instance. See the documentation of
-[module compile cache][] for details.
+Отключает [кэш компиляции модулей][module compile cache] для экземпляра
+Node.js. Подробнее см. документацию по
+[кэшу компиляции модулей][module compile cache].
 
 ### `NODE_EXTRA_CA_CERTS=file`
 
@@ -3901,21 +4034,22 @@ Disable the [module compile cache][] for the Node.js instance. See the documenta
 added: v7.3.0
 -->
 
-When set, the well known "root" CAs (like VeriSign) will be extended with the
-extra certificates in `file`. The file should consist of one or more trusted
-certificates in PEM format. A message will be emitted (once) with
-[`process.emitWarning()`][emit_warning] if the file is missing or
-malformed, but any errors are otherwise ignored.
+Если установлено, общеизвестные "корневые" CA (например, VeriSign) будут
+дополнены сертификатами из `file`. Файл должен содержать один или несколько
+доверенных сертификатов в формате PEM. Если файл отсутствует или имеет
+неверный формат, будет один раз выведено сообщение через
+[`process.emitWarning()`][emit_warning], но в остальном любые ошибки
+игнорируются.
 
-Neither the well known nor extra certificates are used when the `ca`
-options property is explicitly specified for a TLS or HTTPS client or server.
+Ни общеизвестные, ни дополнительные сертификаты не используются, если свойство
+`ca` явно указано в параметрах TLS- или HTTPS-клиента либо сервера.
 
-This environment variable is ignored when `node` runs as setuid root or
-has Linux file capabilities set.
+Эта переменная окружения игнорируется, когда `node` запускается как setuid-root
+или имеет установленные файловые возможности Linux.
 
-The `NODE_EXTRA_CA_CERTS` environment variable is only read when the Node.js
-process is first launched. Changing the value at runtime using
-`process.env.NODE_EXTRA_CA_CERTS` has no effect on the current process.
+Переменная окружения `NODE_EXTRA_CA_CERTS` читается только при первом запуске
+процесса Node.js. Изменение её значения во время выполнения через
+`process.env.NODE_EXTRA_CA_CERTS` не влияет на текущий процесс.
 
 ### `NODE_ICU_DATA=file`
 
@@ -3923,8 +4057,8 @@ process is first launched. Changing the value at runtime using
 added: v0.11.15
 -->
 
-Data path for ICU (`Intl` object) data. Will extend linked-in data when compiled
-with small-icu support.
+Путь к данным ICU (объект `Intl`). При сборке с поддержкой `small-icu`
+расширяет встроенные данные.
 
 ### `NODE_NO_WARNINGS=1`
 
@@ -3932,7 +4066,7 @@ with small-icu support.
 added: v6.11.0
 -->
 
-When set to `1`, process warnings are silenced.
+Если установлено значение `1`, предупреждения процесса подавляются.
 
 ### `NODE_OPTIONS=options...`
 
@@ -3940,39 +4074,40 @@ When set to `1`, process warnings are silenced.
 added: v8.0.0
 -->
 
-A space-separated list of command-line options. `options...` are interpreted
-before command-line options, so command-line options will override or
-compound after anything in `options...`. Node.js will exit with an error if
-an option that is not allowed in the environment is used, such as `-p` or a
-script file.
+Разделённый пробелами список параметров командной строки. `options...`
+обрабатываются до параметров командной строки, поэтому параметры командной
+строки переопределяют или дополняют всё, что указано в `options...`. Node.js
+завершится с ошибкой, если будет использован параметр, не разрешённый в
+переменной окружения, например `-p` или файл скрипта.
 
-If an option value contains a space, it can be escaped using double quotes:
+Если значение параметра содержит пробел, его можно экранировать двойными
+кавычками:
 
 ```bash
 NODE_OPTIONS='--require "./my path/file.js"'
 ```
 
-A singleton flag passed as a command-line option will override the same flag
-passed into `NODE_OPTIONS`:
+Одиночный флаг, переданный в командной строке, переопределяет тот же флаг,
+переданный через `NODE_OPTIONS`:
 
 ```bash
-# The inspector will be available on port 5555
+# Инспектор будет доступен на порту 5555
 NODE_OPTIONS='--inspect=localhost:4444' node --inspect=localhost:5555
 ```
 
-A flag that can be passed multiple times will be treated as if its
-`NODE_OPTIONS` instances were passed first, and then its command-line
-instances afterwards:
+Флаг, который можно передавать несколько раз, обрабатывается так, как если бы
+сначала были переданы его экземпляры из `NODE_OPTIONS`, а затем экземпляры из
+командной строки:
 
 ```bash
 NODE_OPTIONS='--require "./a.js"' node --require "./b.js"
-# is equivalent to:
+# эквивалентно:
 node --require "./a.js" --require "./b.js"
 ```
 
-Node.js options that are allowed are in the following list. If an option
-supports both --XX and --no-XX variants, they are both supported but only
-one is included in the list below.
+Разрешённые параметры Node.js приведены в следующем списке. Если параметр
+поддерживает варианты и `--XX`, и `--no-XX`, поддерживаются оба, но в список
+ниже включён только один из них.
 
 <!-- node-options-node start -->
 
@@ -4139,7 +4274,7 @@ one is included in the list below.
 
 <!-- node-options-node end -->
 
-V8 options that are allowed are:
+Допустимы следующие параметры V8:
 
 <!-- node-options-v8 start -->
 
@@ -4163,9 +4298,9 @@ V8 options that are allowed are:
 <!-- node-options-others start -->
 
 `--perf-basic-prof-only-functions`, `--perf-basic-prof`,
-`--perf-prof-unwinding-info`, and `--perf-prof` are only available on Linux.
+`--perf-prof-unwinding-info` и `--perf-prof` доступны только в Linux.
 
-`--enable-etw-stack-walking` is only available on Windows.
+`--enable-etw-stack-walking` доступен только в Windows.
 
 <!-- node-options-others end -->
 
@@ -4175,9 +4310,10 @@ V8 options that are allowed are:
 added: v0.1.32
 -->
 
-`':'`-separated list of directories prefixed to the module search path.
+Список каталогов, разделённых `':'`, который добавляется в начало пути поиска
+модулей.
 
-On Windows, this is a `';'`-separated list instead.
+В Windows вместо этого используется список, разделённый `';'`.
 
 ### `NODE_PENDING_DEPRECATION=1`
 
@@ -4185,19 +4321,21 @@ On Windows, this is a `';'`-separated list instead.
 added: v8.0.0
 -->
 
-When set to `1`, emit pending deprecation warnings.
+Если установлено значение `1`, выводит ожидающие предупреждения об
+устаревании.
 
-Pending deprecations are generally identical to a runtime deprecation with the
-notable exception that they are turned _off_ by default and will not be emitted
-unless either the `--pending-deprecation` command-line flag, or the
-`NODE_PENDING_DEPRECATION=1` environment variable, is set. Pending deprecations
-are used to provide a kind of selective "early warning" mechanism that
-developers may leverage to detect deprecated API usage.
+Ожидающие предупреждения об устаревании в целом идентичны предупреждениям
+времени выполнения, за исключением того, что по умолчанию они _выключены_ и не
+выводятся, если не установлен либо флаг командной строки
+`--pending-deprecation`, либо переменная окружения
+`NODE_PENDING_DEPRECATION=1`. Они служат своего рода выборочным механизмом
+"раннего предупреждения", который разработчики могут использовать для
+обнаружения применения устаревших API.
 
 ### `NODE_PENDING_PIPE_INSTANCES=instances`
 
-Set the number of pending pipe instance handles when the pipe server is waiting
-for connections. This setting applies to Windows only.
+Задаёт количество ожидающих дескрипторов экземпляров канала, когда сервер
+каналов ожидает подключения. Этот параметр применяется только в Windows.
 
 ### `NODE_PRESERVE_SYMLINKS=1`
 
@@ -4205,8 +4343,8 @@ for connections. This setting applies to Windows only.
 added: v7.1.0
 -->
 
-When set to `1`, instructs the module loader to preserve symbolic links when
-resolving and caching modules.
+Если установлено значение `1`, загрузчику модулей предписывается сохранять
+символьные ссылки при разрешении и кэшировании модулей.
 
 ### `NODE_REDIRECT_WARNINGS=file`
 
@@ -4214,11 +4352,12 @@ resolving and caching modules.
 added: v8.0.0
 -->
 
-When set, process warnings will be emitted to the given file instead of
-printing to stderr. The file will be created if it does not exist, and will be
-appended to if it does. If an error occurs while attempting to write the
-warning to the file, the warning will be written to stderr instead. This is
-equivalent to using the `--redirect-warnings=file` command-line flag.
+Если задано, предупреждения процесса будут выводиться в указанный файл вместо
+печати в `stderr`. Если файл не существует, он будет создан; если существует,
+запись будет выполняться в конец файла. Если при попытке записать
+предупреждение в файл произойдёт ошибка, предупреждение будет выведено в
+`stderr`. Это эквивалентно использованию параметра командной строки
+`--redirect-warnings=file`.
 
 ### `NODE_REPL_EXTERNAL_MODULE=file`
 
@@ -4237,12 +4376,14 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.3.0, v20.16.0 | Удалите возможность использовать эту переменную env с kDisableNodeOptionsEnv для разработчиков. |
 
-Path to a Node.js module which will be loaded in place of the built-in REPL.
-Overriding this value to an empty string (`''`) will use the built-in REPL.
+Путь к модулю Node.js, который будет загружен вместо встроенного REPL.
+Если задать для этого значения пустую строку (`''`), будет использоваться
+встроенный REPL.
 
 ### `NODE_REPL_HISTORY=file`
 
@@ -4250,9 +4391,9 @@ Overriding this value to an empty string (`''`) will use the built-in REPL.
 added: v3.0.0
 -->
 
-Path to the file used to store the persistent REPL history. The default path is
-`~/.node_repl_history`, which is overridden by this variable. Setting the value
-to an empty string (`''` or `' '`) disables persistent REPL history.
+Путь к файлу, используемому для хранения постоянной истории REPL. Путь по
+умолчанию - `~/.node_repl_history`; эта переменная его переопределяет.
+Установка пустого значения (`''` или `' '`) отключает постоянную историю REPL.
 
 ### `NODE_SKIP_PLATFORM_CHECK=value`
 
@@ -4260,21 +4401,22 @@ to an empty string (`''` or `' '`) disables persistent REPL history.
 added: v14.5.0
 -->
 
-If `value` equals `'1'`, the check for a supported platform is skipped during
-Node.js startup. Node.js might not execute correctly. Any issues encountered
-on unsupported platforms will not be fixed.
+Если `value` равно `'1'`, во время запуска Node.js пропускается проверка
+поддерживаемой платформы. Node.js может работать некорректно. Любые проблемы,
+возникающие на неподдерживаемых платформах, исправляться не будут.
 
 ### `NODE_TEST_CONTEXT=value`
 
-If `value` equals `'child'`, test reporter options will be overridden and test
-output will be sent to stdout in the TAP format. If any other value is provided,
-Node.js makes no guarantees about the reporter format used or its stability.
+Если `value` равно `'child'`, параметры репортера тестов будут переопределены,
+а вывод тестов будет отправлен в `stdout` в формате TAP. Если задано любое
+другое значение, Node.js не даёт гарантий относительно используемого формата
+репортера и его стабильности.
 
 ### `NODE_TLS_REJECT_UNAUTHORIZED=value`
 
-If `value` equals `'0'`, certificate validation is disabled for TLS connections.
-This makes TLS, and HTTPS by extension, insecure. The use of this environment
-variable is strongly discouraged.
+Если `value` равно `'0'`, проверка сертификатов для TLS-соединений отключается.
+Это делает TLS, а следовательно и HTTPS, небезопасными. Использование этой
+переменной окружения настоятельно не рекомендуется.
 
 ### `NODE_USE_ENV_PROXY=1`
 
@@ -4284,14 +4426,15 @@ added:
  - v22.21.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
-When enabled, Node.js parses the `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`
-environment variables during startup, and tunnels requests over the
-specified proxy.
+При включении Node.js во время запуска разбирает переменные окружения
+`HTTP_PROXY`, `HTTPS_PROXY` и `NO_PROXY` и направляет запросы через указанный
+прокси.
 
-This can also be enabled using the [`--use-env-proxy`][] command-line flag.
-When both are set, `--use-env-proxy` takes precedence.
+Это также можно включить с помощью параметра командной строки
+[`--use-env-proxy`][`--use-env-proxy`].
+Если заданы оба варианта, приоритет имеет `--use-env-proxy`.
 
 ### `NODE_USE_SYSTEM_CA=1`
 
@@ -4301,27 +4444,30 @@ added:
  - v22.19.0
 -->
 
-Node.js uses the trusted CA certificates present in the system store along with
-the `--use-bundled-ca` option and the `NODE_EXTRA_CA_CERTS` environment variable.
+Node.js использует доверенные сертификаты CA, присутствующие в системном
+хранилище, вместе с параметром `--use-bundled-ca` и переменной окружения
+`NODE_EXTRA_CA_CERTS`.
 
-This can also be enabled using the [`--use-system-ca`][] command-line flag.
-When both are set, `--use-system-ca` takes precedence.
+Это также можно включить с помощью параметра командной строки
+[`--use-system-ca`][`--use-system-ca`].
+Если заданы оба варианта, приоритет имеет `--use-system-ca`.
 
 ### `NODE_V8_COVERAGE=dir`
 
-When set, Node.js will begin outputting [V8 JavaScript code coverage][] and
-[Source Map][] data to the directory provided as an argument (coverage
-information is written as JSON to files with a `coverage` prefix).
+Если задано это значение, Node.js начнёт выводить данные
+[покрытия JavaScript-кода V8][V8 JavaScript code coverage] и
+[Source Map][Source Map] в каталог, переданный в качестве аргумента
+(информация о покрытии записывается в JSON-файлы с префиксом `coverage`).
 
-`NODE_V8_COVERAGE` will automatically propagate to subprocesses, making it
-easier to instrument applications that call the `child_process.spawn()` family
-of functions. `NODE_V8_COVERAGE` can be set to an empty string, to prevent
-propagation.
+`NODE_V8_COVERAGE` автоматически распространяется на подпроцессы, что упрощает
+инструментирование приложений, вызывающих семейство функций
+`child_process.spawn()`. Чтобы предотвратить распространение,
+`NODE_V8_COVERAGE` можно установить в пустую строку.
 
-#### Coverage output
+#### Вывод покрытия
 
-Coverage is output as an array of [ScriptCoverage][] objects on the top-level
-key `result`:
+Покрытие выводится как массив объектов [ScriptCoverage][ScriptCoverage] в
+ключе верхнего уровня `result`:
 
 ```json
 {
@@ -4335,17 +4481,17 @@ key `result`:
 }
 ```
 
-#### Source map cache
+#### Кэш source map
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-If found, source map data is appended to the top-level key `source-map-cache`
-on the JSON coverage object.
+Если данные source map найдены, они добавляются в ключ верхнего уровня
+`source-map-cache` объекта JSON покрытия.
 
-`source-map-cache` is an object with keys representing the files source maps
-were extracted from, and values which include the raw source-map URL
-(in the key `url`), the parsed Source Map v3 information (in the key `data`),
-and the line lengths of the source file (in the key `lineLengths`).
+`source-map-cache` - это объект, где ключи представляют файлы, из которых были
+извлечены source map, а значения включают необработанный URL source map
+(в ключе `url`), разобранную информацию Source Map v3 (в ключе `data`) и длины
+строк исходного файла (в ключе `lineLengths`).
 
 ```json
 {
@@ -4385,8 +4531,8 @@ and the line lengths of the source file (in the key `lineLengths`).
 
 ### `NO_COLOR=<any>`
 
-[`NO_COLOR`][]  is an alias for `NODE_DISABLE_COLORS`. The value of the
-environment variable is arbitrary.
+[`NO_COLOR`][`NO_COLOR`] - это псевдоним для `NODE_DISABLE_COLORS`. Значение
+переменной окружения может быть любым.
 
 ### `OPENSSL_CONF=file`
 
@@ -4394,12 +4540,12 @@ environment variable is arbitrary.
 added: v6.11.0
 -->
 
-Load an OpenSSL configuration file on startup. Among other uses, this can be
-used to enable FIPS-compliant crypto if Node.js is built with
+Загружает конфигурационный файл OpenSSL при запуске. Помимо прочего, это можно
+использовать для включения FIPS-совместимой криптографии, если Node.js собран с
 `./configure --openssl-fips`.
 
-If the [`--openssl-config`][] command-line option is used, the environment
-variable is ignored.
+Если используется параметр командной строки
+[`--openssl-config`][`--openssl-config`], переменная окружения игнорируется.
 
 ### `SSL_CERT_DIR=dir`
 
@@ -4407,13 +4553,14 @@ variable is ignored.
 added: v7.7.0
 -->
 
-If `--use-openssl-ca` is enabled, or if `--use-system-ca` is enabled on
-platforms other than macOS and Windows, this overrides and sets OpenSSL's directory
-containing trusted certificates.
+Если включено `--use-openssl-ca`, либо если `--use-system-ca` включено на
+платформах, отличных от macOS и Windows, эта переменная переопределяет и
+задаёт каталог OpenSSL, содержащий доверенные сертификаты.
 
-Be aware that unless the child environment is explicitly set, this environment
-variable will be inherited by any child processes, and if they use OpenSSL, it
-may cause them to trust the same CAs as node.
+Имейте в виду, что если дочернее окружение не задано явно, эта переменная
+окружения будет унаследована всеми дочерними процессами, и если они используют
+OpenSSL, это может привести к тому, что они будут доверять тем же CA, что и
+Node.js.
 
 ### `SSL_CERT_FILE=file`
 
@@ -4421,13 +4568,14 @@ may cause them to trust the same CAs as node.
 added: v7.7.0
 -->
 
-If `--use-openssl-ca` is enabled, or if `--use-system-ca` is enabled on
-platforms other than macOS and Windows, this overrides and sets OpenSSL's file
-containing trusted certificates.
+Если включено `--use-openssl-ca`, либо если `--use-system-ca` включено на
+платформах, отличных от macOS и Windows, эта переменная переопределяет и
+задаёт файл OpenSSL, содержащий доверенные сертификаты.
 
-Be aware that unless the child environment is explicitly set, this environment
-variable will be inherited by any child processes, and if they use OpenSSL, it
-may cause them to trust the same CAs as node.
+Имейте в виду, что если дочернее окружение не задано явно, эта переменная
+окружения будет унаследована всеми дочерними процессами, и если они используют
+OpenSSL, это может привести к тому, что они будут доверять тем же CA, что и
+Node.js.
 
 ### `TZ`
 
@@ -4451,18 +4599,20 @@ changes:
 Добавлено в: v0.0.1
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.2.0 | Изменение переменной TZ с помощью процесса.env.TZ = также меняет часовой пояс в Windows. |
     | v13.0.0 | Изменение переменной TZ с помощью процесса.env.TZ = меняет часовой пояс в системах POSIX. |
 
-The `TZ` environment variable is used to specify the timezone configuration.
+Переменная окружения `TZ` используется для указания конфигурации часового пояса.
 
-While Node.js does not support all of the various [ways that `TZ` is handled in
-other environments][], it does support basic [timezone IDs][] (such as
-`'Etc/UTC'`, `'Europe/Paris'`, or `'America/New_York'`).
-It may support a few other abbreviations or aliases, but these are strongly
-discouraged and not guaranteed.
+Хотя Node.js не поддерживает все различные [способы обработки `TZ` в других
+окружениях][], он поддерживает базовые [идентификаторы часовых
+поясов][timezone IDs] (такие как `'Etc/UTC'`, `'Europe/Paris'` или
+`'America/New_York'`).
+Он может поддерживать и некоторые другие сокращения или псевдонимы, но их
+использование настоятельно не рекомендуется и не гарантируется.
 
 ```console
 $ TZ=Europe/Dublin node -pe "new Date().toString()"
@@ -4471,39 +4621,40 @@ Wed May 12 2021 20:30:48 GMT+0100 (Irish Standard Time)
 
 ### `UV_THREADPOOL_SIZE=size`
 
-Set the number of threads used in libuv's threadpool to `size` threads.
+Задаёт количество потоков, используемых в пуле потоков libuv, равным `size`.
 
-Asynchronous system APIs are used by Node.js whenever possible, but where they
-do not exist, libuv's threadpool is used to create asynchronous node APIs based
-on synchronous system APIs. Node.js APIs that use the threadpool are:
+Node.js по возможности использует асинхронные системные API, но там, где их
+нет, пул потоков libuv применяется для создания асинхронных API Node.js на
+основе синхронных системных API. Пул потоков используют следующие API Node.js:
 
-* all `fs` APIs, other than the file watcher APIs and those that are explicitly
-  synchronous
-* asynchronous crypto APIs such as `crypto.pbkdf2()`, `crypto.scrypt()`,
-  `crypto.randomBytes()`, `crypto.randomFill()`, `crypto.generateKeyPair()`
+* все API `fs`, кроме API наблюдения за файлами и тех, которые явно являются
+  синхронными
+* асинхронные криптографические API, такие как `crypto.pbkdf2()`,
+  `crypto.scrypt()`, `crypto.randomBytes()`, `crypto.randomFill()`,
+  `crypto.generateKeyPair()`
 * `dns.lookup()`
-* all `zlib` APIs, other than those that are explicitly synchronous
+* все API `zlib`, кроме тех, которые явно являются синхронными
 
-Because libuv's threadpool has a fixed size, it means that if for whatever
-reason any of these APIs takes a long time, other (seemingly unrelated) APIs
-that run in libuv's threadpool will experience degraded performance. In order to
-mitigate this issue, one potential solution is to increase the size of libuv's
-threadpool by setting the `'UV_THREADPOOL_SIZE'` environment variable to a value
-greater than `4` (its current default value). However, setting this from inside
-the process using `process.env.UV_THREADPOOL_SIZE=size` is not guaranteed to work
-as the threadpool would have been created as part of the runtime initialisation
-much before user code is run. For more information, see the [libuv threadpool documentation][].
+Поскольку пул потоков libuv имеет фиксированный размер, если по какой-либо
+причине один из этих API работает долго, производительность других
+(на первый взгляд не связанных) API, выполняющихся в пуле потоков libuv, будет
+снижаться. Чтобы смягчить эту проблему, можно, например, увеличить размер пула
+потоков libuv, установив переменную окружения `'UV_THREADPOOL_SIZE'` в значение
+больше `4` (это текущее значение по умолчанию). Однако установка этого значения
+изнутри процесса через `process.env.UV_THREADPOOL_SIZE=size` не гарантирует
+результат, так как пул потоков создаётся ещё во время инициализации среды
+выполнения, задолго до запуска пользовательского кода. Подробнее см. в
+[документации по пулу потоков libuv][libuv threadpool documentation].
 
-## Useful V8 options
+## Полезные параметры V8
 
-V8 has its own set of CLI options. Any V8 CLI option that is provided to `node`
-will be passed on to V8 to handle. V8's options have _no stability guarantee_.
-The V8 team themselves don't consider them to be part of their formal API,
-and reserve the right to change them at any time. Likewise, they are not
-covered by the Node.js stability guarantees. Many of the V8
-options are of interest only to V8 developers. Despite this, there is a small
-set of V8 options that are widely applicable to Node.js, and they are
-documented here:
+У V8 есть собственный набор CLI-параметров. Любой CLI-параметр V8, переданный
+`node`, будет передан V8 для обработки. Для параметров V8 _не даётся гарантии
+стабильности_. Команда V8 сама не считает их частью формального API и оставляет
+за собой право изменить их в любой момент. Аналогично, на них не
+распространяются гарантии стабильности Node.js. Многие параметры V8 интересны
+только разработчикам V8. Тем не менее существует небольшой набор параметров
+V8, которые широко применимы в Node.js, и они документированы здесь:
 
 <!-- v8-options start -->
 
@@ -4525,22 +4676,22 @@ documented here:
 
 ### `--max-heap-size`
 
-Specifies the maximum heap size (in megabytes) for the process.
+Указывает максимальный размер кучи процесса (в мегабайтах).
 
-This option is typically used to limit the amount of memory the process can use for its JavaScript heap.
+Обычно этот параметр используется для ограничения объёма памяти, который
+процесс может использовать для своей JavaScript-кучи.
 
 <!-- Anchor to make sure old links find a target -->
 
-<a id="--max-old-space-sizesize-in-megabytes"></a>
+### `--max-old-space-size=SIZE` (in MiB) {#--max-old-space-sizesize-in-megabytes}
 
-### `--max-old-space-size=SIZE` (in MiB)
+Устанавливает максимальный размер старой области памяти V8. По мере
+приближения потребления памяти к пределу V8 будет тратить больше времени на
+сборку мусора, пытаясь освободить неиспользуемую память.
 
-Sets the max memory size of V8's old memory section. As memory
-consumption approaches the limit, V8 will spend more time on
-garbage collection in an effort to free unused memory.
-
-On a machine with 2 GiB of memory, consider setting this to
-1536 (1.5 GiB) to leave some memory for other uses and avoid swapping.
+На машине с 2 GiB памяти можно установить значение
+1536 (1.5 GiB), чтобы оставить часть памяти для других задач и избежать
+подкачки.
 
 ```bash
 node --max-old-space-size=1536 index.js
@@ -4548,30 +4699,29 @@ node --max-old-space-size=1536 index.js
 
 <!-- Anchor to make sure old links find a target -->
 
-<a id="--max-semi-space-sizesize-in-megabytes"></a>
+### `--max-semi-space-size=SIZE` (in MiB) {#--max-semi-space-sizesize-in-megabytes}
 
-### `--max-semi-space-size=SIZE` (in MiB)
+Устанавливает максимальный размер [полупространства][semi-space] для
+[сборщика мусора scavenge][scavenge garbage collector] в V8 в MiB
+(мебибайтах). Увеличение максимального размера полупространства может повысить
+пропускную способность Node.js ценой большего потребления памяти.
 
-Sets the maximum [semi-space][] size for V8's [scavenge garbage collector][] in
-MiB (mebibytes).
-Increasing the max size of a semi-space may improve throughput for Node.js at
-the cost of more memory consumption.
+Поскольку размер молодого поколения кучи V8 в три раза больше размера
+полупространства (см.
+[`YoungGenerationSizeFromSemiSpaceSize`][`YoungGenerationSizeFromSemiSpaceSize`]
+в V8), увеличение полупространства на 1 MiB применяется к каждому из трёх
+отдельных полупространств и увеличивает размер кучи на 3 MiB. Улучшение
+пропускной способности зависит от вашей нагрузки (см. [#42511][#42511]).
 
-Since the young generation size of the V8 heap is three times (see
-[`YoungGenerationSizeFromSemiSpaceSize`][] in V8) the size of the semi-space,
-an increase of 1 MiB to semi-space applies to each of the three individual
-semi-spaces and causes the heap size to increase by 3 MiB. The throughput
-improvement depends on your workload (see [#42511][]).
+Значение по умолчанию зависит от лимита памяти. Например, в 64-битных системах
+с лимитом памяти 512 MiB максимальный размер полупространства по умолчанию
+равен 1 MiB. При лимите памяти до 2 GiB включительно максимальный размер
+полупространства по умолчанию в 64-битных системах будет меньше 16 MiB.
 
-The default value depends on the memory limit. For example, on 64-bit systems
-with a memory limit of 512 MiB, the max size of a semi-space defaults to 1 MiB.
-For memory limits up to and including 2GiB, the default max size of a
-semi-space will be less than 16 MiB on 64-bit systems.
+Чтобы подобрать наилучшую конфигурацию для вашего приложения, попробуйте
+разные значения `max-semi-space-size` при запуске его бенчмарков.
 
-To get the best configuration for your application, you should try different
-max-semi-space-size values when running benchmarks for your application.
-
-For example, benchmark on a 64-bit systems:
+Например, бенчмарк в 64-битной системе:
 
 ```bash
 for MiB in 16 32 64 128; do
@@ -4593,8 +4743,9 @@ done
 
 ### `--stack-trace-limit=limit`
 
-The maximum number of stack frames to collect in an error's stack trace.
-Setting it to 0 disables stack trace collection. The default value is 10.
+Максимальное количество кадров стека, собираемых в трассировке стека ошибки.
+Установка значения 0 отключает сбор трассировки стека. Значение по умолчанию:
+10.
 
 ```bash
 node --stack-trace-limit=12 -p -e "Error.stackTraceLimit" # prints 12

@@ -83,7 +83,7 @@ hello world
 ```
 
 Колбэк выполняется асинхронно со «укороченным» стеком. Если колбэк выбросит
-исключение, процесс испустит [`'uncaughtException'`][], и при отсутствии
+исключение, процесс испустит [`'uncaughtException'`][`'uncaughtException'`], и при отсутствии
 обработчика завершится.
 
 Так как `null` особый для первого аргумента колбэка, при отклонении промиса с
@@ -116,7 +116,7 @@ added:
 `util.convertProcessSignalToExitCode()` преобразует имя сигнала в код выхода POSIX.
 По POSIX код для завершения по сигналу: `128 + номер сигнала`.
 
-При недопустимом имени сигнала выбрасывается ошибка. Список сигналов: [`signal(7)`][].
+При недопустимом имени сигнала выбрасывается ошибка. Список сигналов: [`signal(7)`][`signal(7)`].
 
 === "MJS"
 
@@ -151,7 +151,7 @@ added: v0.11.3
 
 `util.debuglog()` создаёт функцию, которая при совпадении имени `section` с переменной
 окружения `NODE_DEBUG` пишет отладочные сообщения в `stderr` (по смыслу как
-[`console.error()`][]); иначе функция ничего не делает.
+[`console.error()`][`console.error()`]); иначе функция ничего не делает.
 
 === "MJS"
 
@@ -295,6 +295,7 @@ changes:
 Добавлено в: v0.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.2.0, v24.12.0 | Добавьте объект параметров с помощью EditPrototype, чтобы условно изменить прототип устаревшего объекта. |
@@ -302,7 +303,7 @@ changes:
 
 * `fn` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Помечаемая как устаревшая функция.
 * `msg` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст предупреждения при вызове устаревшей функции.
-* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код устаревания. Список кодов — в [списке устаревших API][].
+* `code` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код устаревания. Список кодов — в [списке устаревших API][list of deprecated APIS].
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `modifyPrototype` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если false — не менять прототип объекта при выводе предупреждения.
     **По умолчанию:** `true`.
@@ -330,7 +331,7 @@ changes:
     }, 'obsoleteFunction() is deprecated. Use newShinyFunction() instead.');
     ```
 
-При вызове `util.deprecate()` возвращается функция, которая выдаёт `DeprecationWarning` через событие [`'warning'`][]. Предупреждение выводится в `stderr` при первом вызове возвращаемой функции; затем вызывается обёрнутая функция без повторного предупреждения.
+При вызове `util.deprecate()` возвращается функция, которая выдаёт `DeprecationWarning` через событие [`'warning'`][`'warning'`]. Предупреждение выводится в `stderr` при первом вызове возвращаемой функции; затем вызывается обёрнутая функция без повторного предупреждения.
 
 Если в нескольких вызовах `util.deprecate()` указан один и тот же необязательный `code`, предупреждение выводится только один раз для этого `code`.
 
@@ -408,7 +409,7 @@ added:
 
 * D — расстояние редактирования (минимальное число операций для превращения одной последовательности в другую).
 
-[`util.diff()`][] сравнивает две строки или массива и возвращает массив записей различий.
+[`util.diff()`][`util.diff()`] сравнивает две строки или массива и возвращает массив записей различий.
 Используется алгоритм Майерса для минимальных отличий — тот же, что и во внутренних сообщениях assert.
 
 При равных значениях возвращается пустой массив.
@@ -490,6 +491,7 @@ changes:
 Добавлено в: v0.5.3
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v12.11.0 | Спецификатор %c теперь игнорируется. |
@@ -566,8 +568,8 @@ added: v10.0.0
 * `inspectOptions` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `format` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Как [`util.format()`][], но дополнительно принимает `inspectOptions` — опции для
-[`util.inspect()`][].
+Как [`util.format()`][`util.format()`], но дополнительно принимает `inspectOptions` — опции для
+[`util.inspect()`][`util.inspect()`].
 
 ```js
 util.formatWithOptions({ colors: true }, 'See object %O', { foo: 42 });
@@ -600,6 +602,7 @@ changes:
 Добавлено в: v22.9.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.7.0, v22.14.0 | Свойство «column» устарело в пользу «columnNumber». |
@@ -616,7 +619,7 @@ changes:
 * Returns: [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Массив объектов call site
   * `functionName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя функции для этого call site.
   * `scriptName` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя ресурса со скриптом для этой функции.
-  * `scriptId` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор скрипта, как в протоколе Chrome DevTools [`Runtime.ScriptId`][].
+  * `scriptId` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Уникальный идентификатор скрипта, как в протоколе Chrome DevTools [`Runtime.ScriptId`][`Runtime.ScriptId`].
   * `lineNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер строки в JS (с 1).
   * `columnNumber` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Номер колонки в JS (с 1).
 
@@ -760,7 +763,7 @@ added: v9.7.0
 
 Возвращает строковое имя числового кода ошибки из API Node.js.
 Соответствие кодов и имён зависит от платформы.
-Имена распространённых ошибок см. в [Common System Errors][].
+Имена распространённых ошибок см. в [Common System Errors][Common System Errors].
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
@@ -781,7 +784,7 @@ added:
 
 Возвращает `Map` всех кодов системных ошибок, доступных из API Node.js.
 Соответствие кодов и имён зависит от платформы.
-Имена распространённых ошибок см. в [Common System Errors][].
+Имена распространённых ошибок см. в [Common System Errors][Common System Errors].
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
@@ -837,6 +840,7 @@ changes:
 Добавлено в: v0.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v5.0.0 | Параметр `constructor` теперь может ссылаться на класс ES6. |
@@ -847,9 +851,9 @@ changes:
 * `superConstructor` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Использование `util.inherits()` не рекомендуется. Лучше ключевые слова ES6 `class` и
-`extends` для наследования на уровне языка. Стили [semantically incompatible][].
+`extends` для наследования на уровне языка. Стили [semantically incompatible][semantically incompatible].
 
-Копирует методы прототипа из одного [constructor][] в другой. Прототип `constructor`
+Копирует методы прототипа из одного [constructor][constructor] в другой. Прототип `constructor`
 становится объектом, созданным из `superConstructor`.
 
 По сути добавляет проверку входных данных к
@@ -1021,6 +1025,7 @@ changes:
 Добавлено в: v0.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.0.0 | Стиль util.inspect.styles.regexp теперь является методом, который вызывается для раскрашивания строкового регулярного выражения. |
@@ -1058,13 +1063,13 @@ changes:
     the maximum call stack size pass `Infinity` or `null`.
     **Default:** `2`.
   * `colors` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the output is styled with ANSI color
-    codes. Colors are customizable. See [Customizing `util.inspect` colors][].
+    codes. Colors are customizable. See [Customizing `util.inspect` colors][Customizing `util.inspect` colors].
     **Default:** `false`.
   * `customInspect` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `false`,
     `[util.inspect.custom](depth, opts, inspect)` functions are not invoked.
     **Default:** `true`.
   * `showProxy` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, `Proxy` inspection includes
-    the [`target` and `handler`][] objects. **Default:** `false`.
+    the [`target` and `handler`][`target` and `handler`] objects. **Default:** `false`.
   * `maxArrayLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the maximum number of `Array`,
     [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), and [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) elements to include when formatting.
     Set to `null` or `Infinity` to show all elements. Set to `0` or
@@ -1084,8 +1089,8 @@ changes:
     information, see the example below. **Default:** `3`.
   * `sorted` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) If set to `true` or a function, all properties
     of an object, and `Set` and `Map` entries are sorted in the resulting
-    string. If set to `true` the [default sort][] is used. If set to a function,
-    it is used as a [compare function][].
+    string. If set to `true` the [default sort][default sort] is used. If set to a function,
+    it is used as a [compare function][compare function].
   * `getters` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) If set to `true`, getters are inspected. If set
     to `'get'`, only getters without a corresponding setter are inspected. If
     set to `'set'`, only getters with a corresponding setter are inspected.
@@ -1448,7 +1453,7 @@ The default styles and associated colors are:
 * `undefined`: `grey`
 
 Color styling uses ANSI control codes that may not be supported on all
-terminals. To verify color support use [`tty.hasColors()`][].
+terminals. To verify color support use [`tty.hasColors()`][`tty.hasColors()`].
 
 Predefined control codes are listed below (grouped as "Modifiers", "Foreground
 colors", and "Background colors").
@@ -1541,6 +1546,7 @@ changes:
 Добавлено в: v0.1.97
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v17.3.0, v16.14.0 | Аргумент проверки добавлен для большей совместимости. |
@@ -1661,6 +1667,7 @@ changes:
 Добавлено в: v6.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v10.12.0 | Теперь это определено как общий символ. |
@@ -1698,7 +1705,7 @@ console.log(password);
 // Prints Password <xxxxxxxx>
 ```
 
-See [Custom inspection functions on Objects][] for more details.
+See [Custom inspection functions on Objects][Custom inspection functions on objects] for more details.
 
 ### `util.inspect.defaultOptions`
 
@@ -1709,7 +1716,7 @@ added: v6.4.0
 The `defaultOptions` value allows customization of the default options used by
 `util.inspect`. This is useful for functions like `console.log` or
 `util.format` which implicitly call into `util.inspect`. It shall be set to an
-object containing one or more valid [`util.inspect()`][] options. Setting
+object containing one or more valid [`util.inspect()`][`util.inspect()`] options. Setting
 option properties directly is also supported.
 
 === "MJS"
@@ -1747,6 +1754,7 @@ changes:
 Добавлено в: v9.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.9.0 | Добавлен параметр options, позволяющий пропустить сравнение прототипов. |
@@ -1791,7 +1799,7 @@ console.log(util.isDeepStrictEqual(foo, bar, true));
 // true
 ```
 
-See [`assert.deepStrictEqual()`][] for more information about deep strict
+See [`assert.deepStrictEqual()`][`assert.deepStrictEqual()`] for more information about deep strict
 equality.
 
 ## Class: `util.MIMEType`
@@ -1809,6 +1817,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
@@ -1980,9 +1989,9 @@ Use `mime.type` or `mime.subtype` to alter the MIME.
 
 * Type: [<MIMEParams>](#class-utilmimeparams)
 
-Gets the [`MIMEParams`][] object representing the
+Gets the [`MIMEParams`][`MIMEparams`] object representing the
 parameters of the MIME. This property is read-only. See
-[`MIMEParams`][] documentation for details.
+[`MIMEParams`][`MIMEparams`] documentation for details.
 
 ### `mime.toString()`
 
@@ -1997,10 +2006,10 @@ to customize the serialization process of the MIME.
 
 * Returns: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Alias for [`mime.toString()`][].
+Alias for [`mime.toString()`][`mime.toString()`].
 
 This method is automatically called when an `MIMEType` object is serialized
-with [`JSON.stringify()`][].
+with [`JSON.stringify()`][`JSON.stringify()`].
 
 === "MJS"
 
@@ -2166,7 +2175,7 @@ Returns an iterator over the values of each name-value pair.
 
 * Returns: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
-Alias for [`mimeParams.entries()`][].
+Alias for [`mimeParams.entries()`][`mimeParams.entries()`].
 
 === "MJS"
 
@@ -2226,6 +2235,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0, v20.16.0 | добавить поддержку разрешения отрицательных параметров во входных данных `config`. |
@@ -2448,6 +2458,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.10.0, v22.21.0 | Этот API больше не является экспериментальным. |
@@ -2492,6 +2503,7 @@ changes:
 Добавлено в: v8.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.8.0 | Вызов Promisify для функции, возвращающей Promise, устарел. |
@@ -2566,7 +2578,7 @@ Or, equivalently using `async function`s:
     ```
 
 If there is an `original[util.promisify.custom]` property present, `promisify`
-will return its value, see [Custom promisified functions][].
+will return its value, see [Custom promisified functions][Custom promisified functions].
 
 `promisify()` assumes that `original` is a function taking a callback as its
 final argument in all cases. If `original` is not a function, `promisify()`
@@ -2634,7 +2646,7 @@ work as expected unless handled specially:
 ### Custom promisified functions
 
 Using the `util.promisify.custom` symbol one can override the return value of
-[`util.promisify()`][]:
+[`util.promisify()`][`util.promisify()`]:
 
 === "MJS"
 
@@ -2704,12 +2716,13 @@ changes:
 Добавлено в: v8.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v13.12.0, v12.16.2 | Теперь это определено как общий символ. |
 
 * Type: [<symbol>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) that can be used to declare custom promisified variants of functions,
-  see [Custom promisified functions][].
+  see [Custom promisified functions][Custom promisified functions].
 
 In addition to being accessible through `util.promisify.custom`, this
 symbol is [registered globally][global symbol registry] and can be
@@ -2773,6 +2786,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | REPLACEME | Добавить поддержку шестнадцатеричных цветов. |
@@ -2881,7 +2895,7 @@ specified in either 3-digit (`#RGB`) or 6-digit (`#RRGGBB`) format:
     console.log(styleText('#f00', 'Red text'));
     ```
 
-The full list of formats can be found in [modifiers][].
+The full list of formats can be found in [modifiers][modifiers].
 
 ## Class: `util.TextDecoder`
 
@@ -2896,11 +2910,12 @@ changes:
 Добавлено в: v8.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v11.0.0 | Теперь класс доступен для глобального объекта. |
 
-An implementation of the [WHATWG Encoding Standard][] `TextDecoder` API.
+An implementation of the [WHATWG Encoding Standard][WHATWG Encoding Standard] `TextDecoder` API.
 
 ```js
 const decoder = new TextDecoder();
@@ -2910,12 +2925,12 @@ console.log(decoder.decode(u8arr)); // Hello
 
 ### WHATWG supported encodings
 
-Per the [WHATWG Encoding Standard][], the encodings supported by the
+Per the [WHATWG Encoding Standard][WHATWG Encoding Standard], the encodings supported by the
 `TextDecoder` API are outlined in the tables below. For each encoding,
 one or more aliases may be used.
 
 Different Node.js build configurations support different sets of encodings.
-(see [Internationalization][])
+(see [Internationalization][Internationalization])
 
 #### Encodings supported by default (with full ICU data)
 
@@ -2971,7 +2986,7 @@ Different Node.js build configurations support different sets of encodings.
 | `'utf-8'`    | `'unicode-1-1-utf-8'`, `'utf8'` |
 | `'utf-16le'` | `'utf-16'`                      |
 
-The `'iso-8859-16'` encoding listed in the [WHATWG Encoding Standard][]
+The `'iso-8859-16'` encoding listed in the [WHATWG Encoding Standard][WHATWG Encoding Standard]
 is not supported.
 
 ### `new TextDecoder([encoding[, options]])`
@@ -2981,7 +2996,7 @@ is not supported.
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `fatal` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if decoding failures are fatal.
     This option is not supported when ICU is disabled
-    (see [Internationalization][]). **Default:** `false`.
+    (see [Internationalization][Internationalization]). **Default:** `false`.
   * `ignoreBOM` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, the `TextDecoder` will include the byte
     order mark in the decoded result. When `false`, the byte order mark will
     be removed from the output. This option is only used when `encoding` is
@@ -3041,11 +3056,12 @@ changes:
 Добавлено в: v8.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v11.0.0 | Теперь класс доступен для глобального объекта. |
 
-An implementation of the [WHATWG Encoding Standard][] `TextEncoder` API. All
+An implementation of the [WHATWG Encoding Standard][WHATWG Encoding Standard] `TextEncoder` API. All
 instances of `TextEncoder` only support UTF-8 encoding.
 
 ```js
@@ -3120,6 +3136,7 @@ changes:
 Добавлено в: v18.11.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
@@ -3142,6 +3159,7 @@ changes:
 Добавлено в: v18.11.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
@@ -3173,6 +3191,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
@@ -3247,6 +3266,7 @@ changes:
 Добавлено в: v10.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.3.0 | Представлено как `require('util/types')`. |
@@ -3274,8 +3294,8 @@ added: v10.0.0
 Returns `true` if the value is a built-in [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) or
 [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance.
 
-See also [`util.types.isArrayBuffer()`][] and
-[`util.types.isSharedArrayBuffer()`][].
+See also [`util.types.isArrayBuffer()`][`util.types.isArrayBuffer()`] and
+[`util.types.isSharedArrayBuffer()`][`util.types.isSharedArrayBuffer()`].
 
 ```js
 util.types.isAnyArrayBuffer(new ArrayBuffer());  // Returns true
@@ -3293,7 +3313,7 @@ added: v10.0.0
 
 Returns `true` if the value is an instance of one of the [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 views, such as typed array objects or [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView). Equivalent to
-[`ArrayBuffer.isView()`][].
+[`ArrayBuffer.isView()`][`ArrayBuffer.isView()`].
 
 ```js
 util.types.isArrayBufferView(new Int8Array());  // true
@@ -3332,7 +3352,7 @@ added: v10.0.0
 
 Returns `true` if the value is a built-in [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instance.
 This does _not_ include [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instances. Usually, it is
-desirable to test for both; See [`util.types.isAnyArrayBuffer()`][] for that.
+desirable to test for both; See [`util.types.isAnyArrayBuffer()`][`util.types.isAnyArrayBuffer()`] for that.
 
 ```js
 util.types.isArrayBuffer(new ArrayBuffer());  // Returns true
@@ -3348,7 +3368,7 @@ added: v10.0.0
 * `value` {any}
 * Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the value is an [async function][].
+Returns `true` if the value is an [async function][async function].
 This only reports back what the JavaScript engine is seeing;
 in particular, the return value may not match the original source code if
 a transpilation tool was used.
@@ -3479,7 +3499,7 @@ util.types.isDataView(new DataView(ab));  // Returns true
 util.types.isDataView(new Float64Array());  // Returns false
 ```
 
-See also [`ArrayBuffer.isView()`][].
+See also [`ArrayBuffer.isView()`][`ArrayBuffer.isView()`].
 
 ### `util.types.isDate(value)`
 
@@ -3556,7 +3576,7 @@ DECLARE_NAPI_PROPERTY("myNapi", MyNapi)
     ```
 
 For further information on `napi_create_external`, refer to
-[`napi_create_external()`][].
+[`napi_create_external()`][`napi_create_external()`].
 
 ### `util.types.isFloat16Array(value)`
 
@@ -3757,7 +3777,7 @@ added: v10.0.0
 * `value` {any}
 * Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the value is an instance of a [Module Namespace Object][].
+Returns `true` if the value is an instance of a [Module Namespace Object][Module Namespace Object].
 
 === "MJS"
 
@@ -3774,7 +3794,7 @@ added: v10.0.0
 deprecated: v24.2.0
 -->
 
-> Stability: 0 - Deprecated: Use [`Error.isError`][] instead.
+> Stability: 0 - Deprecated: Use [`Error.isError`][`Error.isError`] instead.
 
 **Note:** As of Node.js 24, `Error.isError()` is currently slower than `util.types.isNativeError()`.
 If performance is critical, consider benchmarking both in your environment.
@@ -3783,7 +3803,7 @@ If performance is critical, consider benchmarking both in your environment.
 * Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the value was returned by the constructor of a
-[built-in `Error` type][].
+[built-in `Error` type][built-in `Error` type].
 
 ```js
 console.log(util.types.isNativeError(new Error()));  // true
@@ -3800,7 +3820,7 @@ console.log(util.types.isNativeError(new MyError()));  // true
 
 A value being `instanceof` a native error class is not equivalent to `isNativeError()`
 returning `true` for that value. `isNativeError()` returns `true` for errors
-which come from a different [realm][] while `instanceof Error` returns `false`
+which come from a different [realm][realm] while `instanceof Error` returns `false`
 for these errors:
 
 === "MJS"
@@ -3949,7 +3969,7 @@ added: v10.0.0
 
 Returns `true` if the value is a built-in [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance.
 This does _not_ include [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instances. Usually, it is
-desirable to test for both; See [`util.types.isAnyArrayBuffer()`][] for that.
+desirable to test for both; See [`util.types.isAnyArrayBuffer()`][`util.types.isAnyArrayBuffer()`] for that.
 
 ```js
 util.types.isSharedArrayBuffer(new ArrayBuffer());  // Returns false
@@ -4008,7 +4028,7 @@ util.types.isTypedArray(new Uint8Array());  // Returns true
 util.types.isTypedArray(new Float64Array());  // Returns true
 ```
 
-See also [`ArrayBuffer.isView()`][].
+See also [`ArrayBuffer.isView()`][`ArrayBuffer.isView()`].
 
 ### `util.types.isUint8Array(value)`
 
@@ -4120,7 +4140,7 @@ added: v0.7.5
 deprecated: v6.0.0
 -->
 
-> Stability: 0 - Deprecated: Use [`Object.assign()`][] instead.
+> Stability: 0 - Deprecated: Use [`Object.assign()`][`Object.assign()`] instead.
 
 * `target` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `source` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4129,7 +4149,7 @@ The `util._extend()` method was never intended to be used outside of internal
 Node.js modules. The community found and used it anyway.
 
 It is deprecated and should not be used in new code. JavaScript comes with very
-similar built-in functionality through [`Object.assign()`][].
+similar built-in functionality through [`Object.assign()`][`Object.assign()`].
 
 An automated migration is available ([source](https://github.com/nodejs/userland-migrations/tree/main/recipes/util-extend-to-object-assign)):
 
@@ -4144,12 +4164,12 @@ added: v0.6.0
 deprecated: v4.0.0
 -->
 
-> Stability: 0 - Deprecated: Use [`Array.isArray()`][] instead.
+> Stability: 0 - Deprecated: Use [`Array.isArray()`][`Array.isArray()`] instead.
 
 * `object` {any}
 * Returns: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Alias for [`Array.isArray()`][].
+Alias for [`Array.isArray()`][`Array.isArray()`].
 
 Returns `true` if the given `object` is an `Array`. Otherwise, returns `false`.
 

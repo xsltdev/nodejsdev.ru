@@ -21,9 +21,9 @@ description: Глобальный API для отложенного вызова
 
 ## Класс: `Immediate`
 
-Этот объект создаётся внутри и возвращается из [`setImmediate()`][]. Его можно передать в [`clearImmediate()`][], чтобы отменить запланированные действия.
+Этот объект создаётся внутри и возвращается из [`setImmediate()`][`setImmediate()`]. Его можно передать в [`clearImmediate()`][`clearImmediate()`], чтобы отменить запланированные действия.
 
-По умолчанию, когда планируется immediate, цикл событий Node.js продолжает работу, пока immediate активен. Объект `Immediate`, возвращаемый [`setImmediate()`][], предоставляет функции `immediate.ref()` и `immediate.unref()`, которыми можно управлять этим поведением по умолчанию.
+По умолчанию, когда планируется immediate, цикл событий Node.js продолжает работу, пока immediate активен. Объект `Immediate`, возвращаемый [`setImmediate()`][`setImmediate()`], предоставляет функции `immediate.ref()` и `immediate.unref()`, которыми можно управлять этим поведением по умолчанию.
 
 ### `immediate.hasRef()`
 
@@ -70,6 +70,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
@@ -78,12 +79,12 @@ changes:
 
 ## Класс: `Timeout`
 
-Этот объект создаётся внутри и возвращается из [`setTimeout()`][] и
-[`setInterval()`][]. Его можно передать в [`clearTimeout()`][] или
-[`clearInterval()`][], чтобы отменить запланированные действия.
+Этот объект создаётся внутри и возвращается из [`setTimeout()`][`setTimeout()`] и
+[`setInterval()`][`setInterval()`]. Его можно передать в [`clearTimeout()`][`clearTimeout()`] или
+[`clearInterval()`][`clearInterval()`], чтобы отменить запланированные действия.
 
-По умолчанию, когда таймер планируется через [`setTimeout()`][] или
-[`setInterval()`][], цикл событий Node.js продолжает работу, пока таймер активен. Каждый возвращаемый этими функциями объект `Timeout` предоставляет `timeout.ref()` и `timeout.unref()` для управления этим поведением.
+По умолчанию, когда таймер планируется через [`setTimeout()`][`setTimeout()`] или
+[`setInterval()`][`setInterval()`], цикл событий Node.js продолжает работу, пока таймер активен. Каждый возвращаемый этими функциями объект `Timeout` предоставляет `timeout.ref()` и `timeout.unref()` для управления этим поведением.
 
 ### `timeout.close()`
 
@@ -95,7 +96,7 @@ added: v0.9.1
 
     Принимаются только фиксы, связанные с безопасностью, производительностью или баг-фиксы. Пожалуйста, не предлагайте изменений АПИ в разделе с таким индикатором, они будут отклонены.
 
-    Используйте [`clearTimeout()`][] вместо этого.
+    Используйте [`clearTimeout()`][`clearTimeout()`] вместо этого.
 
 * Возвращает: [<Timeout>](timers.md) ссылку на `timeout`
 
@@ -158,7 +159,7 @@ added:
 Приводит `Timeout` к примитиву. Примитив можно использовать для
 очистки `Timeout`. Примитив можно использовать только в
 том же потоке, где создан таймер. Поэтому для использования в
-[`worker_threads`][] его нужно сначала передать в нужный
+[`worker_threads`][`worker_threads`] его нужно сначала передать в нужный
 поток. Это улучшает совместимость с браузерными реализациями
 `setTimeout()` и `setInterval()`.
 
@@ -175,6 +176,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
@@ -200,21 +202,22 @@ changes:
 Добавлено в: v0.9.1
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая в конце текущего витка [цикла событий][Event Loop] Node.js
 * `...args` {any} Необязательные аргументы для вызова `callback`.
-* Возвращает: [<Immediate>](timers.md) для использования с [`clearImmediate()`][]
+* Возвращает: [<Immediate>](timers.md) для использования с [`clearImmediate()`][`clearImmediate()`]
 
 Планирует «немедленный» вызов `callback` после обратных вызовов событий ввода-вывода.
 
 При нескольких вызовах `setImmediate()` функции `callback` ставятся в очередь в порядке создания. Вся очередь обрабатывается на каждой итерации цикла событий. Если immediate ставится в очередь из выполняющегося обратного вызова, он сработает только на следующей итерации цикла событий.
 
-Если `callback` не является функцией, будет выброшен [`TypeError`][].
+Если `callback` не является функцией, будет выброшен [`TypeError`][`TypeError`].
 
-Для промисов есть отдельный вариант: [`timersPromises.setImmediate()`][].
+Для промисов есть отдельный вариант: [`timersPromises.setImmediate()`][`timersPromises.setImmediate()`].
 
 ### `setInterval(callback[, delay[, ...args]])`
 
@@ -231,6 +234,7 @@ changes:
 Добавлено в: v0.0.1
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
@@ -239,16 +243,16 @@ changes:
 * `delay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
   `callback`. **По умолчанию:** `1`.
 * `...args` {any} Необязательные аргументы для вызова `callback`.
-* Возвращает: [<Timeout>](timers.md) для использования с [`clearInterval()`][]
+* Возвращает: [<Timeout>](timers.md) для использования с [`clearInterval()`][`clearInterval()`]
 
 Планирует периодический вызов `callback` каждые `delay` миллисекунд.
 
 Если `delay` больше `2147483647`, меньше `1` или `NaN`, `delay`
 устанавливается в `1`. Нецелые задержки усекаются до целого.
 
-Если `callback` не является функцией, будет выброшен [`TypeError`][].
+Если `callback` не является функцией, будет выброшен [`TypeError`][`TypeError`].
 
-Для промисов есть отдельный вариант: [`timersPromises.setInterval()`][].
+Для промисов есть отдельный вариант: [`timersPromises.setInterval()`][`timersPromises.setInterval()`].
 
 ### `setTimeout(callback[, delay[, ...args]])`
 
@@ -265,6 +269,7 @@ changes:
 Добавлено в: v0.0.1
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
@@ -273,7 +278,7 @@ changes:
 * `delay` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
   `callback`. **По умолчанию:** `1`.
 * `...args` {any} Необязательные аргументы для вызова `callback`.
-* Возвращает: [<Timeout>](timers.md) для использования с [`clearTimeout()`][]
+* Возвращает: [<Timeout>](timers.md) для использования с [`clearTimeout()`][`clearTimeout()`]
 
 Планирует однократный вызов `callback` через `delay` миллисекунд.
 
@@ -283,17 +288,17 @@ Node.js не гарантирует точное время и порядок с
 Если `delay` больше `2147483647`, меньше `1` или `NaN`, `delay`
 устанавливается в `1`. Нецелые задержки усекаются до целого.
 
-Если `callback` не является функцией, будет выброшен [`TypeError`][].
+Если `callback` не является функцией, будет выброшен [`TypeError`][`TypeError`].
 
-Для промисов есть отдельный вариант: [`timersPromises.setTimeout()`][].
+Для промисов есть отдельный вариант: [`timersPromises.setTimeout()`][`timersPromises.setTimeout()`].
 
 ## Отмена таймеров
 
-Методы [`setImmediate()`][], [`setInterval()`][] и [`setTimeout()`][]
+Методы [`setImmediate()`][`setImmediate()`], [`setInterval()`][`setInterval()`] и [`setTimeout()`][`setTimeout()`]
 возвращают объекты, представляющие запланированные таймеры. Их можно использовать для отмены и предотвращения срабатывания.
 
-Для промисных вариантов [`setImmediate()`][] и [`setTimeout()`][]
-для отмены можно использовать [`AbortController`][]. При отмене
+Для промисных вариантов [`setImmediate()`][`setImmediate()`] и [`setTimeout()`][`setTimeout()`]
+для отмены можно использовать [`AbortController`][`AbortController`]. При отмене
 возвращаемые промисы отклоняются с `'AbortError'`.
 
 Для `setImmediate()`:
@@ -381,9 +386,9 @@ added: v0.9.1
 -->
 
 * `immediate` [<Immediate>](timers.md) Объект `Immediate`, возвращённый
-  [`setImmediate()`][].
+  [`setImmediate()`][`setImmediate()`].
 
-Отменяет объект `Immediate`, созданный [`setImmediate()`][].
+Отменяет объект `Immediate`, созданный [`setImmediate()`][`setImmediate()`].
 
 ### `clearInterval(timeout)`
 
@@ -391,10 +396,10 @@ added: v0.9.1
 added: v0.0.1
 -->
 
-* `timeout` [<Timeout>](timers.md) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setInterval()`][],
+* `timeout` [<Timeout>](timers.md) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setInterval()`][`setInterval()`],
   или [примитив][primitive] объекта `Timeout` в виде строки или числа.
 
-Отменяет объект `Timeout`, созданный [`setInterval()`][].
+Отменяет объект `Timeout`, созданный [`setInterval()`][`setInterval()`].
 
 ### `clearTimeout(timeout)`
 
@@ -402,10 +407,10 @@ added: v0.0.1
 added: v0.0.1
 -->
 
-* `timeout` [<Timeout>](timers.md) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setTimeout()`][],
+* `timeout` [<Timeout>](timers.md) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setTimeout()`][`setTimeout()`],
   или [примитив][primitive] объекта `Timeout` в виде строки или числа.
 
-Отменяет объект `Timeout`, созданный [`setTimeout()`][].
+Отменяет объект `Timeout`, созданный [`setTimeout()`][`setTimeout()`].
 
 ## API таймеров на промисах
 
@@ -420,6 +425,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.0.0 | Окончил экспериментальный. |
@@ -598,7 +604,7 @@ added:
   * `signal` [<AbortSignal>](globals.md#abortsignal) Необязательный `AbortSignal` для отмены ожидания.
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Экспериментальный API из черновика спецификации [Scheduling APIs][], разрабатываемой как стандарт веб-платформы.
+Экспериментальный API из черновика спецификации [Scheduling APIs][Scheduling APIs], разрабатываемой как стандарт веб-платформы.
 
 Вызов `timersPromises.scheduler.wait(delay, options)` эквивалентен
 вызову `timersPromises.setTimeout(delay, undefined, options)`.
@@ -625,7 +631,7 @@ added:
 
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Экспериментальный API из черновика спецификации [Scheduling APIs][], разрабатываемой как стандарт веб-платформы.
+Экспериментальный API из черновика спецификации [Scheduling APIs][Scheduling APIs], разрабатываемой как стандарт веб-платформы.
 
 Вызов `timersPromises.scheduler.yield()` эквивалентен вызову
 `timersPromises.setImmediate()` без аргументов.

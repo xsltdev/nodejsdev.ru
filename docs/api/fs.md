@@ -159,7 +159,13 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Представлено как `require('fs/promises')`. | | v11.14.0, v10.17.0 | Этот API больше не является экспериментальным. | | v10.1.0 | API доступен только через `require('fs').promises`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Представлено как `require('fs/promises')`. |
+    | v11.14.0, v10.17.0 | Этот API больше не является экспериментальным. |
+    | v10.1.0 | API доступен только через `require('fs').promises`. |
 
 API `fs/promises` предоставляет асинхронные методы файловой системы, возвращающие промисы.
 
@@ -210,7 +216,13 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. | | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. |
+    | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
 
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<AsyncIterable>](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [<Iterable>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [<Stream>](stream.md#stream)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -218,9 +230,9 @@ changes:
     -   `signal` [<AbortSignal>](globals.md#abortsignal) | undefined позволяет прервать выполняющуюся операцию `writeFile`. **По умолчанию:** `undefined`
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Псевдоним [`filehandle.writeFile()`][].
+Псевдоним [`filehandle.writeFile()`][`filehandle.writefile()`].
 
-При работе с дескриптором файла режим нельзя изменить относительно того, что был задан при [`fsPromises.open()`][]. Поэтому метод эквивалентен [`filehandle.writeFile()`][].
+При работе с дескриптором файла режим нельзя изменить относительно того, что был задан при [`fsPromises.open()`][`fspromises.open()`]. Поэтому метод эквивалентен [`filehandle.writeFile()`][`filehandle.writefile()`].
 
 #### `filehandle.chmod(mode)`
 
@@ -284,7 +296,7 @@ added: v16.11.0
     -   `signal` [<AbortSignal>](globals.md#abortsignal) | undefined **По умолчанию:** `undefined`
 -   Возвращает: [<fs.ReadStream>](fs.md#class-fsreadstream)
 
-В `options` можно задать `start` и `end`, чтобы прочитать диапазон байт вместо всего файла. Оба значения включаются в диапазон, отсчёт с 0; допустимый диапазон — \[0, [`Number.MAX_SAFE_INTEGER`][]]. Если `start` опущен или `undefined`, `filehandle.createReadStream()` читает последовательно с текущей позиции в файле. Для `encoding` допустимы те же значения, что принимает [Buffer](buffer.md#buffer).
+В `options` можно задать `start` и `end`, чтобы прочитать диапазон байт вместо всего файла. Оба значения включаются в диапазон, отсчёт с 0; допустимый диапазон — \[0, [`Number.MAX_SAFE_INTEGER`][`number.max_safe_integer`]]. Если `start` опущен или `undefined`, `filehandle.createReadStream()` читает последовательно с текущей позиции в файле. Для `encoding` допустимы те же значения, что принимает [Buffer](buffer.md#buffer).
 
 Если `FileHandle` указывает на символьное устройство с только блокирующим чтением (например клавиатуру или звуковую карту), чтение не завершится, пока не появятся данные. Из-за этого процесс может не завершиться, а поток — не закрыться естественным образом.
 
@@ -337,7 +349,11 @@ changes:
 
 Добавлено в: v16.11.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
 
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
@@ -348,7 +364,7 @@ changes:
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) при `true` базовый дескриптор файла сбрасывается на носитель перед закрытием. **По умолчанию:** `false`.
 -   Возвращает: [<fs.WriteStream>](fs.md#fswritestream)
 
-В `options` также может быть указан `start` для записи с позиции после начала файла; допустимые значения в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`][]]. Чтобы изменять файл, а не заменять его целиком, для `open` может понадобиться флаг `r+` вместо `r` по умолчанию. Для `encoding` допустимы те же значения, что принимает [Buffer](buffer.md#buffer).
+В `options` также может быть указан `start` для записи с позиции после начала файла; допустимые значения в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`][`number.max_safe_integer`]]. Чтобы изменять файл, а не заменять его целиком, для `open` может понадобиться флаг `r+` вместо `r` по умолчанию. Для `encoding` допустимы те же значения, что принимает [Buffer](buffer.md#buffer).
 
 Если `autoClose` равен `true` (по умолчанию), при `'error'` или `'finish'` дескриптор закрывается автоматически. Если `autoClose` равен `false`, дескриптор не закрывается даже при ошибке. Закрыть его и избежать утечки дескрипторов — задача приложения.
 
@@ -384,7 +400,7 @@ added: v25.9.0
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `...transforms` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) необязательные преобразования через [`stream/iter pull()`][].
+-   `...transforms` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) необязательные преобразования через [`stream/iter pull()`][`stream/iter pull()`].
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `signal` [<AbortSignal>](globals.md#abortsignal)
     -   `autoClose` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) закрыть дескриптор файла по окончании потока. **По умолчанию:** `false`.
@@ -393,7 +409,7 @@ added: v25.9.0
     -   `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера в байтах для каждой операции чтения. **По умолчанию:** `131072` (128 КиБ).
 -   Возвращает: [<AsyncIterable<Uint8Array[]>>](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
 
-Возвращает содержимое файла как асинхронный итерируемый объект по модели pull из [`node:stream/iter`][]. Чтение идёт блоками по `chunkSize` байт (по умолчанию 128 КиБ). Если заданы преобразования, они применяются через [`stream/iter pull()`][].
+Возвращает содержимое файла как асинхронный итерируемый объект по модели pull из [`node:stream/iter`][`node:stream/iter`]. Чтение идёт блоками по `chunkSize` байт (по умолчанию 128 КиБ). Если заданы преобразования, они применяются через [`stream/iter pull()`][`stream/iter pull()`].
 
 Пока итерируемый объект потребляется, дескриптор файла заблокирован; разблокировка — по завершении итерации, при ошибке или при прерывании потребителем.
 
@@ -455,7 +471,7 @@ added: v25.9.0
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
--   `...transforms` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) необязательные преобразования через [`stream/iter pullSync()`][].
+-   `...transforms` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) необязательные преобразования через [`stream/iter pullSync()`][`stream/iter pullsync()`].
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `autoClose` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) закрыть дескриптор файла по окончании потока. **По умолчанию:** `false`.
     -   `start` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) смещение в байтах для начала чтения. Если задано, используется явное позиционирование. **По умолчанию:** текущая позиция в файле.
@@ -463,7 +479,7 @@ added: v25.9.0
     -   `chunkSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера в байтах для каждой операции чтения. **По умолчанию:** `131072` (128 КиБ).
 -   Возвращает: [<Iterable<Uint8Array[]>>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)
 
-Синхронный аналог [`filehandle.pull()`][]. Возвращает синхронный итерируемый объект, который читает файл синхронным вводом-выводом в основном потоке. Чтение идёт блоками по `chunkSize` байт (по умолчанию 128 КиБ).
+Синхронный аналог [`filehandle.pull()`][`filehandle.pull()`]. Возвращает синхронный итерируемый объект, который читает файл синхронным вводом-выводом в основном потоке. Чтение идёт блоками по `chunkSize` байт (по умолчанию 128 КиБ).
 
 Пока итерируемый объект потребляется, дескриптор файла заблокирован. В отличие от асинхронного `pull()`, `AbortSignal` не поддерживается — все операции синхронны.
 
@@ -524,7 +540,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0 | Принимает значения bigint как позицию. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0 | Принимает значения bigint как позицию. |
 
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read.
 -   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The location in the buffer at which to start filling. **По умолчанию:** `0`
@@ -550,7 +570,11 @@ changes:
     description: Accepts bigint values as `position`.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0 | Принимает значения bigint как позицию. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0 | Принимает значения bigint как позицию. |
 
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read. **По умолчанию:** `Buffer.alloc(16384)`
@@ -577,7 +601,11 @@ changes:
     description: Accepts bigint values as `position`.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0 | Принимает значения bigint как позицию. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0 | Принимает значения bigint как позицию. |
 
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read.
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -617,7 +645,13 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.0.0, v22.17.0 | Маркировка стабильного API. | | v23.8.0, v22.15.0 | Удалена опция создания потока «байтов». Потоки теперь всегда являются «байтовыми» потоками. | | v20.0.0, v18.17.0 | Добавлена ​​возможность создания потока «байтов». |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+    | v23.8.0, v22.15.0 | Удалена опция создания потока «байтов». Потоки теперь всегда являются «байтовыми» потоками. |
+    | v20.0.0, v18.17.0 | Добавлена ​​возможность создания потока «байтов». |
 
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `autoClose` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When true, causes the [FileHandle](#filehandle) to be closed when the stream is closed. **По умолчанию:** `false`
@@ -695,7 +729,7 @@ added: v18.11.0
     -   `highWaterMark` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `64 * 1024`
 -   Возвращает: [<readline.InterfaceConstructor>](readline.md#interfaceconstructor)
 
-Convenience method to create a `readline` interface and stream over the file. See [`filehandle.createReadStream()`][] for the options.
+Convenience method to create a `readline` interface and stream over the file. See [`filehandle.createReadStream()`][`filehandle.createreadstream()`] for the options.
 
 === "MJS"
 
@@ -754,7 +788,12 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Теперь принимает дополнительное свойство signal, позволяющее прервать операцию. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Теперь принимает дополнительное свойство signal, позволяющее прервать операцию. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
 
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `bigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
@@ -829,7 +868,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Параметр `buffer` больше не будет принудительно помещать неподдерживаемый ввод в буферы. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Параметр `buffer` больше не будет принудительно помещать неподдерживаемый ввод в буферы. |
 
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The start position from within `buffer` where the data to write begins.
@@ -844,7 +887,7 @@ Write `buffer` to the file.
 -   `bytesWritten` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes written
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) a reference to the `buffer` written.
 
-It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`][].
+It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`][`filehandle.createwritestream()`].
 
 On Linux, positional writes do not work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
 
@@ -880,7 +923,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. |
 
 -   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `position` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null The offset from the beginning of the file where the data from `string` should be written. If `position` is not a `number` the data will be written at the current position. Подробнее см. POSIX pwrite(2). **По умолчанию:** `null`
@@ -894,7 +941,7 @@ Write `string` to the file. If `string` is not a string, the promise is rejected
 -   `bytesWritten` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes written
 -   `buffer` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) a reference to the `string` written.
 
-It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`][].
+It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`][`filehandle.createwritestream()`].
 
 On Linux, positional writes do not work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
 
@@ -916,7 +963,12 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. | | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.14.0, v14.18.0 | Аргумент `data` поддерживает `AsyncIterable`, `Iterable` и `Stream`. |
+    | v14.0.0 | Параметр `data` больше не будет принуждать неподдерживаемый ввод к строкам. |
 
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<AsyncIterable>](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [<Iterable>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [<Stream>](stream.md#stream)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -987,14 +1039,14 @@ added: v25.9.0
     -   `endSync()` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) total bytes written on success, `-1` if the writer is errored or an async operation is in flight. Idempotent when already closed.
     -   `fail(reason)` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Puts the writer into a terminal error state. Synchronous. If the writer is already closed or errored, this is a no-op. If `autoClose` is true, closes the file handle synchronously.
 
-Return a [`node:stream/iter`][] writer backed by this file handle.
+Return a [`node:stream/iter`][`node:stream/iter`] writer backed by this file handle.
 
 The writer supports both `Symbol.asyncDispose` and `Symbol.dispose`:
 
 -   `await using w = fh.writer()` — if the writer is still open (no `end()` called), `asyncDispose` calls `fail()`. If `end()` is pending, it waits for it to complete.
 -   `using w = fh.writer()` — calls `fail()` unconditionally.
 
-The `writeSync()` and `writevSync()` methods enable the try-sync fast path used by [`stream/iter pipeTo()`][]. When the reader's chunk size matches the writer's `chunkSize`, all writes in a `pipeTo()` pipeline complete synchronously with zero promise overhead.
+The `writeSync()` and `writevSync()` methods enable the try-sync fast path used by [`stream/iter pipeTo()`][`stream/iter pipeto()`]. When the reader's chunk size matches the writer's `chunkSize`, all writes in a `pipeTo()` pipeline complete synchronously with zero promise overhead.
 
 This function is only available when the `--experimental-stream-iter` flag is enabled.
 
@@ -1054,7 +1106,11 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.2.0 | Больше не экспериментально. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.2.0 | Больше не экспериментально. |
 
 Calls `filehandle.close()` and returns a promise that fulfills when the filehandle is closed.
 
@@ -1068,7 +1124,7 @@ added: v10.0.0
 -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `fs.constants.F_OK`
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
-Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][] for possible values of `mode`.
+Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
 
 If the accessibility check is successful, the promise is fulfilled with no value. If any of the accessibility checks fail, the promise is rejected with an [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object. The following example checks if the file `/etc/passwd` can be read and written by the current process.
 
@@ -1101,14 +1157,18 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<FileHandle>](#filehandle) filename or [FileHandle](#filehandle)
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'a'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'a'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
@@ -1116,7 +1176,7 @@ Asynchronously append data to a file, creating the file if it does not yet exist
 
 Если `options` — строка, она задаёт `encoding`.
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
 The `path` may be specified as a [FileHandle](#filehandle) that has been opened for appending (using `fsPromises.open()`).
 
@@ -1158,7 +1218,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) source filename to copy
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) destination filename of the copy operation
@@ -1217,7 +1281,13 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v22.3.0 | Этот API больше не является экспериментальным. | | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. | | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.3.0 | Этот API больше не является экспериментальным. |
+    | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. |
+    | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) source path to copy.
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) destination path to copy to.
@@ -1229,7 +1299,7 @@ changes:
         -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) destination path to copy to.
         -   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) A value that is coercible to `boolean` or a `Promise` that fulfils with such value.
     -   `force` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) overwrite existing file or directory. The copy operation will ignore errors if you set this to false and the destination exists. Use the `errorOnExist` option to change this behavior. **По умолчанию:** `true`.
-    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fsPromises.copyFile()`][].
+    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fsPromises.copyFile()`][`fspromises.copyfile()`].
     -   `preserveTimestamps` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true` timestamps from `src` will be preserved. **По умолчанию:** `false`.
     -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
     -   `verbatimSymlinks` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
@@ -1266,7 +1336,14 @@ changes:
 
 Добавлено в: v22.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. | | v24.0.0, v22.17.0 | Маркировка стабильного API. | | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. | | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+    | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. |
+    | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
 
 -   `pattern` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1323,7 +1400,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.6.0 | Этот API больше не устарел. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.6.0 | Этот API больше не устарел. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1345,7 +1426,7 @@ added:
 -   `mtime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
-Changes the access and modification times of a file in the same way as [`fsPromises.utimes()`][], with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
+Changes the access and modification times of a file in the same way as [`fsPromises.utimes()`][`fspromises.utimes()`], with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
 
 ### `fsPromises.link(existingPath, newPath)`
 
@@ -1372,14 +1453,18 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `bigint` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the [fs.Stats](fs.md#fsstats) object for the given symbolic link `path`.
 
-Equivalent to [`fsPromises.stat()`][] unless `path` refers to a symbolic link, in which case the link itself is stat-ed, not the file that it refers to. Refer to the POSIX lstat(2) document for more detail.
+Equivalent to [`fsPromises.stat()`][`fspromises.stat()`] unless `path` refers to a symbolic link, in which case the link itself is stat-ed, not the file that it refers to. Refer to the POSIX lstat(2) document for more detail.
 
 ### `fsPromises.mkdir(path[, options])`
 
@@ -1390,7 +1475,7 @@ added: v10.0.0
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][] for more details. **По умолчанию:** `0o777`.
+    -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][file modes] for more details. **По умолчанию:** `0o777`.
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Upon success, fulfills with `undefined` if `recursive` is `false`, or the first directory path created if `recursive` is `true`.
 
 Asynchronously creates a directory.
@@ -1448,7 +1533,12 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. | | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. |
+    | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. |
 
 -   `prefix` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1495,7 +1585,7 @@ Both this function and the disposal function on the resulting object are async, 
 
 <!-- TODO: link MDN docs for disposables once https://github.com/mdn/content/pull/38027 lands -->
 
-For detailed information, see the documentation of [`fsPromises.mkdtemp()`][].
+For detailed information, see the documentation of [`fsPromises.mkdtemp()`][`fspromises.mkdtemp()`].
 
 The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
 
@@ -1511,18 +1601,22 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v11.1.0 | Аргумент flags теперь является необязательным и по умолчанию имеет значение r. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v11.1.0 | Аргумент `flags` теперь является необязательным и по умолчанию имеет значение `r`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
--   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
--   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Sets the file mode (permission and sticky bits) if the file is created. See [File modes][] for more details. **По умолчанию:** `0o666` (readable and writable)
+-   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
+-   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Sets the file mode (permission and sticky bits) if the file is created. See [File modes][file modes] for more details. **По умолчанию:** `0o666` (readable and writable)
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a [FileHandle](#filehandle) object.
 
 Opens a [FileHandle](#filehandle).
 
 Refer to the POSIX open(2) documentation for more detail.
 
-Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
+Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][naming files, paths, and namespaces]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
 
 ### `fsPromises.opendir(path[, options])`
 
@@ -1543,7 +1637,12 @@ changes:
 
 Добавлено в: v12.12.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1593,7 +1692,12 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v10.11.0 | Добавлена ​​новая опция withFileTypes. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v10.11.0 | Добавлена ​​новая опция withFileTypes. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1637,12 +1741,16 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса readFile. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса readFile. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<FileHandle>](#filehandle) filename or `FileHandle`
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) allows aborting an in-progress readFile
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the contents of the file.
 
@@ -1800,7 +1908,17 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.0.0 | Удалите опцию «рекурсивный». | | v16.0.0 | «Использование `fsPromises.rmdir(path, { recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. | | v16.0.0 | «Использование `fsPromises.rmdir(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. | | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. | | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fsPromises.rm». | | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. | | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.0.0 | Удалите опцию «рекурсивный». |
+    | v16.0.0 | «Использование `fsPromises.rmdir(path, { recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. |
+    | v16.0.0 | «Использование `fsPromises.rmdir(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. |
+    | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. |
+    | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fsPromises.rm». |
+    | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. |
+    | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
@@ -1810,7 +1928,7 @@ Removes the directory identified by `path`.
 
 Using `fsPromises.rmdir()` on a file (not a directory) results in the promise being rejected with an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
 
-To get a behavior similar to the `rm -rf` Unix command, use [`fsPromises.rm()`][] with options `{ recursive: true, force: true }`.
+To get a behavior similar to the `rm -rf` Unix command, use [`fsPromises.rm()`][`fspromises.rm()`] with options `{ recursive: true, force: true }`.
 
 ### `fsPromises.rm(path[, options])`
 
@@ -1845,7 +1963,12 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.7.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.7.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1881,7 +2004,11 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v19.0.0 | Если аргумент `type` имеет значение null или опущен, Node.js автоматически определит тип `target` и автоматически выберет `dir` или `file`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Если аргумент `type` имеет значение null или опущен, Node.js автоматически определит тип `target` и автоматически выберет `dir` или `file`. |
 
 -   `target` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -1944,12 +2071,12 @@ added:
 -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `persistent` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the process should continue to run as long as files are being watched. **По умолчанию:** `true`.
-    -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][]). **По умолчанию:** `false`.
+    -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][caveats]). **По умолчанию:** `false`.
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the character encoding to be used for the filename passed to the listener. **По умолчанию:** `'utf8'`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) An [AbortSignal](globals.md#abortsignal) used to signal when the watcher should stop.
     -   `maxQueue` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of events to queue between iterations of the [AsyncIterator](https://tc39.github.io/ecma262/#sec-asynciterator-interface) returned. **По умолчанию:** `2048`.
     -   `overflow` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'ignore'` or `'throw'` when there are more events to be queued than `maxQueue` allows. `'ignore'` means overflow events are dropped and a warning is emitted, while `'throw'` means to throw an exception. **По умолчанию:** `'ignore'`.
-    -   `ignore` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`][]), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
+    -   `ignore` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`][`minimatch`]), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
 -   Возвращает: [<AsyncIterator>](https://tc39.github.io/ecma262/#sec-asynciterator-interface) of objects with the properties:
     -   `eventType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The type of change
     -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | null The name of the file changed.
@@ -1977,7 +2104,7 @@ setTimeout(() => ac.abort(), 10000);
 
 On most platforms, `'rename'` is emitted whenever a filename appears or disappears in the directory.
 
-All the [caveats][] for `fs.watch()` also apply to `fsPromises.watch()`.
+All the [caveats][caveats] for `fs.watch()` also apply to `fsPromises.watch()`.
 
 ### `fsPromises.writeFile(file, data[, options])`
 
@@ -2008,14 +2135,21 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. | | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса writeFile. | | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. |
+    | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса writeFile. |
+    | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
 
 -   `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<FileHandle>](#filehandle) filename or `FileHandle`
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<AsyncIterable>](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [<Iterable>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [<Stream>](stream.md#stream)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'w'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'w'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If all data is successfully written to the file, and `flush` is `true`, `filehandle.sync()` is used to flush the data. **По умолчанию:** `false`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) allows aborting an in-progress writeFile
 -   Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
@@ -2026,13 +2160,13 @@ The `encoding` option is ignored if `data` is a buffer.
 
 Если `options` — строка, она задаёт кодировку.
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
 Any specified [FileHandle](#filehandle) has to support writing.
 
 It is unsafe to use `fsPromises.writeFile()` multiple times on the same file without waiting for the promise to be settled.
 
-Similarly to `fsPromises.readFile` - `fsPromises.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`][] or [`filehandle.createWriteStream()`][].
+Similarly to `fsPromises.readFile` - `fsPromises.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`][`fs.createwritestream()`] or [`filehandle.createWriteStream()`][`filehandle.createwritestream()`].
 
 It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fsPromises.writeFile()`. Cancelation is "best effort", and some amount of data is likely still to be written.
 
@@ -2070,7 +2204,7 @@ added:
 
 -   Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Returns an object containing commonly used constants for file system operations. The object is the same as `fs.constants`. See [FS constants][] for more details.
+Returns an object containing commonly used constants for file system operations. The object is the same as `fs.constants`. See [FS constants][fs constants] for more details.
 
 ## Callback API
 
@@ -2112,14 +2246,22 @@ changes:
 
 Добавлено в: v0.11.15
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.0.0 | Константы `fs.F_OK`, `fs.R_OK`, `fs.W_OK` и `fs.X_OK`, которые присутствовали непосредственно в `fs`, удалены. | | v20.8.0 | Константы `fs.F_OK`, `fs.R_OK`, `fs.W_OK` и `fs.X_OK`, которые присутствовали непосредственно в `fs`, считаются устаревшими. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v6.3.0 | Константы типа fs.R_OK и т. д., которые присутствовали непосредственно в fs, были перенесены в fs.constants в качестве мягкого устаревания. Таким образом, для Node.js `< v6.3.0` используйте `fs` для доступа к этим константам или сделайте что-то вроде `(fs.constants \|\| fs).R_OK` для работы со всеми версиями. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.0.0 | Константы `fs.F_OK`, `fs.R_OK`, `fs.W_OK` и `fs.X_OK`, которые присутствовали непосредственно в `fs`, удалены. |
+    | v20.8.0 | Константы `fs.F_OK`, `fs.R_OK`, `fs.W_OK` и `fs.X_OK`, которые присутствовали непосредственно в `fs`, считаются устаревшими. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v6.3.0 | Константы типа fs.R_OK и т. д., которые присутствовали непосредственно в fs, были перенесены в fs.constants в качестве мягкого устаревания. Таким образом, для Node.js `< v6.3.0` используйте `fs` для доступа к этим константам или сделайте что-то вроде `(fs.constants \|\| fs).R_OK` для работы со всеми версиями. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `fs.constants.F_OK`
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][] for possible values of `mode`.
+Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
 
 The final argument, `callback`, is a callback function that is invoked with a possible error argument. If any of the accessibility checks fail, the error argument will be an `Error` object. The following examples check if `package.json` exists, and if it is readable or writable.
 
@@ -2303,21 +2445,30 @@ changes:
 
 Добавлено в: v0.6.7
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v7.0.0 | Переданный объект `options` никогда не будет изменен. | | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
+    | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'a'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'a'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Asynchronously append data to a file, creating the file if it does not yet exist. `data` can be a string or a [Buffer](buffer.md#buffer).
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
 === "MJS"
 
@@ -2394,7 +2545,14 @@ changes:
 
 Добавлено в: v0.1.30
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2481,7 +2639,14 @@ changes:
 
 Добавлено в: v0.1.97
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2520,7 +2685,14 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v15.9.0, v14.17.0 | Обратный вызов по умолчанию теперь используется, если он не указан. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v15.9.0, v14.17.0 | Обратный вызов по умолчанию теперь используется, если он не указан. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2550,7 +2722,12 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) source filename to copy
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) destination filename of the copy operation
@@ -2612,7 +2789,14 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v22.3.0 | Этот API больше не является экспериментальным. | | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.3.0 | Этот API больше не является экспериментальным. |
+    | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) source path to copy.
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) destination path to copy to.
@@ -2624,7 +2808,7 @@ changes:
         -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) destination path to copy to.
         -   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) A value that is coercible to `boolean` or a `Promise` that fulfils with such value.
     -   `force` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) overwrite existing file or directory. The copy operation will ignore errors if you set this to false and the destination exists. Use the `errorOnExist` option to change this behavior. **По умолчанию:** `true`.
-    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fs.copyFile()`][].
+    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fs.copyFile()`][`fs.copyfile()`].
     -   `preserveTimestamps` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true` timestamps from `src` will be preserved. **По умолчанию:** `false`.
     -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
     -   `verbatimSymlinks` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
@@ -2684,11 +2868,25 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v16.10.0 | Опция `fs` не требует метода `open`, если был предоставлен `fd`. | | v16.10.0 | Опция `fs` не требует метода close, если `autoClose` имеет значение false. | | v15.5.0 | Добавьте поддержку AbortSignal. | | v15.4.0 | Опция `fd` принимает аргументы FileHandle. | | v14.0.0 | Измените значение по умолчанию `emitClose` на `true`. | | v13.6.0, v12.17.0 | Опции `fs` позволяют переопределить используемую реализацию `fs`. | | v12.10.0 | Включите опцию emitClose. | | v11.0.0 | Наложите новые ограничения на «начало» и «конец», выдавая более подходящие ошибки в тех случаях, когда мы не можем разумно обработать входные значения. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Переданный объект `options` никогда не будет изменен. | | v2.3.0 | Передаваемый объект `options` теперь может быть строкой. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v16.10.0 | Опция `fs` не требует метода `open`, если был предоставлен `fd`. |
+    | v16.10.0 | Опция `fs` не требует метода close, если `autoClose` имеет значение false. |
+    | v15.5.0 | Добавьте поддержку AbortSignal. |
+    | v15.4.0 | Опция `fd` принимает аргументы FileHandle. |
+    | v14.0.0 | Измените значение по умолчанию `emitClose` на `true`. |
+    | v13.6.0, v12.17.0 | Опции `fs` позволяют переопределить используемую реализацию `fs`. |
+    | v12.10.0 | Включите опцию emitClose. |
+    | v11.0.0 | Наложите новые ограничения на «начало» и «конец», выдавая более подходящие ошибки в тех случаях, когда мы не можем разумно обработать входные значения. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
+    | v2.3.0 | Передаваемый объект `options` теперь может быть строкой. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
+    -   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `null`
     -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<FileHandle>](#filehandle) **По умолчанию:** `null`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
@@ -2701,7 +2899,7 @@ changes:
     -   `signal` [<AbortSignal>](globals.md#abortsignal) | null **По умолчанию:** `null`
 -   Возвращает: [<fs.ReadStream>](fs.md#class-fsreadstream)
 
-`options` can include `start` and `end` values to read a range of bytes from the file instead of the entire file. Both `start` and `end` are inclusive and start counting at 0, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`][]] range. If `fd` is specified and `start` is omitted or `undefined`, `fs.createReadStream()` reads sequentially from the current file position. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
+`options` can include `start` and `end` values to read a range of bytes from the file instead of the entire file. Both `start` and `end` are inclusive and start counting at 0, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`][`number.max_safe_integer`]] range. If `fd` is specified and `start` is omitted or `undefined`, `fs.createReadStream()` reads sequentially from the current file position. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
 
 If `fd` is specified, `ReadStream` will ignore the `path` argument and will use the specified file descriptor. This means that no `'open'` event will be emitted. `fd` should be blocking; non-blocking `fd`s should be passed to [net.Socket](net.md#class-netsocket).
 
@@ -2798,11 +2996,26 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v16.10.0 | Опция `fs` не требует метода `open`, если был предоставлен `fd`. | | v16.10.0 | Опция `fs` не требует метода close, если `autoClose` имеет значение false. | | v15.5.0 | Добавьте поддержку AbortSignal. | | v15.4.0 | Опция `fd` принимает аргументы FileHandle. | | v14.0.0 | Измените значение по умолчанию `emitClose` на `true`. | | v13.6.0, v12.17.0 | Опции `fs` позволяют переопределить используемую реализацию `fs`. | | v12.10.0 | Включите опцию emitClose. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Переданный объект `options` никогда не будет изменен. | | v5.5.0 | Опция `autoClose` теперь поддерживается. | | v2.3.0 | Передаваемый объект `options` теперь может быть строкой. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v16.10.0 | Опция `fs` не требует метода `open`, если был предоставлен `fd`. |
+    | v16.10.0 | Опция `fs` не требует метода close, если `autoClose` имеет значение false. |
+    | v15.5.0 | Добавьте поддержку AbortSignal. |
+    | v15.4.0 | Опция `fd` принимает аргументы FileHandle. |
+    | v14.0.0 | Измените значение по умолчанию `emitClose` на `true`. |
+    | v13.6.0, v12.17.0 | Опции `fs` позволяют переопределить используемую реализацию `fs`. |
+    | v12.10.0 | Включите опцию emitClose. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
+    | v5.5.0 | Опция `autoClose` теперь поддерживается. |
+    | v2.3.0 | Передаваемый объект `options` теперь может быть строкой. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'w'`.
+    -   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'w'`.
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
     -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<FileHandle>](#filehandle) **По умолчанию:** `null`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
@@ -2815,7 +3028,7 @@ changes:
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
 -   Возвращает: [<fs.WriteStream>](fs.md#fswritestream)
 
-`options` may also include a `start` option to allow writing data at some position past the beginning of the file, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`][]] range. Modifying a file rather than replacing it may require the `flags` option to be set to `r+` rather than the default `w`. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
+`options` may also include a `start` option to allow writing data at some position past the beginning of the file, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`][`number.max_safe_integer`]] range. Modifying a file rather than replacing it may require the `flags` option to be set to `r+` rather than the default `w`. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
 
 If `autoClose` is set to true (default behavior) on `'error'` or `'finish'` the file descriptor will be closed automatically. If `autoClose` is false, then the file descriptor won't be closed, even if there's an error. It is the application's responsibility to close it and make sure there's no file descriptor leak.
 
@@ -2846,9 +3059,14 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
 
-> Stability: 0 - Deprecated: Use [`fs.stat()`][] or [`fs.access()`][] instead.
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+
+> Stability: 0 - Deprecated: Use [`fs.stat()`][`fs.stat()`] or [`fs.access()`][`fs.access()`] instead.
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -3003,7 +3221,13 @@ changes:
 
 Добавлено в: v0.4.7
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3036,7 +3260,13 @@ changes:
 
 Добавлено в: v0.4.7
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3070,7 +3300,13 @@ changes:
 
 Добавлено в: v0.1.96
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -3104,7 +3340,14 @@ changes:
 
 Добавлено в: v0.1.95
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3139,7 +3382,13 @@ changes:
 
 Добавлено в: v0.1.96
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -3169,7 +3418,13 @@ changes:
 
 Добавлено в: v0.8.6
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `len` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
@@ -3240,7 +3495,14 @@ changes:
 
 Добавлено в: v0.4.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
@@ -3248,7 +3510,7 @@ changes:
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Change the file system timestamps of the object referenced by the supplied file descriptor. See [`fs.utimes()`][].
+Change the file system timestamps of the object referenced by the supplied file descriptor. See [`fs.utimes()`][`fs.utimes()`].
 
 ### `fs.glob(pattern[, options], callback)`
 
@@ -3277,7 +3539,14 @@ changes:
 
 Добавлено в: v22.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. | | v24.0.0, v22.17.0 | Маркировка стабильного API. | | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. | | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+    | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. |
+    | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
 
 -   `pattern` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3339,7 +3608,14 @@ changes:
                  it will emit a deprecation warning with id DEP0013.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 > Stability: 0 - Deprecated
 
@@ -3378,7 +3654,15 @@ changes:
     description: Documentation-only deprecation.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.6.0 | Этот API больше не устарел. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v0.4.7 | Прекращение поддержки только документации. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.6.0 | Этот API больше не устарел. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v0.4.7 | Прекращение поддержки только документации. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3404,7 +3688,11 @@ changes:
                  `ERR_INVALID_CALLBACK`.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
@@ -3412,7 +3700,7 @@ changes:
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Changes the access and modification times of a file in the same way as [`fs.utimes()`][], with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
+Changes the access and modification times of a file in the same way as [`fs.utimes()`][`fs.utimes()`], with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
 
 No arguments other than a possible exception are given to the completion callback.
 
@@ -3443,7 +3731,14 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметры existingPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметры existingPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `existingPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `newPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -3482,7 +3777,15 @@ changes:
 
 Добавлено в: v0.1.30
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3531,12 +3834,21 @@ changes:
 
 Добавлено в: v0.1.8
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v13.11.0, v12.17.0 | В рекурсивном режиме обратный вызов теперь получает в качестве аргумента первый созданный путь. | | v10.12.0 | Вторым аргументом теперь может быть объект options со свойствами recursive и mode. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v13.11.0, v12.17.0 | В рекурсивном режиме обратный вызов теперь получает в качестве аргумента первый созданный путь. |
+    | v10.12.0 | Вторым аргументом теперь может быть объект options со свойствами recursive и mode. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][] for more details. **По умолчанию:** `0o777`.
+    -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][file modes] for more details. **По умолчанию:** `0o777`.
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Present only if a directory is created with `recursive` set to `true`.
@@ -3607,7 +3919,16 @@ changes:
 
 Добавлено в: v5.10.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v6.2.1 | Параметр `callback` теперь является необязательным. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v6.2.1 | Параметр `callback` теперь является необязательным. |
 
 -   `prefix` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3693,10 +4014,17 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v11.1.0 | Аргумент flags теперь является необязательным и по умолчанию имеет значение r. | | v9.9.0 | Флаги `as` и `as+` теперь поддерживаются. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v11.1.0 | Аргумент flags теперь является необязательным и по умолчанию имеет значение r. |
+    | v9.9.0 | Флаги `as` и `as+` теперь поддерживаются. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
--   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
+-   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
 -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666` (readable and writable)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -3704,11 +4032,11 @@ changes:
 
 Asynchronous file open. Подробнее см. POSIX open(2).
 
-`mode` sets the file mode (permission and sticky bits), but only if the file was created. On Windows, only the write permission can be manipulated; see [`fs.chmod()`][].
+`mode` sets the file mode (permission and sticky bits), but only if the file was created. On Windows, only the write permission can be manipulated; see [`fs.chmod()`][`fs.chmod()`].
 
 The callback gets two arguments `(err, fd)`.
 
-Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
+Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][naming files, paths, and namespaces]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
 
 Functions based on `fs.open()` exhibit this behavior as well: `fs.writeFile()`, `fs.readFile()`, etc.
 
@@ -3726,7 +4054,11 @@ changes:
 
 Добавлено в: v19.8.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3783,7 +4115,13 @@ changes:
 
 Добавлено в: v12.12.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3824,7 +4162,14 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. | | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. | | v6.0.0 | Параметр length теперь может быть равен 0. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. |
+    | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
+    | v6.0.0 | Параметр length теперь может быть равен 0. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The buffer that the data will be written to.
@@ -3842,7 +4187,7 @@ The callback is given the three arguments, `(err, bytesRead, buffer)`.
 
 If the file is not modified concurrently, the end-of-file is reached when the number of bytes read is zero.
 
-If this method is invoked as its [`util.promisify()`][]ed version, it returns a promise for an `Object` with `bytesRead` and `buffer` properties.
+If this method is invoked as its [`util.promisify()`][`util.promisify()`]ed version, it returns a promise for an `Object` with `bytesRead` and `buffer` properties.
 
 The `fs.read()` method reads data from the file specified by the file descriptor (`fd`). The `length` argument indicates the maximum number of bytes that Node.js will attempt to read from the kernel. However, the actual number of bytes read (`bytesRead`) can be lower than the specified `length` for various reasons.
 
@@ -3871,7 +4216,11 @@ changes:
                  to make buffer, offset, length, and position optional.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v13.11.0, v12.17.0 | Можно передать объект параметров, чтобы сделать буфер, смещение, длину и позицию необязательными. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.11.0, v12.17.0 | Можно передать объект параметров, чтобы сделать буфер, смещение, длину и позицию необязательными. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3884,7 +4233,7 @@ changes:
     -   `bytesRead` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffer` [<Buffer>](buffer.md#buffer)
 
-Similar to the [`fs.read()`][] function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
+Similar to the [`fs.read()`][`fs.read()`] function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
 
 ### `fs.read(fd, buffer[, options], callback)`
 
@@ -3905,7 +4254,7 @@ added:
     -   `bytesRead` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffer` [<Buffer>](buffer.md#buffer)
 
-Similar to the [`fs.read()`][] function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
+Similar to the [`fs.read()`][`fs.read()`] function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
 
 ### `fs.readdir(path[, options], callback)`
 
@@ -3944,7 +4293,17 @@ changes:
 
 Добавлено в: v0.1.8
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.10.0 | Добавлена ​​новая опция withFileTypes. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v6.0.0 | Добавлен параметр `options`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.10.0 | Добавлена ​​новая опция withFileTypes. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v6.0.0 | Добавлен параметр `options`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4006,12 +4365,23 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. | | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса readFile. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v5.1.0 | В случае успеха обратный вызов всегда будет вызываться с нулевым значением параметра error. | | v5.0.0 | Параметр `path` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. |
+    | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса readFile. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v5.1.0 | В случае успеха обратный вызов всегда будет вызываться с нулевым значением параметра error. |
+    | v5.0.0 | Параметр `path` теперь может быть дескриптором файла. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) allows aborting an in-progress readFile
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [<AggregateError>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
@@ -4044,7 +4414,7 @@ If no encoding is specified, then the raw buffer is returned.
     readFile('/etc/passwd', 'utf8', callback);
     ```
 
-When the path is a directory, the behavior of `fs.readFile()` and [`fs.readFileSync()`][] is platform-specific. On macOS, Linux, and Windows, an error will be returned. On FreeBSD, a representation of the directory's contents will be returned.
+When the path is a directory, the behavior of `fs.readFile()` and [`fs.readFileSync()`][`fs.readfilesync()`] is platform-specific. On macOS, Linux, and Windows, an error will be returned. On FreeBSD, a representation of the directory's contents will be returned.
 
 === "MJS"
 
@@ -4096,7 +4466,7 @@ The additional read overhead can vary broadly on different systems and depends o
 
 For applications that require as-fast-as-possible reading of file contents, it is better to use `fs.read()` directly and for application code to manage reading the full contents of the file itself.
 
-The Node.js GitHub issue [#25741][] provides more information and a detailed analysis on the performance of `fs.readFile()` for multiple file sizes in different Node.js versions.
+The Node.js GitHub issue [#25741][#25741] provides more information and a detailed analysis on the performance of `fs.readFile()` for multiple file sizes in different Node.js versions.
 
 ### `fs.readlink(path[, options], callback)`
 
@@ -4124,7 +4494,14 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4153,7 +4530,11 @@ changes:
                  `ERR_INVALID_CALLBACK`.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffers` [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
@@ -4169,7 +4550,7 @@ Read from a file specified by `fd` and write to an array of `ArrayBufferView`s u
 
 The callback will be given three arguments: `err`, `bytesRead`, and `buffers`. `bytesRead` is how many bytes were read from the file.
 
-If this method is invoked as its [`util.promisify()`][]ed version, it returns a promise for an `Object` with `bytesRead` and `buffers` properties.
+If this method is invoked as its [`util.promisify()`][`util.promisify()`]ed version, it returns a promise for an `Object` with `bytesRead` and `buffers` properties.
 
 ### `fs.realpath(path[, options], callback)`
 
@@ -4207,7 +4588,17 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v8.0.0 | Была добавлена ​​поддержка разрешения труб/сокетов. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v6.4.0 | Вызов Realpath теперь снова работает в различных крайних случаях в Windows. | | v6.0.0 | Параметр `cache` был удален. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v8.0.0 | Была добавлена ​​поддержка разрешения труб/сокетов. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v6.4.0 | Вызов Realpath теперь снова работает в различных крайних случаях в Windows. |
+    | v6.0.0 | Параметр `cache` был удален. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4250,7 +4641,11 @@ changes:
 
 Добавлено в: v9.2.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4296,7 +4691,14 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметры oldPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметры oldPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `oldPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `newPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -4377,7 +4779,21 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.0.0 | Удалите опцию «рекурсивный». | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v16.0.0 | «Использование `fs.rmdir(path, {recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. | | v16.0.0 | «Использование `fs.rmdir(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. | | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. | | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fs.rm». | | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. | | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметры `path` могут быть объектом `URL` WHATWG, использующим протокол `file:`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.0.0 | Удалите опцию «рекурсивный». |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.0.0 | «Использование `fs.rmdir(path, {recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. |
+    | v16.0.0 | «Использование `fs.rmdir(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. |
+    | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. |
+    | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fs.rm». |
+    | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. |
+    | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметры `path` могут быть объектом `URL` WHATWG, использующим протокол `file:`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
@@ -4388,7 +4804,7 @@ Asynchronous rmdir(2). No arguments other than a possible exception are given to
 
 Using `fs.rmdir()` on a file (not a directory) results in an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
 
-To get a behavior similar to the `rm -rf` Unix command, use [`fs.rm()`][] with options `{ recursive: true, force: true }`.
+To get a behavior similar to the `rm -rf` Unix command, use [`fs.rm()`][`fs.rm()`] with options `{ recursive: true, force: true }`.
 
 ### `fs.rm(path[, options], callback)`
 
@@ -4405,7 +4821,11 @@ changes:
 
 Добавлено в: v14.14.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v17.3.0, v16.14.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.3.0, v16.14.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4452,7 +4872,16 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.7.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.7.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4464,13 +4893,13 @@ changes:
 
 Asynchronous stat(2). The callback gets two arguments `(err, stats)` where `stats` is an [fs.Stats](fs.md#fsstats) object.
 
-In case of an error, the `err.code` will be one of [Common System Errors][].
+In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
 
-[`fs.stat()`][] follows symbolic links. Use [`fs.lstat()`][] to look at the links themselves.
+[`fs.stat()`][`fs.stat()`] follows symbolic links. Use [`fs.lstat()`][`fs.lstat()`] to look at the links themselves.
 
 Using `fs.stat()` to check for the existence of a file before calling `fs.open()`, `fs.readFile()`, or `fs.writeFile()` is not recommended. Instead, user code should open/read/write the file directly and handle the error raised if the file is not available.
 
-To check if a file exists without manipulating it afterwards, [`fs.access()`][] is recommended.
+To check if a file exists without manipulating it afterwards, [`fs.access()`][`fs.access()`] is recommended.
 
 For example, given the following directory structure:
 
@@ -4561,7 +4990,7 @@ added:
 
 Asynchronous statfs(2). Returns information about the mounted file system which contains `path`. The callback gets two arguments `(err, stats)` where `stats` is an [fs.StatFs](fs.md#fsstatfs) object.
 
-In case of an error, the `err.code` will be one of [Common System Errors][].
+In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
 
 ### `fs.symlink(target, path[, type], callback)`
 
@@ -4586,7 +5015,13 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v12.0.0 | Если аргумент `type` не определён, Node автоматически определит `target` тип и автоматически выберет `dir` или `file`. | | v7.6.0 | Параметры target и path могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v12.0.0 | Если аргумент `type` не определён, Node автоматически определит `target` тип и автоматически выберет `dir` или `file`. |
+    | v7.6.0 | Параметры target и path могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
 
 -   `target` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -4645,7 +5080,14 @@ changes:
 
 Добавлено в: v0.8.6
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `len` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
@@ -4706,7 +5148,14 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -4725,7 +5174,7 @@ Asynchronously removes a file or symbolic link. No arguments other than a possib
     });
     ```
 
-`fs.unlink()` will not work on a directory, empty or otherwise. To remove a directory, use [`fs.rmdir()`][].
+`fs.unlink()` will not work on a directory, empty or otherwise. To remove a directory, use [`fs.rmdir()`][`fs.rmdir()`].
 
 Подробнее см. POSIX unlink(2).
 
@@ -4742,7 +5191,7 @@ Stop watching for changes on `filename`. If `listener` is specified, only that p
 
 Calling `fs.unwatchFile()` with a filename that is not being watched is a no-op, not an error.
 
-Using [`fs.watch()`][] is more efficient than `fs.watchFile()` and `fs.unwatchFile()`. `fs.watch()` should be used instead of `fs.watchFile()` and `fs.unwatchFile()` when possible.
+Using [`fs.watch()`][`fs.watch()`] is more efficient than `fs.watchFile()` and `fs.unwatchFile()`. `fs.watch()` should be used instead of `fs.watchFile()` and `fs.unwatchFile()` when possible.
 
 ### `fs.utimes(path, atime, mtime, callback)`
 
@@ -4778,7 +5227,16 @@ changes:
 
 Добавлено в: v0.4.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v8.0.0 | «`NaN`, `Infinity` и `-Infinity` больше не являются допустимыми спецификаторами времени». | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v8.0.0 | «`NaN`, `Infinity` и `-Infinity` больше не являются допустимыми спецификаторами времени». |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
@@ -4820,16 +5278,24 @@ changes:
 
 Добавлено в: v0.5.10
 
-??? note "История" | Версия | Изменения | | --- | --- | | REPLACEME | Добавлена ​​опция throwIfNoEntry. | | v19.1.0 | Добавлена ​​рекурсивная поддержка для Linux, AIX и IBMi. | | v15.9.0, v14.17.0 | Добавлена ​​поддержка закрытия наблюдателя с помощью AbortSignal. | | v7.6.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол file:. | | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | REPLACEME | Добавлена ​​опция throwIfNoEntry. |
+    | v19.1.0 | Добавлена ​​рекурсивная поддержка для Linux, AIX и IBMi. |
+    | v15.9.0, v14.17.0 | Добавлена ​​поддержка закрытия наблюдателя с помощью AbortSignal. |
+    | v7.6.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол file:. |
+    | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
 
 -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `persistent` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the process should continue to run as long as files are being watched. **По умолчанию:** `true`.
-    -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][]). **По умолчанию:** `false`.
+    -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][caveats]). **По умолчанию:** `false`.
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the character encoding to be used for the filename passed to the listener. **По умолчанию:** `'utf8'`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) allows closing the watcher with an AbortSignal.
     -   `throwIfNoEntry` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether an exception should be thrown when the path does not exist. **По умолчанию:** `true`.
-    -   `ignore` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`][]), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
+    -   `ignore` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<RegExp>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [<Array>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`][`minimatch`]), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
 -   `listener` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined **По умолчанию:** `undefined`
     -   `eventType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | null
@@ -4863,12 +5329,12 @@ The `fs.watch` API does not provide any protection with respect to malicious act
 
 This feature depends on the underlying operating system providing a way to be notified of file system changes.
 
--   On Linux systems, this uses [`inotify(7)`][].
--   On BSD systems, this uses [`kqueue(2)`][].
--   On macOS, this uses [`kqueue(2)`][] for files and [`FSEvents`][] for directories.
--   On SunOS systems (including Solaris and SmartOS), this uses [`event ports`][].
--   On Windows systems, this feature depends on [`ReadDirectoryChangesW`][].
--   On AIX systems, this feature depends on [`AHAFS`][], which must be enabled.
+-   On Linux systems, this uses [`inotify(7)`][`inotify(7)`].
+-   On BSD systems, this uses [`kqueue(2)`][`kqueue(2)`].
+-   On macOS, this uses [`kqueue(2)`][`kqueue(2)`] for files and [`FSEvents`][`fsevents`] for directories.
+-   On SunOS systems (including Solaris and SmartOS), this uses [`event ports`][`event ports`].
+-   On Windows systems, this feature depends on [`ReadDirectoryChangesW`][`readdirectorychangesw`].
+-   On AIX systems, this feature depends on [`AHAFS`][`ahafs`], which must be enabled.
 -   On IBM i systems, this feature is not supported.
 
 If the underlying functionality is not available for some reason, then `fs.watch()` will not be able to function and may throw an exception. For example, watching files or directories can be unreliable, and in some cases impossible, on network file systems (NFS, SMB, etc) or host file systems when using virtualization software such as Vagrant or Docker.
@@ -4879,7 +5345,7 @@ It is still possible to use `fs.watchFile()`, which uses stat polling, but this 
 
 <!--type=misc-->
 
-On Linux and macOS systems, `fs.watch()` resolves the path to an [inode][] and watches the inode. If the watched path is deleted and recreated, it is assigned a new inode. The watch will emit an event for the delete but will continue watching the _original_ inode. Events for the new inode will not be emitted. This is expected behavior.
+On Linux and macOS systems, `fs.watch()` resolves the path to an [inode][inode] and watches the inode. If the watched path is deleted and recreated, it is assigned a new inode. The watch will emit an event for the delete but will continue watching the _original_ inode. Events for the new inode will not be emitted. This is expected behavior.
 
 AIX files retain the same inode for the lifetime of a file. Saving and closing a watched file on AIX will result in two notifications (one for adding new content, and one for truncation).
 
@@ -4919,7 +5385,12 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.5.0 | Опция bigint теперь поддерживается. | | v7.6.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.5.0 | Опция bigint теперь поддерживается. |
+    | v7.6.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4954,7 +5425,7 @@ To be notified when the file was modified, not just accessed, it is necessary to
 
 When an `fs.watchFile` operation results in an `ENOENT` error, it will invoke the listener once, with all the fields zeroed (or, for dates, the Unix Epoch). If the file is created later on, the listener will be called again, with the latest stat objects. This is a change in functionality since v0.10.
 
-Using [`fs.watch()`][] is more efficient than `fs.watchFile` and `fs.unwatchFile`. `fs.watch` should be used instead of `fs.watchFile` and `fs.unwatchFile` when possible.
+Using [`fs.watch()`][`fs.watch()`] is more efficient than `fs.watchFile` and `fs.unwatchFile`. `fs.watch` should be used instead of `fs.watchFile` and `fs.unwatchFile` when possible.
 
 When a file being watched by `fs.watchFile()` disappears and reappears, then the contents of `previous` in the second callback event (the file's reappearance) will be the same as the contents of `previous` in the first callback event (its disappearance).
 
@@ -4999,7 +5470,17 @@ changes:
 
 Добавлено в: v0.0.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v14.0.0 | Параметр `buffer` больше не будет приводить к строкам неподдерживаемый ввод. | | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. | | v7.2.0 | Параметры offset и length теперь необязательны. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v14.0.0 | Параметр `buffer` больше не будет приводить к строкам неподдерживаемый ввод. |
+    | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
+    | v7.2.0 | Параметры offset и length теперь необязательны. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
@@ -5019,9 +5500,9 @@ Write `buffer` to the file specified by `fd`.
 
 The callback will be given three arguments `(err, bytesWritten, buffer)` where `bytesWritten` specifies how many _bytes_ were written from `buffer`.
 
-If this method is invoked as its [`util.promisify()`][]ed version, it returns a promise for an `Object` with `bytesWritten` and `buffer` properties.
+If this method is invoked as its [`util.promisify()`][`util.promisify()`]ed version, it returns a promise for an `Object` with `bytesWritten` and `buffer` properties.
 
-It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][] is recommended.
+It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][`fs.createwritestream()`] is recommended.
 
 On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
 
@@ -5084,7 +5565,17 @@ changes:
 
 Добавлено в: v0.11.5
 
-??? note "История" | Версия | Изменения | | --- | --- | | v19.0.0 | Передача в параметр string объекта с собственной функцией toString больше не поддерживается. | | v17.8.0 | Передача в параметр `string` объекта с собственной функцией `toString` считается устаревшей. | | v14.12.0 | Параметр string преобразует объект в строку с помощью явной функции toString. | | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.2.0 | Параметр `position` теперь является необязательным. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v19.0.0 | Передача в параметр string объекта с собственной функцией toString больше не поддерживается. |
+    | v17.8.0 | Передача в параметр `string` объекта с собственной функцией `toString` считается устаревшей. |
+    | v14.12.0 | Параметр string преобразует объект в строку с помощью явной функции toString. |
+    | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.2.0 | Параметр `position` теперь является необязательным. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -5101,13 +5592,13 @@ Write `string` to the file specified by `fd`. If `string` is not a string, an ex
 
 `encoding` is the expected string encoding.
 
-The callback will receive the arguments `(err, written, string)` where `written` specifies how many _bytes_ the passed string required to be written. Bytes written is not necessarily the same as string characters written. See [`Buffer.byteLength`][].
+The callback will receive the arguments `(err, written, string)` where `written` specifies how many _bytes_ the passed string required to be written. Bytes written is not necessarily the same as string characters written. See [`Buffer.byteLength`][`buffer.bytelength`].
 
-It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][] is recommended.
+It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][`fs.createwritestream()`] is recommended.
 
 On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
 
-On Windows, if the file descriptor is connected to the console (e.g. `fd == 1` or `stdout`) a string containing non-ASCII characters will not be rendered properly by default, regardless of the encoding used. It is possible to configure the console to render UTF-8 properly by changing the active codepage with the `chcp 65001` command. See the [chcp][] docs for more details.
+On Windows, if the file descriptor is connected to the console (e.g. `fd == 1` or `stdout`) a string containing non-ASCII characters will not be rendered properly by default, regardless of the encoding used. It is possible to configure the console to render UTF-8 properly by changing the active codepage with the `chcp 65001` command. See the [chcp][chcp] docs for more details.
 
 ### `fs.writeFile(file, data[, options], callback)`
 
@@ -5172,14 +5663,30 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v19.0.0 | Передача в параметр string объекта с собственной функцией toString больше не поддерживается. | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. | | v17.8.0 | Передача в параметр `string` объекта с собственной функцией `toString` считается устаревшей. | | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. | | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса writeFile. | | v14.12.0 | Параметр data преобразует объект в строку с помощью явной функции toString. | | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. | | v10.10.0 | Параметр data теперь может быть любым TypedArray или DataView. | | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. | | v7.4.0 | Параметр data теперь может быть Uint8Array. | | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. | | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v19.0.0 | Передача в параметр string объекта с собственной функцией toString больше не поддерживается. |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+    | v17.8.0 | Передача в параметр `string` объекта с собственной функцией `toString` считается устаревшей. |
+    | v16.0.0 | Возвращаемая ошибка может быть AggregateError, если возвращается более одной ошибки. |
+    | v15.2.0, v14.17.0 | Аргумент options может включать AbortSignal для прерывания текущего запроса writeFile. |
+    | v14.12.0 | Параметр data преобразует объект в строку с помощью явной функции toString. |
+    | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
+    | v10.10.0 | Параметр data теперь может быть любым TypedArray или DataView. |
+    | v10.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, во время выполнения будет выброшено `TypeError`. |
+    | v7.4.0 | Параметр data теперь может быть Uint8Array. |
+    | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
+    | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
 
 -   `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'w'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'w'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If all data is successfully written to the file, and `flush` is `true`, `fs.fsync()` is used to flush the data. **По умолчанию:** `false`.
     -   `signal` [<AbortSignal>](globals.md#abortsignal) allows aborting an in-progress writeFile
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -5191,7 +5698,7 @@ When `file` is a file descriptor, the behavior is similar to calling `fs.write()
 
 The `encoding` option is ignored if `data` is a buffer.
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
 === "MJS"
 
@@ -5216,9 +5723,9 @@ The `mode` option only affects the newly created file. See [`fs.open()`][] for m
     writeFile('message.txt', 'Hello Node.js', 'utf8', callback);
     ```
 
-It is unsafe to use `fs.writeFile()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][] is recommended.
+It is unsafe to use `fs.writeFile()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`][`fs.createwritestream()`] is recommended.
 
-Similarly to `fs.readFile` - `fs.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`][].
+Similarly to `fs.readFile` - `fs.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`][`fs.createwritestream()`].
 
 It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fs.writeFile()`. Cancelation is "best effort", and some amount of data is likely still to be written.
 
@@ -5273,7 +5780,11 @@ changes:
 
 Добавлено в: v12.9.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffers` [<ArrayBufferView[]>](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
@@ -5289,9 +5800,9 @@ Write an array of `ArrayBufferView`s to the file specified by `fd` using `writev
 
 The callback will be given three arguments: `err`, `bytesWritten`, and `buffers`. `bytesWritten` is how many bytes were written from `buffers`.
 
-If this method is [`util.promisify()`][]ed, it returns a promise for an `Object` with `bytesWritten` and `buffers` properties.
+If this method is [`util.promisify()`][`util.promisify()`]ed, it returns a promise for an `Object` with `bytesWritten` and `buffers` properties.
 
-It is unsafe to use `fs.writev()` multiple times on the same file without waiting for the callback. For this scenario, use [`fs.createWriteStream()`][].
+It is unsafe to use `fs.writev()` multiple times on the same file without waiting for the callback. For this scenario, use [`fs.createWriteStream()`][`fs.createwritestream()`].
 
 On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
 
@@ -5312,12 +5823,16 @@ changes:
 
 Добавлено в: v0.11.15
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `fs.constants.F_OK`
 
-Synchronously tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][] for possible values of `mode`.
+Synchronously tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
 
 If any of the accessibility checks fail, an `Error` will be thrown. Otherwise, the method will return `undefined`.
 
@@ -5354,19 +5869,25 @@ changes:
 
 Добавлено в: v0.6.7
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v7.0.0 | Переданный объект `options` никогда не будет изменен. | | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v7.0.0 | Переданный объект `options` никогда не будет изменен. |
+    | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'a'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'a'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
 
 Synchronously append data to a file, creating the file if it does not yet exist. `data` can be a string or a [Buffer](buffer.md#buffer).
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
 === "MJS"
 
@@ -5424,12 +5945,16 @@ changes:
 
 Добавлено в: v0.6.7
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.chmod()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.chmod()`][`fs.chmod()`].
 
 Подробнее см. POSIX chmod(2).
 
@@ -5446,13 +5971,17 @@ changes:
 
 Добавлено в: v0.1.97
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `gid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Synchronously changes owner and group of a file. Returns `undefined`. This is the synchronous version of [`fs.chown()`][].
+Synchronously changes owner and group of a file. Returns `undefined`. This is the synchronous version of [`fs.chown()`][`fs.chown()`].
 
 Подробнее см. POSIX chown(2).
 
@@ -5483,7 +6012,11 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) source filename to copy
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) destination filename of the copy operation
@@ -5534,7 +6067,13 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v22.3.0 | Этот API больше не является экспериментальным. | | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. | | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.3.0 | Этот API больше не является экспериментальным. |
+    | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. |
+    | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
 
 -   `src` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) source path to copy.
 -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) destination path to copy to.
@@ -5546,7 +6085,7 @@ changes:
         -   `dest` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) destination path to copy to.
         -   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Any non-`Promise` value that is coercible to `boolean`.
     -   `force` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) overwrite existing file or directory. The copy operation will ignore errors if you set this to false and the destination exists. Use the `errorOnExist` option to change this behavior. **По умолчанию:** `true`.
-    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fs.copyFileSync()`][].
+    -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fs.copyFileSync()`][`fs.copyfilesync()`].
     -   `preserveTimestamps` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true` timestamps from `src` will be preserved. **По умолчанию:** `false`.
     -   `recursive` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
     -   `verbatimSymlinks` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
@@ -5568,14 +6107,18 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   Возвращает: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Returns `true` if the path exists, `false` otherwise.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.exists()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.exists()`][`fs.exists()`].
 
 `fs.exists()` is deprecated, but `fs.existsSync()` is not. The `callback` parameter to `fs.exists()` accepts parameters that are inconsistent with other Node.js callbacks. `fs.existsSync()` does not use a callback.
 
@@ -5638,7 +6181,11 @@ changes:
 
 Добавлено в: v0.1.95
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -5670,7 +6217,7 @@ added: v0.8.6
 
 Truncates the file descriptor. Returns `undefined`.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.ftruncate()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.ftruncate()`][`fs.ftruncate()`].
 
 ### `fs.futimesSync(fd, atime, mtime)`
 
@@ -5685,13 +6232,17 @@ changes:
 
 Добавлено в: v0.4.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   `mtime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-Synchronous version of [`fs.futimes()`][]. Returns `undefined`.
+Synchronous version of [`fs.futimes()`][`fs.futimes()`]. Returns `undefined`.
 
 ### `fs.globSync(pattern[, options])`
 
@@ -5720,7 +6271,14 @@ changes:
 
 Добавлено в: v22.0.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. | | v24.0.0, v22.17.0 | Маркировка стабильного API. | | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. | | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.1.0, v22.17.0 | Добавлена ​​поддержка экземпляров URL для опции cwd. |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+    | v23.7.0, v22.14.0 | Добавьте поддержку опции «исключить», чтобы принимать шаблоны glob. |
+    | v22.2.0 | Добавьте поддержку withFileTypes в качестве опции. |
 
 -   `pattern` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -5773,7 +6331,12 @@ changes:
     description: Documentation-only deprecation.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.6.0 | Этот API больше не устарел. | | v0.4.7 | Прекращение поддержки только документации. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.6.0 | Этот API больше не устарел. |
+    | v0.4.7 | Прекращение поддержки только документации. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `uid` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file's new owner's user id.
@@ -5795,7 +6358,7 @@ added:
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   `mtime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-Change the file system timestamps of the symbolic link referenced by `path`. Returns `undefined`, or throws an exception when parameters are incorrect or the operation fails. This is the synchronous version of [`fs.lutimes()`][].
+Change the file system timestamps of the symbolic link referenced by `path`. Returns `undefined`, or throws an exception when parameters are incorrect or the operation fails. This is the synchronous version of [`fs.lutimes()`][`fs.lutimes()`].
 
 ### `fs.linkSync(existingPath, newPath)`
 
@@ -5811,7 +6374,11 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметры existingPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметры existingPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
 
 -   `existingPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `newPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -5841,7 +6408,13 @@ changes:
 
 Добавлено в: v0.1.30
 
-??? note "История" | Версия | Изменения | | --- | --- | | v15.3.0, v14.17.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.3.0, v14.17.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -5875,7 +6448,13 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v13.11.0, v12.17.0 | В «рекурсивном» режиме теперь возвращается первый созданный путь. | | v10.12.0 | Вторым аргументом теперь может быть объект options со свойствами recursive и mode. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.11.0, v12.17.0 | В «рекурсивном» режиме теперь возвращается первый созданный путь. |
+    | v10.12.0 | Вторым аргументом теперь может быть объект options со свойствами recursive и mode. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -5883,7 +6462,7 @@ changes:
     -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. **По умолчанию:** `0o777`.
 -   Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
-Synchronously creates a directory. Returns `undefined`, or if `recursive` is `true`, the first directory path created. This is the synchronous version of [`fs.mkdir()`][].
+Synchronously creates a directory. Returns `undefined`, or if `recursive` is `true`, the first directory path created. This is the synchronous version of [`fs.mkdir()`][`fs.mkdir()`].
 
 Подробнее см. POSIX mkdir(2).
 
@@ -5906,7 +6485,12 @@ changes:
 
 Добавлено в: v5.10.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. | | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.6.0, v18.19.0 | Параметр `prefix` теперь принимает буферы и URL. |
+    | v16.5.0, v14.18.0 | Параметр `prefix` теперь принимает пустую строку. |
 
 -   `prefix` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -5915,7 +6499,7 @@ changes:
 
 Returns the created directory path.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.mkdtemp()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.mkdtemp()`][`fs.mkdtemp()`].
 
 The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
 
@@ -5937,7 +6521,7 @@ Returns a disposable object whose `path` property holds the created directory pa
 
 <!-- TODO: link MDN docs for disposables once https://github.com/mdn/content/pull/38027 lands -->
 
-For detailed information, see the documentation of [`fs.mkdtemp()`][].
+For detailed information, see the documentation of [`fs.mkdtemp()`][`fs.mkdtemp()`].
 
 There is no callback-based version of this API because it is designed for use with the `using` syntax.
 
@@ -5962,7 +6546,12 @@ changes:
 
 Добавлено в: v12.12.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v13.1.0, v12.16.0 | Была введена опция `bufferSize`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -5996,16 +6585,22 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v11.1.0 | Аргумент flags теперь является необязательным и по умолчанию имеет значение r. | | v9.9.0 | Флаги `as` и `as+` теперь поддерживаются. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v11.1.0 | Аргумент flags теперь является необязательным и по умолчанию имеет значение r. |
+    | v9.9.0 | Флаги `as` и `as+` теперь поддерживаются. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
--   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `'r'`. See [support of file system `flags`][].
+-   `flags` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `'r'`. See [support of file system `flags`][support of file system `flags`].
 -   `mode` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Returns an integer representing the file descriptor.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.open()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.open()`][`fs.open()`].
 
 ### `fs.readdirSync(path[, options])`
 
@@ -6028,7 +6623,13 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». | | v10.10.0 | Добавлена ​​новая опция withFileTypes. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v20.1.0, v18.17.0 | Добавлена ​​опция «рекурсивный». |
+    | v10.10.0 | Добавлена ​​новая опция withFileTypes. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -6061,21 +6662,26 @@ changes:
 
 Добавлено в: v0.1.8
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v5.0.0 | Параметр `path` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v5.0.0 | Параметр `path` теперь может быть дескриптором файла. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'r'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'r'`.
 -   Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 
 Returns the contents of the `path`.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.readFile()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.readFile()`][`fs.readfile()`].
 
 If the `encoding` option is specified then this function returns a string. Otherwise it returns a buffer.
 
-Similar to [`fs.readFile()`][], when the path is a directory, the behavior of `fs.readFileSync()` is platform-specific.
+Similar to [`fs.readFile()`][`fs.readfile()`], when the path is a directory, the behavior of `fs.readFileSync()` is platform-specific.
 
 === "MJS"
 
@@ -6103,7 +6709,11 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -6132,7 +6742,12 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. | | v6.0.0 | Параметр length теперь может быть равен 0. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. |
+    | v6.0.0 | Параметр length теперь может быть равен 0. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
@@ -6143,7 +6758,7 @@ changes:
 
 Returns the number of `bytesRead`.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`][`fs.read()`].
 
 ### `fs.readSync(fd, buffer[, options])`
 
@@ -6160,7 +6775,11 @@ changes:
                  to make offset, length, and position optional.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v13.13.0, v12.17.0 | Можно передать объект Options, чтобы сделать смещение, длину и положение необязательными. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v13.13.0, v12.17.0 | Можно передать объект Options, чтобы сделать смещение, длину и положение необязательными. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
@@ -6174,7 +6793,7 @@ Returns the number of `bytesRead`.
 
 Similar to the above `fs.readSync` function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`][`fs.read()`].
 
 ### `fs.readvSync(fd, buffers[, position])`
 
@@ -6189,7 +6808,7 @@ added:
 -   `position` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes read.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.readv()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.readv()`][`fs.readv()`].
 
 ### `fs.realpathSync(path[, options])`
 
@@ -6214,7 +6833,14 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v8.0.0 | Была добавлена ​​поддержка разрешения труб/сокетов. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v6.4.0 | Вызов RealpathSync теперь снова работает в различных крайних случаях в Windows. | | v6.0.0 | Параметр `cache` был удален. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v8.0.0 | Была добавлена ​​поддержка разрешения труб/сокетов. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v6.4.0 | Вызов RealpathSync теперь снова работает в различных крайних случаях в Windows. |
+    | v6.0.0 | Параметр `cache` был удален. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -6223,7 +6849,7 @@ changes:
 
 Returns the resolved pathname.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.realpath()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.realpath()`][`fs.realpath()`].
 
 ### `fs.realpathSync.native(path[, options])`
 
@@ -6258,7 +6884,11 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметры oldPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметры oldPath и newPath могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
 
 -   `oldPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `newPath` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
@@ -6313,7 +6943,18 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v25.0.0 | Удалите опцию «рекурсивный». | | v16.0.0 | «Использование `fs.rmdirSync(path, {recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. | | v16.0.0 | «Использование `fs.rmdirSync(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. | | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. | | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fs.rmSync». | | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. | | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. | | v7.6.0 | Параметры `path` могут быть объектом `URL` WHATWG, использующим протокол `file:`. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v25.0.0 | Удалите опцию «рекурсивный». |
+    | v16.0.0 | «Использование `fs.rmdirSync(path, {recursive: true })` по `path`, который является файлом, больше не разрешено и приводит к ошибке `ENOENT` в Windows и ошибке `ENOTDIR` в POSIX. |
+    | v16.0.0 | «Использование `fs.rmdirSync(path, {recursive: true })` для несуществующего `пути` больше не разрешено и приводит к ошибке `ENOENT`. |
+    | v16.0.0 | Опция `recursive` устарела, ее использование вызывает предупреждение об устаревании. |
+    | v14.14.0 | Параметр «рекурсивный» устарел, вместо него используйте «fs.rmSync». |
+    | v13.3.0, v12.16.0 | Параметр maxBusyTries переименован в maxRetries, и его значение по умолчанию равно 0. Параметр emfileWait удален, а ошибки EMFILE используют ту же логику повтора, что и другие ошибки. Опция `retryDelay` теперь поддерживается. Ошибки `ENFILE` теперь повторяются. |
+    | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. |
+    | v7.6.0 | Параметры `path` могут быть объектом `URL` WHATWG, использующим протокол `file:`. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
@@ -6322,7 +6963,7 @@ Synchronous rmdir(2). Returns `undefined`.
 
 Using `fs.rmdirSync()` on a file (not a directory) results in an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
 
-To get a behavior similar to the `rm -rf` Unix command, use [`fs.rmSync()`][] with options `{ recursive: true, force: true }`.
+To get a behavior similar to the `rm -rf` Unix command, use [`fs.rmSync()`][`fs.rmsync()`] with options `{ recursive: true, force: true }`.
 
 ### `fs.rmSync(path[, options])`
 
@@ -6339,7 +6980,11 @@ changes:
 
 Добавлено в: v14.14.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v17.3.0, v16.14.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v17.3.0, v16.14.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -6373,7 +7018,13 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v15.3.0, v14.17.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. | | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v15.3.0, v14.17.0 | Принимает опцию `throwIfNoEntry`, чтобы указать, должно ли создаваться исключение, если запись не существует. |
+    | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -6398,7 +7049,7 @@ added:
 
 Synchronous statfs(2). Returns information about the mounted file system which contains `path`.
 
-In case of an error, the `err.code` will be one of [Common System Errors][].
+In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
 
 ### `fs.symlinkSync(target, path[, type])`
 
@@ -6418,14 +7069,19 @@ changes:
 
 Добавлено в: v0.1.31
 
-??? note "История" | Версия | Изменения | | --- | --- | | v12.0.0 | Если аргумент `type` не определён, Node автоматически определит `target` тип и автоматически выберет `dir` или `file`. | | v7.6.0 | Параметры target и path могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v12.0.0 | Если аргумент `type` не определён, Node автоматически определит `target` тип и автоматически выберет `dir` или `file`. |
+    | v7.6.0 | Параметры target и path могут быть объектами URL WHATWG, использующими протокол file:. В настоящее время поддержка все еще _экспериментальная_. |
 
 -   `target` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
 -   Возвращает: `undefined`.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.symlink()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.symlink()`][`fs.symlink()`].
 
 ### `fs.truncateSync(path[, len])`
 
@@ -6453,7 +7109,11 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 
@@ -6480,14 +7140,20 @@ changes:
 
 Добавлено в: v0.4.2
 
-??? note "История" | Версия | Изменения | | --- | --- | | v8.0.0 | «`NaN`, `Infinity` и `-Infinity` больше не являются допустимыми спецификаторами времени». | | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. | | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v8.0.0 | «`NaN`, `Infinity` и `-Infinity` больше не являются допустимыми спецификаторами времени». |
+    | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
+    | v4.1.0 | Числовые строки, NaN и Infinity теперь разрешены как спецификаторы времени. |
 
 -   `path` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api)
 -   `atime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   `mtime` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Date>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   Возвращает: `undefined`.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.utimes()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.utimes()`][`fs.utimes()`].
 
 ### `fs.writeFileSync(file, data[, options])`
 
@@ -6529,20 +7195,31 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История" | Версия | Изменения | | --- | --- | | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. | | v19.0.0 | Передача в параметр data объекта с собственной функцией toString больше не поддерживается. | | v17.8.0 | Передача в параметр data объекта с собственной функцией toString считается устаревшей. | | v14.12.0 | Параметр data преобразует объект в строку с помощью явной функции toString. | | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. | | v10.10.0 | Параметр data теперь может быть любым TypedArray или DataView. | | v7.4.0 | Параметр data теперь может быть Uint8Array. | | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v21.0.0, v20.10.0 | Опция `flush` теперь поддерживается. |
+    | v19.0.0 | Передача в параметр data объекта с собственной функцией toString больше не поддерживается. |
+    | v17.8.0 | Передача в параметр data объекта с собственной функцией toString считается устаревшей. |
+    | v14.12.0 | Параметр data преобразует объект в строку с помощью явной функции toString. |
+    | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
+    | v10.10.0 | Параметр data теперь может быть любым TypedArray или DataView. |
+    | v7.4.0 | Параметр data теперь может быть Uint8Array. |
+    | v5.0.0 | Параметр `file` теперь может быть дескриптором файла. |
 
 -   `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<URL>](url.md#the-whatwg-url-api) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `data` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][]. **По умолчанию:** `'w'`.
+    -   `flag` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`][support of file system `flags`]. **По умолчанию:** `'w'`.
     -   `flush` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If all data is successfully written to the file, and `flush` is `true`, `fs.fsyncSync()` is used to flush the data.
 -   Возвращает: `undefined`.
 
-The `mode` option only affects the newly created file. See [`fs.open()`][] for more details.
+The `mode` option only affects the newly created file. See [`fs.open()`][`fs.open()`] for more details.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.writeFile()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.writeFile()`][`fs.writefile()`].
 
 ### `fs.writeSync(fd, buffer, offset[, length[, position]])`
 
@@ -6567,7 +7244,14 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Параметр `buffer` больше не будет приводить к строкам неподдерживаемый ввод. | | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. | | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. | | v7.2.0 | Параметры offset и length теперь необязательны. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Параметр `buffer` больше не будет приводить к строкам неподдерживаемый ввод. |
+    | v10.10.0 | Параметром `buffer` теперь может быть любой `TypedArray` или `DataView`. |
+    | v7.4.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
+    | v7.2.0 | Параметры offset и length теперь необязательны. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
@@ -6576,7 +7260,7 @@ changes:
 -   `position` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes written.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, buffer...)`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, buffer...)`][`fs.write(fd, buffer...)`].
 
 ### `fs.writeSync(fd, buffer[, options])`
 
@@ -6594,7 +7278,7 @@ added:
     -   `position` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes written.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, buffer...)`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, buffer...)`][`fs.write(fd, buffer...)`].
 
 ### `fs.writeSync(fd, string[, position[, encoding]])`
 
@@ -6612,7 +7296,12 @@ changes:
 
 Добавлено в: v0.11.5
 
-??? note "История" | Версия | Изменения | | --- | --- | | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. | | v7.2.0 | Параметр `position` теперь является необязательным. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. |
+    | v7.2.0 | Параметр `position` теперь является необязательным. |
 
 -   `fd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `string` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -6620,7 +7309,7 @@ changes:
 -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes written.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, string...)`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.write(fd, string...)`][`fs.write(fd, string...)`].
 
 ### `fs.writevSync(fd, buffers[, position])`
 
@@ -6633,7 +7322,7 @@ added: v12.9.0
 -   `position` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 -   Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes written.
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.writev()`][].
+For detailed information, see the documentation of the asynchronous version of this API: [`fs.writev()`][`fs.writev()`].
 
 ## Common Objects
 
@@ -6647,7 +7336,7 @@ added: v12.12.0
 
 A class representing a directory stream.
 
-Created by [`fs.opendir()`][], [`fs.opendirSync()`][], or [`fsPromises.opendir()`][].
+Created by [`fs.opendir()`][`fs.opendir()`], [`fs.opendirSync()`][`fs.opendirsync()`], or [`fsPromises.opendir()`][`fspromises.opendir()`].
 
 === "MJS"
 
@@ -6691,7 +7380,11 @@ changes:
 
 Добавлено в: v12.12.0
 
-??? note "История" | Версия | Изменения | | --- | --- | | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 -   `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [<Error>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -6716,7 +7409,7 @@ added: v12.12.0
 
 -   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The read-only path of this directory as was provided to [`fs.opendir()`][], [`fs.opendirSync()`][], or [`fsPromises.opendir()`][].
+The read-only path of this directory as was provided to [`fs.opendir()`][`fs.opendir()`], [`fs.opendirSync()`][`fs.opendirsync()`], or [`fsPromises.opendir()`][`fspromises.opendir()`].
 
 #### `dir.read()`
 
@@ -6790,7 +7483,11 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.2.0 | Больше не экспериментально. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.2.0 | Больше не экспериментально. |
 
 Calls `dir.close()` if the directory handle is open, and returns a promise that fulfills when disposal is complete.
 
@@ -6806,7 +7503,11 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.2.0 | Больше не экспериментально. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.2.0 | Больше не экспериментально. |
 
 Calls `dir.closeSync()` if the directory handle is open, and returns `undefined`.
 
@@ -6818,7 +7519,7 @@ added: v10.10.0
 
 A representation of a directory entry, which can be a file or a subdirectory within the directory, as returned by reading from an [fs.Dir](fs.md#class-fsdir). The directory entry is a combination of the file name and file type pairs.
 
-Additionally, when [`fs.readdir()`][] or [`fs.readdirSync()`][] is called with the `withFileTypes` option set to `true`, the resulting array is filled with [fs.Dirent](fs.md#fsdirent) objects, rather than strings or [Buffer](buffer.md#buffer)s.
+Additionally, when [`fs.readdir()`][`fs.readdir()`] or [`fs.readdirSync()`][`fs.readdirsync()`] is called with the `withFileTypes` option set to `true`, the resulting array is filled with [fs.Dirent](fs.md#fsdirent) objects, rather than strings or [Buffer](buffer.md#buffer)s.
 
 #### `dirent.isBlockDevice()`
 
@@ -6898,7 +7599,7 @@ added: v10.10.0
 
 -   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer)
 
-The file name that this [fs.Dirent](fs.md#fsdirent) object refers to. The type of this value is determined by the `options.encoding` passed to [`fs.readdir()`][] or [`fs.readdirSync()`][].
+The file name that this [fs.Dirent](fs.md#fsdirent) object refers to. The type of this value is determined by the `options.encoding` passed to [`fs.readdir()`][`fs.readdir()`] or [`fs.readdirSync()`][`fs.readdirsync()`].
 
 #### `dirent.parentPath`
 
@@ -6915,7 +7616,11 @@ changes:
     description: Marking the API stable.
 -->
 
-??? note "История" | Версия | Изменения | | --- | --- | | v24.0.0, v22.17.0 | Маркировка стабильного API. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 -   Тип: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -6929,7 +7634,7 @@ added: v0.5.8
 
 -   Extends [<EventEmitter>](events.md#class-eventemitter)
 
-A successful call to [`fs.watch()`][] method will return a new [fs.FSWatcher](fs.md#fsfswatcher) object.
+A successful call to [`fs.watch()`][`fs.watch()`] method will return a new [fs.FSWatcher](fs.md#fsfswatcher) object.
 
 All [fs.FSWatcher](fs.md#fsfswatcher) objects emit a `'change'` event whenever a specific watched file is modified.
 
@@ -6942,7 +7647,7 @@ added: v0.5.8
 -   `eventType` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The type of change event that has occurred
 -   `filename` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) The filename that changed (if relevant/available)
 
-Emitted when something changes in a watched directory or file. See more details in [`fs.watch()`][].
+Emitted when something changes in a watched directory or file. See more details in [`fs.watch()`][`fs.watch()`].
 
 The `filename` argument may not be provided depending on operating system support. If `filename` is provided, it will be provided as a [Buffer](buffer.md#buffer) if `fs.watch()` is called with its `encoding` option set to `'buffer'`, otherwise `filename` will be a UTF-8 string.
 
@@ -7057,7 +7762,7 @@ added: v0.1.93
 
 -   Extends: [<stream.Readable>](stream.md#streamreadable)
 
-Instances of [fs.ReadStream](fs.md#class-fsreadstream) cannot be constructed directly. They are created and returned using the [`fs.createReadStream()`][] function.
+Instances of [fs.ReadStream](fs.md#class-fsreadstream) cannot be constructed directly. They are created and returned using the [`fs.createReadStream()`][`fs.createreadstream()`] function.
 
 #### Event: `'close'`
 
@@ -7136,11 +7841,16 @@ changes:
 
 Добавлено в: v0.1.21
 
-??? note "История" | Версия | Изменения | | --- | --- | | v22.0.0, v20.13.0 | Публичный конструктор устарел. | | v8.1.0 | Добавлено время в виде чисел. |
+??? note "История"
+
+    | Версия | Изменения |
+    | --- | --- |
+    | v22.0.0, v20.13.0 | Публичный конструктор устарел. |
+    | v8.1.0 | Добавлено время в виде чисел. |
 
 A [fs.Stats](fs.md#fsstats) object provides information about a file.
 
-Objects returned from [`fs.stat()`][], [`fs.lstat()`][], [`fs.fstat()`][], and their synchronous counterparts are of this type. If `bigint` in the `options` passed to those methods is true, the numeric values will be `bigint` instead of `number`, and the object will contain additional nanosecond-precision properties suffixed with `Ns`. `Stat` objects are not to be created directly using the `new` keyword.
+Objects returned from [`fs.stat()`][`fs.stat()`], [`fs.lstat()`][`fs.lstat()`], [`fs.fstat()`][`fs.fstat()`], and their synchronous counterparts are of this type. If `bigint` in the `options` passed to those methods is true, the numeric values will be `bigint` instead of `number`, and the object will contain additional nanosecond-precision properties suffixed with `Ns`. `Stat` objects are not to be created directly using the `new` keyword.
 
 ```console
 Stats {
@@ -7222,7 +7932,7 @@ added: v0.1.10
 
 Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a file system directory.
 
-If the [fs.Stats](fs.md#fsstats) object was obtained from calling [`fs.lstat()`][] on a symbolic link which resolves to a directory, this method will return `false`. This is because [`fs.lstat()`][] returns information about a symbolic link itself and not the path it resolves to.
+If the [fs.Stats](fs.md#fsstats) object was obtained from calling [`fs.lstat()`][`fs.lstat()`] on a symbolic link which resolves to a directory, this method will return `false`. This is because [`fs.lstat()`][`fs.lstat()`] returns information about a symbolic link itself and not the path it resolves to.
 
 #### `stats.isFIFO()`
 
@@ -7264,7 +7974,7 @@ added: v0.1.10
 
 Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a symbolic link.
 
-This method is only valid when using [`fs.lstat()`][].
+This method is only valid when using [`fs.lstat()`][`fs.lstat()`].
 
 #### `stats.dev`
 
@@ -7450,9 +8160,9 @@ The timestamp indicating the creation time of this file.
 
 #### Stat time values
 
-The `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` properties are numeric values that hold the corresponding times in milliseconds. Their precision is platform specific. When `bigint: true` is passed into the method that generates the object, the properties will be [bigints][], otherwise they will be [numbers][mdn-number].
+The `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` properties are numeric values that hold the corresponding times in milliseconds. Their precision is platform specific. When `bigint: true` is passed into the method that generates the object, the properties will be [bigints][bigints], otherwise they will be [numbers][mdn-number].
 
-The `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` properties are [bigints][] that hold the corresponding times in nanoseconds. They are only present when `bigint: true` is passed into the method that generates the object. Their precision is platform specific.
+The `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` properties are [bigints][bigints] that hold the corresponding times in nanoseconds. They are only present when `bigint: true` is passed into the method that generates the object. Their precision is platform specific.
 
 `atime`, `mtime`, `ctime`, and `birthtime` are [`Date`][mdn-date] object alternate representations of the various times. The `Date` and number values are not connected. Assigning a new number value, or mutating the `Date` value, will not be reflected in the corresponding alternate representation.
 
@@ -7475,7 +8185,7 @@ added:
 
 Provides information about a mounted file system.
 
-Objects returned from [`fs.statfs()`][] and its synchronous counterpart are of this type. If `bigint` in the `options` passed to those methods is `true`, the numeric values will be `bigint` instead of `number`.
+Objects returned from [`fs.statfs()`][`fs.statfs()`] and its synchronous counterpart are of this type. If `bigint` in the `options` passed to those methods is `true`, the numeric values will be `bigint` instead of `number`.
 
 ```console
 StatFs {
@@ -7750,7 +8460,7 @@ added: v0.1.93
 
 -   Extends [<stream.Writable>](stream.md#streamwritable)
 
-Instances of [fs.WriteStream](fs.md#fswritestream) cannot be constructed directly. They are created and returned using the [`fs.createWriteStream()`][] function.
+Instances of [fs.WriteStream](fs.md#fswritestream) cannot be constructed directly. They are created and returned using the [`fs.createWriteStream()`][`fs.createwritestream()`] function.
 
 #### Event: `'close'`
 
@@ -7805,7 +8515,7 @@ Closes `writeStream`. Optionally accepts a callback that will be executed once t
 added: v0.1.93
 -->
 
-The path to the file the stream is writing to as specified in the first argument to [`fs.createWriteStream()`][]. If `path` is passed as a string, then `writeStream.path` will be a string. If `path` is passed as a [Buffer](buffer.md#buffer), then `writeStream.path` will be a [Buffer](buffer.md#buffer).
+The path to the file the stream is writing to as specified in the first argument to [`fs.createWriteStream()`][`fs.createwritestream()`]. If `path` is passed as a string, then `writeStream.path` will be a string. If `path` is passed as a [Buffer](buffer.md#buffer), then `writeStream.path` will be a [Buffer](buffer.md#buffer).
 
 #### `writeStream.pending`
 
@@ -7851,7 +8561,7 @@ Example:
 
 ##### File access constants
 
-The following constants are meant for use as the `mode` parameter passed to [`fsPromises.access()`][], [`fs.access()`][], and [`fs.accessSync()`][].
+The following constants are meant for use as the `mode` parameter passed to [`fsPromises.access()`][`fspromises.access()`], [`fs.access()`][`fs.access()`], and [`fs.accessSync()`][`fs.accesssync()`].
 
 <table>
   <tr>
@@ -7885,7 +8595,7 @@ The definitions are also available on Windows.
 
 ##### File copy constants
 
-The following constants are meant for use with [`fs.copyFile()`][].
+The following constants are meant for use with [`fs.copyFile()`][`fs.copyfile()`].
 
 <table>
   <tr>
@@ -8420,7 +9130,7 @@ The promise-based APIs use a [FileHandle](#filehandle) object in place of the nu
 
 ### Threadpool usage
 
-All callback and promise-based file system APIs (with the exception of `fs.FSWatcher()`) use libuv's threadpool. This can have surprising and negative performance implications for some applications. See the [`UV_THREADPOOL_SIZE`][] documentation for more information.
+All callback and promise-based file system APIs (with the exception of `fs.FSWatcher()`) use libuv's threadpool. This can have surprising and negative performance implications for some applications. See the [`UV_THREADPOOL_SIZE`][`uv_threadpool_size`] documentation for more information.
 
 ### File system flags
 

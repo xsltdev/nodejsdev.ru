@@ -158,25 +158,25 @@ changes:
 
 В настоящее время Node.js поддерживает следующие кодировки символов:
 
--   `'utf8'` (псевдоним: `'utf-8'`): многобайтовое кодирование символов Unicode. Многие веб-страницы и другие форматы документов используют [UTF-8][]. Это кодировка по умолчанию. При декодировании `Buffer` в строку, которая не содержит только корректных данных UTF-8, для обозначения ошибок используется символ замены Unicode `U+FFFD` �.
+-   `'utf8'` (псевдоним: `'utf-8'`): многобайтовое кодирование символов Unicode. Многие веб-страницы и другие форматы документов используют [UTF-8][utf-8]. Это кодировка по умолчанию. При декодировании `Buffer` в строку, которая не содержит только корректных данных UTF-8, для обозначения ошибок используется символ замены Unicode `U+FFFD` �.
 
--   `'utf16le'` (псевдоним: `'utf-16le'`): многобайтовое кодирование символов Unicode. В отличие от `'utf8'`, каждый символ строки кодируется 2 или 4 байтами. Node.js поддерживает только [младший порядок байтов][endianness] для [UTF-16][].
+-   `'utf16le'` (псевдоним: `'utf-16le'`): многобайтовое кодирование символов Unicode. В отличие от `'utf8'`, каждый символ строки кодируется 2 или 4 байтами. Node.js поддерживает только [младший порядок байтов][endianness] для [UTF-16][utf-16].
 
--   `'latin1'`: Latin-1 соответствует [ISO-8859-1][]. Эта кодировка поддерживает только символы Unicode от `U+0000` до `U+00FF`. Каждый символ кодируется одним байтом. Символы вне этого диапазона усекаются и отображаются на символы из него.
+-   `'latin1'`: Latin-1 соответствует [ISO-8859-1][iso-8859-1]. Эта кодировка поддерживает только символы Unicode от `U+0000` до `U+00FF`. Каждый символ кодируется одним байтом. Символы вне этого диапазона усекаются и отображаются на символы из него.
 
 Преобразование `Buffer` в строку одним из перечисленных способов называется декодированием, а преобразование строки в `Buffer` — кодированием.
 
 Node.js также поддерживает следующие двоично-текстовые кодировки. Для них соглашение об именовании обратное: преобразование `Buffer` в строку обычно называют кодированием, а строки в `Buffer` — декодированием.
 
--   `'base64'`: кодирование [Base64][]. При создании `Buffer` из строки эта кодировка также корректно принимает «безопасный для URL и имён файлов алфавит» из [RFC 4648, раздел 5][]. Пробельные символы (пробелы, табуляции, переводы строк) внутри строки в base64 игнорируются.
+-   `'base64'`: кодирование [Base64][base64]. При создании `Buffer` из строки эта кодировка также корректно принимает «безопасный для URL и имён файлов алфавит» из [RFC 4648, раздел 5][rfc 4648, section 5]. Пробельные символы (пробелы, табуляции, переводы строк) внутри строки в base64 игнорируются.
 
--   `'base64url'`: кодирование [base64url][] по [RFC 4648, Section 5][]. При создании `Buffer` из строки эта кодировка также принимает обычные строки в base64. При кодировании `Buffer` в строку заполнение (padding) опускается.
+-   `'base64url'`: кодирование [base64url][base64url] по [RFC 4648, Section 5][rfc 4648, section 5]. При создании `Buffer` из строки эта кодировка также принимает обычные строки в base64. При кодировании `Buffer` в строку заполнение (padding) опускается.
 
 -   `'hex'`: каждый байт кодируется двумя шестнадцатеричными символами. При декодировании строк, в которых нечётное число шестнадцатеричных символов, возможна усечённая обработка данных. Пример ниже.
 
 Также поддерживаются устаревшие кодировки символов:
 
--   `'ascii'`: только 7-битные данные [ASCII][]. При кодировании строки в `Buffer` это эквивалентно `'latin1'`. При декодировании `Buffer` в строку у этой кодировки дополнительно сбрасывается старший бит каждого байта перед интерпретацией как `'latin1'`. Обычно эту кодировку использовать не нужно: для текста только в ASCII лучше подходят `'utf8'` или, если известно, что данные строго ASCII, `'latin1'`. Оставлена для совместимости со старым кодом.
+-   `'ascii'`: только 7-битные данные [ASCII][ascii]. При кодировании строки в `Buffer` это эквивалентно `'latin1'`. При декодировании `Buffer` в строку у этой кодировки дополнительно сбрасывается старший бит каждого байта перед интерпретацией как `'latin1'`. Обычно эту кодировку использовать не нужно: для текста только в ASCII лучше подходят `'utf8'` или, если известно, что данные строго ASCII, `'latin1'`. Оставлена для совместимости со старым кодом.
 
 -   `'binary'`: псевдоним `'latin1'`. Название может вводить в заблуждение: все перечисленные здесь кодировки преобразуют строки и двоичные данные. Для строк и `Buffer` чаще всего подходит `'utf8'`.
 
@@ -214,7 +214,7 @@ Node.js также поддерживает следующие двоично-т
     // Prints <Buffer 16 34>, all data represented.
     ```
 
-Современные веб-браузеры следуют [WHATWG Encoding Standard][], где `'latin1'` и `'ISO-8859-1'` сопоставляются с `'win-1252'`. Поэтому при вызове, например, `http.get()`, если в ответе указана одна из кодировок из спецификации WHATWG, сервер мог вернуть данные в `'win-1252'`, и декодирование с `'latin1'` может дать неверные символы.
+Современные веб-браузеры следуют [WHATWG Encoding Standard][whatwg encoding standard], где `'latin1'` и `'ISO-8859-1'` сопоставляются с `'win-1252'`. Поэтому при вызове, например, `http.get()`, если в ответе указана одна из кодировок из спецификации WHATWG, сервер мог вернуть данные в `'win-1252'`, и декодирование с `'latin1'` может дать неверные символы.
 
 ## Буферы и TypedArray
 
@@ -235,9 +235,9 @@ changes:
 
 В частности:
 
--   [`TypedArray.prototype.slice()`][] создаёт копию части `TypedArray`, тогда как [`Buffer.prototype.slice()`][`buf.slice()`] даёт представление над существующим `Buffer` без копирования. Такое поведение может удивлять и оставлено для совместимости со старым кодом. Для поведения, аналогичного [`Buffer.prototype.slice()`][`buf.slice()`] и для `Buffer`, и для других `TypedArray`, предпочтительнее [`TypedArray.prototype.subarray()`][].
--   [`buf.toString()`][] не эквивалентен одноимённому методу `TypedArray`.
--   Ряд методов, например [`buf.indexOf()`][], принимает дополнительные аргументы.
+-   [`TypedArray.prototype.slice()`][`typedarray.prototype.slice()`] создаёт копию части `TypedArray`, тогда как [`Buffer.prototype.slice()`][`buf.slice()`] даёт представление над существующим `Buffer` без копирования. Такое поведение может удивлять и оставлено для совместимости со старым кодом. Для поведения, аналогичного [`Buffer.prototype.slice()`][`buf.slice()`] и для `Buffer`, и для других `TypedArray`, предпочтительнее [`TypedArray.prototype.subarray()`][`typedarray.prototype.subarray()`].
+-   [`buf.toString()`][`buf.tostring()`] не эквивалентен одноимённому методу `TypedArray`.
+-   Ряд методов, например [`buf.indexOf()`][`buf.indexof()`], принимает дополнительные аргументы.
 
 Создать новые экземпляры [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) из `Buffer` можно двумя способами:
 
@@ -389,14 +389,14 @@ changes:
     // Prints: 16
     ```
 
-`Buffer.from()` и [`TypedArray.from()`][] имеют разные сигнатуры и реализацию. В частности, варианты [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) принимают второй аргумент — функцию отображения, вызываемую для каждого элемента:
+`Buffer.from()` и [`TypedArray.from()`][`typedarray.from()`] имеют разные сигнатуры и реализацию. В частности, варианты [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) принимают второй аргумент — функцию отображения, вызываемую для каждого элемента:
 
 -   [`TypedArray.from(source[, mapFn[, thisArg]])`][`typedarray.from()`]
 
 Метод `Buffer.from()` функцию отображения не поддерживает:
 
--   [`Buffer.from(array)`][]
--   [`Buffer.from(buffer)`][]
+-   [`Buffer.from(array)`][`buffer.from(array)`]
+-   [`Buffer.from(buffer)`][`buffer.from(buffer)`]
 -   [`Buffer.from(arrayBuffer[, byteOffset[, length]])`][`buffer.from(arraybuf)`]
 -   [`Buffer.from(string[, encoding])`][`buffer.from(string)`]
 
@@ -451,7 +451,7 @@ toString.call(uint8array, 'utf8'); // 'hello'
     //   3
     ```
 
-Дополнительно итераторы можно получить методами [`buf.values()`][], [`buf.keys()`][] и [`buf.entries()`][].
+Дополнительно итераторы можно получить методами [`buf.values()`][`buf.values()`], [`buf.keys()`][`buf.keys()`] и [`buf.entries()`][`buf.entries()`].
 
 ## Класс: `Blob`
 
@@ -726,7 +726,7 @@ changes:
     // Prints: <Buffer 00 00 00 00 00>
     ```
 
-Если `size` больше [`buffer.constants.MAX_LENGTH`][] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][].
+Если `size` больше [`buffer.constants.MAX_LENGTH`][`buffer.constants.max_length`] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][`err_out_of_range`].
 
 Если указан `fill`, выделенный `Buffer` инициализируется вызовом [`buf.fill(fill)`][`buf.fill()`].
 
@@ -776,7 +776,7 @@ changes:
     // Prints: <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
     ```
 
-Вызов [`Buffer.alloc()`][] может быть заметно медленнее [`Buffer.allocUnsafe()`][], но гарантирует, что содержимое нового `Buffer` не будет включать чувствительные данные из предыдущих выделений памяти, в том числе не относящиеся к `Buffer`.
+Вызов [`Buffer.alloc()`][`buffer.alloc()`] может быть заметно медленнее [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`], но гарантирует, что содержимое нового `Buffer` не будет включать чувствительные данные из предыдущих выделений памяти, в том числе не относящиеся к `Buffer`.
 
 Если `size` не является числом, выбрасывается `TypeError`.
 
@@ -811,9 +811,9 @@ changes:
 -   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   Возвращает: [<Buffer>](buffer.md#buffer)
 
-Выделяет новый `Buffer` размером `size` байт. Если `size` больше [`buffer.constants.MAX_LENGTH`][] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][].
+Выделяет новый `Buffer` размером `size` байт. Если `size` больше [`buffer.constants.MAX_LENGTH`][`buffer.constants.max_length`] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][`err_out_of_range`].
 
-Память под такие экземпляры `Buffer` _не инициализируется_. Содержимое нового `Buffer` непредсказуемо и _может содержать конфиденциальные данные_. Вместо этого используйте [`Buffer.alloc()`][], чтобы получить буфер, заполненный нулями.
+Память под такие экземпляры `Buffer` _не инициализируется_. Содержимое нового `Buffer` непредсказуемо и _может содержать конфиденциальные данные_. Вместо этого используйте [`Buffer.alloc()`][`buffer.alloc()`], чтобы получить буфер, заполненный нулями.
 
 === "MJS"
 
@@ -849,9 +849,9 @@ changes:
 
 Если `size` не является числом, выбрасывается `TypeError`.
 
-Модуль `Buffer` заранее выделяет внутренний экземпляр размера [`Buffer.poolSize`][] — пул для быстрого выделения новых `Buffer`, создаваемых через [`Buffer.allocUnsafe()`][], [`Buffer.from(array)`][], [`Buffer.from(string)`][] и [`Buffer.concat()`][], только если `size` меньше `Buffer.poolSize >>> 1` (целая часть [`Buffer.poolSize`][], делённой на два).
+Модуль `Buffer` заранее выделяет внутренний экземпляр размера [`Buffer.poolSize`][`buffer.poolsize`] — пул для быстрого выделения новых `Buffer`, создаваемых через [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`], [`Buffer.from(array)`][`buffer.from(array)`], [`Buffer.from(string)`][`buffer.from(string)`] и [`Buffer.concat()`][`buffer.concat()`], только если `size` меньше `Buffer.poolSize >>> 1` (целая часть [`Buffer.poolSize`][`buffer.poolsize`], делённой на два).
 
-Использование этого пула — ключевое отличие между `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`: `Buffer.alloc(size, fill)` _никогда_ не использует внутренний пул `Buffer`, а `Buffer.allocUnsafe(size).fill(fill)` _использует_ его, если `size` не больше половины [`Buffer.poolSize`][]. Разница тонкая, но важна, когда нужна дополнительная производительность [`Buffer.allocUnsafe()`][].
+Использование этого пула — ключевое отличие между `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`: `Buffer.alloc(size, fill)` _никогда_ не использует внутренний пул `Buffer`, а `Buffer.allocUnsafe(size).fill(fill)` _использует_ его, если `size` не больше половины [`Buffer.poolSize`][`buffer.poolsize`]. Разница тонкая, но важна, когда нужна дополнительная производительность [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`].
 
 ### Статический метод: `Buffer.allocUnsafeSlow(size)`
 
@@ -880,11 +880,11 @@ changes:
 -   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   Возвращает: [<Buffer>](buffer.md#buffer)
 
-Выделяет новый `Buffer` размером `size` байт. Если `size` больше [`buffer.constants.MAX_LENGTH`][] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][]. При `size` равном 0 создаётся `Buffer` нулевой длины.
+Выделяет новый `Buffer` размером `size` байт. Если `size` больше [`buffer.constants.MAX_LENGTH`][`buffer.constants.max_length`] или меньше 0, выбрасывается [`ERR_OUT_OF_RANGE`][`err_out_of_range`]. При `size` равном 0 создаётся `Buffer` нулевой длины.
 
 Память под такие экземпляры `Buffer` _не инициализируется_. Содержимое нового `Buffer` непредсказуемо и _может содержать конфиденциальные данные_. Инициализируйте такие буферы вызовом [`buf.fill(0)`][`buf.fill()`].
 
-При использовании [`Buffer.allocUnsafe()`][] для выделения новых `Buffer` фрагменты меньше `Buffer.poolSize >>> 1` (при значении пула по умолчанию — до 4 КиБ) вырезаются из одного заранее выделенного `Buffer`. Это снижает накладные расходы сборщика мусора при множестве отдельных выделений и улучшает производительность и расход памяти, уменьшая число отслеживаемых объектов `ArrayBuffer`.
+При использовании [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`] для выделения новых `Buffer` фрагменты меньше `Buffer.poolSize >>> 1` (при значении пула по умолчанию — до 4 КиБ) вырезаются из одного заранее выделенного `Buffer`. Это снижает накладные расходы сборщика мусора при множестве отдельных выделений и улучшает производительность и расход памяти, уменьшая число отслеживаемых объектов `ArrayBuffer`.
 
 Если же нужно удерживать небольшой фрагмент памяти из пула неопределённо долго, разумнее создать внепуловый `Buffer` через `Buffer.allocUnsafeSlow()` и скопировать нужные данные.
 
@@ -961,7 +961,7 @@ changes:
 -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
 -   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в `string` при заданной интерпретации.
 
-Возвращает длину строки в байтах при кодировании в `encoding`. Это не то же самое, что [`String.prototype.length`][]: длина в символах не учитывает кодировку при преобразовании в байты.
+Возвращает длину строки в байтах при кодировании в `encoding`. Это не то же самое, что [`String.prototype.length`][`string.prototype.length`]: длина в символах не учитывает кодировку при преобразовании в байты.
 
 Для `'base64'`, `'base64url'` и `'hex'` функция предполагает корректные входные данные. Если в строке есть посторонние символы (например пробелы), возвращаемое значение может быть больше длины `Buffer`, созданного из этой строки.
 
@@ -1011,7 +1011,7 @@ changes:
 
 -   `buf1` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `buf2` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
--   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `-1`, `0` или `1` в зависимости от результата сравнения. Подробности см. в [`buf.compare()`][].
+-   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `-1`, `0` или `1` в зависимости от результата сравнения. Подробности см. в [`buf.compare()`][`buf.compare()`].
 
 Сравнивает `buf1` с `buf2`, обычно для сортировки массивов экземпляров `Buffer`. Эквивалентно вызову [`buf1.compare(buf2)`][`buf.compare()`].
 
@@ -1119,7 +1119,7 @@ changes:
     // Prints: 42
     ```
 
-`Buffer.concat()` также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][].
+`Buffer.concat()` также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`].
 
 ### Статический метод: `Buffer.copyBytesFrom(view[, offset[, length]])`
 
@@ -1174,11 +1174,11 @@ added: v5.10.0
     const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
     ```
 
-Если `array` — объект, похожий на `Array` (то есть с свойством `length` типа `number`), он обрабатывается как массив, если только это не `Buffer` или `Uint8Array`. Иначе говоря, все остальные варианты `TypedArray` обрабатываются как `Array`. Чтобы создать `Buffer` из байтов, лежащих в основе `TypedArray`, используйте [`Buffer.copyBytesFrom()`][].
+Если `array` — объект, похожий на `Array` (то есть с свойством `length` типа `number`), он обрабатывается как массив, если только это не `Buffer` или `Uint8Array`. Иначе говоря, все остальные варианты `TypedArray` обрабатываются как `Array`. Чтобы создать `Buffer` из байтов, лежащих в основе `TypedArray`, используйте [`Buffer.copyBytesFrom()`][`buffer.copybytesfrom()`].
 
 Будет выброшен `TypeError`, если `array` не является `Array` или другим типом, подходящим для вариантов `Buffer.from()`.
 
-`Buffer.from(array)` и [`Buffer.from(string)`][] также могут использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][].
+`Buffer.from(array)` и [`Buffer.from(string)`][`buffer.from(string)`] также могут использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`].
 
 ### Статический метод: `Buffer.from(arrayBuffer[, byteOffset[, length]])`
 
@@ -1453,7 +1453,7 @@ added: v5.10.0
 
 Будет выброшен `TypeError`, если `string` не является строкой или другим типом, подходящим для вариантов `Buffer.from()`.
 
-[`Buffer.from(string)`][] также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][].
+[`Buffer.from(string)`][`buffer.from(string)`] также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`].
 
 ### Статический метод: `Buffer.isBuffer(obj)`
 
@@ -1689,7 +1689,7 @@ changes:
 -   `targetStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается сравнение. **По умолчанию:** `0`.
 -   `targetEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, на котором сравнение заканчивается (не включая). **По умолчанию:** `target.length`.
 -   `sourceStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается сравнение. **По умолчанию:** `0`.
--   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором сравнение заканчивается (не включая). **По умолчанию:** [`buf.length`][].
+-   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором сравнение заканчивается (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Сравнивает `buf` с `target` и возвращает число, показывающее, идёт ли `buf` в порядке сортировки до, после или совпадает с `target`. Сравнение основано на фактической последовательности байтов в каждом `Buffer`.
@@ -1780,7 +1780,7 @@ changes:
     // Prints: 1
     ```
 
-Выбрасывается [`ERR_OUT_OF_RANGE`][], если `targetStart < 0`, `sourceStart < 0`, `targetEnd > target.byteLength` или `sourceEnd > source.byteLength`.
+Выбрасывается [`ERR_OUT_OF_RANGE`][`err_out_of_range`], если `targetStart < 0`, `sourceStart < 0`, `targetEnd > target.byteLength` или `sourceEnd > source.byteLength`.
 
 ### `buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])`
 
@@ -1791,12 +1791,12 @@ added: v0.1.90
 -   `target` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), в который копируют.
 -   `targetStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается запись. **По умолчанию:** `0`.
 -   `sourceStart` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, с которого начинается копирование. **По умолчанию:** `0`.
--   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором копирование останавливается (не включая). **По умолчанию:** [`buf.length`][].
+-   `sourceEnd` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `buf`, на котором копирование останавливается (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число скопированных байтов.
 
 Копирует данные из области `buf` в область `target`, даже если память `target` перекрывается с `buf`.
 
-[`TypedArray.prototype.set()`][] выполняет ту же операцию и доступен для всех TypedArray, включая `Buffer` Node.js, хотя набор аргументов у функции другой.
+[`TypedArray.prototype.set()`][`typedarray.prototype.set()`] выполняет ту же операцию и доступен для всех TypedArray, включая `Buffer` Node.js, хотя набор аргументов у функции другой.
 
 === "MJS"
 
@@ -1894,7 +1894,7 @@ added: v1.1.0
 
 -   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
-Создаёт и возвращает [iterator][] пар `[index, byte]` по содержимому `buf`.
+Создаёт и возвращает [iterator][iterator] пар `[index, byte]` по содержимому `buf`.
 
 === "MJS"
 
@@ -2029,7 +2029,7 @@ changes:
 
 -   `value` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для заполнения `buf`. Пустое значение (строка, Uint8Array, Buffer) приводится к `0`.
 -   `offset` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед началом заполнения `buf`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить заполнение `buf` (не включая). **По умолчанию:** [`buf.length`][].
+-   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить заполнение `buf` (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для `value`, если `value` — строка. **По умолчанию:** `'utf8'`.
 -   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
 
@@ -2247,7 +2247,7 @@ changes:
 Если `value` — это:
 
 -   строка, `value` интерпретируется в соответствии с кодировкой символов в `encoding`;
--   `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), используется `value` целиком; для сравнения части `Buffer` используйте [`buf.subarray`][];
+-   `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), используется `value` целиком; для сравнения части `Buffer` используйте [`buf.subarray`][`buf.subarray`];
 -   число, `value` интерпретируется как беззнаковое 8-битное целое в диапазоне от `0` до `255`.
 
 === "MJS"
@@ -2308,7 +2308,7 @@ changes:
 
 Если `value` не является строкой, числом или `Buffer`, метод выбросит `TypeError`. Если `value` — число, оно приводится к допустимому байтовому значению (целое от 0 до 255).
 
-Если `byteOffset` не число, оно приводится к числу. Если результат приведения `NaN` или `0`, ищется весь буфер. Поведение совпадает с [`String.prototype.indexOf()`][].
+Если `byteOffset` не число, оно приводится к числу. Если результат приведения `NaN` или `0`, ищется весь буфер. Поведение совпадает с [`String.prototype.indexOf()`][`string.prototype.indexof()`].
 
 === "MJS"
 
@@ -2360,7 +2360,7 @@ added: v1.1.0
 
 -   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
-Создаёт и возвращает [iterator][] по ключам `buf` (индексам).
+Создаёт и возвращает [iterator][iterator] по ключам `buf` (индексам).
 
 === "MJS"
 
@@ -2428,7 +2428,7 @@ changes:
 -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `value` — строка, задаёт кодировку для двоичного представления строки при поиске в `buf`. **По умолчанию:** `'utf8'`.
 -   Возвращает: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс последнего вхождения `value` в `buf` или `-1`, если `value` в `buf` нет.
 
-То же, что [`buf.indexOf()`][], но ищется последнее вхождение `value`, а не первое.
+То же, что [`buf.indexOf()`][`buf.indexof()`], но ищется последнее вхождение `value`, а не первое.
 
 === "MJS"
 
@@ -2492,7 +2492,7 @@ changes:
 
 Если `value` не является строкой, числом или `Buffer`, метод выбросит `TypeError`. Если `value` — число, оно приводится к допустимому байтовому значению (целое от 0 до 255).
 
-Если `byteOffset` не число, оно приводится к числу. Аргументы, дающие при приведении `NaN` (например `{}` или `undefined`), означают поиск по всему буферу. Поведение совпадает с [`String.prototype.lastIndexOf()`][].
+Если `byteOffset` не число, оно приводится к числу. Аргументы, дающие при приведении `NaN` (например `{}` или `undefined`), означают поиск по всему буферу. Поведение совпадает с [`String.prototype.lastIndexOf()`][`string.prototype.lastindexof()`].
 
 === "MJS"
 
@@ -2594,7 +2594,7 @@ added: v0.1.90
 deprecated: v8.0.0
 -->
 
-> Stability: 0 - Deprecated: Use [`buf.buffer`][] instead.
+> Stability: 0 - Deprecated: Use [`buf.buffer`][`buf.buffer`] instead.
 
 Свойство `buf.parent` — устаревший псевдоним для `buf.buffer`.
 
@@ -3717,14 +3717,14 @@ added: v3.0.0
 -->
 
 -   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** [`buf.length`][].
+-   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   Возвращает: [<Buffer>](buffer.md#buffer)
 
 Возвращает новый `Buffer`, ссылающийся на ту же память, что и исходный, но со смещением и обрезкой по индексам `start` и `end`.
 
-Если указать `end` больше [`buf.length`][], результат совпадёт с вариантом, когда `end` равен [`buf.length`][].
+Если указать `end` больше [`buf.length`][`buf.length`], результат совпадёт с вариантом, когда `end` равен [`buf.length`][`buf.length`].
 
-Метод унаследован от [`TypedArray.prototype.subarray()`][].
+Метод унаследован от [`TypedArray.prototype.subarray()`][`typedarray.prototype.subarray()`].
 
 Изменение нового фрагмента `Buffer` меняет память в исходном `Buffer`, потому что выделенная память у обоих объектов перекрывается.
 
@@ -3854,10 +3854,10 @@ changes:
     | v7.1.0, v6.9.2 | Приведение смещений к целым числам теперь правильно обрабатывает значения вне диапазона 32-битных целых чисел. |
     | v7.0.0 | Все смещения теперь приводятся к целым числам перед выполнением каких-либо вычислений с ними. |
 
-> Stability: 0 - Deprecated: Use [`buf.subarray`][] instead.
+> Stability: 0 - Deprecated: Use [`buf.subarray`][`buf.subarray`] instead.
 
 -   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** [`buf.length`][].
+-   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   Возвращает: [<Buffer>](buffer.md#buffer)
 
 Возвращает новый `Buffer`, ссылающийся на ту же память, что и исходный, но со смещением и обрезкой по индексам `start` и `end`.
@@ -3920,7 +3920,7 @@ added: v5.10.0
 
 -   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
 
-Interprets `buf` as an array of unsigned 16-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][] if [`buf.length`][] is not a multiple of 2.
+Interprets `buf` as an array of unsigned 16-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][`err_invalid_buffer_size`] if [`buf.length`][`buf.length`] is not a multiple of 2.
 
 === "MJS"
 
@@ -3992,7 +3992,7 @@ added: v5.10.0
 
 -   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
 
-Interprets `buf` as an array of unsigned 32-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][] if [`buf.length`][] is not a multiple of 4.
+Interprets `buf` as an array of unsigned 32-bit integers and swaps the byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][`err_invalid_buffer_size`] if [`buf.length`][`buf.length`] is not a multiple of 4.
 
 === "MJS"
 
@@ -4044,7 +4044,7 @@ added: v6.3.0
 
 -   Возвращает: [<Buffer>](buffer.md#buffer) Ссылка на `buf`.
 
-Интерпретирует `buf` как массив 64-битных чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`][], если [`buf.length`][] не кратен 8.
+Интерпретирует `buf` как массив 64-битных чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`][`err_invalid_buffer_size`], если [`buf.length`][`buf.length`] не кратен 8.
 
 === "MJS"
 
@@ -4096,7 +4096,7 @@ added: v0.9.2
 
 -   Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Возвращает JSON-представление `buf`. [`JSON.stringify()`][] неявно вызывает эту функцию при сериализации экземпляра `Buffer`.
+Возвращает JSON-представление `buf`. [`JSON.stringify()`][`json.stringify()`] неявно вызывает эту функцию при сериализации экземпляра `Buffer`.
 
 `Buffer.from()` принимает объекты в формате, возвращаемом этим методом. В частности, `Buffer.from(buf.toJSON())` ведёт себя как `Buffer.from(buf)`.
 
@@ -4164,14 +4164,14 @@ changes:
 
 -   `encoding` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов. **По умолчанию:** `'utf8'`.
 -   `start` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, с которого начинать декодирование. **По умолчанию:** `0`.
--   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, на котором декодирование останавливается (не включая). **По умолчанию:** [`buf.length`][].
+-   `end` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, на котором декодирование останавливается (не включая). **По умолчанию:** [`buf.length`][`buf.length`].
 -   Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Декодирует `buf` в строку в соответствии с кодировкой `encoding`. Можно передать `start` и `end`, чтобы декодировать только часть `buf`.
 
 Если `encoding` — `'utf8'`, а последовательность байтов во входе не является корректным UTF-8, каждый некорректный байт заменяется символом-заменителем `U+FFFD`.
 
-Максимальная длина строки (в кодовых единицах UTF-16) задаётся константой [`buffer.constants.MAX_STRING_LENGTH`][].
+Максимальная длина строки (в кодовых единицах UTF-16) задаётся константой [`buffer.constants.MAX_STRING_LENGTH`][`buffer.constants.max_string_length`].
 
 === "MJS"
 
@@ -4235,7 +4235,7 @@ added: v1.1.0
 
 -   Возвращает: [<Iterator>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
-Создаёт и возвращает [iterator][] по значениям `buf` (байтам). Функция вызывается автоматически, когда `Buffer` используется в операторе `for..of`.
+Создаёт и возвращает [iterator][iterator] по значениям `buf` (байтам). Функция вызывается автоматически, когда `Buffer` используется в операторе `for..of`.
 
 === "MJS"
 
@@ -5582,11 +5582,11 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.from(array)`][] instead.
+> Stability: 0 - Deprecated: Use [`Buffer.from(array)`][`buffer.from(array)`] instead.
 
 -   `array` [<integer[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Массив байтов для копирования.
 
-См. [`Buffer.from(array)`][].
+См. [`Buffer.from(array)`][`buffer.from(array)`].
 
 ### `new Buffer(arrayBuffer[, byteOffset[, length]])`
 
@@ -5653,11 +5653,11 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.from(buffer)`][] instead.
+> Stability: 0 - Deprecated: Use [`Buffer.from(buffer)`][`buffer.from(buffer)`] instead.
 
 -   `buffer` [<Buffer>](buffer.md#buffer) | [<Uint8Array>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
 
-См. [`Buffer.from(buffer)`][].
+См. [`Buffer.from(buffer)`][`buffer.from(buffer)`].
 
 ### `new Buffer(size)`
 
@@ -5689,11 +5689,11 @@ changes:
     | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
     | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
-> Stability: 0 - Deprecated: Use [`Buffer.alloc()`][] instead (also see [`Buffer.allocUnsafe()`][]).
+> Stability: 0 - Deprecated: Use [`Buffer.alloc()`][`buffer.alloc()`] instead (also see [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`]).
 
 -   `size` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 
-См. [`Buffer.alloc()`][] и [`Buffer.allocUnsafe()`][]. Этот вариант конструктора эквивалентен [`Buffer.alloc()`][].
+См. [`Buffer.alloc()`][`buffer.alloc()`] и [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`]. Этот вариант конструктора эквивалентен [`Buffer.alloc()`][`buffer.alloc()`].
 
 ### `new Buffer(string[, encoding])`
 
@@ -5882,7 +5882,7 @@ added: v0.5.4
 
 -   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `50`
 
-Максимальное число байт, возвращаемых при вызове `buf.inspect()`. Пользовательские модули могут переопределить значение. Подробнее о поведении `buf.inspect()` см. [`util.inspect()`][].
+Максимальное число байт, возвращаемых при вызове `buf.inspect()`. Пользовательские модули могут переопределить значение. Подробнее о поведении `buf.inspect()` см. [`util.inspect()`][`util.inspect()`].
 
 ### `buffer.kMaxLength`
 
@@ -5892,7 +5892,7 @@ added: v3.0.0
 
 -   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
 
-Псевдоним [`buffer.constants.MAX_LENGTH`][].
+Псевдоним [`buffer.constants.MAX_LENGTH`][`buffer.constants.max_length`].
 
 ### `buffer.kStringMaxLength`
 
@@ -5902,7 +5902,7 @@ added: v3.0.0
 
 -   Тип: [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
 
-Псевдоним [`buffer.constants.MAX_STRING_LENGTH`][].
+Псевдоним [`buffer.constants.MAX_STRING_LENGTH`][`buffer.constants.max_string_length`].
 
 ### `buffer.resolveObjectURL(id)`
 
@@ -6021,11 +6021,11 @@ changes:
 
 На 32-битных архитектурах значение равно 2<sup>31</sup> - 1 (около 2 ГиБ).
 
-На 64-битных — [`Number.MAX_SAFE_INTEGER`][] (2<sup>53</sup> - 1, около 8 ПиБ).
+На 64-битных — [`Number.MAX_SAFE_INTEGER`][`number.max_safe_integer`] (2<sup>53</sup> - 1, около 8 ПиБ).
 
-Внутри соответствует [`v8::Uint8Array::kMaxLength`][].
+Внутри соответствует [`v8::Uint8Array::kMaxLength`][`v8::uint8array::kmaxlength`].
 
-То же значение доступно как [`buffer.kMaxLength`][].
+То же значение доступно как [`buffer.kMaxLength`][`buffer.kmaxlength`].
 
 #### `buffer.constants.MAX_STRING_LENGTH`
 
@@ -6051,18 +6051,18 @@ added: v8.2.0
 
 Например, если злоумышленник заставит приложение получить число там, где ожидалась строка, может вызваться `new Buffer(100)` вместо `new Buffer("100")` — будет выделен буфер на 100 байт вместо трёх байт со строкой `"100"`. Такое часто возможно через JSON API: типы числа и строки различимы, и в наивный код без проверки можно подставить число. До Node.js 8.0.0 буфер на 100 байт мог содержать произвольные остатки памяти и использоваться для утечки секретов. С Node.js 8.0.0 память обнуляется, но возможны другие атаки — например выделение очень больших буферов и исчерпание памяти.
 
-Чтобы сделать создание `Buffer` надёжнее, варианты конструктора `new Buffer()` **устарели** и заменены методами `Buffer.from()`, [`Buffer.alloc()`][] и [`Buffer.allocUnsafe()`][].
+Чтобы сделать создание `Buffer` надёжнее, варианты конструктора `new Buffer()` **устарели** и заменены методами `Buffer.from()`, [`Buffer.alloc()`][`buffer.alloc()`] и [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`].
 
 _Следует перенести весь существующий код с `new Buffer()` на эти API._
 
--   [`Buffer.from(array)`][] возвращает новый `Buffer` с _копией_ переданных октетов.
+-   [`Buffer.from(array)`][`buffer.from(array)`] возвращает новый `Buffer` с _копией_ переданных октетов.
 -   [`Buffer.from(arrayBuffer[, byteOffset[, length]])`][`buffer.from(arraybuf)`] возвращает новый `Buffer`, _разделяющий память_ с указанным [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
--   [`Buffer.from(buffer)`][] возвращает новый `Buffer` с _копией_ содержимого данного `Buffer`.
+-   [`Buffer.from(buffer)`][`buffer.from(buffer)`] возвращает новый `Buffer` с _копией_ содержимого данного `Buffer`.
 -   [`Buffer.from(string[, encoding])`][`buffer.from(string)`] возвращает новый `Buffer` с _копией_ строки.
 -   [`Buffer.alloc(size[, fill[, encoding]])`][`buffer.alloc()`] возвращает новый инициализированный `Buffer` заданного размера. Медленнее [`Buffer.allocUnsafe(size)`][`buffer.allocunsafe()`], но гарантирует отсутствие старых чувствительных данных. При нечисловом `size` выбрасывается `TypeError`.
 -   [`Buffer.allocUnsafe(size)`][`buffer.allocunsafe()`] и [`Buffer.allocUnsafeSlow(size)`][`buffer.allocunsafeslow()`] возвращают новый неинициализированный `Buffer` заданного размера; в памяти могут остаться старые данные.
 
-Экземпляры, возвращаемые [`Buffer.allocUnsafe()`][], [`Buffer.from(string)`][], [`Buffer.concat()`][] и [`Buffer.from(array)`][], _могут_ выделяться из общего внутреннего пула, если `size` не больше половины [`Buffer.poolSize`][]. Экземпляры от [`Buffer.allocUnsafeSlow()`][] общий пул _никогда_ не используют.
+Экземпляры, возвращаемые [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`], [`Buffer.from(string)`][`buffer.from(string)`], [`Buffer.concat()`][`buffer.concat()`] и [`Buffer.from(array)`][`buffer.from(array)`], _могут_ выделяться из общего внутреннего пула, если `size` не больше половины [`Buffer.poolSize`][`buffer.poolsize`]. Экземпляры от [`Buffer.allocUnsafeSlow()`][`buffer.allocunsafeslow()`] общий пул _никогда_ не используют.
 
 ### Опция командной строки `--zero-fill-buffers`
 
@@ -6070,7 +6070,7 @@ _Следует перенести весь существующий код с `
 added: v5.10.0
 -->
 
-Node.js можно запускать с флагом `--zero-fill-buffers`, чтобы все вновь выделенные `Buffer` по умолчанию обнулялись. Без флага буферы, созданные через [`Buffer.allocUnsafe()`][] и [`Buffer.allocUnsafeSlow()`][], не обнуляются. Флаг может заметно снизить производительность; включайте его только если нужно гарантировать отсутствие старых данных в новой памяти.
+Node.js можно запускать с флагом `--zero-fill-buffers`, чтобы все вновь выделенные `Buffer` по умолчанию обнулялись. Без флага буферы, созданные через [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`] и [`Buffer.allocUnsafeSlow()`][`buffer.allocunsafeslow()`], не обнуляются. Флаг может заметно снизить производительность; включайте его только если нужно гарантировать отсутствие старых данных в новой памяти.
 
 ```console
 $ node --zero-fill-buffers
@@ -6080,9 +6080,9 @@ $ node --zero-fill-buffers
 
 ### Почему `Buffer.allocUnsafe()` и `Buffer.allocUnsafeSlow()` «небезопасны»?
 
-При вызове [`Buffer.allocUnsafe()`][] и [`Buffer.allocUnsafeSlow()`][] выделенный участок памяти _не инициализирован_ (не обнулён). Это ускоряет выделение, но в памяти могут остаться старые данные. Использование `Buffer` от [`Buffer.allocUnsafe()`][] без _полной_ перезаписи может привести к утечке этих данных при чтении.
+При вызове [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`] и [`Buffer.allocUnsafeSlow()`][`buffer.allocunsafeslow()`] выделенный участок памяти _не инициализирован_ (не обнулён). Это ускоряет выделение, но в памяти могут остаться старые данные. Использование `Buffer` от [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`] без _полной_ перезаписи может привести к утечке этих данных при чтении.
 
-Производительность [`Buffer.allocUnsafe()`][] выше, но нужна повышенная осторожность, чтобы не ввести уязвимости.
+Производительность [`Buffer.allocUnsafe()`][`buffer.allocunsafe()`] выше, но нужна повышенная осторожность, чтобы не ввести уязвимости.
 
 [ascii]: https://en.wikipedia.org/wiki/ASCII
 [base64]: https://en.wikipedia.org/wiki/Base64

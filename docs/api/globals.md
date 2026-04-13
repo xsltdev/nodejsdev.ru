@@ -20,22 +20,22 @@ description: Глобальные объекты и API, доступные во
 Следующие переменные могут казаться глобальными, но таковыми не являются. Они существуют только в
 области видимости [модулей CommonJS][CommonJS modules]:
 
-* [`__dirname`][]
-* [`__filename`][]
-* [`exports`][]
-* [`module`][]
-* [`require()`][]
+* [`__dirname`][`__dirname`]
+* [`__filename`][`__filename`]
+* [`exports`][`exports`]
+* [`module`][`module`]
+* [`require()`][`require()`]
 
 Перечисленные ниже объекты относятся к Node.js. Есть и [встроенные объекты][built-in objects],
 входящие в сам язык JavaScript; они тоже доступны глобально.
 
 ## `__dirname`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`__dirname`][].
+Эта переменная может казаться глобальной, но таковой не является. См. [`__dirname`][`__dirname`].
 
 ## `__filename`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`__filename`][].
+Эта переменная может казаться глобальной, но таковой не является. См. [`__filename`][`__filename`].
 
 ## Класс: `AbortController`
 
@@ -50,6 +50,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
@@ -83,6 +84,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
@@ -130,6 +132,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
@@ -163,7 +166,7 @@ added:
 * `signals` [<AbortSignal[]>](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван, если прерван любой из переданных
-сигналов. Свойство [`abortSignal.reason`][] получит значение той причины,
+сигналов. Свойство [`abortSignal.reason`][`abortSignal.reason`] получит значение той причины,
 которая привела к прерыванию.
 
 ### Событие: `'abort'`
@@ -258,7 +261,7 @@ added: v16.0.0
 
     Используйте вместо этого `Buffer.from(data, 'base64')`.
 
-Глобальный псевдоним для [`buffer.atob()`][].
+Глобальный псевдоним для [`buffer.atob()`][`buffer.atob()`].
 
 Доступна автоматическая миграция ([исходники](https://github.com/nodejs/userland-migrations/tree/main/recipes/buffer-atob-btoa)):
 
@@ -292,7 +295,7 @@ added: v16.0.0
 
     Используйте вместо этого `buf.toString('base64')`.
 
-Глобальный псевдоним для [`buffer.btoa()`][].
+Глобальный псевдоним для [`buffer.btoa()`][`buffer.btoa()`].
 
 Доступна автоматическая миграция ([исходники](https://github.com/nodejs/userland-migrations/tree/main/recipes/buffer-atob-btoa)):
 
@@ -325,11 +328,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ByteLengthQueuingStrategy`][], совместимая с браузером.
+Реализация [`ByteLengthQueuingStrategy`][`ByteLengthQueuingStrategy`], совместимая с браузером.
 
 ## `clearImmediate(immediateObject)`
 
@@ -337,7 +341,7 @@ changes:
 added: v0.9.1
 -->
 
-[`clearImmediate`][] описан в разделе [таймеры][timers].
+[`clearImmediate`][`clearImmediate`] описан в разделе [таймеры][timers].
 
 ## `clearInterval(intervalObject)`
 
@@ -345,7 +349,7 @@ added: v0.9.1
 added: v0.0.1
 -->
 
-[`clearInterval`][] описан в разделе [таймеры][timers].
+[`clearInterval`][`clearInterval`] описан в разделе [таймеры][timers].
 
 ## `clearTimeout(timeoutObject)`
 
@@ -353,7 +357,7 @@ added: v0.0.1
 added: v0.0.1
 -->
 
-[`clearTimeout`][] описан в разделе [таймеры][timers].
+[`clearTimeout`][`clearTimeout`] описан в разделе [таймеры][timers].
 
 ## Класс: `CloseEvent`
 
@@ -362,7 +366,7 @@ added: v23.0.0
 -->
 
 Реализация [CloseEvent](globals.md), совместимая с браузером. Отключите это API
-флагом CLI [`--no-experimental-websocket`][].
+флагом CLI [`--no-experimental-websocket`][`--no-experimental-websocket`].
 
 ## Класс: `CompressionStream`
 
@@ -384,12 +388,13 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`CompressionStream`][], совместимая с браузером.
+Реализация [`CompressionStream`][`CompressionStream`], совместимая с браузером.
 
 ## `console`
 
@@ -399,7 +404,7 @@ added: v0.1.100
 
 * Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Вывод в stdout и stderr. См. раздел [`console`][].
+Вывод в stdout и stderr. См. раздел [`console`][`console`].
 
 ## Класс: `CountQueuingStrategy`
 
@@ -416,11 +421,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`CountQueuingStrategy`][], совместимая с браузером.
+Реализация [`CountQueuingStrategy`][`CountQueuingStrategy`], совместимая с браузером.
 
 ## Класс: `Crypto`
 
@@ -438,6 +444,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0 | Больше не экспериментально. |
@@ -463,6 +470,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0 | Больше не экспериментально. |
@@ -486,6 +494,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0 | Больше не экспериментально. |
@@ -516,6 +525,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.0.0 | Больше не экспериментально. |
@@ -544,12 +554,13 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`DecompressionStream`][], совместимая с браузером.
+Реализация [`DecompressionStream`][`DecompressionStream`], совместимая с браузером.
 
 ## Класс: `DOMException`
 
@@ -580,12 +591,13 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
 Реализация класса `Event`, совместимая с браузером. Подробнее —
-[`EventTarget` and `Event` API][].
+[`EventTarget` and `Event` API][`EventTarget` and `Event` API].
 
 ## Класс: `EventSource`
 
@@ -597,7 +609,7 @@ added:
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Включите это API флагом CLI [`--experimental-eventsource`][].
+    Включите это API флагом CLI [`--experimental-eventsource`][`--experimental-eventsource`].
 
 Реализация [EventSource](globals.md), совместимая с браузером.
 
@@ -614,16 +626,17 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
 Реализация класса `EventTarget`, совместимая с браузером. Подробнее —
-[`EventTarget` and `Event` API][].
+[`EventTarget` and `Event` API][`EventTarget` and `Event` API].
 
 ## `exports`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`exports`][].
+Эта переменная может казаться глобальной, но таковой не является. См. [`exports`][`exports`].
 
 ## `fetch`
 
@@ -642,12 +655,13 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | Больше не экспериментально. |
     | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
 
-Реализация функции [`fetch()`][], совместимая с браузером.
+Реализация функции [`fetch()`][`fetch()`], совместимая с браузером.
 
 === "MJS"
 
@@ -684,10 +698,10 @@ fetch(url, { dispatcher: new MyAgent() });
 
 С `fetch` можно использовать глобалы:
 
-* [`FormData`][]
-* [`Headers`][]
-* [`Request`][]
-* [`Response`][]
+* [`FormData`][`FormData`]
+* [`Headers`][`Headers`]
+* [`Request`][`Request`]
+* [`Response`][`Response`]
 
 ## Класс: `File`
 
@@ -714,6 +728,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | Больше не экспериментально. |
@@ -729,7 +744,7 @@ added: v0.1.27
 
 !!!note "Стабильность: 3 – Закрыто"
 
-    Используйте вместо этого [`globalThis`][].
+    Используйте вместо этого [`globalThis`][`globalThis`].
 
 * Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
 
@@ -752,6 +767,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | Больше не экспериментально. |
@@ -782,6 +798,7 @@ changes:
 Добавлено в: v22.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | REPLACEME | Доступ к глобальному объекту localStorage без указания --localstorage-file теперь вызывает исключение DOMException для соответствия спецификации веб-хранилища. |
@@ -790,10 +807,10 @@ changes:
 
 !!!warning "Кандидат в релиз"
 
-    Отключите это API флагом [`--no-experimental-webstorage`][].
+    Отключите это API флагом [`--no-experimental-webstorage`][`--no-experimental-webstorage`].
 
-Реализация [`localStorage`][], совместимая с браузером. Данные хранятся
-без шифрования в файле, заданном флагом CLI [`--localstorage-file`][].
+Реализация [`localStorage`][`localStorage`], совместимая с браузером. Данные хранятся
+без шифрования в файле, заданном флагом CLI [`--localstorage-file`][`--localstorage-file`].
 Максимальный объём — 10 МБ.
 Изменение данных вне Web Storage API не поддерживается.
 На сервере `localStorage` не разделён по пользователям или запросам: данные общие для всех.
@@ -804,7 +821,7 @@ changes:
 added: v15.0.0
 -->
 
-Класс `MessageChannel`. Подробнее — [`MessageChannel`][].
+Класс `MessageChannel`. Подробнее — [`MessageChannel`][`MessageChannel`].
 
 ## Класс: `MessageEvent`
 
@@ -820,11 +837,11 @@ added: v15.0.0
 added: v15.0.0
 -->
 
-Класс `MessagePort`. Подробнее — [`MessagePort`][].
+Класс `MessagePort`. Подробнее — [`MessagePort`][`MessagePort`].
 
 ## `module`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`module`][].
+Эта переменная может казаться глобальной, но таковой не является. См. [`module`][`module`].
 
 ## Класс: `Navigator`
 
@@ -834,7 +851,7 @@ added: v21.0.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Отключите это API флагом [`--no-experimental-global-navigator`][].
+    Отключите это API флагом [`--no-experimental-global-navigator`][`--no-experimental-global-navigator`].
 
 Частичная реализация [Navigator API][Navigator API].
 
@@ -846,9 +863,9 @@ added: v21.0.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Отключите это API флагом [`--no-experimental-global-navigator`][].
+    Отключите это API флагом [`--no-experimental-global-navigator`][`--no-experimental-global-navigator`].
 
-Частичная реализация [`window.navigator`][].
+Частичная реализация [`window.navigator`][`window.navigator`].
 
 ### `navigator.hardwareConcurrency`
 
@@ -875,7 +892,7 @@ added: v21.2.0
 
 Свойство `navigator.language` только для чтения: предпочитаемый язык экземпляра Node.js. Определяется библиотекой ICU по умолчанию языка ОС.
 
-Формат — как в [RFC 5646][].
+Формат — как в [RFC 5646][RFC 5646].
 
 Без ICU значение по умолчанию — `'en-US'`.
 
@@ -908,7 +925,7 @@ added: v24.5.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-Свойство `navigator.locks` только для чтения: экземпляр [`LockManager`][] для координации доступа к ресурсам между потоками одного процесса. Семантика соответствует [браузерному API `LockManager`][browser `LockManager`].
+Свойство `navigator.locks` только для чтения: экземпляр [`LockManager`][`LockManager`] для координации доступа к ресурсам между потоками одного процесса. Семантика соответствует [браузерному API `LockManager`][browser `LockManager`].
 
 === "MJS"
 
@@ -940,7 +957,7 @@ added: v24.5.0
     });
     ```
 
-Подробная документация — [`worker_threads.locks`][].
+Подробная документация — [`worker_threads.locks`][`worker_threads.locks`].
 
 ### `navigator.platform`
 
@@ -976,7 +993,7 @@ console.log(`The user-agent is ${navigator.userAgent}`); // Выводит "Node
 added: v16.0.0
 -->
 
-Объект [`perf_hooks.performance`][].
+Объект [`perf_hooks.performance`][`perf_hooks.performance`].
 
 ## Класс: `PerformanceEntry`
 
@@ -984,7 +1001,7 @@ added: v16.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceEntry`. См. [`PerformanceEntry`][].
+Класс `PerformanceEntry`. См. [`PerformanceEntry`][`PerformanceEntry`].
 
 ## Класс: `PerformanceMark`
 
@@ -992,7 +1009,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceMark`. См. [`PerformanceMark`][].
+Класс `PerformanceMark`. См. [`PerformanceMark`][`PerformanceMark`].
 
 ## Класс: `PerformanceMeasure`
 
@@ -1000,7 +1017,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceMeasure`. См. [`PerformanceMeasure`][].
+Класс `PerformanceMeasure`. См. [`PerformanceMeasure`][`PerformanceMeasure`].
 
 ## Класс: `PerformanceObserver`
 
@@ -1008,7 +1025,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceObserver`. См. [`PerformanceObserver`][].
+Класс `PerformanceObserver`. См. [`PerformanceObserver`][`PerformanceObserver`].
 
 ## Класс: `PerformanceObserverEntryList`
 
@@ -1017,7 +1034,7 @@ added: v19.0.0
 -->
 
 Класс `PerformanceObserverEntryList`. См.
-[`PerformanceObserverEntryList`][].
+[`PerformanceObserverEntryList`][`PerformanceObserverEntryList`].
 
 ## Класс: `PerformanceResourceTiming`
 
@@ -1025,7 +1042,7 @@ added: v19.0.0
 added: v19.0.0
 -->
 
-Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`][].
+Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`][`PerformanceResourceTiming`].
 
 ## `process`
 
@@ -1046,9 +1063,9 @@ added: v11.0.0
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
 `queueMicrotask()` ставит микрозадачу на вызов `callback`. Если
-`callback` выбрасывает исключение, генерируется событие [`process` object][] `'uncaughtException'`.
+`callback` выбрасывает исключение, генерируется событие [`process` object][`process` object] `'uncaughtException'`.
 
-Очередь микрозадач управляется V8; её можно сравнить с очередью [`process.nextTick()`][], которую управляет Node.js. Очередь `process.nextTick()` всегда обрабатывается раньше очереди микрозадач в каждом цикле событий.
+Очередь микрозадач управляется V8; её можно сравнить с очередью [`process.nextTick()`][`process.nextTick()`], которую управляет Node.js. Очередь `process.nextTick()` всегда обрабатывается раньше очереди микрозадач в каждом цикле событий.
 
 ```js
 // `queueMicrotask()` гарантирует, что событие 'load' всегда
@@ -1093,11 +1110,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableByteStreamController`][], совместимая с браузером.
+Реализация [`ReadableByteStreamController`][`ReadableByteStreamController`], совместимая с браузером.
 
 ## Класс: `ReadableStream`
 
@@ -1114,11 +1132,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStream`][], совместимая с браузером.
+Реализация [`ReadableStream`][`ReadableStream`], совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBReader`
 
@@ -1135,11 +1154,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamBYOBReader`][], совместимая с браузером.
+Реализация [`ReadableStreamBYOBReader`][`ReadableStreamBYOBReader`], совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBRequest`
 
@@ -1156,11 +1176,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamBYOBRequest`][], совместимая с браузером.
+Реализация [`ReadableStreamBYOBRequest`][`ReadableStreamBYOBRequest`], совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultController`
 
@@ -1177,11 +1198,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamDefaultController`][], совместимая с браузером.
+Реализация [`ReadableStreamDefaultController`][`ReadableStreamDefaultController`], совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultReader`
 
@@ -1198,11 +1220,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`ReadableStreamDefaultReader`][], совместимая с браузером.
+Реализация [`ReadableStreamDefaultReader`][`ReadableStreamDefaultReader`], совместимая с браузером.
 
 ## Класс: `Request`
 
@@ -1221,6 +1244,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | Больше не экспериментально. |
@@ -1230,7 +1254,7 @@ changes:
 
 ## `require()`
 
-Эта переменная может казаться глобальной, но таковой не является. См. [`require()`][].
+Эта переменная может казаться глобальной, но таковой не является. См. [`require()`][`require()`].
 
 ## Класс: `Response`
 
@@ -1249,6 +1273,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0 | Больше не экспериментально. |
@@ -1269,15 +1294,16 @@ changes:
 Добавлено в: v22.4.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.0.0 | Этот API больше не находится за флагом времени выполнения `--experimental-webstorage`. |
 
 !!!warning "Кандидат в релиз"
 
-    Отключите это API флагом [`--no-experimental-webstorage`][].
+    Отключите это API флагом [`--no-experimental-webstorage`][`--no-experimental-webstorage`].
 
-Реализация [`sessionStorage`][], совместимая с браузером. Данные в памяти, квота 10 МБ. `sessionStorage` живёт только в текущем процессе и не разделяется между worker.
+Реализация [`sessionStorage`][`sessionStorage`], совместимая с браузером. Данные в памяти, квота 10 МБ. `sessionStorage` живёт только в текущем процессе и не разделяется между worker.
 
 ## `setImmediate(callback[, ...args])`
 
@@ -1285,7 +1311,7 @@ changes:
 added: v0.9.1
 -->
 
-[`setImmediate`][] описан в разделе [таймеры][timers].
+[`setImmediate`][`setImmediate`] описан в разделе [таймеры][timers].
 
 ## `setInterval(callback, delay[, ...args])`
 
@@ -1293,7 +1319,7 @@ added: v0.9.1
 added: v0.0.1
 -->
 
-[`setInterval`][] описан в разделе [таймеры][timers].
+[`setInterval`][`setInterval`] описан в разделе [таймеры][timers].
 
 ## `setTimeout(callback, delay[, ...args])`
 
@@ -1301,7 +1327,7 @@ added: v0.0.1
 added: v0.0.1
 -->
 
-[`setTimeout`][] описан в разделе [таймеры][timers].
+[`setTimeout`][`setTimeout`] описан в разделе [таймеры][timers].
 
 ## Класс: `Storage`
 
@@ -1311,7 +1337,7 @@ added: v22.4.0
 
 !!!warning "Кандидат в релиз"
 
-    Отключите это API флагом [`--no-experimental-webstorage`][].
+    Отключите это API флагом [`--no-experimental-webstorage`][`--no-experimental-webstorage`].
 
 Реализация [Storage](globals.md), совместимая с браузером.
 
@@ -1321,7 +1347,7 @@ added: v22.4.0
 added: v17.0.0
 -->
 
-Метод WHATWG [`structuredClone`][].
+Метод WHATWG [`structuredClone`][`structuredClone`].
 
 ## Класс: `SubtleCrypto`
 
@@ -1336,6 +1362,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
@@ -1350,7 +1377,7 @@ changes:
 added: v11.0.0
 -->
 
-Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`][].
+Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`][`TextDecoder`].
 
 ## Класс: `TextDecoderStream`
 
@@ -1367,11 +1394,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TextDecoderStream`][], совместимая с браузером.
+Реализация [`TextDecoderStream`][`TextDecoderStream`], совместимая с браузером.
 
 ## Класс: `TextEncoder`
 
@@ -1379,7 +1407,7 @@ changes:
 added: v11.0.0
 -->
 
-Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`][].
+Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`][`TextEncoder`].
 
 ## Класс: `TextEncoderStream`
 
@@ -1396,11 +1424,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TextEncoderStream`][], совместимая с браузером.
+Реализация [`TextEncoderStream`][`TextEncoderStream`], совместимая с браузером.
 
 ## Класс: `TransformStream`
 
@@ -1417,11 +1446,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TransformStream`][], совместимая с браузером.
+Реализация [`TransformStream`][`TransformStream`], совместимая с браузером.
 
 ## Класс: `TransformStreamDefaultController`
 
@@ -1438,11 +1468,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`TransformStreamDefaultController`][], совместимая с браузером.
+Реализация [`TransformStreamDefaultController`][`TransformStreamDefaultController`], совместимая с браузером.
 
 ## Класс: `URL`
 
@@ -1450,7 +1481,7 @@ changes:
 added: v10.0.0
 -->
 
-Класс WHATWG `URL`. См. раздел [`URL`][].
+Класс WHATWG `URL`. См. раздел [`URL`][`URL`].
 
 ## Класс: `URLPattern`
 
@@ -1460,7 +1491,7 @@ added: v24.0.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-Класс WHATWG `URLPattern`. См. раздел [`URLPattern`][].
+Класс WHATWG `URLPattern`. См. раздел [`URLPattern`][`URLPattern`].
 
 ## Класс: `URLSearchParams`
 
@@ -1468,7 +1499,7 @@ added: v24.0.0
 added: v10.0.0
 -->
 
-Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`][].
+Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`][`URLSearchParams`].
 
 ## Класс: `WebAssembly`
 
@@ -1498,13 +1529,14 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.4.0 | Больше не экспериментально. |
     | v22.0.0 | Больше нет флага CLI `--experimental-websocket`. |
 
 Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API
-флагом [`--no-experimental-websocket`][].
+флагом [`--no-experimental-websocket`][`--no-experimental-websocket`].
 
 ## Класс: `WritableStream`
 
@@ -1521,11 +1553,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStream`][], совместимая с браузером.
+Реализация [`WritableStream`][`WritableStream`], совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultController`
 
@@ -1542,11 +1575,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStreamDefaultController`][], совместимая с браузером.
+Реализация [`WritableStreamDefaultController`][`WritableStreamDefaultController`], совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultWriter`
 
@@ -1563,11 +1597,12 @@ changes:
 Добавлено в: v18.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
-Реализация [`WritableStreamDefaultWriter`][], совместимая с браузером.
+Реализация [`WritableStreamDefaultWriter`][`WritableStreamDefaultWriter`], совместимая с браузером.
 
 [CommonJS module]: modules.md
 [CommonJS modules]: modules.md

@@ -12,7 +12,7 @@ description: Система модулей CommonJS — require, module.exports,
 <!--name=module-->
 
 **Модули CommonJS** — изначальный способ упаковки кода JavaScript для Node.js.
-Node.js также поддерживает стандарт [ECMAScript modules][], который используют браузеры
+Node.js также поддерживает стандарт [ECMAScript modules][ECMAScript Modules], который используют браузеры
 и другие среды выполнения JavaScript.
 
 В Node.js каждый файл считается отдельным модулем. Например,
@@ -77,27 +77,27 @@ module.exports = class Square {
 
 <!-- type=misc -->
 
-У Node.js две системы модулей: CommonJS и [ECMAScript modules][].
+У Node.js две системы модулей: CommonJS и [ECMAScript modules][ECMAScript Modules].
 
 По умолчанию Node.js считает модулями CommonJS следующее:
 
 * Файлы с расширением `.cjs`.
 
 * Файлы с расширением `.js` или без расширения, если ближайший родительский
-  файл `package.json` содержит поле верхнего уровня [`"type"`][] со значением
+  файл `package.json` содержит поле верхнего уровня [`"type"`][`"type"`] со значением
   `"commonjs"`.
 
 * Файлы с расширением `.js` или без расширения, если ближайший родительский
-  `package.json` не содержит поля верхнего уровня [`"type"`][] или в родительских
+  `package.json` не содержит поля верхнего уровня [`"type"`][`"type"`] или в родительских
   папках нет `package.json`; если только файл не содержит синтаксиса, который
   вызовет ошибку, если его не оценивать как ES-модуль. Авторам пакетов следует указывать
-  поле [`"type"`][], даже если все исходники — CommonJS. Явное указание
+  поле [`"type"`][`"type"`], даже если все исходники — CommonJS. Явное указание
   `type` пакета упрощает работу инструментов сборки и загрузчиков при определении
   того, как интерпретировать файлы пакета.
 
 * Файлы с расширением, отличным от `.mjs`, `.cjs`, `.json`, `.node` и `.js`,
   если ближайший родительский `package.json` содержит поле верхнего уровня
-  [`"type"`][] со значением `"module"`.
+  [`"type"`][`"type"`] со значением `"module"`.
 
 Подробнее см. [Определение системы модулей][Determining module system].
 
@@ -196,6 +196,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
@@ -203,8 +204,8 @@ changes:
     | v23.0.0, v22.12.0, v20.19.0 | Эта функция больше не скрывается за флагом CLI `--experimental-require-module`. |
     | v23.0.0, v22.12.0 | Поддержка экспорта взаимодействия «module.exports» в «require(esm)». |
 
-Расширение `.mjs` зарезервировано для [ECMAScript Modules][].
-См. раздел [Determining module system][], какие файлы разбираются как ECMAScript-модули.
+Расширение `.mjs` зарезервировано для [ECMAScript Modules][ECMAScript Modules].
+См. раздел [Determining module system][Determining module system], какие файлы разбираются как ECMAScript-модули.
 
 `require()` поддерживает загрузку ECMAScript-модулей только при выполнении условий:
 
@@ -332,7 +333,7 @@ changes:
 
 Если в `require()`-ном модуле есть top-level `await` или в графе его `import`
 есть top-level `await`,
-выбрасывается [`ERR_REQUIRE_ASYNC_MODULE`][]. В этом случае асинхронный модуль нужно загружать через [`import()`][].
+выбрасывается [`ERR_REQUIRE_ASYNC_MODULE`][`ERR_REQUIRE_ASYNC_MODULE`]. В этом случае асинхронный модуль нужно загружать через [`import()`][`import()`].
 
 При включённом `--experimental-print-required-tla` вместо выброса
 `ERR_REQUIRE_ASYNC_MODULE` до выполнения Node.js выполнит модуль,
@@ -341,10 +342,10 @@ changes:
 
 Если поддержка загрузки ES-модулей через `require()` даёт неожиданные сбои,
 её можно отключить флагом `--no-require-module`.
-Чтобы вывести места использования этой возможности, используйте [`--trace-require-module`][].
+Чтобы вывести места использования этой возможности, используйте [`--trace-require-module`][`--trace-require-module`].
 
 Наличие возможности проверяется по
-[`process.features.require_module`][] === `true`.
+[`process.features.require_module`][`process.features.require_module`] === `true`.
 
 ## Всё вместе {: #all-together}
 
@@ -514,6 +515,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v16.0.0, v14.18.0 | Добавлена ​​поддержка импорта `node:` в `require(...)`. |
@@ -529,7 +531,7 @@ changes:
 Некоторые встроенные модули всегда имеют приоритет при передаче идентификатора в `require()`.
 Например, `require('http')` всегда даёт встроенный HTTP-модуль, даже если есть файл с таким именем.
 
-Список всех встроенных модулей — в [`module.builtinModules`][].
+Список всех встроенных модулей — в [`module.builtinModules`][`module.builtinModules`].
 Имена перечислены без префикса `node:`, кроме модулей, для которых префикс обязателен (см. ниже).
 
 ### Встроенные модули с обязательным префиксом `node:` {: #built-in-modules-with-mandatory-node-prefix}
@@ -538,12 +540,12 @@ changes:
 `node:`. Это снижает риск конфликта с пакетами пользователя с тем же именем.
 Сейчас префикс `node:` обязателен для:
 
-* [`node:sea`][]
-* [`node:sqlite`][]
-* [`node:test`][]
-* [`node:test/reporters`][]
+* [`node:sea`][`node:sea`]
+* [`node:sqlite`][`node:sqlite`]
+* [`node:test`][`node:test`]
+* [`node:test/reporters`][`node:test/reporters`]
 
-Список этих модулей есть в [`module.builtinModules`][], с префиксом.
+Список этих модулей есть в [`module.builtinModules`][`module.builtinModules`], с префиксом.
 
 ## Циклы {: #cycles}
 
@@ -616,7 +618,7 @@ in main, a.done = true, b.done = true
 
 Файлы `.json` разбираются как JSON, `.node` — как скомпилированные аддоны через `process.dlopen()`.
 С любыми другими расширениями или без расширения файл обрабатывается как JavaScript. См.
-[Determining module system][], какой режим разбора применяется.
+[Determining module system][Determining module system], какой режим разбора применяется.
 
 Путь, начинающийся с `'/'`, — абсолютный путь к файлу. Например,
 `require('/home/marco/foo.js')` загрузит `/home/marco/foo.js`.
@@ -628,17 +630,17 @@ in main, a.done = true, b.done = true
 Без ведущего `'/'`, `'./'` или `'../'` модуль должен быть встроенным или загружаться из `node_modules`.
 
 Если путь не существует, `require()` выбрасывает
-[`MODULE_NOT_FOUND`][].
+[`MODULE_NOT_FOUND`][`MODULE_NOT_FOUND`].
 
 ## Каталоги как модули {: #folders-as-modules}
 
 <!--type=misc-->
 
-> Stability: 3 - Legacy: Use [subpath exports][] or [subpath imports][] instead.
+> Stability: 3 - Legacy: Use [subpath exports][subpath exports] or [subpath imports][subpath imports] instead.
 
 Передать в `require()` каталог можно тремя способами.
 
-Первый — создать в корне каталога [`package.json`][] с полем `main`. Пример [`package.json`][]:
+Первый — создать в корне каталога [`package.json`][`package.json`] с полем `main`. Пример [`package.json`][`package.json`]:
 
 ```json
 { "name" : "some-library",
@@ -649,9 +651,9 @@ in main, a.done = true, b.done = true
 `require('./some-library')` попытается загрузить
 `./some-library/lib/some-library.js`.
 
-Если в каталоге нет [`package.json`][], или поле
-[`"main"`][] отсутствует или не разрешается, Node.js
-ищет `index.js` или `index.node` в этом каталоге. Например, без [`package.json`][] в примере выше
+Если в каталоге нет [`package.json`][`package.json`], или поле
+[`"main"`][`"main"`] отсутствует или не разрешается, Node.js
+ищет `index.js` или `index.node` в этом каталоге. Например, без [`package.json`][`package.json`] в примере выше
 `require('./some-library')` попытается загрузить:
 
 * `./some-library/index.js`
@@ -664,8 +666,8 @@ Error: Cannot find module 'some-library'
 ```
 
 Во всех трёх случаях вызов `import('./some-library')` даст ошибку
-[`ERR_UNSUPPORTED_DIR_IMPORT`][]. [Подпути exports][] или
-[подпути imports][] дают схожую инкапсуляцию, как у каталогов-модулей,
+[`ERR_UNSUPPORTED_DIR_IMPORT`][`ERR_UNSUPPORTED_DIR_IMPORT`]. [Подпути exports][subpath exports] или
+[подпути imports][subpath imports] дают схожую инкапсуляцию, как у каталогов-модулей,
 и работают и с `require`, и с `import`.
 
 ## Загрузка из каталогов `node_modules` {: #loading-from-node_modules-folders}
@@ -755,7 +757,7 @@ added: v0.1.27
 * Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя каталога текущего модуля. Совпадает с
-[`path.dirname()`][] от [`__filename`][].
+[`path.dirname()`][`path.dirname()`] от [`__filename`][`__filename`].
 
 Пример: запуск `node example.js` из `/Users/mjr`
 
@@ -778,7 +780,7 @@ added: v0.0.1
 
 Для главной программы это не обязательно то же имя, что в командной строке.
 
-См. [`__dirname`][] для каталога текущего модуля.
+См. [`__dirname`][`__dirname`] для каталога текущего модуля.
 
 Примеры:
 
@@ -821,7 +823,7 @@ added: v0.1.16
 
 * Type: [<module>](modules.md#module)
 
-Ссылка на текущий модуль, см. объект [`module` object][].
+Ссылка на текущий модуль, см. объект [`module` object][`module` object].
 `module.exports` задаёт, что модуль экспортирует и отдаёт через `require()`.
 
 ### `require(id)` {: #requireid}
@@ -835,7 +837,7 @@ added: v0.1.13
 
 Импорт модулей, `JSON` и локальных файлов. Модули из `node_modules`, локальные файлы и JSON —
 через относительный путь (например `./`, `./foo`, `./bar/baz`, `../foo`), разрешаемый
-относительно [`__dirname`][] (если есть) или
+относительно [`__dirname`][`__dirname`] (если есть) или
 текущего рабочего каталога. Относительные пути в стиле POSIX разрешаются
 одинаково на разных ОС, в том числе в Windows как в Unix.
 
@@ -956,6 +958,7 @@ changes:
 Добавлено в: v0.3.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v8.9.0 | Опция `paths` теперь поддерживается. |
@@ -1155,8 +1158,8 @@ deprecated:
   - v12.19.0
 -->
 
-> Stability: 0 - Deprecated: Please use [`require.main`][] and
-> [`module.children`][] instead.
+> Stability: 0 - Deprecated: Please use [`require.main`][`require.main`] and
+> [`module.children`][`module.children`] instead.
 
 * Type: [<module>](modules.md#module) | null | undefined
 
@@ -1172,7 +1175,7 @@ added: v11.14.0
 * Type: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог модуля. Обычно совпадает с
-[`path.dirname()`][] от [`module.id`][].
+[`path.dirname()`][`path.dirname()`] от [`module.id`][`module.id`].
 
 ### `module.paths`
 

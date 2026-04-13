@@ -78,7 +78,7 @@ added: v0.1.99
 
 Инкапсулирует работу с датаграммами.
 
-Новые экземпляры `dgram.Socket` создаются через [`dgram.createSocket()`][].
+Новые экземпляры `dgram.Socket` создаются через [`dgram.createSocket()`][`dgram.createSocket()`].
 Ключевое слово `new` не используется для создания экземпляров `dgram.Socket`.
 
 ### Событие: `'close'`
@@ -87,7 +87,7 @@ added: v0.1.99
 added: v0.1.99
 -->
 
-Событие `'close'` испускается после закрытия сокета вызовом [`close()`][].
+Событие `'close'` испускается после закрытия сокета вызовом [`close()`][`close()`].
 После этого на сокете больше не будут испускаться события `'message`.
 
 ### Событие: `'connect'`
@@ -97,7 +97,7 @@ added: v12.0.0
 -->
 
 Событие `'connect'` испускается после того, как сокет связан с удалённым
-адресом в результате успешного вызова [`connect()`][].
+адресом в результате успешного вызова [`connect()`][`connect()`].
 
 ### Событие: `'error'`
 
@@ -137,6 +137,7 @@ changes:
 Добавлено в: v0.1.99
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
@@ -261,6 +262,7 @@ changes:
 Добавлено в: v0.1.99
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v0.9.1 | Метод был изменен на модель асинхронного выполнения. Устаревший код необходимо будет изменить, чтобы передать функцию обратного вызова в вызов метода. |
@@ -283,7 +285,7 @@ changes:
 датаграмм.
 
 При ошибке привязки генерируется событие `'error'`. В редких случаях (например
-привязка закрытого сокета) может быть выброшен [`Error`][].
+привязка закрытого сокета) может быть выброшен [`Error`][`Error`].
 
 Пример UDP-сервера на порту 41234:
 
@@ -364,7 +366,7 @@ added: v0.11.14
 не вредно, но мало что даёт.
 
 Объект `options` может содержать дополнительное свойство `exclusive`, используемое
-с модулем [`cluster`][]. При `exclusive` равном `false` (по умолчанию) воркеры
+с модулем [`cluster`][`cluster`]. При `exclusive` равном `false` (по умолчанию) воркеры
 `cluster` используют один нижележащий дескриптор сокета и могут совместно
 обрабатывать соединения. При `exclusive` равном `true` дескриптор не разделяется,
 и попытка разделить порт приводит к ошибке. Создание `dgram.Socket` с опцией
@@ -372,7 +374,7 @@ added: v0.11.14
 
 Привязанный датаграммный сокет удерживает процесс Node.js для приёма датаграмм.
 
-При ошибке привязки генерируется `'error'`. В редких случаях может быть выброшен [`Error`][].
+При ошибке привязки генерируется `'error'`. В редких случаях может быть выброшен [`Error`][`Error`].
 
 Ниже пример сокета с эксклюзивным портом.
 
@@ -393,7 +395,7 @@ added: v0.1.99
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после закрытия сокета.
 
 Закрывает нижележащий сокет и прекращает приём данных. Если передан `callback`,
-он добавляется как обработчик события [`'close'`][].
+он добавляется как обработчик события [`'close'`][`'close'`].
 
 ### `socket[Symbol.asyncDispose]()`
 
@@ -408,11 +410,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
 
-Вызывает [`socket.close()`][] и возвращает промис, который выполняется после
+Вызывает [`socket.close()`][`socket.close()`] и возвращает промис, который выполняется после
 закрытия сокета.
 
 ### `socket.connect(port[, address][, callback])`
@@ -429,7 +432,7 @@ added: v12.0.0
 отправляемое этим дескриптором, уходит на этот адрес. Сокет принимает сообщения
 только от этого удалённого узла.
 Повторный вызов `connect()` на уже подключённом сокете приводит к исключению
-[`ERR_SOCKET_DGRAM_IS_CONNECTED`][]. Если `address` не задан, по умолчанию
+[`ERR_SOCKET_DGRAM_IS_CONNECTED`][`ERR_SOCKET_DGRAM_IS_CONNECTED`]. Если `address` не задан, по умолчанию
 используется `'127.0.0.1'` (для `udp4`) или `'::1'` (для `udp6`).
 После установления соединения испускается `'connect'` и вызывается необязательный
 `callback`. При ошибке вызывается `callback` или, если это невозможно, испускается `'error'`.
@@ -442,7 +445,7 @@ added: v12.0.0
 
 Синхронная функция, отсоединяющая подключённый `dgram.Socket` от
 удалённого адреса. Вызов `disconnect()` на несвязанном или уже отсоединённом
-сокете даёт исключение [`ERR_SOCKET_DGRAM_NOT_CONNECTED`][].
+сокете даёт исключение [`ERR_SOCKET_DGRAM_NOT_CONNECTED`][`ERR_SOCKET_DGRAM_NOT_CONNECTED`].
 
 ### `socket.dropMembership(multicastAddress[, multicastInterface])`
 
@@ -485,7 +488,7 @@ added: v8.7.0
 
 * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера приёма сокета `SO_RCVBUF` в байтах.
 
-Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][] на несвязанном сокете.
+Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`] на несвязанном сокете.
 
 ### `socket.getSendBufferSize()`
 
@@ -495,7 +498,7 @@ added: v8.7.0
 
 * Возвращает: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера отправки сокета `SO_SNDBUF` в байтах.
 
-Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][] на несвязанном сокете.
+Метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`] на несвязанном сокете.
 
 ### `socket.getSendQueueSize()`
 
@@ -542,7 +545,7 @@ added: v12.0.0
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает объект с `address`, `family` и `port` удалённого узла.
-Если сокет не подключён, выбрасывается [`ERR_SOCKET_DGRAM_NOT_CONNECTED`][].
+Если сокет не подключён, выбрасывается [`ERR_SOCKET_DGRAM_NOT_CONNECTED`][`ERR_SOCKET_DGRAM_NOT_CONNECTED`].
 
 ### `socket.send(msg[, offset, length][, port][, address][, callback])`
 
@@ -580,6 +583,7 @@ changes:
 Добавлено в: v0.1.99
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v17.0.0 | Параметр `address` теперь принимает только `string`, `null` или `undef`. |
@@ -606,7 +610,7 @@ changes:
 `TypedArray` или `DataView`,
 `offset` и `length` задают смещение в буфере и число байт сообщения.
 Если `msg` — строка, она преобразуется в `Buffer` с кодировкой `'utf8'`.
-Для символов в нескольких байтах `offset` и `length` считаются по [byte length][], а не по позиции символа.
+Для символов в нескольких байтах `offset` и `length` считаются по [byte length][byte length], а не по позиции символа.
 Если `msg` — массив, `offset` и `length` указывать нельзя.
 
 Аргумент `address` — строка. Если это имя хоста, для разрешения используется DNS.
@@ -626,7 +630,7 @@ changes:
 `offset` и `length` необязательны, но если используется один из них, нужны оба.
 Они поддерживаются только если первый аргумент — `Buffer`, `TypedArray` или `DataView`.
 
-На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BAD_PORT`][].
+На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BAD_PORT`][`ERR_SOCKET_BAD_PORT`].
 
 Пример отправки UDP-пакета на порт на `localhost`:
 
@@ -764,7 +768,7 @@ added: v8.6.0
 
 * `multicastInterface` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-_Все упоминания scope здесь относятся к [IPv6 Zone Indexes][], определённым в [RFC 4007][].
+_Все упоминания scope здесь относятся к [IPv6 Zone Indexes][IPv6 Zone Indexes], определённым в [RFC 4007][RFC 4007].
 В строковой форме IP с индексом области записывается как `'IP%scope'`, где scope — имя интерфейса или его номер._
 
 Задаёт интерфейс исходящего multicast по умолчанию или возвращает выбор системе.
@@ -814,12 +818,12 @@ socket.bind(1234, () => {
 
 #### Результат вызова
 
-Вызов на сокете, не готовом к отправке или уже закрытом, может выбросить _Not running_ [`Error`][].
+Вызов на сокете, не готовом к отправке или уже закрытом, может выбросить _Not running_ [`Error`][`Error`].
 
-Если `multicastInterface` нельзя разобрать как IP, выбрасывается _EINVAL_ [`System Error`][].
+Если `multicastInterface` нельзя разобрать как IP, выбрасывается _EINVAL_ [`System Error`][`System Error`].
 
 В IPv4 при корректном, но не совпадающем с интерфейсом адресе или несовпадении семейства —
-[`System Error`][], например `EADDRNOTAVAIL` или `EPROTONOSUP`.
+[`System Error`][`System Error`], например `EADDRNOTAVAIL` или `EPROTONOSUP`.
 
 В IPv6 при ошибках указания или пропуска scope сокет часто продолжает использовать выбор интерфейса по умолчанию.
 
@@ -865,7 +869,7 @@ added: v8.7.0
 
 Задаёт опцию `SO_RCVBUF` — максимальный буфер приёма сокета в байтах.
 
-На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][].
+На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`].
 
 ### `socket.setSendBufferSize(size)`
 
@@ -877,7 +881,7 @@ added: v8.7.0
 
 Задаёт опцию `SO_SNDBUF` — максимальный буфер отправки сокета в байтах.
 
-На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][].
+На несвязанном сокете метод выбрасывает [`ERR_SOCKET_BUFFER_SIZE`][`ERR_SOCKET_BUFFER_SIZE`].
 
 ### `socket.setTTL(ttl)`
 
@@ -939,6 +943,7 @@ changes:
 Добавлено в: v0.11.13
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.1.0, v22.12.0 | Поддерживается опция `reusePort`. |
@@ -950,11 +955,11 @@ changes:
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
   * `type` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство сокета: `'udp4'` или `'udp6'`.
     Обязательно.
-  * `reuseAddr` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][] переиспользует
+  * `reuseAddr` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
     адрес, даже если другой процесс уже привязал сокет, но
     данные получит только один сокет.
     **По умолчанию:** `false`.
-  * `reusePort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][] переиспользует
+  * `reusePort` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` [`socket.bind()`][`socket.bind()`] переиспользует
     порт, даже если другой процесс уже привязал сокет. Входящие
     датаграммы распределяются между слушающими сокетами. Опция доступна
     только на части платформ: Linux 3.9+, DragonFlyBSD 3.6+, FreeBSD 12.0+,
@@ -964,7 +969,7 @@ changes:
     т.е. привязка к `::` не привязывает `0.0.0.0`. **По умолчанию:** `false`.
   * `recvBufferSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_RCVBUF`.
   * `sendBufferSize` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение `SO_SNDBUF`.
-  * `lookup` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`][].
+  * `lookup` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция поиска. **По умолчанию:** [`dns.lookup()`][`dns.lookup()`].
   * `signal` [<AbortSignal>](globals.md#abortsignal) Сигнал для закрытия сокета.
   * `receiveBlockList` [<net.BlockList>](net.md) Отбрасывает входящие датаграммы с заданных IP, диапазонов или подсетей. Не
     работает за обратным прокси, NAT и т.п.: проверяется адрес прокси или NAT, а не клиента.
@@ -972,10 +977,10 @@ changes:
 * `callback` [<Function>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик событий `'message'`. Необязательно.
 * Возвращает: [<dgram.Socket>](dgram.md#class-dgramsocket)
 
-Создаёт объект `dgram.Socket`. После создания вызов [`socket.bind()`][] запускает приём датаграмм.
-Если в [`socket.bind()`][] не переданы `address` и `port`, сокет привязывается к адресу «все интерфейсы»
+Создаёт объект `dgram.Socket`. После создания вызов [`socket.bind()`][`socket.bind()`] запускает приём датаграмм.
+Если в [`socket.bind()`][`socket.bind()`] не переданы `address` и `port`, сокет привязывается к адресу «все интерфейсы»
 на случайном порту (корректно для `udp4` и `udp6`). Привязанный адрес и порт можно получить через
-[`socket.address().address`][] и [`socket.address().port`][].
+[`socket.address().address`][`socket.address().address`] и [`socket.address().port`][`socket.address().port`].
 
 Если задана опция `signal`, вызов `.abort()` у соответствующего
 `AbortController` аналогичен `.close()` у сокета:
@@ -1003,9 +1008,9 @@ added: v0.1.99
 
 Создаёт `dgram.Socket` указанного `type`.
 
-После создания [`socket.bind()`][] запускает приём датаграмм. Без `address` и `port` в [`socket.bind()`][]
+После создания [`socket.bind()`][`socket.bind()`] запускает приём датаграмм. Без `address` и `port` в [`socket.bind()`][`socket.bind()`]
 сокет привязывается к «все интерфейсы» на случайном порту (для `udp4` и `udp6`). Адрес и порт —
-[`socket.address().address`][] и [`socket.address().port`][].
+[`socket.address().address`][`socket.address().address`] и [`socket.address().port`][`socket.address().port`].
 
 [IPv6 Zone Indexes]: https://en.wikipedia.org/wiki/IPv6_address#Scoped_literal_IPv6_addresses
 [RFC 4007]: https://tools.ietf.org/html/rfc4007

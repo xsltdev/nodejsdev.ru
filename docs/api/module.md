@@ -16,7 +16,7 @@ added: v0.3.7
 * Тип: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Общие вспомогательные методы при работе с экземплярами
-`Module` и переменной [`module`][], часто встречающейся в модулях [CommonJS][]. Доступ
+`Module` и переменной [`module`][`module`], часто встречающейся в модулях [CommonJS][CommonJS]. Доступ
 через `import 'node:module'` или `require('node:module')`.
 
 ### `module.builtinModules`
@@ -33,6 +33,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.5.0 | Список теперь также содержит модули только с префиксами. |
@@ -216,13 +217,14 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | REPLACEME | Прекращение поддержки во время выполнения (DEP0205). |
     | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
     | v20.8.0, v18.19.0 | Добавьте поддержку экземпляров URL-адресов WHATWG. |
 
-> Стабильность: 0 — устарело: используйте [`module.registerHooks()`][].
+> Стабильность: 0 — устарело: используйте [`module.registerHooks()`][`module.registerHooks()`].
 
 * `specifier` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Модуль с хуками настройки; обычно та же строка, что для
   `import()`, но относительные спецификаторы разрешаются относительно `parentURL`.
@@ -231,7 +233,7 @@ changes:
 * `options` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `parentURL` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<URL>](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
     если `parentURL` передан вторым аргументом. **По умолчанию:** `'data:'`
-  * `data` {any} Произвольное клонируемое значение для хука [`initialize`][].
+  * `data` {any} Произвольное клонируемое значение для хука [`initialize`][`initialize`].
   * `transferList` [<Object[]>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
     хука `initialize`.
 
@@ -255,6 +257,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0, v24.13.1 | Синхронные и внутрипоточные перехватчики теперь являются кандидатами на выпуск. |
@@ -269,7 +272,7 @@ changes:
     завершения процесса.
 
 Регистрирует [хуки][hooks], меняющие разрешение и загрузку модулей.
-См. [Customization hooks][]. Возвращённый объект позволяет
+См. [Customization hooks][Customization hooks]. Возвращённый объект позволяет
 [снять хуки][deregistration of synchronous customization hooks].
 
 ### `module.stripTypeScriptTypes(code[, options])`
@@ -285,6 +288,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | REPLACEME | Удалены опции «transform» и «sourceMap». |
@@ -302,7 +306,7 @@ changes:
 можно вызывать перед запуском через `vm.runInContext()` или `vm.compileFunction()`.
 
 По умолчанию будет ошибка, если в коде есть конструкции TypeScript, требующие
-трансформации (например `enum`). Подробнее — [type-stripping][].
+трансформации (например `enum`). Подробнее — [type-stripping][type-stripping].
 
 _ВНИМАНИЕ_: вывод этой функции не гарантированно стабилен между версиями Node.js
 из‑за изменений в парсере TypeScript.
@@ -356,8 +360,8 @@ added: v12.12.0
 -->
 
 Метод `module.syncBuiltinESMExports()` обновляет живые привязки встроенных
-[ES Modules][], чтобы они соответствовали экспорту [CommonJS][]. Имена экспорта в
-[ES Modules][] не добавляет и не удаляет.
+[ES Modules][ES Modules], чтобы они соответствовали экспорту [CommonJS][CommonJS]. Имена экспорта в
+[ES Modules][ES Modules] не добавляет и не удаляет.
 
 ```js
 const fs = require('node:fs');
@@ -401,28 +405,29 @@ changes:
 Добавлено в: v22.1.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.8.0 | добавьте начальные API-интерфейсы JavaScript для доступа во время выполнения. |
 
-Кэш компиляции модулей включается через [`module.enableCompileCache()`][] или
-переменную окружения [`NODE_COMPILE_CACHE=dir`][]. После включения при компиляции
+Кэш компиляции модулей включается через [`module.enableCompileCache()`][`module.enableCompileCache()`] или
+переменную окружения [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`]. После включения при компиляции
 CommonJS, ECMAScript- или TypeScript-модулей используется дисковый [кэш кода V8][V8 code cache]
 в указанном каталоге, что ускоряет компиляцию. Первый обход графа модулей может стать
 медленнее, повторные загрузки того же графа — заметно быстрее, если содержимое не менялось.
 
 Чтобы очистить кэш, удалите каталог кэша; при следующем использовании того же пути он
 создастся снова. Чтобы не забивать диск устаревшим кэшем, лучше использовать каталог под
-[`os.tmpdir()`][]. Если [`module.enableCompileCache()`][] вызван без `directory`, Node.js
-берёт [`NODE_COMPILE_CACHE=dir`][], если задано, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
-Текущий каталог кэша у процесса — [`module.getCompileCacheDir()`][].
+[`os.tmpdir()`][`os.tmpdir()`]. Если [`module.enableCompileCache()`][`module.enableCompileCache()`] вызван без `directory`, Node.js
+берёт [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`], если задано, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
+Текущий каталог кэша у процесса — [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
 
-Отключить кэш можно переменной [`NODE_DISABLE_COMPILE_CACHE=1`][], если кэш даёт
+Отключить кэш можно переменной [`NODE_DISABLE_COMPILE_CACHE=1`][`NODE_DISABLE_COMPILE_CACHE=1`], если кэш даёт
 неожиданные эффекты (например менее точное покрытие тестами).
 
 Сейчас при включённом кэше данные кэша кода для модуля создаются сразу после компиляции,
 но на диск записываются ближе к завершению процесса (поведение может измениться).
-[`module.flushCompileCache()`][] принудительно сбрасывает накопленный кэш на диск, если
+[`module.flushCompileCache()`][`module.flushCompileCache()`] принудительно сбрасывает накопленный кэш на диск, если
 нужно запустить другие процессы Node.js с общим кэшем до выхода родителя.
 
 Формат кэша на диске — деталь реализации; на него не стоит опираться. Кэш обычно
@@ -438,7 +443,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
 
 Два способа включить переносимый режим:
 
-1. Using the portable option in [`module.enableCompileCache()`][]:
+1. Using the portable option in [`module.enableCompileCache()`][`module.enableCompileCache()`]:
 
    ```js
    // Non-portable cache (default): cache breaks if project is moved
@@ -448,7 +453,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
    module.enableCompileCache({ directory: '/path/to/cache/storage/dir', portable: true });
    ```
 
-2. Setting the environment variable: [`NODE_COMPILE_CACHE_PORTABLE=1`][]
+2. Setting the environment variable: [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`]
 
 ### Ограничения кэша компиляции
 
@@ -472,11 +477,12 @@ changes:
 Добавлено в: v22.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-Следующие константы возвращаются в поле `status` объекта из [`module.enableCompileCache()`][]
+Следующие константы возвращаются в поле `status` объекта из [`module.enableCompileCache()`][`module.enableCompileCache()`]
 и отражают результат попытки включить [кэш компиляции модулей][module compile cache].
 
 <table>
@@ -543,6 +549,7 @@ changes:
 Добавлено в: v22.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
@@ -551,15 +558,15 @@ changes:
 
 * `options` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Optional. If a string is passed, it is considered to be `options.directory`.
   * `directory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional. Directory to store the compile cache. If not specified,
-    the directory specified by the [`NODE_COMPILE_CACHE=dir`][] environment variable
+    the directory specified by the [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`] environment variable
     will be used if it's set, or `path.join(os.tmpdir(), 'node-compile-cache')`
     otherwise.
   * `portable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Optional. If `true`, enables portable compile cache so that
     the cache can be reused even if the project directory is moved. This is a best-effort
     feature. If not specified, it will depend on whether the environment variable
-    [`NODE_COMPILE_CACHE_PORTABLE=1`][] is set.
+    [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`] is set.
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `status` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) One of the [`module.constants.compileCacheStatus`][]
+  * `status` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) One of the [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
   * `message` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If Node.js cannot enable the compile cache, this contains
     the error message. Only set if `status` is `module.constants.compileCacheStatus.FAILED`.
   * `directory` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined If the compile cache is enabled, this contains the directory
@@ -567,7 +574,7 @@ changes:
     `module.constants.compileCacheStatus.ENABLED` or
     `module.constants.compileCacheStatus.ALREADY_ENABLED`.
 
-Enable [module compile cache][] in the current Node.js instance.
+Enable [module compile cache][module compile cache] in the current Node.js instance.
 
 For general use cases, it's recommended to call `module.enableCompileCache()` without
 specifying the `options.directory`, so that the directory can be overridden by the
@@ -579,13 +586,13 @@ Instead, it will return an object containing an error message in the `message` f
 aid debugging. If compile cache is enabled successfully, the `directory` field in the
 returned object contains the path to the directory where the compile cache is stored. The
 `status` field in the returned object would be one of the `module.constants.compileCacheStatus`
-values to indicate the result of the attempt to enable the [module compile cache][].
+values to indicate the result of the attempt to enable the [module compile cache][module compile cache].
 
 This method only affects the current Node.js instance. To enable it in child worker threads,
 either call this method in child worker threads too, or set the
 `process.env.NODE_COMPILE_CACHE` value to compile cache directory so the behavior can
 be inherited into the child workers. The directory can be obtained either from the
-`directory` field returned by this method, or with [`module.getCompileCacheDir()`][].
+`directory` field returned by this method, or with [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
 
 ### `module.flushCompileCache()`
 
@@ -600,11 +607,12 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-Flush the [module compile cache][] accumulated from modules already loaded
+Flush the [module compile cache][module compile cache] accumulated from modules already loaded
 in the current Node.js instance to disk. This returns after all the flushing
 file system operations come to an end, no matter they succeed or not. If there
 are any errors, this will fail silently, since compile cache misses should not
@@ -623,11 +631,12 @@ changes:
 Добавлено в: v22.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Path to the [module compile cache][] directory if it is enabled,
+* Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Path to the [module compile cache][module compile cache] directory if it is enabled,
   or `undefined` otherwise.
 
 <i id="module_customization_hooks"></i>
@@ -666,6 +675,7 @@ changes:
 Добавлено в: v8.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.4.0, v24.13.1 | Синхронные и внутрипоточные перехватчики теперь являются кандидатами на выпуск. |
@@ -698,8 +708,8 @@ for simplicity.
 
 #### Registration of synchronous customization hooks
 
-To register synchronous customization hooks, use [`module.registerHooks()`][], which
-takes [synchronous hook functions][] directly in-line.
+To register synchronous customization hooks, use [`module.registerHooks()`][`module.registerHooks()`], which
+takes [synchronous hook functions][synchronous hook functions] directly in-line.
 
 === "MJS"
 
@@ -726,7 +736,7 @@ takes [synchronous hook functions][] directly in-line.
 ##### Registering hooks before application code runs with flags
 
 The hooks can be registered before the application code is run by using the
-[`--import`][] or [`--require`][] flag:
+[`--import`][`--import`] or [`--require`][`--require`] flag:
 
 ```bash
 node --import ./register-hooks.js ./my-app.js
@@ -740,7 +750,7 @@ node --import some-package/register ./my-app.js
 node --require some-package/register ./my-app.js
 ```
 
-Where `some-package` has an [`"exports"`][] field defining the `/register`
+Where `some-package` has an [`"exports"`][`"exports"`] field defining the `/register`
 export to map to a file that calls `registerHooks()`, like the
 `register-hooks.js` examples above.
 
@@ -936,14 +946,14 @@ The `module.registerHooks()` method accepts the following synchronous hook funct
     }
     ```
 
-Synchronous hooks are run in the same thread and the same [realm][] where the modules
+Synchronous hooks are run in the same thread and the same [realm][realm] where the modules
 are loaded, the code in the hook function can pass values to the modules being referenced
 directly via global variables or other shared states.
 
 Unlike the asynchronous hooks, the synchronous hooks are not inherited into child worker
 threads by default, though if the hooks are registered using a file preloaded by
-[`--import`][] or [`--require`][], child worker threads can inherit the preloaded scripts
-via `process.execArgv` inheritance. See [the documentation of `Worker`][] for details.
+[`--import`][`--import`] or [`--require`][`--require`], child worker threads can inherit the preloaded scripts
+via `process.execArgv` inheritance. See [the documentation of `Worker`][the documentation of `Worker`] for details.
 
 #### Synchronous `resolve(specifier, context, nextResolve)`
 
@@ -957,6 +967,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.5.0, v22.15.0 | Добавьте поддержку синхронных и внутрипоточных перехватчиков. |
@@ -1052,6 +1063,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v23.5.0, v22.15.0 | Добавьте поддержку синхронной и внутрипоточной версии. |
@@ -1140,7 +1152,7 @@ not possible to replace the value of a Node.js builtin (core) module.
 * The specific [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) object is a [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
 If the source value of a text-based format (i.e., `'json'`, `'module'`)
-is not a string, it is converted to a string using [`util.TextDecoder`][].
+is not a string, it is converted to a string using [`util.TextDecoder`][`util.TextDecoder`].
 
 ### Asynchronous customization hooks
 
@@ -1163,8 +1175,8 @@ via `module.registerHooks()` instead to avoid these caveats.
     that go through it, the child modules loaded by those CommonJS modules via built-in
     `require()` would not be affected by the asynchronous hooks either.
 * There are several caveats that the asynchronous hooks need to handle when
-  customizing CommonJS modules. See [asynchronous `resolve` hook][] and
-  [asynchronous `load` hook][] for details.
+  customizing CommonJS modules. See [asynchronous `resolve` hook][asynchronous `resolve` hook] and
+  [asynchronous `load` hook][asynchronous `load` hook] for details.
 * When `require()` calls inside CommonJS modules are customized by asynchronous hooks,
   Node.js may need to load the source code of the CommonJS module multiple times to maintain
   compatibility with existing CommonJS monkey-patching. If the module code changes between
@@ -1176,7 +1188,7 @@ via `module.registerHooks()` instead to avoid these caveats.
 #### Registration of asynchronous customization hooks
 
 Asynchronous customization hooks are registered using [`module.register()`][`register`] which takes
-a path or URL to another module that exports the [asynchronous hook functions][].
+a path or URL to another module that exports the [asynchronous hook functions][asynchronous hook functions].
 
 Similar to `registerHooks()`, `register()` can be called in a module preloaded by `--import` or
 `--require`, or called directly within the entry point.
@@ -1316,7 +1328,7 @@ thread that runs application code. This means mutating global variables won't
 affect the other thread(s), and message channels must be used to communicate
 between the threads.
 
-The `register` method can be used to pass data to an [`initialize`][] hook. The
+The `register` method can be used to pass data to an [`initialize`][`initialize`] hook. The
 data passed to the hook may include transferable objects like ports.
 
 === "MJS"
@@ -1388,13 +1400,14 @@ changes:
 Добавлено в: v8.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.6.0, v18.19.0 | Добавлен хук `initialize` для замены `globalPreload`. |
     | v18.6.0, v16.17.0 | Добавьте поддержку цепочки загрузчиков. |
     | v16.12.0 | Удалены `getFormat`, `getSource`, `transformSource` и `globalPreload`; добавлен хук `load` и `getGlobalPreload`. |
 
-The [`register`][] method can be used to register a module that exports a set of
+The [`register`][`register`] method can be used to register a module that exports a set of
 hooks. The hooks are functions that are called by Node.js to customize the
 module resolution and loading process. The exported functions must have specific
 names and signatures, and they must be exported as named exports.
@@ -1416,7 +1429,7 @@ names and signatures, and they must be exported as named exports.
     ```
 
 Asynchronous hooks are run in a separate thread, isolated from the main thread where
-application code runs. That means it is a different [realm][]. The hooks thread
+application code runs. That means it is a different [realm][realm]. The hooks thread
 may be terminated by the main thread at any time, so do not depend on
 asynchronous operations (like `console.log`) to complete. They are inherited into
 child workers by default.
@@ -1431,15 +1444,15 @@ added:
 
 * `data` {any} The data from `register(loader, import.meta.url, { data })`.
 
-The `initialize` hook is only accepted by [`register`][]. `registerHooks()` does
+The `initialize` hook is only accepted by [`register`][`register`]. `registerHooks()` does
 not support nor need it since initialization done for synchronous hooks can be run
 directly before the call to `registerHooks()`.
 
 The `initialize` hook provides a way to define a custom function that runs in
 the hooks thread when the hooks module is initialized. Initialization happens
-when the hooks module is registered via [`register`][].
+when the hooks module is registered via [`register`][`register`].
 
-This hook can receive data from a [`register`][] invocation, including
+This hook can receive data from a [`register`][`register`] invocation, including
 ports and other transferable objects. The return value of `initialize` can be a
 [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), in which case it will be awaited before the main application thread
 execution resumes.
@@ -1534,6 +1547,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v21.0.0, v20.10.0, v18.19.0 | Свойство context.importAssertions заменяется на context.importAttributes. Использование старого имени по-прежнему поддерживается и приведет к появлению экспериментального предупреждения. |
@@ -1628,6 +1642,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v22.6.0 | Добавьте поддержку исходного кода в формате commonjs-typescript и module-typescript. |
@@ -1903,7 +1918,7 @@ This is only for running the example. In real world loaders, `getPackageType()` 
 able to return an `format` known to Node.js even in the absence of an explicit type in a
 `package.json`, or otherwise the `nextLoad` call would throw `ERR_UNKNOWN_FILE_EXTENSION`
 (if undefined) or `ERR_UNKNOWN_MODULE_FORMAT` (if it's not a known format listed in
-the [load hook][] documentation).
+the [load hook][load hook] documentation).
 
 With the preceding hooks modules, running
 `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./coffeescript-hooks.mjs"));' ./main.coffee`
@@ -2002,17 +2017,17 @@ added:
 
 > Stability: 1 - Experimental
 
-Node.js supports TC39 ECMA-426 [Source Map][] format (it was called Source map
+Node.js supports TC39 ECMA-426 [Source Map][Source Map] format (it was called Source map
 revision 3 format).
 
 The APIs in this section are helpers for interacting with the source map
 cache. This cache is populated when source map parsing is enabled and
-[source map include directives][] are found in a modules' footer.
+[source map include directives][source map include directives] are found in a modules' footer.
 
 To enable source map parsing, Node.js must be run with the flag
-[`--enable-source-maps`][], or with code coverage enabled by setting
-[`NODE_V8_COVERAGE=dir`][], or be enabled programmatically via
-[`module.setSourceMapsSupport()`][].
+[`--enable-source-maps`][`--enable-source-maps`], or with code coverage enabled by setting
+[`NODE_V8_COVERAGE=dir`][`NODE_V8_COVERAGE=dir`], or be enabled programmatically via
+[`module.setSourceMapsSupport()`][`module.setSourceMapsSupport()`].
 
 === "MJS"
 
@@ -2048,9 +2063,7 @@ traces is enabled.
 
 <!-- Anchors to make sure old links find a target -->
 
-<a id="module_module_findsourcemap_path_error"></a>
-
-### `module.findSourceMap(path)`
+### `module.findSourceMap(path)` {#module_module_findsourcemap_path_error}
 
 <!-- YAML
 added:
@@ -2110,6 +2123,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v20.5.0 | Добавьте поддержку `lineLengths`. |
@@ -2119,7 +2133,7 @@ changes:
 
 Creates a new `sourceMap` instance.
 
-`payload` is an object with keys matching the [Source map format][]:
+`payload` is an object with keys matching the [Source map format][Source map format]:
 
 * `file` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `version` [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2136,7 +2150,7 @@ generated code.
 
 * Возвращает: [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Getter for the payload used to construct the [`SourceMap`][] instance.
+Getter for the payload used to construct the [`SourceMap`][`SourceMap`] instance.
 
 #### `sourceMap.findEntry(lineOffset, columnOffset)`
 

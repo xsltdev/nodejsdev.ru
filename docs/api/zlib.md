@@ -32,7 +32,7 @@ Gzip, Deflate/Inflate, Brotli и Zstd.
     const zlib = require('node:zlib');
     ```
 
-Сжатие и распаковка опираются на [Streams API][] Node.js.
+Сжатие и распаковка опираются на [Streams API][Streams API] Node.js.
 
 Сжать или распаковать поток (например, файл) можно, пропустив исходный поток через `Transform` модуля `zlib` в целевой поток:
 
@@ -245,7 +245,7 @@ Gzip, Deflate/Inflate, Brotli и Zstd.
 `br` и `zstd` для `content-encoding` из
 [HTTP](https://tools.ietf.org/html/rfc7230#section-4.2).
 
-Заголовок [`Accept-Encoding`][] в запросе указывает, какие кодировки сжатия принимает клиент. Заголовок [`Content-Encoding`][]
+Заголовок [`Accept-Encoding`][`Accept-Encoding`] в запросе указывает, какие кодировки сжатия принимает клиент. Заголовок [`Content-Encoding`][`Content-Encoding`]
 — какие кодировки сжатия фактически применены к сообщению.
 
 Примеры ниже сильно упрощены. Кодирование через `zlib` может быть дорогим, результаты стоит кэшировать.
@@ -524,7 +524,7 @@ const options = { windowBits: 14, memLevel: 7 };
 
 ## Сброс (flush)
 
-Вызов [`.flush()`][] на потоке сжатия заставляет `zlib` отдать максимум выходных данных на текущий момент. Качество сжатия может ухудшиться, зато данные быстрее становятся доступны.
+Вызов [`.flush()`][`.flush()`] на потоке сжатия заставляет `zlib` отдать максимум выходных данных на текущий момент. Качество сжатия может ухудшиться, зато данные быстрее становятся доступны.
 
 В примере `flush()` используется для отправки клиенту частичного сжатого HTTP-ответа:
 
@@ -697,7 +697,7 @@ added:
 * `BROTLI_PARAM_DISABLE_LITERAL_CONTEXT_MODELING`
   * Boolean: снижает степень сжатия в пользу скорости распаковки.
 * `BROTLI_PARAM_LARGE_WINDOW`
-  * Boolean: режим «Large Window Brotli» (несовместим с форматом Brotli в [RFC 7932][]).
+  * Boolean: режим «Large Window Brotli» (несовместим с форматом Brotli в [RFC 7932][RFC 7932]).
 * `BROTLI_PARAM_NPOSTFIX`
   * От `0` до `BROTLI_MAX_NPOSTFIX`.
 * `BROTLI_PARAM_NDIRECT`
@@ -710,7 +710,7 @@ added:
 * `BROTLI_DECODER_PARAM_DISABLE_RING_BUFFER_REALLOCATION`
   * Boolean: влияет на схему внутренних выделений памяти.
 * `BROTLI_DECODER_PARAM_LARGE_WINDOW`
-  * Boolean: режим «Large Window Brotli» (несовместим с [RFC 7932][]).
+  * Boolean: режим «Large Window Brotli» (несовместим с [RFC 7932][RFC 7932]).
 
 ### Константы Zstd
 
@@ -806,6 +806,7 @@ changes:
 Добавлено в: v0.11.1
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v14.5.0, v12.19.0 | Опция `maxOutputLength` теперь поддерживается. |
@@ -830,9 +831,9 @@ changes:
   по умолчанию пустой словарь)
 * `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) (при `true` возвращается объект с `buffer` и `engine`.)
 * `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
-  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][]
+  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
 
-Подробнее см. документацию [`deflateInit2` and `inflateInit2`][].
+Подробнее см. документацию [`deflateInit2` and `inflateInit2`][`deflateInit2` and `inflateInit2`].
 
 ## Класс: `BrotliOptions`
 
@@ -849,6 +850,7 @@ changes:
 Добавлено в: v11.7.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v14.5.0, v12.19.0 | Опция `maxOutputLength` теперь поддерживается. |
@@ -862,7 +864,7 @@ changes:
 * `chunkSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
 * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Brotli][Brotli parameters].
 * `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
-  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][]
+  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
 * `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
 
 Например:
@@ -886,7 +888,7 @@ added:
  - v10.16.0
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Сжатие данных алгоритмом Brotli.
 
@@ -898,7 +900,7 @@ added:
  - v10.16.0
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Распаковка данных алгоритмом Brotli.
 
@@ -908,7 +910,7 @@ added:
 added: v0.5.8
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Сжатие через deflate.
 
@@ -918,7 +920,7 @@ added: v0.5.8
 added: v0.5.8
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Сжатие через deflate без добавления заголовка `zlib`.
 
@@ -942,13 +944,14 @@ changes:
 Добавлено в: v0.5.8
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.0.0 | Замыкание мусора в конце входного потока теперь приведет к событию ошибки. |
     | v5.9.0 | Теперь поддерживается несколько объединенных элементов файла gzip. |
     | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Распаковка потока gzip.
 
@@ -958,7 +961,7 @@ changes:
 added: v0.5.8
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Сжатие через gzip.
 
@@ -975,11 +978,12 @@ changes:
 Добавлено в: v0.5.8
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Распаковка потока deflate.
 
@@ -999,12 +1003,13 @@ changes:
 Добавлено в: v0.5.8
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v6.8.0 | Пользовательские словари теперь поддерживаются InflateRaw. |
     | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Распаковка «сырого» deflate.
 
@@ -1014,7 +1019,7 @@ changes:
 added: v0.5.8
 -->
 
-* Расширяет: [`ZlibBase`][]
+* Расширяет: [`ZlibBase`][`ZlibBase`]
 
 Распаковка потока, сжатого Gzip или Deflate, с автоматическим определением заголовка.
 
@@ -1033,15 +1038,16 @@ changes:
 Добавлено в: v0.5.8
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v11.7.0, v10.16.0 | Этот класс был переименован с Zlib на ZlibBase. |
 
-* Расширяет: [`stream.Transform`][]
+* Расширяет: [`stream.Transform`][`stream.Transform`]
 
 Не экспортируется модулем `node:zlib`. Описан как базовый класс для компрессоров/декомпрессоров.
 
-Наследует [`stream.Transform`][], поэтому объекты `node:zlib` можно использовать в цепочках `pipe` и подобных операциях с потоками.
+Наследует [`stream.Transform`][`stream.Transform`], поэтому объекты `node:zlib` можно использовать в цепочках `pipe` и подобных операциях с потоками.
 
 ### `zlib.bytesWritten`
 
@@ -1121,7 +1127,7 @@ added:
 * `chunkSize` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16 * 1024`
 * `params` [<Object>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект «ключ — значение» с индексированными [параметрами Zstd][Zstd parameters].
 * `maxOutputLength` [<integer>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
-  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][]
+  [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`][`buffer.kMaxLength`]
 * `info` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` возвращается объект с `buffer` и `engine`. **По умолчанию:** `false`
 * `dictionary` [<Buffer>](buffer.md#buffer) Необязательный словарь для
   повышения эффективности сжатия/распаковки данных с общими с словарём шаблонами.
@@ -1238,7 +1244,7 @@ added:
 
 * `options` {brotli options}
 
-Создаёт и возвращает новый объект [`BrotliCompress`][].
+Создаёт и возвращает новый объект [`BrotliCompress`][`BrotliCompress`].
 
 ## `zlib.createBrotliDecompress([options])`
 
@@ -1250,7 +1256,7 @@ added:
 
 * `options` {brotli options}
 
-Создаёт и возвращает новый объект [`BrotliDecompress`][].
+Создаёт и возвращает новый объект [`BrotliDecompress`][`BrotliDecompress`].
 
 ## `zlib.createDeflate([options])`
 
@@ -1260,7 +1266,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`Deflate`][].
+Создаёт и возвращает новый объект [`Deflate`][`Deflate`].
 
 ## `zlib.createDeflateRaw([options])`
 
@@ -1270,7 +1276,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`DeflateRaw`][].
+Создаёт и возвращает новый объект [`DeflateRaw`][`DeflateRaw`].
 
 Обновление zlib с 1.2.8 до 1.2.11 изменило поведение при `windowBits` = 8 для потоков raw deflate: zlib автоматически поднимала `windowBits` до 9, если изначально было 8. В новых zlib при этом выбрасывается исключение; Node.js восстановил прежнее поведение (8 → 9), так как при `windowBits = 9` получается поток, фактически использующий только 8-битное окно.
 
@@ -1282,7 +1288,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`Gunzip`][].
+Создаёт и возвращает новый объект [`Gunzip`][`Gunzip`].
 
 ## `zlib.createGzip([options])`
 
@@ -1292,7 +1298,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`Gzip`][].
+Создаёт и возвращает новый объект [`Gzip`][`Gzip`].
 См. [пример][zlib.createGzip example].
 
 ## `zlib.createInflate([options])`
@@ -1303,7 +1309,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`Inflate`][].
+Создаёт и возвращает новый объект [`Inflate`][`Inflate`].
 
 ## `zlib.createInflateRaw([options])`
 
@@ -1313,7 +1319,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`InflateRaw`][].
+Создаёт и возвращает новый объект [`InflateRaw`][`InflateRaw`].
 
 ## `zlib.createUnzip([options])`
 
@@ -1323,7 +1329,7 @@ added: v0.5.8
 
 * `options` {zlib options}
 
-Создаёт и возвращает новый объект [`Unzip`][].
+Создаёт и возвращает новый объект [`Unzip`][`Unzip`].
 
 ## `zlib.createZstdCompress([options])`
 
@@ -1339,7 +1345,7 @@ added:
 
 * `options` {zstd options}
 
-Создаёт и возвращает новый объект [`ZstdCompress`][].
+Создаёт и возвращает новый объект [`ZstdCompress`][`ZstdCompress`].
 
 ## `zlib.createZstdDecompress([options])`
 
@@ -1355,7 +1361,7 @@ added:
 
 * `options` {zstd options}
 
-Создаёт и возвращает новый объект [`ZstdDecompress`][].
+Создаёт и возвращает новый объект [`ZstdDecompress`][`ZstdDecompress`].
 
 ## Вспомогательные методы
 
@@ -1390,7 +1396,7 @@ added:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
 
-Сжимает фрагмент данных через [`BrotliCompress`][].
+Сжимает фрагмент данных через [`BrotliCompress`][`BrotliCompress`].
 
 ### `zlib.brotliDecompress(buffer[, options], callback)`
 
@@ -1415,7 +1421,7 @@ added:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {brotli options}
 
-Распаковывает фрагмент данных через [`BrotliDecompress`][].
+Распаковывает фрагмент данных через [`BrotliDecompress`][`BrotliDecompress`].
 
 ### `zlib.deflate(buffer[, options], callback)`
 
@@ -1436,6 +1442,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1465,6 +1472,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1474,7 +1482,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Сжимает фрагмент данных через [`Deflate`][].
+Сжимает фрагмент данных через [`Deflate`][`Deflate`].
 
 ### `zlib.deflateRaw(buffer[, options], callback)`
 
@@ -1492,6 +1500,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
@@ -1520,6 +1529,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1529,7 +1539,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Сжимает фрагмент данных через [`DeflateRaw`][].
+Сжимает фрагмент данных через [`DeflateRaw`][`DeflateRaw`].
 
 ### `zlib.gunzip(buffer[, options], callback)`
 
@@ -1550,6 +1560,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1579,6 +1590,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1588,7 +1600,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Распаковывает фрагмент данных через [`Gunzip`][].
+Распаковывает фрагмент данных через [`Gunzip`][`Gunzip`].
 
 ### `zlib.gzip(buffer[, options], callback)`
 
@@ -1609,6 +1621,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1638,6 +1651,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1647,7 +1661,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Сжимает фрагмент данных через [`Gzip`][].
+Сжимает фрагмент данных через [`Gzip`][`Gzip`].
 
 ### `zlib.inflate(buffer[, options], callback)`
 
@@ -1668,6 +1682,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1697,6 +1712,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1706,7 +1722,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Распаковывает фрагмент данных через [`Inflate`][].
+Распаковывает фрагмент данных через [`Inflate`][`Inflate`].
 
 ### `zlib.inflateRaw(buffer[, options], callback)`
 
@@ -1727,6 +1743,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1756,6 +1773,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1765,7 +1783,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Распаковывает фрагмент данных через [`InflateRaw`][].
+Распаковывает фрагмент данных через [`InflateRaw`][`InflateRaw`].
 
 ### `zlib.unzip(buffer[, options], callback)`
 
@@ -1786,6 +1804,7 @@ changes:
 Добавлено в: v0.6.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1815,6 +1834,7 @@ changes:
 Добавлено в: v0.11.12
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
@@ -1824,7 +1844,7 @@ changes:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zlib options}
 
-Распаковывает фрагмент данных через [`Unzip`][].
+Распаковывает фрагмент данных через [`Unzip`][`Unzip`].
 
 ### `zlib.zstdCompress(buffer[, options], callback)`
 
@@ -1857,7 +1877,7 @@ added:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
 
-Сжимает фрагмент данных через [`ZstdCompress`][].
+Сжимает фрагмент данных через [`ZstdCompress`][`ZstdCompress`].
 
 ### `zlib.zstdDecompress(buffer[, options], callback)`
 
@@ -1886,7 +1906,7 @@ added:
 * `buffer` [<Buffer>](buffer.md#buffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` {zstd options}
 
-Распаковывает фрагмент данных через [`ZstdDecompress`][].
+Распаковывает фрагмент данных через [`ZstdDecompress`][`ZstdDecompress`].
 
 [Brotli parameters]: #brotli-constants
 [Cyclic redundancy check]: https://en.wikipedia.org/wiki/Cyclic_redundancy_check

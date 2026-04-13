@@ -83,6 +83,7 @@ changes:
 -->
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | Алгоритмы TurboSHAKE и KangarooTwelve теперь поддерживаются. |
@@ -109,7 +110,7 @@ changes:
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Node.js реализует стандарт [Web Crypto API][].
+Node.js реализует стандарт [Web Crypto API][Web Crypto API].
 
 Доступ: `globalThis.crypto` или `require('node:crypto').webcrypto`.
 
@@ -176,12 +177,12 @@ Node.js поддерживает следующие возможности из 
 
 Методы:
 
-* [`subtle.decapsulateBits()`][]
-* [`subtle.decapsulateKey()`][]
-* [`subtle.encapsulateBits()`][]
-* [`subtle.encapsulateKey()`][]
-* [`subtle.getPublicKey()`][]
-* [`SubtleCrypto.supports()`][]
+* [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`]
+* [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
+* [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`]
+* [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`]
+* [`subtle.getPublicKey()`][`subtle.getPublicKey()`]
+* [`SubtleCrypto.supports()`][`SubtleCrypto.supports()`]
 
 ## Безопасные кривые в Web Cryptography API {#secure-curves-in-the-web-cryptography-api}
 
@@ -470,7 +471,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### Проверка поддержки алгоритмов в рантайме {#checking-for-runtime-algorithm-support}
 
-[`SubtleCrypto.supports()`][] позволяет определять возможности в Web Crypto API
+[`SubtleCrypto.supports()`][`SubtleCrypto.supports()`] позволяет определять возможности в Web Crypto API
 и выяснять, поддерживается ли заданный идентификатор алгоритма
 (вместе с его параметрами) для указанной операции.
 
@@ -547,7 +548,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### API управления ключами
 
-| Алгоритм                             | [`subtle.generateKey()`][] | [`subtle.exportKey()`][] | [`subtle.importKey()`][] | [`subtle.getPublicKey()`][] |
+| Алгоритм                             | [`subtle.generateKey()`][`subtle.generateKey()`] | [`subtle.exportKey()`][`subtle.exportKey()`] | [`subtle.importKey()`][`subtle.importKey()`] | [`subtle.getPublicKey()`][`subtle.getPublicKey()`] |
 | ------------------------------------ | -------------------------- | ------------------------ | ------------------------ | --------------------------- |
 | `'AES-CBC'`                          | ✔                          | ✔                        | ✔                        |                             |
 | `'AES-CTR'`                          | ✔                          | ✔                        | ✔                        |                             |
@@ -583,13 +584,13 @@ async function digest(data, algorithm = 'SHA-512') {
 
 **Условные обозначения столбцов:**
 
-* **Шифрование**: [`subtle.encrypt()`][] / [`subtle.decrypt()`][]
-* **Подписи и MAC**: [`subtle.sign()`][] / [`subtle.verify()`][]
-* **Вывод ключа или битов**: [`subtle.deriveBits()`][] / [`subtle.deriveKey()`][]
-* **Упаковка ключа**: [`subtle.wrapKey()`][] / [`subtle.unwrapKey()`][]
-* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][] / [`subtle.decapsulateBits()`][] /
-  [`subtle.encapsulateKey()`][] / [`subtle.decapsulateKey()`][]
-* **Хеш (digest)**: [`subtle.digest()`][]
+* **Шифрование**: [`subtle.encrypt()`][`subtle.encrypt()`] / [`subtle.decrypt()`][`subtle.decrypt()`]
+* **Подписи и MAC**: [`subtle.sign()`][`subtle.sign()`] / [`subtle.verify()`][`subtle.verify()`]
+* **Вывод ключа или битов**: [`subtle.deriveBits()`][`subtle.deriveBits()`] / [`subtle.deriveKey()`][`subtle.deriveKey()`]
+* **Упаковка ключа**: [`subtle.wrapKey()`][`subtle.wrapKey()`] / [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
+* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`] / [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`] /
+  [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`] / [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
+* **Хеш (digest)**: [`subtle.digest()`][`subtle.digest()`]
 
 | Алгоритм                             | Шифрование | Подписи и MAC | Вывод ключа или битов | Упаковка ключа | Инкапсуляция ключа | Digest |
 | ------------------------------------ | ---------- | ------------------ | ---------------------- | ------------ | ----------------- | ------ |
@@ -681,7 +682,7 @@ added: v16.7.0
 
 * Возвращает: [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Генерирует случайный UUID версии 4 по [RFC 4122][]. UUID создаётся с помощью
+Генерирует случайный UUID версии 4 по [RFC 4122][RFC 4122]. UUID создаётся с помощью
 криптографически стойкого генератора псевдослучайных чисел.
 
 ## Класс: `CryptoKey`
@@ -716,7 +717,7 @@ added: v15.0.0
 * Тип: [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, [CryptoKey](webcrypto.md#class-cryptokey) можно извлечь через
-[`subtle.exportKey()`][] или [`subtle.wrapKey()`][].
+[`subtle.exportKey()`][`subtle.exportKey()`] или [`subtle.wrapKey()`][`subtle.wrapKey()`].
 
 Только для чтения.
 
@@ -743,29 +744,29 @@ added: v15.0.0
 
 Возможные варианты использования:
 
-* `'encrypt'` — разрешает использовать ключ с [`subtle.encrypt()`][]
-* `'decrypt'` — разрешает использовать ключ с [`subtle.decrypt()`][]
-* `'sign'` — разрешает использовать ключ с [`subtle.sign()`][]
-* `'verify'` — разрешает использовать ключ с [`subtle.verify()`][]
-* `'deriveKey'` — разрешает использовать ключ с [`subtle.deriveKey()`][]
-* `'deriveBits'` — разрешает использовать ключ с [`subtle.deriveBits()`][]
-* `'encapsulateBits'` — разрешает использовать ключ с [`subtle.encapsulateBits()`][]
-* `'decapsulateBits'` — разрешает использовать ключ с [`subtle.decapsulateBits()`][]
-* `'encapsulateKey'` — разрешает использовать ключ с [`subtle.encapsulateKey()`][]
-* `'decapsulateKey'` — разрешает использовать ключ с [`subtle.decapsulateKey()`][]
-* `'wrapKey'` — разрешает использовать ключ с [`subtle.wrapKey()`][]
-* `'unwrapKey'` — разрешает использовать ключ с [`subtle.unwrapKey()`][]
+* `'encrypt'` — разрешает использовать ключ с [`subtle.encrypt()`][`subtle.encrypt()`]
+* `'decrypt'` — разрешает использовать ключ с [`subtle.decrypt()`][`subtle.decrypt()`]
+* `'sign'` — разрешает использовать ключ с [`subtle.sign()`][`subtle.sign()`]
+* `'verify'` — разрешает использовать ключ с [`subtle.verify()`][`subtle.verify()`]
+* `'deriveKey'` — разрешает использовать ключ с [`subtle.deriveKey()`][`subtle.deriveKey()`]
+* `'deriveBits'` — разрешает использовать ключ с [`subtle.deriveBits()`][`subtle.deriveBits()`]
+* `'encapsulateBits'` — разрешает использовать ключ с [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`]
+* `'decapsulateBits'` — разрешает использовать ключ с [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`]
+* `'encapsulateKey'` — разрешает использовать ключ с [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`]
+* `'decapsulateKey'` — разрешает использовать ключ с [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
+* `'wrapKey'` — разрешает использовать ключ с [`subtle.wrapKey()`][`subtle.wrapKey()`]
+* `'unwrapKey'` — разрешает использовать ключ с [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
 
 Допустимые варианты зависят от алгоритма ключа (см. `cryptokey.algorithm.name`).
 
 **Условные обозначения столбцов:**
 
-* **Шифрование**: [`subtle.encrypt()`][] / [`subtle.decrypt()`][]
-* **Подписи и MAC**: [`subtle.sign()`][] / [`subtle.verify()`][]
-* **Вывод ключа или битов**: [`subtle.deriveBits()`][] / [`subtle.deriveKey()`][]
-* **Упаковка ключа**: [`subtle.wrapKey()`][] / [`subtle.unwrapKey()`][]
-* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][] / [`subtle.decapsulateBits()`][] /
-  [`subtle.encapsulateKey()`][] / [`subtle.decapsulateKey()`][]
+* **Шифрование**: [`subtle.encrypt()`][`subtle.encrypt()`] / [`subtle.decrypt()`][`subtle.decrypt()`]
+* **Подписи и MAC**: [`subtle.sign()`][`subtle.sign()`] / [`subtle.verify()`][`subtle.verify()`]
+* **Вывод ключа или битов**: [`subtle.deriveBits()`][`subtle.deriveBits()`] / [`subtle.deriveKey()`][`subtle.deriveKey()`]
+* **Упаковка ключа**: [`subtle.wrapKey()`][`subtle.wrapKey()`] / [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
+* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`] / [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`] /
+  [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`] / [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
 
 | Поддерживаемый алгоритм ключа        | Шифрование | Подписи и MAC | Вывод ключа или битов | Упаковка ключа | Инкапсуляция ключа |
 | ------------------------------------ | ---------- | ------------------ | ---------------------- | ------------ | ----------------- |
@@ -851,7 +852,7 @@ added: v24.7.0
 и выяснять, поддерживается ли заданный идентификатор алгоритма
 (вместе с его параметрами) для указанной операции.
 
-См. раздел [Checking for runtime algorithm support][] с примером использования этого метода.
+См. раздел [Checking for runtime algorithm support][Checking for runtime algorithm support] с примером использования этого метода.
 
 ### `subtle.decapsulateBits(decapsulationAlgorithm, decapsulationKey, ciphertext)`
 
@@ -889,7 +890,7 @@ added: v24.7.0
 * `ciphertext` [<ArrayBuffer>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [<TypedArray>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [<DataView>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [<Buffer>](buffer.md#buffer)
 * `sharedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Получатель сообщения использует свой асимметричный закрытый ключ, чтобы расшифровать
@@ -918,6 +919,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
@@ -966,6 +968,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы Argon2 теперь поддерживаются. |
@@ -1020,6 +1023,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы Argon2 теперь поддерживаются. |
@@ -1031,7 +1035,7 @@ changes:
 * `baseKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
 * `derivedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 <!--lint enable maximum-line-length remark-lint-->
@@ -1039,9 +1043,9 @@ changes:
 По методу и параметрам из `algorithm` и ключевому материалу из `baseKey`
 метод пытается сгенерировать новый [CryptoKey](webcrypto.md#class-cryptokey) по методу и параметрам в `derivedKeyAlgorithm`.
 
-Вызов этого метода эквивалентен вызову [`subtle.deriveBits()`][] для
+Вызов этого метода эквивалентен вызову [`subtle.deriveBits()`][`subtle.deriveBits()`] для
 получения сырого ключевого материала с последующей передачей результата в
-[`subtle.importKey()`][] с аргументами `deriveKeyAlgorithm`, `extractable` и
+[`subtle.importKey()`][`subtle.importKey()`] с аргументами `deriveKeyAlgorithm`, `extractable` и
 `keyUsages`.
 
 В настоящее время поддерживаются следующие алгоритмы:
@@ -1075,6 +1079,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | Алгоритмы TurboSHAKE и KangarooTwelve теперь поддерживаются. |
@@ -1140,7 +1145,7 @@ added: v24.7.0
 * `encapsulationKey` [<CryptoKey>](webcrypto.md#class-cryptokey)
 * `sharedKeyAlgorithm` [<string>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [<Algorithm>](webcrypto.md) | [<HmacImportParams>](webcrypto.md) | [<AesDerivedKeyParams>](webcrypto.md) | [<KmacImportParams>](webcrypto.md)
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `usages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [EncapsulatedKey](webcrypto.md).
 
 Использует асимметричный открытый ключ получателя сообщения для шифрования временного симметричного ключа.
@@ -1168,6 +1173,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
@@ -1222,6 +1228,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
@@ -1244,7 +1251,7 @@ changes:
 промис выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим данные ключа.
 
 Если `format` — `'jwk'` и экспорт успешен, промис выполняется
-с объектом JavaScript, соответствующим спецификации [JSON Web Key][].
+с объектом JavaScript, соответствующим спецификации [JSON Web Key][JSON Web Key].
 
 | Поддерживаемый алгоритм ключа        | `'spki'` | `'pkcs8'` | `'jwk'` | `'raw'` | `'raw-secret'` | `'raw-public'` | `'raw-seed'` |
 | ------------------------------------ | -------- | --------- | ------- | ------- | -------------- | -------------- | ------------ |
@@ -1280,7 +1287,7 @@ added: v24.7.0
 > Стабильность: 1.1 – Активная разработка
 
 * `key` [<CryptoKey>](webcrypto.md#class-cryptokey) Закрытый ключ, из которого выводится соответствующий открытый ключ.
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Выводит открытый ключ из заданного закрытого ключа.
@@ -1307,6 +1314,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
@@ -1321,7 +1329,7 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey) | [CryptoKeyPair](webcrypto.md).
 
 По параметрам из `algorithm` метод
@@ -1392,6 +1400,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | Импорт ключей ML-DSA и ML-KEM в PKCS#8 без seed больше не поддерживается. |
@@ -1413,7 +1422,7 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 Метод пытается интерпретировать переданные `keyData`
@@ -1478,6 +1487,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
@@ -1528,6 +1538,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
@@ -1546,15 +1557,15 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 * `extractable` [<boolean>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][].
+* `keyUsages` [<string[]>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [<Promise>](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод пытается расшифровать упакованный
 ключ и создать экземпляр [CryptoKey](webcrypto.md#class-cryptokey). Это эквивалентно сначала вызову
-[`subtle.decrypt()`][] для зашифрованных данных ключа (аргументы `wrappedKey`,
+[`subtle.decrypt()`][`subtle.decrypt()`] для зашифрованных данных ключа (аргументы `wrappedKey`,
 `unwrapAlgo` и `unwrappingKey`), затем передаче результата в
-[`subtle.importKey()`][] с аргументами `unwrappedKeyAlgo`,
+[`subtle.importKey()`][`subtle.importKey()`] с аргументами `unwrappedKeyAlgo`,
 `extractable` и `keyUsages`. При успехе промис выполняется с объектом [CryptoKey](webcrypto.md#class-cryptokey).
 
 В настоящее время поддерживаются следующие алгоритмы упаковки:
@@ -1615,6 +1626,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
@@ -1666,6 +1678,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
@@ -1685,9 +1698,9 @@ changes:
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод экспортирует ключевой материал в
 формат `format`, затем шифрует его методом и параметрами из `wrapAlgo`
-и ключом `wrappingKey`. Это эквивалентно вызову [`subtle.exportKey()`][] с
+и ключом `wrappingKey`. Это эквивалентно вызову [`subtle.exportKey()`][`subtle.exportKey()`] с
 `format` и `key`, затем передаче результата в
-[`subtle.encrypt()`][] с `wrappingKey` и `wrapAlgo`. При
+[`subtle.encrypt()`][`subtle.encrypt()`] с `wrappingKey` и `wrapAlgo`. При
 успехе промис выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer),
 содержащим зашифрованные данные ключа.
 
@@ -2013,6 +2026,7 @@ changes:
 Добавлено в: v24.7.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.8.0 | Поддерживается непустой контекст. |
@@ -2035,6 +2049,7 @@ changes:
 Добавлено в: v24.7.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | `cShakeParams.length` переименовано в `cShakeParams.outputLength`. |
@@ -2125,6 +2140,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2291,6 +2307,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2360,6 +2377,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2448,6 +2466,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2620,6 +2639,7 @@ changes:
 Добавлено в: v24.8.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v25.9.0 | `kmacParams.length` переименовано в `kmacParams.outputLength`. |
@@ -2671,6 +2691,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2737,6 +2758,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2826,6 +2848,7 @@ changes:
 Добавлено в: v15.0.0
 
 ??? note "История"
+
     | Версия | Изменения |
     | --- | --- |
     | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
@@ -2959,9 +2982,9 @@ added: v25.9.0
 
 * Тип: [<number>](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
-[^secure-curves]: См. [Secure Curves in the Web Cryptography API][]
+[^secure-curves]: См. [Secure Curves in the Web Cryptography API][Secure Curves in the Web Cryptography API]
 
-[^modern-algos]: См. [Modern Algorithms in the Web Cryptography API][]
+[^modern-algos]: См. [Modern Algorithms in the Web Cryptography API][Modern Algorithms in the Web Cryptography API]
 
 [^openssl30]: Требуется OpenSSL >= 3.0
 
