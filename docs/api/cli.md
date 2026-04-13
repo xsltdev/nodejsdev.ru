@@ -682,7 +682,7 @@ added:
  - v12.17.0
 -->
 
-Disable the `Object.prototype.__proto__` property. If `mode` is `delete`, the property is removed entirely. If `mode` is `throw`, accesses to the property throw an exception with the code `ERR_PROTO_ACCESS`.
+Отключает свойство `Object.prototype.__proto__`. Если `mode` равно `delete`, свойство удаляется полностью. Если `mode` равно `throw`, обращения к свойству вызывают исключение с кодом `ERR_PROTO_ACCESS`.
 
 ### `--disable-sigusr1`
 
@@ -704,7 +704,7 @@ changes:
     | --- | --- |
     | v24.8.0, v22.20.0 | Опция больше не является экспериментальной. |
 
-Disable the ability of starting a debugging session by sending a `SIGUSR1` signal to the process.
+Отключает возможность запуска отладочного сеанса путём отправки сигнала `SIGUSR1` процессу.
 
 ### `--disable-warning=code-or-type`
 
@@ -716,7 +716,7 @@ added:
 
 > Stability: 1.1 - Active development
 
-Disable specific process warnings by `code` or `type`.
+Отключает конкретные предупреждения процесса по `code` или `type`.
 
 Предупреждения, выдаваемые через [`process.emitWarning()`](process.md#processemitwarningwarning-options), могут содержать `code` и `type`. Этот параметр подавляет предупреждения с совпадающим `code` или `type`.
 
@@ -792,7 +792,7 @@ Node.js enables V8's trap-handler-based WebAssembly bound checks on 64-bit platf
 added: v9.8.0
 -->
 
-Make built-in language features like `eval` and `new Function` that generate code from strings throw an exception instead. This does not affect the Node.js `node:vm` module.
+Заставляет встроенные языковые конструкции, такие как `eval` и `new Function`, которые генерируют код из строк, выбрасывать исключение вместо этого. Это не влияет на модуль Node.js `node:vm`.
 
 ### `--dns-result-order=order`
 
@@ -832,7 +832,7 @@ changes:
 added: v6.0.0
 -->
 
-Enable FIPS-compliant crypto at startup. (Requires Node.js to be built against FIPS-compatible OpenSSL.)
+Включает совместимую с FIPS криптографию при запуске. (Требует сборки Node.js с поддержкой FIPS-совместимого OpenSSL.)
 
 ### `--enable-source-maps`
 
@@ -854,11 +854,11 @@ changes:
     | --- | --- |
     | v15.11.0, v14.18.0 | Этот API больше не является экспериментальным. |
 
-Enable [Source Map](https://tc39.es/ecma426/) support for stack traces.
+Включает поддержку [Source Map](https://tc39.es/ecma426/) для трассировок стека.
 
-When using a transpiler, such as TypeScript, stack traces thrown by an application reference the transpiled code, not the original source position. `--enable-source-maps` enables caching of Source Maps and makes a best effort to report stack traces relative to the original source file.
+При использовании транспилятора, такого как TypeScript, трассировки стека, выбрасываемые приложением, ссылаются на транспилированный код, а не на исходную позицию. `--enable-source-maps` включает кэширование Source Maps и делает всё возможное, чтобы сообщать трассировки стека относительно исходного файла.
 
-Overriding `Error.prepareStackTrace` may prevent `--enable-source-maps` from modifying the stack trace. Call and return the results of the original `Error.prepareStackTrace` in the overriding function to modify the stack trace with source maps.
+Переопределение `Error.prepareStackTrace` может предотвратить модификацию трассировки стека `--enable-source-maps`. Вызывайте и возвращайте результаты оригинального `Error.prepareStackTrace` в переопределяющей функции, чтобы модифицировать трассировку стека с помощью source maps.
 
 ```js
 const originalPrepareStackTrace = Error.prepareStackTrace;
@@ -869,7 +869,7 @@ Error.prepareStackTrace = (error, trace) => {
 };
 ```
 
-Note, enabling source maps can introduce latency to your application when `Error.stack` is accessed. If you access `Error.stack` frequently in your application, take into account the performance implications of `--enable-source-maps`.
+Примечание: Включение source maps может ввести задержку в ваше приложение при доступе к `Error.stack`. Если вы часто обращаетесь к `Error.stack` в вашем приложении, учитывайте влияние на производительность `--enable-source-maps`.
 
 ### `--entry-url`
 
@@ -881,11 +881,11 @@ added:
 
 > Стабильность: 1 - Экспериментальная
 
-When present, Node.js will interpret the entry point as a URL, rather than a path.
+Когда присутствует, Node.js будет интерпретировать точку входа как URL, а не как путь.
 
-Follows [ECMAScript module](esm.md#modules-ecmascript-modules) resolution rules.
+Следует правилам разрешения [ECMAScript модулей](esm.md#modules-ecmascript-modules).
 
-Any query parameter or hash in the URL will be accessible via [`import.meta.url`](esm.md#importmetaurl).
+Любой параметр запроса или хэш в URL будут доступны через [`import.meta.url`](esm.md#importmetaurl).
 
 ```bash
 node --entry-url 'file:///path/to/file.js?queryparams=work#and-hashes-too'
@@ -913,7 +913,7 @@ changes:
     | --- | --- |
     | v24.10.0, v22.21.0 | Флаг --env-file-if-exists больше не является экспериментальным. |
 
-Behavior is the same as [`--env-file`](#--env-filefile), but an error is not thrown if the file does not exist.
+Поведение такое же, как у [`--env-file`](#--env-filefile), но ошибка не выбрасывается, если файл не существует.
 
 ### `--env-file=file`
 
@@ -941,11 +941,11 @@ changes:
     | v24.10.0, v22.21.0 | Флаг `--env-file` больше не является экспериментальным. |
     | v21.7.0, v20.12.0 | Добавьте поддержку многострочных значений. |
 
-Loads environment variables from a file relative to the current directory, making them available to applications on `process.env`. The [environment variables which configure Node.js][environment_variables], such as `NODE_OPTIONS`, are parsed and applied. If the same variable is defined in the environment and in the file, the value from the environment takes precedence.
+Загружает переменные окружения из файла относительно текущего каталога, делая их доступными для приложений в `process.env`. [Переменные окружения, которые настраивают Node.js][environment_variables], такие как `NODE_OPTIONS`, анализируются и применяются. Если одна и та же переменная определена в окружении и в файле, приоритет имеет значение из окружения.
 
-You can pass multiple `--env-file` arguments. Subsequent files override pre-existing variables defined in previous files.
+Можно передать несколько аргументов `--env-file`. Последующие файлы переопределяют существующие переменные, определённые в предыдущих файлах.
 
-An error is thrown if the file does not exist.
+Ошибка выбрасывается, если файл не существует.
 
 ```bash
 node --env-file=.env --env-file=.development.env index.js
@@ -1008,13 +1008,13 @@ changes:
     | v22.6.0 | Eval теперь поддерживает экспериментальное удаление типов. |
     | v5.11.0 | Встроенные библиотеки теперь доступны как предопределенные переменные. |
 
-Evaluate the following argument as JavaScript. The modules which are predefined in the REPL can also be used in `script`.
+Оценивает следующий аргумент как JavaScript. Модули, которые предопределены в REPL, также могут использоваться в `script`.
 
-If `script` starts with `-`, pass it using `=` (for example, `node --print --eval=-42`) so it is parsed as the value of `--eval`.
+Если `script` начинается с `-`, передайте его с помощью `=` (например, `node --print --eval=-42`), чтобы он был проанализирован как значение `--eval`.
 
-On Windows, using `cmd.exe` a single quote will not work correctly because it only recognizes double `"` for quoting. In Powershell or Git bash, both `'` and `"` are usable.
+В Windows, используя `cmd.exe`, одинарная кавычка не будет работать правильно, потому что она распознаёт только двойные `"` для цитирования. В Powershell или Git bash, оба `'` и `"` пригодны для использования.
 
-It is possible to run code containing inline types unless the [`--no-strip-types`](#--no-strip-types) flag is provided.
+Возможно запускать код, содержащий встроенные типы, если не предоставлен флаг [`--no-strip-types`](#--no-strip-types).
 
 ### `--experimental-addon-modules`
 
@@ -1026,7 +1026,7 @@ added:
 
 > Stability: 1.0 - Early development
 
-Enable experimental import support for `.node` addons.
+Включает экспериментальную поддержку импорта для аддонов `.node`.
 
 ### `--experimental-config-file=config`
 
@@ -1038,7 +1038,7 @@ added:
 
 > Stability: 1.0 - Early development
 
-If present, Node.js will look for a configuration file at the specified path. Node.js will read the configuration file and apply the settings. The configuration file should be a JSON file with the following structure. `vX.Y.Z` in the `$schema` must be replaced with the version of Node.js you are using.
+Если присутствует, Node.js будет искать файл конфигурации по указанному пути. Node.js прочитает файл конфигурации и применит настройки. Файл конфигурации должен быть JSON-файлом со следующей структурой. `vX.Y.Z` в `$schema` должен быть заменён на версию Node.js, которую вы используете.
 
 ```json
 {
@@ -1081,7 +1081,7 @@ If present, Node.js will look for a configuration file at the specified path. No
 node --test --test-isolation=process
 ```
 
-To disable the automatic flag while still using namespace options, you can explicitly set the flag to `false` within the namespace:
+Чтобы отключить автоматический флаг, продолжая использовать параметры пространства имён, вы можете явно установить флаг в `false` в пространстве имён:
 
 ```json
 {
@@ -1092,9 +1092,9 @@ To disable the automatic flag while still using namespace options, you can expli
 }
 ```
 
-No-op flags are not supported. Not all V8 flags are currently supported.
+No-op флаги не поддерживаются. Не все флаги V8 в настоящее время поддерживаются.
 
-It is possible to use the [official JSON schema](../node-config-schema.json) to validate the configuration file, which may vary depending on the Node.js version. Each key in the configuration file corresponds to a flag that can be passed as a command-line argument. The value of the key is the value that would be passed to the flag.
+Возможно использовать [официальную JSON-схему](../node-config-schema.json) для валидации файла конфигурации, которая может варьироваться в зависимости от версии Node.js. Каждый ключ в файле конфигурации соответствует флагу, который можно передать как аргумент командной строки. Значение ключа — это значение, которое будет передано флагу.
 
 Например, приведённый выше файл конфигурации эквивалентен следующим аргументам командной строки:
 
@@ -1110,7 +1110,7 @@ node --import amaro/strip --watch-path=src --watch-preserve-output --test-isolat
 
 Значения из файла конфигурации не переопределяют значения из переменных окружения и параметров командной строки, но переопределяют значения из файла `NODE_OPTIONS`, разобранного флагом `--env-file`.
 
-Keys cannot be duplicated within the same or different namespaces.
+Ключи не могут дублироваться в том же или разных пространствах имён.
 
 Парсер конфигурации выдаст ошибку, если файл конфигурации содержит неизвестные ключи или ключи, которые нельзя использовать в пространстве имён.
 
@@ -1126,7 +1126,7 @@ added:
 
 > Stability: 1.0 - Early development
 
-If the `--experimental-default-config-file` flag is present, Node.js will look for a `node.config.json` file in the current working directory and load it as a as configuration file.
+Если флаг `--experimental-default-config-file` присутствует, Node.js будет искать файл `node.config.json` в текущем рабочем каталоге и загрузит его как файл конфигурации.
 
 ### `--experimental-eventsource`
 
@@ -1136,7 +1136,7 @@ added:
   - v20.18.0
 -->
 
-Enable exposition of [EventSource Web API](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) on the global scope.
+Включает экспозицию [EventSource Web API](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) в глобальную область видимости.
 
 ### `--experimental-import-meta-resolve`
 
@@ -1160,9 +1160,9 @@ changes:
     | --- | --- |
     | v20.6.0, v18.19.0 | синхронный import.meta.resolve доступен по умолчанию, с сохраненным флагом для включения экспериментального второго аргумента, как это поддерживалось ранее. |
 
-Enable experimental `import.meta.resolve()` parent URL support, which allows passing a second `parentURL` argument for contextual resolution.
+Включает экспериментальную поддержку `import.meta.resolve()` для родительского URL, которая позволяет передавать второй аргумент `parentURL` для контекстного разрешения.
 
-Previously gated the entire `import.meta.resolve` feature.
+Ранее блокировала всю функцию `import.meta.resolve`.
 
 ### `--experimental-inspector-network-resource`
 
@@ -1174,7 +1174,7 @@ added:
 
 > Stability: 1.1 - Active Development
 
-Enable experimental support for inspector network resources.
+Включает экспериментальную поддержку сетевых ресурсов инспектора.
 
 ### `--experimental-loader=module`
 
@@ -1203,7 +1203,7 @@ changes:
     | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
     | v12.11.1 | Этот флаг был переименован с `--loader` на `--experimental-loader`. |
 
-> This flag is discouraged and may be removed in a future version of Node.js. Вместо этого используйте [`--import` с `register()`](module.md#registration-of-asynchronous-customization-hooks).
+> Этот флаг не рекомендуется и может быть удалён в будущей версии Node.js. Вместо этого используйте [`--import` с `register()`](module.md#registration-of-asynchronous-customization-hooks).
 
 Указывает `module`, содержащий экспортируемые [асинхронные хуки настройки модулей](module.md#asynchronous-customization-hooks). `module` может быть любой строкой, допустимой в качестве [`import`-спецификатора](esm.md#import-specifiers).
 
@@ -1219,7 +1219,7 @@ added:
 
 > Стабильность: 1 - Экспериментальная
 
-Enable experimental support for the network inspection with Chrome DevTools.
+Включает экспериментальную поддержку сетевой инспекции с Chrome DevTools.
 
 ### `--experimental-print-required-tla`
 
@@ -1229,7 +1229,7 @@ added:
   - v20.17.0
 -->
 
-If the ES module being `require()`'d contains top-level `await`, this flag allows Node.js to evaluate the module, try to locate the top-level awaits, and print their location to help users find them.
+Если ES-модуль, который `require()`'d, содержит `await` верхнего уровня, этот флаг позволяет Node.js оценить модуль, попытаться найти верхние await, и вывести их местоположение, чтобы помочь пользователям найти их.
 
 ### `--experimental-quic`
 
@@ -1239,7 +1239,7 @@ added: v25.0.0
 
 > Stability: 1.1 - Active development
 
-Enable experimental support for the QUIC protocol.
+Включает экспериментальную поддержку протокола QUIC.
 
 ### `--experimental-sea-config`
 
@@ -1249,7 +1249,7 @@ added: v20.0.0
 
 > Stability: 1 - Experimental
 
-Use this flag to generate a blob that can be injected into the Node.js binary to produce a [single executable application](single-executable-applications.md). See the documentation about [this configuration](single-executable-applications.md#1-generating-single-executable-preparation-blobs) for details.
+Используйте этот флаг для генерации blob, который можно внедрить в бинарный файл Node.js для создания [одного исполняемого приложения](single-executable-applications.md). См. документацию о [этой конфигурации](single-executable-applications.md#1-generating-single-executable-preparation-blobs) для деталей.
 
 ### `--experimental-shadow-realm`
 
@@ -1259,7 +1259,7 @@ added:
   - v18.13.0
 -->
 
-Use this flag to enable [ShadowRealm](https://github.com/tc39/proposal-shadowrealm) support.
+Используйте этот флаг для включения поддержки [ShadowRealm](https://github.com/tc39/proposal-shadowrealm).
 
 ### `--experimental-storage-inspection`
 
@@ -1270,7 +1270,7 @@ added:
 
 > Stability: 1.1 - Active Development
 
-Enable experimental support for storage inspection
+Включает экспериментальную поддержку инспекции хранилища
 
 ### `--experimental-stream-iter`
 
@@ -1280,7 +1280,7 @@ added: v25.9.0
 
 > Stability: 1 - Experimental
 
-Enable the experimental [`node:stream/iter`](stream_iter.md) module.
+Включает экспериментальный модуль [`node:stream/iter`](stream_iter.md).
 
 ### `--experimental-test-coverage`
 
@@ -1338,7 +1338,7 @@ changes:
 added: v9.6.0
 -->
 
-Enable experimental ES Module support in the `node:vm` module.
+Включает экспериментальную поддержку ES-модулей в модуле `node:vm`.
 
 ### `--experimental-wasi-unstable-preview1`
 
@@ -1366,7 +1366,7 @@ changes:
     | v20.0.0, v18.17.0 | Этот параметр больше не требуется, поскольку WASI включен по умолчанию, но его все равно можно передать. |
     | v13.6.0 | изменен с `--experimental-wasi-unstable-preview0` на `--experimental-wasi-unstable-preview1`. |
 
-Enable experimental WebAssembly System Interface (WASI) support.
+Включает экспериментальную поддержку WebAssembly System Interface (WASI).
 
 ### `--experimental-worker-inspection`
 
@@ -1378,7 +1378,7 @@ added:
 
 > Stability: 1.1 - Active Development
 
-Enable experimental support for the worker inspection with Chrome DevTools.
+Включает экспериментальную поддержку инспекции worker с Chrome DevTools.
 
 ### `--expose-gc`
 
@@ -1404,7 +1404,7 @@ if (globalThis.gc) {
 added: v12.12.0
 -->
 
-Disable loading native addons that are not [context-aware](addons.md#context-aware-addons).
+Отключает загрузку нативных аддонов, которые не являются [context-aware](addons.md#context-aware-addons).
 
 ### `--force-fips`
 
@@ -1422,9 +1422,9 @@ added:
   - v16.17.0
 -->
 
-Enforces `uncaughtException` event on Node-API asynchronous callbacks.
+Принуждает событие `uncaughtException` для асинхронных обратных вызовов Node-API.
 
-To prevent from an existing add-on from crashing the process, this flag is not enabled by default. In the future, this flag will be enabled by default to enforce the correct behavior.
+Чтобы предотвратить сбой процесса из-за существующего аддона, этот флаг по умолчанию не включён. В будущем этот флаг будет включён по умолчанию для принуждения правильного поведения.
 
 ### `--frozen-intrinsics`
 
@@ -1434,11 +1434,11 @@ added: v11.12.0
 
 > Stability: 1 - Experimental
 
-Enable experimental frozen intrinsics like `Array` and `Object`.
+Включает экспериментальные замороженные intrinsics, такие как `Array` и `Object`.
 
-Only the root context is supported. There is no guarantee that `globalThis.Array` is indeed the default intrinsic reference. Code may break under this flag.
+Поддерживается только корневой контекст. Нет гарантии, что `globalThis.Array` действительно является ссылкой на intrinsic по умолчанию. Код может сломаться под этим флагом.
 
-To allow polyfills to be added, [`--require`](#-r---require-module) and [`--import`](#--importmodule) both run before freezing intrinsics.
+Чтобы позволить добавлять полифиллы, [`--require`](#-r---require-module) и [`--import`](#--importmodule) оба запускаются до заморозки intrinsics.
 
 ### `--heap-prof`
 
