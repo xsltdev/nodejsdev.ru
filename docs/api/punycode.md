@@ -23,7 +23,7 @@ deprecated: v7.0.0
 В одной из будущих основных версий Node.js этот модуль будет удалён. Пользователям,
 которые сейчас зависят от модуля `punycode`, следует перейти на пользовательский
 модуль [Punycode.js][Punycode.js]. Для кодирования URL на основе Punycode см.
-[`url.domainToASCII`][`url.domainToASCII`] или, в более общем случае, [WHATWG URL API][WHATWG URL API].
+[`url.domainToASCII`](url.md#urldomaintoasciidomain) или, в более общем случае, [WHATWG URL API][WHATWG URL API].
 
 Модуль `punycode` — это встроенная версия модуля [Punycode.js][Punycode.js]. Доступ к нему:
 

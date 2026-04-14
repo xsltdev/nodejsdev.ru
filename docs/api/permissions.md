@@ -46,9 +46,9 @@ changes:
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
 Модель разрешений Node.js — механизм ограничения доступа к отдельным ресурсам во время выполнения.
-АПИ доступно за флагом [`--permission`][`--permission`]: при его включении доступ ко всем перечисленным разрешениям ограничивается.
+АПИ доступно за флагом [`--permission`](cli.md#--permission): при его включении доступ ко всем перечисленным разрешениям ограничивается.
 
-Список доступных разрешений описан в документации флага [`--permission`][`--permission`].
+Список доступных разрешений описан в документации флага [`--permission`](cli.md#--permission).
 
 При запуске Node.js с `--permission`
 доступ к файловой системе через модуль `fs`, к сети, создание дочерних процессов, использование `node:worker_threads`, нативных аддонов, WASI, а также включение инспектора выполнения будут ограничены (слушатель SIGUSR1 создаваться не будет).
@@ -64,20 +64,20 @@ Error: Access to this API has been restricted
 }
 ```
 
-Разрешить создание дочернего процесса и потоков worker можно с помощью [`--allow-child-process`][`--allow-child-process`] и [`--allow-worker`][`--allow-worker`] соответственно.
+Разрешить создание дочернего процесса и потоков worker можно с помощью [`--allow-child-process`](cli.md#--allow-child-process) и [`--allow-worker`](cli.md#--allow-worker) соответственно.
 
-Чтобы разрешить сетевой доступ, используйте [`--allow-net`][`--allow-net`]; для нативных аддонов при включённой модели разрешений — флаг [`--allow-addons`][`--allow-addons`].
-Для WASI — флаг [`--allow-wasi`][`--allow-wasi`].
+Чтобы разрешить сетевой доступ, используйте [`--allow-net`](cli.md#--allow-net); для нативных аддонов при включённой модели разрешений — флаг [`--allow-addons`](cli.md#--allow-addons).
+Для WASI — флаг [`--allow-wasi`](cli.md#--allow-wasi).
 
 #### API времени выполнения
 
-При включении модели разрешений через флаг [`--permission`][`--permission`]
+При включении модели разрешений через флаг [`--permission`](cli.md#--permission)
 к объекту `process` добавляется свойство `permission`.
 Оно содержит одну функцию:
 
 ##### `permission.has(scope[, reference])`
 
-Вызов для проверки разрешений во время выполнения ([`permission.has()`][`permission.has()`])
+Вызов для проверки разрешений во время выполнения ([`permission.has()`](process.md#processpermissionhasscope-reference))
 
 ```js
 process.permission.has('fs.write'); // true
@@ -93,8 +93,8 @@ process.permission.has('fs.read', '/home/rafaelgss/protected-folder'); // false
 Она не гарантирует, что пользователь не сможет обратиться к файловой системе другими путями,
 например через модуль `node:sqlite`.
 
-Чтобы разрешить доступ к файловой системе, используйте флаги [`--allow-fs-read`][`--allow-fs-read`] и
-[`--allow-fs-write`][`--allow-fs-write`]:
+Чтобы разрешить доступ к файловой системе, используйте флаги [`--allow-fs-read`](cli.md#--allow-fs-read) и
+[`--allow-fs-write`](cli.md#--allow-fs-write):
 
 ```console
 $ node --permission --allow-fs-read=* --allow-fs-write=* index.js
@@ -149,7 +149,7 @@ $ node -r /path/to/custom-require.js --permission index.js.
 
 Помимо передачи флагов разрешений в командной строке, их можно задать
 в файле конфигурации Node.js при использовании экспериментального
-флага [`--experimental-config-file`][`--experimental-config-file`]. Опции разрешений должны находиться в объекте верхнего уровня `permission`.
+флага [`--experimental-config-file`](cli.md#--experimental-config-fileconfig). Опции разрешений должны находиться в объекте верхнего уровня `permission`.
 
 Пример `node.config.json`:
 
@@ -175,7 +175,7 @@ $ node --experimental-default-config-file app.js
 
 #### Использование модели разрешений с `npx`
 
-Если вы запускаете скрипт Node.js через [`npx`][`npx`], модель разрешений можно включить,
+Если вы запускаете скрипт Node.js через [`npx`](https://docs.npmjs.com/cli/commands/npx), модель разрешений можно включить,
 передав флаг `--node-options`. Например:
 
 ```bash
@@ -183,7 +183,7 @@ npx --node-options="--permission" package-name
 ```
 
 Так задаётся переменная окружения `NODE_OPTIONS` для всех процессов Node.js,
-запущенных [`npx`][`npx`], без влияния на сам процесс `npx`.
+запущенных [`npx`](https://docs.npmjs.com/cli/commands/npx), без влияния на сам процесс `npx`.
 
 **Ошибка FileSystemRead при использовании `npx`**
 

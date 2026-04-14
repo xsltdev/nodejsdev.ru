@@ -50,7 +50,7 @@ path.basename('C:\\temp\\myfile.html');
 ```
 
 Чтобы получать согласованные результаты при работе с путями Windows на любой
-операционной системе, используйте [`path.win32`][`path.win32`]:
+операционной системе, используйте [`path.win32`](#pathwin32):
 
 На POSIX и Windows:
 
@@ -60,7 +60,7 @@ path.win32.basename('C:\\temp\\myfile.html');
 ```
 
 Чтобы получать согласованные результаты при работе с путями POSIX на любой
-операционной системе, используйте [`path.posix`][`path.posix`]:
+операционной системе, используйте [`path.posix`](#pathposix):
 
 На POSIX и Windows:
 
@@ -97,7 +97,7 @@ changes:
 * `suffix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный суффикс, который нужно убрать
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Завершающие [разделители каталогов][`path.sep`]
+Метод `path.basename()` возвращает последнюю часть `path`, аналогично команде Unix `basename`. Завершающие [разделители каталогов](#pathsep)
 игнорируются.
 
 ```js
@@ -119,7 +119,7 @@ path.win32.basename('C:\\foo.HTML', '.html');
 // Возвращает: 'foo.HTML'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка или если указан `suffix`, который не является строкой.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка или если указан `suffix`, который не является строкой.
 
 ## `path.delimiter`
 
@@ -176,14 +176,14 @@ changes:
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `path.dirname()` возвращает имя каталога для `path`, аналогично команде Unix `dirname`. Завершающие разделители каталогов игнорируются, см.
-[`path.sep`][`path.sep`].
+[`path.sep`](#pathsep).
 
 ```js
 path.dirname('/foo/bar/baz/asdf/quux');
 // Возвращает: '/foo/bar/baz/asdf'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка.
 
 ## `path.extname(path)`
 
@@ -229,7 +229,7 @@ path.extname('.index.md');
 // Возвращает: '.md'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка.
 
 ## `path.format(pathObject)`
 
@@ -257,7 +257,7 @@ changes:
   * `ext` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Метод `path.format()` собирает строку пути из объекта. Обратная операция к [`path.parse()`][`path.parse()`].
+Метод `path.format()` собирает строку пути из объекта. Обратная операция к [`path.parse()`](#pathparsepath).
 
 При заполнении `pathObject` помните, что в некоторых сочетаниях одно свойство важнее другого:
 
@@ -345,7 +345,7 @@ path.matchesGlob('/foo/bar', '/foo/*'); // true
 path.matchesGlob('/foo/bar*', 'foo/bird'); // false
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` или `pattern` не строки.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` или `pattern` не строки.
 
 ## `path.isAbsolute(path)`
 
@@ -382,7 +382,7 @@ path.isAbsolute('bar/baz');     // false
 path.isAbsolute('.');           // false
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка.
 
 ## `path.join([...paths])`
 
@@ -405,7 +405,7 @@ path.join('foo', {}, 'bar');
 // Throws 'TypeError: Path must be a string. Received {}'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если какой-либо сегмент не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если какой-либо сегмент не строка.
 
 ## `path.normalize(path)`
 
@@ -445,7 +445,7 @@ path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
 // Возвращает: 'C:\\temp\\foo\\bar'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка.
 
 ## `path.parse(path)`
 
@@ -456,7 +456,7 @@ added: v0.11.15
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Метод `path.parse()` возвращает объект, свойства которого соответствуют частям `path`. Завершающие разделители каталогов игнорируются, см. [`path.sep`][`path.sep`].
+Метод `path.parse()` возвращает объект, свойства которого соответствуют частям `path`. Завершающие разделители каталогов игнорируются, см. [`path.sep`](#pathsep).
 
 У объекта будут свойства:
 
@@ -510,7 +510,7 @@ path.parse('C:\\path\\dir\\file.txt');
 (Пробелы в строке "" только для выравнивания, их следует игнорировать.)
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `path` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `path` не строка.
 
 ## `path.posix`
 
@@ -577,7 +577,7 @@ path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 // Возвращает: '..\\..\\impl\\bbb'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если `from` или `to` не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если `from` или `to` не строка.
 
 ## `path.resolve([...paths])`
 
@@ -615,7 +615,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 // вернёт '/home/myself/node/wwwroot/static_files/gif/image.gif'
 ```
 
-Выбрасывается [`TypeError`][`TypeError`], если какой-либо аргумент не строка.
+Выбрасывается [`TypeError`](errors.md#class-typeerror), если какой-либо аргумент не строка.
 
 ## `path.sep`
 

@@ -16,7 +16,7 @@ added: v0.3.7
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Общие вспомогательные методы при работе с экземплярами
-`Module` и переменной [`module`][`module`], часто встречающейся в модулях [CommonJS][CommonJS]. Доступ
+`Module` и переменной [`module`](#the-module-object), часто встречающейся в модулях [CommonJS][CommonJS]. Доступ
 через `import 'node:module'` или `require('node:module')`.
 
 ### `module.builtinModules`
@@ -105,7 +105,7 @@ added:
 > поле `type` в `package.json` — _наименее_ надёжный ориентир (расширение файла важнее, а хук загрузчика — ещё важнее).
 
 > **Ограничение**: сейчас используется только встроенный резолвер по умолчанию; если зарегистрированы
-> [хуки настройки `resolve`][resolve hook], они не влияют на разрешение.
+> [хуки настройки `resolve`](#synchronous-resolvespecifier-context-nextresolve), они не влияют на разрешение.
 > Это может измениться в будущем.
 
 ```text
@@ -224,7 +224,7 @@ changes:
     | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
     | v20.8.0, v18.19.0 | Добавьте поддержку экземпляров URL-адресов WHATWG. |
 
-> Стабильность: 0 — устарело: используйте [`module.registerHooks()`][`module.registerHooks()`].
+> Стабильность: 0 — устарело: используйте [`module.registerHooks()`](#moduleregisterhooksoptions).
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Модуль с хуками настройки; обычно та же строка, что для
   `import()`, но относительные спецификаторы разрешаются относительно `parentURL`.
@@ -233,7 +233,7 @@ changes:
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `parentURL` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Базовый URL для разрешения `specifier`. Игнорируется,
     если `parentURL` передан вторым аргументом. **По умолчанию:** `'data:'`
-  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`][`initialize`].
+  * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение для хука [`initialize`](#initialize).
   * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Передаваемые объекты][transferable objects] для
     хука `initialize`.
 
@@ -410,24 +410,24 @@ changes:
     | --- | --- |
     | v22.8.0 | добавьте начальные API-интерфейсы JavaScript для доступа во время выполнения. |
 
-Кэш компиляции модулей включается через [`module.enableCompileCache()`][`module.enableCompileCache()`] или
-переменную окружения [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`]. После включения при компиляции
+Кэш компиляции модулей включается через [`module.enableCompileCache()`](#moduleenablecompilecacheoptions) или
+переменную окружения [`NODE_COMPILE_CACHE=dir`](cli.md#node_compile_cachedir). После включения при компиляции
 CommonJS, ECMAScript- или TypeScript-модулей используется дисковый [кэш кода V8][V8 code cache]
 в указанном каталоге, что ускоряет компиляцию. Первый обход графа модулей может стать
 медленнее, повторные загрузки того же графа — заметно быстрее, если содержимое не менялось.
 
 Чтобы очистить кэш, удалите каталог кэша; при следующем использовании того же пути он
 создастся снова. Чтобы не забивать диск устаревшим кэшем, лучше использовать каталог под
-[`os.tmpdir()`][`os.tmpdir()`]. Если [`module.enableCompileCache()`][`module.enableCompileCache()`] вызван без `directory`, Node.js
-берёт [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`], если задано, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
-Текущий каталог кэша у процесса — [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
+[`os.tmpdir()`](os.md#ostmpdir). Если [`module.enableCompileCache()`](#moduleenablecompilecacheoptions) вызван без `directory`, Node.js
+берёт [`NODE_COMPILE_CACHE=dir`](cli.md#node_compile_cachedir), если задано, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
+Текущий каталог кэша у процесса — [`module.getCompileCacheDir()`](#modulegetcompilecachedir).
 
-Отключить кэш можно переменной [`NODE_DISABLE_COMPILE_CACHE=1`][`NODE_DISABLE_COMPILE_CACHE=1`], если кэш даёт
+Отключить кэш можно переменной [`NODE_DISABLE_COMPILE_CACHE=1`](cli.md#node_disable_compile_cache1), если кэш даёт
 неожиданные эффекты (например менее точное покрытие тестами).
 
 Сейчас при включённом кэше данные кэша кода для модуля создаются сразу после компиляции,
 но на диск записываются ближе к завершению процесса (поведение может измениться).
-[`module.flushCompileCache()`][`module.flushCompileCache()`] принудительно сбрасывает накопленный кэш на диск, если
+[`module.flushCompileCache()`](#moduleflushcompilecache) принудительно сбрасывает накопленный кэш на диск, если
 нужно запустить другие процессы Node.js с общим кэшем до выхода родителя.
 
 Формат кэша на диске — деталь реализации; на него не стоит опираться. Кэш обычно
@@ -443,7 +443,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
 
 Два способа включить переносимый режим:
 
-1. Через опцию `portable` в [`module.enableCompileCache()`][`module.enableCompileCache()`]:
+1. Через опцию `portable` в [`module.enableCompileCache()`](#moduleenablecompilecacheoptions):
 
    ```js
    // Non-portable cache (default): cache breaks if project is moved
@@ -453,7 +453,7 @@ CommonJS, ECMAScript- или TypeScript-модулей используется 
    module.enableCompileCache({ directory: '/path/to/cache/storage/dir', portable: true });
    ```
 
-2. Через переменную окружения [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`]
+2. Через переменную окружения [`NODE_COMPILE_CACHE_PORTABLE=1`](cli.md#node_compile_cache_portable1)
 
 ### Ограничения кэша компиляции
 
@@ -482,7 +482,7 @@ changes:
     | --- | --- |
     | v25.4.0 | Эта функция больше не является экспериментальной. |
 
-Следующие константы возвращаются в поле `status` объекта из [`module.enableCompileCache()`][`module.enableCompileCache()`]
+Следующие константы возвращаются в поле `status` объекта из [`module.enableCompileCache()`](#moduleenablecompilecacheoptions)
 и отражают результат попытки включить [кэш компиляции модулей][module compile cache].
 
 <table>
@@ -554,14 +554,14 @@ changes:
 
 * `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно. Если передана строка, она считается значением `options.directory`.
   * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Каталог для хранения кэша компиляции. Если не указан,
-    используется каталог из переменной окружения [`NODE_COMPILE_CACHE=dir`][`NODE_COMPILE_CACHE=dir`],
+    используется каталог из переменной окружения [`NODE_COMPILE_CACHE=dir`](cli.md#node_compile_cachedir),
     если она задана, иначе `path.join(os.tmpdir(), 'node-compile-cache')`.
   * `portable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Необязательно. При `true` включается переносимый кэш компиляции, чтобы
     кэш можно было переиспользовать после переноса каталога проекта. Режим работает по возможности.
     Если не указано, поведение зависит от того, задана ли переменная окружения
-    [`NODE_COMPILE_CACHE_PORTABLE=1`][`NODE_COMPILE_CACHE_PORTABLE=1`].
+    [`NODE_COMPILE_CACHE_PORTABLE=1`](cli.md#node_compile_cache_portable1).
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `status` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из значений [`module.constants.compileCacheStatus`][`module.constants.compileCacheStatus`]
+  * `status` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одно из значений [`module.constants.compileCacheStatus`](#moduleconstantscompilecachestatus)
   * `message` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Если Node.js не удалось включить кэш компиляции, здесь
     сообщение об ошибке. Заполняется только при `status` равном `module.constants.compileCacheStatus.FAILED`.
   * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Если кэш компиляции включён, здесь каталог,
@@ -584,7 +584,7 @@ changes:
 Метод действует только в текущем экземпляре Node.js. Чтобы включить кэш в дочерних потоках worker,
 либо вызывайте этот метод и в них, либо задайте `process.env.NODE_COMPILE_CACHE` равным каталогу кэша,
 чтобы поведение унаследовалось дочерними worker. Каталог можно взять из поля `directory`
-возвращаемого этим методом объекта или через [`module.getCompileCacheDir()`][`module.getCompileCacheDir()`].
+возвращаемого этим методом объекта или через [`module.getCompileCacheDir()`](#modulegetcompilecachedir).
 
 ### `module.flushCompileCache()`
 
@@ -679,9 +679,9 @@ changes:
 
 Сейчас Node.js поддерживает два вида хуков настройки модулей:
 
-1. [`module.registerHooks(options)`][`module.registerHooks()`]: принимает синхронные функции-хуки,
+1. [`module.registerHooks(options)`](#moduleregisterhooksoptions): принимает синхронные функции-хуки,
    которые выполняются в том же потоке, где загружаются модули.
-2. [`module.register(specifier[, parentURL][, options])`][`register`]: принимает спецификатор модуля,
+2. [`module.register(specifier[, parentURL][, options])`](#moduleregisterspecifier-parenturl-options): принимает спецификатор модуля,
    экспортирующего асинхронные функции-хуки. Они выполняются в отдельном потоке загрузчика.
 
 Асинхронные хуки добавляют накладные расходы на обмен между потоками и связаны с
@@ -696,7 +696,7 @@ changes:
 
 #### Регистрация синхронных хуков настройки {: #registration-of-synchronous-customization-hooks}
 
-Чтобы зарегистрировать синхронные хуки настройки, используйте [`module.registerHooks()`][`module.registerHooks()`] —
+Чтобы зарегистрировать синхронные хуки настройки, используйте [`module.registerHooks()`](#moduleregisterhooksoptions) —
 в него передаются [синхронные функции-хуки][synchronous hook functions] напрямую.
 
 === "MJS"
@@ -724,7 +724,7 @@ changes:
 ##### Регистрация хуков до запуска кода приложения через флаги {: #registering-hooks-before-application-code-runs-with-flags}
 
 Хуки можно зарегистрировать до выполнения кода приложения с помощью флагов
-[`--import`][`--import`] или [`--require`][`--require`]:
+[`--import`](cli.md#--importmodule) или [`--require`](cli.md#-r---require-module):
 
 ```bash
 node --import ./register-hooks.js ./my-app.js
@@ -738,7 +738,7 @@ node --import some-package/register ./my-app.js
 node --require some-package/register ./my-app.js
 ```
 
-Если у `some-package` в поле [`"exports"`][`"exports"`] задан экспорт `/register`,
+Если у `some-package` в поле [`"exports"`](packages.md#exports) задан экспорт `/register`,
 он может указывать на файл, вызывающий `registerHooks()`, как в примерах `register-hooks.js` выше.
 
 Флаги `--import` и `--require` гарантируют регистрацию хуков до загрузки любого кода приложения,
@@ -925,8 +925,8 @@ added:
 код хука может передавать значения в модули через глобальные переменные или общее состояние.
 
 В отличие от асинхронных, синхронные хуки по умолчанию не наследуются дочерними worker, но если хуки
-зарегистрированы через предзагружаемый файл [`--import`][`--import`] или [`--require`][`--require`], дочерние worker
-могут унаследовать предзагрузку через `process.execArgv`. Подробнее — в [документации `Worker`][the documentation of `Worker`].
+зарегистрированы через предзагружаемый файл [`--import`](cli.md#--importmodule) или [`--require`](cli.md#-r---require-module), дочерние worker
+могут унаследовать предзагрузку через `process.execArgv`. Подробнее — в [документации `Worker`](worker_threads.md#new-workerfilename-options).
 
 #### Синхронный `resolve(specifier, context, nextResolve)` {: #synchronous-resolvespecifier-context-nextresolve}
 
@@ -1103,7 +1103,7 @@ changes:
 * Конкретный объект [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) — это [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
 * Конкретный объект [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) — это [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).
 
-Если для текстового формата (например `'json'`, `'module'`) значение `source` не строка, оно приводится к строке через [`util.TextDecoder`][`util.TextDecoder`].
+Если для текстового формата (например `'json'`, `'module'`) значение `source` не строка, оно приводится к строке через [`util.TextDecoder`](util.md#class-utiltextdecoder).
 
 ### Асинхронные хуки настройки {: #asynchronous-customization-hooks}
 
@@ -1117,13 +1117,13 @@ changes:
 * Асинхронные хуки не затрагивают все вызовы `require()` в графе модулей.
   * На пользовательские функции `require`, созданные через `module.createRequire()`, они не действуют.
   * Если асинхронный хук `load` не переопределяет `source` для проходящих через него CommonJS-модулей, дочерние модули, подключаемые из них встроенным `require()`, тоже не проходят через асинхронные хуки.
-* При настройке CommonJS-модулей есть дополнительные нюансы — см. [асинхронный хук `resolve`][asynchronous `resolve` hook] и [асинхронный хук `load`][asynchronous `load` hook].
+* При настройке CommonJS-модулей есть дополнительные нюансы — см. [асинхронный хук `resolve`](#asynchronous-resolvespecifier-context-nextresolve) и [асинхронный хук `load`](#asynchronous-loadurl-context-nextload).
 * Когда вызовы `require()` внутри CommonJS-модулей настраиваются асинхронными хуками, Node.js может несколько раз загружать исходный код модуля для совместимости с существующим «monkey patching» в CommonJS. Если код между загрузками меняется, возможно неожиданное поведение.
   * Побочный эффект: если зарегистрированы и асинхронные, и синхронные хуки, а асинхронные настраивают CommonJS-модуль, синхронные хуки для вызовов `require()` в этом модуле могут вызываться несколько раз.
 
 #### Регистрация асинхронных хуков настройки {: #registration-of-asynchronous-customization-hooks}
 
-Асинхронные хуки регистрируются через [`module.register()`][`register`] — передаётся путь или URL модуля, экспортирующего [асинхронные функции-хуки][asynchronous hook functions].
+Асинхронные хуки регистрируются через [`module.register()`](#moduleregisterspecifier-parenturl-options) — передаётся путь или URL модуля, экспортирующего [асинхронные функции-хуки][asynchronous hook functions].
 
 Как и `registerHooks()`, `register()` можно вызвать из предзагружаемого по `--import` или `--require` модуля или прямо из точки входа.
 
@@ -1255,7 +1255,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
 Асинхронные хуки выполняются в отдельном потоке, не в основном потоке приложения. Поэтому изменение глобальных переменных
 не затронет другой поток — для обмена нужны каналы сообщений.
 
-Через `register` можно передать данные в хук [`initialize`][`initialize`], в том числе передаваемые объекты вроде портов.
+Через `register` можно передать данные в хук [`initialize`](#initialize), в том числе передаваемые объекты вроде портов.
 
 === "MJS"
 
@@ -1333,7 +1333,7 @@ changes:
     | v18.6.0, v16.17.0 | Добавьте поддержку цепочки загрузчиков. |
     | v16.12.0 | Удалены `getFormat`, `getSource`, `transformSource` и `globalPreload`; добавлен хук `load` и `getGlobalPreload`. |
 
-Метод [`register`][`register`] регистрирует модуль, экспортирующий набор хуков. Это функции, которые Node.js вызывает для настройки
+Метод [`register`](#moduleregisterspecifier-parenturl-options) регистрирует модуль, экспортирующий набор хуков. Это функции, которые Node.js вызывает для настройки
 разрешения и загрузки модулей. Имена и сигнатуры должны совпадать с ожидаемыми, экспорт — именованный.
 
 === "MJS"
@@ -1365,12 +1365,12 @@ added:
 
 * `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные из `register(loader, import.meta.url, { data })`.
 
-Хук `initialize` поддерживается только в [`register`][`register`]. В `registerHooks()` он не нужен: инициализацию для синхронных хуков можно выполнить
+Хук `initialize` поддерживается только в [`register`](#moduleregisterspecifier-parenturl-options). В `registerHooks()` он не нужен: инициализацию для синхронных хуков можно выполнить
 непосредственно перед вызовом `registerHooks()`.
 
-Хук `initialize` задаёт функцию, которая выполняется в потоке хуков при инициализации модуля с хуками — при регистрации через [`register`][`register`].
+Хук `initialize` задаёт функцию, которая выполняется в потоке хуков при инициализации модуля с хуками — при регистрации через [`register`](#moduleregisterspecifier-parenturl-options).
 
-Хук может получить данные из вызова [`register`][`register`], включая порты и другие передаваемые объекты. Возвращаемое значение может быть
+Хук может получить данные из вызова [`register`](#moduleregisterspecifier-parenturl-options), включая порты и другие передаваемые объекты. Возвращаемое значение может быть
 [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise); тогда основной поток дождётся его перед продолжением.
 
 Код настройки модуля:
@@ -1662,7 +1662,7 @@ documentation already and should be put into a repository instead? -->
 
 #### Транспиляция {: #transpilation}
 
-Исходники в форматах, которые Node.js не понимает напрямую, можно преобразовать в JavaScript через [хук `load`][load hook].
+Исходники в форматах, которые Node.js не понимает напрямую, можно преобразовать в JavaScript через [хук `load`](#synchronous-loadurl-context-nextload).
 
 Это медленнее, чем транспилировать файлы до запуска Node.js; хуки-транспиляторы имеют смысл в основном для разработки и тестов.
 
@@ -1787,7 +1787,7 @@ export scream = (str) -> str.toUpperCase()
 
 Это только для примера. В реальных загрузчиках `getPackageType()` должен возвращать `format`,
 известный Node.js, даже без явного `type` в `package.json`, иначе `nextLoad` выбросит `ERR_UNKNOWN_FILE_EXTENSION`
-(если `undefined`) или `ERR_UNKNOWN_MODULE_FORMAT` (если формат не из списка в [документации хука `load`][load hook]).
+(если `undefined`) или `ERR_UNKNOWN_MODULE_FORMAT` (если формат не из списка в [документации хука `load`](#synchronous-loadurl-context-nextload)).
 
 С подключёнными выше модулями хуков команды
 `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./coffeescript-hooks.mjs"));' ./main.coffee`
@@ -1888,9 +1888,9 @@ API в этом разделе помогают работать с кэшем s
 в «подвале» модулей найдены [директивы подключения source map][source map include directives].
 
 Чтобы включить разбор source map, запустите Node.js с флагом
-[`--enable-source-maps`][`--enable-source-maps`], с покрытием кода через
-[`NODE_V8_COVERAGE=dir`][`NODE_V8_COVERAGE=dir`] или включите поддержку программно через
-[`module.setSourceMapsSupport()`][`module.setSourceMapsSupport()`].
+[`--enable-source-maps`](cli.md#--enable-source-maps), с покрытием кода через
+[`NODE_V8_COVERAGE=dir`](cli.md#node_v8_coveragedir) или включите поддержку программно через
+[`module.setSourceMapsSupport()`](#modulesetsourcemapssupportenabled-options).
 
 === "MJS"
 
@@ -2007,7 +2007,7 @@ changes:
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Геттер для полезной нагрузки, из которой создан экземпляр [`SourceMap`][`SourceMap`].
+Геттер для полезной нагрузки, из которой создан экземпляр [`SourceMap`](#class-modulesourcemap).
 
 #### `sourceMap.findEntry(lineOffset, columnOffset)`
 

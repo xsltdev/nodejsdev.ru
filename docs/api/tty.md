@@ -23,7 +23,7 @@ const tty = require('node:tty');
 ```
 
 Когда Node.js определяет, что он запущен с подключённым текстовым терминалом («TTY»),
-[`process.stdin`][`process.stdin`] по умолчанию инициализируется как экземпляр `tty.ReadStream`, а [`process.stdout`][`process.stdout`] и [`process.stderr`][`process.stderr`] по
+[`process.stdin`](process.md#processstdin) по умолчанию инициализируется как экземпляр `tty.ReadStream`, а [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) по
 умолчанию — как экземпляры `tty.WriteStream`. Предпочтительный способ выяснить, выполняется ли Node.js в контексте TTY, — проверить, что значение свойства `process.stdout.isTTY` равно `true`:
 
 ```console
@@ -44,7 +44,7 @@ added: v0.5.8
 * Расширяет: [net.Socket](net.md#class-netsocket)
 
 Представляет читаемую сторону TTY. В обычных условиях
-[`process.stdin`][`process.stdin`] будет единственным экземпляром `tty.ReadStream` в процессе Node.js, и не должно быть причин создавать дополнительные экземпляры.
+[`process.stdin`](process.md#processstdin) будет единственным экземпляром `tty.ReadStream` в процессе Node.js, и не должно быть причин создавать дополнительные экземпляры.
 
 ### `readStream.isRaw`
 
@@ -88,7 +88,7 @@ added: v0.5.8
 * Расширяет: [net.Socket](net.md#class-netsocket)
 
 Представляет записываемую сторону TTY. В обычных условиях
-[`process.stdout`][`process.stdout`] и [`process.stderr`][`process.stderr`] будут единственными
+[`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) будут единственными
 созданными для процесса Node.js экземплярами `tty.WriteStream`, и не должно быть причин создавать дополнительные экземпляры.
 
 ### `new tty.ReadStream(fd[, options])`
@@ -110,7 +110,7 @@ changes:
 
 * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры, передаваемые родительскому `net.Socket`;
-  см. `options` у [конструктора `net.Socket`][`net.Socket` constructor].
+  см. `options` у [конструктора `net.Socket`](net.md#new-netsocketoptions).
 * Возвращает: [`<tty.ReadStream>`](tty.md)
 
 Создаёт `ReadStream` для `fd`, связанного с TTY.
@@ -292,7 +292,7 @@ added:
 `count`. Минимальная поддержка — 2 (чёрный и белый).
 
 Те же ложные срабатывания и ограничения, что описаны для
-[`writeStream.getColorDepth()`][`writeStream.getColorDepth()`].
+[`writeStream.getColorDepth()`](#writestreamgetcolordepthenv).
 
 ```js
 process.stdout.hasColors();

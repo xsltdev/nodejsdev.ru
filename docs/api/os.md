@@ -55,7 +55,7 @@ added:
 Оценка рекомендуемой степени параллелизма для программы.
 Всегда возвращает значение больше нуля.
 
-Тонкая обёртка над [`uv_available_parallelism()`][`uv_available_parallelism()`] в libuv.
+Тонкая обёртка над [`uv_available_parallelism()`](https://docs.libuv.org/en/v1.x/misc.html#c.uv_available_parallelism) в libuv.
 
 ## `os.arch()`
 
@@ -69,7 +69,7 @@ added: v0.5.0
 `'arm'`, `'arm64'`, `'ia32'`, `'loong64'`,
 `'mips'`, `'mipsel'`, `'ppc64'`, `'riscv64'`, `'s390x'` и `'x64'`.
 
-Эквивалентно [`process.arch`][`process.arch`].
+Эквивалентно [`process.arch`](process.md#processarch).
 
 ## `os.constants`
 
@@ -261,7 +261,7 @@ added:
 Тип машины строкой, например `arm`, `arm64`, `aarch64`,
 `mips`, `mips64`, `ppc64`, `ppc64le`, `s390x`, `i386`, `i686`, `x86_64`.
 
-В POSIX тип определяется вызовом [`uname(3)`][`uname(3)`]. В Windows — `RtlGetVersion()`, при недоступности — `GetVersionExW()`. См. также
+В POSIX тип определяется вызовом [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при недоступности — `GetVersionExW()`. См. также
 <https://en.wikipedia.org/wiki/Uname#Examples>.
 
 ## `os.networkInterfaces()`
@@ -359,7 +359,7 @@ added: v0.5.0
 Возможные значения: `'aix'`, `'darwin'`, `'freebsd'`,`'linux'`,
 `'openbsd'`, `'sunos'` и `'win32'`.
 
-Эквивалентно [`process.platform`][`process.platform`].
+Эквивалентно [`process.platform`](process.md#processplatform).
 
 Может вернуться `'android'`, если Node.js собран для Android.
 [Поддержка Android экспериментальна][Android building].
@@ -374,7 +374,7 @@ added: v0.3.3
 
 Строка с версией выпуска ОС.
 
-В POSIX — через [`uname(3)`][`uname(3)`]. В Windows — `GetVersionExW()`. См.
+В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `GetVersionExW()`. См.
 <https://en.wikipedia.org/wiki/Uname#Examples>.
 
 ## `os.setPriority([pid, ]priority)`
@@ -440,7 +440,7 @@ added: v0.3.3
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Имя ОС, как в [`uname(3)`][`uname(3)`]. Например `'Linux'`, `'Darwin'` на macOS, `'Windows_NT'` в Windows.
+Имя ОС, как в [`uname(3)`](https://linux.die.net/man/3/uname). Например `'Linux'`, `'Darwin'` на macOS, `'Windows_NT'` в Windows.
 
 Дополнительно см. <https://en.wikipedia.org/wiki/Uname#Examples>.
 
@@ -482,7 +482,7 @@ added: v6.0.0
 
 `homedir` здесь даёт ОС; это не то же самое, что `os.homedir()`, который сначала смотрит переменные окружения.
 
-Выбрасывает [`SystemError`][`SystemError`], если нет `username` или `homedir`.
+Выбрасывает [`SystemError`](errors.md#class-systemerror), если нет `username` или `homedir`.
 
 ## `os.version()`
 
@@ -496,7 +496,7 @@ added:
 
 Строка с версией ядра.
 
-В POSIX — через [`uname(3)`][`uname(3)`]. В Windows — `RtlGetVersion()`, при необходимости `GetVersionExW()`. См.
+В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при необходимости `GetVersionExW()`. См.
 <https://en.wikipedia.org/wiki/Uname#Examples>.
 
 ## Константы ОС

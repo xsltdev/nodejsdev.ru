@@ -609,7 +609,7 @@ added: v25.9.0
   Не должен быть `null` или `undefined`.
 * Возвращает: [`<Iterable<Uint8Array[]>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)
 
-Синхронный вариант [`from()`][`from()`]. Возвращает синхронный итерируемый объект. Не принимает
+Синхронный вариант [`from()`](#frominput). Возвращает синхронный итерируемый объект. Не принимает
 async iterable и промисы. Объекты с
 `Symbol.for('Stream.toStreamable')` преобразуются по этому протоколу (приоритет
 над `Symbol.iterator`). Протокол `toAsyncStreamable` полностью
@@ -706,7 +706,7 @@ added: v25.9.0
   * `preventFail` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Всего записано байт.
 
-Синхронный вариант [`pipeTo()`][`pipeTo()`]. Источник, все преобразования и
+Синхронный вариант [`pipeTo()`](#pipetosource-transforms-writer-options). Источник, все преобразования и
 `writer` должны быть синхронными. Async iterable и промисы не допускаются.
 
 У `writer` должны быть `*Sync` (`writeSync`, `writevSync`,
@@ -801,7 +801,7 @@ added: v25.9.0
 * `...transforms` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ноль или несколько синхронных преобразований.
 * Возвращает: [`<Iterable<Uint8Array[]>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)
 
-Синхронный вариант [`pull()`][`pull()`]. Все преобразования должны быть синхронными.
+Синхронный вариант [`pull()`](#pullsource-transforms-options). Все преобразования должны быть синхронными.
 
 ## Push-потоки
 
@@ -997,7 +997,7 @@ added: v25.9.0
     превышает лимит, выбрасывается `ERR_OUT_OF_RANGE`
 * Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
-Синхронный вариант [`arrayBuffer()`][`arrayBuffer()`].
+Синхронный вариант [`arrayBuffer()`](#arraybuffersource-options).
 
 ### `arraySync(source[, options])`
 
@@ -1011,7 +1011,7 @@ added: v25.9.0
     превышает лимит, выбрасывается `ERR_OUT_OF_RANGE`
 * Возвращает: [`<Uint8Array[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
-Синхронный вариант [`array()`][`array()`].
+Синхронный вариант [`array()`](#arraysource-options).
 
 ### `bytes(source[, options])`
 
@@ -1062,7 +1062,7 @@ added: v25.9.0
     превышает лимит, выбрасывается `ERR_OUT_OF_RANGE`
 * Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
-Синхронный вариант [`bytes()`][`bytes()`].
+Синхронный вариант [`bytes()`](#bytessource-options).
 
 ### `text(source[, options])`
 
@@ -1113,7 +1113,7 @@ added: v25.9.0
     превышает лимит, выбрасывается `ERR_OUT_OF_RANGE`
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Синхронный вариант [`text()`][`text()`].
+Синхронный вариант [`text()`](#textsource-options).
 
 ## Утилиты
 
@@ -1265,7 +1265,7 @@ added: v25.9.0
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-Синхронный вариант [`tap()`][`tap()`].
+Синхронный вариант [`tap()`](#tapcallback).
 
 ## Несколько потребителей
 
@@ -1497,7 +1497,7 @@ added: v25.9.0
   * `backpressure` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'strict'`.
 * Возвращает: [`<SyncShare>`](stream_iter.md)
 
-Синхронный вариант [`share()`][`share()`].
+Синхронный вариант [`share()`](#sharesource-options).
 
 ### `SyncShare.fromSync(input[, options])`
 
@@ -1512,13 +1512,13 @@ added: v25.9.0
 ## Преобразования сжатия и распаковки
 
 Преобразования сжатия и распаковки для `pull()`, `pullSync()`,
-`pipeTo()` и `pipeToSync()` доступны в модуле [`node:zlib/iter`][`node:zlib/iter`].
-Подробнее см. в [документации `node:zlib/iter`][`node:zlib/iter` documentation].
+`pipeTo()` и `pipeToSync()` доступны в модуле [`node:zlib/iter`](zlib_iter.md).
+Подробнее см. в [документации `node:zlib/iter`](zlib_iter.md).
 
 ## Совместимость с классическими потоками
 
 Эти функции связывают классические потоки
-[`stream.Readable`][`stream.Readable`]/[`stream.Writable`][`stream.Writable`] с API `stream/iter`.
+[`stream.Readable`](stream.md#class-streamreadable)/[`stream.Writable`](stream.md#class-streamwritable) с API `stream/iter`.
 
 И `fromReadable()`, и `fromWritable()` принимают объекты по контракту «утиной типизации» —
 не требуется наследование от `stream.Readable` или `stream.Writable`.
@@ -1539,10 +1539,10 @@ added: REPLACEME
 * Возвращает: [`<AsyncIterable<Uint8Array[]>>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) Источник async iterable для stream/iter.
 
 Преобразует классический Readable (или эквивалент по контракту) в
-источник async iterable stream/iter, который можно передать в [`from()`][`from()`],
-[`pull()`][`pull()`], [`text()`][`text()`] и т.д.
+источник async iterable stream/iter, который можно передать в [`from()`](#frominput),
+[`pull()`](#pullsource-transforms-options), [`text()`](#textsource-options) и т.д.
 
-Если объект реализует протокол [`toAsyncStreamable`][`toAsyncStreamable`] (как
+Если объект реализует протокол [`toAsyncStreamable`](#streamtoasyncstreamable) (как
 `stream.Readable`), используется он. Иначе выполняется проверка по `read()` и `on()` (EventEmitter) и поток оборачивается в
 пакетный async iterator.
 
@@ -1600,12 +1600,12 @@ added: REPLACEME
     * `'strict'` — записи отклоняются при полном буфере. Выявляет
       вызовы, игнорирующие обратное давление.
     * `'block'` — записи ждут drain при полном буфере. Рекомендуется
-      с [`pipeTo()`][`pipeTo()`].
+      с [`pipeTo()`](#pipetosource-transforms-writer-options).
     * `'drop-newest'` — при полном буфере новые записи тихо отбрасываются.
     * `'drop-oldest'` — **не поддерживается**. Выбрасывается `ERR_INVALID_ARG_VALUE`.
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Адаптер Writer для stream/iter.
 
-Создаёт адаптер Writer stream/iter из классического Writable (или эквивалента по контракту). Его можно передать в [`pipeTo()`][`pipeTo()`] как
+Создаёт адаптер Writer stream/iter из классического Writable (или эквивалента по контракту). Его можно передать в [`pipeTo()`](#pipetosource-transforms-writer-options) как
 назначение.
 
 Так как все записи в классический Writable по сути асинхронны,
@@ -1662,14 +1662,14 @@ added: REPLACEME
     Эта возможность не подпадает под правила семантического версионирования. Несовместимые назад изменения или удаление могут произойти в любом будущем релизе.
 
 * `source` [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) Источник `AsyncIterable<Uint8Array[]>`, например
-  результат [`pull()`][`pull()`] или [`from()`][`from()`].
+  результат [`pull()`](#pullsource-transforms-options) или [`from()`](#frominput).
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Внутренний размер буфера в байтах до включения
     обратного давления. **По умолчанию:** `65536` (64 КБ).
   * `signal` [`<AbortSignal>`](globals.md#abortsignal) Необязательный сигнал отмены readable.
 * Возвращает: [`<stream.Readable>`](stream.md#streamreadable)
 
-Создаёт [`stream.Readable`][`stream.Readable`] в байтовом режиме из `AsyncIterable<Uint8Array[]>`
+Создаёт [`stream.Readable`](stream.md#class-streamreadable) в байтовом режиме из `AsyncIterable<Uint8Array[]>`
 (родной формат пакетов API stream/iter). Каждый `Uint8Array` в
 выданном пакете передаётся в Readable отдельным фрагментом.
 
@@ -1710,13 +1710,13 @@ added: REPLACEME
     Эта возможность не подпадает под правила семантического версионирования. Несовместимые назад изменения или удаление могут произойти в любом будущем релизе.
 
 * `source` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Источник `Iterable<Uint8Array[]>`, например
-  результат [`pullSync()`][`pullSync()`] или [`fromSync()`][`fromSync()`].
+  результат [`pullSync()`](#pullsyncsource-transforms-options) или [`fromSync()`](#fromsyncinput).
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Внутренний размер буфера в байтах до включения
     обратного давления. **По умолчанию:** `65536` (64 КБ).
 * Возвращает: [`<stream.Readable>`](stream.md#streamreadable)
 
-Создаёт [`stream.Readable`][`stream.Readable`] в байтовом режиме из синхронного
+Создаёт [`stream.Readable`](stream.md#class-streamreadable) в байтовом режиме из синхронного
 `Iterable<Uint8Array[]>`. Метод `_read()` извлекает данные из итератора
 синхронно, поэтому данные сразу доступны через `readable.read()`.
 
@@ -1757,7 +1757,7 @@ added: REPLACEME
   и `writev()` необязательны.
 * Возвращает: [`<stream.Writable>`](stream.md#streamwritable)
 
-Создаёт классический [`stream.Writable`][`stream.Writable`], опирающийся на Writer stream/iter.
+Создаёт классический [`stream.Writable`](stream.md#class-streamwritable), опирающийся на Writer stream/iter.
 
 Каждый вызов `_write()` / `_writev()` сначала пытается синхронные методы Writer
 (`writeSync` / `writevSync`), при необходимости переходит к асинхронным, если

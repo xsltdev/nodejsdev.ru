@@ -140,7 +140,7 @@ changes:
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вычислении этого сценария при вызове `import()`. Опция относится к
     экспериментальному API модулей. В production не рекомендуется.
-    Подробнее см. [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    Подробнее см. [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 
 Если `options` — строка, она задаёт имя файла.
 
@@ -218,13 +218,13 @@ changes:
 * `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстированный][contextified] объект, возвращённый
   методом `vm.createContext()`.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`](errors.md#class-error),
     строка кода, вызвавшая ошибку, добавляется к трассировке стека. **По умолчанию:** `true`.
-  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до принудительной остановки. При остановке выбрасывается [`Error`][`Error`].
+  * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до принудительной остановки. При остановке выбрасывается [`Error`](errors.md#class-error).
     Значение — строго положительное целое.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Обработчики, подключённые через `process.on('SIGINT')`, на время выполнения сценария отключаются, затем снова действуют. **По умолчанию:** `false`.
+    [`Error`](errors.md#class-error). Обработчики, подключённые через `process.on('SIGINT')`, на время выполнения сценария отключаются, затем снова действуют. **По умолчанию:** `false`.
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного оператора сценария.
 
 Выполняет скомпилированный код объекта `vm.Script` в заданном
@@ -313,25 +313,25 @@ changes:
     | v6.3.0 | Поддерживается опция `breakOnSigint`. |
 
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
-  Либо [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`], либо объект, который будет [контекстифицирован][contextified].
+  Либо [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), либо объект, который будет [контекстифицирован][contextified].
   Если `undefined`, для обратной совместимости создаётся пустой контекстифицированный объект.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`](errors.md#class-error) при компиляции
     `code` к стеку добавляется строка с ошибочным кодом.
     **По умолчанию:** `true`.
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code`
-    до прерывания. При прерывании выбрасывается [`Error`][`Error`].
+    до прерывания. При прерывании выбрасывается [`Error`](errors.md#class-error).
     Значение должно быть строго положительным целым.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Обработчики `process.on('SIGINT')` отключаются на время выполнения скрипта, затем снова работают.
+    [`Error`](errors.md#class-error). Обработчики `process.on('SIGINT')` отключаются на время выполнения скрипта, затем снова работают.
     **По умолчанию:** `false`.
   * `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя нового контекста.
     **По умолчанию:** `'VM Context i'`, где `i` — возрастающий индекс
     созданного контекста.
   * `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
     Формат как у URL, но только схема, хост и при необходимости порт, как
-    у [`url.origin`][`url.origin`] у [`URL`][`URL`]. Обратите внимание: без завершающего слэша, он означает путь.
+    у [`url.origin`](url.md#urlorigin) у [`URL`](url.md#class-url). Обратите внимание: без завершающего слэша, он означает путь.
     **По умолчанию:** `''`.
   * `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, вызовы `eval` и конструкторов функций
@@ -350,7 +350,7 @@ changes:
 1. Создаёт новый контекст.
 2. Если `contextObject` — объект, [контекстифицирует][contextified] его в новом контексте.
    Если `contextObject` — `undefined`, создаётся новый объект и [контекстифицируется][contextified].
-   Если [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`] — ничего не [контекстифицировать][contextified].
+   Если [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify) — ничего не [контекстифицировать][contextified].
 3. Запускает скомпилированный код `vm.Script` в созданном контексте. Код
    не видит область, из которой вызван метод.
 4. Возвращает результат.
@@ -421,13 +421,13 @@ changes:
     | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`][`Error`] при компиляции `code`
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`](errors.md#class-error) при компиляции `code`
     строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число миллисекунд выполнения `code` до остановки. При остановке
-    выбрасывается [`Error`][`Error`]. Значение — строго положительное целое.
+    выбрасывается [`Error`](errors.md#class-error). Значение — строго положительное целое.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Обработчики `process.on('SIGINT')` отключаются на время выполнения
+    [`Error`](errors.md#class-error). Обработчики `process.on('SIGINT')` отключаются на время выполнения
     сценария, затем снова работают. **По умолчанию:** `false`.
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в сценарии оператора.
 
@@ -723,11 +723,11 @@ added:
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт число миллисекунд выполнения
-    до принудительного завершения. Если выполнение будет прервано, будет выброшен [`Error`][`Error`].
+    до принудительного завершения. Если выполнение будет прервано, будет выброшен [`Error`](errors.md#class-error).
     Это значение должно быть строго положительным целым числом.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Уже подключённые обработчики через
+    [`Error`](errors.md#class-error). Уже подключённые обработчики через
     `process.on('SIGINT')` на время выполнения сценария отключаются, затем снова
     работают. **По умолчанию:** `false`.
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
@@ -822,8 +822,8 @@ changes:
 Связывает зависимости модуля. Метод нужно вызвать до вычисления, не более
 одного раза на модуль.
 
-Используйте [`sourceTextModule.linkRequests(modules)`][`sourceTextModule.linkRequests(modules)`] и
-[`sourceTextModule.instantiate()`][`sourceTextModule.instantiate()`], чтобы связывать модули синхронно или
+Используйте [`sourceTextModule.linkRequests(modules)`](#sourcetextmodulelinkrequestsmodules) и
+[`sourceTextModule.instantiate()`](#sourcetextmoduleinstantiate), чтобы связывать модули синхронно или
 асинхронно.
 
 Функция должна вернуть объект `Module` или `Promise`, который в итоге
@@ -946,7 +946,7 @@ changes:
     как загружать модули при вычислении этого модуля при вызове `import()`. Опция относится к экспериментальному
     API модулей. В production не рекомендуется.
     Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 
 Создаёт новый экземпляр `SourceTextModule`.
 
@@ -1064,7 +1064,7 @@ changes:
     | --- | --- |
     | v24.4.0, v22.20.0 | Это устарело в пользу `sourceTextModule.moduleRequests`. |
 
-> Stability: 0 - Deprecated: вместо этого используйте [`sourceTextModule.moduleRequests`][`sourceTextModule.moduleRequests`].
+> Stability: 0 - Deprecated: вместо этого используйте [`sourceTextModule.moduleRequests`](#sourcetextmodulemodulerequests).
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1121,7 +1121,7 @@ added:
 ошибка выбрасывается синхронно.
 
 Если среди запрошенных модулей есть циклические зависимости, метод
-[`sourceTextModule.linkRequests(modules)`][`sourceTextModule.linkRequests(modules)`] нужно вызвать для всех
+[`sourceTextModule.linkRequests(modules)`](#sourcetextmodulelinkrequestsmodules) нужно вызвать для всех
 модулей в цикле до вызова этого метода.
 
 ### `sourceTextModule.linkRequests(modules)`
@@ -1134,14 +1134,14 @@ added:
 
 * `modules` [`<vm.Module[]>`](vm.md) Массив объектов `vm.Module`, от которых зависит этот модуль.
   Порядок модулей в массиве совпадает с порядком
-  [`sourceTextModule.moduleRequests`][`sourceTextModule.moduleRequests`].
+  [`sourceTextModule.moduleRequests`](#sourcetextmodulemodulerequests).
 * Возвращает: [`<undefined>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 
 Связывает зависимости модуля. Метод нужно вызвать до вычисления, не более
 одного раза на модуль.
 
 Порядок экземпляров в массиве `modules` должен соответствовать порядку разрешения
-[`sourceTextModule.moduleRequests`][`sourceTextModule.moduleRequests`]. Если два запроса модуля имеют одинаковый
+[`sourceTextModule.moduleRequests`](#sourcetextmodulemodulerequests). Если два запроса модуля имеют одинаковый
 спецификатор и атрибуты импорта, они должны разрешаться в один и тот же экземпляр модуля, иначе будет выброшен
 `ERR_MODULE_LINK_MISMATCH`. Например, при связывании запросов для этого
 модуля:
@@ -1170,7 +1170,7 @@ added:
 Синхронность или асинхронность разрешения зависимостей определяет создатель `SourceTextModule`.
 
 После связывания каждого модуля из массива `modules` вызовите
-[`sourceTextModule.instantiate()`][`sourceTextModule.instantiate()`].
+[`sourceTextModule.instantiate()`](#sourcetextmoduleinstantiate).
 
 ### `sourceTextModule.moduleRequests`
 
@@ -1447,7 +1447,7 @@ changes:
   * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
   * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
     `TypedArray` или `DataView` с данными кэша кода V8 для переданного
-    исходника. Должен быть получен предыдущим вызовом [`vm.compileFunction()`][`vm.compileFunction()`]
+    исходника. Должен быть получен предыдущим вызовом [`vm.compileFunction()`](#vmcompilefunctioncode-params-options)
     с теми же `code` и `params`.
   * `produceCachedData` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Создавать ли новые данные кэша.
     **По умолчанию:** `false`.
@@ -1460,7 +1460,7 @@ changes:
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вычислении этой функции при вызове `import()`. Опция относится к
     экспериментальному API модулей. В production не рекомендуется. Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 * Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Компилирует переданный код в указанном контексте (если контекст не задан,
@@ -1493,7 +1493,7 @@ added:
 загрузчик ESM из основного контекста для загрузки запрошенного модуля.
 
 Подробнее см.
-[Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+[Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 
 ## `vm.createContext([contextObject[, options]])`
 
@@ -1541,7 +1541,7 @@ changes:
     | v10.0.0 | Опция `codeGeneration` теперь поддерживается. |
 
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
-  Либо [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`], либо объект, который будет [контекстифицирован][contextified].
+  Либо [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), либо объект, который будет [контекстифицирован][contextified].
   Если `undefined`, для обратной совместимости создаётся пустой контекстифицированный объект.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя создаваемого контекста.
@@ -1549,7 +1549,7 @@ changes:
     созданного контекста.
   * `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
     Формат как у URL, но только схема, хост и при необходимости порт, как у
-    свойства [`url.origin`][`url.origin`] у [`URL`][`URL`]. Завершающий слэш не указывайте — он означает путь.
+    свойства [`url.origin`](url.md#urlorigin) у [`URL`](url.md#class-url). Завершающий слэш не указывайте — он означает путь.
     **По умолчанию:** `''`.
   * `codeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `false` вызовы `eval` и конструкторов функций
@@ -1558,18 +1558,18 @@ changes:
     * `wasm` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `false` попытка скомпилировать модуль WebAssembly
       выбрасывает `WebAssembly.CompileError`. **По умолчанию:** `true`.
   * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При `afterEvaluate` микрозадачи (через `Promise` и `async function`)
-    выполняются сразу после сценария в [`script.runInContext()`][`script.runInContext()`].
+    выполняются сразу после сценария в [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options).
     В этом случае они входят в действие опций `timeout` и `breakOnSigint`.
   * `importModuleDynamically`
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вызове `import()` в этом контексте без сценария-реферера или модуля. Опция относится к
     экспериментальному API модулей. В production не рекомендуется. Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) контекстифицированный объект.
 
 Если передан объект `contextObject`, метод `vm.createContext()` [подготавливает этот
 объект][contextified] и возвращает ссылку для использования в
-вызовах [`vm.runInContext()`][`vm.runInContext()`] или [`script.runInContext()`][`script.runInContext()`]. В таких
+вызовах [`vm.runInContext()`](#vmrunincontextcode-contextifiedobject-options) или [`script.runInContext()`](#scriptrunincontextcontextifiedobject-options). В таких
 сценариях глобальный объект оборачивается `contextObject`, сохраняя все
 имеющиеся свойства и добавляя встроенные объекты и функции, как у обычного [глобального объекта][global object]. Вне сценариев, запускаемых модулем `vm`, глобальные
 переменные среды выполнения не меняются.
@@ -1616,8 +1616,8 @@ changes:
 пустой [контекстифицированный][contextified] объект.
 
 Когда глобальный объект в новом контекте [контекстифицирован][contextified], у него есть особенности по сравнению с обычными глобальными объектами: например, его нельзя заморозить. Чтобы создать контекст
-без этих особенностей, передайте [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`] в качестве аргумента
-`contextObject`. Подробнее — в описании [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`].
+без этих особенностей, передайте [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify) в качестве аргумента
+`contextObject`. Подробнее — в описании [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify).
 
 Метод `vm.createContext()` удобен для создания одного
 контекста, в котором выполняется несколько сценариев. Например, при эмуляции
@@ -1635,8 +1635,8 @@ added: v0.11.7
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает `true`, если переданный `object` был [контекстифицирован][contextified] через
-[`vm.createContext()`][`vm.createContext()`], или если это глобальный объект контекста, созданного
-с [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`].
+[`vm.createContext()`](#vmcreatecontextcontextobject-options), или если это глобальный объект контекста, созданного
+с [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify).
 
 ## `vm.measureMemory([options])`
 
@@ -1775,14 +1775,14 @@ changes:
     сценария. **По умолчанию:** `'evalmachine.<anonymous>'`.
   * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
   * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`](errors.md#class-error),
     строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт число миллисекунд выполнения `code`
-    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`][`Error`].
+    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`](errors.md#class-error).
     Это значение должно быть строго положительным целым числом.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Уже подключённые обработчики через
+    [`Error`](errors.md#class-error). Уже подключённые обработчики через
     `process.on('SIGINT')` на время выполнения сценария отключаются, затем снова
     работают. **По умолчанию:** `false`.
   * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
@@ -1792,12 +1792,12 @@ changes:
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вычислении этого сценария при вызове `import()`. Опция относится к
     экспериментальному API модулей. В production не рекомендуется. Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 
 Метод `vm.runInContext()` компилирует `code`, выполняет его в контексте
 `contextifiedObject` и возвращает результат. У выполняемого кода нет доступа
 к локальной области видимости. Объект `contextifiedObject` _должен_ быть заранее
-[контекстифицирован][contextified] через [`vm.createContext()`][`vm.createContext()`].
+[контекстифицирован][contextified] через [`vm.createContext()`](#vmcreatecontextcontextobject-options).
 
 Если `options` — строка, она задаёт имя файла.
 
@@ -1882,21 +1882,21 @@ changes:
 
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код JavaScript для компиляции и выполнения.
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
-  Либо [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`], либо объект, который будет [контекстифицирован][contextified].
+  Либо [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), либо объект, который будет [контекстифицирован][contextified].
   Если `undefined`, для обратной совместимости создаётся пустой контекстифицированный объект.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
   * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла в трассировках стека для этого
     сценария. **По умолчанию:** `'evalmachine.<anonymous>'`.
   * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
   * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`](errors.md#class-error),
     строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт число миллисекунд выполнения `code`
-    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`][`Error`].
+    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`](errors.md#class-error).
     Это значение должно быть строго положительным целым числом.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Уже подключённые обработчики через
+    [`Error`](errors.md#class-error). Уже подключённые обработчики через
     `process.on('SIGINT')` на время выполнения сценария отключаются, затем снова
     работают. **По умолчанию:** `false`.
   * `contextName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Читаемое имя создаваемого контекста.
@@ -1904,7 +1904,7 @@ changes:
     созданного контекста.
   * `contextOrigin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Origin][origin] нового контекста для отображения.
     Формат как у URL, но только схема, хост и при необходимости порт, как
-    у [`url.origin`][`url.origin`] у [`URL`][`URL`]. Завершающий слэш не указывайте — он означает путь.
+    у [`url.origin`](url.md#urlorigin) у [`URL`](url.md#class-url). Завершающий слэш не указывайте — он означает путь.
     **По умолчанию:** `''`.
   * `contextCodeGeneration` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     * `strings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `false` вызовы `eval` и конструкторов функций
@@ -1919,7 +1919,7 @@ changes:
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вычислении этого сценария при вызове `import()`. Опция относится к
     экспериментальному API модулей. В production не рекомендуется. Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
   * `microtaskMode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) При `afterEvaluate` микрозадачи (через `Promise` и `async function`)
     выполняются сразу после сценария. В этом случае они входят в действие опций `timeout` и
     `breakOnSigint`.
@@ -1934,7 +1934,7 @@ changes:
 1. Создаёт новый контекст.
 2. Если `contextObject` — объект, [контекстифицирует][contextified] его в новом контексте.
    Если `contextObject` — `undefined`, создаётся новый объект и [контекстифицируется][contextified].
-   Если `contextObject` — [`vm.constants.DONT_CONTEXTIFY`][`vm.constants.DONT_CONTEXTIFY`], ничего не [контекстифицировать][contextified].
+   Если `contextObject` — [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), ничего не [контекстифицировать][contextified].
 3. Компилирует код как `vm.Script`.
 4. Выполняет скомпилированный код в созданном контексте. Код не видит область видимости,
    из которой вызван метод.
@@ -2027,14 +2027,14 @@ changes:
     сценария. **По умолчанию:** `'evalmachine.<anonymous>'`.
   * `lineOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера строки в трассировках стека. **По умолчанию:** `0`.
   * `columnOffset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение номера колонки первой строки в трассировках стека. **По умолчанию:** `0`.
-  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`][`Error`],
+  * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true`, если при компиляции `code` возникает [`Error`](errors.md#class-error),
     строка с ошибочным кодом добавляется к трассировке стека. **По умолчанию:** `true`.
   * `timeout` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задаёт число миллисекунд выполнения `code`
-    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`][`Error`].
+    до принудительного завершения. Если выполнение будет остановлено, будет выброшен [`Error`](errors.md#class-error).
     Это значение должно быть строго положительным целым числом.
   * `breakOnSigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` сигнал `SIGINT`
     (<kbd>Ctrl</kbd>+<kbd>C</kbd>) прерывает выполнение и выбрасывает
-    [`Error`][`Error`]. Уже подключённые обработчики через
+    [`Error`](errors.md#class-error). Уже подключённые обработчики через
     `process.on('SIGINT')` на время выполнения сценария отключаются, затем снова
     работают. **По умолчанию:** `false`.
   * `cachedData` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательный `Buffer`,
@@ -2044,7 +2044,7 @@ changes:
     [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER
     Задаёт, как загружать модули при вычислении этого сценария при вызове `import()`. Опция относится к
     экспериментальному API модулей. В production не рекомендуется. Подробнее см.
-    [Поддержка динамического `import()` в API компиляции][Support of dynamic `import()` in compilation APIs].
+    [Поддержка динамического `import()` в API компиляции](#support-of-dynamic-import-in-compilation-apis).
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат последнего выполненного в сценарии оператора.
 
 `vm.runInThisContext()` компилирует `code`, выполняет его в контексте текущего
@@ -2054,7 +2054,7 @@ changes:
 Если `options` — строка, она задаёт имя файла.
 
 Следующий пример показывает использование и `vm.runInThisContext()`, и
-встроенной [`eval()`][`eval()`] для одного и того же кода:
+встроенной [`eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) для одного и того же кода:
 
 <!-- eslint-disable prefer-const -->
 
@@ -2093,13 +2093,13 @@ changes:
 Так как у `vm.runInThisContext()` нет доступа к локальной области видимости,
 `localVar` не меняется. Прямой вызов `eval()`, наоборот, _имеет_ доступ
 к локальной области, поэтому `localVar` меняется. В этом смысле
-`vm.runInThisContext()` близок к [косвенному вызову `eval()`][indirect `eval()` call], например
+`vm.runInThisContext()` близок к [косвенному вызову `eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval), например
 `(0,eval)('code')`.
 
 ## Пример: HTTP-сервер внутри VM
 
-Используя [`script.runInThisContext()`][`script.runInThisContext()`] или
-[`vm.runInThisContext()`][`vm.runInThisContext()`], код выполняется в текущем глобальном контексте V8. Переданный в VM код имеет свою изолированную область видимости.
+Используя [`script.runInThisContext()`](#scriptruninthiscontextoptions) или
+[`vm.runInThisContext()`](#vmruninthiscontextcode-options), код выполняется в текущем глобальном контексте V8. Переданный в VM код имеет свою изолированную область видимости.
 
 Чтобы запустить простой веб-сервер на модуле `node:http`, переданный в контекст код должен сам вызвать `require('node:http')` или получить
 ссылку на `node:http` снаружи. Например:
@@ -2247,7 +2247,7 @@ changes:
     }
     ```
 
-Если `vm.constants.DONT_CONTEXTIFY` передан в [`vm.createContext()`][`vm.createContext()`] как `contextObject`,
+Если `vm.constants.DONT_CONTEXTIFY` передан в [`vm.createContext()`](#vmcreatecontextcontextobject-options) как `contextObject`,
 возвращаемый объект похож на прокси к глобальному объекту нового контекста с
 меньшим числом особенностей Node.js. Он совпадает по ссылке с `globalThis` в новом контексте,
 его можно менять извне и через него обращаться к встроенным объектам нового контекста.
@@ -2391,7 +2391,7 @@ changes:
 В этом случае микрозадача, запланированная через `promise.then()`, выполнится
 до возврата из `vm.runInNewContext()` и может быть прервана
 механизмом `timeout`. Это относится только к коду в
-`vm.Context`, например [`vm.runInThisContext()`][`vm.runInThisContext()`] эту опцию не принимает.
+`vm.Context`, например [`vm.runInThisContext()`](#vmruninthiscontextcode-options) эту опцию не принимает.
 
 Колбэки Promise попадают в очередь микрозадач того контекста, в котором
 они были созданы. Если в примере выше заменить `() => loop()` на просто `loop`,
@@ -2507,7 +2507,7 @@ inner_promise`.
 
 Если опция не указана или равна `undefined`, код с `import()` всё ещё можно скомпилировать через API `vm`, но при выполнении скомпилированного кода, когда
 фактически вызывается `import()`, результат будет отклонён с
-[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`][`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`].
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`](errors.md#err_vm_dynamic_import_callback_missing).
 
 ### Когда `importModuleDynamically` равен `vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER`
 
@@ -2634,7 +2634,7 @@ inner_promise`.
 в скомпилированном коде, чтобы задать способ компиляции и вычисления запрошенного модуля. Сейчас процесс Node.js должен быть запущен с флагом `--experimental-vm-modules`, иначе опция не сработает. Если
 флаг не задан, этот колбэк игнорируется. Если выполняемый код
 фактически вызывает `import()`, результат будет отклонён с
-[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`][`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`].
+[`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG`](errors.md#err_vm_dynamic_import_callback_missing_flag).
 
 Колбэк `importModuleDynamically(specifier, referrer, importAttributes)`
 имеет сигнатуру:
@@ -2647,7 +2647,7 @@ inner_promise`.
   `vm.SourceTextModule` для `new vm.SourceTextModule`; объект контекста `Object`
   для `vm.createContext()`.
 * `importAttributes` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `"with"`, переданное в необязательный параметр
-  [`optionsExpression`][`optionsExpression`], или пустой объект, если значение не
+  [`optionsExpression`](https://tc39.es/proposal-import-attributes/#sec-evaluate-import-call), или пустой объект, если значение не
   задано.
 * `phase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Фаза динамического импорта (`"source"` или `"evaluation"`).
 * Возвращает: [`<Module Namespace Object>`](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects) | [`<vm.Module>`](vm.md) Рекомендуется возвращать `vm.Module`, чтобы

@@ -113,16 +113,16 @@ changes:
 
 ### Совместимость с потоками Node.js
 
-Потоки Node.js можно преобразовать в веб-потоки и обратно методами `toWeb` и `fromWeb` у [`stream.Readable`][`stream.Readable`], [`stream.Writable`][`stream.Writable`] и [`stream.Duplex`][`stream.Duplex`].
+Потоки Node.js можно преобразовать в веб-потоки и обратно методами `toWeb` и `fromWeb` у [`stream.Readable`](stream.md#class-streamreadable), [`stream.Writable`](stream.md#class-streamwritable) и [`stream.Duplex`](stream.md#class-streamduplex).
 
 Подробнее в соответствующих разделах:
 
-* [`stream.Readable.toWeb`][`stream.Readable.toWeb`]
-* [`stream.Readable.fromWeb`][`stream.Readable.fromWeb`]
-* [`stream.Writable.toWeb`][`stream.Writable.toWeb`]
-* [`stream.Writable.fromWeb`][`stream.Writable.fromWeb`]
-* [`stream.Duplex.toWeb`][`stream.Duplex.toWeb`]
-* [`stream.Duplex.fromWeb`][`stream.Duplex.fromWeb`]
+* [`stream.Readable.toWeb`](stream.md#streamreadabletowebstreamreadable-options)
+* [`stream.Readable.fromWeb`](stream.md#streamreadablefromwebreadablestream-options)
+* [`stream.Writable.toWeb`](stream.md#streamwritabletowebstreamwritable)
+* [`stream.Writable.fromWeb`](stream.md#streamwritablefromwebwritablestream-options)
+* [`stream.Duplex.toWeb`](stream.md#streamduplextowebstreamduplex-options)
+* [`stream.Duplex.fromWeb`](stream.md#streamduplexfromwebpair-options)
 
 ## API
 

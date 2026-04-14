@@ -71,7 +71,7 @@ module.exports = class Square {
 };
 ```
 
-Система модулей CommonJS реализована во [встроенном модуле `module`][`module` core module].
+Система модулей CommonJS реализована во [встроенном модуле `module`](module.md).
 
 ## Включение {: #enabling}
 
@@ -84,20 +84,20 @@ module.exports = class Square {
 * Файлы с расширением `.cjs`.
 
 * Файлы с расширением `.js` или без расширения, если ближайший родительский
-  файл `package.json` содержит поле верхнего уровня [`"type"`][`"type"`] со значением
+  файл `package.json` содержит поле верхнего уровня [`"type"`](packages.md#type) со значением
   `"commonjs"`.
 
 * Файлы с расширением `.js` или без расширения, если ближайший родительский
-  `package.json` не содержит поля верхнего уровня [`"type"`][`"type"`] или в родительских
+  `package.json` не содержит поля верхнего уровня [`"type"`](packages.md#type) или в родительских
   папках нет `package.json`; если только файл не содержит синтаксиса, который
   вызовет ошибку, если его не оценивать как ES-модуль. Авторам пакетов следует указывать
-  поле [`"type"`][`"type"`], даже если все исходники — CommonJS. Явное указание
+  поле [`"type"`](packages.md#type), даже если все исходники — CommonJS. Явное указание
   `type` пакета упрощает работу инструментов сборки и загрузчиков при определении
   того, как интерпретировать файлы пакета.
 
 * Файлы с расширением, отличным от `.mjs`, `.cjs`, `.json`, `.node` и `.js`,
   если ближайший родительский `package.json` содержит поле верхнего уровня
-  [`"type"`][`"type"`] со значением `"module"`.
+  [`"type"`](packages.md#type) со значением `"module"`.
 
 Подробнее см. [Определение системы модулей][Determining module system].
 
@@ -333,7 +333,7 @@ changes:
 
 Если в `require()`-ном модуле есть top-level `await` или в графе его `import`
 есть top-level `await`,
-выбрасывается [`ERR_REQUIRE_ASYNC_MODULE`][`ERR_REQUIRE_ASYNC_MODULE`]. В этом случае асинхронный модуль нужно загружать через [`import()`][`import()`].
+выбрасывается [`ERR_REQUIRE_ASYNC_MODULE`](errors.md#err_require_async_module). В этом случае асинхронный модуль нужно загружать через [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import).
 
 При включённом `--experimental-print-required-tla` вместо выброса
 `ERR_REQUIRE_ASYNC_MODULE` до выполнения Node.js выполнит модуль,
@@ -342,10 +342,10 @@ changes:
 
 Если поддержка загрузки ES-модулей через `require()` даёт неожиданные сбои,
 её можно отключить флагом `--no-require-module`.
-Чтобы вывести места использования этой возможности, используйте [`--trace-require-module`][`--trace-require-module`].
+Чтобы вывести места использования этой возможности, используйте [`--trace-require-module`](cli.md#--trace-require-modulemode).
 
 Наличие возможности проверяется по
-[`process.features.require_module`][`process.features.require_module`] === `true`.
+[`process.features.require_module`](process.md#processfeaturesrequire_module) === `true`.
 
 ## Всё вместе {: #all-together}
 
@@ -531,7 +531,7 @@ changes:
 Некоторые встроенные модули всегда имеют приоритет при передаче идентификатора в `require()`.
 Например, `require('http')` всегда даёт встроенный HTTP-модуль, даже если есть файл с таким именем.
 
-Список всех встроенных модулей — в [`module.builtinModules`][`module.builtinModules`].
+Список всех встроенных модулей — в [`module.builtinModules`](module.md#modulebuiltinmodules).
 Имена перечислены без префикса `node:`, кроме модулей, для которых префикс обязателен (см. ниже).
 
 ### Встроенные модули с обязательным префиксом `node:` {: #built-in-modules-with-mandatory-node-prefix}
@@ -540,12 +540,12 @@ changes:
 `node:`. Это снижает риск конфликта с пакетами пользователя с тем же именем.
 Сейчас префикс `node:` обязателен для:
 
-* [`node:sea`][`node:sea`]
-* [`node:sqlite`][`node:sqlite`]
-* [`node:test`][`node:test`]
-* [`node:test/reporters`][`node:test/reporters`]
+* [`node:sea`](single-executable-applications.md#single-executable-application-api)
+* [`node:sqlite`](sqlite.md)
+* [`node:test`](test.md)
+* [`node:test/reporters`](test.md#test-reporters)
 
-Список этих модулей есть в [`module.builtinModules`][`module.builtinModules`], с префиксом.
+Список этих модулей есть в [`module.builtinModules`](module.md#modulebuiltinmodules), с префиксом.
 
 ## Циклы {: #cycles}
 
@@ -630,7 +630,7 @@ in main, a.done = true, b.done = true
 Без ведущего `'/'`, `'./'` или `'../'` модуль должен быть встроенным или загружаться из `node_modules`.
 
 Если путь не существует, `require()` выбрасывает
-[`MODULE_NOT_FOUND`][`MODULE_NOT_FOUND`].
+[`MODULE_NOT_FOUND`](errors.md#module_not_found).
 
 ## Каталоги как модули {: #folders-as-modules}
 
@@ -640,7 +640,7 @@ in main, a.done = true, b.done = true
 
 Передать в `require()` каталог можно тремя способами.
 
-Первый — создать в корне каталога [`package.json`][`package.json`] с полем `main`. Пример [`package.json`][`package.json`]:
+Первый — создать в корне каталога [`package.json`](packages.md#nodejs-packagejson-field-definitions) с полем `main`. Пример [`package.json`](packages.md#nodejs-packagejson-field-definitions):
 
 ```json
 { "name" : "some-library",
@@ -651,9 +651,9 @@ in main, a.done = true, b.done = true
 `require('./some-library')` попытается загрузить
 `./some-library/lib/some-library.js`.
 
-Если в каталоге нет [`package.json`][`package.json`], или поле
-[`"main"`][`"main"`] отсутствует или не разрешается, Node.js
-ищет `index.js` или `index.node` в этом каталоге. Например, без [`package.json`][`package.json`] в примере выше
+Если в каталоге нет [`package.json`](packages.md#nodejs-packagejson-field-definitions), или поле
+[`"main"`](packages.md#main) отсутствует или не разрешается, Node.js
+ищет `index.js` или `index.node` в этом каталоге. Например, без [`package.json`](packages.md#nodejs-packagejson-field-definitions) в примере выше
 `require('./some-library')` попытается загрузить:
 
 * `./some-library/index.js`
@@ -666,7 +666,7 @@ Error: Cannot find module 'some-library'
 ```
 
 Во всех трёх случаях вызов `import('./some-library')` даст ошибку
-[`ERR_UNSUPPORTED_DIR_IMPORT`][`ERR_UNSUPPORTED_DIR_IMPORT`]. [Подпути exports][subpath exports] или
+[`ERR_UNSUPPORTED_DIR_IMPORT`](errors.md#err_unsupported_dir_import). [Подпути exports][subpath exports] или
 [подпути imports][subpath imports] дают схожую инкапсуляцию, как у каталогов-модулей,
 и работают и с `require`, и с `import`.
 
@@ -757,7 +757,7 @@ added: v0.1.27
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя каталога текущего модуля. Совпадает с
-[`path.dirname()`][`path.dirname()`] от [`__filename`][`__filename`].
+[`path.dirname()`](path.md#pathdirnamepath) от [`__filename`](#__filename).
 
 Пример: запуск `node example.js` из `/Users/mjr`
 
@@ -780,7 +780,7 @@ added: v0.0.1
 
 Для главной программы это не обязательно то же имя, что в командной строке.
 
-См. [`__dirname`][`__dirname`] для каталога текущего модуля.
+См. [`__dirname`](#__dirname) для каталога текущего модуля.
 
 Примеры:
 
@@ -823,7 +823,7 @@ added: v0.1.16
 
 * Тип: [`<module>`](modules.md#module)
 
-Ссылка на текущий модуль, см. объект [`module` object][`module` object].
+Ссылка на текущий модуль, см. объект [`module` object](#the-module-object).
 `module.exports` задаёт, что модуль экспортирует и отдаёт через `require()`.
 
 ### `require(id)` {: #requireid}
@@ -837,7 +837,7 @@ added: v0.1.13
 
 Импорт модулей, `JSON` и локальных файлов. Модули из `node_modules`, локальные файлы и JSON —
 через относительный путь (например `./`, `./foo`, `./bar/baz`, `../foo`), разрешаемый
-относительно [`__dirname`][`__dirname`] (если есть) или
+относительно [`__dirname`](#__dirname) (если есть) или
 текущего рабочего каталога. Относительные пути в стиле POSIX разрешаются
 одинаково на разных ОС, в том числе в Windows как в Unix.
 
@@ -1158,8 +1158,8 @@ deprecated:
   - v12.19.0
 -->
 
-> Stability: 0 - Deprecated: Please use [`require.main`][`require.main`] and
-> [`module.children`][`module.children`] instead.
+> Stability: 0 - Deprecated: Please use [`require.main`](#requiremain) and
+> [`module.children`](#modulechildren) instead.
 
 * Тип: [`<module>`](modules.md#module) | null | undefined
 
@@ -1175,7 +1175,7 @@ added: v11.14.0
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог модуля. Обычно совпадает с
-[`path.dirname()`][`path.dirname()`] от [`module.id`][`module.id`].
+[`path.dirname()`](path.md#pathdirnamepath) от [`module.id`](#moduleid).
 
 ### `module.paths`
 

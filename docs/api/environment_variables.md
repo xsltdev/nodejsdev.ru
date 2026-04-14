@@ -21,7 +21,7 @@ description: Переменные окружения процесса Node.js, p
 Основной API для работы с переменными окружения — `process.env`: объект
 с предзаполненными пользовательскими переменными окружения, которые можно изменять и дополнять.
 
-Подробнее см. в [документации по `process.env`][`process.env` documentation].
+Подробнее см. в [документации по `process.env`](process.md#processenv).
 
 ## DotEnv
 
@@ -144,17 +144,17 @@ export MY_VAR = my variable
 
 Файлы `.env` можно использовать для заполнения объекта `process.env` одним из параметров CLI:
 
-* [`--env-file=file`][`--env-file=file`]
+* [`--env-file=file`](cli.md#--env-filefile)
 
-* [`--env-file-if-exists=file`][`--env-file-if-exists=file`]
+* [`--env-file-if-exists=file`](cli.md#--env-file-if-existsfile)
 
 ### Программные API
 
 Две следующие функции позволяют напрямую работать с файлами `.env`:
 
-* [`process.loadEnvFile`][`process.loadEnvFile`] — загружает файл `.env` и помещает переменные в `process.env`
+* [`process.loadEnvFile`](process.md#processloadenvfilepath) — загружает файл `.env` и помещает переменные в `process.env`
 
-* [`util.parseEnv`][`util.parseEnv`] — разбирает сырое содержимое файла `.env` и возвращает объект
+* [`util.parseEnv`](util.md#utilparseenvcontent) — разбирает сырое содержимое файла `.env` и возвращает объект
 
 [CLI Environment Variables documentation]: cli.md#environment-variables_1
 [`--env-file-if-exists=file`]: cli.md#--env-file-if-existsfile

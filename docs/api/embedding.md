@@ -90,7 +90,7 @@ changes:
 * несколько `v8::Context`, но ровно один основной `v8::Context`;
 * один `node::IsolateData` с данными, которые могут разделяться несколькими `node::Environment`. Встраивающий код должен гарантировать, что `node::IsolateData` разделяется только между `node::Environment`, использующими один и тот же `v8::Isolate`; Node.js эту проверку не выполняет.
 
-Чтобы настроить `v8::Isolate`, нужен `v8::ArrayBuffer::Allocator`. Вариант по умолчанию — аллокатор Node.js через `node::ArrayBufferAllocator::Create()`. Он даёт небольшой выигрыш в производительности, когда аддоны используют C++ API `Buffer` Node.js, и нужен для учёта памяти `ArrayBuffer` в [`process.memoryUsage()`][`process.memoryUsage()`].
+Чтобы настроить `v8::Isolate`, нужен `v8::ArrayBuffer::Allocator`. Вариант по умолчанию — аллокатор Node.js через `node::ArrayBufferAllocator::Create()`. Он даёт небольшой выигрыш в производительности, когда аддоны используют C++ API `Buffer` Node.js, и нужен для учёта памяти `ArrayBuffer` в [`process.memoryUsage()`](process.md#processmemoryusage).
 
 Кроме того, каждый `v8::Isolate`, используемый экземпляром Node.js, нужно регистрировать и снимать с регистрации на `MultiIsolatePlatform`, если он используется, чтобы платформа знала, какой цикл событий применять для задач, планируемых этим `v8::Isolate`.
 

@@ -205,7 +205,7 @@ changes:
   * `enableForeignKeyConstraints` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включены внешние ключи.
     Рекомендуется; можно отключить для совместимости со старыми схемами. Ограничения
     можно включать и выключать после открытия через
-    [`PRAGMA foreign_keys`][`PRAGMA foreign_keys`]. **По умолчанию:** `true`.
+    [`PRAGMA foreign_keys`](https://www.sqlite.org/pragma.html#pragma_foreign_keys). **По умолчанию:** `true`.
   * `enableDoubleQuotedStringLiterals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` SQLite принимает
     [строковые литералы в двойных кавычках][double-quoted string literals]. Не рекомендуется; можно включить
     для совместимости со старыми схемами.
@@ -256,21 +256,21 @@ added:
 -->
 
 Регистрирует новую агрегатную функцию в базе SQLite. Метод является обёрткой над
-[`sqlite3_create_window_function()`][`sqlite3_create_window_function()`].
+[`sqlite3_create_window_function()`](https://www.sqlite.org/c3ref/create_function.html).
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя создаваемой функции SQLite.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Настройки функции.
   * `deterministic` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
-    флаг [`SQLITE_DETERMINISTIC`][`SQLITE_DETERMINISTIC`].
+    флаг [`SQLITE_DETERMINISTIC`](https://www.sqlite.org/c3ref/c_deterministic.html).
     **По умолчанию:** `false`.
   * `directOnly` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
-    флаг [`SQLITE_DIRECTONLY`][`SQLITE_DIRECTONLY`].
+    флаг [`SQLITE_DIRECTONLY`](https://www.sqlite.org/c3ref/c_deterministic.html).
     **По умолчанию:** `false`.
   * `useBigIntArguments` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы для `options.step` и `options.inverse`
     преобразуются в `BigInt`. Если `false`, целые передаются как
     числа JavaScript. **По умолчанию:** `false`.
   * `varargs` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `options.step` и `options.inverse` могут вызываться с любым числом
-    аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`][`SQLITE_MAX_FUNCTION_ARG`]). Если `false`,
+    аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`](https://www.sqlite.org/limits.html#max_function_arg)). Если `false`,
     `inverse` и `step` должны вызываться ровно с `length` аргументами.
     **По умолчанию:** `false`.
   * `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Начальное
@@ -339,7 +339,7 @@ added: v22.5.0
 -->
 
 Закрывает соединение с базой. Если база не открыта, выбрасывается исключение.
-Метод является обёрткой над [`sqlite3_close_v2()`][`sqlite3_close_v2()`].
+Метод является обёрткой над [`sqlite3_close_v2()`](https://www.sqlite.org/c3ref/close.html).
 
 ### `database.loadExtension(path)`
 
@@ -352,7 +352,7 @@ added:
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к загружаемой динамической библиотеке.
 
 Загружает разделяемую библиотеку в соединение с базой. Метод является обёрткой
-над [`sqlite3_load_extension()`][`sqlite3_load_extension()`]. Нужно включить опцию
+над [`sqlite3_load_extension()`](https://www.sqlite.org/c3ref/load_extension.html). Нужно включить опцию
 `allowExtension` при создании экземпляра `DatabaseSync`.
 
 ### `database.enableLoadExtension(allow)`
@@ -381,7 +381,7 @@ added:
 
 Включает или отключает режим defensive. При активном флаге отключаются
 возможности SQL, позволяющие намеренно повредить файл базы.
-Подробности — [`SQLITE_DBCONFIG_DEFENSIVE`][`SQLITE_DBCONFIG_DEFENSIVE`] в документации SQLite.
+Подробности — [`SQLITE_DBCONFIG_DEFENSIVE`](https://www.sqlite.org/c3ref/c_dbconfig_defensive.html#sqlitedbconfigdefensive) в документации SQLite.
 
 ### `database.location([dbName])`
 
@@ -392,11 +392,11 @@ added:
 -->
 
 * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы. Может быть `'main'` (основная база по умолчанию) или любая другая,
-  добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  добавленная через [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Путь к файлу базы. Для базы в памяти
   возвращается `null`.
 
-Метод является обёрткой над [`sqlite3_db_filename()`][`sqlite3_db_filename()`].
+Метод является обёрткой над [`sqlite3_db_filename()`](https://sqlite.org/c3ref/db_filename.html).
 
 ### `database.exec(sql)`
 
@@ -408,7 +408,7 @@ added: v22.5.0
 
 Позволяет выполнить одну или несколько SQL-команд без возврата
 результатов. Удобно при выполнении SQL, прочитанного из файла.
-Метод является обёрткой над [`sqlite3_exec()`][`sqlite3_exec()`].
+Метод является обёрткой над [`sqlite3_exec()`](https://www.sqlite.org/c3ref/exec.html).
 
 ### `database.function(name[, options], fn)`
 
@@ -422,16 +422,16 @@ added:
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные настройки функции. Поддерживаются
   свойства:
   * `deterministic` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
-    флаг [`SQLITE_DETERMINISTIC`][`SQLITE_DETERMINISTIC`].
+    флаг [`SQLITE_DETERMINISTIC`](https://www.sqlite.org/c3ref/c_deterministic.html).
     **По умолчанию:** `false`.
   * `directOnly` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, для созданной функции устанавливается
-    флаг [`SQLITE_DIRECTONLY`][`SQLITE_DIRECTONLY`].
+    флаг [`SQLITE_DIRECTONLY`](https://www.sqlite.org/c3ref/c_deterministic.html).
     **По умолчанию:** `false`.
   * `useBigIntArguments` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, целочисленные аргументы `function`
     преобразуются в `BigInt`. Если `false`, целые передаются как
     числа JavaScript. **По умолчанию:** `false`.
   * `varargs` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `function` может вызываться с любым числом
-    аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`][`SQLITE_MAX_FUNCTION_ARG`]). Если `false`,
+    аргументов (от нуля до [`SQLITE_MAX_FUNCTION_ARG`](https://www.sqlite.org/limits.html#max_function_arg)). Если `false`,
     `function` должна вызываться ровно с `function.length` аргументами.
     **По умолчанию:** `false`.
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция JavaScript, вызываемая при обращении к функции SQLite.
@@ -440,7 +440,7 @@ added:
   `NULL`.
 
 Создаёт пользовательские функции SQLite. Метод является обёрткой
-над [`sqlite3_create_function_v2()`][`sqlite3_create_function_v2()`].
+над [`sqlite3_create_function_v2()`](https://www.sqlite.org/c3ref/create_function.html).
 
 ### `database.setAuthorizer(callback)`
 
@@ -454,7 +454,7 @@ added: v24.10.0
 Задаёт callback авторизации, который SQLite вызывает при попытке
 обратиться к данным или изменить схему через подготовленные выражения.
 Можно использовать для политик безопасности, аудита или ограничения операций.
-Метод является обёрткой над [`sqlite3_set_authorizer()`][`sqlite3_set_authorizer()`].
+Метод является обёрткой над [`sqlite3_set_authorizer()`](https://sqlite.org/c3ref/set_authorizer.html).
 
 При вызове callback получает пять аргументов:
 
@@ -540,7 +540,7 @@ added:
 -->
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Находится ли соединение внутри транзакции. Метод
-  является обёрткой над [`sqlite3_get_autocommit()`][`sqlite3_get_autocommit()`].
+  является обёрткой над [`sqlite3_get_autocommit()`](https://sqlite.org/c3ref/get_autocommit.html).
 
 ### `database.limits`
 
@@ -590,11 +590,11 @@ added: REPLACEME
 
 * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сериализуемой базы. Может быть `'main'`
   (основная по умолчанию) или любая другая, добавленная через
-  [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
 * Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы.
 
 Сериализует базу в двоичный вид (`Uint8Array`). Удобно для сохранения,
-клонирования или переноса in-memory базы. Метод является обёрткой над [`sqlite3_serialize()`][`sqlite3_serialize()`].
+клонирования или переноса in-memory базы. Метод является обёрткой над [`sqlite3_serialize()`](https://sqlite.org/c3ref/serialize.html).
 
 === "MJS"
 
@@ -627,7 +627,7 @@ added: REPLACEME
 -->
 
 * `buffer` [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичное представление базы, например результат
-  [`database.serialize()`][`database.serialize()`].
+  [`database.serialize()`](#databaseserializedbname).
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры десериализации.
   * `dbName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы, в которую загружают данные.
     **По умолчанию:** `'main'`.
@@ -636,7 +636,7 @@ added: REPLACEME
 Результат доступен для записи. Существующие подготовленные выражения
 финализируются до попытки десериализации, даже если операция затем завершится ошибкой.
 Метод является обёрткой над
-[`sqlite3_deserialize()`][`sqlite3_deserialize()`].
+[`sqlite3_deserialize()`](https://sqlite.org/c3ref/deserialize.html).
 
 === "MJS"
 
@@ -691,7 +691,7 @@ added: v22.5.0
 * Возвращает: [`<StatementSync>`](sqlite.md) Подготовленное выражение.
 
 Компилирует SQL в [подготовленное выражение][prepared statement]. Метод является обёрткой
-над [`sqlite3_prepare_v2()`][`sqlite3_prepare_v2()`].
+над [`sqlite3_prepare_v2()`](https://www.sqlite.org/c3ref/prepare.html).
 
 ### `database.createTagStore([maxSize])`
 
@@ -703,7 +703,7 @@ added: v24.9.0
   **По умолчанию:** `1000`.
 * Возвращает: [`<SQLTagStore>`](#class-sqltagstore) Новый тег-хранилище SQL для кэширования выражений.
 
-Создаёт [`SQLTagStore`][`SQLTagStore`] — LRU-кэш
+Создаёт [`SQLTagStore`](#class-sqltagstore) — LRU-кэш
 подготовленных выражений. Позволяет повторно использовать
 выражения, помечая их уникальным идентификатором.
 
@@ -829,10 +829,10 @@ added:
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры сессии.
   * `table` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Конкретная таблица для отслеживания изменений. По умолчанию отслеживаются все таблицы.
-  * `db` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы для отслеживания. Полезно при нескольких базах через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  * `db` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя базы для отслеживания. Полезно при нескольких базах через [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
 * Возвращает: [`<Session>`](sqlite.md) Дескриптор сессии.
 
-Создаёт и подключает сессию к базе. Метод является обёрткой над [`sqlite3session_create()`][`sqlite3session_create()`] и [`sqlite3session_attach()`][`sqlite3session_attach()`].
+Создаёт и подключает сессию к базе. Метод является обёрткой над [`sqlite3session_create()`](https://www.sqlite.org/session/sqlite3session_create.html) и [`sqlite3session_attach()`](https://www.sqlite.org/session/sqlite3session_attach.html).
 
 ### `database.applyChangeset(changeset[, options])`
 
@@ -869,7 +869,7 @@ added:
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Успешно ли применён changeset без прерывания.
 
 Если база не открыта, выбрасывается исключение.
-Метод является обёрткой над [`sqlite3changeset_apply()`][`sqlite3changeset_apply()`].
+Метод является обёрткой над [`sqlite3changeset_apply()`](https://www.sqlite.org/session/sqlite3changeset_apply.html).
 
 === "MJS"
 
@@ -954,7 +954,7 @@ added:
 * Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный changeset для применения к другим базам.
 
 Возвращает changeset со всеми изменениями с момента создания сессии. Можно вызывать несколько раз.
-Если база или сессия не открыты, выбрасывается исключение. Метод является обёрткой над [`sqlite3session_changeset()`][`sqlite3session_changeset()`].
+Если база или сессия не открыты, выбрасывается исключение. Метод является обёрткой над [`sqlite3session_changeset()`](https://www.sqlite.org/session/sqlite3session_changeset.html).
 
 ### `session.patchset()`
 
@@ -968,12 +968,12 @@ added:
 
 Аналогично предыдущему методу, но формирует более компактный patchset. См. [Changesets and Patchsets][Changesets and Patchsets]
 в документации SQLite. Если база или сессия не открыты, выбрасывается исключение. Метод является
-обёрткой над [`sqlite3session_patchset()`][`sqlite3session_patchset()`].
+обёрткой над [`sqlite3session_patchset()`](https://www.sqlite.org/session/sqlite3session_patchset.html).
 
 ### `session.close()`
 
 Закрывает сессию. Если база или сессия не открыты, выбрасывается исключение. Метод является
-обёрткой над [`sqlite3session_delete()`][`sqlite3session_delete()`].
+обёрткой над [`sqlite3session_delete()`](https://www.sqlite.org/session/sqlite3session_delete.html).
 
 ### `session[Symbol.dispose]()`
 
@@ -1044,20 +1044,20 @@ added:
 
   * `column` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя столбца в исходной таблице без псевдонима
     или `null`, если столбец получен из выражения или подзапроса.
-    Соответствует [`sqlite3_column_origin_name()`][`sqlite3_column_origin_name()`].
+    Соответствует [`sqlite3_column_origin_name()`](https://www.sqlite.org/c3ref/column_database_name.html).
   * `database` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной базы без псевдонима
     или `null` для выражения/подзапроса.
-    Соответствует [`sqlite3_column_database_name()`][`sqlite3_column_database_name()`].
+    Соответствует [`sqlite3_column_database_name()`](https://www.sqlite.org/c3ref/column_database_name.html).
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя столбца в наборе результатов
     `SELECT`.
     Соответствует
-    [`sqlite3_column_name()`][`sqlite3_column_name()`].
+    [`sqlite3_column_name()`](https://www.sqlite.org/c3ref/column_name.html).
   * `table` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Имя исходной таблицы без псевдонима или `null`
     для выражения/подзапроса.
-    Соответствует [`sqlite3_column_table_name()`][`sqlite3_column_table_name()`].
+    Соответствует [`sqlite3_column_table_name()`](https://www.sqlite.org/c3ref/column_database_name.html).
   * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Объявленный тип столбца или `null`
     для выражения/подзапроса.
-    Соответствует [`sqlite3_column_decltype()`][`sqlite3_column_decltype()`].
+    Соответствует [`sqlite3_column_decltype()`](https://www.sqlite.org/c3ref/column_decltype.html).
 
 Возвращает сведения о столбцах результата
 подготовленного выражения.
@@ -1072,7 +1072,7 @@ added: v22.5.0
 
 Текст подготовленного выражения, в котором плейсхолдеры заменены значениями
 последнего выполнения. Свойство является обёрткой над
-[`sqlite3_expanded_sql()`][`sqlite3_expanded_sql()`].
+[`sqlite3_expanded_sql()`](https://www.sqlite.org/c3ref/expanded_sql.html).
 
 ### `statement.get([namedParameters][, ...anonymousParameters])`
 
@@ -1164,11 +1164,11 @@ changes:
     последним завершённым `INSERT`, `UPDATE` или `DELETE`.
     Тип — число или `BigInt` в зависимости от настроек
     выражения. Соответствует
-    [`sqlite3_changes64()`][`sqlite3_changes64()`].
+    [`sqlite3_changes64()`](https://www.sqlite.org/c3ref/changes.html).
   * `lastInsertRowid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Идентификатор последней вставленной строки.
     Тип — число или `BigInt` в зависимости от настроек выражения.
     Соответствует
-    [`sqlite3_last_insert_rowid()`][`sqlite3_last_insert_rowid()`].
+    [`sqlite3_last_insert_rowid()`](https://www.sqlite.org/c3ref/last_insert_rowid.html).
 
 Выполняет выражение и возвращает сводку по
 изменениям. [Параметры][parameters are bound] привязываются
@@ -1239,7 +1239,7 @@ added: v22.5.0
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный SQL, из которого создано выражение.
 
 Текст подготовленного выражения. Свойство является
-обёрткой над [`sqlite3_sql()`][`sqlite3_sql()`].
+обёрткой над [`sqlite3_sql()`](https://www.sqlite.org/c3ref/expanded_sql.html).
 
 ## Class: `SQLTagStore` {: #class-sqltagstore}
 
@@ -1250,7 +1250,7 @@ added: v24.9.0
 Класс представляет LRU-кэш (least recently used) для
 подготовленных выражений.
 
-Экземпляры создаются через [`database.createTagStore()`][`database.createTagStore()`],
+Экземпляры создаются через [`database.createTagStore()`](#databasecreatetagstoremaxsize),
 не конструктором. Кэш ключуется строкой SQL. При повторном том же запросе
 берётся сохранённое выражение, новые значения подставляются через привязку параметров,
 что снижает риск SQL-инъекций.
@@ -1393,14 +1393,14 @@ changes:
   он перезаписывается.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры резервного копирования.
   Поддерживаются:
-  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходной базы: `'main'` или база, добавленная через [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
-  * `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`][`ATTACH DATABASE`]. **По умолчанию:** `'main'`.
+  * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходной базы: `'main'` или база, добавленная через [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
+  * `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
   * `rate` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число страниц за один шаг копирования. **По умолчанию:** `100`.
   * `progress` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный callback после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
 
-Создаёт резервную копию базы. Обёртка над [`sqlite3_backup_init()`][`sqlite3_backup_init()`], [`sqlite3_backup_step()`][`sqlite3_backup_step()`]
-и [`sqlite3_backup_finish()`][`sqlite3_backup_finish()`].
+Создаёт резервную копию базы. Обёртка над [`sqlite3_backup_init()`](https://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupinit), [`sqlite3_backup_step()`](https://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupstep)
+и [`sqlite3_backup_finish()`](https://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupfinish).
 
 Во время копирования исходную базу можно использовать как обычно. Изменения из того же соединения ([DatabaseSync](sqlite.md))
 сразу попадают в копию. Изменения из других соединений перезапускают процесс резервного копирования.
@@ -1458,7 +1458,7 @@ added:
 #### Константы разрешения конфликтов
 
 Одна из следующих констант может передаваться обработчику `onConflict`
-при вызове [`database.applyChangeset()`][`database.applyChangeset()`]. См. также
+при вызове [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
 [Constants Passed To The Conflict Handler][Constants Passed To The Conflict Handler] в документации SQLite.
 
 <table>
@@ -1489,7 +1489,7 @@ added:
 </table>
 
 Одна из следующих констант должна возвращаться из обработчика `onConflict`
-для [`database.applyChangeset()`][`database.applyChangeset()`]. См. также
+для [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
 [Constants Returned From The Conflict Handler][Constants Returned From The Conflict Handler] в документации SQLite.
 
 <table>
@@ -1513,12 +1513,12 @@ added:
 
 #### Константы авторизации
 
-Следующие константы используются с методом [`database.setAuthorizer()`][`database.setAuthorizer()`].
+Следующие константы используются с методом [`database.setAuthorizer()`](#databasesetauthorizercallback).
 
 ##### Коды результата авторизации
 
 Одна из следующих констант должна возвращаться из callback авторизатора
-для [`database.setAuthorizer()`][`database.setAuthorizer()`].
+для [`database.setAuthorizer()`](#databasesetauthorizercallback).
 
 <table>
   <tr>

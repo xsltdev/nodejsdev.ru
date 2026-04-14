@@ -18,12 +18,12 @@ description: Модуль node:zlib/iter — преобразования сжа
 <!-- source_link=lib/zlib/iter.js -->
 
 Модуль `node:zlib/iter` предоставляет преобразования сжатия и распаковки
-для API итерируемых потоков [`node:stream/iter`][`node:stream/iter`].
+для API итерируемых потоков [`node:stream/iter`](stream_iter.md).
 
 Модуль доступен только при включённом флаге CLI `--experimental-stream-iter`.
 
 У каждого алгоритма есть асинхронный вариант (сохраняющий состояние async generator — для
-[`pull()`][`pull()`] и [`pipeTo()`][`pipeTo()`]) и синхронный вариант (сохраняющий состояние sync generator — для `pullSync()` и `pipeToSync()`).
+[`pull()`](stream_iter.md#pullsource-transforms-options) и [`pipeTo()`](stream_iter.md#pipetosource-transforms-writer-options)) и синхронный вариант (сохраняющий состояние sync generator — для `pullSync()` и `pipeToSync()`).
 
 Асинхронные преобразования выполняют сжатие в пуле потоков libuv, перекрывая
 ввод-вывод с выполнением JavaScript. Синхронные выполняют сжатие прямо

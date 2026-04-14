@@ -55,7 +55,7 @@ changes:
 
 Обработчики ошибок домена **не заменяют** корректное завершение процесса при ошибке.
 
-Из-за того, как в JavaScript работает [`throw`][`throw`], почти нельзя безопасно
+Из-за того, как в JavaScript работает [`throw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw), почти нельзя безопасно
 «продолжить с того же места», не допустив утечек ссылок или хрупкого неопределённого состояния.
 
 Самый безопасный ответ на выброшенную ошибку — завершить процесс. В обычном веб-сервере
@@ -311,7 +311,7 @@ d.on('error', (er) => {
 
 Метод `enter()` — внутренняя часть реализации `run()`, `bind()` и `intercept()`: задаёт активный домен.
 Устанавливает `domain.active` и `process.domain` на этот домен и помещает домен в стек доменов
-(см. [`domain.exit()`][`domain.exit()`]). Вызов `enter()` ограничивает начало цепочки асинхронных вызовов и операций ввода-вывода,
+(см. [`domain.exit()`](#domainexit)). Вызов `enter()` ограничивает начало цепочки асинхронных вызовов и операций ввода-вывода,
 привязанных к домену.
 
 `enter()` меняет только активный домен, не сам объект домена. `enter()` и `exit()` можно вызывать
@@ -334,8 +334,8 @@ d.on('error', (er) => {
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция обратного вызова
 * Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) перехватывающая функция
 
-Почти то же, что [`domain.bind(callback)`][`domain.bind(callback)`], но помимо перехвата выброшенных ошибок перехватывает
-объекты [`Error`][`Error`], переданные первым аргументом в функцию.
+Почти то же, что [`domain.bind(callback)`](#domainbindcallback), но помимо перехвата выброшенных ошибок перехватывает
+объекты [`Error`](errors.md#class-error), переданные первым аргументом в функцию.
 
 Типичный шаблон `if (err) return callback(err);` можно заменить одним обработчиком ошибок в одном месте.
 
@@ -361,7 +361,7 @@ d.on('error', (er) => {
 
 * `emitter` [`<EventEmitter>`](events.md#class-eventemitter) эмиттер, удаляемый из домена
 
-Противоположность [`domain.add(emitter)`][`domain.add(emitter)`]. Снимает обработку домена с указанного эмиттера.
+Противоположность [`domain.add(emitter)`](#domainaddemitter). Снимает обработку домена с указанного эмиттера.
 
 ### `domain.run(fn[, ...args])`
 
@@ -414,7 +414,7 @@ d2.run(() => {
 });
 ```
 
-Колбэк можно привязать к конкретному домену через [`domain.bind(callback)`][`domain.bind(callback)`]:
+Колбэк можно привязать к конкретному домену через [`domain.bind(callback)`](#domainbindcallback):
 
 ```js
 const d1 = domain.create();

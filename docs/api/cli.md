@@ -445,7 +445,7 @@ $ node --snapshot-blob snapshot.blob index.js
 I am from the snapshot
 ```
 
-API [`v8.startupSnapshot` API][`v8.startupsnapshot` api] позволяет задать точку входа на этапе сборки снимка, без дополнительного скрипта при десериализации:
+API [`v8.startupSnapshot` API](v8.md#startup-snapshot-api) позволяет задать точку входа на этапе сборки снимка, без дополнительного скрипта при десериализации:
 
 ```console
 $ echo "require('v8').startupSnapshot.setDeserializeMainFunction(() => console.log('I am from the snapshot'))" > snapshot.js
@@ -454,11 +454,11 @@ $ node --snapshot-blob snapshot.blob
 I am from the snapshot
 ```
 
-Подробнее — в документации [`v8.startupSnapshot` API][`v8.startupsnapshot` api].
+Подробнее — в документации [`v8.startupSnapshot` API](v8.md#startup-snapshot-api).
 
 Сейчас при сборке снимка поддерживается только одна точка входа; можно подключать встроенные модули, но не дополнительные пользовательские — приложение обычно собирают в один скрипт бандлером до сборки снимка.
 
-Гарантировать сериализуемость всех встроенных модулей сложно, и их число растёт; лишь часть встроенных модулей надёжно проверена на сериализуемость при сборке снимка. Тесты Node.js проверяют несколько относительно сложных приложений. Список встроенных модулей, [captured by the built-in snapshot of Node.js](https://github.com/nodejs/node/blob/b19525a33cc84033af4addd0f80acd4dc33ce0cf/test/parallel/test-bootstrap-modules.js#L24), считается поддерживаемым. Если при сборке встречается встроенный модуль, который нельзя сериализовать, процесс сборки снимка может аварийно завершиться; типичный обход — отложить загрузку такого модуля до выполнения, через [`v8.startupSnapshot.setDeserializeMainFunction()`][`v8.startupsnapshot.setdeserializemainfunction()`] или [`v8.startupSnapshot.addDeserializeCallback()`][`v8.startupsnapshot.adddeserializecallback()`]. Если нужна сериализация дополнительного модуля при сборке снимка, создайте запрос в [Node.js issue tracker](https://github.com/nodejs/node/issues) и сошлитесь на [tracking issue for user-land snapshots](https://github.com/nodejs/node/issues/44014).
+Гарантировать сериализуемость всех встроенных модулей сложно, и их число растёт; лишь часть встроенных модулей надёжно проверена на сериализуемость при сборке снимка. Тесты Node.js проверяют несколько относительно сложных приложений. Список встроенных модулей, [captured by the built-in snapshot of Node.js](https://github.com/nodejs/node/blob/b19525a33cc84033af4addd0f80acd4dc33ce0cf/test/parallel/test-bootstrap-modules.js#L24), считается поддерживаемым. Если при сборке встречается встроенный модуль, который нельзя сериализовать, процесс сборки снимка может аварийно завершиться; типичный обход — отложить загрузку такого модуля до выполнения, через [`v8.startupSnapshot.setDeserializeMainFunction()`](v8.md#v8startupsnapshotsetdeserializemainfunctioncallback-data) или [`v8.startupSnapshot.addDeserializeCallback()`](v8.md#v8startupsnapshotadddeserializecallbackcallback-data). Если нужна сериализация дополнительного модуля при сборке снимка, создайте запрос в [Node.js issue tracker](https://github.com/nodejs/node/issues) и сошлитесь на [tracking issue for user-land snapshots](https://github.com/nodejs/node/issues/44014).
 
 ### `--build-snapshot-config`
 
@@ -724,7 +724,7 @@ added:
 
 Основные типы предупреждений в Node.js: `DeprecationWarning` и `ExperimentalWarning`
 
-For example, the following script will not emit [DEP0025 `require('node:sys')`](deprecations.md#dep0025-requirenodesys) when executed with `node --disable-warning=DEP0025`:
+Например, следующий скрипт не будет выдавать предупреждение [DEP0025 `require('node:sys')`](deprecations.md#dep0025-requirenodesys), если запустить его с `node --disable-warning=DEP0025`:
 
 === "MJS"
 
@@ -738,7 +738,7 @@ For example, the following script will not emit [DEP0025 `require('node:sys')`](
     const sys = require('node:sys');
     ```
 
-For example, the following script will emit the [DEP0025 `require('node:sys')`](deprecations.md#dep0025-requirenodesys), but not any Experimental Warnings (such as [ExperimentalWarning: `vm.measureMemory` is an experimental feature](vm.md#vmmeasurememoryoptions) in <=v21) when executed with `node --disable-warning=ExperimentalWarning`:
+Например, следующий скрипт будет выдавать [DEP0025 `require('node:sys')`](deprecations.md#dep0025-requirenodesys), но не будет выдавать предупреждения типа Experimental Warning (например, [ExperimentalWarning: `vm.measureMemory` is an experimental feature](vm.md#vmmeasurememoryoptions) в <=v21), если запустить его с `node --disable-warning=ExperimentalWarning`:
 
 === "MJS"
 
@@ -768,8 +768,8 @@ changes:
   - version:
     - REPLACEME
     pr-url: https://github.com/nodejs/node/pull/62132
-    description: Node.js now automatically disables the trap handler when there is not
-                 enough virtual memory available at startup to allocate one cage.
+    description: Node.js теперь автоматически отключает trap handler, если при запуске
+                 недостаточно виртуальной памяти для выделения одного cage.
 -->
 
 Добавлено в: v22.2.0, v20.15.0
@@ -780,7 +780,7 @@ changes:
     | --- | --- |
     | REPLACEME | Node.js теперь автоматически отключает trap handler, если при запуске недостаточно виртуальной памяти для выделения одного cage. |
 
-Node.js enables V8's trap-handler-based WebAssembly bound checks on 64-bit platforms, which significantly improves WebAssembly performance by eliminating the need for inline bound checks. This optimization requires allocating a large virtual memory cage per WebAssembly memory instance (currently typically 8GB for 32-bit WebAssembly memory, 16GB for 64-bit WebAssembly memory) to trap out-of-bound accesses. On most 64-bit platforms, the virtual memory address space is usually large enough (around 128TB) to accommodate typical WebAssembly usages, but if the machine has manual limits on virtual memory (e.g. through `ulimit -v`), WebAssembly memory allocation is more likely to fail with `WebAssembly.Memory(): could not allocate memory`.
+Node.js включает проверки границ WebAssembly в V8 на основе trap handler на 64-битных платформах, что заметно повышает производительность WebAssembly за счёт отказа от inline-проверок границ. Для этой оптимизации требуется выделять большую область виртуальной памяти на каждый экземпляр памяти WebAssembly (сейчас обычно 8 ГБ для 32-битной памяти WebAssembly и 16 ГБ для 64-битной), чтобы перехватывать выход за границы. На большинстве 64-битных платформ адресного пространства виртуальной памяти обычно достаточно (около 128 ТБ) для типичных сценариев использования WebAssembly, но если на машине вручную ограничена виртуальная память (например, через `ulimit -v`), выделение памяти WebAssembly с большей вероятностью завершится ошибкой `WebAssembly.Memory(): could not allocate memory`.
 
 При запуске Node.js автоматически проверяет, достаточно ли доступной виртуальной памяти для выделения хотя бы одной области, и если нет, то оптимизация trap-handler автоматически отключается, чтобы WebAssembly всё ещё мог выполняться с inline-проверками границ (с менее оптимальной производительностью). Но если приложению нужно создать много экземпляров памяти WebAssembly, а на машине при этом всё ещё установлен относительно высокий лимит виртуальной памяти, выделение памяти для WebAssembly может по-прежнему завершаться ошибкой быстрее, чем ожидается, из-за увеличенного потребления виртуальной памяти.
 
@@ -818,13 +818,13 @@ changes:
     | v22.1.0, v20.13.0 | `ipv6first` теперь поддерживается. |
     | v17.0.0 | Изменено значение по умолчанию на `verbatim`. |
 
-Задаёт значение по умолчанию для `order` в [`dns.lookup()`][`dns.lookup()`] и [`dnsPromises.lookup()`][`dnspromises.lookup()`]. Возможные значения:
+Задаёт значение по умолчанию для `order` в [`dns.lookup()`](dns.md#dnslookuphostname-options-callback) и [`dnsPromises.lookup()`](dns.md#dnspromiseslookuphostname-options). Возможные значения:
 
 -   `ipv4first`: устанавливает `order` по умолчанию в `ipv4first`.
 -   `ipv6first`: устанавливает `order` по умолчанию в `ipv6first`.
 -   `verbatim`: устанавливает `order` по умолчанию в `verbatim`.
 
-По умолчанию используется `verbatim`, а [`dns.setDefaultResultOrder()`][`dns.setdefaultresultorder()`] имеет более высокий приоритет, чем `--dns-result-order`.
+По умолчанию используется `verbatim`, а [`dns.setDefaultResultOrder()`](dns.md#dnssetdefaultresultorderorder) имеет более высокий приоритет, чем `--dns-result-order`.
 
 ### `--enable-fips`
 
@@ -978,13 +978,13 @@ A MULTILINE"
 # will result in `THIS IS\nA MULTILINE` as the value.
 ```
 
-Export keyword before a key is ignored:
+Ключевое слово `export` перед ключом игнорируется:
 
 ```text
 export USERNAME="nodejs" # will result in `nodejs` as the value.
 ```
 
-If you want to load environment variables from a file that may not exist, you can use the [`--env-file-if-exists`](#--env-file-if-existsfile) flag instead.
+Если нужно загружать переменные окружения из файла, который может не существовать, используйте вместо этого флаг [`--env-file-if-exists`](#--env-file-if-existsfile).
 
 ### `-e`, `--eval "script"`
 
@@ -993,10 +993,10 @@ added: v0.5.2
 changes:
   - version: v22.6.0
     pr-url: https://github.com/nodejs/node/pull/53725
-    description: Eval now supports experimental type-stripping.
+    description: Eval теперь поддерживает экспериментальное удаление типов.
   - version: v5.11.0
     pr-url: https://github.com/nodejs/node/pull/5348
-    description: Built-in libraries are now available as predefined variables.
+    description: Встроенные библиотеки теперь доступны как предопределённые переменные.
 -->
 
 Добавлено в: v0.5.2
@@ -1186,11 +1186,11 @@ changes:
     - v22.13.1
     - v20.18.2
     pr-url: https://github.com/nodejs-private/node-private/pull/629
-    description: Using this feature with the permission model enabled requires
-                 passing `--allow-worker`.
+    description: Для использования этой возможности при включённой модели
+                 разрешений требуется передать `--allow-worker`.
   - version: v12.11.1
     pr-url: https://github.com/nodejs/node/pull/29752
-    description: This flag was renamed from `--loader` to
+    description: Этот флаг был переименован с `--loader` в
                  `--experimental-loader`.
 -->
 
@@ -1293,7 +1293,7 @@ changes:
     - v20.1.0
     - v18.17.0
     pr-url: https://github.com/nodejs/node/pull/47686
-    description: This option can be used with `--test`.
+    description: Эту опцию можно использовать с `--test`.
 -->
 
 ??? note "История"
@@ -1302,7 +1302,7 @@ changes:
     | --- | --- |
     | v20.1.0, v18.17.0 | Эту опцию можно использовать с --test. |
 
-When used in conjunction with the `node:test` module, a code coverage report is generated as part of the test runner output. If no tests are run, a coverage report is not generated. See the documentation on [collecting code coverage from tests](test.md#collecting-code-coverage) for more details.
+При использовании вместе с модулем `node:test` отчёт о покрытии кода генерируется как часть вывода средства запуска тестов. Если тесты не запускались, отчёт о покрытии не создаётся. Подробнее см. в документации о [сборе покрытия кода из тестов](test.md#collecting-code-coverage).
 
 ### `--experimental-test-module-mocks`
 
@@ -1316,8 +1316,8 @@ changes:
     - v22.13.1
     - v20.18.2
     pr-url: https://github.com/nodejs-private/node-private/pull/629
-    description: Using this feature with the permission model enabled requires
-                 passing `--allow-worker`.
+    description: Для использования этой возможности при включённой модели
+                 разрешений требуется передать `--allow-worker`.
 -->
 
 ??? note "История"
@@ -1351,11 +1351,11 @@ changes:
     - v20.0.0
     - v18.17.0
     pr-url: https://github.com/nodejs/node/pull/47286
-    description: This option is no longer required as WASI is
-                 enabled by default, but can still be passed.
+    description: Эта опция больше не обязательна, так как WASI
+                 включён по умолчанию, но её всё ещё можно передавать.
   - version: v13.6.0
     pr-url: https://github.com/nodejs/node/pull/30980
-    description: changed from `--experimental-wasi-unstable-preview0` to
+    description: Изменено с `--experimental-wasi-unstable-preview0` на
                  `--experimental-wasi-unstable-preview1`.
 -->
 
@@ -1516,7 +1516,7 @@ changes:
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
 
-Specify the average sampling interval in bytes for the heap profiles generated by `--heap-prof`. The default is 512 \* 1024 bytes.
+Задаёт средний интервал выборки в байтах для профилей кучи, создаваемых флагом `--heap-prof`. Значение по умолчанию — 512 \* 1024 байт.
 
 ### `--heap-prof-name`
 
@@ -1538,7 +1538,7 @@ changes:
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
 
-Specify the file name of the heap profile generated by `--heap-prof`.
+Задаёт имя файла профиля кучи, создаваемого флагом `--heap-prof`.
 
 ### `--heapsnapshot-near-heap-limit=max_count`
 
@@ -1552,7 +1552,7 @@ changes:
     - v24.13.1
     - v22.22.1
     pr-url: https://github.com/nodejs/node/pull/60956
-    description: The flag is no longer experimental.
+    description: Флаг больше не является экспериментальным.
 -->
 
 ??? note "История"
@@ -1561,11 +1561,11 @@ changes:
     | --- | --- |
     | v25.4.0, v24.13.1, v22.22.1 | Флаг больше не является экспериментальным. |
 
-Writes a V8 heap snapshot to disk when the V8 heap usage is approaching the heap limit. `count` should be a non-negative integer (in which case Node.js will write no more than `max_count` snapshots to disk).
+Записывает снимок кучи V8 на диск, когда использование кучи V8 приближается к её пределу. Параметр `count` должен быть неотрицательным целым числом (в этом случае Node.js запишет на диск не более `max_count` снимков).
 
-When generating snapshots, garbage collection may be triggered and bring the heap usage down. Therefore multiple snapshots may be written to disk before the Node.js instance finally runs out of memory. These heap snapshots can be compared to determine what objects are being allocated during the time consecutive snapshots are taken. It's not guaranteed that Node.js will write exactly `max_count` snapshots to disk, but it will try its best to generate at least one and up to `max_count` snapshots before the Node.js instance runs out of memory when `max_count` is greater than `0`.
+При создании снимков может запускаться сборка мусора, которая уменьшает использование кучи. Поэтому до окончательного исчерпания памяти экземпляром Node.js на диск может быть записано несколько снимков. Эти снимки кучи можно сравнивать, чтобы определить, какие объекты выделяются между последовательными моментами снятия снимков. Node.js не гарантирует запись ровно `max_count` снимков на диск, но постарается создать как минимум один и не более `max_count` снимков до исчерпания памяти, если `max_count` больше `0`.
 
-Generating V8 snapshots takes time and memory (both memory managed by the V8 heap and native memory outside the V8 heap). The bigger the heap is, the more resources it needs. Node.js will adjust the V8 heap to accommodate the additional V8 heap memory overhead, and try its best to avoid using up all the memory available to the process. When the process uses more memory than the system deems appropriate, the process may be terminated abruptly by the system, depending on the system configuration.
+Создание снимков V8 требует времени и памяти (как памяти, управляемой кучей V8, так и нативной памяти вне кучи V8). Чем больше куча, тем больше ресурсов требуется. Node.js скорректирует размер кучи V8, чтобы учесть дополнительные накладные расходы памяти V8, и постарается не исчерпать всю память, доступную процессу. Если процесс начнёт использовать больше памяти, чем система считает допустимым, она может аварийно завершить его в зависимости от своей конфигурации.
 
 ```console
 $ node --max-old-space-size=100 --heapsnapshot-near-heap-limit=3 index.js
@@ -1705,11 +1705,11 @@ added:
 added: v7.6.0
 -->
 
-Activate inspector on `host:port` and break at start of user script. Default `host:port` is `127.0.0.1:9229`. If port `0` is specified, a random available port will be used.
+Активирует инспектор на `host:port` и останавливает выполнение в начале пользовательского скрипта. Значение `host:port` по умолчанию — `127.0.0.1:9229`. Если указан порт `0`, будет использован случайный доступный порт.
 
-See [V8 Inspector integration for Node.js](debugger.md#v8-inspector-integration-for-nodejs) for further explanation on Node.js debugger.
+Дополнительные сведения об отладчике Node.js см. в разделе [Интеграция V8 Inspector для Node.js](debugger.md#v8-inspector-integration-for-nodejs).
 
-See the [security warning](#warning-binding-inspector-to-a-public-ipport-combination-is-insecure) below regarding the `host` parameter usage.
+См. приведённое ниже [предупреждение о безопасности](#warning-binding-inspector-to-a-public-ipport-combination-is-insecure) относительно использования параметра `host`.
 
 ### `--inspect-port=[host:]port`
 
@@ -1725,9 +1725,9 @@ added: v7.6.0
 
 ### `--inspect-publish-uid=stderr,http`
 
-Specify ways of the inspector web socket url exposure.
+Задаёт способы публикации URL веб-сокета инспектора.
 
-By default inspector websocket url is available in stderr and under `/json/list` endpoint on `http://host:port/json/list`.
+По умолчанию URL веб-сокета инспектора доступен в `stderr` и по пути `/json/list` на `http://host:port/json/list`.
 
 ### `--inspect-wait[=[host:]port]`
 
@@ -1737,11 +1737,11 @@ added:
   - v20.15.0
 -->
 
-Activate inspector on `host:port` and wait for debugger to be attached. Default `host:port` is `127.0.0.1:9229`. If port `0` is specified, a random available port will be used.
+Активирует инспектор на `host:port` и ожидает подключения отладчика. Значение `host:port` по умолчанию — `127.0.0.1:9229`. Если указан порт `0`, будет использован случайный доступный порт.
 
-See [V8 Inspector integration for Node.js](debugger.md#v8-inspector-integration-for-nodejs) for further explanation on Node.js debugger.
+Дополнительные сведения об отладчике Node.js см. в разделе [Интеграция V8 Inspector для Node.js](debugger.md#v8-inspector-integration-for-nodejs).
 
-See the [security warning](#warning-binding-inspector-to-a-public-ipport-combination-is-insecure) below regarding the `host` parameter usage.
+См. приведённое ниже [предупреждение о безопасности](#warning-binding-inspector-to-a-public-ipport-combination-is-insecure) относительно использования параметра `host`.
 
 ### `--inspect[=[host:]port]`
 
@@ -1749,24 +1749,24 @@ See the [security warning](#warning-binding-inspector-to-a-public-ipport-combina
 added: v6.3.0
 -->
 
-Activate inspector on `host:port`. Default is `127.0.0.1:9229`. If port `0` is specified, a random available port will be used.
+Активирует инспектор на `host:port`. Значение по умолчанию — `127.0.0.1:9229`. Если указан порт `0`, будет использован случайный доступный порт.
 
-V8 inspector integration allows tools such as Chrome DevTools and IDEs to debug and profile Node.js instances. The tools attach to Node.js instances via a tcp port and communicate using the [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). See [V8 Inspector integration for Node.js](debugger.md#v8-inspector-integration-for-nodejs) for further explanation on Node.js debugger.
+Интеграция V8 Inspector позволяет таким инструментам, как Chrome DevTools и IDE, отлаживать и профилировать экземпляры Node.js. Эти инструменты подключаются к экземплярам Node.js через TCP-порт и взаимодействуют с ними с помощью [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). Дополнительные сведения об отладчике Node.js см. в разделе [Интеграция V8 Inspector для Node.js](debugger.md#v8-inspector-integration-for-nodejs).
 
 <!-- Anchor to make sure old links find a target -->
 
-#### Warning: binding inspector to a public IP:port combination is insecure {#inspector_security}
+#### Предупреждение: привязка инспектора к публичной комбинации IP:port небезопасна {#warning-binding-inspector-to-a-public-ipport-combination-is-insecure}
 
-Binding the inspector to a public IP (including `0.0.0.0`) with an open port is insecure, as it allows external hosts to connect to the inspector and perform a [remote code execution](https://www.owasp.org/index.php/Code_Injection) attack.
+Привязка инспектора к публичному IP-адресу (включая `0.0.0.0`) с открытым портом небезопасна, поскольку позволяет внешним узлам подключаться к инспектору и выполнять атаку [удалённого выполнения кода](https://www.owasp.org/index.php/Code_Injection).
 
-If specifying a host, make sure that either:
+Если вы указываете хост, убедитесь, что выполняется одно из условий:
 
--   The host is not accessible from public networks.
--   A firewall disallows unwanted connections on the port.
+-   хост недоступен из публичных сетей;
+-   брандмауэр запрещает нежелательные подключения к этому порту.
 
-**More specifically, `--inspect=0.0.0.0` is insecure if the port (`9229` by default) is not firewall-protected.**
+**Более конкретно: `--inspect=0.0.0.0` небезопасен, если порт (по умолчанию `9229`) не защищён брандмауэром.**
 
-See the [debugging security implications](https://nodejs.org/en/docs/guides/debugging-getting-started/#security-implications) section for more information.
+Дополнительные сведения см. в разделе [последствия безопасности отладки](https://nodejs.org/en/docs/guides/debugging-getting-started/#security-implications).
 
 ### `-i`, `--interactive`
 
@@ -1774,7 +1774,7 @@ See the [debugging security implications](https://nodejs.org/en/docs/guides/debu
 added: v0.7.7
 -->
 
-Opens the REPL even if stdin does not appear to be a terminal.
+Открывает REPL, даже если stdin не выглядит как терминал.
 
 ### `--jitless`
 
@@ -1782,9 +1782,9 @@ Opens the REPL even if stdin does not appear to be a terminal.
 added: v12.0.0
 -->
 
-> Stability: 1 - Experimental. This flag is inherited from V8 and is subject to change upstream.
+> Стабильность: 1 - Экспериментальная. Этот флаг унаследован от V8 и может измениться в вышестоящем проекте.
 
-Disable [runtime allocation of executable memory](https://v8.dev/blog/jitless). This may be required on some platforms for security reasons. It can also reduce attack surface on other platforms, but the performance impact may be severe.
+Отключает [выделение исполняемой памяти во время выполнения](https://v8.dev/blog/jitless). На некоторых платформах это может требоваться по соображениям безопасности. На других платформах это также может уменьшить поверхность атаки, но влияние на производительность может быть существенным.
 
 ### `--localstorage-file=file`
 
@@ -1848,7 +1848,7 @@ added:
   - v20.13.0
 -->
 
-Задаёт значение по умолчанию для тайм-аута попытки автоподбора сетевого семейства. Подробнее см. в [`net.getDefaultAutoSelectFamilyAttemptTimeout()`][`net.getdefaultautoselectfamilyattempttimeout()`].
+Задаёт значение по умолчанию для тайм-аута попытки автоподбора сетевого семейства. Подробнее см. в [`net.getDefaultAutoSelectFamilyAttemptTimeout()`](net.md#netgetdefaultautoselectfamilyattempttimeout).
 
 ### `--no-addons`
 
@@ -1858,7 +1858,7 @@ added:
   - v14.19.0
 -->
 
-Disable the `node-addons` exports condition as well as disable loading native addons. When `--no-addons` is specified, calling `process.dlopen` or requiring a native C++ addon will fail and throw an exception.
+Отключает условие экспорта `node-addons`, а также загрузку нативных аддонов. Если указан `--no-addons`, вызов `process.dlopen` или подключение нативного C++-аддона завершится ошибкой и выбросит исключение.
 
 ### `--no-async-context-frame`
 
@@ -1866,7 +1866,7 @@ Disable the `node-addons` exports condition as well as disable loading native ad
 added: v24.0.0
 -->
 
-Disables the use of [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) backed by `AsyncContextFrame` and uses the prior implementation which relied on async_hooks. The previous model is retained for compatibility with Electron and for cases where the context flow may differ. However, if a difference in flow is found please report it.
+Отключает использование [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage), основанного на `AsyncContextFrame`, и возвращает прежнюю реализацию, полагавшуюся на `async_hooks`. Предыдущая модель сохранена для совместимости с Electron и для случаев, когда поток контекста может отличаться. Однако если обнаружится различие в потоке, пожалуйста, сообщите об этом.
 
 ### `--no-deprecation`
 
@@ -1874,7 +1874,7 @@ Disables the use of [`AsyncLocalStorage`](async_context.md#class-asynclocalstora
 added: v0.8.0
 -->
 
-Silence deprecation warnings.
+Подавляет предупреждения об устаревании.
 
 ### `--no-experimental-detect-module`
 
@@ -1896,7 +1896,7 @@ changes:
     | --- | --- |
     | v22.7.0, v20.19.0 | Обнаружение синтаксиса включено по умолчанию. |
 
-Disable using [syntax detection](packages.md#syntax-detection) to determine module type.
+Отключает использование [определения синтаксиса](packages.md#syntax-detection) для определения типа модуля.
 
 ### `--no-experimental-global-navigator`
 
@@ -1904,9 +1904,9 @@ Disable using [syntax detection](packages.md#syntax-detection) to determine modu
 added: v21.2.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-Disable exposition of [Navigator API](globals.md#navigator) on the global scope.
+Отключает публикацию [Navigator API](globals.md#navigator) в глобальной области видимости.
 
 ### `--no-experimental-repl-await`
 
@@ -1914,7 +1914,7 @@ Disable exposition of [Navigator API](globals.md#navigator) on the global scope.
 added: v16.6.0
 -->
 
-Use this flag to disable top-level await in REPL.
+Используйте этот флаг, чтобы отключить top-level await в REPL.
 
 ### `--no-experimental-require-module`
 
@@ -1926,14 +1926,14 @@ changes:
   - version:
     - v25.4.0
     pr-url: https://github.com/nodejs/node/pull/60959
-    description: The flag was renamed from `--no-experimental-require-module` to
-                 `--no-require-module`, with the former marked as legacy.
+    description: Флаг был переименован с `--no-experimental-require-module` на
+                 `--no-require-module`, а прежнее имя помечено как устаревшее.
   - version:
     - v23.0.0
     - v22.12.0
     - v20.19.0
     pr-url: https://github.com/nodejs/node/pull/55085
-    description: This is now false by default.
+    description: Теперь по умолчанию это значение равно false.
 -->
 
 ??? note "История"
@@ -1943,9 +1943,9 @@ changes:
     | v25.4.0 | Флаг был переименован с `--no-experimental-require-module` на `--no-require-module`, причем первый флаг помечен как устаревший. |
     | v23.0.0, v22.12.0, v20.19.0 | Теперь это ложь по умолчанию. |
 
-> Stability: 3 - Legacy: Use [`--no-require-module`](#--no-require-module) instead.
+> Стабильность: 3 - Устаревшее: используйте вместо этого [`--no-require-module`](#--experimental-require-module).
 
-Legacy alias for [`--no-require-module`](#--no-require-module).
+Устаревший псевдоним для [`--no-require-module`](#--experimental-require-module).
 
 ### `--no-experimental-sqlite`
 
@@ -1956,7 +1956,7 @@ changes:
     - v23.4.0
     - v22.13.0
     pr-url: https://github.com/nodejs/node/pull/55890
-    description: SQLite is unflagged but still experimental.
+    description: SQLite больше не требует флага, но всё ещё остаётся экспериментальным.
 -->
 
 Добавлено в: v22.5.0
@@ -1967,7 +1967,7 @@ changes:
     | --- | --- |
     | v23.4.0, v22.13.0 | SQLite не помечен, но все еще является экспериментальным. |
 
-Disable the experimental [`node:sqlite`](sqlite.md) module.
+Отключает экспериментальный модуль [`node:sqlite`](sqlite.md).
 
 ### `--no-experimental-websocket`
 
@@ -1975,7 +1975,7 @@ Disable the experimental [`node:sqlite`](sqlite.md) module.
 added: v22.0.0
 -->
 
-Disable exposition of [WebSocket](globals.md) on the global scope.
+Отключает публикацию [WebSocket](globals.md) в глобальной области видимости.
 
 ### `--no-experimental-webstorage`
 
@@ -1997,7 +1997,7 @@ changes:
 
 > Stability: 1.2 - Release candidate.
 
-Disable [`Web Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) support.
+Отключает поддержку [`Web Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
 
 ### `--no-extra-info-on-fatal-exception`
 
@@ -2005,7 +2005,7 @@ Disable [`Web Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Sto
 added: v17.0.0
 -->
 
-Hide extra information on fatal exception that causes exit.
+Скрывает дополнительную информацию о фатальном исключении, приводящем к завершению процесса.
 
 ### `--no-force-async-hooks-checks`
 
@@ -2013,7 +2013,7 @@ Hide extra information on fatal exception that causes exit.
 added: v9.0.0
 -->
 
-Disables runtime checks for `async_hooks`. These will still be enabled dynamically when `async_hooks` is enabled.
+Отключает проверки времени выполнения для `async_hooks`. Они по-прежнему будут динамически включаться, когда включён `async_hooks`.
 
 ### `--no-global-search-paths`
 
@@ -2030,9 +2030,9 @@ added: v19.4.0
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46790
-    description: The flag was renamed from `--no-enable-network-family-autoselection`
-                 to `--no-network-family-autoselection`. The old name can still work as
-                 an alias.
+    description: Флаг был переименован с `--no-enable-network-family-autoselection`
+                 на `--no-network-family-autoselection`. Старое имя по-прежнему может
+                 работать как псевдоним.
 -->
 
 Добавлено в: v19.4.0
@@ -2043,7 +2043,7 @@ changes:
     | --- | --- |
     | v20.0.0 | Флаг был переименован с --no-enable-network-family-autoselection` на `--no-network-family-autoselection`. Старое имя по-прежнему может работать как псевдоним. |
 
-Disables the family autoselection algorithm unless connection options explicitly enables it.
+Отключает алгоритм автоматического выбора семейства адресов, если только параметры подключения явно его не включают.
 
 ### `--no-require-module` {#--experimental-require-module}
 
@@ -2055,18 +2055,18 @@ changes:
   - version:
     - v25.4.0
     pr-url: https://github.com/nodejs/node/pull/60959
-    description: This flag is no longer experimental.
+    description: Этот флаг больше не является экспериментальным.
   - version:
     - v25.4.0
     pr-url: https://github.com/nodejs/node/pull/60959
-    description: This flag was renamed from `--no-experimental-require-module`
-                 to `--no-require-module`.
+    description: Этот флаг был переименован с `--no-experimental-require-module`
+                 на `--no-require-module`.
   - version:
     - v23.0.0
     - v22.12.0
     - v20.19.0
     pr-url: https://github.com/nodejs/node/pull/55085
-    description: This is now false by default.
+    description: Теперь по умолчанию это значение равно false.
 -->
 
 ??? note "История"
@@ -2077,9 +2077,9 @@ changes:
     | v25.4.0 | Этот флаг был переименован с `--no-experimental-require-module` на `--no-require-module`. |
     | v23.0.0, v22.12.0, v20.19.0 | Теперь это ложь по умолчанию. |
 
-Disable support for loading a synchronous ES module graph in `require()`.
+Отключает поддержку загрузки синхронного графа ES-модулей через `require()`.
 
-See [Loading ECMAScript modules using `require()`](modules.md#loading-ecmascript-modules-using-require).
+См. [Загрузка модулей ECMAScript с помощью `require()`](modules.md#loading-ecmascript-modules-using-require).
 
 ### `--no-strip-types`
 
@@ -2108,7 +2108,7 @@ changes:
     | v25.2.0, v24.12.0 | Удаление типов теперь стабильно, флаг был переименован с `--no-experimental-strip-types` на `--no-strip-types`. |
     | v23.6.0, v22.18.0 | Удаление типов включено по умолчанию. |
 
-Disable type-stripping for TypeScript files. For more information, see the [TypeScript type-stripping](typescript.md#type-stripping) documentation.
+Отключает удаление типов для файлов TypeScript. Подробнее см. в документации по [удалению типов TypeScript](typescript.md#type-stripping).
 
 ### `--no-warnings`
 
@@ -2116,7 +2116,7 @@ Disable type-stripping for TypeScript files. For more information, see the [Type
 added: v6.0.0
 -->
 
-Silence all process warnings (including deprecations).
+Подавляет все предупреждения процесса, включая предупреждения об устаревании.
 
 ### `--node-memory-debug`
 
@@ -2126,7 +2126,7 @@ added:
   - v14.18.0
 -->
 
-Enable extra debug checks for memory leaks in Node.js internals. This is usually only useful for developers debugging Node.js itself.
+Включает дополнительные отладочные проверки на утечки памяти во внутренних компонентах Node.js. Обычно это полезно только разработчикам, отлаживающим сам Node.js.
 
 ### `--openssl-config=file`
 
@@ -2134,7 +2134,7 @@ Enable extra debug checks for memory leaks in Node.js internals. This is usually
 added: v6.9.0
 -->
 
-Load an OpenSSL configuration file on startup. Among other uses, this can be used to enable FIPS-compliant crypto if Node.js is built against FIPS-enabled OpenSSL.
+Загружает файл конфигурации OpenSSL при запуске. В частности, это можно использовать для включения FIPS-совместимой криптографии, если Node.js собран с OpenSSL с поддержкой FIPS.
 
 ### `--openssl-legacy-provider`
 
@@ -2144,7 +2144,7 @@ added:
   - v16.17.0
 -->
 
-Enable OpenSSL 3.0 legacy provider. For more information please see [OSSL_PROVIDER-legacy](https://www.openssl.org/docs/man3.0/man7/OSSL_PROVIDER-legacy.html).
+Включает legacy provider OpenSSL 3.0. Подробнее см. в [OSSL_PROVIDER-legacy](https://www.openssl.org/docs/man3.0/man7/OSSL_PROVIDER-legacy.html).
 
 ### `--openssl-shared-config`
 
@@ -2176,7 +2176,7 @@ changes:
     - v23.5.0
     - v22.13.0
     pr-url: https://github.com/nodejs/node/pull/56201
-    description: Permission Model is now stable.
+    description: Модель разрешений теперь стабильна.
 -->
 
 Добавлено в: v20.0.0
@@ -2187,14 +2187,14 @@ changes:
     | --- | --- |
     | v23.5.0, v22.13.0 | Модель разрешений теперь стабильна. |
 
-Enable the Permission Model for current process. When enabled, the following permissions are restricted:
+Включает модель разрешений для текущего процесса. При её включении ограничиваются следующие разрешения:
 
--   File System - manageable through [`--allow-fs-read`](#--allow-fs-read), [`--allow-fs-write`](#--allow-fs-write) flags
--   Network - manageable through [`--allow-net`](#--allow-net) flag
--   Child Process - manageable through [`--allow-child-process`](#--allow-child-process) flag
--   Worker Threads - manageable through [`--allow-worker`](#--allow-worker) flag
--   WASI - manageable through [`--allow-wasi`](#--allow-wasi) flag
--   Addons - manageable through [`--allow-addons`](#--allow-addons) flag
+-   файловая система — управляется флагами [`--allow-fs-read`](#--allow-fs-read) и [`--allow-fs-write`](#--allow-fs-write);
+-   сеть — управляется флагом [`--allow-net`](#--allow-net);
+-   дочерние процессы — управляются флагом [`--allow-child-process`](#--allow-child-process);
+-   потоки Worker — управляются флагом [`--allow-worker`](#--allow-worker);
+-   WASI — управляется флагом [`--allow-wasi`](#--allow-wasi);
+-   аддоны — управляются флагом [`--allow-addons`](#--allow-addons).
 
 ### `--permission-audit`
 
@@ -2202,7 +2202,7 @@ Enable the Permission Model for current process. When enabled, the following per
 added: v25.8.0
 -->
 
-Enable audit only for the permission model. When enabled, permission checks are performed but access is not denied. Instead, a warning is emitted for each permission violation via diagnostics channel.
+Включает режим только аудита для модели разрешений. В этом режиме проверки разрешений выполняются, но доступ не запрещается. Вместо этого при каждом нарушении разрешений через diagnostics channel выдаётся предупреждение.
 
 ### `--preserve-symlinks`
 
@@ -2210,9 +2210,9 @@ Enable audit only for the permission model. When enabled, permission checks are 
 added: v6.3.0
 -->
 
-Instructs the module loader to preserve symbolic links when resolving and caching modules.
+Указывает загрузчику модулей сохранять символьные ссылки при разрешении и кэшировании модулей.
 
-By default, when Node.js loads a module from a path that is symbolically linked to a different on-disk location, Node.js will dereference the link and use the actual on-disk "real path" of the module as both an identifier and as a root path to locate other dependency modules. In most cases, this default behavior is acceptable. However, when using symbolically linked peer dependencies, as illustrated in the example below, the default behavior causes an exception to be thrown if `moduleA` attempts to require `moduleB` as a peer dependency:
+По умолчанию, когда Node.js загружает модуль по пути, который является символьной ссылкой на другое расположение на диске, Node.js разыменовывает эту ссылку и использует фактический «реальный путь» модуля на диске и как идентификатор, и как корневой путь для поиска других зависимостей модуля. В большинстве случаев такое поведение по умолчанию приемлемо. Однако при использовании peer-зависимостей, подключённых через символьные ссылки, как показано в примере ниже, оно приводит к исключению, если `moduleA` пытается подключить `moduleB` как peer-зависимость:
 
 ```text
 {appDir}
@@ -2244,9 +2244,9 @@ added: v10.2.0
 
 Этот флаг существует для того, чтобы главный модуль можно было перевести в тот же режим поведения, который `--preserve-symlinks` даёт всем остальным импортам; однако это отдельные флаги для обратной совместимости со старыми версиями Node.js.
 
-`--preserve-symlinks-main` does not imply `--preserve-symlinks`; use `--preserve-symlinks-main` in addition to `--preserve-symlinks` when it is not desirable to follow symlinks before resolving relative paths.
+`--preserve-symlinks-main` не подразумевает `--preserve-symlinks`; используйте `--preserve-symlinks-main` вместе с `--preserve-symlinks`, если нежелательно разыменовывать символьные ссылки до разрешения относительных путей.
 
-See [`--preserve-symlinks`](#--preserve-symlinks) for more information.
+Подробнее см. [`--preserve-symlinks`](#--preserve-symlinks).
 
 ### `-p`, `--print "script"`
 
@@ -2290,7 +2290,7 @@ Process V8 profiler output generated using the V8 option `--prof`.
 added: v8.0.0
 -->
 
-Write process warnings to the given file instead of printing to stderr. The file will be created if it does not exist, and will be appended to if it does. Если при попытке записать предупреждение в файл произойдёт ошибка, предупреждение будет записано в `stderr`.
+Записывает предупреждения процесса в указанный файл вместо вывода в `stderr`. Если файла не существует, он будет создан; если существует, запись будет выполнена в конец файла. Если при попытке записать предупреждение в файл произойдёт ошибка, предупреждение будет записано в `stderr`.
 
 Имя `file` может быть абсолютным путём. Если это не так, каталог по умолчанию, в который будет выполнена запись, задаётся параметром командной строки [`--diagnostic-dir`](#--diagnostic-dirdirectory).
 
@@ -2313,10 +2313,10 @@ changes:
      - v13.12.0
      - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32242
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: Changed from `--diagnostic-report-directory` to
+    description: Изменено с `--diagnostic-report-directory` на
                  `--report-directory`.
 -->
 
@@ -2360,10 +2360,10 @@ changes:
      - v13.12.0
      - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32242
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: changed from `--diagnostic-report-filename` to
+    description: Изменено с `--diagnostic-report-filename` на
                  `--report-filename`.
 -->
 
@@ -2390,10 +2390,10 @@ changes:
     - v13.14.0
     - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32496
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: changed from `--diagnostic-report-on-fatalerror` to
+    description: Изменено с `--diagnostic-report-on-fatalerror` на
                  `--report-on-fatalerror`.
 -->
 
@@ -2417,10 +2417,10 @@ changes:
      - v13.12.0
      - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32242
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: changed from `--diagnostic-report-on-signal` to
+    description: Изменено с `--diagnostic-report-on-signal` на
                  `--report-on-signal`.
 -->
 
@@ -2444,10 +2444,10 @@ changes:
      - v13.12.0
      - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32242
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: changed from `--diagnostic-report-signal` to
+    description: Изменено с `--diagnostic-report-signal` на
                  `--report-signal`.
 -->
 
@@ -2471,15 +2471,15 @@ changes:
       - v18.8.0
       - v16.18.0
     pr-url: https://github.com/nodejs/node/pull/44208
-    description: Report is not generated if the uncaught exception is handled.
+    description: Отчёт не создаётся, если необработанное исключение было обработано.
   - version:
      - v13.12.0
      - v12.17.0
     pr-url: https://github.com/nodejs/node/pull/32242
-    description: This option is no longer experimental.
+    description: Эта опция больше не является экспериментальной.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
-    description: changed from `--diagnostic-report-uncaught-exception` to
+    description: Изменено с `--diagnostic-report-uncaught-exception` на
                  `--report-uncaught-exception`.
 -->
 
@@ -2505,7 +2505,7 @@ changes:
       - v22.12.0
       - v20.19.0
     pr-url: https://github.com/nodejs/node/pull/51977
-    description: This option also supports ECMAScript module.
+    description: Эта опция также поддерживает модуль ECMAScript.
 -->
 
 Добавлено в: v1.6.0
@@ -2759,7 +2759,7 @@ added: v22.8.0
 changes:
   - version: v23.6.0
     pr-url: https://github.com/nodejs/node/pull/56298
-    description: This flag was renamed from `--experimental-test-isolation` to
+    description: Этот флаг был переименован с `--experimental-test-isolation` в
                  `--test-isolation`.
 -->
 

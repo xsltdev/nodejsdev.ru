@@ -177,12 +177,12 @@ Node.js поддерживает следующие возможности из 
 
 Методы:
 
-* [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`]
-* [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
-* [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`]
-* [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`]
-* [`subtle.getPublicKey()`][`subtle.getPublicKey()`]
-* [`SubtleCrypto.supports()`][`SubtleCrypto.supports()`]
+* [`subtle.decapsulateBits()`](#subtledecapsulatebitsdecapsulationalgorithm-decapsulationkey-ciphertext)
+* [`subtle.decapsulateKey()`](#subtledecapsulatekeydecapsulationalgorithm-decapsulationkey-ciphertext-sharedkeyalgorithm-extractable-usages)
+* [`subtle.encapsulateBits()`](#subtleencapsulatebitsencapsulationalgorithm-encapsulationkey)
+* [`subtle.encapsulateKey()`](#subtleencapsulatekeyencapsulationalgorithm-encapsulationkey-sharedkeyalgorithm-extractable-usages)
+* [`subtle.getPublicKey()`](#subtlegetpublickeykey-keyusages)
+* [`SubtleCrypto.supports()`](#static-method-subtlecryptosupportsoperation-algorithm-lengthoradditionalalgorithm)
 
 ## Безопасные кривые в Web Cryptography API {#secure-curves-in-the-web-cryptography-api}
 
@@ -471,7 +471,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### Проверка поддержки алгоритмов в рантайме {#checking-for-runtime-algorithm-support}
 
-[`SubtleCrypto.supports()`][`SubtleCrypto.supports()`] позволяет определять возможности в Web Crypto API
+[`SubtleCrypto.supports()`](#static-method-subtlecryptosupportsoperation-algorithm-lengthoradditionalalgorithm) позволяет определять возможности в Web Crypto API
 и выяснять, поддерживается ли заданный идентификатор алгоритма
 (вместе с его параметрами) для указанной операции.
 
@@ -548,7 +548,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ### API управления ключами
 
-| Алгоритм                             | [`subtle.generateKey()`][`subtle.generateKey()`] | [`subtle.exportKey()`][`subtle.exportKey()`] | [`subtle.importKey()`][`subtle.importKey()`] | [`subtle.getPublicKey()`][`subtle.getPublicKey()`] |
+| Алгоритм                             | [`subtle.generateKey()`](#subtlegeneratekeyalgorithm-extractable-keyusages) | [`subtle.exportKey()`](#subtleexportkeyformat-key) | [`subtle.importKey()`](#subtleimportkeyformat-keydata-algorithm-extractable-keyusages) | [`subtle.getPublicKey()`](#subtlegetpublickeykey-keyusages) |
 | ------------------------------------ | -------------------------- | ------------------------ | ------------------------ | --------------------------- |
 | `'AES-CBC'`                          | ✔                          | ✔                        | ✔                        |                             |
 | `'AES-CTR'`                          | ✔                          | ✔                        | ✔                        |                             |
@@ -584,13 +584,13 @@ async function digest(data, algorithm = 'SHA-512') {
 
 **Условные обозначения столбцов:**
 
-* **Шифрование**: [`subtle.encrypt()`][`subtle.encrypt()`] / [`subtle.decrypt()`][`subtle.decrypt()`]
-* **Подписи и MAC**: [`subtle.sign()`][`subtle.sign()`] / [`subtle.verify()`][`subtle.verify()`]
-* **Вывод ключа или битов**: [`subtle.deriveBits()`][`subtle.deriveBits()`] / [`subtle.deriveKey()`][`subtle.deriveKey()`]
-* **Упаковка ключа**: [`subtle.wrapKey()`][`subtle.wrapKey()`] / [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
-* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`] / [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`] /
-  [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`] / [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
-* **Хеш (digest)**: [`subtle.digest()`][`subtle.digest()`]
+* **Шифрование**: [`subtle.encrypt()`](#subtleencryptalgorithm-key-data) / [`subtle.decrypt()`](#subtledecryptalgorithm-key-data)
+* **Подписи и MAC**: [`subtle.sign()`](#subtlesignalgorithm-key-data) / [`subtle.verify()`](#subtleverifyalgorithm-key-signature-data)
+* **Вывод ключа или битов**: [`subtle.deriveBits()`](#subtlederivebitsalgorithm-basekey-length) / [`subtle.deriveKey()`](#subtlederivekeyalgorithm-basekey-derivedkeyalgorithm-extractable-keyusages)
+* **Упаковка ключа**: [`subtle.wrapKey()`](#subtlewrapkeyformat-key-wrappingkey-wrapalgo) / [`subtle.unwrapKey()`](#subtleunwrapkeyformat-wrappedkey-unwrappingkey-unwrapalgo-unwrappedkeyalgo-extractable-keyusages)
+* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`](#subtleencapsulatebitsencapsulationalgorithm-encapsulationkey) / [`subtle.decapsulateBits()`](#subtledecapsulatebitsdecapsulationalgorithm-decapsulationkey-ciphertext) /
+  [`subtle.encapsulateKey()`](#subtleencapsulatekeyencapsulationalgorithm-encapsulationkey-sharedkeyalgorithm-extractable-usages) / [`subtle.decapsulateKey()`](#subtledecapsulatekeydecapsulationalgorithm-decapsulationkey-ciphertext-sharedkeyalgorithm-extractable-usages)
+* **Хеш (digest)**: [`subtle.digest()`](#subtledigestalgorithm-data)
 
 | Алгоритм                             | Шифрование | Подписи и MAC | Вывод ключа или битов | Упаковка ключа | Инкапсуляция ключа | Digest |
 | ------------------------------------ | ---------- | ------------------ | ---------------------- | ------------ | ----------------- | ------ |
@@ -717,7 +717,7 @@ added: v15.0.0
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, [CryptoKey](webcrypto.md#class-cryptokey) можно извлечь через
-[`subtle.exportKey()`][`subtle.exportKey()`] или [`subtle.wrapKey()`][`subtle.wrapKey()`].
+[`subtle.exportKey()`](#subtleexportkeyformat-key) или [`subtle.wrapKey()`](#subtlewrapkeyformat-key-wrappingkey-wrapalgo).
 
 Только для чтения.
 
@@ -744,29 +744,29 @@ added: v15.0.0
 
 Возможные варианты использования:
 
-* `'encrypt'` — разрешает использовать ключ с [`subtle.encrypt()`][`subtle.encrypt()`]
-* `'decrypt'` — разрешает использовать ключ с [`subtle.decrypt()`][`subtle.decrypt()`]
-* `'sign'` — разрешает использовать ключ с [`subtle.sign()`][`subtle.sign()`]
-* `'verify'` — разрешает использовать ключ с [`subtle.verify()`][`subtle.verify()`]
-* `'deriveKey'` — разрешает использовать ключ с [`subtle.deriveKey()`][`subtle.deriveKey()`]
-* `'deriveBits'` — разрешает использовать ключ с [`subtle.deriveBits()`][`subtle.deriveBits()`]
-* `'encapsulateBits'` — разрешает использовать ключ с [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`]
-* `'decapsulateBits'` — разрешает использовать ключ с [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`]
-* `'encapsulateKey'` — разрешает использовать ключ с [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`]
-* `'decapsulateKey'` — разрешает использовать ключ с [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
-* `'wrapKey'` — разрешает использовать ключ с [`subtle.wrapKey()`][`subtle.wrapKey()`]
-* `'unwrapKey'` — разрешает использовать ключ с [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
+* `'encrypt'` — разрешает использовать ключ с [`subtle.encrypt()`](#subtleencryptalgorithm-key-data)
+* `'decrypt'` — разрешает использовать ключ с [`subtle.decrypt()`](#subtledecryptalgorithm-key-data)
+* `'sign'` — разрешает использовать ключ с [`subtle.sign()`](#subtlesignalgorithm-key-data)
+* `'verify'` — разрешает использовать ключ с [`subtle.verify()`](#subtleverifyalgorithm-key-signature-data)
+* `'deriveKey'` — разрешает использовать ключ с [`subtle.deriveKey()`](#subtlederivekeyalgorithm-basekey-derivedkeyalgorithm-extractable-keyusages)
+* `'deriveBits'` — разрешает использовать ключ с [`subtle.deriveBits()`](#subtlederivebitsalgorithm-basekey-length)
+* `'encapsulateBits'` — разрешает использовать ключ с [`subtle.encapsulateBits()`](#subtleencapsulatebitsencapsulationalgorithm-encapsulationkey)
+* `'decapsulateBits'` — разрешает использовать ключ с [`subtle.decapsulateBits()`](#subtledecapsulatebitsdecapsulationalgorithm-decapsulationkey-ciphertext)
+* `'encapsulateKey'` — разрешает использовать ключ с [`subtle.encapsulateKey()`](#subtleencapsulatekeyencapsulationalgorithm-encapsulationkey-sharedkeyalgorithm-extractable-usages)
+* `'decapsulateKey'` — разрешает использовать ключ с [`subtle.decapsulateKey()`](#subtledecapsulatekeydecapsulationalgorithm-decapsulationkey-ciphertext-sharedkeyalgorithm-extractable-usages)
+* `'wrapKey'` — разрешает использовать ключ с [`subtle.wrapKey()`](#subtlewrapkeyformat-key-wrappingkey-wrapalgo)
+* `'unwrapKey'` — разрешает использовать ключ с [`subtle.unwrapKey()`](#subtleunwrapkeyformat-wrappedkey-unwrappingkey-unwrapalgo-unwrappedkeyalgo-extractable-keyusages)
 
 Допустимые варианты зависят от алгоритма ключа (см. `cryptokey.algorithm.name`).
 
 **Условные обозначения столбцов:**
 
-* **Шифрование**: [`subtle.encrypt()`][`subtle.encrypt()`] / [`subtle.decrypt()`][`subtle.decrypt()`]
-* **Подписи и MAC**: [`subtle.sign()`][`subtle.sign()`] / [`subtle.verify()`][`subtle.verify()`]
-* **Вывод ключа или битов**: [`subtle.deriveBits()`][`subtle.deriveBits()`] / [`subtle.deriveKey()`][`subtle.deriveKey()`]
-* **Упаковка ключа**: [`subtle.wrapKey()`][`subtle.wrapKey()`] / [`subtle.unwrapKey()`][`subtle.unwrapKey()`]
-* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`][`subtle.encapsulateBits()`] / [`subtle.decapsulateBits()`][`subtle.decapsulateBits()`] /
-  [`subtle.encapsulateKey()`][`subtle.encapsulateKey()`] / [`subtle.decapsulateKey()`][`subtle.decapsulateKey()`]
+* **Шифрование**: [`subtle.encrypt()`](#subtleencryptalgorithm-key-data) / [`subtle.decrypt()`](#subtledecryptalgorithm-key-data)
+* **Подписи и MAC**: [`subtle.sign()`](#subtlesignalgorithm-key-data) / [`subtle.verify()`](#subtleverifyalgorithm-key-signature-data)
+* **Вывод ключа или битов**: [`subtle.deriveBits()`](#subtlederivebitsalgorithm-basekey-length) / [`subtle.deriveKey()`](#subtlederivekeyalgorithm-basekey-derivedkeyalgorithm-extractable-keyusages)
+* **Упаковка ключа**: [`subtle.wrapKey()`](#subtlewrapkeyformat-key-wrappingkey-wrapalgo) / [`subtle.unwrapKey()`](#subtleunwrapkeyformat-wrappedkey-unwrappingkey-unwrapalgo-unwrappedkeyalgo-extractable-keyusages)
+* **Инкапсуляция ключа**: [`subtle.encapsulateBits()`](#subtleencapsulatebitsencapsulationalgorithm-encapsulationkey) / [`subtle.decapsulateBits()`](#subtledecapsulatebitsdecapsulationalgorithm-decapsulationkey-ciphertext) /
+  [`subtle.encapsulateKey()`](#subtleencapsulatekeyencapsulationalgorithm-encapsulationkey-sharedkeyalgorithm-extractable-usages) / [`subtle.decapsulateKey()`](#subtledecapsulatekeydecapsulationalgorithm-decapsulationkey-ciphertext-sharedkeyalgorithm-extractable-usages)
 
 | Поддерживаемый алгоритм ключа        | Шифрование | Подписи и MAC | Вывод ключа или битов | Упаковка ключа | Инкапсуляция ключа |
 | ------------------------------------ | ---------- | ------------------ | ---------------------- | ------------ | ----------------- |
@@ -1043,9 +1043,9 @@ changes:
 По методу и параметрам из `algorithm` и ключевому материалу из `baseKey`
 метод пытается сгенерировать новый [CryptoKey](webcrypto.md#class-cryptokey) по методу и параметрам в `derivedKeyAlgorithm`.
 
-Вызов этого метода эквивалентен вызову [`subtle.deriveBits()`][`subtle.deriveBits()`] для
+Вызов этого метода эквивалентен вызову [`subtle.deriveBits()`](#subtlederivebitsalgorithm-basekey-length) для
 получения сырого ключевого материала с последующей передачей результата в
-[`subtle.importKey()`][`subtle.importKey()`] с аргументами `deriveKeyAlgorithm`, `extractable` и
+[`subtle.importKey()`](#subtleimportkeyformat-keydata-algorithm-extractable-keyusages) с аргументами `deriveKeyAlgorithm`, `extractable` и
 `keyUsages`.
 
 В настоящее время поддерживаются следующие алгоритмы:
@@ -1563,9 +1563,9 @@ changes:
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод пытается расшифровать упакованный
 ключ и создать экземпляр [CryptoKey](webcrypto.md#class-cryptokey). Это эквивалентно сначала вызову
-[`subtle.decrypt()`][`subtle.decrypt()`] для зашифрованных данных ключа (аргументы `wrappedKey`,
+[`subtle.decrypt()`](#subtledecryptalgorithm-key-data) для зашифрованных данных ключа (аргументы `wrappedKey`,
 `unwrapAlgo` и `unwrappingKey`), затем передаче результата в
-[`subtle.importKey()`][`subtle.importKey()`] с аргументами `unwrappedKeyAlgo`,
+[`subtle.importKey()`](#subtleimportkeyformat-keydata-algorithm-extractable-keyusages) с аргументами `unwrappedKeyAlgo`,
 `extractable` и `keyUsages`. При успехе промис выполняется с объектом [CryptoKey](webcrypto.md#class-cryptokey).
 
 В настоящее время поддерживаются следующие алгоритмы упаковки:
@@ -1698,9 +1698,9 @@ changes:
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод экспортирует ключевой материал в
 формат `format`, затем шифрует его методом и параметрами из `wrapAlgo`
-и ключом `wrappingKey`. Это эквивалентно вызову [`subtle.exportKey()`][`subtle.exportKey()`] с
+и ключом `wrappingKey`. Это эквивалентно вызову [`subtle.exportKey()`](#subtleexportkeyformat-key) с
 `format` и `key`, затем передаче результата в
-[`subtle.encrypt()`][`subtle.encrypt()`] с `wrappingKey` и `wrapAlgo`. При
+[`subtle.encrypt()`](#subtleencryptalgorithm-key-data) с `wrappingKey` и `wrapAlgo`. При
 успехе промис выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer),
 содержащим зашифрованные данные ключа.
 

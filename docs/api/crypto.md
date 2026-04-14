@@ -69,7 +69,7 @@ Node.js может быть собран без модуля `node:crypto`.
 (например через preload).
 
 Если код может выполняться в сборке Node.js без crypto, вместо лексического `import`
-используйте динамический [`import()`][`import()`]:
+используйте динамический [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import):
 
 === "MJS"
 
@@ -84,7 +84,7 @@ Node.js может быть собран без модуля `node:crypto`.
 
 ## Типы асимметричных ключей
 
-В таблице — типы асимметричных ключей, которые распознаёт API [`KeyObject`][`KeyObject`], и поддерживаемые форматы импорта/экспорта.
+В таблице — типы асимметричных ключей, которые распознаёт API [`KeyObject`](#class-keyobject), и поддерживаемые форматы импорта/экспорта.
 
 | Тип ключа                          | Описание           | OID                     | `'pem'` | `'der'` | `'jwk'` | `'raw-public'` | `'raw-private'` | `'raw-seed'` |
 | ---------------------------------- | ------------------ | ----------------------- | ------- | ------- | ------- | -------------- | --------------- | ------------ |
@@ -118,16 +118,16 @@ Node.js может быть собран без модуля `node:crypto`.
 
 ### Форматы ключей
 
-Асимметричные ключи можно представить в нескольких форматах. **Рекомендуется один раз импортировать материал ключа в [`KeyObject`][`KeyObject`] и переиспользовать его**
+Асимметричные ключи можно представить в нескольких форматах. **Рекомендуется один раз импортировать материал ключа в [`KeyObject`](#class-keyobject) и переиспользовать его**
 для всех дальнейших операций — так не повторяется разбор и достигается лучшая производительность.
 
-Если [`KeyObject`][`KeyObject`] неудобен (например ключ приходит в сообщении протокола и используется один раз), большинство криптографических функций принимают строку PEM или объект с форматом и материалом ключа. Полный набор опций — в [`crypto.createPublicKey()`][`crypto.createPublicKey()`],
-[`crypto.createPrivateKey()`][`crypto.createPrivateKey()`] и [`keyObject.export()`][`keyObject.export()`].
+Если [`KeyObject`](#class-keyobject) неудобен (например ключ приходит в сообщении протокола и используется один раз), большинство криптографических функций принимают строку PEM или объект с форматом и материалом ключа. Полный набор опций — в [`crypto.createPublicKey()`](#cryptocreatepublickeykey),
+[`crypto.createPrivateKey()`](#cryptocreateprivatekeykey) и [`keyObject.export()`](#keyobjectexportoptions).
 
 #### KeyObject
 
-[`KeyObject`][`KeyObject`] — представление разобранного ключа в памяти. Создаётся через [`crypto.createPublicKey()`][`crypto.createPublicKey()`], [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`],
-[`crypto.createSecretKey()`][`crypto.createSecretKey()`] или функции генерации, например [`crypto.generateKeyPair()`][`crypto.generateKeyPair()`]. Первая криптографическая операция с данным [`KeyObject`][`KeyObject`] может быть медленнее последующих: OpenSSL лениво инициализирует внутренние кэши при первом использовании.
+[`KeyObject`](#class-keyobject) — представление разобранного ключа в памяти. Создаётся через [`crypto.createPublicKey()`](#cryptocreatepublickeykey), [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey),
+[`crypto.createSecretKey()`](#cryptocreatesecretkeykey-encoding) или функции генерации, например [`crypto.generateKeyPair()`](#cryptogeneratekeypairtype-options-callback). Первая криптографическая операция с данным [`KeyObject`](#class-keyobject) может быть медленнее последующих: OpenSSL лениво инициализирует внутренние кэши при первом использовании.
 
 #### PEM и DER
 
@@ -145,18 +145,18 @@ JSON Web Key (JWK) — представление ключа в JSON по [RFC 7
 > Стабильность: 1.1 — Активная разработка
 
 Форматы `'raw-public'`, `'raw-private'` и `'raw-seed'` позволяют импортировать и экспортировать сырой материал ключа без обёртки.
-Подробности — [`keyObject.export()`][`keyObject.export()`], [`crypto.createPublicKey()`][`crypto.createPublicKey()`], [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`].
+Подробности — [`keyObject.export()`](#keyobjectexportoptions), [`crypto.createPublicKey()`](#cryptocreatepublickeykey), [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey).
 
 `'raw-public'` обычно самый быстрый способ импорта открытого ключа.
 `'raw-private'` и `'raw-seed'` не всегда быстрее других форматов: в них только скаляр/seed закрытого ключа — для использования часто нужно вычислить открытую часть (умножение на кривой, развёртывание seed), что дорого. В других форматах уже есть обе части ключа.
 
 ### Выбор формата ключа
 
-**По возможности используйте [`KeyObject`][`KeyObject`]** — создайте из любого доступного формата и переиспользуйте. Ниже — про выбор формата сериализации при импорте в [`KeyObject`][`KeyObject`] или при передаче материала inline, когда [`KeyObject`][`KeyObject`] не подходит.
+**По возможности используйте [`KeyObject`](#class-keyobject)** — создайте из любого доступного формата и переиспользуйте. Ниже — про выбор формата сериализации при импорте в [`KeyObject`](#class-keyobject) или при передаче материала inline, когда [`KeyObject`](#class-keyobject) не подходит.
 
 #### Импорт ключей
 
-Если [`KeyObject`][`KeyObject`] создаётся для многократного использования, стоимость импорта платится один раз, и более быстрый формат снижает задержку старта.
+Если [`KeyObject`](#class-keyobject) создаётся для многократного использования, стоимость импорта платится один раз, и более быстрый формат снижает задержку старта.
 
 Импорт состоит из **разбора обёртки** и **вычислений по ключу** (восстановление полного ключа: открытый ключ из закрытого скаляра, развёртывание seed и т. д.). Что доминирует, зависит от типа ключа. Например:
 
@@ -166,15 +166,15 @@ JSON Web Key (JWK) — представление ключа в JSON по [RFC 7
 
 #### Материал ключа inline в операциях
 
-Если [`KeyObject`][`KeyObject`] нельзя переиспользовать (ключ пришёл как сырые байты в сообщении и используется один раз), функции обычно принимают PEM или объект с форматом и материалом. Полная стоимость — импорт плюс сама криптооперация.
+Если [`KeyObject`](#class-keyobject) нельзя переиспользовать (ключ пришёл как сырые байты в сообщении и используется один раз), функции обычно принимают PEM или объект с форматом и материалом. Полная стоимость — импорт плюс сама криптооперация.
 
 Если доминирует тяжёлая операция (подпись RSA, ECDH на P-384/P-521), формат сериализации почти не влияет на пропускную способность — выбирайте удобный. Для лёгких операций (Ed25519) импорт заметнее, и быстрые `'raw-public'` / `'raw-private'` дают выигрыш.
 
-Даже при нескольких использованиях одного материала лучше импортировать в [`KeyObject`][`KeyObject`], чем снова передавать сырой или PEM.
+Даже при нескольких использованиях одного материала лучше импортировать в [`KeyObject`](#class-keyobject), чем снова передавать сырой или PEM.
 
 ### Примеры
 
-Переиспользование [`KeyObject`][`KeyObject`] для подписи и проверки:
+Переиспользование [`KeyObject`](#class-keyobject) для подписи и проверки:
 
 === "MJS"
 
@@ -191,7 +191,7 @@ JSON Web Key (JWK) — представление ключа в JSON по [RFC 7
     verify(null, data, publicKey, signature);
     ```
 
-Пример: импорт ключей разных форматов в [`KeyObject`][`KeyObject`]:
+Пример: импорт ключей разных форматов в [`KeyObject`](#class-keyobject):
 
 === "MJS"
 
@@ -228,8 +228,8 @@ JSON Web Key (JWK) — представление ключа в JSON по [RFC 7
     createPublicKey({ key: rawPub, format: 'raw-public', asymmetricKeyType: 'ed25519' });
     ```
 
-Пример: передача материала ключа напрямую в [`crypto.sign()`][`crypto.sign()`] и
-[`crypto.verify()`][`crypto.verify()`] без предварительного [`KeyObject`][`KeyObject`]:
+Пример: передача материала ключа напрямую в [`crypto.sign()`](#cryptosignalgorithm-data-key-callback) и
+[`crypto.verify()`](#cryptoverifyalgorithm-data-key-signature-callback) без предварительного [`KeyObject`](#class-keyobject):
 
 === "MJS"
 
@@ -630,9 +630,9 @@ added: v0.1.94
 Экземпляры `Cipheriv` используются для шифрования данных. Два варианта использования:
 
 * как [поток][stream] `Transform`: в пишущую сторону подаётся открытый текст, со стороны чтения — шифротекст;
-* через [`cipher.update()`][`cipher.update()`] и [`cipher.final()`][`cipher.final()`].
+* через [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding) и [`cipher.final()`](#cipherfinaloutputencoding).
 
-[`crypto.createCipheriv()`][`crypto.createCipheriv()`] создаёт экземпляры `Cipheriv`; конструктор `new` не используют.
+[`crypto.createCipheriv()`](#cryptocreatecipherivalgorithm-key-iv-options) создаёт экземпляры `Cipheriv`; конструктор `new` не используют.
 
 Пример: `Cipheriv` как поток:
 
@@ -790,7 +790,7 @@ added: v0.1.94
     });
     ```
 
-Пример: методы [`cipher.update()`][`cipher.update()`] и [`cipher.final()`][`cipher.final()`]:
+Пример: методы [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding) и [`cipher.final()`](#cipherfinaloutputencoding):
 
 === "MJS"
 
@@ -859,7 +859,7 @@ added: v0.1.94
 * `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The [encoding][encoding] of the return value.
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Any remaining enciphered contents.
   If `outputEncoding` is specified, a string is
-  returned. If an `outputEncoding` is not provided, a [`Buffer`][`Buffer`] is returned.
+  returned. If an `outputEncoding` is not provided, a [`Buffer`](buffer.md) is returned.
 
 Once the `cipher.final()` method has been called, the `Cipheriv` object can no
 longer be used to encrypt data. Attempts to call `cipher.final()` more than
@@ -873,9 +873,9 @@ added: v1.0.0
 
 * Возвращает: [`<Buffer>`](buffer.md#buffer) В режимах с аутентификацией (`GCM`, `CCM`,
   `OCB`, `chacha20-poly1305`) метод `cipher.getAuthTag()` возвращает
-  [`Buffer`][`Buffer`] с _тегом аутентификации_, вычисленным по данным.
+  [`Buffer`](buffer.md) с _тегом аутентификации_, вычисленным по данным.
 
-`cipher.getAuthTag()` вызывают только после завершения шифрования через [`cipher.final()`][`cipher.final()`].
+`cipher.getAuthTag()` вызывают только после завершения шифрования через [`cipher.final()`](#cipherfinaloutputencoding).
 
 Если при создании `cipher` была задана опция `authTagLength`, вернётся ровно столько байт.
 
@@ -886,7 +886,7 @@ added: v1.0.0
 -->
 
 * `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
   * `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] строки `buffer`.
 * Возвращает: [`<Cipheriv>`](crypto.md#class-cipheriv) Тот же экземпляр `Cipheriv` (цепочка вызовов).
@@ -897,7 +897,7 @@ added: v1.0.0
 Для `GCM` и `OCB` опция `plaintextLength` необязательна. Для `CCM` её нужно указать,
 и значение должно совпадать с длиной открытого текста в байтах. См. [режим CCM][CCM mode].
 
-`cipher.setAAD()` вызывают до [`cipher.update()`][`cipher.update()`].
+`cipher.setAAD()` вызывают до [`cipher.update()`](#cipherupdatedata-inputencoding-outputencoding).
 
 ### `cipher.setAutoPadding([autoPadding])`
 
@@ -912,10 +912,10 @@ added: v0.7.1
 Отключить: `cipher.setAutoPadding(false)`.
 
 При `autoPadding === false` длина всех входных данных должна быть кратна размеру блока,
-иначе [`cipher.final()`][`cipher.final()`] выбросит ошибку. Отключение padding нужно для нестандартного
+иначе [`cipher.final()`](#cipherfinaloutputencoding) выбросит ошибку. Отключение padding нужно для нестандартного
 заполнения (например `0x0` вместо PKCS).
 
-`cipher.setAutoPadding()` вызывают до [`cipher.final()`][`cipher.final()`].
+`cipher.setAutoPadding()` вызывают до [`cipher.final()`](#cipherfinaloutputencoding).
 
 ### `cipher.update(data[, inputEncoding][, outputEncoding])`
 
@@ -941,14 +941,14 @@ changes:
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Обновляет шифр данными `data`. Если задан `inputEncoding`, `data` — строка в этой кодировке.
-Если `inputEncoding` нет, `data` должен быть [`Buffer`][`Buffer`], `TypedArray` или `DataView`;
+Если `inputEncoding` нет, `data` должен быть [`Buffer`](buffer.md), `TypedArray` или `DataView`;
 для бинарных типов `inputEncoding` игнорируется.
 
 `outputEncoding` задаёт формат шифротекста на выходе: при указании возвращается строка,
-иначе — [`Buffer`][`Buffer`].
+иначе — [`Buffer`](buffer.md).
 
-`cipher.update()` можно вызывать несколько раз до [`cipher.final()`][`cipher.final()`]; после
-[`cipher.final()`][`cipher.final()`] вызов `cipher.update()` приведёт к ошибке.
+`cipher.update()` можно вызывать несколько раз до [`cipher.final()`](#cipherfinaloutputencoding); после
+[`cipher.final()`](#cipherfinaloutputencoding) вызов `cipher.update()` приведёт к ошибке.
 
 ## Class: `Decipheriv`
 
@@ -961,9 +961,9 @@ added: v0.1.94
 Экземпляры `Decipheriv` расшифровывают данные. Два варианта:
 
 * как [поток][stream] `Transform`: на запись подаётся шифротекст, со стороны чтения — открытый текст;
-* через [`decipher.update()`][`decipher.update()`] и [`decipher.final()`][`decipher.final()`].
+* через [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) и [`decipher.final()`](#decipherfinaloutputencoding).
 
-[`crypto.createDecipheriv()`][`crypto.createDecipheriv()`] создаёт `Decipheriv`; `new` не используют.
+[`crypto.createDecipheriv()`](#cryptocreatedecipherivalgorithm-key-iv-options) создаёт `Decipheriv`; `new` не используют.
 
 Пример: `Decipheriv` как поток:
 
@@ -1103,7 +1103,7 @@ added: v0.1.94
     input.pipe(decipher).pipe(output);
     ```
 
-Пример: [`decipher.update()`][`decipher.update()`] и [`decipher.final()`][`decipher.final()`]:
+Пример: [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding) и [`decipher.final()`](#decipherfinaloutputencoding):
 
 === "MJS"
 
@@ -1167,7 +1167,7 @@ added: v0.1.94
 
 * `outputEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [Кодировка][encoding] результата.
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Оставшийся расшифрованный материал.
-  При указанном `outputEncoding` возвращается строка, иначе — [`Buffer`][`Buffer`].
+  При указанном `outputEncoding` возвращается строка, иначе — [`Buffer`](buffer.md).
 
 После вызова `decipher.final()` объект `Decipheriv` больше нельзя использовать для расшифровки.
 Повторный вызов `decipher.final()` вызывает ошибку.
@@ -1196,7 +1196,7 @@ changes:
     | v7.2.0 | Этот метод теперь возвращает ссылку на `decipher`. |
 
 * `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
   * `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки `buffer`.
 * Возвращает: [`<Decipheriv>`](crypto.md#class-decipheriv) Тот же `Decipheriv` (цепочка вызовов).
@@ -1207,7 +1207,7 @@ changes:
 Для `GCM` аргумент `options` необязателен. Для `CCM` нужно указать `plaintextLength`,
 совпадающий с длиной шифротекста в байтах. См. [режим CCM][CCM mode].
 
-`decipher.setAAD()` вызывают до [`decipher.update()`][`decipher.update()`].
+`decipher.setAAD()` вызывают до [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding).
 
 При передаче строки в `buffer` учитывайте
 [оговорки по строкам во входах крипто-API][caveats when using strings as inputs to cryptographic APIs].
@@ -1258,12 +1258,12 @@ changes:
 * Возвращает: [`<Decipheriv>`](crypto.md#class-decipheriv) Тот же `Decipheriv`.
 
 В режимах с аутентификацией (`GCM`, `CCM`, `OCB`, `chacha20-poly1305`) `decipher.setAuthTag()` передаёт
-полученный _тег аутентификации_. Без тега или при изменении шифротекста [`decipher.final()`][`decipher.final()`]
+полученный _тег аутентификации_. Без тега или при изменении шифротекста [`decipher.final()`](#decipherfinaloutputencoding)
 выбросит ошибку — данные нужно отбросить. Неверная длина тега по [NIST SP 800-38D][NIST SP 800-38D] или
 несовпадение с `authTagLength` также даёт ошибку.
 
-`decipher.setAuthTag()` для `CCM` вызывают до [`decipher.update()`][`decipher.update()`], для `GCM`, `OCB` и
-`chacha20-poly1305` — до [`decipher.final()`][`decipher.final()`].
+`decipher.setAuthTag()` для `CCM` вызывают до [`decipher.update()`](#decipherupdatedata-inputencoding-outputencoding), для `GCM`, `OCB` и
+`chacha20-poly1305` — до [`decipher.final()`](#decipherfinaloutputencoding).
 `decipher.setAuthTag()` можно вызвать только один раз.
 
 Для строки-тега см.
@@ -1279,11 +1279,11 @@ added: v0.7.1
 * Возвращает: [`<Decipheriv>`](crypto.md#class-decipheriv) Тот же `Decipheriv`.
 
 Если шифрование было без стандартного блочного padding, `decipher.setAutoPadding(false)` отключает
-автоматическое снятие padding, чтобы [`decipher.final()`][`decipher.final()`] не проверял и не удалял его.
+автоматическое снятие padding, чтобы [`decipher.final()`](#decipherfinaloutputencoding) не проверял и не удалял его.
 
 Без padding длина входных данных должна быть кратна размеру блока шифра.
 
-`decipher.setAutoPadding()` вызывают до [`decipher.final()`][`decipher.final()`].
+`decipher.setAutoPadding()` вызывают до [`decipher.final()`](#decipherfinaloutputencoding).
 
 ### `decipher.update(data[, inputEncoding][, outputEncoding])`
 
@@ -1309,15 +1309,15 @@ changes:
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Обновляет расшифровщик данными `data`. Если задан `inputEncoding`, `data` — строка в этой кодировке.
-Если `inputEncoding` нет, `data` должен быть [`Buffer`][`Buffer`]; для `Buffer` `inputEncoding` игнорируется.
+Если `inputEncoding` нет, `data` должен быть [`Buffer`](buffer.md); для `Buffer` `inputEncoding` игнорируется.
 
-`outputEncoding` задаёт формат выхода: строка или [`Buffer`][`Buffer`].
+`outputEncoding` задаёт формат выхода: строка или [`Buffer`](buffer.md).
 
-`decipher.update()` можно вызывать несколько раз до [`decipher.final()`][`decipher.final()`]; после
-[`decipher.final()`][`decipher.final()`] — ошибка.
+`decipher.update()` можно вызывать несколько раз до [`decipher.final()`](#decipherfinaloutputencoding); после
+[`decipher.final()`](#decipherfinaloutputencoding) — ошибка.
 
 Даже при аутентифицирующем шифре на этом шаге подлинность открытого текста может быть не подтверждена;
-для AEAD проверка обычно завершается при вызове [`decipher.final()`][`decipher.final()`].
+для AEAD проверка обычно завершается при вызове [`decipher.final()`](#decipherfinaloutputencoding).
 
 ## Класс: `DiffieHellman`
 
@@ -1327,7 +1327,7 @@ added: v0.5.0
 
 Класс `DiffieHellman` — обмен ключами Диффи–Хеллмана.
 
-Экземпляры создаются через [`crypto.createDiffieHellman()`][`crypto.createDiffieHellman()`].
+Экземпляры создаются через [`crypto.createDiffieHellman()`](#cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding).
 
 === "MJS"
 
@@ -1395,11 +1395,11 @@ added: v0.5.0
 ключ интерпретируется в указанной `inputEncoding`, а секрет кодируется
 в указанной `outputEncoding`.
 Если `inputEncoding` не
-задана, ожидается, что `otherPublicKey` — это [`Buffer`][`Buffer`],
+задана, ожидается, что `otherPublicKey` — это [`Buffer`](buffer.md),
 `TypedArray` или `DataView`.
 
 Если задана `outputEncoding`, возвращается строка; иначе —
-[`Buffer`][`Buffer`].
+[`Buffer`](buffer.md).
 
 ### `diffieHellman.generateKeys([encoding])`
 
@@ -1415,9 +1415,9 @@ added: v0.5.0
 открытый ключ в указанной `encoding`. Этот ключ нужно
 передать другой стороне.
 Если задана `encoding`, возвращается строка; иначе —
-[`Buffer`][`Buffer`].
+[`Buffer`](buffer.md).
 
-Эта функция — тонкая обёртка над [`DH_generate_key()`][`DH_generate_key()`]. В частности,
+Эта функция — тонкая обёртка над [`DH_generate_key()`](https://www.openssl.org/docs/man3.0/man3/DH_generate_key.html). В частности,
 после того как закрытый ключ уже сгенерирован или задан, вызов этой функции только обновляет
 открытый ключ, но не создаёт новый закрытый.
 
@@ -1432,7 +1432,7 @@ added: v0.5.0
 
 Возвращает генератор Диффи–Хеллмана в указанной `encoding`.
 Если задана `encoding`, возвращается строка;
-иначе — [`Buffer`][`Buffer`].
+иначе — [`Buffer`](buffer.md).
 
 ### `diffieHellman.getPrime([encoding])`
 
@@ -1445,7 +1445,7 @@ added: v0.5.0
 
 Возвращает простое число (модуль) Диффи–Хеллмана в указанной `encoding`.
 Если задана `encoding`, возвращается строка;
-иначе — [`Buffer`][`Buffer`].
+иначе — [`Buffer`](buffer.md).
 
 ### `diffieHellman.getPrivateKey([encoding])`
 
@@ -1458,7 +1458,7 @@ added: v0.5.0
 
 Возвращает закрытый ключ Диффи–Хеллмана в указанной `encoding`.
 Если задана `encoding`,
-возвращается строка; иначе — [`Buffer`][`Buffer`].
+возвращается строка; иначе — [`Buffer`](buffer.md).
 
 ### `diffieHellman.getPublicKey([encoding])`
 
@@ -1471,7 +1471,7 @@ added: v0.5.0
 
 Возвращает открытый ключ Диффи–Хеллмана в указанной `encoding`.
 Если задана `encoding`,
-возвращается строка; иначе — [`Buffer`][`Buffer`].
+возвращается строка; иначе — [`Buffer`](buffer.md).
 
 ### `diffieHellman.setPrivateKey(privateKey[, encoding])`
 
@@ -1485,10 +1485,10 @@ added: v0.5.0
 Задаёт закрытый ключ Диффи–Хеллмана. Если передан аргумент `encoding`,
 ожидается, что `privateKey` —
 строка. Если `encoding` не задана, ожидается, что `privateKey` —
-это [`Buffer`][`Buffer`], `TypedArray` или `DataView`.
+это [`Buffer`](buffer.md), `TypedArray` или `DataView`.
 
 Эта функция не вычисляет связанный открытый ключ автоматически. Можно вызвать либо
-[`diffieHellman.setPublicKey()`][`diffieHellman.setPublicKey()`], либо [`diffieHellman.generateKeys()`][`diffieHellman.generateKeys()`] —
+[`diffieHellman.setPublicKey()`](#diffiehellmansetpublickeypublickey-encoding), либо [`diffieHellman.generateKeys()`](#diffiehellmangeneratekeysencoding) —
 чтобы явно задать открытый ключ или получить его автоматически.
 
 ### `diffieHellman.setPublicKey(publicKey[, encoding])`
@@ -1503,7 +1503,7 @@ added: v0.5.0
 Задаёт открытый ключ Диффи–Хеллмана. Если передан аргумент `encoding`,
 ожидается, что `publicKey` —
 строка. Если `encoding` не задана, ожидается, что `publicKey` —
-это [`Buffer`][`Buffer`], `TypedArray` или `DataView`.
+это [`Buffer`](buffer.md), `TypedArray` или `DataView`.
 
 ### `diffieHellman.verifyError`
 
@@ -1571,7 +1571,7 @@ added: v0.11.14
 Класс `ECDH` — утилита для обмена ключами по протоколу Elliptic Curve Diffie-Hellman (ECDH).
 
 Экземпляры класса `ECDH` создаются функцией
-[`crypto.createECDH()`][`crypto.createECDH()`].
+[`crypto.createECDH()`](#cryptocreateecdhcurvename).
 
 === "MJS"
 
@@ -1642,13 +1642,13 @@ added: v10.0.0
 интерпретируется в указанной `inputEncoding`, возвращаемый ключ кодируется
 в указанной `outputEncoding`.
 
-Список имён доступных кривых можно получить через [`crypto.getCurves()`][`crypto.getCurves()`].
+Список имён доступных кривых можно получить через [`crypto.getCurves()`](#cryptogetcurves).
 В свежих версиях OpenSSL команда `openssl ecparam -list_curves` также выводит
 имя и описание каждой доступной эллиптической кривой.
 
 Если `format` не указан, точка возвращается в формате `'uncompressed'`.
 
-Если `inputEncoding` не задана, ожидается, что `key` — это [`Buffer`][`Buffer`],
+Если `inputEncoding` не задана, ожидается, что `key` — это [`Buffer`](buffer.md),
 `TypedArray` или `DataView`.
 
 Пример (распаковка ключа):
@@ -1732,11 +1732,11 @@ changes:
 ключ интерпретируется в указанной `inputEncoding`, возвращаемый секрет
 кодируется в указанной `outputEncoding`.
 Если `inputEncoding` не
-задана, ожидается, что `otherPublicKey` — это [`Buffer`][`Buffer`], `TypedArray` или
+задана, ожидается, что `otherPublicKey` — это [`Buffer`](buffer.md), `TypedArray` или
 `DataView`.
 
 Если задана `outputEncoding`, возвращается строка; иначе —
-[`Buffer`][`Buffer`].
+[`Buffer`](buffer.md).
 
 `ecdh.computeSecret` выбросит ошибку
 `ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY`, когда `otherPublicKey`
@@ -1762,7 +1762,7 @@ added: v0.11.14
 `'uncompressed'`. Если `format` не указан, точка возвращается в
 формате `'uncompressed'`.
 
-Если задана `encoding`, возвращается строка; иначе — [`Buffer`][`Buffer`].
+Если задана `encoding`, возвращается строка; иначе — [`Buffer`](buffer.md).
 
 ### `ecdh.getPrivateKey([encoding])`
 
@@ -1773,7 +1773,7 @@ added: v0.11.14
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка][encoding] возвращаемого значения
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) закрытый ключ EC Diffie-Hellman в указанной `encoding`.
 
-Если задана `encoding`, возвращается строка; иначе — [`Buffer`][`Buffer`].
+Если задана `encoding`, возвращается строка; иначе — [`Buffer`](buffer.md).
 
 ### `ecdh.getPublicKey([encoding][, format])`
 
@@ -1790,7 +1790,7 @@ added: v0.11.14
 `'uncompressed'`. Если `format` не указан, точка возвращается в
 формате `'uncompressed'`.
 
-Если задана `encoding`, возвращается строка; иначе — [`Buffer`][`Buffer`].
+Если задана `encoding`, возвращается строка; иначе — [`Buffer`](buffer.md).
 
 ### `ecdh.setPrivateKey(privateKey[, encoding])`
 
@@ -1803,7 +1803,7 @@ added: v0.11.14
 
 Задаёт закрытый ключ EC Diffie-Hellman.
 Если задана `encoding`, ожидается, что `privateKey` —
-строка; иначе ожидается [`Buffer`][`Buffer`],
+строка; иначе ожидается [`Buffer`](buffer.md),
 `TypedArray` или `DataView`.
 
 Если `privateKey` недопустим для кривой, указанной при создании объекта `ECDH`,
@@ -1824,11 +1824,11 @@ deprecated: v5.2.0
 
 Задаёт открытый ключ EC Diffie-Hellman.
 Если задана `encoding`, ожидается, что `publicKey` —
-строка; иначе ожидается [`Buffer`][`Buffer`], `TypedArray` или `DataView`.
+строка; иначе ожидается [`Buffer`](buffer.md), `TypedArray` или `DataView`.
 
 Обычно этот метод не нужен: для `ECDH` достаточно закрытого ключа и открытого ключа
-другой стороны, чтобы вычислить общий секрет. Обычно вызывают либо [`ecdh.generateKeys()`][`ecdh.generateKeys()`], либо
-[`ecdh.setPrivateKey()`][`ecdh.setPrivateKey()`]. Метод [`ecdh.setPrivateKey()`][`ecdh.setPrivateKey()`]
+другой стороны, чтобы вычислить общий секрет. Обычно вызывают либо [`ecdh.generateKeys()`](#ecdhgeneratekeysencoding-format), либо
+[`ecdh.setPrivateKey()`](#ecdhsetprivatekeyprivatekey-encoding). Метод [`ecdh.setPrivateKey()`](#ecdhsetprivatekeyprivatekey-encoding)
 пытается сгенерировать открытую точку/ключ, соответствующие устанавливаемому
 закрытому ключу.
 
@@ -1905,10 +1905,10 @@ added: v0.1.92
 
 * как [поток][stream] с чтением и записью: данные пишутся
   с одной стороны, а на стороне чтения получается вычисленный хеш-дайджест;
-* через методы [`hash.update()`][`hash.update()`] и [`hash.digest()`][`hash.digest()`], чтобы получить
+* через методы [`hash.update()`](#hashupdatedata-inputencoding) и [`hash.digest()`](#hashdigestencoding), чтобы получить
   вычисленный хеш.
 
-Экземпляры `Hash` создаёт метод [`crypto.createHash()`][`crypto.createHash()`]. Объекты `Hash`
+Экземпляры `Hash` создаёт метод [`crypto.createHash()`](#cryptocreatehashalgorithm-options). Объекты `Hash`
 не создают напрямую через `new`.
 
 Пример: объект `Hash` как поток:
@@ -1989,7 +1989,7 @@ added: v0.1.92
     input.pipe(hash).setEncoding('hex').pipe(stdout);
     ```
 
-Пример: [`hash.update()`][`hash.update()`] и [`hash.digest()`][`hash.digest()`]:
+Пример: [`hash.update()`](#hashupdatedata-inputencoding) и [`hash.digest()`](#hashdigestencoding):
 
 === "MJS"
 
@@ -2027,7 +2027,7 @@ added: v0.1.92
 added: v13.1.0
 -->
 
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
 * Возвращает: [`<Hash>`](crypto.md)
 
 Создаёт новый объект `Hash` с глубокой копией внутреннего состояния
@@ -2038,7 +2038,7 @@ added: v13.1.0
 указать желаемую длину выхода в байтах.
 
 Ошибка выбрасывается при попытке скопировать объект `Hash` после вызова
-его метода [`hash.digest()`][`hash.digest()`].
+его метода [`hash.digest()`](#hashdigestencoding).
 
 === "MJS"
 
@@ -2094,9 +2094,9 @@ added: v0.1.92
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Вычисляет дайджест по всем данным, переданным для хеширования (через
-[`hash.update()`][`hash.update()`]).
+[`hash.update()`](#hashupdatedata-inputencoding)).
 Если задана `encoding`, возвращается строка; иначе —
-[`Buffer`][`Buffer`].
+[`Buffer`](buffer.md).
 
 После вызова `hash.digest()` объект `Hash` использовать снова нельзя.
 Повторные вызовы приведут к ошибке.
@@ -2124,7 +2124,7 @@ changes:
 
 Обновляет содержимое хеша данными `data`; их кодировка задаётся в `inputEncoding`.
 Если `inputEncoding` не задана и `data` — строка, принудительно используется
-кодировка `'utf8'`. Если `data` — [`Buffer`][`Buffer`], `TypedArray` или
+кодировка `'utf8'`. Если `data` — [`Buffer`](buffer.md), `TypedArray` или
 `DataView`, то `inputEncoding` игнорируется.
 
 Метод можно вызывать многократно по мере поступления новых данных в потоке.
@@ -2142,10 +2142,10 @@ added: v0.1.94
 
 * как [поток][stream] с чтением и записью: данные пишутся
   с одной стороны, а на стороне чтения получается вычисленный HMAC-дайджест;
-* через методы [`hmac.update()`][`hmac.update()`] и [`hmac.digest()`][`hmac.digest()`], чтобы получить
+* через методы [`hmac.update()`](#hmacupdatedata-inputencoding) и [`hmac.digest()`](#hmacdigestencoding), чтобы получить
   вычисленный HMAC-дайджест.
 
-Экземпляры `Hmac` создаёт метод [`crypto.createHmac()`][`crypto.createHmac()`]. Объекты `Hmac`
+Экземпляры `Hmac` создаёт метод [`crypto.createHmac()`](#cryptocreatehmacalgorithm-key-options). Объекты `Hmac`
 не создают напрямую через `new`.
 
 Пример: объект `Hmac` как поток:
@@ -2232,7 +2232,7 @@ added: v0.1.94
     input.pipe(hmac).pipe(stdout);
     ```
 
-Пример: [`hmac.update()`][`hmac.update()`] и [`hmac.digest()`][`hmac.digest()`]:
+Пример: [`hmac.update()`](#hmacupdatedata-inputencoding) и [`hmac.digest()`](#hmacdigestencoding):
 
 === "MJS"
 
@@ -2273,9 +2273,9 @@ added: v0.1.94
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) [кодировка][encoding] возвращаемого значения
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Вычисляет HMAC-дайджест по всем данным, переданным через [`hmac.update()`][`hmac.update()`].
+Вычисляет HMAC-дайджест по всем данным, переданным через [`hmac.update()`](#hmacupdatedata-inputencoding).
 Если задана `encoding`,
-возвращается строка; иначе — [`Buffer`][`Buffer`].
+возвращается строка; иначе — [`Buffer`](buffer.md).
 
 После вызова `hmac.digest()` объект `Hmac` использовать снова нельзя.
 Повторные вызовы `hmac.digest()` приведут к ошибке.
@@ -2303,7 +2303,7 @@ changes:
 
 Обновляет содержимое `Hmac` данными `data`; их кодировка задаётся в `inputEncoding`.
 Если `inputEncoding` не задана и `data` — строка, принудительно используется
-кодировка `'utf8'`. Если `data` — [`Buffer`][`Buffer`], `TypedArray` или
+кодировка `'utf8'`. Если `data` — [`Buffer`](buffer.md), `TypedArray` или
 `DataView`, то `inputEncoding` игнорируется.
 
 Метод можно вызывать многократно по мере поступления новых данных в потоке.
@@ -2339,14 +2339,14 @@ changes:
 
 В Node.js класс `KeyObject` представляет симметричный или асимметричный ключ;
 у каждого вида ключа свой набор возможностей. Экземпляры `KeyObject` создают методы
-[`crypto.createSecretKey()`][`crypto.createSecretKey()`], [`crypto.createPublicKey()`][`crypto.createPublicKey()`] и
-[`crypto.createPrivateKey()`][`crypto.createPrivateKey()`]. Объекты `KeyObject`
+[`crypto.createSecretKey()`](#cryptocreatesecretkeykey-encoding), [`crypto.createPublicKey()`](#cryptocreatepublickeykey) и
+[`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). Объекты `KeyObject`
 не создают напрямую через `new`.
 
 В большинстве приложений лучше использовать API `KeyObject` вместо передачи ключей
 строками или `Buffer` — благодаря улучшенным мерам безопасности.
 
-Экземпляры `KeyObject` можно передавать в другие потоки через [`postMessage()`][`postMessage()`].
+Экземпляры `KeyObject` можно передавать в другие потоки через [`postMessage()`](worker_threads.md#portpostmessagevalue-transferlist).
 Получатель получает клонированный `KeyObject`; указывать `KeyObject` в аргументе `transferList` не нужно.
 
 ### Статический метод: `KeyObject.from(key)`
@@ -2650,15 +2650,15 @@ The `Sign` class is a utility for generating signatures. It can be used in one
 of two ways:
 
 * As a writable [stream][stream], where data to be signed is written and the
-  [`sign.sign()`][`sign.sign()`] method is used to generate and return the signature, or
-* Using the [`sign.update()`][`sign.update()`] and [`sign.sign()`][`sign.sign()`] methods to produce the
+  [`sign.sign()`](#signsignprivatekey-outputencoding) method is used to generate and return the signature, or
+* Using the [`sign.update()`](#signupdatedata-inputencoding) and [`sign.sign()`](#signsignprivatekey-outputencoding) methods to produce the
   signature.
 
-The [`crypto.createSign()`][`crypto.createSign()`] method is used to create `Sign` instances. The
+The [`crypto.createSign()`](#cryptocreatesignalgorithm-options) method is used to create `Sign` instances. The
 argument is the string name of the hash function to use. `Sign` objects are not
 to be created directly using the `new` keyword.
 
-Пример: объекты `Sign` и [`Verify`][`Verify`] как потоки:
+Пример: объекты `Sign` и [`Verify`](#class-verify) как потоки:
 
 === "MJS"
 
@@ -2710,7 +2710,7 @@ to be created directly using the `new` keyword.
     // Prints: true
     ```
 
-Пример: [`sign.update()`][`sign.update()`] и [`verify.update()`][`verify.update()`]:
+Пример: [`sign.update()`](#signupdatedata-inputencoding) и [`verify.update()`](#verifyupdatedata-inputencoding):
 
 === "MJS"
 
@@ -2810,10 +2810,10 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 Calculates the signature on all the data passed through using either
-[`sign.update()`][`sign.update()`] or [`sign.write()`][stream-writable-write].
+[`sign.update()`](#signupdatedata-inputencoding) or [`sign.write()`](stream.md#writablewritechunk-encoding-callback).
 
-If `privateKey` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`privateKey` had been passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`]. If it is an
+If `privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an
 object, the following additional properties can be passed:
 
 * `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
@@ -2835,7 +2835,7 @@ object, the following additional properties can be passed:
   size, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (default) sets it to the
   maximum permissible value.
 
-If `outputEncoding` is provided a string is returned; otherwise a [`Buffer`][`Buffer`]
+If `outputEncoding` is provided a string is returned; otherwise a [`Buffer`](buffer.md)
 is returned.
 
 The `Sign` object can not be again used after `sign.sign()` method has been
@@ -2865,7 +2865,7 @@ changes:
 Updates the `Sign` content with the given `data`, the encoding of which
 is given in `inputEncoding`.
 If `encoding` is not provided, and the `data` is a string, an
-encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][`Buffer`], `TypedArray`, or
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`](buffer.md), `TypedArray`, or
 `DataView`, then `inputEncoding` is ignored.
 
 This can be called many times with new data as it is streamed.
@@ -2883,13 +2883,13 @@ of two ways:
 
 * As a writable [stream][stream] where written data is used to validate against the
   supplied signature, or
-* Using the [`verify.update()`][`verify.update()`] and [`verify.verify()`][`verify.verify()`] methods to verify
+* Using the [`verify.update()`](#verifyupdatedata-inputencoding) and [`verify.verify()`](#verifyverifykey-signature-signatureencoding) methods to verify
   the signature.
 
-The [`crypto.createVerify()`][`crypto.createVerify()`] method is used to create `Verify` instances.
+The [`crypto.createVerify()`](#cryptocreateverifyalgorithm-options) method is used to create `Verify` instances.
 `Verify` objects are not to be created directly using the `new` keyword.
 
-See [`Sign`][`Sign`] for examples.
+See [`Sign`](#class-sign) for examples.
 
 ### `verify.update(data[, inputEncoding])`
 
@@ -2915,7 +2915,7 @@ changes:
 Updates the `Verify` content with the given `data`, the encoding of which
 is given in `inputEncoding`.
 If `inputEncoding` is not provided, and the `data` is a string, an
-encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][`Buffer`], `TypedArray`, or
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`](buffer.md), `TypedArray`, or
 `DataView`, then `inputEncoding` is ignored.
 
 This can be called many times with new data as it is streamed.
@@ -2971,8 +2971,8 @@ changes:
 
 Verifies the provided data using the given `key` and `signature`.
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`key` had been passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`]. If it is an
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an
 object, the following additional properties can be passed:
 
 * `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
@@ -2997,7 +2997,7 @@ object, the following additional properties can be passed:
 The `signature` argument is the previously calculated signature for the data, in
 the `signatureEncoding`.
 If a `signatureEncoding` is specified, the `signature` is expected to be a
-string; otherwise `signature` is expected to be a [`Buffer`][`Buffer`],
+string; otherwise `signature` is expected to be a [`Buffer`](buffer.md),
 `TypedArray`, or `DataView`.
 
 The `verify` object can not be used again after `verify.verify()` has been
@@ -3207,8 +3207,8 @@ selected using a more rudimentary filtering routine, i.e. just based on subject
 and issuer names.
 
 Finally, to verify that this certificate's signature was produced by a private key
-corresponding to `otherCert`'s public key use [`x509.verify(publicKey)`][`x509.verify(publicKey)`]
-with `otherCert`'s public key represented as a [`KeyObject`][`KeyObject`]
+corresponding to `otherCert`'s public key use [`x509.verify(publicKey)`](#x509verifypublickey)
+with `otherCert`'s public key represented as a [`KeyObject`](#class-keyobject)
 like so
 
 ```js
@@ -3241,7 +3241,7 @@ The SHA-1 fingerprint of this certificate.
 
 Because SHA-1 is cryptographically broken and because the security of SHA-1 is
 significantly worse than that of algorithms that are commonly used to sign
-certificates, consider using [`x509.fingerprint256`][`x509.fingerprint256`] instead.
+certificates, consider using [`x509.fingerprint256`](#x509fingerprint256) instead.
 
 ### `x509.fingerprint256`
 
@@ -3266,7 +3266,7 @@ added:
 The SHA-512 fingerprint of this certificate.
 
 Because computing the SHA-256 fingerprint is usually faster and because it is
-only half the size of the SHA-512 fingerprint, [`x509.fingerprint256`][`x509.fingerprint256`] may be
+only half the size of the SHA-512 fingerprint, [`x509.fingerprint256`](#x509fingerprint256) may be
 a better choice. While SHA-512 presumably provides a higher level of security in
 general, the security of SHA-256 matches that of most algorithms that are
 commonly used to sign certificates.
@@ -3369,7 +3369,7 @@ added: v15.6.0
 The serial number of this certificate.
 
 Serial numbers are assigned by certificate authorities and do not uniquely
-identify certificates. Consider using [`x509.fingerprint256`][`x509.fingerprint256`] as a unique
+identify certificates. Consider using [`x509.fingerprint256`](#x509fingerprint256) as a unique
 identifier instead.
 
 ### `x509.subject`
@@ -3578,7 +3578,7 @@ consider [caveats when using strings as inputs to cryptographic APIs][caveats wh
 
 The `callback` function is called with two arguments: `err` and `derivedKey`.
 `err` is an exception object when key derivation fails, otherwise `err` is
-`null`. `derivedKey` is passed to the callback as a [`Buffer`][`Buffer`].
+`null`. `derivedKey` is passed to the callback as a [`Buffer`](buffer.md).
 
 An exception is thrown when any of the input arguments specify invalid values
 or types.
@@ -3665,7 +3665,7 @@ When passing strings for `message`, `nonce`, `secret` or `associatedData`, pleas
 consider [caveats when using strings as inputs to cryptographic APIs][caveats when using strings as inputs to cryptographic APIs].
 
 An exception is thrown when key derivation fails, otherwise the derived key is
-returned as a [`Buffer`][`Buffer`].
+returned as a [`Buffer`](buffer.md).
 
 An exception is thrown when any of the input arguments specify invalid values
 or types.
@@ -3734,7 +3734,7 @@ changes:
     iterations to perform. When the value is `0` (zero), a number of checks
     is used that yields a false positive rate of at most 2<sup>-64</sup> for
     random input. Care must be used when selecting a number of checks. Refer
-    to the OpenSSL documentation for the [`BN_is_prime_ex`][`BN_is_prime_ex`] function `nchecks`
+    to the OpenSSL documentation for the [`BN_is_prime_ex`](https://www.openssl.org/docs/man1.1.1/man3/BN_is_prime_ex.html) function `nchecks`
     options for more details. **По умолчанию:** `0`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Set to an [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object if an error occurred during check.
@@ -3757,7 +3757,7 @@ added: v15.8.0
     iterations to perform. When the value is `0` (zero), a number of checks
     is used that yields a false positive rate of at most 2<sup>-64</sup> for
     random input. Care must be used when selecting a number of checks. Refer
-    to the OpenSSL documentation for the [`BN_is_prime_ex`][`BN_is_prime_ex`] function `nchecks`
+    to the OpenSSL documentation for the [`BN_is_prime_ex`](https://www.openssl.org/docs/man1.1.1/man3/BN_is_prime_ex.html) function `nchecks`
     options for more details. **По умолчанию:** `0`
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the candidate is a prime with an error
   probability less than `0.25 ** options.checks`.
@@ -3834,7 +3834,7 @@ changes:
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `iv` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | null
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
 * Возвращает: [`<Cipheriv>`](crypto.md#class-cipheriv)
 
 Creates and returns a `Cipheriv` object, with the given `algorithm`, `key` and
@@ -3854,8 +3854,8 @@ display the available cipher algorithms.
 
 The `key` is the raw key used by the `algorithm` and `iv` is an
 [initialization vector][initialization vector]. Both arguments must be `'utf8'` encoded strings,
-[Buffers][`Buffer`], `TypedArray`, or `DataView`s. The `key` may optionally be
-a [`KeyObject`][`KeyObject`] of type `secret`. If the cipher does not need
+[Buffers](buffer.md), `TypedArray`, or `DataView`s. The `key` may optionally be
+a [`KeyObject`](#class-keyobject) of type `secret`. If the cipher does not need
 an initialization vector, `iv` may be `null`.
 
 When passing strings for `key` or `iv`, please consider
@@ -3921,7 +3921,7 @@ changes:
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `iv` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | null
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
 * Возвращает: [`<Decipheriv>`](crypto.md#class-decipheriv)
 
 Creates and returns a `Decipheriv` object that uses the given `algorithm`, `key`
@@ -3940,8 +3940,8 @@ display the available cipher algorithms.
 
 The `key` is the raw key used by the `algorithm` and `iv` is an
 [initialization vector][initialization vector]. Both arguments must be `'utf8'` encoded strings,
-[Buffers][`Buffer`], `TypedArray`, or `DataView`s. The `key` may optionally be
-a [`KeyObject`][`KeyObject`] of type `secret`. If the cipher does not need
+[Buffers](buffer.md), `TypedArray`, or `DataView`s. The `key` may optionally be
+a [`KeyObject`](#class-keyobject) of type `secret`. If the cipher does not need
 an initialization vector, `iv` may be `null`.
 
 When passing strings for `key` or `iv`, please consider
@@ -3991,14 +3991,14 @@ changes:
 Creates a `DiffieHellman` key exchange object using the supplied `prime` and an
 optional specific `generator`.
 
-The `generator` argument can be a number, string, or [`Buffer`][`Buffer`]. If
+The `generator` argument can be a number, string, or [`Buffer`](buffer.md). If
 `generator` is not specified, the value `2` is used.
 
 If `primeEncoding` is specified, `prime` is expected to be a string; otherwise
-a [`Buffer`][`Buffer`], `TypedArray`, or `DataView` is expected.
+a [`Buffer`](buffer.md), `TypedArray`, or `DataView` is expected.
 
 If `generatorEncoding` is specified, `generator` is expected to be a string;
-otherwise a number, [`Buffer`][`Buffer`], `TypedArray`, or `DataView` is expected.
+otherwise a number, [`Buffer`](buffer.md), `TypedArray`, or `DataView` is expected.
 
 ### `crypto.createDiffieHellman(primeLength[, generator])`
 
@@ -4023,7 +4023,7 @@ added: v0.9.3
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<DiffieHellmanGroup>`](#class-diffiehellmangroup)
 
-An alias for [`crypto.getDiffieHellman()`][`crypto.getDiffieHellman()`]
+An alias for [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname)
 
 ### `crypto.createECDH(curveName)`
 
@@ -4036,7 +4036,7 @@ added: v0.11.14
 
 Creates an Elliptic Curve Diffie-Hellman (`ECDH`) key exchange object using a
 predefined curve specified by the `curveName` string. Use
-[`crypto.getCurves()`][`crypto.getCurves()`] to obtain a list of available curve names. On recent
+[`crypto.getCurves()`](#cryptogetcurves) to obtain a list of available curve names. On recent
 OpenSSL releases, `openssl ecparam -list_curves` will also display the name
 and description of each available elliptic curve.
 
@@ -4059,7 +4059,7 @@ changes:
     | v12.8.0 | Опция «outputLength» была добавлена ​​для хэш-функций XOF. |
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
 * Возвращает: [`<Hash>`](crypto.md)
 
 Creates and returns a `Hash` object that can be used to generate hash digests
@@ -4160,7 +4160,7 @@ changes:
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options][`stream.transform` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `key` is a string.
 * Возвращает: [`<Hmac>`](crypto.md)
 
@@ -4173,10 +4173,10 @@ On recent releases of OpenSSL, `openssl list -digest-algorithms` will
 display the available digest algorithms.
 
 The `key` is the HMAC key used to generate the cryptographic HMAC hash. If it is
-a [`KeyObject`][`KeyObject`], its type must be `secret`. If it is a string, please consider
+a [`KeyObject`](#class-keyobject), its type must be `secret`. If it is a string, please consider
 [caveats when using strings as inputs to cryptographic APIs][caveats when using strings as inputs to cryptographic APIs]. If it was
 obtained from a cryptographically secure source of entropy, such as
-[`crypto.randomBytes()`][`crypto.randomBytes()`] or [`crypto.generateKey()`][`crypto.generateKey()`], its length should not
+[`crypto.randomBytes()`](#cryptorandombytessize-callback) or [`crypto.generateKey()`](#cryptogeneratekeytype-options-callback), its length should not
 exceed the block size of `algorithm` (e.g., 512 bits for SHA-256).
 
 Example: generating the sha256 HMAC of a file
@@ -4372,7 +4372,7 @@ If the format is `'pem'`, the `'key'` may also be an X.509 certificate.
 
 Because public keys can be derived from private keys, a private key may be
 passed instead of a public key. In that case, this function behaves as if
-[`crypto.createPrivateKey()`][`crypto.createPrivateKey()`] had been called, except that the type of the
+[`crypto.createPrivateKey()`](#cryptocreateprivatekeykey) had been called, except that the type of the
 returned `KeyObject` will be `'public'` and that the private key cannot be
 extracted from the returned `KeyObject`. Similarly, if a `KeyObject` with type
 `'private'` is given, a new `KeyObject` with type `'public'` will be returned
@@ -4418,11 +4418,11 @@ added: v0.1.92
 -->
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options][`stream.Writable` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options](stream.md#new-streamwritableoptions)
 * Возвращает: [`<Sign>`](#class-sign)
 
 Creates and returns a `Sign` object that uses the given `algorithm`. Use
-[`crypto.getHashes()`][`crypto.getHashes()`] to obtain the names of the available digest algorithms.
+[`crypto.getHashes()`](#cryptogethashes) to obtain the names of the available digest algorithms.
 Optional `options` argument controls the `stream.Writable` behavior.
 
 In some cases, a `Sign` instance can be created using the name of a signature
@@ -4438,11 +4438,11 @@ added: v0.1.92
 -->
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options][`stream.Writable` options]
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.Writable` options](stream.md#new-streamwritableoptions)
 * Возвращает: [`<Verify>`](#class-verify)
 
 Creates and returns a `Verify` object that uses the given algorithm.
-Use [`crypto.getHashes()`][`crypto.getHashes()`] to obtain an array of names of the available
+Use [`crypto.getHashes()`](#cryptogethashes) to obtain an array of names of the available
 signing algorithms. Optional `options` argument controls the
 `stream.Writable` behavior.
 
@@ -4481,8 +4481,8 @@ Supported key types and their KEM algorithms are:
 * `'ml-kem-768'`[^openssl35] ML-KEM
 * `'ml-kem-1024'`[^openssl35] ML-KEM
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if `key` had been
-passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`].
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been
+passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey).
 
 If the `callback` function is provided this function uses libuv's threadpool.
 
@@ -4520,11 +4520,11 @@ Computes the Diffie-Hellman shared secret based on a `privateKey` and a `publicK
 Both keys must represent the same asymmetric key type and must support either the DH or
 ECDH operation.
 
-If `options.privateKey` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`options.privateKey` had been passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`].
+If `options.privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`options.privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey).
 
-If `options.publicKey` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`options.publicKey` had been passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`].
+If `options.publicKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`options.publicKey` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey).
 
 If the `callback` function is provided this function uses libuv's threadpool.
 
@@ -4560,8 +4560,8 @@ Supported key types and their KEM algorithms are:
 * `'ml-kem-768'`[^openssl35] ML-KEM
 * `'ml-kem-1024'`[^openssl35] ML-KEM
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if `key` had been
-passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`].
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been
+passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey).
 
 If the `callback` function is provided this function uses libuv's threadpool.
 
@@ -4643,7 +4643,7 @@ Asynchronously generates a new random secret key of the given `length`. The
     ```
 
 The size of a generated HMAC key should not exceed the block size of the
-underlying hash function. See [`crypto.createHmac()`][`crypto.createHmac()`] for more information.
+underlying hash function. See [`crypto.createHmac()`](#cryptocreatehmacalgorithm-key-options) for more information.
 
 ### `crypto.generateKeyPair(type, options, callback)`
 
@@ -4720,11 +4720,11 @@ changes:
   * `primeLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Prime length in bits (DH).
   * `generator` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Custom generator (DH). **По умолчанию:** `2`.
   * `groupName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Diffie-Hellman group name (DH). See
-    [`crypto.getDiffieHellman()`][`crypto.getDiffieHellman()`].
+    [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname).
   * `paramEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'named'` or `'explicit'` (EC).
     **По умолчанию:** `'named'`.
-  * `publicKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][`keyObject.export()`].
-  * `privateKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][`keyObject.export()`].
+  * `publicKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`](#keyobjectexportoptions).
+  * `privateKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`](#keyobjectexportoptions).
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
   * `publicKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<KeyObject>`](#class-keyobject)
@@ -4734,8 +4734,8 @@ Generates a new asymmetric key pair of the given `type`. See the
 supported [asymmetric key types][asymmetric key types].
 
 If a `publicKeyEncoding` or `privateKeyEncoding` was specified, this function
-behaves as if [`keyObject.export()`][`keyObject.export()`] had been called on its result. Otherwise,
-the respective part of the key is returned as a [`KeyObject`][`KeyObject`].
+behaves as if [`keyObject.export()`](#keyobjectexportoptions) had been called on its result. Otherwise,
+the respective part of the key is returned as a [`KeyObject`](#class-keyobject).
 
 It is recommended to encode public keys as `'spki'` and private keys as
 `'pkcs8'` with encryption for long-term storage:
@@ -4791,7 +4791,7 @@ It is recommended to encode public keys as `'spki'` and private keys as
 On completion, `callback` will be called with `err` set to `undefined` and
 `publicKey` / `privateKey` representing the generated key pair.
 
-If this method is invoked as its [`util.promisify()`][`util.promisify()`]ed version, it returns
+If this method is invoked as its [`util.promisify()`](util.md#utilpromisifyoriginal)ed version, it returns
 a `Promise` for an `Object` with `publicKey` and `privateKey` properties.
 
 ### `crypto.generateKeyPairSync(type, options)`
@@ -4863,11 +4863,11 @@ changes:
   * `primeLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Prime length in bits (DH).
   * `generator` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Custom generator (DH). **По умолчанию:** `2`.
   * `groupName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Diffie-Hellman group name (DH). See
-    [`crypto.getDiffieHellman()`][`crypto.getDiffieHellman()`].
+    [`crypto.getDiffieHellman()`](#cryptogetdiffiehellmangroupname).
   * `paramEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Must be `'named'` or `'explicit'` (EC).
     **По умолчанию:** `'named'`.
-  * `publicKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][`keyObject.export()`].
-  * `privateKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`][`keyObject.export()`].
+  * `publicKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`](#keyobjectexportoptions).
+  * `privateKeyEncoding` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) See [`keyObject.export()`](#keyobjectexportoptions).
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `publicKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<KeyObject>`](#class-keyobject)
   * `privateKey` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<KeyObject>`](#class-keyobject)
@@ -4876,8 +4876,8 @@ Generates a new asymmetric key pair of the given `type`. See the
 supported [asymmetric key types][asymmetric key types].
 
 If a `publicKeyEncoding` or `privateKeyEncoding` was specified, this function
-behaves as if [`keyObject.export()`][`keyObject.export()`] had been called on its result. Otherwise,
-the respective part of the key is returned as a [`KeyObject`][`KeyObject`].
+behaves as if [`keyObject.export()`](#keyobjectexportoptions) had been called on its result. Otherwise,
+the respective part of the key is returned as a [`KeyObject`](#class-keyobject).
 
 When encoding public keys, it is recommended to use `'spki'`. When encoding
 private keys, it is recommended to use `'pkcs8'` with a strong passphrase,
@@ -4979,7 +4979,7 @@ Synchronously generates a new random secret key of the given `length`. The
     ```
 
 The size of a generated HMAC key should not exceed the block size of the
-underlying hash function. See [`crypto.createHmac()`][`crypto.createHmac()`] for more information.
+underlying hash function. See [`crypto.createHmac()`](#cryptocreatehmacalgorithm-key-options) for more information.
 
 ### `crypto.generatePrime(size[, options], callback)`
 
@@ -5190,11 +5190,11 @@ added: v0.7.5
 * Возвращает: [`<DiffieHellmanGroup>`](#class-diffiehellmangroup)
 
 Creates a predefined `DiffieHellmanGroup` key exchange object. The
-supported groups are listed in the documentation for [`DiffieHellmanGroup`][`DiffieHellmanGroup`].
+supported groups are listed in the documentation for [`DiffieHellmanGroup`](#class-diffiehellmangroup).
 
 The returned object mimics the interface of objects created by
-[`crypto.createDiffieHellman()`][`crypto.createDiffieHellman()`], but will not allow changing
-the keys (with [`diffieHellman.setPublicKey()`][`diffieHellman.setPublicKey()`], for example). The
+[`crypto.createDiffieHellman()`](#cryptocreatediffiehellmanprime-primeencoding-generator-generatorencoding), but will not allow changing
+the keys (with [`diffieHellman.setPublicKey()`](#diffiehellmansetpublickeypublickey-encoding), for example). The
 advantage of using this method is that the parties do not have to
 generate nor exchange a group modulus beforehand, saving both processor
 and communication time.
@@ -5288,9 +5288,9 @@ added: v17.4.0
 * `typedArray` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) Returns `typedArray`.
 
-A convenient alias for [`crypto.webcrypto.getRandomValues()`][`crypto.webcrypto.getRandomValues()`]. This
+A convenient alias for [`crypto.webcrypto.getRandomValues()`](webcrypto.md#cryptogetrandomvaluestypedarray). This
 implementation is not compliant with the Web Crypto spec, to write
-web-compatible code use [`crypto.webcrypto.getRandomValues()`][`crypto.webcrypto.getRandomValues()`] instead.
+web-compatible code use [`crypto.webcrypto.getRandomValues()`](webcrypto.md#cryptogetrandomvaluestypedarray) instead.
 
 ### `crypto.hash(algorithm, data[, options])`
 
@@ -5584,7 +5584,7 @@ applied to derive a key of the requested byte length (`keylen`) from the
 The supplied `callback` function is called with two arguments: `err` and
 `derivedKey`. If an error occurs while deriving the key, `err` will be set;
 otherwise `err` will be `null`. By default, the successfully generated
-`derivedKey` will be passed to the callback as a [`Buffer`][`Buffer`]. An error will be
+`derivedKey` will be passed to the callback as a [`Buffer`](buffer.md). An error will be
 thrown if any of the input arguments specify invalid values or types.
 
 The `iterations` argument must be a number set as high as possible. The
@@ -5624,11 +5624,11 @@ When passing strings for `password` or `salt`, please consider
     ```
 
 An array of supported digest functions can be retrieved using
-[`crypto.getHashes()`][`crypto.getHashes()`].
+[`crypto.getHashes()`](#cryptogethashes).
 
 This API uses libuv's threadpool, which can have surprising and
 negative performance implications for some applications; see the
-[`UV_THREADPOOL_SIZE`][`UV_THREADPOOL_SIZE`] documentation for more information.
+[`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
 
 ### `crypto.pbkdf2Sync(password, salt, iterations, keylen, digest)`
 
@@ -5672,7 +5672,7 @@ applied to derive a key of the requested byte length (`keylen`) from the
 `password`, `salt` and `iterations`.
 
 If an error occurs an `Error` will be thrown, otherwise the derived key will be
-returned as a [`Buffer`][`Buffer`].
+returned as a [`Buffer`](buffer.md).
 
 The `iterations` argument must be a number set as high as possible. The
 higher the number of iterations, the more secure the derived key will be,
@@ -5707,7 +5707,7 @@ When passing strings for `password` or `salt`, please consider
     ```
 
 An array of supported digest functions can be retrieved using
-[`crypto.getHashes()`][`crypto.getHashes()`].
+[`crypto.getHashes()`](#cryptogethashes).
 
 ### `crypto.privateDecrypt(privateKey, buffer)`
 
@@ -5767,14 +5767,14 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 Decrypts `buffer` with `privateKey`. `buffer` was previously encrypted using
-the corresponding public key, for example using [`crypto.publicEncrypt()`][`crypto.publicEncrypt()`].
+the corresponding public key, for example using [`crypto.publicEncrypt()`](#cryptopublicencryptkey-buffer).
 
-If `privateKey` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`privateKey` had been passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`]. If it is an
+If `privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an
 object, the `padding` property can be passed. Otherwise, this function uses
 `RSA_PKCS1_OAEP_PADDING`.
 
-Using `crypto.constants.RSA_PKCS1_PADDING` in [`crypto.privateDecrypt()`][`crypto.privateDecrypt()`]
+Using `crypto.constants.RSA_PKCS1_PADDING` in [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer)
 requires OpenSSL to support implicit rejection (`rsa_pkcs1_implicit_rejection`).
 If the version of OpenSSL used by Node.js does not support this feature,
 attempting to use `RSA_PKCS1_PADDING` will fail.
@@ -5822,10 +5822,10 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 Encrypts `buffer` with `privateKey`. The returned data can be decrypted using
-the corresponding public key, for example using [`crypto.publicDecrypt()`][`crypto.publicDecrypt()`].
+the corresponding public key, for example using [`crypto.publicDecrypt()`](#cryptopublicdecryptkey-buffer).
 
-If `privateKey` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`privateKey` had been passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`]. If it is an
+If `privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an
 object, the `padding` property can be passed. Otherwise, this function uses
 `RSA_PKCS1_PADDING`.
 
@@ -5870,10 +5870,10 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 Decrypts `buffer` with `key`.`buffer` was previously encrypted using
-the corresponding private key, for example using [`crypto.privateEncrypt()`][`crypto.privateEncrypt()`].
+the corresponding private key, for example using [`crypto.privateEncrypt()`](#cryptoprivateencryptprivatekey-buffer).
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`key` had been passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`]. If it is an
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an
 object, the `padding` property can be passed. Otherwise, this function uses
 `RSA_PKCS1_PADDING`.
 
@@ -5936,11 +5936,11 @@ changes:
 <!--lint enable maximum-line-length remark-lint-->
 
 Encrypts the content of `buffer` with `key` and returns a new
-[`Buffer`][`Buffer`] with encrypted content. The returned data can be decrypted using
-the corresponding private key, for example using [`crypto.privateDecrypt()`][`crypto.privateDecrypt()`].
+[`Buffer`](buffer.md) with encrypted content. The returned data can be decrypted using
+the corresponding private key, for example using [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer).
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if
-`key` had been passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`]. If it is an
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if
+`key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an
 object, the `padding` property can be passed. Otherwise, this function uses
 `RSA_PKCS1_OAEP_PADDING`.
 
@@ -5985,7 +5985,7 @@ is a number indicating the number of bytes to generate.
 If a `callback` function is provided, the bytes are generated asynchronously
 and the `callback` function is invoked with two arguments: `err` and `buf`.
 If an error occurs, `err` will be an `Error` object; otherwise it is `null`. The
-`buf` argument is a [`Buffer`][`Buffer`] containing the generated bytes.
+`buf` argument is a [`Buffer`](buffer.md) containing the generated bytes.
 
 === "MJS"
 
@@ -6016,7 +6016,7 @@ If an error occurs, `err` will be an `Error` object; otherwise it is `null`. The
     ```
 
 If the `callback` function is not provided, the random bytes are generated
-synchronously and returned as a [`Buffer`][`Buffer`]. An error will be thrown if
+synchronously and returned as a [`Buffer`](buffer.md). An error will be thrown if
 there is a problem generating the bytes.
 
 === "MJS"
@@ -6053,7 +6053,7 @@ time is right after boot, when the whole system is still low on entropy.
 
 This API uses libuv's threadpool, which can have surprising and
 negative performance implications for some applications; see the
-[`UV_THREADPOOL_SIZE`][`UV_THREADPOOL_SIZE`] documentation for more information.
+[`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
 
 The asynchronous version of `crypto.randomBytes()` is carried out in a single
 threadpool request. To minimize threadpool task length variation, partition
@@ -6091,8 +6091,8 @@ changes:
   not be larger than `2**31 - 1`.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, buf) {}`.
 
-This function is similar to [`crypto.randomBytes()`][`crypto.randomBytes()`] but requires the first
-argument to be a [`Buffer`][`Buffer`] that will be filled. It also
+This function is similar to [`crypto.randomBytes()`](#cryptorandombytessize-callback) but requires the first
+argument to be a [`Buffer`](buffer.md) that will be filled. It also
 requires that a callback is passed in.
 
 If the `callback` function is not provided, an error will be thrown.
@@ -6210,7 +6210,7 @@ distribution and have no meaningful lower or upper bounds.
 
 This API uses libuv's threadpool, which can have surprising and
 negative performance implications for some applications; see the
-[`UV_THREADPOOL_SIZE`][`UV_THREADPOOL_SIZE`] documentation for more information.
+[`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
 
 The asynchronous version of `crypto.randomFill()` is carried out in a single
 threadpool request. To minimize threadpool task length variation, partition
@@ -6243,7 +6243,7 @@ changes:
 * Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The object passed as
   `buffer` argument.
 
-Synchronous version of [`crypto.randomFill()`][`crypto.randomFill()`].
+Synchronous version of [`crypto.randomFill()`](#cryptorandomfillbuffer-offset-size-callback).
 
 === "MJS"
 
@@ -6532,7 +6532,7 @@ When passing strings for `password` or `salt`, please consider
 
 The `callback` function is called with two arguments: `err` and `derivedKey`.
 `err` is an exception object when key derivation fails, otherwise `err` is
-`null`. `derivedKey` is passed to the callback as a [`Buffer`][`Buffer`].
+`null`. `derivedKey` is passed to the callback as a [`Buffer`](buffer.md).
 
 An exception is thrown when any of the input arguments specify invalid values
 or types.
@@ -6626,7 +6626,7 @@ When passing strings for `password` or `salt`, please consider
 [caveats when using strings as inputs to cryptographic APIs][caveats when using strings as inputs to cryptographic APIs].
 
 An exception is thrown when key derivation fails, otherwise the derived key is
-returned as a [`Buffer`][`Buffer`].
+returned as a [`Buffer`](buffer.md).
 
 An exception is thrown when any of the input arguments specify invalid values
 or types.
@@ -6797,8 +6797,8 @@ dependent upon the key type.
 `algorithm` is required to be `null` or `undefined` for Ed25519, Ed448, and
 ML-DSA.
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if `key` had been
-passed to [`crypto.createPrivateKey()`][`crypto.createPrivateKey()`]. If it is an object, the following
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been
+passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an object, the following
 additional properties can be passed:
 
 * `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
@@ -6832,7 +6832,7 @@ added: v17.4.0
 
 * Тип: [`<SubtleCrypto>`](webcrypto.md)
 
-A convenient alias for [`crypto.webcrypto.subtle`][`crypto.webcrypto.subtle`].
+A convenient alias for [`crypto.webcrypto.subtle`](webcrypto.md#class-subtlecrypto).
 
 ### `crypto.timingSafeEqual(a, b)`
 
@@ -6955,8 +6955,8 @@ key type.
 `algorithm` is required to be `null` or `undefined` for Ed25519, Ed448, and
 ML-DSA.
 
-If `key` is not a [`KeyObject`][`KeyObject`], this function behaves as if `key` had been
-passed to [`crypto.createPublicKey()`][`crypto.createPublicKey()`]. If it is an object, the following
+If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been
+passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an object, the following
 additional properties can be passed:
 
 * `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the
@@ -7037,18 +7037,18 @@ When passing strings to cryptographic APIs, consider the following factors.
   function, such as PBKDF2 or scrypt, the result of the key derivation function
   depends on whether the string uses composed or decomposed characters. Node.js
   does not normalize character representations. Developers should consider using
-  [`String.prototype.normalize()`][`String.prototype.normalize()`] on user inputs before passing them to
+  [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize) on user inputs before passing them to
   cryptographic APIs.
 
 ### Legacy streams API (prior to Node.js 0.10)
 
 The Crypto module was added to Node.js before there was the concept of a
-unified Stream API, and before there were [`Buffer`][`Buffer`] objects for handling
+unified Stream API, and before there were [`Buffer`](buffer.md) objects for handling
 binary data. As such, many `crypto` classes have methods not
 typically found on other Node.js classes that implement the [streams][stream]
 API (e.g. `update()`, `final()`, or `digest()`). Also, many methods accepted
 and returned `'latin1'` encoded strings by default rather than `Buffer`s. This
-default was changed in Node.js 0.9.3 to use [`Buffer`][`Buffer`] objects by default
+default was changed in Node.js 0.9.3 to use [`Buffer`](buffer.md) objects by default
 instead.
 
 ### Support for weak or compromised algorithms

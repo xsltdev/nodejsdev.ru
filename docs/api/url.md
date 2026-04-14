@@ -140,7 +140,7 @@ changes:
 
 По соглашениям браузеров все свойства объектов `URL` реализованы как геттеры и сеттеры
 на прототипе класса, а не как свойства данных самого объекта. Поэтому, в отличие от
-[legacy `urlObject`][legacy `urlObject`], использование ключевого слова `delete` для любых свойств объектов
+[legacy `urlObject`](#legacy-urlobject), использование ключевого слова `delete` для любых свойств объектов
 `URL` (например, `delete myURL.protocol`, `delete myURL.pathname` и т.д.) не даёт эффекта,
 но всё равно возвращает `true`.
 
@@ -248,7 +248,7 @@ console.log(myURL.href);
 
 Недопустимые символы URL в значении, присвоенном свойству `hash`, подвергаются
 [процентному кодированию][percent-encoded]. Набор кодируемых символов может
-слегка отличаться от того, что дают [`url.parse()`][`url.parse()`] и [`url.format()`][`url.format()`].
+слегка отличаться от того, что дают [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.host`
 
@@ -309,10 +309,10 @@ console.log(myURL.href);
 // Prints https://example.com/bar
 ```
 
-Чтение свойства `href` эквивалентно вызову [`url.toString()`][`url.toString()`].
+Чтение свойства `href` эквивалентно вызову [`url.toString()`](#urltostring).
 
 Присвоение нового значения эквивалентно созданию объекта `URL` через
-[`new URL(value)`][`new URL()`]; изменяются все свойства объекта.
+[`new URL(value)`](#new-urlinput-base); изменяются все свойства объекта.
 
 Если присвоенное значение не является допустимым URL, выбрасывается `TypeError`.
 
@@ -369,7 +369,7 @@ console.log(myURL.href);
 
 Недопустимые символы URL в значении свойства `password` кодируются
 [процентным кодированием][percent-encoded]. Набор кодируемых символов может
-слегка отличаться от [`url.parse()`][`url.parse()`] и [`url.format()`][`url.format()`].
+слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.pathname`
 
@@ -389,7 +389,7 @@ console.log(myURL.href);
 
 Недопустимые символы URL в значении свойства `pathname` кодируются
 [процентным кодированием][percent-encoded]. Набор кодируемых символов может
-слегка отличаться от [`url.parse()`][`url.parse()`] и [`url.format()`][`url.format()`].
+слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.port`
 
@@ -565,16 +565,16 @@ console.log(myURL.href);
 
 Недопустимые символы URL в значении свойства `search` кодируются
 [процентным кодированием][percent-encoded]. Набор кодируемых символов может
-слегка отличаться от [`url.parse()`][`url.parse()`] и [`url.format()`][`url.format()`].
+слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.searchParams`
 
 * Тип: [`<URLSearchParams>`](url.md#class-urlsearchparams)
 
-Возвращает объект [`URLSearchParams`][`URLSearchParams`] с параметрами запроса URL. Свойство
+Возвращает объект [`URLSearchParams`](#class-urlsearchparams) с параметрами запроса URL. Свойство
 только для чтения, но через `URLSearchParams` можно менять экземпляр URL; чтобы
-полностью заменить строку запроса, используйте сеттер [`url.search`][`url.search`]. Подробнее
-см. [`URLSearchParams`][`URLSearchParams`].
+полностью заменить строку запроса, используйте сеттер [`url.search`](#urlsearch). Подробнее
+см. [`URLSearchParams`](#class-urlsearchparams).
 
 При изменении URL через `.searchParams` учитывайте: по спецификации WHATWG у
 `URLSearchParams` другие правила процентного кодирования. Например, объект `URL`
@@ -609,14 +609,14 @@ console.log(myURL.href);
 
 Недопустимые символы URL в значении свойства `username` кодируются
 [процентным кодированием][percent-encoded]. Набор кодируемых символов может
-слегка отличаться от [`url.parse()`][`url.parse()`] и [`url.format()`][`url.format()`].
+слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.toString()`
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `toString()` объекта `URL` возвращает сериализованный URL; результат
-совпадает с [`url.href`][`url.href`] и [`url.toJSON()`][`url.toJSON()`].
+совпадает с [`url.href`](#urlhref) и [`url.toJSON()`](#urltojson).
 
 #### `url.toJSON()`
 
@@ -629,10 +629,10 @@ added:
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Метод `toJSON()` объекта `URL` возвращает сериализованный URL; результат
-совпадает с [`url.href`][`url.href`] и [`url.toString()`][`url.toString()`].
+совпадает с [`url.href`](#urlhref) и [`url.toString()`](#urltostring).
 
 Метод вызывается автоматически при сериализации объекта `URL` через
-[`JSON.stringify()`][`JSON.stringify()`].
+[`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
 
 ```js
 const myURLs = [
@@ -889,8 +889,8 @@ API `URLSearchParams` даёт доступ на чтение и запись к
 можно использовать отдельно — ниже четыре варианта конструктора. Класс также
 доступен в глобальном объекте.
 
-Интерфейс WHATWG `URLSearchParams` и модуль [`querystring`][`querystring`] решают похожую задачу,
-но [`querystring`][`querystring`] универсальнее: можно настраивать разделители (`&` и `=`).
+Интерфейс WHATWG `URLSearchParams` и модуль [`querystring`](querystring.md) решают похожую задачу,
+но [`querystring`](querystring.md) универсальнее: можно настраивать разделители (`&` и `=`).
 Этот API предназначен именно для строк запроса в URL.
 
 ```js
@@ -964,8 +964,8 @@ added:
 Создаёт `URLSearchParams` из обычного объекта. Ключи и значения свойств `obj`
 приводятся к строкам.
 
-В отличие от [`querystring`][`querystring`], дубликаты ключей в виде массивов не поддерживаются:
-массивы приводятся через [`array.toString()`][`array.toString()`] — элементы склеиваются запятыми.
+В отличие от [`querystring`](querystring.md), дубликаты ключей в виде массивов не поддерживаются:
+массивы приводятся через [`array.toString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toString) — элементы склеиваются запятыми.
 
 ```js
 const params = new URLSearchParams({
@@ -1233,7 +1233,7 @@ console.log(params.toString());
 Возвращает ES6-итератор по парам имя–значение в строке запроса. Каждый элемент —
 массив `Array`: первый элемент — `name`, второй — `value`.
 
-Синоним [`urlSearchParams.entries()`][`urlSearchParams.entries()`].
+Синоним [`urlSearchParams.entries()`](#urlsearchparamsentries).
 
 ```js
 const params = new URLSearchParams('foo=bar&xyz=baz');
@@ -1271,7 +1271,7 @@ changes:
 Возвращает ASCII-представление `domain` в [Punycode][Punycode]. Если домен недопустим —
 пустая строка.
 
-Обратная операция к [`url.domainToUnicode()`][`url.domainToUnicode()`].
+Обратная операция к [`url.domainToUnicode()`](#urldomaintounicodedomain).
 
 === "MJS"
 
@@ -1324,7 +1324,7 @@ changes:
 
 Возвращает Unicode-представление `domain`. Если домен недопустим — пустая строка.
 
-Обратная операция к [`url.domainToASCII()`][`url.domainToASCII()`].
+Обратная операция к [`url.domainToASCII()`](#urldomaintoasciidomain).
 
 === "MJS"
 
@@ -1450,7 +1450,7 @@ added:
 
 **Безопасность:**
 
-Те же риски, что у [`url.fileURLToPath()`][`url.fileURLToPath()`]: декодирование и нормализация пути.
+Те же риски, что у [`url.fileURLToPath()`](#urlfileurltopathurl-options): декодирование и нормализация пути.
 **Нельзя полагаться только на эту функцию против атак с обходом каталога.**
 Проверяйте полученный `Buffer` перед использованием в ФС.
 
@@ -1600,7 +1600,7 @@ changes:
   * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт удалённого сервера.
   * `auth` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Basic-авторизация в виде `'user:password'` для заголовка Authorization.
 
-Преобразует объект URL в обычный объект опций для [`http.request()`][`http.request()`] и [`https.request()`][`https.request()`].
+Преобразует объект URL в обычный объект опций для [`http.request()`](http.md#httprequestoptions-callback) и [`https.request()`](https.md#httpsrequestoptions-callback).
 
 === "MJS"
 
@@ -1757,7 +1757,7 @@ changes:
 #### `urlObject.query`
 
 Свойство `query` — либо строка запроса без ведущего ASCII `?`, либо объект из
-метода `parse()` модуля [`querystring`][`querystring`]. Тип задаётся аргументом `parseQueryString` в `url.parse()`.
+метода `parse()` модуля [`querystring`](querystring.md). Тип задаётся аргументом `parseQueryString` в `url.parse()`.
 
 Например: `'query=string'` или `{'query': 'string'}`.
 
@@ -1832,13 +1832,13 @@ url.format({
 // => 'https://example.com/some/path?page=1&format=json'
 ```
 
-Если `urlObject` не объект и не строка, `url.format()` выбросит [`TypeError`][`TypeError`].
+Если `urlObject` не объект и не строка, `url.format()` выбросит [`TypeError`](errors.md#class-typeerror).
 
 Форматирование выполняется так:
 
 * Создаётся пустая строка `result`.
 * Если `urlObject.protocol` — строка, она добавляется в `result` как есть.
-* Иначе, если `urlObject.protocol` не `undefined` и не строка, выбрасывается [`Error`][`Error`].
+* Иначе, если `urlObject.protocol` не `undefined` и не строка, выбрасывается [`Error`](errors.md#class-error).
 * Для строковых значений `urlObject.protocol`, которые _не заканчиваются_ ASCII-двоеточием
   (`:`), к `result` добавляется литерал `:`.
 * Если выполняется одно из условий, к `result` добавляется литерал `//`:
@@ -1848,24 +1848,24 @@ url.format({
   значение `urlObject.auth` приводится к строке, добавляется к `result`, затем литерал `@`.
 * Если `urlObject.host` — `undefined`:
   * если `urlObject.hostname` — строка, она добавляется к `result`;
-  * иначе, если `urlObject.hostname` не `undefined` и не строка, выбрасывается [`Error`][`Error`];
+  * иначе, если `urlObject.hostname` не `undefined` и не строка, выбрасывается [`Error`](errors.md#class-error);
   * если `urlObject.port` истинно и `urlObject.hostname` не `undefined`: к `result` добавляется
     `:` и строковое значение `urlObject.port`.
 * Иначе, если `urlObject.host` истинно, его значение приводится к строке и добавляется к `result`.
 * Если `urlObject.pathname` — непустая строка:
   * если `urlObject.pathname` _не начинается_ с ASCII `/`, к `result` добавляется `'/'`;
   * затем добавляется значение `urlObject.pathname`.
-* Иначе, если `urlObject.pathname` не `undefined` и не строка, выбрасывается [`Error`][`Error`].
+* Иначе, если `urlObject.pathname` не `undefined` и не строка, выбрасывается [`Error`](errors.md#class-error).
 * Если `urlObject.search` — `undefined`, а `urlObject.query` — объект, к `result` добавляется
-  `?` и результат вызова `stringify()` модуля [`querystring`][`querystring`] для `urlObject.query`.
+  `?` и результат вызова `stringify()` модуля [`querystring`](querystring.md) для `urlObject.query`.
 * Иначе, если `urlObject.search` — строка:
   * если она _не начинается_ с ASCII `?`, к `result` добавляется `?`;
   * затем добавляется значение `urlObject.search`.
-* Иначе, если `urlObject.search` не `undefined` и не строка, выбрасывается [`Error`][`Error`].
+* Иначе, если `urlObject.search` не `undefined` и не строка, выбрасывается [`Error`](errors.md#class-error).
 * Если `urlObject.hash` — строка:
   * если она _не начинается_ с ASCII `#`, к `result` добавляется `#`;
   * затем добавляется значение `urlObject.hash`.
-* Иначе, если `urlObject.hash` не `undefined` и не строка, выбрасывается [`Error`][`Error`].
+* Иначе, если `urlObject.hash` не `undefined` и не строка, выбрасывается [`Error`](errors.md#class-error).
 * Возвращается `result`.
 
 Доступна автоматическая миграция ([исходники](https://github.com/nodejs/userland-migrations/tree/main/recipes/node-url-to-whatwg-url)).
@@ -1899,10 +1899,10 @@ changes:
 
 `url.format(urlString)` — сокращение для `url.format(url.parse(urlString))`.
 
-Внутри вызывается устаревший [`url.parse()`][`url.parse()`], поэтому передача строки в `url.format()`
+Внутри вызывается устаревший [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost), поэтому передача строки в `url.format()`
 сама по себе устарела.
 
-Канонизацию строки URL лучше делать через WHATWG URL API: `new URL(...)` и [`url.toString()`][`url.toString()`].
+Канонизацию строки URL лучше делать через WHATWG URL API: `new URL(...)` и [`url.toString()`](#urltostring).
 
 === "MJS"
 
@@ -1982,7 +1982,7 @@ changes:
 
 * `urlString` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL для разбора.
 * `parseQueryString` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, свойство `query` всегда будет объектом
-  из метода `parse()` модуля [`querystring`][`querystring`]. Если `false` — неразобранная строка. **По умолчанию:** `false`.
+  из метода `parse()` модуля [`querystring`](querystring.md). Если `false` — неразобранная строка. **По умолчанию:** `false`.
 * `slashesDenoteHost` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, первый фрагмент после литерала `//` до
   следующего `/` считается `host`. Например, для `//foo/bar` получится
   `{host: 'foo', pathname: '/bar'}`, а не `{pathname: '//foo/bar'}`. **По умолчанию:** `false`.
@@ -2081,7 +2081,7 @@ url.resolve('http://example.com/', '/one');    // 'http://example.com/one'
 url.resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 ```
 
-Внутри вызывается устаревший [`url.parse()`][`url.parse()`], поэтому `url.resolve()` устарел.
+Внутри вызывается устаревший [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost), поэтому `url.resolve()` устарел.
 
 Тот же результат через WHATWG URL API:
 

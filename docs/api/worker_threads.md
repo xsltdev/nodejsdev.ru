@@ -107,13 +107,13 @@ JavaScript параллельно. Подключение:
 для таких задач используйте пул worker’ов — иначе накладные расходы на создание
 потоков могут перевесить пользу.
 
-Реализуя пул, применяйте API [`AsyncResource`][`AsyncResource`], чтобы диагностические инструменты
+Реализуя пул, применяйте API [`AsyncResource`](async_hooks.md#class-asyncresource), чтобы диагностические инструменты
 (например трассировки асинхронного стека) видели связь задач с результатами. Пример —
-в разделе [«Использование `AsyncResource` для пула потоков `Worker`»][async-resource-worker-pool]
+в разделе [«Использование `AsyncResource` для пула потоков `Worker`»](async_context.md#using-asyncresource-for-a-worker-thread-pool)
 документации `async_hooks`.
 
 Потоки worker по умолчанию наследуют опции, не зависящие от процесса. См.
-[параметры конструктора `Worker`][`Worker constructor options`] — настройка `argv` и `execArgv`.
+[параметры конструктора `Worker`](#new-workerfilename-options) — настройка `argv` и `execArgv`.
 
 ## `worker_threads.getEnvironmentData(key)`
 
@@ -191,7 +191,7 @@ added:
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-`true`, если этот код выполняется во внутреннем потоке [`Worker`][`Worker`] (например, в потоке загрузчика).
+`true`, если этот код выполняется во внутреннем потоке [`Worker`](#class-worker) (например, в потоке загрузчика).
 
 ```bash
 node --experimental-loader ./loader.js main.js
@@ -241,7 +241,7 @@ added: v10.5.0
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-`true`, если этот код выполняется не в потоке [`Worker`][`Worker`].
+`true`, если этот код выполняется не в потоке [`Worker`](#class-worker).
 
 === "MJS"
 
@@ -284,13 +284,13 @@ added:
 * `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
 
 Помечает объект как непередаваемый. Если `object` попадает в список передачи вызова
-[`port.postMessage()`][`port.postMessage()`], выбрасывается ошибка. Для примитивных значений
+[`port.postMessage()`](#portpostmessagevalue-transferlist), выбрасывается ошибка. Для примитивных значений
 `object` ничего не делает.
 
 Это уместно для объектов, которые клонируются, а не
 передаются, и используются другими объектами на стороне отправителя.
 Например, Node.js помечает так `ArrayBuffer`, используемые для
-[`Buffer` pool][`Buffer.allocUnsafe()`].
+[`Buffer` pool](buffer.md#static-method-bufferallocunsafesize).
 `ArrayBuffer.prototype.transfer()` для таких буферов запрещён.
 
 Эту операцию нельзя отменить.
@@ -365,7 +365,7 @@ added: v21.0.0
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Проверяет, помечен ли объект как непередаваемый через
-[`markAsUntransferable()`][`markAsUntransferable()`].
+[`markAsUntransferable()`](#worker_threadsmarkasuntransferableobject).
 
 === "MJS"
 
@@ -404,7 +404,7 @@ added:
 * `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное значение JavaScript.
 
 Помечает объект как неклонируемый. Если `object` используется как [`message`](#event-message) в
-вызове [`port.postMessage()`][`port.postMessage()`], выбрасывается ошибка. Для примитивных значений `object` ничего не делает.
+вызове [`port.postMessage()`](#portpostmessagevalue-transferlist), выбрасывается ошибка. Для примитивных значений `object` ничего не делает.
 
 Это не действует на `ArrayBuffer` и объекты, похожие на `Buffer`.
 
@@ -459,16 +459,16 @@ added: v11.13.0
 
 * Возвращает: [`<MessagePort>`](worker_threads.md#class-messageport)
 
-Передаёт `MessagePort` в другой [`vm`][`vm`] Context. Исходный объект `port`
+Передаёт `MessagePort` в другой [`vm`](vm.md) Context. Исходный объект `port`
 становится непригодным, на его месте используется возвращённый `MessagePort`.
 
 Возвращённый `MessagePort` — объект в целевом контексте и
 наследует глобальный класс `Object`. Объекты, передаваемые в слушатель
-[`port.onmessage()`][`port.onmessage()`], тоже создаются в целевом контексте
+[`port.onmessage()`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/message_event), тоже создаются в целевом контексте
 и наследуют его глобальный класс `Object`.
 
 Однако созданный `MessagePort` больше не наследует
-[EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget), для получения событий можно использовать только [`port.onmessage()`][`port.onmessage()`].
+[EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget), для получения событий можно использовать только [`port.onmessage()`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/message_event).
 
 ## `worker_threads.parentPort`
 
@@ -478,7 +478,7 @@ added: v10.5.0
 
 * Тип: null | [`<MessagePort>`](worker_threads.md#class-messageport)
 
-Если этот поток — [`Worker`][`Worker`], это [`MessagePort`][`MessagePort`]
+Если этот поток — [`Worker`](#class-worker), это [`MessagePort`](#class-messageport)
 для связи с родительским потоком. Сообщения, отправленные через
 `parentPort.postMessage()`, доступны родителю в
 `worker.on('message')`, а сообщения от родителя через
@@ -536,29 +536,29 @@ added:
 > Стабильность: 1.1 – Активная разработка
 
 * `threadId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) ID целевого потока. Если ID недействителен,
-  выбрасывается [`ERR_WORKER_MESSAGING_FAILED`][`ERR_WORKER_MESSAGING_FAILED`]. Если ID совпадает с текущим потоком,
-  выбрасывается [`ERR_WORKER_MESSAGING_SAME_THREAD`][`ERR_WORKER_MESSAGING_SAME_THREAD`].
+  выбрасывается [`ERR_WORKER_MESSAGING_FAILED`](errors.md#err_worker_messaging_failed). Если ID совпадает с текущим потоком,
+  выбрасывается [`ERR_WORKER_MESSAGING_SAME_THREAD`](errors.md#err_worker_messaging_same_thread).
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Отправляемое значение.
 * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `value` передаются один или несколько объектов, похожих на `MessagePort`,
-  для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`].
-  См. [`port.postMessage()`][`port.postMessage()`].
+  для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](errors.md#err_missing_message_port_in_transfer_list).
+  См. [`port.postMessage()`](#portpostmessagevalue-transferlist).
 * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидание доставки сообщения в миллисекундах.
   **По умолчанию:** `undefined` — ждать бесконечно. При таймауте
-  выбрасывается [`ERR_WORKER_MESSAGING_TIMEOUT`][`ERR_WORKER_MESSAGING_TIMEOUT`].
+  выбрасывается [`ERR_WORKER_MESSAGING_TIMEOUT`](errors.md#err_worker_messaging_timeout).
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) промис выполняется, если целевой поток успешно обработал сообщение.
 
 Отправляет значение другому worker, определяемому по ID потока.
 
 Если в целевом потоке нет слушателя события `workerMessage`, выбрасывается
-[`ERR_WORKER_MESSAGING_FAILED`][`ERR_WORKER_MESSAGING_FAILED`].
+[`ERR_WORKER_MESSAGING_FAILED`](errors.md#err_worker_messaging_failed).
 
 Если целевой поток выбросил ошибку при обработке `workerMessage`, выбрасывается
-[`ERR_WORKER_MESSAGING_ERRORED`][`ERR_WORKER_MESSAGING_ERRORED`].
+[`ERR_WORKER_MESSAGING_ERRORED`](errors.md#err_worker_messaging_errored).
 
 Этот метод нужен, когда целевой поток не является прямым
 родителем или дочерним для текущего.
-Если потоки в отношении родитель–дочерний, используйте [`require('node:worker_threads').parentPort.postMessage()`][`require('node:worker_threads').parentPort.postMessage()`]
-и [`worker.postMessage()`][`worker.postMessage()`].
+Если потоки в отношении родитель–дочерний, используйте [`require('node:worker_threads').parentPort.postMessage()`](#workerpostmessagevalue-transferlist)
+и [`worker.postMessage()`](#workerpostmessagevalue-transferlist).
 
 Ниже пример `postMessageToThread`: создаётся 10 вложенных потоков,
 последний пытается связаться с главным потоком.
@@ -713,7 +713,7 @@ added:
   * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт ограничения ресурсов JS-движка в этом потоке Worker.
-Если в конструктор [`Worker`][`Worker`] передавалась опция `resourceLimits`,
+Если в конструктор [`Worker`](#class-worker) передавалась опция `resourceLimits`,
 значения совпадают с ней.
 
 В главном потоке значение — пустой объект.
@@ -726,7 +726,7 @@ added: v11.14.0
 
 * Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 
-Специальное значение для опции `env` конструктора [`Worker`][`Worker`]:
+Специальное значение для опции `env` конструктора [`Worker`](#class-worker):
 текущий поток и поток Worker совместно читают и изменяют
 один и тот же набор переменных окружения.
 
@@ -792,8 +792,8 @@ added: v10.5.0
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Целочисленный идентификатор текущего потока. На соответствующем объекте worker
-(если есть) доступен как [`worker.threadId`][`worker.threadId`].
-Уникален для каждого [`Worker`][`Worker`] в одном процессе.
+(если есть) доступен как [`worker.threadId`](#workerthreadid).
+Уникален для каждого [`Worker`](#class-worker) в одном процессе.
 
 ## `worker_threads.threadName`
 
@@ -806,7 +806,7 @@ added:
 * [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Строковый идентификатор текущего потока или `null`, если поток не выполняется.
-На соответствующем объекте worker (если есть) доступен как [`worker.threadName`][`worker.threadName`].
+На соответствующем объекте worker (если есть) доступен как [`worker.threadName`](#workerthreadname).
 
 ## `worker_threads.workerData`
 
@@ -817,7 +817,7 @@ added: v10.5.0
 Произвольное значение JavaScript — клон данных, переданных
 в конструктор `Worker` этого потока.
 
-Данные клонируются как при [`postMessage()`][`port.postMessage()`],
+Данные клонируются как при [`postMessage()`](#portpostmessagevalue-transferlist),
 по [алгоритму структурированного клонирования HTML][HTML structured clone algorithm].
 
 === "MJS"
@@ -856,10 +856,10 @@ added: v24.5.0
 
 * [LockManager](worker_threads.md#class-lockmanager)
 
-Экземпляр [`LockManager`][LockManager] для координации
+Экземпляр [`LockManager`](#class-lockmanager) для координации
 доступа к ресурсам, общим для нескольких потоков одного
 процесса. Семантика соответствует
-[браузерному `LockManager`][browser `LockManager`]
+[браузерному `LockManager`](https://developer.mozilla.org/en-US/docs/Web/API/LockManager)
 
 ### Класс: `Lock`
 
@@ -868,7 +868,7 @@ added: v24.5.0
 -->
 
 Интерфейс `Lock` описывает блокировку, выданную через
-[`locks.request()`][locks.request()]
+[`locks.request()`](#locksrequestname-options-callback)
 
 #### `lock.name`
 
@@ -913,7 +913,7 @@ added: v24.5.0
     const { locks } = require('node:worker_threads');
     ```
 
-Реализация соответствует API [browser `LockManager`][browser `LockManager`].
+Реализация соответствует API [browser `LockManager`](https://developer.mozilla.org/en-US/docs/Web/API/LockManager).
 
 #### `locks.request(name[, options], callback)`
 
@@ -1151,7 +1151,7 @@ added: v10.5.0
 двусторонний канал связи.
 У `MessageChannel` нет собственных методов. `new MessageChannel()`
 возвращает объект с полями `port1` и `port2` — связанные
-экземпляры [`MessagePort`][`MessagePort`].
+экземпляры [`MessagePort`](#class-messageport).
 
 === "MJS"
 
@@ -1202,9 +1202,9 @@ changes:
 Класс `worker.MessagePort` — один конец асинхронного
 двустороннего канала. Через него передают
 структурированные данные, области памяти и другие `MessagePort` между
-разными [`Worker`][`Worker`].
+разными [`Worker`](#class-worker).
 
-Реализация соответствует [browser `MessagePort`][browser `MessagePort`].
+Реализация соответствует [browser `MessagePort`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort).
 
 ### Event: `'close'`
 
@@ -1258,7 +1258,7 @@ added: v10.5.0
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
 Событие `'message'` генерируется для каждого входящего сообщения с клоном
-аргумента [`port.postMessage()`][`port.postMessage()`].
+аргумента [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
 Слушатели получают клон параметра `value`, как в
 `postMessage()`, без дополнительных аргументов.
@@ -1289,7 +1289,7 @@ added: v10.5.0
 Отключает дальнейшую отправку сообщений с обеих сторон соединения.
 Вызывают, когда обмен по этому `MessagePort` больше не нужен.
 
-Событие [`'close'`][`'close'` event] генерируется на обоих `MessagePort`
+Событие [`'close'`](#event-close) генерируется на обоих `MessagePort`
 этого канала.
 
 ### `port.postMessage(value[, transferList])`
@@ -1356,7 +1356,7 @@ changes:
   `BigInt`, `Map`, `Set` и т.д.
 * `value` может содержать типизированные массивы на `ArrayBuffer`
   и `SharedArrayBuffer`.
-* `value` может содержать экземпляры [`WebAssembly.Module`][`WebAssembly.Module`].
+* `value` может содержать экземпляры [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Module).
 * нельзя передавать нативные (C++) объекты, кроме:
   * [CryptoKey](webcrypto.md#class-cryptokey)s,
   * [FileHandle](#filehandle)s,
@@ -1397,8 +1397,8 @@ changes:
     port2.postMessage(circularData);
     ```
 
-`transferList` — список [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`MessagePort`][`MessagePort`] и
-[`FileHandle`][`FileHandle`].
+`transferList` — список [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`MessagePort`](#class-messageport) и
+[`FileHandle`](fs.md#class-filehandle).
 После передачи они недоступны на стороне отправителя
 (даже если не входят в `value`). В отличие от
 [дочерних процессов][child processes], передача сокетов и подобных handle сейчас
@@ -1468,7 +1468,7 @@ changes:
 без побочных эффектов.
 
 Подробнее о сериализации и десериализации см.
-[API сериализации модуля `node:v8`][v8.serdes].
+[API сериализации модуля `node:v8`](v8.md#serialization-api).
 
 #### Передача TypedArray и Buffer
 
@@ -1494,7 +1494,7 @@ console.log(u2.length);  // prints 0
 Для `Buffer` возможность передать или клонировать базовый
 `ArrayBuffer` зависит от способа создания, который не всегда можно надёжно определить.
 
-`ArrayBuffer` можно пометить [`markAsUntransferable()`][`markAsUntransferable()`], чтобы
+`ArrayBuffer` можно пометить [`markAsUntransferable()`](#worker_threadsmarkasuntransferableobject), чтобы
 он всегда клонировался, а не передавался.
 
 В зависимости от создания `Buffer` он может
@@ -1505,7 +1505,7 @@ console.log(u2.length);  // prints 0
 что может копировать весь пул `Buffer`.
 Это ведёт к лишнему расходу памяти и рискам безопасности.
 
-См. [`Buffer.allocUnsafe()`][`Buffer.allocUnsafe()`] о пуле `Buffer`.
+См. [`Buffer.allocUnsafe()`](buffer.md#static-method-bufferallocunsafesize) о пуле `Buffer`.
 
 `ArrayBuffer` у `Buffer`, созданных через
 `Buffer.alloc()` или `Buffer.allocUnsafeSlow()`, можно
@@ -1634,42 +1634,42 @@ added: v10.5.0
 
 Отличия среды Worker:
 
-* Потоки [`process.stdin`][`process.stdin`], [`process.stdout`][`process.stdout`], [`process.stderr`][`process.stderr`]
+* Потоки [`process.stdin`](process.md#processstdin), [`process.stdout`](process.md#processstdout), [`process.stderr`](process.md#processstderr)
   могут перенаправлять родительский поток.
-* Свойство [`require('node:worker_threads').isMainThread`][`require('node:worker_threads').isMainThread`] равно `false`.
-* Доступен порт сообщений [`require('node:worker_threads').parentPort`][`require('node:worker_threads').parentPort`].
-* [`process.exit()`][`process.exit()`] завершает только этот поток, не всю программу;
-  [`process.abort()`][`process.abort()`] недоступен.
-* [`process.chdir()`][`process.chdir()`] и методы `process` для смены группы/пользователя
+* Свойство [`require('node:worker_threads').isMainThread`](#worker_threadsismainthread) равно `false`.
+* Доступен порт сообщений [`require('node:worker_threads').parentPort`](#worker_threadsparentport).
+* [`process.exit()`](process.md#processexitcode) завершает только этот поток, не всю программу;
+  [`process.abort()`](process.md#processabort) недоступен.
+* [`process.chdir()`](process.md#processchdirdirectory) и методы `process` для смены группы/пользователя
   недоступны.
-* [`process.env`][`process.env`] — копия переменных окружения родителя,
+* [`process.env`](process.md#processenv) — копия переменных окружения родителя,
   если не указано иное. Изменения в одной копии не видны другим
   потокам и нативным аддонам (кроме случая
-  [`worker.SHARE_ENV`][`worker.SHARE_ENV`] в опции `env` конструктора
-  [`Worker`][`Worker`]). В Windows копия переменных, в отличие от главного потока,
+  [`worker.SHARE_ENV`](#worker_threadsshare_env) в опции `env` конструктора
+  [`Worker`](#class-worker)). В Windows копия переменных, в отличие от главного потока,
   учитывает регистр.
-* [`process.title`][`process.title`] нельзя изменить.
-* Сигналы не доставляются через [`process.on('...')`][Signals events].
-* Выполнение может прерваться в любой момент при [`worker.terminate()`][`worker.terminate()`].
+* [`process.title`](process.md#processtitle) нельзя изменить.
+* Сигналы не доставляются через [`process.on('...')`](process.md#signal-events).
+* Выполнение может прерваться в любой момент при [`worker.terminate()`](#workerterminate).
 * IPC-каналы родительского процесса недоступны.
-* Модуль [`trace_events`][`trace_events`] не поддерживается.
+* Модуль [`trace_events`](tracing.md) не поддерживается.
 * Нативные аддоны в нескольких потоках — только при выполнении
   [условий][Addons worker support].
 
 `Worker` можно создавать внутри других `Worker`.
 
-Как у [Web Workers][Web Workers] и модуля [`node:cluster`][`node:cluster` module], двусторонняя связь
+Как у [Web Workers][Web Workers] и модуля [`node:cluster`](cluster.md), двусторонняя связь
 достижима через передачу сообщений. У `Worker` внутри есть пара
-связанных [`MessagePort`][`MessagePort`], созданных при инициализации. Родительский
+связанных [`MessagePort`](#class-messageport), созданных при инициализации. Родительский
 `MessagePort` не экспонируется напрямую; функции доступны через
-[`worker.postMessage()`][`worker.postMessage()`] и событие [`worker.on('message')`][`worker.on('message')`]
+[`worker.postMessage()`](#workerpostmessagevalue-transferlist) и событие [`worker.on('message')`](#event-message_1)
 у объекта `Worker` в родительском потоке.
 
 Для своих каналов связи (предпочтительнее глобального канала из‑за разделения ответственности) можно создать
 `MessageChannel` в любом потоке и передать один из
 `MessagePort` другому потоку через уже существующий канал, например глобальный.
 
-Подробнее о передаче сообщений и допустимых значениях см. [`port.postMessage()`][`port.postMessage()`].
+Подробнее о передаче сообщений и допустимых значениях см. [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
 === "MJS"
 
@@ -1781,22 +1781,22 @@ changes:
     | v13.2.0, v12.16.0 | Была введена опция `resourceLimits`. |
 
 * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Путь к основному скрипту или модулю Worker. Должен быть либо абсолютным путём, либо относительным (относительно текущего рабочего каталога) с префиксом `./` или `../`, либо объектом WHATWG `URL` с протоколом `file:` или `data:`.
-  При использовании [`data:` URL][`data:` URL] данные интерпретируются по MIME-типу с помощью [загрузчика модулей ECMAScript][ECMAScript module loader].
+  При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data) данные интерпретируются по MIME-типу с помощью [загрузчика модулей ECMAScript][ECMAScript module loader].
   Если `options.eval` равен `true`, это строка с кодом JavaScript, а не путь.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `argv` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Список аргументов, которые преобразуются в строки и добавляются к `process.argv` в worker. По смыслу близко к `workerData`, но значения доступны в глобальном `process.argv`, как если бы они были переданы скрипту в командной строке.
-  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если задано, задаёт начальное значение `process.env` в потоке Worker. В качестве особого значения можно указать [`worker.SHARE_ENV`][`worker.SHARE_ENV`], чтобы родительский и дочерний потоки разделяли переменные окружения; тогда изменения объекта `process.env` в одном потоке видны и в другом. **По умолчанию:** `process.env`.
+  * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если задано, задаёт начальное значение `process.env` в потоке Worker. В качестве особого значения можно указать [`worker.SHARE_ENV`](#worker_threadsshare_env), чтобы родительский и дочерний потоки разделяли переменные окружения; тогда изменения объекта `process.env` в одном потоке видны и в другом. **По умолчанию:** `process.env`.
   * `eval` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true` и первый аргумент — строка, первый аргумент конструктора трактуется как скрипт, выполняемый после перехода worker в состояние online.
-  * `execArgv` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список опций CLI Node.js, передаваемых worker. Опции V8 (например `--max-old-space-size`) и опции, влияющие на процесс (например `--title`), не поддерживаются. Если задано, внутри worker доступно как [`process.execArgv`][`process.execArgv`]. По умолчанию опции наследуются от родительского потока.
+  * `execArgv` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список опций CLI Node.js, передаваемых worker. Опции V8 (например `--max-old-space-size`) и опции, влияющие на процесс (например `--title`), не поддерживаются. Если задано, внутри worker доступно как [`process.execArgv`](process.md#processexecargv). По умолчанию опции наследуются от родительского потока.
   * `stdin` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stdin` — поток записи, содержимое которого попадает в `process.stdin` внутри Worker. По умолчанию данные не подаются.
   * `stdout` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stdout` не перенаправляется автоматически в `process.stdout` родителя.
   * `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, `worker.stderr` не перенаправляется автоматически в `process.stderr` родителя.
-  * `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript, клонируемое и доступное как [`require('node:worker_threads').workerData`][`require('node:worker_threads').workerData`]. Клонирование выполняется по [алгоритму структурированного клонирования HTML][HTML structured clone algorithm]; если объект клонировать нельзя (например, из‑за наличия `function`), выбрасывается ошибка.
-  * `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, Worker отслеживает «сырые» дескрипторы файлов, открытые через [`fs.open()`][`fs.open()`] и [`fs.close()`][`fs.close()`], и закрывает их при завершении Worker, аналогично другим ресурсам (сетевые сокеты, дескрипторы через API [`FileHandle`][`FileHandle`]). Опция автоматически наследуется всеми вложенными `Worker`. **По умолчанию:** `true`.
-  * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `workerData` передан один или несколько объектов, похожих на `MessagePort`, для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`]. Подробнее см. [`port.postMessage()`][`port.postMessage()`].
+  * `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript, клонируемое и доступное как [`require('node:worker_threads').workerData`](#worker_threadsworkerdata). Клонирование выполняется по [алгоритму структурированного клонирования HTML][HTML structured clone algorithm]; если объект клонировать нельзя (например, из‑за наличия `function`), выбрасывается ошибка.
+  * `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, Worker отслеживает «сырые» дескрипторы файлов, открытые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при завершении Worker, аналогично другим ресурсам (сетевые сокеты, дескрипторы через API [`FileHandle`](fs.md#class-filehandle)). Опция автоматически наследуется всеми вложенными `Worker`. **По умолчанию:** `true`.
+  * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `workerData` передан один или несколько объектов, похожих на `MessagePort`, для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](errors.md#err_missing_message_port_in_transfer_list). Подробнее см. [`port.postMessage()`](#portpostmessagevalue-transferlist).
   * `resourceLimits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный набор ограничений ресурсов для нового экземпляра JS-движка. При достижении лимитов экземпляр `Worker` завершается. Ограничения действуют только на движок JS, не на внешние данные, в том числе на `ArrayBuffer`. Даже при заданных лимитах процесс может аварийно завершиться при глобальной нехватке памяти.
-    * `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер основной кучи в МБ. Если задан аргумент командной строки [`--max-old-space-size`][`--max-old-space-size`], он переопределяет это значение.
-    * `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер области кучи для недавно созданных объектов. Если задан аргумент [`--max-semi-space-size`][`--max-semi-space-size`], он переопределяет это значение.
+    * `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер основной кучи в МБ. Если задан аргумент командной строки [`--max-old-space-size`](cli.md#--max-old-space-sizesize-in-mib), он переопределяет это значение.
+    * `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер области кучи для недавно созданных объектов. Если задан аргумент [`--max-semi-space-size`](cli.md#--max-semi-space-sizesize-in-mib), он переопределяет это значение.
     * `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер заранее выделенного диапазона памяти для сгенерированного кода.
     * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер стека потока по умолчанию. Слишком малые значения могут сделать экземпляры Worker непригодными. **По умолчанию:** `4`.
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя `name`, подставляемое в имя потока и заголовок worker для отладки и идентификации; итоговый заголовок вида `[worker ${id}] ${name}`.
@@ -1829,7 +1829,7 @@ added: v10.5.0
 * `exitCode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Событие `'exit'` генерируется после остановки worker. Если worker завершился
-вызовом [`process.exit()`][`process.exit()`], параметр `exitCode` — переданный код выхода.
+вызовом [`process.exit()`](process.md#processexitcode), параметр `exitCode` — переданный код выхода.
 Если worker был принудительно завершён, `exitCode` равен `1`.
 
 Это последнее событие, которое генерирует любой экземпляр `Worker`.
@@ -1843,11 +1843,11 @@ added: v10.5.0
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
 Событие `'message'` генерируется, когда поток worker вызывает
-[`require('node:worker_threads').parentPort.postMessage()`][`require('node:worker_threads').parentPort.postMessage()`].
-Подробнее см. событие [`port.on('message')`][`port.on('message')`].
+[`require('node:worker_threads').parentPort.postMessage()`](#workerpostmessagevalue-transferlist).
+Подробнее см. событие [`port.on('message')`](#event-message).
 
 Все сообщения, отправленные из потока worker, доставляются до генерации
-события [`'exit'`][`'exit'` event] на объекте `Worker`.
+события [`'exit'`](#event-exit) на объекте `Worker`.
 
 ### Event: `'messageerror'`
 
@@ -1880,8 +1880,8 @@ added:
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`process.threadCpuUsage()`][`process.threadCpuUsage()`],
-или будет отклонён с [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`], если worker уже не работает.
+Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`process.threadCpuUsage()`](process.md#processthreadcpuusagepreviousvalue),
+или будет отклонён с [`ERR_WORKER_NOT_RUNNING`](errors.md#err_worker_not_running), если worker уже не работает.
 Позволяет получать статистику использования CPU потока извне, не находясь в нём.
 
 ### `worker.getHeapSnapshot([options])`
@@ -1911,11 +1911,11 @@ changes:
   снимок кучи V8
 
 Возвращает поток чтения со снимком V8 текущего состояния Worker.
-Подробнее см. [`v8.getHeapSnapshot()`][`v8.getHeapSnapshot()`].
+Подробнее см. [`v8.getHeapSnapshot()`](v8.md#v8getheapsnapshotoptions).
 
 Если поток Worker уже не выполняется (это возможно до генерации
-события [`'exit'`][`'exit'` event]), возвращённый `Promise` сразу отклоняется
-с ошибкой [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`].
+события [`'exit'`](#event-exit)), возвращённый `Promise` сразу отклоняется
+с ошибкой [`ERR_WORKER_NOT_RUNNING`](errors.md#err_worker_not_running).
 
 ### `worker.getHeapStatistics()`
 
@@ -1927,8 +1927,8 @@ added:
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`v8.getHeapStatistics()`][`v8.getHeapStatistics()`],
-или будет отклонён с [`ERR_WORKER_NOT_RUNNING`][`ERR_WORKER_NOT_RUNNING`], если worker уже не работает.
+Метод возвращает `Promise`, который выполнится объектом, совпадающим с [`v8.getHeapStatistics()`](v8.md#v8getheapstatistics),
+или будет отклонён с [`ERR_WORKER_NOT_RUNNING`](errors.md#err_worker_not_running), если worker уже не работает.
 Позволяет получать статистику кучи извне, не находясь в потоке worker.
 
 ### `worker.performance`
@@ -1960,7 +1960,7 @@ added:
   * `active` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `utilization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Тот же вызов, что и [`perf_hooks` `eventLoopUtilization()`][`perf_hooks` `eventLoopUtilization()`], но возвращаются значения
+Тот же вызов, что и [`perf_hooks` `eventLoopUtilization()`](perf_hooks.md#perf_hookseventlooputilizationutilization1-utilization2), но возвращаются значения
 для экземпляра worker.
 
 Отличие: в отличие от главного потока, инициализация в worker выполняется
@@ -2017,7 +2017,7 @@ added:
     }
     ```
 
-Загрузку цикла событий worker можно получить только после генерации события [`'online'`][`'online'` event]; при вызове до этого или после события [`'exit'`][`'exit'` event]
+Загрузку цикла событий worker можно получить только после генерации события [`'online'`](#event-online); при вызове до этого или после события [`'exit'`](#event-exit)
 все свойства равны `0`.
 
 ### `worker.postMessage(value[, transferList])`
@@ -2030,8 +2030,8 @@ added: v10.5.0
 * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Отправляет сообщение worker; оно принимается в
-[`require('node:worker_threads').parentPort.on('message')`][`require('node:worker_threads').parentPort.on('message')`].
-Подробнее см. [`port.postMessage()`][`port.postMessage()`].
+[`require('node:worker_threads').parentPort.on('message')`](#event-message).
+Подробнее см. [`port.postMessage()`](#portpostmessagevalue-transferlist).
 
 ### `worker.ref()`
 
@@ -2058,7 +2058,7 @@ added:
   * `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Задаёт ограничения ресурсов JS-движка для этого потока Worker.
-Если в конструктор [`Worker`][`Worker`] передавалась опция `resourceLimits`,
+Если в конструктор [`Worker`](#class-worker) передавалась опция `resourceLimits`,
 значения совпадают с ней.
 
 Если worker остановлен, возвращается пустой объект.
@@ -2212,9 +2212,9 @@ added: v10.5.0
 
 * Тип: [`<stream.Readable>`](stream.md#streamreadable)
 
-Поток чтения с данными, записанными в [`process.stderr`][`process.stderr`]
-внутри потока worker. Если в конструктор [`Worker`][`Worker`] не передано `stderr: true`,
-данные перенаправляются в [`process.stderr`][`process.stderr`] родительского потока.
+Поток чтения с данными, записанными в [`process.stderr`](process.md#processstderr)
+внутри потока worker. Если в конструктор [`Worker`](#class-worker) не передано `stderr: true`,
+данные перенаправляются в [`process.stderr`](process.md#processstderr) родительского потока.
 
 ### `worker.stdin`
 
@@ -2224,8 +2224,8 @@ added: v10.5.0
 
 * Тип: null | [`<stream.Writable>`](stream.md#streamwritable)
 
-Если в конструктор [`Worker`][`Worker`] передано `stdin: true`, это поток
-записи. Данные, записанные в него, доступны в потоке worker как [`process.stdin`][`process.stdin`].
+Если в конструктор [`Worker`](#class-worker) передано `stdin: true`, это поток
+записи. Данные, записанные в него, доступны в потоке worker как [`process.stdin`](process.md#processstdin).
 
 ### `worker.stdout`
 
@@ -2235,9 +2235,9 @@ added: v10.5.0
 
 * Тип: [`<stream.Readable>`](stream.md#streamreadable)
 
-Поток чтения с данными, записанными в [`process.stdout`][`process.stdout`]
-внутри потока worker. Если в конструктор [`Worker`][`Worker`] не передано `stdout: true`,
-данные перенаправляются в [`process.stdout`][`process.stdout`] родительского потока.
+Поток чтения с данными, записанными в [`process.stdout`](process.md#processstdout)
+внутри потока worker. Если в конструктор [`Worker`](#class-worker) не передано `stdout: true`,
+данные перенаправляются в [`process.stdout`](process.md#processstdout) родительского потока.
 
 ### `worker.terminate()`
 
@@ -2264,7 +2264,7 @@ changes:
 
 Останавливает выполнение JavaScript в потоке worker как можно скорее.
 Возвращает `Promise` с кодом выхода, который выполняется при генерации
-события [`'exit'`][`'exit'` event].
+события [`'exit'`](#event-exit).
 
 ### `worker.threadId`
 
@@ -2275,7 +2275,7 @@ added: v10.5.0
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Целочисленный идентификатор соответствующего потока. В потоке worker
-доступен как [`require('node:worker_threads').threadId`][`require('node:worker_threads').threadId`].
+доступен как [`require('node:worker_threads').threadId`](#worker_threadsthreadid).
 Уникален для каждого экземпляра `Worker` в одном процессе.
 
 ### `worker.threadName`
@@ -2289,7 +2289,7 @@ added:
 * [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Строковый идентификатор потока или `null`, если поток не выполняется.
-В потоке worker доступен как [`require('node:worker_threads').threadName`][`require('node:worker_threads').threadName`].
+В потоке worker доступен как [`require('node:worker_threads').threadName`](#worker_threadsthreadname).
 
 ### `worker.unref()`
 
@@ -2309,7 +2309,7 @@ added:
  - v22.18.0
 -->
 
-Вызывает [`worker.terminate()`][`worker.terminate()`] при выходе из области dispose.
+Вызывает [`worker.terminate()`](#workerterminate) при выходе из области dispose.
 
 ```js
 async function example() {

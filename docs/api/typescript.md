@@ -62,7 +62,7 @@ changes:
 
 Чтобы использовать TypeScript со всеми возможностями, включая
 `tsconfig.json`, можно подключить сторонний пакет. Ниже в качестве примера используется
-[`tsx`][`tsx`], но доступны и другие похожие библиотеки.
+[`tsx`](https://tsx.is/), но доступны и другие похожие библиотеки.
 
 1.  Установите пакет как dev-зависимость тем менеджером пакетов, которым пользуетесь. Например, с `npm`:
 
@@ -106,7 +106,7 @@ changes:
 стираемый синтаксис TypeScript.
 Синтаксис TypeScript заменяется пробельными символами,
 проверка типов не выполняется.
-Чтобы отключить это поведение, используйте флаг [`--no-strip-types`][`--no-strip-types`].
+Чтобы отключить это поведение, используйте флаг [`--no-strip-types`](cli.md#--no-strip-types).
 
 Node.js не читает `tsconfig.json`, поэтому
 возможности, зависящие от настроек в `tsconfig.json`
@@ -144,7 +144,7 @@ Node.js поддерживает в файлах TypeScript и [CommonJS][Common
 Node.js не преобразует одну систему модулей в другую: для ES-модуля нужны `import` и `export`,
 для CommonJS — `require` и `module.exports`.
 
-*   Для файлов `.ts` система модулей определяется [так же, как для `.js`][the same way as `.js` files.].
+*   Для файлов `.ts` система модулей определяется [так же, как для `.js`](packages.md#determining-module-system).
     Чтобы использовать `import` и `export`, добавьте `"type": "module"` в
     ближайший родительский `package.json`.
 *   Файлы `.mts` всегда выполняются как ES-модули, аналогично `.mjs`.
@@ -182,7 +182,7 @@ namespace TypeOnly {
 }
 ```
 
-Ниже будет ошибка [`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`][`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`]:
+Ниже будет ошибка [`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`](errors.md#err_unsupported_typescript_syntax):
 
 ```ts
 // This namespace is exporting a value
@@ -203,7 +203,7 @@ Node.js не подставляет полифиллы и не будет под
 
 При снятии типов ключевое слово `type` нужно, чтобы корректно отделить импорты типов.
 Без `type` Node.js считает импорт значимым на этапе выполнения, что приведёт к ошибке.
-Поведение можно согласовать с опцией [`verbatimModuleSyntax`][`verbatimModuleSyntax`].
+Поведение можно согласовать с опцией [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax).
 
 Корректный пример:
 
@@ -238,7 +238,7 @@ Node.js не обрабатывает файлы `.ts` внутри катало
 
 ### Псевдонимы путей {: #paths-aliases}
 
-Настройка [`tsconfig` "paths"][`tsconfig` "paths"] не трансформируется и приводит к ошибке. Ближайший аналог —
+Настройка [`tsconfig` "paths"](https://www.typescriptlang.org/tsconfig/#paths) не трансформируется и приводит к ошибке. Ближайший аналог —
 [подпути импорта][subpath imports], с ограничением: они должны начинаться с `#`.
 
 <!-- markdownlint-disable MD051 --><!-- внутренние якоря через pymdown `{: #id}` -->

@@ -67,7 +67,7 @@ added: v19.0.0
 added: v8.0.0
 -->
 
-Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`][`session.connect()`] до отправки сообщений в бэкенд инспектора.
+Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`](#sessionconnect) до отправки сообщений в бэкенд инспектора.
 
 При использовании `Session` объекты, выводимые консольным API, не освобождаются, пока вручную не выполнена команда `Runtime.DiscardConsoleEntries`.
 
@@ -101,7 +101,7 @@ added: v8.0.0
 
 Генерируется при получении уведомления инспектора, у которого поле `method` равно `<inspector-protocol-method>`.
 
-Следующий фрагмент подписывается на событие [`'Debugger.paused'`][`'Debugger.paused'`] и выводит причину приостановки при каждой остановке выполнения (например из-за точек останова):
+Следующий фрагмент подписывается на событие [`'Debugger.paused'`](https://chromedevtools.github.io/devtools-protocol/v8/Debugger#event-paused) и выводит причину приостановки при каждой остановке выполнения (например из-за точек останова):
 
 ```js
 session.on('Debugger.paused', ({ params }) => {
@@ -134,7 +134,7 @@ added: v12.11.0
 added: v8.0.0
 -->
 
-Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`][`session.connect()`]. После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
+Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`](#sessionconnect). После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
 
 #### `session.post(method[, params])`
 
@@ -233,7 +233,7 @@ added: v19.0.0
 added: v8.0.0
 -->
 
-Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`][`session.connect()`] до отправки сообщений в бэкенд инспектора.
+Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`](#sessionconnect) до отправки сообщений в бэкенд инспектора.
 
 При использовании `Session` объекты, выводимые консольным API, не освобождаются, пока вручную не выполнена команда `Runtime.DiscardConsoleEntries`.
 
@@ -267,7 +267,7 @@ added: v8.0.0
 
 Генерируется при получении уведомления инспектора, у которого поле `method` равно `<inspector-protocol-method>`.
 
-Следующий фрагмент подписывается на событие [`'Debugger.paused'`][`'Debugger.paused'`] и выводит причину приостановки при каждой остановке выполнения (например из-за точек останова):
+Следующий фрагмент подписывается на событие [`'Debugger.paused'`](https://chromedevtools.github.io/devtools-protocol/v8/Debugger#event-paused) и выводит причину приостановки при каждой остановке выполнения (например из-за точек останова):
 
 ```js
 session.on('Debugger.paused', ({ params }) => {
@@ -300,7 +300,7 @@ added: v12.11.0
 added: v8.0.0
 -->
 
-Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`][`session.connect()`]. После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
+Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`](#sessionconnect). После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
 
 #### `session.post(method[, params][, callback])`
 
@@ -443,7 +443,7 @@ changes:
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Блокировать выполнение до подключения клиента. Необязательно. **По умолчанию:** `false`.
-* Возвращает: [`<Disposable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol/dispose) объект `Disposable`, вызывающий [`inspector.close()`][`inspector.close()`].
+* Возвращает: [`<Disposable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol/dispose) объект `Disposable`, вызывающий [`inspector.close()`](#inspectorclose).
 
 Включает инспектор на указанном хосте и порту. Эквивалентно `node --inspect=[[host:]port]`, но может быть вызвано программно после старта Node.js.
 
@@ -763,9 +763,9 @@ added:
 
 ## Поддержка точек останова
 
-Домен [`Debugger` domain][`Debugger` domain] протокола Chrome DevTools позволяет объекту `inspector.Session` подключаться к программе и задавать точки останова для пошагового прохода по коду.
+Домен [`Debugger` domain](https://chromedevtools.github.io/devtools-protocol/v8/Debugger) протокола Chrome DevTools позволяет объекту `inspector.Session` подключаться к программе и задавать точки останова для пошагового прохода по коду.
 
-Однако задавать точки останова в `inspector.Session` того же потока, подключённом через [`session.connect()`][`session.connect()`], не следует: приостанавливается та же программа, что и сам отладчик. Вместо этого подключайтесь к основному потоку через [`session.connectToMainThread()`][`session.connectToMainThread()`] и задавайте точки останова в потоке `Worker`, либо используйте отдельную программу [Debugger][Debugger] по WebSocket.
+Однако задавать точки останова в `inspector.Session` того же потока, подключённом через [`session.connect()`](#sessionconnect), не следует: приостанавливается та же программа, что и сам отладчик. Вместо этого подключайтесь к основному потоку через [`session.connectToMainThread()`](#sessionconnecttomainthread) и задавайте точки останова в потоке `Worker`, либо используйте отдельную программу [Debugger][Debugger] по WebSocket.
 
 [CPU Profiler]: https://chromedevtools.github.io/devtools-protocol/v8/Profiler
 [Chrome DevTools Protocol Viewer]: https://chromedevtools.github.io/devtools-protocol/v8/

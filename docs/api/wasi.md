@@ -213,7 +213,7 @@ added:
 
 Пытается начать выполнение `instance` как команды WASI, вызывая экспорт `_start()`. Если в `instance` нет экспорта `_start()` или есть экспорт `_initialize()`, выбрасывается исключение.
 
-`start()` требует, чтобы `instance` экспортировал [`WebAssembly.Memory`][`WebAssembly.Memory`] с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
+`start()` требует, чтобы `instance` экспортировал [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Memory) с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
 
 Повторный вызов `start()` приводит к исключению.
 
@@ -229,7 +229,7 @@ added:
 
 Пытается инициализировать `instance` как реактор WASI, вызывая экспорт `_initialize()`, если он есть. Если в `instance` есть экспорт `_start()`, выбрасывается исключение.
 
-`initialize()` требует экспорта [`WebAssembly.Memory`][`WebAssembly.Memory`] с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
+`initialize()` требует экспорта [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Memory) с именем `memory`. При отсутствии экспорта `memory` выбрасывается исключение.
 
 Повторный вызов `initialize()` приводит к исключению.
 
@@ -245,7 +245,7 @@ added: v24.4.0
 
 Настраивает привязки хоста WASI к `instance` без вызова `initialize()` или `start()`. Полезно, когда модуль WASI создаётся в дочерних потоках с разделяемой памятью.
 
-`finalizeBindings()` требует либо экспорта [`WebAssembly.Memory`][`WebAssembly.Memory`] с именем `memory`, либо явного указания объекта [`WebAssembly.Memory`][`WebAssembly.Memory`] в `options.memory`. При невалидной памяти выбрасывается исключение.
+`finalizeBindings()` требует либо экспорта [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Memory) с именем `memory`, либо явного указания объекта [`WebAssembly.Memory`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Memory) в `options.memory`. При невалидной памяти выбрасывается исключение.
 
 `start()` и `initialize()` внутри вызывают `finalizeBindings()`. Повторный вызов `finalizeBindings()` приводит к исключению.
 
@@ -259,7 +259,7 @@ added:
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-`wasiImport` — объект, реализующий API системных вызовов WASI. Его следует передавать как импорт `wasi_snapshot_preview1` при создании [`WebAssembly.Instance`][`WebAssembly.Instance`].
+`wasiImport` — объект, реализующий API системных вызовов WASI. Его следует передавать как импорт `wasi_snapshot_preview1` при создании [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Instance).
 
 [WebAssembly System Interface]: https://wasi.dev/
 [`WebAssembly.Instance`]: https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/Instance
