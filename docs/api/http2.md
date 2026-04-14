@@ -868,9 +868,9 @@ added: v9.4.0
 чтобы сбросить ранее заданную альтернативную службу для домена.
 
 Если в аргумент `originOrStream` передана строка, она разбирается как URL и из неё
-извлекается origin. Например, для HTTP URL `'https://example.org/foo/bar'` origin —
-ASCII-строка `'https://example.org'`. Будет выброшена ошибка, если строку нельзя
-разобрать как URL или из неё нельзя получить корректный origin.
+извлекается значение `origin`. Например, для URL HTTP `'https://example.org/foo/bar'`
+значение `origin` — ASCII-строка `'https://example.org'`. Будет выброшена ошибка,
+если строку нельзя разобрать как URL или из неё нельзя получить корректный `origin`.
 
 В качестве `originOrStream` можно передать объект `URL` или любой объект со свойством
 `origin`; тогда используется значение свойства `origin`. Значение свойства `origin`
@@ -936,9 +936,9 @@ added: v10.12.0
     ```
 
 Если в качестве `origin` передана строка, она разбирается как URL и из неё извлекается
-origin. Например, для URL HTTP `'https://example.org/foo/bar'` origin — ASCII-строка
-`'https://example.org'`. Будет выброшена ошибка, если строку нельзя разобрать как URL
-или из неё нельзя получить корректный origin.
+значение `origin`. Например, для URL HTTP `'https://example.org/foo/bar'` значение
+`origin` — ASCII-строка `'https://example.org'`. Будет выброшена ошибка, если строку
+нельзя разобрать как URL или из неё нельзя получить корректный `origin`.
 
 В качестве `origin` можно передать объект `URL` или любой объект со свойством
 `origin`; тогда используется значение свойства `origin`. Значение свойства `origin`
@@ -2397,7 +2397,7 @@ added: v8.4.0
 
 Событие `'stream'` генерируется, когда оно же пришло от `Http2Session`, связанной с сервером.
 
-См. также [`Http2Session`'s `'stream'` event](#event-stream).
+См. также [событие `'stream'` у `Http2Session`][`Http2Session`'s `'stream'` event].
 
 === "MJS"
 
@@ -2670,7 +2670,7 @@ added: v8.4.0
 
 Событие `'stream'` при `'stream'` от `Http2Session`, связанной с сервером.
 
-См. также [`Http2Session`'s `'stream'` event](#event-stream).
+См. также [событие `'stream'` у `Http2Session`][`Http2Session`'s `'stream'` event].
 
 === "MJS"
 
@@ -3127,7 +3127,7 @@ changes:
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `allowHTTP1` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Входящие клиенты без HTTP/2 переводятся на HTTP/1.x при `true`.
-    См. [`'unknownProtocol'`](#event-unknownprotocol) и [ALPN negotiation][ALPN negotiation].
+    См. [`'unknownProtocol'`](#event-unknownprotocol) и [согласование ALPN][ALPN negotiation].
     **По умолчанию:** `false`.
   * `maxDeflateDynamicTableSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) См. описание у `http2.createServer()`. **По умолчанию:** `4Kib`.
   * `maxSettings` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) См. `http2.createServer()`. **По умолчанию:** `32`.
@@ -3907,7 +3907,7 @@ API совместимости даёт опыт, близкий к HTTP/1, пр
     });
     ```
 
-О смешанном сервере [HTTPS][HTTPS] и HTTP/2 см. в разделе [согласования ALPN][ALPN negotiation].
+О смешанном сервере [HTTPS][HTTPS] и HTTP/2 см. в разделе [согласование ALPN][ALPN negotiation].
 Обновление с не-TLS HTTP/1 не поддерживается.
 
 API совместимости состоит из [`Http2ServerRequest`](#class-http2http2serverrequest) и
@@ -4201,7 +4201,7 @@ added: v8.4.0
 `setTimeout` вызывается на `request.stream.session`.
 
 `pause`, `read`, `resume` и `write` дают ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`.
-См. [`Http2Session` and Sockets](#http2session-and-sockets).
+См. [`Http2Session` и сокеты][`Http2Session` and Sockets].
 
 Остальное идёт на сокет напрямую. При TLS для данных клиентского сертификата используйте
 [`request.socket.getPeerCertificate()`](tls.md#tlssocketgetpeercertificatedetailed).
@@ -4622,7 +4622,7 @@ added: v8.4.0
 `setTimeout` вызывается на `response.stream.session`.
 
 `pause`, `read`, `resume` и `write` дают ошибку с кодом `ERR_HTTP2_NO_SOCKET_MANIPULATION`.
-См. [`Http2Session` and Sockets](#http2session-and-sockets).
+См. [`Http2Session` и сокеты][`Http2Session` and Sockets].
 
 Остальное идёт на сокет напрямую.
 

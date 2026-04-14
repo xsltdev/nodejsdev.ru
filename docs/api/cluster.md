@@ -902,23 +902,3 @@ cluster.on('online', (worker) => {
     ```
 
 <!-- 0034.part.md -->
-
-[расширенная сериализация для `child_process`]: child_process.md#advanced-serialization
-[модуль дочерних процессов]: child_process.md#child_processforkmodulepath-args-options
-[`.fork()`]: #clusterforkenv
-[`.setupPrimary()`]: #clustersetupprimarysettings
-[`ChildProcess.send()`]: child_process.md#subprocesssendmessage-sendhandle-options-callback
-[`child_process.fork()`]: child_process.md#child_processforkmodulepath-args-options
-[`child_process.spawn()`]: child_process.md#child_processspawncommand-args-options
-[`событие child_process: 'exit'`]: child_process.md#event-exit
-[`событие child_process: 'message'`]: child_process.md#event-message
-[`cluster.isPrimary`]: #clusterisprimary
-[`cluster.settings`]: #clustersettings
-[`disconnect()`]: child_process.md#subprocessdisconnect
-[`kill()`]: process.md#processkillpid-signal
-[`событие process: 'message'`]: process.md#event-message
-[`server.close()`]: net.md#event-close
-[`stdio`]: child_process.md#optionsstdio
-[`worker.exitedAfterDisconnect`]: #workerexitedafterdisconnect
-[`worker_threads`]: worker_threads.md
-

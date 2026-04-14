@@ -1162,9 +1162,9 @@ added: v23.8.0
 added: REPLACEME
 -->
 
-* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) (client) | [string[]](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) (server)
+* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) (клиент) | [string[]](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) (сервер)
 
-Идентификатор(ы) ALPN (Application-Layer Protocol Negotiation).
+Идентификатор(ы) ALPN (согласование протокола прикладного уровня).
 
 Для **клиентских** сессий — одна строка с желаемым протоколом
 (например `'h3'`).
@@ -1173,12 +1173,12 @@ added: REPLACEME
 которые поддерживает сервер (например `['h3', 'h3-29']`). При TLS-рукопожатии
 сервер выбирает первый протокол из своего списка, который поддерживает и клиент.
 
-Согласованный ALPN определяет реализацию Application для сессии. Варианты `'h3'` и `'h3-*'` выбирают HTTP/3;
+Согласованный ALPN определяет прикладную реализацию для сессии. Варианты `'h3'` и `'h3-*'` выбирают HTTP/3;
 остальные значения — реализацию по умолчанию.
 
 По умолчанию: `'h3'`
 
-#### `sessionOptions.ca` (client only)
+#### `sessionOptions.ca` (только клиент)
 
 <!-- YAML
 added: v23.8.0
@@ -1201,7 +1201,7 @@ added: v23.8.0
 
 Расширенная опция, обычно не требуется.
 
-#### `sessionOptions.certs` (client only)
+#### `sessionOptions.certs` (только клиент)
 
 <!-- YAML
 added: v23.8.0
@@ -1222,7 +1222,7 @@ added: v23.8.0
 
 Список поддерживаемых шифров TLS 1.3.
 
-#### `sessionOptions.crl` (client only)
+#### `sessionOptions.crl` (только клиент)
 
 <!-- YAML
 added: v23.8.0
@@ -1253,7 +1253,7 @@ added: v23.8.0
 
 `true` — включить вывод TLS key logging.
 
-#### `sessionOptions.keys` (client only)
+#### `sessionOptions.keys` (только клиент)
 
 <!-- YAML
 added: v23.8.0
@@ -1355,7 +1355,7 @@ added: v23.8.0
 
 Максимальное время в миллисекундах на TLS-рукопожатие до тайм-аута.
 
-#### `sessionOptions.servername` (client only)
+#### `sessionOptions.servername` (только клиент)
 
 <!-- YAML
 added: v23.8.0
@@ -1365,7 +1365,7 @@ added: v23.8.0
 
 Имя сервера пира (SNI). По умолчанию `'localhost'`.
 
-#### `sessionOptions.sni` (server only)
+#### `sessionOptions.sni` (только сервер)
 
 <!-- YAML
 added: REPLACEME
@@ -1445,7 +1445,7 @@ added: v23.8.0
 
 `true` — требовать проверку клиентского TLS-сертификата.
 
-#### `sessionOptions.verifyPrivateKey` (client only)
+#### `sessionOptions.verifyPrivateKey` (только клиент)
 
 <!-- YAML
 added: v23.8.0

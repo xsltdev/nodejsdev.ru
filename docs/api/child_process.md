@@ -132,7 +132,7 @@ changes:
                  использующим протокол `file:`.
   - version: v15.4.0
     pr-url: https://github.com/nodejs/node/pull/36308
-    description: Добавлена поддержка AbortSignal.
+    description: Добавлена поддержка `AbortSignal`.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
     description: Опция `windowsHide` теперь поддерживается.
