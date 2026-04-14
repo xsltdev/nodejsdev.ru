@@ -410,8 +410,8 @@ changes:
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-  * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) e.g. `example.com`
-  * `service` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) e.g. `http`
+  * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) например `example.com`
+  * `service` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) например `http`
 
 Преобразует `address` и `port` в имя хоста и имя службы через `getnameinfo` ОС.
 
@@ -1037,7 +1037,7 @@ changes:
 * `verbatim`: по умолчанию `order` равен `verbatim`.
 
 По умолчанию используется `verbatim`; [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) имеет
-более высокий приоритет, чем [`--dns-result-order`](cli.md#--dns-result-orderorder). В [worker threads][worker threads]
+более высокий приоритет, чем [`--dns-result-order`](cli.md#--dns-result-orderorder). В [потоках worker][потоках worker]
 вызов [`dns.setDefaultResultOrder()`](#dnssetdefaultresultorderorder) из основного потока не меняет порядок DNS
 в воркерах.
 
@@ -1695,7 +1695,7 @@ changes:
 * `verbatim` — по умолчанию `verbatim`.
 
 По умолчанию `verbatim`; [`dnsPromises.setDefaultResultOrder()`](#dnspromisessetdefaultresultorderorder) важнее
-[`--dns-result-order`](cli.md#--dns-result-orderorder). В [worker threads][worker threads] вызов из основного потока не меняет порядок DNS в воркерах.
+[`--dns-result-order`](cli.md#--dns-result-orderorder). В [потоках worker][потоках worker] вызов из основного потока не меняет порядок DNS в воркерах.
 
 ### `dnsPromises.getDefaultResultOrder()`
 
@@ -1834,4 +1834,4 @@ API `dnsPromises` экспортирует те же коды, например 
 [`socket.connect()`]: net.md#socketconnectoptions-connectlistener
 [`util.promisify()`]: util.md#utilpromisifyoriginal
 [supported `getaddrinfo` flags]: #supported-getaddrinfo-flags
-[worker threads]: worker_threads.md
+[потоках worker]: worker_threads.md

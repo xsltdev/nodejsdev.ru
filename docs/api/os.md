@@ -1,5 +1,5 @@
 ---
-title: OS
+title: Операционная система
 description: Модуль node:os — методы и свойства для сведений об операционной системе
 ---
 
@@ -283,8 +283,8 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
+    | v18.4.0 | Свойство `family` теперь возвращает строку вместо числа. |
+    | v18.0.0 | Свойство `family` теперь возвращает число вместо строки. |
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -298,7 +298,7 @@ changes:
 * `netmask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) маска сети IPv4 или IPv6
 * `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `IPv4` или `IPv6`
 * `mac` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес интерфейса
-* `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для loopback и аналогичных недоступных извне интерфейсов; иначе `false`
+* `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для петлевых и аналогичных недоступных извне интерфейсов; иначе `false`
 * `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
 * `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
 

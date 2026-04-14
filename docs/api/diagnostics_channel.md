@@ -23,7 +23,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v19.2.0, v18.13.0 | Diagnostics_channel теперь стабильный. |
+    | v19.2.0, v18.13.0 | `diagnostics_channel` теперь стабилен. |
 
 <!--introduced_in=v15.1.0-->
 
@@ -814,11 +814,11 @@ added:
 -->
 
 * `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel][TracingChannel Channels]
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`start` event](#startevent)
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`end` event](#endevent)
-  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`asyncStart` event](#asyncstartevent)
-  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`asyncEnd` event](#asyncendevent)
-  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`error` event](#errorevent)
+  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие start`](#startevent)
+  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие end`](#endevent)
+  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncStart`](#asyncstartevent)
+  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncEnd`](#asyncendevent)
+  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие error`](#errorevent)
 
 Вспомогательный метод подписки набора функций на соответствующие каналы. Эквивалентно вызову [`channel.subscribe(onMessage)`](#channelsubscribeonmessage) для каждого канала по отдельности.
 
@@ -883,11 +883,11 @@ added:
 -->
 
 * `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel][TracingChannel Channels]
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`start` event](#startevent)
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`end` event](#endevent)
-  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`asyncStart` event](#asyncstartevent)
-  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`asyncEnd` event](#asyncendevent)
-  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`error` event](#errorevent)
+  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие start`](#startevent)
+  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие end`](#endevent)
+  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncStart`](#asyncstartevent)
+  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncEnd`](#asyncendevent)
+  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие error`](#errorevent)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если все обработчики сняты, иначе `false`.
 
 Отписка набора функций от соответствующих каналов. Эквивалентно [`channel.unsubscribe(onMessage)`](#channelunsubscribeonmessage) на каждом канале отдельно.
@@ -958,7 +958,7 @@ added:
 * `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
-Трассирует синхронный вызов: всегда генерируются [`start` event](#startevent) и [`end` event](#endevent) вокруг выполнения и при необходимости [`error` event](#errorevent), если функция выбросила ошибку. Функция выполняется через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`, чтобы привязанные хранилища соответствовали контексту трассировки.
+Трассирует синхронный вызов: всегда генерируются [`событие start`](#startevent) и [`событие end`](#endevent) вокруг выполнения и при необходимости [`событие error`](#errorevent), если функция выбросила ошибку. Функция выполняется через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`, чтобы привязанные хранилища соответствовали контексту трассировки.
 
 События публикуются только если подписчики есть до начала трассировки; подписки после старта не получат события этой трассировки.
 
@@ -1015,7 +1015,7 @@ changes:
 * `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат `fn` или результат `.then(...)`, если у канала трассировки есть активные подписчики. Если значение не `Promise` и не thenable, оно возвращается как есть и выводится предупреждение.
 
-Трассирует асинхронный вызов, возвращающий [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или [thenable object][thenable object]. Всегда генерируются [`start` event](#startevent) и [`end` event](#endevent) вокруг синхронной части; при разрешении или отклонении промиса — [`asyncStart` event](#asyncstartevent) и [`asyncEnd` event](#asyncendevent). Возможен [`error` event](#errorevent), если функция выбросила ошибку или промис отклонён. Выполнение идёт через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
+Трассирует асинхронный вызов, возвращающий [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или [thenable-объект][thenable-объект]. Всегда генерируются [`событие start`](#startevent) и [`событие end`](#endevent) вокруг синхронной части; при разрешении или отклонении промиса — [`событие asyncStart`](#asyncstartevent) и [`событие asyncEnd`](#asyncendevent). Возможен [`событие error`](#errorevent), если функция выбросила ошибку или промис отклонён. Выполнение идёт через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
 
 Если `fn` вернула не промис и не thenable, значение возвращается с предупреждением, без событий `asyncStart` и `asyncEnd`.
 
@@ -1064,7 +1064,7 @@ added:
 * `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) аргументы вызова (должен включать колбэк)
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
-Трассирует вызов функции с колбэком в типичной конвенции «ошибка первым аргументом». Всегда даёт [`start` event](#startevent) и [`end` event](#endevent) вокруг синхронной части и [`asyncStart` event](#asyncstartevent) с [`asyncEnd` event](#asyncendevent) вокруг выполнения колбэка. Возможен [`error` event](#errorevent), если функция выбросила ошибку или в колбэк передан первый аргумент (ошибка). Выполнение через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
+Трассирует вызов функции с колбэком в типичной конвенции «ошибка первым аргументом». Всегда даёт [`событие start`](#startevent) и [`событие end`](#endevent) вокруг синхронной части и [`событие asyncStart`](#asyncstartevent) с [`событие asyncEnd`](#asyncendevent) вокруг выполнения колбэка. Возможен [`событие error`](#errorevent), если функция выбросила ошибку или в колбэк передан первый аргумент (ошибка). Выполнение через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
 
 События публикуются только если подписчики есть до начала трассировки.
 
@@ -1519,38 +1519,38 @@ added: REPLACEME
 
 ### Встроенные каналы
 
-#### Console
+#### Консоль
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'console.log'`
+##### Событие: `'console.log'`
 
 * `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.log()`. Передаётся массив аргументов вызова `console.log()`.
 
-##### Event: `'console.info'`
+##### Событие: `'console.info'`
 
 * `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.info()`. Передаётся массив аргументов вызова `console.info()`.
 
-##### Event: `'console.debug'`
+##### Событие: `'console.debug'`
 
 * `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.debug()`. Передаётся массив аргументов вызова `console.debug()`.
 
-##### Event: `'console.warn'`
+##### Событие: `'console.warn'`
 
 * `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.warn()`. Передаётся массив аргументов вызова `console.warn()`.
 
-##### Event: `'console.error'`
+##### Событие: `'console.error'`
 
 * `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -1563,33 +1563,33 @@ added: REPLACEME
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'http.client.request.created'`
+##### Событие: `'http.client.request.created'`
 
 * `request` [`<http.ClientRequest>`](#httpclientrequest)
 
 Генерируется, когда клиент создаёт объект запроса. В отличие от `http.client.request.start`, событие до отправки запроса.
 
-##### Event: `'http.client.request.start'`
+##### Событие: `'http.client.request.start'`
 
 * `request` [`<http.ClientRequest>`](#httpclientrequest)
 
 Генерируется, когда клиент начинает запрос.
 
-##### Event: `'http.client.request.error'`
+##### Событие: `'http.client.request.error'`
 
 * `request` [`<http.ClientRequest>`](#httpclientrequest)
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке клиентского запроса.
 
-##### Event: `'http.client.response.finish'`
+##### Событие: `'http.client.response.finish'`
 
 * `request` [`<http.ClientRequest>`](#httpclientrequest)
 * `response` [`<http.IncomingMessage>`](#httpincomingmessage)
 
 Генерируется, когда клиент получил ответ.
 
-##### Event: `'http.server.request.start'`
+##### Событие: `'http.server.request.start'`
 
 * `request` [`<http.IncomingMessage>`](#httpincomingmessage)
 * `response` [`<http.ServerResponse>`](#httpserverresponse)
@@ -1598,14 +1598,14 @@ added: REPLACEME
 
 Генерируется, когда сервер получил запрос.
 
-##### Event: `'http.server.response.created'`
+##### Событие: `'http.server.response.created'`
 
 * `request` [`<http.IncomingMessage>`](#httpincomingmessage)
 * `response` [`<http.ServerResponse>`](#httpserverresponse)
 
 Генерируется, когда сервер создал объект ответа. Событие до отправки ответа.
 
-##### Event: `'http.server.response.finish'`
+##### Событие: `'http.server.response.finish'`
 
 * `request` [`<http.IncomingMessage>`](#httpincomingmessage)
 * `response` [`<http.ServerResponse>`](#httpserverresponse)
@@ -1621,28 +1621,28 @@ added: REPLACEME
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'http2.client.stream.created'`
+##### Событие: `'http2.client.stream.created'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
 Генерируется при создании потока на клиенте.
 
-##### Event: `'http2.client.stream.start'`
+##### Событие: `'http2.client.stream.start'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
 Генерируется при старте потока на клиенте.
 
-##### Event: `'http2.client.stream.error'`
+##### Событие: `'http2.client.stream.error'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке обработки потока на клиенте.
 
-##### Event: `'http2.client.stream.finish'`
+##### Событие: `'http2.client.stream.finish'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
@@ -1650,7 +1650,7 @@ added: REPLACEME
 
 Генерируется при получении потока на клиенте.
 
-##### Event: `'http2.client.stream.bodyChunkSent'`
+##### Событие: `'http2.client.stream.bodyChunkSent'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 * `writev` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -1661,40 +1661,40 @@ added: REPLACEME
 
 Генерируется при отправке фрагмента тела потока клиента.
 
-##### Event: `'http2.client.stream.bodySent'`
+##### Событие: `'http2.client.stream.bodySent'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 
 Генерируется после полной отправки тела потока клиента.
 
-##### Event: `'http2.client.stream.close'`
+##### Событие: `'http2.client.stream.close'`
 
 * `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
 
 Генерируется при закрытии потока на клиенте. Код ошибки HTTP/2 при закрытии доступен в `stream.rstCode`.
 
-##### Event: `'http2.server.stream.created'`
+##### Событие: `'http2.server.stream.created'`
 
 * `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
 Генерируется при создании потока на сервере.
 
-##### Event: `'http2.server.stream.start'`
+##### Событие: `'http2.server.stream.start'`
 
 * `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
 Генерируется при старте потока на сервере.
 
-##### Event: `'http2.server.stream.error'`
+##### Событие: `'http2.server.stream.error'`
 
 * `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке обработки потока на сервере.
 
-##### Event: `'http2.server.stream.finish'`
+##### Событие: `'http2.server.stream.finish'`
 
 * `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
@@ -1702,102 +1702,102 @@ added: REPLACEME
 
 Генерируется при отправке потока с сервера.
 
-##### Event: `'http2.server.stream.close'`
+##### Событие: `'http2.server.stream.close'`
 
 * `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
 
 Генерируется при закрытии потока на сервере. Код ошибки HTTP/2 при закрытии доступен в `stream.rstCode`.
 
-#### Modules
+#### Модули
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'module.require.start'`
+##### Событие: `'module.require.start'`
 
 * `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
   * `id` — аргумент `require()`, имя модуля.
   * `parentFilename` — файл модуля, вызвавшего `require(id)`.
 
-Генерируется при выполнении `require()`. См. событие [`start` event](#startevent).
+Генерируется при выполнении `require()`. См. [`событие start`](#startevent).
 
-##### Event: `'module.require.end'`
+##### Событие: `'module.require.end'`
 
 * `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
   * `id` — аргумент `require()`, имя модуля.
   * `parentFilename` — файл модуля, вызвавшего `require(id)`.
 
-Генерируется при возврате из `require()`. См. событие [`end` event](#endevent).
+Генерируется при возврате из `require()`. См. [`событие end`](#endevent).
 
-##### Event: `'module.require.error'`
+##### Событие: `'module.require.error'`
 
 * `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
   * `id` — аргумент `require()`, имя модуля.
   * `parentFilename` — файл модуля, вызвавшего `require(id)`.
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Генерируется при ошибке `require()`. См. событие [`error` event](#errorevent).
+Генерируется при ошибке `require()`. См. [`событие error`](#errorevent).
 
-##### Event: `'module.import.asyncStart'`
-
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `import()`, имя модуля.
-  * `parentURL` — URL модуля, вызвавшего `import(id)`.
-
-Генерируется при вызове `import()`. См. событие [`asyncStart` event](#asyncstartevent).
-
-##### Event: `'module.import.asyncEnd'`
+##### Событие: `'module.import.asyncStart'`
 
 * `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
   * `id` — аргумент `import()`, имя модуля.
   * `parentURL` — URL модуля, вызвавшего `import(id)`.
 
-Генерируется по завершении `import()`. См. событие [`asyncEnd` event](#asyncendevent).
+Генерируется при вызове `import()`. См. [`событие asyncStart`](#asyncstartevent).
 
-##### Event: `'module.import.error'`
+##### Событие: `'module.import.asyncEnd'`
+
+* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+  * `id` — аргумент `import()`, имя модуля.
+  * `parentURL` — URL модуля, вызвавшего `import(id)`.
+
+Генерируется по завершении `import()`. См. [`событие asyncEnd`](#asyncendevent).
+
+##### Событие: `'module.import.error'`
 
 * `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
   * `id` — аргумент `import()`, имя модуля.
   * `parentURL` — URL модуля, вызвавшего `import(id)`.
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Генерируется при ошибке `import()`. См. событие [`error` event](#errorevent).
+Генерируется при ошибке `import()`. См. [`событие error`](#errorevent).
 
-#### NET
+#### Сеть
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'net.client.socket'`
+##### Событие: `'net.client.socket'`
 
 * `socket` [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
 Генерируется при создании нового клиентского TCP- или pipe-сокета.
 
-##### Event: `'net.server.socket'`
+##### Событие: `'net.server.socket'`
 
 * `socket` [`<net.Socket>`](net.md#class-netsocket)
 
 Генерируется при приёме нового TCP- или pipe-подключения.
 
-##### Event: `'tracing:net.server.listen:asyncStart'`
+##### Событие: `'tracing:net.server.listen:asyncStart'`
 
 * `server` [`<net.Server>`](net.md#class-netserver)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Генерируется при вызове [`net.Server.listen()`](net.md#serverlisten), до настройки порта или pipe.
 
-##### Event: `'tracing:net.server.listen:asyncEnd'`
+##### Событие: `'tracing:net.server.listen:asyncEnd'`
 
 * `server` [`<net.Server>`](net.md#class-netserver)
 
 Генерируется после завершения [`net.Server.listen()`](net.md#serverlisten) — сервер готов принимать соединения.
 
-##### Event: `'tracing:net.server.listen:error'`
+##### Событие: `'tracing:net.server.listen:error'`
 
 * `server` [`<net.Server>`](net.md#class-netserver)
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -1811,13 +1811,13 @@ added: REPLACEME
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
 
-##### Event: `'udp.socket'`
+##### Событие: `'udp.socket'`
 
 * `socket` [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 Генерируется при создании нового UDP-сокета.
 
-#### Process
+#### Процесс
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1828,7 +1828,7 @@ added: REPLACEME
 added: v16.18.0
 -->
 
-##### Event: `'child_process'`
+##### Событие: `'child_process'`
 
 * `process` [`<ChildProcess>`](child_process.md#class-childprocess)
 
@@ -1854,7 +1854,7 @@ added: v16.18.0
 
 Генерируется при ошибке [`child_process.spawn()`](child_process.md#child_processspawncommand-args-options).
 
-##### Event: `'execve'`
+##### Событие: `'execve'`
 
 * `execPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1862,7 +1862,7 @@ added: v16.18.0
 
 Генерируется при вызове [`process.execve()`](process.md#processexecvefile-args-env).
 
-#### Web Locks
+#### Веб-блокировки
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1873,30 +1873,30 @@ added: v16.18.0
 added: v25.9.0
 -->
 
-Эти каналы генерируются при каждом вызове [`locks.request()`](worker_threads.md#locksrequestname-options-callback). Подробнее о Web Locks — [`worker_threads.locks`](worker_threads.md#worker_threadslocks).
+Эти каналы генерируются при каждом вызове [`locks.request()`](worker_threads.md#locksrequestname-options-callback). Подробнее о механизме веб-блокировок — [`worker_threads.locks`](worker_threads.md#worker_threadslocks).
 
-##### Event: `'locks.request.start'`
+##### Событие: `'locks.request.start'`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
 * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется при инициации запроса блокировки, до её выдачи.
 
-##### Event: `'locks.request.grant'`
+##### Событие: `'locks.request.grant'`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
 * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется при успешной выдаче блокировки, непосредственно перед запуском колбэка.
 
-##### Event: `'locks.request.miss'`
+##### Событие: `'locks.request.miss'`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
 * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется, если `ifAvailable` равен `true`, блокировка сразу недоступна и колбэк вызывается с `null` вместо объекта `Lock`.
 
-##### Event: `'locks.request.end'`
+##### Событие: `'locks.request.end'`
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
 * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
@@ -1906,7 +1906,7 @@ added: v25.9.0
 
 Генерируется по завершении запроса блокировки: успех колбэка, исключение или украденная блокировка.
 
-#### Worker Thread
+#### Поток Worker
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1917,7 +1917,7 @@ added: v25.9.0
 added: v16.18.0
 -->
 
-##### Event: `'worker_threads'`
+##### Событие: `'worker_threads'`
 
 * `worker` [`<Worker>`](worker_threads.md#class-worker)
 
@@ -1928,8 +1928,8 @@ added: v16.18.0
 [`'uncaughtException'`]: process.md#event-uncaughtexception
 [`BoundedChannel`]: #class-boundedchannel
 [`TracingChannel`]: #class-tracingchannel
-[`asyncEnd` event]: #asyncendevent
-[`asyncStart` event]: #asyncstartevent
+[`событие asyncEnd`]: #asyncendevent
+[`событие asyncStart`]: #asyncstartevent
 [`boundedChannel.withScope(context)`]: #boundedchannelwithscopecontext
 [`channel.bindStore(store)`]: #channelbindstorestore-transform
 [`channel.runStores(context, ...)`]: #channelrunstorescontext-fn-thisarg-args
@@ -1940,12 +1940,12 @@ added: v16.18.0
 [`diagnostics_channel.channel(name)`]: #diagnostics_channelchannelname
 [`diagnostics_channel.subscribe(name, onMessage)`]: #diagnostics_channelsubscribename-onmessage
 [`diagnostics_channel.tracingChannel()`]: #diagnostics_channeltracingchannelnameorchannels
-[`end` event]: #endevent
-[`error` event]: #errorevent
+[`событие end`]: #endevent
+[`событие error`]: #errorevent
 [`locks.request()`]: worker_threads.md#locksrequestname-options-callback
 [`net.Server.listen()`]: net.md#serverlisten
 [`process.execve()`]: process.md#processexecvefile-args-env
-[`start` event]: #startevent
+[`событие start`]: #startevent
 [`worker_threads.locks`]: worker_threads.md#worker_threadslocks
 [context loss]: async_context.md#troubleshooting-context-loss
-[thenable object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables
+[thenable-объект]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables

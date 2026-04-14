@@ -13,7 +13,7 @@ description: Кластеры процессов Node.js можно исполь
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
 Кластеры процессов Node.js можно использовать для запуска нескольких экземпляров Node.js, которые могут распределять рабочую нагрузку между своими потоками приложений. Если изоляция процессов не требуется, используйте вместо этого модуль [`worker_threads`](worker_threads.md), который позволяет запускать несколько потоков приложений в рамках одного экземпляра Node.js.
 
@@ -104,7 +104,7 @@ Worker 5644 started
 
 Модуль кластера поддерживает два способа распределения входящих соединений.
 
-Первый (по умолчанию на всех платформах, кроме Windows) — round-robin: основной процесс слушает порт, принимает новые соединения и по очереди отдаёт их рабочим, с дополнительной логикой, чтобы не перегружать отдельный рабочий процесс.
+Первый (по умолчанию на всех платформах, кроме Windows) — циклическое распределение: основной процесс слушает порт, принимает новые соединения и по очереди отдаёт их рабочим, с дополнительной логикой, чтобы не перегружать отдельный рабочий процесс.
 
 Второй вариант: основной процесс создаёт сокет для прослушивания и передаёт его нужным рабочим; рабочие принимают входящие соединения сами.
 
@@ -229,7 +229,7 @@ cluster.fork().on('disconnect', () => {
     });
     ```
 
-Это не эмитируется в воркере.
+Это не испускается в рабочем процессе.
 
 <!-- 0006.part.md -->
 
@@ -343,7 +343,7 @@ cluster.fork().on('online', () => {
 });
 ```
 
-Это не выдается в воркере.
+Это не испускается в рабочем процессе.
 
 <!-- 0008.part.md -->
 
@@ -532,7 +532,7 @@ worker.kill();
 
 Все рабочие создаются с помощью [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options), возвращаемый объект из этой функции хранится как `.process`. В рабочем хранится глобальный `process`.
 
-См: [Модуль Child Process](child_process.md#child_processforkmodulepath-args-options).
+См.: [модуль дочерних процессов](child_process.md#child_processforkmodulepath-args-options).
 
 Рабочие процессы будут вызывать `process.exit(0)`, если событие `'disconnect'` произойдет на `process` и `.exitedAfterDisconnect` не будет `true`. Это защищает от случайного отключения.
 
@@ -642,7 +642,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 После вызова функции `listen()` от рабочего, когда событие `'listening'` испускается на сервере, событие `'listening'` также будет испущено на `cluster` в первичном.
 
-Обработчик события выполняется с двумя аргументами, `worker` содержит объект worker, а объект `address` содержит следующие свойства соединения: `address`, `port` и `addressType`. Это очень полезно, если рабочий прослушивает более одного адреса.
+Обработчик события вызывается с двумя аргументами: `worker` содержит объект рабочего, а объект `address` — следующие свойства соединения: `address`, `port` и `addressType`. Это особенно полезно, если рабочий слушает более одного адреса.
 
 ```js
 cluster.on('listening', (worker, address) => {
@@ -656,7 +656,7 @@ cluster.on('listening', (worker, address) => {
 
 -   `4` (TCPv4)
 -   `6` (TCPv6)
--   `-1` (сокет Unix domain)
+-   `-1` (Unix-сокет домена)
 -   `'udp4'` или `'udp6'` (UDPv4 или UDPv6)
 
 <!-- 0020.part.md -->
@@ -669,7 +669,7 @@ cluster.on('listening', (worker, address) => {
 
 Выдается, когда основной кластер получает сообщение от любого рабочего.
 
-См. [`child_process` event: `'message'`](child_process.md#event-message).
+См. [событие `child_process`: `'message'`](child_process.md#event-message).
 
 <!-- 0021.part.md -->
 
@@ -750,7 +750,7 @@ cluster.on('online', (worker) => {
 
 ## `cluster.schedulingPolicy`
 
-Политика планирования, либо `cluster.SCHED_RR` для round-robin, либо `cluster.SCHED_NONE`, чтобы оставить это на усмотрение операционной системы. Это глобальная настройка и фактически замораживается после порождения первого рабочего или вызова [`.setupPrimary()`](#clustersetupprimarysettings), в зависимости от того, что произойдет раньше.
+Политика планирования: либо `cluster.SCHED_RR` для циклического распределения, либо `cluster.SCHED_NONE`, чтобы оставить это на усмотрение операционной системы. Это глобальная настройка и фактически замораживается после порождения первого рабочего или вызова [`.setupPrimary()`](#clustersetupprimarysettings), в зависимости от того, что произойдет раньше.
 
 По умолчанию используется `SCHED_RR` во всех операционных системах, кроме Windows. Windows перейдет на `SCHED_RR`, когда libuv сможет эффективно распределять ручки IOCP без большого падения производительности.
 
@@ -841,7 +841,7 @@ cluster.on('online', (worker) => {
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Ссылка на текущий объект worker. Недоступно в основном процессе.
+Ссылка на текущий объект рабочего процесса. Недоступно в основном процессе.
 
 === "MJS"
 
@@ -904,19 +904,19 @@ cluster.on('online', (worker) => {
 <!-- 0034.part.md -->
 
 [расширенная сериализация для `child_process`]: child_process.md#advanced-serialization
-[Child Process module]: child_process.md#child_processforkmodulepath-args-options
+[модуль дочерних процессов]: child_process.md#child_processforkmodulepath-args-options
 [`.fork()`]: #clusterforkenv
 [`.setupPrimary()`]: #clustersetupprimarysettings
 [`ChildProcess.send()`]: child_process.md#subprocesssendmessage-sendhandle-options-callback
 [`child_process.fork()`]: child_process.md#child_processforkmodulepath-args-options
 [`child_process.spawn()`]: child_process.md#child_processspawncommand-args-options
-[`child_process` event: `'exit'`]: child_process.md#event-exit
-[`child_process` event: `'message'`]: child_process.md#event-message
+[`событие child_process: 'exit'`]: child_process.md#event-exit
+[`событие child_process: 'message'`]: child_process.md#event-message
 [`cluster.isPrimary`]: #clusterisprimary
 [`cluster.settings`]: #clustersettings
 [`disconnect()`]: child_process.md#subprocessdisconnect
 [`kill()`]: process.md#processkillpid-signal
-[`process` event: `'message'`]: process.md#event-message
+[`событие process: 'message'`]: process.md#event-message
 [`server.close()`]: net.md#event-close
 [`stdio`]: child_process.md#optionsstdio
 [`worker.exitedAfterDisconnect`]: #workerexitedafterdisconnect

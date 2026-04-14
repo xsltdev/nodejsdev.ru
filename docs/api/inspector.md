@@ -3,7 +3,7 @@ title: Инспектор
 description: Модуль node:inspector — API взаимодействия с инспектором V8, сессии Chrome DevTools Protocol, профилирование и интеграция с DevTools
 ---
 
-# Inspector
+# Инспектор
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/inspector.html)
 
@@ -11,7 +11,7 @@ description: Модуль node:inspector — API взаимодействия с
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
 <!-- source_link=lib/inspector.js -->
 
@@ -53,7 +53,7 @@ added: v19.0.0
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
+    Эта возможность изменяется и может быть изменена или удалена в последующих версиях.
 
 ### Класс: `inspector.Session`
 
@@ -763,7 +763,7 @@ added:
 
 ## Поддержка точек останова
 
-Домен [`Debugger` domain](https://chromedevtools.github.io/devtools-protocol/v8/Debugger) протокола Chrome DevTools позволяет объекту `inspector.Session` подключаться к программе и задавать точки останова для пошагового прохода по коду.
+Домен [Debugger в протоколе](https://chromedevtools.github.io/devtools-protocol/v8/Debugger) Chrome DevTools позволяет объекту `inspector.Session` подключаться к программе и задавать точки останова для пошагового прохода по коду.
 
 Однако задавать точки останова в `inspector.Session` того же потока, подключённом через [`session.connect()`](#sessionconnect), не следует: приостанавливается та же программа, что и сам отладчик. Вместо этого подключайтесь к основному потоку через [`session.connectToMainThread()`](#sessionconnecttomainthread) и задавайте точки останова в потоке `Worker`, либо используйте отдельную программу [Debugger][Debugger] по WebSocket.
 
@@ -772,7 +772,7 @@ added:
 [Debugger]: debugger.md
 [Heap Profiler]: https://chromedevtools.github.io/devtools-protocol/v8/HeapProfiler
 [`'Debugger.paused'`]: https://chromedevtools.github.io/devtools-protocol/v8/Debugger#event-paused
-[`Debugger` domain]: https://chromedevtools.github.io/devtools-protocol/v8/Debugger
+[Debugger в протоколе]: https://chromedevtools.github.io/devtools-protocol/v8/Debugger
 [`inspector.close()`]: #inspectorclose
 [`session.connect()`]: #sessionconnect
 [`session.connectToMainThread()`]: #sessionconnecttomainthread

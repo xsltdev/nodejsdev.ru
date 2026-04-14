@@ -13,7 +13,7 @@ description: Модуль node:zlib/iter — преобразования сжа
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
-    Эта возможность не подпадает под правила [семантического версионирования](https://semver.org/lang/ru/). Несовместимые назад изменения или удаление могут произойти в любом будущем релизе. Использовать такую возможность в production-окружении не рекомендуется.
+    Эта возможность не подпадает под правила [семантического версионирования](https://semver.org/lang/ru/). Несовместимые изменения или удаление могут произойти в любом будущем релизе. Использовать такую возможность в рабочем окружении не рекомендуется.
 
 <!-- source_link=lib/zlib/iter.js -->
 
@@ -196,8 +196,8 @@ added: v25.9.0
     `zlib.constants`. Доступные параметры декомпрессора:
     * `BROTLI_DECODER_PARAM_DISABLE_RING_BUFFER_REALLOCATION` — логический
       флаг, влияющий на внутреннее выделение памяти.
-    * `BROTLI_DECODER_PARAM_LARGE_WINDOW` — логический флаг, включающий режим «Large
-      Window Brotli» (несовместим с [RFC 7932][RFC 7932]).
+    * `BROTLI_DECODER_PARAM_LARGE_WINDOW` — логический флаг, включающий режим большого
+      окна Brotli (несовместим с [RFC 7932][RFC 7932]).
       Подробнее см. в разделе [параметры декомпрессора Brotli][параметры декомпрессора Brotli] в документации по zlib.
   * `dictionary` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Преобразование с состоянием.

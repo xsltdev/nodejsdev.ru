@@ -13,7 +13,7 @@ Node.js предоставляет ряд C++ API для выполнения Ja
 
 Документация по этим API находится в файле [src/node.h][src/node.h] в дереве исходного кода Node.js. Помимо API Node.js, часть необходимых понятий задаётся API встраивания V8.
 
-Поскольку использование Node.js как встраиваемой библиотеки отличается от кода, который запускает сам Node.js, изменения, нарушающие совместимость, не следуют обычной Node.js [политике устаревания][deprecation policy] и могут появляться в каждом semver-major выпуске без предварительного предупреждения.
+Поскольку использование Node.js как встраиваемой библиотеки отличается от кода, который запускает сам Node.js, несовместимые изменения не следуют обычной [политике устаревания Node.js][deprecation policy] и могут появляться в каждом мажорном релизе semver без предварительного предупреждения.
 
 ## Пример приложения для встраивания
 
@@ -136,7 +136,7 @@ int RunNodeInstance(MultiIsolatePlatform* platform,
         "globalThis.require = publicRequire;"
         "require('node:vm').runInThisContext(process.argv[1]);");
 
-    if (loadenv_ret.IsEmpty())  // There has been a JS exception.
+    if (loadenv_ret.IsEmpty())  // Произошло исключение JavaScript.
       return 1;
 
     exit_code = node::SpinEventLoop(env).FromMaybe(1);

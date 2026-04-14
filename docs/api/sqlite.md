@@ -119,10 +119,10 @@ changes:
 | Класс хранения | JavaScript → SQLite        | SQLite → JavaScript                   |
 | -------------- | -------------------------- | ------------------------------------- |
 | `NULL`        | {null}                     | {null}                                |
-| `INTEGER`     | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)       | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) or [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) _(configurable)_ |
+| `INTEGER`     | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) или [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)       | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) или [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) _(настраивается)_ |
 | `REAL`        | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                   | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)                              |
 | `TEXT`        | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                   | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)                              |
-| `BLOB`        | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) or [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)                          |
+| `BLOB`        | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) или [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)                          |
 
 API, читающие значения из SQLite, имеют опции, определяющие,
 преобразуются ли `INTEGER` в `number` или `bigint` в JavaScript —
@@ -154,7 +154,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v24.0.0, v22.16.0 | Добавьте опцию «тайм-аут». |
+    | v24.0.0, v22.16.0 | Добавлена опция `timeout`. |
     | v23.10.0, v22.15.0 | Аргумент path теперь поддерживает объекты Buffer и URL. |
 
 Этот класс представляет одно [соединение][connection] с базой SQLite. Все API
@@ -169,17 +169,17 @@ changes:
      - v25.5.0
      - v24.14.0
     pr-url: https://github.com/nodejs/node/pull/61266
-    description: Enable `defensive` by default.
+    description: Включать режим `defensive` по умолчанию.
   - version:
       - v25.1.0
       - v24.12.0
     pr-url: https://github.com/nodejs/node/pull/60217
-    description: Add `defensive` option.
+    description: Добавить опцию `defensive`.
   - version:
       - v24.4.0
       - v22.18.0
     pr-url: https://github.com/nodejs/node/pull/58697
-    description: Add new SQLite database options.
+    description: Добавить новые параметры базы данных SQLite.
 -->
 
 Добавлено в: v22.5.0
@@ -188,9 +188,9 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v25.5.0, v24.14.0 | Включите «защиту» по умолчанию. |
-    | v25.1.0, v24.12.0 | Добавьте опцию «защита». |
-    | v24.4.0, v22.18.0 | Добавьте новые параметры базы данных SQLite. |
+    | v25.5.0, v24.14.0 | Режим `defensive` включён по умолчанию. |
+    | v25.1.0, v24.12.0 | Добавлена опция `defensive`. |
+    | v24.4.0, v22.18.0 | Добавлены новые параметры базы данных SQLite. |
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Путь к базе. База SQLite может храниться
   в файле или полностью [в памяти][in memory]. Для файловой базы
@@ -225,12 +225,12 @@ changes:
     (например `foo` вместо `:foo`). **По умолчанию:** `true`.
   * `allowUnknownNamedParameters` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` неизвестные именованные параметры при привязке игнорируются.
     При `false` — исключение. **По умолчанию:** `false`.
-  * `defensive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включается режим defensive: отключаются возможности SQL,
+  * `defensive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` включается защитный режим (`defensive`): отключаются возможности SQL,
     позволяющие намеренно повредить файл базы.
     То же задаёт `enableDefensive()`.
     **По умолчанию:** `true`.
   * `limits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Лимиты SQLite для ограничения ресурсов при
-    обработке потенциально вредоносного ввода. См. [Run-Time Limits][Run-Time Limits] и [Limit Constants][Limit Constants]
+    обработке потенциально вредоносного ввода. См. [лимиты времени выполнения][лимиты времени выполнения] и [константы лимитов][константы лимитов]
     в документации SQLite. Значения по умолчанию зависят от сборки.
     Свойства:
     * `length` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальная длина строки или BLOB.
@@ -377,9 +377,9 @@ added:
   - v24.12.0
 -->
 
-* `active` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Установить ли флаг defensive.
+* `active` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Следует ли установить флаг `defensive`.
 
-Включает или отключает режим defensive. При активном флаге отключаются
+Включает или отключает защитный режим (`defensive`). При активном флаге отключаются
 возможности SQL, позволяющие намеренно повредить файл базы.
 Подробности — [`SQLITE_DBCONFIG_DEFENSIVE`](https://www.sqlite.org/c3ref/c_dbconfig_defensive.html#sqlitedbconfigdefensive) в документации SQLite.
 
@@ -436,7 +436,7 @@ added:
     **По умолчанию:** `false`.
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция JavaScript, вызываемая при обращении к функции SQLite.
   Возвращаемое значение должно быть допустимым типом данных SQLite:
-  см. [преобразование типов между JavaScript и SQLite][Type conversion between JavaScript and SQLite]. Если возвращается `undefined`, в SQLite уходит
+  см. [преобразование типов между JavaScript и SQLite][преобразование типов между JavaScript и SQLite]. Если возвращается `undefined`, в SQLite уходит
   `NULL`.
 
 Создаёт пользовательские функции SQLite. Метод является обёрткой
@@ -451,12 +451,12 @@ added: v24.10.0
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | null Функция-авторизатор или `null` для
   сброса текущего авторизатора.
 
-Задаёт callback авторизации, который SQLite вызывает при попытке
+Задаёт функцию обратного вызова авторизации, которую SQLite вызывает при попытке
 обратиться к данным или изменить схему через подготовленные выражения.
 Можно использовать для политик безопасности, аудита или ограничения операций.
 Метод является обёрткой над [`sqlite3_set_authorizer()`](https://sqlite.org/c3ref/set_authorizer.html).
 
-При вызове callback получает пять аргументов:
+При вызове функция обратного вызова получает пять аргументов:
 
 * `actionCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тип операции (например
   `SQLITE_INSERT`, `SQLITE_UPDATE`, `SQLITE_SELECT`).
@@ -935,7 +935,7 @@ changes:
 
 Закрывает соединение с базой. Если оно уже закрыто, вызов ничего не делает.
 
-## Class: `Session`
+## Класс: `Session`
 
 <!-- YAML
 added:
@@ -966,7 +966,7 @@ added:
 
 * Возвращает: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Двоичный patchset для применения к другим базам.
 
-Аналогично предыдущему методу, но формирует более компактный patchset. См. [Changesets and Patchsets][Changesets and Patchsets]
+Аналогично предыдущему методу, но формирует более компактный patchset. См. [changeset и patchset][changeset и patchset]
 в документации SQLite. Если база или сессия не открыты, выбрасывается исключение. Метод является
 обёрткой над [`sqlite3session_patchset()`](https://www.sqlite.org/session/sqlite3session_patchset.html).
 
@@ -983,7 +983,7 @@ added: v24.9.0
 
 Закрывает сессию. Если сессия уже закрыта, ничего не делает.
 
-## Class: `StatementSync`
+## Класс: `StatementSync`
 
 <!-- YAML
 added: v22.5.0
@@ -1017,7 +1017,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
+    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
 
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
@@ -1028,7 +1028,7 @@ changes:
   имена столбцов и значения в строке.
 
 Выполняет подготовленное выражение и возвращает все строки массивом
-объектов. Если строк нет, возвращается пустой массив. [Параметры][parameters are bound] привязываются
+объектов. Если строк нет, возвращается пустой массив. [Параметры][параметры привязываются] привязываются
 из `namedParameters` и `anonymousParameters`.
 
 ### `statement.columns()`
@@ -1092,7 +1092,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
+    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
 
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
@@ -1102,7 +1102,7 @@ changes:
   результата или `undefined`, если строк нет.
 
 Выполняет выражение и возвращает первую строку как
-объект. Если строк нет, возвращается `undefined`. [Параметры][parameters are bound] привязываются
+объект. Если строк нет, возвращается `undefined`. [Параметры][параметры привязываются] привязываются
 из `namedParameters` и `anonymousParameters`.
 
 ### `statement.iterate([namedParameters][, ...anonymousParameters])`
@@ -1123,7 +1123,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
+    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
 
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
@@ -1132,7 +1132,7 @@ changes:
 * Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol) Итератор объектов по строкам результата.
 
 Выполняет выражение и возвращает итератор по
-строкам. Если строк нет, итератор пустой. [Параметры][parameters are bound] привязываются
+строкам. Если строк нет, итератор пустой. [Параметры][параметры привязываются] привязываются
 из `namedParameters` и `anonymousParameters`.
 
 ### `statement.run([namedParameters][, ...anonymousParameters])`
@@ -1153,7 +1153,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.7.0, v22.14.0 | Добавьте поддержку DataView и объектов типизированного массива для anonymousParameters. |
+    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
 
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
@@ -1171,7 +1171,7 @@ changes:
     [`sqlite3_last_insert_rowid()`](https://www.sqlite.org/c3ref/last_insert_rowid.html).
 
 Выполняет выражение и возвращает сводку по
-изменениям. [Параметры][parameters are bound] привязываются
+изменениям. [Параметры][параметры привязываются] привязываются
 из `namedParameters` и `anonymousParameters`.
 
 ### `statement.setAllowBareNamedParameters(enabled)`
@@ -1241,13 +1241,13 @@ added: v22.5.0
 Текст подготовленного выражения. Свойство является
 обёрткой над [`sqlite3_sql()`](https://www.sqlite.org/c3ref/expanded_sql.html).
 
-## Class: `SQLTagStore` {: #class-sqltagstore}
+## Класс: `SQLTagStore` {: #class-sqltagstore}
 
 <!-- YAML
 added: v24.9.0
 -->
 
-Класс представляет LRU-кэш (least recently used) для
+Класс представляет LRU-кэш (наименее недавно использованный) для
 подготовленных выражений.
 
 Экземпляры создаются через [`database.createTagStore()`](#databasecreatetagstoremaxsize),
@@ -1396,7 +1396,7 @@ changes:
   * `source` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя исходной базы: `'main'` или база, добавленная через [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
   * `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя целевой базы: `'main'` или база из [`ATTACH DATABASE`](https://www.sqlite.org/lang_attach.html). **По умолчанию:** `'main'`.
   * `rate` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число страниц за один шаг копирования. **По умолчанию:** `100`.
-  * `progress` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный callback после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
+  * `progress` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция обратного вызова после каждого шага. Аргумент — [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) с полями `remainingPages` и `totalPages` (прогресс операции).
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Промис с общим числом скопированных страниц при успехе или отклонение при ошибке.
 
 Создаёт резервную копию базы. Обёртка над [`sqlite3_backup_init()`](https://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupinit), [`sqlite3_backup_step()`](https://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupstep)
@@ -1459,7 +1459,7 @@ added:
 
 Одна из следующих констант может передаваться обработчику `onConflict`
 при вызове [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
-[Constants Passed To The Conflict Handler][Constants Passed To The Conflict Handler] в документации SQLite.
+[константы, передаваемые обработчику конфликтов][константы, передаваемые обработчику конфликтов] в документации SQLite.
 
 | Константа | Описание |
 | --- | --- |
@@ -1471,7 +1471,7 @@ added:
 
 Одна из следующих констант должна возвращаться из обработчика `onConflict`
 для [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
-[Constants Returned From The Conflict Handler][Constants Returned From The Conflict Handler] в документации SQLite.
+[константы, возвращаемые обработчиком конфликтов][константы, возвращаемые обработчиком конфликтов] в документации SQLite.
 
 | Константа | Описание |
 | --- | --- |
@@ -1485,7 +1485,7 @@ added:
 
 ##### Коды результата авторизации
 
-Одна из следующих констант должна возвращаться из callback авторизатора
+Одна из следующих констант должна возвращаться из функции обратного вызова авторизатора
 для [`database.setAuthorizer()`](#databasesetauthorizercallback).
 
 | Константа | Описание |
@@ -1496,7 +1496,7 @@ added:
 
 ##### Коды действий авторизации
 
-Следующие константы передаются первым аргументом в callback авторизации
+Следующие константы передаются первым аргументом в функцию обратного вызова авторизации
 и обозначают тип операции.
 
 | Константа | Описание |
@@ -1536,13 +1536,13 @@ added:
 | `SQLITE_COPY` | Копирование данных (устар.) |
 | `SQLITE_RECURSIVE` | Рекурсивный запрос |
 
-[Changesets and Patchsets]: https://www.sqlite.org/sessionintro.html#changesets_and_patchsets
-[Constants Passed To The Conflict Handler]: https://www.sqlite.org/session/c_changeset_conflict.html
-[Constants Returned From The Conflict Handler]: https://www.sqlite.org/session/c_changeset_abort.html
-[Limit Constants]: https://www.sqlite.org/c3ref/c_limit_attached.html
-[Run-Time Limits]: https://www.sqlite.org/c3ref/limit.html
+[changeset и patchset]: https://www.sqlite.org/sessionintro.html#changesets_and_patchsets
+[константы, передаваемые обработчику конфликтов]: https://www.sqlite.org/session/c_changeset_conflict.html
+[константы, возвращаемые обработчиком конфликтов]: https://www.sqlite.org/session/c_changeset_abort.html
+[константы лимитов]: https://www.sqlite.org/c3ref/c_limit_attached.html
+[лимиты времени выполнения]: https://www.sqlite.org/c3ref/limit.html
 [SQL injection]: https://en.wikipedia.org/wiki/SQL_injection
-[Type conversion between JavaScript and SQLite]: #type-conversion-between-javascript-and-sqlite
+[преобразование типов между JavaScript и SQLite]: #type-conversion-between-javascript-and-sqlite
 [`ATTACH DATABASE`]: https://www.sqlite.org/lang_attach.html
 [`PRAGMA foreign_keys`]: https://www.sqlite.org/pragma.html#pragma_foreign_keys
 [`SQLITE_DBCONFIG_DEFENSIVE`]: https://www.sqlite.org/c3ref/c_dbconfig_defensive.html#sqlitedbconfigdefensive
@@ -1588,7 +1588,7 @@ added:
 [data types]: https://www.sqlite.org/datatype3.html
 [double-quoted string literals]: https://www.sqlite.org/quirks.html#dblquote
 [in memory]: https://www.sqlite.org/inmemorydb.html
-[parameters are bound]: https://www.sqlite.org/c3ref/bind_blob.html
+[параметры привязываются]: https://www.sqlite.org/c3ref/bind_blob.html
 [prepared statement]: https://www.sqlite.org/c3ref/stmt.html
 [safe integer]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger
 

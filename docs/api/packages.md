@@ -801,7 +801,7 @@ node --conditions=development index.js
 [WinterCG][WinterCG] в спецификации предложения [Runtime Keys][Runtime Keys].
 
 Новые определения условий можно добавить в этот список через pull request
-в [документацию Node.js по этому разделу][Node.js documentation for this section]. Требования к включению
+в [документацию Node.js по этому разделу][документацию Node.js по этому разделу]. Требования к включению
 нового определения:
 
 * Определение должно быть ясным и однозначным для всех реализаторов.
@@ -1160,7 +1160,7 @@ added:
 [Conditional exports]: #conditional-exports
 [ES module]: esm.md
 [ES modules]: esm.md
-[Node.js documentation for this section]: https://github.com/nodejs/node/blob/HEAD/doc/api/packages.md#conditions-definitions
+[документацию Node.js по этому разделу]: https://github.com/nodejs/node/blob/HEAD/doc/api/packages.md#conditions-definitions
 [Runtime Keys]: https://runtime-keys.proposal.wintercg.org/
 [Syntax detection]: #syntax-detection
 [TypeScript]: typescript.md

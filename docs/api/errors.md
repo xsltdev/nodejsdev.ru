@@ -1412,7 +1412,7 @@ added:
 
 ### `ERR_INPUT_TYPE_NOT_ALLOWED` {#ERR_INPUT_TYPE_NOT_ALLOWED}
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Флаг `--input-type` использован для запуска файла. Его можно применять только вместе с вводом через `--eval`, `--print` или `STDIN`.
 
@@ -1876,7 +1876,7 @@ added:
   - v22.13.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Ошибка приложения QUIC.
 
@@ -1888,9 +1888,9 @@ added:
  - v22.10.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-Establishing a QUIC connection failed.
+Не удалось установить соединение QUIC.
 
 ### `ERR_QUIC_ENDPOINT_CLOSED` {#ERR_QUIC_ENDPOINT_CLOSED}
 
@@ -1900,7 +1900,7 @@ added:
  - v22.10.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Конечная точка QUIC закрыта с ошибкой.
 
@@ -1912,9 +1912,9 @@ added:
  - v22.10.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-Opening a QUIC stream failed.
+Не удалось открыть поток QUIC.
 
 ### `ERR_QUIC_TRANSPORT_ERROR` {#ERR_QUIC_TRANSPORT_ERROR}
 
@@ -1924,7 +1924,7 @@ added:
   - v22.13.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Ошибка транспорта QUIC.
 
@@ -1936,7 +1936,7 @@ added:
   - v22.13.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Сессия QUIC не удалась: требуется согласование версии.
 
@@ -1977,17 +1977,17 @@ changes:
     | --- | --- |
     | v23.0.0, v22.12.0, v20.19.0 | require() теперь поддерживает загрузку синхронных модулей ES по умолчанию. |
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-An attempt was made to `require()` an [ES Module](esm.md).
+Была предпринята попытка вызвать `require()` для [ES-модуля](esm.md).
 
 ### `ERR_SCRIPT_EXECUTION_INTERRUPTED` {#ERR_SCRIPT_EXECUTION_INTERRUPTED}
 
-Script execution was interrupted by `SIGINT` (For example, <kbd>Ctrl</kbd>+<kbd>C</kbd> was pressed.)
+Выполнение скрипта было прервано сигналом `SIGINT` (например, при нажатии <kbd>Ctrl</kbd>+<kbd>C</kbd>).
 
 ### `ERR_SCRIPT_EXECUTION_TIMEOUT` {#ERR_SCRIPT_EXECUTION_TIMEOUT}
 
-Script execution timed out, possibly due to bugs in the script being executed.
+Время выполнения скрипта истекло, возможно из-за ошибок в исполняемом скрипте.
 
 ### `ERR_SERVER_ALREADY_LISTEN` {#ERR_SERVER_ALREADY_LISTEN}
 
@@ -2005,32 +2005,32 @@ added:
   - v20.12.0
 -->
 
-A key was passed to single executable application APIs to identify an asset,
-but no match could be found.
+В API одноисполняемого приложения был передан ключ для идентификации ресурса,
+но соответствие не найдено.
 
 ### `ERR_SOCKET_ALREADY_BOUND` {#ERR_SOCKET_ALREADY_BOUND}
 
-An attempt was made to bind a socket that has already been bound.
+Была предпринята попытка привязать сокет, который уже привязан.
 
 ### `ERR_SOCKET_BAD_BUFFER_SIZE` {#ERR_SOCKET_BAD_BUFFER_SIZE}
 
-An invalid (negative) size was passed for either the `recvBufferSize` or `sendBufferSize` options in [`dgram.createSocket()`](dgram.md#dgramcreatesocketoptions-callback).
+Для параметров `recvBufferSize` или `sendBufferSize` в [`dgram.createSocket()`](dgram.md#dgramcreatesocketoptions-callback) был передан недопустимый (отрицательный) размер.
 
 ### `ERR_SOCKET_BAD_PORT` {#ERR_SOCKET_BAD_PORT}
 
-An API function expecting a port \>= 0 and \< 65536 received an invalid value.
+Функция API, ожидающая порт \>= 0 и \< 65536, получила недопустимое значение.
 
 ### `ERR_SOCKET_BAD_TYPE` {#ERR_SOCKET_BAD_TYPE}
 
-An API function expecting a socket type (`udp4` or `udp6`) received an invalid value.
+Функция API, ожидающая тип сокета (`udp4` или `udp6`), получила недопустимое значение.
 
 ### `ERR_SOCKET_BUFFER_SIZE` {#ERR_SOCKET_BUFFER_SIZE}
 
-While using [`dgram.createSocket()`](dgram.md#dgramcreatesocketoptions-callback), the size of the receive or send `Buffer` could not be determined.
+При использовании [`dgram.createSocket()`](dgram.md#dgramcreatesocketoptions-callback) не удалось определить размер буфера приёма или отправки.
 
 ### `ERR_SOCKET_CLOSED` {#ERR_SOCKET_CLOSED}
 
-An attempt was made to operate on an already closed socket.
+Была предпринята попытка выполнить операцию над уже закрытым сокетом.
 
 ### `ERR_SOCKET_CLOSED_BEFORE_CONNECTION` {#ERR_SOCKET_CLOSED_BEFORE_CONNECTION}
 
@@ -2043,15 +2043,15 @@ An attempt was made to operate on an already closed socket.
 
 ### `ERR_SOCKET_DGRAM_IS_CONNECTED` {#ERR_SOCKET_DGRAM_IS_CONNECTED}
 
-A [`dgram.connect()`](dgram.md#socketconnectport-address-callback) call was made on an already connected socket.
+Вызов [`dgram.connect()`](dgram.md#socketconnectport-address-callback) был выполнен для уже подключённого сокета.
 
 ### `ERR_SOCKET_DGRAM_NOT_CONNECTED` {#ERR_SOCKET_DGRAM_NOT_CONNECTED}
 
-A [`dgram.disconnect()`](dgram.md#socketdisconnect) or [`dgram.remoteAddress()`](dgram.md#socketremoteaddress) call was made on a disconnected socket.
+Вызов [`dgram.disconnect()`](dgram.md#socketdisconnect) или [`dgram.remoteAddress()`](dgram.md#socketremoteaddress) был выполнен для отключённого сокета.
 
 ### `ERR_SOCKET_DGRAM_NOT_RUNNING` {#ERR_SOCKET_DGRAM_NOT_RUNNING}
 
-A call was made and the UDP subsystem was not running.
+Был выполнен вызов, когда подсистема UDP не работала.
 
 ### `ERR_SOURCE_MAP_CORRUPT` {#ERR_SRI_PARSE}
 
@@ -2059,7 +2059,7 @@ A call was made and the UDP subsystem was not running.
 
 ### `ERR_SOURCE_MAP_MISSING_SOURCE` {#ERR_SOURCE_MAP_MISSING_SOURCE}
 
-A file imported from a source map was not found.
+Файл, импортируемый из карты исходников, не найден.
 
 ### `ERR_SOURCE_PHASE_NOT_DEFINED` {#ERR_SOURCE_PHASE_NOT_DEFINED}
 
@@ -2067,8 +2067,8 @@ A file imported from a source map was not found.
 added: v24.0.0
 -->
 
-The provided module import does not provide a source phase imports representation for source phase
-import syntax `import source x from 'x'` or `import.source(x)`.
+Предоставленный импорт модуля не содержит представления импортов фазы исходника
+для синтаксиса `import source x from 'x'` или `import.source(x)`.
 
 ### `ERR_SQLITE_ERROR` {#ERR_SQLITE_ERROR}
 
@@ -2076,52 +2076,51 @@ import syntax `import source x from 'x'` or `import.source(x)`.
 added: v22.5.0
 -->
 
-An error was returned from [SQLite][].
+Из [SQLite][] была возвращена ошибка.
 
 ### `ERR_SRI_PARSE` {#ERR_SRI_PARSE}
 
-A string was provided for a Subresource Integrity check, but was unable to be parsed. Check the format of integrity attributes by looking at the [Subresource Integrity specification](https://www.w3.org/TR/SRI/#the-integrity-attribute).
+Для проверки целостности подресурса была передана строка, но её не удалось разобрать. Проверьте формат атрибутов целостности по [спецификации Subresource Integrity](https://www.w3.org/TR/SRI/#the-integrity-attribute).
 
 ### `ERR_STREAM_ALREADY_FINISHED` {#ERR_STREAM_ALREADY_FINISHED}
 
-A stream method was called that cannot complete because the stream was finished.
+Был вызван метод потока, который не может завершиться, потому что поток уже завершён.
 
 ### `ERR_STREAM_CANNOT_PIPE` {#ERR_STREAM_CANNOT_PIPE}
 
-An attempt was made to call [`stream.pipe()`](stream.md#readablepipedestination-options) on a [`Writable`](stream.md#class-streamwritable) stream.
+Была предпринята попытка вызвать [`stream.pipe()`](stream.md#readablepipedestination-options) у потока [`Writable`](stream.md#class-streamwritable).
 
 ### `ERR_STREAM_DESTROYED` {#ERR_STREAM_DESTROYED}
 
-A stream method was called that cannot complete because the stream was destroyed using `stream.destroy()`.
+Был вызван метод потока, который не может завершиться, потому что поток уничтожен через `stream.destroy()`.
 
 ### `ERR_STREAM_ITER_MISSING_FLAG` {#ERR_STREAM_NULL_VALUES}
 
-A stream/iter API was used without the `--experimental-stream-iter` CLI flag
-enabled.
+API `stream/iter` использовался без включённого CLI-флага `--experimental-stream-iter`.
 
 ### `ERR_STREAM_NULL_VALUES` {#ERR_STREAM_NULL_VALUES}
 
-An attempt was made to call [`stream.write()`](stream.md#writablewritechunk-encoding-callback) with a `null` chunk.
+Была предпринята попытка вызвать [`stream.write()`](stream.md#writablewritechunk-encoding-callback) с фрагментом `null`.
 
 ### `ERR_STREAM_PREMATURE_CLOSE` {#ERR_STREAM_PREMATURE_CLOSE}
 
-An error returned by `stream.finished()` and `stream.pipeline()`, when a stream or a pipeline ends non gracefully with no explicit error.
+Ошибка, возвращаемая `stream.finished()` и `stream.pipeline()`, когда поток или конвейер завершается некорректно без явной ошибки.
 
 ### `ERR_STREAM_PUSH_AFTER_EOF` {#ERR_STREAM_PUSH_AFTER_EOF}
 
-An attempt was made to call [`stream.push()`](stream.md#readablepushchunk-encoding) after a `null`(EOF) had been pushed to the stream.
+Была предпринята попытка вызвать [`stream.push()`](stream.md#readablepushchunk-encoding) после того, как в поток уже был отправлен `null` (EOF).
 
 ### `ERR_STREAM_UNABLE_TO_PIPE` {#ERR_STREAM_UNSHIFT_AFTER_END_EVENT}
 
-An attempt was made to pipe to a closed or destroyed stream in a pipeline.
+Была предпринята попытка направить данные в закрытый или уничтоженный поток внутри конвейера.
 
 ### `ERR_STREAM_UNSHIFT_AFTER_END_EVENT` {#ERR_STREAM_UNSHIFT_AFTER_END_EVENT}
 
-An attempt was made to call [`stream.unshift()`](stream.md#readableunshiftchunk-encoding) after the `'end'` event was emitted.
+Была предпринята попытка вызвать [`stream.unshift()`](stream.md#readableunshiftchunk-encoding) после генерации события `'end'`.
 
 ### `ERR_STREAM_WRAP` {#ERR_STREAM_WRAP}
 
-Prevents an abort if a string decoder was set on the Socket or if the decoder is in `objectMode`.
+Предотвращает прерывание, если у `Socket` был задан строковый декодер или если декодер находится в режиме `objectMode`.
 
 ```js
 const Socket = require('node:net').Socket;
@@ -2132,19 +2131,19 @@ instance.setEncoding('utf8');
 
 ### `ERR_STREAM_WRITE_AFTER_END` {#ERR_STREAM_WRITE_AFTER_END}
 
-An attempt was made to call [`stream.write()`](stream.md#writablewritechunk-encoding-callback) after `stream.end()` has been called.
+Была предпринята попытка вызвать [`stream.write()`](stream.md#writablewritechunk-encoding-callback) после вызова `stream.end()`.
 
 ### `ERR_STRING_TOO_LONG` {#ERR_STRING_TOO_LONG}
 
-An attempt has been made to create a string longer than the maximum allowed length.
+Была предпринята попытка создать строку длиннее максимально допустимой.
 
 ### `ERR_SYNTHETIC` {#ERR_SYNTHETIC}
 
-An artificial error object used to capture the call stack for diagnostic reports.
+Искусственный объект ошибки, используемый для захвата стека вызовов в диагностических отчётах.
 
 ### `ERR_SYSTEM_ERROR` {#ERR_SYSTEM_ERROR}
 
-An unspecified or non-specific system error has occurred within the Node.js process. The error object will have an `err.info` object property with additional details.
+В процессе Node.js произошла неуточнённая системная ошибка. У объекта ошибки будет свойство-объект `err.info` с дополнительными сведениями.
 
 ### `ERR_TEST_FAILURE` {#ERR_TAP_LEXER_ERROR}
 
@@ -2152,17 +2151,17 @@ An unspecified or non-specific system error has occurred within the Node.js proc
 
 ### `ERR_TLS_ALPN_CALLBACK_INVALID_RESULT` {#ERR_TLS_CERT_ALTNAME_FORMAT}
 
-This error is thrown when an `ALPNCallback` returns a value that is not in the
-list of ALPN protocols offered by the client.
+Эта ошибка выбрасывается, когда `ALPNCallback` возвращает значение, которого нет
+в списке ALPN-протоколов, предложенных клиентом.
 
 ### `ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS` {#ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS}
 
-This error is thrown when creating a `TLSServer` if the TLS options include
-both `ALPNProtocols` and `ALPNCallback`. These options are mutually exclusive.
+Эта ошибка выбрасывается при создании `TLSServer`, если параметры TLS содержат
+и `ALPNProtocols`, и `ALPNCallback`. Эти параметры взаимно исключают друг друга.
 
 ### `ERR_TLS_CERT_ALTNAME_FORMAT` {#ERR_TLS_CERT_ALTNAME_FORMAT}
 
-This error is thrown by `checkServerIdentity` if a user-supplied `subjectaltname` property violates encoding rules. Certificate objects produced by Node.js itself always comply with encoding rules and will never cause this error.
+Эта ошибка выбрасывается `checkServerIdentity`, если переданное пользователем свойство `subjectaltname` нарушает правила кодирования. Объекты сертификатов, созданные самим Node.js, всегда соответствуют этим правилам и никогда не вызовут такую ошибку.
 
 ### `ERR_TLS_CERT_ALTNAME_INVALID` {#ERR_TLS_CERT_ALTNAME_INVALID}
 
@@ -2208,23 +2207,23 @@ Attempting to set a TLS protocol `minVersion` or `maxVersion` conflicts with an 
 
 ### `ERR_TLS_PSK_SET_IDENTITY_HINT_FAILED` {#ERR_TLS_PSK_SET_IDENTIY_HINT_FAILED}
 
-Failed to set PSK identity hint. Hint may be too long.
+Не удалось установить подсказку идентичности PSK. Возможно, подсказка слишком длинная.
 
 ### `ERR_TLS_RENEGOTIATION_DISABLED` {#ERR_TLS_RENEGOTIATION_DISABLED}
 
-An attempt was made to renegotiate TLS on a socket instance with renegotiation disabled.
+Была предпринята попытка повторного согласования TLS на экземпляре сокета, где повторное согласование отключено.
 
 ### `ERR_TLS_REQUIRED_SERVER_NAME` {#ERR_TLS_REQUIRED_SERVER_NAME}
 
-While using TLS, the `server.addContext()` method was called without providing a host name in the first parameter.
+При использовании TLS метод `server.addContext()` был вызван без указания имени хоста в первом параметре.
 
 ### `ERR_TLS_SESSION_ATTACK` {#ERR_TLS_SESSION_ATTACK}
 
-An excessive amount of TLS renegotiations is detected, which is a potential vector for denial-of-service attacks.
+Обнаружено чрезмерное количество повторных согласований TLS, что может быть вектором для атак типа отказа в обслуживании.
 
 ### `ERR_TLS_SNI_FROM_SERVER` {#ERR_TLS_SNI_FROM_SERVER}
 
-An attempt was made to issue Server Name Indication from a TLS server-side socket, which is only valid from a client.
+Была предпринята попытка передать Server Name Indication из серверного TLS-сокета, хотя это допустимо только со стороны клиента.
 
 ### `ERR_TRACE_EVENTS_CATEGORY_REQUIRED` {#ERR_TRACE_EVENTS_CATEGORY_REQUIRED}
 
@@ -2236,18 +2235,18 @@ An attempt was made to issue Server Name Indication from a TLS server-side socke
 
 ### `ERR_TRAILING_JUNK_AFTER_STREAM_END` {#ERR_TRANSFORM_ALREADY_TRANSFORMING}
 
-Trailing junk found after the end of the compressed stream.
-This error is thrown when extra, unexpected data is detected
-after the end of a compressed stream (for example, in zlib
-or gzip decompression).
+После конца сжатого потока обнаружены лишние данные.
+Эта ошибка выбрасывается, когда после завершения сжатого потока
+обнаруживаются дополнительные неожиданные данные (например, при распаковке
+zlib или gzip).
 
 ### `ERR_TRANSFORM_ALREADY_TRANSFORMING` {#ERR_TRANSFORM_ALREADY_TRANSFORMING}
 
-A `Transform` stream finished while it was still transforming.
+Поток `Transform` завершился, пока ещё выполнял преобразование.
 
 ### `ERR_TRANSFORM_WITH_LENGTH_0` {#ERR_TRANSFORM_WITH_LENGTH_0}
 
-A `Transform` stream finished with data still in the write buffer.
+Поток `Transform` завершился, хотя в буфере записи ещё оставались данные.
 
 ### `ERR_TTY_INIT_FAILED` {#ERR_TTY_INIT_FAILED}
 
@@ -2255,29 +2254,29 @@ A `Transform` stream finished with data still in the write buffer.
 
 ### `ERR_UNAVAILABLE_DURING_EXIT` {#ERR_UNAVAILABLE_DURING_EXIT}
 
-Function was called within a [`process.on('exit')`](process.md#event-exit) handler that shouldn’t be called within [`process.on('exit')`](process.md#event-exit) handler.
+Функция была вызвана внутри обработчика [`process.on('exit')`](process.md#event-exit), где её вызывать нельзя.
 
 ### `ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET` {#ERR_UNCAUGHT_EXCEPTION_CAPTURE_ALREADY_SET}
 
-[`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) was called twice, without first resetting the callback to `null`.
+[`process.setUncaughtExceptionCaptureCallback()`](process.md#processsetuncaughtexceptioncapturecallbackfn) был вызван дважды без предварительного сброса callback в `null`.
 
 Эта ошибка предотвращает случайную перезапись колбэка, зарегистрированного другим модулем.
 
 ### `ERR_UNESCAPED_CHARACTERS` {#ERR_UNESCAPED_CHARACTERS}
 
-A string that contained unescaped characters was received.
+Была получена строка с неэкранированными символами.
 
 ### `ERR_UNHANDLED_ERROR` {#ERR_UNHANDLED_ERROR}
 
-An unhandled error occurred (for instance, when an `'error'` event is emitted by an [`EventEmitter`](events.md#class-eventemitter) but an `'error'` handler is not registered).
+Произошла необработанная ошибка (например, когда [`EventEmitter`](events.md#class-eventemitter) генерирует событие `'error'`, но обработчик `'error'` не зарегистрирован).
 
 ### `ERR_UNKNOWN_BUILTIN_MODULE` {#ERR_UNKNOWN_BUILTIN_MODULE}
 
-Used to identify a specific kind of internal Node.js error that should not typically be triggered by user code. Instances of this error point to an internal bug within the Node.js binary itself.
+Используется для обозначения определённого вида внутренней ошибки Node.js, которая обычно не должна вызываться пользовательским кодом. Экземпляры этой ошибки указывают на внутреннюю ошибку в самом бинарном файле Node.js.
 
 ### `ERR_UNKNOWN_CREDENTIAL` {#ERR_UNKNOWN_CREDENTIAL}
 
-A Unix group or user identifier that does not exist was passed.
+Был передан идентификатор Unix-группы или пользователя, который не существует.
 
 ### `ERR_UNKNOWN_ENCODING` {#ERR_UNKNOWN_ENCODING}
 
@@ -2287,21 +2286,21 @@ An invalid or unknown encoding option was passed to an API.
 
 > Stability: 1 - Experimental
 
-An attempt was made to load a module with an unknown or unsupported file extension.
+Была предпринята попытка загрузить модуль с неизвестным или неподдерживаемым расширением файла.
 
 ### `ERR_UNKNOWN_MODULE_FORMAT` {#ERR_UNKNOWN_MODULE_FORMAT}
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-An attempt was made to load a module with an unknown or unsupported format.
+Была предпринята попытка загрузить модуль с неизвестным или неподдерживаемым форматом.
 
 ### `ERR_UNKNOWN_SIGNAL` {#ERR_UNKNOWN_SIGNAL}
 
-An invalid or unknown process signal was passed to an API expecting a valid signal (such as [`subprocess.kill()`](child_process.md#subprocesskillsignal)).
+В API, ожидающий допустимый сигнал процесса (например, [`subprocess.kill()`](child_process.md#subprocesskillsignal)), был передан недопустимый или неизвестный сигнал.
 
 ### `ERR_UNSUPPORTED_DIR_IMPORT` {#ERR_UNSUPPORTED_DIR_IMPORT}
 
-`import` a directory URL is unsupported. Instead, [self-reference a package using its name](packages.md#self-referencing-a-package-using-its-name) and [define a custom subpath](packages.md#subpath-exports) in the [`"exports"`](packages.md#exports) field of the [`package.json`](packages.md#nodejs-packagejson-field-definitions) file.
+`import` URL каталога не поддерживается. Вместо этого [сошлитесь на пакет по его имени](packages.md#self-referencing-a-package-using-its-name) и [определите пользовательский подпуть](packages.md#subpath-exports) в поле [`"exports"`](packages.md#exports) файла [`package.json`](packages.md#nodejs-packagejson-field-definitions).
 
 ```js
 import './'; // unsupported
@@ -2311,7 +2310,7 @@ import 'package-name'; // supported
 
 ### `ERR_UNSUPPORTED_ESM_URL_SCHEME` {#ERR_UNSUPPORTED_ESM_URL_SCHEME}
 
-`import` with URL schemes other than `file` and `data` is unsupported.
+`import` с URL-схемами, отличными от `file` и `data`, не поддерживается.
 
 ### `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING` {#ERR_USE_AFTER_CLOSE}
 
@@ -2319,16 +2318,16 @@ import 'package-name'; // supported
 added: v22.6.0
 -->
 
-Type stripping is not supported for files descendent of a `node_modules` directory.
+Удаление типов не поддерживается для файлов, находящихся внутри каталога `node_modules`.
 
 ### `ERR_UNSUPPORTED_RESOLVE_REQUEST` {#ERR_UNSUPPORTED_RESOLVE_REQUEST}
 
-An attempt was made to resolve an invalid module referrer. This can happen when
-importing or calling `import.meta.resolve()` with either:
+Была предпринята попытка разрешить недопустимый источник ссылки на модуль. Это
+может произойти при импорте или вызове `import.meta.resolve()` в одном из случаев:
 
-* a bare specifier that is not a builtin module from a module whose URL scheme
-  is not `file`.
-* a [relative URL][] from a module whose URL scheme is not a [special scheme][].
+* голый спецификатор, который не является встроенным модулем, из модуля, чья URL-схема
+  не равна `file`;
+* [относительный URL][] из модуля, чья URL-схема не является [специальной схемой][].
 
 === "MJS"
 
@@ -2350,26 +2349,26 @@ added:
 -->
 
 Указанный синтаксис TypeScript не поддерживается.
-This could happen when using TypeScript syntax that requires
-transformation with [type-stripping][].
+Это может произойти при использовании синтаксиса TypeScript, который требует
+преобразования с помощью [удаления типов][type-stripping].
 
 ### `ERR_USE_AFTER_CLOSE` {#ERR_USE_AFTER_CLOSE}
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-An attempt was made to use something that was already closed.
+Была предпринята попытка использовать объект, который уже закрыт.
 
 ### `ERR_VALID_PERFORMANCE_ENTRY_TYPE` {#ERR_VALID_PERFORMANCE_ENTRY_TYPE}
 
-While using the Performance Timing API (`perf_hooks`), no valid performance entry types are found.
+При использовании Performance Timing API (`perf_hooks`) не найдено допустимых типов записей производительности.
 
 ### `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING` {#ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING}
 
-A dynamic import callback was not specified.
+Не был указан callback динамического импорта.
 
 ### `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG` {#ERR_VM_MODULE_ALREADY_LINKED}
 
-A dynamic import callback was invoked without `--experimental-vm-modules`.
+Callback динамического импорта был вызван без `--experimental-vm-modules`.
 
 ### `ERR_VM_MODULE_ALREADY_LINKED` {#ERR_VM_MODULE_ALREADY_LINKED}
 
@@ -2439,7 +2438,7 @@ added: v18.1.0
 added: v22.5.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
 В потоке назначения произошла ошибка при обработке сообщения, отправленного через [`postMessageToThread()`][].
 
@@ -2449,7 +2448,7 @@ added: v22.5.0
 added: v22.5.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
 Поток, указанный в [`postMessageToThread()`][], недопустим или у него нет обработчика `workerMessage`.
 
@@ -2459,7 +2458,7 @@ added: v22.5.0
 added: v22.5.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
 Запрошенный в [`postMessageToThread()`][] идентификатор потока совпадает с текущим.
 
@@ -2469,13 +2468,13 @@ added: v22.5.0
 added: v22.5.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
-Sending a message via [`postMessageToThread()`][] timed out.
+Время ожидания отправки сообщения через [`postMessageToThread()`][] истекло.
 
 ### `ERR_WORKER_NOT_RUNNING` {#ERR_WORKER_NOT_RUNNING}
 
-An operation failed because the `Worker` instance is not currently running.
+Операция завершилась неудачей, потому что экземпляр `Worker` сейчас не запущен.
 
 ### `ERR_WORKER_OUT_OF_MEMORY` {#ERR_WORKER_OUT_OF_MEMORY}
 
@@ -2618,8 +2617,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when a failure occurs sending an individual frame on the HTTP/2
-session.
+Используется, когда происходит сбой при отправке отдельного кадра в HTTP/2-сессии.
 
 ### `ERR_HTTP2_HEADERS_OBJECT` {#ERR_HTTP2_HEADERS_OBJECT}
 
@@ -2628,7 +2626,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when an HTTP/2 Headers Object is expected.
+Используется, когда ожидается объект заголовков HTTP/2.
 
 ### `ERR_HTTP2_HEADER_REQUIRED` {#ERR_HTTP2_HEADER_REQUIRED}
 
@@ -2637,7 +2635,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when a required header is missing in an HTTP/2 message.
+Используется, когда в сообщении HTTP/2 отсутствует обязательный заголовок.
 
 ### `ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND` {#ERR_HTTP2_INFO_HEADERS_AFTER_RESPOND}
 
@@ -2646,8 +2644,8 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-HTTP/2 informational headers must only be sent _prior_ to calling the
-`Http2Stream.prototype.respond()` method.
+Информационные заголовки HTTP/2 можно отправлять только _до_ вызова
+метода `Http2Stream.prototype.respond()`.
 
 ### `ERR_HTTP2_STREAM_CLOSED` {#ERR_HTTP2_STREAM_CLOSED}
 
@@ -2656,8 +2654,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when an action has been performed on an HTTP/2 Stream that has already
-been closed.
+Используется, когда действие выполняется над потоком HTTP/2, который уже закрыт.
 
 ### `ERR_HTTP_INVALID_CHAR` {#ERR_HTTP_INVALID_CHAR}
 
@@ -2666,8 +2663,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when an invalid character is found in an HTTP response status message
-(reason phrase).
+Используется, когда в сообщении о статусе HTTP-ответа (reason phrase) обнаружен недопустимый символ.
 
 ### `ERR_IMPORT_ASSERTION_TYPE_FAILED` {#ERR_IMPORT_ASSERTION_TYPE_FAILED}
 
@@ -2763,9 +2759,9 @@ An invalid transfer object was passed to `postMessage()`.
 removed: v22.2.0
 -->
 
-An attempt was made to load a resource, but the resource did not match the
-integrity defined by the policy manifest. See the documentation for policy
-manifests for more information.
+Была предпринята попытка загрузить ресурс, но он не соответствовал
+целостности, заданной манифестом политики. Подробнее см. документацию по
+манифестам политики.
 
 ### `ERR_MANIFEST_DEPENDENCY_MISSING` {#ERR_MANIFEST_DEPENDENCY_MISSING}
 
@@ -2773,9 +2769,9 @@ manifests for more information.
 removed: v22.2.0
 -->
 
-An attempt was made to load a resource, but the resource was not listed as a
-dependency from the location that attempted to load it. See the documentation
-for policy manifests for more information.
+Была предпринята попытка загрузить ресурс, но он не был указан как
+зависимость из места, откуда выполнялась загрузка. Подробнее см. документацию
+по манифестам политики.
 
 ### `ERR_MANIFEST_INTEGRITY_MISMATCH` {#ERR_MANIFEST_INTEGRITY_MISMATCH}
 
@@ -2783,10 +2779,10 @@ for policy manifests for more information.
 removed: v22.2.0
 -->
 
-An attempt was made to load a policy manifest, but the manifest had multiple
-entries for a resource which did not match each other. Update the manifest
-entries to match in order to resolve this error. See the documentation for
-policy manifests for more information.
+Была предпринята попытка загрузить манифест политики, но в нём оказалось
+несколько записей для одного ресурса, которые не совпадали между собой.
+Приведите записи манифеста к совпадающему виду, чтобы устранить эту ошибку.
+Подробнее см. документацию по манифестам политики.
 
 ### `ERR_MANIFEST_INVALID_RESOURCE_FIELD` {#ERR_MANIFEST_INVALID_RESOURCE_FIELD}
 
@@ -2794,9 +2790,9 @@ policy manifests for more information.
 removed: v22.2.0
 -->
 
-A policy manifest resource had an invalid value for one of its fields. Update
-the manifest entry to match in order to resolve this error. See the
-documentation for policy manifests for more information.
+Ресурс манифеста политики имел недопустимое значение в одном из полей.
+Исправьте запись манифеста, чтобы устранить эту ошибку. Подробнее см.
+документацию по манифестам политики.
 
 ### `ERR_MANIFEST_INVALID_SPECIFIER` {#ERR_MANIFEST_INVALID_SPECIFIER}
 
@@ -2804,9 +2800,9 @@ documentation for policy manifests for more information.
 removed: v22.2.0
 -->
 
-A policy manifest resource had an invalid value for one of its dependency
-mappings. Update the manifest entry to match to resolve this error. See the
-documentation for policy manifests for more information.
+Ресурс манифеста политики имел недопустимое значение в одном из отображений
+зависимостей. Исправьте запись манифеста, чтобы устранить эту ошибку.
+Подробнее см. документацию по манифестам политики.
 
 ### `ERR_MANIFEST_PARSE_POLICY` {#ERR_MANIFEST_PARSE_POLICY}
 
@@ -2814,8 +2810,8 @@ documentation for policy manifests for more information.
 removed: v22.2.0
 -->
 
-An attempt was made to load a policy manifest, but the manifest was unable to
-be parsed. See the documentation for policy manifests for more information.
+Была предпринята попытка загрузить манифест политики, но его не удалось
+разобрать. Подробнее см. документацию по манифестам политики.
 
 ### `ERR_MANIFEST_TDZ` {#ERR_MANIFEST_TDZ}
 
@@ -2823,8 +2819,8 @@ be parsed. See the documentation for policy manifests for more information.
 removed: v22.2.0
 -->
 
-An attempt was made to read from a policy manifest, but the manifest
-initialization has not yet taken place. This is likely a bug in Node.js.
+Была предпринята попытка прочитать манифест политики, но его инициализация
+ещё не произошла. Вероятно, это ошибка в Node.js.
 
 ### `ERR_MANIFEST_UNKNOWN_ONERROR` {#ERR_MANIFEST_UNKNOWN_ONERROR}
 
@@ -2832,8 +2828,8 @@ initialization has not yet taken place. This is likely a bug in Node.js.
 removed: v22.2.0
 -->
 
-A policy manifest was loaded, but had an unknown value for its "onerror"
-behavior. See the documentation for policy manifests for more information.
+Манифест политики был загружен, но содержал неизвестное значение для поведения
+`"onerror"`. Подробнее см. документацию по манифестам политики.
 
 ### `ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST` {#ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST}
 
@@ -2864,11 +2860,11 @@ changes:
     | --- | --- |
     | v21.0.0 | Вместо этого выдается исключение DOMException. |
 
-An object that needs to be explicitly listed in the `transferList` argument
-is in the object passed to a [`postMessage()`][] call, but is not provided
-in the `transferList` for that call. Usually, this is a `MessagePort`.
+Объект, который должен быть явно указан в аргументе `transferList`, находится
+в объекте, переданном вызову [`postMessage()`][], но не указан в `transferList`
+для этого вызова. Обычно это `MessagePort`.
 
-In Node.js versions prior to v15.0.0, the error code being used here was
+В версиях Node.js до v15.0.0 здесь использовался код ошибки
 [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][]. However, the set of
 transferable object types has been expanded to cover more types than
 `MessagePort`.
@@ -2962,8 +2958,8 @@ changes:
     | --- | --- |
     | v10.12.0 | Вместо того, чтобы выдавать ошибку, `process.stderr.end()` теперь закрывает только сторону потока, но не базовый ресурс, что делает эту ошибку устаревшей. |
 
-An attempt was made to close the `process.stderr` stream. By design, Node.js
-does not allow `stdout` or `stderr` streams to be closed by user code.
+Была предпринята попытка закрыть поток `process.stderr`. По замыслу Node.js
+пользовательскому коду не разрешается закрывать потоки `stdout` или `stderr`.
 
 ### `ERR_STDOUT_CLOSE` {#ERR_STDOUT_CLOSE}
 
@@ -2983,8 +2979,8 @@ changes:
     | --- | --- |
     | v10.12.0 | Вместо того, чтобы выдавать ошибку, `process.stderr.end()` теперь закрывает только сторону потока, но не базовый ресурс, что делает эту ошибку устаревшей. |
 
-An attempt was made to close the `process.stdout` stream. By design, Node.js
-does not allow `stdout` or `stderr` streams to be closed by user code.
+Была предпринята попытка закрыть поток `process.stdout`. По замыслу Node.js
+пользовательскому коду не разрешается закрывать потоки `stdout` или `stderr`.
 
 ### `ERR_STREAM_READ_NOT_IMPLEMENTED` {#ERR_STREAM_READ_NOT_IMPLEMENTED}
 
@@ -2993,17 +2989,17 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when an attempt is made to use a readable stream that has not implemented
-[`readable._read()`][].
+Используется, когда предпринимается попытка использовать читаемый поток, в
+котором не реализован [`readable._read()`][].
 
 ### `ERR_TAP_LEXER_ERROR` {#ERR_TAP_LEXER_ERROR}
 
-An error representing a failing lexer state.
+Ошибка, представляющая неуспешное состояние лексера.
 
 ### `ERR_TAP_PARSER_ERROR` {#ERR_TAP_PARSER_ERROR}
 
-An error representing a failing parser state. Additional information about
-the token causing the error is available via the `cause` property.
+Ошибка, представляющая неуспешное состояние парсера. Дополнительные сведения
+о токене, вызвавшем ошибку, доступны через свойство `cause`.
 
 ### `ERR_TAP_VALIDATION_ERROR` {#ERR_TAP_VALIDATION_ERROR}
 
@@ -3016,7 +3012,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when a TLS renegotiation request has failed in a non-specific way.
+Используется, когда запрос на повторное согласование TLS завершился неудачей по неуточнённой причине.
 
 ### `ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER` {#ERR_TRANSFERRING_EXTERNALIZED_SHAREDARRAYBUFFER}
 
@@ -3025,9 +3021,9 @@ added: v10.5.0
 removed: v14.0.0
 -->
 
-A `SharedArrayBuffer` whose memory is not managed by the JavaScript engine
-or by Node.js was encountered during serialization. Such a `SharedArrayBuffer`
-cannot be serialized.
+Во время сериализации встретился `SharedArrayBuffer`, память которого не
+управляется движком JavaScript или Node.js. Такой `SharedArrayBuffer`
+нельзя сериализовать.
 
 Это возможно только если нативные аддоны создают `SharedArrayBuffer` в режиме
 «externalized» или переводят существующий `SharedArrayBuffer` в этот режим.
@@ -3039,9 +3035,9 @@ added: v8.0.0
 removed: v11.7.0
 -->
 
-An attempt was made to launch a Node.js process with an unknown `stdin` file
-type. This error is usually an indication of a bug within Node.js itself,
-although it is possible for user code to trigger it.
+Была предпринята попытка запустить процесс Node.js с неизвестным типом файла
+`stdin`. Обычно эта ошибка указывает на сбой в самом Node.js, хотя её может
+спровоцировать и пользовательский код.
 
 ### `ERR_UNKNOWN_STREAM_TYPE` {#ERR_UNKNOWN_STREAM_TYPE}
 
@@ -3050,9 +3046,9 @@ added: v8.0.0
 removed: v11.7.0
 -->
 
-An attempt was made to launch a Node.js process with an unknown `stdout` or
-`stderr` file type. This error is usually an indication of a bug within Node.js
-itself, although it is possible for user code to trigger it.
+Была предпринята попытка запустить процесс Node.js с неизвестным типом файла
+`stdout` или `stderr`. Обычно эта ошибка указывает на сбой в самом Node.js,
+хотя её может спровоцировать и пользовательский код.
 
 ### `ERR_V8BREAKITERATOR` {#ERR_V8BREAKITERATOR}
 
@@ -3065,7 +3061,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when a given value is out of the accepted range.
+Используется, когда переданное значение выходит за пределы допустимого диапазона.
 
 ### `ERR_VM_MODULE_LINKING_ERRORED` {#ERR_VM_MODULE_LINKING_ERRORED}
 
@@ -3098,8 +3094,7 @@ added: v9.0.0
 removed: v10.0.0
 -->
 
-Used when an attempt is made to use a `zlib` object after it has already been
-closed.
+Используется, когда предпринимается попытка использовать объект `zlib` после того, как он уже закрыт.
 
 ## Коды ошибок OpenSSL {#openssl-error-codes}
 
@@ -3190,7 +3185,7 @@ Certificate does not match provided name.
 
 Корневой CA помечен как отклоняющий указанную цель.
 
-### Formatting Errors {#Formatting Errors}
+### Ошибки форматирования {#Formatting Errors}
 
 #### `CERT_SIGNATURE_FAILURE` {#CERT_SIGNATURE_FAILURE}
 
@@ -3202,41 +3197,41 @@ Certificate does not match provided name.
 
 #### `ERROR_IN_CERT_NOT_BEFORE_FIELD` {#ERROR_IN_CERT_NOT_BEFORE_FIELD}
 
-The certificate notBefore field contains an invalid time.
+Поле `notBefore` сертификата содержит недопустимое время.
 
 #### `ERROR_IN_CERT_NOT_AFTER_FIELD` {#ERROR_IN_CERT_NOT_AFTER_FIELD}
 
-The certificate notAfter field contains an invalid time.
+Поле `notAfter` сертификата содержит недопустимое время.
 
 #### `ERROR_IN_CRL_LAST_UPDATE_FIELD` {#ERROR_IN_CRL_LAST_UPDATE_FIELD}
 
-The CRL lastUpdate field contains an invalid time.
+Поле `lastUpdate` списка отзыва сертификатов (CRL) содержит недопустимое время.
 
 #### `ERROR_IN_CRL_NEXT_UPDATE_FIELD` {#ERROR_IN_CRL_NEXT_UPDATE_FIELD}
 
-The CRL nextUpdate field contains an invalid time.
+Поле `nextUpdate` списка отзыва сертификатов (CRL) содержит недопустимое время.
 
 #### `UNABLE_TO_DECRYPT_CERT_SIGNATURE` {#UNABLE_TO_DECRYPT_CERT_SIGNATURE}
 
-The certificate signature could not be decrypted. This means that the actual
-signature value could not be determined rather than it not matching the expected
-value, this is only meaningful for RSA keys.
+Не удалось расшифровать подпись сертификата. Это означает, что фактическое
+значение подписи не удалось определить, а не то, что оно не совпало с ожидаемым
+значением; это имеет смысл только для ключей RSA.
 
 #### `UNABLE_TO_DECRYPT_CRL_SIGNATURE` {#UNABLE_TO_DECRYPT_CRL_SIGNATURE}
 
-The certificate revocation list (CRL) signature could not be decrypted: this
-means that the actual signature value could not be determined rather than it not
-matching the expected value.
+Не удалось расшифровать подпись списка отзыва сертификатов (CRL): это
+означает, что фактическое значение подписи не удалось определить, а не то, что
+оно не совпало с ожидаемым значением.
 
 #### `UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY` {#UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY}
 
-The public key in the certificate SubjectPublicKeyInfo could not be read.
+Не удалось прочитать открытый ключ из `SubjectPublicKeyInfo` сертификата.
 
-### Other OpenSSL Errors {#Other OpenSSL Errors}
+### Другие ошибки OpenSSL {#Other OpenSSL Errors}
 
 #### `OUT_OF_MEM` {#OUT_OF_MEM}
 
-An error occurred trying to allocate memory. This should never happen.
+Произошла ошибка при попытке выделить память. Этого не должно происходить.
 
 [ES Module]: esm.md
 [ICU]: intl.md#internationalization-support

@@ -31,12 +31,12 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.3.0, v22.13.0 | Добавлен параметр --report-exclude-env для исключения переменных среды из создания отчета. |
-    | v22.0.0, v20.13.0 | Добавлен параметр --report-exclude-network для исключения сетевых операций, которые в некоторых случаях могут замедлить создание отчетов. |
+    | v23.3.0, v22.13.0 | Добавлен параметр `--report-exclude-env` для исключения переменных окружения из создаваемого отчёта. |
+    | v22.0.0, v20.13.0 | Добавлен параметр `--report-exclude-network` для исключения сетевых операций, которые в некоторых случаях могут замедлить создание отчётов. |
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
 Формирует диагностическую сводку в формате JSON и записывает её в файл.
 
@@ -463,7 +463,7 @@ node --report-uncaught-exception --report-on-signal \
 
 * `--report-uncaught-exception` — включает генерацию отчёта при необработанных исключениях. Удобно при анализе стека JavaScript вместе с нативным стеком и прочими данными окружения.
 
-* `--report-on-signal` — включает генерацию отчёта при получении указанного (или заданного по умолчанию) сигналом процесса Node.js (см. ниже, как сменить сигнал). По умолчанию используется `SIGUSR2`. Полезно, когда отчёт нужно инициировать из другой программы. Мониторы приложений могут периодически собирать отчёты и строить представления по внутренним данным рантайма.
+* `--report-on-signal` — включает генерацию отчёта при получении процессом Node.js указанного сигнала (или сигнала по умолчанию; ниже описано, как его сменить). По умолчанию используется `SIGUSR2`. Это полезно, когда отчёт нужно инициировать из другой программы. Мониторы приложений могут периодически собирать отчёты и строить представления по внутренним данным рантайма.
 
 Генерация отчёта по сигналу в Windows не поддерживается.
 
@@ -503,7 +503,7 @@ try {
 } catch (err) {
   process.report.writeReport(err);
 }
-// Any other code
+// Любой другой код
 ```
 
 Если переданы и имя файла, и объект ошибки, объект ошибки должен быть вторым аргументом.
@@ -523,7 +523,7 @@ try {
 const report = process.report.getReport();
 console.log(typeof report === 'object'); // true
 
-// Similar to process.report.writeReport() output
+// Аналогично выводу process.report.writeReport()
 console.log(JSON.stringify(report, null, 2));
 ```
 
@@ -569,25 +569,25 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.5.0, v22.13.0 | Исправьте опечатки в единицах ограничения памяти. |
+    | v23.5.0, v22.13.0 | Исправлены опечатки в единицах ограничения памяти. |
 
 Ключи `data_seg_size_kbytes`, `max_memory_size_kbytes` и `virtual_memory_kbytes` в разделе `userLimits` заменены на `data_seg_size_bytes`, `max_memory_size_bytes` и `virtual_memory_bytes` — значения задаются в байтах.
 
 ```json
 {
   "userLimits": {
-    // Skip some keys ...
-    "data_seg_size_bytes": { // replacing data_seg_size_kbytes
+    // Некоторые ключи опущены ...
+    "data_seg_size_bytes": { // заменяет data_seg_size_kbytes
       "soft": "unlimited",
       "hard": "unlimited"
     },
     // ...
-    "max_memory_size_bytes": { // replacing max_memory_size_kbytes
+    "max_memory_size_bytes": { // заменяет max_memory_size_kbytes
       "soft": "unlimited",
       "hard": "unlimited"
     },
     // ...
-    "virtual_memory_bytes": { // replacing virtual_memory_kbytes
+    "virtual_memory_bytes": { // заменяет virtual_memory_kbytes
       "soft": "unlimited",
       "hard": "unlimited"
     }
@@ -610,7 +610,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.3.0, v22.13.0 | Добавлен параметр --report-exclude-env для исключения переменных среды из создания отчета. |
+    | v23.3.0, v22.13.0 | Добавлен параметр `--report-exclude-env` для исключения переменных окружения из создаваемого отчёта. |
 
 В конечные точки дескрипторов `tcp` и `udp` libuv добавлены поля `ipv4` и `ipv6`. Примеры:
 
@@ -624,12 +624,12 @@ changes:
       "address": "0x000055e70fcb85d8",
       "localEndpoint": {
         "host": "localhost",
-        "ip4": "127.0.0.1", // new key
+        "ip4": "127.0.0.1", // новый ключ
         "port": 48986
       },
       "remoteEndpoint": {
         "host": "localhost",
-        "ip4": "127.0.0.1", // new key
+        "ip4": "127.0.0.1", // новый ключ
         "port": 38573
       },
       "sendBufferSize": 2626560,
@@ -646,12 +646,12 @@ changes:
       "address": "0x000055e70fcd68c8",
       "localEndpoint": {
         "host": "ip6-localhost",
-        "ip6": "::1", // new key
+        "ip6": "::1", // новый ключ
         "port": 52266
       },
       "remoteEndpoint": {
         "host": "ip6-localhost",
-        "ip6": "::1", // new key
+        "ip6": "::1", // новый ключ
         "port": 38573
       },
       "sendBufferSize": 2626560,
@@ -680,7 +680,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v19.1.0, v18.13.0 | Добавьте дополнительную информацию о памяти. |
+    | v19.1.0, v18.13.0 | Добавлена дополнительная информация о памяти. |
 
 В раздел `resourceUsage` добавлены следующие поля, связанные с памятью.
 
@@ -711,7 +711,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v13.9.0, v12.16.2 | Рабочие теперь включены в отчет. |
+    | v13.9.0, v12.16.2 | Потоки Worker теперь включаются в отчёт. |
 
 Добавлена поддержка [`Worker`](worker_threads.md). Подробнее — в разделе «Взаимодействие с worker» ниже на этой странице.
 
@@ -738,17 +738,17 @@ changes:
 `excludeNetwork` — исключает `header.networkInterfaces` из отчёта.
 
 ```js
-// Trigger report only on uncaught exceptions.
+// Формировать отчёт только при необработанных исключениях.
 process.report.reportOnFatalError = false;
 process.report.reportOnSignal = false;
 process.report.reportOnUncaughtException = true;
 
-// Trigger report for both internal errors as well as external signal.
+// Формировать отчёт как для внутренних ошибок, так и по внешнему сигналу.
 process.report.reportOnFatalError = true;
 process.report.reportOnSignal = true;
 process.report.reportOnUncaughtException = false;
 
-// Change the default signal to 'SIGQUIT' and enable it.
+// Изменить сигнал по умолчанию на 'SIGQUIT' и включить его.
 process.report.reportOnFatalError = false;
 process.report.reportOnUncaughtException = false;
 process.report.reportOnSignal = true;
@@ -769,7 +769,7 @@ NODE_OPTIONS="--report-uncaught-exception \
 
 Подробное описание API см. в разделе [`документация process`](process.md).
 
-## Взаимодействие с worker {: #interaction-with-workers}
+## Взаимодействие с worker {#interaction-with-workers}
 
 <!-- YAML
 changes:
@@ -784,7 +784,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v13.9.0, v12.16.2 | Рабочие теперь включены в отчет. |
+    | v13.9.0, v12.16.2 | Потоки Worker теперь включаются в отчёт. |
 
 Потоки [`Worker`](worker_threads.md) могут формировать отчёты так же, как основной поток.
 

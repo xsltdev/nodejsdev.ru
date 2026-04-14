@@ -14,7 +14,7 @@ description: Переменные окружения процесса Node.js, p
 ## Переменные окружения CLI
 
 Набор переменных окружения можно задать, чтобы настроить поведение Node.js;
-подробнее см. в [документации по переменным окружения CLI][CLI Environment Variables documentation].
+подробнее см. в [документации по переменным окружения CLI][документации по переменным окружения CLI].
 
 ## `process.env`
 
@@ -27,7 +27,7 @@ description: Переменные окружения процесса Node.js, p
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    API является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
 Набор утилит для работы с дополнительными переменными окружения, заданными в файлах `.env`.
 
@@ -122,8 +122,8 @@ MY_VAR_B = '   my variable b   '
 Например:
 
 ```text
-# This is a comment
-MY_VAR = my variable # This is also a comment
+# Это комментарий
+MY_VAR = my variable # Это тоже комментарий
 MY_VAR_A = "# this is NOT a comment"
 ```
 
@@ -156,7 +156,7 @@ export MY_VAR = my variable
 
 * [`util.parseEnv`](util.md#utilparseenvcontent) — разбирает сырое содержимое файла `.env` и возвращает объект
 
-[CLI Environment Variables documentation]: cli.md#environment-variables_1
+[документации по переменным окружения CLI]: cli.md#environment-variables_1
 [`--env-file-if-exists=file`]: cli.md#--env-file-if-existsfile
 [`--env-file=file`]: cli.md#--env-filefile
 [`process.env` documentation]: process.md#processenv

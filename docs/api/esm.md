@@ -104,7 +104,7 @@ changes:
     | v13.2.0, v12.17.0 | Для загрузки модулей ECMAScript больше не требуется флаг командной строки. |
     | v12.0.0 | Добавьте поддержку модулей ES, используя расширение файла `.js` через поле `"type"` package.json`. |
 
-> Stability: 2 - Stable
+!!!success "Стабильность: 2 – Стабильная"
 
 ## Введение
 
@@ -161,7 +161,7 @@ CommonJS через расширение `.cjs`, поле `package.json` [`"type
 Если в коде нет явных маркеров ни для одной из систем модулей, Node.js просматривает
 исходный текст модуля на наличие синтаксиса ES-модулей. Если такой синтаксис найден,
 код выполняется как ES-модуль; иначе модуль выполняется как CommonJS. Подробнее см.
-[Determining module system][Determining module system].
+[Определение системы модулей][определение системы модулей].
 
 <!-- Anchors to make sure old links find a target -->
 
@@ -452,7 +452,7 @@ added:
   - v22.18.0
 -->
 
-> Stability: 1.0 - Early development
+!!!warning "Стабильность: 1.0 – ранняя разработка"
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если текущий модуль — точка входа процесса; иначе `false`.
 
@@ -512,9 +512,9 @@ changes:
     | v20.6.0, v18.19.0 | Больше нет флага CLI `--experimental-import-meta-resolve`, за исключением нестандартного параметра `parentURL`. |
     | v20.6.0, v18.19.0 | Этот API больше не выдает ошибку при выборе URL-адресов file:, которые не сопоставлены с существующим файлом в локальной файловой системе. |
     | v20.0.0, v18.19.0 | Этот API теперь синхронно возвращает строку вместо обещания. |
-    | v16.2.0, v14.18.0 | Добавьте поддержку объекта WHATWG `URL` в параметр `parentURL`. |
+    | v16.2.0, v14.18.0 | Добавлена поддержка объекта WHATWG `URL` в параметре `parentURL`. |
 
-> Stability: 1.2 - Release candidate
+!!!warning "Стабильность: 1.2 – кандидат в релиз"
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор модуля для разрешения относительно текущего модуля.
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютная строка URL, в которую разрешился бы спецификатор.
@@ -564,7 +564,7 @@ import.meta.resolve('./dep.js');
 В CommonJS `require` сейчас поддерживает загрузку только синхронных ES-модулей
 (то есть ES-модулей без top-level `await`).
 
-Подробнее см. [Loading ECMAScript modules using `require()`](modules.md#loading-ecmascript-modules-using-require).
+Подробнее см. [Загрузка ECMAScript-модулей через `require()`](modules.md#loading-ecmascript-modules-using-require).
 
 ### Пространства имён CommonJS {: #commonjs-namespaces}
 
@@ -760,7 +760,7 @@ changes:
 import packageConfig from './package.json' with { type: 'json' };
 ```
 
-Синтаксис `with { type: 'json' }` обязателен; см. [Import Attributes][Import Attributes].
+Синтаксис `with { type: 'json' }` обязателен; см. [атрибуты импорта][атрибуты импорта].
 
 Импортируемый JSON даёт только экспорт `default`. Именованных экспортов нет.
 В кэше CommonJS создаётся запись, чтобы избежать дублирования.
@@ -789,17 +789,17 @@ changes:
 Поддерживается импорт как экземпляров модулей WebAssembly, так и импортов в фазе исходника (source phase).
 
 Оба варианта согласованы с
-[ES Module Integration Proposal for WebAssembly][ES Module Integration Proposal for WebAssembly].
+[предложении интеграции ES-модулей для WebAssembly][предложении интеграции ES-модулей для WebAssembly].
 
-### Импорты Wasm в фазе исходника (Source Phase)
+### Импорты Wasm в фазе исходника
 
-> Stability: 1.2 - Release candidate
+!!!warning "Стабильность: 1.2 – кандидат в релиз"
 
 <!-- YAML
 added: v24.0.0
 -->
 
-Предложение [Source Phase Imports][Source Phase Imports] позволяет сочетанию ключевых слов `import source`
+Предложение [импортов фазы исходника][импортов фазы исходника] позволяет сочетанию ключевых слов `import source`
 импортировать объект `WebAssembly.Module` напрямую, вместо получения
 уже инстанцированного экземпляра модуля с зависимостями.
 
@@ -828,7 +828,7 @@ const instance = await WebAssembly.instantiate(dynamicLibrary, importObject);
 
 ### Встроенные строковые функции JavaScript
 
-> Stability: 1.2 - Release candidate
+!!!warning "Стабильность: 1.2 – кандидат в релиз"
 
 <!-- YAML
 added:
@@ -837,7 +837,7 @@ added:
 -->
 
 При импорте модулей WebAssembly предложение
-[WebAssembly JS String Builtins Proposal][WebAssembly JS String Builtins Proposal] автоматически включается через
+[предложение WebAssembly JS String Builtins][предложение WebAssembly JS String Builtins] автоматически включается через
 интеграцию ESM. Это позволяет модулям WebAssembly напрямую использовать эффективные
 встроенные строковые функции времени компиляции из пространства имён `wasm:js-string`.
 
@@ -892,7 +892,7 @@ getLength('foo'); // Also returns 3.
 
 ### Импорты фазы экземпляра Wasm
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 – активная разработка"
 
 Импорты экземпляра позволяют импортировать любые `.wasm` как обычные модули,
 поддерживая в свою очередь их импорты модулей.
@@ -932,7 +932,7 @@ added:
 
 <i id="esm_experimental_top_level_await"></i>
 
-## Top-level `await`
+## `await` верхнего уровня
 
 <!-- YAML
 added: v14.8.0
@@ -977,10 +977,10 @@ spawn(execPath, [
 
 <i id="esm_experimental_loaders"></i>
 
-## Загрузчики (Loaders)
+## Загрузчики
 
 Документация по загрузчикам перенесена в
-[Модули: хуки настройки][Module customization hooks].
+[Модули: хуки настройки][модули: хуки настройки].
 
 ## Алгоритм разрешения и загрузки
 
@@ -1036,17 +1036,17 @@ _defaultConditions_ — массив имён условной среды,
 
 Резолвер может выбросить такие ошибки:
 
-* _Invalid Module Specifier_: спецификатор модуля — недопустимый URL, имя пакета
+* _Недопустимый спецификатор модуля_: спецификатор модуля — недопустимый URL, имя пакета
   или подпуть пакета.
-* _Invalid Package Configuration_: конфигурация `package.json` недопустима или
+* _Недопустимая конфигурация пакета_: конфигурация `package.json` недопустима или
   содержит недопустимые данные.
-* _Invalid Package Target_: в `exports` или `imports` пакета целевой модуль
+* _Недопустимая цель пакета_: в `exports` или `imports` пакета целевой модуль
   имеет недопустимый тип или строку.
-* _Package Path Not Exported_: `exports` пакета не задаёт и не разрешает целевой
+* _Путь пакета не экспортирован_: `exports` пакета не задаёт и не разрешает целевой
   подпуть для данного модуля.
-* _Package Import Not Defined_: в `imports` пакета нет такого спецификатора.
-* _Module Not Found_: запрошенный пакет или модуль не существует.
-* _Unsupported Directory Import_: разрешённый путь указывает на каталог,
+* _Импорт пакета не определён_: в `imports` пакета нет такого спецификатора.
+* _Модуль не найден_: запрошенный пакет или модуль не существует.
+* _Импорт каталога не поддерживается_: разрешённый путь указывает на каталог,
   импорт модулей в каталог не поддерживается.
 
 <i id="resolver-algorithm-specification"></i>
@@ -1055,299 +1055,301 @@ _defaultConditions_ — массив имён условной среды,
 
 **ESM\_RESOLVE**(_specifier_, _parentURL_)
 
-> 1. Let _resolved_ be **undefined**.
-> 2. If _specifier_ is a valid URL, then
->    1. Set _resolved_ to the result of parsing and reserializing
->       _specifier_ as a URL.
-> 3. Otherwise, if _specifier_ starts with _"/"_, _"./"_, or _"../"_, then
->    1. Set _resolved_ to the URL resolution of _specifier_ relative to
->       _parentURL_.
-> 4. Otherwise, if _specifier_ starts with _"#"_, then
->    1. Set _resolved_ to the result of
+> 1. Пусть _resolved_ будет **undefined**.
+> 2. Если _specifier_ является корректным URL, тогда
+>    1. Установить _resolved_ равным результату разбора и повторной сериализации
+>       _specifier_ как URL.
+> 3. Иначе, если _specifier_ начинается с _"/"_, _"./"_ или _"../"_, тогда
+>    1. Установить _resolved_ равным результату разрешения URL для _specifier_
+>       относительно _parentURL_.
+> 4. Иначе, если _specifier_ начинается с _"#"_, тогда
+>    1. Установить _resolved_ равным результату
 >       **PACKAGE\_IMPORTS\_RESOLVE**(_specifier_,
 >       _parentURL_, _defaultConditions_).
-> 5. Otherwise,
->    1. Note: _specifier_ is now a bare specifier.
->    2. Set _resolved_ the result of
+> 5. Иначе,
+>    1. Примечание: теперь _specifier_ является голым спецификатором.
+>    2. Установить _resolved_ равным результату
 >       **PACKAGE\_RESOLVE**(_specifier_, _parentURL_).
-> 6. Let _format_ be **undefined**.
-> 7. If _resolved_ is a _"file:"_ URL, then
->    1. If _resolved_ contains any percent encodings of _"/"_ or _"\\"_ (_"%2F"_
->       and _"%5C"_ respectively), then
->       1. Throw an _Invalid Module Specifier_ error.
->    2. If the file at _resolved_ is a directory, then
->       1. Throw an _Unsupported Directory Import_ error.
->    3. If the file at _resolved_ does not exist, then
->       1. Throw a _Module Not Found_ error.
->    4. Set _resolved_ to the real path of _resolved_, maintaining the
->       same URL querystring and fragment components.
->    5. Set _format_ to the result of **ESM\_FILE\_FORMAT**(_resolved_).
-> 8. Otherwise,
->    1. Set _format_ the module format of the content type associated with the
->       URL _resolved_.
-> 9. Return _format_ and _resolved_ to the loading phase
+> 6. Пусть _format_ будет **undefined**.
+> 7. Если _resolved_ является URL вида _"file:"_, тогда
+>    1. Если _resolved_ содержит процентные кодировки _"/"_ или _"\\"_ (_"%2F"_
+>       и _"%5C"_ соответственно), тогда
+>       1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+>    2. Если файл по адресу _resolved_ является каталогом, тогда
+>       1. Выбросить ошибку _Импорт каталога не поддерживается_.
+>    3. Если файл по адресу _resolved_ не существует, тогда
+>       1. Выбросить ошибку _Модуль не найден_.
+>    4. Установить _resolved_ в реальный путь _resolved_, сохранив
+>       те же компоненты строки запроса URL и фрагмента.
+>    5. Установить _format_ равным результату **ESM\_FILE\_FORMAT**(_resolved_).
+> 8. Иначе,
+>    1. Установить _format_ в формат модуля для типа содержимого,
+>       связанного с URL _resolved_.
+> 9. Вернуть _format_ и _resolved_ на этап загрузки.
 
 **PACKAGE\_RESOLVE**(_packageSpecifier_, _parentURL_)
 
-> 1. Let _packageName_ be **undefined**.
-> 2. If _packageSpecifier_ is an empty string, then
->    1. Throw an _Invalid Module Specifier_ error.
-> 3. If _packageSpecifier_ is a Node.js builtin module name, then
->    1. Return the string _"node:"_ concatenated with _packageSpecifier_.
-> 4. If _packageSpecifier_ does not start with _"@"_, then
->    1. Set _packageName_ to the substring of _packageSpecifier_ until the first
->       _"/"_ separator or the end of the string.
-> 5. Otherwise,
->    1. If _packageSpecifier_ does not contain a _"/"_ separator, then
->       1. Throw an _Invalid Module Specifier_ error.
->    2. Set _packageName_ to the substring of _packageSpecifier_
->       until the second _"/"_ separator or the end of the string.
-> 6. If _packageName_ starts with _"."_ or contains _"\\"_ or _"%"_, then
->    1. Throw an _Invalid Module Specifier_ error.
-> 7. Let _packageSubpath_ be _"."_ concatenated with the substring of
->    _packageSpecifier_ from the position at the length of _packageName_.
-> 8. Let _selfUrl_ be the result of
+> 1. Пусть _packageName_ будет **undefined**.
+> 2. Если _packageSpecifier_ является пустой строкой, тогда
+>    1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+> 3. Если _packageSpecifier_ является именем встроенного модуля Node.js, тогда
+>    1. Вернуть строку _"node:"_, объединённую с _packageSpecifier_.
+> 4. Если _packageSpecifier_ не начинается с _"@"_, тогда
+>    1. Установить _packageName_ равным подстроке _packageSpecifier_ до первого
+>       разделителя _"/"_ или до конца строки.
+> 5. Иначе,
+>    1. Если _packageSpecifier_ не содержит разделитель _"/"_, тогда
+>       1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+>    2. Установить _packageName_ равным подстроке _packageSpecifier_
+>       до второго разделителя _"/"_ или до конца строки.
+> 6. Если _packageName_ начинается с _"."_ или содержит _"\\"_ либо _"%"_, тогда
+>    1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+> 7. Пусть _packageSubpath_ будет _"."_, объединённая с подстрокой
+>    _packageSpecifier_ от позиции длины _packageName_.
+> 8. Пусть _selfUrl_ будет результатом
 >    **PACKAGE\_SELF\_RESOLVE**(_packageName_, _packageSubpath_, _parentURL_).
-> 9. If _selfUrl_ is not **undefined**, return _selfUrl_.
-> 10. While _parentURL_ is not the file system root,
->     1. Let _packageURL_ be the URL resolution of _"node\_modules/"_
->        concatenated with _packageName_, relative to _parentURL_.
->     2. Set _parentURL_ to the parent folder URL of _parentURL_.
->     3. If the folder at _packageURL_ does not exist, then
->        1. Continue the next loop iteration.
->     4. Let _pjson_ be the result of **READ\_PACKAGE\_JSON**(_packageURL_).
->     5. If _pjson_ is not **null** and _pjson_._exports_ is not **null** or
->        **undefined**, then
->        1. Return the result of **PACKAGE\_EXPORTS\_RESOLVE**(_packageURL_,
+> 9. Если _selfUrl_ не равен **undefined**, вернуть _selfUrl_.
+> 10. Пока _parentURL_ не является корнем файловой системы,
+>     1. Пусть _packageURL_ будет результатом разрешения URL _"node\_modules/"_,
+>        объединённого с _packageName_, относительно _parentURL_.
+>     2. Установить _parentURL_ в URL родительской папки для _parentURL_.
+>     3. Если каталог по адресу _packageURL_ не существует, тогда
+>        1. Продолжить следующую итерацию цикла.
+>     4. Пусть _pjson_ будет результатом **READ\_PACKAGE\_JSON**(_packageURL_).
+>     5. Если _pjson_ не равен **null** и _pjson_._exports_ не равен **null** или
+>        **undefined**, тогда
+>        1. Вернуть результат **PACKAGE\_EXPORTS\_RESOLVE**(_packageURL_,
 >           _packageSubpath_, _pjson.exports_, _defaultConditions_).
->     6. Otherwise, if _packageSubpath_ is equal to _"."_, then
->        1. If _pjson.main_ is a string, then
->           1. Return the URL resolution of _main_ in _packageURL_.
->     7. Otherwise,
->        1. Return the URL resolution of _packageSubpath_ in _packageURL_.
-> 11. Throw a _Module Not Found_ error.
+>     6. Иначе, если _packageSubpath_ равен _"."_, тогда
+>        1. Если _pjson.main_ является строкой, тогда
+>           1. Вернуть разрешение URL _main_ в _packageURL_.
+>     7. Иначе,
+>        1. Вернуть разрешение URL _packageSubpath_ в _packageURL_.
+> 11. Выбросить ошибку _Модуль не найден_.
 
 **PACKAGE\_SELF\_RESOLVE**(_packageName_, _packageSubpath_, _parentURL_)
 
-> 1. Let _packageURL_ be the result of **LOOKUP\_PACKAGE\_SCOPE**(_parentURL_).
-> 2. If _packageURL_ is **null**, then
->    1. Return **undefined**.
-> 3. Let _pjson_ be the result of **READ\_PACKAGE\_JSON**(_packageURL_).
-> 4. If _pjson_ is **null** or if _pjson_._exports_ is **null** or
->    **undefined**, then
->    1. Return **undefined**.
-> 5. If _pjson.name_ is equal to _packageName_, then
->    1. Return the result of **PACKAGE\_EXPORTS\_RESOLVE**(_packageURL_,
+> 1. Пусть _packageURL_ будет результатом **LOOKUP\_PACKAGE\_SCOPE**(_parentURL_).
+> 2. Если _packageURL_ равно **null**, то
+>    1. Вернуть **undefined**.
+> 3. Пусть _pjson_ будет результатом **READ\_PACKAGE\_JSON**(_packageURL_).
+> 4. Если _pjson_ равно **null** либо _pjson_._exports_ равно **null** или
+>    **undefined**, то
+>    1. Вернуть **undefined**.
+> 5. Если _pjson.name_ равно _packageName_, то
+>    1. Вернуть результат **PACKAGE\_EXPORTS\_RESOLVE**(_packageURL_,
 >       _packageSubpath_, _pjson.exports_, _defaultConditions_).
-> 6. Otherwise, return **undefined**.
+> 6. Иначе вернуть **undefined**.
 
 **PACKAGE\_EXPORTS\_RESOLVE**(_packageURL_, _subpath_, _exports_, _conditions_)
 
-Note: This function is directly invoked by the CommonJS resolution algorithm.
+Примечание: эта функция вызывается напрямую алгоритмом разрешения CommonJS.
 
-> 1. If _exports_ is an Object with both a key starting with _"."_ and a key not
->    starting with _"."_, throw an _Invalid Package Configuration_ error.
-> 2. If _subpath_ is equal to _"."_, then
->    1. Let _mainExport_ be **undefined**.
->    2. If _exports_ is a String or Array, or an Object containing no keys
->       starting with _"."_, then
->       1. Set _mainExport_ to _exports_.
->    3. Otherwise if _exports_ is an Object containing a _"."_ property, then
->       1. Set _mainExport_ to _exports_\[_"."_].
->    4. If _mainExport_ is not **undefined**, then
->       1. Let _resolved_ be the result of **PACKAGE\_TARGET\_RESOLVE**(
+> 1. Если _exports_ является объектом, у которого есть и ключ, начинающийся с
+>    _"."_, и ключ, не начинающийся с _"."_, выбросить ошибку _Недопустимая конфигурация пакета_.
+> 2. Если _subpath_ равен _"."_, то
+>    1. Пусть _mainExport_ будет **undefined**.
+>    2. Если _exports_ является строкой или массивом либо объектом, не содержащим
+>       ключей, начинающихся с _"."_, то
+>       1. Установить _mainExport_ в _exports_.
+>    3. Иначе, если _exports_ является объектом и содержит свойство _"."_, то
+>       1. Установить _mainExport_ в _exports_\[_"."_].
+>    4. Если _mainExport_ не равен **undefined**, то
+>       1. Пусть _resolved_ будет результатом **PACKAGE\_TARGET\_RESOLVE**(
 >          _packageURL_, _mainExport_, **null**, **false**, _conditions_).
->       2. If _resolved_ is not **null** or **undefined**, return _resolved_.
-> 3. Otherwise, if _exports_ is an Object and all keys of _exports_ start with
->    _"."_, then
->    1. Assert: _subpath_ begins with _"./"_.
->    2. Let _resolved_ be the result of **PACKAGE\_IMPORTS\_EXPORTS\_RESOLVE**(
+>       2. Если _resolved_ не равен **null** и не равен **undefined**, вернуть _resolved_.
+> 3. Иначе, если _exports_ является объектом и все его ключи начинаются с _"."_,
+>    то
+>    1. Утверждение: _subpath_ начинается с _"./"_.
+>    2. Пусть _resolved_ будет результатом **PACKAGE\_IMPORTS\_EXPORTS\_RESOLVE**(
 >       _subpath_, _exports_, _packageURL_, **false**, _conditions_).
->    3. If _resolved_ is not **null** or **undefined**, return _resolved_.
-> 4. Throw a _Package Path Not Exported_ error.
+>    3. Если _resolved_ не равен **null** и не равен **undefined**, вернуть _resolved_.
+> 4. Выбросить ошибку _Путь пакета не экспортируется_.
 
 **PACKAGE\_IMPORTS\_RESOLVE**(_specifier_, _parentURL_, _conditions_)
 
-Note: This function is directly invoked by the CommonJS resolution algorithm.
+Примечание: эта функция вызывается напрямую алгоритмом разрешения CommonJS.
 
-> 1. Assert: _specifier_ begins with _"#"_.
-> 2. If _specifier_ is exactly equal to _"#"_, then
->    1. Throw an _Invalid Module Specifier_ error.
-> 3. Let _packageURL_ be the result of **LOOKUP\_PACKAGE\_SCOPE**(_parentURL_).
-> 4. If _packageURL_ is not **null**, then
->    1. Let _pjson_ be the result of **READ\_PACKAGE\_JSON**(_packageURL_).
->    2. If _pjson.imports_ is a non-null Object, then
->       1. Let _resolved_ be the result of
+> 1. Утверждение: _specifier_ начинается с _"#"_.
+> 2. Если _specifier_ в точности равен _"#"_, то
+>    1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+> 3. Пусть _packageURL_ будет результатом **LOOKUP\_PACKAGE\_SCOPE**(_parentURL_).
+> 4. Если _packageURL_ не равен **null**, то
+>    1. Пусть _pjson_ будет результатом **READ\_PACKAGE\_JSON**(_packageURL_).
+>    2. Если _pjson.imports_ является ненулевым объектом, то
+>       1. Пусть _resolved_ будет результатом
 >          **PACKAGE\_IMPORTS\_EXPORTS\_RESOLVE**(
 >          _specifier_, _pjson.imports_, _packageURL_, **true**, _conditions_).
->       2. If _resolved_ is not **null** or **undefined**, return _resolved_.
-> 5. Throw a _Package Import Not Defined_ error.
+>       2. Если _resolved_ не равен **null** и не равен **undefined**, вернуть _resolved_.
+> 5. Выбросить ошибку _Импорт пакета не определён_.
 
 **PACKAGE\_IMPORTS\_EXPORTS\_RESOLVE**(_matchKey_, _matchObj_, _packageURL_,
 _isImports_, _conditions_)
 
-> 1. If _matchKey_ ends in _"/"_, then
->    1. Throw an _Invalid Module Specifier_ error.
-> 2. If _matchKey_ is a key of _matchObj_ and does not contain _"\*"_, then
->    1. Let _target_ be the value of _matchObj_\[_matchKey_].
->    2. Return the result of **PACKAGE\_TARGET\_RESOLVE**(_packageURL_,
+> 1. Если _matchKey_ оканчивается на _"/"_, то
+>    1. Выбросить ошибку _Недопустимый спецификатор модуля_.
+> 2. Если _matchKey_ является ключом в _matchObj_ и не содержит _"\*"_, то
+>    1. Пусть _target_ будет значением _matchObj_\[_matchKey_].
+>    2. Вернуть результат **PACKAGE\_TARGET\_RESOLVE**(_packageURL_,
 >       _target_, **null**, _isImports_, _conditions_).
-> 3. Let _expansionKeys_ be the list of keys of _matchObj_ containing only a
->    single _"\*"_, sorted by the sorting function **PATTERN\_KEY\_COMPARE**
->    which orders in descending order of specificity.
-> 4. For each key _expansionKey_ in _expansionKeys_, do
->    1. Let _patternBase_ be the substring of _expansionKey_ up to but excluding
->       the first _"\*"_ character.
->    2. If _matchKey_ starts with but is not equal to _patternBase_, then
->       1. Let _patternTrailer_ be the substring of _expansionKey_ from the
->          index after the first _"\*"_ character.
->       2. If _patternTrailer_ has zero length, or if _matchKey_ ends with
->          _patternTrailer_ and the length of _matchKey_ is greater than or
->          equal to the length of _expansionKey_, then
->          1. Let _target_ be the value of _matchObj_\[_expansionKey_].
->          2. Let _patternMatch_ be the substring of _matchKey_ starting at the
->             index of the length of _patternBase_ up to the length of
->             _matchKey_ minus the length of _patternTrailer_.
->          3. Return the result of **PACKAGE\_TARGET\_RESOLVE**(_packageURL_,
+> 3. Пусть _expansionKeys_ будет списком ключей _matchObj_, содержащих только
+>    один _"\*"_, отсортированных функцией **PATTERN\_KEY\_COMPARE**,
+>    которая располагает их по убыванию специфичности.
+> 4. Для каждого ключа _expansionKey_ в _expansionKeys_ выполнить
+>    1. Пусть _patternBase_ будет подстрокой _expansionKey_ до первого символа
+>       _"\*"_, не включая его.
+>    2. Если _matchKey_ начинается с _patternBase_, но не равен ему, то
+>       1. Пусть _patternTrailer_ будет подстрокой _expansionKey_, начиная с
+>          позиции после первого символа _"\*"_.
+>       2. Если _patternTrailer_ имеет нулевую длину либо _matchKey_
+>          оканчивается на _patternTrailer_ и длина _matchKey_ больше либо
+>          равна длине _expansionKey_, то
+>          1. Пусть _target_ будет значением _matchObj_\[_expansionKey_].
+>          2. Пусть _patternMatch_ будет подстрокой _matchKey_, начиная с
+>             позиции, равной длине _patternBase_, и до длины _matchKey_
+>             минус длина _patternTrailer_.
+>          3. Вернуть результат **PACKAGE\_TARGET\_RESOLVE**(_packageURL_,
 >             _target_, _patternMatch_, _isImports_, _conditions_).
-> 5. Return **null**.
+> 5. Вернуть **null**.
 
 **PATTERN\_KEY\_COMPARE**(_keyA_, _keyB_)
 
-> 1. Assert: _keyA_ contains only a single _"\*"_.
-> 2. Assert: _keyB_ contains only a single _"\*"_.
-> 3. Let _baseLengthA_ be the index of _"\*"_ in _keyA_.
-> 4. Let _baseLengthB_ be the index of _"\*"_ in _keyB_.
-> 5. If _baseLengthA_ is greater than _baseLengthB_, return -1.
-> 6. If _baseLengthB_ is greater than _baseLengthA_, return 1.
-> 7. If the length of _keyA_ is greater than the length of _keyB_, return -1.
-> 8. If the length of _keyB_ is greater than the length of _keyA_, return 1.
-> 9. Return 0.
+> 1. Утверждение: _keyA_ содержит только один _"\*"_.
+> 2. Утверждение: _keyB_ содержит только один _"\*"_.
+> 3. Пусть _baseLengthA_ будет индексом _"\*"_ в _keyA_.
+> 4. Пусть _baseLengthB_ будет индексом _"\*"_ в _keyB_.
+> 5. Если _baseLengthA_ больше _baseLengthB_, вернуть -1.
+> 6. Если _baseLengthB_ больше _baseLengthA_, вернуть 1.
+> 7. Если длина _keyA_ больше длины _keyB_, вернуть -1.
+> 8. Если длина _keyB_ больше длины _keyA_, вернуть 1.
+> 9. Вернуть 0.
 
 **PACKAGE\_TARGET\_RESOLVE**(_packageURL_, _target_, _patternMatch_,
 _isImports_, _conditions_)
 
-> 1. If _target_ is a String, then
->    1. If _target_ does not start with _"./"_, then
->       1. If _isImports_ is **false**, or if _target_ starts with _"../"_ or
->          _"/"_, or if _target_ is a valid URL, then
->          1. Throw an _Invalid Package Target_ error.
->       2. If _patternMatch_ is a String, then
->          1. Return **PACKAGE\_RESOLVE**(_target_ with every instance of _"\*"_
->             replaced by _patternMatch_, _packageURL_ + _"/"_).
->       3. Return **PACKAGE\_RESOLVE**(_target_, _packageURL_ + _"/"_).
->    2. If _target_ split on _"/"_ or _"\\"_ contains any _""_, _"."_, _".."_,
->       or _"node\_modules"_ segments after the first _"."_ segment, case
->       insensitive and including percent encoded variants, throw an _Invalid
->       Package Target_ error.
->    3. Let _resolvedTarget_ be the URL resolution of the concatenation of
->       _packageURL_ and _target_.
->    4. Assert: _packageURL_ is contained in _resolvedTarget_.
->    5. If _patternMatch_ is **null**, then
->       1. Return _resolvedTarget_.
->    6. If _patternMatch_ split on _"/"_ or _"\\"_ contains any _""_, _"."_,
->       _".."_, or _"node\_modules"_ segments, case insensitive and including
->       percent encoded variants, throw an _Invalid Module Specifier_ error.
->    7. Return the URL resolution of _resolvedTarget_ with every instance of
->       _"\*"_ replaced with _patternMatch_.
-> 2. Otherwise, if _target_ is a non-null Object, then
->    1. If _target_ contains any index property keys, as defined in ECMA-262
->       [6.1.7 Array Index][6.1.7 Array Index], throw an _Invalid Package Configuration_ error.
->    2. For each property _p_ of _target_, in object insertion order as,
->       1. If _p_ equals _"default"_ or _conditions_ contains an entry for _p_,
->          then
->          1. Let _targetValue_ be the value of the _p_ property in _target_.
->          2. Let _resolved_ be the result of **PACKAGE\_TARGET\_RESOLVE**(
+> 1. Если _target_ является строкой, то
+>    1. Если _target_ не начинается с _"./"_, то
+>       1. Если _isImports_ равно **false**, либо _target_ начинается с _"../"_
+>          или _"/"_, либо _target_ является допустимым URL, то
+>          1. Выбросить ошибку _Недопустимая цель пакета_.
+>       2. Если _patternMatch_ является строкой, то
+>          1. Вернуть **PACKAGE\_RESOLVE**(_target_, где каждое вхождение _"\*"_
+>             заменено на _patternMatch_, _packageURL_ + _"/"_).
+>       3. Вернуть **PACKAGE\_RESOLVE**(_target_, _packageURL_ + _"/"_).
+>    2. Если _target_, разбитый по _"/"_ или _"\\"_, содержит после первого
+>       сегмента _"."_ любой из сегментов _""_, _"."_, _".."_ или
+>       _"node\_modules"_ без учёта регистра и с учётом percent-encoding,
+>       выбросить ошибку _Недопустимая цель пакета_.
+>    3. Пусть _resolvedTarget_ будет URL-результатом разрешения конкатенации
+>       _packageURL_ и _target_.
+>    4. Утверждение: _packageURL_ содержится в _resolvedTarget_.
+>    5. Если _patternMatch_ равен **null**, то
+>       1. Вернуть _resolvedTarget_.
+>    6. Если _patternMatch_, разбитый по _"/"_ или _"\\"_, содержит любой из
+>       сегментов _""_, _"."_, _".."_, или _"node\_modules"_ без учёта регистра
+>       и с учётом percent-encoding, выбросить ошибку _Недопустимый спецификатор модуля_.
+>    7. Вернуть результат разрешения URL для _resolvedTarget_, где каждое
+>       вхождение _"\*"_ заменено на _patternMatch_.
+> 2. Иначе, если _target_ является ненулевым объектом, то
+>    1. Если _target_ содержит какие-либо индексные ключи свойств, как
+>       определено в ECMA-262 [6.1.7 Индекс массива][6.1.7 Array Index],
+>       выбросить ошибку _Недопустимая конфигурация пакета_.
+>    2. Для каждого свойства _p_ объекта _target_ в порядке вставки выполнить
+>       1. Если _p_ равно _"default"_ либо _conditions_ содержит запись для _p_,
+>          то
+>          1. Пусть _targetValue_ будет значением свойства _p_ в _target_.
+>          2. Пусть _resolved_ будет результатом **PACKAGE\_TARGET\_RESOLVE**(
 >             _packageURL_, _targetValue_, _patternMatch_, _isImports_,
 >             _conditions_).
->          3. If _resolved_ is equal to **undefined**, continue the loop.
->          4. Return _resolved_.
->    3. Return **undefined**.
-> 3. Otherwise, if _target_ is an Array, then
->    1. If \_target.length is zero, return **null**.
->    2. For each item _targetValue_ in _target_, do
->       1. Let _resolved_ be the result of **PACKAGE\_TARGET\_RESOLVE**(
+>          3. Если _resolved_ равен **undefined**, продолжить цикл.
+>          4. Вернуть _resolved_.
+>    3. Вернуть **undefined**.
+> 3. Иначе, если _target_ является массивом, то
+>    1. Если \_target.length равно нулю, вернуть **null**.
+>    2. Для каждого элемента _targetValue_ в _target_ выполнить
+>       1. Пусть _resolved_ будет результатом **PACKAGE\_TARGET\_RESOLVE**(
 >          _packageURL_, _targetValue_, _patternMatch_, _isImports_,
->          _conditions_), continuing the loop on any _Invalid Package Target_
->          error.
->       2. If _resolved_ is **undefined**, continue the loop.
->       3. Return _resolved_.
->    3. Return or throw the last fallback resolution **null** return or error.
-> 4. Otherwise, if _target_ is _null_, return **null**.
-> 5. Otherwise throw an _Invalid Package Target_ error.
+>          _conditions_); при ошибке _Недопустимая цель пакета_ продолжить цикл.
+>       2. Если _resolved_ равен **undefined**, продолжить цикл.
+>       3. Вернуть _resolved_.
+>    3. Вернуть **null** последнего резервного разрешения либо выбросить его ошибку.
+> 4. Иначе, если _target_ равен _null_, вернуть **null**.
+> 5. Иначе выбросить ошибку _Недопустимая цель пакета_.
 
 **ESM\_FILE\_FORMAT**(_url_)
 
-> 1. Assert: _url_ corresponds to an existing file.
-> 2. If _url_ ends in _".mjs"_, then
->    1. Return _"module"_.
-> 3. If _url_ ends in _".cjs"_, then
->    1. Return _"commonjs"_.
-> 4. If _url_ ends in _".json"_, then
->    1. Return _"json"_.
-> 5. If _url_ ends in
->    _".wasm"_, then
->    1. Return _"wasm"_.
-> 6. If `--experimental-addon-modules` is enabled and _url_ ends in
->    _".node"_, then
->    1. Return _"addon"_.
-> 7. Let _packageURL_ be the result of **LOOKUP\_PACKAGE\_SCOPE**(_url_).
-> 8. Let _pjson_ be the result of **READ\_PACKAGE\_JSON**(_packageURL_).
-> 9. Let _packageType_ be **null**.
-> 10. If _pjson?.type_ is _"module"_ or _"commonjs"_, then
->     1. Set _packageType_ to _pjson.type_.
-> 11. If _url_ ends in _".js"_, then
->     1. If _packageType_ is not **null**, then
->        1. Return _packageType_.
->     2. If the result of **DETECT\_MODULE\_SYNTAX**(_source_) is true, then
->        1. Return _"module"_.
->     3. Return _"commonjs"_.
-> 12. If _url_ does not have any extension, then
->     1. If _packageType_ is _"module"_ and the file at _url_ contains the
->        "application/wasm" content type header for a WebAssembly module, then
->        1. Return _"wasm"_.
->     2. If _packageType_ is not **null**, then
->        1. Return _packageType_.
->     3. If the result of **DETECT\_MODULE\_SYNTAX**(_source_) is true, then
->        1. Return _"module"_.
->     4. Return _"commonjs"_.
-> 13. Return **undefined** (will throw during load phase).
+> 1. Утверждение: _url_ соответствует существующему файлу.
+> 2. Если _url_ оканчивается на _".mjs"_, то
+>    1. Вернуть _"module"_.
+> 3. Если _url_ оканчивается на _".cjs"_, то
+>    1. Вернуть _"commonjs"_.
+> 4. Если _url_ оканчивается на _".json"_, то
+>    1. Вернуть _"json"_.
+> 5. Если _url_ оканчивается на
+>    _".wasm"_, то
+>    1. Вернуть _"wasm"_.
+> 6. Если включён `--experimental-addon-modules` и _url_ оканчивается на
+>    _".node"_, то
+>    1. Вернуть _"addon"_.
+> 7. Пусть _packageURL_ будет результатом **LOOKUP\_PACKAGE\_SCOPE**(_url_).
+> 8. Пусть _pjson_ будет результатом **READ\_PACKAGE\_JSON**(_packageURL_).
+> 9. Пусть _packageType_ будет **null**.
+> 10. Если _pjson?.type_ равно _"module"_ или _"commonjs"_, то
+>     1. Установить _packageType_ в _pjson.type_.
+> 11. Если _url_ оканчивается на _".js"_, то
+>     1. Если _packageType_ не равно **null**, то
+>        1. Вернуть _packageType_.
+>     2. Если результат **DETECT\_MODULE\_SYNTAX**(_source_) равен true, то
+>        1. Вернуть _"module"_.
+>     3. Вернуть _"commonjs"_.
+> 12. Если у _url_ нет расширения, то
+>     1. Если _packageType_ равно _"module"_ и файл по адресу _url_ содержит
+>        заголовок типа содержимого `"application/wasm"` для модуля WebAssembly,
+>        то
+>        1. Вернуть _"wasm"_.
+>     2. Если _packageType_ не равно **null**, то
+>        1. Вернуть _packageType_.
+>     3. Если результат **DETECT\_MODULE\_SYNTAX**(_source_) равен true, то
+>        1. Вернуть _"module"_.
+>     4. Вернуть _"commonjs"_.
+> 13. Вернуть **undefined** (ошибка будет выброшена на этапе загрузки).
 
 **LOOKUP\_PACKAGE\_SCOPE**(_url_)
 
-> 1. Let _scopeURL_ be _url_.
-> 2. While _scopeURL_ is not the file system root,
->    1. Set _scopeURL_ to the parent URL of _scopeURL_.
->    2. If _scopeURL_ ends in a _"node\_modules"_ path segment, return **null**.
->    3. Let _pjsonURL_ be the resolution of _"package.json"_ within
+> 1. Пусть _scopeURL_ будет _url_.
+> 2. Пока _scopeURL_ не является корнем файловой системы,
+>    1. Установить _scopeURL_ в родительский URL для _scopeURL_.
+>    2. Если _scopeURL_ оканчивается сегментом пути _"node\_modules"_, вернуть **null**.
+>    3. Пусть _pjsonURL_ будет результатом разрешения _"package.json"_ внутри
 >       _scopeURL_.
->    4. if the file at _pjsonURL_ exists, then
->       1. Return _scopeURL_.
-> 3. Return **null**.
+>    4. Если файл по адресу _pjsonURL_ существует, то
+>       1. Вернуть _scopeURL_.
+> 3. Вернуть **null**.
 
 **READ\_PACKAGE\_JSON**(_packageURL_)
 
-> 1. Let _pjsonURL_ be the resolution of _"package.json"_ within _packageURL_.
-> 2. If the file at _pjsonURL_ does not exist, then
->    1. Return **null**.
-> 3. If the file at _packageURL_ does not parse as valid JSON, then
->    1. Throw an _Invalid Package Configuration_ error.
-> 4. Return the parsed JSON source of the file at _pjsonURL_.
+> 1. Пусть _pjsonURL_ будет результатом разрешения _"package.json"_ внутри _packageURL_.
+> 2. Если файл по адресу _pjsonURL_ не существует, то
+>    1. Вернуть **null**.
+> 3. Если файл по адресу _packageURL_ не удаётся разобрать как корректный JSON,
+>    то
+>    1. Выбросить ошибку _Недопустимая конфигурация пакета_.
+> 4. Вернуть разобранный JSON-источник файла по адресу _pjsonURL_.
 
 **DETECT\_MODULE\_SYNTAX**(_source_)
 
-> 1. Parse _source_ as an ECMAScript module.
-> 2. If the parse is successful, then
->    1. If _source_ contains top-level `await`, static `import` or `export`
->       statements, or `import.meta`, return **true**.
->    2. If _source_ contains a top-level lexical declaration (`const`, `let`,
->       or `class`) of any of the CommonJS wrapper variables (`require`,
->       `exports`, `module`, `__filename`, or `__dirname`) then return **true**.
-> 3. Return **false**.
+> 1. Разобрать _source_ как ECMAScript-модуль.
+> 2. Если разбор успешен, то
+>    1. Если _source_ содержит `await` верхнего уровня, статические операторы
+>       `import` или `export`, либо `import.meta`, вернуть **true**.
+>    2. Если _source_ содержит лексическое объявление верхнего уровня (`const`,
+>       `let` или `class`) для любой из переменных-обёрток CommonJS (`require`,
+>       `exports`, `module`, `__filename` или `__dirname`), вернуть **true**.
+> 3. Вернуть **false**.
 
 ### Настройка алгоритма разрешения спецификаторов ESM
 
-[Module customization hooks][Module customization hooks] дают способ изменить алгоритм разрешения
+[модули: хуки настройки][модули: хуки настройки] дают способ изменить алгоритм разрешения
 спецификаторов ESM. Пример с разрешением в стиле CommonJS для спецификаторов ESM —
 [commonjs-extension-resolution-loader][commonjs-extension-resolution-loader].
 
@@ -1357,19 +1359,19 @@ _isImports_, _conditions_)
 [Addons]: addons.md
 [Built-in modules]: modules.md#built-in-modules
 [CommonJS]: modules.md
-[Determining module system]: packages.md#determining-module-system
+[определение системы модулей]: packages.md#determining-module-system
 [Dynamic `import()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
-[ES Module Integration Proposal for WebAssembly]: https://github.com/webassembly/esm-integration
-[Import Attributes]: #import-attributes
+[предложении интеграции ES-модулей для WebAssembly]: https://github.com/webassembly/esm-integration
+[атрибуты импорта]: #import-attributes
 [Import Attributes MDN]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with
 [JSON modules]: #json-modules
-[Loading ECMAScript modules using `require()`]: modules.md#loading-ecmascript-modules-using-require
-[Module customization hooks]: module.md#customization-hooks
+[Загрузка ECMAScript-модулей через `require()`]: modules.md#loading-ecmascript-modules-using-require
+[модули: хуки настройки]: module.md#customization-hooks
 [Node.js Module Resolution And Loading Algorithm]: #resolution-algorithm-specification
-[Source Phase Imports]: https://github.com/tc39/proposal-source-phase-imports
+[импортов фазы исходника]: https://github.com/tc39/proposal-source-phase-imports
 [Terminology]: #terminology
 [URL]: https://url.spec.whatwg.org/
-[WebAssembly JS String Builtins Proposal]: https://github.com/WebAssembly/js-string-builtins
+[предложение WebAssembly JS String Builtins]: https://github.com/WebAssembly/js-string-builtins
 [`"exports"`]: packages.md#exports
 [`"type"`]: packages.md#type
 [`--input-type`]: cli.md#--input-typetype

@@ -3930,8 +3930,8 @@ changes:
     | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
 
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Accepts the same `options` as
-  [`http.request()`](#httprequestoptions-callback), with the method set to GET by default.
+* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает те же `options`, что и
+  [`http.request()`](#httprequestoptions-callback), но с методом `GET` по умолчанию.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<http.ClientRequest>`](#httpclientrequest)
 
@@ -4260,10 +4260,10 @@ const req = http.request(options, (res) => {
 
 * `'socket'`
 * `'response'`
-  * `'data'` any number of times, on the `res` object
-    (`'data'` will not be emitted at all if the response body is empty, for
-    instance, in most redirects)
-  * `'end'` on the `res` object
+  * `'data'` произвольное число раз на объекте `res`
+    (событие `'data'` может не генерироваться вообще, если тело ответа пустое,
+    например при большинстве перенаправлений)
+  * `'end'` на объекте `res`
 * `'close'`
 
 При ошибке соединения:
@@ -4275,7 +4275,7 @@ const req = http.request(options, (res) => {
 При преждевременном закрытии соединения до получения ответа:
 
 * `'socket'`
-* `'error'` with an error with message `'Error: socket hang up'` and code
+* `'error'` с ошибкой с сообщением `'Error: socket hang up'` и кодом
   `'ECONNRESET'`
 * `'close'`
 
@@ -4283,53 +4283,53 @@ const req = http.request(options, (res) => {
 
 * `'socket'`
 * `'response'`
-  * `'data'` any number of times, on the `res` object
-* (connection closed here)
-* `'aborted'` on the `res` object
+  * `'data'` произвольное число раз на объекте `res`
+* (соединение закрывается здесь)
+* `'aborted'` на объекте `res`
 * `'close'`
-* `'error'` on the `res` object with an error with message
+* `'error'` на объекте `res` с ошибкой с сообщением
   `'Error: aborted'` and code `'ECONNRESET'`
-* `'close'` on the `res` object
+* `'close'` на объекте `res`
 
 Если `req.destroy()` вызван до назначения сокета, порядок событий:
 
-* (`req.destroy()` called here)
-* `'error'` with an error with message `'Error: socket hang up'` and code
-  `'ECONNRESET'`, or the error with which `req.destroy()` was called
+* (здесь вызывается `req.destroy()`)
+* `'error'` с ошибкой с сообщением `'Error: socket hang up'` и кодом
+  `'ECONNRESET'` либо с ошибкой, с которой был вызван `req.destroy()`
 * `'close'`
 
 Если `req.destroy()` вызван до успешного соединения:
 
 * `'socket'`
-* (`req.destroy()` called here)
-* `'error'` with an error with message `'Error: socket hang up'` and code
-  `'ECONNRESET'`, or the error with which `req.destroy()` was called
+* (здесь вызывается `req.destroy()`)
+* `'error'` с ошибкой с сообщением `'Error: socket hang up'` и кодом
+  `'ECONNRESET'` либо с ошибкой, с которой был вызван `req.destroy()`
 * `'close'`
 
 Если `req.destroy()` вызван после получения ответа:
 
 * `'socket'`
 * `'response'`
-  * `'data'` any number of times, on the `res` object
-* (`req.destroy()` called here)
-* `'aborted'` on the `res` object
+  * `'data'` произвольное число раз на объекте `res`
+* (здесь вызывается `req.destroy()`)
+* `'aborted'` на объекте `res`
 * `'close'`
-* `'error'` on the `res` object with an error with message `'Error: aborted'`
-  and code `'ECONNRESET'`, or the error with which `req.destroy()` was called
-* `'close'` on the `res` object
+* `'error'` на объекте `res` с ошибкой с сообщением `'Error: aborted'`
+  и кодом `'ECONNRESET'` либо с ошибкой, с которой был вызван `req.destroy()`
+* `'close'` на объекте `res`
 
 Если `req.abort()` вызван до назначения сокета:
 
-* (`req.abort()` called here)
+* (здесь вызывается `req.abort()`)
 * `'abort'`
 * `'close'`
 
 Если `req.abort()` вызван до успешного соединения:
 
 * `'socket'`
-* (`req.abort()` called here)
+* (здесь вызывается `req.abort()`)
 * `'abort'`
-* `'error'` with an error with message `'Error: socket hang up'` and code
+* `'error'` с ошибкой с сообщением `'Error: socket hang up'` и кодом
   `'ECONNRESET'`
 * `'close'`
 
@@ -4337,14 +4337,14 @@ const req = http.request(options, (res) => {
 
 * `'socket'`
 * `'response'`
-  * `'data'` any number of times, on the `res` object
-* (`req.abort()` called here)
+  * `'data'` произвольное число раз на объекте `res`
+* (здесь вызывается `req.abort()`)
 * `'abort'`
-* `'aborted'` on the `res` object
-* `'error'` on the `res` object with an error with message
+* `'aborted'` на объекте `res`
+* `'error'` на объекте `res` с ошибкой с сообщением
   `'Error: aborted'` and code `'ECONNRESET'`.
 * `'close'`
-* `'close'` on the `res` object
+* `'close'` на объекте `res`
 
 Опция `timeout` или `setTimeout()` сами по себе не прерывают запрос — только
 добавляют событие `'timeout'`.
@@ -4374,7 +4374,7 @@ changes:
     | v19.5.0, v18.14.0 | Добавлен параметр `label`. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Label for error message. **По умолчанию:** `'Header name'`.
+* `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка для сообщения об ошибке. **По умолчанию:** `'Header name'`.
 
 Низкоуровневая проверка `name`, как при `res.setHeader(name, value)`.
 

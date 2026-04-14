@@ -41,7 +41,7 @@ Node.js и лежащий в основе движок V8 используют [
 
 | Возможность                              | `none`                            | `system-icu`                 | `small-icu`            | `full-icu` |
 | ---------------------------------------- | --------------------------------- | ---------------------------- | ---------------------- | ---------- |
-| [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)       | нет (функция — no-op)             | полная                       | полная                 | полная     |
+| [`String.prototype.normalize()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)       | нет (функция ничего не делает)    | полная                       | полная                 | полная     |
 | `String.prototype.to*Case()`             | полная                            | полная                       | полная                 | полная     |
 | [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)                               | нет (объект отсутствует)          | частичная/полная (зависит от ОС) | частичная (только английский) | полная |
 | [`String.prototype.localeCompare()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)   | частичная (без учёта локали)      | полная                       | полная                 | полная     |

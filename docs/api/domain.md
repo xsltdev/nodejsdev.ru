@@ -250,7 +250,7 @@ serverDomain.run(() => {
 
 ## Класс: `Domain`
 
-* Extends: [`<EventEmitter>`](events.md#class-eventemitter)
+* Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `Domain` инкапсулирует маршрутизацию ошибок и необработанных исключений к активному объекту `Domain`.
 

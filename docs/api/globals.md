@@ -588,7 +588,7 @@ changes:
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
-Реализация класса `Event`, совместимая с браузером. Подробнее — [`EventTarget` and `Event` API](events.md#eventtarget-and-event-api).
+Реализация класса `Event`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## Класс: `EventSource`
 
@@ -622,7 +622,7 @@ changes:
     | --- | --- |
     | v15.4.0 | Больше не экспериментально. |
 
-Реализация класса `EventTarget`, совместимая с браузером. Подробнее — [`EventTarget` and `Event` API](events.md#eventtarget-and-event-api).
+Реализация класса `EventTarget`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## `exports`
 
@@ -1602,7 +1602,7 @@ changes:
 [`compressionstream`]: webstreams.md#class-compressionstream
 [`countqueuingstrategy`]: webstreams.md#class-countqueuingstrategy
 [`decompressionstream`]: webstreams.md#class-decompressionstream
-[`eventtarget` and `event` api]: events.md#eventtarget-and-event-api
+[API `EventTarget` и `Event`]: events.md#eventtarget-and-event-api
 [`formdata`]: #class-formdata
 [`headers`]: #class-headers
 [`lockmanager`]: worker_threads.md#class-lockmanager

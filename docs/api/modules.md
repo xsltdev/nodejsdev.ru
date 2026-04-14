@@ -7,7 +7,7 @@ description: Система модулей CommonJS — require, module.exports,
 
 <!--introduced_in=v0.10.0-->
 
-> Stability: 2 - Stable
+!!!success "Стабильность: 2 – Стабильная"
 
 <!--name=module-->
 
@@ -99,7 +99,7 @@ module.exports = class Square {
   если ближайший родительский `package.json` содержит поле верхнего уровня
   [`"type"`](packages.md#type) со значением `"module"`.
 
-Подробнее см. [Определение системы модулей][Determining module system].
+Подробнее см. [Определение системы модулей][определение системы модулей].
 
 Вызов `require()` всегда использует загрузчик модулей CommonJS. Вызов `import()`
 всегда использует загрузчик модулей ECMAScript.
@@ -205,7 +205,7 @@ changes:
     | v23.0.0, v22.12.0 | Поддержка экспорта взаимодействия «module.exports» в «require(esm)». |
 
 Расширение `.mjs` зарезервировано для [ECMAScript Modules][ECMAScript Modules].
-См. раздел [Determining module system][Determining module system], какие файлы разбираются как ECMAScript-модули.
+См. раздел [Определение системы модулей][определение системы модулей], какие файлы разбираются как ECMAScript-модули.
 
 `require()` поддерживает загрузку ECMAScript-модулей только при выполнении условий:
 
@@ -618,7 +618,7 @@ in main, a.done = true, b.done = true
 
 Файлы `.json` разбираются как JSON, `.node` — как скомпилированные аддоны через `process.dlopen()`.
 С любыми другими расширениями или без расширения файл обрабатывается как JavaScript. См.
-[Determining module system][Determining module system], какой режим разбора применяется.
+[Определение системы модулей][определение системы модулей], какой режим разбора применяется.
 
 Путь, начинающийся с `'/'`, — абсолютный путь к файлу. Например,
 `require('/home/marco/foo.js')` загрузит `/home/marco/foo.js`.
@@ -636,7 +636,9 @@ in main, a.done = true, b.done = true
 
 <!--type=misc-->
 
-> Stability: 3 - Legacy: Use [subpath exports][subpath exports] or [subpath imports][subpath imports] instead.
+!!!note "Стабильность: 3 – Закрыто"
+
+    Используйте вместо этого [экспорты подпутей][экспорты подпутей] или [импорты подпутей][импорты подпутей].
 
 Передать в `require()` каталог можно тремя способами.
 
@@ -666,8 +668,8 @@ Error: Cannot find module 'some-library'
 ```
 
 Во всех трёх случаях вызов `import('./some-library')` даст ошибку
-[`ERR_UNSUPPORTED_DIR_IMPORT`](errors.md#err_unsupported_dir_import). [Подпути exports][subpath exports] или
-[подпути imports][subpath imports] дают схожую инкапсуляцию, как у каталогов-модулей,
+[`ERR_UNSUPPORTED_DIR_IMPORT`](errors.md#err_unsupported_dir_import). [экспорты подпутей][экспорты подпутей] или
+[импорты подпутей][импорты подпутей] дают схожую инкапсуляцию, как у каталогов-модулей,
 и работают и с `require`, и с `import`.
 
 ## Загрузка из каталогов `node_modules` {: #loading-from-node_modules-folders}
@@ -832,8 +834,8 @@ added: v0.1.16
 added: v0.1.13
 -->
 
-* `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) module name or path
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя модуля или путь
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
 
 Импорт модулей, `JSON` и локальных файлов. Модули из `node_modules`, локальные файлы и JSON —
 через относительный путь (например `./`, `./foo`, `./bar/baz`, `../foo`), разрешаемый
@@ -889,7 +891,7 @@ added: v0.3.0
 deprecated: v0.10.6
 -->
 
-> Stability: 0 - Deprecated
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -963,7 +965,7 @@ changes:
     | --- | --- |
     | v8.9.0 | Опция `paths` теперь поддерживается. |
 
-* `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The module path to resolve.
+* `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, который нужно разрешить.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `paths` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Каталоги для разрешения модуля. Если заданы, используются вместо путей по умолчанию, кроме
     [GLOBAL\_FOLDERS][GLOBAL_FOLDERS] вроде `$HOME/.node_modules` — они
@@ -981,7 +983,7 @@ changes:
 added: v8.9.0
 -->
 
-* `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The module path whose lookup paths are being retrieved.
+* `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, для которого нужно получить пути поиска.
 * Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Массив путей, просмотренных при разрешении `request`, или
@@ -1158,8 +1160,10 @@ deprecated:
   - v12.19.0
 -->
 
-> Stability: 0 - Deprecated: Please use [`require.main`](#requiremain) and
-> [`module.children`](#modulechildren) instead.
+!!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
+
+    Используйте вместо этого [`require.main`](#requiremain) и
+    [`module.children`](#modulechildren).
 
 * Тип: [`<module>`](modules.md#module) | null | undefined
 
@@ -1194,7 +1198,7 @@ added: v0.5.1
 -->
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) exported module content
+* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
 
 `module.require()` загружает модуль так, как если бы `require()` вызвали из исходного модуля.
 
@@ -1212,7 +1216,7 @@ added: v0.5.1
 * <a id="modules_module_createrequire_filename" href="module.html#modulecreaterequirefilename">`module.createRequire(filename)`</a>
 * <a id="modules_module_syncbuiltinesmexports" href="module.html#modulesyncbuiltinesmexports">`module.syncBuiltinESMExports()`</a>
 
-## Поддержка Source map v3
+## Поддержка карт исходного кода v3
 
 Раздел перенесён в
 [Модули: встроенный модуль `module`](module.md#source-map-support).
@@ -1225,7 +1229,7 @@ added: v0.5.1
   * <a id="modules_sourcemap_payload" href="module.html#sourcemappayload">`sourceMap.payload`</a>
   * <a id="modules_sourcemap_findentry_linenumber_columnnumber" href="module.html#sourcemapfindentrylineoffset-columnoffset">`sourceMap.findEntry(lineNumber, columnNumber)`</a>
 
-[Determining module system]: packages.md#determining-module-system
+[определение системы модулей]: packages.md#determining-module-system
 [ECMAScript Modules]: esm.md
 [GLOBAL_FOLDERS]: #loading-from-the-global-folders
 [`"main"`]: packages.md#main
@@ -1254,5 +1258,5 @@ added: v0.5.1
 [module namespace object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import#module_namespace_object
 [module resolution]: #all-together
 [native addons]: addons.md
-[subpath exports]: packages.md#subpath-exports
-[subpath imports]: packages.md#subpath-imports
+[экспорты подпутей]: packages.md#subpath-exports
+[импорты подпутей]: packages.md#subpath-imports

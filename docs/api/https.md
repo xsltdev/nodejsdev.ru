@@ -11,7 +11,7 @@ description: HTTPS — протокол HTTP поверх TLS/SSL; в Node.js р
 
 !!!success "Стабильность: 2 – Стабильная"
 
-    АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
+    API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
 <!-- source_link=lib/https.js -->
 
@@ -102,9 +102,9 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v24.5.0, v22.21.0 | Добавьте поддержку proxyEnv. |
-    | v24.5.0, v22.21.0 | Добавьте поддержку defaultPort и протокола. |
-    | v12.5.0 | не задавайте имя сервера автоматически, если целевой хост был указан с использованием IP-адреса. |
+    | v24.5.0, v22.21.0 | Добавлена поддержка `proxyEnv`. |
+    | v24.5.0, v22.21.0 | Добавлена поддержка `defaultPort` и `protocol`. |
+    | v12.5.0 | Имя сервера больше не задаётся автоматически, если целевой хост указан IP-адресом. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
   Может содержать те же поля, что и [`http.Agent(options)`](http.md#new-agentoptions), а также
@@ -116,7 +116,7 @@ changes:
     **По умолчанию:** имя хоста целевого сервера, если только целевой сервер
     не задан IP-адресом — тогда по умолчанию `''` (без расширения).
 
-    См. [`Session Resumption`](tls.md#session-resumption) о повторном использовании TLS-сессий.
+    См. раздел [возобновления сессии](tls.md#session-resumption) о повторном использовании TLS-сессий.
 
 #### Событие: `'keylog'`
 
@@ -819,7 +819,7 @@ statusCode: 200
 ```
 
 [`Agent`]: #class-httpsagent
-[`Session Resumption`]: tls.md#session-resumption
+[возобновления сессии]: tls.md#session-resumption
 [`URL`]: url.md#the-whatwg-url-api
 [`agent.createConnection()`]: http.md#agentcreateconnectionoptions-callback
 [`http.Agent(options)`]: http.md#new-agentoptions
