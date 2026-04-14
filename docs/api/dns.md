@@ -283,7 +283,7 @@ changes:
     и `6` соответственно. Значение `0` означает, что может быть возвращён IPv4 или IPv6.
     Если `0` используется вместе с `{ all: true }` (см. ниже), возвращаются IPv4,
     IPv6 или оба — в зависимости от резолвера ОС. **По умолчанию:** `0`.
-  * `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одна или несколько [supported `getaddrinfo` flags](#supported-getaddrinfo-flags).
+  * `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одна или несколько [поддерживаемых флагов `getaddrinfo`](#supported-getaddrinfo-flags).
     Несколько флагов можно объединить побитовым `ИЛИ`.
   * `all` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, колбэк получает все разрешённые адреса в виде
     массива. Иначе — один адрес. **По умолчанию:** `false`.
@@ -490,7 +490,7 @@ changes:
 | `'TXT'`   | текстовые записи                | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dns.resolveTxt()`](#dnsresolvetxthostname-callback)   |
 
 При ошибке `err` — объект [`Error`](errors.md#class-error), поле `err.code` — один из
-[DNS error codes][DNS error codes].
+[кодах ошибок DNS][кодах ошибок DNS].
 
 ## `dns.resolve4(hostname[, options], callback)`
 
@@ -595,7 +595,7 @@ changes:
 Аргумент `ret` у колбэка — массив объектов разных типов. У каждого объекта есть поле `type` —
 тип записи. В зависимости от `type` присутствуют дополнительные поля:
 
-| Type      | Свойства                                                                                                                                         |
+| Тип       | Свойства                                                                                                                                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `'A'`     | `address`/`ttl`                                                                                                                                  |
 | `'AAAA'`  | `address`/`ttl`                                                                                                                                  |
@@ -1001,7 +1001,7 @@ added: v0.1.16
 Выполняет обратный DNS-запрос: IPv4- или IPv6-адрес преобразуется в массив имён хостов.
 
 При ошибке `err` — объект [`Error`](errors.md#class-error), поле `err.code` — один из
-[DNS error codes][DNS error codes].
+[кодах ошибок DNS][кодах ошибок DNS].
 
 ## `dns.setDefaultResultOrder(order)`
 
@@ -1247,7 +1247,7 @@ changes:
   * `family` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство записей: `4`, `6` или `0`. Значение
     `0` — IPv4 или IPv6. С `{ all: true }` (см. ниже) могут вернуться оба семейства,
     в зависимости от резолвера ОС. **По умолчанию:** `0`.
-  * `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одна или несколько [supported `getaddrinfo` flags](#supported-getaddrinfo-flags).
+  * `hints` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Одна или несколько [поддерживаемых флагов `getaddrinfo`](#supported-getaddrinfo-flags).
     Несколько флагов объединяются побитовым `ИЛИ`.
   * `all` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, промис разрешается массивом всех адресов.
     Иначе — одним адресом. **По умолчанию:** `false`.
@@ -1383,7 +1383,7 @@ added: v10.6.0
 | `'TLSA'`  | привязки сертификатов           | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)       | [`dnsPromises.resolveTlsa()`](#dnspromisesresolvetlsahostname)  |
 | `'TXT'`   | текстовые записи                | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)    | [`dnsPromises.resolveTxt()`](#dnspromisesresolvetxthostname)   |
 
-При ошибке промис отклоняется с [`Error`](errors.md#class-error), поле `err.code` — один из [DNS error codes][DNS error codes].
+При ошибке промис отклоняется с [`Error`](errors.md#class-error), поле `err.code` — один из [кодов ошибок DNS][кодов ошибок DNS].
 
 ### `dnsPromises.resolve4(hostname[, options])`
 
@@ -1424,7 +1424,7 @@ added: v10.6.0
 По протоколу DNS разрешает все записи (запрос `ANY` или `*`).
 При успехе промис разрешается массивом объектов разных типов. У каждого есть поле `type`; дальше набор полей зависит от типа:
 
-| Type      | Свойства                                                                                                                                                 |
+| Тип       | Свойства                                                                                                                                                 |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `'A'`     | `address`/`ttl`                                                                                                                                          |
 | `'AAAA'`  | `address`/`ttl`                                                                                                                                          |
@@ -1659,7 +1659,7 @@ added: v10.6.0
 
 Обратный DNS-запрос: IPv4- или IPv6-адрес преобразуется в массив имён хостов.
 
-При ошибке промис отклоняется с [`Error`](errors.md#class-error), поле `err.code` — один из [DNS error codes][DNS error codes].
+При ошибке промис отклоняется с [`Error`](errors.md#class-error), поле `err.code` — один из [кодов ошибок DNS][кодов ошибок DNS].
 
 ### `dnsPromises.setDefaultResultOrder(order)`
 
@@ -1784,7 +1784,8 @@ API `dnsPromises` экспортирует те же коды, например 
 
 Набор конфигурации у них другой: например, не используется `/etc/hosts` так, как при lookup.
 
-[DNS error codes]: #error-codes
+[кодов ошибок DNS]: #error-codes
+[кодах ошибок DNS]: #error-codes
 [Domain Name System (DNS)]: https://en.wikipedia.org/wiki/Domain_Name_System
 [Implementation considerations section]: #implementation-considerations
 [RFC 5952]: https://tools.ietf.org/html/rfc5952#section-6
@@ -1833,5 +1834,5 @@ API `dnsPromises` экспортирует те же коды, например 
 [`dnsPromises.setServers()`]: #dnspromisessetserversservers
 [`socket.connect()`]: net.md#socketconnectoptions-connectlistener
 [`util.promisify()`]: util.md#utilpromisifyoriginal
-[supported `getaddrinfo` flags]: #supported-getaddrinfo-flags
+[поддерживаемых флагов `getaddrinfo`]: #supported-getaddrinfo-flags
 [потоках worker]: worker_threads.md

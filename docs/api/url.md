@@ -416,7 +416,7 @@ changes:
 
 Порт может быть пустой строкой; тогда фактический порт определяется схемой:
 
-| protocol | port |
+| протокол | порт |
 | -------- | ---- |
 | "ftp"    | 21   |
 | "file"   |      |
@@ -761,7 +761,7 @@ added: v22.1.0
 added: v23.8.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 API `URLPattern` сопоставляет URL или их части с шаблоном.
 
@@ -1665,9 +1665,11 @@ changes:
     | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
     | v11.0.0 | Этот API устарел. |
 
-> Stability: 3 - Legacy: предпочитайте WHATWG URL API.
+!!!warning "Стабильность: 3 - Устаревшее"
 
-### Legacy `urlObject`
+    Предпочитайте WHATWG URL API.
+
+### Устаревший `urlObject`
 
 <!-- YAML
 changes:
@@ -1893,7 +1895,9 @@ changes:
     | --- | --- |
     | v24.0.0 | Устаревание приложения. |
 
-> Stability: 0 - Deprecated: предпочитайте WHATWG URL API.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Предпочитайте WHATWG URL API.
 
 * `urlString` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка, которая будет передана в `url.parse()`, затем отформатирована.
 
@@ -1978,7 +1982,9 @@ changes:
     | v11.0.0 | API устаревших URL-адресов устарел. Используйте URL-API WHATWG. |
     | v9.0.0 | Свойство search в возвращаемом объекте URL теперь имеет значение null, если строка запроса отсутствует. |
 
-> Stability: 0 - Deprecated: предпочитайте WHATWG URL API.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Предпочитайте WHATWG URL API.
 
 * `urlString` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL для разбора.
 * `parseQueryString` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, свойство `query` всегда будет объектом
@@ -2066,7 +2072,9 @@ changes:
     | v6.5.0, v4.6.2 | Поле `port` теперь копируется правильно. |
     | v6.0.0 | Поля `auth` очищаются, теперь параметр `to` содержит имя хоста. |
 
-> Stability: 0 - Deprecated: предпочитайте WHATWG URL API.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Предпочитайте WHATWG URL API.
 
 * `from` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовый URL, если `to` относительный.
 * `to` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Целевой URL для разрешения.
@@ -2117,7 +2125,7 @@ resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 
 Например, пробел ASCII (`' '`) кодируется как `%20`. Прямой слэш ASCII (`/`) — как `%3C`.
 
-### WHATWG API
+### API WHATWG
 
 [WHATWG URL Standard][WHATWG URL Standard] задаёт более выборочный и детальный набор кодируемых
 символов, чем унаследованный API.

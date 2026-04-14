@@ -197,7 +197,7 @@ changes:
     держит его минимальным. **По умолчанию:** `'lifo'`.
   * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут сокета в миллисекундах; задаётся при создании сокета.
   * `proxyEnv` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined Переменные окружения для настройки прокси.
-    См. [встроенную поддержку прокси][Built-in Proxy Support]. **По умолчанию:** `undefined`
+    См. [встроенную поддержку прокси][встроенную поддержку прокси]. **По умолчанию:** `undefined`
     * `HTTP_PROXY` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined URL прокси для HTTP-запросов.
       Если `undefined`, для HTTP прокси не используется.
     * `HTTPS_PROXY` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined URL прокси для HTTPS-запросов.
@@ -467,13 +467,13 @@ changes:
 
 Объект с массивами сокетов, которые агент сейчас использует. Не изменяйте.
 
-## Class: `http.ClientRequest`
+## Класс: `http.ClientRequest`
 
 <!-- YAML
 added: v0.1.17
 -->
 
-* Extends: [`<http.OutgoingMessage>`](http.md)
+* Наследует: [`<http.OutgoingMessage>`](http.md)
 
 Этот объект создаётся внутри и возвращается из [`http.request()`](#httprequestoptions-callback). Это
 _текущий_ запрос, заголовок которого уже поставлен в очередь. Заголовок ещё можно
@@ -504,7 +504,7 @@ _текущий_ запрос, заголовок которого уже пос
 `Content-Length` задаётся в байтах, не в символах. Для длины тела в байтах
 используйте [`Buffer.byteLength()`](buffer.md#static-method-bufferbytelengthstring-encoding).
 
-### Event: `'abort'`
+### Событие: `'abort'`
 
 <!-- YAML
 added: v1.4.1
@@ -513,12 +513,14 @@ deprecated:
   - v16.12.0
 -->
 
-> Stability: 0 - Deprecated. Listen for the `'close'` event instead.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Вместо этого отслеживайте событие `'close'`.
 
 Генерируется, когда клиент прервал запрос. Событие только при первом вызове
 `abort()`.
 
-### Event: `'close'`
+### Событие: `'close'`
 
 <!-- YAML
 added: v0.5.4
@@ -527,7 +529,7 @@ added: v0.5.4
 Указывает, что запрос завершён или соединение оборвано преждевременно (до конца
 ответа).
 
-### Event: `'connect'`
+### Событие: `'connect'`
 
 <!-- YAML
 added: v0.7.0
@@ -659,7 +661,7 @@ added: v0.7.0
     });
     ```
 
-### Event: `'continue'`
+### Событие: `'continue'`
 
 <!-- YAML
 added: v0.3.2
@@ -669,7 +671,7 @@ added: v0.3.2
 что в запросе был заголовок `Expect: 100-continue`. Это сигнал клиенту отправить
 тело запроса.
 
-### Event: `'finish'`
+### Событие: `'finish'`
 
 <!-- YAML
 added: v0.3.6
@@ -679,7 +681,7 @@ added: v0.3.6
 часть заголовков и тела запроса передана ОС для передачи по сети. Это не значит,
 что сервер уже что-либо получил.
 
-### Event: `'information'`
+### Событие: `'information'`
 
 <!-- YAML
 added: v10.0.0
@@ -742,7 +744,7 @@ Upgrade). Обработчики получают объект с версией
 запрос/ответ (WebSocket, обновление TLS на месте, HTTP/2). Для 101 Upgrade
 слушайте событие [`'upgrade'`](#event-upgrade).
 
-### Event: `'response'`
+### Событие: `'response'`
 
 <!-- YAML
 added: v0.1.0
@@ -752,7 +754,7 @@ added: v0.1.0
 
 Генерируется при получении ответа на этот запрос. Событие возникает только один раз.
 
-### Event: `'socket'`
+### Событие: `'socket'`
 
 <!-- YAML
 added: v0.5.3
@@ -763,7 +765,7 @@ added: v0.5.3
 Обработчику гарантированно передаётся экземпляр класса [net.Socket](net.md#class-netsocket), подкласса
 [stream.Duplex](stream.md#class-streamduplex), если только пользователь не задал другой тип сокета, не [net.Socket](net.md#class-netsocket).
 
-### Event: `'timeout'`
+### Событие: `'timeout'`
 
 <!-- YAML
 added: v0.7.8
@@ -774,7 +776,7 @@ added: v0.7.8
 
 См. также [`request.setTimeout()`](#requestsettimeouttimeout-callback).
 
-### Event: `'upgrade'`
+### Событие: `'upgrade'`
 
 <!-- YAML
 added: v0.1.94
@@ -889,7 +891,9 @@ deprecated:
   - v13.14.0
 -->
 
-> Stability: 0 - Deprecated: Use [`request.destroy()`](#requestdestroyerror) instead.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`request.destroy()`](#requestdestroyerror).
 
 Помечает запрос как прерываемый. Оставшиеся данные ответа отбрасываются, сокет
 уничтожается.
@@ -915,7 +919,9 @@ changes:
     | --- | --- |
     | v11.0.0 | Свойство aborted больше не является номером временной метки. |
 
-> Stability: 0 - Deprecated. Check [`request.destroyed`](#requestdestroyed) instead.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Проверяйте [`request.destroyed`](#requestdestroyed).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -928,7 +934,9 @@ added: v0.3.0
 deprecated: v13.0.0
 -->
 
-> Stability: 0 - Deprecated. Use [`request.socket`](#requestsocket).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`request.socket`](#requestsocket).
 
 * Тип: [`<stream.Duplex>`](stream.md#class-streamduplex)
 
@@ -1029,7 +1037,9 @@ deprecated:
  - v12.16.0
 -->
 
-> Stability: 0 - Deprecated. Use [`request.writableEnded`](#requestwritableended).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`request.writableEnded`](#requestwritableended).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1523,15 +1533,15 @@ changes:
 
 Вызов `write` с пустой строкой или буфером ничего не делает и ждёт следующих данных.
 
-## Class: `http.Server`
+## Класс: `http.Server`
 
 <!-- YAML
 added: v0.1.17
 -->
 
-* Extends: [`<net.Server>`](net.md#class-netserver)
+* Наследует: [`<net.Server>`](net.md#class-netserver)
 
-### Event: `'checkContinue'`
+### Событие: `'checkContinue'`
 
 <!-- YAML
 added: v0.3.0
@@ -1549,7 +1559,7 @@ added: v0.3.0
 
 Если событие обработано, событие [`'request'`](#event-request) не генерируется.
 
-### Event: `'checkExpectation'`
+### Событие: `'checkExpectation'`
 
 <!-- YAML
 added: v5.5.0
@@ -1564,7 +1574,7 @@ added: v5.5.0
 
 Если событие обработано, событие [`'request'`](#event-request) не генерируется.
 
-### Event: `'clientError'`
+### Событие: `'clientError'`
 
 <!-- YAML
 added: v0.1.94
@@ -1663,7 +1673,7 @@ server.on('clientError', (err, socket) => {
 });
 ```
 
-### Event: `'close'`
+### Событие: `'close'`
 
 <!-- YAML
 added: v0.1.4
@@ -1671,7 +1681,7 @@ added: v0.1.4
 
 Генерируется при закрытии сервера.
 
-### Event: `'connect'`
+### Событие: `'connect'`
 
 <!-- YAML
 added: v0.7.0
@@ -1690,7 +1700,7 @@ added: v0.7.0
 После события у сокета запроса не будет слушателя `'data'` — для приёма данных
 на сервер его нужно привязать вручную.
 
-### Event: `'connection'`
+### Событие: `'connection'`
 
 <!-- YAML
 added: v0.1.0
@@ -1711,7 +1721,7 @@ added: v0.1.0
 Обработчику гарантированно передаётся экземпляр класса [net.Socket](net.md#class-netsocket), подкласса
 [stream.Duplex](stream.md#class-streamduplex), если только не задан другой тип сокета, не [net.Socket](net.md#class-netsocket).
 
-### Event: `'dropRequest'`
+### Событие: `'dropRequest'`
 
 <!-- YAML
 added:
@@ -1726,7 +1736,7 @@ added:
 сервер отбрасывает новые запросы и вместо этого генерирует `'dropRequest'`,
 затем отправляет клиенту `503`.
 
-### Event: `'request'`
+### Событие: `'request'`
 
 <!-- YAML
 added: v0.1.0
@@ -1738,7 +1748,7 @@ added: v0.1.0
 Генерируется при каждом запросе. На одном соединении может быть несколько
 запросов (HTTP Keep-Alive).
 
-### Event: `'upgrade'`
+### Событие: `'upgrade'`
 
 <!-- YAML
 added: v0.1.94
@@ -2126,17 +2136,17 @@ changes:
 
 Вызывает [`server.close()`](#serverclosecallback) и возвращает промис, выполняющийся после закрытия сервера.
 
-## Class: `http.ServerResponse`
+## Класс: `http.ServerResponse`
 
 <!-- YAML
 added: v0.1.17
 -->
 
-* Extends: [`<http.OutgoingMessage>`](http.md)
+* Наследует: [`<http.OutgoingMessage>`](http.md)
 
 Объект создаётся внутри HTTP-сервера и передаётся вторым аргументом в [`'request'`](#event-request).
 
-### Event: `'close'`
+### Событие: `'close'`
 
 <!-- YAML
 added: v0.6.7
@@ -2144,7 +2154,7 @@ added: v0.6.7
 
 Сигнализирует, что ответ завершён или соединение оборвано до завершения ответа.
 
-### Event: `'finish'`
+### Событие: `'finish'`
 
 <!-- YAML
 added: v0.3.6
@@ -2185,7 +2195,9 @@ added: v0.3.0
 deprecated: v13.0.0
 -->
 
-> Stability: 0 - Deprecated. Use [`response.socket`](#responsesocket).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`response.socket`](#responsesocket).
 
 * Тип: [`<stream.Duplex>`](stream.md#class-streamduplex)
 
@@ -2245,7 +2257,9 @@ deprecated:
  - v12.16.0
 -->
 
-> Stability: 0 - Deprecated. Use [`response.writableEnded`](#responsewritableended).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`response.writableEnded`](#responsewritableended).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2648,7 +2662,7 @@ changes:
 заголовками для этого сообщения. Необязательный `callback` вызывается после записи
 ответа.
 
-**Example**
+**Пример**
 
 ```js
 const earlyHintsLink = '</styles.css>; rel=preload; as=style';
@@ -2766,7 +2780,7 @@ added: v10.0.0
 Отправляет клиенту HTTP/1.1 `102 Processing`: можно продолжать отправку тела
 запроса.
 
-## Class: `http.IncomingMessage`
+## Класс: `http.IncomingMessage`
 
 <!-- YAML
 added: v0.1.17
@@ -2791,7 +2805,7 @@ changes:
     | v15.5.0 | Значение `destroyed` возвращает `true` после того, как входящие данные будут использованы. |
     | v13.1.0, v12.16.0 | Значение `readableHighWaterMark` отражает значение сокета. |
 
-* Extends: [`<stream.Readable>`](stream.md#streamreadable)
+* Наследует: [`<stream.Readable>`](stream.md#streamreadable)
 
 Объект `IncomingMessage` создаётся [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest)
 и передаётся первым аргументом в [`'request'`](#event-request) и [`'response'`](#event-response) соответственно.
@@ -2801,7 +2815,7 @@ changes:
 [stream.Readable](stream.md#streamreadable): он создаётся отдельно для разбора и выдачи входящих заголовков
 и тела, тогда как сокет при keep-alive может переиспользоваться.
 
-### Event: `'aborted'`
+### Событие: `'aborted'`
 
 <!-- YAML
 added: v0.3.8
@@ -2810,11 +2824,13 @@ deprecated:
   - v16.12.0
 -->
 
-> Stability: 0 - Deprecated. Listen for `'close'` event instead.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Вместо этого отслеживайте событие `'close'`.
 
 Генерируется при прерывании запроса.
 
-### Event: `'close'`
+### Событие: `'close'`
 
 <!-- YAML
 added: v0.4.2
@@ -2844,7 +2860,9 @@ deprecated:
   - v16.12.0
 -->
 
-> Stability: 0 - Deprecated. Check `message.destroyed` from [stream.Readable](stream.md#streamreadable).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Проверяйте `message.destroyed` из [stream.Readable](stream.md#streamreadable).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2886,9 +2904,11 @@ added: v0.1.90
 deprecated: v16.0.0
  -->
 
-> Stability: 0 - Deprecated. Use [`message.socket`](#messagesocket).
+!!!warning "Стабильность: 0 - Устарело"
 
-Alias for [`message.socket`](#messagesocket).
+    Используйте [`message.socket`](#messagesocket).
+
+Псевдоним для [`message.socket`](#messagesocket).
 
 ### `message.destroy([error])`
 
@@ -3232,18 +3252,18 @@ URL {
 использовании `req.headers.host` проверяйте значение: клиент может прислать
 произвольный `Host`.
 
-## Class: `http.OutgoingMessage`
+## Класс: `http.OutgoingMessage`
 
 <!-- YAML
 added: v0.1.17
 -->
 
-* Extends: [`<Stream>`](stream.md#stream)
+* Наследует: [`<Stream>`](stream.md#stream)
 
 Базовый класс для [`http.ClientRequest`](#class-httpclientrequest) и [`http.ServerResponse`](#class-httpserverresponse) —
 абстрактное исходящее сообщение в HTTP-транзакции.
 
-### Event: `'drain'`
+### Событие: `'drain'`
 
 <!-- YAML
 added: v0.3.6
@@ -3251,7 +3271,7 @@ added: v0.3.6
 
 Генерируется, когда буфер сообщения снова свободен.
 
-### Event: `'finish'`
+### Событие: `'finish'`
 
 <!-- YAML
 added: v0.1.17
@@ -3259,7 +3279,7 @@ added: v0.1.17
 
 Генерируется при успешном завершении передачи.
 
-### Event: `'prefinish'`
+### Событие: `'prefinish'`
 
 <!-- YAML
 added: v0.11.6
@@ -3324,9 +3344,11 @@ deprecated:
   - v14.17.1
 -->
 
-> Stability: 0 - Deprecated: Use [`outgoingMessage.socket`](#outgoingmessagesocket) instead.
+!!!warning "Стабильность: 0 - Устарело"
 
-Alias of [`outgoingMessage.socket`](#outgoingmessagesocket).
+    Используйте [`outgoingMessage.socket`](#outgoingmessagesocket).
+
+Псевдоним [`outgoingMessage.socket`](#outgoingmessagesocket).
 
 ### `outgoingMessage.cork()`
 
@@ -3344,7 +3366,7 @@ added:
 added: v0.3.0
 -->
 
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Optional, an error to emit with `error` event
+* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательная ошибка, которую нужно сгенерировать вместе с событием `error`
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 Уничтожает сообщение. Если сокет уже связан с сообщением и подключён, он тоже
@@ -3372,7 +3394,7 @@ changes:
     | v0.11.6 | добавьте аргумент обратного вызова. |
 
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Optional, **Default**: `utf8`
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. **По умолчанию:** `utf8`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
@@ -3669,7 +3691,7 @@ changes:
     | v0.11.6 | Был добавлен аргумент обратного вызова. |
 
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **Default**: `utf8`
+* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `utf8`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -4509,9 +4531,9 @@ added:
 Перезаписывает `http.globalAgent`, `https.globalAgent` и глобальный диспетчер
 undici; лучше вызывать до любых запросов, не в середине запросов.
 
-См. [Built-in Proxy Support][Built-in Proxy Support] о форматах URL прокси и синтаксисе `NO_PROXY`.
+См. [встроенную поддержку прокси][встроенную поддержку прокси] о форматах URL прокси и синтаксисе `NO_PROXY`.
 
-## Class: `WebSocket`
+## Класс: `WebSocket`
 
 <!-- YAML
 added:
@@ -4520,7 +4542,7 @@ added:
 
 Реализация [WebSocket](globals.md), совместимая с браузером.
 
-## Built-in Proxy Support
+## Встроенная поддержка прокси
 
 <!-- YAML
 added:
@@ -4528,7 +4550,7 @@ added:
  - v22.21.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
 При создании глобального агента, если `NODE_USE_ENV_PROXY=1` или включён
 `--use-env-proxy`, агент собирается с `proxyEnv: process.env` и прокси берётся
@@ -4578,13 +4600,13 @@ added:
 NODE_USE_ENV_PROXY=1 HTTP_PROXY=http://proxy.example.com:8080 NO_PROXY=localhost,127.0.0.1 node client.js
 ```
 
-Or the `--use-env-proxy` flag.
+Или флаг `--use-env-proxy`.
 
 ```console
 HTTP_PROXY=http://proxy.example.com:8080 NO_PROXY=localhost,127.0.0.1 node --use-env-proxy client.js
 ```
 
-To enable proxy support dynamically and globally with `process.env` (the default option of `http.setGlobalProxyFromEnv()`):
+Чтобы динамически и глобально включить поддержку прокси через `process.env` (поведение `http.setGlobalProxyFromEnv()` по умолчанию):
 
 === "CJS"
 
@@ -4628,7 +4650,7 @@ To enable proxy support dynamically and globally with `process.env` (the default
     // restore();
     ```
 
-To enable proxy support dynamically and globally with custom settings:
+Чтобы динамически и глобально включить поддержку прокси с пользовательскими настройками:
 
 === "CJS"
 
@@ -4707,7 +4729,7 @@ Alternatively, the following also works:
     const agent2 = new http.Agent({ proxyEnv: process.env });
     ```
 
-[Built-in Proxy Support]: #built-in-proxy-support
+[встроенную поддержку прокси]: #built-in-proxy-support
 [RFC 8187]: https://www.rfc-editor.org/rfc/rfc8187.txt
 [RFC 9110 Section 6.6.1]: https://www.rfc-editor.org/rfc/rfc9110#section-6.6.1
 [`'ERR_HTTP_CONTENT_LENGTH_MISMATCH'`]: errors.md#err_http_content_length_mismatch

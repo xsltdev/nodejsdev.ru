@@ -527,7 +527,7 @@ changes:
 Объект — JSON-представление `performance`. По смыслу похож на
 [`window.performance.toJSON`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/toJSON) в браузерах.
 
-#### Event: `'resourcetimingbufferfull'`
+#### Событие: `'resourcetimingbufferfull'`
 
 <!-- YAML
 added: v18.8.0
@@ -660,7 +660,7 @@ added:
   - v16.17.0
 -->
 
-* Extends: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
+* Наследует: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
 
 Представляет метки, созданные методом `Performance.mark()`.
 
@@ -695,7 +695,7 @@ added:
   - v16.17.0
 -->
 
-* Extends: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
+* Наследует: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
 
 Представляет измерения, созданные методом `Performance.measure()`.
 
@@ -730,7 +730,7 @@ changes:
 added: v19.0.0
 -->
 
-* Extends: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
+* Наследует: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
 
 _Этот класс — расширение Node.js. В веб-браузерах недоступен._
 
@@ -778,7 +778,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство Detail, если тип записи равен «gc». |
+    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство `detail`, если тип записи равен «gc». |
 
 > Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
@@ -813,7 +813,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство Detail, если тип записи равен «gc». |
+    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство `detail`, если тип записи равен «gc». |
 
 > Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
@@ -916,7 +916,7 @@ changes:
 added: v8.5.0
 -->
 
-* Extends: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
+* Наследует: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
 
 _Это свойство — расширение Node.js. В веб-браузерах недоступно._
 
@@ -1046,7 +1046,7 @@ added:
   - v16.17.0
 -->
 
-* Extends: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
+* Наследует: [`<PerformanceEntry>`](perf_hooks.md#class-performanceentry)
 
 Подробные сетевые метрики времени загрузки ресурсов приложения.
 
@@ -2488,7 +2488,7 @@ added:
     });
     ```
 
-### Measuring how long the `net.connect` (only for TCP) takes when the connection is successful
+### Измерение времени `net.connect` (только для TCP) при успешном подключении
 
 === "MJS"
 
@@ -2530,7 +2530,7 @@ added:
     });
     ```
 
-### Measuring how long the DNS takes when the request is successful
+### Измерение времени DNS при успешном запросе
 
 === "MJS"
 

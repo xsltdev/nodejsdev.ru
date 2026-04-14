@@ -87,7 +87,7 @@ Node.js может быть собран без модуля `node:crypto`. То
 ## Основной API (Core API)
 
 Core API — низкоуровневый интерфейс вокруг возможностей HTTP/2. Он _не_ рассчитан
-на совместимость с модулем [HTTP/1][HTTP/1], зато есть [Compatibility API][Compatibility API].
+на совместимость с модулем [HTTP/1][HTTP/1], зато есть [API совместимости][Compatibility API].
 
 Core API `http2` симметричнее для клиента и сервера, чем `http`: события вроде
 `'error'`, `'connect'` и `'stream'` могут испускаться и на клиенте, и на сервере.
@@ -216,7 +216,7 @@ openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' \
     req.end();
     ```
 
-### Class: `Http2Session`
+### Класс: `Http2Session` {#class-http2session}
 
 <!-- YAML
 added: v8.4.0
@@ -238,7 +238,7 @@ added: v8.4.0
 создаются экземпляром `Http2Server` при приёме нового соединения HTTP/2. На клиенте
 экземпляры `Http2Session` создаются вызовом `http2.connect()`.
 
-#### `Http2Session` and sockets
+#### `Http2Session` и сокеты {#http2session-and-sockets}
 
 Каждый экземпляр `Http2Session` при создании связан ровно с одним [`net.Socket`](net.md#class-netsocket) или
 [`tls.TLSSocket`](tls.md#class-tlstlssocket). При уничтожении `Socket` или `Http2Session` уничтожаются оба.
@@ -251,7 +251,7 @@ added: v8.4.0
 После привязки `Socket` к `Http2Session` прикладной код должен опираться
 только на API `Http2Session`.
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v8.4.0
@@ -260,7 +260,7 @@ added: v8.4.0
 Событие `'close'` генерируется после уничтожения `Http2Session`. У обработчика нет
 аргументов.
 
-#### Event: `'connect'`
+#### Событие: `'connect'`
 
 <!-- YAML
 added: v8.4.0
@@ -274,7 +274,7 @@ added: v8.4.0
 
 Прикладной код обычно не подписывается на это событие напрямую.
 
-#### Event: `'error'`
+#### Событие: `'error'`
 
 <!-- YAML
 added: v8.4.0
@@ -284,7 +284,7 @@ added: v8.4.0
 
 Событие `'error'` генерируется при ошибке обработки `Http2Session`.
 
-#### Event: `'frameError'`
+#### Событие: `'frameError'`
 
 <!-- YAML
 added: v8.4.0
@@ -302,7 +302,7 @@ added: v8.4.0
 уничтожается. Если событие не связано с потоком, `Http2Session` завершается сразу
 после `'frameError'`.
 
-#### Event: `'goaway'`
+#### Событие: `'goaway'`
 
 <!-- YAML
 added: v8.4.0
@@ -318,7 +318,7 @@ added: v8.4.0
 
 Экземпляр `Http2Session` автоматически завершается при генерации `'goaway'`.
 
-#### Event: `'localSettings'`
+#### Событие: `'localSettings'`
 
 <!-- YAML
 added: v8.4.0
@@ -340,7 +340,7 @@ session.on('localSettings', (settings) => {
 });
 ```
 
-#### Event: `'ping'`
+#### Событие: `'ping'`
 
 <!-- YAML
 added: v10.12.0
@@ -350,7 +350,7 @@ added: v10.12.0
 
 Событие `'ping'` генерируется при каждом получении кадра `PING` от подключённого пира.
 
-#### Event: `'remoteSettings'`
+#### Событие: `'remoteSettings'`
 
 <!-- YAML
 added: v8.4.0
@@ -366,7 +366,7 @@ session.on('remoteSettings', (settings) => {
 });
 ```
 
-#### Event: `'stream'`
+#### Событие: `'stream'`
 
 <!-- YAML
 added: v8.4.0
@@ -440,7 +440,7 @@ session.on('stream', (stream, headers, flags) => {
 Потоки HTTP/2 и сетевые сокеты не соответствуют друг другу 1:1; сетевая ошибка
 уничтожает каждый поток отдельно — обрабатывайте на уровне потока, как выше.
 
-#### Event: `'timeout'`
+#### Событие: `'timeout'`
 
 <!-- YAML
 added: v8.4.0
@@ -727,7 +727,7 @@ added: v8.4.0
 но ограничивает методы безопасными для HTTP/2.
 
 `destroy`, `emit`, `end`, `pause`, `read`, `resume`, `write` дают ошибку
-`ERR_HTTP2_NO_SOCKET_MANIPULATION`. См. [`Http2Session` and Sockets](#http2session-and-sockets).
+`ERR_HTTP2_NO_SOCKET_MANIPULATION`. См. [`Http2Session` и сокеты](#http2session-and-sockets).
 
 `setTimeout` вызывается на этой `Http2Session`.
 
@@ -806,7 +806,7 @@ added: v9.4.0
 
 Вызывает [`unref()`](net.md#socketunref) для базового [`net.Socket`](net.md#class-netsocket).
 
-### Class: `ServerHttp2Session`
+### Класс: `ServerHttp2Session` {#class-serverhttp2session}
 
 <!-- YAML
 added: v8.4.0
@@ -821,7 +821,7 @@ added: v9.4.0
 -->
 
 * `alt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Описание альтернативной службы по [RFC 7838][RFC 7838].
-* `originOrStream` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) URL origin (или объект с `origin`)
+* `originOrStream` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) origin URL (или объект с `origin`)
   либо числовой ID активного `Http2Stream` (`http2stream.id`).
 
 Отправляет клиенту кадр `ALTSVC` ([RFC 7838][RFC 7838]).
@@ -876,7 +876,7 @@ ASCII-строка `'https://example.org'`. Будет выброшена оши
 `origin`; тогда используется значение свойства `origin`. Значение свойства `origin`
 _должно_ быть корректно сериализованным ASCII origin.
 
-#### Specifying alternative services
+#### Указание альтернативных служб {#specifying-alternative-services}
 
 Формат параметра `alt` строго задан [RFC 7838][RFC 7838]: это ASCII-строка со списком
 «альтернативных» протоколов через запятую, связанных с конкретным хостом и портом.
@@ -936,7 +936,7 @@ added: v10.12.0
     ```
 
 Если в качестве `origin` передана строка, она разбирается как URL и из неё извлекается
-origin. Например, для HTTP URL `'https://example.org/foo/bar'` origin — ASCII-строка
+origin. Например, для URL HTTP `'https://example.org/foo/bar'` origin — ASCII-строка
 `'https://example.org'`. Будет выброшена ошибка, если строку нельзя разобрать как URL
 или из неё нельзя получить корректный origin.
 
@@ -973,7 +973,7 @@ _должно_ быть корректно сериализованным ASCII 
     });
     ```
 
-### Class: `ClientHttp2Session`
+### Класс: `ClientHttp2Session` {#class-clienthttp2session}
 
 <!-- YAML
 added: v8.4.0
@@ -981,7 +981,7 @@ added: v8.4.0
 
 * Наследует: [`<Http2Session>`](http2.md)
 
-#### Event: `'altsvc'`
+#### Событие: `'altsvc'`
 
 <!-- YAML
 added: v9.4.0
@@ -1021,7 +1021,7 @@ added: v9.4.0
     });
     ```
 
-#### Event: `'origin'`
+#### Событие: `'origin'`
 
 <!-- YAML
 added: v10.12.0
@@ -1172,7 +1172,7 @@ changes:
 * `:method` = `'GET'`
 * `:path` = `/`
 
-### Class: `Http2Stream`
+### Класс: `Http2Stream` {#class-http2stream}
 
 <!-- YAML
 added: v8.4.0
@@ -1206,9 +1206,9 @@ stream.respond({
 });
 ```
 
-#### `Http2Stream` Lifecycle
+#### Жизненный цикл `Http2Stream`
 
-##### Creation
+##### Создание
 
 На сервере экземпляры [`ServerHttp2Stream`](#class-serverhttp2stream) создаются, когда:
 
@@ -1224,7 +1224,7 @@ stream.respond({
 нужно обрабатывать `'ready'` напрямую. Готовность `Http2Stream` можно проверить по
 `http2stream.id`: если значение `undefined`, поток ещё не готов.
 
-##### Destruction
+##### Уничтожение
 
 Все экземпляры [`Http2Stream`](#class-http2stream) уничтожаются, когда:
 
@@ -1242,7 +1242,7 @@ stream.respond({
 После уничтожения `http2stream.destroyed` будет `true`, а `http2stream.rstCode` задаёт
 код ошибки `RST_STREAM`. Уничтоженный `Http2Stream` использовать нельзя.
 
-#### Event: `'aborted'`
+#### Событие: `'aborted'`
 
 <!-- YAML
 added: v8.4.0
@@ -1253,7 +1253,7 @@ added: v8.4.0
 
 Событие `'aborted'` генерируется только если сторона записи `Http2Stream` ещё не завершена.
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v8.4.0
@@ -1265,7 +1265,7 @@ added: v8.4.0
 Код ошибки HTTP/2 при закрытии потока можно получить из `http2stream.rstCode`. Если код
 не равен `NGHTTP2_NO_ERROR` (`0`), также будет событие `'error`.
 
-#### Event: `'error'`
+#### Событие: `'error'`
 
 <!-- YAML
 added: v8.4.0
@@ -1275,7 +1275,7 @@ added: v8.4.0
 
 Событие `'error'` генерируется при ошибке обработки `Http2Stream`.
 
-#### Event: `'frameError'`
+#### Событие: `'frameError'`
 
 <!-- YAML
 added: v8.4.0
@@ -1289,7 +1289,7 @@ added: v8.4.0
 число — тип кадра, и целое число — код ошибки. Экземпляр `Http2Stream` уничтожается сразу
 после `'frameError'`.
 
-#### Event: `'ready'`
+#### Событие: `'ready'`
 
 <!-- YAML
 added: v8.4.0
@@ -1298,7 +1298,7 @@ added: v8.4.0
 Событие `'ready'` генерируется, когда `Http2Stream` открыт, ему назначен `id`, и им можно
 пользоваться. У обработчика нет аргументов.
 
-#### Event: `'timeout'`
+#### Событие: `'timeout'`
 
 <!-- YAML
 added: v8.4.0
@@ -1308,7 +1308,7 @@ added: v8.4.0
 числа миллисекунд, заданного `http2stream.setTimeout()`.
 У обработчика нет аргументов.
 
-#### Event: `'trailers'`
+#### Событие: `'trailers'`
 
 <!-- YAML
 added: v8.4.0
@@ -1318,7 +1318,7 @@ added: v8.4.0
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Связанные числовые флаги
 
 Событие `'trailers'` генерируется при получении блока заголовков завершающих полей.
-В колбэк передаются [HTTP/2 Headers Object][HTTP/2 Headers Object] и флаги.
+В колбэк передаются [объект заголовков HTTP/2][HTTP/2 Headers Object] и флаги.
 
 Событие может не произойти, если `http2stream.end()` вызван до получения трейлеров и
 входящие данные не читаются и на них не подписываются.
@@ -1329,7 +1329,7 @@ stream.on('trailers', (headers, flags) => {
 });
 ```
 
-#### Event: `'wantTrailers'`
+#### Событие: `'wantTrailers'`
 
 <!-- YAML
 added: v10.0.0
@@ -1464,8 +1464,10 @@ changes:
     | --- | --- |
     | v24.2.0 | Этот метод больше не устанавливает приоритет потока. Его использование теперь вызывает предупреждение во время выполнения. |
 
-> Stability: 0 - Deprecated: support for priority signaling has been deprecated
-> in the [RFC 9113][RFC 9113] and is no longer supported in Node.js.
+!!!warning "Стабильность: 0 - Устарело"
+
+    Поддержка сигнализации приоритета объявлена устаревшей в [RFC 9113][RFC 9113]
+    и больше не поддерживается в Node.js.
 
 Пустой метод, оставлен для обратной совместимости.
 
@@ -1655,7 +1657,7 @@ added: v10.0.0
 По спецификации HTTP/1 в трейлерах не допускаются псевдозаголовки HTTP/2 (например
 `':method'`, `':path'` и т.д.).
 
-### Class: `ClientHttp2Stream`
+### Класс: `ClientHttp2Stream` {#class-clienthttp2stream}
 
 <!-- YAML
 added: v8.4.0
@@ -1667,7 +1669,7 @@ added: v8.4.0
 На клиенте экземпляры `Http2Stream` дают события вроде `'response'` и `'push'`, актуальные
 только для клиента.
 
-#### Event: `'continue'`
+#### Событие: `'continue'`
 
 <!-- YAML
 added: v8.5.0
@@ -1676,7 +1678,7 @@ added: v8.5.0
 Генерируется, когда сервер отправляет статус `100 Continue`, обычно из-за заголовка
 `Expect: 100-continue` в запросе — сигнал клиенту отправить тело запроса.
 
-#### Event: `'headers'`
+#### Событие: `'headers'`
 
 <!-- YAML
 added: v8.4.0
@@ -1687,8 +1689,8 @@ added: v8.4.0
 * `rawHeaders` [`<HTTP/2 Raw Headers>`](#raw-headers)
 
 Событие `'headers'` генерируется при получении дополнительного блока заголовков для потока,
-например информационных `1xx`. В колбэк передаются [HTTP/2 Headers Object][HTTP/2 Headers Object], флаги
-и сырые заголовки (см. [HTTP/2 Raw Headers][HTTP/2 Raw Headers]).
+например информационных `1xx`. В колбэк передаются [объект заголовков HTTP/2][HTTP/2 Headers Object], флаги
+и сырые заголовки (см. [сырые заголовки HTTP/2][HTTP/2 Raw Headers]).
 
 ```js
 stream.on('headers', (headers, flags) => {
@@ -1696,7 +1698,7 @@ stream.on('headers', (headers, flags) => {
 });
 ```
 
-#### Event: `'push'`
+#### Событие: `'push'`
 
 <!-- YAML
 added: v8.4.0
@@ -1706,7 +1708,7 @@ added: v8.4.0
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Событие `'push'` генерируется при получении заголовков ответа для потока Server Push.
-В колбэк передаются [HTTP/2 Headers Object][HTTP/2 Headers Object] и связанные флаги.
+В колбэк передаются [объект заголовков HTTP/2][HTTP/2 Headers Object] и связанные флаги.
 
 ```js
 stream.on('push', (headers, flags) => {
@@ -1714,7 +1716,7 @@ stream.on('push', (headers, flags) => {
 });
 ```
 
-#### Event: `'response'`
+#### Событие: `'response'`
 
 <!-- YAML
 added: v8.4.0
@@ -1726,7 +1728,7 @@ added: v8.4.0
 
 Событие `'response'` генерируется при получении от подключённого HTTP/2-сервера кадра ответа
 `HEADERS` для этого потока. Обработчик вызывается с тремя аргументами: объект с
-[HTTP/2 Headers Object][HTTP/2 Headers Object], флаги и сырые заголовки (см. [HTTP/2 Raw Headers][HTTP/2 Raw Headers]).
+[объект заголовков HTTP/2][HTTP/2 Headers Object], флаги и сырые заголовки (см. [сырые заголовки HTTP/2][HTTP/2 Raw Headers]).
 
 === "MJS"
 
@@ -1750,7 +1752,7 @@ added: v8.4.0
     });
     ```
 
-### Class: `ServerHttp2Stream`
+### Класс: `ServerHttp2Stream` {#class-serverhttp2stream}
 
 <!-- YAML
 added: v8.4.0
@@ -2306,7 +2308,7 @@ changes:
     });
     ```
 
-### Class: `Http2Server`
+### Класс: `Http2Server` {#class-http2server}
 
 <!-- YAML
 added: v8.4.0
@@ -2317,7 +2319,7 @@ added: v8.4.0
 Экземпляры `Http2Server` создаются функцией `http2.createServer()`. Класс `Http2Server`
 не экспортируется модулем `node:http2` напрямую.
 
-#### Event: `'checkContinue'`
+#### Событие: `'checkContinue'`
 
 <!-- YAML
 added: v8.5.0
@@ -2336,7 +2338,7 @@ added: v8.5.0
 
 Если событие обработано, [`'request'`](#event-request) для этого запроса не генерируется.
 
-#### Event: `'connection'`
+#### Событие: `'connection'`
 
 <!-- YAML
 added: v8.4.0
@@ -2350,7 +2352,7 @@ added: v8.4.0
 Его также можно явно сгенерировать, чтобы подставить соединение в HTTP-сервер; тогда
 можно передать любой поток [`Duplex`](stream.md#class-streamduplex).
 
-#### Event: `'request'`
+#### Событие: `'request'`
 
 <!-- YAML
 added: v8.4.0
@@ -2359,9 +2361,9 @@ added: v8.4.0
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
 
-Генерируется при каждом запросе. В одной сессии может быть несколько запросов. См. [Compatibility API][Compatibility API].
+Генерируется при каждом запросе. В одной сессии может быть несколько запросов. См. [API совместимости][Compatibility API].
 
-#### Event: `'session'`
+#### Событие: `'session'`
 
 <!-- YAML
 added: v8.4.0
@@ -2371,7 +2373,7 @@ added: v8.4.0
 
 Событие `'session'` генерируется при создании новой `Http2Session` объектом `Http2Server`.
 
-#### Event: `'sessionError'`
+#### Событие: `'sessionError'`
 
 <!-- YAML
 added: v8.4.0
@@ -2382,7 +2384,7 @@ added: v8.4.0
 
 Событие `'sessionError'` генерируется при событии `'error'` у `Http2Session`, связанной с `Http2Server`.
 
-#### Event: `'stream'`
+#### Событие: `'stream'`
 
 <!-- YAML
 added: v8.4.0
@@ -2447,7 +2449,7 @@ added: v8.4.0
     });
     ```
 
-#### Event: `'timeout'`
+#### Событие: `'timeout'`
 
 <!-- YAML
 added: v8.4.0
@@ -2582,7 +2584,7 @@ added:
 
 Выбрасывает `ERR_INVALID_ARG_TYPE` при недопустимом аргументе `settings`.
 
-### Class: `Http2SecureServer`
+### Класс: `Http2SecureServer` {#class-http2secureserver}
 
 <!-- YAML
 added: v8.4.0
@@ -2593,7 +2595,7 @@ added: v8.4.0
 Экземпляры `Http2SecureServer` создаются функцией `http2.createSecureServer()`. Класс
 `Http2SecureServer` не экспортируется модулем `node:http2` напрямую.
 
-#### Event: `'checkContinue'`
+#### Событие: `'checkContinue'`
 
 <!-- YAML
 added: v8.5.0
@@ -2610,7 +2612,7 @@ added: v8.5.0
 
 Если событие обработано, [`'request'`](#event-request) для этого запроса не генерируется.
 
-#### Event: `'connection'`
+#### Событие: `'connection'`
 
 <!-- YAML
 added: v8.4.0
@@ -2623,7 +2625,7 @@ added: v8.4.0
 
 Его можно явно сгенерировать для подстановки соединения; допускается любой [`Duplex`](stream.md#class-streamduplex).
 
-#### Event: `'request'`
+#### Событие: `'request'`
 
 <!-- YAML
 added: v8.4.0
@@ -2632,9 +2634,9 @@ added: v8.4.0
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
 
-Генерируется при каждом запросе. В сессии может быть несколько запросов. См. [Compatibility API][Compatibility API].
+Генерируется при каждом запросе. В сессии может быть несколько запросов. См. [API совместимости][Compatibility API].
 
-#### Event: `'session'`
+#### Событие: `'session'`
 
 <!-- YAML
 added: v8.4.0
@@ -2644,7 +2646,7 @@ added: v8.4.0
 
 Событие `'session'` при создании новой `Http2Session` объектом `Http2SecureServer`.
 
-#### Event: `'sessionError'`
+#### Событие: `'sessionError'`
 
 <!-- YAML
 added: v8.4.0
@@ -2655,7 +2657,7 @@ added: v8.4.0
 
 Событие `'sessionError'` при `'error'` у `Http2Session`, связанной с `Http2SecureServer`.
 
-#### Event: `'stream'`
+#### Событие: `'stream'`
 
 <!-- YAML
 added: v8.4.0
@@ -2724,7 +2726,7 @@ added: v8.4.0
     });
     ```
 
-#### Event: `'timeout'`
+#### Событие: `'timeout'`
 
 <!-- YAML
 added: v8.4.0
@@ -2734,7 +2736,7 @@ added: v8.4.0
 миллисекунд, заданного `http2secureServer.setTimeout()`.
 **По умолчанию:** 2 минуты.
 
-#### Event: `'unknownProtocol'`
+#### Событие: `'unknownProtocol'`
 
 <!-- YAML
 added: v8.4.0
@@ -2765,7 +2767,7 @@ changes:
 клиент отправляет ALPN без HTTP/2 (или без HTTP/1.1 при `allowHTTP1` равном `true`), TLS
 handshake завершается ошибкой, защищённое соединение не устанавливается.
 
-См. [Compatibility API][Compatibility API].
+См. [API совместимости][Compatibility API].
 
 #### `server.close([callback])`
 
@@ -3000,7 +3002,7 @@ changes:
     которые по определению однозначны; при нескольких значениях — ошибка.
     **По умолчанию:** `true`.
   * `...options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любые опции [`net.createServer()`](net.md#netcreateserveroptions-connectionlistener).
-* `onRequestHandler` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [Compatibility API][Compatibility API]
+* `onRequestHandler` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [API совместимости][Compatibility API]
 * Возвращает: [`<Http2Server>`](http2.md)
 
 Возвращает экземпляр `net.Server`, который создаёт и управляет `Http2Session`.
@@ -3161,7 +3163,7 @@ changes:
       **По умолчанию:** `http.ServerResponse`.
     * `keepAliveTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) См. `http2.createServer()`.
       **По умолчанию:** `5000`.
-* `onRequestHandler` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [Compatibility API][Compatibility API]
+* `onRequestHandler` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [API совместимости][Compatibility API]
 * Возвращает: [`<Http2SecureServer>`](http2.md)
 
 Возвращает экземпляр `tls.Server`, который создаёт и управляет `Http2Session`.
@@ -3325,24 +3327,24 @@ changes:
 added: v8.4.0
 -->
 
-#### Error codes for `RST_STREAM` and `GOAWAY`
+#### Коды ошибок для `RST_STREAM` и `GOAWAY`
 
-| Value  | Name                | Constant                                      |
-| ------ | ------------------- | --------------------------------------------- |
-| `0x00` | No Error            | `http2.constants.NGHTTP2_NO_ERROR`            |
-| `0x01` | Protocol Error      | `http2.constants.NGHTTP2_PROTOCOL_ERROR`      |
-| `0x02` | Internal Error      | `http2.constants.NGHTTP2_INTERNAL_ERROR`      |
-| `0x03` | Flow Control Error  | `http2.constants.NGHTTP2_FLOW_CONTROL_ERROR`  |
-| `0x04` | Settings Timeout    | `http2.constants.NGHTTP2_SETTINGS_TIMEOUT`    |
-| `0x05` | Stream Closed       | `http2.constants.NGHTTP2_STREAM_CLOSED`       |
-| `0x06` | Frame Size Error    | `http2.constants.NGHTTP2_FRAME_SIZE_ERROR`    |
-| `0x07` | Refused Stream      | `http2.constants.NGHTTP2_REFUSED_STREAM`      |
-| `0x08` | Cancel              | `http2.constants.NGHTTP2_CANCEL`              |
-| `0x09` | Compression Error   | `http2.constants.NGHTTP2_COMPRESSION_ERROR`   |
-| `0x0a` | Connect Error       | `http2.constants.NGHTTP2_CONNECT_ERROR`       |
-| `0x0b` | Enhance Your Calm   | `http2.constants.NGHTTP2_ENHANCE_YOUR_CALM`   |
-| `0x0c` | Inadequate Security | `http2.constants.NGHTTP2_INADEQUATE_SECURITY` |
-| `0x0d` | HTTP/1.1 Required   | `http2.constants.NGHTTP2_HTTP_1_1_REQUIRED`   |
+| Значение | Имя                         | Константа                                     |
+| -------- | --------------------------- | --------------------------------------------- |
+| `0x00`   | Нет ошибки                  | `http2.constants.NGHTTP2_NO_ERROR`            |
+| `0x01`   | Ошибка протокола            | `http2.constants.NGHTTP2_PROTOCOL_ERROR`      |
+| `0x02`   | Внутренняя ошибка           | `http2.constants.NGHTTP2_INTERNAL_ERROR`      |
+| `0x03`   | Ошибка управления потоком   | `http2.constants.NGHTTP2_FLOW_CONTROL_ERROR`  |
+| `0x04`   | Тайм-аут настроек           | `http2.constants.NGHTTP2_SETTINGS_TIMEOUT`    |
+| `0x05`   | Поток закрыт                | `http2.constants.NGHTTP2_STREAM_CLOSED`       |
+| `0x06`   | Ошибка размера кадра        | `http2.constants.NGHTTP2_FRAME_SIZE_ERROR`    |
+| `0x07`   | Поток отклонён              | `http2.constants.NGHTTP2_REFUSED_STREAM`      |
+| `0x08`   | Отмена                      | `http2.constants.NGHTTP2_CANCEL`              |
+| `0x09`   | Ошибка сжатия               | `http2.constants.NGHTTP2_COMPRESSION_ERROR`   |
+| `0x0a`   | Ошибка CONNECT              | `http2.constants.NGHTTP2_CONNECT_ERROR`       |
+| `0x0b`   | Не нагнетайте               | `http2.constants.NGHTTP2_ENHANCE_YOUR_CALM`   |
+| `0x0c`   | Недостаточная безопасность  | `http2.constants.NGHTTP2_INADEQUATE_SECURITY` |
+| `0x0d`   | Требуется HTTP/1.1          | `http2.constants.NGHTTP2_HTTP_1_1_REQUIRED`   |
 
 ### `http2.getDefaultSettings()`
 
@@ -3398,7 +3400,7 @@ added: v8.4.0
 * `buf` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Упакованные настройки.
 * Возвращает: [`<HTTP/2 Settings Object>`](#settings-object)
 
-Возвращает [HTTP/2 Settings Object][HTTP/2 Settings Object] с разобранными настройками из `Buffer`,
+Возвращает [объект настроек HTTP/2][HTTP/2 Settings Object] с разобранными настройками из `Buffer`,
 как у `http2.getPackedSettings()`.
 
 ### `http2.performServerHandshake(socket[, options])`
@@ -3427,9 +3429,9 @@ added:
 
 Этот символ можно задать свойством объекта заголовков HTTP/2 со значением-массивом —
 список имён заголовков, считающихся чувствительными.
-Подробнее см. [Sensitive headers][Sensitive headers].
+Подробнее см. [чувствительные заголовки][Sensitive headers].
 
-### Headers object
+### Объект заголовков {#headers-object}
 
 Заголовки задаются собственными свойствами объектов JavaScript. Ключи при сериализации
 приводятся к нижнему регистру. Значения — строки (иначе приводятся к строкам) или массив
@@ -3486,7 +3488,7 @@ stream.respond(headers);
     });
     ```
 
-#### Raw headers
+#### Сырые заголовки {#raw-headers}
 
 В некоторых API заголовки можно передавать или получать плоским массивом, сохраняя порядок
 и дубликаты ключей, как в сырой передаче.
@@ -3507,7 +3509,7 @@ const rawHeaders = [
 stream.respond(rawHeaders);
 ```
 
-#### Sensitive headers
+#### Чувствительные заголовки {#sensitive-headers}
 
 Заголовки HTTP/2 можно пометить как чувствительные: тогда алгоритм сжатия заголовков никогда
 не индексирует их. Так поступают для значений с низкой энтропией, которые ценны для атакующего,
@@ -3536,7 +3538,7 @@ stream.respond(headers);
 `rawHeadersArray[http2.sensitiveHeaders] = ['cookie']`, а не отдельной парой ключ–значение
 внутри массива.
 
-### Settings object
+### Объект настроек {#settings-object}
 
 <!-- YAML
 added: v8.4.0
@@ -3596,7 +3598,7 @@ API `http2.getDefaultSettings()`, `http2.getPackedSettings()`,
 
 Любые прочие свойства объекта настроек игнорируются.
 
-### Error handling
+### Обработка ошибок
 
 При использовании `node:http2` возможны разные ошибки:
 
@@ -3613,7 +3615,7 @@ API `http2.getDefaultSettings()`, `http2.getPackedSettings()`,
 Ошибки протокола — нарушение ограничений HTTP/2. Сообщаются `throw` или `'error'` на
 `Http2Stream`, `Http2Session` или HTTP/2-сервере.
 
-### Invalid character handling in header names and values
+### Обработка недопустимых символов в именах и значениях заголовков
 
 Реализация HTTP/2 строже относится к недопустимым символам в именах и значениях заголовков,
 чем HTTP/1.
@@ -3629,7 +3631,7 @@ API `http2.getDefaultSettings()`, `http2.getPackedSettings()`,
 Значения допускают больше свободы, но _не должны_ содержать перевод строки или возврат каретки
 и _должны_ укладываться в US-ASCII по требованиям HTTP.
 
-### Push streams on the client
+### Push-потоки на клиенте
 
 Чтобы принимать push-потоки на клиенте, подпишитесь на событие `'stream'` у `ClientHttp2Session`:
 
@@ -3667,7 +3669,7 @@ API `http2.getDefaultSettings()`, `http2.getPackedSettings()`,
     const req = client.request({ ':path': '/' });
     ```
 
-### Supporting the `CONNECT` method
+### Поддержка метода `CONNECT` {#supporting-the-connect-method}
 
 Метод `CONNECT` позволяет использовать HTTP/2-сервер как прокси для TCP/IP-соединений.
 
@@ -3821,7 +3823,7 @@ HTTP/2 CONNECT-клиент:
     req.end('Jane');
     ```
 
-### The extended `CONNECT` protocol
+### Расширенный протокол `CONNECT` {#the-extended-connect-protocol}
 
 [RFC 8441][RFC 8441] описывает расширение «Extended CONNECT Protocol» для HTTP/2: туннель
 через `Http2Stream` с методом `CONNECT` для других протоколов (например WebSocket).
@@ -3873,13 +3875,13 @@ HTTP/2-серверы включают Extended CONNECT настройкой `en
     });
     ```
 
-## Compatibility API
+## API совместимости {#compatibility-api}
 
-Compatibility API даёт опыт, близкий к HTTP/1, при работе с HTTP/2, чтобы писать приложения
+API совместимости даёт опыт, близкий к HTTP/1, при работе с HTTP/2, чтобы писать приложения
 и для [HTTP/1][HTTP/1], и для HTTP/2. Охватывается только **публичный API** [HTTP/1][HTTP/1].
 Внутренние методы и состояние многих модулей _не поддерживаются_ — реализация другая.
 
-Пример HTTP/2-сервера через compatibility API:
+Пример HTTP/2-сервера через API совместимости:
 
 === "MJS"
 
@@ -3905,14 +3907,14 @@ Compatibility API даёт опыт, близкий к HTTP/1, при работ
     });
     ```
 
-Смешанный сервер [HTTPS][HTTPS] и HTTP/2 см. в разделе [ALPN negotiation][ALPN negotiation].
+О смешанном сервере [HTTPS][HTTPS] и HTTP/2 см. в разделе [согласования ALPN][ALPN negotiation].
 Обновление с не-TLS HTTP/1 не поддерживается.
 
-Compatibility API состоит из [`Http2ServerRequest`](#class-http2http2serverrequest) и
+API совместимости состоит из [`Http2ServerRequest`](#class-http2http2serverrequest) и
 [`Http2ServerResponse`](#class-http2http2serverresponse). Совместимость с HTTP/1 не скрывает различий протоколов;
 например текстовое пояснение к коду статуса игнорируется.
 
-### ALPN negotiation
+### Согласование ALPN {#alpn-negotiation}
 
 ALPN позволяет обслуживать и [HTTPS][HTTPS], и HTTP/2 на одном сокете. Объекты `req` и `res`
 могут быть HTTP/1 или HTTP/2; приложение **должно** опираться только на публичный API
@@ -3974,7 +3976,7 @@ ALPN позволяет обслуживать и [HTTPS][HTTPS], и HTTP/2 на
 
 Событие `'request'` ведёт себя одинаково и для [HTTPS][HTTPS], и для HTTP/2.
 
-### Class: `http2.Http2ServerRequest`
+### Класс: `http2.Http2ServerRequest` {#class-http2http2serverrequest}
 
 <!-- YAML
 added: v8.4.0
@@ -3986,7 +3988,7 @@ added: v8.4.0
 [`http2.SecureServer`](#class-http2secureserver) и передаётся первым аргументом в
 [`'request'`](#event-request). Даёт доступ к состоянию запроса, заголовкам и данным.
 
-#### Event: `'aborted'`
+#### Событие: `'aborted'`
 
 <!-- YAML
 added: v8.4.0
@@ -3996,7 +3998,7 @@ added: v8.4.0
 
 Генерируется только если сторона записи `Http2ServerRequest` ещё не завершена.
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v8.4.0
@@ -4043,7 +4045,9 @@ added: v8.4.0
 deprecated: v13.0.0
 -->
 
-> Stability: 0 - Deprecated. Use [`request.socket`](#requestsocket).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`request.socket`](#requestsocket).
 
 * Тип: [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
@@ -4084,7 +4088,7 @@ added: v8.4.0
 console.log(request.headers);
 ```
 
-См. [HTTP/2 Headers Object][HTTP/2 Headers Object].
+См. [объект заголовков HTTP/2][HTTP/2 Headers Object].
 
 В HTTP/2 путь, хост, протокол и метод задаются особыми заголовками с префиксом `:`
 (например `':path'`). Они попадают в `request.headers`; их нельзя менять бездумно — возможны
@@ -4237,7 +4241,7 @@ GET /status?name=ryan HTTP/1.1
 Accept: text/plain
 ```
 
-Then `request.url` will be:
+Тогда `request.url` будет таким:
 
 <!-- eslint-disable @stylistic/js/semi -->
 
@@ -4266,7 +4270,7 @@ URL {
 }
 ```
 
-### Class: `http2.Http2ServerResponse`
+### Класс: `http2.Http2ServerResponse` {#class-http2http2serverresponse}
 
 <!-- YAML
 added: v8.4.0
@@ -4277,7 +4281,7 @@ added: v8.4.0
 Создаётся HTTP-сервером внутри, не пользователем. Передаётся вторым аргументом в
 [`'request'`](#event-request).
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v8.4.0
@@ -4285,7 +4289,7 @@ added: v8.4.0
 
 Базовый [`Http2Stream`](#class-http2stream) завершён до вызова [`response.end()`](#responseenddata-encoding-callback) или до сброса буфера.
 
-#### Event: `'finish'`
+#### Событие: `'finish'`
 
 <!-- YAML
 added: v8.4.0
@@ -4344,7 +4348,9 @@ added: v8.4.0
 deprecated: v13.0.0
 -->
 
-> Stability: 0 - Deprecated. Use [`response.socket`](#responsesocket).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`response.socket`](#responsesocket).
 
 * Тип: [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
@@ -4421,7 +4427,9 @@ deprecated:
  - v12.16.0
 -->
 
-> Stability: 0 - Deprecated. Use [`response.writableEnded`](#responsewritableended).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Используйте [`response.writableEnded`](#responsewritableended).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -4822,7 +4830,7 @@ const server = http2.createServer((req, res) => {
 
 Недопустимые символы в имени или значении заголовка — [`TypeError`](errors.md#class-typeerror).
 
-## Collecting HTTP/2 performance metrics
+## Сбор метрик производительности HTTP/2
 
 API [Performance Observer][Performance Observer] позволяет собирать базовые метрики для каждой `Http2Session` и
 `Http2Stream`.
@@ -4886,13 +4894,13 @@ API [Performance Observer][Performance Observer] позволяет собира
 * `streamCount` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число обработанных `Http2Stream` у `Http2Session`.
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'server'` или `'client'` — тип `Http2Session`.
 
-## Note on `:authority` and `host`
+## Примечание о `:authority` и `host`
 
 В HTTP/2 в запросе должен быть псевдозаголовок `:authority` или заголовок `host`. При прямой
 сборке HTTP/2 предпочтительнее `:authority`; при переводе с HTTP/1 (например в прокси) — `host`.
 
-Compatibility API подставляет `host`, если нет `:authority`. См. [`request.authority`](#requestauthority).
-Без compatibility API (или при прямой работе с `req.headers`) запасной логикой занимаетесь сами.
+API совместимости подставляет `host`, если нет `:authority`. См. [`request.authority`](#requestauthority).
+Без API совместимости (или при прямой работе с `req.headers`) запасной логикой занимаетесь сами.
 
 [ALPN Protocol ID]: https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
 [ALPN negotiation]: #alpn-negotiation

@@ -1206,7 +1206,7 @@ changes:
 
 Реализация соответствует [browser `MessagePort`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort).
 
-### Event: `'close'`
+### Событие: `'close'`
 
 <!-- YAML
 added: v10.5.0
@@ -1249,7 +1249,7 @@ added: v10.5.0
     port1.close();
     ```
 
-### Event: `'message'`
+### Событие: `'message'`
 
 <!-- YAML
 added: v10.5.0
@@ -1263,7 +1263,7 @@ added: v10.5.0
 Слушатели получают клон параметра `value`, как в
 `postMessage()`, без дополнительных аргументов.
 
-### Event: `'messageerror'`
+### Событие: `'messageerror'`
 
 <!-- YAML
 added:
@@ -1809,7 +1809,7 @@ changes:
       * FreeBSD и OpenBSD: ограничено `MAXCOMLEN`
         **По умолчанию:** `'WorkerThread'`.
 
-### Event: `'error'`
+### Событие: `'error'`
 
 <!-- YAML
 added: v10.5.0
@@ -1820,7 +1820,7 @@ added: v10.5.0
 Событие `'error'` генерируется, если в потоке worker выброшено необработанное
 исключение. В этом случае worker завершается.
 
-### Event: `'exit'`
+### Событие: `'exit'`
 
 <!-- YAML
 added: v10.5.0
@@ -1834,7 +1834,7 @@ added: v10.5.0
 
 Это последнее событие, которое генерирует любой экземпляр `Worker`.
 
-### Event: `'message'`
+### Событие: `'message'`
 
 <!-- YAML
 added: v10.5.0
@@ -1849,7 +1849,7 @@ added: v10.5.0
 Все сообщения, отправленные из потока worker, доставляются до генерации
 события [`'exit'`](#event-exit) на объекте `Worker`.
 
-### Event: `'messageerror'`
+### Событие: `'messageerror'`
 
 <!-- YAML
 added:
@@ -1861,7 +1861,7 @@ added:
 
 Событие `'messageerror'` генерируется при ошибке десериализации сообщения.
 
-### Event: `'online'`
+### Событие: `'online'`
 
 <!-- YAML
 added: v10.5.0

@@ -522,7 +522,7 @@ added:
  - v12.16.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Эта возможность доступна только при включённом флаге командной строки
 `--experimental-vm-modules`.
@@ -893,7 +893,7 @@ changes:
 added: v9.6.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Эта возможность доступна только при включённом флаге командной строки
 `--experimental-vm-modules`.
@@ -1064,7 +1064,9 @@ changes:
     | --- | --- |
     | v24.4.0, v22.20.0 | Это устарело в пользу `sourceTextModule.moduleRequests`. |
 
-> Stability: 0 - Deprecated: вместо этого используйте [`sourceTextModule.moduleRequests`](#sourcetextmodulemodulerequests).
+!!!warning "Стабильность: 0 - Устарело"
+
+    Вместо этого используйте [`sourceTextModule.moduleRequests`](#sourcetextmodulemodulerequests).
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1241,7 +1243,7 @@ added:
  - v12.16.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Эта возможность доступна только при включённом флаге командной строки
 `--experimental-vm-modules`.
@@ -1486,7 +1488,7 @@ added:
   - v20.12.0
 -->
 
-> Stability: 1.1 - Active development
+!!!warning "Стабильность: 1.1 - Активная разработка"
 
 Константа для опции `importModuleDynamically` у
 `vm.Script` и `vm.compileFunction()`: Node.js использует стандартный
@@ -1644,7 +1646,7 @@ added: v0.11.7
 added: v13.10.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
 Измеряет память, известную V8 и используемую всеми контекстами текущего
 изолята V8, либо основным контекстом.

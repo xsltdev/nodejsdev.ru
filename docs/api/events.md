@@ -1576,7 +1576,7 @@ changes:
     // Prints: ok boom
     ```
 
-An [AbortSignal](globals.md#abortsignal) can be used to cancel waiting for the event:
+[AbortSignal](globals.md#abortsignal) можно использовать, чтобы отменить ожидание события:
 
 === "MJS"
 
@@ -2407,7 +2407,9 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-> Stability: 3 - Legacy: Use [`event.stopPropagation()`](#eventstoppropagation) instead.
+!!!warning "Стабильность: 3 - Устаревшее"
+
+    Используйте [`event.stopPropagation()`](#eventstoppropagation).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -2479,8 +2481,10 @@ added: v14.5.0
 added: v19.5.0
 -->
 
-> Stability: 3 - Legacy: The WHATWG spec considers it deprecated and users
-> shouldn't use it at all.
+!!!warning "Стабильность: 3 - Устаревшее"
+
+    Спецификация WHATWG считает это устаревшим, и пользователям
+    вообще не следует это использовать.
 
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `bubbles` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -2514,7 +2518,9 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-> Stability: 3 - Legacy: Use [`event.defaultPrevented`](#eventdefaultprevented) instead.
+!!!warning "Стабильность: 3 - Устаревшее"
+
+    Используйте [`event.defaultPrevented`](#eventdefaultprevented).
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если событие не отменено.
 
@@ -2527,7 +2533,9 @@ added: v14.5.0
 added: v14.5.0
 -->
 
-> Stability: 3 - Legacy: Use [`event.target`](#eventtarget) instead.
+!!!warning "Стабильность: 3 - Устаревшее"
+
+    Используйте [`event.target`](#eventtarget).
 
 * Тип: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget) `EventTarget`, диспетчеризующий событие.
 
@@ -2705,7 +2713,7 @@ changes:
     | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
     | v19.0.0 | Флаг CLI `--experimental-global-customevent` больше не используется. |
 
-* Extends: [`<Event>`](globals.md)
+* Наследует: [`<Event>`](globals.md)
 
 Объект `CustomEvent` — адаптация [`CustomEvent` Web API](https://dom.spec.whatwg.org/#customevent). Экземпляры создаются
 внутри Node.js.

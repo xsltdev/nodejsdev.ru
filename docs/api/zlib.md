@@ -771,7 +771,7 @@ const stream = zlib.createZstdCompress({
 });
 ```
 
-#### Pledged Source Size
+#### Заявленный размер исходных данных
 
 Ожидаемый полный размер несжатого входа можно задать через `opts.pledgedSrcSize`. Если в конце входа размер не совпадает, сжатие завершится с кодом `ZSTD_error_srcSize_wrong`.
 
@@ -833,7 +833,7 @@ changes:
 * `maxOutputLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ограничивает размер выхода у
   [вспомогательных методов][convenience methods]. **По умолчанию:** [`buffer.kMaxLength`](buffer.md#bufferkmaxlength)
 
-Подробнее см. документацию [`deflateInit2` and `inflateInit2`](https://zlib.net/manual.html#Advanced).
+Подробнее см. документацию [`deflateInit2` и `inflateInit2`](https://zlib.net/manual.html#Advanced).
 
 ## Класс: `BrotliOptions`
 
@@ -1930,7 +1930,7 @@ added:
 [`ZstdCompress`]: #class-zlibzstdcompress
 [`ZstdDecompress`]: #class-zlibzstddecompress
 [`buffer.kMaxLength`]: buffer.md#bufferkmaxlength
-[`deflateInit2` and `inflateInit2`]: https://zlib.net/manual.html#Advanced
+[`deflateInit2` и `inflateInit2`]: https://zlib.net/manual.html#Advanced
 [`stream.Transform`]: stream.md#class-streamtransform
 [convenience methods]: #convenience-methods
 [zlib documentation]: https://zlib.net/manual.html#Constants

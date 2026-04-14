@@ -1526,8 +1526,8 @@ added: v25.6.0
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Текущее значение TOS.
 
-Возвращает текущее поле Type of Service (TOS) для IPv4-пакетов или Traffic
-Class для IPv6-пакетов этого сокета.
+Возвращает текущее поле Type of Service (TOS) для IPv4-пакетов или Traffic Class
+для IPv6-пакетов этого сокета.
 
 `setTypeOfService()` можно вызвать до подключения; значение
 кэшируется и применяется при установлении соединения.
