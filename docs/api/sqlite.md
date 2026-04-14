@@ -1461,55 +1461,23 @@ added:
 при вызове [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
 [Constants Passed To The Conflict Handler][Constants Passed To The Conflict Handler] в документации SQLite.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_DATA</code></td>
-    <td>Обработчик конфликтов вызывается с этой константой при обработке DELETE или UPDATE, если строка с нужным PRIMARY KEY есть в базе, но одно или несколько не ключевых полей, затронутых обновлением, не содержат ожидаемых «старых» значений.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_NOTFOUND</code></td>
-    <td>Обработчик вызывается с этой константой при DELETE или UPDATE, если строки с нужным PRIMARY KEY в базе нет.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_CONFLICT</code></td>
-    <td>Константа передаётся при INSERT, если операция привела бы к дубликату первичного ключа.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_CONSTRAINT</code></td>
-    <td>Если включена обработка внешних ключей и после применения changeset в базе остаются нарушения внешних ключей, обработчик вызывается с этой константой ровно один раз до фиксации changeset. Если обработчик вернёт <code>SQLITE_CHANGESET_OMIT</code>, фиксируются все изменения, включая вызвавшие нарушение. Если <code>SQLITE_CHANGESET_ABORT</code> — changeset откатывается.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_FOREIGN_KEY</code></td>
-    <td>Если при применении изменения возникает иное нарушение ограничения (UNIQUE, CHECK или NOT NULL), обработчик вызывается с этой константой.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `SQLITE_CHANGESET_DATA` | Обработчик конфликтов вызывается с этой константой при обработке DELETE или UPDATE, если строка с нужным PRIMARY KEY есть в базе, но одно или несколько не ключевых полей, затронутых обновлением, не содержат ожидаемых «старых» значений. |
+| `SQLITE_CHANGESET_NOTFOUND` | Обработчик вызывается с этой константой при DELETE или UPDATE, если строки с нужным PRIMARY KEY в базе нет. |
+| `SQLITE_CHANGESET_CONFLICT` | Константа передаётся при INSERT, если операция привела бы к дубликату первичного ключа. |
+| `SQLITE_CHANGESET_CONSTRAINT` | Если включена обработка внешних ключей и после применения changeset в базе остаются нарушения внешних ключей, обработчик вызывается с этой константой ровно один раз до фиксации changeset. Если обработчик вернёт `SQLITE_CHANGESET_OMIT`, фиксируются все изменения, включая вызвавшие нарушение. Если `SQLITE_CHANGESET_ABORT` — changeset откатывается. |
+| `SQLITE_CHANGESET_FOREIGN_KEY` | Если при применении изменения возникает иное нарушение ограничения (UNIQUE, CHECK или NOT NULL), обработчик вызывается с этой константой. |
 
 Одна из следующих констант должна возвращаться из обработчика `onConflict`
 для [`database.applyChangeset()`](#databaseapplychangesetchangeset-options). См. также
 [Constants Returned From The Conflict Handler][Constants Returned From The Conflict Handler] в документации SQLite.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_OMIT</code></td>
-    <td>Конфликтующие изменения пропускаются.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_REPLACE</code></td>
-    <td>Конфликтующие изменения заменяют существующие значения. Допустимо только при типе конфликта <code>SQLITE_CHANGESET_DATA</code> или <code>SQLITE_CHANGESET_CONFLICT</code>.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CHANGESET_ABORT</code></td>
-    <td>Прервать при конфликте и откатить базу.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `SQLITE_CHANGESET_OMIT` | Конфликтующие изменения пропускаются. |
+| `SQLITE_CHANGESET_REPLACE` | Конфликтующие изменения заменяют существующие значения. Допустимо только при типе конфликта `SQLITE_CHANGESET_DATA` или `SQLITE_CHANGESET_CONFLICT`. |
+| `SQLITE_CHANGESET_ABORT` | Прервать при конфликте и откатить базу. |
 
 #### Константы авторизации
 
@@ -1520,172 +1488,53 @@ added:
 Одна из следующих констант должна возвращаться из callback авторизатора
 для [`database.setAuthorizer()`](#databasesetauthorizercallback).
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>SQLITE_OK</code></td>
-    <td>Разрешить операцию.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DENY</code></td>
-    <td>Запретить операцию и вернуть ошибку.</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_IGNORE</code></td>
-    <td>Игнорировать операцию, как будто её не было.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `SQLITE_OK` | Разрешить операцию. |
+| `SQLITE_DENY` | Запретить операцию и вернуть ошибку. |
+| `SQLITE_IGNORE` | Игнорировать операцию, как будто её не было. |
 
 ##### Коды действий авторизации
 
 Следующие константы передаются первым аргументом в callback авторизации
 и обозначают тип операции.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_INDEX</code></td>
-    <td>Создать индекс</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TABLE</code></td>
-    <td>Создать таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TEMP_INDEX</code></td>
-    <td>Создать временный индекс</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TEMP_TABLE</code></td>
-    <td>Создать временную таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TEMP_TRIGGER</code></td>
-    <td>Создать временный триггер</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TEMP_VIEW</code></td>
-    <td>Создать временное представление</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_TRIGGER</code></td>
-    <td>Создать триггер</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_VIEW</code></td>
-    <td>Создать представление</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DELETE</code></td>
-    <td>Удаление из таблицы</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_INDEX</code></td>
-    <td>Удалить индекс</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TABLE</code></td>
-    <td>Удалить таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TEMP_INDEX</code></td>
-    <td>Удалить временный индекс</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TEMP_TABLE</code></td>
-    <td>Удалить временную таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TEMP_TRIGGER</code></td>
-    <td>Удалить временный триггер</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TEMP_VIEW</code></td>
-    <td>Удалить временное представление</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_TRIGGER</code></td>
-    <td>Удалить триггер</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_VIEW</code></td>
-    <td>Удалить представление</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_INSERT</code></td>
-    <td>Вставка в таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_PRAGMA</code></td>
-    <td>Выполнить PRAGMA</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_READ</code></td>
-    <td>Чтение из таблицы</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_SELECT</code></td>
-    <td>Выполнить SELECT</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_TRANSACTION</code></td>
-    <td>Начать, зафиксировать или откатить транзакцию</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_UPDATE</code></td>
-    <td>Обновление таблицы</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_ATTACH</code></td>
-    <td>Прикрепить базу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DETACH</code></td>
-    <td>Открепить базу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_ALTER_TABLE</code></td>
-    <td>Изменить таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_REINDEX</code></td>
-    <td>Переиндексация</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_ANALYZE</code></td>
-    <td>Анализ базы</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_CREATE_VTABLE</code></td>
-    <td>Создать виртуальную таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_DROP_VTABLE</code></td>
-    <td>Удалить виртуальную таблицу</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_FUNCTION</code></td>
-    <td>Вызов функции</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_SAVEPOINT</code></td>
-    <td>Создать, освободить или откатить точку сохранения</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_COPY</code></td>
-    <td>Копирование данных (устар.)</td>
-  </tr>
-  <tr>
-    <td><code>SQLITE_RECURSIVE</code></td>
-    <td>Рекурсивный запрос</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `SQLITE_CREATE_INDEX` | Создать индекс |
+| `SQLITE_CREATE_TABLE` | Создать таблицу |
+| `SQLITE_CREATE_TEMP_INDEX` | Создать временный индекс |
+| `SQLITE_CREATE_TEMP_TABLE` | Создать временную таблицу |
+| `SQLITE_CREATE_TEMP_TRIGGER` | Создать временный триггер |
+| `SQLITE_CREATE_TEMP_VIEW` | Создать временное представление |
+| `SQLITE_CREATE_TRIGGER` | Создать триггер |
+| `SQLITE_CREATE_VIEW` | Создать представление |
+| `SQLITE_DELETE` | Удаление из таблицы |
+| `SQLITE_DROP_INDEX` | Удалить индекс |
+| `SQLITE_DROP_TABLE` | Удалить таблицу |
+| `SQLITE_DROP_TEMP_INDEX` | Удалить временный индекс |
+| `SQLITE_DROP_TEMP_TABLE` | Удалить временную таблицу |
+| `SQLITE_DROP_TEMP_TRIGGER` | Удалить временный триггер |
+| `SQLITE_DROP_TEMP_VIEW` | Удалить временное представление |
+| `SQLITE_DROP_TRIGGER` | Удалить триггер |
+| `SQLITE_DROP_VIEW` | Удалить представление |
+| `SQLITE_INSERT` | Вставка в таблицу |
+| `SQLITE_PRAGMA` | Выполнить PRAGMA |
+| `SQLITE_READ` | Чтение из таблицы |
+| `SQLITE_SELECT` | Выполнить SELECT |
+| `SQLITE_TRANSACTION` | Начать, зафиксировать или откатить транзакцию |
+| `SQLITE_UPDATE` | Обновление таблицы |
+| `SQLITE_ATTACH` | Прикрепить базу |
+| `SQLITE_DETACH` | Открепить базу |
+| `SQLITE_ALTER_TABLE` | Изменить таблицу |
+| `SQLITE_REINDEX` | Переиндексация |
+| `SQLITE_ANALYZE` | Анализ базы |
+| `SQLITE_CREATE_VTABLE` | Создать виртуальную таблицу |
+| `SQLITE_DROP_VTABLE` | Удалить виртуальную таблицу |
+| `SQLITE_FUNCTION` | Вызов функции |
+| `SQLITE_SAVEPOINT` | Создать, освободить или откатить точку сохранения |
+| `SQLITE_COPY` | Копирование данных (устар.) |
+| `SQLITE_RECURSIVE` | Рекурсивный запрос |
 
 [Changesets and Patchsets]: https://www.sqlite.org/sessionintro.html#changesets_and_patchsets
 [Constants Passed To The Conflict Handler]: https://www.sqlite.org/session/c_changeset_conflict.html

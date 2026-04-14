@@ -224,7 +224,7 @@ changes:
     | v15.14.0, v14.18.0 | Аргумент data поддерживает AsyncIterable, Iterable и Stream. |
     | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.es/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) | undefined позволяет прервать выполняющуюся операцию `writeFile`. **По умолчанию:** `undefined`
@@ -407,7 +407,7 @@ added: v25.9.0
     -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) смещение в байтах, с которого начинать чтение. Если задано, используется явное позиционирование (семантика `pread`). **По умолчанию:** текущая позиция в файле.
     -   `limit` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимум байт для чтения до завершения итератора. Чтение останавливается, когда передано `limit` байт или достигнут конец файла — в зависимости от того, что наступит раньше. **По умолчанию:** до конца файла.
     -   `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) размер буфера в байтах для каждой операции чтения. **По умолчанию:** `131072` (128 КиБ).
--   Возвращает: [`<AsyncIterable<Uint8Array[]>>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
+-   Возвращает: [`<AsyncIterable<Uint8Array[]>>`](https://tc39.es/ecma262/#sec-asynciterable-interface)
 
 Возвращает содержимое файла как асинхронный итерируемый объект по модели pull из [`node:stream/iter`](stream_iter.md). Чтение идёт блоками по `chunkSize` байт (по умолчанию 128 КиБ). Если заданы преобразования, они применяются через [`stream/iter pull()`](stream_iter.md#pullsource-transforms-options).
 
@@ -535,7 +535,7 @@ added: v10.0.0
 changes:
   - version: v21.0.0
     pr-url: https://github.com/nodejs/node/pull/42835
-    description: Accepts bigint values as `position`.
+    description: Принимает значения bigint в качестве `position`.
 -->
 
 Добавлено в: v10.0.0
@@ -546,13 +546,13 @@ changes:
     | --- | --- |
     | v21.0.0 | Принимает значения bigint как позицию. |
 
--   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read.
--   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The location in the buffer at which to start filling. **По умолчанию:** `0`
--   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to read. **По умолчанию:** `buffer.byteLength - offset`
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null The location where to begin reading data from the file. If `null` or `-1`, data will be read from the current file position, and the position will be updated. If `position` is a non-negative integer, the current file position will remain unchanged. **По умолчанию:** `null`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills upon success with an object with two properties:
-    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes read
-    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A reference to the passed in `buffer` argument.
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Буфер, в который будут помещены считанные из файла данные.
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Позиция в буфере, начиная с которой нужно заполнять данные. **По умолчанию:** `0`
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null Позиция в файле, с которой следует начать чтение данных. Если `null` или `-1`, данные читаются из текущей позиции файла, и эта позиция будет обновлена. Если `position` является неотрицательным целым числом, текущая позиция файла останется неизменной. **По умолчанию:** `null`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется объектом с двумя свойствами:
+    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество прочитанных байт
+    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ссылка на переданный аргумент `buffer`.
 
 Читает данные из файла и помещает их в переданный буфер.
 
@@ -567,7 +567,7 @@ added:
 changes:
   - version: v21.0.0
     pr-url: https://github.com/nodejs/node/pull/42835
-    description: Accepts bigint values as `position`.
+    description: Принимает значения bigint в качестве `position`.
 -->
 
 ??? note "История"
@@ -577,13 +577,13 @@ changes:
     | v21.0.0 | Принимает значения bigint как позицию. |
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read. **По умолчанию:** `Buffer.alloc(16384)`
-    -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The location in the buffer at which to start filling. **По умолчанию:** `0`
-    -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to read. **По умолчанию:** `buffer.byteLength - offset`
-    -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null The location where to begin reading data from the file. If `null` or `-1`, data will be read from the current file position, and the position will be updated. If `position` is a non-negative integer, the current file position will remain unchanged. **По умолчанию:** `null`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills upon success with an object with two properties:
-    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes read
-    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A reference to the passed in `buffer` argument.
+    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Буфер, в который будут помещены считанные из файла данные. **По умолчанию:** `Buffer.alloc(16384)`
+    -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Позиция в буфере, начиная с которой нужно заполнять данные. **По умолчанию:** `0`
+    -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`
+    -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null Позиция в файле, с которой следует начать чтение данных. Если `null` или `-1`, данные читаются из текущей позиции файла, и эта позиция будет обновлена. Если `position` является неотрицательным целым числом, текущая позиция файла останется неизменной. **По умолчанию:** `null`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется объектом с двумя свойствами:
+    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество прочитанных байт
+    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ссылка на переданный аргумент `buffer`.
 
 Читает данные из файла и помещает их в переданный буфер.
 
@@ -598,7 +598,7 @@ added:
 changes:
   - version: v21.0.0
     pr-url: https://github.com/nodejs/node/pull/42835
-    description: Accepts bigint values as `position`.
+    description: Принимает значения bigint в качестве `position`.
 -->
 
 ??? note "История"
@@ -607,14 +607,14 @@ changes:
     | --- | --- |
     | v21.0.0 | Принимает значения bigint как позицию. |
 
--   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A buffer that will be filled with the file data read.
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Буфер, в который будут помещены считанные из файла данные.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The location in the buffer at which to start filling. **По умолчанию:** `0`
-    -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to read. **По умолчанию:** `buffer.byteLength - offset`
-    -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null The location where to begin reading data from the file. If `null` or `-1`, data will be read from the current file position, and the position will be updated. If `position` is a non-negative integer, the current file position will remain unchanged. **По умолчанию:** `null`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills upon success with an object with two properties:
-    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes read
-    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) A reference to the passed in `buffer` argument.
+    -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Позиция в буфере, начиная с которой нужно заполнять данные. **По умолчанию:** `0`
+    -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт для чтения. **По умолчанию:** `buffer.byteLength - offset`
+    -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null Позиция в файле, с которой следует начать чтение данных. Если `null` или `-1`, данные читаются из текущей позиции файла, и эта позиция будет обновлена. Если `position` является неотрицательным целым числом, текущая позиция файла останется неизменной. **По умолчанию:** `null`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется объектом с двумя свойствами:
+    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество прочитанных байт
+    -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ссылка на переданный аргумент `buffer`.
 
 Читает данные из файла и помещает их в переданный буфер.
 
@@ -630,17 +630,17 @@ changes:
       - v24.0.0
       - v22.17.0
     pr-url: https://github.com/nodejs/node/pull/57513
-    description: Marking the API stable.
+    description: API отмечен как стабильный.
   - version:
     - v23.8.0
     - v22.15.0
     pr-url: https://github.com/nodejs/node/pull/55461
-    description: Removed option to create a 'bytes' stream. Streams are now always 'bytes' streams.
+    description: Удалена опция создания потока `'bytes'`. Теперь потоки всегда являются потоками `'bytes'`.
   - version:
     - v20.0.0
     - v18.17.0
     pr-url: https://github.com/nodejs/node/pull/46933
-    description: Added option to create a 'bytes' stream.
+    description: Добавлена опция создания потока `'bytes'`.
 -->
 
 Добавлено в: v17.0.0
@@ -654,7 +654,7 @@ changes:
     | v20.0.0, v18.17.0 | Добавлена ​​возможность создания потока «байтов». |
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `autoClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When true, causes the [FileHandle](#filehandle) to be closed when the stream is closed. **По умолчанию:** `false`
+    -   `autoClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, [FileHandle](#filehandle) будет закрыт при закрытии потока. **По умолчанию:** `false`
 -   Возвращает: [`<ReadableStream>`](webstreams.md#readablestream)
 
 Возвращает байтовый `ReadableStream` для чтения содержимого файла.
@@ -693,7 +693,7 @@ changes:
     })();
     ```
 
-While the `ReadableStream` will read the file to completion, it will not close the `FileHandle` automatically. User code must still call the `fileHandle.close()` method unless the `autoClose` option is set to `true`.
+Хотя `ReadableStream` прочитает файл до конца, он не закроет `FileHandle` автоматически. Пользовательский код всё равно должен вызвать метод `fileHandle.close()`, если только опция `autoClose` не установлена в `true`.
 
 #### `filehandle.readFile(options)`
 
@@ -703,16 +703,16 @@ added: v10.0.0
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) allows aborting an in-progress readFile
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills upon a successful read with the contents of the file. If no encoding is specified (using `options.encoding`), the data is returned as a [Buffer](buffer.md#buffer) object. Otherwise, the data will be a string.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет прервать выполняющийся `readFile`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется содержимым файла. Если кодировка не указана (через `options.encoding`), данные возвращаются как объект [Buffer](buffer.md#buffer). В противном случае это будет строка.
 
-Asynchronously reads the entire contents of a file.
+Асинхронно читает всё содержимое файла.
 
 Если `options` — строка, она задаёт `encoding`.
 
-The [FileHandle](#filehandle) has to support reading.
+[`FileHandle`](#filehandle) должен поддерживать чтение.
 
-If one or more `filehandle.read()` calls are made on a file handle and then a `filehandle.readFile()` call is made, the data will be read from the current position till the end of the file. It doesn't always read from the beginning of the file.
+Если для файлового дескриптора был выполнен один или несколько вызовов `filehandle.read()`, а затем вызывается `filehandle.readFile()`, данные будут прочитаны от текущей позиции до конца файла. Чтение не всегда начинается с начала файла.
 
 #### `filehandle.readLines([options])`
 
@@ -729,7 +729,7 @@ added: v18.11.0
     -   `highWaterMark` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `64 * 1024`
 -   Возвращает: [`<readline.InterfaceConstructor>`](readline.md#interfaceconstructor)
 
-Convenience method to create a `readline` interface and stream over the file. See [`filehandle.createReadStream()`](#filehandlecreatereadstreamoptions) for the options.
+Вспомогательный метод для создания интерфейса `readline` и потокового чтения файла. Описание параметров см. в [`filehandle.createReadStream()`](#filehandlecreatereadstreamoptions).
 
 === "MJS"
 
@@ -766,12 +766,12 @@ added:
 -->
 
 -   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null The offset from the beginning of the file where the data should be read from. If `position` is not a `number`, the data will be read from the current position. **По умолчанию:** `null`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills upon success an object containing two properties:
-    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes read
-    -   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) property containing a reference to the `buffers` input.
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Смещение от начала файла, с которого нужно читать данные. Если `position` не является `number`, данные будут читаться из текущей позиции. **По умолчанию:** `null`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется объектом с двумя свойствами:
+    -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество прочитанных байт
+    -   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Свойство, содержащее ссылку на входной аргумент `buffers`.
 
-Read from a file and write to an array of [ArrayBufferView](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)s
+Читает данные из файла и записывает их в массив объектов [ArrayBufferView](https://developer.mozilla.org/docs/Web/API/ArrayBufferView).
 
 #### `filehandle.stat([options])`
 
@@ -780,10 +780,10 @@ added: v10.0.0
 changes:
   - version: REPLACEME
     pr-url: https://github.com/nodejs/node/pull/57775
-    description: Now accepts an additional `signal` property to allow aborting the operation.
+    description: Теперь принимает дополнительное свойство `signal`, позволяющее прервать операцию.
   - version: v10.5.0
     pr-url: https://github.com/nodejs/node/pull/20220
-    description: Accepts an additional `options` object to specify whether the numeric values returned should be bigint.
+    description: Принимает дополнительный объект `options`, позволяющий указать, должны ли возвращаемые числовые значения быть bigint.
 -->
 
 Добавлено в: v10.0.0
@@ -796,9 +796,9 @@ changes:
     | v10.5.0 | Принимает дополнительный объект options, чтобы указать, должны ли возвращаемые числовые значения быть bigint. |
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) An AbortSignal to cancel the operation. **По умолчанию:** `undefined`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with an [fs.Stats](fs.md#fsstats) for the file.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) быть `bigint`. **По умолчанию:** `false`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) AbortSignal для отмены операции. **По умолчанию:** `undefined`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется объектом [fs.Stats](fs.md#fsstats) для файла.
 
 #### `filehandle.sync()`
 
@@ -806,9 +806,9 @@ changes:
 added: v10.0.0
 -->
 
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Request that all data for the open file descriptor is flushed to the storage device. The specific implementation is operating system and device specific. Refer to the POSIX fsync(2) documentation for more detail.
+Запрашивает сброс всех данных для открытого файлового дескриптора на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. Подробнее см. документацию POSIX для `fsync(2)`.
 
 #### `filehandle.truncate(len)`
 
@@ -817,13 +817,13 @@ added: v10.0.0
 -->
 
 -   `len` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Truncates the file.
+Усекает файл.
 
-If the file was larger than `len` bytes, only the first `len` bytes will be retained in the file.
+Если файл был больше `len` байт, в нём будут сохранены только первые `len` байт.
 
-The following example retains only the first four bytes of the file:
+Следующий пример сохраняет только первые четыре байта файла:
 
 === "MJS"
 
@@ -839,9 +839,9 @@ The following example retains only the first four bytes of the file:
     }
     ```
 
-If the file previously was shorter than `len` bytes, it is extended, and the extended part is filled with null bytes (`'\0'`):
+Если ранее файл был короче `len` байт, он будет расширен, а добавленная часть будет заполнена нулевыми байтами (`'\0'`):
 
-If `len` is negative then `0` will be used.
+Если `len` отрицателен, будет использовано значение `0`.
 
 #### `filehandle.utimes(atime, mtime)`
 
@@ -853,7 +853,7 @@ added: v10.0.0
 -   `mtime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Change the file system timestamps of the object referenced by the [FileHandle](#filehandle) then fulfills the promise with no arguments upon success.
+Изменяет временные метки файловой системы для объекта, на который ссылается [FileHandle](#filehandle), и при успешном выполнении исполняет промис без аргументов.
 
 #### `filehandle.write(buffer, offset[, length[, position]])`
 
@@ -862,8 +862,8 @@ added: v10.0.0
 changes:
   - version: v14.0.0
     pr-url: https://github.com/nodejs/node/pull/31030
-    description: The `buffer` parameter won't coerce unsupported input to
-                 buffers anymore.
+    description: Параметр `buffer` больше не приводит неподдерживаемый ввод
+                 к буферам.
 -->
 
 Добавлено в: v10.0.0
@@ -875,21 +875,21 @@ changes:
     | v14.0.0 | Параметр `buffer` больше не будет принудительно помещать неподдерживаемый ввод в буферы. |
 
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The start position from within `buffer` where the data to write begins.
--   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes from `buffer` to write. **По умолчанию:** `buffer.byteLength - offset`
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null The offset from the beginning of the file where the data from `buffer` should be written. If `position` is not a `number`, the data will be written at the current position. Подробнее см. POSIX pwrite(2). **По умолчанию:** `null`
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальная позиция внутри `buffer`, откуда начинаются данные для записи.
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байт из `buffer`, которые нужно записать. **По умолчанию:** `buffer.byteLength - offset`
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Смещение от начала файла, куда должны быть записаны данные из `buffer`. Если `position` не является `number`, данные будут записаны в текущую позицию. Подробнее см. POSIX `pwrite(2)`. **По умолчанию:** `null`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Write `buffer` to the file.
+Записывает `buffer` в файл.
 
 Промис выполняется объектом с двумя свойствами:
 
--   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes written
--   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) a reference to the `buffer` written.
+-   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество записанных байт
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ссылка на записанный `buffer`.
 
-It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Небезопасно вызывать `filehandle.write()` несколько раз для одного и того же файла, не дожидаясь выполнения (или отклонения) промиса. Для такого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
 
-On Linux, positional writes do not work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
 #### `filehandle.write(buffer[, options])`
 
@@ -906,9 +906,9 @@ added:
     -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Write `buffer` to the file.
+Записывает `buffer` в файл.
 
-Similar to the above `filehandle.write` function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
+Подобно описанной выше функции `filehandle.write`, эта версия принимает необязательный объект `options`. Если объект `options` не указан, используются приведённые выше значения по умолчанию.
 
 #### `filehandle.write(string[, position[, encoding]])`
 
@@ -917,8 +917,8 @@ added: v10.0.0
 changes:
   - version: v14.0.0
     pr-url: https://github.com/nodejs/node/pull/31030
-    description: The `string` parameter won't coerce unsupported input to
-                 strings anymore.
+    description: Параметр `string` больше не приводит неподдерживаемый ввод
+                 к строкам.
 -->
 
 Добавлено в: v10.0.0
@@ -927,23 +927,23 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v14.0.0 | Параметр `string` больше не будет приводить к строкам неподдерживаемый ввод. |
+    | v14.0.0 | Параметр `string` больше не приводит неподдерживаемый ввод к строкам. |
 
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null The offset from the beginning of the file where the data from `string` should be written. If `position` is not a `number` the data will be written at the current position. Подробнее см. POSIX pwrite(2). **По умолчанию:** `null`
--   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The expected string encoding. **По умолчанию:** `'utf8'`
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Смещение от начала файла, куда должны быть записаны данные из `string`. Если `position` не является `number`, данные будут записаны в текущую позицию. Подробнее см. POSIX `pwrite(2)`. **По умолчанию:** `null`
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Ожидаемая кодировка строки. **По умолчанию:** `'utf8'`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Write `string` to the file. If `string` is not a string, the promise is rejected with an error.
+Записывает `string` в файл. Если `string` не является строкой, промис будет отклонён с ошибкой.
 
 Промис выполняется объектом с двумя свойствами:
 
--   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes written
--   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) a reference to the `string` written.
+-   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество записанных байт
+-   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Ссылка на записанную `string`.
 
-It is unsafe to use `filehandle.write()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected). For this scenario, use [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Небезопасно вызывать `filehandle.write()` несколько раз для одного и того же файла, не дожидаясь выполнения (или отклонения) промиса. Для такого сценария используйте [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
 
-On Linux, positional writes do not work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
 #### `filehandle.writeFile(data, options)`
 
@@ -970,21 +970,21 @@ changes:
     | v15.14.0, v14.18.0 | Аргумент `data` поддерживает `AsyncIterable`, `Iterable` и `Stream`. |
     | v14.0.0 | Параметр `data` больше не будет принуждать неподдерживаемый ввод к строкам. |
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.es/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null The expected character encoding when `data` is a string. **По умолчанию:** `'utf8'`
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) | undefined allows aborting an in-progress writeFile. **По умолчанию:** `undefined`
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null Ожидаемая кодировка символов, когда `data` является строкой. **По умолчанию:** `'utf8'`
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) | undefined позволяет прервать выполняющийся `writeFile`. **По умолчанию:** `undefined`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Asynchronously writes data to a file, replacing the file if it already exists. `data` can be a string, a buffer, an [AsyncIterable](https://tc39.github.io/ecma262/#sec-asynciterable-interface), or an [Iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) object. При успехе промис выполняется без аргументов.
+Асинхронно записывает данные в файл, заменяя файл, если он уже существует. `data` может быть строкой, буфером, объектом [AsyncIterable](https://tc39.es/ecma262/#sec-asynciterable-interface) или [Iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol). При успехе промис выполняется без аргументов.
 
 Если `options` — строка, она задаёт `encoding`.
 
-The [FileHandle](#filehandle) has to support writing.
+[`FileHandle`](#filehandle) должен поддерживать запись.
 
-It is unsafe to use `filehandle.writeFile()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected).
+Небезопасно вызывать `filehandle.writeFile()` несколько раз для одного и того же файла, не дожидаясь выполнения (или отклонения) промиса.
 
-If one or more `filehandle.write()` calls are made on a file handle and then a `filehandle.writeFile()` call is made, the data will be written from the current position till the end of the file. It doesn't always write from the beginning of the file.
+Если для файлового дескриптора был выполнен один или несколько вызовов `filehandle.write()`, а затем вызывается `filehandle.writeFile()`, данные будут записаны от текущей позиции до конца файла. Запись не всегда начинается с начала файла.
 
 #### `filehandle.writev(buffers[, position])`
 
@@ -993,19 +993,19 @@ added: v12.9.0
 -->
 
 -   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null The offset from the beginning of the file where the data from `buffers` should be written. If `position` is not a `number`, the data will be written at the current position. **По умолчанию:** `null`
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null Смещение от начала файла, куда должны быть записаны данные из `buffers`. Если `position` не является `number`, данные будут записаны в текущую позицию. **По умолчанию:** `null`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Write an array of [ArrayBufferView](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)s to the file.
+Записывает массив объектов [ArrayBufferView](https://developer.mozilla.org/docs/Web/API/ArrayBufferView) в файл.
 
 Промис выполняется объектом с двумя свойствами:
 
--   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) the number of bytes written
--   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) a reference to the `buffers` input.
+-   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество записанных байт
+-   `buffers` [`<Buffer[]>`](buffer.md#buffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ссылка на входной аргумент `buffers`.
 
-It is unsafe to call `writev()` multiple times on the same file without waiting for the promise to be fulfilled (or rejected).
+Небезопасно вызывать `writev()` несколько раз для одного и того же файла, не дожидаясь выполнения (или отклонения) промиса.
 
-On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
 #### `filehandle.writer([options])`
 
@@ -1013,42 +1013,42 @@ On Linux, positional writes don't work when the file is opened in append mode. T
 added: v25.9.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `autoClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Close the file handle when the writer ends or fails. **По умолчанию:** `false`.
-    -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Byte offset to start writing at. When specified, writes use explicit positioning. **По умолчанию:** current file position.
-    -   `limit` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Maximum number of bytes the writer will accept. Async writes (`write()`, `writev()`) that would exceed the limit reject with `ERR_OUT_OF_RANGE`. Sync writes (`writeSync()`, `writevSync()`) return `false`. **По умолчанию:** no limit.
-    -   `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Maximum chunk size in bytes for synchronous write operations. Writes larger than this threshold fall back to async I/O. Set this to match the reader's `chunkSize` for optimal `pipeTo()` performance. **По умолчанию:** `131072` (128 KB).
+    -   `autoClose` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Закрывать файловый дескриптор, когда writer завершает работу или переходит в состояние ошибки. **По умолчанию:** `false`.
+    -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, с которого нужно начинать запись. Если указано, запись использует явное позиционирование. **По умолчанию:** текущая позиция файла.
+    -   `limit` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальное число байт, которое writer примет. Асинхронные записи (`write()`, `writev()`), превышающие лимит, отклоняются с `ERR_OUT_OF_RANGE`. Синхронные записи (`writeSync()`, `writevSync()`) возвращают `false`. **По умолчанию:** без ограничений.
+    -   `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер чанка в байтах для синхронных операций записи. Записи больше этого порога переводятся на асинхронный ввод-вывод. Для оптимальной производительности `pipeTo()` установите значение, совпадающее с `chunkSize` у reader. **По умолчанию:** `131072` (128 KB).
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `write(chunk[, options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [`Promise<void>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Accepts `Uint8Array`, `Buffer`, or string (UTF-8 encoded).
+    -   `write(chunk[, options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [`<Promise<void>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Принимает `Uint8Array`, `Buffer` или строку (в кодировке UTF-8).
         -   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
         -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) If the signal is already aborted, the write rejects with `AbortError` without performing I/O.
-    -   `writev(chunks[, options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [`Promise<void>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Uses scatter/gather I/O via a single `writev()` syscall. Accepts mixed `Uint8Array`/string arrays.
+            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Если сигнал уже прерван, запись отклоняется с `AbortError` без выполнения ввода-вывода.
+    -   `writev(chunks[, options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [`<Promise<void>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise). Использует scatter/gather I/O через один системный вызов `writev()`. Принимает массивы с элементами смешанных типов `Uint8Array`/string.
         -   `chunks` [`<Array<Buffer|TypedArray|DataView|string>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
         -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) If the signal is already aborted, the write rejects with `AbortError` without performing I/O.
-    -   `writeSync(chunk)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type). Attempts a synchronous write. Returns `true` if the write succeeded, `false` if the caller should fall back to async `write()`. Returns `false` when: the writer is closed/errored, an async operation is in flight, the chunk exceeds `chunkSize`, or the write would exceed `limit`.
+            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Если сигнал уже прерван, запись отклоняется с `AbortError` без выполнения ввода-вывода.
+    -   `writeSync(chunk)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type). Пытается выполнить синхронную запись. Возвращает `true`, если запись успешна, и `false`, если вызывающему коду следует перейти на асинхронный `write()`. `false` возвращается, когда writer закрыт/в состоянии ошибки, когда асинхронная операция уже выполняется, когда размер чанка превышает `chunkSize` или когда запись превысила бы `limit`.
         -   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-    -   `writevSync(chunks)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type). Synchronous batch write. Same fallback semantics as `writeSync()`.
+    -   `writevSync(chunks)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type). Синхронная пакетная запись. Семантика переключения на запасной вариант такая же, как у `writeSync()`.
         -   `chunks` [`<Array<Buffer|TypedArray|DataView|string>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
-    -   `end([options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [`Promise<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) total bytes written. Idempotent: returns `totalBytesWritten` if already closed, returns the pending promise if already closing. Rejects if the writer is in an errored state.
+    -   `end([options])` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [`<Promise<number>>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) с общим числом записанных байт. Идемпотентен: возвращает `totalBytesWritten`, если уже закрыт, и возвращает ожидающий промис, если уже находится в процессе закрытия. Отклоняется, если writer находится в состоянии ошибки.
         -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) If the signal is already aborted, `end()` rejects with `AbortError` and the writer remains open.
-    -   `endSync()` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Returns [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) total bytes written on success, `-1` if the writer is errored or an async operation is in flight. Idempotent when already closed.
-    -   `fail(reason)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Puts the writer into a terminal error state. Synchronous. If the writer is already closed or errored, this is a no-op. If `autoClose` is true, closes the file handle synchronously.
+            -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Если сигнал уже прерван, `end()` отклоняется с `AbortError`, а writer остаётся открытым.
+    -   `endSync()` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Возвращает [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type): общее число записанных байт при успехе или `-1`, если writer находится в состоянии ошибки либо выполняется асинхронная операция. Идемпотентен, если уже закрыт.
+    -   `fail(reason)` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Переводит writer в конечное состояние ошибки. Синхронный метод. Если writer уже закрыт или находится в состоянии ошибки, ничего не делает. Если `autoClose` равно `true`, синхронно закрывает файловый дескриптор.
 
-Return a [`node:stream/iter`](stream_iter.md) writer backed by this file handle.
+Возвращает writer из [`node:stream/iter`](stream_iter.md), работающий поверх данного файлового дескриптора.
 
-The writer supports both `Symbol.asyncDispose` and `Symbol.dispose`:
+Writer поддерживает как `Symbol.asyncDispose`, так и `Symbol.dispose`:
 
 -   `await using w = fh.writer()` — if the writer is still open (no `end()` called), `asyncDispose` calls `fail()`. If `end()` is pending, it waits for it to complete.
 -   `using w = fh.writer()` — calls `fail()` unconditionally.
 
-The `writeSync()` and `writevSync()` methods enable the try-sync fast path used by [`stream/iter pipeTo()`](stream_iter.md#pipetosource-transforms-writer). When the reader's chunk size matches the writer's `chunkSize`, all writes in a `pipeTo()` pipeline complete synchronously with zero promise overhead.
+Методы `writeSync()` и `writevSync()` включают быстрый try-sync путь, используемый [`stream/iter pipeTo()`](stream_iter.md#pipetosource-transforms-writer). Когда размер чанка reader совпадает с `chunkSize` у writer, все записи в конвейере `pipeTo()` завершаются синхронно без накладных расходов на промисы.
 
-This function is only available when the `--experimental-stream-iter` flag is enabled.
+Эта функция доступна только при включённом флаге `--experimental-stream-iter`.
 
 === "MJS"
 
@@ -1103,7 +1103,7 @@ added:
 changes:
  - version: v24.2.0
    pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
+   description: Больше не является экспериментальным.
 -->
 
 ??? note "История"
@@ -1112,7 +1112,7 @@ changes:
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
 
-Calls `filehandle.close()` and returns a promise that fulfills when the filehandle is closed.
+Вызывает `filehandle.close()` и возвращает промис, который исполняется, когда `filehandle` закрыт.
 
 ### `fsPromises.access(path[, mode])`
 
@@ -1122,11 +1122,11 @@ added: v10.0.0
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `fs.constants.F_OK`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
+Проверяет права пользователя на файл или каталог, указанный в `path`. Аргумент `mode` — необязательное целое число, задающее проверки доступности, которые нужно выполнить. `mode` должен быть либо значением `fs.constants.F_OK`, либо маской, составленной побитовым ИЛИ из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Возможные значения `mode` см. в [константах доступа к файлам](#file-access-constants).
 
-If the accessibility check is successful, the promise is fulfilled with no value. If any of the accessibility checks fail, the promise is rejected with an [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object. The following example checks if the file `/etc/passwd` can be read and written by the current process.
+Если проверка доступности успешна, промис выполняется без значения. Если какая-либо из проверок завершится неудачей, промис будет отклонён объектом [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error). Следующий пример проверяет, может ли текущий процесс читать и записывать файл `/etc/passwd`.
 
 === "MJS"
 
@@ -1141,7 +1141,7 @@ If the accessibility check is successful, the promise is fulfilled with no value
     }
     ```
 
-Using `fsPromises.access()` to check for the accessibility of a file before calling `fsPromises.open()` is not recommended. Doing so introduces a race condition, since other processes may change the file's state between the two calls. Instead, user code should open/read/write the file directly and handle the error raised if the file is not accessible.
+Не рекомендуется использовать `fsPromises.access()` для проверки доступности файла перед вызовом `fsPromises.open()`. Это создаёт состояние гонки, поскольку между двумя вызовами другие процессы могут изменить состояние файла. Вместо этого пользовательский код должен сразу открывать, читать или записывать файл и обрабатывать ошибку, если файл недоступен.
 
 ### `fsPromises.appendFile(path, data[, options])`
 
@@ -1152,7 +1152,7 @@ changes:
     - v21.1.0
     - v20.10.0
     pr-url: https://github.com/nodejs/node/pull/50095
-    description: The `flush` option is now supported.
+    description: Опция `flush` теперь поддерживается.
 -->
 
 Добавлено в: v10.0.0
@@ -1163,22 +1163,22 @@ changes:
     | --- | --- |
     | v21.1.0, v20.10.0 | Опция `flush` теперь поддерживается. |
 
--   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<FileHandle>`](#filehandle) filename or [FileHandle](#filehandle)
+-   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<FileHandle>`](#filehandle) Имя файла или [FileHandle](#filehandle)
 -   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'a'`.
-    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [поддержку файловых `flags`](#file-system-flags). **По умолчанию:** `'a'`.
+    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, базовый файловый дескриптор будет сброшен перед закрытием. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Asynchronously append data to a file, creating the file if it does not yet exist. `data` can be a string or a [Buffer](buffer.md#buffer).
+Асинхронно добавляет данные в файл, создавая файл, если он ещё не существует. `data` может быть строкой или [Buffer](buffer.md#buffer).
 
 Если `options` — строка, она задаёт `encoding`.
 
-The `mode` option only affects the newly created file. See [`fs.open()`](#fsopenpath-flags-mode-callback) for more details.
+Опция `mode` влияет только на вновь создаваемый файл. Подробнее см. [`fs.open()`](#fsopenpath-flags-mode-callback).
 
-The `path` may be specified as a [FileHandle](#filehandle) that has been opened for appending (using `fsPromises.open()`).
+`path` может быть задан как [FileHandle](#filehandle), открытый для добавления (через `fsPromises.open()`).
 
 ### `fsPromises.chmod(path, mode)`
 
@@ -1188,9 +1188,9 @@ added: v10.0.0
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Changes the permissions of a file.
+Изменяет права доступа к файлу.
 
 ### `fsPromises.chown(path, uid, gid)`
 
@@ -1201,9 +1201,9 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `uid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `gid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Changes the ownership of a file.
+Изменяет владельца файла.
 
 ### `fsPromises.copyFile(src, dest[, mode])`
 
@@ -1212,8 +1212,8 @@ added: v10.0.0
 changes:
   - version: v14.0.0
     pr-url: https://github.com/nodejs/node/pull/27044
-    description: Changed `flags` argument to `mode` and imposed
-                 stricter type validation.
+    description: Аргумент `flags` изменён на `mode`, а проверка типов
+                 стала строже.
 -->
 
 Добавлено в: v10.0.0
@@ -1222,19 +1222,19 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
+    | v14.0.0 | Аргумент `flags` изменён на `mode`, а проверка типов стала строже. |
 
--   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) source filename to copy
--   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) destination filename of the copy operation
--   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional modifiers that specify the behavior of the copy operation. It is possible to create a mask consisting of the bitwise OR of two or more values (e.g. `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`) **По умолчанию:** `0`.
-    -   `fs.constants.COPYFILE_EXCL`: The copy operation will fail if `dest` already exists.
-    -   `fs.constants.COPYFILE_FICLONE`: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then a fallback copy mechanism is used.
-    -   `fs.constants.COPYFILE_FICLONE_FORCE`: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then the operation will fail.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Имя исходного файла для копирования
+-   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Имя файла назначения для операции копирования
+-   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательные модификаторы, задающие поведение операции копирования. Можно создать маску, состоящую из побитового ИЛИ двух или более значений (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`) **По умолчанию:** `0`.
+    -   `fs.constants.COPYFILE_EXCL`: Операция копирования завершится ошибкой, если `dest` уже существует.
+    -   `fs.constants.COPYFILE_FICLONE`: Операция копирования попытается создать reflink по схеме copy-on-write. Если платформа не поддерживает copy-on-write, будет использован резервный механизм копирования.
+    -   `fs.constants.COPYFILE_FICLONE_FORCE`: Операция копирования попытается создать reflink по схеме copy-on-write. Если платформа не поддерживает copy-on-write, операция завершится ошибкой.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Asynchronously copies `src` to `dest`. By default, `dest` is overwritten if it already exists.
+Асинхронно копирует `src` в `dest`. По умолчанию `dest` будет перезаписан, если уже существует.
 
-No guarantees are made about the atomicity of the copy operation. If an error occurs after the destination file has been opened for writing, an attempt will be made to remove the destination.
+Никаких гарантий атомарности операции копирования не даётся. Если после открытия файла назначения для записи произойдёт ошибка, будет предпринята попытка удалить файл назначения.
 
 === "MJS"
 
@@ -1264,19 +1264,19 @@ added: v16.7.0
 changes:
   - version: v22.3.0
     pr-url: https://github.com/nodejs/node/pull/53127
-    description: This API is no longer experimental.
+    description: Этот API больше не является экспериментальным.
   - version:
     - v20.1.0
     - v18.17.0
     pr-url: https://github.com/nodejs/node/pull/47084
-    description: Accept an additional `mode` option to specify
-                 the copy behavior as the `mode` argument of `fs.copyFile()`.
+    description: Принимает дополнительную опцию `mode`, чтобы задавать
+                 поведение копирования так же, как аргумент `mode` у `fs.copyFile()`.
   - version:
     - v17.6.0
     - v16.15.0
     pr-url: https://github.com/nodejs/node/pull/41819
-    description: Accepts an additional `verbatimSymlinks` option to specify
-                 whether to perform path resolution for symlinks.
+    description: Принимает дополнительную опцию `verbatimSymlinks`, чтобы задавать,
+                 нужно ли выполнять разрешение пути для символических ссылок.
 -->
 
 Добавлено в: v16.7.0
@@ -1286,28 +1286,28 @@ changes:
     | Версия | Изменения |
     | --- | --- |
     | v22.3.0 | Этот API больше не является экспериментальным. |
-    | v20.1.0, v18.17.0 | Примите дополнительную опцию `mode`, чтобы указать поведение копирования в качестве аргумента `mode` функции `fs.copyFile()`. |
+    | v20.1.0, v18.17.0 | Принимает дополнительную опцию `mode`, чтобы задавать поведение копирования так же, как аргумент `mode` у `fs.copyFile()`. |
     | v17.6.0, v16.15.0 | Принимает дополнительную опцию `verbatimSymlinks`, чтобы указать, следует ли выполнять разрешение пути для символических ссылок. |
 
--   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) source path to copy.
--   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) destination path to copy to.
+-   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Исходный путь для копирования.
+-   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Путь назначения для копирования.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `dereference` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) dereference symlinks. **По умолчанию:** `false`.
-    -   `errorOnExist` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) when `force` is `false`, and the destination exists, throw an error. **По умолчанию:** `false`.
-    -   `filter` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Function to filter copied files/directories. Return `true` to copy the item, `false` to ignore it. When ignoring a directory, all of its contents will be skipped as well. Can also return a `Promise` that resolves to `true` or `false` **По умолчанию:** `undefined`.
-        -   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) source path to copy.
-        -   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) destination path to copy to.
-        -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) A value that is coercible to `boolean` or a `Promise` that fulfils with such value.
-    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) overwrite existing file or directory. The copy operation will ignore errors if you set this to false and the destination exists. Use the `errorOnExist` option to change this behavior. **По умолчанию:** `true`.
-    -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fsPromises.copyFile()`](#fspromisescopyfilesrc-dest-mode).
-    -   `preserveTimestamps` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true` timestamps from `src` will be preserved. **По умолчанию:** `false`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
-    -   `verbatimSymlinks` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+    -   `dereference` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разыменовывать символические ссылки. **По умолчанию:** `false`.
+    -   `errorOnExist` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `force` равно `false` и место назначения существует, выбрасывать ошибку. **По умолчанию:** `false`.
+    -   `filter` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для фильтрации копируемых файлов и каталогов. Верните `true`, чтобы скопировать элемент, и `false`, чтобы его проигнорировать. Если игнорируется каталог, всё его содержимое также будет пропущено. Может также возвращать `Promise`, который разрешается в `true` или `false` **По умолчанию:** `undefined`.
+        -   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходный путь для копирования.
+        -   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь назначения для копирования.
+        -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Значение, приводимое к `boolean`, либо `Promise`, который исполняется таким значением.
+    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Перезаписывать существующий файл или каталог. Операция копирования будет игнорировать ошибки, если установить `false`, а место назначения уже существует. Используйте опцию `errorOnExist`, чтобы изменить это поведение. **По умолчанию:** `true`.
+    -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Модификаторы операции копирования. **По умолчанию:** `0`. См. флаг `mode` у [`fsPromises.copyFile()`](#fspromisescopyfilesrc-dest-mode).
+    -   `preserveTimestamps` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, временные метки из `src` будут сохранены. **По умолчанию:** `false`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Копировать каталоги рекурсивно. **По умолчанию:** `false`
+    -   `verbatimSymlinks` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, разрешение путей для символических ссылок будет пропущено. **По умолчанию:** `false`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Asynchronously copies the entire directory structure from `src` to `dest`, including subdirectories and files.
+Асинхронно копирует всю структуру каталога из `src` в `dest`, включая подкаталоги и файлы.
 
-When copying a directory to another directory, globs are not supported and behavior is similar to `cp dir1/ dir2/`.
+При копировании одного каталога в другой globs не поддерживаются, а поведение аналогично `cp dir1/ dir2/`.
 
 ### `fsPromises.glob(pattern[, options])`
 
@@ -1318,20 +1318,20 @@ changes:
       - v24.1.0
       - v22.17.0
     pr-url: https://github.com/nodejs/node/pull/58182
-    description: Add support for `URL` instances for `cwd` option.
+    description: Добавлена поддержка экземпляров `URL` для опции `cwd`.
   - version:
       - v24.0.0
       - v22.17.0
     pr-url: https://github.com/nodejs/node/pull/57513
-    description: Marking the API stable.
+    description: API отмечен как стабильный.
   - version:
     - v23.7.0
     - v22.14.0
     pr-url: https://github.com/nodejs/node/pull/56489
-    description: Add support for `exclude` option to accept glob patterns.
+    description: Добавлена поддержка glob-шаблонов в опции `exclude`.
   - version: v22.2.0
     pr-url: https://github.com/nodejs/node/pull/52837
-    description: Add support for `withFileTypes` as an option.
+    description: Добавлена поддержка опции `withFileTypes`.
 -->
 
 Добавлено в: v22.0.0
@@ -1350,7 +1350,7 @@ changes:
     -   `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) current working directory. **По умолчанию:** `process.cwd()`
     -   `exclude` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Function to filter out files/directories or a list of glob patterns to be excluded. If a function is provided, return `true` to exclude the item, `false` to include it. **По умолчанию:** `undefined`. If a string array is provided, each string should be a glob pattern that specifies paths to exclude. Note: Negation patterns (e.g., '!foo.js') are not supported.
     -   `withFileTypes` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` if the glob should return paths as Dirents, `false` otherwise. **По умолчанию:** `false`.
--   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) An AsyncIterator that yields the paths of files that match the pattern.
+-   Возвращает: [`<AsyncIterator>`](https://tc39.es/ecma262/#sec-asynciterator-interface) An AsyncIterator that yields the paths of files that match the pattern.
 
 === "MJS"
 
@@ -1378,15 +1378,15 @@ changes:
 deprecated: v10.0.0
 -->
 
-> Stability: 0 - Deprecated
+!!!danger "Стабильность: 0 - устарело или набрало много негативных отзывов"
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Changes the permissions on a symbolic link.
+Изменяет права доступа символической ссылки.
 
-This method is only implemented on macOS.
+Этот метод реализован только в macOS.
 
 ### `fsPromises.lchown(path, uid, gid)`
 
@@ -1409,9 +1409,9 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `uid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `gid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Changes the ownership on a symbolic link.
+Изменяет владельца символической ссылки.
 
 ### `fsPromises.lutimes(path, atime, mtime)`
 
@@ -1424,9 +1424,9 @@ added:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `atime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   `mtime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Changes the access and modification times of a file in the same way as [`fsPromises.utimes()`](#fspromisesutimespath-atime-mtime), with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
+Изменяет время доступа и модификации файла так же, как [`fsPromises.utimes()`](#fspromisesutimespath-atime-mtime), с той разницей, что если путь указывает на символическую ссылку, то разыменование не выполняется: вместо этого изменяются временные метки самой символической ссылки.
 
 ### `fsPromises.link(existingPath, newPath)`
 
@@ -1461,10 +1461,10 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the [fs.Stats](fs.md#fsstats) object for the given symbolic link `path`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [fs.Stats](fs.md#fsstats) для указанной символической ссылки `path`.
 
-Equivalent to [`fsPromises.stat()`](#fspromisesstatpath-options) unless `path` refers to a symbolic link, in which case the link itself is stat-ed, not the file that it refers to. Refer to the POSIX lstat(2) document for more detail.
+Эквивалентен [`fsPromises.stat()`](#fspromisesstatpath-options), если только `path` не указывает на символическую ссылку. В этом случае статистика берётся для самой ссылки, а не для файла, на который она указывает. Подробнее см. документацию POSIX `lstat(2)`.
 
 ### `fsPromises.mkdir(path[, options])`
 
@@ -1475,12 +1475,12 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][file modes] for more details. **По умолчанию:** `0o777`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Upon success, fulfills with `undefined` if `recursive` is `false`, or the first directory path created if `recursive` is `true`.
+    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) не поддерживается в Windows. Подробнее см. [Режимы файла](#file-modes). **По умолчанию:** `0o777`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`, если `recursive` равно `false`, или с путём первого созданного каталога, если `recursive` равно `true`.
 
-Asynchronously creates a directory.
+Асинхронно создаёт каталог.
 
-The optional `options` argument can be an integer specifying `mode` (permission and sticky bits), or an object with a `mode` property and a `recursive` property indicating whether parent directories should be created. Calling `fsPromises.mkdir()` when `path` is a directory that exists results in a rejection only when `recursive` is false.
+Необязательный аргумент `options` может быть целым числом, задающим `mode` (права доступа и sticky-биты), либо объектом со свойствами `mode` и `recursive`, указывающим, нужно ли создавать родительские каталоги. Вызов `fsPromises.mkdir()` с `path`, который уже существует как каталог, приводит к отклонению промиса только когда `recursive` равно `false`.
 
 === "MJS"
 
@@ -1543,11 +1543,11 @@ changes:
 -   `prefix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a string containing the file system path of the newly created temporary directory.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется строкой, содержащей путь файловой системы к только что созданному временному каталогу.
 
-Creates a unique temporary directory. A unique directory name is generated by appending six random characters to the end of the provided `prefix`. Due to platform inconsistencies, avoid trailing `X` characters in `prefix`. Some platforms, notably the BSDs, can return more than six random characters, and replace trailing `X` characters in `prefix` with random characters.
+Создаёт уникальный временный каталог. Уникальное имя каталога формируется добавлением шести случайных символов в конец переданного `prefix`. Из-за различий между платформами избегайте завершающих символов `X` в `prefix`. Некоторые платформы, особенно BSD, могут возвращать более шести случайных символов и заменять завершающие `X` в `prefix` случайными символами.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим используемую кодировку символов.
 
 === "MJS"
 
@@ -1563,7 +1563,7 @@ The optional `options` argument can be a string specifying an encoding, or an ob
     }
     ```
 
-The `fsPromises.mkdtemp()` method will append the six randomly selected characters directly to the `prefix` string. For instance, given a directory `/tmp`, if the intention is to create a temporary directory _within_ `/tmp`, the `prefix` must end with a trailing platform-specific path separator (`require('node:path').sep`).
+Метод `fsPromises.mkdtemp()` добавляет шесть случайно выбранных символов непосредственно к строке `prefix`. Например, если дан каталог `/tmp` и требуется создать временный каталог _внутри_ `/tmp`, `prefix` должен заканчиваться завершающим платформенно-зависимым разделителем пути (`require('node:path').sep`).
 
 ### `fsPromises.mkdtempDisposable(prefix[, options])`
 
@@ -1574,20 +1574,20 @@ added: v24.4.0
 -   `prefix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a Promise for an async-disposable Object:
-    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The path of the created directory.
-    -   `remove` [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) A function which removes the created directory.
-    -   `[Symbol.asyncDispose]` [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) The same as `remove`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется промисом для асинхронно освобождаемого объекта:
+    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь созданного каталога
+    -   `remove` [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) функция, удаляющая созданный каталог
+    -   `[Symbol.asyncDispose]` [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) то же самое, что `remove`
 
-The resulting Promise holds an async-disposable object whose `path` property holds the created directory path. When the object is disposed, the directory and its contents will be removed asynchronously if it still exists. If the directory cannot be deleted, disposal will throw an error. The object has an async `remove()` method which will perform the same task.
+Возвращаемый промис содержит асинхронно освобождаемый объект, чьё свойство `path` хранит путь к созданному каталогу. При освобождении объекта каталог и его содержимое будут удалены асинхронно, если они всё ещё существуют. Если каталог не удаётся удалить, освобождение завершится ошибкой. У объекта есть асинхронный метод `remove()`, выполняющий ту же задачу.
 
-Both this function and the disposal function on the resulting object are async, so it should be used with `await` + `await using` as in `await using dir = await fsPromises.mkdtempDisposable('prefix')`.
+И эта функция, и функция освобождения у возвращаемого объекта являются асинхронными, поэтому использовать их следует через `await` + `await using`, например: `await using dir = await fsPromises.mkdtempDisposable('prefix')`.
 
 <!-- TODO: link MDN docs for disposables once https://github.com/mdn/content/pull/38027 lands -->
 
 For detailed information, see the documentation of [`fsPromises.mkdtemp()`](#fspromisesmkdtempprefix-options).
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим используемую кодировку символов.
 
 ### `fsPromises.open(path, flags[, mode])`
 
@@ -1608,15 +1608,15 @@ changes:
     | v11.1.0 | Аргумент `flags` теперь является необязательным и по умолчанию имеет значение `r`. |
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   `flags` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'r'`.
--   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Sets the file mode (permission and sticky bits) if the file is created. See [File modes][file modes] for more details. **По умолчанию:** `0o666` (readable and writable)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a [FileHandle](#filehandle) object.
+--   `flags` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) см. [поддержку файловых `flags`](#file-system-flags). **По умолчанию:** `'r'`.
+-   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) задаёт режим файла (права доступа и sticky-биты), если файл создаётся. Подробнее см. [Режимы файла](#file-modes). **По умолчанию:** `0o666` (доступен для чтения и записи)
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [FileHandle](#filehandle).
 
-Opens a [FileHandle](#filehandle).
+Открывает [FileHandle](#filehandle).
 
-Refer to the POSIX open(2) documentation for more detail.
+Подробнее см. документацию POSIX `open(2)`.
 
-Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][naming files, paths, and namespaces]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
+Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file). Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this Microsoft Learn page](https://learn.microsoft.com/en-us/windows/win32/fileio/using-streams).
 
 ### `fsPromises.opendir(path[, options])`
 
@@ -1647,9 +1647,9 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
-    -   `bufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Number of directory entries that are buffered internally when reading from the directory. Higher values lead to better performance but higher memory usage. **По умолчанию:** `32`
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Resolved `Dir` will be an [AsyncIterable](https://tc39.github.io/ecma262/#sec-asynciterable-interface) containing all sub files and directories. **По умолчанию:** `false`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with an [fs.Dir](fs.md#class-fsdir).
+    -   `bufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) число записей каталога, внутренне буферизуемых при чтении. Более высокие значения улучшают производительность, но увеличивают потребление памяти. **По умолчанию:** `32`
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) возвращаемый `Dir` будет [AsyncIterable](https://tc39.es/ecma262/#sec-asynciterable-interface), содержащим все вложенные файлы и каталоги. **По умолчанию:** `false`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [fs.Dir](fs.md#class-fsdir).
 
 Асинхронно открывает каталог для последовательного обхода. Подробнее см. POSIX opendir(3).
 
@@ -1657,7 +1657,7 @@ changes:
 
 Опция `encoding` задаёт кодировку для `path` при открытии и дальнейших операциях чтения.
 
-Example using async iteration:
+Пример использования асинхронной итерации:
 
 === "MJS"
 
@@ -1673,7 +1673,7 @@ Example using async iteration:
     }
     ```
 
-When using the async iterator, the [fs.Dir](fs.md#class-fsdir) object will be automatically closed after the iterator exits.
+При использовании асинхронного итератора объект [fs.Dir](fs.md#class-fsdir) будет автоматически закрыт после завершения итерации.
 
 ### `fsPromises.readdir(path[, options])`
 
@@ -1703,14 +1703,14 @@ changes:
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
     -   `withFileTypes` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, reads the contents of a directory recursively. In recursive mode, it will list all files, sub files, and directories. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with an array of the names of the files in the directory excluding `'.'` and `'..'`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, читает содержимое каталога рекурсивно. В рекурсивном режиме будут перечислены все файлы, вложенные файлы и каталоги. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется массивом имён файлов каталога, исключая `'.'` и `'..'`.
 
-Reads the contents of a directory.
+Читает содержимое каталога.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the filenames. If the `encoding` is set to `'buffer'`, the filenames returned will be passed as [Buffer](buffer.md#buffer) objects.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим кодировку имён файлов. Если `encoding` установлено в `'buffer'`, возвращаемые имена файлов будут объектами [Buffer](buffer.md#buffer).
 
-If `options.withFileTypes` is set to `true`, the returned array will contain [fs.Dirent](fs.md#fsdirent) objects.
+Если `options.withFileTypes` установлено в `true`, возвращаемый массив будет содержать объекты [fs.Dirent](fs.md#fsdirent).
 
 === "MJS"
 
@@ -1751,18 +1751,18 @@ changes:
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
     -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'r'`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) allows aborting an in-progress readFile
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the contents of the file.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет прервать выполняющийся `readFile`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется содержимым файла.
 
-Asynchronously reads the entire contents of a file.
+Асинхронно читает всё содержимое файла.
 
-If no encoding is specified (using `options.encoding`), the data is returned as a [Buffer](buffer.md#buffer) object. Otherwise, the data will be a string.
+Если кодировка не указана (через `options.encoding`), данные возвращаются как объект [Buffer](buffer.md#buffer). В противном случае это будет строка.
 
 Если `options` — строка, она задаёт кодировку.
 
-When the `path` is a directory, the behavior of `fsPromises.readFile()` is platform-specific. On macOS, Linux, and Windows, the promise will be rejected with an error. On FreeBSD, a representation of the directory's contents will be returned.
+Если `path` указывает на каталог, поведение `fsPromises.readFile()` зависит от платформы. В macOS, Linux и Windows промис будет отклонён с ошибкой. В FreeBSD будет возвращено представление содержимого каталога.
 
-An example of reading a `package.json` file located in the same directory of the running code:
+Пример чтения файла `package.json`, расположенного в том же каталоге, что и выполняемый код:
 
 === "MJS"
 
@@ -1794,7 +1794,7 @@ An example of reading a `package.json` file located in the same directory of the
     logFile();
     ```
 
-It is possible to abort an ongoing `readFile` using an [AbortSignal](globals.md#abortsignal). If a request is aborted the promise returned is rejected with an `AbortError`:
+Текущий `readFile` можно прервать с помощью [AbortSignal](globals.md#abortsignal). Если запрос прерван, возвращаемый промис отклоняется с `AbortError`:
 
 === "MJS"
 
@@ -1816,9 +1816,9 @@ It is possible to abort an ongoing `readFile` using an [AbortSignal](globals.md#
     }
     ```
 
-Aborting an ongoing request does not abort individual operating system requests but rather the internal buffering `fs.readFile` performs.
+Прерывание текущего запроса не отменяет отдельные запросы операционной системы, а лишь внутреннюю буферизацию, которую выполняет `fs.readFile`.
 
-Any specified [FileHandle](#filehandle) has to support reading.
+Любой указанный [FileHandle](#filehandle) должен поддерживать чтение.
 
 ### `fsPromises.readlink(path[, options])`
 
@@ -1829,7 +1829,7 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the `linkString` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется строкой `linkString`.
 
 Читает содержимое символьной ссылки `path`. Подробнее см. POSIX readlink(2). При успехе промис даёт строку `linkString`.
 
@@ -1844,15 +1844,15 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the resolved path upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется разрешённым путём.
 
-Determines the actual location of `path` using the same semantics as the `fs.realpath.native()` function.
+Определяет фактическое расположение `path`, используя ту же семантику, что и функция `fs.realpath.native()`.
 
-Only paths that can be converted to UTF8 strings are supported.
+Поддерживаются только пути, которые можно преобразовать в строки UTF-8.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the path. If the `encoding` is set to `'buffer'`, the path returned will be passed as a [Buffer](buffer.md#buffer) object.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим кодировку символов для пути. Если `encoding` установлено в `'buffer'`, возвращаемый путь будет передан как объект [Buffer](buffer.md#buffer).
 
-On Linux, when Node.js is linked against musl libc, the procfs file system must be mounted on `/proc` in order for this function to work. Glibc does not have this restriction.
+В Linux, когда Node.js слинкован с musl libc, для работы этой функции файловая система procfs должна быть смонтирована в `/proc`. У glibc такого ограничения нет.
 
 ### `fsPromises.rename(oldPath, newPath)`
 
@@ -1862,9 +1862,9 @@ added: v10.0.0
 
 -   `oldPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `newPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Renames `oldPath` to `newPath`.
+Переименовывает `oldPath` в `newPath`.
 
 ### `fsPromises.rmdir(path[, options])`
 
@@ -1921,14 +1921,14 @@ changes:
     | v12.10.0 | Параметры recursive, maxBusyTries и emfileWait теперь поддерживаются. |
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) в настоящий момент никаких опций не предоставляется. Раньше существовали опции `recursive`, `maxBusyTries` и `emfileWait`, но они были устаревшими и удалены. Аргумент `options` по-прежнему принимается для обратной совместимости, но не используется.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Removes the directory identified by `path`.
+Удаляет каталог, указанный в `path`.
 
-Using `fsPromises.rmdir()` on a file (not a directory) results in the promise being rejected with an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
+Использование `fsPromises.rmdir()` для файла (а не каталога) приводит к отклонению промиса с ошибкой `ENOENT` в Windows и `ENOTDIR` в POSIX.
 
-To get a behavior similar to the `rm -rf` Unix command, use [`fsPromises.rm()`](#fspromisesrmpath-options) with options `{ recursive: true, force: true }`.
+Чтобы получить поведение, аналогичное Unix-команде `rm -rf`, используйте [`fsPromises.rm()`](#fspromisesrmpath-options) с опциями `{ recursive: true, force: true }`.
 
 ### `fsPromises.rm(path[, options])`
 
@@ -1938,13 +1938,13 @@ added: v14.14.0
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, exceptions will be ignored if `path` does not exist. **По умолчанию:** `false`.
-    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If an `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY`, or `EPERM` error is encountered, Node.js will retry the operation with a linear backoff wait of `retryDelay` milliseconds longer on each try. This option represents the number of retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `0`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, perform a recursive directory removal. In recursive mode operations are retried on failure. **По умолчанию:** `false`.
-    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The amount of time in milliseconds to wait between retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `100`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, исключения игнорируются, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) если возникает ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию, линейно увеличивая ожидание на `retryDelay` миллисекунд при каждой попытке. Эта опция задаёт число повторов. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `0`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, выполняется рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при сбоях. **По умолчанию:** `false`.
+    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество миллисекунд ожидания между повторными попытками. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `100`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Removes files and directories (modeled on the standard POSIX `rm` utility).
+Удаляет файлы и каталоги (по образцу стандартной POSIX-утилиты `rm`).
 
 ### `fsPromises.stat(path[, options])`
 
@@ -1972,9 +1972,9 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
-    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether an exception will be thrown if no file system entry exists, rather than returning `undefined`. **По умолчанию:** `true`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the [fs.Stats](fs.md#fsstats) object for the given `path`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) следует ли выбрасывать исключение, если запись файловой системы не существует, вместо возврата `undefined`. **По умолчанию:** `true`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [fs.Stats](fs.md#fsstats) для указанного `path`.
 
 ### `fsPromises.statfs(path[, options])`
 
@@ -1986,8 +1986,8 @@ added:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.StatFs](fs.md#fsstatfs) object should be `bigint`. **По умолчанию:** `false`.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with the [fs.StatFs](fs.md#fsstatfs) object for the given `path`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.StatFs](fs.md#fsstatfs) иметь тип `bigint`. **По умолчанию:** `false`.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [fs.StatFs](fs.md#fsstatfs) для указанного `path`.
 
 ### `fsPromises.symlink(target, path[, type])`
 
@@ -2013,11 +2013,11 @@ changes:
 -   `target` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Creates a symbolic link.
+Создаёт символическую ссылку.
 
-The `type` argument is only used on Windows platforms and can be one of `'dir'`, `'file'`, or `'junction'`. If the `type` argument is `null`, Node.js will autodetect `target` type and use `'file'` or `'dir'`. If the `target` does not exist, `'file'` will be used. Windows junction points require the destination path to be absolute. When using `'junction'`, the `target` argument will automatically be normalized to absolute path. Junction points on NTFS volumes can only point to directories.
+Аргумент `type` используется только в Windows и может иметь одно из значений: `'dir'`, `'file'` или `'junction'`. Если `type` равен `null`, Node.js автоматически определит тип `target` и использует `'file'` или `'dir'`. Если `target` не существует, будет использовано `'file'`. Точки соединения Windows требуют, чтобы путь назначения был абсолютным. При использовании `'junction'` аргумент `target` автоматически нормализуется к абсолютному пути. Точки соединения на томах NTFS могут указывать только на каталоги.
 
 ### `fsPromises.truncate(path[, len])`
 
@@ -2029,7 +2029,7 @@ added: v10.0.0
 -   `len` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
-Truncates (shortens or extends the length) of the content at `path` to `len` bytes.
+Усекает (или увеличивает) длину содержимого по пути `path` до `len` байт.
 
 ### `fsPromises.unlink(path)`
 
@@ -2040,7 +2040,7 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
 
-If `path` refers to a symbolic link, then the link is removed without affecting the file or directory to which that link refers. If the `path` refers to a file path that is not a symbolic link, the file is deleted. Подробнее см. POSIX unlink(2).
+Если `path` указывает на символическую ссылку, ссылка будет удалена без влияния на файл или каталог, на который она указывает. Если `path` указывает на путь к файлу, который не является символической ссылкой, файл будет удалён. Подробнее см. POSIX `unlink(2)`.
 
 ### `fsPromises.utimes(path, atime, mtime)`
 
@@ -2051,14 +2051,14 @@ added: v10.0.0
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `atime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 -   `mtime` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) При успешном выполнении исполняется значением `undefined`.
 
-Change the file system timestamps of the object referenced by `path`.
+Изменяет временные метки файловой системы для объекта, на который указывает `path`.
 
-The `atime` and `mtime` arguments follow these rules:
+Аргументы `atime` и `mtime` подчиняются следующим правилам:
 
--   Values can be either numbers representing Unix epoch time, `Date`s, or a numeric string like `'123456789.0'`.
--   If the value can not be converted to a number, or is `NaN`, `Infinity`, or `-Infinity`, an `Error` will be thrown.
+-   Значениями могут быть числа, представляющие время Unix epoch, объекты `Date` или числовые строки вроде `'123456789.0'`.
+-   Если значение нельзя преобразовать в число либо это `NaN`, `Infinity` или `-Infinity`, будет выброшен `Error`.
 
 ### `fsPromises.watch(filename[, options])`
 
@@ -2070,18 +2070,18 @@ added:
 
 -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `persistent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the process should continue to run as long as files are being watched. **По умолчанию:** `true`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][caveats]). **По умолчанию:** `false`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the character encoding to be used for the filename passed to the listener. **По умолчанию:** `'utf8'`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) An [AbortSignal](globals.md#abortsignal) used to signal when the watcher should stop.
-    -   `maxQueue` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Specifies the number of events to queue between iterations of the [AsyncIterator](https://tc39.github.io/ecma262/#sec-asynciterator-interface) returned. **По умолчанию:** `2048`.
-    -   `overflow` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Either `'ignore'` or `'throw'` when there are more events to be queued than `maxQueue` allows. `'ignore'` means overflow events are dropped and a warning is emitted, while `'throw'` means to throw an exception. **По умолчанию:** `'ignore'`.
-    -   `ignore` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`](https://github.com/isaacs/minimatch)), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
--   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) of objects with the properties:
-    -   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The type of change
-    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | null The name of the file changed.
+    -   `persistent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, должен ли процесс продолжать работу, пока файлы отслеживаются. **По умолчанию:** `true`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, нужно ли отслеживать все подкаталоги или только текущий каталог. Применяется, когда указан каталог, и только на поддерживаемых платформах (см. [предостережения](#caveats)). **По умолчанию:** `false`.
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) задаёт кодировку символов, которая будет использоваться для имени файла, передаваемого слушателю. **По умолчанию:** `'utf8'`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) [AbortSignal](globals.md#abortsignal), используемый для указания, когда наблюдатель должен остановиться.
+    -   `maxQueue` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) задаёт число событий, которое может быть помещено в очередь между итерациями возвращаемого [AsyncIterator](https://tc39.es/ecma262/#sec-asynciterator-interface). **По умолчанию:** `2048`.
+    -   `overflow` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) либо `'ignore'`, либо `'throw'`, когда событий для очереди больше, чем допускает `maxQueue`. `'ignore'` означает, что события переполнения будут отброшены и будет выдано предупреждение, а `'throw'` означает выброс исключения. **По умолчанию:** `'ignore'`.
+    -   `ignore` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) шаблоны для игнорирования. Строки являются glob-шаблонами (с использованием [`minimatch`](https://github.com/isaacs/minimatch)), шаблоны `RegExp` проверяются по имени файла, а функции получают имя файла и возвращают `true`, если его нужно игнорировать. **По умолчанию:** `undefined`.
+-   Возвращает: [`<AsyncIterator>`](https://tc39.es/ecma262/#sec-asynciterator-interface) объектов со свойствами:
+    -   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) тип изменения
+    -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | null имя изменившегося файла
 
-Returns an async iterator that watches for changes on `filename`, where `filename` is either a file or a directory.
+Возвращает асинхронный итератор, отслеживающий изменения для `filename`, где `filename` может быть как файлом, так и каталогом.
 
 ```js
 const { watch } = require('node:fs/promises');
@@ -2102,9 +2102,9 @@ setTimeout(() => ac.abort(), 10000);
 })();
 ```
 
-On most platforms, `'rename'` is emitted whenever a filename appears or disappears in the directory.
+На большинстве платформ событие `'rename'` генерируется всякий раз, когда имя файла появляется или исчезает в каталоге.
 
-All the [caveats][caveats] for `fs.watch()` also apply to `fsPromises.watch()`.
+Все [предостережения](#caveats) для `fs.watch()` также относятся к `fsPromises.watch()`.
 
 ### `fsPromises.writeFile(file, data[, options])`
 
@@ -2145,30 +2145,30 @@ changes:
     | v14.0.0 | Параметр data больше не будет принуждать неподдерживаемый ввод к строкам. |
 
 -   `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<FileHandle>`](#filehandle) filename or `FileHandle`
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<AsyncIterable>`](https://tc39.es/ecma262/#sec-asynciterable-interface) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<Stream>`](stream.md#stream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
     -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
-    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'w'`.
-    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If all data is successfully written to the file, and `flush` is `true`, `filehandle.sync()` is used to flush the data. **По умолчанию:** `false`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) allows aborting an in-progress writeFile
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with `undefined` upon success.
+    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) см. [поддержку файловых `flags`](#file-system-flags). **По умолчанию:** `'w'`.
+    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если все данные успешно записаны в файл и `flush` равно `true`, для сброса данных используется `filehandle.sync()`. **По умолчанию:** `false`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет прервать выполняющийся `writeFile`
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с `undefined`.
 
-Asynchronously writes data to a file, replacing the file if it already exists. `data` can be a string, a buffer, an [AsyncIterable](https://tc39.github.io/ecma262/#sec-asynciterable-interface), or an [Iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) object.
+Асинхронно записывает данные в файл, заменяя файл, если он уже существует. `data` может быть строкой, буфером, объектом [AsyncIterable](https://tc39.es/ecma262/#sec-asynciterable-interface) или объектом [Iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol).
 
-The `encoding` option is ignored if `data` is a buffer.
+Опция `encoding` игнорируется, если `data` является буфером.
 
 Если `options` — строка, она задаёт кодировку.
 
-The `mode` option only affects the newly created file. See [`fs.open()`](#fsopenpath-flags-mode-callback) for more details.
+Параметр `mode` влияет только на вновь создаваемый файл. Подробнее см. в [`fs.open()`](#fsopenpath-flags-mode-callback).
 
-Any specified [FileHandle](#filehandle) has to support writing.
+Любой указанный [FileHandle](#filehandle) должен поддерживать запись.
 
-It is unsafe to use `fsPromises.writeFile()` multiple times on the same file without waiting for the promise to be settled.
+Небезопасно использовать `fsPromises.writeFile()` несколько раз для одного и того же файла, не дожидаясь завершения промиса.
 
-Similarly to `fsPromises.readFile` - `fsPromises.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`](#fscreatewritestreampath-options) or [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
+Как и `fsPromises.readFile`, `fsPromises.writeFile` — это удобный метод, который внутри выполняет несколько вызовов `write`, чтобы записать переданный буфер. Для кода, чувствительного к производительности, лучше использовать [`fs.createWriteStream()`](#fscreatewritestreampath-options) или [`filehandle.createWriteStream()`](#filehandlecreatewritestreamoptions).
 
-It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fsPromises.writeFile()`. Cancelation is "best effort", and some amount of data is likely still to be written.
+Можно использовать [AbortSignal](globals.md#abortsignal), чтобы отменить `fsPromises.writeFile()`. Отмена выполняется по принципу "best effort", и некоторое количество данных, вероятно, всё равно будет записано.
 
 === "MJS"
 
@@ -2192,7 +2192,7 @@ It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fsP
     }
     ```
 
-Aborting an ongoing request does not abort individual operating system requests but rather the internal buffering `fs.writeFile` performs.
+Прерывание выполняющегося запроса не отменяет отдельные запросы операционной системы, а лишь внутреннюю буферизацию, которую выполняет `fs.writeFile`.
 
 ### `fsPromises.constants`
 
@@ -2204,13 +2204,13 @@ added:
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Returns an object containing commonly used constants for file system operations. The object is the same as `fs.constants`. See [FS constants][fs constants] for more details.
+Возвращает объект, содержащий часто используемые константы для операций файловой системы. Этот объект совпадает с `fs.constants`. Подробнее см. в разделе [Константы FS](#fs-constants).
 
-## Callback API
+## API обратных вызовов
 
-The callback APIs perform all operations asynchronously, without blocking the event loop, then invoke a callback function upon completion or error.
+API обратных вызовов выполняют все операции асинхронно, не блокируя цикл событий, а затем вызывают функцию обратного вызова при завершении или ошибке.
 
-The callback APIs use the underlying Node.js threadpool to perform file system operations off the event loop thread. These operations are not synchronized or threadsafe. Care must be taken when performing multiple concurrent modifications on the same file or data corruption may occur.
+API обратных вызовов используют базовый пул потоков Node.js для выполнения операций файловой системы вне потока цикла событий. Эти операции не синхронизированы и не являются потокобезопасными. При выполнении нескольких одновременных изменений одного и того же файла нужно соблюдать осторожность, иначе возможна порча данных.
 
 ### `fs.access(path[, mode], callback)`
 
@@ -2261,9 +2261,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
+Проверяет права пользователя на файл или каталог, указанный в `path`. Аргумент `mode` — необязательное целое число, задающее выполняемые проверки доступности. `mode` должен быть либо значением `fs.constants.F_OK`, либо маской, составленной побитовым ИЛИ из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Возможные значения `mode` см. в разделе [Константы доступа к файлам](#file-access-constants).
 
-The final argument, `callback`, is a callback function that is invoked with a possible error argument. If any of the accessibility checks fail, the error argument will be an `Error` object. The following examples check if `package.json` exists, and if it is readable or writable.
+Последний аргумент, `callback`, — это функция обратного вызова, вызываемая с возможным аргументом ошибки. Если какая-либо из проверок доступности завершается неудачей, аргумент ошибки будет объектом `Error`. В следующих примерах проверяется, существует ли `package.json` и доступен ли он для чтения или записи.
 
 === "MJS"
 
@@ -2293,7 +2293,7 @@ The final argument, `callback`, is a callback function that is invoked with a po
     });
     ```
 
-Do not use `fs.access()` to check for the accessibility of a file before calling `fs.open()`, `fs.readFile()`, or `fs.writeFile()`. Doing so introduces a race condition, since other processes may change the file's state between the two calls. Instead, user code should open/read/write the file directly and handle the error raised if the file is not accessible.
+Не используйте `fs.access()` для проверки доступности файла перед вызовом `fs.open()`, `fs.readFile()` или `fs.writeFile()`. Это создаёт состояние гонки, поскольку между двумя вызовами другой процесс может изменить состояние файла. Вместо этого код пользователя должен напрямую открывать/читать/записывать файл и обрабатывать ошибку, возникающую, если файл недоступен.
 
 **write (NOT RECOMMENDED)**
 
@@ -2406,11 +2406,11 @@ Do not use `fs.access()` to check for the accessibility of a file before calling
     });
     ```
 
-The "not recommended" examples above check for accessibility and then use the file; the "recommended" examples are better because they use the file directly and handle the error, if any.
+Примеры выше с пометкой "not recommended" сначала проверяют доступность файла, а затем используют его; примеры с пометкой "recommended" лучше, потому что работают с файлом напрямую и при необходимости обрабатывают ошибку.
 
-In general, check for the accessibility of a file only if the file will not be used directly, for example when its accessibility is a signal from another process.
+В общем случае проверяйте доступность файла только тогда, когда сам файл не будет использоваться напрямую, например если его доступность служит сигналом от другого процесса.
 
-On Windows, access-control policies (ACLs) on a directory may limit access to a file or directory. The `fs.access()` function, however, does not check the ACL and therefore may report that a path is accessible even if the ACL restricts the user from reading or writing to it.
+В Windows политики управления доступом (ACL) для каталога могут ограничивать доступ к файлу или каталогу. Однако функция `fs.access()` не проверяет ACL и потому может сообщить, что путь доступен, даже если ACL запрещает пользователю чтение или запись.
 
 ### `fs.appendFile(path, data[, options], callback)`
 
@@ -2466,9 +2466,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously append data to a file, creating the file if it does not yet exist. `data` can be a string or a [Buffer](buffer.md#buffer).
+Асинхронно добавляет данные в файл, создавая его, если он ещё не существует. `data` может быть строкой или [Buffer](buffer.md#buffer).
 
-The `mode` option only affects the newly created file. See [`fs.open()`](#fsopenpath-flags-mode-callback) for more details.
+Опция `mode` влияет только на вновь создаваемый файл. Подробнее см. [`fs.open()`](#fsopenpath-flags-mode-callback).
 
 === "MJS"
 
@@ -2491,7 +2491,7 @@ The `mode` option only affects the newly created file. See [`fs.open()`](#fsopen
     appendFile('message.txt', 'data to append', 'utf8', callback);
     ```
 
-The `path` may be specified as a numeric file descriptor that has been opened for appending (using `fs.open()` or `fs.openSync()`). The file descriptor will not be closed automatically.
+`path` может быть указан как числовой файловый дескриптор, открытый для добавления (через `fs.open()` или `fs.openSync()`). Такой файловый дескриптор не закрывается автоматически.
 
 === "MJS"
 
@@ -2559,7 +2559,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously changes the permissions of a file. No arguments other than a possible exception are given to the completion callback.
+Асинхронно изменяет права доступа к файлу. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX chmod(2).
 
@@ -2576,42 +2576,42 @@ Asynchronously changes the permissions of a file. No arguments other than a poss
 
 #### File modes
 
-The `mode` argument used in both the `fs.chmod()` and `fs.chmodSync()` methods is a numeric bitmask created using a logical OR of the following constants:
+Аргумент `mode`, используемый в методах `fs.chmod()` и `fs.chmodSync()`, представляет собой числовую битовую маску, создаваемую с помощью побитового OR следующих констант:
 
-| Constant | Octal | Description |
+| Константа | Восьмеричное значение | Описание |
 | --- | --- | --- |
-| `fs.constants.S_IRUSR` | `0o400` | read by owner |
-| `fs.constants.S_IWUSR` | `0o200` | write by owner |
-| `fs.constants.S_IXUSR` | `0o100` | execute/search by owner |
-| `fs.constants.S_IRGRP` | `0o40` | read by group |
-| `fs.constants.S_IWGRP` | `0o20` | write by group |
-| `fs.constants.S_IXGRP` | `0o10` | execute/search by group |
-| `fs.constants.S_IROTH` | `0o4` | read by others |
-| `fs.constants.S_IWOTH` | `0o2` | write by others |
-| `fs.constants.S_IXOTH` | `0o1` | execute/search by others |
+| `fs.constants.S_IRUSR` | `0o400` | чтение владельцем |
+| `fs.constants.S_IWUSR` | `0o200` | запись владельцем |
+| `fs.constants.S_IXUSR` | `0o100` | выполнение/поиск владельцем |
+| `fs.constants.S_IRGRP` | `0o40` | чтение группой |
+| `fs.constants.S_IWGRP` | `0o20` | запись группой |
+| `fs.constants.S_IXGRP` | `0o10` | выполнение/поиск группой |
+| `fs.constants.S_IROTH` | `0o4` | чтение остальными |
+| `fs.constants.S_IWOTH` | `0o2` | запись остальными |
+| `fs.constants.S_IXOTH` | `0o1` | выполнение/поиск остальными |
 
-An easier method of constructing the `mode` is to use a sequence of three octal digits (e.g. `765`). The left-most digit (`7` in the example), specifies the permissions for the file owner. The middle digit (`6` in the example), specifies permissions for the group. The right-most digit (`5` in the example), specifies the permissions for others.
+Более простой способ задать `mode` — использовать последовательность из трёх восьмеричных цифр (например, `765`). Самая левая цифра (`7` в примере) задаёт права для владельца файла. Средняя цифра (`6` в примере) задаёт права для группы. Самая правая цифра (`5` в примере) задаёт права для остальных.
 
-| Number | Description              |
-| ------ | ------------------------ |
-| `7`    | read, write, and execute |
-| `6`    | read and write           |
-| `5`    | read and execute         |
-| `4`    | read only                |
-| `3`    | write and execute        |
-| `2`    | write only               |
-| `1`    | execute only             |
-| `0`    | no permission            |
+| Число | Описание |
+| --- | --- |
+| `7` | чтение, запись и выполнение |
+| `6` | чтение и запись |
+| `5` | чтение и выполнение |
+| `4` | только чтение |
+| `3` | запись и выполнение |
+| `2` | только запись |
+| `1` | только выполнение |
+| `0` | нет прав |
 
-For example, the octal value `0o765` means:
+Например, восьмеричное значение `0o765` означает:
 
--   The owner may read, write, and execute the file.
--   The group may read and write the file.
--   Others may read and execute the file.
+-   владелец может читать, записывать и выполнять файл;
+-   группа может читать и записывать файл;
+-   остальные могут читать и выполнять файл.
 
-When using raw numbers where file modes are expected, any value larger than `0o777` may result in platform-specific behaviors that are not supported to work consistently. Therefore constants like `S_ISVTX`, `S_ISGID`, or `S_ISUID` are not exposed in `fs.constants`.
+Если использовать необработанные числа там, где ожидаются режимы файлов, любое значение больше `0o777` может приводить к платформенно-зависимому поведению, для которого не гарантируется единообразная работа. Поэтому константы вроде `S_ISVTX`, `S_ISGID` или `S_ISUID` не экспортируются через `fs.constants`.
 
-Caveats: on Windows only the write permission can be changed, and the distinction among the permissions of group, owner, or others is not implemented.
+Предостережение: в Windows можно изменить только право на запись, а различие между правами группы, владельца и остальных не реализовано.
 
 ### `fs.chown(path, uid, gid, callback)`
 
@@ -2654,7 +2654,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously changes owner and group of a file. No arguments other than a possible exception are given to the completion callback.
+Асинхронно изменяет владельца и группу файла. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX chown(2).
 
@@ -2698,9 +2698,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Closes the file descriptor. No arguments other than a possible exception are given to the completion callback.
+Закрывает файловый дескриптор. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
-Calling `fs.close()` on any file descriptor (`fd`) that is currently in use through any other `fs` operation may lead to undefined behavior.
+Вызов `fs.close()` для любого файлового дескриптора (`fd`), который в данный момент используется в какой-либо другой операции `fs`, может привести к неопределённому поведению.
 
 Подробнее см. POSIX close(2).
 
@@ -2729,19 +2729,19 @@ changes:
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
     | v14.0.0 | Аргумент flags изменен на mode и введена более строгая проверка типов. |
 
--   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) source filename to copy
--   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) destination filename of the copy operation
--   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`.
+-   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) имя исходного файла для копирования
+-   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) имя целевого файла операции копирования
+-   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) модификаторы операции копирования. **По умолчанию:** `0`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously copies `src` to `dest`. By default, `dest` is overwritten if it already exists. No arguments other than a possible exception are given to the callback function. Node.js makes no guarantees about the atomicity of the copy operation. If an error occurs after the destination file has been opened for writing, Node.js will attempt to remove the destination.
+Асинхронно копирует `src` в `dest`. По умолчанию `dest` будет перезаписан, если он уже существует. В callback не передаются никакие аргументы, кроме возможного исключения. Node.js не даёт никаких гарантий атомарности операции копирования. Если ошибка возникает после открытия целевого файла для записи, Node.js попытается удалить его.
 
-`mode` is an optional integer that specifies the behavior of the copy operation. It is possible to create a mask consisting of the bitwise OR of two or more values (e.g. `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
+`mode` — необязательное целое число, задающее поведение операции копирования. Можно создать маску из двух или более значений, объединённых побитовым ИЛИ (например, `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
 
--   `fs.constants.COPYFILE_EXCL`: The copy operation will fail if `dest` already exists.
--   `fs.constants.COPYFILE_FICLONE`: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then a fallback copy mechanism is used.
--   `fs.constants.COPYFILE_FICLONE_FORCE`: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then the operation will fail.
+-   `fs.constants.COPYFILE_EXCL`: операция копирования завершится ошибкой, если `dest` уже существует.
+-   `fs.constants.COPYFILE_FICLONE`: операция копирования попытается создать reflink с копированием по записи. Если платформа не поддерживает copy-on-write, используется запасной механизм копирования.
+-   `fs.constants.COPYFILE_FICLONE_FORCE`: операция копирования попытается создать reflink с копированием по записи. Если платформа не поддерживает copy-on-write, операция завершится ошибкой.
 
 === "MJS"
 
@@ -2805,19 +2805,19 @@ changes:
     -   `errorOnExist` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) when `force` is `false`, and the destination exists, throw an error. **По умолчанию:** `false`.
     -   `filter` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Function to filter copied files/directories. Return `true` to copy the item, `false` to ignore it. When ignoring a directory, all of its contents will be skipped as well. Can also return a `Promise` that resolves to `true` or `false` **По умолчанию:** `undefined`.
         -   `src` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) source path to copy.
-        -   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) destination path to copy to.
-        -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) A value that is coercible to `boolean` or a `Promise` that fulfils with such value.
-    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) overwrite existing file or directory. The copy operation will ignore errors if you set this to false and the destination exists. Use the `errorOnExist` option to change this behavior. **По умолчанию:** `true`.
-    -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`. See `mode` flag of [`fs.copyFile()`](#fscopyfilesrc-dest-mode-callback).
-    -   `preserveTimestamps` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true` timestamps from `src` will be preserved. **По умолчанию:** `false`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
-    -   `verbatimSymlinks` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
+        -   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь назначения для копирования
+        -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) значение, приводимое к `boolean`, либо `Promise`, который выполняется таким значением
+    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) перезаписывать существующий файл или каталог. Если установить `false` и назначение уже существует, операция копирования будет игнорировать ошибки. Чтобы изменить это поведение, используйте опцию `errorOnExist`. **По умолчанию:** `true`.
+    -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) модификаторы операции копирования. **По умолчанию:** `0`. См. флаг `mode` у [`fs.copyFile()`](#fscopyfilesrc-dest-mode-callback).
+    -   `preserveTimestamps` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, временные метки из `src` будут сохранены. **По умолчанию:** `false`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) копировать каталоги рекурсивно. **По умолчанию:** `false`
+    -   `verbatimSymlinks` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, разрешение путей для символических ссылок будет пропущено. **По умолчанию:** `false`
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously copies the entire directory structure from `src` to `dest`, including subdirectories and files.
+Асинхронно копирует всю структуру каталогов из `src` в `dest`, включая подкаталоги и файлы.
 
-When copying a directory to another directory, globs are not supported and behavior is similar to `cp dir1/ dir2/`.
+При копировании одного каталога в другой glob-шаблоны не поддерживаются, а поведение аналогично `cp dir1/ dir2/`.
 
 ### `fs.createReadStream(path[, options])`
 
@@ -2899,15 +2899,15 @@ changes:
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) | null **По умолчанию:** `null`
 -   Возвращает: [`<fs.ReadStream>`](fs.md#class-fsreadstream)
 
-`options` can include `start` and `end` values to read a range of bytes from the file instead of the entire file. Both `start` and `end` are inclusive and start counting at 0, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)] range. If `fd` is specified and `start` is omitted or `undefined`, `fs.createReadStream()` reads sequentially from the current file position. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
+`options` может включать значения `start` и `end`, чтобы читать диапазон байтов файла, а не весь файл целиком. И `start`, и `end` включаются в диапазон, отсчёт начинается с 0, допустимые значения находятся в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)]. Если указан `fd`, а `start` опущен или равен `undefined`, `fs.createReadStream()` читает последовательно от текущей позиции в файле. `encoding` может быть любым из значений, принимаемых [Buffer](buffer.md#buffer).
 
-If `fd` is specified, `ReadStream` will ignore the `path` argument and will use the specified file descriptor. This means that no `'open'` event will be emitted. `fd` should be blocking; non-blocking `fd`s should be passed to [net.Socket](net.md#class-netsocket).
+Если указан `fd`, `ReadStream` игнорирует аргумент `path` и использует переданный файловый дескриптор. Это означает, что событие `'open'` сгенерировано не будет. `fd` должен быть блокирующим; неблокирующие `fd` следует передавать в [net.Socket](net.md#class-netsocket).
 
-If `fd` points to a character device that only supports blocking reads (such as keyboard or sound card), read operations do not finish until data is available. This can prevent the process from exiting and the stream from closing naturally.
+Если `fd` указывает на символьное устройство, поддерживающее только блокирующее чтение (например, клавиатуру или звуковую карту), операции чтения не завершаются, пока данные не станут доступны. Это может помешать завершению процесса и естественному закрытию потока.
 
-By default, the stream will emit a `'close'` event after it has been destroyed. Set the `emitClose` option to `false` to change this behavior.
+По умолчанию поток генерирует событие `'close'` после уничтожения. Чтобы изменить это поведение, установите опцию `emitClose` в `false`.
 
-By providing the `fs` option, it is possible to override the corresponding `fs` implementations for `open`, `read`, and `close`. When providing the `fs` option, an override for `read` is required. If no `fd` is provided, an override for `open` is also required. If `autoClose` is `true`, an override for `close` is also required.
+Через опцию `fs` можно переопределить соответствующие реализации `fs` для `open`, `read` и `close`. При передаче опции `fs` переопределение `read` обязательно. Если `fd` не указан, обязательно также переопределение `open`. Если `autoClose` равно `true`, обязательно также переопределение `close`.
 
 === "MJS"
 
@@ -2928,11 +2928,11 @@ By providing the `fs` option, it is possible to override the corresponding `fs` 
     }, 100);
     ```
 
-If `autoClose` is false, then the file descriptor won't be closed, even if there's an error. It is the application's responsibility to close it and make sure there's no file descriptor leak. If `autoClose` is set to true (default behavior), on `'error'` or `'end'` the file descriptor will be closed automatically.
+Если `autoClose` равно `false`, файловый дескриптор не будет закрыт даже при ошибке. Приложение само отвечает за его закрытие и за отсутствие утечек файловых дескрипторов. Если `autoClose` установлено в `true` (поведение по умолчанию), при `'error'` или `'end'` файловый дескриптор будет закрыт автоматически.
 
 `mode` sets the file mode (permission and sticky bits), but only if the file was created.
 
-An example to read the last 10 bytes of a file which is 100 bytes long:
+Пример чтения последних 10 байтов файла длиной 100 байтов:
 
 === "MJS"
 
@@ -3025,18 +3025,18 @@ changes:
     -   `fs` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | null **По умолчанию:** `null`
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) | null **По умолчанию:** `null`
     -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `16384`
-    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, the underlying file descriptor is flushed prior to closing it. **По умолчанию:** `false`.
+    -   `flush` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, базовый файловый дескриптор будет сброшен перед закрытием. **По умолчанию:** `false`.
 -   Возвращает: [`<fs.WriteStream>`](fs.md#fswritestream)
 
-`options` may also include a `start` option to allow writing data at some position past the beginning of the file, allowed values are in the \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)] range. Modifying a file rather than replacing it may require the `flags` option to be set to `r+` rather than the default `w`. The `encoding` can be any one of those accepted by [Buffer](buffer.md#buffer).
+`options` также может включать опцию `start`, позволяющую писать данные в некоторую позицию после начала файла; допустимые значения лежат в диапазоне \[0, [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)]. Чтобы изменять файл, а не заменять его, может потребоваться установить `flags` в `r+`, а не использовать значение по умолчанию `w`. `encoding` может быть любым из значений, принимаемых [Buffer](buffer.md#buffer).
 
-If `autoClose` is set to true (default behavior) on `'error'` or `'finish'` the file descriptor will be closed automatically. If `autoClose` is false, then the file descriptor won't be closed, even if there's an error. It is the application's responsibility to close it and make sure there's no file descriptor leak.
+Если `autoClose` установлено в `true` (поведение по умолчанию), при `'error'` или `'finish'` файловый дескриптор будет закрыт автоматически. Если `autoClose` равно `false`, файловый дескриптор не будет закрыт даже при ошибке. Приложение само отвечает за его закрытие и за отсутствие утечек файловых дескрипторов.
 
-By default, the stream will emit a `'close'` event after it has been destroyed. Set the `emitClose` option to `false` to change this behavior.
+По умолчанию поток генерирует событие `'close'` после уничтожения. Чтобы изменить это поведение, установите опцию `emitClose` в `false`.
 
-By providing the `fs` option it is possible to override the corresponding `fs` implementations for `open`, `write`, `writev`, and `close`. Overriding `write()` without `writev()` can reduce performance as some optimizations (`_writev()`) will be disabled. When providing the `fs` option, overrides for at least one of `write` and `writev` are required. If no `fd` option is supplied, an override for `open` is also required. If `autoClose` is `true`, an override for `close` is also required.
+Через опцию `fs` можно переопределить соответствующие реализации `fs` для `open`, `write`, `writev` и `close`. Переопределение `write()` без `writev()` может снизить производительность, потому что некоторые оптимизации (`_writev()`) будут отключены. При передаче опции `fs` требуется переопределить как минимум одну из функций `write` и `writev`. Если опция `fd` не передана, обязательно также переопределение `open`. Если `autoClose` равно `true`, обязательно также переопределение `close`.
 
-Like [fs.ReadStream](fs.md#class-fsreadstream), if `fd` is specified, [fs.WriteStream](fs.md#fswritestream) will ignore the `path` argument and will use the specified file descriptor. This means that no `'open'` event will be emitted. `fd` should be blocking; non-blocking `fd`s should be passed to [net.Socket](net.md#class-netsocket).
+Как и [fs.ReadStream](fs.md#class-fsreadstream), если указан `fd`, [fs.WriteStream](fs.md#fswritestream) игнорирует аргумент `path` и использует переданный файловый дескриптор. Это означает, что событие `'open'` сгенерировано не будет. `fd` должен быть блокирующим; неблокирующие `fd` следует передавать в [net.Socket](net.md#class-netsocket).
 
 Если `options` — строка, она задаёт кодировку.
 
@@ -3066,13 +3066,15 @@ changes:
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
     | v7.6.0 | Параметр path может быть объектом URL WHATWG, использующим протокол file:. |
 
-> Stability: 0 - Deprecated: Use [`fs.stat()`](#fsstatpath-options-callback) or [`fs.access()`](#fsaccesspath-mode-callback) instead.
+!!!danger "Стабильность: 0 - устарело или набрало много негативных отзывов"
+
+Используйте [`fs.stat()`](#fsstatpath-options-callback) или [`fs.access()`](#fsaccesspath-mode-callback).
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `exists` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Test whether or not the element at the given `path` exists by checking with the file system. Then call the `callback` argument with either true or false:
+Проверяет через файловую систему, существует ли элемент по указанному пути `path`. Затем вызывает `callback` со значением `true` или `false`:
 
 === "MJS"
 
@@ -3084,11 +3086,11 @@ Test whether or not the element at the given `path` exists by checking with the 
     });
     ```
 
-**The parameters for this callback are not consistent with other Node.js callbacks.** Normally, the first parameter to a Node.js callback is an `err` parameter, optionally followed by other parameters. The `fs.exists()` callback has only one boolean parameter. This is one reason `fs.access()` is recommended instead of `fs.exists()`.
+**Параметры этого callback не согласованы с другими callback Node.js.** Обычно первый параметр callback в Node.js — это `err`, за которым при необходимости следуют другие параметры. Callback `fs.exists()` имеет только один логический параметр. Это одна из причин, почему вместо `fs.exists()` рекомендуется использовать `fs.access()`.
 
-If `path` is a symbolic link, it is followed. Thus, if `path` exists but points to a non-existent element, the callback will receive the value `false`.
+Если `path` является символической ссылкой, она будет разыменована. Поэтому, если `path` существует, но указывает на несуществующий элемент, callback получит значение `false`.
 
-Using `fs.exists()` to check for the existence of a file before calling `fs.open()`, `fs.readFile()`, or `fs.writeFile()` is not recommended. Doing so introduces a race condition, since other processes may change the file's state between the two calls. Instead, user code should open/read/write the file directly and handle the error raised if the file does not exist.
+Использовать `fs.exists()` для проверки существования файла перед вызовом `fs.open()`, `fs.readFile()` или `fs.writeFile()` не рекомендуется. Это создаёт состояние гонки, поскольку между двумя вызовами другой процесс может изменить состояние файла. Вместо этого код пользователя должен напрямую открывать/читать/записывать файл и обрабатывать ошибку, возникающую, если файл не существует.
 
 **write (NOT RECOMMENDED)**
 
@@ -3195,9 +3197,9 @@ Using `fs.exists()` to check for the existence of a file before calling `fs.open
     });
     ```
 
-The "not recommended" examples above check for existence and then use the file; the "recommended" examples are better because they use the file directly and handle the error, if any.
+Примеры выше с пометкой "not recommended" сначала проверяют существование файла, а затем используют его; примеры с пометкой "recommended" лучше, потому что работают с файлом напрямую и при необходимости обрабатывают ошибку.
 
-In general, check for the existence of a file only if the file won't be used directly, for example when its existence is a signal from another process.
+В общем случае проверяйте существование файла только тогда, когда сам файл не будет использоваться напрямую, например если его наличие служит сигналом от другого процесса.
 
 ### `fs.fchmod(fd, mode, callback)`
 
@@ -3234,7 +3236,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Sets the permissions on the file. No arguments other than a possible exception are given to the completion callback.
+Устанавливает права доступа к файлу. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX fchmod(2).
 
@@ -3274,7 +3276,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Sets the owner of the file. No arguments other than a possible exception are given to the completion callback.
+Устанавливает владельца файла. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX fchown(2).
 
@@ -3312,7 +3314,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Forces all currently queued I/O operations associated with the file to the operating system's synchronized I/O completion state. Refer to the POSIX fdatasync(2) documentation for details. No arguments other than a possible exception are given to the completion callback.
+Принудительно переводит все текущие поставленные в очередь операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода на уровне операционной системы. Подробнее см. документацию POSIX `fdatasync(2)`. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 ### `fs.fstat(fd[, options], callback)`
 
@@ -3351,12 +3353,12 @@ changes:
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Invokes the callback with the [fs.Stats](fs.md#fsstats) for the file descriptor.
+Вызывает callback с объектом [fs.Stats](fs.md#fsstats) для файлового дескриптора.
 
 Подробнее см. POSIX fstat(2).
 
@@ -3394,7 +3396,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Request that all data for the open file descriptor is flushed to the storage device. The specific implementation is operating system and device specific. Refer to the POSIX fsync(2) documentation for more detail. No arguments other than a possible exception are given to the completion callback.
+Запрашивает сброс всех данных открытого файлового дескриптора на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. Подробнее см. документацию POSIX `fsync(2)`. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 ### `fs.ftruncate(fd[, len], callback)`
 
@@ -3431,13 +3433,13 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Truncates the file descriptor. No arguments other than a possible exception are given to the completion callback.
+Усекает файловый дескриптор. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX ftruncate(2).
 
-If the file referred to by the file descriptor was larger than `len` bytes, only the first `len` bytes will be retained in the file.
+Если файл, на который указывает файловый дескриптор, был длиннее `len` байт, в файле будут сохранены только первые `len` байт.
 
-For example, the following program retains only the first four bytes of the file:
+Например, следующая программа сохраняет только первые четыре байта файла:
 
 === "MJS"
 
@@ -3465,9 +3467,9 @@ For example, the following program retains only the first four bytes of the file
     });
     ```
 
-If the file previously was shorter than `len` bytes, it is extended, and the extended part is filled with null bytes (`'\0'`):
+Если до этого файл был короче `len` байт, он будет расширен, а добавленная часть заполнена нулевыми байтами (`'\0'`):
 
-If `len` is negative then `0` will be used.
+Если `len` отрицательно, будет использовано значение `0`.
 
 ### `fs.futimes(fd, atime, mtime, callback)`
 
@@ -3624,9 +3626,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<AggregateError>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 
-Changes the permissions on a symbolic link. No arguments other than a possible exception are given to the completion callback.
+Изменяет права доступа символической ссылки. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
-This method is only implemented on macOS.
+Этот метод реализован только в macOS.
 
 Подробнее см. POSIX lchmod(2).
 
@@ -3670,7 +3672,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Set the owner of the symbolic link. No arguments other than a possible exception are given to the completion callback.
+Устанавливает владельца символической ссылки. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX lchown(2).
 
@@ -3700,9 +3702,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Changes the access and modification times of a file in the same way as [`fs.utimes()`](#fsutimespath-atime-mtime-callback), with the difference that if the path refers to a symbolic link, then the link is not dereferenced: instead, the timestamps of the symbolic link itself are changed.
+Изменяет время доступа и модификации файла так же, как [`fs.utimes()`](#fsutimespath-atime-mtime-callback), с той разницей, что если путь указывает на символическую ссылку, то разыменование не выполняется: вместо этого изменяются временные метки самой символической ссылки.
 
-No arguments other than a possible exception are given to the completion callback.
+В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 ### `fs.link(existingPath, newPath, callback)`
 
@@ -3745,7 +3747,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Создаёт новую жёсткую ссылку с `existingPath` на `newPath`. Подробнее см. POSIX link(2). No arguments other than a possible exception are given to the completion callback.
+Создаёт новую жёсткую ссылку с `existingPath` на `newPath`. Подробнее см. POSIX `link(2)`. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 ### `fs.lstat(path[, options], callback)`
 
@@ -3789,12 +3791,12 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Retrieves the [fs.Stats](fs.md#fsstats) for the symbolic link referred to by the path. The callback gets two arguments `(err, stats)` where `stats` is a [fs.Stats](fs.md#fsstats) object. `lstat()` is identical to `stat()`, except that if `path` is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
+Получает [fs.Stats](fs.md#fsstats) для символической ссылки, на которую указывает путь. Callback получает два аргумента `(err, stats)`, где `stats` — объект [fs.Stats](fs.md#fsstats). `lstat()` идентичен `stat()`, за исключением того, что если `path` является символической ссылкой, статистика берётся для самой ссылки, а не для файла, на который она указывает.
 
 Подробнее см. POSIX lstat(2).
 
@@ -3848,16 +3850,16 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. See [File modes][file modes] for more details. **По умолчанию:** `0o777`.
+    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) не поддерживается в Windows. Подробнее см. [Режимы файла](#file-modes). **По умолчанию:** `0o777`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
-    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Present only if a directory is created with `recursive` set to `true`.
+    -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined присутствует только если каталог создан с `recursive`, установленным в `true`
 
-Asynchronously creates a directory.
+Асинхронно создаёт каталог.
 
-The callback is given a possible exception and, if `recursive` is `true`, the first directory path created, `(err[, path])`. `path` can still be `undefined` when `recursive` is `true`, if no directory was created (for instance, if it was previously created).
+Callback получает возможное исключение и, если `recursive` равно `true`, путь к первому созданному каталогу, `(err[, path])`. `path` всё ещё может быть `undefined`, когда `recursive` равно `true`, если каталог не был создан (например, если он уже существовал).
 
-The optional `options` argument can be an integer specifying `mode` (permission and sticky bits), or an object with a `mode` property and a `recursive` property indicating whether parent directories should be created. Calling `fs.mkdir()` when `path` is a directory that exists results in an error only when `recursive` is false. If `recursive` is false and the directory exists, an `EEXIST` error occurs.
+Необязательный аргумент `options` может быть целым числом, задающим `mode` (права доступа и sticky-биты), либо объектом со свойствами `mode` и `recursive`, указывающим, нужно ли создавать родительские каталоги. Вызов `fs.mkdir()` с `path`, который уже существует как каталог, приводит к ошибке только если `recursive` равно `false`. Если `recursive` равно `false` и каталог существует, возникает ошибка `EEXIST`.
 
 === "MJS"
 
@@ -3870,7 +3872,7 @@ The optional `options` argument can be an integer specifying `mode` (permission 
     });
     ```
 
-On Windows, using `fs.mkdir()` on the root directory even with recursion will result in an error:
+В Windows использование `fs.mkdir()` для корневого каталога даже с рекурсией приведёт к ошибке:
 
 === "MJS"
 
@@ -3937,13 +3939,13 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Creates a unique temporary directory.
+Создаёт уникальный временный каталог.
 
-Generates six random characters to be appended behind a required `prefix` to create a unique temporary directory. Due to platform inconsistencies, avoid trailing `X` characters in `prefix`. Some platforms, notably the BSDs, can return more than six random characters, and replace trailing `X` characters in `prefix` with random characters.
+Генерирует шесть случайных символов, добавляемых в конец обязательного `prefix`, чтобы создать уникальный временный каталог. Из-за различий между платформами избегайте завершающих символов `X` в `prefix`. Некоторые платформы, особенно BSD, могут возвращать более шести случайных символов и заменять завершающие `X` в `prefix` случайными символами.
 
-The created directory path is passed as a string to the callback's second parameter.
+Путь к созданному каталогу передаётся строкой во второй параметр callback.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим используемую кодировку символов.
 
 === "MJS"
 
@@ -3959,7 +3961,7 @@ The optional `options` argument can be a string specifying an encoding, or an ob
     });
     ```
 
-The `fs.mkdtemp()` method will append the six randomly selected characters directly to the `prefix` string. For instance, given a directory `/tmp`, if the intention is to create a temporary directory _within_ `/tmp`, the `prefix` must end with a trailing platform-specific path separator (`require('node:path').sep`).
+Метод `fs.mkdtemp()` добавляет шесть случайно выбранных символов непосредственно к строке `prefix`. Например, если дан каталог `/tmp` и требуется создать временный каталог _внутри_ `/tmp`, `prefix` должен заканчиваться завершающим платформенно-зависимым разделителем пути (`require('node:path').sep`).
 
 === "MJS"
 
@@ -4030,15 +4032,15 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Asynchronous file open. Подробнее см. POSIX open(2).
+Асинхронное открытие файла. Подробнее см. POSIX `open(2)`.
 
-`mode` sets the file mode (permission and sticky bits), but only if the file was created. On Windows, only the write permission can be manipulated; see [`fs.chmod()`](#fschmodpath-mode-callback).
+`mode` задаёт режим файла (права доступа и sticky-биты), но только если файл был создан. В Windows можно управлять только правом на запись; см. [`fs.chmod()`](#fschmodpath-mode-callback).
 
-The callback gets two arguments `(err, fd)`.
+Callback получает два аргумента `(err, fd)`.
 
-Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces][naming files, paths, and namespaces]. Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this MSDN page][msdn-using-streams].
+Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented by [Naming Files, Paths, and Namespaces](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file). Under NTFS, if the filename contains a colon, Node.js will open a file system stream, as described by [this Microsoft Learn page](https://learn.microsoft.com/en-us/windows/win32/fileio/using-streams).
 
-Functions based on `fs.open()` exhibit this behavior as well: `fs.writeFile()`, `fs.readFile()`, etc.
+Такое же поведение наблюдается и у функций, основанных на `fs.open()`: `fs.writeFile()`, `fs.readFile()` и т. д.
 
 ### `fs.openAsBlob(path[, options])`
 
@@ -4062,12 +4064,12 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) An optional mime type for the blob.
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) upon success.
+    -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) необязательный MIME-тип для blob
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется объектом [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 
-Returns a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) whose data is backed by the given file.
+Возвращает [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), данные которого опираются на указанный файл.
 
-The file must not be modified after the [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) is created. Any modifications will cause reading the [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) data to fail with a `DOMException` error. Synchronous stat operations on the file when the `Blob` is created, and before each read in order to detect whether the file data has been modified on disk.
+Файл нельзя изменять после создания [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob). Любые изменения приведут к ошибке чтения данных [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) с `DOMException`. При создании `Blob` и перед каждым чтением выполняются синхронные операции stat над файлом, чтобы определить, были ли данные файла изменены на диске.
 
 === "MJS"
 
@@ -4126,7 +4128,7 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `'utf8'`
-    -   `bufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Number of directory entries that are buffered internally when reading from the directory. Higher values lead to better performance but higher memory usage. **По умолчанию:** `32`
+    -   `bufferSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) число записей каталога, внутренне буферизуемых при чтении. Более высокие значения улучшают производительность, но увеличивают потребление памяти. **По умолчанию:** `32`
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -4172,34 +4174,34 @@ changes:
     | v6.0.0 | Параметр length теперь может быть равен 0. |
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The buffer that the data will be written to.
--   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The position in `buffer` to write the data to.
--   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to read.
--   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null Specifies where to begin reading from in the file. If `position` is `null` or `-1 `, data will be read from the current file position, and the file position will be updated. If `position` is a non-negative integer, the file position will be unchanged.
+-   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) буфер, в который будут записаны данные
+-   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) позиция в `buffer`, в которую будут записаны данные
+-   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество байтов для чтения
+-   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null указывает, с какого места в файле начинать чтение. Если `position` равно `null` или `-1`, данные читаются с текущей позиции в файле, и позиция файла будет обновлена. Если `position` — неотрицательное целое число, позиция файла не изменится.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffer` [`<Buffer>`](buffer.md#buffer)
 
-Read data from the file specified by `fd`.
+Читает данные из файла, указанного в `fd`.
 
-The callback is given the three arguments, `(err, bytesRead, buffer)`.
+Callback получает три аргумента: `(err, bytesRead, buffer)`.
 
-If the file is not modified concurrently, the end-of-file is reached when the number of bytes read is zero.
+Если файл не изменяется параллельно, конец файла достигается, когда количество прочитанных байтов равно нулю.
 
 If this method is invoked as its [`util.promisify()`](util.md#utilpromisifyoriginal)ed version, it returns a promise for an `Object` with `bytesRead` and `buffer` properties.
 
-The `fs.read()` method reads data from the file specified by the file descriptor (`fd`). The `length` argument indicates the maximum number of bytes that Node.js will attempt to read from the kernel. However, the actual number of bytes read (`bytesRead`) can be lower than the specified `length` for various reasons.
+Метод `fs.read()` читает данные из файла, указанного файловым дескриптором (`fd`). Аргумент `length` указывает максимальное количество байтов, которое Node.js попытается прочитать из ядра. Однако фактическое количество прочитанных байтов (`bytesRead`) по разным причинам может быть меньше указанного `length`.
 
-For example:
+Например:
 
--   If the file is shorter than the specified `length`, `bytesRead` will be set to the actual number of bytes read.
--   If the file encounters EOF (End of File) before the buffer could be filled, Node.js will read all available bytes until EOF is encountered, and the `bytesRead` parameter in the callback will indicate the actual number of bytes read, which may be less than the specified `length`.
--   If the file is on a slow network `filesystem` or encounters any other issue during reading, `bytesRead` can be lower than the specified `length`.
+-   если файл короче указанного `length`, в `bytesRead` будет записано фактическое число прочитанных байтов;
+-   если файл достигает EOF (конца файла) до заполнения буфера, Node.js прочитает все доступные байты до EOF, а параметр `bytesRead` в callback укажет фактическое количество прочитанных байтов, которое может быть меньше заданного `length`;
+-   если файл находится в медленной сетевой файловой системе или при чтении возникает любая другая проблема, `bytesRead` может быть меньше указанного `length`.
 
-Therefore, when using `fs.read()`, it's important to check the `bytesRead` value to determine how many bytes were actually read from the file. Depending on your application logic, you may need to handle cases where `bytesRead` is lower than the specified `length`, such as by wrapping the read call in a loop if you require a minimum amount of bytes.
+Поэтому при использовании `fs.read()` важно проверять значение `bytesRead`, чтобы определить, сколько байтов действительно было прочитано из файла. В зависимости от логики приложения может потребоваться обработка случаев, когда `bytesRead` меньше указанного `length`, например через оборачивание вызова чтения в цикл, если требуется минимум определённого количества байтов.
 
-This behavior is similar to the POSIX `preadv2` function.
+Это поведение похоже на функцию POSIX `preadv2`.
 
 ### `fs.read(fd[, options], callback)`
 
@@ -4309,18 +4311,18 @@ changes:
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
     -   `withFileTypes` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, reads the contents of a directory recursively. In recursive mode, it will list all files, sub files and directories. **По умолчанию:** `false`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, читает содержимое каталога рекурсивно. В рекурсивном режиме будут перечислены все файлы, вложенные файлы и каталоги. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `files` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<fs.Dirent[]>`](fs.md#fsdirent)
 
-Reads the contents of a directory. The callback gets two arguments `(err, files)` where `files` is an array of the names of the files in the directory excluding `'.'` and `'..'`.
+Читает содержимое каталога. Callback получает два аргумента `(err, files)`, где `files` — это массив имён файлов каталога, исключая `'.'` и `'..'`.
 
 Подробнее см. POSIX readdir(3).
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the filenames passed to the callback. If the `encoding` is set to `'buffer'`, the filenames returned will be passed as [Buffer](buffer.md#buffer) objects.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим кодировку имён файлов, передаваемых в callback. Если `encoding` установлено в `'buffer'`, возвращаемые имена файлов будут объектами [Buffer](buffer.md#buffer).
 
-If `options.withFileTypes` is set to `true`, the `files` array will contain [fs.Dirent](fs.md#fsdirent) objects.
+Если `options.withFileTypes` установлено в `true`, массив `files` будет содержать объекты [fs.Dirent](fs.md#fsdirent).
 
 ### `fs.readFile(path[, options], callback)`
 
@@ -4381,13 +4383,13 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) filename or file descriptor
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null **По умолчанию:** `null`
-    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'r'`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) allows aborting an in-progress readFile
+    -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) см. [поддержку файловых `flags`](#file-system-flags). **По умолчанию:** `'r'`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет прервать выполняющийся `readFile`
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<AggregateError>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
     -   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Asynchronously reads the entire contents of a file.
+Асинхронно читает всё содержимое файла.
 
 === "MJS"
 
@@ -4400,9 +4402,9 @@ Asynchronously reads the entire contents of a file.
     });
     ```
 
-The callback is passed two arguments `(err, data)`, where `data` is the contents of the file.
+В callback передаются два аргумента `(err, data)`, где `data` — содержимое файла.
 
-If no encoding is specified, then the raw buffer is returned.
+Если кодировка не указана, возвращается исходный буфер.
 
 Если `options` — строка, она задаёт кодировку:
 
@@ -4414,7 +4416,7 @@ If no encoding is specified, then the raw buffer is returned.
     readFile('/etc/passwd', 'utf8', callback);
     ```
 
-When the path is a directory, the behavior of `fs.readFile()` and [`fs.readFileSync()`](#fsreadfilesyncpath-options) is platform-specific. On macOS, Linux, and Windows, an error will be returned. On FreeBSD, a representation of the directory's contents will be returned.
+Если путь указывает на каталог, поведение `fs.readFile()` и [`fs.readFileSync()`](#fsreadfilesyncpath-options) зависит от платформы. В macOS, Linux и Windows будет возвращена ошибка. В FreeBSD будет возвращено представление содержимого каталога.
 
 === "MJS"
 
@@ -4432,7 +4434,7 @@ When the path is a directory, the behavior of `fs.readFile()` and [`fs.readFileS
     });
     ```
 
-It is possible to abort an ongoing request using an `AbortSignal`. If a request is aborted the callback is called with an `AbortError`:
+Текущий запрос можно прервать с помощью `AbortSignal`. Если запрос прерван, callback вызывается с `AbortError`:
 
 === "MJS"
 
@@ -4448,25 +4450,25 @@ It is possible to abort an ongoing request using an `AbortSignal`. If a request 
     controller.abort();
     ```
 
-The `fs.readFile()` function buffers the entire file. To minimize memory costs, when possible prefer streaming via `fs.createReadStream()`.
+Функция `fs.readFile()` буферизует весь файл целиком. Чтобы уменьшить расходы памяти, по возможности предпочтительнее использовать потоковое чтение через `fs.createReadStream()`.
 
-Aborting an ongoing request does not abort individual operating system requests but rather the internal buffering `fs.readFile` performs.
+Прерывание выполняющегося запроса не отменяет отдельные запросы операционной системы, а лишь внутреннюю буферизацию, которую выполняет `fs.readFile`.
 
-#### File descriptors
+#### Файловые дескрипторы
 
 1. Any specified file descriptor has to support reading.
 2. If a file descriptor is specified as the `path`, it will not be closed automatically.
 3. The reading will begin at the current position. For example, if the file already had `'Hello World'` and six bytes are read with the file descriptor, the call to `fs.readFile()` with the same file descriptor, would give `'World'`, rather than `'Hello World'`.
 
-#### Performance Considerations
+#### Соображения производительности
 
-The `fs.readFile()` method asynchronously reads the contents of a file into memory one chunk at a time, allowing the event loop to turn between each chunk. This allows the read operation to have less impact on other activity that may be using the underlying libuv thread pool but means that it will take longer to read a complete file into memory.
+Метод `fs.readFile()` асинхронно читает содержимое файла в память по одному фрагменту за раз, позволяя циклу событий выполняться между чтениями отдельных фрагментов. Благодаря этому операция чтения меньше влияет на другую активность, которая также может использовать базовый пул потоков libuv, но полное чтение файла в память занимает больше времени.
 
-The additional read overhead can vary broadly on different systems and depends on the type of file being read. If the file type is not a regular file (a pipe for instance) and Node.js is unable to determine an actual file size, each read operation will load on 64 KiB of data. For regular files, each read will process 512 KiB of data.
+Дополнительные накладные расходы на чтение могут сильно различаться в разных системах и зависят от типа читаемого файла. Если файл не является обычным файлом (например, это канал) и Node.js не может определить его фактический размер, каждая операция чтения будет загружать по 64 КиБ данных. Для обычных файлов каждая операция чтения обрабатывает по 512 КиБ данных.
 
-For applications that require as-fast-as-possible reading of file contents, it is better to use `fs.read()` directly and for application code to manage reading the full contents of the file itself.
+Для приложений, которым нужно максимально быстро читать содержимое файлов, лучше использовать `fs.read()` напрямую и самостоятельно управлять чтением всего содержимого файла на уровне кода приложения.
 
-The Node.js GitHub issue [#25741][#25741] provides more information and a detailed analysis on the performance of `fs.readFile()` for multiple file sizes in different Node.js versions.
+Issue Node.js [#25741](https://github.com/nodejs/node/issues/25741) содержит дополнительную информацию и подробный анализ производительности `fs.readFile()` для файлов разных размеров в разных версиях Node.js.
 
 ### `fs.readlink(path[, options], callback)`
 
@@ -4510,11 +4512,11 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `linkString` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Reads the contents of the symbolic link referred to by `path`. The callback gets two arguments `(err, linkString)`.
+Читает содержимое символической ссылки, на которую указывает `path`. Callback получает два аргумента: `(err, linkString)`.
 
 Подробнее см. POSIX readlink(2).
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the link path passed to the callback. If the `encoding` is set to `'buffer'`, the link path returned will be passed as a [Buffer](buffer.md#buffer) object.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим кодировку символов для пути ссылки, передаваемого в callback. Если `encoding` установлено в `'buffer'`, возвращаемый путь ссылки будет передан как объект [Buffer](buffer.md#buffer).
 
 ### `fs.readv(fd, buffers[, position], callback)`
 
@@ -4544,13 +4546,13 @@ changes:
     -   `bytesRead` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffers` [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
-Read from a file specified by `fd` and write to an array of `ArrayBufferView`s using `readv()`.
+Читает данные из файла, указанного `fd`, и записывает их в массив `ArrayBufferView` с помощью `readv()`.
 
-`position` is the offset from the beginning of the file from where data should be read. If `typeof position !== 'number'`, the data will be read from the current position.
+`position` — это смещение от начала файла, с которого следует читать данные. Если `typeof position !== 'number'`, данные будут читаться с текущей позиции.
 
-The callback will be given three arguments: `err`, `bytesRead`, and `buffers`. `bytesRead` is how many bytes were read from the file.
+Callback получает три аргумента: `err`, `bytesRead` и `buffers`. `bytesRead` показывает, сколько байтов было прочитано из файла.
 
-If this method is invoked as its [`util.promisify()`](util.md#utilpromisifyoriginal)ed version, it returns a promise for an `Object` with `bytesRead` and `buffers` properties.
+Если этот метод вызывается в версии, полученной через [`util.promisify()`](util.md#utilpromisifyoriginal), он возвращает промис для объекта со свойствами `bytesRead` и `buffers`.
 
 ### `fs.realpath(path[, options], callback)`
 
@@ -4607,25 +4609,25 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `resolvedPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Asynchronously computes the canonical pathname by resolving `.`, `..`, and symbolic links.
+Асинхронно вычисляет канонический путь, разрешая `.`, `..` и символические ссылки.
 
-A canonical pathname is not necessarily unique. Hard links and bind mounts can expose a file system entity through many pathnames.
+Канонический путь не обязательно уникален. Жёсткие ссылки и bind mount могут предоставлять одну и ту же сущность файловой системы через разные пути.
 
-This function behaves like realpath(3), with some exceptions:
+Эта функция ведёт себя как `realpath(3)`, за некоторыми исключениями:
 
-1. No case conversion is performed on case-insensitive file systems.
+1.  На файловых системах без учёта регистра преобразование регистра не выполняется.
 
-2. The maximum number of symbolic links is platform-independent and generally (much) higher than what the native realpath(3) implementation supports.
+2.  Максимальное число символических ссылок не зависит от платформы и обычно значительно больше, чем поддерживает нативная реализация `realpath(3)`.
 
-The `callback` gets two arguments `(err, resolvedPath)`. May use `process.cwd` to resolve relative paths.
+Callback получает два аргумента: `(err, resolvedPath)`. Для разрешения относительных путей может использоваться `process.cwd`.
 
-Only paths that can be converted to UTF8 strings are supported.
+Поддерживаются только пути, которые можно преобразовать в строки UTF-8.
 
 The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the path passed to the callback. If the `encoding` is set to `'buffer'`, the path returned will be passed as a [Buffer](buffer.md#buffer) object.
 
-If `path` resolves to a socket or a pipe, the function will return a system dependent name for that object.
+Если `path` разрешается в сокет или канал, функция вернёт системно-зависимое имя этого объекта.
 
-A path that does not exist results in an ENOENT error. `error.path` is the absolute file path.
+Путь, который не существует, приводит к ошибке `ENOENT`. `error.path` содержит абсолютный путь к файлу.
 
 ### `fs.realpath.native(path[, options], callback)`
 
@@ -4654,15 +4656,15 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `resolvedPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Asynchronous realpath(3).
+Асинхронная версия `realpath(3)`.
 
-The `callback` gets two arguments `(err, resolvedPath)`.
+Callback получает два аргумента: `(err, resolvedPath)`.
 
-Only paths that can be converted to UTF8 strings are supported.
+Поддерживаются только пути, которые можно преобразовать в строки UTF-8.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the path passed to the callback. If the `encoding` is set to `'buffer'`, the path returned will be passed as a [Buffer](buffer.md#buffer) object.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, определяющим кодировку символов для пути, передаваемого в callback. Если `encoding` равно `'buffer'`, возвращаемый путь будет передан как объект [Buffer](buffer.md#buffer).
 
-On Linux, when Node.js is linked against musl libc, the procfs file system must be mounted on `/proc` in order for this function to work. Glibc does not have this restriction.
+В Linux, когда Node.js слинкован с musl libc, для работы этой функции файловая система procfs должна быть смонтирована в `/proc`. У glibc этого ограничения нет.
 
 ### `fs.rename(oldPath, newPath, callback)`
 
@@ -4705,9 +4707,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously rename file at `oldPath` to the pathname provided as `newPath`. In the case that `newPath` already exists, it will be overwritten. If there is a directory at `newPath`, an error will be raised instead. No arguments other than a possible exception are given to the completion callback.
+Асинхронно переименовывает файл из `oldPath` в путь, указанный как `newPath`. Если `newPath` уже существует, он будет перезаписан. Если по `newPath` находится каталог, вместо этого будет выброшена ошибка. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
-See also: rename(2).
+См. также: `rename(2)`.
 
 === "MJS"
 
@@ -4796,15 +4798,15 @@ changes:
     | v7.0.0 | Параметр `callback` больше не является необязательным. Если его не передать, будет выдано предупреждение об устаревании с идентификатором DEP0013. |
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) в настоящий момент никаких опций не предоставляется. Раньше существовали опции `recursive`, `maxBusyTries` и `emfileWait`, но они были устаревшими и удалены. Аргумент `options` по-прежнему принимается для обратной совместимости, но не используется.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronous rmdir(2). No arguments other than a possible exception are given to the completion callback.
+Асинхронная версия `rmdir(2)`. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
-Using `fs.rmdir()` on a file (not a directory) results in an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
+Использование `fs.rmdir()` для файла (а не каталога) приводит к ошибке `ENOENT` в Windows и `ENOTDIR` в POSIX.
 
-To get a behavior similar to the `rm -rf` Unix command, use [`fs.rm()`](#fsrmpath-options-callback) with options `{ recursive: true, force: true }`.
+Чтобы получить поведение, аналогичное Unix-команде `rm -rf`, используйте [`fs.rm()`](#fsrmpath-options-callback) с опциями `{ recursive: true, force: true }`.
 
 ### `fs.rm(path[, options], callback)`
 
@@ -4829,14 +4831,14 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, exceptions will be ignored if `path` does not exist. **По умолчанию:** `false`.
-    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If an `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY`, or `EPERM` error is encountered, Node.js will retry the operation with a linear backoff wait of `retryDelay` milliseconds longer on each try. This option represents the number of retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `0`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, perform a recursive removal. In recursive mode operations are retried on failure. **По умолчанию:** `false`.
-    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The amount of time in milliseconds to wait between retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `100`.
+    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) если возникает ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию, линейно увеличивая ожидание на `retryDelay` миллисекунд при каждой попытке. Эта опция задаёт число повторов. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `0`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, выполняется рекурсивное удаление. В рекурсивном режиме операции повторяются при сбоях. **По умолчанию:** `false`.
+    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество миллисекунд ожидания между повторными попытками. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `100`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously removes files and directories (modeled on the standard POSIX `rm` utility). No arguments other than a possible exception are given to the completion callback.
+Асинхронно удаляет файлы и каталоги (по образцу стандартной POSIX-утилиты `rm`). В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 ### `fs.stat(path[, options], callback)`
 
@@ -4885,23 +4887,23 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
-    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether an exception will be thrown if no file system entry exists, rather than returning `undefined`. **По умолчанию:** `true`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) следует ли выбрасывать исключение, если запись файловой системы не существует, вместо возврата `undefined`. **По умолчанию:** `true`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `stats` [`<fs.Stats>`](fs.md#fsstats)
 
-Asynchronous stat(2). The callback gets two arguments `(err, stats)` where `stats` is an [fs.Stats](fs.md#fsstats) object.
+Асинхронная версия `stat(2)`. Callback получает два аргумента `(err, stats)`, где `stats` — объект [fs.Stats](fs.md#fsstats).
 
-In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
+В случае ошибки `err.code` будет одним из [распространённых системных ошибок](errors.md#common-system-errors).
 
 [`fs.stat()`](#fsstatpath-options-callback) follows symbolic links. Use [`fs.lstat()`](#fslstatpath-options-callback) to look at the links themselves.
 
-Using `fs.stat()` to check for the existence of a file before calling `fs.open()`, `fs.readFile()`, or `fs.writeFile()` is not recommended. Instead, user code should open/read/write the file directly and handle the error raised if the file is not available.
+Использовать `fs.stat()` для проверки существования файла перед вызовом `fs.open()`, `fs.readFile()` или `fs.writeFile()` не рекомендуется. Вместо этого пользовательский код должен напрямую открывать/читать/записывать файл и обрабатывать возникающую ошибку, если файл недоступен.
 
 To check if a file exists without manipulating it afterwards, [`fs.access()`](#fsaccesspath-mode-callback) is recommended.
 
-For example, given the following directory structure:
+Например, при следующей структуре каталогов:
 
 ```text
 - txtDir
@@ -4909,7 +4911,7 @@ For example, given the following directory structure:
 - app.js
 ```
 
-The next program will check for the stats of the given paths:
+Следующая программа проверит статистику для указанных путей:
 
 === "MJS"
 
@@ -4926,7 +4928,7 @@ The next program will check for the stats of the given paths:
     }
     ```
 
-The resulting output will resemble:
+Результирующий вывод будет примерно таким:
 
 ```console
 true
@@ -4983,14 +4985,14 @@ added:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.StatFs](fs.md#fsstatfs) object should be `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.StatFs](fs.md#fsstatfs) иметь тип `bigint`. **По умолчанию:** `false`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `stats` [`<fs.StatFs>`](fs.md#fsstatfs)
 
-Asynchronous statfs(2). Returns information about the mounted file system which contains `path`. The callback gets two arguments `(err, stats)` where `stats` is an [fs.StatFs](fs.md#fsstatfs) object.
+Асинхронная версия `statfs(2)`. Возвращает информацию о смонтированной файловой системе, содержащей `path`. Callback получает два аргумента `(err, stats)`, где `stats` — объект [fs.StatFs](fs.md#fsstatfs).
 
-In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
+В случае ошибки `err.code` будет одним из [распространённых системных ошибок](errors.md#common-system-errors).
 
 ### `fs.symlink(target, path[, type], callback)`
 
@@ -5029,13 +5031,13 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Creates the link called `path` pointing to `target`. No arguments other than a possible exception are given to the completion callback.
+Создаёт ссылку с именем `path`, указывающую на `target`. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 Подробнее см. POSIX symlink(2).
 
-The `type` argument is only available on Windows and ignored on other platforms. It can be set to `'dir'`, `'file'`, or `'junction'`. If the `type` argument is `null`, Node.js will autodetect `target` type and use `'file'` or `'dir'`. If the `target` does not exist, `'file'` will be used. Windows junction points require the destination path to be absolute. When using `'junction'`, the `target` argument will automatically be normalized to absolute path. Junction points on NTFS volumes can only point to directories.
+Аргумент `type` доступен только в Windows и игнорируется на других платформах. Он может принимать значения `'dir'`, `'file'` или `'junction'`. Если `type` равно `null`, Node.js автоматически определит тип `target` и использует `'file'` или `'dir'`. Если `target` не существует, будет использовано `'file'`. Точки соединения Windows требуют, чтобы путь назначения был абсолютным. При использовании `'junction'` аргумент `target` автоматически нормализуется к абсолютному пути. Точки соединения на томах NTFS могут указывать только на каталоги.
 
-Relative targets are relative to the link's parent directory.
+Относительные цели рассчитываются относительно родительского каталога ссылки.
 
 === "MJS"
 
@@ -5045,7 +5047,7 @@ Relative targets are relative to the link's parent directory.
     symlink('./mew', './mewtwo', callback);
     ```
 
-The above example creates a symbolic link `mewtwo` which points to `mew` in the same directory:
+Пример выше создаёт символическую ссылку `mewtwo`, указывающую на `mew` в том же каталоге:
 
 ```bash
 $ tree .
@@ -5094,7 +5096,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<AggregateError>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 
-Truncates the file. No arguments other than a possible exception are given to the completion callback. A file descriptor can also be passed as the first argument. In this case, `fs.ftruncate()` is called.
+Усекает файл. В callback завершения не передаются никакие аргументы, кроме возможного исключения. В качестве первого аргумента также можно передать файловый дескриптор. В этом случае будет вызван `fs.ftruncate()`.
 
 === "MJS"
 
@@ -5118,7 +5120,7 @@ Truncates the file. No arguments other than a possible exception are given to th
     });
     ```
 
-Passing a file descriptor is deprecated and may result in an error being thrown in the future.
+Передача файлового дескриптора устарела и в будущем может приводить к выбрасыванию ошибки.
 
 Подробнее см. POSIX truncate(2).
 
@@ -5161,7 +5163,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously removes a file or symbolic link. No arguments other than a possible exception are given to the completion callback.
+Асинхронно удаляет файл или символическую ссылку. В callback завершения не передаются никакие аргументы, кроме возможного исключения.
 
 === "MJS"
 
@@ -5185,11 +5187,11 @@ added: v0.1.31
 -->
 
 -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional, a listener previously attached using `fs.watchFile()`
+-   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) необязательный listener, ранее подключённый через `fs.watchFile()`
 
-Stop watching for changes on `filename`. If `listener` is specified, only that particular listener is removed. Otherwise, _all_ listeners are removed, effectively stopping watching of `filename`.
+Прекращает отслеживание изменений для `filename`. Если указан `listener`, удаляется только этот конкретный listener. Иначе удаляются _все_ listeners, что фактически останавливает наблюдение за `filename`.
 
-Calling `fs.unwatchFile()` with a filename that is not being watched is a no-op, not an error.
+Вызов `fs.unwatchFile()` с именем файла, который не отслеживается, ничего не делает и не считается ошибкой.
 
 Using [`fs.watch()`](#fswatchfilename-options-listener) is more efficient than `fs.watchFile()` and `fs.unwatchFile()`. `fs.watch()` should be used instead of `fs.watchFile()` and `fs.unwatchFile()` when possible.
 
@@ -5244,12 +5246,12 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Change the file system timestamps of the object referenced by `path`.
+Изменяет временные метки файловой системы объекта, на который указывает `path`.
 
-The `atime` and `mtime` arguments follow these rules:
+Аргументы `atime` и `mtime` подчиняются следующим правилам:
 
--   Values can be either numbers representing Unix epoch time in seconds, `Date`s, or a numeric string like `'123456789.0'`.
--   If the value can not be converted to a number, or is `NaN`, `Infinity`, or `-Infinity`, an `Error` will be thrown.
+-   значения могут быть числами, представляющими Unix-время в секундах, объектами `Date` или числовой строкой вроде `'123456789.0'`;
+-   если значение нельзя преобразовать в число либо оно равно `NaN`, `Infinity` или `-Infinity`, будет выброшена ошибка `Error`.
 
 ### `fs.watch(filename[, options][, listener])`
 
@@ -5290,70 +5292,70 @@ changes:
 
 -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `persistent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether the process should continue to run as long as files are being watched. **По умолчанию:** `true`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether all subdirectories should be watched, or only the current directory. This applies when a directory is specified, and only on supported platforms (See [caveats][caveats]). **По умолчанию:** `false`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specifies the character encoding to be used for the filename passed to the listener. **По умолчанию:** `'utf8'`.
-    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) allows closing the watcher with an AbortSignal.
-    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Indicates whether an exception should be thrown when the path does not exist. **По умолчанию:** `true`.
-    -   `ignore` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Pattern(s) to ignore. Strings are glob patterns (using [`minimatch`](https://github.com/isaacs/minimatch)), RegExp patterns are tested against the filename, and functions receive the filename and return `true` to ignore. **По умолчанию:** `undefined`.
+    -   `persistent` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, должен ли процесс продолжать работу, пока файлы отслеживаются. **По умолчанию:** `true`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, нужно ли отслеживать все подкаталоги или только текущий каталог. Применяется, когда указан каталог, и только на поддерживаемых платформах (см. [Предостережения](#caveats)). **По умолчанию:** `false`.
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) задаёт кодировку символов для имени файла, передаваемого в listener. **По умолчанию:** `'utf8'`.
+    -   `signal` [`<AbortSignal>`](globals.md#abortsignal) позволяет закрыть наблюдатель с помощью `AbortSignal`.
+    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, следует ли выбрасывать исключение, если путь не существует. **По умолчанию:** `true`.
+    -   `ignore` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<RegExp>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) шаблон(ы) для игнорирования. Строки трактуются как glob-шаблоны (с использованием [`minimatch`](https://github.com/isaacs/minimatch)), шаблоны `RegExp` проверяются по имени файла, а функции получают имя файла и возвращают `true`, если его нужно игнорировать. **По умолчанию:** `undefined`.
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | undefined **По умолчанию:** `undefined`
     -   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | null
 -   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
-Watch for changes on `filename`, where `filename` is either a file or a directory.
+Отслеживает изменения для `filename`, где `filename` может быть либо файлом, либо каталогом.
 
-The second argument is optional. If `options` is provided as a string, it specifies the `encoding`. Otherwise `options` should be passed as an object.
+Второй аргумент необязателен. Если `options` передан как строка, он задаёт `encoding`. В противном случае `options` следует передавать как объект.
 
-The listener callback gets two arguments `(eventType, filename)`. `eventType` is either `'rename'` or `'change'`, and `filename` is the name of the file which triggered the event.
+Callback listener получает два аргумента `(eventType, filename)`. `eventType` принимает значение `'rename'` или `'change'`, а `filename` — это имя файла, вызвавшего событие.
 
-On most platforms, `'rename'` is emitted whenever a filename appears or disappears in the directory.
+На большинстве платформ событие `'rename'` генерируется всякий раз, когда имя файла появляется или исчезает в каталоге.
 
 The listener callback is attached to the `'change'` event fired by [fs.FSWatcher](fs.md#fsfswatcher), but it is not the same thing as the `'change'` value of `eventType`.
 
 If a `signal` is passed, aborting the corresponding AbortController will close the returned [fs.FSWatcher](fs.md#fsfswatcher).
 
-#### Caveats
+#### Предостережения
 
 <!--type=misc-->
 
-The `fs.watch` API is not 100% consistent across platforms, and is unavailable in some situations.
+API `fs.watch` не является полностью одинаковым на всех платформах и в некоторых ситуациях недоступно.
 
-On Windows, no events will be emitted if the watched directory is moved or renamed. An `EPERM` error is reported when the watched directory is deleted.
+В Windows никакие события не будут сгенерированы, если отслеживаемый каталог был перемещён или переименован. При удалении отслеживаемого каталога сообщается об ошибке `EPERM`.
 
-The `fs.watch` API does not provide any protection with respect to malicious actions on the file system. For example, on Windows it is implemented by monitoring changes in a directory versus specific files. This allows substitution of a file and fs reporting changes on the new file with the same filename.
+API `fs.watch` не обеспечивает никакой защиты от злонамеренных действий в файловой системе. Например, в Windows оно реализовано как мониторинг изменений в каталоге, а не в конкретных файлах. Из-за этого файл можно подменить, и `fs` будет сообщать об изменениях уже в новом файле с тем же именем.
 
-##### Availability
-
-<!--type=misc-->
-
-This feature depends on the underlying operating system providing a way to be notified of file system changes.
-
--   On Linux systems, this uses [`inotify(7)`](https://man7.org/linux/man-pages/man7/inotify.7.html).
--   On BSD systems, this uses [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2).
--   On macOS, this uses [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2) for files and [`FSEvents`](https://developer.apple.com/documentation/coreservices/file_system_events) for directories.
--   On SunOS systems (including Solaris and SmartOS), this uses [`event ports`](https://illumos.org/man/port_create).
--   On Windows systems, this feature depends on [`ReadDirectoryChangesW`](https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesw).
--   On AIX systems, this feature depends on [`AHAFS`](https://developer.ibm.com/articles/au-aix_event_infrastructure/), which must be enabled.
--   On IBM i systems, this feature is not supported.
-
-If the underlying functionality is not available for some reason, then `fs.watch()` will not be able to function and may throw an exception. For example, watching files or directories can be unreliable, and in some cases impossible, on network file systems (NFS, SMB, etc) or host file systems when using virtualization software such as Vagrant or Docker.
-
-It is still possible to use `fs.watchFile()`, which uses stat polling, but this method is slower and less reliable.
-
-##### Inodes
+##### Доступность
 
 <!--type=misc-->
 
-On Linux and macOS systems, `fs.watch()` resolves the path to an [inode][inode] and watches the inode. If the watched path is deleted and recreated, it is assigned a new inode. The watch will emit an event for the delete but will continue watching the _original_ inode. Events for the new inode will not be emitted. This is expected behavior.
+Эта возможность зависит от того, предоставляет ли базовая операционная система механизм уведомления об изменениях файловой системы.
 
-AIX files retain the same inode for the lifetime of a file. Saving and closing a watched file on AIX will result in two notifications (one for adding new content, and one for truncation).
+-   В Linux используется [`inotify(7)`](https://man7.org/linux/man-pages/man7/inotify.7.html).
+-   В BSD используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2).
+-   В macOS для файлов используется [`kqueue(2)`](https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2), а для каталогов — [`FSEvents`](https://developer.apple.com/documentation/coreservices/file_system_events).
+-   В SunOS (включая Solaris и SmartOS) используются [`event ports`](https://illumos.org/man/port_create).
+-   В Windows эта возможность зависит от [`ReadDirectoryChangesW`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw).
+-   В AIX эта возможность зависит от [`AHAFS`](https://developer.ibm.com/articles/au-aix_event_infrastructure/), который должен быть включён.
+-   В IBM i эта возможность не поддерживается.
 
-##### Filename argument
+Если по какой-либо причине базовая функциональность недоступна, `fs.watch()` не сможет работать и может выбросить исключение. Например, наблюдение за файлами или каталогами может быть ненадёжным, а в некоторых случаях невозможным, в сетевых файловых системах (NFS, SMB и т. п.) или в файловых системах хоста при использовании ПО виртуализации вроде Vagrant или Docker.
+
+По-прежнему можно использовать `fs.watchFile()`, который применяет опрос через stat, но этот метод медленнее и менее надёжен.
+
+##### Inode
 
 <!--type=misc-->
 
-Providing `filename` argument in the callback is only supported on Linux, macOS, Windows, and AIX. Even on supported platforms, `filename` is not always guaranteed to be provided. Therefore, don't assume that `filename` argument is always provided in the callback, and have some fallback logic if it is `null`.
+В Linux и macOS `fs.watch()` разрешает путь до [inode](https://en.wikipedia.org/wiki/Inode) и отслеживает именно inode. Если отслеживаемый путь удалить и создать заново, ему будет назначен новый inode. Наблюдатель сгенерирует событие удаления, но продолжит следить за _исходным_ inode. События для нового inode сгенерированы не будут. Это ожидаемое поведение.
+
+В AIX файлы сохраняют один и тот же inode на всём протяжении своего существования. Сохранение и закрытие отслеживаемого файла в AIX приведёт к двум уведомлениям: одному о добавлении нового содержимого и одному об усечении.
+
+##### Аргумент `filename`
+
+<!--type=misc-->
+
+Передача аргумента `filename` в callback поддерживается только в Linux, macOS, Windows и AIX. Даже на поддерживаемых платформах наличие `filename` не гарантируется. Поэтому не следует предполагать, что аргумент `filename` всегда будет передан в callback; предусмотрите запасную логику на случай, если он равен `null`.
 
 === "MJS"
 
@@ -5402,11 +5404,11 @@ changes:
     -   `previous` [`<fs.Stats>`](fs.md#fsstats)
 -   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher)
 
-Watch for changes on `filename`. The callback `listener` will be called each time the file is accessed.
+Отслеживает изменения для `filename`. Callback `listener` будет вызываться каждый раз, когда к файлу происходит доступ.
 
-The `options` argument may be omitted. If provided, it should be an object. The `options` object may contain a boolean named `persistent` that indicates whether the process should continue to run as long as files are being watched. The `options` object may specify an `interval` property indicating how often the target should be polled in milliseconds.
+Аргумент `options` можно опустить. Если он указан, это должен быть объект. Объект `options` может содержать булево свойство `persistent`, указывающее, должен ли процесс продолжать работу, пока файлы отслеживаются. Объект `options` также может задавать свойство `interval`, определяющее частоту опроса цели в миллисекундах.
 
-The `listener` gets two arguments the current stat object and the previous stat object:
+`listener` получает два аргумента: текущий объект stat и предыдущий объект stat:
 
 === "MJS"
 
@@ -5419,20 +5421,20 @@ The `listener` gets two arguments the current stat object and the previous stat 
     });
     ```
 
-These stat objects are instances of `fs.Stat`. If the `bigint` option is `true`, the numeric values in these objects are specified as `BigInt`s.
+Эти объекты stat являются экземплярами `fs.Stat`. Если опция `bigint` равна `true`, числовые значения в этих объектах представлены как `BigInt`.
 
-To be notified when the file was modified, not just accessed, it is necessary to compare `curr.mtimeMs` and `prev.mtimeMs`.
+Чтобы получать уведомление именно об изменении файла, а не только о доступе к нему, необходимо сравнивать `curr.mtimeMs` и `prev.mtimeMs`.
 
-When an `fs.watchFile` operation results in an `ENOENT` error, it will invoke the listener once, with all the fields zeroed (or, for dates, the Unix Epoch). If the file is created later on, the listener will be called again, with the latest stat objects. This is a change in functionality since v0.10.
+Когда операция `fs.watchFile` приводит к ошибке `ENOENT`, listener будет вызван один раз, при этом все поля будут обнулены (а для дат будет использована Unix Epoch). Если файл позже будет создан, listener будет вызван снова, уже с актуальными объектами stat. Это изменение поведения, действующее с v0.10.
 
 Using [`fs.watch()`](#fswatchfilename-options-listener) is more efficient than `fs.watchFile` and `fs.unwatchFile`. `fs.watch` should be used instead of `fs.watchFile` and `fs.unwatchFile` when possible.
 
-When a file being watched by `fs.watchFile()` disappears and reappears, then the contents of `previous` in the second callback event (the file's reappearance) will be the same as the contents of `previous` in the first callback event (its disappearance).
+Когда файл, отслеживаемый через `fs.watchFile()`, исчезает и затем появляется снова, содержимое `previous` во втором событии callback (повторное появление файла) будет таким же, как содержимое `previous` в первом событии callback (его исчезновение).
 
-This happens when:
+Это происходит, когда:
 
--   the file is deleted, followed by a restore
--   the file is renamed and then renamed a second time back to its original name
+-   файл удаляется, а затем восстанавливается;
+-   файл переименовывается, а затем переименовывается ещё раз обратно в исходное имя.
 
 ### `fs.write(fd, buffer, offset[, length[, position]], callback)`
 
@@ -5492,19 +5494,19 @@ changes:
     -   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
-Write `buffer` to the file specified by `fd`.
+Записывает `buffer` в файл, указанный файловым дескриптором `fd`.
 
-`offset` determines the part of the buffer to be written, and `length` is an integer specifying the number of bytes to write.
+`offset` определяет часть буфера, которая будет записана, а `length` — это целое число, задающее количество байтов для записи.
 
-`position` refers to the offset from the beginning of the file where this data should be written. If `typeof position !== 'number'`, the data will be written at the current position. See pwrite(2).
+`position` указывает смещение от начала файла, куда следует записать эти данные. Если `typeof position !== 'number'`, данные будут записаны по текущей позиции. См. `pwrite(2)`.
 
-The callback will be given three arguments `(err, bytesWritten, buffer)` where `bytesWritten` specifies how many _bytes_ were written from `buffer`.
+Callback получает три аргумента `(err, bytesWritten, buffer)`, где `bytesWritten` указывает, сколько _байтов_ было записано из `buffer`.
 
-If this method is invoked as its [`util.promisify()`](util.md#utilpromisifyoriginal)ed version, it returns a promise for an `Object` with `bytesWritten` and `buffer` properties.
+Если этот метод вызывается в версии, полученной через [`util.promisify()`](util.md#utilpromisifyoriginal), он возвращает промис для объекта со свойствами `bytesWritten` и `buffer`.
 
-It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`](#fscreatewritestreampath-options) is recommended.
+Небезопасно использовать `fs.write()` несколько раз для одного и того же файла, не дожидаясь callback. Для такого сценария рекомендуется [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
 ### `fs.write(fd, buffer[, options], callback)`
 
@@ -5525,9 +5527,9 @@ added:
     -   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
-Write `buffer` to the file specified by `fd`.
+Записывает `buffer` в файл, указанный файловым дескриптором `fd`.
 
-Similar to the above `fs.write` function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
+Подобно приведённой выше функции `fs.write`, эта версия принимает необязательный объект `options`. Если `options` не указан, будут использованы значения по умолчанию, перечисленные выше.
 
 ### `fs.write(fd, string[, position[, encoding]], callback)`
 
@@ -5586,19 +5588,19 @@ changes:
     -   `written` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Write `string` to the file specified by `fd`. If `string` is not a string, an exception is thrown.
+Записывает `string` в файл, указанный файловым дескриптором `fd`. Если `string` не является строкой, будет выброшено исключение.
 
-`position` refers to the offset from the beginning of the file where this data should be written. If `typeof position !== 'number'` the data will be written at the current position. See pwrite(2).
+`position` указывает смещение от начала файла, куда следует записать эти данные. Если `typeof position !== 'number'`, данные будут записаны по текущей позиции. См. `pwrite(2)`.
 
-`encoding` is the expected string encoding.
+`encoding` — ожидаемая кодировка строки.
 
-The callback will receive the arguments `(err, written, string)` where `written` specifies how many _bytes_ the passed string required to be written. Bytes written is not necessarily the same as string characters written. See [`Buffer.byteLength`](buffer.md#static-method-bufferbytelengthstring-encoding).
+Callback получает аргументы `(err, written, string)`, где `written` указывает, сколько _байтов_ потребовалось для записи переданной строки. Количество записанных байтов не обязательно совпадает с количеством записанных символов строки. См. [`Buffer.byteLength`](buffer.md#static-method-bufferbytelengthstring-encoding).
 
-It is unsafe to use `fs.write()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`](#fscreatewritestreampath-options) is recommended.
+Небезопасно вызывать `fs.write()` несколько раз для одного и того же файла, не дожидаясь обратного вызова. Для такого сценария рекомендуется [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
-On Windows, if the file descriptor is connected to the console (e.g. `fd == 1` or `stdout`) a string containing non-ASCII characters will not be rendered properly by default, regardless of the encoding used. It is possible to configure the console to render UTF-8 properly by changing the active codepage with the `chcp 65001` command. See the [chcp][chcp] docs for more details.
+В Windows, если файловый дескриптор подключён к консоли (например, `fd == 1` или `stdout`), строка, содержащая не-ASCII-символы, по умолчанию не будет корректно отображаться независимо от используемой кодировки. Консоль можно настроить на корректное отображение UTF-8, изменив активную кодовую страницу командой `chcp 65001`. Подробнее см. в документации [chcp](https://ss64.com/nt/chcp.html).
 
 ### `fs.writeFile(file, data[, options], callback)`
 
@@ -5692,13 +5694,13 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`<AggregateError>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 
-When `file` is a filename, asynchronously writes data to the file, replacing the file if it already exists. `data` can be a string or a buffer.
+Когда `file` — это имя файла, метод асинхронно записывает данные в файл, заменяя его, если он уже существует. `data` может быть строкой или буфером.
 
-When `file` is a file descriptor, the behavior is similar to calling `fs.write()` directly (which is recommended). See the notes below on using a file descriptor.
+Когда `file` — это файловый дескриптор, поведение аналогично прямому вызову `fs.write()` (что и рекомендуется). См. примечания ниже об использовании файлового дескриптора.
 
-The `encoding` option is ignored if `data` is a buffer.
+Опция `encoding` игнорируется, если `data` является буфером.
 
-The `mode` option only affects the newly created file. See [`fs.open()`](#fsopenpath-flags-mode-callback) for more details.
+Опция `mode` влияет только на вновь создаваемый файл. Подробнее см. [`fs.open()`](#fsopenpath-flags-mode-callback).
 
 === "MJS"
 
@@ -5723,11 +5725,11 @@ The `mode` option only affects the newly created file. See [`fs.open()`](#fsopen
     writeFile('message.txt', 'Hello Node.js', 'utf8', callback);
     ```
 
-It is unsafe to use `fs.writeFile()` multiple times on the same file without waiting for the callback. For this scenario, [`fs.createWriteStream()`](#fscreatewritestreampath-options) is recommended.
+Небезопасно использовать `fs.writeFile()` несколько раз для одного и того же файла, не дожидаясь callback. Для такого сценария рекомендуется [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-Similarly to `fs.readFile` - `fs.writeFile` is a convenience method that performs multiple `write` calls internally to write the buffer passed to it. For performance sensitive code consider using [`fs.createWriteStream()`](#fscreatewritestreampath-options).
+Как и `fs.readFile`, `fs.writeFile` — это удобный метод, который внутри выполняет несколько вызовов `write`, чтобы записать переданный буфер. Для кода, чувствительного к производительности, стоит рассмотреть [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fs.writeFile()`. Cancelation is "best effort", and some amount of data is likely still to be written.
+Можно использовать [AbortSignal](globals.md#abortsignal), чтобы отменить `fs.writeFile()`. Отмена выполняется по принципу "best effort", и некоторое количество данных, вероятно, всё равно будет записано.
 
 === "MJS"
 
@@ -5745,11 +5747,11 @@ It is possible to use an [AbortSignal](globals.md#abortsignal) to cancel an `fs.
     controller.abort();
     ```
 
-Aborting an ongoing request does not abort individual operating system requests but rather the internal buffering `fs.writeFile` performs.
+Прерывание выполняющегося запроса не отменяет отдельные запросы операционной системы, а лишь внутреннюю буферизацию, которую выполняет `fs.writeFile`.
 
-#### Using `fs.writeFile()` with file descriptors
+#### Использование `fs.writeFile()` с файловыми дескрипторами
 
-When `file` is a file descriptor, the behavior is almost identical to directly calling `fs.write()` like:
+Когда `file` является файловым дескриптором, поведение почти идентично прямому вызову `fs.write()`, например:
 
 === "MJS"
 
@@ -5760,11 +5762,11 @@ When `file` is a file descriptor, the behavior is almost identical to directly c
     write(fd, Buffer.from(data, options.encoding), callback);
     ```
 
-The difference from directly calling `fs.write()` is that under some unusual conditions, `fs.write()` might write only part of the buffer and need to be retried to write the remaining data, whereas `fs.writeFile()` retries until the data is entirely written (or an error occurs).
+Отличие от прямого вызова `fs.write()` состоит в том, что при некоторых необычных условиях `fs.write()` может записать только часть буфера, и для записи оставшихся данных потребуется повторный вызов, тогда как `fs.writeFile()` повторяет запись, пока данные не будут записаны полностью (или пока не произойдёт ошибка).
 
-The implications of this are a common source of confusion. In the file descriptor case, the file is not replaced! The data is not necessarily written to the beginning of the file, and the file's original data may remain before and/or after the newly written data.
+Следствия этого часто вызывают путаницу. В случае файлового дескриптора файл не заменяется! Данные не обязательно записываются в начало файла, и исходные данные файла могут остаться до и/или после вновь записанных данных.
 
-For example, if `fs.writeFile()` is called twice in a row, first to write the string `'Hello'`, then to write the string `', World'`, the file would contain `'Hello, World'`, and might contain some of the file's original data (depending on the size of the original file, and the position of the file descriptor). If a file name had been used instead of a descriptor, the file would be guaranteed to contain only `', World'`.
+Например, если `fs.writeFile()` вызвать два раза подряд, сначала записав строку `'Hello'`, а затем строку `', World'`, файл будет содержать `'Hello, World'` и, возможно, часть исходных данных файла (в зависимости от размера исходного файла и позиции файлового дескриптора). Если бы вместо дескриптора использовалось имя файла, гарантировалось бы, что файл содержит только `', World'`.
 
 ### `fs.writev(fd, buffers[, position], callback)`
 
@@ -5794,21 +5796,21 @@ changes:
     -   `bytesWritten` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `buffers` [`<ArrayBufferView[]>`](https://developer.mozilla.org/docs/Web/API/ArrayBufferView)
 
-Write an array of `ArrayBufferView`s to the file specified by `fd` using `writev()`.
+Записывает массив `ArrayBufferView` в файл, указанный файловым дескриптором `fd`, с помощью `writev()`.
 
-`position` is the offset from the beginning of the file where this data should be written. If `typeof position !== 'number'`, the data will be written at the current position.
+`position` — это смещение от начала файла, куда следует записать эти данные. Если `typeof position !== 'number'`, данные будут записаны по текущей позиции.
 
-The callback will be given three arguments: `err`, `bytesWritten`, and `buffers`. `bytesWritten` is how many bytes were written from `buffers`.
+Callback получит три аргумента: `err`, `bytesWritten` и `buffers`. `bytesWritten` показывает, сколько байт было записано из `buffers`.
 
-If this method is [`util.promisify()`](util.md#utilpromisifyoriginal)ed, it returns a promise for an `Object` with `bytesWritten` and `buffers` properties.
+Если этот метод обёрнут через [`util.promisify()`](util.md#utilpromisifyoriginal), он возвращает промис для объекта со свойствами `bytesWritten` и `buffers`.
 
-It is unsafe to use `fs.writev()` multiple times on the same file without waiting for the callback. For this scenario, use [`fs.createWriteStream()`](#fscreatewritestreampath-options).
+Небезопасно использовать `fs.writev()` несколько раз для одного и того же файла, не дожидаясь callback. Для такого сценария используйте [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, если файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
 ## Synchronous API
 
-The synchronous APIs perform all operations synchronously, blocking the event loop until the operation completes or fails.
+Синхронные API выполняют все операции синхронно, блокируя цикл событий до тех пор, пока операция не завершится успешно или с ошибкой.
 
 ### `fs.accessSync(path[, mode])`
 
@@ -5832,9 +5834,9 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `fs.constants.F_OK`
 
-Synchronously tests a user's permissions for the file or directory specified by `path`. The `mode` argument is an optional integer that specifies the accessibility checks to be performed. `mode` should be either the value `fs.constants.F_OK` or a mask consisting of the bitwise OR of any of `fs.constants.R_OK`, `fs.constants.W_OK`, and `fs.constants.X_OK` (e.g. `fs.constants.W_OK | fs.constants.R_OK`). Check [File access constants][file access constants] for possible values of `mode`.
+Синхронно проверяет права пользователя для файла или каталога, указанных в `path`. Аргумент `mode` — необязательное целое число, задающее выполняемые проверки доступности. `mode` должен быть либо значением `fs.constants.F_OK`, либо маской, составленной через побитовое OR из `fs.constants.R_OK`, `fs.constants.W_OK` и `fs.constants.X_OK` (например, `fs.constants.W_OK | fs.constants.R_OK`). Возможные значения `mode` см. в разделе [Константы доступа к файлам](#file-access-constants).
 
-If any of the accessibility checks fail, an `Error` will be thrown. Otherwise, the method will return `undefined`.
+Если любая из проверок доступности не проходит, будет выброшен `Error`. Иначе метод вернёт `undefined`.
 
 === "MJS"
 
@@ -5912,7 +5914,7 @@ The `mode` option only affects the newly created file. See [`fs.open()`](#fsopen
     appendFileSync('message.txt', 'data to append', 'utf8');
     ```
 
-The `path` may be specified as a numeric file descriptor that has been opened for appending (using `fs.open()` or `fs.openSync()`). The file descriptor will not be closed automatically.
+`path` может быть задан как числовой файловый дескриптор, открытый для добавления (через `fs.open()` или `fs.openSync()`). Файловый дескриптор не будет закрыт автоматически.
 
 === "MJS"
 
@@ -5954,7 +5956,7 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-For detailed information, see the documentation of the asynchronous version of this API: [`fs.chmod()`](#fschmodpath-mode-callback).
+Подробности см. в документации асинхронной версии этого API: [`fs.chmod()`](#fschmodpath-mode-callback).
 
 Подробнее см. POSIX chmod(2).
 
@@ -5981,7 +5983,7 @@ changes:
 -   `uid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `gid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Synchronously changes owner and group of a file. Returns `undefined`. This is the synchronous version of [`fs.chown()`](#fschownpath-uid-gid-callback).
+Синхронно изменяет владельца и группу файла. Возвращает `undefined`. Это синхронная версия [`fs.chown()`](#fschownpath-uid-gid-callback).
 
 Подробнее см. POSIX chown(2).
 
@@ -5993,9 +5995,9 @@ added: v0.1.21
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Closes the file descriptor. Returns `undefined`.
+Закрывает файловый дескриптор. Возвращает `undefined`.
 
-Calling `fs.closeSync()` on any file descriptor (`fd`) that is currently in use through any other `fs` operation may lead to undefined behavior.
+Вызов `fs.closeSync()` для любого файлового дескриптора (`fd`), который в данный момент используется другой операцией `fs`, может привести к неопределённому поведению.
 
 Подробнее см. POSIX close(2).
 
@@ -6022,7 +6024,7 @@ changes:
 -   `dest` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) destination filename of the copy operation
 -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) modifiers for copy operation. **По умолчанию:** `0`.
 
-Synchronously copies `src` to `dest`. By default, `dest` is overwritten if it already exists. Returns `undefined`. Node.js makes no guarantees about the atomicity of the copy operation. If an error occurs after the destination file has been opened for writing, Node.js will attempt to remove the destination.
+Синхронно копирует `src` в `dest`. По умолчанию `dest` будет перезаписан, если уже существует. Возвращает `undefined`. Node.js не даёт гарантий атомарности операции копирования. Если ошибка произойдёт после открытия файла назначения для записи, Node.js попытается удалить файл назначения.
 
 `mode` is an optional integer that specifies the behavior of the copy operation. It is possible to create a mask consisting of the bitwise OR of two or more values (e.g. `fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE`).
 
@@ -6090,9 +6092,9 @@ changes:
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) copy directories recursively **По умолчанию:** `false`
     -   `verbatimSymlinks` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, path resolution for symlinks will be skipped. **По умолчанию:** `false`
 
-Synchronously copies the entire directory structure from `src` to `dest`, including subdirectories and files.
+Синхронно копирует всю структуру каталогов из `src` в `dest`, включая подкаталоги и файлы.
 
-When copying a directory to another directory, globs are not supported and behavior is similar to `cp dir1/ dir2/`.
+При копировании каталога в другой каталог glob-шаблоны не поддерживаются, а поведение аналогично `cp dir1/ dir2/`.
 
 ### `fs.existsSync(path)`
 
@@ -6116,7 +6118,7 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the path exists, `false` otherwise.
+Возвращает `true`, если путь существует, и `false` в противном случае.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.exists()`](#fsexistspath-callback).
 
@@ -6140,7 +6142,7 @@ added: v0.4.7
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Sets the permissions on the file. Returns `undefined`.
+Устанавливает права доступа к файлу. Возвращает `undefined`.
 
 Подробнее см. POSIX fchmod(2).
 
@@ -6154,7 +6156,7 @@ added: v0.4.7
 -   `uid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file's new owner's user id.
 -   `gid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file's new group's group id.
 
-Sets the owner of the file. Returns `undefined`.
+Устанавливает владельца файла. Возвращает `undefined`.
 
 Подробнее см. POSIX fchown(2).
 
@@ -6166,7 +6168,7 @@ added: v0.1.96
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Forces all currently queued I/O operations associated with the file to the operating system's synchronized I/O completion state. Refer to the POSIX fdatasync(2) documentation for details. Returns `undefined`.
+Принудительно переводит все текущие поставленные в очередь операции ввода-вывода, связанные с файлом, в состояние синхронизированного завершения ввода-вывода на уровне операционной системы. Подробнее см. документацию POSIX `fdatasync(2)`. Возвращает `undefined`.
 
 ### `fs.fstatSync(fd[, options])`
 
@@ -6189,10 +6191,10 @@ changes:
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
 -   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Retrieves the [fs.Stats](fs.md#fsstats) for the file descriptor.
+Получает [fs.Stats](fs.md#fsstats) для файлового дескриптора.
 
 Подробнее см. POSIX fstat(2).
 
@@ -6204,7 +6206,7 @@ added: v0.1.96
 
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Request that all data for the open file descriptor is flushed to the storage device. The specific implementation is operating system and device specific. Refer to the POSIX fsync(2) documentation for more detail. Returns `undefined`.
+Запрашивает сброс всех данных открытого файлового дескриптора на устройство хранения. Конкретная реализация зависит от операционной системы и устройства. Подробнее см. документацию POSIX `fsync(2)`. Возвращает `undefined`.
 
 ### `fs.ftruncateSync(fd[, len])`
 
@@ -6215,7 +6217,7 @@ added: v0.8.6
 -   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `len` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
 
-Truncates the file descriptor. Returns `undefined`.
+Усекает файловый дескриптор. Возвращает `undefined`.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.ftruncate()`](#fsftruncatefd-len-callback).
 
@@ -6309,14 +6311,14 @@ changes:
 deprecated: v0.4.7
 -->
 
-> Stability: 0 - Deprecated
+!!!danger "Стабильность: 0 - устарело или набрало много негативных отзывов"
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `mode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Changes the permissions on a symbolic link. Returns `undefined`.
+Изменяет права доступа символической ссылки. Возвращает `undefined`.
 
-This method is only implemented on macOS.
+Этот метод реализован только в macOS.
 
 Подробнее см. POSIX lchmod(2).
 
@@ -6342,7 +6344,7 @@ changes:
 -   `uid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file's new owner's user id.
 -   `gid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file's new group's group id.
 
-Set the owner for the path. Returns `undefined`.
+Устанавливает владельца для пути. Возвращает `undefined`.
 
 Подробнее см. POSIX lchown(2).
 
@@ -6418,11 +6420,11 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
-    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether an exception will be thrown if no file system entry exists, rather than returning `undefined`. **По умолчанию:** `true`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) следует ли выбрасывать исключение, если запись файловой системы не существует, вместо возврата `undefined`. **По умолчанию:** `true`.
 -   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Retrieves the [fs.Stats](fs.md#fsstats) for the symbolic link referred to by `path`.
+Получает [fs.Stats](fs.md#fsstats) для символической ссылки, на которую указывает `path`.
 
 Подробнее см. POSIX lstat(2).
 
@@ -6459,10 +6461,10 @@ changes:
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
-    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Not supported on Windows. **По умолчанию:** `0o777`.
+    -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) не поддерживается в Windows. **По умолчанию:** `0o777`.
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
-Synchronously creates a directory. Returns `undefined`, or if `recursive` is `true`, the first directory path created. This is the synchronous version of [`fs.mkdir()`](#fsmkdirpath-options-callback).
+Синхронно создаёт каталог. Возвращает `undefined`, либо, если `recursive` равно `true`, путь к первому созданному каталогу. Это синхронная версия [`fs.mkdir()`](#fsmkdirpath-options-callback).
 
 Подробнее см. POSIX mkdir(2).
 
@@ -6497,11 +6499,11 @@ changes:
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Returns the created directory path.
+Возвращает путь к созданному каталогу.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.mkdtemp()`](#fsmkdtempprefix-options-callback).
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим используемую кодировку символов.
 
 ### `fs.mkdtempDisposableSync(prefix[, options])`
 
@@ -6517,15 +6519,15 @@ added: v24.4.0
     -   `remove` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function which removes the created directory.
     -   `[Symbol.dispose]` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) The same as `remove`.
 
-Returns a disposable object whose `path` property holds the created directory path. When the object is disposed, the directory and its contents will be removed if it still exists. If the directory cannot be deleted, disposal will throw an error. The object has a `remove()` method which will perform the same task.
+Возвращает disposable-объект, чьё свойство `path` содержит путь к созданному каталогу. Когда объект освобождается, каталог и его содержимое будут удалены, если они всё ещё существуют. Если каталог не удаётся удалить, освобождение выбросит ошибку. У объекта есть метод `remove()`, выполняющий ту же задачу.
 
 <!-- TODO: link MDN docs for disposables once https://github.com/mdn/content/pull/38027 lands -->
 
 For detailed information, see the documentation of [`fs.mkdtemp()`](#fsmkdtempprefix-options-callback).
 
-There is no callback-based version of this API because it is designed for use with the `using` syntax.
+Версии этого API с callback нет, потому что он разработан для использования с синтаксисом `using`.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, задающим используемую кодировку символов.
 
 ### `fs.opendirSync(path[, options])`
 
@@ -6560,11 +6562,11 @@ changes:
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
 -   Возвращает: [`<fs.Dir>`](fs.md#class-fsdir)
 
-Synchronously open a directory. See opendir(3).
+Синхронно открывает каталог. См. `opendir(3)`.
 
-Creates an [fs.Dir](fs.md#class-fsdir), which contains all further functions for reading from and cleaning up the directory.
+Создаёт [fs.Dir](fs.md#class-fsdir), содержащий все последующие функции для чтения из каталога и его очистки.
 
-The `encoding` option sets the encoding for the `path` while opening the directory and subsequent read operations.
+Опция `encoding` задаёт кодировку для `path` при открытии каталога и последующих операциях чтения.
 
 ### `fs.openSync(path[, flags[, mode]])`
 
@@ -6598,7 +6600,7 @@ changes:
 -   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0o666`
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Returns an integer representing the file descriptor.
+Возвращает целое число, представляющее файловый дескриптор.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.open()`](#fsopenpath-flags-mode-callback).
 
@@ -6638,7 +6640,7 @@ changes:
     -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, reads the contents of a directory recursively. In recursive mode, it will list all files, sub files, and directories. **По умолчанию:** `false`.
 -   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<fs.Dirent[]>`](fs.md#fsdirent)
 
-Reads the contents of the directory.
+Читает содержимое каталога.
 
 Подробнее см. POSIX readdir(3).
 
@@ -6675,11 +6677,11 @@ changes:
     -   `flag` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) See [support of file system `flags`](#file-system-flags). **По умолчанию:** `'r'`.
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Returns the contents of the `path`.
+Возвращает содержимое `path`.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.readFile()`](#fsreadfilepath-options-callback).
 
-If the `encoding` option is specified then this function returns a string. Otherwise it returns a buffer.
+Если указана опция `encoding`, эта функция возвращает строку. В противном случае она возвращает буфер.
 
 Similar to [`fs.readFile()`](#fsreadfilepath-options-callback), when the path is a directory, the behavior of `fs.readFileSync()` is platform-specific.
 
@@ -6720,7 +6722,7 @@ changes:
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Returns the symbolic link's string value.
+Возвращает строковое значение символической ссылки.
 
 Подробнее см. POSIX readlink(2).
 
@@ -6756,7 +6758,7 @@ changes:
 -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null **По умолчанию:** `null`
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Returns the number of `bytesRead`.
+Возвращает количество `bytesRead`.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`](#fsreadfd-buffer-offset-length-position-callback).
 
@@ -6789,9 +6791,9 @@ changes:
     -   `position` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | null **По умолчанию:** `null`
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-Returns the number of `bytesRead`.
+Возвращает количество `bytesRead`.
 
-Similar to the above `fs.readSync` function, this version takes an optional `options` object. If no `options` object is specified, it will default with the above values.
+Подобно приведённой выше функции `fs.readSync`, эта версия принимает необязательный объект `options`. Если `options` не указан, будут использованы значения по умолчанию, перечисленные выше.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.read()`](#fsreadfd-buffer-offset-length-position-callback).
 
@@ -6847,7 +6849,7 @@ changes:
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Returns the resolved pathname.
+Возвращает разрешённый путь.
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.realpath()`](#fsrealpathpath-options-callback).
 
@@ -6862,13 +6864,13 @@ added: v9.2.0
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-Synchronous realpath(3).
+Синхронная версия `realpath(3)`.
 
-Only paths that can be converted to UTF8 strings are supported.
+Поддерживаются только пути, которые можно преобразовать в строки UTF-8.
 
-The optional `options` argument can be a string specifying an encoding, or an object with an `encoding` property specifying the character encoding to use for the path returned. If the `encoding` is set to `'buffer'`, the path returned will be passed as a [Buffer](buffer.md#buffer) object.
+Необязательный аргумент `options` может быть строкой, задающей кодировку, либо объектом со свойством `encoding`, определяющим кодировку символов для возвращаемого пути. Если `encoding` равно `'buffer'`, возвращаемый путь будет передан как объект [Buffer](buffer.md#buffer).
 
-On Linux, when Node.js is linked against musl libc, the procfs file system must be mounted on `/proc` in order for this function to work. Glibc does not have this restriction.
+В Linux, когда Node.js слинкован с musl libc, для работы этой функции файловая система procfs должна быть смонтирована в `/proc`. У glibc этого ограничения нет.
 
 ### `fs.renameSync(oldPath, newPath)`
 
@@ -6893,7 +6895,7 @@ changes:
 -   `oldPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `newPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 
-Renames the file from `oldPath` to `newPath`. Returns `undefined`.
+Переименовывает файл из `oldPath` в `newPath`. Возвращает `undefined`.
 
 Подробнее см. POSIX rename(2).
 
@@ -6957,11 +6959,11 @@ changes:
     | v7.6.0 | Параметры `path` могут быть объектом `URL` WHATWG, использующим протокол `file:`. |
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) There are currently no options exposed. There used to be options for `recursive`, `maxBusyTries`, and `emfileWait` but they were deprecated and removed. The `options` argument is still accepted for backwards compatibility but it is not used.
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) в настоящий момент никаких опций не предоставляется. Раньше существовали опции `recursive`, `maxBusyTries` и `emfileWait`, но они были устаревшими и удалены. Аргумент `options` по-прежнему принимается для обратной совместимости, но не используется.
 
-Synchronous rmdir(2). Returns `undefined`.
+Синхронная версия `rmdir(2)`. Возвращает `undefined`.
 
-Using `fs.rmdirSync()` on a file (not a directory) results in an `ENOENT` error on Windows and an `ENOTDIR` error on POSIX.
+Использование `fs.rmdirSync()` для файла (а не каталога) приводит к ошибке `ENOENT` в Windows и `ENOTDIR` в POSIX.
 
 To get a behavior similar to the `rm -rf` Unix command, use [`fs.rmSync()`](#fsrmsyncpath-options) with options `{ recursive: true, force: true }`.
 
@@ -6988,12 +6990,12 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) When `true`, exceptions will be ignored if `path` does not exist. **По умолчанию:** `false`.
-    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) If an `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY`, or `EPERM` error is encountered, Node.js will retry the operation with a linear backoff wait of `retryDelay` milliseconds longer on each try. This option represents the number of retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `0`.
-    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, perform a recursive directory removal. In recursive mode operations are retried on failure. **По умолчанию:** `false`.
-    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The amount of time in milliseconds to wait between retries. This option is ignored if the `recursive` option is not `true`. **По умолчанию:** `100`.
+    -   `force` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, исключения будут игнорироваться, если `path` не существует. **По умолчанию:** `false`.
+    -   `maxRetries` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) если возникает ошибка `EBUSY`, `EMFILE`, `ENFILE`, `ENOTEMPTY` или `EPERM`, Node.js повторяет операцию, линейно увеличивая ожидание на `retryDelay` миллисекунд при каждой попытке. Эта опция задаёт число повторов. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `0`.
+    -   `recursive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, выполняется рекурсивное удаление каталога. В рекурсивном режиме операции повторяются при сбоях. **По умолчанию:** `false`.
+    -   `retryDelay` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество миллисекунд ожидания между повторными попытками. Игнорируется, если `recursive` не равно `true`. **По умолчанию:** `100`.
 
-Synchronously removes files and directories (modeled on the standard POSIX `rm` utility). Returns `undefined`.
+Синхронно удаляет файлы и каталоги (по образцу стандартной POSIX-утилиты `rm`). Возвращает `undefined`.
 
 ### `fs.statSync(path[, options])`
 
@@ -7028,11 +7030,11 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.Stats](fs.md#fsstats) object should be `bigint`. **По умолчанию:** `false`.
-    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether an exception will be thrown if no file system entry exists, rather than returning `undefined`. **По умолчанию:** `true`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.Stats](fs.md#fsstats) иметь тип `bigint`. **По умолчанию:** `false`.
+    -   `throwIfNoEntry` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) следует ли выбрасывать исключение, если запись файловой системы не существует, вместо возврата `undefined`. **По умолчанию:** `true`.
 -   Возвращает: [`<fs.Stats>`](fs.md#fsstats)
 
-Retrieves the [fs.Stats](fs.md#fsstats) for the path.
+Получает [fs.Stats](fs.md#fsstats) для указанного пути.
 
 ### `fs.statfsSync(path[, options])`
 
@@ -7044,12 +7046,12 @@ added:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the numeric values in the returned [fs.StatFs](fs.md#fsstatfs) object should be `bigint`. **По умолчанию:** `false`.
+    -   `bigint` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) должны ли числовые значения в возвращаемом объекте [fs.StatFs](fs.md#fsstatfs) иметь тип `bigint`. **По умолчанию:** `false`.
 -   Возвращает: [`<fs.StatFs>`](fs.md#fsstatfs)
 
-Synchronous statfs(2). Returns information about the mounted file system which contains `path`.
+Синхронная версия `statfs(2)`. Возвращает информацию о смонтированной файловой системе, содержащей `path`.
 
-In case of an error, the `err.code` will be one of [Common System Errors][common system errors].
+В случае ошибки `err.code` будет одним из [распространённых системных ошибок](errors.md#common-system-errors).
 
 ### `fs.symlinkSync(target, path[, type])`
 
@@ -7092,9 +7094,9 @@ added: v0.8.6
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `len` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
 
-Truncates the file. Returns `undefined`. A file descriptor can also be passed as the first argument. In this case, `fs.ftruncateSync()` is called.
+Усекает файл. Возвращает `undefined`. В качестве первого аргумента также можно передать файловый дескриптор. В этом случае будет вызван `fs.ftruncateSync()`.
 
-Passing a file descriptor is deprecated and may result in an error being thrown in the future.
+Передача файлового дескриптора устарела и в будущем может приводить к выбрасыванию ошибки.
 
 ### `fs.unlinkSync(path)`
 
@@ -7117,7 +7119,7 @@ changes:
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 
-Synchronous unlink(2). Returns `undefined`.
+Синхронная версия `unlink(2)`. Возвращает `undefined`.
 
 ### `fs.utimesSync(path, atime, mtime)`
 
@@ -7324,19 +7326,19 @@ added: v12.9.0
 
 For detailed information, see the documentation of the asynchronous version of this API: [`fs.writev()`](#fswritevfd-buffers-position-callback).
 
-## Common Objects
+## Общие объекты
 
-The common objects are shared by all of the file system API variants (promise, callback, and synchronous).
+Общие объекты используются всеми вариантами API файловой системы: на промисах, с обратными вызовами и синхронным.
 
-### Class: `fs.Dir`
+### Класс: `fs.Dir` {#class-fsdir}
 
 <!-- YAML
 added: v12.12.0
 -->
 
-A class representing a directory stream.
+Класс, представляющий поток каталога.
 
-Created by [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()`](#fsopendirsyncpath-options), or [`fsPromises.opendir()`](#fspromisesopendirpath-options).
+Создаётся методами [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()`](#fsopendirsyncpath-options) или [`fsPromises.opendir()`](#fspromisesopendirpath-options).
 
 === "MJS"
 
@@ -7352,7 +7354,7 @@ Created by [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()
     }
     ```
 
-When using the async iterator, the [fs.Dir](fs.md#class-fsdir) object will be automatically closed after the iterator exits.
+При использовании асинхронного итератора объект [fs.Dir](fs.md#class-fsdir) будет автоматически закрыт после завершения итерации.
 
 #### `dir.close()`
 
@@ -7362,9 +7364,9 @@ added: v12.12.0
 
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Asynchronously close the directory's underlying resource handle. Subsequent reads will result in errors.
+Асинхронно закрывает базовый дескриптор ресурса каталога. Последующие чтения приведут к ошибкам.
 
-A promise is returned that will be fulfilled after the resource has been closed.
+Возвращает промис, который будет выполнен после закрытия ресурса.
 
 #### `dir.close(callback)`
 
@@ -7389,9 +7391,9 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Asynchronously close the directory's underlying resource handle. Subsequent reads will result in errors.
+Асинхронно закрывает базовый дескриптор ресурса каталога. Последующие чтения приведут к ошибкам.
 
-The `callback` will be called after the resource handle has been closed.
+`callback` будет вызван после закрытия дескриптора ресурса.
 
 #### `dir.closeSync()`
 
@@ -7399,7 +7401,7 @@ The `callback` will be called after the resource handle has been closed.
 added: v12.12.0
 -->
 
-Synchronously close the directory's underlying resource handle. Subsequent reads will result in errors.
+Синхронно закрывает базовый дескриптор ресурса каталога. Последующие чтения приведут к ошибкам.
 
 #### `dir.path`
 
@@ -7409,7 +7411,7 @@ added: v12.12.0
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The read-only path of this directory as was provided to [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()`](#fsopendirsyncpath-options), or [`fsPromises.opendir()`](#fspromisesopendirpath-options).
+Путь к этому каталогу только для чтения, переданный в [`fs.opendir()`](#fsopendirpath-options-callback), [`fs.opendirSync()`](#fsopendirsyncpath-options) или [`fsPromises.opendir()`](#fspromisesopendirpath-options).
 
 #### `dir.read()`
 
@@ -7417,13 +7419,13 @@ The read-only path of this directory as was provided to [`fs.opendir()`](#fsopen
 added: v12.12.0
 -->
 
--   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Fulfills with a [fs.Dirent](fs.md#fsdirent) | null
+-   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), который выполняется с [fs.Dirent](fs.md#fsdirent) или `null`
 
-Asynchronously read the next directory entry via readdir(3) as an [fs.Dirent](fs.md#fsdirent).
+Асинхронно читает следующую запись каталога через `readdir(3)` как [fs.Dirent](fs.md#fsdirent).
 
-A promise is returned that will be fulfilled with an [fs.Dirent](fs.md#fsdirent), or `null` if there are no more directory entries to read.
+Возвращает промис, который будет выполнен с [fs.Dirent](fs.md#fsdirent) или `null`, если больше нет записей каталога для чтения.
 
-Directory entries returned by this function are in no particular order as provided by the operating system's underlying directory mechanisms. Entries added or removed while iterating over the directory might not be included in the iteration results.
+Записи каталога, возвращаемые этой функцией, не имеют определённого порядка и зависят от базовых механизмов каталогов операционной системы. Записи, добавленные или удалённые во время итерации по каталогу, могут не попасть в результаты итерации.
 
 #### `dir.read(callback)`
 
@@ -7435,11 +7437,11 @@ added: v12.12.0
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `dirent` [`<fs.Dirent>`](fs.md#fsdirent) | null
 
-Asynchronously read the next directory entry via readdir(3) as an [fs.Dirent](fs.md#fsdirent).
+Асинхронно читает следующую запись каталога через `readdir(3)` как [fs.Dirent](fs.md#fsdirent).
 
-After the read is completed, the `callback` will be called with an [fs.Dirent](fs.md#fsdirent), or `null` if there are no more directory entries to read.
+После завершения чтения `callback` будет вызван с [fs.Dirent](fs.md#fsdirent) или `null`, если больше нет записей каталога для чтения.
 
-Directory entries returned by this function are in no particular order as provided by the operating system's underlying directory mechanisms. Entries added or removed while iterating over the directory might not be included in the iteration results.
+Записи каталога, возвращаемые этой функцией, не имеют определённого порядка и зависят от базовых механизмов каталогов операционной системы. Записи, добавленные или удалённые во время итерации по каталогу, могут не попасть в результаты итерации.
 
 #### `dir.readSync()`
 
@@ -7449,11 +7451,11 @@ added: v12.12.0
 
 -   Возвращает: [`<fs.Dirent>`](fs.md#fsdirent) | null
 
-Synchronously read the next directory entry as an [fs.Dirent](fs.md#fsdirent). See the POSIX readdir(3) documentation for more detail.
+Синхронно читает следующую запись каталога как [fs.Dirent](fs.md#fsdirent). Подробнее см. документацию POSIX `readdir(3)`.
 
-If there are no more directory entries to read, `null` will be returned.
+Если больше нет записей каталога для чтения, будет возвращён `null`.
 
-Directory entries returned by this function are in no particular order as provided by the operating system's underlying directory mechanisms. Entries added or removed while iterating over the directory might not be included in the iteration results.
+Записи каталога, возвращаемые этой функцией, не имеют определённого порядка и зависят от базовых механизмов каталогов операционной системы. Записи, добавленные или удалённые во время итерации по каталогу, могут не попасть в результаты итерации.
 
 #### `dir[Symbol.asyncIterator]()`
 
@@ -7461,15 +7463,15 @@ Directory entries returned by this function are in no particular order as provid
 added: v12.12.0
 -->
 
--   Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) An AsyncIterator of [fs.Dirent](fs.md#fsdirent)
+-   Возвращает: [`<AsyncIterator>`](https://tc39.es/ecma262/#sec-asynciterator-interface) асинхронный итератор из [fs.Dirent](fs.md#fsdirent)
 
-Asynchronously iterates over the directory until all entries have been read. Refer to the POSIX readdir(3) documentation for more detail.
+Асинхронно перебирает каталог, пока не будут прочитаны все записи. Подробнее см. документацию POSIX `readdir(3)`.
 
-Entries returned by the async iterator are always an [fs.Dirent](fs.md#fsdirent). The `null` case from `dir.read()` is handled internally.
+Записи, возвращаемые асинхронным итератором, всегда являются [fs.Dirent](fs.md#fsdirent). Случай `null` из `dir.read()` обрабатывается внутри.
 
-See [fs.Dir](fs.md#class-fsdir) for an example.
+Пример см. в разделе [fs.Dir](fs.md#class-fsdir).
 
-Directory entries returned by this iterator are in no particular order as provided by the operating system's underlying directory mechanisms. Entries added or removed while iterating over the directory might not be included in the iteration results.
+Записи каталога, возвращаемые этим итератором, не имеют определённого порядка и зависят от базовых механизмов каталогов операционной системы. Записи, добавленные или удалённые во время итерации по каталогу, могут не попасть в результаты итерации.
 
 #### `dir[Symbol.asyncDispose]()`
 
@@ -7489,7 +7491,7 @@ changes:
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
 
-Calls `dir.close()` if the directory handle is open, and returns a promise that fulfills when disposal is complete.
+Вызывает `dir.close()`, если дескриптор каталога открыт, и возвращает промис, который выполняется после завершения освобождения ресурса.
 
 #### `dir[Symbol.dispose]()`
 
@@ -7509,17 +7511,17 @@ changes:
     | --- | --- |
     | v24.2.0 | Больше не экспериментально. |
 
-Calls `dir.closeSync()` if the directory handle is open, and returns `undefined`.
+Вызывает `dir.closeSync()`, если дескриптор каталога открыт, и возвращает `undefined`.
 
-### Class: `fs.Dirent`
+### Класс: `fs.Dirent` {#class-fsdirent}
 
 <!-- YAML
 added: v10.10.0
 -->
 
-A representation of a directory entry, which can be a file or a subdirectory within the directory, as returned by reading from an [fs.Dir](fs.md#class-fsdir). The directory entry is a combination of the file name and file type pairs.
+Представление записи каталога, которая может быть файлом или подкаталогом внутри каталога и возвращается при чтении из [fs.Dir](fs.md#class-fsdir). Запись каталога сочетает имя файла и тип файла.
 
-Additionally, when [`fs.readdir()`](#fsreaddirpath-options-callback) or [`fs.readdirSync()`](#fsreaddirsyncpath-options) is called with the `withFileTypes` option set to `true`, the resulting array is filled with [fs.Dirent](fs.md#fsdirent) objects, rather than strings or [Buffer](buffer.md#buffer)s.
+Кроме того, когда [`fs.readdir()`](#fsreaddirpath-options-callback) или [`fs.readdirSync()`](#fsreaddirsyncpath-options) вызываются с опцией `withFileTypes`, установленной в `true`, результирующий массив заполняется объектами [fs.Dirent](fs.md#fsdirent), а не строками или [Buffer](buffer.md#buffer).
 
 #### `dirent.isBlockDevice()`
 
@@ -7529,7 +7531,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a block device.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает блочное устройство.
 
 #### `dirent.isCharacterDevice()`
 
@@ -7539,7 +7541,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a character device.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает символьное устройство.
 
 #### `dirent.isDirectory()`
 
@@ -7549,7 +7551,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a file system directory.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает каталог файловой системы.
 
 #### `dirent.isFIFO()`
 
@@ -7559,7 +7561,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a first-in-first-out (FIFO) pipe.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает канал FIFO (first-in-first-out).
 
 #### `dirent.isFile()`
 
@@ -7569,7 +7571,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a regular file.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает обычный файл.
 
 #### `dirent.isSocket()`
 
@@ -7579,7 +7581,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a socket.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает сокет.
 
 #### `dirent.isSymbolicLink()`
 
@@ -7589,7 +7591,7 @@ added: v10.10.0
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Dirent](fs.md#fsdirent) object describes a symbolic link.
+Возвращает `true`, если объект [fs.Dirent](fs.md#fsdirent) описывает символическую ссылку.
 
 #### `dirent.name`
 
@@ -7599,7 +7601,7 @@ added: v10.10.0
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-The file name that this [fs.Dirent](fs.md#fsdirent) object refers to. The type of this value is determined by the `options.encoding` passed to [`fs.readdir()`](#fsreaddirpath-options-callback) or [`fs.readdirSync()`](#fsreaddirsyncpath-options).
+Имя файла, на который указывает этот объект [fs.Dirent](fs.md#fsdirent). Тип этого значения определяется `options.encoding`, переданным в [`fs.readdir()`](#fsreaddirpath-options-callback) или [`fs.readdirSync()`](#fsreaddirsyncpath-options).
 
 #### `dirent.parentPath`
 
@@ -7624,9 +7626,9 @@ changes:
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-The path to the parent directory of the file this [fs.Dirent](fs.md#fsdirent) object refers to.
+Путь к родительскому каталогу файла, на который указывает этот объект [fs.Dirent](fs.md#fsdirent).
 
-### Class: `fs.FSWatcher`
+### Класс: `fs.FSWatcher` {#class-fsfswatcher}
 
 <!-- YAML
 added: v0.5.8
@@ -7634,45 +7636,45 @@ added: v0.5.8
 
 -   Extends [`<EventEmitter>`](events.md#class-eventemitter)
 
-A successful call to [`fs.watch()`](#fswatchfilename-options-listener) method will return a new [fs.FSWatcher](fs.md#fsfswatcher) object.
+Успешный вызов метода [`fs.watch()`](#fswatchfilename-options-listener) возвращает новый объект [fs.FSWatcher](fs.md#fsfswatcher).
 
-All [fs.FSWatcher](fs.md#fsfswatcher) objects emit a `'change'` event whenever a specific watched file is modified.
+Все объекты [fs.FSWatcher](fs.md#fsfswatcher) генерируют событие `'change'` всякий раз, когда изменяется конкретный отслеживаемый файл.
 
-#### Event: `'change'`
+#### Событие: `'change'`
 
 <!-- YAML
 added: v0.5.8
 -->
 
--   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The type of change event that has occurred
--   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) The filename that changed (if relevant/available)
+-   `eventType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) тип произошедшего события изменения
+-   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) имя изменившегося файла (если применимо/доступно)
 
-Emitted when something changes in a watched directory or file. See more details in [`fs.watch()`](#fswatchfilename-options-listener).
+Генерируется, когда что-то изменяется в отслеживаемом каталоге или файле. Подробнее см. в [`fs.watch()`](#fswatchfilename-options-listener).
 
-The `filename` argument may not be provided depending on operating system support. If `filename` is provided, it will be provided as a [Buffer](buffer.md#buffer) if `fs.watch()` is called with its `encoding` option set to `'buffer'`, otherwise `filename` will be a UTF-8 string.
+Аргумент `filename` может отсутствовать в зависимости от поддержки со стороны операционной системы. Если `filename` передан, он будет иметь тип [Buffer](buffer.md#buffer), если `fs.watch()` вызван с опцией `encoding`, установленной в `'buffer'`, иначе `filename` будет строкой UTF-8.
 
 === "MJS"
 
     ```js
     import { watch } from 'node:fs';
-    // Example when handled through fs.watch() listener
+    // Пример обработки через слушатель fs.watch()
     watch('./tmp', { encoding: 'buffer' }, (eventType, filename) => {
       if (filename) {
         console.log(filename);
-        // Prints: <Buffer ...>
+        // Выведет: <Buffer ...>
       }
     });
     ```
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v10.0.0
 -->
 
-Emitted when the watcher stops watching for changes. The closed [fs.FSWatcher](fs.md#fsfswatcher) object is no longer usable in the event handler.
+Генерируется, когда наблюдатель прекращает следить за изменениями. Закрытый объект [fs.FSWatcher](fs.md#fsfswatcher) больше нельзя использовать в обработчике события.
 
-#### Event: `'error'`
+#### Событие: `'error'`
 
 <!-- YAML
 added: v0.5.8
@@ -7680,7 +7682,7 @@ added: v0.5.8
 
 -   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Emitted when an error occurs while watching the file. The errored [fs.FSWatcher](fs.md#fsfswatcher) object is no longer usable in the event handler.
+Генерируется при возникновении ошибки во время наблюдения за файлом. Объект [fs.FSWatcher](fs.md#fsfswatcher), для которого произошла ошибка, больше нельзя использовать в обработчике события.
 
 #### `watcher.close()`
 
@@ -7688,7 +7690,7 @@ Emitted when an error occurs while watching the file. The errored [fs.FSWatcher]
 added: v0.5.8
 -->
 
-Stop watching for changes on the given [fs.FSWatcher](fs.md#fsfswatcher). Once stopped, the [fs.FSWatcher](fs.md#fsfswatcher) object is no longer usable.
+Прекращает наблюдение за изменениями для данного [fs.FSWatcher](fs.md#fsfswatcher). После остановки объект [fs.FSWatcher](fs.md#fsfswatcher) больше нельзя использовать.
 
 #### `watcher.ref()`
 
@@ -7700,9 +7702,9 @@ added:
 
 -   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
-When called, requests that the Node.js event loop _not_ exit so long as the [fs.FSWatcher](fs.md#fsfswatcher) is active. Calling `watcher.ref()` multiple times will have no effect.
+При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока активен [fs.FSWatcher](fs.md#fsfswatcher). Многократный вызов `watcher.ref()` ни на что не влияет.
 
-By default, all [fs.FSWatcher](fs.md#fsfswatcher) objects are "ref'ed", making it normally unnecessary to call `watcher.ref()` unless `watcher.unref()` had been called previously.
+По умолчанию все объекты [fs.FSWatcher](fs.md#fsfswatcher) уже имеют состояние "ref", поэтому обычно вызывать `watcher.ref()` не требуется, если ранее не вызывался `watcher.unref()`.
 
 #### `watcher.unref()`
 
@@ -7714,9 +7716,9 @@ added:
 
 -   Возвращает: [`<fs.FSWatcher>`](fs.md#fsfswatcher)
 
-When called, the active [fs.FSWatcher](fs.md#fsfswatcher) object will not require the Node.js event loop to remain active. If there is no other activity keeping the event loop running, the process may exit before the [fs.FSWatcher](fs.md#fsfswatcher) object's callback is invoked. Calling `watcher.unref()` multiple times will have no effect.
+При вызове активный объект [fs.FSWatcher](fs.md#fsfswatcher) перестаёт требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до вызова callback объекта [fs.FSWatcher](fs.md#fsfswatcher). Многократный вызов `watcher.unref()` ни на что не влияет.
 
-### Class: `fs.StatWatcher`
+### Класс: `fs.StatWatcher` {#class-fsstatwatcher}
 
 <!-- YAML
 added:
@@ -7726,7 +7728,7 @@ added:
 
 -   Extends [`<EventEmitter>`](events.md#class-eventemitter)
 
-A successful call to `fs.watchFile()` method will return a new [fs.StatWatcher](fs.md#fsstatwatcher) object.
+Успешный вызов метода `fs.watchFile()` возвращает новый объект [fs.StatWatcher](fs.md#fsstatwatcher).
 
 #### `watcher.ref()`
 
@@ -7738,9 +7740,9 @@ added:
 
 -   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher)
 
-When called, requests that the Node.js event loop _not_ exit so long as the [fs.StatWatcher](fs.md#fsstatwatcher) is active. Calling `watcher.ref()` multiple times will have no effect.
+При вызове запрашивает, чтобы цикл событий Node.js _не_ завершался, пока активен [fs.StatWatcher](fs.md#fsstatwatcher). Многократный вызов `watcher.ref()` ни на что не влияет.
 
-By default, all [fs.StatWatcher](fs.md#fsstatwatcher) objects are "ref'ed", making it normally unnecessary to call `watcher.ref()` unless `watcher.unref()` had been called previously.
+По умолчанию все объекты [fs.StatWatcher](fs.md#fsstatwatcher) уже имеют состояние "ref", поэтому обычно вызывать `watcher.ref()` не требуется, если ранее не вызывался `watcher.unref()`.
 
 #### `watcher.unref()`
 
@@ -7752,9 +7754,9 @@ added:
 
 -   Возвращает: [`<fs.StatWatcher>`](fs.md#fsstatwatcher)
 
-When called, the active [fs.StatWatcher](fs.md#fsstatwatcher) object will not require the Node.js event loop to remain active. If there is no other activity keeping the event loop running, the process may exit before the [fs.StatWatcher](fs.md#fsstatwatcher) object's callback is invoked. Calling `watcher.unref()` multiple times will have no effect.
+При вызове активный объект [fs.StatWatcher](fs.md#fsstatwatcher) перестаёт требовать, чтобы цикл событий Node.js оставался активным. Если нет другой активности, поддерживающей цикл событий, процесс может завершиться до вызова callback объекта [fs.StatWatcher](fs.md#fsstatwatcher). Многократный вызов `watcher.unref()` ни на что не влияет.
 
-### Class: `fs.ReadStream`
+### Класс: `fs.ReadStream` {#class-fsreadstream}
 
 <!-- YAML
 added: v0.1.93
@@ -7762,35 +7764,35 @@ added: v0.1.93
 
 -   Extends: [`<stream.Readable>`](stream.md#streamreadable)
 
-Instances of [fs.ReadStream](fs.md#class-fsreadstream) cannot be constructed directly. They are created and returned using the [`fs.createReadStream()`](#fscreatereadstreampath-options) function.
+Экземпляры [fs.ReadStream](fs.md#class-fsreadstream) нельзя создавать напрямую. Они создаются и возвращаются функцией [`fs.createReadStream()`](#fscreatereadstreampath-options).
 
-#### Event: `'close'`
-
-<!-- YAML
-added: v0.1.93
--->
-
-Emitted when the [fs.ReadStream](fs.md#class-fsreadstream)'s underlying file descriptor has been closed.
-
-#### Event: `'open'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v0.1.93
 -->
 
--   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Integer file descriptor used by the [fs.ReadStream](fs.md#class-fsreadstream).
+Генерируется, когда базовый файловый дескриптор [fs.ReadStream](fs.md#class-fsreadstream) закрыт.
 
-Emitted when the [fs.ReadStream](fs.md#class-fsreadstream)'s file descriptor has been opened.
+#### Событие: `'open'`
 
-#### Event: `'ready'`
+<!-- YAML
+added: v0.1.93
+-->
+
+-   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) целочисленный файловый дескриптор, используемый [fs.ReadStream](fs.md#class-fsreadstream)
+
+Генерируется, когда файловый дескриптор [fs.ReadStream](fs.md#class-fsreadstream) открыт.
+
+#### Событие: `'ready'`
 
 <!-- YAML
 added: v9.11.0
 -->
 
-Emitted when the [fs.ReadStream](fs.md#class-fsreadstream) is ready to be used.
+Генерируется, когда [fs.ReadStream](fs.md#class-fsreadstream) готов к использованию.
 
-Fires immediately after `'open'`.
+Срабатывает сразу после `'open'`.
 
 #### `readStream.bytesRead`
 
@@ -7800,7 +7802,7 @@ added: v6.4.0
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-The number of bytes that have been read so far.
+Количество байтов, прочитанных на данный момент.
 
 #### `readStream.path`
 
@@ -7810,7 +7812,7 @@ added: v0.1.93
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer)
 
-The path to the file the stream is reading from as specified in the first argument to `fs.createReadStream()`. If `path` is passed as a string, then `readStream.path` will be a string. If `path` is passed as a [Buffer](buffer.md#buffer), then `readStream.path` will be a [Buffer](buffer.md#buffer). If `fd` is specified, then `readStream.path` will be `undefined`.
+Путь к файлу, из которого читает поток, указанный в первом аргументе `fs.createReadStream()`. Если `path` передан как строка, `readStream.path` будет строкой. Если `path` передан как [Buffer](buffer.md#buffer), `readStream.path` будет [Buffer](buffer.md#buffer). Если указан `fd`, значение `readStream.path` будет `undefined`.
 
 #### `readStream.pending`
 
@@ -7822,9 +7824,9 @@ added:
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-This property is `true` if the underlying file has not been opened yet, i.e. before the `'ready'` event is emitted.
+Это свойство равно `true`, если базовый файл ещё не был открыт, то есть до генерации события `'ready'`.
 
-### Class: `fs.Stats`
+### Класс: `fs.Stats` {#class-fsstats}
 
 <!-- YAML
 added: v0.1.21
@@ -7848,9 +7850,9 @@ changes:
     | v22.0.0, v20.13.0 | Публичный конструктор устарел. |
     | v8.1.0 | Добавлено время в виде чисел. |
 
-A [fs.Stats](fs.md#fsstats) object provides information about a file.
+Объект [fs.Stats](fs.md#fsstats) содержит информацию о файле.
 
-Objects returned from [`fs.stat()`](#fsstatpath-options-callback), [`fs.lstat()`](#fslstatpath-options-callback), [`fs.fstat()`](#fsfstatfd-options-callback), and their synchronous counterparts are of this type. If `bigint` in the `options` passed to those methods is true, the numeric values will be `bigint` instead of `number`, and the object will contain additional nanosecond-precision properties suffixed with `Ns`. `Stat` objects are not to be created directly using the `new` keyword.
+Объекты, возвращаемые методами [`fs.stat()`](#fsstatpath-options-callback), [`fs.lstat()`](#fslstatpath-options-callback), [`fs.fstat()`](#fsfstatfd-options-callback) и их синхронными аналогами, имеют этот тип. Если в `options`, переданных этим методам, значение `bigint` равно `true`, числовые значения будут иметь тип `bigint` вместо `number`, а объект также будет содержать дополнительные свойства с наносекундной точностью, оканчивающиеся на `Ns`. Объекты `Stat` не следует создавать напрямую через `new`.
 
 ```console
 Stats {
@@ -7874,7 +7876,7 @@ Stats {
   birthtime: Mon, 10 Oct 2011 23:24:11 GMT }
 ```
 
-`bigint` version:
+Версия с `bigint`:
 
 ```console
 BigIntStats {
@@ -7910,7 +7912,7 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a block device.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает блочное устройство.
 
 #### `stats.isCharacterDevice()`
 
@@ -7920,7 +7922,7 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a character device.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает символьное устройство.
 
 #### `stats.isDirectory()`
 
@@ -7930,9 +7932,9 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a file system directory.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает каталог файловой системы.
 
-If the [fs.Stats](fs.md#fsstats) object was obtained from calling [`fs.lstat()`](#fslstatpath-options-callback) on a symbolic link which resolves to a directory, this method will return `false`. This is because [`fs.lstat()`](#fslstatpath-options-callback) returns information about a symbolic link itself and not the path it resolves to.
+Если объект [fs.Stats](fs.md#fsstats) получен вызовом [`fs.lstat()`](#fslstatpath-options-callback) для символической ссылки, которая указывает на каталог, этот метод вернёт `false`. Это связано с тем, что [`fs.lstat()`](#fslstatpath-options-callback) возвращает информацию о самой символической ссылке, а не о пути, к которому она разрешается.
 
 #### `stats.isFIFO()`
 
@@ -7942,7 +7944,7 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a first-in-first-out (FIFO) pipe.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает FIFO-канал (first-in-first-out).
 
 #### `stats.isFile()`
 
@@ -7952,7 +7954,7 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a regular file.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает обычный файл.
 
 #### `stats.isSocket()`
 
@@ -7962,7 +7964,7 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a socket.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает сокет.
 
 #### `stats.isSymbolicLink()`
 
@@ -7972,71 +7974,71 @@ added: v0.1.10
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Returns `true` if the [fs.Stats](fs.md#fsstats) object describes a symbolic link.
+Возвращает `true`, если объект [fs.Stats](fs.md#fsstats) описывает символическую ссылку.
 
-This method is only valid when using [`fs.lstat()`](#fslstatpath-options-callback).
+Этот метод корректен только при использовании [`fs.lstat()`](#fslstatpath-options-callback).
 
 #### `stats.dev`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The numeric identifier of the device containing the file.
+Числовой идентификатор устройства, содержащего файл.
 
 #### `stats.ino`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The file system specific "Inode" number for the file.
+Специфичный для файловой системы номер inode файла.
 
 #### `stats.mode`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-A bit-field describing the file type and mode.
+Битовое поле, описывающее тип и режим файла.
 
 #### `stats.nlink`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The number of hard-links that exist for the file.
+Количество жёстких ссылок, существующих для файла.
 
 #### `stats.uid`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The numeric user identifier of the user that owns the file (POSIX).
+Числовой идентификатор пользователя, которому принадлежит файл (POSIX).
 
 #### `stats.gid`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The numeric group identifier of the group that owns the file (POSIX).
+Числовой идентификатор группы, которой принадлежит файл (POSIX).
 
 #### `stats.rdev`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-A numeric device identifier if the file represents a device.
+Числовой идентификатор устройства, если файл представляет устройство.
 
 #### `stats.size`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The size of the file in bytes.
+Размер файла в байтах.
 
-If the underlying file system does not support getting the size of the file, this will be `0`.
+Если базовая файловая система не поддерживает получение размера файла, значение будет равно `0`.
 
 #### `stats.blksize`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The file system block size for i/o operations.
+Размер блока файловой системы для операций ввода-вывода.
 
 #### `stats.blocks`
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The number of blocks allocated for this file.
+Количество блоков, выделенных для этого файла.
 
 #### `stats.atimeMs`
 
@@ -8046,7 +8048,7 @@ added: v8.1.0
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The timestamp indicating the last time this file was accessed expressed in milliseconds since the POSIX Epoch.
+Временная метка последнего доступа к файлу в миллисекундах с эпохи POSIX.
 
 #### `stats.mtimeMs`
 
@@ -8056,7 +8058,7 @@ added: v8.1.0
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The timestamp indicating the last time this file was modified expressed in milliseconds since the POSIX Epoch.
+Временная метка последнего изменения файла в миллисекундах с эпохи POSIX.
 
 #### `stats.ctimeMs`
 
@@ -8066,7 +8068,7 @@ added: v8.1.0
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The timestamp indicating the last time the file status was changed expressed in milliseconds since the POSIX Epoch.
+Временная метка последнего изменения состояния файла в миллисекундах с эпохи POSIX.
 
 #### `stats.birthtimeMs`
 
@@ -8076,7 +8078,7 @@ added: v8.1.0
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-The timestamp indicating the creation time of this file expressed in milliseconds since the POSIX Epoch.
+Временная метка времени создания файла в миллисекундах с эпохи POSIX.
 
 #### `stats.atimeNs`
 
@@ -8086,7 +8088,7 @@ added: v12.10.0
 
 -   Тип: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Only present when `bigint: true` is passed into the method that generates the object. The timestamp indicating the last time this file was accessed expressed in nanoseconds since the POSIX Epoch.
+Присутствует только тогда, когда в метод, создающий объект, передано `bigint: true`. Это временная метка последнего доступа к файлу в наносекундах с эпохи POSIX.
 
 #### `stats.mtimeNs`
 
@@ -8096,7 +8098,7 @@ added: v12.10.0
 
 -   Тип: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Only present when `bigint: true` is passed into the method that generates the object. The timestamp indicating the last time this file was modified expressed in nanoseconds since the POSIX Epoch.
+Присутствует только тогда, когда в метод, создающий объект, передано `bigint: true`. Это временная метка последнего изменения файла в наносекундах с эпохи POSIX.
 
 #### `stats.ctimeNs`
 
@@ -8106,7 +8108,7 @@ added: v12.10.0
 
 -   Тип: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Only present when `bigint: true` is passed into the method that generates the object. The timestamp indicating the last time the file status was changed expressed in nanoseconds since the POSIX Epoch.
+Присутствует только тогда, когда в метод, создающий объект, передано `bigint: true`. Это временная метка последнего изменения состояния файла в наносекундах с эпохи POSIX.
 
 #### `stats.birthtimeNs`
 
@@ -8116,7 +8118,7 @@ added: v12.10.0
 
 -   Тип: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Only present when `bigint: true` is passed into the method that generates the object. The timestamp indicating the creation time of this file expressed in nanoseconds since the POSIX Epoch.
+Присутствует только тогда, когда в метод, создающий объект, передано `bigint: true`. Это временная метка времени создания файла в наносекундах с эпохи POSIX.
 
 #### `stats.atime`
 
@@ -8126,7 +8128,7 @@ added: v0.11.13
 
 -   Тип: [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-The timestamp indicating the last time this file was accessed.
+Временная метка последнего доступа к этому файлу.
 
 #### `stats.mtime`
 
@@ -8136,7 +8138,7 @@ added: v0.11.13
 
 -   Тип: [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-The timestamp indicating the last time this file was modified.
+Временная метка последнего изменения этого файла.
 
 #### `stats.ctime`
 
@@ -8146,7 +8148,7 @@ added: v0.11.13
 
 -   Тип: [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-The timestamp indicating the last time the file status was changed.
+Временная метка последнего изменения состояния файла.
 
 #### `stats.birthtime`
 
@@ -8156,26 +8158,26 @@ added: v0.11.13
 
 -   Тип: [`<Date>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
-The timestamp indicating the creation time of this file.
+Временная метка времени создания этого файла.
 
-#### Stat time values
+#### Значения времени Stat
 
-The `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` properties are numeric values that hold the corresponding times in milliseconds. Their precision is platform specific. When `bigint: true` is passed into the method that generates the object, the properties will be [bigints][bigints], otherwise they will be [numbers][mdn-number].
+Свойства `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` — это числовые значения, содержащие соответствующее время в миллисекундах. Их точность зависит от платформы. Если в метод, создающий объект, передано `bigint: true`, эти свойства будут иметь тип [bigint](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt), иначе это будут [числа](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures#number_type).
 
-The `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` properties are [bigints][bigints] that hold the corresponding times in nanoseconds. They are only present when `bigint: true` is passed into the method that generates the object. Their precision is platform specific.
+Свойства `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` — это значения [bigint](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt), содержащие соответствующее время в наносекундах. Они присутствуют только тогда, когда в метод, создающий объект, передано `bigint: true`. Их точность зависит от платформы.
 
-`atime`, `mtime`, `ctime`, and `birthtime` are [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object alternate representations of the various times. The `Date` and number values are not connected. Assigning a new number value, or mutating the `Date` value, will not be reflected in the corresponding alternate representation.
+`atime`, `mtime`, `ctime` и `birthtime` — это альтернативные представления различных моментов времени в виде объектов [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date). Значения `Date` и числовые значения не связаны между собой. Если присвоить новое числовое значение или изменить объект `Date`, это не отразится на соответствующем альтернативном представлении.
 
-The times in the stat object have the following semantics:
+Временные поля объекта stat имеют следующую семантику:
 
--   `atime` "Access Time": Time when file data last accessed. Changed by the mknod(2), utimes(2), and read(2) system calls.
--   `mtime` "Modified Time": Time when file data last modified. Changed by the mknod(2), utimes(2), and write(2) system calls.
--   `ctime` "Change Time": Time when file status was last changed (inode data modification). Changed by the chmod(2), chown(2), link(2), mknod(2), rename(2), unlink(2), utimes(2), read(2), and write(2) system calls.
--   `birthtime` "Birth Time": Time of file creation. Set once when the file is created. On file systems where birthtime is not available, this field may instead hold either the `ctime` or `1970-01-01T00:00Z` (ie, Unix epoch timestamp `0`). This value may be greater than `atime` or `mtime` in this case. On Darwin and other FreeBSD variants, also set if the `atime` is explicitly set to an earlier value than the current `birthtime` using the utimes(2) system call.
+-   `atime` "Access Time": время последнего доступа к данным файла. Изменяется системными вызовами `mknod(2)`, `utimes(2)` и `read(2)`.
+-   `mtime` "Modified Time": время последнего изменения данных файла. Изменяется системными вызовами `mknod(2)`, `utimes(2)` и `write(2)`.
+-   `ctime` "Change Time": время последнего изменения состояния файла (модификации данных inode). Изменяется системными вызовами `chmod(2)`, `chown(2)`, `link(2)`, `mknod(2)`, `rename(2)`, `unlink(2)`, `utimes(2)`, `read(2)` и `write(2)`.
+-   `birthtime` "Birth Time": время создания файла. Устанавливается один раз при создании файла. В файловых системах, где `birthtime` недоступно, это поле может вместо этого содержать либо `ctime`, либо `1970-01-01T00:00Z` (то есть Unix-эпоху с меткой времени `0`). В таком случае это значение может быть больше, чем `atime` или `mtime`. В Darwin и других вариантах FreeBSD оно также устанавливается, если `atime` явно устанавливается в значение раньше текущего `birthtime` с помощью системного вызова `utimes(2)`.
 
-Prior to Node.js 0.12, the `ctime` held the `birthtime` on Windows systems. As of 0.12, `ctime` is not "creation time", and on Unix systems, it never was.
+До Node.js 0.12 в Windows поле `ctime` содержало `birthtime`. Начиная с 0.12, `ctime` не означает "время создания", и в Unix-системах оно никогда этого не означало.
 
-### Class: `fs.StatFs`
+### Класс: `fs.StatFs` {#class-fsstatfs}
 
 <!-- YAML
 added:
@@ -8183,9 +8185,9 @@ added:
   - v18.15.0
 -->
 
-Provides information about a mounted file system.
+Содержит информацию о смонтированной файловой системе.
 
-Objects returned from [`fs.statfs()`](#fsstatfspath-options-callback) and its synchronous counterpart are of this type. If `bigint` in the `options` passed to those methods is `true`, the numeric values will be `bigint` instead of `number`.
+Объекты, возвращаемые [`fs.statfs()`](#fsstatfspath-options-callback) и его синхронным аналогом, имеют этот тип. Если в `options`, переданных этим методам, значение `bigint` равно `true`, числовые значения будут иметь тип `bigint` вместо `number`.
 
 ```console
 StatFs {
@@ -8200,7 +8202,7 @@ StatFs {
 }
 ```
 
-`bigint` version:
+Версия с `bigint`:
 
 ```console
 StatFs {
@@ -8225,7 +8227,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Free blocks available to unprivileged users.
+Свободные блоки, доступные непривилегированным пользователям.
 
 #### `statfs.bfree`
 
@@ -8237,7 +8239,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Free blocks in file system.
+Свободные блоки в файловой системе.
 
 #### `statfs.blocks`
 
@@ -8249,7 +8251,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Total data blocks in file system.
+Общее количество блоков данных в файловой системе.
 
 #### `statfs.bsize`
 
@@ -8261,7 +8263,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Optimal transfer block size.
+Оптимальный размер блока передачи.
 
 #### `statfs.frsize`
 
@@ -8271,7 +8273,7 @@ added: REPLACEME
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Fundamental file system block size.
+Базовый размер блока файловой системы.
 
 #### `statfs.ffree`
 
@@ -8283,7 +8285,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Free file nodes in file system.
+Свободные файловые узлы в файловой системе.
 
 #### `statfs.files`
 
@@ -8295,7 +8297,7 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Total file nodes in file system.
+Общее количество файловых узлов в файловой системе.
 
 #### `statfs.type`
 
@@ -8307,152 +8309,152 @@ added:
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
-Type of file system.
+Тип файловой системы.
 
-### Class: `fs.Utf8Stream`
+### Класс: `fs.Utf8Stream` {#class-fsutf8stream}
 
 <!-- YAML
 added: v24.6.0
 -->
 
-> Stability: 1 - Experimental
+!!!warning "Стабильность: 1 - Экспериментальная"
 
-An optimized UTF-8 stream writer that allows for flushing all the internal buffering on demand. It handles `EAGAIN` errors correctly, allowing for customization, for example, by dropping content if the disk is busy.
+Оптимизированный UTF-8-писатель потока, который позволяет по запросу сбрасывать весь внутренний буфер. Корректно обрабатывает ошибки `EAGAIN`, что позволяет настраивать поведение, например отбрасывать содержимое, если диск занят.
 
-#### Event: `'close'`
+#### Событие: `'close'`
 
-The `'close'` event is emitted when the stream is fully closed.
+Событие `'close'` генерируется, когда поток полностью закрыт.
 
-#### Event: `'drain'`
+#### Событие: `'drain'`
 
-The `'drain'` event is emitted when the internal buffer has drained sufficiently to allow continued writing.
+Событие `'drain'` генерируется, когда внутренний буфер достаточно освободился, чтобы можно было продолжить запись.
 
-#### Event: `'drop'`
+#### Событие: `'drop'`
 
-The `'drop'` event is emitted when the maximal length is reached and that data will not be written. The data that was dropped is passed as the first argument to the event handler.
+Событие `'drop'` генерируется, когда достигнута максимальная длина и эти данные не будут записаны. Отброшенные данные передаются первым аргументом обработчику события.
 
-#### Event: `'error'`
+#### Событие: `'error'`
 
-The `'error'` event is emitted when an error occurs.
+Событие `'error'` генерируется при возникновении ошибки.
 
-#### Event: `'finish'`
+#### Событие: `'finish'`
 
-The `'finish'` event is emitted when the stream has been ended and all data has been flushed to the underlying file.
+Событие `'finish'` генерируется, когда поток завершён и все данные сброшены в базовый файл.
 
-#### Event: `'ready'`
+#### Событие: `'ready'`
 
-The `'ready'` event is emitted when the stream is ready to accept writes.
+Событие `'ready'` генерируется, когда поток готов принимать запись.
 
-#### Event: `'write'`
+#### Событие: `'write'`
 
-The `'write'` event is emitted when a write operation has completed. The number of bytes written is passed as the first argument to the event handler.
+Событие `'write'` генерируется, когда операция записи завершена. Количество записанных байтов передаётся первым аргументом обработчику события.
 
 #### `new fs.Utf8Stream([options])`
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `append`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Appends writes to dest file instead of truncating it. **Default**: `true`.
-    -   `contentMode`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Which type of data you can send to the write function, supported values are `'utf8'` or `'buffer'`. **Default**: `'utf8'`.
-    -   `dest`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) A path to a file to be written to (mode controlled by the append option).
-    -   `fd`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) A file descriptor, something that is returned by `fs.open()` or `fs.openSync()`.
-    -   `fs`: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) An object that has the same API as the `fs` module, useful for mocking, testing, or customizing the behavior of the stream.
-    -   `fsync`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Perform a `fs.fsyncSync()` every time a write is completed.
-    -   `maxLength`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum length of the internal buffer. If a write operation would cause the buffer to exceed `maxLength`, the data written is dropped and a drop event is emitted with the dropped data
-    -   `maxWrite`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum number of bytes that can be written; **Default**: `16384`
-    -   `minLength`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The minimum length of the internal buffer that is required to be full before flushing.
-    -   `mkdir`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Ensure directory for `dest` file exists when true. **Default**: `false`.
-    -   `mode`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Specify the creating file mode (see `fs.open()`).
-    -   `periodicFlush`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Calls flush every `periodicFlush` milliseconds.
-    -   `retryEAGAIN` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) A function that will be called when `write()`, `writeSync()`, or `flushSync()` encounters an `EAGAIN` or `EBUSY` error. If the return value is `true` the operation will be retried, otherwise it will bubble the error. The `err` is the error that caused this function to be called, `writeBufferLen` is the length of the buffer that was written, and `remainingBufferLen` is the length of the remaining buffer that the stream did not try to write.
-        -   `err` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) An error or `null`.
+    -   `append`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) добавлять запись в файл `dest`, а не усекать его. **По умолчанию:** `true`.
+    -   `contentMode`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) какой тип данных можно передавать в функцию записи; поддерживаются значения `'utf8'` и `'buffer'`. **По умолчанию:** `'utf8'`.
+    -   `dest`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) путь к файлу, в который будет вестись запись (режим управляется опцией `append`).
+    -   `fd`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) файловый дескриптор, например возвращаемый `fs.open()` или `fs.openSync()`.
+    -   `fs`: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект с тем же API, что и модуль `fs`; полезен для моков, тестирования или настройки поведения потока.
+    -   `fsync`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) выполнять `fs.fsyncSync()` после каждого завершённого вызова записи.
+    -   `maxLength`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальная длина внутреннего буфера. Если операция записи приведёт к превышению `maxLength`, записываемые данные будут отброшены и будет сгенерировано событие `drop` с этими данными.
+    -   `maxWrite`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число байтов, которое можно записать; **По умолчанию:** `16384`
+    -   `minLength`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) минимальная длина внутреннего буфера, которую нужно набрать перед сбросом.
+    -   `mkdir`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) если `true`, гарантирует существование каталога для файла `dest`. **По умолчанию:** `false`.
+    -   `mode`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим создаваемого файла (см. `fs.open()`).
+    -   `periodicFlush`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) вызывает сброс каждые `periodicFlush` миллисекунд.
+    -   `retryEAGAIN` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, вызываемая, когда `write()`, `writeSync()` или `flushSync()` сталкиваются с ошибкой `EAGAIN` или `EBUSY`. Если возвращаемое значение равно `true`, операция будет повторена, иначе ошибка всплывёт наружу. `err` — ошибка, вызвавшая этот вызов функции, `writeBufferLen` — длина буфера, который был записан, а `remainingBufferLen` — длина оставшегося буфера, который поток не пытался записать.
+        -   `err` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) ошибка или `null`.
         -   `writeBufferLen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
         -   `remainingBufferLen`: [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `sync`: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Perform writes synchronously.
 
 #### `utf8Stream.append`
 
--   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the stream is appending to the file or truncating it.
+-   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, добавляет ли поток данные в файл или усекает его.
 
 #### `utf8Stream.contentMode`
 
--   [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The type of data that can be written to the stream. Supported values are `'utf8'` or `'buffer'`. **Default**: `'utf8'`.
+-   [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) тип данных, которые можно записывать в поток. Поддерживаются значения `'utf8'` и `'buffer'`. **По умолчанию:** `'utf8'`.
 
 #### `utf8Stream.destroy()`
 
-Close the stream immediately, without flushing the internal buffer.
+Немедленно закрывает поток без сброса внутреннего буфера.
 
 #### `utf8Stream.end()`
 
-Close the stream gracefully, flushing the internal buffer before closing.
+Аккуратно закрывает поток, предварительно сбрасывая внутренний буфер.
 
 #### `utf8Stream.fd`
 
--   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The file descriptor that is being written to.
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) файловый дескриптор, в который выполняется запись.
 
 #### `utf8Stream.file`
 
--   [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The file that is being written to.
+-   [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) файл, в который выполняется запись.
 
 #### `utf8Stream.flush(callback)`
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null An error if the flush failed, otherwise `null`.
+    -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | null ошибка, если сброс завершился неудачей, иначе `null`
 
-Writes the current buffer to the file if a write was not in progress. Do nothing if `minLength` is zero or if it is already writing.
+Записывает текущий буфер в файл, если запись в данный момент не выполняется. Ничего не делает, если `minLength` равно нулю или если поток уже пишет.
 
 #### `utf8Stream.flushSync()`
 
-Flushes the buffered data synchronously. This is a costly operation.
+Синхронно сбрасывает буферизованные данные. Это затратная операция.
 
 #### `utf8Stream.fsync`
 
--   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the stream is performing a `fs.fsyncSync()` after every write operation.
+-   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, выполняет ли поток `fs.fsyncSync()` после каждой операции записи.
 
 #### `utf8Stream.maxLength`
 
--   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The maximum length of the internal buffer. If a write operation would cause the buffer to exceed `maxLength`, the data written is dropped and a drop event is emitted with the dropped data.
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальная длина внутреннего буфера. Если операция записи приведёт к превышению `maxLength`, записываемые данные будут отброшены и будет сгенерировано событие `drop` с отброшенными данными.
 
 #### `utf8Stream.minLength`
 
--   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The minimum length of the internal buffer that is required to be full before flushing.
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) минимальная длина внутреннего буфера, которую нужно заполнить перед сбросом.
 
 #### `utf8Stream.mkdir`
 
--   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the stream should ensure that the directory for the `dest` file exists. If `true`, it will create the directory if it does not exist. **Default**: `false`.
+-   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, должен ли поток обеспечивать существование каталога для файла `dest`. Если `true`, каталог будет создан, если он отсутствует. **По умолчанию:** `false`.
 
 #### `utf8Stream.mode`
 
--   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The mode of the file that is being written to.
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим файла, в который выполняется запись.
 
 #### `utf8Stream.periodicFlush`
 
--   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of milliseconds between flushes. If set to `0`, no periodic flushes will be performed.
+-   [number](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) количество миллисекунд между сбросами. Если установлено `0`, периодические сбросы выполняться не будут.
 
 #### `utf8Stream.reopen(file)`
 
--   `file`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [Buffer](buffer.md#buffer) | [URL](url.md#the-whatwg-url-api) A path to a file to be written to (mode controlled by the append option).
+-   `file`: [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [Buffer](buffer.md#buffer) | [URL](url.md#the-whatwg-url-api) путь к файлу, в который будет вестись запись (режим управляется опцией `append`)
 
-Reopen the file in place, useful for log rotation.
+Повторно открывает файл на месте; полезно для ротации логов.
 
 #### `utf8Stream.sync`
 
--   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the stream is writing synchronously or asynchronously.
+-   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, пишет ли поток синхронно или асинхронно.
 
 #### `utf8Stream.write(data)`
 
--   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) The data to write.
--   Returns [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) данные для записи
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-When the `options.contentMode` is set to `'utf8'` when the stream is created, the `data` argument must be a string. If the `contentMode` is set to `'buffer'`, the `data` argument must be a [Buffer](buffer.md#buffer).
+Если при создании потока `options.contentMode` установлен в `'utf8'`, аргумент `data` должен быть строкой. Если `contentMode` установлен в `'buffer'`, аргумент `data` должен быть [Buffer](buffer.md#buffer).
 
 #### `utf8Stream.writing`
 
--   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Whether the stream is currently writing data to the file.
+-   [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, записывает ли поток данные в файл в данный момент.
 
 #### `utf8Stream[Symbol.dispose]()`
 
-Calls `utf8Stream.destroy()`.
+Вызывает `utf8Stream.destroy()`.
 
-### Class: `fs.WriteStream`
+### Класс: `fs.WriteStream` {#class-fswritestream}
 
 <!-- YAML
 added: v0.1.93
@@ -8460,35 +8462,35 @@ added: v0.1.93
 
 -   Extends [`<stream.Writable>`](stream.md#streamwritable)
 
-Instances of [fs.WriteStream](fs.md#fswritestream) cannot be constructed directly. They are created and returned using the [`fs.createWriteStream()`](#fscreatewritestreampath-options) function.
+Экземпляры [fs.WriteStream](fs.md#fswritestream) нельзя создавать напрямую. Они создаются и возвращаются функцией [`fs.createWriteStream()`](#fscreatewritestreampath-options).
 
-#### Event: `'close'`
-
-<!-- YAML
-added: v0.1.93
--->
-
-Emitted when the [fs.WriteStream](fs.md#fswritestream)'s underlying file descriptor has been closed.
-
-#### Event: `'open'`
+#### Событие: `'close'`
 
 <!-- YAML
 added: v0.1.93
 -->
 
--   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Integer file descriptor used by the [fs.WriteStream](fs.md#fswritestream).
+Генерируется, когда базовый файловый дескриптор [fs.WriteStream](fs.md#fswritestream) закрыт.
 
-Emitted when the [fs.WriteStream](fs.md#fswritestream)'s file is opened.
+#### Событие: `'open'`
 
-#### Event: `'ready'`
+<!-- YAML
+added: v0.1.93
+-->
+
+-   `fd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) целочисленный файловый дескриптор, используемый [fs.WriteStream](fs.md#fswritestream)
+
+Генерируется, когда файл [fs.WriteStream](fs.md#fswritestream) открыт.
+
+#### Событие: `'ready'`
 
 <!-- YAML
 added: v9.11.0
 -->
 
-Emitted when the [fs.WriteStream](fs.md#fswritestream) is ready to be used.
+Генерируется, когда [fs.WriteStream](fs.md#fswritestream) готов к использованию.
 
-Fires immediately after `'open'`.
+Срабатывает сразу после `'open'`.
 
 #### `writeStream.bytesWritten`
 
@@ -8496,7 +8498,7 @@ Fires immediately after `'open'`.
 added: v0.4.7
 -->
 
-The number of bytes written so far. Does not include data that is still queued for writing.
+Количество байтов, записанных на данный момент. Не включает данные, которые всё ещё находятся в очереди на запись.
 
 #### `writeStream.close([callback])`
 
@@ -8507,7 +8509,7 @@ added: v0.9.4
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-Closes `writeStream`. Optionally accepts a callback that will be executed once the `writeStream` is closed.
+Закрывает `writeStream`. Необязательно принимает callback, который будет выполнен после закрытия `writeStream`.
 
 #### `writeStream.path`
 
@@ -8515,7 +8517,7 @@ Closes `writeStream`. Optionally accepts a callback that will be executed once t
 added: v0.1.93
 -->
 
-The path to the file the stream is writing to as specified in the first argument to [`fs.createWriteStream()`](#fscreatewritestreampath-options). If `path` is passed as a string, then `writeStream.path` will be a string. If `path` is passed as a [Buffer](buffer.md#buffer), then `writeStream.path` will be a [Buffer](buffer.md#buffer).
+Путь к файлу, в который пишет поток, указанный в первом аргументе [`fs.createWriteStream()`](#fscreatewritestreampath-options). Если `path` передан как строка, `writeStream.path` будет строкой. Если `path` передан как [Buffer](buffer.md#buffer), `writeStream.path` будет [Buffer](buffer.md#buffer).
 
 #### `writeStream.pending`
 
@@ -8525,23 +8527,23 @@ added: v11.2.0
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-This property is `true` if the underlying file has not been opened yet, i.e. before the `'ready'` event is emitted.
+Это свойство равно `true`, если базовый файл ещё не был открыт, то есть до генерации события `'ready'`.
 
 ### `fs.constants`
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Returns an object containing commonly used constants for file system operations.
+Возвращает объект, содержащий часто используемые константы для операций файловой системы.
 
-#### FS constants
+#### Константы FS {#fs-constants}
 
-The following constants are exported by `fs.constants` and `fsPromises.constants`.
+Следующие константы экспортируются через `fs.constants` и `fsPromises.constants`.
 
-Not every constant will be available on every operating system; this is especially important for Windows, where many of the POSIX specific definitions are not available. For portable applications it is recommended to check for their presence before use.
+Не каждая константа будет доступна в каждой операционной системе; особенно это важно для Windows, где многие определения, специфичные для POSIX, недоступны. Для переносимых приложений рекомендуется перед использованием проверять их наличие.
 
-To use more than one constant, use the bitwise OR `|` operator.
+Чтобы использовать несколько констант одновременно, применяйте оператор побитового ИЛИ `|`.
 
-Example:
+Пример:
 
 === "MJS"
 
@@ -8559,279 +8561,102 @@ Example:
     });
     ```
 
-##### File access constants
+##### Константы доступа к файлам {#file-access-constants}
 
-The following constants are meant for use as the `mode` parameter passed to [`fsPromises.access()`](#fspromisesaccesspath-mode), [`fs.access()`](#fsaccesspath-mode-callback), and [`fs.accessSync()`](#fsaccesssyncpath-mode).
+Следующие константы предназначены для использования в качестве параметра `mode`, передаваемого в [`fsPromises.access()`](#fspromisesaccesspath-mode), [`fs.access()`](#fsaccesspath-mode-callback) и [`fs.accessSync()`](#fsaccesssyncpath-mode).
 
-<table>
-  <tr>
-    <th>Constant</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>F_OK</code></td>
-    <td>Flag indicating that the file is visible to the calling process.
-     This is useful for determining if a file exists, but says nothing
-     about <code>rwx</code> permissions. Default if no mode is specified.</td>
-  </tr>
-  <tr>
-    <td><code>R_OK</code></td>
-    <td>Flag indicating that the file can be read by the calling process.</td>
-  </tr>
-  <tr>
-    <td><code>W_OK</code></td>
-    <td>Flag indicating that the file can be written by the calling
-    process.</td>
-  </tr>
-  <tr>
-    <td><code>X_OK</code></td>
-    <td>Flag indicating that the file can be executed by the calling
-    process. This has no effect on Windows
-    (will behave like <code>fs.constants.F_OK</code>).</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `F_OK` | Флаг, указывающий, что файл видим для вызывающего процесса. Полезен для проверки существования файла, но ничего не говорит о правах `rwx`. Используется по умолчанию, если режим не указан. |
+| `R_OK` | Флаг, указывающий, что файл может быть прочитан вызывающим процессом. |
+| `W_OK` | Флаг, указывающий, что в файл можно записывать из вызывающего процесса. |
+| `X_OK` | Флаг, указывающий, что файл может быть выполнен вызывающим процессом. В Windows не оказывает эффекта (ведёт себя как `fs.constants.F_OK`). |
 
-The definitions are also available on Windows.
+Эти определения также доступны в Windows.
 
-##### File copy constants
+##### Константы копирования файлов {#file-copy-constants}
 
-The following constants are meant for use with [`fs.copyFile()`](#fscopyfilesrc-dest-mode-callback).
+Следующие константы предназначены для использования с [`fs.copyFile()`](#fscopyfilesrc-dest-mode-callback).
 
-<table>
-  <tr>
-    <th>Constant</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>COPYFILE_EXCL</code></td>
-    <td>If present, the copy operation will fail with an error if the
-    destination path already exists.</td>
-  </tr>
-  <tr>
-    <td><code>COPYFILE_FICLONE</code></td>
-    <td>If present, the copy operation will attempt to create a
-    copy-on-write reflink. If the underlying platform does not support
-    copy-on-write, then a fallback copy mechanism is used.</td>
-  </tr>
-  <tr>
-    <td><code>COPYFILE_FICLONE_FORCE</code></td>
-    <td>If present, the copy operation will attempt to create a
-    copy-on-write reflink. If the underlying platform does not support
-    copy-on-write, then the operation will fail with an error.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `COPYFILE_EXCL` | Если указана, операция копирования завершится ошибкой, если целевой путь уже существует. |
+| `COPYFILE_FICLONE` | Если указана, операция копирования попытается создать reflink с копированием по записи. Если базовая платформа не поддерживает copy-on-write, используется запасной механизм копирования. |
+| `COPYFILE_FICLONE_FORCE` | Если указана, операция копирования попытается создать reflink с копированием по записи. Если базовая платформа не поддерживает copy-on-write, операция завершится ошибкой. |
 
-The definitions are also available on Windows.
+Эти определения также доступны в Windows.
 
-##### File open constants
+##### Константы открытия файлов {#file-open-constants}
 
-The following constants are meant for use with `fs.open()`.
+Следующие константы предназначены для использования с `fs.open()`.
 
-<table>
-  <tr>
-    <th>Constant</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>O_RDONLY</code></td>
-    <td>Flag indicating to open a file for read-only access.</td>
-  </tr>
-  <tr>
-    <td><code>O_WRONLY</code></td>
-    <td>Flag indicating to open a file for write-only access.</td>
-  </tr>
-  <tr>
-    <td><code>O_RDWR</code></td>
-    <td>Flag indicating to open a file for read-write access.</td>
-  </tr>
-  <tr>
-    <td><code>O_CREAT</code></td>
-    <td>Flag indicating to create the file if it does not already exist.</td>
-  </tr>
-  <tr>
-    <td><code>O_EXCL</code></td>
-    <td>Flag indicating that opening a file should fail if the
-    <code>O_CREAT</code> flag is set and the file already exists.</td>
-  </tr>
-  <tr>
-    <td><code>O_NOCTTY</code></td>
-    <td>Flag indicating that if path identifies a terminal device, opening the
-    path shall not cause that terminal to become the controlling terminal for
-    the process (if the process does not already have one).</td>
-  </tr>
-  <tr>
-    <td><code>O_TRUNC</code></td>
-    <td>Flag indicating that if the file exists and is a regular file, and the
-    file is opened successfully for write access, its length shall be truncated
-    to zero.</td>
-  </tr>
-  <tr>
-    <td><code>O_APPEND</code></td>
-    <td>Flag indicating that data will be appended to the end of the file.</td>
-  </tr>
-  <tr>
-    <td><code>O_DIRECTORY</code></td>
-    <td>Flag indicating that the open should fail if the path is not a
-    directory.</td>
-  </tr>
-  <tr>
-  <td><code>O_NOATIME</code></td>
-    <td>Flag indicating reading accesses to the file system will no longer
-    result in an update to the <code>atime</code> information associated with
-    the file. This flag is available on Linux operating systems only.</td>
-  </tr>
-  <tr>
-    <td><code>O_NOFOLLOW</code></td>
-    <td>Flag indicating that the open should fail if the path is a symbolic
-    link.</td>
-  </tr>
-  <tr>
-    <td><code>O_SYNC</code></td>
-    <td>Flag indicating that the file is opened for synchronized I/O with write
-    operations waiting for file integrity.</td>
-  </tr>
-  <tr>
-    <td><code>O_DSYNC</code></td>
-    <td>Flag indicating that the file is opened for synchronized I/O with write
-    operations waiting for data integrity.</td>
-  </tr>
-  <tr>
-    <td><code>O_SYMLINK</code></td>
-    <td>Flag indicating to open the symbolic link itself rather than the
-    resource it is pointing to.</td>
-  </tr>
-  <tr>
-    <td><code>O_DIRECT</code></td>
-    <td>When set, an attempt will be made to minimize caching effects of file
-    I/O.</td>
-  </tr>
-  <tr>
-    <td><code>O_NONBLOCK</code></td>
-    <td>Flag indicating to open the file in nonblocking mode when possible.</td>
-  </tr>
-  <tr>
-    <td><code>UV_FS_O_FILEMAP</code></td>
-    <td>When set, a memory file mapping is used to access the file. This flag
-    is available on Windows operating systems only. On other operating systems,
-    this flag is ignored.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `O_RDONLY` | Флаг, указывающий, что файл следует открыть только для чтения. |
+| `O_WRONLY` | Флаг, указывающий, что файл следует открыть только для записи. |
+| `O_RDWR` | Флаг, указывающий, что файл следует открыть для чтения и записи. |
+| `O_CREAT` | Флаг, указывающий, что файл следует создать, если он ещё не существует. |
+| `O_EXCL` | Флаг, указывающий, что открытие файла должно завершиться ошибкой, если установлен флаг `O_CREAT` и файл уже существует. |
+| `O_NOCTTY` | Флаг, указывающий, что если path обозначает терминальное устройство, его открытие не должно делать этот терминал управляющим терминалом процесса (если у процесса его ещё нет). |
+| `O_TRUNC` | Флаг, указывающий, что если файл существует и является обычным файлом, а также успешно открыт для записи, его длина будет усечена до нуля. |
+| `O_APPEND` | Флаг, указывающий, что данные будут добавляться в конец файла. |
+| `O_DIRECTORY` | Флаг, указывающий, что открытие должно завершиться ошибкой, если path не является каталогом. |
+| `O_NOATIME` | Флаг, указывающий, что операции чтения из файловой системы больше не будут приводить к обновлению связанного с файлом значения `atime`. Этот флаг доступен только в Linux. |
+| `O_NOFOLLOW` | Флаг, указывающий, что открытие должно завершиться ошибкой, если path является символической ссылкой. |
+| `O_SYNC` | Флаг, указывающий, что файл открывается для синхронизированного ввода-вывода, при котором операции записи ждут сохранения целостности файла. |
+| `O_DSYNC` | Флаг, указывающий, что файл открывается для синхронизированного ввода-вывода, при котором операции записи ждут сохранения целостности данных. |
+| `O_SYMLINK` | Флаг, указывающий, что следует открыть саму символическую ссылку, а не ресурс, на который она указывает. |
+| `O_DIRECT` | Если установлен, будет предпринята попытка минимизировать влияние кэширования на файловый ввод-вывод. |
+| `O_NONBLOCK` | Флаг, указывающий, что файл следует открыть в неблокирующем режиме, если это возможно. |
+| `UV_FS_O_FILEMAP` | Если установлен, для доступа к файлу используется отображение файла в память. Этот флаг доступен только в Windows. В других операционных системах он игнорируется. |
 
-On Windows, only `O_APPEND`, `O_CREAT`, `O_EXCL`, `O_RDONLY`, `O_RDWR`, `O_TRUNC`, `O_WRONLY`, and `UV_FS_O_FILEMAP` are available.
+В Windows доступны только `O_APPEND`, `O_CREAT`, `O_EXCL`, `O_RDONLY`, `O_RDWR`, `O_TRUNC`, `O_WRONLY` и `UV_FS_O_FILEMAP`.
 
-##### File type constants
+##### Константы типа файла {#file-type-constants}
 
-The following constants are meant for use with the [fs.Stats](fs.md#fsstats) object's `mode` property for determining a file's type.
+Следующие константы предназначены для использования со свойством `mode` объекта [fs.Stats](fs.md#fsstats) для определения типа файла.
 
-<table>
-  <tr>
-    <th>Constant</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>S_IFMT</code></td>
-    <td>Bit mask used to extract the file type code.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFREG</code></td>
-    <td>File type constant for a regular file.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFDIR</code></td>
-    <td>File type constant for a directory.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFCHR</code></td>
-    <td>File type constant for a character-oriented device file.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFBLK</code></td>
-    <td>File type constant for a block-oriented device file.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFIFO</code></td>
-    <td>File type constant for a FIFO/pipe.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFLNK</code></td>
-    <td>File type constant for a symbolic link.</td>
-  </tr>
-  <tr>
-    <td><code>S_IFSOCK</code></td>
-    <td>File type constant for a socket.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `S_IFMT` | Битовая маска, используемая для извлечения кода типа файла. |
+| `S_IFREG` | Константа типа для обычного файла. |
+| `S_IFDIR` | Константа типа для каталога. |
+| `S_IFCHR` | Константа типа для символьного устройства. |
+| `S_IFBLK` | Константа типа для блочного устройства. |
+| `S_IFIFO` | Константа типа для FIFO/канала. |
+| `S_IFLNK` | Константа типа для символической ссылки. |
+| `S_IFSOCK` | Константа типа для сокета. |
 
-On Windows, only `S_IFCHR`, `S_IFDIR`, `S_IFLNK`, `S_IFMT`, and `S_IFREG`, are available.
+В Windows доступны только `S_IFCHR`, `S_IFDIR`, `S_IFLNK`, `S_IFMT` и `S_IFREG`.
 
-##### File mode constants
+##### Константы режима файла {#file-mode-constants}
 
-The following constants are meant for use with the [fs.Stats](fs.md#fsstats) object's `mode` property for determining the access permissions for a file.
+Следующие константы предназначены для использования со свойством `mode` объекта [fs.Stats](fs.md#fsstats) для определения прав доступа к файлу.
 
-<table>
-  <tr>
-    <th>Constant</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>S_IRWXU</code></td>
-    <td>File mode indicating readable, writable, and executable by owner.</td>
-  </tr>
-  <tr>
-    <td><code>S_IRUSR</code></td>
-    <td>File mode indicating readable by owner.</td>
-  </tr>
-  <tr>
-    <td><code>S_IWUSR</code></td>
-    <td>File mode indicating writable by owner.</td>
-  </tr>
-  <tr>
-    <td><code>S_IXUSR</code></td>
-    <td>File mode indicating executable by owner.</td>
-  </tr>
-  <tr>
-    <td><code>S_IRWXG</code></td>
-    <td>File mode indicating readable, writable, and executable by group.</td>
-  </tr>
-  <tr>
-    <td><code>S_IRGRP</code></td>
-    <td>File mode indicating readable by group.</td>
-  </tr>
-  <tr>
-    <td><code>S_IWGRP</code></td>
-    <td>File mode indicating writable by group.</td>
-  </tr>
-  <tr>
-    <td><code>S_IXGRP</code></td>
-    <td>File mode indicating executable by group.</td>
-  </tr>
-  <tr>
-    <td><code>S_IRWXO</code></td>
-    <td>File mode indicating readable, writable, and executable by others.</td>
-  </tr>
-  <tr>
-    <td><code>S_IROTH</code></td>
-    <td>File mode indicating readable by others.</td>
-  </tr>
-  <tr>
-    <td><code>S_IWOTH</code></td>
-    <td>File mode indicating writable by others.</td>
-  </tr>
-  <tr>
-    <td><code>S_IXOTH</code></td>
-    <td>File mode indicating executable by others.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `S_IRWXU` | Режим файла, указывающий, что владелец может читать, записывать и выполнять файл. |
+| `S_IRUSR` | Режим файла, указывающий, что владелец может читать файл. |
+| `S_IWUSR` | Режим файла, указывающий, что владелец может записывать в файл. |
+| `S_IXUSR` | Режим файла, указывающий, что владелец может выполнять файл. |
+| `S_IRWXG` | Режим файла, указывающий, что группа может читать, записывать и выполнять файл. |
+| `S_IRGRP` | Режим файла, указывающий, что группа может читать файл. |
+| `S_IWGRP` | Режим файла, указывающий, что группа может записывать в файл. |
+| `S_IXGRP` | Режим файла, указывающий, что группа может выполнять файл. |
+| `S_IRWXO` | Режим файла, указывающий, что остальные могут читать, записывать и выполнять файл. |
+| `S_IROTH` | Режим файла, указывающий, что остальные могут читать файл. |
+| `S_IWOTH` | Режим файла, указывающий, что остальные могут записывать в файл. |
+| `S_IXOTH` | Режим файла, указывающий, что остальные могут выполнять файл. |
 
-On Windows, only `S_IRUSR` and `S_IWUSR` are available.
+В Windows доступны только `S_IRUSR` и `S_IWUSR`.
 
-## Notes
+## Примечания {#notes}
 
-### Ordering of callback and promise-based operations
+### Порядок выполнения операций с обратными вызовами и промисами {#ordering-of-callback-and-promise-based-operations}
 
-Because they are executed asynchronously by the underlying thread pool, there is no guaranteed ordering when using either the callback or promise-based methods.
+Поскольку эти операции выполняются асинхронно базовым пулом потоков, при использовании методов на основе обратных вызовов или промисов порядок их выполнения не гарантируется.
 
-For example, the following is prone to error because the `fs.stat()` operation might complete before the `fs.rename()` operation:
+Например, следующий код подвержен ошибкам, потому что операция `fs.stat()` может завершиться раньше, чем `fs.rename()`:
 
 ```js
 const fs = require('node:fs');
@@ -8846,7 +8671,7 @@ fs.stat('/tmp/world', (err, stats) => {
 });
 ```
 
-It is important to correctly order the operations by awaiting the results of one before invoking the other:
+Важно правильно упорядочивать операции: дождаться результата одной, прежде чем вызывать другую:
 
 === "MJS"
 
@@ -8881,7 +8706,7 @@ It is important to correctly order the operations by awaiting the results of one
     })('/tmp/hello', '/tmp/world');
     ```
 
-Or, when using the callback APIs, move the `fs.stat()` call into the callback of the `fs.rename()` operation:
+Или, если используются callback API, перенести вызов `fs.stat()` внутрь обратного вызова операции `fs.rename()`:
 
 === "MJS"
 
@@ -8911,15 +8736,15 @@ Or, when using the callback APIs, move the `fs.stat()` call into the callback of
     });
     ```
 
-### File paths
+### Пути к файлам {#file-paths}
 
-Most `fs` operations accept file paths that may be specified in the form of a string, a [Buffer](buffer.md#buffer), or a [URL](url.md#the-whatwg-url-api) object using the `file:` protocol.
+Большинство операций `fs` принимают пути к файлам, которые могут быть указаны в виде строки, [Buffer](buffer.md#buffer) или объекта [URL](url.md#the-whatwg-url-api) с протоколом `file:`.
 
-#### String paths
+#### Строковые пути {#string-paths}
 
-String paths are interpreted as UTF-8 character sequences identifying the absolute or relative filename. Relative paths will be resolved relative to the current working directory as determined by calling `process.cwd()`.
+Строковые пути интерпретируются как последовательности символов UTF-8, задающие абсолютное или относительное имя файла. Относительные пути разрешаются относительно текущего рабочего каталога, определяемого вызовом `process.cwd()`.
 
-Example using an absolute path on POSIX:
+Пример использования абсолютного пути в POSIX:
 
 === "MJS"
 
@@ -8929,13 +8754,13 @@ Example using an absolute path on POSIX:
     let fd;
     try {
       fd = await open('/open/some/file.txt', 'r');
-      // Do something with the file
+      // Сделать что-нибудь с файлом
     } finally {
       await fd?.close();
     }
     ```
 
-Example using a relative path on POSIX (relative to `process.cwd()`):
+Пример использования относительного пути в POSIX (относительно `process.cwd()`):
 
 === "MJS"
 
@@ -8945,19 +8770,19 @@ Example using a relative path on POSIX (relative to `process.cwd()`):
     let fd;
     try {
       fd = await open('file.txt', 'r');
-      // Do something with the file
+      // Сделать что-нибудь с файлом
     } finally {
       await fd?.close();
     }
     ```
 
-#### File URL paths
+#### URL-пути к файлам {#file-url-paths}
 
 <!-- YAML
 added: v7.6.0
 -->
 
-For most `node:fs` module functions, the `path` or `filename` argument may be passed as a [URL](url.md#the-whatwg-url-api) object using the `file:` protocol.
+Для большинства функций модуля `node:fs` аргумент `path` или `filename` можно передавать как объект [URL](url.md#the-whatwg-url-api) с использованием протокола `file:`.
 
 === "MJS"
 
@@ -8967,91 +8792,91 @@ For most `node:fs` module functions, the `path` or `filename` argument may be pa
     readFileSync(new URL('file:///tmp/hello'));
     ```
 
-`file:` URLs are always absolute paths.
+URL `file:` всегда являются абсолютными путями.
 
-##### Platform-specific considerations
+##### Платформенные особенности {#platform-specific-considerations}
 
-On Windows, `file:` [URL](url.md#the-whatwg-url-api)s with a host name convert to UNC paths, while `file:` [URL](url.md#the-whatwg-url-api)s with drive letters convert to local absolute paths. `file:` [URL](url.md#the-whatwg-url-api)s with no host name and no drive letter will result in an error:
+В Windows объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и именем хоста преобразуются в UNC-пути, а объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и буквами дисков преобразуются в локальные абсолютные пути. Объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` без имени хоста и без буквы диска приводят к ошибке:
 
 === "MJS"
 
     ```js
     import { readFileSync } from 'node:fs';
-    // On Windows :
+    // В Windows:
 
-    // - WHATWG file URLs with hostname convert to UNC path
+    // - URL файлов WHATWG с именем хоста преобразуются в UNC-путь
     // file://hostname/p/a/t/h/file => \\hostname\p\a\t\h\file
     readFileSync(new URL('file://hostname/p/a/t/h/file'));
 
-    // - WHATWG file URLs with drive letters convert to absolute path
+    // - URL файлов WHATWG с буквами дисков преобразуются в абсолютный путь
     // file:///C:/tmp/hello => C:\tmp\hello
     readFileSync(new URL('file:///C:/tmp/hello'));
 
-    // - WHATWG file URLs without hostname must have a drive letters
+    // - URL файлов WHATWG без имени хоста должны содержать букву диска
     readFileSync(new URL('file:///notdriveletter/p/a/t/h/file'));
     readFileSync(new URL('file:///c/p/a/t/h/file'));
     // TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
     ```
 
-`file:` [URL](url.md#the-whatwg-url-api)s with drive letters must use `:` as a separator just after the drive letter. Using another separator will result in an error.
+Объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и буквами дисков должны использовать `:` как разделитель сразу после буквы диска. Использование другого разделителя приведёт к ошибке.
 
-On all other platforms, `file:` [URL](url.md#the-whatwg-url-api)s with a host name are unsupported and will result in an error:
+На всех остальных платформах объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и именем хоста не поддерживаются и приводят к ошибке:
 
 === "MJS"
 
     ```js
     import { readFileSync } from 'node:fs';
-    // On other platforms:
+    // На других платформах:
 
-    // - WHATWG file URLs with hostname are unsupported
+    // - URL файлов WHATWG с именем хоста не поддерживаются
     // file://hostname/p/a/t/h/file => throw!
     readFileSync(new URL('file://hostname/p/a/t/h/file'));
     // TypeError [ERR_INVALID_FILE_URL_PATH]: must be absolute
 
-    // - WHATWG file URLs convert to absolute path
+    // - URL файлов WHATWG преобразуются в абсолютный путь
     // file:///tmp/hello => /tmp/hello
     readFileSync(new URL('file:///tmp/hello'));
     ```
 
-A `file:` [URL](url.md#the-whatwg-url-api) having encoded slash characters will result in an error on all platforms:
+Объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и закодированными символами слеша приводят к ошибке на всех платформах:
 
 === "MJS"
 
     ```js
     import { readFileSync } from 'node:fs';
 
-    // On Windows
+    // В Windows
     readFileSync(new URL('file:///C:/p/a/t/h/%2F'));
     readFileSync(new URL('file:///C:/p/a/t/h/%2f'));
     /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
     \ or / characters */
 
-    // On POSIX
+    // В POSIX
     readFileSync(new URL('file:///p/a/t/h/%2F'));
     readFileSync(new URL('file:///p/a/t/h/%2f'));
     /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
     / characters */
     ```
 
-On Windows, `file:` [URL](url.md#the-whatwg-url-api)s having encoded backslash will result in an error:
+В Windows объекты [URL](url.md#the-whatwg-url-api) с протоколом `file:` и закодированной обратной косой чертой приводят к ошибке:
 
 === "MJS"
 
     ```js
     import { readFileSync } from 'node:fs';
 
-    // On Windows
+    // В Windows
     readFileSync(new URL('file:///C:/path/%5C'));
     readFileSync(new URL('file:///C:/path/%5c'));
     /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
     \ or / characters */
     ```
 
-#### Buffer paths
+#### Пути через Buffer {#buffer-paths}
 
-Paths specified using a [Buffer](buffer.md#buffer) are useful primarily on certain POSIX operating systems that treat file paths as opaque byte sequences. On such systems, it is possible for a single file path to contain sub-sequences that use multiple character encodings. As with string paths, [Buffer](buffer.md#buffer) paths may be relative or absolute:
+Пути, заданные через [Buffer](buffer.md#buffer), полезны прежде всего в некоторых POSIX-совместимых операционных системах, которые рассматривают пути к файлам как непрозрачные последовательности байтов. В таких системах один путь к файлу может содержать подпоследовательности с разными кодировками символов. Как и строковые пути, пути [Buffer](buffer.md#buffer) могут быть относительными или абсолютными:
 
-Example using an absolute path on POSIX:
+Пример использования абсолютного пути в POSIX:
 
 === "MJS"
 
@@ -9062,23 +8887,23 @@ Example using an absolute path on POSIX:
     let fd;
     try {
       fd = await open(Buffer.from('/open/some/file.txt'), 'r');
-      // Do something with the file
+      // Сделать что-нибудь с файлом
     } finally {
       await fd?.close();
     }
     ```
 
-#### Per-drive working directories on Windows
+#### Рабочие каталоги для каждого диска в Windows {#per-drive-working-directories-on-windows}
 
-On Windows, Node.js follows the concept of per-drive working directory. This behavior can be observed when using a drive path without a backslash. For example `fs.readdirSync('C:\\')` can potentially return a different result than `fs.readdirSync('C:')`. For more information, see [this MSDN page][msdn-rel-path].
+В Windows Node.js придерживается концепции отдельного рабочего каталога для каждого диска. Это поведение можно наблюдать при использовании пути к диску без обратной косой черты. Например, `fs.readdirSync('C:\\')` потенциально может вернуть другой результат, чем `fs.readdirSync('C:')`. Подробнее см. [на этой странице Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#fully-qualified-vs-relative-paths).
 
-### File descriptors
+### Файловые дескрипторы {#file-descriptors}
 
-On POSIX systems, for every process, the kernel maintains a table of currently open files and resources. Each open file is assigned a simple numeric identifier called a _file descriptor_. At the system-level, all file system operations use these file descriptors to identify and track each specific file. Windows systems use a different but conceptually similar mechanism for tracking resources. To simplify things for users, Node.js abstracts away the differences between operating systems and assigns all open files a numeric file descriptor.
+В POSIX-системах ядро для каждого процесса поддерживает таблицу текущих открытых файлов и ресурсов. Каждому открытому файлу присваивается простой числовой идентификатор, называемый _файловым дескриптором_. На системном уровне все операции файловой системы используют эти файловые дескрипторы для идентификации и отслеживания конкретных файлов. В Windows используется другой, но концептуально похожий механизм отслеживания ресурсов. Чтобы упростить работу пользователям, Node.js скрывает различия между операционными системами и присваивает всем открытым файлам числовой файловый дескриптор.
 
-The callback-based `fs.open()`, and synchronous `fs.openSync()` methods open a file and allocate a new file descriptor. Once allocated, the file descriptor may be used to read data from, write data to, or request information about the file.
+Методы `fs.open()` на основе обратного вызова и синхронный `fs.openSync()` открывают файл и выделяют новый файловый дескриптор. После этого дескриптор можно использовать для чтения, записи или запроса информации о файле.
 
-Operating systems limit the number of file descriptors that may be open at any given time so it is critical to close the descriptor when operations are completed. Failure to do so will result in a memory leak that will eventually cause an application to crash.
+Операционные системы ограничивают количество файловых дескрипторов, которые могут быть одновременно открыты, поэтому после завершения операций дескриптор критически важно закрывать. Иначе возникнет утечка памяти, которая со временем может привести к сбою приложения.
 
 === "MJS"
 
@@ -9100,7 +8925,7 @@ Operating systems limit the number of file descriptors that may be open at any g
             throw err;
           }
 
-          // use stat
+          // использовать stat
 
           closeFd(fd);
         });
@@ -9111,7 +8936,7 @@ Operating systems limit the number of file descriptors that may be open at any g
     });
     ```
 
-The promise-based APIs use a [FileHandle](#filehandle) object in place of the numeric file descriptor. These objects are better managed by the system to ensure that resources are not leaked. However, it is still required that they are closed when operations are completed:
+API на основе промисов используют объект [FileHandle](#filehandle) вместо числового файлового дескриптора. Система лучше управляет такими объектами, чтобы предотвратить утечки ресурсов. Тем не менее, по завершении операций их всё равно необходимо закрывать:
 
 === "MJS"
 
@@ -9122,155 +8947,74 @@ The promise-based APIs use a [FileHandle](#filehandle) object in place of the nu
     try {
       file = await open('/open/some/file.txt', 'r');
       const stat = await file.stat();
-      // use stat
+      // использовать stat
     } finally {
       await file.close();
     }
     ```
 
-### Threadpool usage
+### Использование пула потоков {#threadpool-usage}
 
-All callback and promise-based file system APIs (with the exception of `fs.FSWatcher()`) use libuv's threadpool. This can have surprising and negative performance implications for some applications. See the [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
+Все файловые API на основе обратных вызовов и промисов (за исключением `fs.FSWatcher()`) используют пул потоков libuv. Для некоторых приложений это может иметь неожиданные и негативные последствия для производительности. Подробнее см. документацию [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
 
-### File system flags
+### Флаги файловой системы {#file-system-flags}
 
-The following flags are available wherever the `flag` option takes a string.
+Следующие флаги доступны везде, где параметр `flag` принимает строку.
 
--   `'a'`: Open file for appending. The file is created if it does not exist.
+-   `'a'`: Открыть файл для добавления. Если файла нет, он будет создан.
 
--   `'ax'`: Like `'a'` but fails if the path exists.
+-   `'ax'`: То же, что `'a'`, но операция завершится ошибкой, если путь уже существует.
 
--   `'a+'`: Open file for reading and appending. The file is created if it does not exist.
+-   `'a+'`: Открыть файл для чтения и добавления. Если файла нет, он будет создан.
 
--   `'ax+'`: Like `'a+'` but fails if the path exists.
+-   `'ax+'`: То же, что `'a+'`, но операция завершится ошибкой, если путь уже существует.
 
--   `'as'`: Open file for appending in synchronous mode. The file is created if it does not exist.
+-   `'as'`: Открыть файл для добавления в синхронном режиме. Если файла нет, он будет создан.
 
--   `'as+'`: Open file for reading and appending in synchronous mode. The file is created if it does not exist.
+-   `'as+'`: Открыть файл для чтения и добавления в синхронном режиме. Если файла нет, он будет создан.
 
--   `'r'`: Open file for reading. An exception occurs if the file does not exist.
+-   `'r'`: Открыть файл для чтения. Если файл не существует, возникнет исключение.
 
--   `'rs'`: Open file for reading in synchronous mode. An exception occurs if the file does not exist.
+-   `'rs'`: Открыть файл для чтения в синхронном режиме. Если файл не существует, возникнет исключение.
 
--   `'r+'`: Open file for reading and writing. An exception occurs if the file does not exist.
+-   `'r+'`: Открыть файл для чтения и записи. Если файл не существует, возникнет исключение.
 
--   `'rs+'`: Open file for reading and writing in synchronous mode. Instructs the operating system to bypass the local file system cache.
+-   `'rs+'`: Открыть файл для чтения и записи в синхронном режиме. Указывает операционной системе обойти локальный кэш файловой системы.
 
-    This is primarily useful for opening files on NFS mounts as it allows skipping the potentially stale local cache. It has a very real impact on I/O performance so using this flag is not recommended unless it is needed.
+    Это прежде всего полезно при открытии файлов на NFS-монтированиях, поскольку позволяет обойти потенциально устаревший локальный кэш. Этот флаг ощутимо влияет на производительность ввода-вывода, поэтому использовать его без необходимости не рекомендуется.
 
-    This doesn't turn `fs.open()` or `fsPromises.open()` into a synchronous blocking call. If synchronous operation is desired, something like `fs.openSync()` should be used.
+    Это не превращает `fs.open()` или `fsPromises.open()` в синхронный блокирующий вызов. Если требуется синхронная операция, следует использовать, например, `fs.openSync()`.
 
--   `'w'`: Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
+-   `'w'`: Открыть файл для записи. Файл создаётся (если его нет) или усекается (если он существует).
 
--   `'wx'`: Like `'w'` but fails if the path exists.
+-   `'wx'`: То же, что `'w'`, но операция завершится ошибкой, если путь уже существует.
 
--   `'w+'`: Open file for reading and writing. The file is created (if it does not exist) or truncated (if it exists).
+-   `'w+'`: Открыть файл для чтения и записи. Файл создаётся (если его нет) или усекается (если он существует).
 
--   `'wx+'`: Like `'w+'` but fails if the path exists.
+-   `'wx+'`: То же, что `'w+'`, но операция завершится ошибкой, если путь уже существует.
 
-`flag` can also be a number as documented by open(2); commonly used constants are available from `fs.constants`. On Windows, flags are translated to their equivalent ones where applicable, e.g. `O_WRONLY` to `FILE_GENERIC_WRITE`, or `O_EXCL|O_CREAT` to `CREATE_NEW`, as accepted by `CreateFileW`.
+`flag` также может быть числом, как описано в `open(2)`; часто используемые константы доступны через `fs.constants`. В Windows флаги при необходимости преобразуются в эквиваленты, например `O_WRONLY` в `FILE_GENERIC_WRITE`, а `O_EXCL|O_CREAT` в `CREATE_NEW`, который принимает `CreateFileW`.
 
-The exclusive flag `'x'` (`O_EXCL` flag in open(2)) causes the operation to return an error if the path already exists. On POSIX, if the path is a symbolic link, using `O_EXCL` returns an error even if the link is to a path that does not exist. The exclusive flag might not work with network file systems.
+Эксклюзивный флаг `'x'` (флаг `O_EXCL` в `open(2)`) приводит к ошибке, если путь уже существует. В POSIX, если путь является символической ссылкой, использование `O_EXCL` возвращает ошибку, даже если ссылка указывает на несуществующий путь. Эксклюзивный флаг может не работать с сетевыми файловыми системами.
 
-On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+В Linux позиционная запись не работает, когда файл открыт в режиме добавления. Ядро игнорирует аргумент позиции и всегда дописывает данные в конец файла.
 
-Modifying a file rather than replacing it may require the `flag` option to be set to `'r+'` rather than the default `'w'`.
+Чтобы изменить существующий файл вместо его замены, может потребоваться установить `flag` в `'r+'`, а не использовать значение по умолчанию `'w'`.
 
-The behavior of some flags are platform-specific. As such, opening a directory on macOS and Linux with the `'a+'` flag, as in the example below, will return an error. In contrast, on Windows and FreeBSD, a file descriptor or a `FileHandle` will be returned.
+Поведение некоторых флагов зависит от платформы. Например, открытие каталога на macOS и Linux с флагом `'a+'`, как в примере ниже, завершится ошибкой. Напротив, в Windows и FreeBSD будет возвращён файловый дескриптор или `FileHandle`.
 
 ```js
-// macOS and Linux
+// macOS и Linux
 fs.open('<directory>', 'a+', (err, fd) => {
     // => [Error: EISDIR: illegal operation on a directory, open <directory>]
 });
 
-// Windows and FreeBSD
+// Windows и FreeBSD
 fs.open('<directory>', 'a+', (err, fd) => {
     // => null, <fd>
 });
 ```
 
-On Windows, opening an existing hidden file using the `'w'` flag (either through `fs.open()`, `fs.writeFile()`, or `fsPromises.open()`) will fail with `EPERM`. Existing hidden files can be opened for writing with the `'r+'` flag.
+В Windows открытие существующего скрытого файла с флагом `'w'` (через `fs.open()`, `fs.writeFile()` или `fsPromises.open()`) завершится ошибкой `EPERM`. Для записи в существующие скрытые файлы можно использовать флаг `'r+'`.
 
-A call to `fs.ftruncate()` or `filehandle.truncate()` can be used to reset the file contents.
-
-[#25741]: https://github.com/nodejs/node/issues/25741
-[common system errors]: errors.md#common-system-errors
-[fs constants]: #fs-constants
-[file access constants]: #file-access-constants
-[file modes]: #file-modes
-[mdn-date]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
-[mdn-number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures#number_type
-[msdn-rel-path]: https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#fully-qualified-vs-relative-paths
-[msdn-using-streams]: https://docs.microsoft.com/en-us/windows/desktop/FileIO/using-streams
-[naming files, paths, and namespaces]: https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file
-[`ahafs`]: https://developer.ibm.com/articles/au-aix_event_infrastructure/
-[`buffer.bytelength`]: buffer.md#static-method-bufferbytelengthstring-encoding
-[`fsevents`]: https://developer.apple.com/documentation/coreservices/file_system_events
-[`number.max_safe_integer`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
-[`readdirectorychangesw`]: https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesw
-[`uv_threadpool_size`]: cli.md#uv_threadpool_sizesize
-[`event ports`]: https://illumos.org/man/port_create
-[`filehandle.createreadstream()`]: #filehandlecreatereadstreamoptions
-[`filehandle.createwritestream()`]: #filehandlecreatewritestreamoptions
-[`filehandle.pull()`]: #filehandlepulltransforms-options
-[`filehandle.writefile()`]: #filehandlewritefiledata-options
-[`fs.access()`]: #fsaccesspath-mode-callback
-[`fs.accesssync()`]: #fsaccesssyncpath-mode
-[`fs.chmod()`]: #fschmodpath-mode-callback
-[`fs.chown()`]: #fschownpath-uid-gid-callback
-[`fs.copyfile()`]: #fscopyfilesrc-dest-mode-callback
-[`fs.copyfilesync()`]: #fscopyfilesyncsrc-dest-mode
-[`fs.createreadstream()`]: #fscreatereadstreampath-options
-[`fs.createwritestream()`]: #fscreatewritestreampath-options
-[`fs.exists()`]: #fsexistspath-callback
-[`fs.fstat()`]: #fsfstatfd-options-callback
-[`fs.ftruncate()`]: #fsftruncatefd-len-callback
-[`fs.futimes()`]: #fsfutimesfd-atime-mtime-callback
-[`fs.lstat()`]: #fslstatpath-options-callback
-[`fs.lutimes()`]: #fslutimespath-atime-mtime-callback
-[`fs.mkdir()`]: #fsmkdirpath-options-callback
-[`fs.mkdtemp()`]: #fsmkdtempprefix-options-callback
-[`fs.open()`]: #fsopenpath-flags-mode-callback
-[`fs.opendir()`]: #fsopendirpath-options-callback
-[`fs.opendirsync()`]: #fsopendirsyncpath-options
-[`fs.read()`]: #fsreadfd-buffer-offset-length-position-callback
-[`fs.readfile()`]: #fsreadfilepath-options-callback
-[`fs.readfilesync()`]: #fsreadfilesyncpath-options
-[`fs.readdir()`]: #fsreaddirpath-options-callback
-[`fs.readdirsync()`]: #fsreaddirsyncpath-options
-[`fs.readv()`]: #fsreadvfd-buffers-position-callback
-[`fs.realpath()`]: #fsrealpathpath-options-callback
-[`fs.rm()`]: #fsrmpath-options-callback
-[`fs.rmsync()`]: #fsrmsyncpath-options
-[`fs.rmdir()`]: #fsrmdirpath-options-callback
-[`fs.stat()`]: #fsstatpath-options-callback
-[`fs.statfs()`]: #fsstatfspath-options-callback
-[`fs.symlink()`]: #fssymlinktarget-path-type-callback
-[`fs.utimes()`]: #fsutimespath-atime-mtime-callback
-[`fs.watch()`]: #fswatchfilename-options-listener
-[`fs.write(fd, buffer...)`]: #fswritefd-buffer-offset-length-position-callback
-[`fs.write(fd, string...)`]: #fswritefd-string-position-encoding-callback
-[`fs.writefile()`]: #fswritefilefile-data-options-callback
-[`fs.writev()`]: #fswritevfd-buffers-position-callback
-[`fspromises.access()`]: #fspromisesaccesspath-mode
-[`fspromises.copyfile()`]: #fspromisescopyfilesrc-dest-mode
-[`fspromises.mkdtemp()`]: #fspromisesmkdtempprefix-options
-[`fspromises.open()`]: #fspromisesopenpath-flags-mode
-[`fspromises.opendir()`]: #fspromisesopendirpath-options
-[`fspromises.rm()`]: #fspromisesrmpath-options
-[`fspromises.stat()`]: #fspromisesstatpath-options
-[`fspromises.utimes()`]: #fspromisesutimespath-atime-mtime
-[`inotify(7)`]: https://man7.org/linux/man-pages/man7/inotify.7.html
-[`kqueue(2)`]: https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
-[`minimatch`]: https://github.com/isaacs/minimatch
-[`node:stream/iter`]: stream_iter.md
-[`stream/iter pipeto()`]: stream_iter.md#pipetosource-transforms-writer
-[`stream/iter pull()`]: stream_iter.md#pullsource-transforms-options
-[`stream/iter pullsync()`]: stream_iter.md#pullsyncsource-transforms
-[`util.promisify()`]: util.md#utilpromisifyoriginal
-[bigints]: https://tc39.github.io/proposal-bigint
-[caveats]: #caveats
-[chcp]: https://ss64.com/nt/chcp.html
-[inode]: https://en.wikipedia.org/wiki/Inode
-[support of file system `flags`]: #file-system-flags
+Для сброса содержимого файла можно вызвать `fs.ftruncate()` или `filehandle.truncate()`.

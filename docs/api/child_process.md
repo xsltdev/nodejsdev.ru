@@ -128,14 +128,14 @@ changes:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version: v15.4.0
     pr-url: https://github.com/nodejs/node/pull/36308
-    description: AbortSignal support was added.
+    description: Добавлена поддержка AbortSignal.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
 -->
 
 Добавлено в: v0.1.90
@@ -299,21 +299,21 @@ changes:
       - v23.11.0
       - v22.15.0
     pr-url: https://github.com/nodejs/node/pull/57389
-    description: Passing `args` when `shell` is set to `true` is deprecated.
+    description: Передача `args`, когда `shell` установлен в `true`, устарела.
   - version:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version:
       - v15.4.0
       - v14.17.0
     pr-url: https://github.com/nodejs/node/pull/36308
-    description: AbortSignal support was added.
+    description: Добавлена поддержка AbortSignal.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
 -->
 
 Добавлено в: v0.1.91
@@ -442,40 +442,40 @@ changes:
       - v17.4.0
       - v16.14.0
     pr-url: https://github.com/nodejs/node/pull/41225
-    description: The `modulePath` parameter can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Параметр `modulePath` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version:
       - v15.13.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/37256
-    description: timeout was added.
+    description: Добавлен `timeout`.
   - version:
       - v15.11.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/37325
-    description: killSignal for AbortSignal was added.
+    description: Добавлен `killSignal` для AbortSignal.
   - version:
       - v15.6.0
       - v14.17.0
     pr-url: https://github.com/nodejs/node/pull/36603
-    description: AbortSignal support was added.
+    description: Добавлена поддержка AbortSignal.
   - version:
       - v13.2.0
       - v12.16.0
     pr-url: https://github.com/nodejs/node/pull/30162
-    description: The `serialization` option is supported now.
+    description: Опция `serialization` теперь поддерживается.
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10866
-    description: The `stdio` option can now be a string.
+    description: Опция `stdio` теперь может быть строкой.
   - version: v6.4.0
     pr-url: https://github.com/nodejs/node/pull/7811
-    description: The `stdio` option is supported now.
+    description: Опция `stdio` теперь поддерживается.
 -->
 
 Добавлено в: v0.5.0
@@ -577,42 +577,42 @@ changes:
       - v23.11.0
       - v22.15.0
     pr-url: https://github.com/nodejs/node/pull/57389
-    description: Passing `args` when `shell` is set to `true` is deprecated.
+    description: Передача `args`, когда `shell` установлен в `true`, устарела.
   - version:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version:
       - v15.13.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/37256
-    description: timeout was added.
+    description: Добавлен `timeout`.
   - version:
       - v15.11.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/37325
-    description: killSignal for AbortSignal was added.
+    description: Добавлен `killSignal` для AbortSignal.
   - version:
       - v15.5.0
       - v14.17.0
     pr-url: https://github.com/nodejs/node/pull/36432
-    description: AbortSignal support was added.
+    description: Добавлена поддержка AbortSignal.
   - version:
       - v13.2.0
       - v12.16.0
     pr-url: https://github.com/nodejs/node/pull/30162
-    description: The `serialization` option is supported now.
+    description: Опция `serialization` теперь поддерживается.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
   - version: v6.4.0
     pr-url: https://github.com/nodejs/node/pull/7696
-    description: The `argv0` option is supported now.
+    description: Опция `argv0` теперь поддерживается.
   - version: v5.7.0
     pr-url: https://github.com/nodejs/node/pull/4598
-    description: The `shell` option is supported now.
+    description: Опция `shell` теперь поддерживается.
 -->
 
 Добавлено в: v0.1.90
@@ -928,10 +928,10 @@ changes:
       - v15.6.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/29412
-    description: Added the `overlapped` stdio flag.
+    description: Добавлен флаг stdio `overlapped`.
   - version: v3.3.1
     pr-url: https://github.com/nodejs/node/pull/2727
-    description: The value `0` is now accepted as a file descriptor.
+    description: Значение `0` теперь принимается как файловый дескриптор.
 -->
 
 Добавлено в: v0.7.10
@@ -1015,23 +1015,23 @@ changes:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version: v10.10.0
     pr-url: https://github.com/nodejs/node/pull/22409
-    description: The `input` option can now be any `TypedArray` or a
+    description: Опция `input` теперь может быть любым `TypedArray` или
                  `DataView`.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10653
-    description: The `input` option can now be a `Uint8Array`.
+    description: Опция `input` теперь может быть `Uint8Array`.
   - version:
     - v6.2.1
     - v4.5.0
     pr-url: https://github.com/nodejs/node/pull/6939
-    description: The `encoding` option can now explicitly be set to `buffer`.
+    description: Опцию `encoding` теперь можно явно устанавливать в `buffer`.
 -->
 
 Добавлено в: v0.11.12
@@ -1138,18 +1138,18 @@ changes:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version: v10.10.0
     pr-url: https://github.com/nodejs/node/pull/22409
-    description: The `input` option can now be any `TypedArray` or a
+    description: Опция `input` теперь может быть любым `TypedArray` или
                  `DataView`.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10653
-    description: The `input` option can now be a `Uint8Array`.
+    description: Опция `input` теперь может быть `Uint8Array`.
 -->
 
 Добавлено в: v0.11.12
@@ -1194,26 +1194,26 @@ changes:
       - v16.4.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/38862
-    description: The `cwd` option can be a WHATWG `URL` object using
-                 `file:` protocol.
+    description: Опция `cwd` может быть объектом `URL` WHATWG,
+                 использующим протокол `file:`.
   - version: v10.10.0
     pr-url: https://github.com/nodejs/node/pull/22409
-    description: The `input` option can now be any `TypedArray` or a
+    description: Опция `input` теперь может быть любым `TypedArray` или
                  `DataView`.
   - version: v8.8.0
     pr-url: https://github.com/nodejs/node/pull/15380
-    description: The `windowsHide` option is supported now.
+    description: Опция `windowsHide` теперь поддерживается.
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10653
-    description: The `input` option can now be a `Uint8Array`.
+    description: Опция `input` теперь может быть `Uint8Array`.
   - version:
     - v6.2.1
     - v4.5.0
     pr-url: https://github.com/nodejs/node/pull/6939
-    description: The `encoding` option can now explicitly be set to `buffer`.
+    description: Опцию `encoding` теперь можно явно устанавливать в `buffer`.
   - version: v5.7.0
     pr-url: https://github.com/nodejs/node/pull/4598
-    description: The `shell` option is supported now.
+    description: Опция `shell` теперь поддерживается.
 -->
 
 Добавлено в: v0.11.12
@@ -1404,7 +1404,7 @@ added: v7.1.0
 changes:
   - version: v14.0.0
     pr-url: https://github.com/nodejs/node/pull/30165
-    description: The object no longer accidentally exposes native C++ bindings.
+    description: Объект больше не раскрывает нативные C++-привязки случайным образом.
 -->
 
 Добавлено в: v7.1.0
@@ -1569,7 +1569,7 @@ added:
 changes:
  - version: v24.2.0
    pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
+   description: Больше не является экспериментальным.
 -->
 
 ??? note "История"
@@ -1665,14 +1665,14 @@ added: v0.5.9
 changes:
   - version: v5.8.0
     pr-url: https://github.com/nodejs/node/pull/5283
-    description: The `options` parameter, and the `keepOpen` option
-                 in particular, is supported now.
+    description: Параметр `options`, и в частности опция `keepOpen`,
+                 теперь поддерживаются.
   - version: v5.0.0
     pr-url: https://github.com/nodejs/node/pull/3516
-    description: This method returns a boolean for flow control now.
+    description: Этот метод теперь возвращает boolean для управления потоком.
   - version: v4.0.0
     pr-url: https://github.com/nodejs/node/pull/2620
-    description: The `callback` parameter is supported now.
+    description: Параметр `callback` теперь поддерживается.
 -->
 
 Добавлено в: v0.5.9

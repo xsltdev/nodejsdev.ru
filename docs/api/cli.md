@@ -43,8 +43,8 @@ description: Флаги запуска node, точка входа, переме
 changes:
   - version: v10.12.0
     pr-url: https://github.com/nodejs/node/pull/23020
-    description: Underscores instead of dashes are now allowed for
-                 Node.js options as well, in addition to V8 options.
+    description: Подчёркивания вместо дефисов теперь разрешены
+                 и для опций Node.js, в дополнение к опциям V8.
 -->
 
 ??? note "История"
@@ -136,9 +136,9 @@ changes:
       - v24.4.0
       - v22.18.0
     pr-url: https://github.com/nodejs/node/pull/58853
-    description: When spawning process with the permission model enabled.
-                 The flags are inherit to the child Node.js process through
-                 NODE_OPTIONS environment variable.
+    description: При создании процесса с включённой моделью разрешений
+                 флаги наследуются дочерним процессом Node.js через
+                 переменную окружения NODE_OPTIONS.
 -->
 
 Добавлено в: v20.0.0
@@ -190,15 +190,15 @@ changes:
       - v24.2.0
       - v22.17.0
     pr-url: https://github.com/nodejs/node/pull/58579
-    description: Entrypoints of your application are allowed to be read implicitly.
+    description: Точки входа приложения разрешено читать неявно.
   - version:
     - v23.5.0
     - v22.13.0
     pr-url: https://github.com/nodejs/node/pull/56201
-    description: Permission Model and --allow-fs flags are stable.
+    description: Модель разрешений и флаги --allow-fs теперь стабильны.
   - version: v20.7.0
     pr-url: https://github.com/nodejs/node/pull/49047
-    description: Paths delimited by comma (`,`) are no longer allowed.
+    description: Пути, разделённые запятой (`,`), больше не допускаются.
 -->
 
 Добавлено в: v20.0.0
@@ -243,10 +243,10 @@ changes:
     - v23.5.0
     - v22.13.0
     pr-url: https://github.com/nodejs/node/pull/56201
-    description: Permission Model and --allow-fs flags are stable.
+    description: Модель разрешений и флаги --allow-fs теперь стабильны.
   - version: v20.7.0
     pr-url: https://github.com/nodejs/node/pull/49047
-    description: Paths delimited by comma (`,`) are no longer allowed.
+    description: Пути, разделённые запятой (`,`), больше не допускаются.
 -->
 
 Добавлено в: v20.0.0
@@ -416,7 +416,7 @@ changes:
     - v25.4.0
     - v24.13.1
     pr-url: https://github.com/nodejs/node/pull/60954
-    description: The snapshot building process is no longer experimental.
+    description: Процесс создания снимков больше не является экспериментальным.
 -->
 
 Добавлено в: v18.8.0
@@ -458,7 +458,7 @@ I am from the snapshot
 
 Сейчас при сборке снимка поддерживается только одна точка входа; можно подключать встроенные модули, но не дополнительные пользовательские — приложение обычно собирают в один скрипт бандлером до сборки снимка.
 
-Гарантировать сериализуемость всех встроенных модулей сложно, и их число растёт; лишь часть встроенных модулей надёжно проверена на сериализуемость при сборке снимка. Тесты Node.js проверяют несколько относительно сложных приложений. Список встроенных модулей, [captured by the built-in snapshot of Node.js](https://github.com/nodejs/node/blob/b19525a33cc84033af4addd0f80acd4dc33ce0cf/test/parallel/test-bootstrap-modules.js#L24), считается поддерживаемым. Если при сборке встречается встроенный модуль, который нельзя сериализовать, процесс сборки снимка может аварийно завершиться; типичный обход — отложить загрузку такого модуля до выполнения, через [`v8.startupSnapshot.setDeserializeMainFunction()`](v8.md#v8startupsnapshotsetdeserializemainfunctioncallback-data) или [`v8.startupSnapshot.addDeserializeCallback()`](v8.md#v8startupsnapshotadddeserializecallbackcallback-data). Если нужна сериализация дополнительного модуля при сборке снимка, создайте запрос в [Node.js issue tracker](https://github.com/nodejs/node/issues) и сошлитесь на [tracking issue for user-land snapshots](https://github.com/nodejs/node/issues/44014).
+Гарантировать сериализуемость всех встроенных модулей сложно, и их число растёт; лишь часть встроенных модулей надёжно проверена на сериализуемость при сборке снимка. Тесты Node.js проверяют несколько относительно сложных приложений. Список встроенных модулей, [захваченных встроенным снимком Node.js](https://github.com/nodejs/node/blob/b19525a33cc84033af4addd0f80acd4dc33ce0cf/test/parallel/test-bootstrap-modules.js#L24), считается поддерживаемым. Если при сборке встречается встроенный модуль, который нельзя сериализовать, процесс сборки снимка может аварийно завершиться; типичный обход — отложить загрузку такого модуля до выполнения, через [`v8.startupSnapshot.setDeserializeMainFunction()`](v8.md#v8startupsnapshotsetdeserializemainfunctioncallback-data) или [`v8.startupSnapshot.addDeserializeCallback()`](v8.md#v8startupsnapshotadddeserializecallbackcallback-data). Если нужна сериализация дополнительного модуля при сборке снимка, создайте запрос в [трекере задач Node.js](https://github.com/nodejs/node/issues) и сошлитесь на [задачу отслеживания пользовательских снимков](https://github.com/nodejs/node/issues/44014).
 
 ### `--build-snapshot-config`
 
@@ -471,7 +471,7 @@ changes:
     - v25.4.0
     - v24.13.1
     pr-url: https://github.com/nodejs/node/pull/60954
-    description: The snapshot building process is no longer experimental.
+    description: Процесс создания снимков больше не является экспериментальным.
 -->
 
 ??? note "История"
@@ -498,7 +498,7 @@ added:
 changes:
   - version: v10.0.0
     pr-url: https://github.com/nodejs/node/pull/19600
-    description: The `--require` option is now supported when checking a file.
+    description: Опция `--require` теперь поддерживается при проверке файла.
 -->
 
 ??? note "История"
@@ -533,7 +533,7 @@ changes:
     - v22.9.0
     - v20.18.0
     pr-url: https://github.com/nodejs/node/pull/54209
-    description: The flag is no longer experimental.
+    description: Флаг больше не является экспериментальным.
 -->
 
 ??? note "История"
@@ -563,7 +563,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--cpu-prof` flags are now stable.
+    description: Флаги `--cpu-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.0.0
@@ -605,7 +605,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--cpu-prof` flags are now stable.
+    description: Флаги `--cpu-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.0.0
@@ -629,7 +629,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--cpu-prof` flags are now stable.
+    description: Флаги `--cpu-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.2.0
@@ -651,7 +651,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--cpu-prof` flags are now stable.
+    description: Флаги `--cpu-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.0.0
@@ -695,7 +695,7 @@ changes:
     - v24.8.0
     - v22.20.0
     pr-url: https://github.com/nodejs/node/pull/59707
-    description: The option is no longer experimental.
+    description: Опция больше не является экспериментальной.
 -->
 
 ??? note "История"
@@ -714,7 +714,7 @@ added:
   - v20.11.0
 -->
 
-> Stability: 1.1 - Active development
+> Стабильность: 1.1 - Активная разработка
 
 Отключает конкретные предупреждения процесса по `code` или `type`.
 
@@ -805,10 +805,10 @@ changes:
     - v22.1.0
     - v20.13.0
     pr-url: https://github.com/nodejs/node/pull/52492
-    description: The `ipv6first` is supported now.
+    description: `ipv6first` теперь поддерживается.
   - version: v17.0.0
     pr-url: https://github.com/nodejs/node/pull/39987
-    description: Changed default value to `verbatim`.
+    description: Значение по умолчанию изменено на `verbatim`.
 -->
 
 ??? note "История"
@@ -843,7 +843,7 @@ changes:
       - v15.11.0
       - v14.18.0
     pr-url: https://github.com/nodejs/node/pull/37362
-    description: This API is no longer experimental.
+    description: Этот API больше не является экспериментальным.
 -->
 
 Добавлено в: v12.12.0
@@ -902,7 +902,7 @@ changes:
      - v24.10.0
      - v22.21.0
     pr-url: https://github.com/nodejs/node/pull/59925
-    description: The `--env-file-if-exists` flag is no longer experimental.
+    description: Флаг `--env-file-if-exists` больше не является экспериментальным.
 -->
 
 Добавлено в: v22.9.0
@@ -924,12 +924,12 @@ changes:
      - v24.10.0
      - v22.21.0
     pr-url: https://github.com/nodejs/node/pull/59925
-    description: The `--env-file` flag is no longer experimental.
+    description: Флаг `--env-file` больше не является экспериментальным.
   - version:
     - v21.7.0
     - v20.12.0
     pr-url: https://github.com/nodejs/node/pull/51289
-    description: Add support to multi-line values.
+    description: Добавлена поддержка многострочных значений.
 -->
 
 Добавлено в: v20.6.0
@@ -941,7 +941,7 @@ changes:
     | v24.10.0, v22.21.0 | Флаг `--env-file` больше не является экспериментальным. |
     | v21.7.0, v20.12.0 | Добавьте поддержку многострочных значений. |
 
-Загружает переменные окружения из файла относительно текущего каталога, делая их доступными для приложений в `process.env`. [Переменные окружения, которые настраивают Node.js][environment_variables], такие как `NODE_OPTIONS`, анализируются и применяются. Если одна и та же переменная определена в окружении и в файле, приоритет имеет значение из окружения.
+Загружает переменные окружения из файла относительно текущего каталога, делая их доступными для приложений в `process.env`. [Переменные окружения, которые настраивают Node.js](environment_variables.md#переменные-окружения-cli), такие как `NODE_OPTIONS`, анализируются и применяются. Если одна и та же переменная определена в окружении и в файле, приоритет имеет значение из окружения.
 
 Можно передать несколько аргументов `--env-file`. Последующие файлы переопределяют существующие переменные, определённые в предыдущих файлах.
 
@@ -1024,7 +1024,7 @@ added:
   - v22.20.0
 -->
 
-> Stability: 1.0 - Early development
+> Стабильность: 1.0 - Ранняя разработка
 
 Включает экспериментальную поддержку импорта для аддонов `.node`.
 
@@ -1036,7 +1036,7 @@ added:
  - v22.16.0
 -->
 
-> Stability: 1.0 - Early development
+> Стабильность: 1.0 - Ранняя разработка
 
 Если присутствует, Node.js будет искать файл конфигурации по указанному пути. Node.js прочитает файл конфигурации и применит настройки. Файл конфигурации должен быть JSON-файлом со следующей структурой. `vX.Y.Z` в `$schema` должен быть заменён на версию Node.js, которую вы используете.
 
@@ -1124,7 +1124,7 @@ added:
  - v22.16.0
 -->
 
-> Stability: 1.0 - Early development
+> Стабильность: 1.0 - Ранняя разработка
 
 Если флаг `--experimental-default-config-file` присутствует, Node.js будет искать файл `node.config.json` в текущем рабочем каталоге и загрузит его как файл конфигурации.
 
@@ -1149,16 +1149,16 @@ changes:
     - v20.6.0
     - v18.19.0
     pr-url: https://github.com/nodejs/node/pull/49028
-    description: synchronous import.meta.resolve made available by default, with
-                 the flag retained for enabling the experimental second argument
-                 as previously supported.
+    description: Синхронный `import.meta.resolve` теперь доступен по умолчанию,
+                 а флаг сохранён для включения экспериментального второго аргумента,
+                 как и поддерживалось ранее.
 -->
 
 ??? note "История"
 
     | Версия | Изменения |
     | --- | --- |
-    | v20.6.0, v18.19.0 | синхронный import.meta.resolve доступен по умолчанию, с сохраненным флагом для включения экспериментального второго аргумента, как это поддерживалось ранее. |
+    | v20.6.0, v18.19.0 | Синхронный `import.meta.resolve` доступен по умолчанию, а флаг сохранён для включения экспериментального второго аргумента, как и поддерживалось ранее. |
 
 Включает экспериментальную поддержку `import.meta.resolve()` для родительского URL, которая позволяет передавать второй аргумент `parentURL` для контекстного разрешения.
 
@@ -1172,7 +1172,7 @@ added:
   - v22.19.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
 Включает экспериментальную поддержку сетевых ресурсов инспектора.
 
@@ -1237,7 +1237,7 @@ added:
 added: v25.0.0
 -->
 
-> Stability: 1.1 - Active development
+> Стабильность: 1.1 - Активная разработка
 
 Включает экспериментальную поддержку протокола QUIC.
 
@@ -1247,7 +1247,7 @@ added: v25.0.0
 added: v20.0.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Используйте этот флаг для генерации blob, который можно внедрить в бинарный файл Node.js для создания [одного исполняемого приложения](single-executable-applications.md). См. документацию о [этой конфигурации](single-executable-applications.md#1-generating-single-executable-preparation-blobs) для деталей.
 
@@ -1268,7 +1268,7 @@ added:
   - v25.5.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
 Включает экспериментальную поддержку инспекции хранилища
 
@@ -1278,7 +1278,7 @@ added:
 added: v25.9.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Включает экспериментальный модуль [`node:stream/iter`](stream_iter.md).
 
@@ -1376,7 +1376,7 @@ added:
   - v22.17.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
 Включает экспериментальную поддержку инспекции worker с Chrome DevTools.
 
@@ -1388,7 +1388,7 @@ added:
   - v20.18.0
 -->
 
-> Стабильность: 1 - Экспериментальная. Этот флаг унаследован от V8 и может измениться в upstream.
+> Стабильность: 1 - Экспериментальная. Этот флаг унаследован от V8 и может измениться в вышестоящем проекте.
 
 Этот флаг делает доступным расширение `gc` из V8.
 
@@ -1412,7 +1412,7 @@ added: v12.12.0
 added: v6.0.0
 -->
 
-Force FIPS-compliant crypto on startup. (Cannot be disabled from script code.) (Same requirements as `--enable-fips`.)
+Принудительно включает FIPS-совместимую криптографию при запуске. (Её нельзя отключить из кода скрипта.) (Требования те же, что и у `--enable-fips`.)
 
 ### `--force-node-api-uncaught-exceptions-policy`
 
@@ -1432,7 +1432,7 @@ added:
 added: v11.12.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Включает экспериментальные замороженные intrinsics, такие как `Array` и `Object`.
 
@@ -1449,7 +1449,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--heap-prof` flags are now stable.
+    description: Флаги `--heap-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.4.0
@@ -1460,11 +1460,11 @@ changes:
     | --- | --- |
     | v22.4.0, v20.16.0 | Флаги `--heap-prof` теперь стабильны. |
 
-Starts the V8 heap profiler on start up, and writes the heap profile to disk before exit.
+Запускает профилировщик кучи V8 при старте и записывает профиль кучи на диск перед завершением работы.
 
-If `--heap-prof-dir` is not specified, the generated profile is placed in the current working directory.
+Если `--heap-prof-dir` не указан, созданный профиль помещается в текущий рабочий каталог.
 
-If `--heap-prof-name` is not specified, the generated profile is named `Heap.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.heapprofile`.
+Если `--heap-prof-name` не указан, созданный профиль получает имя `Heap.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.heapprofile`.
 
 ```console
 $ node --heap-prof index.js
@@ -1481,7 +1481,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--heap-prof` flags are now stable.
+    description: Флаги `--heap-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.4.0
@@ -1505,7 +1505,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--heap-prof` flags are now stable.
+    description: Флаги `--heap-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.4.0
@@ -1527,7 +1527,7 @@ changes:
     - v22.4.0
     - v20.16.0
     pr-url: https://github.com/nodejs/node/pull/53343
-    description: The `--heap-prof` flags are now stable.
+    description: Флаги `--heap-prof` теперь стабильны.
 -->
 
 Добавлено в: v12.4.0
@@ -1627,13 +1627,13 @@ added:
  - v18.18.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
-Preload the specified module at startup. If the flag is provided several times, each module will be executed sequentially in the order they appear, starting with the ones provided in [`NODE_OPTIONS`](#node_optionsoptions).
+Предварительно загружает указанный модуль при запуске. Если флаг передан несколько раз, каждый модуль будет выполнен последовательно в порядке появления, начиная с модулей, указанных в [`NODE_OPTIONS`](#node_optionsoptions).
 
-Follows [ECMAScript module](esm.md#modules-ecmascript-modules) resolution rules. Use [`--require`](#-r---require-module) to load a [CommonJS module](modules.md). Modules preloaded with `--require` will run before modules preloaded with `--import`.
+Подчиняется правилам разрешения [ECMAScript-модулей](esm.md#modules-ecmascript-modules). Используйте [`--require`](#-r---require-module), чтобы загрузить [модуль CommonJS](modules.md). Модули, предварительно загруженные через `--require`, выполняются раньше модулей, предварительно загруженных через `--import`.
 
-Modules are preloaded into the main thread as well as any worker threads, forked processes, or clustered processes.
+Модули предварительно загружаются как в основной поток, так и в любые потоки worker, дочерние процессы или процессы кластера.
 
 ### `--input-type=type`
 
@@ -1644,12 +1644,12 @@ changes:
       - v23.6.0
       - v22.18.0
     pr-url: https://github.com/nodejs/node/pull/56350
-    description: Add support for `-typescript` values.
+    description: Добавлена поддержка значений `-typescript`.
   - version:
     - v22.7.0
     - v20.19.0
     pr-url: https://github.com/nodejs/node/pull/53619
-    description: ESM syntax detection is enabled by default.
+    description: Определение синтаксиса ESM включено по умолчанию.
 -->
 
 Добавлено в: v12.0.0
@@ -1658,7 +1658,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.6.0, v22.18.0 | Добавить поддержку значений `-typescript`. |
+    | v23.6.0, v22.18.0 | Добавлена поддержка значений `-typescript`. |
     | v22.7.0, v20.19.0 | Обнаружение синтаксиса ESM включено по умолчанию. |
 
 Этот параметр указывает Node.js интерпретировать ввод из `--eval` или `STDIN` как CommonJS либо как ES-модуль. Допустимые значения: `"commonjs"`, `"module"`, `"module-typescript"` и `"commonjs-typescript"`. Значения с `"-typescript"` недоступны при использовании флага `--no-strip-types`. По умолчанию значение не задано, либо используется `"commonjs"`, если передан `--no-experimental-detect-module`.
@@ -1805,14 +1805,14 @@ added:
 changes:
   - version: v13.13.0
     pr-url: https://github.com/nodejs/node/pull/32520
-    description: Change maximum default size of HTTP headers from 8 KiB to 16 KiB.
+    description: Максимальный размер HTTP-заголовков по умолчанию изменён с 8 KiB на 16 KiB.
 -->
 
 ??? note "История"
 
     | Версия | Изменения |
     | --- | --- |
-    | v13.13.0 | Измените максимальный размер HTTP-заголовков по умолчанию с 8 КБ до 16 КБ. |
+    | v13.13.0 | Максимальный размер HTTP-заголовков по умолчанию изменён с 8 KiB на 16 KiB. |
 
 Указывает максимальный размер HTTP-заголовков в байтах. По умолчанию: 16 KiB.
 
@@ -1887,7 +1887,7 @@ changes:
     - v22.7.0
     - v20.19.0
     pr-url: https://github.com/nodejs/node/pull/53619
-    description: Syntax detection is enabled by default.
+    description: Определение синтаксиса включено по умолчанию.
 -->
 
 ??? note "История"
@@ -1984,7 +1984,7 @@ added: v22.4.0
 changes:
   - version: v25.0.0
     pr-url: https://github.com/nodejs/node/pull/57666
-    description: The feature is now enabled by default.
+    description: Эта возможность теперь включена по умолчанию.
 -->
 
 Добавлено в: v22.4.0
@@ -1995,7 +1995,7 @@ changes:
     | --- | --- |
     | v25.0.0 | Теперь эта функция включена по умолчанию. |
 
-> Stability: 1.2 - Release candidate.
+> Стабильность: 1.2 - Кандидат на выпуск.
 
 Отключает поддержку [`Web Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
 
@@ -2090,13 +2090,13 @@ changes:
       - v25.2.0
       - v24.12.0
     pr-url: https://github.com/nodejs/node/pull/60600
-    description: Type stripping is now stable, the flag was renamed from
-                 `--no-experimental-strip-types` to `--no-strip-types`.
+    description: Удаление типов теперь стабильно, а флаг был переименован с
+                 `--no-experimental-strip-types` на `--no-strip-types`.
   - version:
       - v23.6.0
       - v22.18.0
     pr-url: https://github.com/nodejs/node/pull/56350
-    description: Type stripping is enabled by default.
+    description: Удаление типов включено по умолчанию.
 -->
 
 Добавлено в: v22.6.0
@@ -2255,7 +2255,7 @@ added: v0.6.4
 changes:
   - version: v5.11.0
     pr-url: https://github.com/nodejs/node/pull/5348
-    description: Built-in libraries are now available as predefined variables.
+    description: Встроенные библиотеки теперь доступны как предопределённые переменные.
 -->
 
 Добавлено в: v0.6.4
@@ -2531,15 +2531,15 @@ added: v22.0.0
 changes:
   - version: v22.3.0
     pr-url: https://github.com/nodejs/node/pull/53032
-    description: NODE_RUN_SCRIPT_NAME environment variable is added.
+    description: Добавлена переменная окружения NODE_RUN_SCRIPT_NAME.
   - version: v22.3.0
     pr-url: https://github.com/nodejs/node/pull/53058
-    description: NODE_RUN_PACKAGE_JSON_PATH environment variable is added.
+    description: Добавлена переменная окружения NODE_RUN_PACKAGE_JSON_PATH.
   - version: v22.3.0
     pr-url: https://github.com/nodejs/node/pull/53154
-    description: Traverses up to the root directory and finds
-                 a `package.json` file to run the command from, and updates
-                 `PATH` environment variable accordingly.
+    description: Выполняет подъём до корневого каталога, находит
+                 файл `package.json`, из которого нужно запускать команду,
+                 и соответствующим образом обновляет переменную окружения `PATH`.
 -->
 
 Добавлено в: v22.0.0
@@ -2640,12 +2640,12 @@ added:
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46983
-    description: The test runner is now stable.
+    description: Средство запуска тестов теперь стабильно.
   - version:
       - v19.2.0
       - v18.13.0
     pr-url: https://github.com/nodejs/node/pull/45214
-    description: Test runner now supports running in watch mode.
+    description: Средство запуска тестов теперь поддерживает запуск в режиме наблюдения.
 -->
 
 ??? note "История"
@@ -2674,7 +2674,7 @@ added:
 added: v22.8.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Требует минимальный процент покрытия ветвей. Если покрытие кода не достигает указанного порога, процесс завершится с кодом `1`.
 
@@ -2685,7 +2685,7 @@ added:
   - v22.5.0
 -->
 
-> Stability: 1 - Experimental
+> Стабильность: 1 - Экспериментальная
 
 Исключает определённые файлы из покрытия кода с помощью glob-шаблона, который может соответствовать как абсолютным, так и относительным путям файлов.
 
@@ -2780,7 +2780,7 @@ added: v18.11.0
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46983
-    description: The test runner is now stable.
+    description: Средство запуска тестов теперь стабильно.
 -->
 
 Добавлено в: v18.11.0
@@ -2804,7 +2804,7 @@ added:
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46983
-    description: The test runner is now stable.
+    description: Средство запуска тестов теперь стабильно.
 -->
 
 ??? note "История"
@@ -2837,7 +2837,7 @@ added: REPLACEME
 
 Зерно, использованное для рандомизации, выводится в сводке тестов и может быть повторно использовано с `--test-random-seed`.
 
-Подробное описание поведения и примеры см. в разделе [randomizing tests execution order](test.md#randomizing-tests-execution-order).
+Подробное описание поведения и примеры см. в разделе [рандомизация порядка выполнения тестов](test.md#randomizing-tests-execution-order).
 
 Этот флаг нельзя использовать вместе с `--watch` или `--test-rerun-failures`.
 
@@ -2850,7 +2850,7 @@ added:
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46983
-    description: The test runner is now stable.
+    description: Средство запуска тестов теперь стабильно.
 -->
 
 ??? note "История"
@@ -2870,7 +2870,7 @@ added:
 changes:
   - version: v20.0.0
     pr-url: https://github.com/nodejs/node/pull/46983
-    description: The test runner is now stable.
+    description: Средство запуска тестов теперь стабильно.
 -->
 
 ??? note "История"
@@ -2943,7 +2943,7 @@ changes:
     - v23.4.0
     - v22.13.0
     pr-url: https://github.com/nodejs/node/pull/55897
-    description: Snapshot testing is no longer experimental.
+    description: Тестирование снимков больше не является экспериментальным.
 -->
 
 Добавлено в: v22.3.0
@@ -2954,7 +2954,7 @@ changes:
     | --- | --- |
     | v23.4.0, v22.13.0 | Тестирование моментальных снимков больше не является экспериментальным. |
 
-Повторно создаёт файлы снимков, используемые средством запуска тестов для [snapshot testing](test.md#snapshot-testing).
+Повторно создаёт файлы снимков, используемые средством запуска тестов для [тестирования снимков](test.md#snapshot-testing).
 
 ### `--throw-deprecation`
 
@@ -3204,8 +3204,8 @@ added:
 changes:
   - version: v15.0.0
     pr-url: https://github.com/nodejs/node/pull/33021
-    description: Changed default mode to `throw`. Previously, a warning was
-                 emitted.
+    description: Режим по умолчанию изменён на `throw`. Ранее
+                 выдавалось предупреждение.
 -->
 
 ??? note "История"
@@ -3236,7 +3236,7 @@ added: v6.11.0
 
 Использование хранилища OpenSSL допускает внешние изменения этого хранилища. В большинстве дистрибутивов Linux и BSD это хранилище поддерживается сопровождающими дистрибутива и системными администраторами. Расположение хранилища CA OpenSSL зависит от конфигурации библиотеки OpenSSL, но его можно изменить во время выполнения с помощью переменных окружения.
 
-See `SSL_CERT_DIR` and `SSL_CERT_FILE`.
+См. `SSL_CERT_DIR` и `SSL_CERT_FILE`.
 
 ### `--use-env-proxy`
 
@@ -3246,7 +3246,7 @@ added:
  - v22.21.0
 -->
 
-> Stability: 1.1 - Active Development
+> Стабильность: 1.1 - Активная разработка
 
 При включении Node.js во время запуска разбирает переменные окружения `HTTP_PROXY`, `HTTPS_PROXY` и `NO_PROXY` и направляет запросы через указанный прокси.
 
@@ -3275,7 +3275,7 @@ added: v23.8.0
 changes:
   - version: v23.9.0
     pr-url: https://github.com/nodejs/node/pull/57009
-    description: Added support on non-Windows and non-macOS.
+    description: Добавлена поддержка платформ, отличных от Windows и macOS.
 -->
 
 Добавлено в: v23.8.0
@@ -3284,7 +3284,7 @@ changes:
 
     | Версия | Изменения |
     | --- | --- |
-    | v23.9.0 | Добавлена ​​поддержка не-Windows и не-macOS. |
+    | v23.9.0 | Добавлена поддержка платформ, отличных от Windows и macOS. |
 
 Node.js использует доверенные сертификаты CA, присутствующие в системном хранилище, вместе с параметром `--use-bundled-ca` и переменной окружения `NODE_EXTRA_CA_CERTS`. На платформах, отличных от Windows и macOS, это загружает сертификаты из каталога и файла, которым доверяет OpenSSL, аналогично `--use-openssl-ca`, но с тем отличием, что сертификаты кэшируются после первой загрузки.
 
@@ -3358,20 +3358,20 @@ changes:
     - v22.0.0
     - v20.13.0
     pr-url: https://github.com/nodejs/node/pull/52074
-    description: Watch mode is now stable.
+    description: Режим наблюдения теперь стабилен.
   - version:
       - v19.2.0
       - v18.13.0
     pr-url: https://github.com/nodejs/node/pull/45214
-    description: Test runner now supports running in watch mode.
+    description: Средство запуска тестов теперь поддерживает запуск в режиме наблюдения.
 -->
 
 ??? note "История"
 
     | Версия | Изменения |
     | --- | --- |
-    | v22.0.0, v20.13.0 | Режим просмотра теперь стабилен. |
-    | v19.2.0, v18.13.0 | Тест-раннер теперь поддерживает работу в режиме просмотра. |
+    | v22.0.0, v20.13.0 | Режим наблюдения теперь стабилен. |
+    | v19.2.0, v18.13.0 | Средство запуска тестов теперь поддерживает запуск в режиме наблюдения. |
 
 Запускает Node.js в режиме наблюдения. В этом режиме изменения в отслеживаемых файлах приводят к перезапуску процесса Node.js. По умолчанию режим наблюдения отслеживает точку входа и любые требуемые или импортированные модули. Используйте `--watch-path`, чтобы указать, какие пути нужно отслеживать.
 
@@ -3410,14 +3410,14 @@ changes:
     - v22.0.0
     - v20.13.0
     pr-url: https://github.com/nodejs/node/pull/52074
-    description: Watch mode is now stable.
+    description: Режим наблюдения теперь стабилен.
 -->
 
 ??? note "История"
 
     | Версия | Изменения |
     | --- | --- |
-    | v22.0.0, v20.13.0 | Режим просмотра теперь стабилен. |
+    | v22.0.0, v20.13.0 | Режим наблюдения теперь стабилен. |
 
 Запускает Node.js в режиме наблюдения и задаёт пути, которые нужно отслеживать. В режиме наблюдения изменения в этих путях приводят к перезапуску процесса Node.js. Это отключает отслеживание требуемых или импортированных модулей, даже если параметр используется совместно с `--watch`.
 
@@ -3453,9 +3453,9 @@ added: v6.0.0
 
 Автоматически заполняет нулями все вновь выделенные экземпляры [`Buffer`](buffer.md#class-buffer).
 
-## Environment variables
+## Переменные окружения
 
-> Stability: 2 - Stable
+> Стабильность: 2 - Стабильная
 
 ### `FORCE_COLOR=[1, 2, 3]`
 
@@ -3476,7 +3476,7 @@ added: v22.1.0
 changes:
   - version: v25.4.0
     pr-url: https://github.com/nodejs/node/pull/60971
-    description: This feature is no longer experimental.
+    description: Эта возможность больше не является экспериментальной.
 -->
 
 Добавлено в: v22.1.0

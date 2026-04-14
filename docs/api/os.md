@@ -522,156 +522,44 @@ changes:
 
 Константы сигналов экспортируются в `os.constants.signals`.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>SIGHUP</code></td>
-    <td>Сигнал при закрытии управляющего терминала или выходе родительского процесса.</td>
-  </tr>
-  <tr>
-    <td><code>SIGINT</code></td>
-    <td>Сигнал при прерывании процесса пользователем (<kbd>Ctrl</kbd>+<kbd>C</kbd>).</td>
-  </tr>
-  <tr>
-    <td><code>SIGQUIT</code></td>
-    <td>Сигнал при запросе завершения процесса и создания дампа памяти.</td>
-  </tr>
-  <tr>
-    <td><code>SIGILL</code></td>
-    <td>Сообщает процессу о недопустимой, некорректной, неизвестной или привилегированной инструкции.</td>
-  </tr>
-  <tr>
-    <td><code>SIGTRAP</code></td>
-    <td>Посылается процессу при исключении.</td>
-  </tr>
-  <tr>
-    <td><code>SIGABRT</code></td>
-    <td>Запрос аварийного завершения процесса.</td>
-  </tr>
-  <tr>
-    <td><code>SIGIOT</code></td>
-    <td>Синоним <code>SIGABRT</code></td>
-  </tr>
-  <tr>
-    <td><code>SIGBUS</code></td>
-    <td>Сообщает процессу об ошибке шины.</td>
-  </tr>
-  <tr>
-    <td><code>SIGFPE</code></td>
-    <td>Сообщает процессу о недопустимой арифметической операции.</td>
-  </tr>
-  <tr>
-    <td><code>SIGKILL</code></td>
-    <td>Немедленное завершение процесса.</td>
-  </tr>
-  <tr>
-    <td><code>SIGUSR1</code> <code>SIGUSR2</code></td>
-    <td>Пользовательские условия (SIGUSR1/SIGUSR2).</td>
-  </tr>
-  <tr>
-    <td><code>SIGSEGV</code></td>
-    <td>Сообщает процессу о нарушении сегментации.</td>
-  </tr>
-  <tr>
-    <td><code>SIGPIPE</code></td>
-    <td>Запись в разорванный канал (pipe).</td>
-  </tr>
-  <tr>
-    <td><code>SIGALRM</code></td>
-    <td>Истёк системный таймер.</td>
-  </tr>
-  <tr>
-    <td><code>SIGTERM</code></td>
-    <td>Запрос завершения процесса.</td>
-  </tr>
-  <tr>
-    <td><code>SIGCHLD</code></td>
-    <td>Завершился дочерний процесс.</td>
-  </tr>
-  <tr>
-    <td><code>SIGSTKFLT</code></td>
-    <td>Ошибка стека сопроцессора.</td>
-  </tr>
-  <tr>
-    <td><code>SIGCONT</code></td>
-    <td>Продолжить приостановленный процесс.</td>
-  </tr>
-  <tr>
-    <td><code>SIGSTOP</code></td>
-    <td>Остановить процесс.</td>
-  </tr>
-  <tr>
-    <td><code>SIGTSTP</code></td>
-    <td>Запрос остановки процесса.</td>
-  </tr>
-  <tr>
-    <td><code>SIGBREAK</code></td>
-    <td>Прерывание процесса по запросу пользователя.</td>
-  </tr>
-  <tr>
-    <td><code>SIGTTIN</code></td>
-    <td>Чтение из TTY процессом в фоне.</td>
-  </tr>
-  <tr>
-    <td><code>SIGTTOU</code></td>
-    <td>Запись в TTY процессом в фоне.</td>
-  </tr>
-  <tr>
-    <td><code>SIGURG</code></td>
-    <td>Срочные данные на сокете.</td>
-  </tr>
-  <tr>
-    <td><code>SIGXCPU</code></td>
-    <td>Превышен лимит использования CPU.</td>
-  </tr>
-  <tr>
-    <td><code>SIGXFSZ</code></td>
-    <td>Файл превысил допустимый размер.</td>
-  </tr>
-  <tr>
-    <td><code>SIGVTALRM</code></td>
-    <td>Истёк виртуальный таймер.</td>
-  </tr>
-  <tr>
-    <td><code>SIGPROF</code></td>
-    <td>Истёк системный таймер (SIGPROF).</td>
-  </tr>
-  <tr>
-    <td><code>SIGWINCH</code></td>
-    <td>Изменился размер управляющего терминала.</td>
-  </tr>
-  <tr>
-    <td><code>SIGIO</code></td>
-    <td>Доступен ввод-вывод.</td>
-  </tr>
-  <tr>
-    <td><code>SIGPOLL</code></td>
-    <td>Синоним <code>SIGIO</code></td>
-  </tr>
-  <tr>
-    <td><code>SIGLOST</code></td>
-    <td>Потеряна блокировка файла.</td>
-  </tr>
-  <tr>
-    <td><code>SIGPWR</code></td>
-    <td>Сбой питания.</td>
-  </tr>
-  <tr>
-    <td><code>SIGINFO</code></td>
-    <td>Синоним <code>SIGPWR</code></td>
-  </tr>
-  <tr>
-    <td><code>SIGSYS</code></td>
-    <td>Неверный аргумент.</td>
-  </tr>
-  <tr>
-    <td><code>SIGUNUSED</code></td>
-    <td>Синоним <code>SIGSYS</code></td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `SIGHUP` | Сигнал при закрытии управляющего терминала или выходе родительского процесса. |
+| `SIGINT` | Сигнал при прерывании процесса пользователем (<kbd>Ctrl</kbd>+<kbd>C</kbd>). |
+| `SIGQUIT` | Сигнал при запросе завершения процесса и создания дампа памяти. |
+| `SIGILL` | Сообщает процессу о недопустимой, некорректной, неизвестной или привилегированной инструкции. |
+| `SIGTRAP` | Посылается процессу при исключении. |
+| `SIGABRT` | Запрос аварийного завершения процесса. |
+| `SIGIOT` | Синоним `SIGABRT` |
+| `SIGBUS` | Сообщает процессу об ошибке шины. |
+| `SIGFPE` | Сообщает процессу о недопустимой арифметической операции. |
+| `SIGKILL` | Немедленное завершение процесса. |
+| `SIGUSR1` `SIGUSR2` | Пользовательские условия (SIGUSR1/SIGUSR2). |
+| `SIGSEGV` | Сообщает процессу о нарушении сегментации. |
+| `SIGPIPE` | Запись в разорванный канал (pipe). |
+| `SIGALRM` | Истёк системный таймер. |
+| `SIGTERM` | Запрос завершения процесса. |
+| `SIGCHLD` | Завершился дочерний процесс. |
+| `SIGSTKFLT` | Ошибка стека сопроцессора. |
+| `SIGCONT` | Продолжить приостановленный процесс. |
+| `SIGSTOP` | Остановить процесс. |
+| `SIGTSTP` | Запрос остановки процесса. |
+| `SIGBREAK` | Прерывание процесса по запросу пользователя. |
+| `SIGTTIN` | Чтение из TTY процессом в фоне. |
+| `SIGTTOU` | Запись в TTY процессом в фоне. |
+| `SIGURG` | Срочные данные на сокете. |
+| `SIGXCPU` | Превышен лимит использования CPU. |
+| `SIGXFSZ` | Файл превысил допустимый размер. |
+| `SIGVTALRM` | Истёк виртуальный таймер. |
+| `SIGPROF` | Истёк системный таймер (SIGPROF). |
+| `SIGWINCH` | Изменился размер управляющего терминала. |
+| `SIGIO` | Доступен ввод-вывод. |
+| `SIGPOLL` | Синоним `SIGIO` |
+| `SIGLOST` | Потеряна блокировка файла. |
+| `SIGPWR` | Сбой питания. |
+| `SIGINFO` | Синоним `SIGPWR` |
+| `SIGSYS` | Неверный аргумент. |
+| `SIGUNUSED` | Синоним `SIGSYS` |
 
 ### Константы ошибок
 
@@ -679,602 +567,164 @@ changes:
 
 #### Константы ошибок POSIX
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>E2BIG</code></td>
-    <td>Список аргументов слишком длинный.</td>
-  </tr>
-  <tr>
-    <td><code>EACCES</code></td>
-    <td>Недостаточно прав для операции.</td>
-  </tr>
-  <tr>
-    <td><code>EADDRINUSE</code></td>
-    <td>Сетевой адрес уже используется.</td>
-  </tr>
-  <tr>
-    <td><code>EADDRNOTAVAIL</code></td>
-    <td>Сетевой адрес сейчас недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>EAFNOSUPPORT</code></td>
-    <td>Семейство сетевых адресов не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>EAGAIN</code></td>
-    <td>Данных нет; повторите операцию позже.</td>
-  </tr>
-  <tr>
-    <td><code>EALREADY</code></td>
-    <td>У сокета уже есть незавершённое подключение.</td>
-  </tr>
-  <tr>
-    <td><code>EBADF</code></td>
-    <td>Некорректный файловый дескриптор.</td>
-  </tr>
-  <tr>
-    <td><code>EBADMSG</code></td>
-    <td>Некорректное сообщение данных.</td>
-  </tr>
-  <tr>
-    <td><code>EBUSY</code></td>
-    <td>Устройство или ресурс заняты.</td>
-  </tr>
-  <tr>
-    <td><code>ECANCELED</code></td>
-    <td>Операция отменена.</td>
-  </tr>
-  <tr>
-    <td><code>ECHILD</code></td>
-    <td>Нет дочерних процессов.</td>
-  </tr>
-  <tr>
-    <td><code>ECONNABORTED</code></td>
-    <td>Сетевое соединение прервано.</td>
-  </tr>
-  <tr>
-    <td><code>ECONNREFUSED</code></td>
-    <td>В соединении отказали.</td>
-  </tr>
-  <tr>
-    <td><code>ECONNRESET</code></td>
-    <td>Соединение сброшено.</td>
-  </tr>
-  <tr>
-    <td><code>EDEADLK</code></td>
-    <td>Тупик ресурсов разрешён.</td>
-  </tr>
-  <tr>
-    <td><code>EDESTADDRREQ</code></td>
-    <td>Требуется адрес назначения.</td>
-  </tr>
-  <tr>
-    <td><code>EDOM</code></td>
-    <td>Аргумент вне области определения функции.</td>
-  </tr>
-  <tr>
-    <td><code>EDQUOT</code></td>
-    <td>Превышена дисковая квота.</td>
-  </tr>
-  <tr>
-    <td><code>EEXIST</code></td>
-    <td>Файл уже существует.</td>
-  </tr>
-  <tr>
-    <td><code>EFAULT</code></td>
-    <td>Некорректный адрес указателя.</td>
-  </tr>
-  <tr>
-    <td><code>EFBIG</code></td>
-    <td>Файл слишком велик.</td>
-  </tr>
-  <tr>
-    <td><code>EHOSTUNREACH</code></td>
-    <td>Узел недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>EIDRM</code></td>
-    <td>Идентификатор удалён.</td>
-  </tr>
-  <tr>
-    <td><code>EILSEQ</code></td>
-    <td>Недопустимая последовательность байт.</td>
-  </tr>
-  <tr>
-    <td><code>EINPROGRESS</code></td>
-    <td>Операция уже выполняется.</td>
-  </tr>
-  <tr>
-    <td><code>EINTR</code></td>
-    <td>Вызов функции прерван.</td>
-  </tr>
-  <tr>
-    <td><code>EINVAL</code></td>
-    <td>Передан неверный аргумент.</td>
-  </tr>
-  <tr>
-    <td><code>EIO</code></td>
-    <td>Неуточнённая ошибка ввода-вывода.</td>
-  </tr>
-  <tr>
-    <td><code>EISCONN</code></td>
-    <td>Сокет подключён.</td>
-  </tr>
-  <tr>
-    <td><code>EISDIR</code></td>
-    <td>Путь указывает на каталог.</td>
-  </tr>
-  <tr>
-    <td><code>ELOOP</code></td>
-    <td>Слишком много уровней символических ссылок в пути.</td>
-  </tr>
-  <tr>
-    <td><code>EMFILE</code></td>
-    <td>Слишком много открытых файлов.</td>
-  </tr>
-  <tr>
-    <td><code>EMLINK</code></td>
-    <td>Слишком много жёстких ссылок на файл.</td>
-  </tr>
-  <tr>
-    <td><code>EMSGSIZE</code></td>
-    <td>Сообщение слишком длинное.</td>
-  </tr>
-  <tr>
-    <td><code>EMULTIHOP</code></td>
-    <td>Попытка multihop.</td>
-  </tr>
-  <tr>
-    <td><code>ENAMETOOLONG</code></td>
-    <td>Имя файла слишком длинное.</td>
-  </tr>
-  <tr>
-    <td><code>ENETDOWN</code></td>
-    <td>Сеть недоступна.</td>
-  </tr>
-  <tr>
-    <td><code>ENETRESET</code></td>
-    <td>Сеть прервала соединение.</td>
-  </tr>
-  <tr>
-    <td><code>ENETUNREACH</code></td>
-    <td>Сеть недостижима.</td>
-  </tr>
-  <tr>
-    <td><code>ENFILE</code></td>
-    <td>В системе слишком много открытых файлов.</td>
-  </tr>
-  <tr>
-    <td><code>ENOBUFS</code></td>
-    <td>Нет места в буфере.</td>
-  </tr>
-  <tr>
-    <td><code>ENODATA</code></td>
-    <td>Нет сообщения в очереди чтения потока.</td>
-  </tr>
-  <tr>
-    <td><code>ENODEV</code></td>
-    <td>Нет такого устройства.</td>
-  </tr>
-  <tr>
-    <td><code>ENOENT</code></td>
-    <td>Нет такого файла или каталога.</td>
-  </tr>
-  <tr>
-    <td><code>ENOEXEC</code></td>
-    <td>Ошибка формата исполняемого файла.</td>
-  </tr>
-  <tr>
-    <td><code>ENOLCK</code></td>
-    <td>Нет доступных блокировок.</td>
-  </tr>
-  <tr>
-    <td><code>ENOLINK</code></td>
-    <td>Связь разорвана.</td>
-  </tr>
-  <tr>
-    <td><code>ENOMEM</code></td>
-    <td>Недостаточно памяти.</td>
-  </tr>
-  <tr>
-    <td><code>ENOMSG</code></td>
-    <td>Нет сообщения нужного типа.</td>
-  </tr>
-  <tr>
-    <td><code>ENOPROTOOPT</code></td>
-    <td>Протокол недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>ENOSPC</code></td>
-    <td>На устройстве нет места.</td>
-  </tr>
-  <tr>
-    <td><code>ENOSR</code></td>
-    <td>Нет ресурсов потока.</td>
-  </tr>
-  <tr>
-    <td><code>ENOSTR</code></td>
-    <td>Ресурс не является потоком.</td>
-  </tr>
-  <tr>
-    <td><code>ENOSYS</code></td>
-    <td>Функция не реализована.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTCONN</code></td>
-    <td>Сокет не подключён.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTDIR</code></td>
-    <td>Путь не является каталогом.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTEMPTY</code></td>
-    <td>Каталог не пуст.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTSOCK</code></td>
-    <td>Объект не является сокетом.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTSUP</code></td>
-    <td>Операция не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>ENOTTY</code></td>
-    <td>Недопустимая операция управления вводом-выводом.</td>
-  </tr>
-  <tr>
-    <td><code>ENXIO</code></td>
-    <td>Нет такого устройства или адреса.</td>
-  </tr>
-  <tr>
-    <td><code>EOPNOTSUPP</code></td>
-    <td>Операция не поддерживается для сокета. Хотя на Linux <code>ENOTSUP</code> и <code>EOPNOTSUPP</code> совпадают, в POSIX.1 это разные коды.)</td>
-  </tr>
-  <tr>
-    <td><code>EOVERFLOW</code></td>
-    <td>Значение слишком велико для типа данных.</td>
-  </tr>
-  <tr>
-    <td><code>EPERM</code></td>
-    <td>Операция не разрешена.</td>
-  </tr>
-  <tr>
-    <td><code>EPIPE</code></td>
-    <td>Разорванный канал (pipe).</td>
-  </tr>
-  <tr>
-    <td><code>EPROTO</code></td>
-    <td>Ошибка протокола.</td>
-  </tr>
-  <tr>
-    <td><code>EPROTONOSUPPORT</code></td>
-    <td>Протокол не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>EPROTOTYPE</code></td>
-    <td>Неверный тип протокола для сокета.</td>
-  </tr>
-  <tr>
-    <td><code>ERANGE</code></td>
-    <td>Результат слишком велик.</td>
-  </tr>
-  <tr>
-    <td><code>EROFS</code></td>
-    <td>Файловая система только для чтения.</td>
-  </tr>
-  <tr>
-    <td><code>ESPIPE</code></td>
-    <td>Некорректная операция позиционирования.</td>
-  </tr>
-  <tr>
-    <td><code>ESRCH</code></td>
-    <td>Нет такого процесса.</td>
-  </tr>
-  <tr>
-    <td><code>ESTALE</code></td>
-    <td>Устаревший дескриптор файла.</td>
-  </tr>
-  <tr>
-    <td><code>ETIME</code></td>
-    <td>Таймер истёк.</td>
-  </tr>
-  <tr>
-    <td><code>ETIMEDOUT</code></td>
-    <td>Истекло время ожидания соединения.</td>
-  </tr>
-  <tr>
-    <td><code>ETXTBSY</code></td>
-    <td>Текстовый файл занят.</td>
-  </tr>
-  <tr>
-    <td><code>EWOULDBLOCK</code></td>
-    <td>Операция заблокировала бы выполнение.</td>
-  </tr>
-  <tr>
-    <td><code>EXDEV</code></td>
-    <td>Некорректная связь.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `E2BIG` | Список аргументов слишком длинный. |
+| `EACCES` | Недостаточно прав для операции. |
+| `EADDRINUSE` | Сетевой адрес уже используется. |
+| `EADDRNOTAVAIL` | Сетевой адрес сейчас недоступен. |
+| `EAFNOSUPPORT` | Семейство сетевых адресов не поддерживается. |
+| `EAGAIN` | Данных нет; повторите операцию позже. |
+| `EALREADY` | У сокета уже есть незавершённое подключение. |
+| `EBADF` | Некорректный файловый дескриптор. |
+| `EBADMSG` | Некорректное сообщение данных. |
+| `EBUSY` | Устройство или ресурс заняты. |
+| `ECANCELED` | Операция отменена. |
+| `ECHILD` | Нет дочерних процессов. |
+| `ECONNABORTED` | Сетевое соединение прервано. |
+| `ECONNREFUSED` | В соединении отказали. |
+| `ECONNRESET` | Соединение сброшено. |
+| `EDEADLK` | Тупик ресурсов разрешён. |
+| `EDESTADDRREQ` | Требуется адрес назначения. |
+| `EDOM` | Аргумент вне области определения функции. |
+| `EDQUOT` | Превышена дисковая квота. |
+| `EEXIST` | Файл уже существует. |
+| `EFAULT` | Некорректный адрес указателя. |
+| `EFBIG` | Файл слишком велик. |
+| `EHOSTUNREACH` | Узел недоступен. |
+| `EIDRM` | Идентификатор удалён. |
+| `EILSEQ` | Недопустимая последовательность байт. |
+| `EINPROGRESS` | Операция уже выполняется. |
+| `EINTR` | Вызов функции прерван. |
+| `EINVAL` | Передан неверный аргумент. |
+| `EIO` | Неуточнённая ошибка ввода-вывода. |
+| `EISCONN` | Сокет подключён. |
+| `EISDIR` | Путь указывает на каталог. |
+| `ELOOP` | Слишком много уровней символических ссылок в пути. |
+| `EMFILE` | Слишком много открытых файлов. |
+| `EMLINK` | Слишком много жёстких ссылок на файл. |
+| `EMSGSIZE` | Сообщение слишком длинное. |
+| `EMULTIHOP` | Попытка multihop. |
+| `ENAMETOOLONG` | Имя файла слишком длинное. |
+| `ENETDOWN` | Сеть недоступна. |
+| `ENETRESET` | Сеть прервала соединение. |
+| `ENETUNREACH` | Сеть недостижима. |
+| `ENFILE` | В системе слишком много открытых файлов. |
+| `ENOBUFS` | Нет места в буфере. |
+| `ENODATA` | Нет сообщения в очереди чтения потока. |
+| `ENODEV` | Нет такого устройства. |
+| `ENOENT` | Нет такого файла или каталога. |
+| `ENOEXEC` | Ошибка формата исполняемого файла. |
+| `ENOLCK` | Нет доступных блокировок. |
+| `ENOLINK` | Связь разорвана. |
+| `ENOMEM` | Недостаточно памяти. |
+| `ENOMSG` | Нет сообщения нужного типа. |
+| `ENOPROTOOPT` | Протокол недоступен. |
+| `ENOSPC` | На устройстве нет места. |
+| `ENOSR` | Нет ресурсов потока. |
+| `ENOSTR` | Ресурс не является потоком. |
+| `ENOSYS` | Функция не реализована. |
+| `ENOTCONN` | Сокет не подключён. |
+| `ENOTDIR` | Путь не является каталогом. |
+| `ENOTEMPTY` | Каталог не пуст. |
+| `ENOTSOCK` | Объект не является сокетом. |
+| `ENOTSUP` | Операция не поддерживается. |
+| `ENOTTY` | Недопустимая операция управления вводом-выводом. |
+| `ENXIO` | Нет такого устройства или адреса. |
+| `EOPNOTSUPP` | Операция не поддерживается для сокета. Хотя на Linux `ENOTSUP` и `EOPNOTSUPP` совпадают, в POSIX.1 это разные коды.) |
+| `EOVERFLOW` | Значение слишком велико для типа данных. |
+| `EPERM` | Операция не разрешена. |
+| `EPIPE` | Разорванный канал (pipe). |
+| `EPROTO` | Ошибка протокола. |
+| `EPROTONOSUPPORT` | Протокол не поддерживается. |
+| `EPROTOTYPE` | Неверный тип протокола для сокета. |
+| `ERANGE` | Результат слишком велик. |
+| `EROFS` | Файловая система только для чтения. |
+| `ESPIPE` | Некорректная операция позиционирования. |
+| `ESRCH` | Нет такого процесса. |
+| `ESTALE` | Устаревший дескриптор файла. |
+| `ETIME` | Таймер истёк. |
+| `ETIMEDOUT` | Истекло время ожидания соединения. |
+| `ETXTBSY` | Текстовый файл занят. |
+| `EWOULDBLOCK` | Операция заблокировала бы выполнение. |
+| `EXDEV` | Некорректная связь. |
 
 #### Константы ошибок Windows
 
 Следующие коды ошибок относятся к Windows.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>WSAEINTR</code></td>
-    <td>Прерванный вызов функции.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEBADF</code></td>
-    <td>Некорректный дескриптор файла.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEACCES</code></td>
-    <td>Недостаточно прав для завершения операции.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEFAULT</code></td>
-    <td>Некорректный адрес указателя.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEINVAL</code></td>
-    <td>Передан неверный аргумент.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEMFILE</code></td>
-    <td>Слишком много открытых файлов.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEWOULDBLOCK</code></td>
-    <td>Ресурс временно недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEINPROGRESS</code></td>
-    <td>Операция уже выполняется.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEALREADY</code></td>
-    <td>Операция уже выполняется.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOTSOCK</code></td>
-    <td>Ресурс не является сокетом.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEDESTADDRREQ</code></td>
-    <td>Требуется адрес назначения.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEMSGSIZE</code></td>
-    <td>Сообщение слишком длинное.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEPROTOTYPE</code></td>
-    <td>Неверный тип протокола для сокета.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOPROTOOPT</code></td>
-    <td>Неверная опция протокола.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEPROTONOSUPPORT</code></td>
-    <td>Протокол не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>WSAESOCKTNOSUPPORT</code></td>
-    <td>Тип сокета не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEOPNOTSUPP</code></td>
-    <td>Операция не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEPFNOSUPPORT</code></td>
-    <td>Семейство протоколов не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEAFNOSUPPORT</code></td>
-    <td>Семейство адресов не поддерживается.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEADDRINUSE</code></td>
-    <td>Сетевой адрес уже используется.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEADDRNOTAVAIL</code></td>
-    <td>Сетевой адрес недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENETDOWN</code></td>
-    <td>Сеть недоступна.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENETUNREACH</code></td>
-    <td>Сеть недостижима.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENETRESET</code></td>
-    <td>Соединение сброшено.</td>
-  </tr>
-  <tr>
-    <td><code>WSAECONNABORTED</code></td>
-    <td>Соединение прервано.</td>
-  </tr>
-  <tr>
-    <td><code>WSAECONNRESET</code></td>
-    <td>Удалённый узел сбросил соединение.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOBUFS</code></td>
-    <td>Нет места в буфере.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEISCONN</code></td>
-    <td>Сокет уже подключён.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOTCONN</code></td>
-    <td>Сокет не подключён.</td>
-  </tr>
-  <tr>
-    <td><code>WSAESHUTDOWN</code></td>
-    <td>Нельзя отправлять данные после shutdown сокета.</td>
-  </tr>
-  <tr>
-    <td><code>WSAETOOMANYREFS</code></td>
-    <td>Слишком много ссылок.</td>
-  </tr>
-  <tr>
-    <td><code>WSAETIMEDOUT</code></td>
-    <td>Истекло время ожидания соединения.</td>
-  </tr>
-  <tr>
-    <td><code>WSAECONNREFUSED</code></td>
-    <td>В соединении отказали.</td>
-  </tr>
-  <tr>
-    <td><code>WSAELOOP</code></td>
-    <td>Имя нельзя преобразовать.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENAMETOOLONG</code></td>
-    <td>Имя слишком длинное.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEHOSTDOWN</code></td>
-    <td>Сетевой узел недоступен.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEHOSTUNREACH</code></td>
-    <td>Нет маршрута до узла.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOTEMPTY</code></td>
-    <td>Каталог не пуст.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEPROCLIM</code></td>
-    <td>Слишком много процессов.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEUSERS</code></td>
-    <td>Превышена квота пользователя.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEDQUOT</code></td>
-    <td>Превышена дисковая квота.</td>
-  </tr>
-  <tr>
-    <td><code>WSAESTALE</code></td>
-    <td>Устаревшая ссылка на дескриптор файла.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEREMOTE</code></td>
-    <td>Объект удалённый.</td>
-  </tr>
-  <tr>
-    <td><code>WSASYSNOTREADY</code></td>
-    <td>Сетевая подсистема не готова.</td>
-  </tr>
-  <tr>
-    <td><code>WSAVERNOTSUPPORTED</code></td>
-    <td>Версия <code>winsock.dll</code> вне допустимого диапазона.</td>
-  </tr>
-  <tr>
-    <td><code>WSANOTINITIALISED</code></td>
-    <td>Успешный WSAStartup ещё не выполнялся.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEDISCON</code></td>
-    <td>Выполняется корректное завершение.</td>
-  </tr>
-  <tr>
-    <td><code>WSAENOMORE</code></td>
-    <td>Больше нет результатов.</td>
-  </tr>
-  <tr>
-    <td><code>WSAECANCELLED</code></td>
-    <td>Операция отменена.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEINVALIDPROCTABLE</code></td>
-    <td>Таблица вызовов процедур некорректна.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEINVALIDPROVIDER</code></td>
-    <td>Некорректный поставщик услуг.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEPROVIDERFAILEDINIT</code></td>
-    <td>Не удалось инициализировать поставщика услуг.</td>
-  </tr>
-  <tr>
-    <td><code>WSASYSCALLFAILURE</code></td>
-    <td>Ошибка системного вызова.</td>
-  </tr>
-  <tr>
-    <td><code>WSASERVICE_NOT_FOUND</code></td>
-    <td>Служба не найдена.</td>
-  </tr>
-  <tr>
-    <td><code>WSATYPE_NOT_FOUND</code></td>
-    <td>Тип класса не найден.</td>
-  </tr>
-  <tr>
-    <td><code>WSA_E_NO_MORE</code></td>
-    <td>Больше нет результатов.</td>
-  </tr>
-  <tr>
-    <td><code>WSA_E_CANCELLED</code></td>
-    <td>Вызов отменён.</td>
-  </tr>
-  <tr>
-    <td><code>WSAEREFUSED</code></td>
-    <td>Запрос к базе отклонён.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `WSAEINTR` | Прерванный вызов функции. |
+| `WSAEBADF` | Некорректный дескриптор файла. |
+| `WSAEACCES` | Недостаточно прав для завершения операции. |
+| `WSAEFAULT` | Некорректный адрес указателя. |
+| `WSAEINVAL` | Передан неверный аргумент. |
+| `WSAEMFILE` | Слишком много открытых файлов. |
+| `WSAEWOULDBLOCK` | Ресурс временно недоступен. |
+| `WSAEINPROGRESS` | Операция уже выполняется. |
+| `WSAEALREADY` | Операция уже выполняется. |
+| `WSAENOTSOCK` | Ресурс не является сокетом. |
+| `WSAEDESTADDRREQ` | Требуется адрес назначения. |
+| `WSAEMSGSIZE` | Сообщение слишком длинное. |
+| `WSAEPROTOTYPE` | Неверный тип протокола для сокета. |
+| `WSAENOPROTOOPT` | Неверная опция протокола. |
+| `WSAEPROTONOSUPPORT` | Протокол не поддерживается. |
+| `WSAESOCKTNOSUPPORT` | Тип сокета не поддерживается. |
+| `WSAEOPNOTSUPP` | Операция не поддерживается. |
+| `WSAEPFNOSUPPORT` | Семейство протоколов не поддерживается. |
+| `WSAEAFNOSUPPORT` | Семейство адресов не поддерживается. |
+| `WSAEADDRINUSE` | Сетевой адрес уже используется. |
+| `WSAEADDRNOTAVAIL` | Сетевой адрес недоступен. |
+| `WSAENETDOWN` | Сеть недоступна. |
+| `WSAENETUNREACH` | Сеть недостижима. |
+| `WSAENETRESET` | Соединение сброшено. |
+| `WSAECONNABORTED` | Соединение прервано. |
+| `WSAECONNRESET` | Удалённый узел сбросил соединение. |
+| `WSAENOBUFS` | Нет места в буфере. |
+| `WSAEISCONN` | Сокет уже подключён. |
+| `WSAENOTCONN` | Сокет не подключён. |
+| `WSAESHUTDOWN` | Нельзя отправлять данные после shutdown сокета. |
+| `WSAETOOMANYREFS` | Слишком много ссылок. |
+| `WSAETIMEDOUT` | Истекло время ожидания соединения. |
+| `WSAECONNREFUSED` | В соединении отказали. |
+| `WSAELOOP` | Имя нельзя преобразовать. |
+| `WSAENAMETOOLONG` | Имя слишком длинное. |
+| `WSAEHOSTDOWN` | Сетевой узел недоступен. |
+| `WSAEHOSTUNREACH` | Нет маршрута до узла. |
+| `WSAENOTEMPTY` | Каталог не пуст. |
+| `WSAEPROCLIM` | Слишком много процессов. |
+| `WSAEUSERS` | Превышена квота пользователя. |
+| `WSAEDQUOT` | Превышена дисковая квота. |
+| `WSAESTALE` | Устаревшая ссылка на дескриптор файла. |
+| `WSAEREMOTE` | Объект удалённый. |
+| `WSASYSNOTREADY` | Сетевая подсистема не готова. |
+| `WSAVERNOTSUPPORTED` | Версия `winsock.dll` вне допустимого диапазона. |
+| `WSANOTINITIALISED` | Успешный WSAStartup ещё не выполнялся. |
+| `WSAEDISCON` | Выполняется корректное завершение. |
+| `WSAENOMORE` | Больше нет результатов. |
+| `WSAECANCELLED` | Операция отменена. |
+| `WSAEINVALIDPROCTABLE` | Таблица вызовов процедур некорректна. |
+| `WSAEINVALIDPROVIDER` | Некорректный поставщик услуг. |
+| `WSAEPROVIDERFAILEDINIT` | Не удалось инициализировать поставщика услуг. |
+| `WSASYSCALLFAILURE` | Ошибка системного вызова. |
+| `WSASERVICE_NOT_FOUND` | Служба не найдена. |
+| `WSATYPE_NOT_FOUND` | Тип класса не найден. |
+| `WSA_E_NO_MORE` | Больше нет результатов. |
+| `WSA_E_CANCELLED` | Вызов отменён. |
+| `WSAEREFUSED` | Запрос к базе отклонён. |
 
 ### Константы dlopen
 
 Если доступны в ОС, эти константы экспортируются в `os.constants.dlopen`. Подробности — в dlopen(3).
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>RTLD_LAZY</code></td>
-    <td>Ленивое связывание. По умолчанию Node.js задаёт этот флаг.</td>
-  </tr>
-  <tr>
-    <td><code>RTLD_NOW</code></td>
-    <td>Разрешить все неопределённые символы до возврата из dlopen(3).</td>
-  </tr>
-  <tr>
-    <td><code>RTLD_GLOBAL</code></td>
-    <td>Символы библиотеки доступны для разрешения в последующих загрузках.</td>
-  </tr>
-  <tr>
-    <td><code>RTLD_LOCAL</code></td>
-    <td>Противоположность <code>RTLD_GLOBAL</code>. Поведение по умолчанию, если флаги не заданы.</td>
-  </tr>
-  <tr>
-    <td><code>RTLD_DEEPBIND</code></td>
-    <td>Самодостаточная библиотека предпочитает свои символы символам ранее загруженных библиотек.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `RTLD_LAZY` | Ленивое связывание. По умолчанию Node.js задаёт этот флаг. |
+| `RTLD_NOW` | Разрешить все неопределённые символы до возврата из dlopen(3). |
+| `RTLD_GLOBAL` | Символы библиотеки доступны для разрешения в последующих загрузках. |
+| `RTLD_LOCAL` | Противоположность `RTLD_GLOBAL`. Поведение по умолчанию, если флаги не заданы. |
+| `RTLD_DEEPBIND` | Самодостаточная библиотека предпочитает свои символы символам ранее загруженных библиотек. |
 
 ### Константы приоритета
 
@@ -1285,49 +735,20 @@ added: v10.10.0
 Константы планирования процессов экспортируются в
 `os.constants.priority`.
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_LOW</code></td>
-    <td>Наименьший приоритет планирования: <code>IDLE_PRIORITY_CLASS</code> в Windows, nice <code>19</code> на остальных платформах.</td>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_BELOW_NORMAL</code></td>
-    <td>Приоритет между <code>PRIORITY_LOW</code> и <code>PRIORITY_NORMAL</code>: <code>BELOW_NORMAL_PRIORITY_CLASS</code> в Windows, nice <code>10</code> иначе.</td>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_NORMAL</code></td>
-    <td>Приоритет по умолчанию: <code>NORMAL_PRIORITY_CLASS</code> в Windows, nice <code>0</code> иначе.</td>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_ABOVE_NORMAL</code></td>
-    <td>Приоритет между <code>PRIORITY_NORMAL</code> и <code>PRIORITY_HIGH</code>: <code>ABOVE_NORMAL_PRIORITY_CLASS</code> в Windows, nice <code>-7</code> иначе.</td>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_HIGH</code></td>
-    <td>Приоритет между <code>PRIORITY_ABOVE_NORMAL</code> и <code>PRIORITY_HIGHEST</code>: <code>HIGH_PRIORITY_CLASS</code> в Windows, nice <code>-14</code> иначе.</td>
-  </tr>
-  <tr>
-    <td><code>PRIORITY_HIGHEST</code></td>
-    <td>Наивысший приоритет: <code>REALTIME_PRIORITY_CLASS</code> в Windows, nice <code>-20</code> иначе.</td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `PRIORITY_LOW` | Наименьший приоритет планирования: `IDLE_PRIORITY_CLASS` в Windows, nice `19` на остальных платформах. |
+| `PRIORITY_BELOW_NORMAL` | Приоритет между `PRIORITY_LOW` и `PRIORITY_NORMAL`: `BELOW_NORMAL_PRIORITY_CLASS` в Windows, nice `10` иначе. |
+| `PRIORITY_NORMAL` | Приоритет по умолчанию: `NORMAL_PRIORITY_CLASS` в Windows, nice `0` иначе. |
+| `PRIORITY_ABOVE_NORMAL` | Приоритет между `PRIORITY_NORMAL` и `PRIORITY_HIGH`: `ABOVE_NORMAL_PRIORITY_CLASS` в Windows, nice `-7` иначе. |
+| `PRIORITY_HIGH` | Приоритет между `PRIORITY_ABOVE_NORMAL` и `PRIORITY_HIGHEST`: `HIGH_PRIORITY_CLASS` в Windows, nice `-14` иначе. |
+| `PRIORITY_HIGHEST` | Наивысший приоритет: `REALTIME_PRIORITY_CLASS` в Windows, nice `-20` иначе. |
 
 ### Константы libuv
 
-<table>
-  <tr>
-    <th>Константа</th>
-    <th>Описание</th>
-  </tr>
-  <tr>
-    <td><code>UV_UDP_REUSEADDR</code></td>
-    <td></td>
-  </tr>
-</table>
+| Константа | Описание |
+| --- | --- |
+| `UV_UDP_REUSEADDR` |  |
 
 [Android building]: https://github.com/nodejs/node/blob/HEAD/BUILDING.md#android
 [EUID]: https://en.wikipedia.org/wiki/User_identifier#Effective_user_ID
