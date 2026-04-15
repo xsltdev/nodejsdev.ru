@@ -5,15 +5,11 @@ description: Объекты Buffer представляют последоват
 
 # Буфер
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/buffer.html)
-
-<!--introduced_in=v0.1.90-->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/buffer.html)
 
 !!!success "Стабильность: 2 – Стабильная"
 
     Совместимость с экосистемой npm имеет высокий приоритет.
-
-<!-- source_link=lib/buffer.js -->
 
 Объекты `Buffer` используются для представления последовательности байтов фиксированной длины. Многие API Node.js поддерживают `Buffer`.
 
@@ -92,29 +88,6 @@ description: Объекты Buffer представляют последоват
     ```
 
 ## Буферы и кодировки символов
-
-<!-- YAML
-changes:
-  - version:
-      - v15.7.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/36952
-    description: Introduced `base64url` encoding.
-  - version: v6.4.0
-    pr-url: https://github.com/nodejs/node/pull/7111
-    description: Introduced `latin1` as an alias for `binary`.
-  - version: v5.0.0
-    pr-url: https://github.com/nodejs/node/pull/2859
-    description: Removed the deprecated `raw` and `raws` encodings.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.7.0, v14.18.0 | Введена кодировка base64url. |
-    | v6.4.0 | Введено `latin1` как псевдоним для `binary`. |
-    | v5.0.0 | Удалены устаревшие кодировки `raw` и `raws`. |
 
 При преобразовании между `Buffer` и строками может быть указана кодировка символов. Если кодировка не указана, по умолчанию используется UTF-8.
 
@@ -217,19 +190,6 @@ Node.js также поддерживает следующие двоично-т
 Современные веб-браузеры следуют [WHATWG Encoding Standard](https://www.whatwg.org/spec/#encoding-standard), где `'latin1'` и `'ISO-8859-1'` сопоставляются с `'win-1252'`. Поэтому при вызове, например, `http.get()`, если в ответе указана одна из кодировок из спецификации WHATWG, сервер мог вернуть данные в `'win-1252'`, и декодирование с `'latin1'` может дать неверные символы.
 
 ## Буферы и TypedArray
-
-<!-- YAML
-changes:
-  - version: v3.0.0
-    pr-url: https://github.com/nodejs/node/pull/2002
-    description: The `Buffer` class now inherits from `Uint8Array`.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v3.0.0 | Класс Buffer теперь наследуется от Uint8Array. |
 
 Экземпляры `Buffer` одновременно являются экземплярами JavaScript [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) и [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray). Все методы и свойства [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) доступны у `Buffer`. При этом между API `Buffer` и [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) есть тонкие различия.
 
@@ -455,44 +415,9 @@ toString.call(uint8array, 'utf8'); // 'hello'
 
 ## Класс: `Blob`
 
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
-changes:
-  - version:
-    - v18.0.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/41270
-    description: No longer experimental.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0, v16.17.0 | Больше не экспериментально. |
-
 [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) инкапсулирует неизменяемые сырые данные, которые безопасно разделять между несколькими рабочими потоками.
 
 ### `new buffer.Blob([sources[, options]])`
-
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
-changes:
-  - version: v16.7.0
-    pr-url: https://github.com/nodejs/node/pull/39708
-    description: Added the standard `endings` option to replace line-endings,
-                 and removed the non-standard `encoding` option.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.7.0 | Добавлен стандартный параметр «окончания» для замены окончаний строк и удален нестандартный параметр «кодировка». |
 
 -   `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Blob[]>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `Blob`.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -507,23 +432,11 @@ changes:
 
 ### `blob.arrayBuffer()`
 
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
--->
-
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Возвращает промис, который выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), содержащим копию данных `Blob`.
 
 ### `blob.bytes()`
-
-<!-- YAML
-added:
-  - v22.3.0
-  - v20.16.0
--->
 
 Метод `blob.bytes()` возвращает байты объекта `Blob` в виде `Promise<Uint8Array>`.
 
@@ -536,21 +449,9 @@ blob.bytes().then((bytes) => {
 
 ### `blob.size`
 
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
--->
-
 Общий размер `Blob` в байтах.
 
 ### `blob.slice([start[, end[, type]]])`
-
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
--->
 
 -   `start` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальный индекс.
 -   `end` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Конечный индекс.
@@ -560,33 +461,17 @@ added:
 
 ### `blob.stream()`
 
-<!-- YAML
-added: v16.7.0
--->
-
 -   Возвращает: [ReadableStream](https://developer.mozilla.org/docs/Web/API/ReadableStream)(webstreams.md#readablestream)
 
 Возвращает новый `ReadableStream` для чтения содержимого `Blob`.
 
 ### `blob.text()`
 
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
--->
-
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Возвращает промис, который выполняется со строкой — содержимым `Blob`, декодированным как UTF-8.
 
 ### `blob.type`
-
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
--->
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -659,43 +544,6 @@ MIME-тип содержимого `Blob`.
 Класс `Buffer` — глобальный тип для прямой работы с двоичными данными. Его можно создавать разными способами.
 
 ### Статический метод: `Buffer.alloc(size[, fill[, encoding]])` {#static-method-bufferallocsize-fill-encoding}
-
-<!-- YAML
-added: v5.10.0
-changes:
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/45796
-    description: Throw ERR_INVALID_ARG_TYPE or ERR_OUT_OF_RANGE instead of
-                 ERR_INVALID_ARG_VALUE for invalid input arguments.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34682
-    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
-                 for invalid input arguments.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18129
-    description: Attempting to fill a non-zero length buffer with a zero length
-                 buffer triggers a thrown exception.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/17427
-    description: Specifying an invalid string for `fill` triggers a thrown
-                 exception.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17428
-    description: Specifying an invalid string for `fill` now results in a
-                 zero-filled buffer.
--->
-
-Добавлено в: v5.10.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Выдавайте ERR_INVALID_ARG_TYPE или ERR_OUT_OF_RANGE вместо ERR_INVALID_ARG_VALUE для недопустимых входных аргументов. |
-    | v15.0.0 | Выдавайте ERR_INVALID_ARG_VALUE вместо ERR_INVALID_OPT_VALUE для недопустимых входных аргументов. |
-    | v10.0.0 | Попытка заполнить буфер ненулевой длины буфером нулевой длины вызывает исключение. |
-    | v10.0.0 | Указание недопустимой строки для `fill` вызывает исключение. |
-    | v8.9.3 | Указание недопустимой строки для `fill` теперь приводит к заполнению буфера нулями. |
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   `fill` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для предварительного заполнения нового `Buffer`. **По умолчанию:** `0`.
@@ -782,32 +630,6 @@ changes:
 
 ### Статический метод: `Buffer.allocUnsafe(size)` {#static-method-bufferallocunsafesize}
 
-<!-- YAML
-added: v5.10.0
-changes:
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/45796
-    description: Throw ERR_INVALID_ARG_TYPE or ERR_OUT_OF_RANGE instead of
-                 ERR_INVALID_ARG_VALUE for invalid input arguments.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34682
-    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
-                 for invalid input arguments.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/7079
-    description: Passing a negative `size` will now throw an error.
--->
-
-Добавлено в: v5.10.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Выдавайте ERR_INVALID_ARG_TYPE или ERR_OUT_OF_RANGE вместо ERR_INVALID_ARG_VALUE для недопустимых входных аргументов. |
-    | v15.0.0 | Выдавайте ERR_INVALID_ARG_VALUE вместо ERR_INVALID_OPT_VALUE для недопустимых входных аргументов. |
-    | v7.0.0 | Передача отрицательного размера теперь приведет к ошибке. |
-
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
@@ -854,28 +676,6 @@ changes:
 Использование этого пула — ключевое отличие между `Buffer.alloc(size, fill)` и `Buffer.allocUnsafe(size).fill(fill)`: `Buffer.alloc(size, fill)` _никогда_ не использует внутренний пул `Buffer`, а `Buffer.allocUnsafe(size).fill(fill)` _использует_ его, если `size` не больше половины `Buffer.poolSize`. Разница тонкая, но важна, когда нужна дополнительная производительность [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
 ### Статический метод: `Buffer.allocUnsafeSlow(size)` {#static-method-bufferallocunsafeslowsize}
-
-<!-- YAML
-added: v5.12.0
-changes:
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/45796
-    description: Throw ERR_INVALID_ARG_TYPE or ERR_OUT_OF_RANGE instead of
-                 ERR_INVALID_ARG_VALUE for invalid input arguments.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34682
-    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
-                 for invalid input arguments.
--->
-
-Добавлено в: v5.12.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Выдавайте ERR_INVALID_ARG_TYPE или ERR_OUT_OF_RANGE вместо ERR_INVALID_ARG_VALUE для недопустимых входных аргументов. |
-    | v15.0.0 | Выдавайте ERR_INVALID_ARG_VALUE вместо ERR_INVALID_OPT_VALUE для недопустимых входных аргументов. |
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
@@ -936,27 +736,6 @@ changes:
 
 ### Статический метод: `Buffer.byteLength(string[, encoding])`
 
-<!-- YAML
-added: v0.1.90
-changes:
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8946
-    description: Passing invalid input will now throw an error.
-  - version: v5.10.0
-    pr-url: https://github.com/nodejs/node/pull/5255
-    description: The `string` parameter can now be any `TypedArray`, `DataView`
-                 or `ArrayBuffer`.
--->
-
-Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v7.0.0 | Передача недопустимого ввода теперь приведет к ошибке. |
-    | v5.10.0 | Параметром string теперь может быть любой TypedArray, DataView или ArrayBuffer. |
-
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) Значение, для которого вычисляется длина.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число байт в `string` при заданной интерпретации.
@@ -993,22 +772,6 @@ changes:
 
 ### Статический метод: `Buffer.compare(buf1, buf2)`
 
-<!-- YAML
-added: v0.11.13
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The arguments can now be `Uint8Array`s.
--->
-
-Добавлено в: v0.11.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Аргументы теперь могут быть Uint8Array. |
-
 -   `buf1` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   `buf2` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `-1`, `0` или `1` в зависимости от результата сравнения. Подробности см. в [`buf.compare()`](#bufcomparetarget-targetstart-targetend-sourcestart-sourceend).
@@ -1044,22 +807,6 @@ changes:
     ```
 
 ### Статический метод: `Buffer.concat(list[, totalLength])` {#static-method-bufferconcatlist-totallength}
-
-<!-- YAML
-added: v0.7.11
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The elements of `list` can now be `Uint8Array`s.
--->
-
-Добавлено в: v0.7.11
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Элементами списка теперь могут быть элементы Uint8Array. |
 
 -   `list` [`<Buffer[]>`](buffer.md#buffer) | [`<Uint8Array[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Список экземпляров `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для объединения.
 -   `totalLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Суммарная длина экземпляров `Buffer` в `list` после конкатенации.
@@ -1123,12 +870,6 @@ changes:
 
 ### Статический метод: `Buffer.copyBytesFrom(view[, offset[, length]])` {#static-method-buffercopybytesfromview-offset-length}
 
-<!-- YAML
-added:
- - v19.8.0
- - v18.16.0
--->
-
 -   `view` [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) для копирования.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Начальное смещение в `view`. **По умолчанию:** `0`.
 -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число элементов из `view` для копирования. **По умолчанию:** `view.length - offset`.
@@ -1146,10 +887,6 @@ console.log(buf[1]); // 255
 ```
 
 ### Статический метод: `Buffer.from(array)` {#static-method-bufferfromarray}
-
-<!-- YAML
-added: v5.10.0
--->
 
 -   `array` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
@@ -1181,10 +918,6 @@ added: v5.10.0
 `Buffer.from(array)` и [`Buffer.from(string)`](#static-method-bufferfromstring-encoding) также могут использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
 ### Статический метод: `Buffer.from(arrayBuffer[, byteOffset[, length]])` {#static-method-bufferfromarraybuffer-byteoffset-length}
-
-<!-- YAML
-added: v5.10.0
--->
 
 -   `arrayBuffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), например свойство `.buffer` у [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
 -   `byteOffset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Индекс первого байта, который нужно «раскрыть». **По умолчанию:** `0`.
@@ -1299,10 +1032,6 @@ added: v5.10.0
 
 ### Статический метод: `Buffer.from(buffer)` {#static-method-bufferfrombuffer}
 
-<!-- YAML
-added: v5.10.0
--->
-
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
@@ -1343,10 +1072,6 @@ added: v5.10.0
 Будет выброшен `TypeError`, если `buffer` не является `Buffer` или другим типом, подходящим для вариантов `Buffer.from()`.
 
 ### Статический метод: `Buffer.from(object[, offsetOrEncoding[, length]])`
-
-<!-- YAML
-added: v8.2.0
--->
 
 -   `object` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с поддержкой `Symbol.toPrimitive` или `valueOf()`.
 -   `offsetOrEncoding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Смещение в байтах или кодировка.
@@ -1409,10 +1134,6 @@ added: v8.2.0
 
 ### Статический метод: `Buffer.from(string[, encoding])` {#static-method-bufferfromstring-encoding}
 
-<!-- YAML
-added: v5.10.0
--->
-
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для кодирования.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка `string`. **По умолчанию:** `'utf8'`.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
@@ -1457,10 +1178,6 @@ added: v5.10.0
 
 ### Статический метод: `Buffer.isBuffer(obj)`
 
-<!-- YAML
-added: v0.1.101
--->
-
 -   `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1491,10 +1208,6 @@ added: v0.1.101
     ```
 
 ### Статический метод: `Buffer.isEncoding(encoding)`
-
-<!-- YAML
-added: v0.9.1
--->
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя кодировки для проверки.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -1665,26 +1378,6 @@ added: v0.11.3
 
 ### `buf.compare(target[, targetStart[, targetEnd[, sourceStart[, sourceEnd]]]])`
 
-<!-- YAML
-added: v0.11.13
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The `target` parameter can now be a `Uint8Array`.
-  - version: v5.11.0
-    pr-url: https://github.com/nodejs/node/pull/5880
-    description: Additional parameters for specifying offsets are supported now.
--->
-
-Добавлено в: v0.11.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Параметр target теперь может быть Uint8Array. |
-    | v5.11.0 | Теперь поддерживаются дополнительные параметры для указания смещений. |
-
 -   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), с которым сравнивается `buf`.
 -   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается сравнение. **По умолчанию:** `0`.
 -   `targetEnd` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, на котором сравнение заканчивается (не включая). **По умолчанию:** `target.length`.
@@ -1783,10 +1476,6 @@ changes:
 Выбрасывается [`ERR_OUT_OF_RANGE`](errors.md#err_out_of_range), если `targetStart < 0`, `sourceStart < 0`, `targetEnd > target.byteLength` или `sourceEnd > source.byteLength`.
 
 ### `buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])`
-
-<!-- YAML
-added: v0.1.90
--->
 
 -   `target` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), в который копируют.
 -   `targetStart` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в `target`, с которого начинается запись. **По умолчанию:** `0`.
@@ -1890,10 +1579,6 @@ added: v0.1.90
 
 ### `buf.entries()`
 
-<!-- YAML
-added: v1.1.0
--->
-
 -   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) пар `[index, byte]` по содержимому `buf`.
@@ -1942,22 +1627,6 @@ added: v1.1.0
 
 ### `buf.equals(otherBuffer)`
 
-<!-- YAML
-added: v0.11.13
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The arguments can now be `Uint8Array`s.
--->
-
-Добавлено в: v0.11.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Аргументы теперь могут быть Uint8Array. |
-
 -   `otherBuffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) для сравнения с `buf`.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1994,40 +1663,6 @@ changes:
     ```
 
 ### `buf.fill(value[, offset[, end]][, encoding])`
-
-<!-- YAML
-added: v0.5.0
-changes:
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22969
-    description: Throws `ERR_OUT_OF_RANGE` instead of `ERR_INDEX_OUT_OF_RANGE`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18790
-    description: Negative `end` values throw an `ERR_INDEX_OUT_OF_RANGE` error.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18129
-    description: Attempting to fill a non-zero length buffer with a zero length
-                 buffer triggers a thrown exception.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/17427
-    description: Specifying an invalid string for `value` triggers a thrown
-                 exception.
-  - version: v5.7.0
-    pr-url: https://github.com/nodejs/node/pull/4935
-    description: The `encoding` parameter is supported now.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.0.0 | Выдает `ERR_OUT_OF_RANGE` вместо `ERR_INDEX_OUT_OF_RANGE`. |
-    | v10.0.0 | Отрицательные значения end вызывают ошибку ERR_INDEX_OUT_OF_RANGE. |
-    | v10.0.0 | Попытка заполнить буфер ненулевой длины буфером нулевой длины вызывает исключение. |
-    | v10.0.0 | Указание недопустимой строки для `value` вызывает исключение. |
-    | v5.7.0 | Параметр `encoding` теперь поддерживается. |
 
 -   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Значение для заполнения `buf`. Пустое значение (строка, Uint8Array, Buffer) приводится к `0`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед началом заполнения `buf`. **По умолчанию:** `0`.
@@ -2135,28 +1770,6 @@ changes:
 
 ### `buf.includes(value[, start[, end]][, encoding])`
 
-<!-- YAML
-added: v5.3.0
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/62390
-    description: Added the `end` parameter.
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
--->
-
-Добавлено в: v5.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Добавлен параметр `end`. |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-
 -   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
 -   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где закончить поиск в `buf` (не включая). **По умолчанию:** `buf.length`.
@@ -2212,33 +1825,6 @@ changes:
     ```
 
 ### `buf.indexOf(value[, start[, end]][, encoding])` {#bufindexofvalue-byteoffset-encoding}
-
-<!-- YAML
-added: v1.5.0
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/62390
-    description: Added the `end` parameter.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The `value` can now be a `Uint8Array`.
-  - version:
-    - v5.7.0
-    - v4.4.0
-    pr-url: https://github.com/nodejs/node/pull/4803
-    description: When `encoding` is being passed, the `byteOffset` parameter
-                 is no longer required.
--->
-
-Добавлено в: v1.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Добавлен параметр `end`. |
-    | v8.0.0 | Значением теперь может быть Uint8Array. |
-    | v5.7.0, v4.4.0 | При передаче encoding параметр byteOffset больше не требуется. |
 
 -   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `0`.
@@ -2356,10 +1942,6 @@ changes:
 
 ### `buf.keys()`
 
-<!-- YAML
-added: v1.1.0
--->
-
 -   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) по ключам `buf` (индексам).
@@ -2403,26 +1985,6 @@ added: v1.1.0
     ```
 
 ### `buf.lastIndexOf(value[, start[, end]][, encoding])`
-
-<!-- YAML
-added: v6.0.0
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/62390
-    description: Added the `end` parameter.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The `value` can now be a `Uint8Array`.
--->
-
-Добавлено в: v6.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Добавлен параметр `end`. |
-    | v8.0.0 | Значением теперь может быть Uint8Array. |
 
 -   `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Что искать.
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого места начинать поиск в `buf`. Если отрицательно, смещение считается от конца `buf`. **По умолчанию:** `buf.length - 1`.
@@ -2546,10 +2108,6 @@ changes:
 
 ### `buf.length`
 
-<!-- YAML
-added: v0.1.90
--->
-
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает число байт в `buf`.
@@ -2592,21 +2150,11 @@ added: v0.1.90
 
 ### `buf.parent`
 
-<!-- YAML
-deprecated: v8.0.0
--->
-
 > Стабильность: 0 - Устарело: используйте [`buf.buffer`](#bufbuffer) вместо этого.
 
 Свойство `buf.parent` — устаревший псевдоним для `buf.buffer`.
 
 ### `buf.readBigInt64BE([offset])`
-
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
--->
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
@@ -2617,12 +2165,6 @@ added:
 
 ### `buf.readBigInt64LE([offset])`
 
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
--->
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
@@ -2631,24 +2173,6 @@ added:
 Целые числа, прочитанные из `Buffer`, интерпретируются как знаковые в дополнении до двух.
 
 ### `buf.readBigUInt64BE([offset])`
-
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
-changes:
-  - version:
-    - v14.10.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34960
-    description: This function is also available as `buf.readBigUint64BE()`.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.readBigUint64BE()`. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
@@ -2681,24 +2205,6 @@ changes:
 
 ### `buf.readBigUInt64LE([offset])`
 
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
-changes:
-  - version:
-    - v14.10.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34960
-    description: This function is also available as `buf.readBigUint64LE()`.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.readBigUint64LE()`. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 
@@ -2730,23 +2236,6 @@ changes:
 
 ### `buf.readDoubleBE([offset])`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2775,23 +2264,6 @@ changes:
     ```
 
 ### `buf.readDoubleLE([offset])`
-
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2826,23 +2298,6 @@ changes:
 
 ### `buf.readFloatBE([offset])`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2871,23 +2326,6 @@ changes:
     ```
 
 ### `buf.readFloatLE([offset])`
-
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2921,23 +2359,6 @@ changes:
     ```
 
 ### `buf.readInt8([offset])`
-
-<!-- YAML
-added: v0.5.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2978,23 +2399,6 @@ changes:
 
 ### `buf.readInt16BE([offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -3025,23 +2429,6 @@ changes:
     ```
 
 ### `buf.readInt16LE([offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3078,23 +2465,6 @@ changes:
 
 ### `buf.readInt32BE([offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -3125,23 +2495,6 @@ changes:
     ```
 
 ### `buf.readInt32LE([offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3177,30 +2530,6 @@ changes:
     ```
 
 ### `buf.readIntBE(offset, byteLength)`
-
-<!-- YAML
-added: v0.11.15
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
-
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
@@ -3240,30 +2569,6 @@ changes:
 
 ### `buf.readIntLE(offset, byteLength)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
-
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3293,29 +2598,6 @@ changes:
     ```
 
 ### `buf.readUInt8([offset])`
-
-<!-- YAML
-added: v0.5.0
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUint8()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint8()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3356,29 +2638,6 @@ changes:
 
 ### `buf.readUInt16BE([offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUint16BE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint16BE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -3413,29 +2672,6 @@ changes:
     ```
 
 ### `buf.readUInt16LE([offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUint16LE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint16LE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3476,29 +2712,6 @@ changes:
 
 ### `buf.readUInt32BE([offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUint32BE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint32BE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -3529,29 +2742,6 @@ changes:
     ```
 
 ### `buf.readUInt32LE([offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUint32LE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUint32LE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3587,35 +2777,6 @@ changes:
     ```
 
 ### `buf.readUIntBE(offset, byteLength)`
-
-<!-- YAML
-added: v0.11.15
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUintBE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUintBE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
@@ -3653,35 +2814,6 @@ changes:
 
 ### `buf.readUIntLE(offset, byteLength)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.readUintLE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.readUintLE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
-
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед чтением. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт прочитать. Должно выполняться `0 < byteLength <= 6`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -3713,10 +2845,6 @@ changes:
     ```
 
 ### `buf.subarray([start[, end]])`
-
-<!-- YAML
-added: v3.0.0
--->
 
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
 -   `end` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Где заканчивается новый `Buffer` (не включая). **По умолчанию:** `buf.length`.
@@ -3826,36 +2954,6 @@ added: v3.0.0
 
 ### `buf.slice([start[, end]])`
 
-<!-- YAML
-added: v0.3.0
-changes:
-  - version:
-    - v17.5.0
-    - v16.15.0
-    pr-url: https://github.com/nodejs/node/pull/41596
-    description: The buf.slice() method has been deprecated.
-  - version:
-    - v7.1.0
-    - v6.9.2
-    pr-url: https://github.com/nodejs/node/pull/9341
-    description: Coercing the offsets to integers now handles values outside
-                 the 32-bit integer range properly.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/9101
-    description: All offsets are now coerced to integers before doing any
-                 calculations with them.
--->
-
-Добавлено в: v0.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.5.0, v16.15.0 | Метод buf.slice() устарел. |
-    | v7.1.0, v6.9.2 | Приведение смещений к целым числам теперь правильно обрабатывает значения вне диапазона 32-битных целых чисел. |
-    | v7.0.0 | Все смещения теперь приводятся к целым числам перед выполнением каких-либо вычислений с ними. |
-
 > Стабильность: 0 - Устарело: используйте [`buf.subarray`](#bufsubarraystart-end) вместо этого.
 
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) С какого индекса начинается новый `Buffer`. **По умолчанию:** `0`.
@@ -3915,10 +3013,6 @@ changes:
     ```
 
 ### `buf.swap16()`
-
-<!-- YAML
-added: v5.10.0
--->
 
 -   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
@@ -3988,10 +3082,6 @@ added: v5.10.0
 
 ### `buf.swap32()`
 
-<!-- YAML
-added: v5.10.0
--->
-
 -   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Интерпретирует `buf` как массив беззнаковых 32-битных целых чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size), если [`buf.length`](#buflength) не кратно 4.
@@ -4040,10 +3130,6 @@ added: v5.10.0
 
 ### `buf.swap64()`
 
-<!-- YAML
-added: v6.3.0
--->
-
 -   Возвращает: [`<Buffer>`](buffer.md#buffer) Ссылка на `buf`.
 
 Интерпретирует `buf` как массив 64-битных чисел и меняет порядок байтов _на месте_. Выбрасывает [`ERR_INVALID_BUFFER_SIZE`](errors.md#err_invalid_buffer_size), если [`buf.length`](#buflength) не кратен 8.
@@ -4091,10 +3177,6 @@ added: v6.3.0
     ```
 
 ### `buf.toJSON()`
-
-<!-- YAML
-added: v0.9.2
--->
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -4145,24 +3227,6 @@ added: v0.9.2
     ```
 
 ### `buf.toString([encoding[, start[, end]]])`
-
-<!-- YAML
-added: v0.1.90
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
--->
-
-Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка символов. **По умолчанию:** `'utf8'`.
 -   `start` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в байтах, с которого начинать декодирование. **По умолчанию:** `0`.
@@ -4231,10 +3295,6 @@ changes:
 
 ### `buf.values()`
 
-<!-- YAML
-added: v1.1.0
--->
-
 -   Возвращает: [`<Iterator>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol)
 
 Создаёт и возвращает [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) по значениям `buf` (байтам). Функция вызывается автоматически, когда `Buffer` используется в операторе `for..of`.
@@ -4301,24 +3361,6 @@ added: v1.1.0
 
 ### `buf.write(string[, offset[, length]][, encoding])`
 
-<!-- YAML
-added: v0.1.90
-changes:
-  - version:
-     - v25.5.0
-     - v24.13.1
-    pr-url: https://github.com/nodejs/node/pull/56578
-    description: supports Uint8Array as `this` value.
--->
-
-Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | поддерживает Uint8Array как значение this. |
-
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью `string`. **По умолчанию:** `0`.
 -   `length` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимум байт для записи (не больше `buf.length - offset`). **По умолчанию:** `buf.length - offset`.
@@ -4369,12 +3411,6 @@ changes:
 
 ### `buf.writeBigInt64BE(value[, offset])`
 
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
--->
-
 -   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4410,12 +3446,6 @@ added:
     ```
 
 ### `buf.writeBigInt64LE(value[, offset])`
-
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
--->
 
 -   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
@@ -4453,24 +3483,6 @@ added:
 
 ### `buf.writeBigUInt64BE(value[, offset])`
 
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
-changes:
-  - version:
-    - v14.10.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34960
-    description: This function is also available as `buf.writeBigUint64BE()`.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.writeBigUint64BE()`. |
-
 -   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4506,24 +3518,6 @@ changes:
     ```
 
 ### `buf.writeBigUInt64LE(value[, offset])`
-
-<!-- YAML
-added:
- - v12.0.0
- - v10.20.0
-changes:
-  - version:
-    - v14.10.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34960
-    description: This function is also available as `buf.writeBigUint64LE()`.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.10.0, v12.19.0 | Эта функция также доступна как `buf.writeBigUint64LE()`. |
 
 -   `value` [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться: `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
@@ -4561,23 +3555,6 @@ changes:
 
 ### `buf.writeDoubleBE(value[, offset])`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4611,23 +3588,6 @@ changes:
     ```
 
 ### `buf.writeDoubleLE(value[, offset])`
-
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 8`. **По умолчанию:** `0`.
@@ -4663,23 +3623,6 @@ changes:
 
 ### `buf.writeFloatBE(value[, offset])`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4714,23 +3657,6 @@ changes:
 
 ### `buf.writeFloatLE(value[, offset])`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4764,23 +3690,6 @@ changes:
     ```
 
 ### `buf.writeInt8(value[, offset])`
-
-<!-- YAML
-added: v0.5.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
@@ -4820,23 +3729,6 @@ changes:
 
 ### `buf.writeInt16BE(value[, offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4872,23 +3764,6 @@ changes:
     ```
 
 ### `buf.writeInt16LE(value[, offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
@@ -4926,23 +3801,6 @@ changes:
 
 ### `buf.writeInt32BE(value[, offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -4978,23 +3836,6 @@ changes:
     ```
 
 ### `buf.writeInt32LE(value[, offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
@@ -5032,23 +3873,6 @@ changes:
 
 ### `buf.writeIntBE(value, offset, byteLength)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
@@ -5084,23 +3908,6 @@ changes:
 
 ### `buf.writeIntLE(value, offset, byteLength)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
@@ -5135,29 +3942,6 @@ changes:
     ```
 
 ### `buf.writeUInt8(value[, offset])`
-
-<!-- YAML
-added: v0.5.0
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUint8()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint8()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 1`. **По умолчанию:** `0`.
@@ -5201,29 +3985,6 @@ changes:
 
 ### `buf.writeUInt16BE(value[, offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUint16BE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint16BE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -5261,29 +4022,6 @@ changes:
     ```
 
 ### `buf.writeUInt16LE(value[, offset])`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUint16LE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint16LE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 2`. **По умолчанию:** `0`.
@@ -5323,29 +4061,6 @@ changes:
 
 ### `buf.writeUInt32BE(value[, offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUint32BE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint32BE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -5382,29 +4097,6 @@ changes:
 
 ### `buf.writeUInt32LE(value[, offset])`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUint32LE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUint32LE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - 4`. **По умолчанию:** `0`.
 -   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `offset` плюс число записанных байт.
@@ -5440,29 +4132,6 @@ changes:
     ```
 
 ### `buf.writeUIntBE(value, offset, byteLength)`
-
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUintBE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUintBE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
 
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
@@ -5501,29 +4170,6 @@ changes:
 
 ### `buf.writeUIntLE(value, offset, byteLength)`
 
-<!-- YAML
-added: v0.5.5
-changes:
-  - version:
-    - v14.9.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/34729
-    description: This function is also available as `buf.writeUintLE()`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18395
-    description: Removed `noAssert` and no implicit coercion of the offset
-                 and `byteLength` to `uint32` anymore.
--->
-
-Добавлено в: v0.5.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.9.0, v12.19.0 | Эта функция также доступна как `buf.writeUintLE()`. |
-    | v10.0.0 | Удален noAssert и больше нет неявного приведения смещения и byteLength к uint32. |
-
 -   `value` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число для записи в `buf`.
 -   `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт пропустить перед записью. Должно выполняться `0 <= offset <= buf.length - byteLength`.
 -   `byteLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Сколько байт записать. Должно выполняться `0 < byteLength <= 6`.
@@ -5561,66 +4207,13 @@ changes:
 
 ### `new Buffer(array)`
 
-<!-- YAML
-deprecated: v6.0.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19524
-    description: Calling this constructor emits a deprecation warning when
-                 run from code outside the `node_modules` directory.
-  - version: v7.2.1
-    pr-url: https://github.com/nodejs/node/pull/9529
-    description: Calling this constructor no longer emits a deprecation warning.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8169
-    description: Calling this constructor emits a deprecation warning now.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Вызов этого конструктора выдает предупреждение об устаревании при запуске из кода вне каталога `node_modules`. |
-    | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
-    | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
-
-> Stability: 0 - Deprecated: Use [`Buffer.from(array)`](#static-method-bufferfromarray) instead.
+> Stability: 0 - Устарело: Используйте [`Buffer.from(array)`](#static-method-bufferfromarray) вместо этого.
 
 -   `array` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Массив байтов для копирования.
 
 См. [`Buffer.from(array)`](#static-method-bufferfromarray).
 
 ### `new Buffer(arrayBuffer[, byteOffset[, length]])`
-
-<!-- YAML
-added: v3.0.0
-deprecated: v6.0.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19524
-    description: Calling this constructor emits a deprecation warning when
-                 run from code outside the `node_modules` directory.
-  - version: v7.2.1
-    pr-url: https://github.com/nodejs/node/pull/9529
-    description: Calling this constructor no longer emits a deprecation warning.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8169
-    description: Calling this constructor emits a deprecation warning now.
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/4682
-    description: The `byteOffset` and `length` parameters are supported now.
--->
-
-Добавлено в: v3.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Вызов этого конструктора выдает предупреждение об устаревании при запуске из кода вне каталога `node_modules`. |
-    | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
-    | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
-    | v6.0.0 | Параметры `byteOffset` и `length` теперь поддерживаются. |
 
 > Стабильность: 0 - Устарело: используйте [`Buffer.from(arrayBuffer[, byteOffset[, length]])`](#static-method-bufferfromarraybuffer-byteoffset-length) вместо этого.
 
@@ -5632,29 +4225,6 @@ changes:
 
 ### `new Buffer(buffer)`
 
-<!-- YAML
-deprecated: v6.0.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19524
-    description: Calling this constructor emits a deprecation warning when
-                 run from code outside the `node_modules` directory.
-  - version: v7.2.1
-    pr-url: https://github.com/nodejs/node/pull/9529
-    description: Calling this constructor no longer emits a deprecation warning.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8169
-    description: Calling this constructor emits a deprecation warning now.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Вызов этого конструктора выдает предупреждение об устаревании при запуске из кода вне каталога `node_modules`. |
-    | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
-    | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
-
 > Стабильность: 0 - Устарело: используйте [`Buffer.from(buffer)`](#static-method-bufferfrombuffer) вместо этого.
 
 -   `buffer` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Существующий `Buffer` или [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), из которого копируются данные.
@@ -5663,34 +4233,6 @@ changes:
 
 ### `new Buffer(size)`
 
-<!-- YAML
-deprecated: v6.0.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19524
-    description: Calling this constructor emits a deprecation warning when
-                 run from code outside the `node_modules` directory.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/12141
-    description: The `new Buffer(size)` will return zero-filled memory by
-                 default.
-  - version: v7.2.1
-    pr-url: https://github.com/nodejs/node/pull/9529
-    description: Calling this constructor no longer emits a deprecation warning.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8169
-    description: Calling this constructor emits a deprecation warning now.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Вызов этого конструктора выдает предупреждение об устаревании при запуске из кода вне каталога `node_modules`. |
-    | v8.0.0 | `new Buffer(size)` по умолчанию возвращает заполненную нулями память. |
-    | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
-    | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
-
 > Стабильность: 0 - Устарело: используйте [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) вместо этого (см. также [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize)).
 
 -   `size` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Желаемая длина нового `Buffer`.
@@ -5698,29 +4240,6 @@ changes:
 См. [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding) и [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize). Этот вариант конструктора эквивалентен [`Buffer.alloc()`](#static-method-bufferallocsize-fill-encoding).
 
 ### `new Buffer(string[, encoding])`
-
-<!-- YAML
-deprecated: v6.0.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19524
-    description: Calling this constructor emits a deprecation warning when
-                 run from code outside the `node_modules` directory.
-  - version: v7.2.1
-    pr-url: https://github.com/nodejs/node/pull/9529
-    description: Calling this constructor no longer emits a deprecation warning.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/8169
-    description: Calling this constructor emits a deprecation warning now.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Вызов этого конструктора выдает предупреждение об устаревании при запуске из кода вне каталога `node_modules`. |
-    | v7.2.1 | Вызов этого конструктора больше не выдает предупреждение об устаревании. |
-    | v7.0.0 | Вызов этого конструктора теперь выдает предупреждение об устаревании. |
 
 > Стабильность: 0 - Устарело: используйте [`Buffer.from(string[, encoding])`](#static-method-bufferfromstring-encoding) вместо этого.
 
@@ -5731,37 +4250,11 @@ changes:
 
 ## Класс: `File`
 
-<!-- YAML
-added:
-  - v19.2.0
-  - v18.13.0
-changes:
-  - version: v23.0.0
-    pr-url: https://github.com/nodejs/node/pull/47613
-    description: Makes File instances cloneable.
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/47153
-    description: No longer experimental.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Делает экземпляры файлов клонируемыми. |
-    | v20.0.0 | Больше не экспериментально. |
-
 -   Наследует: [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 
 [File](https://developer.mozilla.org/en-US/docs/Web/API/File) представляет сведения о файле.
 
 ### `new buffer.File(sources, fileName[, options])`
-
-<!-- YAML
-added:
-  - v19.2.0
-  - v18.13.0
--->
 
 -   `sources` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray[]>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Blob[]>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) | [`<File[]>`](https://developer.mozilla.org/en-US/docs/Web/API/File) Массив строк, [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView), [File](https://developer.mozilla.org/en-US/docs/Web/API/File) или [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), либо любая смесь таких объектов, которые будут помещены в `File`.
 -   `fileName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла.
@@ -5772,23 +4265,11 @@ added:
 
 ### `file.name`
 
-<!-- YAML
-added:
-  - v19.2.0
-  - v18.13.0
--->
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя `File`.
 
 ### `file.lastModified`
-
-<!-- YAML
-added:
-  - v19.2.0
-  - v18.13.0
--->
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -5799,12 +4280,6 @@ added:
 Хотя объект `Buffer` доступен глобально, дополнительные API, связанные с `Buffer`, доступны только через модуль `node:buffer` (`require('node:buffer')`).
 
 ### `buffer.atob(data)`
-
-<!-- YAML
-added:
-  - v15.13.0
-  - v14.17.0
--->
 
 > Стабильность: 3 - Закрыто. Вместо этого используйте `Buffer.from(data, 'base64')`.
 
@@ -5824,12 +4299,6 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ### `buffer.btoa(data)`
 
-<!-- YAML
-added:
-  - v15.13.0
-  - v14.17.0
--->
-
 > Стабильность: 3 - Закрыто. Вместо этого используйте `buf.toString('base64')`.
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Строка ASCII (Latin1).
@@ -5848,12 +4317,6 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ### `buffer.isAscii(input)`
 
-<!-- YAML
-added:
-  - v19.6.0
-  - v18.15.0
--->
-
 -   `input` [`<Buffer>`](buffer.md#buffer) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -5862,12 +4325,6 @@ added:
 Выбрасывает исключение, если `input` — отсоединённый `ArrayBuffer`.
 
 ### `buffer.isUtf8(input)`
-
-<!-- YAML
-added:
-  - v19.4.0
-  - v18.14.0
--->
 
 -   `input` [`<Buffer>`](buffer.md#buffer) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Входные данные для проверки.
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -5878,19 +4335,11 @@ added:
 
 ### `buffer.INSPECT_MAX_BYTES`
 
-<!-- YAML
-added: v0.5.4
--->
-
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `50`
 
 Максимальное число байт, возвращаемых при вызове `buf.inspect()`. Пользовательские модули могут переопределить значение. Подробнее о поведении `buf.inspect()` см. [`util.inspect()`](util.md#utilinspectobject-options).
 
 ### `buffer.kMaxLength`
-
-<!-- YAML
-added: v3.0.0
--->
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
 
@@ -5898,33 +4347,11 @@ added: v3.0.0
 
 ### `buffer.kStringMaxLength`
 
-<!-- YAML
-added: v3.0.0
--->
-
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
 
 Псевдоним [`buffer.constants.MAX_STRING_LENGTH`](#bufferconstantsmax_string_length).
 
 ### `buffer.resolveObjectURL(id)`
-
-<!-- YAML
-added: v16.7.0
-changes:
- - version:
-    - v24.0.0
-    - v22.17.0
-   pr-url: https://github.com/nodejs/node/pull/57513
-   description: Marking the API stable.
--->
-
-Добавлено в: v16.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 -   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL вида `'blob:nodedata:...`, полученная ранее от `URL.createObjectURL()`.
 -   Возвращает: [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
@@ -5932,22 +4359,6 @@ changes:
 Сопоставляет `'blob:nodedata:...'` с соответствующим объектом [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), зарегистрированным ранее через `URL.createObjectURL()`.
 
 ### `buffer.transcode(source, fromEnc, toEnc)`
-
-<!-- YAML
-added: v7.1.0
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10236
-    description: The `source` parameter can now be a `Uint8Array`.
--->
-
-Добавлено в: v7.1.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Параметр `source` теперь может быть `Uint8Array`. |
 
 -   `source` [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) Экземпляр `Buffer` или `Uint8Array`.
 -   `fromEnc` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Исходная кодировка.
@@ -5986,38 +4397,7 @@ changes:
 
 ### Константы Buffer
 
-<!-- YAML
-added: v8.2.0
--->
-
 #### `buffer.constants.MAX_LENGTH`
-
-<!-- YAML
-added: v8.2.0
-changes:
-  - version: v22.0.0
-    pr-url: https://github.com/nodejs/node/pull/52465
-    description: Value is changed to 2<sup>53</sup> - 1 on 64-bit
-      architectures, and 2<sup>31</sup> - 1 on 32-bit architectures.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/35415
-    description: Value is changed to 2<sup>32</sup> on 64-bit
-      architectures.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/32116
-    description: Value is changed from 2<sup>31</sup> - 1 to
-      2<sup>32</sup> - 1 on 64-bit architectures.
--->
-
-Добавлено в: v8.2.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0 | Значение изменяется на 2<sup>53</sup> — 1 в 64-разрядных архитектурах и на 2<sup>31</sup> — 1 в 32-разрядных архитектурах. |
-    | v15.0.0 | Значение изменяется на 2<sup>32</sup> в 64-разрядных архитектурах. |
-    | v14.0.0 | Значение изменено с 2<sup>31</sup> – 1 на 2<sup>32</sup> – 1 в 64-разрядных архитектурах. |
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольший допустимый размер одного экземпляра `Buffer`.
 
@@ -6030,10 +4410,6 @@ changes:
 То же значение доступно как [`buffer.kMaxLength`](#bufferkmaxlength).
 
 #### `buffer.constants.MAX_STRING_LENGTH`
-
-<!-- YAML
-added: v8.2.0
--->
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Наибольшая допустимая длина одного примитива `string`.
 
@@ -6067,10 +4443,6 @@ _Следует перенести весь существующий код с `
 Экземпляры, возвращаемые [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize), [`Buffer.from(string)`](#static-method-bufferfromstring-encoding), [`Buffer.concat()`](#static-method-bufferconcatlist-totallength) и [`Buffer.from(array)`](#static-method-bufferfromarray), _могут_ выделяться из общего внутреннего пула, если `size` не больше половины `Buffer.poolSize`. Экземпляры от [`Buffer.allocUnsafeSlow()`](#static-method-bufferallocunsafeslowsize) общий пул _никогда_ не используют.
 
 ### Опция командной строки `--zero-fill-buffers`
-
-<!-- YAML
-added: v5.10.0
--->
 
 Node.js можно запускать с флагом `--zero-fill-buffers`, чтобы все вновь выделенные `Buffer` по умолчанию обнулялись. Без флага буферы, созданные через [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize) и [`Buffer.allocUnsafeSlow()`](#static-method-bufferallocunsafeslowsize), не обнуляются. Флаг может заметно снизить производительность; включайте его только если нужно гарантировать отсутствие старых данных в новой памяти.
 

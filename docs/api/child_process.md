@@ -1,19 +1,15 @@
 ---
-title: Дочерний процесс
+title: Child процессы
 description: Модуль node:child_process позволяет порождать подпроцессы способом, похожим на popen(3), но не идентичным ему
 ---
 
-# Дочерний процесс
+# Child процессы
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/child_process.html)
-
-<!--introduced_in=v0.10.0-->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/child_process.html)
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
-
-<!-- source_link=lib/child_process.js -->
 
 Модуль `node:child_process` предоставляет возможность порождать подпроцессы способом, который похож, но не идентичен popen(3). В основном эта возможность реализуется функцией [`child_process.spawn()`](#child_processspawncommand-args-options):
 
@@ -120,33 +116,6 @@ description: Модуль node:child_process позволяет порождат
     ```
 
 ### `child_process.exec(command[, options][, callback])`
-
-<!-- YAML
-added: v0.1.90
-changes:
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version: v15.4.0
-    pr-url: https://github.com/nodejs/node/pull/36308
-    description: Добавлена поддержка `AbortSignal`.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
--->
-
-Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v15.4.0 | Добавлена ​​поддержка AbortSignal. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
 
 -   `command` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Команда для выполнения с аргументами, разделёнными пробелами.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -292,41 +261,6 @@ changes:
 
 ### `child_process.execFile(file[, args][, options][, callback])`
 
-<!-- YAML
-added: v0.1.91
-changes:
-  - version:
-      - v23.11.0
-      - v22.15.0
-    pr-url: https://github.com/nodejs/node/pull/57389
-    description: Передача `args`, когда `shell` установлен в `true`, устарела.
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version:
-      - v15.4.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/36308
-    description: Добавлена поддержка AbortSignal.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
--->
-
-Добавлено в: v0.1.91
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Передача аргументов, когда для параметра Shell установлено значение true, устарела. |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v15.4.0, v14.17.0 | Добавлена ​​поддержка AbortSignal. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
-
 -   `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя или путь исполняемого файла.
 -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -435,64 +369,6 @@ changes:
 
 ### `child_process.fork(modulePath[, args][, options])`
 
-<!-- YAML
-added: v0.5.0
-changes:
-  - version:
-      - v17.4.0
-      - v16.14.0
-    pr-url: https://github.com/nodejs/node/pull/41225
-    description: Параметр `modulePath` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version:
-      - v15.13.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/37256
-    description: Добавлен `timeout`.
-  - version:
-      - v15.11.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/37325
-    description: Добавлен `killSignal` для AbortSignal.
-  - version:
-      - v15.6.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/36603
-    description: Добавлена поддержка AbortSignal.
-  - version:
-      - v13.2.0
-      - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30162
-    description: Опция `serialization` теперь поддерживается.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10866
-    description: Опция `stdio` теперь может быть строкой.
-  - version: v6.4.0
-    pr-url: https://github.com/nodejs/node/pull/7811
-    description: Опция `stdio` теперь поддерживается.
--->
-
-Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.4.0, v16.14.0 | Параметр modulePath может быть объектом URL WHATWG, использующим протокол file:. |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v15.13.0, v14.18.0 | был добавлен таймаут. |
-    | v15.11.0, v14.18.0 | Был добавлен killSignal для AbortSignal. |
-    | v15.6.0, v14.17.0 | Добавлена ​​поддержка AbortSignal. |
-    | v13.2.0, v12.16.0 | Опция сериализации теперь поддерживается. |
-    | v8.0.0 | Опция `stdio` теперь может быть строкой. |
-    | v6.4.0 | Опция `stdio` теперь поддерживается. |
-
 -   `modulePath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Модуль для запуска в дочернем процессе.
 -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -569,67 +445,6 @@ changes:
     ```
 
 ### `child_process.spawn(command[, args][, options])`
-
-<!-- YAML
-added: v0.1.90
-changes:
-  - version:
-      - v23.11.0
-      - v22.15.0
-    pr-url: https://github.com/nodejs/node/pull/57389
-    description: Передача `args`, когда `shell` установлен в `true`, устарела.
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version:
-      - v15.13.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/37256
-    description: Добавлен `timeout`.
-  - version:
-      - v15.11.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/37325
-    description: Добавлен `killSignal` для AbortSignal.
-  - version:
-      - v15.5.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/36432
-    description: Добавлена поддержка AbortSignal.
-  - version:
-      - v13.2.0
-      - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30162
-    description: Опция `serialization` теперь поддерживается.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
-  - version: v6.4.0
-    pr-url: https://github.com/nodejs/node/pull/7696
-    description: Опция `argv0` теперь поддерживается.
-  - version: v5.7.0
-    pr-url: https://github.com/nodejs/node/pull/4598
-    description: Опция `shell` теперь поддерживается.
--->
-
-Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Передача аргументов, когда для параметра Shell установлено значение true, устарела. |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v15.13.0, v14.18.0 | был добавлен таймаут. |
-    | v15.11.0, v14.18.0 | Был добавлен killSignal для AbortSignal. |
-    | v15.5.0, v14.17.0 | Добавлена ​​поддержка AbortSignal. |
-    | v13.2.0, v12.16.0 | Опция сериализации теперь поддерживается. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
-    | v6.4.0 | Опция `argv0` теперь поддерживается. |
-    | v5.7.0 | Опция `shell` теперь поддерживается. |
 
 -   `command` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Команда для запуска.
 -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов.
@@ -921,28 +736,6 @@ added: v0.7.10
 
 #### `options.stdio`
 
-<!-- YAML
-added: v0.7.10
-changes:
-  - version:
-      - v15.6.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/29412
-    description: Добавлен флаг stdio `overlapped`.
-  - version: v3.3.1
-    pr-url: https://github.com/nodejs/node/pull/2727
-    description: Значение `0` теперь принимается как файловый дескриптор.
--->
-
-Добавлено в: v0.7.10
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.6.0, v14.18.0 | Добавлен флаг stdio `overlapped`. |
-    | v3.3.1 | Значение `0` теперь принимается как дескриптор файла. |
-
 Опция `options.stdio` задаёт каналы между родителем и дочерним процессом. По умолчанию stdin, stdout и stderr дочернего процесса связаны с потоками [`subprocess.stdin`](#subprocessstdin), [`subprocess.stdout`](#subprocessstdout) и [`subprocess.stderr`](#subprocessstderr) на объекте [`ChildProcess`](#class-childprocess). Это эквивалентно `options.stdio` равному `['pipe', 'pipe', 'pipe']`.
 
 Для удобства `options.stdio` может быть одной из строк:
@@ -1007,44 +800,6 @@ _Если между процессами установлен канал IPC и
 Такие блокирующие вызовы удобны для сценариев общего назначения и для загрузки или обработки конфигурации при старте приложения.
 
 ### `child_process.execFileSync(file[, args][, options])`
-
-<!-- YAML
-added: v0.11.12
-changes:
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version: v10.10.0
-    pr-url: https://github.com/nodejs/node/pull/22409
-    description: Опция `input` теперь может быть любым `TypedArray` или
-                 `DataView`.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10653
-    description: Опция `input` теперь может быть `Uint8Array`.
-  - version:
-    - v6.2.1
-    - v4.5.0
-    pr-url: https://github.com/nodejs/node/pull/6939
-    description: Опцию `encoding` теперь можно явно устанавливать в `buffer`.
--->
-
-Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v10.10.0 | Опцией input теперь может быть любой TypedArray или DataView. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
-    | v8.0.0 | Опцией input теперь может быть Uint8Array. |
-    | v6.2.1, v4.5.0 | Опция `encoding` теперь может быть явно установлена ​​на `buffer`. |
 
 -   `file` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя или путь исполняемого файла.
 -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов.
@@ -1131,38 +886,6 @@ changes:
 
 ### `child_process.execSync(command[, options])`
 
-<!-- YAML
-added: v0.11.12
-changes:
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version: v10.10.0
-    pr-url: https://github.com/nodejs/node/pull/22409
-    description: Опция `input` теперь может быть любым `TypedArray` или
-                 `DataView`.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10653
-    description: Опция `input` теперь может быть `Uint8Array`.
--->
-
-Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v10.10.0 | Опцией input теперь может быть любой TypedArray или DataView. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
-    | v8.0.0 | Опцией input теперь может быть Uint8Array. |
-
 -   `command` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Команда для выполнения.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `cwd` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Текущий рабочий каталог дочернего процесса.
@@ -1186,48 +909,6 @@ changes:
 **Никогда не передавайте несанированный пользовательский ввод. Метасимволы оболочки могут привести к выполнению произвольной команды.**
 
 ### `child_process.spawnSync(command[, args][, options])`
-
-<!-- YAML
-added: v0.11.12
-changes:
-  - version:
-      - v16.4.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/38862
-    description: Опция `cwd` может быть объектом `URL` WHATWG,
-                 использующим протокол `file:`.
-  - version: v10.10.0
-    pr-url: https://github.com/nodejs/node/pull/22409
-    description: Опция `input` теперь может быть любым `TypedArray` или
-                 `DataView`.
-  - version: v8.8.0
-    pr-url: https://github.com/nodejs/node/pull/15380
-    description: Опция `windowsHide` теперь поддерживается.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10653
-    description: Опция `input` теперь может быть `Uint8Array`.
-  - version:
-    - v6.2.1
-    - v4.5.0
-    pr-url: https://github.com/nodejs/node/pull/6939
-    description: Опцию `encoding` теперь можно явно устанавливать в `buffer`.
-  - version: v5.7.0
-    pr-url: https://github.com/nodejs/node/pull/4598
-    description: Опция `shell` теперь поддерживается.
--->
-
-Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0, v14.18.0 | Опция `cwd` может быть объектом `URL` WHATWG, использующим протокол `file:`. |
-    | v10.10.0 | Опцией input теперь может быть любой TypedArray или DataView. |
-    | v8.8.0 | Опция «windowsHide» теперь поддерживается. |
-    | v8.0.0 | Опцией input теперь может быть Uint8Array. |
-    | v6.2.1, v4.5.0 | Опция `encoding` теперь может быть явно установлена ​​на `buffer`. |
-    | v5.7.0 | Опция `shell` теперь поддерживается. |
 
 -   `command` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Команда для запуска.
 -   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Список строковых аргументов.
@@ -1261,10 +942,6 @@ changes:
 
 ## Класс: `ChildProcess` {#class-childprocess}
 
-<!-- YAML
-added: v2.2.0
--->
-
 -   Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Экземпляры `ChildProcess` представляют порождённые дочерние процессы.
@@ -1272,10 +949,6 @@ added: v2.2.0
 Экземпляры `ChildProcess` не предназначены для прямого создания. Используйте [`child_process.spawn()`](#child_processspawncommand-args-options), [`child_process.exec()`](#child_processexeccommand-options-callback), [`child_process.execFile()`](#child_processexecfilefile-args-options-callback) или [`child_process.fork()`](#child_processforkmodulepath-args-options).
 
 ### Событие: `'close'` {#event-close}
-
-<!-- YAML
-added: v0.7.7
--->
 
 -   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если процесс завершился сам, или `null`, если по сигналу.
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сигнал завершения или `null`, если завершение не по сигналу.
@@ -1328,10 +1001,6 @@ added: v0.7.7
 
 ### Событие: `'disconnect'` {#event-disconnect}
 
-<!-- YAML
-added: v0.7.2
--->
-
 Событие `'disconnect'` генерируется после вызова [`subprocess.disconnect()`](#subprocessdisconnect) в родителе или [`process.disconnect()`](process.md#processdisconnect) в дочернем процессе. После отключения отправка и приём сообщений невозможны, свойство [`subprocess.connected`](#subprocessconnected) равно `false`.
 
 ### Событие: `'error'` {#event-error}
@@ -1351,10 +1020,6 @@ added: v0.7.2
 
 ### Событие: `'exit'` {#event-exit}
 
-<!-- YAML
-added: v0.1.90
--->
-
 -   `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, если процесс завершился сам, или `null`, если по сигналу.
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Сигнал завершения или `null`, если завершение не по сигналу.
 
@@ -1370,10 +1035,6 @@ Node.js устанавливает обработчики `SIGINT` и `SIGTERM` 
 
 ### Событие: `'message'` {#event-message}
 
-<!-- YAML
-added: v0.5.9
--->
-
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Разобранный JSON-объект или примитив.
 -   `sendHandle` [`<Handle | undefined>`](child_process.md) `undefined` либо объект [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver) или [`dgram.Socket`](dgram.md#class-dgramsocket).
 
@@ -1385,12 +1046,6 @@ added: v0.5.9
 
 ### Событие: `'spawn'` {#event-spawn}
 
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
--->
-
 Событие `'spawn'` генерируется один раз после успешного порождения дочернего процесса. Если породить процесс не удалось, `'spawn'` не приходит, вместо него — `'error'`.
 
 Если событие есть, оно предшествует остальным и любым данным из `stdout` или `stderr`.
@@ -1399,57 +1054,25 @@ added:
 
 ### `subprocess.channel`
 
-<!-- YAML
-added: v7.1.0
-changes:
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/30165
-    description: Объект больше не раскрывает нативные C++-привязки случайным образом.
--->
-
-Добавлено в: v7.1.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0 | Объект больше не случайно предоставляет собственные привязки C++. |
-
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Канал (pipe), представляющий IPC к дочернему процессу.
 
 Свойство `subprocess.channel` ссылается на IPC-канал дочернего процесса. Если IPC нет, значение `undefined`.
 
 #### `subprocess.channel.ref()`
 
-<!-- YAML
-added: v7.1.0
--->
-
 Делает так, чтобы IPC-канал удерживал цикл событий родителя, если ранее вызывался `.unref()`.
 
 #### `subprocess.channel.unref()`
 
-<!-- YAML
-added: v7.1.0
--->
-
 IPC-канал перестаёт удерживать цикл событий родителя; цикл может завершиться, пока канал ещё открыт.
 
 ### `subprocess.connected`
-
-<!-- YAML
-added: v0.7.2
--->
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Становится `false` после вызова `subprocess.disconnect()`.
 
 Свойство `subprocess.connected` показывает, можно ли ещё обмениваться сообщениями с дочерним процессом. При `false` отправка и приём невозможны.
 
 ### `subprocess.disconnect()`
-
-<!-- YAML
-added: v0.7.2
--->
 
 Закрывает IPC между родителем и потомком, позволяя дочернему процессу корректно завершиться, когда больше нет других удерживающих соединений. После вызова `subprocess.connected` и `process.connected` в родителе и потомке (соответственно) становятся `false`, сообщения передавать нельзя.
 
@@ -1466,10 +1089,6 @@ added: v0.7.2
 При завершении по сигналу `subprocess.exitCode` равен `null`, а [`subprocess.signalCode`](#subprocesssignalcode) заполнен. Для соответствующего POSIX-кода выхода используйте [`util.convertProcessSignalToExitCode(subprocess.signalCode)`](util.md#utilconvertprocesssignaltoexitcodesignalcode).
 
 ### `subprocess.kill([signal])`
-
-<!-- YAML
-added: v0.1.90
--->
 
 -   `signal` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -1562,39 +1181,15 @@ added: v0.1.90
 
 ### `subprocess[Symbol.dispose]()`
 
-<!-- YAML
-added:
- - v20.5.0
- - v18.18.0
-changes:
- - version: v24.2.0
-   pr-url: https://github.com/nodejs/node/pull/58467
-   description: Больше не является экспериментальным.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Вызывает [`subprocess.kill()`](#subprocesskillsignal) с `'SIGTERM'`.
 
 ### `subprocess.killed`
-
-<!-- YAML
-added: v0.5.10
--->
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Становится `true`, после того как `subprocess.kill()` успешно отправил сигнал дочернему процессу.
 
 Свойство `subprocess.killed` показывает, получил ли дочерний процесс сигнал от `subprocess.kill()`. Оно не означает, что процесс уже завершён.
 
 ### `subprocess.pid`
-
-<!-- YAML
-added: v0.1.90
--->
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
@@ -1621,10 +1216,6 @@ added: v0.1.90
     ```
 
 ### `subprocess.ref()`
-
-<!-- YAML
-added: v0.7.10
--->
 
 Вызов `subprocess.ref()` после `subprocess.unref()` восстанавливает учёт дочернего процесса в счётчике ссылок: родитель снова ждёт завершения потомка перед своим выходом.
 
@@ -1659,31 +1250,6 @@ added: v0.7.10
     ```
 
 ### `subprocess.send(message[, sendHandle[, options]][, callback])`
-
-<!-- YAML
-added: v0.5.9
-changes:
-  - version: v5.8.0
-    pr-url: https://github.com/nodejs/node/pull/5283
-    description: Параметр `options`, и в частности опция `keepOpen`,
-                 теперь поддерживаются.
-  - version: v5.0.0
-    pr-url: https://github.com/nodejs/node/pull/3516
-    description: Этот метод теперь возвращает boolean для управления потоком.
-  - version: v4.0.0
-    pr-url: https://github.com/nodejs/node/pull/2620
-    description: Параметр `callback` теперь поддерживается.
--->
-
-Добавлено в: v0.5.9
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.8.0 | Параметр `options` и, в частности, `keepOpen` теперь поддерживаются. |
-    | v5.0.0 | Этот метод теперь возвращает логическое значение для управления потоком. |
-    | v4.0.0 | Параметр `callback` теперь поддерживается. |
 
 -   `message` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `sendHandle` [`<Handle | undefined>`](child_process.md) `undefined`, or a [`net.Socket`](net.md#class-netsocket), [`net.Server`](net.md#class-netserver), or [`dgram.Socket`](dgram.md#class-dgramsocket) object.
@@ -1901,10 +1467,6 @@ process.on('message', (m, socket) => {
 
 ### `subprocess.stderr`
 
-<!-- YAML
-added: v0.1.90
--->
-
 -   Тип: [`<stream.Readable>`](stream.md#streamreadable) | null | undefined
 
 Поток `Readable` для `stderr` дочернего процесса.
@@ -1916,10 +1478,6 @@ added: v0.1.90
 Свойство может быть `null` или `undefined`, если процесс не удалось породить.
 
 ### `subprocess.stdin`
-
-<!-- YAML
-added: v0.1.90
--->
 
 -   Тип: [`<stream.Writable>`](stream.md#streamwritable) | null | undefined
 
@@ -1934,10 +1492,6 @@ added: v0.1.90
 Свойство может быть `null` или `undefined`, если процесс не удалось породить.
 
 ### `subprocess.stdio`
-
-<!-- YAML
-added: v0.7.10
--->
 
 -   Тип: [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
@@ -1999,10 +1553,6 @@ added: v0.7.10
 
 ### `subprocess.stdout`
 
-<!-- YAML
-added: v0.1.90
--->
-
 -   Тип: [`<stream.Readable>`](stream.md#streamreadable) | null | undefined
 
 Поток `Readable` для `stdout` дочернего процесса.
@@ -2038,10 +1588,6 @@ added: v0.1.90
 Свойство может быть `null` или `undefined`, если процесс не удалось породить.
 
 ### `subprocess.unref()`
-
-<!-- YAML
-added: v0.7.10
--->
 
 По умолчанию родитель ждёт завершения отсоединённого дочернего процесса. Чтобы не ждать `subprocess`, вызовите `subprocess.unref()`: цикл событий родителя перестанет учитывать потомка в счётчике ссылок, и родитель может завершиться независимо, если нет IPC между родителем и потомком.
 
@@ -2086,12 +1632,6 @@ added: v0.7.10
 Microsoft требует, чтобы `%COMSPEC%` указывал на `'cmd.exe'`, но дочерние процессы не всегда подчиняются тому же правилу. В функциях `child_process`, где можно породить оболочку, при отсутствии `process.env.ComSpec` используется запасной вариант `'cmd.exe'`.
 
 ## Расширенная сериализация {#advanced-serialization}
-
-<!-- YAML
-added:
- - v13.2.0
- - v12.16.0
--->
 
 Для IPC дочерние процессы поддерживают сериализацию на основе [API сериализации модуля `node:v8`](v8.md#serialization-api) и [алгоритма структурированного клонирования HTML](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm). Это мощнее JSON и покрывает больше встроенных типов: `BigInt`, `Map`, `Set`, `ArrayBuffer`, `TypedArray`, `Buffer`, `Error`, `RegExp` и т.д.
 

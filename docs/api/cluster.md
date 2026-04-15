@@ -1,15 +1,11 @@
 ---
-title: Кластер
+title: Cluster
 description: Кластеры процессов Node.js можно использовать для запуска нескольких экземпляров Node.js, которые могут распределять рабочую нагрузку между своими потоками приложений
 ---
 
 # Кластер
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/cluster.html)
-
-<!--introduced_in=v0.10.0-->
-
-<!-- source_link=lib/cluster.js -->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/cluster.html)
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -96,8 +92,6 @@ Worker 5644 started
 
 В Windows пока невозможно настроить сервер именованных труб в рабочем.
 
-<!-- 0000.part.md -->
-
 ## Как это работает
 
 Рабочие процессы создаются через [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options), чтобы они могли обмениваться с родителем по IPC и передавать друг другу дескрипторы сервера.
@@ -112,9 +106,9 @@ Worker 5644 started
 
 Так как `server.listen()` перенаправляет основную работу в основной процесс, есть три случая, когда поведение обычного процесса Node.js и рабочего в кластере различаются:
 
-1. `server.listen({fd: 7})` — сообщение уходит в основной процесс, поэтому дескриптор файла 7 **в родителе** будет прослушан, а дескриптор передастся рабочему, вместо того чтобы рабочий слушал свой дескриптор с номером 7.
-2. Если `server.listen(handle)` вызывают с явным дескриптором, рабочий использует переданный дескриптор и не обращается к основному процессу.
-3. `server.listen(0)` — обычно сервер получает случайный порт. В кластере каждый рабочий при каждом `listen(0)` получает один и тот же «случайный» порт: в первый раз он случаен, дальше — предсказуем. Чтобы слушать уникальный порт, задайте номер порта, например с учётом идентификатора рабочего в кластере.
+1.  `server.listen({fd: 7})` — сообщение уходит в основной процесс, поэтому дескриптор файла 7 **в родителе** будет прослушан, а дескриптор передастся рабочему, вместо того чтобы рабочий слушал свой дескриптор с номером 7.
+2.  Если `server.listen(handle)` вызывают с явным дескриптором, рабочий использует переданный дескриптор и не обращается к основному процессу.
+3.  `server.listen(0)` — обычно сервер получает случайный порт. В кластере каждый рабочий при каждом `listen(0)` получает один и тот же «случайный» порт: в первый раз он случаен, дальше — предсказуем. Чтобы слушать уникальный порт, задайте номер порта, например с учётом идентификатора рабочего в кластере.
 
 Node.js не реализует прикладную маршрутизацию. Поэтому важно проектировать приложение так, чтобы оно не опиралось на данные только в памяти процесса для сессий, входа и т. п.
 
@@ -122,15 +116,11 @@ Node.js не реализует прикладную маршрутизацию.
 
 Основное применение модуля `node:cluster` — сеть, но его можно использовать и в других сценариях, где нужны отдельные рабочие процессы.
 
-<!-- 0001.part.md -->
-
 ## Класс: `Worker`
 
 -   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
 
 Объект `Worker` содержит всю публичную информацию и методы о рабочем процессе. В основном процессе его можно получить через `cluster.workers`. В рабочем — через `cluster.worker`.
-
-<!-- 0002.part.md -->
 
 ### Событие: `'disconnect'`
 
@@ -142,15 +132,11 @@ cluster.fork().on('disconnect', () => {
 });
 ```
 
-<!-- 0003.part.md -->
-
 ### Событие: `error`
 
 Это событие аналогично событию, предоставляемому [`child_process.fork()`](child_process.md#child_processforkmodulepath-args-options).
 
 Внутри рабочего процесса также может использоваться `process.on('error')`.
-
-<!-- 0004.part.md -->
 
 ### Событие: `exit`
 
@@ -205,8 +191,6 @@ cluster.fork().on('disconnect', () => {
     }
     ```
 
-<!-- 0005.part.md -->
-
 ### Событие: `listening`
 
 -   `адрес` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -230,8 +214,6 @@ cluster.fork().on('disconnect', () => {
     ```
 
 Это не испускается в рабочем процессе.
-
-<!-- 0006.part.md -->
 
 ### Событие: `message`
 
@@ -331,8 +313,6 @@ cluster.fork().on('disconnect', () => {
     }
     ```
 
-<!-- 0007.part.md -->
-
 ### Событие: `'online'`
 
 Аналогично событию `cluster.on('online')`, но специфично для этого рабочего.
@@ -344,8 +324,6 @@ cluster.fork().on('online', () => {
 ```
 
 Это не испускается в рабочем процессе.
-
-<!-- 0008.part.md -->
 
 ### `worker.disconnect()`
 
@@ -397,8 +375,6 @@ if (cluster.isPrimary) {
 }
 ```
 
-<!-- 0009.part.md -->
-
 ### `worker.exitedAfterDisconnect`
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -420,8 +396,6 @@ cluster.on('exit', (worker, code, signal) => {
 worker.kill();
 ```
 
-<!-- 0010.part.md -->
-
 ### `worker.id`
 
 -   [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -430,13 +404,9 @@ worker.kill();
 
 Пока рабочий жив, это ключ, по которому он индексируется в `cluster.workers`.
 
-<!-- 0011.part.md -->
-
 ### `worker.isConnected()`
 
 Эта функция возвращает `true`, если рабочий подключен к своему первичному серверу через его IPC-канал, `false` в противном случае. Рабочий подключается к своему первичному серверу после его создания. Он отключается после возникновения события `'disconnect'`.
-
-<!-- 0012.part.md -->
 
 ### `worker.isDead()`
 
@@ -510,8 +480,6 @@ worker.kill();
     }
     ```
 
-<!-- 0013.part.md -->
-
 ### `worker.kill([signal])`
 
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала kill, который нужно послать рабочему процессу. **По умолчанию:** `SIGTERM`.
@@ -524,8 +492,6 @@ worker.kill();
 
 В рабочем процессе существует `process.kill()`, но это не эта функция, а [`kill()`](process.md#processkillpid-signal).
 
-<!-- 0014.part.md -->
-
 ### `worker.process`
 
 -   `ChildProcess`
@@ -535,8 +501,6 @@ worker.kill();
 См.: [модуль дочерних процессов](child_process.md#child_processforkmodulepath-args-options).
 
 Рабочие процессы будут вызывать `process.exit(0)`, если событие `'disconnect'` произойдет на `process` и `.exitedAfterDisconnect` не будет `true`. Это защищает от случайного отключения.
-
-<!-- 0015.part.md -->
 
 ### `worker.send(message[, sendHandle[, options]][, callback])`
 
@@ -566,8 +530,6 @@ if (cluster.isPrimary) {
 }
 ```
 
-<!-- 0016.part.md -->
-
 ## Событие: `'disconnect'`
 
 -   `worker` [`<cluster.Worker>`](cluster.md)
@@ -581,8 +543,6 @@ cluster.on('disconnect', (worker) => {
     console.log(`Рабочий #${worker.id} отключился`);
 });
 ```
-
-<!-- 0017.part.md -->
 
 ## Событие: `'exit'`
 
@@ -606,8 +566,6 @@ cluster.on('exit', (worker, code, signal) => {
 ```
 
 См. [событие `child_process`: `'exit'`](child_process.md#event-exit).
-
-<!-- 0018.part.md -->
 
 ## Событие: `fork`
 
@@ -633,8 +591,6 @@ cluster.on('exit', (worker, code, signal) => {
 });
 ```
 
-<!-- 0019.part.md -->
-
 ## Событие: `listening`
 
 -   `worker` [`<cluster.Worker>`](cluster.md)
@@ -659,8 +615,6 @@ cluster.on('listening', (worker, address) => {
 -   `-1` (Unix-сокет домена)
 -   `'udp4'` или `'udp6'` (UDPv4 или UDPv6)
 
-<!-- 0020.part.md -->
-
 ## Событие: `message`
 
 -   `worker` [`<cluster.Worker>`](cluster.md)
@@ -670,8 +624,6 @@ cluster.on('listening', (worker, address) => {
 Выдается, когда основной кластер получает сообщение от любого рабочего.
 
 См. [событие `child_process`: `'message'`](child_process.md#event-message).
-
-<!-- 0021.part.md -->
 
 ## Событие: `online`
 
@@ -687,8 +639,6 @@ cluster.on('online', (worker) => {
 });
 ```
 
-<!-- 0022.part.md -->
-
 ## Событие: `setup`
 
 -   `settings` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -698,8 +648,6 @@ cluster.on('online', (worker) => {
 Объект `settings` представляет собой объект `cluster.settings` на момент вызова [`.setupPrimary()`](#clustersetupprimarysettings) и является только рекомендательным, так как за один такт может быть сделано несколько вызовов [`.setupPrimary()`](#clustersetupprimarysettings).
 
 Если важна точность, используйте `cluster.settings`.
-
-<!-- 0023.part.md -->
 
 ## `cluster.disconnect([callback])`
 
@@ -713,8 +661,6 @@ cluster.on('online', (worker) => {
 
 Этот метод может быть вызван только из основного процесса.
 
-<!-- 0024.part.md -->
-
 ## `cluster.fork([env])`
 
 -   `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Пары ключ/значение для добавления в окружение рабочего процесса.
@@ -724,13 +670,9 @@ cluster.on('online', (worker) => {
 
 Это может быть вызвано только из основного процесса.
 
-<!-- 0025.part.md -->
-
 ## `cluster.isMaster`
 
 Утративший силу псевдоним для [`cluster.isPrimary`](#clusterisprimary).
-
-<!-- 0026.part.md -->
 
 ## `cluster.isPrimary`
 
@@ -738,15 +680,11 @@ cluster.on('online', (worker) => {
 
 Истина, если процесс является первичным. Это определяется `process.env.NODE_UNIQUE_ID`. Если `process.env.NODE_UNIQUE_ID` не определен, то `isPrimary` будет `true`.
 
-<!-- 0027.part.md -->
-
 ## `cluster.isWorker`
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Истина, если процесс не является основным (это отрицание `cluster.isPrimary`).
-
-<!-- 0028.part.md -->
 
 ## `cluster.schedulingPolicy`
 
@@ -755,8 +693,6 @@ cluster.on('online', (worker) => {
 По умолчанию используется `SCHED_RR` во всех операционных системах, кроме Windows. Windows перейдет на `SCHED_RR`, когда libuv сможет эффективно распределять ручки IOCP без большого падения производительности.
 
 `cluster.schedulingPolicy` также может быть задана через переменную окружения `NODE_CLUSTER_SCHED_POLICY`. Допустимыми значениями являются `'rr'` и `'none'`.
-
-<!-- 0029.part.md -->
 
 ## `cluster.settings`
 
@@ -777,13 +713,9 @@ cluster.on('online', (worker) => {
 
 Этот объект не предназначен для изменения или настройки вручную.
 
-<!-- 0030.part.md -->
-
 ## `cluster.setupMaster([settings])`
 
 Утративший силу псевдоним для [`.setupPrimary()`](#clustersetupprimarysettings).
-
-<!-- 0031.part.md -->
 
 ## `cluster.setupPrimary([settings])`
 
@@ -835,8 +767,6 @@ cluster.on('online', (worker) => {
 
 Это может быть вызвано только из основного процесса.
 
-<!-- 0032.part.md -->
-
 ## `cluster.worker`
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -871,8 +801,6 @@ cluster.on('online', (worker) => {
     }
     ```
 
-<!-- 0033.part.md -->
-
 ## `cluster.workers`
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -900,5 +828,3 @@ cluster.on('online', (worker) => {
         worker.send('big announcement to all workers');
     }
     ```
-
-<!-- 0034.part.md -->

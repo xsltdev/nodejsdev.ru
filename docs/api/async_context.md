@@ -5,15 +5,11 @@ description: Классы для связывания состояния и ег
 
 # Асинхронное отслеживание контекста
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/async_context.html)
-
-<!--introduced_in=v16.4.0-->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/async_context.html)
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
-
-<!-- source_link=lib/async_hooks.js -->
 
 ## Введение
 
@@ -40,22 +36,6 @@ description: Классы для связывания состояния и ег
     ```
 
 ## Класс: `AsyncLocalStorage`
-
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
-changes:
- - version: v16.4.0
-   pr-url: https://github.com/nodejs/node/pull/37675
-   description: AsyncLocalStorage is now Stable. Previously, it had been Experimental.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0 | AsyncLocalStorage теперь стабильный. Раньше это был экспериментальный вариант. |
 
 Этот класс создаёт хранилища, которые сохраняют целостность при асинхронных операциях.
 
@@ -135,34 +115,6 @@ changes:
 
 ### `new AsyncLocalStorage([options])`
 
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
-changes:
- - version: v24.0.0
-   pr-url: https://github.com/nodejs/node/pull/57766
-   description: Add `defaultValue` and `name` options.
- - version:
-    - v19.7.0
-    - v18.16.0
-   pr-url: https://github.com/nodejs/node/pull/46386
-   description: Removed experimental onPropagate option.
- - version:
-    - v19.2.0
-    - v18.13.0
-   pr-url: https://github.com/nodejs/node/pull/45386
-   description: Add option onPropagate.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0 | Добавлены параметры `defaultValue` и `name`. |
-    | v19.7.0, v18.16.0 | Удалена экспериментальная опция onPropagate. |
-    | v19.2.0, v18.13.0 | Добавлена опция `onPropagate`. |
-
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `defaultValue` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение по умолчанию, которое будет использоваться, если хранилище не передано.
     -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя для значения `AsyncLocalStorage`.
@@ -171,48 +123,12 @@ changes:
 
 ### Статический метод: `AsyncLocalStorage.bind(fn)`
 
-<!-- YAML
-added:
- - v19.8.0
- - v18.16.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
 -   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию, которая вызывает `fn` в захваченном контексте выполнения.
 
 Привязывает переданную функцию к текущему контексту выполнения.
 
 ### Статический метод: `AsyncLocalStorage.snapshot()`
-
-<!-- YAML
-added:
- - v19.8.0
- - v18.16.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 -   Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Новую функцию с сигнатурой `(fn: (...args) : R, ...args) : R`.
 
@@ -248,12 +164,6 @@ console.log(asyncLocalStorage.run(321, () => foo.get())); // returns 123
 
 ### `asyncLocalStorage.disable()`
 
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Экспериментальный
@@ -268,23 +178,11 @@ added:
 
 ### `asyncLocalStorage.getStore()`
 
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
--->
-
 -   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Возвращает текущее хранилище. Если метод вызывается вне асинхронного контекста, инициализированного вызовом `asyncLocalStorage.run()` или `asyncLocalStorage.enterWith()`, он возвращает `undefined`.
 
 ### `asyncLocalStorage.enterWith(store)`
-
-<!-- YAML
-added:
- - v13.11.0
- - v12.17.0
--->
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -325,21 +223,11 @@ asyncLocalStorage.getStore(); // Returns the same object
 
 ### `asyncLocalStorage.name`
 
-<!-- YAML
-added: v24.0.0
--->
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя экземпляра `AsyncLocalStorage`, если оно задано.
 
 ### `asyncLocalStorage.run(store, callback[, ...args])`
-
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
--->
 
 -   `store` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -371,12 +259,6 @@ try {
 
 ### `asyncLocalStorage.exit(callback[, ...args])`
 
-<!-- YAML
-added:
- - v13.10.0
- - v12.17.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Экспериментальный
@@ -407,10 +289,6 @@ try {
 ```
 
 ### `asyncLocalStorage.withScope(store)` {#asynclocalstoragewithscopestore}
-
-<!-- YAML
-added: v25.9.0
--->
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -532,13 +410,9 @@ async function fn() {
 
 Если ваш код основан на функциях обратного вызова, достаточно промисифицировать его с помощью [`util.promisify()`](util.md#utilpromisifyoriginal), чтобы он начал работать с нативными промисами.
 
-Если вам нужно использовать API на основе функций обратного вызова или ваш код предполагает пользовательскую реализацию thenable, используйте класс [`AsyncResource`](#класс-asyncresource) для связывания асинхронной операции с правильным контекстом выполнения. Найдите вызов функции, ответственный за потерю контекста, логируя содержимое `asyncLocalStorage.getStore()` после вызовов, которые вы подозреваете в этой потере. Когда в логе появляется `undefined`, вероятнее всего, за потерю контекста отвечает последняя вызванная функция обратного вызова.
+Если вам нужно использовать API на основе функций обратного вызова или ваш код предполагает пользовательскую реализацию thenable, используйте класс [`AsyncResource`](#class-asyncresource) для связывания асинхронной операции с правильным контекстом выполнения. Найдите вызов функции, ответственный за потерю контекста, логируя содержимое `asyncLocalStorage.getStore()` после вызовов, которые вы подозреваете в этой потере. Когда в логе появляется `undefined`, вероятнее всего, за потерю контекста отвечает последняя вызванная функция обратного вызова.
 
 ## Класс: `RunScope`
-
-<!-- YAML
-added: v25.9.0
--->
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -549,10 +423,6 @@ added: v25.9.0
 Область видимости автоматически восстанавливает предыдущее значение хранилища при выходе из блока `using` как при обычном завершении, так и при выбрасывании ошибки.
 
 ### `scope.dispose()`
-
-<!-- YAML
-added: v25.9.0
--->
 
 Явно завершает область видимости и восстанавливает предыдущее значение хранилища. Этот метод идемпотентен: многократный вызов имеет тот же эффект, что и однократный.
 
@@ -591,19 +461,6 @@ added: v25.9.0
     ```
 
 ## Класс: `AsyncResource` {#class-asyncresource}
-
-<!-- YAML
-changes:
- - version: v16.4.0
-   pr-url: https://github.com/nodejs/node/pull/37675
-   description: AsyncResource is now Stable. Previously, it had been Experimental.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.4.0 | AsyncResource теперь стабильный. Раньше это был экспериментальный вариант. |
 
 Класс `AsyncResource` предназначен для расширения асинхронными ресурсами, создаваемыми embedder-ом. С его помощью пользователи могут легко инициировать события жизненного цикла собственных ресурсов.
 
@@ -710,35 +567,6 @@ class DBQuery extends AsyncResource {
 
 ### Статический метод: `AsyncResource.bind(fn[, type[, thisArg]])`
 
-<!-- YAML
-added:
-  - v14.8.0
-  - v12.19.0
-changes:
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/46432
-    description: The `asyncResource` property added to the bound function
-                 has been deprecated and will be removed in a future
-                 version.
-  - version:
-    - v17.8.0
-    - v16.15.0
-    pr-url: https://github.com/nodejs/node/pull/42177
-    description: Changed the default when `thisArg` is undefined to use `this`
-                 from the caller.
-  - version: v16.0.0
-    pr-url: https://github.com/nodejs/node/pull/36782
-    description: Added optional thisArg.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Свойство asyncResource, добавленное к связанной функции, устарело и будет удалено в будущей версии. |
-    | v17.8.0, v16.15.0 | Изменено значение по умолчанию, когда thisArg не определен, чтобы использовать this от вызывающего объекта. |
-    | v16.0.0 | Добавлен необязательный thisArg. |
-
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему контексту выполнения.
 -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя, связанное с базовым `AsyncResource`.
 -   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -747,45 +575,12 @@ changes:
 
 ### `asyncResource.bind(fn[, thisArg])`
 
-<!-- YAML
-added:
-  - v14.8.0
-  - v12.19.0
-changes:
-  - version: v20.0.0
-    pr-url: https://github.com/nodejs/node/pull/46432
-    description: The `asyncResource` property added to the bound function
-                 has been deprecated and will be removed in a future
-                 version.
-  - version:
-    - v17.8.0
-    - v16.15.0
-    pr-url: https://github.com/nodejs/node/pull/42177
-    description: Changed the default when `thisArg` is undefined to use `this`
-                 from the caller.
-  - version: v16.0.0
-    pr-url: https://github.com/nodejs/node/pull/36782
-    description: Added optional thisArg.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Свойство asyncResource, добавленное к связанной функции, устарело и будет удалено в будущей версии. |
-    | v17.8.0, v16.15.0 | Изменено значение по умолчанию, когда thisArg не определен, чтобы использовать this от вызывающего объекта. |
-    | v16.0.0 | Добавлен необязательный thisArg. |
-
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно привязать к текущему `AsyncResource`.
 -   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Привязывает переданную функцию к выполнению в области видимости этого `AsyncResource`.
 
 ### `asyncResource.runInAsyncScope(fn[, thisArg, ...args])`
-
-<!-- YAML
-added: v9.6.0
--->
 
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, которую нужно вызвать в контексте выполнения этого асинхронного ресурса.
 -   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Получатель, который будет использован при вызове функции.

@@ -1,19 +1,15 @@
 ---
-title: Консоль
+title: Console
 description: Модуль node:console — простая отладочная консоль и класс Console для записи в потоки
 ---
 
 # Консоль
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/console.html)
-
-<!--introduced_in=v0.10.13-->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/console.html)
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
-
-<!-- source_link=lib/console.js -->
 
 Модуль `node:console` предоставляет простую отладочную консоль, похожую на механизм `console` в браузерах.
 
@@ -70,22 +66,6 @@ myConsole.warn(`Danger ${name}! Danger!`);
 
 ## Класс: `Console`
 
-<!-- YAML
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/9744
-    description: Errors that occur while writing to the underlying streams
-                 will now be ignored by default.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Ошибки, возникающие при записи в базовые потоки, теперь будут игнорироваться по умолчанию. |
-
-<!--type=class-->
-
 Класс `Console` служит для создания простого логгера с настраиваемыми потоками вывода. Доступ: `require('node:console').Console` или `console.Console` (или деструктуризация):
 
 === "MJS"
@@ -107,38 +87,6 @@ const { Console } = console;
 ### `new Console(stdout[, stderr][, ignoreErrors])`
 
 ### `new Console(options)`
-
-<!-- YAML
-changes:
-  - version: v24.10.0
-    pr-url: https://github.com/nodejs/node/pull/60082
-    description: The `inspectOptions` option can be a `Map` from stream to options.
-  - version:
-     - v14.2.0
-     - v12.17.0
-    pr-url: https://github.com/nodejs/node/pull/32964
-    description: The `groupIndentation` option was introduced.
-  - version: v11.7.0
-    pr-url: https://github.com/nodejs/node/pull/24978
-    description: The `inspectOptions` option is introduced.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/19372
-    description: The `Console` constructor now supports an `options` argument,
-                 and the `colorMode` option was introduced.
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/9744
-    description: The `ignoreErrors` option was introduced.
--->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.10.0 | Опция `inspectOptions` может быть `Map` из потока в параметры. |
-    | v14.2.0, v12.17.0 | Добавлена опция `groupIndentation`. |
-    | v11.7.0 | Добавлена опция `inspectOptions`. |
-    | v10.0.0 | Конструктор `Console` теперь поддерживает аргумент `options`, а также добавлена опция `colorMode`. |
-    | v8.0.0 | Добавлена опция `ignoreErrors`. |
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `stdout` [`<stream.Writable>`](stream.md#streamwritable)
@@ -195,23 +143,6 @@ new Console({
 
 ### `console.assert(value[, ...message])`
 
-<!-- YAML
-added: v0.1.101
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/17706
-    description: The implementation is now spec compliant and does not throw
-                 anymore.
--->
-
-Добавлено в: v0.1.101
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Реализация теперь соответствует спецификации и больше не выдает ошибок. |
-
 -   `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Проверяемое значение на истинность.
 -   `...message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Остальные аргументы — текст сообщения.
 
@@ -231,25 +162,15 @@ console.assert();
 
 ### `console.clear()`
 
-<!-- YAML
-added: v8.3.0
--->
-
 Если `stdout` — TTY, `console.clear()` пытается очистить TTY. Если `stdout` не TTY, метод ничего не делает.
 
 Поведение зависит от ОС и типа терминала. В большинстве Linux это похоже на команду `clear`. В Windows очищается только вывод в текущей области просмотра терминала для процесса `node`.
 
 ### `console.count([label])`
 
-<!-- YAML
-added: v8.3.0
--->
-
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
 
 Ведёт внутренний счётчик для `label` и выводит в `stdout`, сколько раз `console.count()` вызывали с этим `label`.
-
-<!-- eslint-skip -->
 
 ```js
 > console.count()
@@ -275,15 +196,9 @@ undefined
 
 ### `console.countReset([label])`
 
-<!-- YAML
-added: v8.3.0
--->
-
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подпись счётчика. **По умолчанию:** `'default'`.
 
 Сбрасывает внутренний счётчик для `label`.
-
-<!-- eslint-skip -->
 
 ```js
 > console.count('abc');
@@ -299,32 +214,12 @@ undefined
 
 ### `console.debug(data[, ...args])`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v8.10.0
-    pr-url: https://github.com/nodejs/node/pull/17033
-    description: "`console.debug` is now an alias for `console.log`."
--->
-
-Добавлено в: v8.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.10.0 | «`console.debug` теперь является псевдонимом `console.log`». |
-
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 `console.debug()` — псевдоним [`console.log()`](#consolelogdata-args).
 
 ### `console.dir(obj[, options])`
-
-<!-- YAML
-added: v0.1.101
--->
 
 -   `obj` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -336,31 +231,11 @@ added: v0.1.101
 
 ### `console.dirxml(...data)`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v9.3.0
-    pr-url: https://github.com/nodejs/node/pull/17152
-    description: "`console.dirxml` now calls `console.log` for its arguments."
--->
-
-Добавлено в: v8.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.3.0 | «`console.dirxml` теперь вызывает `console.log` для получения своих аргументов." |
-
 -   `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Вызывает `console.log()` с теми же аргументами. XML-форматирования не производится.
 
 ### `console.error([data][, ...args])`
-
-<!-- YAML
-added: v0.1.100
--->
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -379,10 +254,6 @@ console.error('error', code);
 
 ### `console.group([...label])`
 
-<!-- YAML
-added: v8.5.0
--->
-
 -   `...label` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Увеличивает отступ последующих строк на `groupIndentation` пробелов.
@@ -391,25 +262,13 @@ added: v8.5.0
 
 ### `console.groupCollapsed()`
 
-<!-- YAML
-  added: v8.5.0
--->
-
 Псевдоним [`console.group()`](#consolegrouplabel).
 
 ### `console.groupEnd()`
 
-<!-- YAML
-added: v8.5.0
--->
-
 Уменьшает отступ последующих строк на `groupIndentation` пробелов.
 
 ### `console.info([data][, ...args])`
-
-<!-- YAML
-added: v0.1.100
--->
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -417,10 +276,6 @@ added: v0.1.100
 `console.info()` — псевдоним [`console.log()`](#consolelogdata-args).
 
 ### `console.log([data][, ...args])`
-
-<!-- YAML
-added: v0.1.100
--->
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -438,10 +293,6 @@ console.log('count:', count);
 См. [`util.format()`](util.md#utilformatformat-args).
 
 ### `console.table(tabularData[, properties])`
-
-<!-- YAML
-added: v10.0.0
--->
 
 -   `tabularData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `properties` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Альтернативный набор свойств для столбцов.
@@ -484,36 +335,11 @@ console.table(
 
 ### `console.time([label])`
 
-<!-- YAML
-added: v0.1.104
--->
-
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
 
 Запускает таймер для измерения длительности операции. Таймеры различаются по `label`. Используйте тот же `label` в [`console.timeEnd()`](#consoletimeendlabel), чтобы остановить таймер и вывести прошедшее время в подходящих единицах в `stdout`. Например, при 3869 мс `console.timeEnd()` покажет "3.869s".
 
 ### `console.timeEnd([label])`
-
-<!-- YAML
-added: v0.1.104
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29251
-    description: The elapsed time is displayed with a suitable time unit.
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5901
-    description: This method no longer supports multiple calls that don't map
-                 to individual `console.time()` calls; see below for details.
--->
-
-Добавлено в: v0.1.104
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Прошедшее время отображается в подходящей единице времени. |
-    | v6.0.0 | Этот метод больше не поддерживает множественные вызовы, которые не соответствуют отдельным вызовам console.time(); подробности см. ниже. |
 
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
 
@@ -527,10 +353,6 @@ console.timeEnd('bunch-of-stuff');
 ```
 
 ### `console.timeLog([label][, ...data])`
-
-<!-- YAML
-added: v10.7.0
--->
 
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'default'`
 -   `...data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -547,10 +369,6 @@ console.timeEnd('process');
 ```
 
 ### `console.trace([message][, ...args])`
-
-<!-- YAML
-added: v0.1.104
--->
 
 -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -575,10 +393,6 @@ console.trace('Show me');
 
 ### `console.warn([data][, ...args])`
 
-<!-- YAML
-added: v0.1.100
--->
-
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -589,10 +403,6 @@ added: v0.1.100
 Следующие методы предоставляет движок V8 в общем API, но ничего не выводят, если не используются вместе с [инспектором](debugger.md) (флаг `--inspect`).
 
 ### `console.profile([label])`
-
-<!-- YAML
-added: v8.0.0
--->
 
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -607,10 +417,6 @@ console.profileEnd('MyLabel');
 
 ### `console.profileEnd([label])`
 
-<!-- YAML
-added: v8.0.0
--->
-
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Вне инспектора ничего не отображает. Останавливает текущую сессию CPU-профилирования, если она была начата, и выводит отчёт на панель **Profiles**. Пример — см. [`console.profile()`](#consoleprofilelabel).
@@ -618,10 +424,6 @@ added: v8.0.0
 Без метки останавливается последний запущенный профиль.
 
 ### `console.timeStamp([label])`
-
-<!-- YAML
-added: v8.0.0
--->
 
 -   `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

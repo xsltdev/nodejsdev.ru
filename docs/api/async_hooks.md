@@ -1,19 +1,15 @@
 ---
-title: Асинхронные хуки (async_hooks)
+title: Async hooks
 description: Модуль async_hooks — API для отслеживания асинхронных ресурсов
 ---
 
 # Асинхронные хуки
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/async_hooks.html)
-
-<!--introduced_in=v8.1.0-->
+[:octicons-tag-24: latest](https://nodejs.org/docs/latest-v25.x/api/async_hooks.html)
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Пожалуйста, мигрируйте от этого API, если можете. Мы не рекомендуем использовать API [`createHook`](#async_hookscreatehookoptions), [`AsyncHook`](#class-asynchook) и [`executionAsyncResource`](#async_hooksexecutionasyncresource), так как они имеют проблемы с удобством использования, риски для безопасности и влияют на производительность. Для случаев использования отслеживания асинхронного контекста лучше использовать стабильный API [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage). Если у вас есть сценарий использования `createHook`, `AsyncHook` или `executionAsyncResource`, выходящий за рамки потребностей отслеживания контекста, решаемых [`AsyncLocalStorage`](async_context.md#class-asynclocalstorage) или диагностических данных, предоставляемых в настоящее время [каналом диагностики](diagnostics_channel.md), пожалуйста, откройте проблему по адресу <https://github.com/nodejs/node/issues>, описав ваш сценарий использования, чтобы мы могли создать API, более ориентированный на конкретные цели.
-
-<!-- source_link=lib/async_hooks.js -->
 
 Мы настоятельно не рекомендуем использовать API `async_hooks`. Другие API, которые могут покрыть большинство случаев использования, включают:
 
@@ -145,10 +141,6 @@ description: Модуль async_hooks — API для отслеживания а
     ```
 
 ## `async_hooks.createHook(options)` {#async_hookscreatehookoptions}
-
-<!-- YAML
-added: v8.1.0
--->
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Обратные вызовы хука](#hook-callbacks) для регистрации
     -   `init` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обратный вызов [init](#initasyncid-type-triggerasyncid-resource).
@@ -558,10 +550,6 @@ TCPSERVERWRAP(5)
 
 #### `promiseResolve(asyncId)` {#promiseresolveasyncid}
 
-<!-- YAML
-added: v8.6.0
--->
-
 -   `asyncId` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Вызывается, когда вызывается функция `resolve`, переданная конструктору `Promise` (напрямую или через другие способы разрешения промиса).
@@ -586,12 +574,6 @@ init for PROMISE with id 6, trigger id: 5  # Promise, возвращённый t
 ```
 
 ### `async_hooks.executionAsyncResource()` {#async_hooksexecutionasyncresource}
-
-<!-- YAML
-added:
- - v13.9.0
- - v12.17.0
--->
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Ресурс, представляющий текущее выполнение. Удобно хранить данные в ресурсе.
 
@@ -683,22 +665,6 @@ added:
 
 ### `async_hooks.executionAsyncId()`
 
-<!-- YAML
-added: v8.1.0
-changes:
-  - version: v8.2.0
-    pr-url: https://github.com/nodejs/node/pull/13490
-    description: Renamed from `currentId`.
--->
-
-Добавлено в: v8.1.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.2.0 | Переименован из `currentId`. |
-
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) `asyncId` текущего контекста выполнения. Удобно отслеживать, кто что вызывает.
 
 === "MJS"
@@ -767,12 +733,6 @@ const server = net
 Контексты промисов по умолчанию могут не получать корректные `triggerAsyncId`. См. раздел [отслеживание выполнения промисов](#promise-execution-tracking).
 
 ### `async_hooks.asyncWrapProviders`
-
-<!-- YAML
-added:
-  - v17.2.0
-  - v16.14.0
--->
 
 -   Возвращает: Отображение типов провайдеров на числовые id. Содержит все типы событий, которые может порождать событие `async_hooks.init()`.
 
