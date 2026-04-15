@@ -2164,7 +2164,7 @@ changes:
 
 Метод можно вызывать многократно по мере поступления новых данных в потоке.
 
-## Класс: `KeyObject`
+## Класс: `KeyObject` {#class-keyobject}
 
 <!-- YAML
 added: v11.6.0
@@ -4862,9 +4862,9 @@ changes:
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `derivedKey` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
-HKDF is a simple key derivation function defined in RFC 5869. The given `ikm`, `salt` and `info` are used with the `digest` to derive a key of `keylen` bytes.
+HKDF — это простая функция выработки ключа, определённая в RFC 5869. Переданные `ikm`, `salt` и `info` используются вместе с `digest` для выработки ключа длиной `keylen` байт.
 
-The supplied `callback` function is called with two arguments: `err` and `derivedKey`. If an errors occurs while deriving the key, `err` will be set; otherwise `err` will be `null`. The successfully generated `derivedKey` will be passed to the callback as an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). An error will be thrown if any of the input arguments specify invalid values or types.
+Переданная функция `callback` вызывается с двумя аргументами: `err` и `derivedKey`. Если при выработке ключа возникает ошибка, в `err` будет передано её значение; в противном случае `err` будет равно `null`. Успешно сгенерированный `derivedKey` будет передан в callback как [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer). Если какие-либо входные аргументы содержат недопустимые значения или типы, будет выброшена ошибка.
 
 === "MJS"
 
@@ -5158,19 +5158,19 @@ changes:
 <!--lint disable maximum-line-length remark-lint-->
 
 -   `privateKey` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
-    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The hash function to use for OAEP padding and MGF1. **По умолчанию:** `'sha1'`
-    -   `oaepLabel` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The label to use for OAEP padding. If not specified, no label is used.
-    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) An optional padding value defined in `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING`, or `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
+    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хеш-функция, используемая для OAEP-паддинга и MGF1. **По умолчанию:** `'sha1'`
+    -   `oaepLabel` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Метка, используемая для OAEP-паддинга. Если не указана, метка не используется.
+    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) Необязательное значение паддинга, определённое в `crypto.constants`. Может быть одним из следующих: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING` или `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
 -   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   Возвращает: [`<Buffer>`](buffer.md#buffer) A new `Buffer` with the decrypted content.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `Buffer` с расшифрованным содержимым.
 
 <!--lint enable maximum-line-length remark-lint-->
 
-Decrypts `buffer` with `privateKey`. `buffer` was previously encrypted using the corresponding public key, for example using [`crypto.publicEncrypt()`](#cryptopublicencryptkey-buffer).
+Расшифровывает `buffer` с помощью `privateKey`. `buffer` должен быть предварительно зашифрован соответствующим открытым ключом, например с использованием [`crypto.publicEncrypt()`](#cryptopublicencryptkey-buffer).
 
-If `privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if `privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an object, the `padding` property can be passed. Otherwise, this function uses `RSA_PKCS1_OAEP_PADDING`.
+Если `privateKey` не является [`KeyObject`](#class-keyobject), эта функция ведёт себя так, как если бы `privateKey` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). Если это объект, можно передать свойство `padding`. В противном случае функция использует `RSA_PKCS1_OAEP_PADDING`.
 
-Using `crypto.constants.RSA_PKCS1_PADDING` in [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer) requires OpenSSL to support implicit rejection (`rsa_pkcs1_implicit_rejection`). If the version of OpenSSL used by Node.js does not support this feature, attempting to use `RSA_PKCS1_PADDING` will fail.
+Использование `crypto.constants.RSA_PKCS1_PADDING` в [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer) требует, чтобы OpenSSL поддерживал неявное отклонение (`rsa_pkcs1_implicit_rejection`). Если версия OpenSSL, используемая Node.js, не поддерживает эту возможность, попытка использовать `RSA_PKCS1_PADDING` завершится ошибкой.
 
 ### `crypto.privateEncrypt(privateKey, buffer)`
 
@@ -5200,18 +5200,18 @@ changes:
 <!--lint disable maximum-line-length remark-lint-->
 
 -   `privateKey` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
-    -   `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey) A PEM encoded private key.
-    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional passphrase for the private key.
-    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) An optional padding value defined in `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING` or `crypto.constants.RSA_PKCS1_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`, or `passphrase` are strings.
+    -   `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey) Закрытый ключ в PEM-кодировке.
+    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательная парольная фраза для закрытого ключа.
+    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) Необязательное значение паддинга, определённое в `crypto.constants`. Может быть одним из следующих: `crypto.constants.RSA_NO_PADDING` или `crypto.constants.RSA_PKCS1_PADDING`.
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, используемая, когда `buffer`, `key` или `passphrase` являются строками.
 -   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   Возвращает: [`<Buffer>`](buffer.md#buffer) A new `Buffer` with the encrypted content.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `Buffer` с зашифрованным содержимым.
 
 <!--lint enable maximum-line-length remark-lint-->
 
-Encrypts `buffer` with `privateKey`. The returned data can be decrypted using the corresponding public key, for example using [`crypto.publicDecrypt()`](#cryptopublicdecryptkey-buffer).
+Шифрует `buffer` с помощью `privateKey`. Возвращённые данные можно расшифровать соответствующим открытым ключом, например с использованием [`crypto.publicDecrypt()`](#cryptopublicdecryptkey-buffer).
 
-If `privateKey` is not a [`KeyObject`](#class-keyobject), this function behaves as if `privateKey` had been passed to [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). If it is an object, the `padding` property can be passed. Otherwise, this function uses `RSA_PKCS1_PADDING`.
+Если `privateKey` не является [`KeyObject`](#class-keyobject), эта функция ведёт себя так, как если бы `privateKey` был передан в [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey). Если это объект, можно передать свойство `padding`. В противном случае функция использует `RSA_PKCS1_PADDING`.
 
 ### `crypto.publicDecrypt(key, buffer)`
 
@@ -5241,19 +5241,19 @@ changes:
 <!--lint disable maximum-line-length remark-lint-->
 
 -   `key` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
-    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional passphrase for the private key.
-    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) An optional padding value defined in `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING` or `crypto.constants.RSA_PKCS1_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`, or `passphrase` are strings.
+    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательная парольная фраза для закрытого ключа.
+    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) Необязательное значение паддинга, определённое в `crypto.constants`. Может быть одним из следующих: `crypto.constants.RSA_NO_PADDING` или `crypto.constants.RSA_PKCS1_PADDING`.
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, используемая, когда `buffer`, `key` или `passphrase` являются строками.
 -   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   Возвращает: [`<Buffer>`](buffer.md#buffer) A new `Buffer` with the decrypted content.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `Buffer` с расшифрованным содержимым.
 
 <!--lint enable maximum-line-length remark-lint-->
 
-Decrypts `buffer` with `key`.`buffer` was previously encrypted using the corresponding private key, for example using [`crypto.privateEncrypt()`](#cryptoprivateencryptprivatekey-buffer).
+Расшифровывает `buffer` с помощью `key`. `buffer` должен быть предварительно зашифрован соответствующим закрытым ключом, например с использованием [`crypto.privateEncrypt()`](#cryptoprivateencryptprivatekey-buffer).
 
-If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an object, the `padding` property can be passed. Otherwise, this function uses `RSA_PKCS1_PADDING`.
+Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведёт себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, можно передать свойство `padding`. В противном случае функция использует `RSA_PKCS1_PADDING`.
 
-Because RSA public keys can be derived from private keys, a private key may be passed instead of a public key.
+Поскольку открытые ключи RSA могут быть получены из закрытых, вместо открытого ключа можно передать закрытый.
 
 ### `crypto.publicEncrypt(key, buffer)`
 
@@ -5291,22 +5291,22 @@ changes:
 <!--lint disable maximum-line-length remark-lint-->
 
 -   `key` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
-    -   `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey) A PEM encoded public or private key, [KeyObject](#class-keyobject), or [CryptoKey](webcrypto.md#class-cryptokey).
-    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The hash function to use for OAEP padding and MGF1. **По умолчанию:** `'sha1'`
-    -   `oaepLabel` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The label to use for OAEP padding. If not specified, no label is used.
-    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) An optional passphrase for the private key.
-    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) An optional padding value defined in `crypto.constants`, which may be: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING`, or `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
-    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) The string encoding to use when `buffer`, `key`, `oaepLabel`, or `passphrase` are strings.
+    -   `key` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey) Открытый или закрытый ключ в PEM-кодировке, [KeyObject](#class-keyobject) или [CryptoKey](webcrypto.md#class-cryptokey).
+    -   `oaepHash` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хеш-функция, используемая для OAEP-паддинга и MGF1. **По умолчанию:** `'sha1'`
+    -   `oaepLabel` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Метка, используемая для OAEP-паддинга. Если не указана, метка не используется.
+    -   `passphrase` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательная парольная фраза для закрытого ключа.
+    -   `padding` [`<crypto.constants>`](crypto.md#cryptoconstants) Необязательное значение паддинга, определённое в `crypto.constants`. Может быть одним из следующих: `crypto.constants.RSA_NO_PADDING`, `crypto.constants.RSA_PKCS1_PADDING` или `crypto.constants.RSA_PKCS1_OAEP_PADDING`.
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, используемая, когда `buffer`, `key`, `oaepLabel` или `passphrase` являются строками.
 -   `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
--   Возвращает: [`<Buffer>`](buffer.md#buffer) A new `Buffer` with the encrypted content.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer) Новый `Buffer` с зашифрованным содержимым.
 
 <!--lint enable maximum-line-length remark-lint-->
 
-Encrypts the content of `buffer` with `key` and returns a new [`Buffer`](buffer.md) with encrypted content. The returned data can be decrypted using the corresponding private key, for example using [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer).
+Шифрует содержимое `buffer` с помощью `key` и возвращает новый [`Buffer`](buffer.md) с зашифрованным содержимым. Возвращённые данные можно расшифровать соответствующим закрытым ключом, например с использованием [`crypto.privateDecrypt()`](#cryptoprivatedecryptprivatekey-buffer).
 
-If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an object, the `padding` property can be passed. Otherwise, this function uses `RSA_PKCS1_OAEP_PADDING`.
+Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведёт себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, можно передать свойство `padding`. В противном случае функция использует `RSA_PKCS1_OAEP_PADDING`.
 
-Because RSA public keys can be derived from private keys, a private key may be passed instead of a public key.
+Поскольку открытые ключи RSA могут быть получены из закрытых, вместо открытого ключа можно передать закрытый.
 
 ### `crypto.randomBytes(size[, callback])`
 
@@ -5333,15 +5333,15 @@ changes:
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
     | v9.0.0 | При передаче null в качестве аргумента обратного вызова теперь выдается ERR_INVALID_CALLBACK. |
 
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The number of bytes to generate. The `size` must not be larger than `2**31 - 1`.
+-   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Количество байтов для генерации. Значение `size` не должно быть больше `2**31 - 1`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `buf` [`<Buffer>`](buffer.md#buffer)
 -   Возвращает: [`<Buffer>`](buffer.md#buffer), если функция `callback` не указана.
 
-Generates cryptographically strong pseudorandom data. The `size` argument is a number indicating the number of bytes to generate.
+Генерирует криптографически стойкие псевдослучайные данные. Аргумент `size` — это число, указывающее количество байтов для генерации.
 
-If a `callback` function is provided, the bytes are generated asynchronously and the `callback` function is invoked with two arguments: `err` and `buf`. If an error occurs, `err` will be an `Error` object; otherwise it is `null`. The `buf` argument is a [`Buffer`](buffer.md) containing the generated bytes.
+Если передана функция `callback`, байты генерируются асинхронно, а функция `callback` вызывается с двумя аргументами: `err` и `buf`. Если возникает ошибка, `err` будет объектом `Error`; в противном случае оно будет равно `null`. Аргумент `buf` — это [`Buffer`](buffer.md), содержащий сгенерированные байты.
 
 === "MJS"
 
@@ -5371,7 +5371,7 @@ If a `callback` function is provided, the bytes are generated asynchronously and
     });
     ```
 
-If the `callback` function is not provided, the random bytes are generated synchronously and returned as a [`Buffer`](buffer.md). An error will be thrown if there is a problem generating the bytes.
+Если функция `callback` не передана, случайные байты генерируются синхронно и возвращаются как [`Buffer`](buffer.md). Если при генерации байтов возникает проблема, будет выброшена ошибка.
 
 === "MJS"
 
@@ -5399,11 +5399,11 @@ If the `callback` function is not provided, the random bytes are generated synch
       `${buf.length} bytes of random data: ${buf.toString('hex')}`);
     ```
 
-The `crypto.randomBytes()` method will not complete until there is sufficient entropy available. This should normally never take longer than a few milliseconds. The only time when generating the random bytes may conceivably block for a longer period of time is right after boot, when the whole system is still low on entropy.
+Метод `crypto.randomBytes()` не завершится, пока не станет доступно достаточное количество энтропии. Обычно это не должно занимать больше нескольких миллисекунд. Единственный случай, когда генерация случайных байтов потенциально может блокироваться дольше, — сразу после загрузки, когда во всей системе ещё низкий уровень энтропии.
 
-This API uses libuv's threadpool, which can have surprising and negative performance implications for some applications; see the [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
+Этот API использует пул потоков libuv, что для некоторых приложений может иметь неожиданные и негативные последствия для производительности; подробности см. в документации по [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
 
-The asynchronous version of `crypto.randomBytes()` is carried out in a single threadpool request. To minimize threadpool task length variation, partition large `randomBytes` requests when doing so as part of fulfilling a client request.
+Асинхронная версия `crypto.randomBytes()` выполняется в рамках одного запроса к пулу потоков. Чтобы минимизировать разброс длительности задач в пуле потоков, разбивайте большие запросы `randomBytes` на части, если выполняете их в рамках обработки клиентского запроса.
 
 ### `crypto.randomFill(buffer[, offset][, size], callback)`
 
@@ -5429,14 +5429,14 @@ changes:
     | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
     | v9.0.0 | Аргументом `buffer` может быть любой `TypedArray` или `DataView`. |
 
--   `buffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Must be supplied. The size of the provided `buffer` must not be larger than `2**31 - 1`.
+-   `buffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Обязательный параметр. Размер переданного `buffer` не должен быть больше `2**31 - 1`.
 -   `offset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. The `size` must not be larger than `2**31 - 1`.
+-   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. Значение `size` не должно быть больше `2**31 - 1`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, buf) {}`.
 
-This function is similar to [`crypto.randomBytes()`](#cryptorandombytessize-callback) but requires the first argument to be a [`Buffer`](buffer.md) that will be filled. It also requires that a callback is passed in.
+Эта функция похожа на [`crypto.randomBytes()`](#cryptorandombytessize-callback), но требует, чтобы первым аргументом был [`Buffer`](buffer.md), который будет заполнен. Также требуется передать callback.
 
-If the `callback` function is not provided, an error will be thrown.
+Если функция `callback` не передана, будет выброшена ошибка.
 
 === "MJS"
 
@@ -5486,9 +5486,9 @@ If the `callback` function is not provided, an error will be thrown.
     });
     ```
 
-Any `ArrayBuffer`, `TypedArray`, or `DataView` instance may be passed as `buffer`.
+В качестве `buffer` можно передать любой экземпляр `ArrayBuffer`, `TypedArray` или `DataView`.
 
-While this includes instances of `Float32Array` and `Float64Array`, this function should not be used to generate random floating-point numbers. The result may contain `+Infinity`, `-Infinity`, and `NaN`, and even if the array contains finite numbers only, they are not drawn from a uniform random distribution and have no meaningful lower or upper bounds.
+Хотя это включает экземпляры `Float32Array` и `Float64Array`, эту функцию не следует использовать для генерации случайных чисел с плавающей точкой. Результат может содержать `+Infinity`, `-Infinity` и `NaN`, и даже если массив содержит только конечные числа, они не будут получены из равномерного случайного распределения и не имеют осмысленных нижней и верхней границ.
 
 === "MJS"
 
@@ -5544,9 +5544,9 @@ While this includes instances of `Float32Array` and `Float64Array`, this functio
     });
     ```
 
-This API uses libuv's threadpool, which can have surprising and negative performance implications for some applications; see the [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize) documentation for more information.
+Этот API использует пул потоков libuv, что для некоторых приложений может иметь неожиданные и негативные последствия для производительности; подробности см. в документации по [`UV_THREADPOOL_SIZE`](cli.md#uv_threadpool_sizesize).
 
-The asynchronous version of `crypto.randomFill()` is carried out in a single threadpool request. To minimize threadpool task length variation, partition large `randomFill` requests when doing so as part of fulfilling a client request.
+Асинхронная версия `crypto.randomFill()` выполняется в рамках одного запроса к пулу потоков. Чтобы минимизировать разброс длительности задач в пуле потоков, разбивайте большие запросы `randomFill` на части, если выполняете их в рамках обработки клиентского запроса.
 
 ### `crypto.randomFillSync(buffer[, offset][, size])`
 
@@ -5566,12 +5566,12 @@ changes:
     | --- | --- |
     | v9.0.0 | Аргументом `buffer` может быть любой `TypedArray` или `DataView`. |
 
--   `buffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Must be supplied. The size of the provided `buffer` must not be larger than `2**31 - 1`.
+-   `buffer` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Обязательный параметр. Размер переданного `buffer` не должен быть больше `2**31 - 1`.
 -   `offset` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. The `size` must not be larger than `2**31 - 1`.
--   Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) The object passed as `buffer` argument.
+-   `size` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `buffer.length - offset`. Значение `size` не должно быть больше `2**31 - 1`.
+-   Возвращает: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Объект, переданный в аргументе `buffer`.
 
-Synchronous version of [`crypto.randomFill()`](#cryptorandomfillbuffer-offset-size-callback).
+Синхронная версия [`crypto.randomFill()`](#cryptorandomfillbuffer-offset-size-callback).
 
 === "MJS"
 
@@ -5607,7 +5607,7 @@ Synchronous version of [`crypto.randomFill()`](#cryptorandomfillbuffer-offset-si
     console.log(buf.toString('hex'));
     ```
 
-Any `ArrayBuffer`, `TypedArray` or `DataView` instance may be passed as `buffer`.
+В качестве `buffer` можно передать любой экземпляр `ArrayBuffer`, `TypedArray` или `DataView`.
 
 === "MJS"
 
@@ -5669,11 +5669,11 @@ changes:
 -   `max` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) End of random range (exclusive).
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) `function(err, n) {}`.
 
-Return a random integer `n` such that `min <= n < max`. This implementation avoids [modulo bias](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Modulo_bias).
+Возвращает случайное целое число `n` такое, что `min <= n < max`. Эта реализация избегает [смещения по модулю](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Modulo_bias).
 
-The range (`max - min`) must be less than 2<sup>48</sup>. `min` and `max` must be [safe integers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger).
+Диапазон (`max - min`) должен быть меньше 2<sup>48</sup>. Значения `min` и `max` должны быть [безопасными целыми числами](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger).
 
-If the `callback` function is not provided, the random integer is generated synchronously.
+Если функция `callback` не передана, случайное целое число генерируется синхронно.
 
 === "MJS"
 
@@ -5703,6 +5703,8 @@ If the `callback` function is not provided, the random integer is generated sync
     });
     ```
 
+---
+
 === "MJS"
 
     ```js
@@ -5726,6 +5728,8 @@ If the `callback` function is not provided, the random integer is generated sync
     const n = randomInt(3);
     console.log(`Random number chosen from (0, 1, 2): ${n}`);
     ```
+
+---
 
 === "MJS"
 
@@ -5760,10 +5764,10 @@ added:
 -->
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `disableEntropyCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) By default, to improve performance, Node.js generates and caches enough random data to generate up to 128 random UUIDs. To generate a UUID without using the cache, set `disableEntropyCache` to `true`. **По умолчанию:** `false`.
+    -   `disableEntropyCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию Node.js для повышения производительности генерирует и кэширует достаточно случайных данных, чтобы создать до 128 случайных UUID. Чтобы сгенерировать UUID без использования кэша, установите `disableEntropyCache` в `true`. **По умолчанию:** `false`.
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Generates a random [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) version 4 UUID. The UUID is generated using a cryptographic pseudorandom number generator.
+Генерирует случайный UUID версии 4 по [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt). UUID генерируется с использованием криптографического псевдослучайного генератора чисел.
 
 ### `crypto.randomUUIDv7([options])`
 
@@ -5772,10 +5776,10 @@ added: REPLACEME
 -->
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `disableEntropyCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) By default, to improve performance, Node.js generates and caches enough random data to generate up to 128 random UUIDs. To generate a UUID without using the cache, set `disableEntropyCache` to `true`. **По умолчанию:** `false`.
+    -   `disableEntropyCache` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) По умолчанию Node.js для повышения производительности генерирует и кэширует достаточно случайных данных, чтобы создать до 128 случайных UUID. Чтобы сгенерировать UUID без использования кэша, установите `disableEntropyCache` в `true`. **По умолчанию:** `false`.
 -   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-Generates a random [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.txt) version 7 UUID. The UUID contains a millisecond precision Unix timestamp in the most significant 48 bits, followed by cryptographically secure random bits for the remaining fields, making it suitable for use as a database key with time-based sorting. The embedded timestamp relies on a non-monotonic clock and is not guaranteed to be strictly increasing.
+Генерирует случайный UUID версии 7 по [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.txt). UUID содержит Unix-временную метку с точностью до миллисекунд в старших 48 битах, после которой идут криптографически стойкие случайные биты для остальных полей, что делает его подходящим для использования в качестве ключа базы данных с сортировкой по времени. Встроенная временная метка опирается на немонотонные часы и не гарантированно строго возрастает.
 
 ### `crypto.scrypt(password, salt, keylen[, options], callback)`
 
@@ -5817,13 +5821,13 @@ changes:
 -   `salt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) CPU/memory cost parameter. Must be a power of two greater than one. **По умолчанию:** `16384`.
-    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Block size parameter. **По умолчанию:** `8`.
-    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Parallelization parameter. **По умолчанию:** `1`.
-    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `cost`. Only one of both may be specified.
-    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `blockSize`. Only one of both may be specified.
-    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `parallelization`. Only one of both may be specified.
-    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Memory upper bound. It is an error when (approximately) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
+    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр вычислительной стоимости по CPU/памяти. Должен быть степенью двойки больше единицы. **По умолчанию:** `16384`.
+    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр размера блока. **По умолчанию:** `8`.
+    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр параллелизма. **По умолчанию:** `1`.
+    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `cost`. Можно указать только один из двух.
+    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `blockSize`. Можно указать только один из двух.
+    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `parallelization`. Можно указать только один из двух.
+    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Верхняя граница памяти. Ошибка возникает, когда (приблизительно) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `derivedKey` [`<Buffer>`](buffer.md#buffer)
@@ -5905,13 +5909,13 @@ changes:
 -   `salt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 -   `keylen` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) CPU/memory cost parameter. Must be a power of two greater than one. **По умолчанию:** `16384`.
-    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Block size parameter. **По умолчанию:** `8`.
-    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Parallelization parameter. **По умолчанию:** `1`.
-    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `cost`. Only one of both may be specified.
-    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `blockSize`. Only one of both may be specified.
-    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Alias for `parallelization`. Only one of both may be specified.
-    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Memory upper bound. It is an error when (approximately) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
+    -   `cost` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр вычислительной стоимости по CPU/памяти. Должен быть степенью двойки больше единицы. **По умолчанию:** `16384`.
+    -   `blockSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр размера блока. **По умолчанию:** `8`.
+    -   `parallelization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Параметр параллелизма. **По умолчанию:** `1`.
+    -   `N` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `cost`. Можно указать только один из двух.
+    -   `r` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `blockSize`. Можно указать только один из двух.
+    -   `p` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Псевдоним для `parallelization`. Можно указать только один из двух.
+    -   `maxmem` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Верхняя граница памяти. Ошибка возникает, когда (приблизительно) `128 * N * r > maxmem`. **По умолчанию:** `32 * 1024 * 1024`.
 -   Возвращает: [`<Buffer>`](buffer.md#buffer)
 
 Предоставляет синхронную реализацию [scrypt](https://en.wikipedia.org/wiki/Scrypt). Scrypt - это функция выведения ключа на основе пароля, специально сделанная вычислительно и по памяти дорогой, чтобы атаки перебором были неэффективны.
@@ -5961,10 +5965,10 @@ added: v15.6.0
 -->
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `total` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total allocated secure heap size as specified using the `--secure-heap=n` command-line flag.
-    -   `min` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The minimum allocation from the secure heap as specified using the `--secure-heap-min` command-line flag.
-    -   `used` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The total number of bytes currently allocated from the secure heap.
-    -   `utilization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) The calculated ratio of `used` to `total` allocated bytes.
+    -   `total` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий размер выделенной защищённой кучи, заданный флагом командной строки `--secure-heap=n`.
+    -   `min` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Минимальный размер выделения из защищённой кучи, заданный флагом командной строки `--secure-heap-min`.
+    -   `used` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общее количество байтов, в данный момент выделенных из защищённой кучи.
+    -   `utilization` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Вычисленное отношение `used` к общему количеству выделенных байтов `total`.
 
 ### `crypto.setEngine(engine[, flags])`
 
@@ -5989,11 +5993,11 @@ changes:
 -   `engine` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `flags` [`<crypto.constants>`](crypto.md#cryptoconstants) **По умолчанию:** `crypto.constants.ENGINE_METHOD_ALL`
 
-Load and set the `engine` for some or all OpenSSL functions (selected by flags). Support for custom engines in OpenSSL is deprecated from OpenSSL 3.
+Загружает и устанавливает `engine` для некоторых или всех функций OpenSSL (выбираются флагами). Поддержка пользовательских engine в OpenSSL объявлена устаревшей, начиная с OpenSSL 3.
 
-`engine` could be either an id or a path to the engine's shared library.
+`engine` может быть либо идентификатором, либо путём к разделяемой библиотеке engine.
 
-The optional `flags` argument uses `ENGINE_METHOD_ALL` by default. The `flags` is a bit field taking one of or a mix of the following flags (defined in `crypto.constants`):
+Необязательный аргумент `flags` по умолчанию использует `ENGINE_METHOD_ALL`. `flags` — это битовое поле, принимающее один из следующих флагов (определённых в `crypto.constants`) или их комбинацию:
 
 -   `crypto.constants.ENGINE_METHOD_RSA`
 -   `crypto.constants.ENGINE_METHOD_DSA`
@@ -6071,7 +6075,7 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `signature` [`<Buffer>`](buffer.md#buffer)
--   Возвращает: [`<Buffer>`](buffer.md#buffer) if the `callback` function is not provided.
+-   Возвращает: [`<Buffer>`](buffer.md#buffer), если функция `callback` не передана.
 
 <!--lint enable maximum-line-length remark-lint-->
 
@@ -6136,7 +6140,7 @@ changes:
 
 Если хотя бы один из `a` и `b` является `TypedArray`, в котором на элемент приходится более одного байта, например `Uint16Array`, результат будет вычислен с использованием порядка байтов платформы.
 
-<strong class="critical">Когда оба входных значения являются `Float32Array` или `Float64Array`, эта функция может вернуть неожиданный результат из-за кодировки чисел с плавающей точкой IEEE 754. В частности, ни `x === y`, ни `Object.is(x, y)` не означают, что байтовые представления двух чисел с плавающей точкой `x` и `y` совпадают.</strong>
+Когда оба входных значения являются `Float32Array` или `Float64Array`, эта функция может вернуть неожиданный результат из-за кодировки чисел с плавающей точкой IEEE 754. В частности, ни `x === y`, ни `Object.is(x, y)` не означают, что байтовые представления двух чисел с плавающей точкой `x` и `y` совпадают.
 
 Использование `crypto.timingSafeEqual` не гарантирует, что _окружающий_ код безопасен с точки зрения времени выполнения. Следует убедиться, что окружающий код не вносит уязвимостей, связанных с побочными временными эффектами.
 
@@ -6199,34 +6203,34 @@ changes:
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
     -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
     -   `result` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
--   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` or `false` depending on the validity of the signature for the data and public key if the `callback` function is not provided.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` или `false` в зависимости от корректности подписи для данных и открытого ключа, если функция `callback` не передана.
 
 <!--lint enable maximum-line-length remark-lint-->
 
-Verifies the given signature for `data` using the given key and algorithm. If `algorithm` is `null` or `undefined`, then the algorithm is dependent upon the key type.
+Проверяет заданную подпись для `data`, используя указанные ключ и алгоритм. Если `algorithm` равен `null` или `undefined`, то алгоритм зависит от типа ключа.
 
-`algorithm` is required to be `null` or `undefined` for Ed25519, Ed448, and ML-DSA.
+Для Ed25519, Ed448 и ML-DSA параметр `algorithm` должен быть `null` или `undefined`.
 
-If `key` is not a [`KeyObject`](#class-keyobject), this function behaves as if `key` had been passed to [`crypto.createPublicKey()`](#cryptocreatepublickeykey). If it is an object, the following additional properties can be passed:
+Если `key` не является [`KeyObject`](#class-keyobject), эта функция ведёт себя так, как если бы `key` был передан в [`crypto.createPublicKey()`](#cryptocreatepublickeykey). Если это объект, можно передать следующие дополнительные свойства:
 
--   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) For DSA and ECDSA, this option specifies the format of the signature. It can be one of the following:
-    -   `'der'` (default): DER-encoded ASN.1 signature structure encoding `(r, s)`.
-    -   `'ieee-p1363'`: Signature format `r || s` as proposed in IEEE-P1363.
--   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Optional padding value for RSA, one of the following:
+-   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Для DSA и ECDSA этот параметр задаёт формат подписи. Возможны следующие значения:
+    -   `'der'` (по умолчанию): ASN.1-структура подписи `(r, s)` в кодировке DER.
+    -   `'ieee-p1363'`: формат подписи `r || s`, предложенный в IEEE-P1363.
+-   `padding` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Необязательное значение padding для RSA, одно из следующих:
 
-    -   `crypto.constants.RSA_PKCS1_PADDING` (default)
+    -   `crypto.constants.RSA_PKCS1_PADDING` (по умолчанию)
     -   `crypto.constants.RSA_PKCS1_PSS_PADDING`
 
-    `RSA_PKCS1_PSS_PADDING` will use MGF1 with the same hash function used to sign the message as specified in section 3.1 of [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
+    `RSA_PKCS1_PSS_PADDING` будет использовать MGF1 с той же хеш-функцией, которая применяется для подписи сообщения, как указано в разделе 3.1 [RFC 4055](https://www.rfc-editor.org/rfc/rfc4055.txt).
 
--   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Salt length for when padding is `RSA_PKCS1_PSS_PADDING`. The special value `crypto.constants.RSA_PSS_SALTLEN_DIGEST` sets the salt length to the digest size, `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (default) sets it to the maximum permissible value.
--   `context` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) For Ed25519[^openssl32] (using Ed25519ctx from [RFC 8032](https://www.rfc-editor.org/rfc/rfc8032.txt)), Ed448, ML-DSA, and SLH-DSA, this option specifies the optional context to differentiate signatures generated for different purposes with the same key.
+-   `saltLength` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Длина соли при использовании `RSA_PKCS1_PSS_PADDING`. Специальное значение `crypto.constants.RSA_PSS_SALTLEN_DIGEST` устанавливает длину соли равной размеру дайджеста, а `crypto.constants.RSA_PSS_SALTLEN_MAX_SIGN` (по умолчанию) — максимально допустимому значению.
+-   `context` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Для Ed25519[^openssl32] (с использованием Ed25519ctx из [RFC 8032](https://www.rfc-editor.org/rfc/rfc8032.txt)), Ed448, ML-DSA и SLH-DSA этот параметр задаёт необязательный контекст, позволяющий различать подписи, созданные для разных целей одним и тем же ключом.
 
-The `signature` argument is the previously calculated signature for the `data`.
+Аргумент `signature` — это ранее вычисленная подпись для `data`.
 
-Because public keys can be derived from private keys, a private key or a public key may be passed for `key`.
+Поскольку открытые ключи могут быть получены из закрытых, в качестве `key` можно передать как закрытый, так и открытый ключ.
 
-If the `callback` function is provided this function uses libuv's threadpool.
+Если передана функция `callback`, эта функция использует пул потоков libuv.
 
 ### `crypto.webcrypto`
 
@@ -6240,7 +6244,7 @@ added: v15.0.0
 
 ## Примечания
 
-### Использование строк в качестве входных данных для криптографических API
+### Использование строк в качестве входных данных для криптографических API {#using-strings-as-inputs-to-cryptographic-apis}
 
 По историческим причинам многие криптографические API, предоставляемые Node.js, принимают строки в качестве входных данных, хотя лежащий в их основе криптографический алгоритм работает с последовательностями байтов. Это относится к открытому тексту, шифротексту, симметричным ключам, векторам инициализации, парольным фразам, солям, тегам аутентификации и дополнительным аутентифицированным данным.
 
